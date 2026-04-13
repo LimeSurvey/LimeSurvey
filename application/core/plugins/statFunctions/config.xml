@@ -4,10 +4,10 @@
         <name>statFunctions</name>
         <type>plugin</type>
         <creationDate>2019-09-19</creationDate>
-        <last_update>2022-04-01</last_update>
+        <last_update>2022-09-30</last_update>
         <author>Denis Chenu</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[New function for expression manager to count some statictics data : <ul>
             <li>statCountIf(QuestionCode.sgqa, value[, submitted = true][, self = true])</li>
@@ -17,6 +17,7 @@
     </metadata>
 
     <compatibility>
+        <version>6.0</version>
         <version>5.0</version>
         <version>4.0</version>
     </compatibility>

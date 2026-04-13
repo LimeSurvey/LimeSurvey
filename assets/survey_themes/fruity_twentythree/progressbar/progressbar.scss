@@ -1,0 +1,13 @@
+.top-container {
+    margin-bottom: 2rem;
+    .ls-progress-container {
+        padding: 4px 0;
+    }
+    .progress {
+        height        : 2px;
+        margin-bottom : 0;
+    }
+    .progress-bar {
+        min-width: 2em;
+    }
+}

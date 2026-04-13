@@ -1,0 +1,452 @@
+{
+  "@file": "ArStrToTime",
+  "str_replace": {
+    "@function": "strtotime",
+    "pair": [
+      {
+        "search": "أ",
+        "replace": "ا"
+      },
+      {
+        "search": "إ",
+        "replace": "ا"
+      },
+      {
+        "search": "آ",
+        "replace": "ا"
+      },
+      {
+        "search": "ة",
+        "replace": "ه"
+      },
+      {
+        "search": "بعد",
+        "replace": "+"
+      },
+      {
+        "search": "تالي",
+        "replace": "next"
+      },
+      {
+        "search": "لاحق",
+        "replace": "next"
+      },
+      {
+        "search": "قادم",
+        "replace": "next"
+      },
+      {
+        "search": "سابق",
+        "replace": "last"
+      },
+      {
+        "search": "فائت",
+        "replace": "last"
+      },
+      {
+        "search": "ماضي",
+        "replace": "last"
+      },
+      {
+        "search": "منذ",
+        "replace": "-"
+      },
+      {
+        "search": "قبل",
+        "replace": "-"
+      },
+      {
+        "search": "يوم",
+        "replace": "1 day"
+      },
+      {
+        "search": "ايام",
+        "replace": "days"
+      },
+      {
+        "search": "ساعه",
+        "replace": "1 hour"
+      },
+      {
+        "search": "ساعتان",
+        "replace": "2 hours"
+      },
+      {
+        "search": "ساعتين",
+        "replace": "2 hours"
+      },
+      {
+        "search": "ساعات",
+        "replace": "hours"
+      },
+      {
+        "search": "دقيقه",
+        "replace": "1 minute"
+      },
+      {
+        "search": "يومين",
+        "replace": "2 days"
+      },
+      {
+        "search": "دقيقتان",
+        "replace": "2 minutes"
+      },
+      {
+        "search": "دقيقتين",
+        "replace": "2 minutes"
+      },
+      {
+        "search": "دقائق",
+        "replace": "minutes"
+      },
+      {
+        "search": "ثانيه",
+        "replace": "1 second"
+      },
+      {
+        "search": "ثانيتين",
+        "replace": "2 seconds"
+      },
+      {
+        "search": "ثانيتان",
+        "replace": "2 seconds"
+      },
+      {
+        "search": "ثواني",
+        "replace": "seconds"
+      },
+      {
+        "search": "اسبوعين",
+        "replace": "2 weeks"
+      },
+      {
+        "search": "اسبوعان",
+        "replace": "2 weeks"
+      },
+      {
+        "search": "اسابيع",
+        "replace": "weeks"
+      },
+      {
+        "search": "اسبوع",
+        "replace": "1 week"
+      },
+      {
+        "search": "شهرين",
+        "replace": "2 months"
+      },
+      {
+        "search": "شهران",
+        "replace": "2 months"
+      },
+      {
+        "search": "اشهر",
+        "replace": "months"
+      },
+      {
+        "search": "شهور",
+        "replace": "months"
+      },
+      {
+        "search": "شهر",
+        "replace": "1 month"
+      },
+      {
+        "search": "سنه",
+        "replace": "1 year"
+      },
+      {
+        "search": "سنتين",
+        "replace": "2 years"
+      },
+      {
+        "search": "سنتان",
+        "replace": "2 years"
+      },
+      {
+        "search": "سنوات",
+        "replace": "years"
+      },
+      {
+        "search": "سنين",
+        "replace": "years"
+      },
+      {
+        "search": "صباحا",
+        "replace": "am"
+      },
+      {
+        "search": "فجرا",
+        "replace": "am"
+      },
+      {
+        "search": "قبل الظهر",
+        "replace": "am"
+      },
+      {
+        "search": "مساء",
+        "replace": "pm"
+      },
+      {
+        "search": "عصرا",
+        "replace": "pm"
+      },
+      {
+        "search": "بعد الظهر",
+        "replace": "pm"
+      },
+      {
+        "search": "ليلا",
+        "replace": "pm"
+      },
+      {
+        "search": "غد",
+        "replace": "tomorrow"
+      },
+      {
+        "search": "بارحة",
+        "replace": "yesterday"
+      },
+      {
+        "search": "أمس",
+        "replace": "yesterday"
+      },
+      {
+        "search": "مضت",
+        "replace": "ago"
+      },
+      {
+        "search": "مضى",
+        "replace": "ago"
+      },
+      {
+        "search": "هذا",
+        "replace": "this"
+      },
+      {
+        "search": "هذه",
+        "replace": "this"
+      },
+      {
+        "search": "الآن",
+        "replace": "now"
+      },
+      {
+        "search": "لحظه",
+        "replace": "now"
+      },
+      {
+        "search": "اول",
+        "replace": "first"
+      },
+      {
+        "search": "ثالث",
+        "replace": "third"
+      },
+      {
+        "search": "رابع",
+        "replace": "fourth"
+      },
+      {
+        "search": "خامس",
+        "replace": "fifth"
+      },
+      {
+        "search": "سادس",
+        "replace": "sixth"
+      },
+      {
+        "search": "سابع",
+        "replace": "seventh"
+      },
+      {
+        "search": "ثامن",
+        "replace": "eighth"
+      },
+      {
+        "search": "تاسع",
+        "replace": "ninth"
+      },
+      {
+        "search": "عاشر",
+        "replace": "tenth"
+      },
+      {
+        "search": "حادي عشر",
+        "replace": "eleventh"
+      },
+      {
+        "search": "حاديه عشر",
+        "replace": "eleventh"
+      },
+      {
+        "search": "ثاني عشر",
+        "replace": "twelfth"
+      },
+      {
+        "search": "ثانيه عشر",
+        "replace": "twelfth"
+      },
+      {
+        "search": "سبت",
+        "replace": "saturday"
+      },
+      {
+        "search": "احد",
+        "replace": "sunday"
+      },
+      {
+        "search": "اثنين",
+        "replace": "monday"
+      },
+      {
+        "search": "ثلاثاء",
+        "replace": "tuesday"
+      },
+      {
+        "search": "اربعاء",
+        "replace": "wednesday"
+      },
+      {
+        "search": "خميس",
+        "replace": "thursday"
+      },
+      {
+        "search": "جمعه",
+        "replace": "friday"
+      },
+      {
+        "search": "ثلاث",
+        "replace": "3"
+      },
+      {
+        "search": "اربع",
+        "replace": "4"
+      },
+      {
+        "search": "خمس",
+        "replace": "5"
+      },
+      {
+        "search": "ست",
+        "replace": "6"
+      },
+      {
+        "search": "سبع",
+        "replace": "7"
+      },
+      {
+        "search": "ثمان",
+        "replace": "8"
+      },
+      {
+        "search": "تسع",
+        "replace": "9"
+      },
+      {
+        "search": "عشر",
+        "replace": "10"
+      },
+      {
+        "search": "كانون ثاني",
+        "replace": "january"
+      },
+      {
+        "search": "شباط",
+        "replace": "february"
+      },
+      {
+        "search": "اذار",
+        "replace": "march"
+      },
+      {
+        "search": "نيسان",
+        "replace": "april"
+      },
+      {
+        "search": "ايار",
+        "replace": "may"
+      },
+      {
+        "search": "حزيران",
+        "replace": "june"
+      },
+      {
+        "search": "تموز",
+        "replace": "july"
+      },
+      {
+        "search": "اب",
+        "replace": "august"
+      },
+      {
+        "search": "ايلول",
+        "replace": "september"
+      },
+      {
+        "search": "تشرين اول",
+        "replace": "october"
+      },
+      {
+        "search": "تشرين ثاني",
+        "replace": "november"
+      },
+      {
+        "search": "كانون اول",
+        "replace": "december"
+      },
+      {
+        "search": "يناير",
+        "replace": "january"
+      },
+      {
+        "search": "فبراير",
+        "replace": "february"
+      },
+      {
+        "search": "مارس",
+        "replace": "march"
+      },
+      {
+        "search": "ابريل",
+        "replace": "april"
+      },
+      {
+        "search": "مايو",
+        "replace": "may"
+      },
+      {
+        "search": "يونيو",
+        "replace": "june"
+      },
+      {
+        "search": "يوليو",
+        "replace": "july"
+      },
+      {
+        "search": "اغسطس",
+        "replace": "august"
+      },
+      {
+        "search": "سبتمبر",
+        "replace": "september"
+      },
+      {
+        "search": "اكتوبر",
+        "replace": "october"
+      },
+      {
+        "search": "نوفمبر",
+        "replace": "november"
+      },
+      {
+        "search": "ديسمبر",
+        "replace": "december"
+      },
+      {
+        "search": "و",
+        "replace": "+"
+      }
+    ]
+  }
+}

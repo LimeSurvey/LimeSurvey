@@ -21,23 +21,30 @@ class LSYii_EmailIDNAValidator extends CValidator
 
     public $allowEmpty = false;
     public $allowMultiple = false;
-
+    public $allowInherit = false;
 
     public function validateAttribute($object, $attribute)
     {
-
+        // If the attribute is empty and empty values are allowed, it's valid.
         if ($object->$attribute == '' && $this->allowEmpty) {
             return;
         }
 
+        // If the attribute is 'inherit' and inherited values are allowed (like in survey settings), it's valid.
+        if ($object->$attribute == 'inherit' && $this->allowInherit) {
+            return;
+        }
+
+        // If the attribute accepts multiple emails, split them into an array.
+        // Otherwise, create an array with the single email.
         if ($this->allowMultiple) {
-            $aEmailAdresses = preg_split("/(,|;)/", $object->$attribute);
+            $aEmailAdresses = preg_split("/(,|;)/", (string) $object->$attribute);
         } else {
             $aEmailAdresses = array($object->$attribute);
         }
 
         foreach ($aEmailAdresses as $sEmailAddress) {
-            if (!validateEmailAddress($sEmailAddress)) {
+            if (!LimeMailer::validateAddress($sEmailAddress)) {
                 $this->addError($object, $attribute, gT('Invalid email address.'));
                 return;
             }

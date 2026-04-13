@@ -16,10 +16,10 @@
 <!-- List Dropdown -->
 
 <!-- answer-->
-<div class="form-inline">
-    <div class="{{ coreClass }} form-group">
+<div class="mb-3 row g-1 align-items-center {{ coreClass }}">
+    <div class="col-auto">
         <select
-                class="form-control list-question-select"
+                class="form-select form-control list-question-select"
                 name="{{ name }}"
                 id="answer{{ name }}"
                 {% if dropdownSize %} size={{ dropdownSize }} {% endif %}
@@ -28,15 +28,15 @@
                 {# rows/option.php #}
                 {{ sOptions }}
         </select>
-            {# rows/othertext.php #}
-            {{ sOther }}
-
-        {# Value for expression manager javascript (use id) ; no need to submit #}
-        {{ C.Html.hiddenField("java"~name,value,({
-            'id' : "java"~name,
-            'disabled' : "disabled",
-        }))
-        }}
     </div>
+        {# rows/othertext.php #}
+        {{ sOther }}
+
+    {# Value for expression manager javascript (use id) ; no need to submit #}
+    {{ C.Html.hiddenField("java"~name,value,({
+        'id' : "java"~name,
+        'disabled' : "disabled",
+    }))
+    }}
 </div>
 <!-- end of answer  -->

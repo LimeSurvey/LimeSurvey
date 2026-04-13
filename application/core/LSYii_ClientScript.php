@@ -33,6 +33,10 @@ if (!defined('BASEPATH')) {
 class LSYii_ClientScript extends CClientScript
 {
 
+    /**
+     * The script is rendered at the end of the body section.
+     * only for scripts not script files
+     */
     const POS_POSTSCRIPT = 5;
     const POS_PREBEGIN = 6;
     /**
@@ -74,8 +78,8 @@ class LSYii_ClientScript extends CClientScript
     {
         $aPackages = array();
         foreach ($this->packages as $key => $package) {
-            if (strpos($key, 'font-') === 0) {
-                $key = str_replace('font-', '', $key);
+            if (strpos((string) $key, 'font-') === 0) {
+                $key = str_replace('font-', '', (string) $key);
                 $aPackages[$package['type']][$key] = $package;
             }
         }
@@ -155,7 +159,9 @@ class LSYii_ClientScript extends CClientScript
         if (!empty(Yii::app()->clientScript->packages[$sPackageName])) {
             if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
                 $key = array_search($sFileName, Yii::app()->clientScript->packages[$sPackageName][$sType]);
-                unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+                if ($key !== false) {
+                    unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+                }
             }
         }
     }
@@ -228,7 +234,7 @@ class LSYii_ClientScript extends CClientScript
     public function getRecursiveDependencies($sPackageName)
     {
         $aPackages = Yii::app()->clientScript->packages;
-        if (array_key_exists('depends', $aPackages[$sPackageName])) {
+        if (isset($aPackages[$sPackageName]['depends'])) {
             $aDependencies = $aPackages[$sPackageName]['depends'];
 
             foreach ($aDependencies as $sDpackageName) {
@@ -284,7 +290,7 @@ class LSYii_ClientScript extends CClientScript
      */
     private function analyzeUrl($sUrl)
     {
-        $sCleanUrl  = str_replace(Yii::app()->baseUrl, '', $sUrl); // we remove the base url to be sure that the first parameter is the one we want
+        $sCleanUrl  = str_replace(Yii::app()->baseUrl, '', (string) $sUrl); // we remove the base url to be sure that the first parameter is the one we want
         $aUrlParams = explode('/', $sCleanUrl);
         $sFilePath  = Yii::app()->getConfig('rootdir') . $sCleanUrl;
         $sPath = '';
@@ -548,7 +554,7 @@ class LSYii_ClientScript extends CClientScript
                 }
             }
         }
-        $scripts = isset($this->scripts[self::POS_END]) ? $this->scripts[self::POS_END] : array();
+        $scripts = $this->scripts[self::POS_END] ?? array();
 
         if (isset($this->scripts[self::POS_READY])) {
             if ($fullPage) {
@@ -606,9 +612,9 @@ class LSYii_ClientScript extends CClientScript
     public function render(&$output)
     {
         /**
-         * beforeCloseHtml event @see https://manual.limesurvey.org/BeforeCloseHtml
+         * beforeCloseHtml event @see https://www.limesurvey.org/manual/BeforeCloseHtml
          * Set it before all other action allow registerScript by plugin
-         * Whitelisting available controller (public plugin not happen for PluginsController using actionDirect, actionUnsecure event)
+         * Allowlisting available controller (public plugin not happen for PluginsController using actionDirect, actionUnsecure event)
          */
         $publicControllers = array('option','optout','printanswers','register','statistics_user','survey','surveys','uploader');
         if (Yii::app()->getController() && in_array(Yii::app()->getController()->getId(), $publicControllers) && strpos($output, '</body>')) {

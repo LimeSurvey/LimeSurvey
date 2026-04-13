@@ -50,7 +50,7 @@ class QuestionGroupL10n extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'group' => array(self::BELONGS_TO, 'group', '', 'on' => "$alias.gid = group.gid"),
+            'group' => array(self::BELONGS_TO, QuestionGroup::class, '', 'on' => "$alias.gid = group.gid"),
         );
     }
 

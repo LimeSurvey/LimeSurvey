@@ -1,5 +1,5 @@
 <div class="input-group col-12">
-    <div class="input-group-addon">
+    <div class="input-group-text">
         <?= $this->generalOption->formElement->options['inputGroup']['prefix']; ?>
     </div>
     <input
@@ -12,7 +12,7 @@
         <?php foreach ($this->generalOption->formElement->options['attributes'] as $attributeName => $attributeValue) echo $attributeName . '="' . CHtml::encode($attributeValue) . '"'; ?>
     />
     <?php if (isset($this->generalOption->formElement->options['inputGroup']['suffix'])) : ?>
-        <div class="input-group-addon">
+        <div class="input-group-text">
             <?= $this->generalOption->formElement->options['inputGroup']['suffix']; ?>
         </div>
     <?php endif; ?>

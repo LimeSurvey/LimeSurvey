@@ -27,9 +27,9 @@
           style="text-align: center;"
         >
             <span
-              class="fa fa-bars bigIcons move-icon"
+              class="ri-menu-fill bigIcons move-icon"
               role="button"
-              data-toggle="tooltip"
+              data-bs-toggle="tooltip"
               data-title="{{ gT("Drag to sort") }}"
             ></span>
         </td>
@@ -55,6 +55,7 @@
                     class='code code-title'
                     value="{{ answerOption.code }}"
                     maxlength='5'
+                    pattern="[a-zA-Z0-9]+"
                     required='required'
                     onfocusout="LS.questionEditor.showAnswerOptionCodeUniqueError(this);"
                 />
@@ -76,9 +77,10 @@
                 id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
                 name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
                 value="{{ answerOption.assessment_value }}"
+                pattern="-?\d+"
                 maxlength='5'
                 size='5'
-                onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
+                onkeypress="return window.LS.goodchars(event,'-1234567890')"
             />
         </td>
     {% elseif first %}
@@ -90,8 +92,9 @@
                 name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
                 value="{{ answerOption.assessment_value }}"
                 maxlength='5'
+                pattern="-?\d+"
                 size='5'
-                onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
+                onkeypress="return window.LS.goodchars(event,'-1234567890')"
             />
         </td>
     {% elseif assessmentvisible %}
@@ -115,37 +118,35 @@
                 data-contents-dir="{{ getLanguageRTL(language) ? 'rtl' : 'ltr' }}"
                 value="{{ answerOptionl10n.answer|escape('html_attr') }}"
             />
-            <span class="input-group-addon">
-                {{ getEditor(
-                    "editanswer",
-                    "answeroptions["~answerOption.aid~"]["~scale_id~"][answeroptionl10n]["~language~"]",
-                    "["~gT("Answer option:", "js")~"]("~language~")",
-                    question.sid,
-                    question.gid,
-                    question.qid,
-                    'editanswer'
-                ) }}
-            </span>
+            {{ getEditor(
+                "editanswer",
+                "answeroptions["~answerOption.aid~"]["~scale_id~"][answeroptionl10n]["~language~"]",
+                "["~gT("Answer option:", "js")~"]("~language~")",
+                question.sid,
+                question.gid,
+                question.qid,
+                'editanswer'
+            ) }}
         </div>
     </td>
 
     <!-- Icons edit/delete -->
     <td style="vertical-align: middle; white-space: nowrap;" class="answeroption-actions">
         {% if first %}
-            <button type="button" class="btn btn-default btn-sm btnaddanswer">
+            <button type="button" class="btn btn-outline-secondary btn-sm btnaddanswer">
                 <i
-                    class="icon-add text-success"
+                    class="ri-add-circle-fill text-primary"
                     data-assessmentvisible='{{ assessmentvisible }}'
                     data-position="{{ position }}"
                     data-code="{{ answerOption.code }}"
                     data-scale-id="{{ scale_id }}"
-                    data-toggle="tooltip"
-                    data-placement="bottom"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
                     title="{{ gT("Insert a new answer option after this one") }}"
                 ></i>
             </button>
-            <button type="button" class="btn btn-default btn-sm btndelanswer">
-                <i class="fa fa-minus-circle text-danger " data-toggle="tooltip" data-placement="bottom" title="{{ gT("Delete this entry") }}"></i>
+            <button type="button" class="btn btn-outline-secondary btn-sm btndelanswer">
+                <i class="ri-indeterminate-circle-fill text-danger " data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ gT("Delete this entry") }}"></i>
             </button>
         {% endif %}
     </td>

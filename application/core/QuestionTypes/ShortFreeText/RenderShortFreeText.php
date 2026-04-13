@@ -42,7 +42,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
-        if (trim($this->getQuestionAttribute('placeholder', $this->sLanguage)) != '') {
+        if (trim((string) $this->getQuestionAttribute('placeholder', $this->sLanguage)) != '') {
             $placeholder = $this->getQuestionAttribute('placeholder', $this->sLanguage);
         }
 

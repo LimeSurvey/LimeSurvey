@@ -227,7 +227,7 @@
             onDropdownHidden: function(event) {
 
             },
-            buttonClass: 'btn btn-default',
+            buttonClass: 'btn btn-outline-secondary',
             dropRight: false,
             selectedClass: 'active',
             buttonWidth: 'auto',
@@ -251,7 +251,7 @@
             numberDisplayed: 3,
             disableIfEmpty: false,
             templates: {
-                button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"></button>',
+                button: '<button type="button" class="multiselect dropdown-toggle" data-bs-toggle="dropdown"></button>',
                 ul: '<ul class="multiselect-container dropdown-menu"></ul>',
                 filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
                 li: '<li><a href="javascript:void(0);"><label></label></a></li>',

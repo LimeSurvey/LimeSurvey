@@ -16,7 +16,7 @@
             'type'        => 'action',
             'action'      => 'delete',
             'url'         =>  App()->createUrl('/admin/menuentries/sa/massDelete'),
-            'iconClasses' => 'fa fa-trash text-danger',
+            'iconClasses' => 'ri-delete-bin-fill text-danger',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
 
@@ -35,7 +35,7 @@
             'type' => 'action',
             'action' => 'batchEdit',
             'url' => App()->createUrl('/admin/menuentries/sa/batchEdit'),
-            'iconClasses' => 'fa fa-edit',
+            'iconClasses' => 'ri-file-edit-line',
             'text' => gT('Batch edit'),
             'grid-reload' => 'yes',
             //modal

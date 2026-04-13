@@ -7,7 +7,7 @@
     {
         public function run()
         {
-            if (YII_DEBUG && in_array(getIPAddress(), array("127.0.0.1","::1")))
+            if (YII_DEBUG && in_array(getRealIPAddress(), array("127.0.0.1","::1")))
             {                
                 $data = array(
                     'session' => $_SESSION,

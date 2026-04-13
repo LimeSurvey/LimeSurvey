@@ -12,15 +12,15 @@ class LSSodiumOld
 
     public function init()
     {
-        require_once Yii::app()->basePath . '/../third_party/paragonie/sodium_compat/src/Compat.php';
-        require_once Yii::app()->basePath . '/../third_party/paragonie/sodium_compat/src/Core/Util.php';
-        require_once Yii::app()->basePath . '/../third_party/paragonie/sodium_compat/autoload.php';
+        require_once Yii::app()->basePath . '/../vendor/paragonie/sodium_compat/src/Compat.php';
+        require_once Yii::app()->basePath . '/../vendor/paragonie/sodium_compat/src/Core/Util.php';
+        require_once Yii::app()->basePath . '/../vendor/paragonie/sodium_compat/autoload.php';
 
         $this->checkIfLibraryExists();
 
         if ($this->bLibraryExists === false) {
             /*throw new SodiumException(sprintf(gT("This operation uses data encryption functions which require Sodium library to be installed, but library was not found. If you don't want to use data encryption, you have to disable encryption in attribute settings. Here is a link to the manual page:
-            %s", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));*/
+            %s", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));*/
         } else {
             $this->checkIfKeyExists();
         }
@@ -124,7 +124,7 @@ class LSSodiumOld
             if ($sEncryptedString && $sEncryptedString !== 'null') {
                 $plaintext = ParagonIE_Sodium_Compat::crypto_sign_open(base64_decode($sEncryptedString), $this->sEncryptionPublicKey);
                 if ($plaintext === false) {
-                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
+                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));
                 } else {
                     return $plaintext;
                 }

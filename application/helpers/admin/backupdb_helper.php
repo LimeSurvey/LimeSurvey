@@ -35,7 +35,7 @@ function outputDatabase($sDbName = '', $bEchoOutput = true, $sFileName = null)
         if ($oFile === false) {
             safeDie('Could not open output file.');
         } else {
-            fwrite($oFile, $sOutput);
+            fwrite($oFile, (string) $sOutput);
         }
     } else {
         $oFile = null;
@@ -63,7 +63,7 @@ function _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile)
     if ($bAllowExportAllDb) {
         $aTables = Yii::app()->db->getSchema()->getTableNames();
     } else {
-        $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes(Yii::app()->db->tablePrefix, '_') . "%"))->queryColumn();
+        $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes((string) Yii::app()->db->tablePrefix, '_') . "%"))->queryColumn();
     }
     foreach ($aTables as $sTableName) {
         $oTableData = Yii::app()->db->getSchema()->getTable($sTableName);
@@ -72,7 +72,7 @@ function _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile)
             echo $sOutput;
         }
         if (!is_null($sFileName)) {
-            fwrite($oFile, $sOutput);
+            fwrite($oFile, (string) $sOutput);
         }
         _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile);
     }
@@ -196,8 +196,36 @@ function _getMaxNbRecords()
 function _getDbName()
 {
     // Yii doesn't give us a good way to get the database name
-    preg_match('/dbname=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
+    preg_match('/dbname=([^;]*)/', (string) Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
     $sDbName = $aMatches[1];
 
     return $sDbName;
+}
+
+/**
+ * Get database size in MB
+ */
+function getDatabaseSize()
+{
+    $dbName = _getDbName();
+
+    // Run the query using Yii's DB component
+    $result = Yii::app()->db->createCommand("
+        SELECT 
+            table_schema AS `Database`, 
+            ROUND(SUM(data_length) / 1024 / 1024, 2) AS `Size (MB)`
+        FROM 
+            information_schema.tables 
+        WHERE 
+            table_schema = :dbName
+        GROUP BY 
+            table_schema;
+    ")->bindValue(':dbName', $dbName)->queryRow();
+
+    if ($result) {
+        // echo "Database: " . $result['Database'] . "<br>";
+        return $result['Size (MB)']; // Size in MB
+    } else {
+        return null;
+    }
 }

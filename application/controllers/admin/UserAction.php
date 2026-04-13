@@ -65,7 +65,7 @@ class UserAction extends SurveyCommonAction
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
 
                 if ($newPassword !== '' && $repeatPassword !== '') {
-                    $error = $oUserModel->validateNewPassword($newPassword, $oldPassword, $repeatPassword);
+                    $error = $oUserModel->validateNewPassword($newPassword, $oldPassword ?? '', $repeatPassword);
 
                     if ($error !== '') {
                         Yii::app()->setFlashMessage(gT($error), 'error');
@@ -125,6 +125,7 @@ class UserAction extends SurveyCommonAction
                 SettingsUser::setUserSetting('subquestionprefix', Yii::app()->request->getPost('subquestionprefix'));
                 SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
                 SettingsUser::setUserSetting('createsample', Yii::app()->request->getPost('createsample'));
+                SettingsUser::setUserSetting('breadcrumbMode', Yii::app()->request->getPost('breadcrumbMode'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -133,7 +134,7 @@ class UserAction extends SurveyCommonAction
             }
 
             if (Yii::app()->request->getPost("saveandclose")) {
-                $this->getController()->redirect(array("admin/index"));
+                $this->getController()->redirect(array("dashboard/view"));
             }
         }
 
@@ -143,7 +144,6 @@ class UserAction extends SurveyCommonAction
         }
 
         // Get user lang
-        unset($oUser);
         $oUser = User::model()->findByPk(Yii::app()->session['loginID']);
 
         $aLanguageData = array('auto' => gT("(Autodetect)"));
@@ -159,13 +159,18 @@ class UserAction extends SurveyCommonAction
         $aData['sEmailAdress'] = $oUser->email;
         $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
 
-        // Fullpager Bar
-        $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
-        $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
-        $aData['fullpagebar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin"));
-
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('My Account');
+        $aData['topbar']['title'] = gT('Account');
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn' => true,
+                'isSaveBtn' => true,
+                'isSaveAndCloseBtn' => true,
+                'formIdSave' => 'personalsettings',
+                'formIdSaveClose' => 'personalsettings'
+            ],
+            true
+        );
 
         //Get data for personal menues
         $oSurveymenu = Surveymenu::model();

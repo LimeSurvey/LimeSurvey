@@ -7,29 +7,32 @@
     var strSelectLabelset = '<?php eT('You have to select at least one label set.', 'js');?>';
 </script>
 
-<div class="col-lg-12 list-surveys">
+<div class="col-12 list-surveys">
     <div class="row">
-        <div class="col-lg-12 content-right text-center">
+        <div class="col-12 content-right text-center">
             <?php echo CHtml::form(["admin/export/sa/dumplabel"], 'post', ['id' => 'exportlabelset', 'class' => '']); ?>
-            <div class="form-group row">
-                <label class="col-sm-3 form-control-label" for='labelsets'>
+            <div class="mb-3 row">
+                <label class="col-md-3 form-form-label" for='labelsets'>
                     <?php eT('Please choose the label sets you want to export:'); ?>
                     <br/>
                     <?php eT('(Select multiple label sets by using the Ctrl key)'); ?>
                 </label>
-                <div class="col-sm-3">
-                    <select id='labelsets' multiple='multiple' name='lids[]' size='20' class="form-control">
+                <div class="col-md-3">
+                    <select id='labelsets' multiple='multiple' name='lids[]' size='20' class="form-select">
                         <?php if (count($labelsets) > 0) {
                             foreach ($labelsets as $lb) {
-                                echo "<option value='{$lb[0]}'>{$lb[0]}: {$lb[1]}</option>\n";
+                                echo "<option value='{$lb[0]}'>{$lb[0]}: " . CHtml::encode($lb[1]) . "</option>\n";
                             }
                         } ?>
                     </select>
                 </div>
                 <p>
                     <br/>
-                    <input type='submit' id='btnDumpLabelSets' value='<?php eT('Export selected label sets'); ?>' class="hidden"/>
+                    <input type='submit' id='btnDumpLabelSets' value='<?php eT('Export selected label sets'); ?>' class="d-none"/>
                     <input type='hidden' name='action' value='dumplabel'/>
+                    <?php $exportToken = 'labelExport_' . uniqid(mt_rand(), true); ?>
+                    <input type="hidden" name="export_token" value="<?php echo CHtml::encode($exportToken); ?>">
+                    <input type="hidden" name="url" value="<?php echo CHtml::encode(Yii::app()->createUrl('admin/export', ['sa' => 'exportstatus', 'token' => ''])); ?>"/>
                 </p>
             </div>
             <?php echo CHtml::endForm() ?>
@@ -53,6 +56,9 @@
             isSelected = true;
             return isSelected;
         });
+
+        if ($('#labelsets option:selected').length === 0)
+            isSelected = false;
 
         if (isSelected) {
             saveButton.removeAttribute('disabled');

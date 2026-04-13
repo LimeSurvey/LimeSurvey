@@ -5,9 +5,9 @@
 /** @var int $surveyid */
 
 if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <div class="row welcome survey-action">
-            <div class="col-sm-12 content-right">
+            <div class="col-12 content-right">
                 <div class="jumbotron message-box">
                     <h2><?php eT("Import survey resources"); ?></h2>
                     <p class="lead text-success">
@@ -32,19 +32,19 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('surveyAdministration/rendersidemenulink/', ['surveyid' => $surveyid, 'subaction' => 'resources']); ?>', '_top')"/>
+                        <input class="btn btn-outline-secondary btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('surveyAdministration/rendersidemenulink/', ['surveyid' => $surveyid, 'subaction' => 'resources']); ?>', '_top')"/>
                     </p>
                 </div>
             </div>
         </div>
     </div>
 <?php elseif (count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <div class="row welcome survey-action">
-            <div class="col-sm-12 content-right">
+            <div class="col-12 content-right">
                 <div class="jumbotron message-box message-box-warning">
                     <h2><?php eT("Import survey resources"); ?></h2>
-                    <p class="lead text-warning">
+                    <p class="lead text-danger">
                         <?php eT("Partial"); ?>
                     </p>
                     <p>
@@ -67,7 +67,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                     </ul>
                     </p>
                     <p>
-                        <strong class="text-warning"><?php eT("Error Files List"); ?>:</strong>
+                        <strong class="text-danger"><?php eT("Error Files List"); ?>:</strong>
                     </p>
                     <p>
                         <ul>
@@ -79,7 +79,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>'
+                        <input class="btn btn-outline-secondary btn-lg" type='submit' value='<?php eT("Back"); ?>'
                                onclick="window.open('<?php echo $this->createUrl('surveyAdministration/rendersidemenulink/', ['surveyid' => $surveyid, 'subaction' => 'resources']); ?>', '_top')"/>
                     </p>
                 </div>
@@ -87,9 +87,9 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
         </div>
     </div>
 <?php else : ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <div class="row welcome survey-action">
-            <div class="col-sm-12 content-right">
+            <div class="col-12 content-right">
                 <div class="jumbotron message-box message-box-error">
                     <h2><?php eT("Import survey resources"); ?></h2>
                     <p class="lead text-danger">
@@ -103,7 +103,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Total Errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong class="text-warning"><?php eT("Error Files List"); ?>:</strong>
+                        <strong class="text-danger"><?php eT("Error Files List"); ?>:</strong>
                     </p>
                     <p>
                         <ul>
@@ -115,7 +115,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>'
+                        <input class="btn btn-outline-secondary btn-lg" type='submit' value='<?php eT("Back"); ?>'
                                onclick="window.open('<?php echo $this->createUrl('surveyAdministration/rendersidemenulink/', ['surveyid' => $surveyid, 'subaction' => 'resources']); ?>', '_top')"/>
                     </p>
                 </div>

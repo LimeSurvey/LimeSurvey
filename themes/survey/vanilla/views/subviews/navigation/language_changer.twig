@@ -25,24 +25,27 @@
         }
     %}
     <!-- Language Changer -->
-    <div class=" {{ aSurveyInfo.class.formgroup }} form-change-lang form-inline" {{ aSurveyInfo.attr.formgroup }} >
-        <label class="{{ aSurveyInfo.class.controllabel }}" {{ aSurveyInfo.attr.controllabel }} for="lang">
+    <div class=" {{ aSurveyInfo.class.formgroup }} form-change-lang row row-cols-lg-auto g-1" {{ aSurveyInfo.attr.formgroup }} >
+        <label class="{{ aSurveyInfo.class.controllabel }} col-form-label col-auto fw-bold" {{ aSurveyInfo.attr.controllabel }} for="lang">
             <span class="control-label" {{ aSurveyInfo.attr.languagechanger }}>{{ gT("Language:") }}</span>
-            {{
-                C.Html.dropDownList(
-                    'lang',
-                    aLCD.sSelected,
-                    aLCD.aListLang,
-                    htmlOptions
-                )
-            }}
         </label>
+        <div class="col-auto">
+                {{
+                    C.Html.dropDownList(
+                        'lang',
+                        aLCD.sSelected,
+                        aLCD.aListLang,
+                        htmlOptions
+                    )
+                }}
+        </div>
+        <div class="col-auto">
         <!-- for no js functionality (need form) -->
         {% set buttonhtmlOptions = {
                 'type'          : 'submit',
                 'value'         : 'changelang',
                 'name'          : 'move',
-                'class'         : 'btn btn-info ls-language-changer-item ',
+                'class'         : 'btn btn-primary ls-language-changer-item ',
             }
         %}
         {{
@@ -51,6 +54,7 @@
                 buttonhtmlOptions
             )
         }}
+        </div>
     </div>
 
     {# Activate the language changer  #}

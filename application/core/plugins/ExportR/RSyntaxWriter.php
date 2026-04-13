@@ -41,7 +41,8 @@ class RSyntaxWriter extends Writer
 
         // R specific stuff
         Yii::app()->loadHelper("export");
-        $tmpFieldmap = SPSSFieldMap($survey->id);
+        
+        $tmpFieldmap = SPSSFieldMap($survey->id, 'V', $sLanguageCode);
         $fieldmap = [];
         foreach ($tmpFieldmap as $field => $values) {
             $fieldmap[$values['title']] = $values;
@@ -57,7 +58,7 @@ class RSyntaxWriter extends Writer
         fwrite($this->handle, $content . "\n");
     }
 
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         $this->headers = $oOptions->selectedColumns;
         foreach ($oOptions->selectedColumns as $id => $title) {
@@ -66,7 +67,7 @@ class RSyntaxWriter extends Writer
             }
             $field = $this->customFieldmap[$title];
             if (!isset($field['answers'])) {
-                $strTmp = mb_substr(stripTagsFull($values[$id]), 0, $this->maxLength);
+                $strTmp = mb_substr((string) stripTagsFull($values[$id]), 0, $this->maxLength);
 
                 $len = mb_strlen($strTmp);
 
@@ -75,7 +76,7 @@ class RSyntaxWriter extends Writer
                 }
 
                 if (trim($strTmp) != '') {
-                    if ($field['SPSStype'] == 'F' && (isNumericExtended($strTmp) === false || $field['size'] > 16)) {
+                    if ($field['SPSStype'] == 'F' && (isNumericExtended($strTmp ?? '') === false || $field['size'] > 16)) {
                         $field['SPSStype'] = 'A';
                     }
                 }
@@ -143,7 +144,7 @@ class RSyntaxWriter extends Writer
                 //print out the value labels!
                 $str = 'data[, ' . $i . '] <- factor(data[, ' . $i . '], levels=c(';
                 foreach ($answers as $answer) {
-                    if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
+                    if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'] ?? '')) {
                         $str .= "{$answer['code']},";
                     } else {
                         $str .= "\"{$answer['code']}\",";
@@ -171,11 +172,11 @@ class RSyntaxWriter extends Writer
             //Rename the Variables (in case somethings goes wrong, we still have the OLD values
             if (isset($field['sql_name'])) {
                 $ftitle = $field['title'];
-                if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
+                if (!preg_match("/^([a-z]|[A-Z])+.*$/", (string) $ftitle)) {
                     $ftitle = "q_" . $ftitle;
                 }
 
-                $ftitle = str_replace(array("-", ":", ";", "!"), array("_hyph_", "_dd_", "_dc_", "_excl_"), $ftitle);
+                $ftitle = str_replace(array("-", ":", ";", "!"), array("_hyph_", "_dd_", "_dc_", "_excl_"), (string) $ftitle);
 
                 if ($ftitle != $field['title']) {
                     $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";

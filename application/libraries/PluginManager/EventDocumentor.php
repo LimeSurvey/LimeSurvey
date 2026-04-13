@@ -15,7 +15,7 @@ foreach ($i2 as $file) {
     /* @var $file SplFileInfo */
 
 
-    if (substr($file->getFileName(), -3, 3) == 'php') {
+    if (substr((string) $file->getFileName(), -3, 3) == 'php') {
         scanFile($file->getPathname());
     }
 }

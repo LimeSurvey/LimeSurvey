@@ -48,7 +48,8 @@ if (typeof PreviewModalScript === 'function') {
        */
       selectItem (itemData){
           $(`#selector__${this.widgetsJsName}-currentSelected`).html(itemData.title);
-          $(`#selector__${this.widgetsJsName}--buttonText`).html(`${itemData.title} ${this.getForDebug(itemData.key)}`);
+        //   $(`#selector__${this.widgetsJsName}--buttonText`).html(`${itemData.title} ${this.getForDebug(itemData.key)}`);
+          $(`#selector__${this.widgetsJsName}--buttonText`).val(`${itemData.title} ${this.options.debugString} ${itemData.key}`);
           $(`#selector__${this.widgetsJsName}-detailPage`).html(this.options.onGetDetails(itemData.itemArray.detailpage, itemData));
           this.inputItem.val(itemData.key);
           this.options.option = itemData.itemArray;

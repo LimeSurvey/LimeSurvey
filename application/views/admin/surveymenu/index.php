@@ -14,53 +14,50 @@ echo viewHelper::getViewTestTag('surveyMenus');
 
 ?>
 
-<div class="col-lg-12">
-    <div class="row">
+<div class="row">
+    <div class="col-12">
         <!-- Tabs -->
         <ul class="nav nav-tabs" id="menueslist" role="tablist">
-            <li class="active">
-				<a href="#surveymenues" aria-controls="surveymenues" role="tab" data-toggle="tab">
+            <li class="nav-item">
+                <a class="nav-link active" role="tab" data-bs-toggle="tab" href="#surveymenues" aria-controls="surveymenues">
                     <?php eT('Survey menus'); ?>
                 </a>
             </li>
-            <li>
-				<a href="#surveymenuentries" aria-controls="surveymenuentries" role="tab" data-toggle="tab">
+            <li class="nav-item">
+                <a class="nav-link" role="tab" data-bs-toggle="tab" href="#surveymenuentries" aria-controls="surveymenuentries">
                     <?php eT('Survey menu entries'); ?>
                 </a>
             </li>
         </ul>
-
         <!-- Tab Content -->
         <div class="tab-content">
-
             <!-- Survey Menu -->
-            <div id="surveymenues" class="tab-pane active">
+            <div id="surveymenues" class="tab-pane show active">
                 <div class="col-12 ls-space margin top-15">
                     <div class="col-12 ls-flex-item">
                         <?php
                         $this->widget(
-                            'bootstrap.widgets.TbGridView',
+                            'application.extensions.admin.grid.CLSGridView',
                             [
-                                'dataProvider'             => $model->search(),
-                                'id'                       => 'surveymenu-grid',
-                                'columns'                  => $model->getColumns(),
-                                'filter'                   => $model,
-                                'emptyText'                => gT('No customizable entries found.'),
-                                'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                                    gT('%s rows per page'),
-                                    CHtml::dropDownList(
-                                        'pageSize',
-                                        $pageSize,
-                                        Yii::app()->params['pageSizeOptions'],
-                                        ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
-                                    )
-                                ),
+                                'dataProvider' => $model->search(),
+                                'id' => 'surveymenu-grid',
+                                'columns' => $model->getColumns(),
+                                'filter' => $model,
+                                'emptyText' => gT('No customizable entries found.'),
+                                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                                        gT('%s rows per page'),
+                                        CHtml::dropDownList(
+                                            'pageSize',
+                                            $pageSize,
+                                            Yii::app()->params['pageSizeOptions'],
+                                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                                        )
+                                    ),
                                 'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
-                                'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
-                                'ajaxType'                 => 'POST',
-                                'ajaxUpdate'               => 'surveymenu-grid',
-                                'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                                'afterAjaxUpdate'          => 'surveyMenuFunctions',
+                                'ajaxType' => 'POST',
+                                'ajaxUpdate' => 'surveymenu-grid',
+                                'massiveActionTemplate' => $massiveAction,
+                                'afterAjaxUpdate' => 'surveyMenuFunctions',
                             ]
                         ); ?>
                     </div>
@@ -88,14 +85,16 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><?php eT("Delete this survey menu?"); ?></h4>
+                <h5 class="modal-title"><?php eT("Delete this survey menu?"); ?></h5>
             </div>
             <div class="modal-body">
                 <?php eT("All menu entries of this menu will also be deleted."); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel'); ?></button>
-                <button type="button" id="deletemodal-confirm" class="btn btn-danger"><?php eT('Delete'); ?></button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>
+                <button type="button" id="deletemodal-confirm" class="btn btn-danger">
+                    <?php eT('Delete'); ?>
+                </button>
             </div>
         </div>
     </div>
@@ -105,7 +104,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><?php eT("Really restore the default survey menus (survey menu entries)?"); ?></h4>
+                <h5 class="modal-title"><?php eT("Really restore the default survey menus (survey menu entries)?"); ?></h5>
             </div>
             <div class="modal-body">
                 <p>
@@ -116,15 +115,15 @@ echo viewHelper::getViewTestTag('surveyMenus');
                 </p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
                     <?php eT('Cancel'); ?>
                 </button>
                 <button
-                        type="button"
-                        id="reset-menus-confirm"
-                        class="btn btn-danger"
-                        data-urlmenu="<?=Yii::app()->getController()->createUrl('/admin/menus/sa/restore');?>"
-                        data-urlmenuentry="<?= Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore');?>"
+                    type="button"
+                    id="reset-menus-confirm"
+                    class="btn btn-danger"
+                    data-urlmenu="<?= Yii::app()->getController()->createUrl('/admin/menus/sa/restore'); ?>"
+                    data-urlmenuentry="<?= Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore'); ?>"
                 >
                     <?php eT('Restore default'); ?>
                 </button>
@@ -134,7 +133,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
 </div>
 
 <script>
-	$('#menueslist a').on('shown.bs.tab', function () {
+    $('#menueslist a').on('shown.bs.tab', function () {
         var tabId = $(this).attr('href');
         $('.tab-dependent-button:not([data-tab="' + tabId + '"])').hide();
         $('.tab-dependent-button[data-tab="' + tabId + '"]').show();

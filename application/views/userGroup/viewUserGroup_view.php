@@ -1,6 +1,17 @@
-<div class="col-lg-12 list-surveys">
+<?php
+/** @var int $ugid */
+/** @var bool $groupfound */
+/** @var string $usergroupdescription */
+/** @var array $headercfg */
+/** @var bool $useradddialog */
+/** @var array $addableUsers */
+/** @var User $model */
+$dataProvider = $model->searchUserGroupMembers($ugid);
+?>
+
+<div class="col-12 list-surveys">
     <div class="row">
-        <div class="col-lg-12 content-right">
+        <div class="col-12 content-right">
             <div class="h4"><?php eT("Group members"); ?></div>
 
             <?php if (isset($groupfound)) : ?>
@@ -13,93 +24,84 @@
 
             <?php if (isset($headercfg)) : ?>
                 <?php if ($headercfg["type"] === "success") : ?>
-                    <div class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <?php echo $headercfg["message"]; ?>
-                    </div>
-
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => $headercfg["message"],
+                        'type' => 'success',
+                    ]);
+                    ?>
                 <?php else : ?>
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <?php echo $headercfg["message"]; ?>
-                    </div>
+                    <?php
+                    $this->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => $headercfg["message"],
+                        'type' => 'warning',
+                    ]);
+                    ?>
 
                 <?php endif; ?>
             <?php endif; ?>
 
             <br/><br/>
-            <?php if (!empty($userloop)) { ?>
-                <div class="table-responsive">
-                    <table class='users table table-hover'>
-                        <thead>
-                        <tr>
-                            <th><?php eT("Action"); ?></th>
-                            <th><?php eT("Username"); ?></th>
-                            <th><?php eT("Email"); ?></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        foreach ($userloop as $currentuser) {
-                            ?>
-                            <tr class='<?php echo $currentuser["rowclass"]; ?>'>
-                                <td>
-                                    <div class="icon-btn-row">
-                                        <?php
-                                        if ((isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true || Permission::model()->hasGlobalPermission('superadmin')) && $currentuser["userid"] != '1') { ?>
-                                            <?php echo CHtml::form(["userGroup/DeleteUserFromGroup/ugid/{$ugid}/"], 'post'); ?>
-                                            <button
-                                                class="btn btn-default btn-sm"
-                                                data-toggle="tooltip"
-                                                data-placement="bottom"
-                                                title="<?php eT('Delete'); ?>"
-                                                type="submit"
-                                                onclick='return confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")'>
-                                                <span class="fa fa-trash text-danger"></span>
-                                            </button>
-                                            <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>'/>
-                                            <?php echo CHtml::endForm() ?>
-                                            <?php
-                                        }
-                                        ?>
-                                    </div>
-                                </td>
-                                <td><?php echo \CHtml::encode($currentuser["username"]); ?></td>
-                                <td><?php echo \CHtml::encode($currentuser["email"]); ?></td>
-                            </tr>
-                            <?php
-                        }
-                        ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php } ?>
-
             <?php
-            if (!empty($useradddialog)) {
-                ?>
-                <?php echo CHtml::form(["userGroup/AddUserToGroup"], 'post'); ?>
-                <table class='users'>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <?php echo CHtml::dropDownList('uid', '-1', $addableUsers, ['class' => "form-control col-lg-4"]); ?>
-                                    <input name='ugid' type='hidden' value='<?php echo $ugid; ?>'/>
-                                </div>
-                                <div class="col-lg-4">
-                                    <input type='submit' value='<?php eT("Add user"); ?>' class="btn btn-default"/>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <?php echo CHtml::endForm() ?>
-                <?php
-            }
+            $this->widget('application.extensions.admin.grid.CLSGridView',
+                [
+                    'id' => 'usergroup-members-grid',
+                    'dataProvider' => $dataProvider,
+                    'filter' => $model,
+                    'ajaxType'        => 'POST',
+                    'emptyText' => gT('No user group members found.'),
+                    'ajaxUpdate' => 'usergroup-members-grid',
+                    'massiveActionTemplate' => $this->renderPartial('_addUserDropdown', [
+                        'useradddialog' => $useradddialog,
+                        'addableUsers' => $addableUsers,
+                        'ugid' => $ugid
+                    ], true),
+                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                            gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $dataProvider->pagination->getPageSize(),
+                                App()->params['pageSizeOptions'],
+                                [
+                                    'class' => 'changePageSize form-select',
+                                    'style' => 'display: inline; width: auto'
+                                ]
+                            )
+                        ),
+                    'columns' => [
+                        array(
+                            'header'      => gT('Username'),
+                            'name'        => 'users_name',
+                            'value'       => '$data->users_name',
+                            'htmlOptions' => array('class' => ''),
+                        ),
+                        array(
+                            'header'      => gT('Email'),
+                            'name'        => 'email',
+                            'value'       => '$data->email',
+                            'htmlOptions' => array('class' => ''),
+                        ),
+                        array(
+                            'header'      => gT('Actions'),
+                            'name'        => 'buttons',
+                            'type'        => 'raw',
+                            'filter'      => false,
+                            'value'       => '$data->GroupMemberListButtons',
+                            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                            'htmlOptions'       => ['class' => 'text-center button-column ls-sticky-column'],
+                        ),
+                    ],
+                ]
+            );
             ?>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    jQuery(function ($) {
+        // To update rows per page via ajax
+        $(document).on("change", '#pageSize', function () {
+            $.fn.yiiGridView.update('usergroup-members-grid', {data: {pageSize: $(this).val()}});
+        });
+    });
+</script>

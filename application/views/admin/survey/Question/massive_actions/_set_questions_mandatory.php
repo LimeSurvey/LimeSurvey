@@ -9,24 +9,22 @@ $surveyid = App()->request->getParam('surveyid', 0);
 
 ?>
 <form class="custom-modal-datas form-horizontal">
-    <div id='MandatorySelection' class="form-group">
-        <label class="col-sm-4 control-label"><?php eT("Mandatory:"); ?></label>
-        <div class="col-sm-8">
-        <?php
-            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                'name' => 'mandatory',
-                'value' => 'N',
-                'selectOptions'=>array(
-                    "Y"=>gT("Yes",'unescaped'),
-                    "S"=>gT("Soft",'unescaped'),
-                    "N"=>gT("No",'unescaped')
-                ),
-                'htmlOptions'=>array(
-                    'class'=>'custom-data',
-                ),
-            ));
-        ?>
-            <input type="hidden" name="sid" value="<?php echo (int) $surveyid; ?>" class="custom-data"/>
+    <div id='MandatorySelection' class="mb-3">
+        <label class="col-md-4 form-label"><?php eT("Mandatory:"); ?></label>
+        <div class="col-md-8">
+            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                'name'          => 'mandatory',
+                'checkedOption' => 'N',
+                'selectOptions' => [
+                    "Y" => gT("Yes", 'unescaped'),
+                    "S" => gT("Soft", 'unescaped'),
+                    "N" => gT("No", 'unescaped')
+                ],
+                'htmlOptions'   => [
+                    'class' => 'custom-data',
+                ],
+            ]); ?>
+            <input type="hidden" name="sid" value="<?php echo (int)$surveyid; ?>" class="custom-data"/>
         </div>
     </div>
 </form>

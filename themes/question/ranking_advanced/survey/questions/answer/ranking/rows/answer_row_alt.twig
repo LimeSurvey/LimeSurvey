@@ -9,12 +9,12 @@
  */
 #}
 
-<li class="select-item form-group">
-    <label for="answer{{ myfname }}" class="control-label col-sm-4">
+<li class="select-item mb-3">
+    <label for="answer{{ myfname }}" class="control-label col-md-4">
         {{ labeltext }}
     </label>
-    <div class="col-sm-8">
-        <select  class='form-control' name="{{ myfname }}" id="answer{{ myfname }}">
+    <div class="col-md-8">
+        <select  class='form-select' name="{{ myfname }}" id="answer{{ myfname }}">
             {% for option in options %}
                 <option value="{{ option.value }}" {{ option.selected }} class='{{ option.classes }}'>
                     {{ option.optiontext }}

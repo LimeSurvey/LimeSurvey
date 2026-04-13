@@ -1,0 +1,1152 @@
+{
+  "@file": "Transliteration",
+  "preg_replace_en2ar": [
+    {
+      "search": "/^au/",
+      "replace": "ا"
+    },
+    {
+      "search": "/^a/",
+      "replace": "ا"
+    },
+    {
+      "search": "/^e/",
+      "replace": "ا"
+    },
+    {
+      "search": "/^i/",
+      "replace": "ا"
+    },
+    {
+      "search": "/^mc/",
+      "replace": "ماك"
+    },
+    {
+      "search": "/^o/",
+      "replace": "او"
+    },
+    {
+      "search": "/^u/",
+      "replace": "ا"
+    },
+    {
+      "search": "/^wr/",
+      "replace": "ر"
+    },
+    {
+      "search": "/ough$/",
+      "replace": "ه"
+    },
+    {
+      "search": "/ue$/",
+      "replace": ""
+    },
+    {
+      "search": "/a$/",
+      "replace": "ه"
+    },
+    {
+      "search": "/s$/",
+      "replace": "س"
+    }
+  ],
+  "str_replace_en2ar": [
+    {
+      "search": "ough",
+      "replace": "او"
+    },
+    {
+      "search": "alk",
+      "replace": "وك"
+    },
+    {
+      "search": "ois",
+      "replace": "وا"
+    },
+    {
+      "search": "sch",
+      "replace": "ش"
+    },
+    {
+      "search": "tio",
+      "replace": "ش"
+    },
+    {
+      "search": "ai",
+      "replace": "اي"
+    },
+    {
+      "search": "au",
+      "replace": "او"
+    },
+    {
+      "search": "bb",
+      "replace": "ب"
+    },
+    {
+      "search": "cc",
+      "replace": "ك"
+    },
+    {
+      "search": "ce",
+      "replace": "س"
+    },
+    {
+      "search": "ci",
+      "replace": "سي"
+    },
+    {
+      "search": "cy",
+      "replace": "سي"
+    },
+    {
+      "search": "ch",
+      "replace": "تش"
+    },
+    {
+      "search": "ck",
+      "replace": "ك"
+    },
+    {
+      "search": "dd",
+      "replace": "د"
+    },
+    {
+      "search": "ea",
+      "replace": "ي"
+    },
+    {
+      "search": "ee",
+      "replace": "ي"
+    },
+    {
+      "search": "ey",
+      "replace": "اي"
+    },
+    {
+      "search": "ff",
+      "replace": "ف"
+    },
+    {
+      "search": "ge",
+      "replace": "ج"
+    },
+    {
+      "search": "gi",
+      "replace": "جي"
+    },
+    {
+      "search": "gg",
+      "replace": "غ"
+    },
+    {
+      "search": "gh",
+      "replace": "ف"
+    },
+    {
+      "search": "gn",
+      "replace": "جن"
+    },
+    {
+      "search": "ie",
+      "replace": "ي"
+    },
+    {
+      "search": "kk",
+      "replace": "ك"
+    },
+    {
+      "search": "kh",
+      "replace": "خ"
+    },
+    {
+      "search": "ll",
+      "replace": "ل"
+    },
+    {
+      "search": "mm",
+      "replace": "م"
+    },
+    {
+      "search": "nn",
+      "replace": "ن"
+    },
+    {
+      "search": "oo",
+      "replace": "و"
+    },
+    {
+      "search": "ou",
+      "replace": "و"
+    },
+    {
+      "search": "ph",
+      "replace": "ف"
+    },
+    {
+      "search": "pp",
+      "replace": "ب"
+    },
+    {
+      "search": "qu",
+      "replace": "كو"
+    },
+    {
+      "search": "rr",
+      "replace": "ر"
+    },
+    {
+      "search": "sh",
+      "replace": "ش"
+    },
+    {
+      "search": "ss",
+      "replace": "س"
+    },
+    {
+      "search": "th",
+      "replace": "ذ"
+    },
+    {
+      "search": "tt",
+      "replace": "ت"
+    },
+    {
+      "search": "wr",
+      "replace": "ر"
+    },
+    {
+      "search": "a",
+      "replace": "ا"
+    },
+    {
+      "search": "b",
+      "replace": "ب"
+    },
+    {
+      "search": "c",
+      "replace": "ك"
+    },
+    {
+      "search": "d",
+      "replace": "د"
+    },
+    {
+      "search": "e",
+      "replace": ""
+    },
+    {
+      "search": "f",
+      "replace": "ف"
+    },
+    {
+      "search": "g",
+      "replace": "غ"
+    },
+    {
+      "search": "h",
+      "replace": "ه"
+    },
+    {
+      "search": "i",
+      "replace": "ي"
+    },
+    {
+      "search": "j",
+      "replace": "ج"
+    },
+    {
+      "search": "k",
+      "replace": "ك"
+    },
+    {
+      "search": "l",
+      "replace": "ل"
+    },
+    {
+      "search": "m",
+      "replace": "م"
+    },
+    {
+      "search": "n",
+      "replace": "ن"
+    },
+    {
+      "search": "o",
+      "replace": "و"
+    },
+    {
+      "search": "p",
+      "replace": "ب"
+    },
+    {
+      "search": "q",
+      "replace": "ك"
+    },
+    {
+      "search": "r",
+      "replace": "ر"
+    },
+    {
+      "search": "s",
+      "replace": "س"
+    },
+    {
+      "search": "t",
+      "replace": "ت"
+    },
+    {
+      "search": "u",
+      "replace": "و"
+    },
+    {
+      "search": "v",
+      "replace": "ف"
+    },
+    {
+      "search": "w",
+      "replace": "و"
+    },
+    {
+      "search": "x",
+      "replace": "كس"
+    },
+    {
+      "search": "y",
+      "replace": "ي"
+    },
+    {
+      "search": "z",
+      "replace": "ز"
+    },
+    {
+      "search": ",",
+      "replace": "،"
+    },
+    {
+      "search": "?",
+      "replace": "؟"
+    },
+    {
+      "search": "/2/",
+      "replace": "ء"
+    },
+    {
+      "search": "7'",
+      "replace": "خ"
+    },
+    {
+      "search": "5",
+      "replace": "خ"
+    },
+    {
+      "search": "7",
+      "replace": "ح"
+    },
+    {
+      "search": "9'",
+      "replace": "ض"
+    },
+    {
+      "search": "9",
+      "replace": "ص"
+    },
+    {
+      "search": "6'",
+      "replace": "ظ"
+    },
+    {
+      "search": "6",
+      "replace": "ط"
+    },
+    {
+      "search": "3'",
+      "replace": "غ"
+    },
+    {
+      "search": "3",
+      "replace": "ع"
+    },
+    {
+      "search": "8",
+      "replace": "ق"
+    }
+  ],
+  "preg_replace_ar2en": [
+    {
+      "search": "/^ال/",
+      "replace": "Al-"
+    },
+    {
+      "search": "/^إِي/",
+      "replace": "ei"
+    },
+    {
+      "search": "/^عِي/",
+      "replace": "ei"
+    },
+    {
+      "search": "/^عُو/",
+      "replace": "ou"
+    },
+    {
+      "search": "/ْع$/",
+      "replace": "a"
+    },
+    {
+      "search": "/ِي$/",
+      "replace": "i"
+    },
+    {
+      "search": "/َو$/",
+      "replace": "aw"
+    },
+    {
+      "search": "/َي$/",
+      "replace": "ay"
+    },
+    {
+      "search": "/^ع/",
+      "replace": "a"
+    },
+    {
+      "search": "/^أ/",
+      "replace": "a"
+    },
+    {
+      "search": "/^آ/",
+      "replace": "aa"
+    }
+  ],
+  "str_replace_ar2en": [
+    {
+      "search": "Al-ت",
+      "replace": "At-t"
+    },
+    {
+      "search": "Al-ث",
+      "replace": "Ath-th"
+    },
+    {
+      "search": "Al-د",
+      "replace": "Ad-d"
+    },
+    {
+      "search": "Al-ذ",
+      "replace": "Adh-dh"
+    },
+    {
+      "search": "Al-ر",
+      "replace": "Ar-r"
+    },
+    {
+      "search": "Al-ز",
+      "replace": "Az-z"
+    },
+    {
+      "search": "Al-س",
+      "replace": "As-s"
+    },
+    {
+      "search": "Al-ش",
+      "replace": "Ash-sh"
+    },
+    {
+      "search": "Al-ص",
+      "replace": "As-s"
+    },
+    {
+      "search": "Al-ض",
+      "replace": "Ad-d"
+    },
+    {
+      "search": "Al-ط",
+      "replace": "At-t"
+    },
+    {
+      "search": "Al-ظ",
+      "replace": "Az-z"
+    },
+    {
+      "search": "Al-ن",
+      "replace": "An-n"
+    },
+    {
+      "search": "ّ",
+      "replace": "#"
+    },
+    {
+      "search": "تة",
+      "replace": "t'h"
+    },
+    {
+      "search": "ته",
+      "replace": "t'h"
+    },
+    {
+      "search": "كة",
+      "replace": "k'h"
+    },
+    {
+      "search": "كه",
+      "replace": "k'h"
+    },
+    {
+      "search": "ده",
+      "replace": "d'h"
+    },
+    {
+      "search": "دة",
+      "replace": "d'h"
+    },
+    {
+      "search": "ضه",
+      "replace": "d'h"
+    },
+    {
+      "search": "ضة",
+      "replace": "d'h"
+    },
+    {
+      "search": "سه",
+      "replace": "s'h"
+    },
+    {
+      "search": "سة",
+      "replace": "s'h"
+    },
+    {
+      "search": "صه",
+      "replace": "s'h"
+    },
+    {
+      "search": "صة",
+      "replace": "s'h"
+    },
+    {
+      "search": "َا",
+      "replace": "a"
+    },
+    {
+      "search": "َي",
+      "replace": "a"
+    },
+    {
+      "search": "ُو",
+      "replace": "ou"
+    },
+    {
+      "search": "ِي",
+      "replace": "ei"
+    },
+    {
+      "search": "ً",
+      "replace": "an"
+    },
+    {
+      "search": "ٌ",
+      "replace": "un"
+    },
+    {
+      "search": "ٍ",
+      "replace": "in"
+    },
+    {
+      "search": "َ",
+      "replace": "a"
+    },
+    {
+      "search": "ِ",
+      "replace": "i"
+    },
+    {
+      "search": "ُ",
+      "replace": "u"
+    },
+    {
+      "search": "ْ",
+      "replace": ""
+    },
+    {
+      "search": "ا",
+      "replace": "a"
+    },
+    {
+      "search": "ب",
+      "replace": "b"
+    },
+    {
+      "search": "ت",
+      "replace": "t"
+    },
+    {
+      "search": "ث",
+      "replace": "th"
+    },
+    {
+      "search": "ج",
+      "replace": "j"
+    },
+    {
+      "search": "ح",
+      "replace": "h"
+    },
+    {
+      "search": "خ",
+      "replace": "kh"
+    },
+    {
+      "search": "د",
+      "replace": "d"
+    },
+    {
+      "search": "ذ",
+      "replace": "dh"
+    },
+    {
+      "search": "ر",
+      "replace": "r"
+    },
+    {
+      "search": "ز",
+      "replace": "z"
+    },
+    {
+      "search": "س",
+      "replace": "s"
+    },
+    {
+      "search": "ش",
+      "replace": "sh"
+    },
+    {
+      "search": "ص",
+      "replace": "s"
+    },
+    {
+      "search": "ض",
+      "replace": "d"
+    },
+    {
+      "search": "ط",
+      "replace": "t"
+    },
+    {
+      "search": "ظ",
+      "replace": "z"
+    },
+    {
+      "search": "ع",
+      "replace": "'"
+    },
+    {
+      "search": "غ",
+      "replace": "gh"
+    },
+    {
+      "search": "ف",
+      "replace": "f"
+    },
+    {
+      "search": "ق",
+      "replace": "q"
+    },
+    {
+      "search": "ك",
+      "replace": "k"
+    },
+    {
+      "search": "ل",
+      "replace": "l"
+    },
+    {
+      "search": "م",
+      "replace": "m"
+    },
+    {
+      "search": "ن",
+      "replace": "n"
+    },
+    {
+      "search": "ه",
+      "replace": "h"
+    },
+    {
+      "search": "ة",
+      "replace": "h"
+    },
+    {
+      "search": "و",
+      "replace": "w"
+    },
+    {
+      "search": "ي",
+      "replace": "y"
+    },
+    {
+      "search": "ى",
+      "replace": "a"
+    },
+    {
+      "search": "أ",
+      "replace": "'a"
+    },
+    {
+      "search": "إ",
+      "replace": "i"
+    },
+    {
+      "search": "ء",
+      "replace": "'a"
+    },
+    {
+      "search": "ؤ",
+      "replace": "u'"
+    },
+    {
+      "search": "ئ",
+      "replace": "'i"
+    },
+    {
+      "search": "آ",
+      "replace": "'aa"
+    },
+    {
+      "search": "ْ",
+      "replace": ""
+    },
+    {
+      "search": "،",
+      "replace": ","
+    },
+    {
+      "search": "؟",
+      "replace": "?"
+    },
+    {
+        "search": "پ",
+        "replace": "p"
+    },
+    {
+        "search": "گ",
+        "replace": "g"
+    },
+    {
+        "search": "ژ",
+        "replace": "zh"
+    },
+    {
+        "search": "چ",
+        "replace": "ch"
+    }
+  ],
+  "str_replace_diaritical": [
+    {
+      "search": "Al-ص",
+      "replace": "Aș-ș"
+    },
+    {
+      "search": "Al-ض",
+      "replace": "Aḑ-ḑ"
+    },
+    {
+      "search": "Al-ط",
+      "replace": "Aț-ț"
+    },
+    {
+      "search": "Al-ظ",
+      "replace": "Az̧-z̧"
+    },
+    {
+      "search": "َا",
+      "replace": "ā"
+    },
+    {
+      "search": "ُو",
+      "replace": "ū"
+    },
+    {
+      "search": "َى",
+      "replace": "á"
+    },
+    {
+      "search": "ص",
+      "replace": "ș"
+    },
+    {
+      "search": "ض",
+      "replace": "ḑ"
+    },
+    {
+      "search": "ط",
+      "replace": "ț"
+    },
+    {
+      "search": "آ",
+      "replace": "ā"
+    },
+    {
+      "search": "ظ",
+      "replace": "z̧"
+    },
+    {
+      "search": "ح",
+      "replace": "ḩ"
+    },
+    {
+      "search": "ِي",
+      "replace": "ī"
+    }
+  ],
+  "str_replace_RJGC": [
+    {
+      "search": "ḑ",
+      "replace": "ḏ"
+    },
+    {
+      "search": "ș",
+      "replace": "s̱"
+    },
+    {
+      "search": "ț",
+      "replace": "ṯ"
+    },
+    {
+      "search": "z̧",
+      "replace": "ḏh"
+    },
+    {
+      "search": "ḩ",
+      "replace": "ẖ"
+    }
+  ],
+  "str_replace_SES": [
+    {
+      "search": "á",
+      "replace": "a"
+    },
+    {
+      "search": "ā",
+      "replace": "â"
+    },
+    {
+      "search": "aw",
+      "replace": "ô"
+    },
+    {
+      "search": "ay",
+      "replace": "ei"
+    },
+    {
+      "search": "ḑ",
+      "replace": "ḍ"
+    },
+    {
+      "search": "ḩ",
+      "replace": "ḥ"
+    },
+    {
+      "search": "ī",
+      "replace": "î"
+    },
+    {
+      "search": "j",
+      "replace": "g"
+    },
+    {
+      "search": "ș",
+      "replace": "ṣ"
+    },
+    {
+      "search": "ț",
+      "replace": "ṭ"
+    },
+    {
+      "search": "ū",
+      "replace": "û"
+    },
+    {
+      "search": "z̧",
+      "replace": "ẓ"
+    }
+  ],
+  "str_replace_ISO233": [
+    {
+      "search": "َا",
+      "replace": "a'"
+    },
+    {
+      "search": "ِي",
+      "replace": "iy"
+    },
+    {
+      "search": "ُو",
+      "replace": "uw"
+    },
+    {
+      "search": "ً",
+      "replace": "á"
+    },
+    {
+      "search": "ٌ",
+      "replace": "ú"
+    },
+    {
+      "search": "ٍ",
+      "replace": "í"
+    },
+    {
+      "search": "ذ",
+      "replace": "ḏ"
+    },
+    {
+      "search": "غ",
+      "replace": "ġ"
+    },
+    {
+      "search": "خ",
+      "replace": "ẖ"
+    },
+    {
+      "search": "ش",
+      "replace": "š"
+    },
+    {
+      "search": "ث",
+      "replace": "ṯ"
+    },
+    {
+      "search": "ض",
+      "replace": "ḍ"
+    },
+    {
+      "search": "ة",
+      "replace": "ṫ"
+    },
+    {
+      "search": "ح",
+      "replace": "ḥ"
+    },
+    {
+      "search": "ج",
+      "replace": "ǧ"
+    },
+    {
+      "search": "ص",
+      "replace": "ṣ"
+    },
+    {
+      "search": "ط",
+      "replace": "ṭ"
+    },
+    {
+      "search": "ظ",
+      "replace": "ẓ"
+    }
+  ],
+  "preg_replace_ALA_LC": [
+    {
+      "search": "//",
+      "replace": ""
+    }
+  ],
+  "str_replace_ALA_LC": [
+    {
+      "search": "ا",
+      "replace": "ā"
+    },
+    {
+      "search": "ب",
+      "replace": "b"
+    },
+    {
+      "search": "ت",
+      "replace": "t"
+    },
+    {
+      "search": "ث",
+      "replace": "th"
+    },
+    {
+      "search": "ج",
+      "replace": "j"
+    },
+    {
+      "search": "ح",
+      "replace": "ḥ"
+    },
+    {
+      "search": "خ",
+      "replace": "kh"
+    },
+    {
+      "search": "د",
+      "replace": "d"
+    },
+    {
+      "search": "ذ",
+      "replace": "dh"
+    },
+    {
+      "search": "ر",
+      "replace": "r"
+    },
+    {
+      "search": "ز",
+      "replace": "z"
+    },
+    {
+      "search": "س",
+      "replace": "s"
+    },
+    {
+      "search": "ش",
+      "replace": "sh"
+    },
+    {
+      "search": "ص",
+      "replace": "ṣ"
+    },
+    {
+      "search": "ض",
+      "replace": "ḍ"
+    },
+    {
+      "search": "ط",
+      "replace": "ṭ"
+    },
+    {
+      "search": "ظ",
+      "replace": "ẓ"
+    },
+    {
+      "search": "ع",
+      "replace": "'"
+    },
+    {
+      "search": "غ",
+      "replace": "gh"
+    },
+    {
+      "search": "ف",
+      "replace": "f"
+    },
+    {
+      "search": "ق",
+      "replace": "q"
+    },
+    {
+      "search": "ك",
+      "replace": "k"
+    },
+    {
+      "search": "ل",
+      "replace": "l"
+    },
+    {
+      "search": "م",
+      "replace": "m"
+    },
+    {
+      "search": "ن",
+      "replace": "n"
+    },
+    {
+      "search": "و",
+      "replace": "w"
+    },
+    {
+      "search": "ي",
+      "replace": "y"
+    },
+    {
+      "search": "ُو",
+      "replace": "ū"
+    },
+    {
+      "search": "ِى",
+      "replace": "ī"
+    },
+    {
+      "search": "َوْ",
+      "replace": "aw"
+    },
+    {
+      "search": "َىْ",
+      "replace": "ay"
+    },
+    {
+      "search": "َ",
+      "replace": "a"
+    },
+    {
+      "search": "ُ",
+      "replace": "u"
+    },
+    {
+      "search": "ِ",
+      "replace": "i"
+    },
+    {
+      "search": "گ",
+      "replace": "g"
+    },
+    {
+      "search": "ڴ",
+      "replace": "ñ"
+    },
+    {
+      "search": "پ",
+      "replace": "p"
+    },
+    {
+      "search": "چ",
+      "replace": "ch"
+    },
+    {
+      "search": "چ",
+      "replace": "zh"
+    },
+    {
+      "search": "ژ",
+      "replace": "zh"
+    },
+    {
+      "search": "ڤ",
+      "replace": "v"
+    },
+    {
+      "search": "ۋ",
+      "replace": "v"
+    },
+    {
+      "search": "ڥ",
+      "replace": "v"
+    },
+    {
+      "search": "ً",
+      "replace": "an",
+      "rule": "12"
+    },
+    {
+      "search": "ٍ",
+      "replace": "in",
+      "rule": "12"
+    },
+    {
+      "search": "ٌ",
+      "replace": "un",
+      "rule": "12"
+    },
+    {
+      "search": "َى",
+      "replace": "ā",
+      "rule": "6(a)"
+    },
+    {
+        "search": "ة",
+        "replace": "h",
+        "rule": "7(a)"
+    }
+  ]
+}

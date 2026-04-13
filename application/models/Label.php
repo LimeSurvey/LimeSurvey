@@ -65,6 +65,13 @@ class Label extends LSActiveRecord
                             'params' => array(':lid' => $this->lid)
                     ),
                     'message' => '{attribute} "{value}" is already in use.'),
+            // Only alphanumeric
+            array(
+                'code',
+                'match',
+                'pattern' => '/^[[:alnum:]]*$/',
+                'message' => gT('Label codes may only contain alphanumeric characters.'),
+            ),
             array('sortorder', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('assessment_value', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );

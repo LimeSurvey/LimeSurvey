@@ -10,7 +10,7 @@ if ($result === 'success') {
 } elseif ($result === 'partial') {
     $status = gT("Partial");
     $class = 'message-box-warning';
-    $statusClass = 'text-warning';
+    $statusClass = 'text-danger';
     $okfiles = count($aImportedFilesInfo);
     $errfiles = count($aErrorFilesInfo);
 } else {
@@ -21,7 +21,7 @@ if ($result === 'success') {
 }
 ?>
 <div class="row">
-    <div class="col-sm-11 col-sm-offset-1 content-right">
+    <div class="col-md-11 offset-md-1 content-right">
         <!-- Message box from super admin -->
         <div class="jumbotron message-box <?php echo $class;?>">
             <div class="h2"><?php eT("Import theme result:") ?></div>
@@ -76,7 +76,7 @@ if ($result === 'success') {
                 </ul>
             <?php endif; ?>
             <p>
-                <input type='submit' class="btn btn-default btn-lg" id="button-open-theme"
+                <input type='submit' class="btn btn-outline-secondary btn-lg" id="button-open-theme"
                        value='<?php eT("Open imported theme") ?>'
                        onclick="window.open('<?php
                        if ($theme == 'question') {

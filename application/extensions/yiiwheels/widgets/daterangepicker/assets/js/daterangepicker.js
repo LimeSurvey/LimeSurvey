@@ -147,7 +147,7 @@
 
             this.buttonClasses = ['btn', 'btn-small btn-sm'];
             this.applyClass = 'btn-success';
-            this.cancelClass = 'btn-default';
+            this.cancelClass = 'btn-outline-secondary';
 
             this.format = 'MM/DD/YYYY';
             this.separator = ' - ';
@@ -559,7 +559,7 @@
             $(document)
                 .on('mousedown.daterangepicker', this._outsideClickProxy)
                 // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-                .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy)
+                .on('click.daterangepicker', '[data-bs-toggle=dropdown]', this._outsideClickProxy)
                 // and also close when focus changes to outside the picker (eg. tabbing between controls)
                 .on('focusin.daterangepicker', this._outsideClickProxy);
 
@@ -584,7 +584,7 @@
 
             $(document)
                 .off('mousedown.daterangepicker')
-                .off('click.daterangepicker', '[data-toggle=dropdown]')
+                .off('click.daterangepicker', '[data-bs-toggle=dropdown]')
                 .off('focusin.daterangepicker');
 
             this.element.removeClass('active');
@@ -960,7 +960,7 @@
                 html += '<th></th>';
 
             if (!minDate || minDate.isBefore(calendar.firstDay)) {
-                html += '<th class="prev available"><i class="fa fa-arrow-left icon-arrow-left fa fa-arrow-left"></i></th>';
+                html += '<th class="prev available"><i class="ri-arrow-left-fill icon-arrow-left ri-arrow-left-fill"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -973,7 +973,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if (!maxDate || maxDate.isAfter(calendar.lastDay)) {
-                html += '<th class="next available"><i class="fa fa-arrow-right icon-arrow-right fa fa-arrow-right"></i></th>';
+                html += '<th class="next available"><i class="ri-arrow-right-fill icon-arrow-right ri-arrow-right-fill"></i></th>';
             } else {
                 html += '<th></th>';
             }

@@ -3,10 +3,12 @@
 
 {% set first = true %}
 {% set scale_id = 0 %}
+{# TODO: Add question type attribute to indicate if the type supports relevance on subquestions #}
+{% set supportsRelevance = question.questionType.code != 'H' %}
 
 <!-- Loop all language, and then hide all but the current selected one with JS. -->
 {% for lang in allLanguages %}
-    <div class="lang-hide lang-{{ lang }}">
+    <div class="lang-hide lang-{{ lang }} {{ first ? 'base-lang' : 'extra-lang' }}">
         {% for scale_id in range(0, scalecount - 1) %}
             {% set anscount = subquestions|length %}
             {# TODO : check the rendering of XSCALES / Y SCALES #}
@@ -28,7 +30,7 @@
             <!-- NB: Both questions and answer options uses class "answertable". -->
             <div class="subquestions-table-wrapper" style="max-height: 414px;">
                 <table
-                    class='answertable subquestions-table table table-responsive'
+                    class='answertable subquestions-table table table-responsive  {{ supportsRelevance ? '' : 'hide-relevance' }}'
                     id='subquestions_{{lang}}_{{scale_id}}'
                     data-scaleid='{{ scale_id }}'
                     data-input-data-id='add-subquestion-input-javascript-datas'
@@ -38,18 +40,24 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th class='col-md-1'>{{ gT("Code") }}</th>
+                            <th class='col-lg-1'>{{ gT("Code") }}
+                            <i
+                class="ri-information-fill"
+                data-bs-toggle="tooltip"
+                title="{{ gT("A mandatory unique alpha-numeric code for each subquestion (1-20 characters)") }}"
+            > </i>
+                            </th>
                             <th>
                                 {{ gT("Subquestion") }}
-                                <i class="fa fa-globe" data-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
+                                <i class="ri-earth-fill" data-bs-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
                             </th>
                             {% if first %}
                                 {% if scale_id == 0 %}
-                                    <th id='rel-eq-th' class='col-md-1'>
+                                    <th id='rel-eq-th' class='col-lg-1'>
                                         {{ gT("Relevance equation") }}
                                     </th>
                                 {% endif %}
-                                <th class="col-md-1">
+                                <th class="col-lg-1">
                                     {{ gT("Action") }}
                                 </th>
                             {% endif %}
@@ -67,9 +75,7 @@
                                 'first'     : first,
                                 'subquestion': subquestion,
                                 'subquestionl10n': subquestion.questionl10ns[lang],
-                                'language'  : lang,
-                                'oldCode'   : true,
-                                'supportsRelevance' : question.questionType.code != 'H',
+                                'language'  : lang
                             } %}
 
                             {% set position = position + 1 %}
@@ -89,7 +95,7 @@
                 <button
                     {{ disabled }}
                     data-scale-id="{{ scale_id }}"
-                    class='btnlsbrowser btn btn-default'
+                    class='btnlsbrowser btn btn-outline-secondary'
                     type='button'
                     onclick="LS.questionEditor.showLabelSetPicker(event, 'subquestions');"
                 >
@@ -98,17 +104,17 @@
 
                 {% if hasLabelSetPermission %}
                     <button
-                        class='bthsaveaslabel btn btn-default'
+                        class='bthsaveaslabel btn btn-outline-secondary'
                         id='bthsaveaslabel_{{ scale_id }}'
                         type='button'
                         onclick="LS.questionEditor.showLabelSetSaver(event, 'subquestions-table');"
-                        data-target="#saveaslabelModal"
+                        data-bs-target="#saveaslabelModal"
                     >
                         {{ gT('Save label set') }}
                     </button>
                 {% endif %}
 
-                <button {{ disabled }} id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd pull-right' type='button' data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                <button {{ disabled }} id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-outline-secondary btnquickadd float-end' type='button' data-bs-toggle="modal" data-bs-target="#quickaddModal" data-scale-id="{{ scale_id }}">
                     {{ gT('Quick add') }}
                 </button>
             </div>

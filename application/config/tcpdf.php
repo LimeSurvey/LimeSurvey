@@ -36,7 +36,7 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['base_directory'] = APPPATH.'third_party'.DIRECTORY_SEPARATOR.'tcpdf'.DIRECTORY_SEPARATOR;
+    $tcpdf['base_directory'] = APPPATH.'vendor'.DIRECTORY_SEPARATOR.'tcpdf'.DIRECTORY_SEPARATOR;
 
 
     /************************************************************
@@ -197,9 +197,9 @@
     * HTML <small> font size ratio
     ***********************************************************/
 
-    $tcpdf['page_font'] = 'freesans';
+    $tcpdf['page_font'] = 'dejavusans';
     $tcpdf['page_font_size'] = 9;
-    $tcpdf['data_font'] = 'freesans';
+    $tcpdf['data_font'] = 'dejavusans';
     $tcpdf['data_font_size'] = 8;
     $tcpdf['mono_font'] = 'freemono';
 

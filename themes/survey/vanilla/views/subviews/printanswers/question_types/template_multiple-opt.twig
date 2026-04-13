@@ -1,16 +1,16 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
- <div class="col-md-8">
+ <div class="col-lg-8">
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
-            <div class="col-md-4 text-right">
-                {% if subquestion.answervalue is sameas("Y") %}
+            <div class="col-lg-4 text-end">
+                {% if subquestion.answervalue is same as("Y") %}
                     <i class="fa fa-check-square-o"></i>
                 {% else %}
                     {{subquestion.answervalue|escape}}
                 {% endif %}
             </div>
-            <div class="col-md-8 text-left">
+            <div class="col-lg-8 text-start">
                 <b>{{subquestion.question}} {% if subquestion.qid != 'other' %}({{subquestion.qid}}){% endif %}</b>
             </div>
         </div>

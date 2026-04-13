@@ -8,7 +8,7 @@
             </th>
             <th>
                 <input type="checkbox" class="markall" name='markall'/>
-                <input type='button' id='btnToggleAdvanced' value='<<' class='btn btn-default'/>
+                <input type='button' id='btnToggleAdvanced' value='<<' class='btn btn-outline-secondary'/>
             </th>
             <th class='extended'><?php eT("Create"); ?></th>
             <th class='extended'><?php eT("View/read"); ?></th>

@@ -1,4 +1,3 @@
-
 {# /**
  * Multiple numeric : dynamic row (remaining + total)
  * @var $id
@@ -11,37 +10,33 @@
  */ #}
 
 {% if sumRemainingEqn %}
-    <li class="form-group ls-group-remaining ls-group-dynamic">
-        <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} col-md-offset-{{ sLabelWidth }}">
-            <div class="control-label">
-                {{ gT('Remaining') }}:
-            </div>
+    <li class="row mb-3 ls-group-remaining">
+        <div class="col-12 col-md-{{ sInputContainerWidth }} offset-md-{{ sLabelWidth }} px-md-5">
+            {{ gT('Remaining') }}:
             {% if prefix %}
-                <div class="prefix-text prefix"><!-- Suffix prefix are not shown inline, but only in the slider: completely different concept : set hidden -->
+                <span class="prefix-text prefix"><!-- Suffix prefix are not shown inline, but only in the slider: completely different concept : set hidden -->
                     {{ processString(prefix) }}
-                </div>
+                </span>
             {% endif %}
-            <div id="remainingvalue_{{ id }}" class="form-control-static numeric dynamic-remaining" data-number="1"><!-- alternative class : form-control : display like an input:text -->
+            <span id="remainingvalue_{{ id }}" class="form-control-static numeric dynamic-remaining" data-number="1"><!-- alternative class : form-control : display like an input:text -->
                 {{ sumRemainingEqn }}
-            </div>
+            </span>
             {% if suffix %}
-                <div class="suffix-text suffix">
+                <span class="suffix-text suffix">
                    {{ processString(suffix) }}
-                </div>
+                </span>
             {% endif %}
         </div>
     </li>
 {% endif %}
 
 {% if sumEqn %}
-    <li class="form-group ls-group-total ls-group-dynamic">
-       <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} col-md-offset-{{ sLabelWidth }}">
-            <div class="control-label">
-                {{gT('Total:')}}
-            </div>
-            <div id="totalvalue_{{ id }}" class="form-control-static numeric dynamic-total" data-number="1">
+    <li class="row mb-3 ls-group-total">
+        <div class="col-12 col-md-{{ sInputContainerWidth }} offset-md-{{ sLabelWidth }} px-md-5">
+            {{ gT('Total:') }}
+            <span id="totalvalue_{{ id }}" class="form-control-static numeric dynamic-total" data-number="1">
                 {{ sumEqn }}
-            </div>
+            </span>
         </div>
     </li>
 {% endif %}

@@ -128,10 +128,10 @@ var SurveymenuEntriesFunctions = function() {
         });
 		
 		$('.selector__hasInfoBox').on('focusin', function(){
-			console.ls.log('FOCUSIN', $(this).closest('div.form-group').find('.selector_infoBox'));
-			$(this).closest('div.form-group').find('.selector_infoBox').removeClass('hidden');
+			console.ls.log('FOCUSIN', $(this).closest('div.ex-form-group').find('.selector_infoBox'));
+			$(this).closest('div.ex-form-group').find('.selector_infoBox').removeClass('d-none');
 			$(this).on('focusout.infoTrigger', function(){
-				$(this).closest('div.form-group').find('.selector_infoBox').addClass('hidden');
+				$(this).closest('div.ex-form-group').find('.selector_infoBox').addClass('d-none');
 				$(this).off('focusout.infoTrigger');
 			})
 		});

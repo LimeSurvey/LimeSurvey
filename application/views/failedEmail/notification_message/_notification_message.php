@@ -8,7 +8,7 @@
 
 ?>
 <p>
-    <?= nl2br(gT("Dear survey administrator, \nThere were one or more notification emails that failed to be sent. Please check the 'Failed email notifications' section in the survey(s) listed below.", 'unescaped')) ?>
+    <?= nl2br((string) gT("Dear survey administrator, \nThere were one or more notification emails that failed to be sent. Please check the 'Failed email notifications' section in the survey(s) listed below.", 'unescaped')) ?>
 </p>
 <ul>
     <?php

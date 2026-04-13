@@ -1,7 +1,7 @@
 <?php
 define('BASEPATH', true);
 // change the following paths if necessary
-$yiit = __DIR__.'/../../third_parts/yiisoft/yii/framework/yiit.php';
+$yiit = __DIR__.'/../../vendor/yiisoft/yii/framework/yiit.php';
 
 require_once($yiit);
 require_once __DIR__.'/../core/LSYii_Application.php';

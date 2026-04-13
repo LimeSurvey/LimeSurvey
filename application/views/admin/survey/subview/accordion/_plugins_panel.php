@@ -20,9 +20,12 @@ echo viewHelper::getViewTestTag('surveyPlugins');
     var sAddParam = '';
 ", LSYii_ClientScript::POS_BEGIN );
 ?>
-<?php if (isset($pluginSettings)):
-        foreach ($pluginSettings as $id => $plugin)
-        {
-            $this->renderPartial('/admin/survey/subview/accordion/_plugin_panel', array('id'=>$id,'plugin'=>$plugin));
-        }
-endif; ?>
+
+<div id="advanced-question-editor">
+    <?php if (isset($pluginSettings)):
+            foreach ($pluginSettings as $id => $plugin)
+            {
+                $this->renderPartial('/admin/survey/subview/accordion/_plugin_panel', array('id'=>$id,'plugin'=>$plugin));
+            }
+    endif; ?>
+</div>

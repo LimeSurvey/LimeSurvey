@@ -4,12 +4,11 @@ build_settings:
     ignore:
         - "vendor"
         - "tests"
-        - "third_party"
         - "tmp"
         - "framework"
         - "upload"
         - "docs"
-        - "application/third_party"
+        - "vendor"
         - "locale"
     mysql:
         host: "localhost"

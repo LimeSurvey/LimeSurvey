@@ -1,9 +1,10 @@
 <?php
 /**
- * This view render the Update Notfication displayed on top of the LimeSurvey admin interface.
- * It is called from SurveyCommonAction which launch AdminController::_getUpdateNotification();
+ * This view renders the update notification displayed on top of the LimeSurvey admin interface.
+ * It is called from LayoutHelper::updatenotification() and SurveyCommonAction::updatenotification().
  *
- * @var $security_update_available
+ * @var bool $security_update_available Whether a security update is available
+ * @var string[] $stability_labels Array of non-stable stability levels present in filtered updates (e.g. ['alpha', 'beta'])
  */
 
 ?>
@@ -13,22 +14,42 @@
 ?>
 
 <?php if(Yii::app()->session['notificationstate']==1):?>
-    <div class="col-sm-12" id="update-container">
+    <div class="col-12" id="update-container">
         <?php if($security_update_available):?>
-            <div class="alert alert-warning alert-dismissible alert-security-update" role="alert" id="update-alert" data-url-notification-state="<?php echo $urlUpdateNotificationState; ?>">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                <strong><?php eT('Security update!');?></strong> <?php eT('A security update is available.');?> <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
-            </div>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => '<strong>' . gT("Security update!") . '</strong> ' . gT("A security update is available.") . ' <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate.') . '</a>',
+                'type' => 'warning',
+                'showCloseButton' => true,
+                'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]
+            ]);
+            ?>
         <?php elseif(Yii::app()->session['unstable_update']):?>
-        <div id="update-alert" data-url-notification-state="<?php echo $urlUpdateNotificationState; ?>" class="alert alert-info alert-dismissible unstable-update" role="alert" >
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span>&times;</span></button>
-                <strong><?php eT('New UNSTABLE update available:');?></strong> <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate or to download it.');?><strong><?php eT("You don't need an update key.");?></strong></a>
-        </div>
+            <?php
+            $labelMap = ['alpha' => gT('Alpha'), 'beta' => gT('Beta'), 'rc' => gT('Release Candidate')];
+            $labelNames = [];
+            foreach ($stability_labels as $label) {
+                if (isset($labelMap[$label])) {
+                    $labelNames[] = $labelMap[$label];
+                }
+            }
+            $stabilityText = !empty($labelNames) ? implode(', ', $labelNames) : gT('unstable');
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => '<strong>' . sprintf(gT('New %s update available:'), $stabilityText) . '</strong> <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate or to download it.') . ' <strong>' . gT("You don't need an update key.") . '</strong></a>',
+                'type' => 'info',
+                'showCloseButton' => true,
+                'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]
+            ]);
+            ?>
         <?php else:?>
-            <div class="alert alert-info alert-dismissible" role="alert" id="update-alert" data-url-notification-state="<?php echo $urlUpdateNotificationState; ?>">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                <strong><?php eT("New update available:");?> </strong> <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate or to download it.');?></a>
-            </div>
+            <?php
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => '<strong>' . gT("New update available:") . '</strong> <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate or to download it.') . '</a>',
+                'type' => 'info',
+                'showCloseButton' => true,
+                'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]
+            ]);
+            ?>
         <?php endif;?>
     </div>
 <?php endif;?>

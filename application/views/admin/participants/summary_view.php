@@ -13,10 +13,13 @@ echo viewHelper::getViewTestTag('participantsSummary');
 
 ?>
 <div id="pjax-content">
-    <div class="col-lg-12 list-surveys">
+    <div class="col-12 list-surveys">
         <div class="row">
-            <div class="col-lg-12 content-right table-responsive">
-                <table class='statisticssummary table table-hover'>
+            <div class="col-12 content-right table-responsive">
+                <table class='ls-statisticssummary table table-hover'>
+                    <caption class="visually-hidden">
+                            <?php eT("Participants summary"); ?>
+                    </caption>
                     <tr>
                         <th>
                             <?php eT("Total participants in central table"); ?>
@@ -51,7 +54,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
                     </tr>
                     <tr>
                         <th>
-                            <?php eT("Blacklisted participants"); ?>
+                            <?php eT("Blocklisted participants"); ?>
                         </th>
                         <td>
                             <?php echo $blacklisted; ?>
@@ -69,5 +72,5 @@ echo viewHelper::getViewTestTag('participantsSummary');
             </div>
         </div>
     </div>
-</div>   
+</div>
 

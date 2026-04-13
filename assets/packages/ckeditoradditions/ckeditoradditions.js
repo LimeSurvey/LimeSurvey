@@ -31,13 +31,13 @@ function updateCKeditor(fieldname, value) {
 
 // CKEDITOR.editorConfig = function (config) {
 
-    // config.filebrowserBrowseUrl = CKEDITOR.basePath + '../../../third_party/kcfinder/browse.php?type=files';
-    // config.filebrowserImageBrowseUrl = CKEDITOR.basePath + '../../../third_party/kcfinder/browse.php?type=images';
-    // config.filebrowserFlashBrowseUrl = CKEDITOR.basePath + '../../../third_party/kcfinder/browse.php?type=flash';
+    // config.filebrowserBrowseUrl = CKEDITOR.basePath + '../../../vendor/kcfinder/browse.php?type=files';
+    // config.filebrowserImageBrowseUrl = CKEDITOR.basePath + '../../../vendor/kcfinder/browse.php?type=images';
+    // config.filebrowserFlashBrowseUrl = CKEDITOR.basePath + '../../../vendor/kcfinder/browse.php?type=flash';
 
-    // config.filebrowserUploadUrl = CKEDITOR.basePath + '../../../third_party/kcfinder/upload.php?type=files';
-    // config.filebrowserImageUploadUrl = CKEDITOR.basePath + '../../../third_party/kcfinder/upload.php?type=images';
-    // config.filebrowserFlashUploadUrl = CKEDITOR.basePath + '../../../third_party/kcfinder/upload.php?type=flash';
+    // config.filebrowserUploadUrl = CKEDITOR.basePath + '../../../vendor/kcfinder/upload.php?type=files';
+    // config.filebrowserImageUploadUrl = CKEDITOR.basePath + '../../../vendor/kcfinder/upload.php?type=images';
+    // config.filebrowserFlashUploadUrl = CKEDITOR.basePath + '../../../vendor/kcfinder/upload.php?type=flash';
     // /* Remove included upload tabs */
     // config.removeDialogTabs = 'link:upload;image:Upload';
     // /* Remove automatic img width/height : better manage "RWD" img */

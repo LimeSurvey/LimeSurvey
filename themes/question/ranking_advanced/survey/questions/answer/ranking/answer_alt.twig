@@ -29,7 +29,7 @@
             {{ sSelects }}
     </ul>
     <div class="ls-no-js-hidden answers-list{{ samechoiceheight ? " list-samechoiceheight": "" }}{{ samelistheight ? " list-samelistheight": "" }} row" aria-hidden="true">
-        <div class="col-sm-6 col-xs-6">
+        <div class="col-md-6 col-6">
             <strong class="sortable-subtitle sortable-rank-subtitle">{{ rank_title }}</strong>
             <!-- @todo : move htmlblock at the good place -->
             <ul id="sortable-choice-{{ qId }}" class="sortable-choice sortable-list list-group">
@@ -38,13 +38,13 @@
                         {{ ansrow.answer }}
                     </li>
                 {% endfor %}
-                <li class="hidden ls-remove"></li>
+                <li class="d-none ls-remove"></li>
             </ul>
         </div>
-        <div class="col-sm-6 col-xs-6">
+        <div class="col-md-6 col-6">
             <strong class="sortable-subtitle sortable-rank-subtitle">{{ choice_title }}</strong>
             <ul id="sortable-rank-{{ qId }}" class="sortable-rank sortable-list list-group">
-                <li class="hidden ls-remove"></li>
+                <li class="d-none ls-remove"></li>
             </ul>
         </div>
     </div>
@@ -52,7 +52,7 @@
 
 <!--  The list with HTML answers -->
 
-<div class="hidden" style="display:none">
+<div class="d-none" style="display:none">
     <div style='display:none' id='ranking-{{ qId }}-maxans'>
         {{ max_answers }}
     </div>

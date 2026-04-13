@@ -19,7 +19,7 @@
 <!-- Privacy message -->
 
 <div class="{{ aSurveyInfo.class.privacycontainer }} row" {{ aSurveyInfo.attr.privacycontainer }}>
-    <div class="{{ aSurveyInfo.class.privacycol }}  col-sm-12 col-centered" {{ aSurveyInfo.attr.privacycol }}>
+    <div class="{{ aSurveyInfo.class.privacycol }}  col-12 col-centered" {{ aSurveyInfo.attr.privacycol }}>
         {% if (aSurveyInfo.options.hideprivacyinfo == "off" ) %}
             {% block anonymous %}
                 {% if (aSurveyInfo.anonymized == "Y") %}

@@ -8,40 +8,36 @@
  */
 
 
-
-$( document ).ready(function() {
-	// OTHER
-	$(".bootstrap-checkbox-other-value").each( function( index, element ){
-		name = $(this).data('name');
-		if ($(this).val()){
-		    // "other" input field
-		    $("#answer" + name).val($(this).val());
-		    $("#" + name + "-div").removeClass('hide');
-	    }
-        // execute validation
-	    checkconditions($("#answer" + name).val(), name, this.type);
-	});
-
-	$(".bootstrap-checkbox-other").change(function(){
-		name = $(this).data('name');
-		// conditionaly show or hide "other" input field
-	    if ($(this).is(':checked')){
-	    	$("#" + name + "-div").removeClass('hide');
-	    } else {
-	    	$("#" + name + "-div").addClass('hide');
-	    	$("#answer" + name + "othertext").val('');
-	    }
-	});
-
-	$(".bootstrap-other-input").on('change keyup paste', function(){
+$(document).ready(function () {
+    // OTHER
+    $(".bootstrap-checkbox-other-value").each(function (index, element) {
         name = $(this).data('name');
-        if (!$(this).val()){
-        	$("#java" + name + "other").val('');
+        if ($(this).val()) {
+            // "other" input field
+            $("#answer" + name).val($(this).val());
+            $("#" + name + "-div").removeClass('hide');
+        }
+        // execute validation
+        checkconditions($("#answer" + name).val(), name, this.type);
+    });
+
+    $(".bootstrap-checkbox-other").change(function () {
+        name = $(this).data('name');
+        // conditionaly show or hide "other" input field
+        if ($(this).is(':checked')) {
+            $("#" + name + "-div").removeClass('d-none');
+        } else {
+            $("#" + name + "-div").addClass('d-none');
+            $("#answer" + name + "othertext").val('');
+        }
+    });
+
+    $(".bootstrap-other-input").on('change keyup paste', function () {
+        name = $(this).data('name');
+        if (!$(this).val()) {
+            $("#java" + name + "other").val('');
         }
         checkconditions(this.value, this.name, this.type);
-	});
+    });
 
-
-
-	
 });

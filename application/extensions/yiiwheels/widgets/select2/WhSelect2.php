@@ -8,7 +8,7 @@
  * @package YiiWheels.widgets.select2
  * @uses YiiStrap.helpers.TbArray
  */
-Yii::import('bootstrap.helpers.TbArray');
+Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhSelect2 extends CInputWidget
 {
@@ -91,7 +91,7 @@ class WhSelect2 extends CInputWidget
         /* @var $cs CClientScript */
         $cs = Yii::app()->getClientScript();
 
-        $cs->registerPackage('bootstrap-select2');
+        $cs->registerPackage('select2-bootstrap');
 
 
         if ($this->language) {
@@ -103,7 +103,7 @@ class WhSelect2 extends CInputWidget
 
         /* initialize plugin */
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
-        $this->pluginOptions['theme']='bootstrap';
+        $this->pluginOptions['theme']='bootstrap-5';
         $this->getApi()->registerPlugin('select2', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
         $this->getApi()->registerEvents($selector, $this->events, LSYii_ClientScript::POS_POSTSCRIPT);
     }

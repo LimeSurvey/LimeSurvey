@@ -1,0 +1,143 @@
+//@extend-elements
+//original selectors
+//.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open .dropdown-toggle.btn-outline-secondary
+%extend_1 {
+    color:            $color_parsley_approx;
+    border:           1px solid $color_parsley_approx;
+    background-color: rgba($color_parsley_approx, 0.1);
+}
+
+//original selectors
+//.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary
+%extend_2 {
+    color:            $white;
+    background-color: $color_green_pea_approx;
+    border:           1px solid $color_parsley_approx;
+}
+
+//original selectors
+//.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success
+%extend_3 {
+    color:            $white;
+    background-color: $color_jewel_approx;
+    border:           1px solid $color_parsley_approx;
+}
+
+//original selectors
+//.btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info
+%extend_4 {
+    color:            $white;
+    background-color: $color_eden_approx;
+    border:           1px solid $color_elephant_approx;
+}
+
+//original selectors
+//.btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning
+%extend_5 {
+    color:            $white;
+    background-color: $color_russet_approx;
+    border:           1px solid $color_jambalaya_approx;
+}
+
+
+//original selectors
+//.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
+%extend_7 {
+    color:            $color_storm_dust_approx;
+    background-color: $white;
+    border:           1px solid $color_alto_approx;
+}
+
+//original selectors
+//pagination > li > a, .pagination > li > span
+%extend_8 {
+    color:            $base-color;
+    background-color: $white;
+    border:           1px solid $color_alto_approx;
+}
+
+//original selectors
+//.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus
+%extend_9 {
+    color:            $color_parsley_approx;
+    background-color: $color_norway_approx;
+    border:           1px solid $color_alto_approx;
+}
+
+//original selectors
+//.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus
+%extend_10 {
+    color:            $white;
+    background-color: $base-color;
+    border:           1px solid $base-color;
+}
+
+//original selectors
+//.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus
+%extend_11 {
+    color:            $color_gunsmoke_approx;
+    background-color: $white;
+    border:           1px solid $color_alto_approx;
+}
+
+//original selectors
+//a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus
+%extend_12 {
+    color:            $white;
+    background-color: $base-color;
+    border:           1px solid $base-color;
+}
+
+//original selectors
+//a.list-group-item-success.active, a.list-group-item-success.active:hover, a.list-group-item-success.active:focus
+%extend_13 {
+    color:            $white;
+    background-color: $base-color;
+    border:           1px solid $base-color;
+}
+
+//original selectors
+//a.list-group-item-info.active, a.list-group-item-info.active:hover, a.list-group-item-info.active:focus
+%extend_14 {
+    color:            $white;
+    background-color: $color_paradiso_approx;
+    border:           1px solid $color_paradiso_approx;
+}
+
+//original selectors
+//a.list-group-item-warning.active, a.list-group-item-warning.active:hover, a.list-group-item-warning.active:focus
+%extend_15 {
+    color:            $white;
+    background-color: $color_sandy_brown_approx;
+    border:           1px solid $color_sandy_brown_approx;
+}
+
+//original selectors
+//a.list-group-item-danger.active, a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus
+%extend_16 {
+    color:            $white;
+    background-color: $color_shilo_approx;
+    border:           1px solid $color_shilo_approx;
+}
+
+//original selectors
+//.carousel-control:hover, .carousel-control:focus
+%extend_17 {
+    color:   $white;
+    opacity: 0.9;
+    filter:  alpha(opacity=90);
+}
+
+%extend_19 {
+    color:         $white;
+    color:         $color_mine_shaft_approx;
+    border-bottom: solid 2px $base-color;
+}
+
+%extend_20 {
+    background-color: $alabaster;
+}
+
+%extend_21 {
+    background-color: $alabaster;
+}

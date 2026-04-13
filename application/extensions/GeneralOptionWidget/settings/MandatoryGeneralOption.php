@@ -17,14 +17,14 @@ class MandatoryGeneralOption extends GeneralOption
         $this->formElement = new FormElement(
             'mandatory',
             null,
-            gT('Makes this question mandatory in your survey. Option "Soft" gives a possibility to skip a question without giving any answer.'),
+            gT('Makes this question mandatory in your survey. Option "Soft" gives a possibility to skip a question without giving any answer.', 'unescaped'),
             $question->mandatory,
             [
                 'classes' => [],
                 'options' => [
-                    new SwitchOption(gt('On'), 'Y'),
-                    new SwitchOption(gt('Soft'), 'S'),
-                    new SwitchOption(gt('Off'), 'N')
+                    new SwitchOption(gT('On'), 'Y'),
+                    new SwitchOption(gT('Soft'), 'S'),
+                    new SwitchOption(gT('Off'), 'N')
                 ]
             ]
         );

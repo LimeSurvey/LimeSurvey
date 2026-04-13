@@ -20,7 +20,7 @@
 function doreplacement($file, $data, $oTemplate = '')
 {
     //Produce sample page from template file
-    $aReplacements = isset($data['aReplacements']) ? $data['aReplacements'] : array();
+    $aReplacements = $data['aReplacements'] ?? array();
     return (array) templatereplace(file_get_contents($file), $aReplacements, $data, 'Unspecified', false, null, array(), false, $oTemplate);
 }
 
@@ -41,7 +41,7 @@ function getListOfFiles($wh)
         }
         closedir($handle);
     }
-    $arr = explode("\n", $files);
+    $arr = explode("\n", (string) $files);
     sort($arr);
     return $arr;
 }
@@ -122,19 +122,18 @@ function is_template_editable($templatename)
 }
 
 /**
-* This is a PCLZip callback function that ensures only files are extracted that have a valid extension
+* This is a callback function that ensures only files are extracted that have a valid extension
 *
-* @param mixed $p_event
-* @param mixed $p_header
+* @param mixed $file
 * @return int Return 1 for yes (file can be extracted), 0 for no
 */
-function templateExtractFilter($p_event, &$p_header)
+function templateExtractFilter($file)
 {
     $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats'));
     $aAllowExtensions[] = 'twig';
-    $info = pathinfo($p_header['filename']);
+    $info = pathinfo((string) $file['name']);
 
-    if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'], $aAllowExtensions)) {
+    if ($file['is_folder'] || !isset($info['extension']) || in_array(strtolower($info['extension']), $aAllowExtensions)) {
         return 1;
     } else {
         return 0;

@@ -10,16 +10,16 @@
 <!-- Language -->
 
 <!-- answer -->
-<div class='form-inline'>
-    <div class="{{ coreClass }} form-group">
-        <label for='answer{{ name }}' class='sr-only control-label'>
+<div class='row row-cols-lg-auto g-1 align-items-center'>
+    <div class="{{ coreClass }} mb-3 col-3">
+        <label for='answer{{ name }}' class='visually-hidden control-label'>
             {{ gT('Choose your language') }}
         </label>
 
         <select
             name="{{ name }}"
             id="answer{{ name }}"
-            class="languagesurvey form-control"
+            class="languagesurvey form-control form-select"
             aria-describedby="ls-question-text-{{ name }}"
         >
             {% for ansrow in answerlangs %}

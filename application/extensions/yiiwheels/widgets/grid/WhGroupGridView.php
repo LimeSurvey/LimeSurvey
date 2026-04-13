@@ -16,7 +16,7 @@
  * @see            http://groupgridview.demopage.ru
  */
 
-Yii::import('bootstrap.widgets.TbGridView');
+Yii::import('yiistrap_fork.widgets.TbGridView');
 
 class WhGroupGridView extends TbGridView
 {
@@ -260,7 +260,7 @@ class WhGroupGridView extends TbGridView
 							$options = $column->htmlOptions;
 							$column->htmlOptions['rowspan'] = $change['columns'][$column->name]['count'];
 							$column->htmlOptions['class'] = 'merge';
-							$style = isset($column->htmlOptions['style']) ? $column->htmlOptions['style'] : '';
+							$style = $column->htmlOptions['style'] ?? '';
 							$column->htmlOptions['style'] = $style . ';' . $this->mergeCellCss;
 							$column->renderDataCell($row);
 							$column->htmlOptions = $options;
@@ -305,7 +305,7 @@ class WhGroupGridView extends TbGridView
 				}
 			}
 		}
-		return isset($result) ? $result : false;
+		return $result ?? false;
 	}
 
 	/**

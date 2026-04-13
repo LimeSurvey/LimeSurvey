@@ -8,7 +8,7 @@
 <?php
     echo TbHtml::animatedProgressBar($progressValue);
 ?>
-<ol>
+<ol class="mt-3">
     <li class="<?php echo $classesForStep[0]; ?>">
         <?php eT("Welcome"); ?>
     </li>

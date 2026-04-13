@@ -1,0 +1,35 @@
+$pagination-padding-y:              5px;
+$pagination-padding-x:              14px;
+//$pagination-padding-y-sm:           .25rem;
+//$pagination-padding-x-sm:           .5rem;
+//$pagination-padding-y-lg:           .75rem;
+//$pagination-padding-x-lg:           1.5rem;
+
+$pagination-color:                  $g-900;
+$pagination-bg:                     $white;
+//$pagination-border-width:           $border-width;
+//$pagination-border-radius:          $border-radius;
+//$pagination-margin-start:           -$pagination-border-width;
+$pagination-border-color:           $g-900;
+
+$pagination-focus-color:            $g-900;
+$pagination-focus-bg:               $link-hover-color;
+$pagination-focus-box-shadow:       none;
+$pagination-focus-outline:          0;
+
+$pagination-hover-color:            $g-900;
+$pagination-hover-bg:               $link-hover-color;
+$pagination-hover-border-color:     $g-900;
+
+$pagination-active-color:           $white;
+$pagination-active-bg:              $g-800;
+$pagination-active-border-color:    $g-800;
+
+$pagination-disabled-color:         $g-600;
+$pagination-disabled-bg:            $white;
+$pagination-disabled-border-color:  $g-600;
+
+//$pagination-transition:              color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+//$pagination-border-radius-sm:       $border-radius-sm;
+//$pagination-border-radius-lg:       $border-radius-lg;

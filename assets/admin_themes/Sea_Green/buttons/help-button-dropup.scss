@@ -1,0 +1,67 @@
+.btn-circle {
+    width         : 44px;
+    height        : 44px;
+    padding       : 12px 10px;
+    border-radius : 35px;
+    text-align    : center;
+}
+
+.btn-black60 {
+    color  : $white;
+    border : 1px solid $black60;
+    &:hover, &:focus, &:active, &.active, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &[aria-expanded="true"] {
+        background-color : $black60;
+        border           : 1px solid $black;
+        box-shadow       : 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+}
+
+#help-button-dropup {
+    position : fixed;
+    bottom   : 16px;
+    right    : 20px;
+    &.question-editor-positioning {
+        bottom : 52px;
+    }
+    & > .dropdown-menu {
+        min-width        : 167px;
+        color            : $white;
+        background-color : $black60;
+        box-shadow       : none;
+        border-radius    : 4px;
+        padding          : 0px 0px 12px;
+        inset            : auto 0px 8px auto !important;
+        & > li > a {
+            color : $white;
+            &:hover {
+                background-color : $primary;
+            }
+            &:active, &:focus {
+                color            : $g-800;
+                background-color : $g-200;
+            }
+        }
+        & .dropdown-header {
+            color     : $white;
+            font-size : var(--bs-root-font-size);
+        }
+    }
+}
+
+.btn-circle {
+    width         : 44px;
+    height        : 44px;
+    padding       : 12px 10px;
+    border-radius : 35px;
+    text-align    : center;
+}
+
+.btn-black60 {
+    color  : $white;
+    border : 1px solid $black60;
+    &:hover, &:focus, &:active, &.active, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &[aria-expanded="true"] {
+        background-color : $black60;
+        border           : 1px solid $black;
+        box-shadow       : 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+}

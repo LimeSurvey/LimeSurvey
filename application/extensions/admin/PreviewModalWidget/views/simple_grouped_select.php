@@ -10,7 +10,7 @@ if ($this->survey_active) {
 }
 
 ?>
-<select id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" class="form-control" <?=$disable?>>
+<select id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" class="form-select" <?=$disable?>>
     <?php 
     foreach ($this->groupStructureArray as $sGroupTitle => $aGroupArray) {  
         echo sprintf("<optgroup label='%s'>", $aGroupArray[$this->groupTitleKey]);

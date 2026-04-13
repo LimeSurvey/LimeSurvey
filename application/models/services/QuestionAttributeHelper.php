@@ -103,7 +103,11 @@ class QuestionAttributeHelper
         foreach ($attributes as $key => $attribute) {
             if ($attribute['i18n'] == false) {
                 if (isset($attributeValues[$attribute['name']][''])) {
-                    $attributes[$key]['value'] = $attributeValues[$attribute['name']][''];
+                    $value = $attributeValues[$attribute['name']][''];
+                    if ($key === 'image') {
+                        $value = $this->decodeImageAttributes($value);
+                    }
+                    $attributes[$key]['value'] = $value;
                 } else {
                     $attributes[$key]['value'] = $attribute['default'];
                 }
@@ -172,7 +176,7 @@ class QuestionAttributeHelper
      */
     public function attributeAppliesToQuestionType($attribute, $questionType)
     {
-        return isset($attribute['types']) && stripos($attribute['types'], $questionType) !== false;
+        return isset($attribute['types']) && stripos((string) $attribute['types'], $questionType) !== false;
     }
 
     /**
@@ -230,10 +234,10 @@ class QuestionAttributeHelper
     protected function categorySort($a, $b)
     {
         $categoryOrders = $this->getCategoryOrders();
-        $orderA = isset($categoryOrders[$a['category']]) ? $categoryOrders[$a['category']] : PHP_INT_MAX;
-        $orderB = isset($categoryOrders[$b['category']]) ? $categoryOrders[$b['category']] : PHP_INT_MAX;
+        $orderA = $categoryOrders[$a['category']] ?? PHP_INT_MAX;
+        $orderB = $categoryOrders[$b['category']] ?? PHP_INT_MAX;
         if ($orderA == $orderB) {
-            $result = strnatcasecmp($a['category'], $b['category']);
+            $result = strnatcasecmp((string) $a['category'], (string) $b['category']);
             if ($result == 0) {
                 $result = $a['sortorder'] - $b['sortorder'];
             }
@@ -288,7 +292,7 @@ class QuestionAttributeHelper
         $defaultValues = [];
         $userDefaultQuestionAttributes = \SettingsUser::getUserSettingValue('question_default_values_' . $questionType);
         if ($userDefaultQuestionAttributes !== null) {
-            $defaultValuesByCategory = json_decode($userDefaultQuestionAttributes, true);
+            $defaultValuesByCategory = json_decode((string) $userDefaultQuestionAttributes, true);
             foreach ($defaultValuesByCategory as $attributes) {
                 foreach ($attributes as $attribute => $value) {
                     if (!is_array($value)) {
@@ -299,5 +303,11 @@ class QuestionAttributeHelper
             }
         }
         return $defaultValues;
+    }
+
+    private function decodeImageAttributes($jsonString)
+    {
+        $decoded = json_decode($jsonString, true);
+        return !$decoded ? $jsonString : $decoded;
     }
 }

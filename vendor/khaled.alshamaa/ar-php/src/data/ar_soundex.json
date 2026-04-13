@@ -1,0 +1,353 @@
+{
+  "@file": "ArSoundex",
+  "arSoundexCode": [
+    {
+      "search": "ا",
+      "replace": "0"
+    },
+    {
+      "search": "و",
+      "replace": "0"
+    },
+    {
+      "search": "ي",
+      "replace": "0"
+    },
+    {
+      "search": "ع",
+      "replace": "0"
+    },
+    {
+      "search": "ح",
+      "replace": "0"
+    },
+    {
+      "search": "ه",
+      "replace": "0"
+    },
+    {
+      "search": "ف",
+      "replace": "1"
+    },
+    {
+      "search": "ب",
+      "replace": "1"
+    },
+    {
+      "search": "خ",
+      "replace": "2"
+    },
+    {
+      "search": "ج",
+      "replace": "2"
+    },
+    {
+      "search": "ز",
+      "replace": "2"
+    },
+    {
+      "search": "س",
+      "replace": "2"
+    },
+    {
+      "search": "ص",
+      "replace": "2"
+    },
+    {
+      "search": "ظ",
+      "replace": "2"
+    },
+    {
+      "search": "ق",
+      "replace": "2"
+    },
+    {
+      "search": "ك",
+      "replace": "2"
+    },
+    {
+      "search": "غ",
+      "replace": "2"
+    },
+    {
+      "search": "ش",
+      "replace": "2"
+    },
+    {
+      "search": "ت",
+      "replace": "3"
+    },
+    {
+      "search": "ث",
+      "replace": "3"
+    },
+    {
+      "search": "د",
+      "replace": "3"
+    },
+    {
+      "search": "ذ",
+      "replace": "3"
+    },
+    {
+      "search": "ض",
+      "replace": "3"
+    },
+    {
+      "search": "ط",
+      "replace": "3"
+    },
+    {
+      "search": "ة",
+      "replace": "3"
+    },
+    {
+      "search": "ل",
+      "replace": "4"
+    },
+    {
+      "search": "م",
+      "replace": "5"
+    },
+    {
+      "search": "ن",
+      "replace": "5"
+    },
+    {
+      "search": "ر",
+      "replace": "6"
+    }
+  ],
+  "arPhonixCode": [
+    {
+      "search": "ا",
+      "replace": "0"
+    },
+    {
+      "search": "و",
+      "replace": "0"
+    },
+    {
+      "search": "ي",
+      "replace": "0"
+    },
+    {
+      "search": "ع",
+      "replace": "0"
+    },
+    {
+      "search": "ح",
+      "replace": "0"
+    },
+    {
+      "search": "ه",
+      "replace": "0"
+    },
+    {
+      "search": "ب",
+      "replace": "1"
+    },
+    {
+      "search": "خ",
+      "replace": "2"
+    },
+    {
+      "search": "ج",
+      "replace": "2"
+    },
+    {
+      "search": "ص",
+      "replace": "2"
+    },
+    {
+      "search": "ظ",
+      "replace": "2"
+    },
+    {
+      "search": "ق",
+      "replace": "2"
+    },
+    {
+      "search": "ك",
+      "replace": "2"
+    },
+    {
+      "search": "غ",
+      "replace": "2"
+    },
+    {
+      "search": "ش",
+      "replace": "2"
+    },
+    {
+      "search": "ت",
+      "replace": "3"
+    },
+    {
+      "search": "ث",
+      "replace": "3"
+    },
+    {
+      "search": "د",
+      "replace": "3"
+    },
+    {
+      "search": "ذ",
+      "replace": "3"
+    },
+    {
+      "search": "ض",
+      "replace": "3"
+    },
+    {
+      "search": "ط",
+      "replace": "3"
+    },
+    {
+      "search": "ة",
+      "replace": "3"
+    },
+    {
+      "search": "ل",
+      "replace": "4"
+    },
+    {
+      "search": "م",
+      "replace": "5"
+    },
+    {
+      "search": "ن",
+      "replace": "5"
+    },
+    {
+      "search": "ر",
+      "replace": "6"
+    },
+    {
+      "search": "ف",
+      "replace": "7"
+    },
+    {
+      "search": "ز",
+      "replace": "8"
+    },
+    {
+      "search": "س",
+      "replace": "8"
+    }
+  ],
+  "soundexTransliteration": [
+    {
+      "search": "ا",
+      "replace": "A"
+    },
+    {
+      "search": "ب",
+      "replace": "B"
+    },
+    {
+      "search": "ت",
+      "replace": "T"
+    },
+    {
+      "search": "ث",
+      "replace": "T"
+    },
+    {
+      "search": "ج",
+      "replace": "J"
+    },
+    {
+      "search": "ح",
+      "replace": "H"
+    },
+    {
+      "search": "خ",
+      "replace": "K"
+    },
+    {
+      "search": "د",
+      "replace": "D"
+    },
+    {
+      "search": "ذ",
+      "replace": "Z"
+    },
+    {
+      "search": "ر",
+      "replace": "R"
+    },
+    {
+      "search": "ز",
+      "replace": "Z"
+    },
+    {
+      "search": "س",
+      "replace": "S"
+    },
+    {
+      "search": "ش",
+      "replace": "S"
+    },
+    {
+      "search": "ص",
+      "replace": "S"
+    },
+    {
+      "search": "ض",
+      "replace": "D"
+    },
+    {
+      "search": "ط",
+      "replace": "T"
+    },
+    {
+      "search": "ظ",
+      "replace": "Z"
+    },
+    {
+      "search": "ع",
+      "replace": "A"
+    },
+    {
+      "search": "غ",
+      "replace": "G"
+    },
+    {
+      "search": "ف",
+      "replace": "F"
+    },
+    {
+      "search": "ق",
+      "replace": "Q"
+    },
+    {
+      "search": "ك",
+      "replace": "K"
+    },
+    {
+      "search": "ل",
+      "replace": "L"
+    },
+    {
+      "search": "م",
+      "replace": "M"
+    },
+    {
+      "search": "ن",
+      "replace": "N"
+    },
+    {
+      "search": "ه",
+      "replace": "H"
+    },
+    {
+      "search": "و",
+      "replace": "W"
+    },
+    {
+      "search": "ي",
+      "replace": "Y"
+    }
+  ]
+}

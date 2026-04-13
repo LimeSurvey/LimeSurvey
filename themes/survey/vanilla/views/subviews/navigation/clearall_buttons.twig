@@ -4,10 +4,10 @@
     This file render the exit button accessible without javascript
 #}
 
-<div class="{{ aSurveyInfo.class.clearallwrapper }} form-inline">
+<div class="{{ aSurveyInfo.class.clearallwrapper }}">
     <div class="{{ aSurveyInfo.class.clearallwrapper }}">
-        <label class="form-group {{ aSurveyInfo.class.clearalllabel }}">
-            <input {{ aSurveyInfo.attr.clearallconfirm }} class="{{ aSurveyInfo.class.clearallconfirm }}"><span class="control-label">{{gT("Please confirm you want to clear your response?")}}</span>
+        <label class="col-form-label fw-bold {{ aSurveyInfo.class.clearalllabel }}">
+            <input {{ aSurveyInfo.attr.clearallconfirm }} class="me-2 {{ aSurveyInfo.class.clearallconfirm }}"><span class="control-label">{{gT("Please confirm you want to clear your response?")}}</span>
         </label>
         <button {{ aSurveyInfo.attr.clearallbutton }} class="{{ aSurveyInfo.class.clearallbutton }} btn btn-link" title="{{ gT("This action need to be confirmed.") }}">{{gT("Exit and clear survey")}}</button>
     </div>

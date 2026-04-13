@@ -1,0 +1,11 @@
+<!-- Question {{ aQuestion.qid }} -->
+{% set hasImage = aQuestion.image['image_path'] is defined and aQuestion.image['image_path'] %}
+
+<div role="group" aria-labelledby="question-text-container-{{ aQuestion.SGQ }}" {{ aQuestion.attributes }} class="row {{ aQuestion.class }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}" {{ aSurveyInfo.attr.questioncontainer }}>
+    {% if hasImage %}
+        {{ include('./subviews/survey/question_subviews/question_image_container.twig') }}
+    {% else %}
+        {{ include('./subviews/survey/question.twig') }}
+    {% endif %}
+</div>
+<!-- End of question {{ aQuestion.qid }} -->

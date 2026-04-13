@@ -1,1 +1,37 @@
-.settingswidget input[type^='button'],.settingswidget label{margin-top:0px;}.settingswidget .boolean label{margin-left:10px;}.settingswidget{margin:0 1em;}ul.settings-list{margin:0;padding:0;}ul.settings-list > li{list-style:none;}fieldset.settingswidget,form.settingswidget > fieldset{border:0;padding:0;margin:0;}.form-horizontal .control-label,.form-horizontal .controls{-moz-box-sizing:border-box;box-sizing:border-box;}form li.control-group{overflow:visible;}.form-core .control-group{margin-bottom:5px;}.form-horizontal .col-sm-1,.form-horizontal .col-sm-2,.form-horizontal .col-sm-3,.form-horizontal .col-sm-4,.form-horizontal .col-sm-5,.form-horizontal .col-sm-6,.form-horizontal .col-sm-7,.form-horizontal .col-sm-8,.form-horizontal .col-sm-9,.form-horizontal .col-sm-10,.form-horizontal .col-sm-11,.form-horizontal .col-sm-12{position:relative;min-height:1px;padding-left:15px;padding-right:15px;margin-right:0;}.form-horizontal.col-sm-1,.form-horizontal .col-sm-2,.form-horizontal .col-sm-3,.form-horizontal .col-sm-4,.form-horizontal .col-sm-5,.form-horizontal .col-sm-6,.form-horizontal .col-sm-7,.form-horizontal .col-sm-8,.form-horizontal .col-sm-9,.form-horizontal .col-sm-10,.form-horizontal .col-sm-11,.form-horizontal .col-sm-12{float:right;}.settingswidget .setting > .control-label{text-align:left;vertical-align:top;}.form-horizontal textarea{height:auto;}.form-horizontal .default textarea,.form-horizontal .default .htmleditor,.form-horizontal .default .jsoneditor-wrapper{width:100%;}.form-horizontal .default textarea{min-height:10em;}.form-horizontal input + .help-block,.form-horizontal select + .help-block,.form-horizontal textarea + .help-block{margin-top:0;}.form-horizontal .buttons{text-align:center;}.form-horizontal ul.wysihtml5-toolbar li{overflow:visible;}#addnewsurvey ul.wysihtml5-toolbar li{clear:none;}.settingswidget .jsoneditor-wrapper{height:1em;min-height:20em;vertical-align:middle;}.settingswidget .setting-list table{width:100%;}.setting-list .settings .controls{margin:0;width:100%;max-width:100%;}.setting-list .settings .setting{text-align:center;vertical-align:middle;display:table-cell;}.setting-list .settings .setting:before,.setting-list .settings .setting:after{content:none;display:none;}.setting-list .settings .setting:after{clear:none;}.select2-container{min-width:6em;}.select2-container{max-width:100%;}
+.form-horizontal ul.wysihtml5-toolbar li {
+    overflow:visible;
+}
+#addnewsurvey ul.wysihtml5-toolbar li{
+    clear:none;
+}
+
+.settingswidget .jsoneditor-wrapper{
+    height:1em;/* set a heigth for heigth:100% on children*/
+    min-height:20em;/* set the min-height */
+    vertical-align: middle;
+}
+/*
+    Special layout for list settings (in table).
+*/
+.settingswidget .setting-list table{
+    width: 100%;
+}
+.setting-list .settings .controls{
+    margin:0;
+    width:100%;
+    max-width:100%;
+}
+.setting-list .settings .setting{
+    text-align:center;
+    vertical-align:middle;
+    display:table-cell;
+}
+.setting-list .settings .setting:before, .setting-list .settings .setting:after {
+    content: none;
+    display: none;
+}
+.setting-list .settings .setting:after {
+    clear: none;
+}
+.select2-container{min-width:6em}
+.select2-container{max-width:100%}

@@ -1,0 +1,142 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Save page Content  ·._.·´¯)·._.·´¯)
+
+    This file displays the page shown to a respondent when they save the survey to complete it later.
+
+    Depending on survey config, a navigator allowing user to change their response can be shown, and an end url
+
+    Form data are in: aSurveyInfo.aLoadForm (errors, css classes, captcha, etc)
+    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file:
+    {{ dump(aSurveyInfo.aLoadForm ) }} )
+
+    (¯`·._.·(¯`·._.·  Advanced ·._.·´¯)·._.·´¯)
+
+    The form is generated using the Yii function CHtml::form. You must keep it to get the CRSF token.
+    Inputs are also generated using the Yii function CHtml. Eg: input textField is generated via CHtml::textField
+    You can replace those inputs by pure Html (<input type="text" ... />), just be sure to use the correct options (id, classes, required, etc)
+    @see: http://www.yiiframework.com/wiki/48/by-example-chtml/ , http://www.yiiframework.com/doc/api/1.1/CHtml
+
+    NOTE: see layout_global.twig for more infos
+    NOTE: This content is included inside mainrow.twig
+#}
+
+    {# This will display the script and the hidden inputs needed for ExpressionScript Engine #}
+    {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+    <div class="{{ aSurveyInfo.class.savemessage }} clearfix" {{ aSurveyInfo.attr.savemessage }}>
+        <div class="{{ aSurveyInfo.class.savemessagetitle }} large-heading mb-3" {{ aSurveyInfo.attr.savemessagetitle }}>{{ gT("Load unfinished survey") }}</div>
+        <div class="{{ aSurveyInfo.class.savemessagetext }} form-heading mb-3" {{ aSurveyInfo.attr.savemessagetext }}>
+            <p {{ aSurveyInfo.attr.savemessagetextp }} > {{ gT("You can load a survey that you have previously saved from this screen.") }} </p>
+            <p {{ aSurveyInfo.attr.savemessagetextpb }} > {{ gT("Type in the 'name' you used to save the survey, and the password.") }} </p>
+        </div>
+    </div>
+
+    <div class="{{ aSurveyInfo.class.loadform }}" {{ aSurveyInfo.attr.loadform }}>
+
+        {% if count(aSurveyInfo.aLoadForm.aErrors) > 0 %}
+            <ul class="{{ aSurveyInfo.class.loadformul }} alert alert-danger list-unstyled " {{ aSurveyInfo.attr.loadformul }} >
+                {% for key,error in aSurveyInfo.aLoadForm.aErrors %}
+                    <li {{ aSurveyInfo.attr.loadformulli }}>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {#
+            array of attributes of the form tag.
+            To add a new attribute, just add an entry:
+            'attribute' : 'value',
+        #}
+        {% set htmlOptions = {
+                'id'          : 'form-load',
+                'name'        : 'form-load',
+                'class'       :  aSurveyInfo.class.loadformform,
+            }
+        %}
+
+        {#
+            It generates the opening form tag and the CRSF token
+            It uses the Yii fuction CHtml::form
+            @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
+        #}
+        <!-- Save Form -->
+        {{
+            C.Html.form(
+                ( aSurveyInfo.surveyUrl ),
+                'post',
+                (htmlOptions)
+            )
+        }}
+            <!-- Hidden fields  -->
+            {{  aSurveyInfo.aLoadForm.sHiddenField }}
+
+            <!-- Name and Password -->
+            <div class="{{ aSurveyInfo.class.saveform }} col-12" {{ aSurveyInfo.attr.saveform }}>
+
+                <!-- Saved name  -->
+                <div class="{{ aSurveyInfo.class.saveformrow }} mb-3" {{ aSurveyInfo.attr.saveformrow }}>
+                    <label class="{{ aSurveyInfo.class.saveformrowlabel }} control-label" {{ aSurveyInfo.attr.saveformrowlabel }}>
+                        {{ gT("Saved name") }}<small class="{{ aSurveyInfo.class.saveformrowlabelsmall }} asterisk ri-asterisk superset" {{ aSurveyInfo.attr.saveformrowlabelsmall }} >&nbsp;</small>
+                        <span class="{{ aSurveyInfo.class.saveformrowlabelspan }} visually-hidden asterisk"  {{ aSurveyInfo.attr.saveformrowlabelspan }} >{{ gT("Mandatory") }}</span>
+                    </label>
+                    <div class="{{ aSurveyInfo.class.saveformrowcol }} input-cell" {{ aSurveyInfo.attr.saveformrowcol }}>
+                        <input class="{{ aSurveyInfo.class.saveformrowcolinput }} form-control ls-important-field" {{ aSurveyInfo.attr.saveformrowcolinput }} id="{{ aSurveyInfo.id.saveformrowcolinput }}" placeholder =" {{ gT('Enter your name') }} ">
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="{{ aSurveyInfo.class.passwordrow }} mb-3" {{ aSurveyInfo.attr.passwordrow }}>
+                    <label class='{{ aSurveyInfo.class.passwordrowcol }} control-label'  {{ aSurveyInfo.attr.passwordrowcol }} >
+                        {{ gT("Password") }}<small class="{{ aSurveyInfo.class.passwordrowcolsmall }} asterisk ri-asterisk superset" {{ aSurveyInfo.attr.passwordrowcolsmall }}>&nbsp;</small>
+                        <span class="{{ aSurveyInfo.class.passwordrowcolspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.passwordrowcolspan }}>{{ gT("Mandatory") }}</span>
+                    </label>
+
+                    <div class='{{ aSurveyInfo.class.passwordrowinput }}'>
+                        <input class='form-control ls-important-field' {{ aSurveyInfo.attr.passwordrowinputi }} placeholder =" {{ gT('Enter your password') }} ">
+                    </div>
+                </div>
+
+                {% if aSurveyInfo.aLoadForm.aCaptcha.show %}
+                    <!-- Captcha -->
+                    <div class='{{ aSurveyInfo.class.captcharow }} mb-3' {{ aSurveyInfo.attr.captcharow }}>
+                        <label class='{{ aSurveyInfo.class.captcharowlabel }} control-label'  {{ aSurveyInfo.attr.captcharowlabel }}>
+                            {{ gT("Security question") }}
+                        </label>
+                        <div class='{{ aSurveyInfo.class.captcharowcol }}' {{ aSurveyInfo.attr.captcharowcol }}>
+                            <div class='{{ aSurveyInfo.class.captcharowcoldiv }}' {{ aSurveyInfo.attr.captcharowcoldiv }}>
+                                <span class='{{ aSurveyInfo.class.captcharowcoldivdiv }}  ls-important-field' {{ aSurveyInfo.attr.captcharowcoldivdiv }} >
+                                    <img src="{{ aSurveyInfo.aLoadForm.aCaptcha.sImageUrl }}" {{ aSurveyInfo.attr.captcharowcoldivdivimg }} />
+                                </span>
+                                <input id="{{ aSurveyInfo.id.captcharowcoldivinput }}" class='{{ aSurveyInfo.class.captcharowcoldivinput }}   form-control ls-important-field' {{ aSurveyInfo.attr.captcharowcoldivinput }} placeholder="{{ gT("Enter result here - numbers only") }}"/>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                    <div class="row button-row">
+                        <!-- return button -->
+                    <div class='{{ aSurveyInfo.class.returntosurvey }} mb-3 col-auto' {{ aSurveyInfo.attr.returntosurvey }}>
+                        <div class="{{ aSurveyInfo.class.returntosurveydiv }}" {{ aSurveyInfo.attr.returntosurveydiv }}>
+                            <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.returntosurveydiva }} btn btn-outline-secondary" {{ aSurveyInfo.attr.returntosurveydiva }}  >{{ gT("Return to survey") }}</a>
+                        </div>
+                    </div>
+                    <!-- load button -->
+                    <div class='{{ aSurveyInfo.class.loadrow }} mb-3 col-auto' {{ aSurveyInfo.attr.loadrow }}>
+                        <div class='{{ aSurveyInfo.class.loadrowcol }}  float-end' {{ aSurveyInfo.attr.loadrowcol }}>
+                            <button class='{{ aSurveyInfo.class.loadrowcolbutton }} btn btn-primary' {{ aSurveyInfo.attr.loadrowcolbutton }} >
+                                {{ gT("Load now") }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>

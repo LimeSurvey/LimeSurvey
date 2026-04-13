@@ -6,9 +6,9 @@ $(document).on('ready pjax:scriptcomplete', function(){
         var state = $(this).find('input').prop('checked');
         $(this).find('input').prop('checked',!state);
                 
-        $targetItem.toggleClass('hidden');
-        // $(this).find('span').toggleClass('hidden');
-        $(this).toggleClass('hidden');
+        $targetItem.toggleClass('d-none');
+        // $(this).find('span').toggleClass('d-none');
+        $(this).toggleClass('d-none');
     });
 
 });

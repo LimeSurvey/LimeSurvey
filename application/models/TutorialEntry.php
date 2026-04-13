@@ -132,7 +132,7 @@ class TutorialEntry extends LSActiveRecord
             $params = array();
             if (is_array($stepArray['path'])) {
                 $path = $stepArray['path'][0];
-                $params = isset($stepArray['path'][1]) ? $stepArray['path'][1] : [];
+                $params = $stepArray['path'][1] ?? [];
             }
             $stepArray['path'] = App()->createUrl($path, $params);
         }

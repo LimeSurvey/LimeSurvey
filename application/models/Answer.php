@@ -22,8 +22,8 @@
  * @property integer $assessment_value
  * @property integer $scale_id
  *
- * @property Question $questions
- * @property Question $groups
+ * @property Question $question
+ * @property Question $group
  * @property AnswerL10n[] $answerl10ns
  */
 class Answer extends LSActiveRecord
@@ -90,7 +90,8 @@ class Answer extends LSActiveRecord
             array(
                 'code',
                 'checkUniqueness',
-                'message' => gT('Answer codes must be unique by question.')
+                'message' => gT('Answer codes must be unique by question.'),
+                'except' => 'saveall'
             ),
             array('sortorder', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('assessment_value', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
@@ -163,6 +164,10 @@ class Answer extends LSActiveRecord
         } else {
             $aAnswer = Answer::model()->findByAttributes(array('qid' => $qid, 'code' => $code, 'scale_id' => $iScaleID));
             if (is_null($aAnswer)) {
+                return null;
+            }
+            if (!isset($aAnswer->answerl10ns[$sLanguage])) {
+                Yii::log("AnswerL10n record missing for language \"{$sLanguage}\" and aid {$aAnswer->aid}", 'warning', 'application.models.Answer.getAnswerFromCode');
                 return null;
             }
             $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerl10ns[$sLanguage]->answer;
@@ -239,7 +244,7 @@ class Answer extends LSActiveRecord
      */
     public function getAnswersForStatistics($fields, $condition, $orderby)
     {
-        return Answer::model()->findAll(['condition' => $condition, 'order' => $orderby]);
+        return Answer::model()->with('answerl10ns')->findAll(['condition' => $condition, 'order' => $orderby]);
     }
 
     /**

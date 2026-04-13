@@ -24,7 +24,7 @@ class QRicketProvider extends BaseHTTPQRCodeProvider
     
     public function getMimeType() 
     {
-        switch (strtolower($this->format))
+        switch (strtolower((string) $this->format))
         {
         	case 'p':
                 return 'image/png';
@@ -45,10 +45,10 @@ class QRicketProvider extends BaseHTTPQRCodeProvider
     {
         return 'http://qrickit.com/api/qr'
             . '?qrsize=' . $size
-            . '&e=' . strtolower($this->errorcorrectionlevel)
+            . '&e=' . strtolower((string) $this->errorcorrectionlevel)
             . '&bgdcolor=' . $this->bgcolor
             . '&fgdcolor=' . $this->color
-            . '&t=' . strtolower($this->format)
-            . '&d=' . rawurlencode($qrtext);
+            . '&t=' . strtolower((string) $this->format)
+            . '&d=' . rawurlencode((string) $qrtext);
     }
 }

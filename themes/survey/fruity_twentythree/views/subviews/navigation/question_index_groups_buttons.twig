@@ -1,0 +1,23 @@
+{#
+    This file is part of LimeSurvey
+    Copyright (C) 2018 The LimeSurvey Project Team
+    This file render group index
+#}
+<div class="list-group index-button-full">
+  <div class="list-group-item">
+      <div class="h4 list-group-item-heading">{{ gT("Question index") }}</div>
+  </div>
+  {% for step, indexItem in aSurveyInfo.aQuestionIndex.items %}
+    {% set templateClass = ''  %}
+    {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
+        {% set templateClass = templateClass ~ ' list-group-item-warning'  %}
+    {% endif %}
+    {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true   %}
+        {% set templateClass = templateClass ~ ' list-group-item-danger'  %}
+    {% endif %}
+    {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
+        {% set templateClass = statusClass ~  ' disabled'  %}
+    {% endif %}
+    <button type="submit" name="move" value="{{ indexItem.step }}" class="list-group-item {{ indexItem.coreClass }} {{ templateClass }}" >{{ indexItem.text }}</button>
+  {% endfor %}
+</div>

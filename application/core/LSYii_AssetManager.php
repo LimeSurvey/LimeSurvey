@@ -22,7 +22,14 @@ class LSYii_AssetManager extends CAssetManager
     /* @inheritdoc */
     protected function hash($path)
     {
-        return sprintf('%x', crc32($path . Yii::app()->getConfig('globalAssetsVersion')));
+        return sprintf(
+            '%x',
+            crc32(
+                $path .
+                App()->getConfig('versionnumber') . // Always reset with version number
+                App()->getConfig('globalAssetsVersion') // Force reset between version number (for dev user)
+            )
+        );
     }
 
     /**
@@ -32,7 +39,7 @@ class LSYii_AssetManager extends CAssetManager
     protected function generatePath($file, $hashByName = false)
     {
         if (is_file($file)) {
-            $pathForHashing = $hashByName ? dirname($file) : dirname($file) . "." . filemtime($file) . "." . AssetVersion::getAssetVersion($file);
+            $pathForHashing = $hashByName ? dirname((string) $file) : dirname((string) $file) . "." . filemtime($file) . "." . AssetVersion::getAssetVersion($file);
         } else {
             $pathForHashing = $hashByName ? $file : $file . "." . filemtime($file) . "." . AssetVersion::getAssetVersion($file);
         }

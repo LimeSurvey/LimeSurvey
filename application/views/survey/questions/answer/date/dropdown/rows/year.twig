@@ -11,21 +11,21 @@
 #}
 
 <!-- year -->
-<label for="year{{ yearId }}" class="sr-only control-label">
-    {{ gT('Year') }}
-</label>
-
-<select id="year{{ yearId }}" name="year{{ yearId }}" class="year form-control">
-    <option value="">
+<div class="col-12">
+    <label for="year{{ yearId }}" class="visually-hidden control-label">
         {{ gT('Year') }}
-    </option>
-    {% for i in yearmin..(yearmax) %}
-        {% if loop.index is divisible by(step) %}
-            <option value="{{ i }}"{% if i == intval(currentyear) %} selected{% endif %}>
-                {{ i }}
-            </option>
-        {% endif %}
-    {% endfor %}
-</select>
-
+    </label>
+    <select id="year{{ yearId }}" name="year{{ yearId }}" class="year form-select">
+        <option value="">
+            {{ gT('Year') }}
+        </option>
+        {% for i in yearmin..(yearmax) %}
+            {% if loop.index is divisible by(step) %}
+                <option value="{{ i }}"{% if i == intval(currentyear) %} selected{% endif %}>
+                    {{ i }}
+                </option>
+            {% endif %}
+        {% endfor %}
+    </select>
+</div>
 <!-- end of year -->

@@ -1,0 +1,58 @@
+{#
+ /**
+ * Label row view (for Label Set editor)
+ *
+ * @var bool $first
+ * @var string $language
+ * @var string $rowId
+ * @var string $code
+ * @var int $assessmentValue
+ * @var string $title
+ * @var bool $hasLabelSetUpdatePermission
+ */
+#}
+<tr class="labelDatas" style='white-space: nowrap;' id='row_{{ language }}_{{ rowId }}'>
+    {% if not first %}
+        <td>{{ code|escape }}</td>
+        <td>{{ assessmentValue }}</td>
+    {% else %}
+        <td>
+            <span class="ri-menu-fill bigIcons text-success"></span>
+        </td>
+
+        <td>
+            <input type='hidden' class='hiddencode' value='{{ code|escape }}'/>
+            <input type='text' class='codeval  form-control  ' id='code_{{ rowId }}' name='code_{{ rowId }}' maxlength='20' size='20' value='{{ code|escape }}'/>
+        </td>
+
+        <td>
+            <input type="number" class='assessmentval  form-control  ' id='assessmentvalue_{{ rowId }}' style='text-align: right;' name='assessmentvalue_{{ rowId }}' maxlength='5' size='6' value='{{ assessmentValue }}'/>
+        </td>
+    {% endif %}
+
+    <td>
+        <input type='text' class=" form-control  " name='title_{{ language }}_{{ rowId }}' id='title_{{ language }}_{{ rowId }}' maxlength='3000' size='80' value="{{ title|escape }}" />
+    </td>
+    <td>
+        <div class="icon-btn-row">
+            {% if hasLabelSetUpdatePermission %}
+                <a
+                    href='#'
+                    class="btn btn-outline-secondary btn-sm htmleditor--openmodal"
+                    data-target-field-id="title_{{ language }}_{{ rowId }}"
+                    data-bs-toggle="tooltip"
+                    title="{{ gT("Open editor") }}">
+                    <i class="ri-file-edit-line"></i>
+                </a>
+                {% if first %}
+                    <button class="btn btn-outline-secondary btn-sm btnaddanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Add label") }}">
+                        <i class="ri-add-circle-fill text-success"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm btndelanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Delete label") }}">
+                        <i class="ri-indeterminate-circle-fill text-danger"></i>
+                    </button>
+                {% endif %}
+            {% endif %}
+        </div>
+    </td>
+</tr>

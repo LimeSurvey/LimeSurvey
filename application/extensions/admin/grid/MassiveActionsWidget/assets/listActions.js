@@ -16,7 +16,9 @@
  *      perform an ajax request and show the result in the modal
  */
 var onClickListAction =  function () {
+    console.log('onClickListAction');
     if($(this).data('disabled')) {
+        console.log('disabled');
         return;
     }
     var $that          = $(this);                                                             // The clicked link
@@ -32,7 +34,9 @@ var onClickListAction =  function () {
     if ($oCheckedItems == '[]') {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
-        $('#error-first-select' + $grididvalue).modal();
+        console.log('error first');
+        const modal = new bootstrap.Modal(document.getElementById('error-first-select' + $grididvalue), {})
+        modal.show();
         return;
     }
     
@@ -48,11 +52,11 @@ var onClickListAction =  function () {
         $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
-            'target': '_blank',
+            'target': $that.data('target') ?? '_blank',
             'method': 'POST'
         }).append(jQuery('<input>', {
             'name': $that.data('input-name'),
-            'value': $oCheckedItems.join("|"),
+            'value': $oCheckedItems.join($that.data('input-separator') ?? '|'),
             'type': 'hidden'
         })).append(jQuery('<input>', {
             'name': LS.data.csrfTokenName,
@@ -60,6 +64,7 @@ var onClickListAction =  function () {
             'type': 'hidden'
         })).appendTo('body');
         newForm.submit();
+        console.log('redirect');
         return;
     }
 
@@ -73,12 +78,14 @@ var onClickListAction =  function () {
             itemsid:$oCheckedItems},function(){
                 $(location).attr('href',$actionUrl);
             });
+        console.log('fill session');
         return;
     }
 
     // Set window location href. Used by download files in responses list view.
     if (actionType == 'window-location-href') {
         var $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
+        console.log('href = ...');
         window.location.href = $actionUrl + $oCheckedItems.join(',');
         return;
     }
@@ -92,6 +99,7 @@ var onClickListAction =  function () {
         var func = eval(js);
         var itemIds = $gridid.yiiGridView('getChecked', $('.listActions').data('pk'));
         func(itemIds);
+        console.log('func itemIds');
         return;
     }
 
@@ -122,6 +130,7 @@ var onClickListAction =  function () {
         //clear selected list view 
         selectedList.empty();
 
+        console.log('before ajax');
         //ajaxpost to set data in the selected items div 
         $.ajax({
             url :$modalSelectedUrl,
@@ -166,7 +175,7 @@ var onClickListAction =  function () {
         var $postDatas  = {sItems:$oCheckedItems};
         $modal.find('.custom-data').each(function(i, el)
         {
-            if ($(this).hasClass('btn-group')){ // yiiwheels.widgets.buttongroup.WhButtonGroup
+            if ($(this).hasClass('btn-group')){ // ext.ButtonGroupWidget.ButtonGroupWidget
                 $(this).find('input:checked').each(function(i, el)
                 {
                     $postDatas[$(this).attr('name')]=$(this).val();
@@ -184,7 +193,7 @@ var onClickListAction =  function () {
         var aAttributesToUpdate = [];
         $modal.find('.attributes-to-update').each(function(i, el)
         {
-            aAttributesToUpdate.push($(this).attr('name'));
+            aAttributesToUpdate.push($(this).attr('name') || $(this).attr('id'));
         });
         $postDatas['aAttributesToUpdate'] = JSON.stringify(aAttributesToUpdate);
         $postDatas['grididvalue'] = $grididvalue;
@@ -232,68 +241,28 @@ var onClickListAction =  function () {
                     return;
                 }
             },
-            error :  function(html, statut){
+            error: function(data, textStatus, jqXHR) {
                 $ajaxLoader.hide();
-                $modal.find('.modal-body-text').empty().html(html.responseText);
-                console.log(html);
+                if (data
+                    && data.responseJSON
+                    && data.responseJSON.success === false
+                    && data.responseJSON.message)
+                {
+                    $modal.modal('hide');
+                    LS.LsGlobalNotifier.createAlert(data.responseJSON.message,  "danger", {showCloseButton: true});
+                } else {
+                    $modal.find('.modal-body-text').empty().html(data.responseText);
+                }
             }
         });
     });
 
-    // open the modal
-    $modal.modal();
+    // Open the modal
+    const modalId = $that.data('modal-id');
+    console.log('modalId = ', modalId);
+    var modal = new bootstrap.Modal(document.getElementById(modalId), {})
+    modal.show();
 };
-
-/**
- * Bootstrap switch extension
- *
- * 1. Setting the value
- * By default, bootstrap switch use the val() jQuery function, which works well for form submission.
- * But, for the ajax request, we need to collect the value in a array for the post using $postDatas[$(this).attr('name')]=$(this).val();
- * So we need to change the value using $(this).attr('value', state);.
- * The difference can be seen visually in the browser code explorer : by default, the bootstrap switch extension change in an invisble way.
- * With the method here, the input value change will be visible.
- *
- * 2. Defining value Type
- * By default, bootstrap switch use boolean values {true,false} for its states.
- * In the PHP code (like in controller questionEditor::changeMultipleQuestionAttributes()), we want to keep the code as dry as possible.
- * To avoid to create a single method for each action using bootstrap-switch, just to change the boolean value to something else ({1,0} or {Y,N}, etc), we perform it here.
- * e.g: a bootstrap-switch with the class bootstrap-switch-integer will have its value converted to integer.
- *
- * 3. Managing grid refresh
- * For now, the modals are injected on the bottom of the selector, which is in the grid footer, which is reload on grid refresh
- * So, when refreshing the grid, the bootstrap-switch must be re-applyed to the elements
- *
- */
-
- function prepareBsSwitchBoolean($gridid){
-     // Bootstrap switch with class "bootstrap-switch-boolean" will use the default boolean values.
-     // e.g: question mandatory, question other, etc
-     $('.bootstrap-switch-boolean').each(function(){
-         $(this).bootstrapSwitch();
-         $(this).attr('value', false);                                           // we specify its value in a "visible" way (see point 1)
-
-         // Switch change
-         $(this).on('switchChange.bootstrapSwitch', function(event, state) {
-             $(this).attr('value', state);                                       // When the switch change,we specify its value in a "visible" way (see point 1)
-         });
-     });
-}
-
-function prepareBsSwitchInteger($gridid){
-    // Bootstrap switch with class "bootstrap-switch-integer" will use integer values
-    // e.g: question statistics_showgraph, question public_statistics, etc
-    $('.bootstrap-switch-integer').each(function(){
-        $(this).bootstrapSwitch();
-        $(this).attr('value', 0);                                               // we specify its value in a "visible" way (see point 1)
-
-        // Switch change
-        $(this).on('switchChange.bootstrapSwitch', function(event, state) {
-            var intValue = (state==true)?'1':'0';                               // Convertion of the boolean to integer (see point 2)
-            $(this).attr('value', intValue)
-        });
-    });
-}
 
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();
@@ -331,23 +300,58 @@ function getDefaultDateTimePickerSettings() {
     return mydata;
 }
 
-function bindListItemclick(){
-    $( '.listActions a').off('click.listactions').on('click.listactions', onClickListAction);
-    $( '.listActions .disabled a').off('click.listactions').on('click.listactions', function(e){ e.preventDefault(); });
+function bindListItemclick() {
+    let listActions = $('.listActions a');
+    let listActionsDisabled = $('.listActions .disabled a');
+    listActions.off('click.listactions').on('click.listactions', onClickListAction);
+    listActionsDisabled.off('click.listactions').on('click.listactions', function (e) {
+        e.preventDefault();
+    });
 }
 
 
 $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listActions, ready ', function() {
-    prepareBsSwitchBoolean(gridId);
-    prepareBsSwitchInteger(gridId);
-
     // Grid refresh: see point 3
     $(document).on('actions-updated', function(){
-        prepareBsSwitchBoolean(gridId);
-        prepareBsSwitchInteger(gridId);
         prepareBsDateTimePicker(gridId);
         bindListItemclick();
     });
     bindListItemclick();
 });
 
+
+function switchStatusOfListActions(e) {
+    var checkboxSelector = '.grid-view-ls input[type="checkbox"]';
+    // Attach an onchange event handler to all checkboxes
+    $(document).on('change', checkboxSelector, function () {
+        // This assumes there is only one massive and one grid in the page.
+        // @todo: 
+        // - Stamp the related grid-id in the massive action button (see massive action widget).
+        // - From checkbox traverse to grid. Fetch grid id.
+        // - Use grid-id to get a more robust link in between grid and massive actions.
+        var actionButton = $('.massiveAction');
+        if (isAnyCheckboxChecked()) {
+            actionButton.removeClass('disabled');
+            actionButton.removeAttr('disabled');
+        } else {
+            actionButton.addClass('disabled');
+            actionButton.attr('disabled', 'disabled');
+        }
+    });
+}
+
+// Function to check if at least one checkbox is checked
+function isAnyCheckboxChecked() {
+    // This assumes there is only one checkbox per row
+    // - Make isAnyCheckboxChecked() to only check the first one
+    // or
+    // - Stamp on the MassiveActions widget the checkbox class for the row selector and the header
+    // - Use that class to only query selector checkboxes
+    return $('.grid-view-ls table tbody input[type="checkbox"]:checked').length > 0;
+}
+
+['DOMContentLoaded','ready', 'pjax:scriptcomplete'].forEach(function (e) {
+    document.addEventListener(e, () => {
+        switchStatusOfListActions();
+    });
+});

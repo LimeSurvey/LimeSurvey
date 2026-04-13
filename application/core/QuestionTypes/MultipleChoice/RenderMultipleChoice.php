@@ -21,8 +21,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     private $sCoreClasses = 'ls-answers checkbox-list answers-list';
     private $inputnames = [];
 
-    private $iColumnWidth;
-    private $iMaxRowsByColumn;
+    /* Number of columns */
     private $iNbCols;
 
     /** @var boolean indicates if the question has the 'Other' option enabled */
@@ -34,6 +33,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     /** @var string the title of the subquestion after which the 'Other' option should be placed (if $otherPosition == 3) */
     protected $subquestionBeforeOther;
 
+    /** @var string the text for the "Other" option */
+    protected $otherText;
+
     const OTHER_POS_END = 'end';
     const OTHER_POS_START = 'beginning';
     const OTHER_POS_AFTER_SUBQUESTION = 'specific';
@@ -43,14 +45,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->setSubquestions();
 
-        $this->iNbCols = $this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1);
+        $this->iNbCols = intval($this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), ""));
 
-        $this->iColumnWidth = round(12 / $this->iNbCols);
-        $this->iColumnWidth = ($this->iColumnWidth >= 1) ? $this->iColumnWidth : 1;
-        $this->iColumnWidth = ($this->iColumnWidth <= 12) ? $this->iColumnWidth : 12;
-        $this->iMaxRowsByColumn = ceil($this->getQuestionCount() / $this->iNbCols);
-    
-        if ($this->iNbCols > 1) {
+        if ($this->iNbCols) {
             $this->sCoreClasses .= " multiple-list nbcol-{$this->iNbCols}";
         }
 
@@ -60,6 +57,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_SUBQUESTION) {
             $this->subquestionBeforeOther = $this->getQuestionAttribute('other_position_code');
         }
+        $this->otherText = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:'));
     }
 
     public function getMainView()
@@ -99,7 +97,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
                 'checkedState'            => ($this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], '') == 'Y' ? CHECKED : ''),
                 'sCheckconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
                 'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], ''),
-                'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname)
+                'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname),
+                'anscount'                => $this->getQuestionCount(),
+                'iNbCols'                 => $this->iNbCols
             );
             if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_SUBQUESTION && $this->subquestionBeforeOther == $oQuestion->title) {
                 $aRows[] = $this->getOtherRow();
@@ -127,9 +127,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
-                $dispVal = str_replace('.', $sSeparator, $dispVal);
+                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
-            $sValue .= htmlspecialchars($dispVal, ENT_QUOTES);
+            $sValue .= htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
         // TODO : check if $sValueHidden === $sValue
@@ -137,9 +137,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
-                $dispVal = str_replace('.', $sSeparator, $dispVal);
+                $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }
-            $sValueHidden = htmlspecialchars($dispVal, ENT_QUOTES);
+            $sValueHidden = htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
         ////
@@ -147,14 +147,16 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         // Display the answer row
         return array(
             'myfname'                    => $myfname,
-            'othertext'                  => $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')),
+            'othertext'                  => $this->otherText,
             'sValue'                     => $sValue,
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => "checkconditions",
             'sValueHidden'               => $sValueHidden,
             'checkedState'               => ($mSessionValue != '' ? CHECKED : ''),
             'relevanceClass'             => $this->getCurrentRelevecanceClass($myfname),
-            'other'                      => true
+            'other'                      => true,
+            'anscount'                   => $this->getQuestionCount(),
+            'iNbCols'                    => $this->iNbCols
         );
     }
 
@@ -170,10 +172,11 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'name'             => $this->sSGQA,
             'basename'         => $this->sSGQA,
             'anscount'         => $this->getQuestionCount(),
-            'iColumnWidth'     => $this->iColumnWidth,
-            'iMaxRowsByColumn' => $this->iMaxRowsByColumn,
             'iNbCols'          => $this->iNbCols,
+            /* @deprecated since 6.3.3 : Leave it for old question theme compatibility, be sure to don't add columns */
+            'iMaxRowsByColumn' => $this->getQuestionCount() + 3,
             'coreClass'        => $this->sCoreClasses,
+            'othertext'        => $this->otherText,
         ), true);
 
         $this->registerAssets();

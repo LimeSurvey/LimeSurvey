@@ -18,13 +18,13 @@ class SaveAsDefaultGeneralOption extends GeneralOption
         $this->formElement = new FormElement(
             'save_as_default',
             null,
-            gT('All attribute values for this question type will be saved as default'),
+            gT('All attribute values for this question type will be saved as default', 'unescaped'),
             'N',
             [
                 'classes' => [],
                 'options' => [
-                    new SwitchOption(gt('Off'), 'N'),
-                    new SwitchOption(gt('On'), 'Y'),
+                    new SwitchOption(gT('Off'), 'N'),
+                    new SwitchOption(gT('On'), 'Y'),
                 ]
             ]
         );

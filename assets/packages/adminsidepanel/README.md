@@ -1,5 +1,7 @@
 # adminsidepanel
 
+### Node version needs to be 14 - not higher! ###
+
 ## Project setup
 ```
 yarn install
@@ -15,7 +17,7 @@ yarn run serve
 yarn run build
 ```
 
-### Compiles for developement
+### Compiles for development
 ```
 yarn run build --mod development
 ```

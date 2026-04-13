@@ -2,16 +2,18 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).on('ready  pjax:scriptcomplete', function() {
+
+$(document).on('ready pjax:scriptcomplete', function() {
+
     if(!$('#csvattribute').length ) {
         //alert("All the attributes are automatically mapped");
     }
     
     // Find the biggest column and set both to that height
+    // TODO: Not needed since BS5 can adjust height.
     function adjustHeights() {
-
         var max = Math.max($('.droppable-new').height(), $('.droppable-csv').height());
-        console.ls.log('max', max);
+        console.log('max', max);
 
         $('.droppable-new').css('min-height', max);
         $('.droppable-csv').css('min-height', max);
@@ -67,17 +69,17 @@ $(document).on('ready  pjax:scriptcomplete', function() {
             // Remove the text input if dropped out of the new attributes column
             if(!$(this).hasClass('newcreate') && $('input[type="text"]', newDraggable).length > 0) { 
                 $('input[type="text"]', newDraggable).remove();
-                $(newDraggable).text($(newDraggable).attr('data-name'));
+                $(newDraggable).html('<div class="card-body">' + $(newDraggable).attr('data-name') + '</div>');
             }        
 
             // Dropped in new attributes
             if($(this).hasClass('newcreate')) { 
-                newDraggable.html(newDraggable.attr('id').replace('cs_',''));
+                newDraggable.html('<div class="card-body">' + newDraggable.attr('id').replace('cs_','') + '</div>');
                 var id = newDraggable.attr('id').replace(/ /g, '');
                 var name = newDraggable.attr('data-name');
-                newDraggable.prepend('<input type="text" id="td_' + id + '" value="' + name + '">&nbsp;');
-            }  
-                        
+                newDraggable.find($('.card-body')).prepend('<input class="form-control" type="text" id="td_' + id + '" value="' + name + '">&nbsp;');
+            }
+
             // Reset the mappable attribute classes 
             $('.mappable-attribute-wrapper').removeClass('paired');
             $('.mappable-attribute-wrapper .csv-attribute').closest('.mappable-attribute-wrapper').addClass('paired');
@@ -95,8 +97,8 @@ $(document).on('ready  pjax:scriptcomplete', function() {
         drop: function(event, ui) {
 
             // Insert nice arrow
-            var col = $(this).find('.col-sm-6:first-child');
-            col.append('<span class="fa fa-arrows-h csvatt-arrow"></span>');
+            var col = $(this).find('.col-6:first-child');
+            col.append('<span class="ri-arrow-left-right-fill csvatt-arrow"></span>');
 
             // Physically  move the draggable to the target (the plugin just visually moves it)
             // Need to use a clone for this to fake out iPad
@@ -142,7 +144,7 @@ $(document).on('ready  pjax:scriptcomplete', function() {
                 $(newDraggable).text($(newDraggable).attr('data-name'));
             }        
 
-            newDraggable.wrap("<div class='col-sm-6'></div>");
+            newDraggable.wrap('<div class="col-6"></div>');
 
             adjustHeights();
         }
@@ -169,10 +171,11 @@ $(document).on('ready  pjax:scriptcomplete', function() {
     $('#move-all').click(function () {
         $('.droppable-csv .csv-attribute-item').each(function(i, elem) {
             var $elem = $(elem);
-            $elem.html($elem.attr('id').replace('cs_',''));
+            $elem.html('<div class="card-body">' + $elem.attr('id').replace('cs_','') + '</div>');
             var id = $elem.attr('id').replace(/ /g, '');
             var name = $elem.attr('data-name');
-            $elem.prepend('<input type="text" id="td_' + id + '" value="' + name + '">');
+            $elem.find($('.card-body'))
+                .prepend('<input class="form-control" type="text" id="td_' + id + '" value="' + name + '">');
             $elem.detach().appendTo('.newcreate');
             adjustHeights();
         });
@@ -204,26 +207,6 @@ $(document).on('ready  pjax:scriptcomplete', function() {
             }
         });
 
-        var dialog_buttons={};
-
-        dialog_buttons[okBtn]=function(){
-            $(location).attr('href',displayParticipants);
-        };
-
-        $("#processing").dialog({
-            height: 550,
-            width: 700,
-            modal: true,
-            buttons: dialog_buttons,
-            open: function(event, ui) {
-                $('#processing').parent().find("button").each(function() {
-                    if ($(this).text() == okBtn) {
-                        $(this).attr('disabled', true);
-                    }
-                });
-            }
-        });
-
         $("#processing").load(copyUrl, {
             characterset: characterset,
             separatorused : separator,
@@ -233,11 +216,9 @@ $(document).on('ready  pjax:scriptcomplete', function() {
             overwrite : attoverwrite,
             filterbea : filterblankemails
         }, function(msg){
-            $('#processing').parent().find("button").each(function() {
-                if ($(this).text() == okBtn) {
-                    $(this).attr('disabled', false);
-                }
-            });
+            var options = {};
+            var uploadSummaryModal = new bootstrap.Modal(document.getElementById('attribute-map-csv-modal'), options);
+            uploadSummaryModal.show();
         });
     });
 });

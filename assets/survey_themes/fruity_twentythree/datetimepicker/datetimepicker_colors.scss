@@ -1,0 +1,109 @@
+$td-light                       : #fff !default;
+$td-widget-background           : $td-light !default;
+$td-font-color                  : #000 !default;
+$td-timepicker-font-size        : 1.2em !default;
+$td-active-bg                   : $base-color;
+$td-active-color                : $td-light !default;
+$td-active-border-color         : $grape !default;
+$td-border-radius               : 2px !default;
+$td-btn-hover-bg                : $td-light !default;
+$td-disabled-color              : #6c757d !default;
+$td-alternate-color             : $g-400 !default;
+$td-secondary-border-color      : #ccc !default;
+$td-secondary-border-color-rgba : rgba(0, 0, 0, 0.2) !default;
+$td-primary-border-color        : $td-light !default;
+$td-text-shadow                 : 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
+$td-dow-color                   : $td-font-color;
+
+.date-timepicker-group {
+    .input-group-addon {
+        border: 2px solid $g-700;
+    }
+}
+
+.tempus-dominus-widget {
+    color            : $td-font-color;
+    background-color : $td-widget-background;
+    .calendar-header {
+        border-bottom : 1px solid $g-400;
+        & .next {
+            color : $g-400;
+        }
+        & .previous {
+            color : $g-400;
+        }
+    }
+    .toolbar {
+        border-top : 1px solid $g-400;
+    }
+    [data-action] {
+        &.disabled,
+        &.disabled:hover {
+            color : $td-disabled-color;
+        }
+    }
+    .toolbar {
+        & div {
+            &:hover {
+                background : $td-btn-hover-bg;
+            }
+        }
+        & > div + div {
+            border-left : 2px solid $g-400;
+        }
+    }
+    .date-container-days {
+        & .dow {
+            color : $td-dow-color;
+        }
+        & .cw {
+            color : $td-alternate-color;
+        }
+    }
+    .date-container-decades,
+    .date-container-years,
+    .date-container-months,
+    .date-container-days,
+    .time-container-clock,
+    .time-container-hour,
+    .time-container-minute,
+    .time-container-second {
+        div:not(.no-highlight) {
+            &:hover {
+                background : $td-btn-hover-bg;
+                border     : 2px solid $elevation-shadow;
+            }
+            &.active {
+                background-color : $td-active-bg;
+                color            : $td-active-color;
+                text-shadow      : none;
+                &.old,
+                &.new {
+                    color : $td-active-color;
+                }
+            }
+            &.active.today:before {
+                border-bottom-color : $td-active-border-color;
+            }
+            &.old,
+            &.new {
+                color : $td-alternate-color;
+            }
+            &.disabled,
+            &.disabled:hover {
+                color : $td-disabled-color;
+            }
+            &.today {
+                &:before {
+                    border-bottom-color : $td-active-bg;
+                    border-top-color    : $td-secondary-border-color-rgba;
+                }
+            }
+        }
+    }
+    button {
+        color            : $td-active-color;
+        background-color : $td-active-bg;
+        border-color     : $td-active-bg;
+    }
+}

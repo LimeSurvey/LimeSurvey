@@ -1,0 +1,38 @@
+li.imageselect-listitem .imageselect-container .imageselect-label{
+    border: 2px solid $g-700 !important;
+}
+
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label{
+    border: 2px solid $base-color !important;
+}
+
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label+.imageselect-radiobutton:after {
+    background-color: $base-color;
+}
+
+.imageselect-container .imageselect-radiobutton:before {
+    background-color: #fff;
+    border: 2px solid $g-700;
+}
+
+li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label+.imageselect-radiobutton:before {
+    border-color: $base-color;
+}
+
+// Multiple
+.imageselect-container .imageselect-select::before {
+    background-color: transparent;
+}
+
+input.imageselect-checkbox:checked ~ .imageselect-select::before {
+    border-color: $base-color;
+}
+
+input.imageselect-checkbox:checked ~ .imageselect-select::after {
+    background-color: #fff;
+    color: $base-color;
+}
+
+body .imageselect-listitem label::after {
+    background-color : transparent;
+}

@@ -1,0 +1,99 @@
+$panelbox-title-font-size: $font-size-lg * 1.2;
+
+.ls-panelboxes {
+    .ls-panelboxes-panelbox {
+        min-height: 220px;
+        margin: 24px 0;
+        position: relative;
+
+        .card {
+            width: 92%;
+            height: 100%;
+
+            .card-title {
+                font-size: $panelbox-title-font-size;
+            }
+
+            .card-header {
+                @extend .card-title;
+            }
+
+            .card-body {
+                justify-content: flex-start;
+                text-align: left !important;
+            }
+
+            .btn {
+                width: fit-content;
+                border-width: 1px;
+            }
+        }
+    }
+    .card.card-primary {
+        background-color: $white;
+        position: relative;
+        border-radius: 4px;
+        box-shadow: $boxshadow;
+        border: 1px solid $g-900;
+        color: $g-900;
+        padding: 0;
+
+        &.card-clickable {
+            &:hover {
+                box-shadow: $boxshadow-hover;
+                cursor: pointer;
+                cursor: hand;
+            }
+        }
+
+        &.disabled {
+            opacity: 0.5;
+            border: none;
+            a {
+                cursor: default;
+            }
+        }
+
+        .card-title {
+            font-size: $font-size-lg;
+            display: inline-block;
+            color: $g-900;
+            font-weight: $font-weight-600;
+            line-height: $card-header-line-height;
+        }
+
+        .card-header {
+            @extend .card-title;
+            padding: 1.72rem;
+            height: unset;
+            background-color: unset;
+            border: none;
+        }
+
+        .card-body {
+            padding: 1.72rem;
+            height: unset;
+            background-color: unset;
+            border: none;
+        }
+
+        // Remove body top padding if it comes after a header
+        .card-header + .card-body {
+            padding-top: 0;
+            margin-top: -1rem;
+        }
+
+        .card-footer {
+            justify-content: flex-start;
+            height: unset;
+            padding: 1.72rem;
+            background-color: unset;
+            border: none;
+        }
+
+        .card-body + .card-footer,
+        .card-header + .card-footer {
+            padding-top: 0;
+        }
+    }
+}

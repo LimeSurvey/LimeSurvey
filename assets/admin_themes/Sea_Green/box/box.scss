@@ -1,0 +1,44 @@
+// Most likely not used?!
+#statisticsview .box {
+  text-align    : left;
+  margin-bottom : 1em;
+}
+
+// Boxes
+.box {
+  border-radius: $border-radius;
+  box-shadow: $boxshadow;
+  border: 1px solid $g-900;
+  color: $g-900;
+  padding: 10px 25px;
+  text-align: right;
+  display: block;
+  margin-top: 10px;
+}
+.box-icon {
+  border-radius: 50%;
+  display: table;
+  height: 50px;
+  margin: 0 auto;
+  width: 50px;
+  margin-top: -31px;
+  span {
+    color: $white;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+  }
+  #info-header {
+    color: $g-900;
+  }
+}
+
+#systemoverview .box__title {
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: $font-weight-600;
+  line-height: $line-height-20;
+  color: $g-900;
+  text-align: center;
+}

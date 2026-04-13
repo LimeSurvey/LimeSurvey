@@ -1,0 +1,73 @@
+{#
+
+!!!! BECAREFUL: ONLY FOR TESTING !!!!!
+!!!! DON'T START TO TRANSLATE ALL VIEWS BASED ON THIS MODEL !!!!!
+
+!!!! IT WILL PROBABLY FIRST NEED TO CHANGE  THE TWIG TEMPLATE SYNTAX TO AVOID CONFLICT WITH EXPRESSION MANAGER !!!!
+
+/**
+ * Multiple Choice Html : item row
+ *
+ * @var hiddenfield
+ * @var name
+ * @var title
+ * @var question
+ * @var checkedState
+ * @var sCheckconditionFunction
+ * @var myfname
+ * @var sValue
+ **** Additional attributes:
+ * @var question_template_attribute.fix_width
+ * @var question_template_attribute.fix_height
+ * @var question_template_attribute.keep_aspect
+ * @var question_template_attribute.crop_or_resize
+ * @var question_template_attribute.horizontal_scroll
+ */
+#}
+
+{#<p>DEBUG:<br>
+question_template_attribute.fix_width           : {{question_template_attribute.fix_width}}<br/>
+question_template_attribute.fix_height          : {{question_template_attribute.fix_height}}<br/>
+question_template_attribute.keep_aspect         : {{question_template_attribute.keep_aspect}}<br/>
+question_template_attribute.crop_or_resize      : {{question_template_attribute.crop_or_resize}}<br/>
+question_template_attribute.horizontal_scroll   : {{question_template_attribute.horizontal_scroll}}<br/>
+</p>#}
+
+<!-- answer_row -->
+<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item imageselect-listitem {{ extra_class }}' {{ sDisplayStyle }} >
+    <div class="imageselect-container">
+        <input
+            class="imageselect-checkbox"
+            type="checkbox"
+            name="{{ name }}{{ title }}"
+            id="answer{{ name}}{{ title }}"
+            value="Y"
+            {{ checkedState }}
+            onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'
+        />
+        <label for="answer{{ name }}{{ title }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
+
+         <img class="unforce-height" src="{{ question|escape('html_attr') }}"
+         style="{%if question_template_attribute.fix_width > 1%} 
+            width: {{question_template_attribute.fix_width}}px 
+            {% endif %} {%if question_template_attribute.fix_height > 1%}
+            height: {{question_template_attribute.fix_height}}px
+            {% endif %}"/>
+        </label>
+        <label for="answer{{ name}}{{ title }}" class="imageselect-select d-none"></label>
+    </div>
+    <input
+        type="hidden"
+        name="java{{ myfname }}"
+        id="java{{ myfname }}"
+        value="{{ sValue }}"
+    />
+</li>
+<script>
+    var imageselectjs_{{name}} = new IMAGESELECT("{{ name}}{{ title }}", {
+        keepAspect: {{question_template_attribute.keep_aspect ? 'true' : 'false'}}, 
+        horizontalScroll: {{question_template_attribute.horizontal_scroll ? 'true' : 'false'}},
+        crop_or_resize: {{question_template_attribute.crop_or_resize ? true : false}}
+        }); 
+</script>
+<!-- end of answer_row -->

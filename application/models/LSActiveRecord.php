@@ -38,16 +38,11 @@ class LSActiveRecord extends CActiveRecord
         $sCreateFieldName = ($this->hasAttribute('created') ? 'created' : null);
         $sUpdateFieldName = ($this->hasAttribute('modified') ? 'modified' : null);
         $sDriverName = Yii::app()->db->getDriverName();
-        if ($sDriverName == 'sqlsrv' || $sDriverName == 'dblib') {
-            $sTimestampExpression = new CDbExpression('GETDATE()');
-        } else {
-            $sTimestampExpression = new CDbExpression('NOW()');
-        }
         $aBehaviors['CTimestampBehavior'] = [
             'class'               => 'zii.behaviors.CTimestampBehavior',
             'createAttribute'     => $sCreateFieldName,
             'updateAttribute'     => $sUpdateFieldName,
-            'timestampExpression' => $sTimestampExpression
+            'timestampExpression' => "date('Y-m-d H:i:s', time())"
         ];
         // Some tables might not exist/not be up to date during a database upgrade so in that case disconnect plugin events
         if (!Yii::app()->getConfig('Updating')) {
@@ -399,7 +394,7 @@ class LSActiveRecord extends CActiveRecord
             $sodium = Yii::app()->sodiumOld;
         }
         // if $value is provided, it would decrypt
-        if ($value) {
+        if (isset($value) && $value !== '') {
             try {
                 return $sodium->decrypt($value);
             } catch (throwable $e) {
@@ -424,7 +419,7 @@ class LSActiveRecord extends CActiveRecord
     public static function encryptSingle($value = '')
     {
         // if $value is provided, it would decrypt
-        if (!empty($value)) {
+        if (isset($value) && $value !== "") {
             // load sodium library
             $sodium = Yii::app()->sodium;
             return $sodium->encrypt($value);
@@ -458,7 +453,6 @@ class LSActiveRecord extends CActiveRecord
 
         // encrypt attributes
         $this->decryptEncryptAttributes('encrypt');
-
         // call save() method  without validation, validation is already done ( if needed )
         return $this->save(false);
     }
@@ -505,7 +499,7 @@ class LSActiveRecord extends CActiveRecord
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
         if (isset($encryptedAttributes)) {
             if (in_array($attributeName, $encryptedAttributes)) {
-                return ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
+                return ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
             }
         }
     }

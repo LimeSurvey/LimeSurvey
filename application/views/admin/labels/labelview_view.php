@@ -1,12 +1,12 @@
 <script type='text/javascript'>
-    var duplicatelabelcode='<?php eT('Error: You are trying to use duplicate label codes.', 'js'); ?>';
-    var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.", 'js'); ?>';
+    var duplicatelabelcode = '<?php eT('Error: You are trying to use duplicate label codes.', 'js'); ?>';
+    var otherisreserved = '<?php eT("Error: 'other' is a reserved keyword.", 'js'); ?>';
 </script>
 
 <!-- quick add popup -->
-<?php $this->renderPartial("./labels/_labelviewquickadd_view", array()); ?>
+<?php $this->renderPartial("./labels/_labelviewquickadd_view", []); ?>
 
-<div class="col-sm-12 labels">
+<div class="col-12 labels">
     <div class="pagetitle h3">
         <?php eT("Labels") ?>
         <?php if (isset($model->label_name)) : ?>
@@ -14,16 +14,14 @@
         <?php endif; ?>
     </div>
 
-    <!-- Left content -->
-    <div class="col-sm-12 content-right text-center">
+    <!-- Main content -->
+    <div class="col-12 content-right text-center">
 
         <!-- tabs -->
         <ul class="nav nav-tabs">
             <?php foreach ($lslanguages as $i => $language) : ?>
-                <li role="presentation" <?php if ($i == 0) {
-                    echo 'class="active"';
-                } ?>>
-                    <a data-toggle="tab" href='#neweditlblset<?php echo $i; ?>'>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link <?= $i === 0 ? 'active' : '' ?>" href='#neweditlblset<?= $i ?>' data-bs-toggle="tab">
                         <?php echo getLanguageNameFromCode($language, false); ?>
                     </a>
                 </li>
@@ -36,14 +34,22 @@
         <input type='hidden' name='action' value='modlabelsetanswers'/>
 
         <!-- tab content -->
-        <?php $this->renderPartial("./labels/_labelviewtabcontent_view", ['lslanguages' => $lslanguages, 'results' => $results, 'action' => $action]); ?>
-        </form>
+        <?php $this->renderPartial("./labels/_labelviewtabcontent_view", ['lslanguages' => $lslanguages, 'results' => $results, 'action' => $action, 'updatePermission' => $model->hasPermission('update')]); ?>
+        <?php echo CHtml::endForm() ?>
+
+        <!-- For javascript -->
+        <input
+            type="hidden"
+            id="add-label-input-javascript-datas"
+            data-url="<?= $addRowUrl ?>"
+            data-errormessage="An error occured while processing the ajax request."
+            data-languages='<?= json_encode($lslanguages) ?>'
+            data-lid="<?= $lid ?>"
+        />
     </div>
 
-    <!-- Right content -->
-    <div class="col-sm-4">
-        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'update')) { ?>
-            <?php $this->renderPartial("./labels/_labelviewrightcontent_view", ['lid' => $lid]); ?>
-        <?php }; ?>
-    </div>
+    <!-- Bottom content -->
+    <?php if ($model->hasPermission('update')) { ?>
+        <?php $this->renderPartial("./labels/_labelviewrightcontent_view", ['lid' => $lid]); ?>
+    <?php }; ?>
 </div>

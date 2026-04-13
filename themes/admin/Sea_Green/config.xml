@@ -11,7 +11,7 @@
         <author>LimeSurvey GmbH</author>
         <authorEmail>info@limesurvey.org</authorEmail>
         <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <copyright>Copyright (C) 2005 - 2022 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
         <version>3.0</version>
         <description>Default LimeSurvey admin interface template.</description>
@@ -19,14 +19,17 @@
         <lastUpdate>2017-27-11 17:00:00</lastUpdate>
     </metadata>
 
+    <compatibility>
+        <version>6.0</version>
+    </compatibility>
+
     <!--
         Here the list of the css/js files to load.
         Any file here will be loaded via the asset manager
     -->
     <files>
         <css>
-            <filename>lime-admin-colors.css</filename>
-            <filename>statistics.css</filename>
+            <filename>sea_green.css</filename>
         </css>
 
         <js></js>
@@ -41,8 +44,7 @@
         <rtl>
             <css>
                 <!-- Still need these files -->
-                <filename>lime-admin-colors.css</filename>
-                <filename>statistics-rtl.css</filename>
+                <filename>sea_green-rtl.css</filename>
             </css>
             <js>
             </js>

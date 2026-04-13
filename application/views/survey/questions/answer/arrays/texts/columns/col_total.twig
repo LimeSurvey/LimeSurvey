@@ -1,8 +1,10 @@
 {#
 /**
  * Optional td item for total, grand total, etc
- * Define the width
- *
+ * [[COL_CODE]] are replaced by code of subquestion Scale X
+ * [[COL_NAME]] are replaced by text of subquestion Scale X
+ * @var $basename
+ * @var $inputsize
  * @var $empty
  */
 #}
@@ -11,8 +13,13 @@
     {% if empty %}
         &nbsp;
     {% else %}
-        <label class="sr-only">{{ gT("Total") }}</label>
-        <input title="[[ROW_NAME]] total" size="{{ inputsize }}" value="" type="text" disabled="disabled" class="disabled form-control"  data-number='1' />
+        <label for="totals{{ basename }}total_[[COL_CODE]]" class="ls-label-xs-visibility">[[COL_NAME]]</label>
+        <input
+            type="text"
+            id="totals{{ basename }}total_[[COL_CODE]]"
+            aria-labelledby="answertext{{ basename }}_[[COL_CODE]]"
+            size="{{ inputsize }}"
+            value="" disabled="disabled" class="disabled form-control"  data-number='1' />
     {% endif %}
 </td>
 

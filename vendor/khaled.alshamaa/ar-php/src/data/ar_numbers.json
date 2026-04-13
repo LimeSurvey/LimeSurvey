@@ -1,0 +1,731 @@
+{
+  "@file": "ArNumbers",
+  "currency": [
+     {
+       "iso": "DZD",
+       "arabic": "دينار جزائري",
+       "english": "Algerian dinar",
+       "ar_basic": "دينار",
+       "ar_fraction": "فلس",
+       "en_basic": "Dinar",
+       "en_fraction": "Fils",
+       "decimals": 3
+     },
+     {
+       "iso": "BHD",
+       "arabic": "دينار بحريني",
+       "english": "Bahraini dinar",
+       "ar_basic": "دينار",
+       "ar_fraction": "فلس",
+       "en_basic": "Dinar",
+       "en_fraction": "Fils",
+       "decimals": 3
+     },
+     {
+       "iso": "DJF",
+       "arabic": "فرنك جيبوتي",
+       "english": "Djiboutian franc",
+       "ar_basic": "فرنك",
+       "ar_fraction": "سنتيم",
+       "en_basic": "Franc",
+       "en_fraction": "Centime",
+       "decimals": 2
+     },
+     {
+       "iso": "EGP",
+       "arabic": "جنيه مصري",
+       "english": "Egyptian pound",
+       "ar_basic": "جنيه",
+       "ar_fraction": "قرش",
+       "en_basic": "Pound",
+       "en_fraction": "Piastre",
+       "decimals": 2
+     },
+     {
+       "iso": "IQD",
+       "arabic": "دينار عراقي",
+       "english": "Iraqi dinar",
+       "ar_basic": "دينار",
+       "ar_fraction": "فلس",
+       "en_basic": "Dinar",
+       "en_fraction": "Fils",
+       "decimals": 3
+     },
+     {
+       "iso": "JOD",
+       "arabic": "دينار أردني",
+       "english": "Jordanian dinar",
+       "ar_basic": "دينار",
+       "ar_fraction": "فلس",
+       "en_basic": "Dinar",
+       "en_fraction": "Fils",
+       "decimals": 3
+     },
+     {
+       "iso": "KWD",
+       "arabic": "دينار كويتي",
+       "english": "Kuwaiti dinar",
+       "ar_basic": "دينار",
+       "ar_fraction": "فلس",
+       "en_basic": "Dinar",
+       "en_fraction": "Fils",
+       "decimals": 3
+     },
+     {
+       "iso": "LBP",
+       "arabic": "ليرة لبنانية",
+       "english": "Lebanese lira",
+       "ar_basic": "ليرة",
+       "ar_fraction": "قرش",
+       "en_basic": "Pound",
+       "en_fraction": "Piastre",
+       "decimals": 2
+     },
+     {
+       "iso": "LYD",
+       "arabic": "دينار ليبي",
+       "english": "Libyan dinar",
+       "ar_basic": "دينار",
+       "ar_fraction": "درهم",
+       "en_basic": "Dinar",
+       "en_fraction": "Dirham",
+       "decimals": 3
+     },
+     {
+       "iso": "MRO",
+       "arabic": "أوقية موريتانية",
+       "english": "Mauritanian ouguiya",
+       "ar_basic": "أوقية",
+       "ar_fraction": "",
+       "en_basic": "Ouguiya",
+       "en_fraction": "",
+       "decimals": 0
+     },
+     {
+       "iso": "MAD",
+       "arabic": "درهم مغربي",
+       "english": "Moroccan dirham",
+       "ar_basic": "درهم",
+       "ar_fraction": "سنتيم",
+       "en_basic": "Dirham",
+       "en_fraction": "Centime",
+       "decimals": 2
+     },
+     {
+       "iso": "OMR",
+       "arabic": "ريال عماني",
+       "english": "Omani rial",
+       "ar_basic": "ريال",
+       "ar_fraction": "بايزاس",
+       "en_basic": "Rial",
+       "en_fraction": "Baisa",
+       "decimals": 3
+     },
+     {
+       "iso": "USD",
+       "arabic": "دولار أمريكي",
+       "english": "US Dollar",
+       "ar_basic": "دولار",
+       "ar_fraction": "سنت",
+       "en_basic": "Dollar",
+       "en_fraction": "Cent",
+       "decimals": 2
+     },
+     {
+       "iso": "QAR",
+       "arabic": "ريال قطري",
+       "english": "Qatari riyal",
+       "ar_basic": "ريال",
+       "ar_fraction": "درهم",
+       "en_basic": "Riyal",
+       "en_fraction": "Dirham",
+       "decimals": 2
+     },
+     {
+       "iso": "SAR",
+       "arabic": "ريال سعودي",
+       "english": "Saudi riyal",
+       "ar_basic": "ريال",
+       "ar_fraction": "هللة",
+       "en_basic": "Riyal",
+       "en_fraction": "Halala",
+       "decimals": 2
+     },
+     {
+       "iso": "SOS",
+       "arabic": "شلن صومالي",
+       "english": "Somali shilling",
+       "ar_basic": "شلن",
+       "ar_fraction": "سنتسيمي",
+       "en_basic": "Shilling",
+       "en_fraction": "Cent",
+       "decimals": 2
+     },
+     {
+       "iso": "SDG",
+       "arabic": "جنيه سوداني",
+       "english": "Sudanese pound",
+       "ar_basic": "جنيه",
+       "ar_fraction": "قرش",
+       "en_basic": "Pound",
+       "en_fraction": "Piastre",
+       "decimals": 2
+     },
+     {
+       "iso": "SYP",
+       "arabic": "ليرة سورية",
+       "english": "Syrian pound",
+       "ar_basic": "ليرة",
+       "ar_fraction": "قرش",
+       "en_basic": "Pound",
+       "en_fraction": "Piastre",
+       "decimals": 2
+     },
+     {
+       "iso": "TND",
+       "arabic": "دينار تونسي",
+       "english": "Tunisian dinar",
+       "ar_basic": "دينار",
+       "ar_fraction": "مليم",
+       "en_basic": "Dinar",
+       "en_fraction": "Millime",
+       "decimals": 3
+     },
+     {
+       "iso": "AED",
+       "arabic": "درهم إماراتي",
+       "english": "United Arab Emirates dirham",
+       "ar_basic": "درهم",
+       "ar_fraction": "فلس",
+       "en_basic": "Dirham",
+       "en_fraction": "Fils",
+       "decimals": 2
+     },
+     {
+       "iso": "YER",
+       "arabic": "ريال يمني",
+       "english": "Yemeni rial",
+       "ar_basic": "ريال",
+       "ar_fraction": "فلس",
+       "en_basic": "Rial",
+       "en_fraction": "Fils",
+       "decimals": 2
+     }
+  ],
+  "individual": {
+    "male": [
+      {
+        "value": "1",
+        "text": "واحد"
+      },
+      {
+        "value": "2",
+        "text": "اثنان",
+        "grammar": "1"
+      },
+      {
+        "value": "2",
+        "text": "اثنين",
+        "grammar": "2"
+      },
+      {
+        "value": "3",
+        "text": "ثلاثة"
+      },
+      {
+        "value": "4",
+        "text": "أربعة"
+      },
+      {
+        "value": "5",
+        "text": "خمسة"
+      },
+      {
+        "value": "6",
+        "text": "ستة"
+      },
+      {
+        "value": "7",
+        "text": "سبعة"
+      },
+      {
+        "value": "8",
+        "text": "ثمانية"
+      },
+      {
+        "value": "9",
+        "text": "تسعة"
+      },
+      {
+        "value": "10",
+        "text": "عشرة"
+      },
+      {
+        "value": "11",
+        "text": "أحد عشر"
+      },
+      {
+        "value": "12",
+        "text": "اثنا عشر",
+        "grammar": "1"
+      },
+      {
+        "value": "12",
+        "text": "اثني عشر",
+        "grammar": "2"
+      },
+      {
+        "value": "13",
+        "text": "ثلاثة عشر"
+      },
+      {
+        "value": "14",
+        "text": "أربعة عشر"
+      },
+      {
+        "value": "15",
+        "text": "خمسة عشر"
+      },
+      {
+        "value": "16",
+        "text": "ستة عشر"
+      },
+      {
+        "value": "17",
+        "text": "سبعة عشر"
+      },
+      {
+        "value": "18",
+        "text": "ثمانية عشر"
+      },
+      {
+        "value": "19",
+        "text": "تسعة عشر"
+      }
+    ],
+    "female": [
+      {
+        "value": "1",
+        "text": "واحدة"
+      },
+      {
+        "value": "2",
+        "text": "اثنتان",
+        "grammar": "1"
+      },
+      {
+        "value": "2",
+        "text": "اثنتين",
+        "grammar": "2"
+      },
+      {
+        "value": "3",
+        "text": "ثلاث"
+      },
+      {
+        "value": "4",
+        "text": "أربع"
+      },
+      {
+        "value": "5",
+        "text": "خمس"
+      },
+      {
+        "value": "6",
+        "text": "ست"
+      },
+      {
+        "value": "7",
+        "text": "سبع"
+      },
+      {
+        "value": "8",
+        "text": "ثماني"
+      },
+      {
+        "value": "9",
+        "text": "تسع"
+      },
+      {
+        "value": "10",
+        "text": "عشر"
+      },
+      {
+        "value": "11",
+        "text": "إحدى عشرة"
+      },
+      {
+        "value": "12",
+        "text": "اثنتا عشرة",
+        "grammar": "1"
+      },
+      {
+        "value": "12",
+        "text": "اثنتي عشرة",
+        "grammar": "2"
+      },
+      {
+        "value": "13",
+        "text": "ثلاث عشرة"
+      },
+      {
+        "value": "14",
+        "text": "أربع عشرة"
+      },
+      {
+        "value": "15",
+        "text": "خمس عشرة"
+      },
+      {
+        "value": "16",
+        "text": "ست عشرة"
+      },
+      {
+        "value": "17",
+        "text": "سبع عشرة"
+      },
+      {
+        "value": "18",
+        "text": "ثماني عشرة"
+      },
+      {
+        "value": "19",
+        "text": "تسع عشرة"
+      }
+    ],
+    "gt19": [
+      {
+        "value": "300",
+        "text": "ثلاثمئة"
+      },
+      {
+        "value": "400",
+        "text": "أربعمئة"
+      },
+      {
+        "value": "500",
+        "text": "خمسمئة"
+      },
+      {
+        "value": "600",
+        "text": "ستمئة"
+      },
+      {
+        "value": "700",
+        "text": "سبعمئة"
+      },
+      {
+        "value": "800",
+        "text": "ثمانمئة"
+      },
+      {
+        "value": "900",
+        "text": "تسعمئة"
+      },
+      {
+        "value": "100",
+        "text": "مئة"
+      },
+      {
+        "value": "20",
+        "text": "عشرون",
+        "grammar": "1"
+      },
+      {
+        "value": "30",
+        "text": "ثلاثون",
+        "grammar": "1"
+      },
+      {
+        "value": "40",
+        "text": "أربعون",
+        "grammar": "1"
+      },
+      {
+        "value": "50",
+        "text": "خمسون",
+        "grammar": "1"
+      },
+      {
+        "value": "60",
+        "text": "ستون",
+        "grammar": "1"
+      },
+      {
+        "value": "70",
+        "text": "سبعون",
+        "grammar": "1"
+      },
+      {
+        "value": "80",
+        "text": "ثمانون",
+        "grammar": "1"
+      },
+      {
+        "value": "90",
+        "text": "تسعون",
+        "grammar": "1"
+      },
+      {
+        "value": "200",
+        "text": "مئتان",
+        "grammar": "1"
+      },
+      {
+        "value": "20",
+        "text": "عشرين",
+        "grammar": "2"
+      },
+      {
+        "value": "30",
+        "text": "ثلاثين",
+        "grammar": "2"
+      },
+      {
+        "value": "40",
+        "text": "أربعين",
+        "grammar": "2"
+      },
+      {
+        "value": "50",
+        "text": "خمسين",
+        "grammar": "2"
+      },
+      {
+        "value": "60",
+        "text": "ستين",
+        "grammar": "2"
+      },
+      {
+        "value": "70",
+        "text": "سبعين",
+        "grammar": "2"
+      },
+      {
+        "value": "80",
+        "text": "ثمانين",
+        "grammar": "2"
+      },
+      {
+        "value": "90",
+        "text": "تسعين",
+        "grammar": "2"
+      },
+      {
+        "value": "200",
+        "text": "مئتين",
+        "grammar": "2"
+      }
+    ]
+  },
+  "complications": [
+    {
+      "scale": "1",
+      "format": "1",
+      "text": "ألفان"
+    },
+    {
+      "scale": "1",
+      "format": "2",
+      "text": "ألفين"
+    },
+    {
+      "scale": "1",
+      "format": "3",
+      "text": "آلاف"
+    },
+    {
+      "scale": "1",
+      "format": "4",
+      "text": "ألف"
+    },
+    {
+      "scale": "2",
+      "format": "1",
+      "text": "مليونان"
+    },
+    {
+      "scale": "2",
+      "format": "2",
+      "text": "مليونين"
+    },
+    {
+      "scale": "2",
+      "format": "3",
+      "text": "ملايين"
+    },
+    {
+      "scale": "2",
+      "format": "4",
+      "text": "مليون"
+    },
+    {
+      "scale": "3",
+      "format": "1",
+      "text": "ملياران"
+    },
+    {
+      "scale": "3",
+      "format": "2",
+      "text": "مليارين"
+    },
+    {
+      "scale": "3",
+      "format": "3",
+      "text": "مليارات"
+    },
+    {
+      "scale": "3",
+      "format": "4",
+      "text": "مليار"
+    },
+    {
+      "scale": "4",
+      "format": "1",
+      "text": "تريليونان"
+    },
+    {
+      "scale": "4",
+      "format": "2",
+      "text": "تريليونين"
+    },
+    {
+      "scale": "4",
+      "format": "3",
+      "text": "تريليونات"
+    },
+    {
+      "scale": "4",
+      "format": "4",
+      "text": "تريليون"
+    }
+  ],
+  "arabicIndic": [
+    {
+      "value": "0",
+      "text": "&#1632;"
+    },
+    {
+      "value": "1",
+      "text": "&#1633;"
+    },
+    {
+      "value": "2",
+      "text": "&#1634;"
+    },
+    {
+      "value": "3",
+      "text": "&#1635;"
+    },
+    {
+      "value": "4",
+      "text": "&#1636;"
+    },
+    {
+      "value": "5",
+      "text": "&#1637;"
+    },
+    {
+      "value": "6",
+      "text": "&#1638;"
+    },
+    {
+      "value": "7",
+      "text": "&#1639;"
+    },
+    {
+      "value": "8",
+      "text": "&#1640;"
+    },
+    {
+      "value": "9",
+      "text": "&#1641;"
+    }
+  ],
+  "order": {
+    "male": [
+      {
+        "value": "1",
+        "text": "حادي"
+      },
+      {
+        "value": "2",
+        "text": "ثاني"
+      },
+      {
+        "value": "3",
+        "text": "ثالث"
+      },
+      {
+        "value": "4",
+        "text": "رابع"
+      },
+      {
+        "value": "5",
+        "text": "خامس"
+      },
+      {
+        "value": "6",
+        "text": "سادس"
+      },
+      {
+        "value": "7",
+        "text": "سابع"
+      },
+      {
+        "value": "8",
+        "text": "ثامن"
+      },
+      {
+        "value": "9",
+        "text": "تاسع"
+      },
+      {
+        "value": "10",
+        "text": "عاشر"
+      }
+    ],
+    "female": [
+      {
+        "value": "1",
+        "text": "حادية"
+      },
+      {
+        "value": "2",
+        "text": "ثانية"
+      },
+      {
+        "value": "3",
+        "text": "ثالثة"
+      },
+      {
+        "value": "4",
+        "text": "رابعة"
+      },
+      {
+        "value": "5",
+        "text": "خامسة"
+      },
+      {
+        "value": "6",
+        "text": "سادسة"
+      },
+      {
+        "value": "7",
+        "text": "سابعة"
+      },
+      {
+        "value": "8",
+        "text": "ثامنة"
+      },
+      {
+        "value": "9",
+        "text": "تاسعة"
+      },
+      {
+        "value": "10",
+        "text": "عاشرة"
+      }
+    ]
+  }
+}

@@ -7,8 +7,10 @@ var formSubmitting = false;
 var changed = false;
 
 $(document).on('ready  pjax:scriptcomplete', function(){
-    var sourceItem;
+    /* @var boolean did we disable parent change , only on ol.organizer in page */
+    let disableParentChange = $('ol.organizer').data('disableparentchange');
     $('ol.organizer').nestedSortable({
+        disableParentChange: disableParentChange,
         doNotClear: true,
         disableNesting: 'no-nest',
         disableNestingClass: 'no-nest',

@@ -1,15 +1,14 @@
 <?php
 
-/* Creates a file containing responses in the SAV (native SPSS binary format). Uses: https://github.com/tiamo/spss/ to do so
+use SPSS\Sav\Variable;
+
+/**
+ * Creates a file containing responses in the SAV (native SPSS binary format). Uses: https://github.com/tiamo/spss/ to do so
  * In contrast to importing a plain CSV or xls-file, the data is fully labelled with variable- and value labels.
  * Date and time strings are converted to SPSSs time format (seconds since midnight, 14 October 1582), so they can be directly used in calculations
  * Limitations:
- *  SPSS versions through 13? only support strings up to 256 bytes, version 14 up to 32767 bytes.....longer answers (ie. text fields) will be cut.
+ * SPSS versions through 13? only support strings up to 256 bytes, version 14 up to 32767 bytes.....longer answers (ie. text fields) will be cut.
  */
-
-use SPSS\Sav\Variable;
-
-
 class SPSSWriter extends Writer
 {
     private $output;
@@ -45,7 +44,7 @@ class SPSSWriter extends Writer
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         if ($oOptions->output == 'display') {
-            header("Content-Disposition: attachment; filename=survey_".$survey->id."_spss.sav");
+            header("Content-Disposition: attachment; filename=survey_" . $survey->id . "_spss.sav");
             header("Content-type: application/download; charset=UTF-8");
             header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
@@ -64,7 +63,7 @@ class SPSSWriter extends Writer
      */
     protected function out($content)
     {
-        fwrite($this->handle, $content."\n");
+        fwrite($this->handle, $content . "\n");
     }
 
 
@@ -75,6 +74,7 @@ class SPSSWriter extends Writer
      */
 
     /**
+     * Create the SPSS fieldmap
      * @param SurveyObj $survey
      * @param string $sLanguage
      * @param FormattingOptions $oOptions
@@ -92,7 +92,7 @@ class SPSSWriter extends Writer
 
         //tokens need to be "smuggled" into the fieldmap as additional questions
         $aFieldmap['tokenFields'] = array_intersect_key($survey->tokenFields, array_flip($oOptions->selectedColumns));
-        foreach ($aFieldmap['tokenFields'] as $key=>$value) {
+        foreach ($aFieldmap['tokenFields'] as $key => $value) {
             $aFieldmap['questions'][$key] = $value;
             $aFieldmap['questions'][$key]['qid'] = '';
             $aFieldmap['questions'][$key]['question'] = $value['description'];
@@ -108,11 +108,22 @@ class SPSSWriter extends Writer
         // add per-survey info
         $aFieldmap['info'] = $survey->info;
 
+        $qids = [0];
+        foreach ($aFieldmap['questions'] as $sSGQAKey => $aQuestion) {
+            $qids [] = $aQuestion['qid'];
+        }
+
+        $rawQuestions = Question::model()->findAllByPk($qids);
+
+        $questions = [];
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->qid] = $rawQuestion;
+        }
+
         // go through the questions array and create/modify vars for SPSS-output
         foreach ($aFieldmap['questions'] as $sSGQAkey => $aQuestion) {
-
             //get SPSS output type if selected
-            $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($aQuestion['qid'],$sLanguage);
+            $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($questions[$aQuestion['qid']] ?? $aQuestion['qid'], $sLanguage);
             if (isset($aQuestionAttribs['scale_export'])) {
                     $export_scale = $aQuestionAttribs['scale_export'];
                     $aFieldmap['questions'][$sSGQAkey]['spssmeasure'] = $export_scale;
@@ -145,23 +156,23 @@ class SPSSWriter extends Writer
             // create variable labels
             $aQuestion['varlabel'] = $aQuestion['question'];
             if (isset($aQuestion['scale'])) {
-                            $aQuestion['varlabel'] = "[{$aQuestion['scale']}] ".$aQuestion['varlabel'];
+                            $aQuestion['varlabel'] = "[{$aQuestion['scale']}] " . $aQuestion['varlabel'];
             }
             if (isset($aQuestion['subquestion'])) {
-                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion']}] ".$aQuestion['varlabel'];
+                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion']}] " . $aQuestion['varlabel'];
             }
             if (isset($aQuestion['subquestion2'])) {
-                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion2']}] ".$aQuestion['varlabel'];
+                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion2']}] " . $aQuestion['varlabel'];
             }
             if (isset($aQuestion['subquestion1'])) {
-                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion1']}] ".$aQuestion['varlabel'];
+                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion1']}] " . $aQuestion['varlabel'];
             }
 
             //write varlabel back to fieldmap
             $aFieldmap['questions'][$sSGQAkey]['varlabel'] = $aQuestion['varlabel'];
 
             //create value labels for question types with "fixed" answers (YES/NO etc.)
-            if ((isset($aQuestion['other']) && $aQuestion['other'] == 'Y') || substr($aQuestion['fieldname'], -7) == 'comment') {
+            if ((isset($aQuestion['other']) && $aQuestion['other'] == 'Y') || substr((string) $aQuestion['fieldname'], -7) == 'comment') {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = true; //comment/other fields: create flag, so value labels are not attached (in close())
             } else {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = false;
@@ -231,7 +242,7 @@ class SPSSWriter extends Writer
                     );
                 }
             } // close: no-other/comment variable
-        $aFieldmap['questions'][$sSGQAkey]['varname'] = $aQuestion['varname']; //write changes back to array
+            $aFieldmap['questions'][$sSGQAkey]['varname'] = $aQuestion['varname']; //write changes back to array
         } // close foreach question
 
 
@@ -241,14 +252,16 @@ class SPSSWriter extends Writer
     }
 
 
-    /*  return a SPSS-compatible variable name
-     *    strips some special characters and fixes variable names starting with a number
+    /**
+     * Returns a SPSS-compatible variable name
+     * Strips some special characters and fixes variable names starting with a number
+     * @return string
      */
     protected function SPSSvarname($sVarname)
     {
-        if (!preg_match("/^([a-z]|[A-Z])+.*$/", $sVarname)) {
-//var starting with a number?
-            $sVarname = "v".$sVarname; //add a leading 'v'
+        if (!preg_match("/^([a-z]|[A-Z])+.*$/", (string) $sVarname)) {
+            //var starting with a number?
+            $sVarname = "v" . $sVarname; //add a leading 'v'
         }
         $sVarname = str_replace(array(
             "-",
@@ -266,22 +279,25 @@ class SPSSWriter extends Writer
             "_",
             "",
             "_"
-        ), $sVarname);
+        ), (string) $sVarname);
         return $sVarname;
     }
 
 
-    /*  strip html tags, blanks and other stuff from array, flattens text
+    /**
+     * Strip html tags, blanks and other stuff from array, flattens text
+     *
+     * @param string[] $tobestripped
+     * @return string[]
      */
     protected function stripArray($tobestripped)
     {
         Yii::app()->loadHelper('export');
         function clean(&$item)
         {
-            if (is_string($item)){
-            $item = trim((htmlspecialchars_decode(stripTagsFull($item))));
+            if (is_string($item)) {
+                $item = trim((htmlspecialchars_decode(stripTagsFull($item))));
             }
-
         }
         array_walk_recursive($tobestripped, 'clean');
         return ($tobestripped);
@@ -291,7 +307,7 @@ class SPSSWriter extends Writer
     /* Function is called for every response
      * Here we just use it to create arrays with variable names and data
      */
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
         // function is called for every response to be exported....only write header once
         if (empty($this->headers)) {
@@ -304,10 +320,11 @@ class SPSSWriter extends Writer
         $this->customResponsemap[] = $values;
     }
 
-    /*
-    This function updates the fieldmap and recodes responses
-    so output to XML in close() is a piece of cake...
-    */
+    /**
+     * This function updates the fieldmap and recodes responses so output to XML in close() is a piece of cake...
+     *
+     * @return void
+     */
     protected function updateCustomresponsemap()
     {
         //go through each particpants' responses
@@ -317,13 +334,12 @@ class SPSSWriter extends Writer
 
             //relevant types for SPSS are numeric (need to know largest number and number of decimal places), date and string
             foreach ($aResponses as $iVarid => &$response) {
-                $response = trim($response);
+                $response = trim((string) $response);
                 $iDatatype = 5;
                 $iStringlength = 1;
                 if ($response != '') {
-
                     if ($response == '-oth-') {
-                     $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['spssothervaluelabel'] = true;
+                        $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['spssothervaluelabel'] = true;
                     }
 
                     $numberresponse = trim($response);
@@ -332,38 +348,38 @@ class SPSSWriter extends Writer
                         $numberresponse = str_replace(',', '.', $response); // replace comma with dot so SPSS can use decimal variables
                     }
 
-                   if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') {
-                    $date = new DateTimeImmutable($response.' GMT');
-                    $spssepoch = new DateTimeImmutable('1582-10-14 00:00:00 GMT');
-                    $response = $date->getTimestamp() - $spssepoch->getTimestamp(); //convert to full SPSS date format which is the number of seconds since midnight October 14, 1582
-                    $iDatatype = 3;
-                   } else if (is_numeric($numberresponse)) {
+                    if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') {
+                        $date = new DateTimeImmutable($response . ' GMT');
+                        $spssepoch = new DateTimeImmutable('1582-10-14 00:00:00 GMT');
+                        $response = $date->getTimestamp() - $spssepoch->getTimestamp(); //convert to full SPSS date format which is the number of seconds since midnight October 14, 1582
+                        $iDatatype = 3;
+                    } elseif (is_numeric($numberresponse)) {
                         // deal with numeric responses/variables
                         if (ctype_digit($numberresponse)) {
                             // if it contains only digits (no dot) --> non-float number (set decimal places to 0)
                                 $iDatatype = 2;
                                 $iDecimalPlaces = 0;
                                 $iNumberWidth = strlen($response);
-                            } else {
-                                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') {
-                                    // if datefield then a date datafiled
-                                    $iDatatype = 3; //date
                         } else {
-//non-integer numeric response
-                            $iDatatype = 2; // float
-                            $iDecimalPlaces = 1;
-                            $response = $numberresponse; //replace in customResponsemap: value with '.' as decimal
-                            $tmpdpoint = strpos($response,".");
-                            $iDecimalPlaces = 2;
-                            $iNumberWidth = strlen($response); //just to be safe
-                            if ($tmpdpoint !== false) {
-                                $iNumberWidth = strlen($response);
-                                $iDecimalPlaces = $iNumberWidth - ($tmpdpoint + 1);
+                            if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') {
+                                // if datefield then a date datafiled
+                                $iDatatype = 3; //date
+                            } else {
+                                    //non-integer numeric response
+                                $iDatatype = 2; // float
+                                $iDecimalPlaces = 1;
+                                $response = $numberresponse; //replace in customResponsemap: value with '.' as decimal
+                                $tmpdpoint = strpos($response, ".");
+                                $iDecimalPlaces = 2;
+                                $iNumberWidth = strlen($response); //just to be safe
+                                if ($tmpdpoint !== false) {
+                                    $iNumberWidth = strlen($response);
+                                    $iDecimalPlaces = $iNumberWidth - ($tmpdpoint + 1);
+                                }
                             }
                         }
-                        }
                     } else {
-// non-numeric response
+                        // non-numeric response
                         $iDatatype = 1; //string
                         $iStringlength = strlen($response); //for strings we need the length for the format and the data type
                     }
@@ -381,7 +397,7 @@ class SPSSWriter extends Writer
                 }
 
                 // Does the variable need a higher datatype because of the current response?
-                if ($iDatatype < $aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] ) {
+                if ($iDatatype < $aSPSStypelist[$this->headersSGQA[$iVarid]]['type']) {
                                     $aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] = $iDatatype;
                 }
 
@@ -399,8 +415,8 @@ class SPSSWriter extends Writer
                     if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] < $iNumberWidth) {
                                             $aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] = $iNumberWidth;
                     }
-                     if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] < $iDecimalPlaces) {
-                                            $aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] = $iDecimalPlaces;
+                    if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] < $iDecimalPlaces) {
+                                           $aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] = $iDecimalPlaces;
                     }
                 }
                 //write the recoded response back to the response array
@@ -411,7 +427,6 @@ class SPSSWriter extends Writer
 
         // translate coding into SPSS datatypes, format and length
         foreach ($aSPSStypelist as $variable => $data) {
-
             switch ($data['type']) {
                 case 5:
                 case 1:
@@ -445,7 +460,10 @@ class SPSSWriter extends Writer
         }
     }
 
-    /* Output SPSS sav code using library
+    /**
+     * Output SPSS sav code using library
+     *
+     * @return void
      */
     public function close()
     {
@@ -459,8 +477,7 @@ class SPSSWriter extends Writer
             $tmpvar['name'] = $question['varname'];
             $tmpvar['format'] = $question['spssformat'];
             $tmpvar['width'] = $question['spsswidth'];
-            if ($question['spssdecimals'] > -1)
-            {
+            if ($question['spssdecimals'] > -1) {
                 $tmpvar['decimals'] = $question['spssdecimals'];
             }
             $tmpvar['label'] = $question['varlabel'];
@@ -468,8 +485,8 @@ class SPSSWriter extends Writer
             //export value labels if they exist (not for time questions)
             if (!empty($this->customFieldmap['answers'][$question['qid']]) && $question['commentother'] == false && $question['type'] != "answer_time") {
                 $tmpvar['values'] = array();
-                foreach($this->customFieldmap['answers'][$question['qid']] as $aAnswercodes) {
-                    foreach($aAnswercodes as $sAnscode => $aAnswer) {
+                foreach ($this->customFieldmap['answers'][$question['qid']] as $aAnswercodes) {
+                    foreach ($aAnswercodes as $sAnscode => $aAnswer) {
                         $tmpans = "";
                         if (is_array($aAnswer) && isset($aAnswer['answer'])) {
                             $tmpans = $aAnswer['answer'];
@@ -477,8 +494,10 @@ class SPSSWriter extends Writer
                             $tmpans = $aAnswer;
                         }
                         $tmpvar['values'][$sAnscode] = $tmpans;
-                        if(!is_numeric($sAnscode))  {
-                            if ($tmpwidth < 28) $tmpwidth = 28; // SPSS wants variable width wide where string data stored
+                        if (!is_numeric($sAnscode)) {
+                            if ($tmpwidth < 28) {
+                                $tmpwidth = 28; // SPSS wants variable width wide where string data stored
+                            }
                         }
                     }
                 }
@@ -499,7 +518,7 @@ class SPSSWriter extends Writer
             'creationDate' => date('d M y'),
             'creationTime' => date('H:i:s'),
             'weightIndex' => 0,
-       );
+        );
 
         $info = array(
              'machineInteger' => [

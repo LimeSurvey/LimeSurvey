@@ -20,14 +20,14 @@ class CaptchaExtendedValidator extends CCaptchaValidator{
 			return parent::clientValidateAttribute($object,$attribute);
 		}
 		
-		$message=$this->message!==null ? $this->message : Yii::t('main','The verification code "{attribute}" is incorrect.');
+		$message=$this->message ?? Yii::t('main','The verification code "{attribute}" is incorrect.');
 		$message=strtr($message, array(
 			'{attribute}'=>$object->getAttributeLabel($attribute),
 		));
 
 		$result=$captcha->getVerifyResult();
 		// remove whitespaces
-		$result = preg_replace('/\s/', '', $result);
+		$result = preg_replace('/\s/', '', (string) $result);
 		
 		if(!$this->caseSensitive){
 			$result = mb_convert_case($result, MB_CASE_LOWER, 'utf-8');

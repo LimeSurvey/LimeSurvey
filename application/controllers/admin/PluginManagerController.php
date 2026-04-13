@@ -44,7 +44,7 @@ class PluginManagerController extends SurveyCommonAction
             $data[] = [
                 'id'          => $oPlugin->id,
                 'name'        => $oPlugin->name,
-                'load_error'  => $oPlugin->load_error,
+                'load_error'  => $oPlugin->getLoadError(),
                 'description' => '',
                 'active'      => $oPlugin->active,
                 'settings'    => []
@@ -71,22 +71,17 @@ class PluginManagerController extends SurveyCommonAction
             ]
         );
 
-        // Green Bar Page Title
-        $aData['pageTitle'] = gT('Plugins');
-        // White Bar
-        $aData['fullpagebar']['returnbutton']['url'] = 'index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
+        $aData['topbar']['title'] = gT('Plugins');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
-        // Additional Buttons in white bar
-        $aData['fullpagebar']['pluginManager']['buttons'] = [
-            'installPluginZipModal' => [
-                'hasConfigDemoMode' => Yii::app()->getConfig('demoMode'),
+        $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
+            [
+                'showUpload' => !Yii::app()->getConfig('demoMode') && !Yii::app()->getConfig('disablePluginUpload'),
+                'scanFilesUrl' => $scanFilesUrl,
             ],
-            'scanFiles' => [
-                'url' => $scanFilesUrl,
-            ],
-            'showUpload' => !Yii::app()->getConfig('demoMode') && !Yii::app()->getConfig('disablePluginUpload'),
-        ];
+            true
+        );
 
         $this->renderWrappedTemplate('pluginmanager', 'index', $aData);
     }
@@ -152,14 +147,16 @@ class PluginManagerController extends SurveyCommonAction
             ]
         );
 
-        $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
-        $data['fullpagebar']['returnbutton']['text'] = gT('Back');
-        $data['pageTitle'] = gT('Plugins - scanned files');
-        $data['fullpagebar']['pluginManager']['buttons'] = [
-            'scanFiles' => [
-                'url' => $scanFilesUrl,
+        $data['topbar']['title'] = gT('Plugins - scanned files');
+        $data['topbar']['backLink'] = $this->getController()->createUrl('/admin/pluginmanager');
+        $data['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+            '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
+            [
+                'showUpload' => false,
+                'scanFilesUrl' => $scanFilesUrl,
             ],
-        ];
+            true
+        );
 
         $this->renderWrappedTemplate(
             'pluginmanager',
@@ -346,20 +343,21 @@ class PluginManagerController extends SurveyCommonAction
             $url = App()->createUrl("admin/pluginmanager/sa/index");
             $aButtons = array(
                 'cancel' => array(
-                    'label' => '<span class="fa fa-close"></span> ' . gT('Close'),
+                    'label' => '<span class="ri-close-fill"></span> ' . gT('Close'),
                     'class' => array('btn btn-danger'),
                     'type'  => 'link',
                     'href' => $url,
                 ),
                 'redirect' => array(
-                    'label' => '<span class="fa fa-check-square"></span> ' . gT('Save and close'),
-                    'class' => array('btn btn-default'),
+                    'label' => '<span class="ri-chat-check-fill"></span> ' . gT('Save and close'),
+                    'class' => array('btn btn-outline-secondary'),
+                    'role'  => 'button',
                     'type'  => 'submit',
                     'value' => $url,
                 ),
                 'save' => array(
-                    'label' => '<span class="fa fa-check"></span> ' . gT('Save'),
-                    'class' => array('btn btn-success'),
+                    'label' => '<span class="ri-check-fill"></span> ' . gT('Save'),
+                    'class' => array('btn btn-primary'),
                     'type'  => 'submit'
                 ),
             );
@@ -367,25 +365,19 @@ class PluginManagerController extends SurveyCommonAction
         // Send to view plugin porperties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
-        // Fullpage Bar
-        $fullPageBar = [];
-        $fullPageBar['returnbutton']['url'] = 'admin/pluginmanager/sa/index';
-        $fullPageBar['returnbutton']['text'] = gT('Return to plugin list');
-
-        // Green Bar with Page Title
-        $pageTitle = gT("Plugin:") . ' ' . $plugin['name'];
+        $topbar['title'] = gT('Plugins') . ' ' . $plugin['name'];
+        $topbar['backLink'] = $this->getController()->createUrl('/admin/pluginmanager', ['sa' => 'index']);
 
         $this->renderWrappedTemplate(
             'pluginmanager',
             'configure',
             [
-                'pageTitle'    => $pageTitle,
                 'settings'     => $aSettings,
                 'buttons'      => $aButtons,
                 'plugin'       => $plugin,
                 'pluginObject' => $oPluginObject,
                 'properties'   => $aPluginProp,
-                'fullpagebar'  => $fullPageBar
+                'topbar' => $topbar
             ]
         );
     }
@@ -419,13 +411,13 @@ class PluginManagerController extends SurveyCommonAction
             $plugin->load_error_message = '';
             $result = $plugin->update();
             if ($result) {
-                Yii::app()->user->setFlash('success', sprintf(gt('Reset load error for plugin %d'), $pluginId));
+                Yii::app()->user->setFlash('success', sprintf(gT('Reset load error for plugin %s (%s)'), $plugin->name, $plugin->plugin_type));
             } else {
-                Yii::app()->user->setFlash('error', sprintf(gt('Could not update plugin %d'), $pluginId));
+                Yii::app()->user->setFlash('error', sprintf(gT('Could not update plugin %s (%s)'), $plugin->name, $plugin->plugin_type));
             }
             $this->getController()->redirect($url);
         } else {
-            Yii::app()->user->setFlash('error', sprintf(gt('Found no plugin with id %d'), $pluginId));
+            Yii::app()->user->setFlash('error', sprintf(gT('Found no plugin with id %d'), $pluginId));
             $this->getController()->redirect($url);
         }
     }
@@ -568,7 +560,7 @@ class PluginManagerController extends SurveyCommonAction
 
             if (!$installer->isWhitelisted()) {
                 $installer->abort();
-                $this->errorAndRedirect(gT('The plugin is not in the plugin whitelist.'));
+                $this->errorAndRedirect(gT('The plugin is not in the plugin allowlist.'));
             }
 
             if (!$config->isCompatible()) {
@@ -787,21 +779,20 @@ class PluginManagerController extends SurveyCommonAction
 }
 
 /**
- * PCLZip callback for plugin ZIP install.
- * @param mixed $p_event
- * @param mixed $p_header
+ * Callback for plugin ZIP install. Filters files by extension.
+ * @param mixed $file
  * @return int Return 1 for yes (file can be extracted), 0 for no
  */
-function pluginExtractFilter($p_event, &$p_header)
+function pluginExtractFilter($file)
 {
     $aAllowExtensions = explode(
         ',',
-        Yii::app()->getConfig('allowedpluginuploads')
+        Yii::app()->getConfig('allowedpluginuploads', '')
     );
-    $info = pathinfo($p_header['filename']);
+    $info = pathinfo((string) $file['name']);
 
     if (
-        $p_header['folder']
+        $file['is_folder']
         || !isset($info['extension'])
         || in_array($info['extension'], $aAllowExtensions)
     ) {

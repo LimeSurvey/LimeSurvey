@@ -42,9 +42,6 @@ class RemoteControl extends SurveyCommonAction
                 $cur_path = get_include_path();
                 set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
                 // Yii::import was causing problems for some odd reason
-                require_once('Zend/XmlRpc/Server.php');
-                require_once('Zend/XmlRpc/Server/Exception.php');
-                require_once('Zend/XmlRpc/Value/Exception.php');
                 $this->xmlrpc = new Zend_XmlRpc_Server();
                 $this->xmlrpc->sendArgumentsToAllMethods(false);
                 Yii::import('application.libraries.LSZend_XmlRpc_Response_Http');
@@ -60,7 +57,7 @@ class RemoteControl extends SurveyCommonAction
             } elseif ($RPCType == 'json') {
                 Yii::app()->loadLibrary('LSjsonRPCServer');
                 if (!isset($_SERVER['CONTENT_TYPE'])) {
-                    $serverContentType = explode(';', $_SERVER['HTTP_CONTENT_TYPE']);
+                    $serverContentType = explode(';', (string) $_SERVER['HTTP_CONTENT_TYPE']);
                     $_SERVER['CONTENT_TYPE'] = reset($serverContentType);
                 }
                 LSjsonRPCServer::handle($oHandler);
@@ -89,7 +86,6 @@ class RemoteControl extends SurveyCommonAction
                 $this->renderWrappedTemplate('remotecontrol', array('index_view'), $aData);
             }
         }
-        Yii::app()->session->destroy();
     }
 
     /**
@@ -103,14 +99,14 @@ class RemoteControl extends SurveyCommonAction
         if ($enabled) {
             $RPCType = Yii::app()->getConfig("RPCInterface");
             $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
-            $sFileToImport = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR . 'ls205_sample_survey_english.lss';
+            $sFileToImport = dirname((string) Yii::app()->basePath) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR . 'ls205_sample_survey_english.lss';
 
             if ($RPCType == 'xml') {
                 $cur_path = get_include_path();
                 set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
-                require_once('Zend/XmlRpc/Client.php');
-
                 $client = new Zend_XmlRpc_Client($serverUrl);
+                // Increase timeout (default is 10 seconds). Importing the survey may take a while.
+                $client->getHttpClient()->setConfig(['timeout' => 300]);
             } elseif ($RPCType == 'json') {
                 Yii::app()->loadLibrary('jsonRPCClient');
                 $client = new jsonRPCClient($serverUrl);
@@ -140,7 +136,7 @@ class RemoteControl extends SurveyCommonAction
             if ($aResult['status'] == 'OK') {
                 echo 'Tokens for Survey ID ' . $iSurveyID . ' successfully activated.<br>';
             }
-            $aResult = $client->call('set_survey_properties', array($sSessionKey, $iSurveyID, array('faxto' => '0800-LIMESURVEY')));
+            $aResult = $client->call('set_survey_properties', array($sSessionKey, $iSurveyID, array('admin' => 'Admin name')));
             if (!array_key_exists('status', $aResult)) {
                 echo 'Modified survey settings for survey ' . $iSurveyID . '<br>';
             }
@@ -156,6 +152,14 @@ class RemoteControl extends SurveyCommonAction
             $aResult = $client->call('delete_language', array($sSessionKey, $iSurveyID, 'ar'));
             if ($aResult['status'] == 'OK') {
                 echo 'Removed Arabian as additional language' . '<br>';
+            }
+            $aResult = $client->call('add_participants', array($sSessionKey, $iSurveyID, array(array('firstname' => 'Some', 'lastname' => 'Body', 'email' => 'somebody@test.com'))));
+            if (!array_key_exists('status', $aResult)) {
+                echo 'Added a participant to survey ' . $iSurveyID . '<br>';
+            }
+            $aResult = $client->call('set_participant_properties', array($sSessionKey, $iSurveyID, array('email' => 'somebody@test.com'), array('lastname' => 'One', 'email' => 'someone@test.com')));
+            if (!array_key_exists('status', $aResult)) {
+                echo 'Modified participant properties in survey ' . $iSurveyID . '<br>';
             }
 
             //Very simple example to export responses as Excel file

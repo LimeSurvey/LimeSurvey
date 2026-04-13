@@ -90,8 +90,19 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             // Switch to German tab.
             self::$webDriver->executeScript("window.scrollTo(0, 0);");  // Scroll to top because otherwise the tabs may be hidden under the topbar
             sleep(2);
-            $germanTab = self::$webDriver->findElement(WebDriverBy::partialLinkText('German'));
+            // Make sure the language tabs are visible and click on German tab
+            $germanTab = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::partialLinkText('German')
+                )
+            );
             $germanTab->click();
+
+            // Wait a moment for tab content to load
+            sleep(1);
+
+            // Ensure the German input field is visible before interacting with it
+            self::$webDriver->executeScript("document.getElementById('group_name_de').scrollIntoView(true);");
 
             // Edit group name in German
             $groupNameGerman = self::$webDriver->wait(10)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::id('group_name_de')));
@@ -163,8 +174,19 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             // Switch to German tab.
             self::$webDriver->executeScript("window.scrollTo(0, 0);");  // Scroll to top because otherwise the tabs may be hidden under the topbar
             sleep(2);
-            $germanTab = self::$webDriver->findElement(WebDriverBy::partialLinkText('German'));
+            // Make sure the language tabs are visible and click on German tab
+            $germanTab = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::partialLinkText('German')
+                )
+            );
             $germanTab->click();
+
+            // Wait a moment for tab content to load
+            sleep(1);
+
+            // Ensure the German input field is visible before interacting with it
+            self::$webDriver->executeScript("document.getElementById('group_name_de').scrollIntoView(true);");
 
             // Edit group name in German
             $groupNameGerman = self::$webDriver->wait(10)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::id('group_name_de')));
@@ -202,7 +224,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
         try {
             $button = self::$webDriver->wait(1)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-outline-secondary')
                 )
             );
             $button->click();
@@ -234,10 +256,13 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
                 $this->assertNotEmpty($iframe);
                 // Switch to question's CKEditor iframe
                 self::$webDriver->switchTo()->frame($iframe);
-                // Edit the question text
-                $question = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-                sleep(2);
-                $question->clear()->sendKeys($text);
+
+                // Edit the text
+                $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
+                $body->click();
+                $body->clear();
+                $body->click();
+                $body->sendKeys($text);
                 // Switch back to main content
                 self::$webDriver->switchTo()->defaultContent();
                 break;

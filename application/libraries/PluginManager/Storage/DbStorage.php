@@ -24,7 +24,7 @@ class DbStorage implements iPluginStorage
      */
     public function get(iPlugin $plugin, $key = null, $model = null, $id = null, $default = null, $language = null)
     {
-        $functionName = 'get' . ucfirst($model);
+        $functionName = 'get' . ucfirst((string)$model);
         if ($model == null || !method_exists($this, $functionName)) {
             return $this->getGeneric($plugin, $key, $model, $id, $default);
         } else {
@@ -54,10 +54,10 @@ class DbStorage implements iPluginStorage
         $records = \PluginSetting::model()->findAllByAttributes($attributes);
         if (count($records) > 1) {
             foreach ($records as $record) {
-                $result[] = json_decode($record->value, true);
+                $result[] = json_decode((string) $record->value, true);
             }
         } elseif (count($records) == 1) {
-            $result = json_decode($records[0]->value, true);
+            $result = json_decode((string) $records[0]->value, true);
         } else {
             $result = $default;
         }
@@ -75,7 +75,7 @@ class DbStorage implements iPluginStorage
      */
     public function set(iPlugin $plugin, $key, $data, $model = null, $id = null, $language = null)
     {
-        $functionName = 'set' . ucfirst($model);
+        $functionName = 'set' . ucfirst((string)$model);
         if ($model == null || !method_exists($this, $functionName)) {
             return $this->setGeneric($plugin, $key, $data, $model, $id, $language);
         } else {

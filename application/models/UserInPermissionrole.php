@@ -54,9 +54,16 @@ class UserInPermissionrole extends CActiveRecord
         return array(
             'ptid' => 'Ptid',
             'uid' => 'Uid',
+            'name' => gT('Name'),
+            'description' => gT('Description')
         );
     }
 
+    /**
+     * @param integer $iUserID user id
+     * @param boolean $single , if true return the 1st user role
+     * @return array|array[] of UserInPermissionrole records
+     */
     public function getRoleForUser($userId, $single = false)
     {
         $aRoles = self::model()->findAllByAttributes(['uid' => $userId]);

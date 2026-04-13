@@ -1,16 +1,16 @@
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Bounce settings"); ?></h3>
+<div class='side-body'>
+    <h2 class="h3"><?php eT("Bounce settings"); ?></h2>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-12">
             <div id='bouncesettingsdiv'>
                 <?php echo CHtml::form(array("admin/tokens/sa/bouncesettings/surveyid/$surveyid"), 'post', array('class' => 'form-core settingswidget ','id' => 'bouncesettings','name' => 'frmeditquestion')); ?>
 
                         <div class="settings-list">
 
                             <!-- Survey bounce email -->
-                            <div class="form-group setting control-group setting-email">
-                                <label class="default control-label" for="bounce_email">
-                                    <?php eT('Survey bounce email address:'); ?>
+                            <div class="mb-3 setting control-group setting-email col-3">
+                                <label class="default form-label" for="bounce_email">
+                                    <?php eT('Survey bounce email address'); ?>
                                 </label>
                                 <div class="default controls">
                                     <input class='form-control' size="50" type="email" value="<?php echo $settings['bounce_email'];?>" name="bounce_email" id="bounce_email" />
@@ -18,14 +18,16 @@
                             </div>
 
                             <!-- Bounce settings to be used -->
-                            <div class="form-group setting control-group setting-select">
-                                <label class="default control-label" for="bounceprocessing">
-                                    <?php eT('Used bounce settings:');?>
+                            <div class="mb-3 setting control-group setting-select">
+                                <label class="default form-label" for="bounceprocessing">
+                                    <?php eT('Used bounce settings');?>
                                 </label>
                                 <div class="default controls">
-                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceprocessing',
-                                        'value' => $settings['bounceprocessing'] ,
+                                        'value'=> $settings['bounceprocessing'] ,
+                                        'ariaLabel'=> gT('Used bounce settings'),
+                                        'checkedOption'=> $settings['bounceprocessing'] ,
                                         'selectOptions' => array(
                                             "N" => gT("None", 'unescaped'),
                                             "L" => gT("Use settings below", 'unescaped'),
@@ -38,14 +40,15 @@
                             <div id="bounceparams">
 
                             <!-- Server type -->
-                            <div class=" form-group setting control-group setting-select">
-                                <label class="default control-label" for="bounceaccounttype">
-                                    <?php eT("Server type:"); ?>
+                            <div class=" mb-3 setting control-group setting-select">
+                                <label class="default form-label" for="bounceaccounttype">
+                                    <?php eT("Server type"); ?>
                                 </label>
                                 <div class="default controls">
-                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccounttype',
-                                        'value' => $settings['bounceaccounttype'] ,
+                                        'checkedOption'=> $settings['bounceaccounttype'] ,
+                                        'ariaLabel'=> gT('Server type'),
                                         'selectOptions' => array(
                                             "IMAP" => gT("IMAP", 'unescaped'),
                                             "POP" => gT("POP", 'unescaped')
@@ -55,12 +58,12 @@
                             </div>
 
                             <!-- Server name port -->
-                            <div class=" form-group setting control-group setting-string">
-                                <label class="default control-label" for="bounceaccounthost">
-                                    <?php eT('Server name & port:'); ?>
+                            <div class=" mb-3 setting control-group setting-string col-3">
+                                <label class="default form-label" for="bounceaccounthost">
+                                    <?php eT('Server name & port'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <input size="50" type="text" value="<?php echo $settings['bounceaccounthost']; ?>" name="bounceaccounthost" id="bounceaccounthost" />
+                                    <input class="form-control" size="50" type="text" value="<?php echo $settings['bounceaccounthost']; ?>" name="bounceaccounthost" id="bounceaccounthost" />
                                 </div>
                             </div>
 
@@ -68,35 +71,36 @@
 
 
                             <!-- User name -->
-                            <div class=" form-group setting control-group setting-string">
-                                <label class="default control-label" for="bounceaccountuser">
-                                    <?php eT('User name:'); ?>
+                            <div class=" mb-3 setting control-group setting-string col-3">
+                                <label class="default form-label" for="bounceaccountuser">
+                                    <?php eT('User name'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <input size="50" type="text" value="<?php echo $settings['bounceaccountuser'];?>" name="bounceaccountuser" id="bounceaccountuser" />
+                                    <input class="form-control" size="50" type="text" value="<?php echo $settings['bounceaccountuser'];?>" name="bounceaccountuser" id="bounceaccountuser" />
                                 </div>
                             </div>
 
                             <!-- Password -->
-                            <div class=" form-group setting control-group setting-password">
-                                <label class="default control-label" for="bounceaccountpass">
-                                    <?php eT('Password:'); ?>
+                            <div class=" mb-3 setting control-group setting-password col-3">
+                                <label class="default form-label" for="bounceaccountpass">
+                                    <?php eT('Password'); ?>
                                 </label>
 
                                 <div class="default controls">
-                                    <input autocomplete="off" size="50" type="password" value="somepassword" name="bounceaccountpass" id="bounceaccountpass" />
+                                    <input class="form-control" autocomplete="off" size="50" type="password" value="somepassword" name="bounceaccountpass" id="bounceaccountpass" />
                                 </div>
                             </div>
 
                             <!-- Encryption type  -->
-                            <div class=" form-group setting control-group setting-select">
-                                <label class="default control-label" for="bounceaccountencryption">
-                                    <?php eT('Encryption type:'); ?>
+                            <div class=" mb-3 setting control-group setting-select">
+                                <label class="default form-label" for="bounceaccountencryption">
+                                    <?php eT('Encryption type'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccountencryption',
-                                        'value' => strtolower($settings['bounceaccountencryption']),
+                                        'ariaLabel'=> gT('Encryption type'),
+                                        'checkedOption'=> strtolower((string) $settings['bounceaccountencryption']),
                                         'selectOptions' => array(
                                             "off" => gT("Off (unsafe)", 'unescaped'),
                                             "ssl" => gT("SSL/TLS", 'unescaped'),
@@ -109,7 +113,7 @@
                     </div>
 
                     <!-- buttons -->
-                    <div class="buttons control-group  hidden">
+                    <div class="buttons control-group d-none">
                         <button name="save" value="save" class="btn" type="submit">Save bounce settings</button>
                     </div>
                 </form>

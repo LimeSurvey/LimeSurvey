@@ -1,4 +1,4 @@
-<div class="side-body <?php echo getSideBodyClass(true); ?>">
+<div class="side-body">
 <h3><?php eT("Iterate survey");?></h3>
 
 <?php if($success) {?>
@@ -14,7 +14,10 @@
 <li><?php eT("Reset all your participants to the 'not used' state");?></li>
 </ol><br />
 <?php echo CHtml::form(array("admin/dataentry/sa/iteratesurvey/unfinalizeanswers/true/surveyid/".$surveyid), 'post');?>
-<input class='btn btn-danger' type='submit' onclick="return confirm('<?php eT("Are you really sure you want to delete incomplete responses and reset the completed state of both, response and participant?","js");?>')" value='<?php eT("Reset answers and participants completed state");?>' />
+<input 
+    class='btn btn-danger'
+    type='submit' 
+    onclick="return confirm('<?php eT("Are you really sure you want to delete incomplete responses and reset the completed state of both, response and participant?","js");?>')" value='<?php eT("Reset answers and participants completed state");?>' />
 </form>
 </div>
 <?php }?>

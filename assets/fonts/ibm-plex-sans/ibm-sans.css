@@ -1,0 +1,110 @@
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 100;
+    font-style: normal;
+    src: url('./IBMPlexSans-Thin.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 200;
+    font-style: normal;
+    src: url('./IBMPlexSans-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 300;
+    font-style: normal;
+    src: url('./IBMPlexSans-Light.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 400;
+    font-style: normal;
+    src: url('./IBMPlexSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 500;
+    font-style: normal;
+    src: url('./IBMPlexSans-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 600;
+    font-style: normal;
+    src: url('./IBMPlexSans-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 700;
+    font-style: normal;
+    src: url('./IBMPlexSans-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 100;
+    font-style: italic;
+    src: url('./IBMPlexSans-ThinItalic.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 200;
+    font-style: italic;
+    src: url('./IBMPlexSans-ExtraLightItalic.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 300;
+    font-style: italic;
+    src: url('./IBMPlexSans-LightItalic.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 400;
+    font-style: italic;
+    src: url('./IBMPlexSans-Italic.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 500;
+    font-style: italic;
+    src: url('./IBMPlexSans-MediumItalic.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 600;
+    font-style: italic;
+    src: url('./IBMPlexSans-SemiBoldItalic.ttf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans';
+    font-weight: 700;
+    font-style: italic;
+    src: url('./IBMPlexSans-BoldItalic.ttf');
+}
+
+body {
+    font-family: "IBMPlexSans",
+        /* Cross-platform generic font family (default user interface font)*/ system-ui,
+        /* Safari for macOS and iOS (San Francisco)*/ -apple-system,
+        /* Windows*/ "Segoe UI",
+        /* Android*/ Roboto,
+        /* Basic web fallback*/ "Helvetica Neue", Arial,
+        /* Linux*/ "Noto Sans",
+    "Liberation Sans",
+        /* Sans serif fallback*/ sans-serif,
+        /* Emoji fonts*/ "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}

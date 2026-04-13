@@ -1,14 +1,14 @@
 <div class="input-group col-12">
 
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['prefix'])) : ?>
-        <div class="input-group-addon">
+        <div class="input-group-text">
             <?= $this->setting['aFormElementOptions']['inputGroup']['prefix']; ?>
         </div>
     <?php endif; ?>
 
     <?php if ($this->setting['i18n']): ?>
         <?php foreach ($this->survey->allLanguages as $lang): ?>
-            <div class="lang-hide lang-<?= $lang; ?>">
+            <div class="lang-hide lang-<?= $lang; ?> col-12">
                 <input
                     type="text"
                     class="form-control"
@@ -32,7 +32,7 @@
     <?php endif; ?>
 
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['suffix'])) : ?>
-        <div class="input-group-addon">
+        <div class="input-group-text">
             <?= $this->setting['aFormElementOptions']['inputGroup']['suffix']; ?>
         </div>
     <?php endif; ?>

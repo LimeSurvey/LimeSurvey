@@ -35,10 +35,10 @@
                             // Data could be passed as string or object, so we add the token depending on the data type
                             if (typeof settings.data == 'string') {
                                 // NB: This sometimes includes the CSRF token twice, when already added to data.
-                                settings.data +=  '&" . urlencode(Yii::app()->request->csrfTokenName) . "=" . urlencode(Yii::app()->request->csrfToken) ."';
+                                settings.data +=  '&" . urlencode((string) Yii::app()->request->csrfTokenName) . "=" . urlencode((string) Yii::app()->request->csrfToken) ."';
                             } else {
                                 settings.data = settings.data || {};
-                                settings.data." . urlencode(Yii::app()->request->csrfTokenName) . " = '" . urlencode(Yii::app()->request->csrfToken) . "';
+                                settings.data." . urlencode((string) Yii::app()->request->csrfTokenName) . " = '" . urlencode((string) Yii::app()->request->csrfToken) . "';
                             }
                         }
                     });";

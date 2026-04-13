@@ -1,0 +1,196 @@
+///////////////////////////
+// Blacks, whites and greys
+$alabaster: #fafafa;
+$color_alabaster_approx: #f5f5f5;
+$color_alto_approx: #dadada;
+$white: #ffffff;
+
+
+
+//GREYS
+$color_gravel_approx: rgb(53, 54, 63);
+$color_celeste_approx:  #cccccc;
+$mercury: #e6e6e6;
+$color_storm_dust_approx: #636363;
+
+$color_mine_shaft_approx: #333333;
+$color_cararra_approx: #ebebeb;
+$color_silver_chalice_approx: #adadad;
+$color_mercury_approx: #e3e3e3;
+$color_buccaneer_approx: $color_mercury_approx;
+$color_gunsmoke_approx: #858585;
+$color_wild_sand_approx: #f5f5f5;
+$color_norway_approx: #e3e3e3;
+
+// TODO: test it, can it be change to white ?
+$color_desert_storm_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 61%);
+
+$black: #000;
+$black_001: rgba(0, 0, 0, 0.0001);
+$black_10: rgba(0, 0, 0, 0.1);
+$black_125: rgba(0, 0, 0, 0.125);
+$black_12: rgba(0, 0, 0, 0.12);
+$black_15: rgba(0, 0, 0, 0.15);
+$black_16: rgba(0, 0, 0, 0.16);
+$black_175: rgba(0, 0, 0, 0.175);
+$black_20: rgba(0, 0, 0, 0.2);
+$black_25: rgba(0, 0, 0, 0.25);
+$black_50: rgba(0, 0, 0, 0.5);
+$black_5: rgba(0, 0, 0, 0.05);
+$black_60: rgba(0, 0, 0, 0.6);
+$black_75: rgba(0, 0, 0, 0.075);
+
+
+//////////
+// Greens (or base color variations)
+
+// $base-color: hsl(124deg, 46%, 36%);
+
+$color_deep_fir_approx: darken( $base-color, 20% );
+$color_acapulco_approx: adjust-color($base-color, $hue: 24deg, $saturation: -22%, $lightness: 25%);
+$color_aqua_forest_approx: adjust-color($base-color, $hue: 4deg, $saturation: -24%, $lightness: 14%);
+$color_paradiso_approx:adjust-color($base-color, $lightness: 5%); ;
+
+
+$color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $lightness: 31%);
+
+
+
+
+// RGBA :
+
+$color_cornflower_blue_approx: $base-color;
+$color_buccaneer_10_approx: rgba(99, 49, 48, 0.1);
+$color_cornflower_blue_60_approx: rgba($base-color, 0.6);
+
+$color_gunsmoke_10_approx: rgba(132, 136, 138, 0.1);
+$white_10: rgba(255, 255, 255, 0.1);
+$white_15: rgba(255, 255, 255, 0.15);
+$white_50: rgba(255, 255, 255, 0.5);
+
+
+////////
+// Reds
+
+// Fixed for danger buttons etc.
+$color_muted: $color_gunsmoke_approx;
+$color_primary: #444;
+$color_success:adjust-color($base-color, $lightness: 10%);
+//$color_success: $base-color;
+//$color_info:adjust-color($base-color, $lightness: 10%);
+$color_info: $base-color;
+$color_warning: #f6863a;
+$color_danger: #a94442;
+
+$color_background: rgba(white, 0.2);
+$color_background_variant:  rgba(white, 0.5);
+
+
+$color_stiletto_approx: #a0352f;
+$color_burnt_umber_approx: #8c2e29;
+$color_red_robin_approx: #802b26;
+$color_espresso_approx: #5d1f1b;
+
+
+$color_sandal_approx: adjust-color($base-color, $hue: -42deg, $saturation: 10%, $lightness: -8%);
+
+
+
+
+
+
+$color_rope_approx: #8c4921;
+$color_russet_approx: #80431e;
+$color_shilo_approx: $color_danger;
+$color_cadillac_approx: $color_danger;
+
+
+
+
+// $color_apple_blossom_approx: #a84947; // HSL: 1° 41% 47%
+$color_apple_blossom_approx: adjust-color($base-color, $hue: -123deg, $saturation: -5%, $lightness: 11%);
+
+// $color_bittersweet_approx: #ff716a; //   3° 100% 71%
+$color_bittersweet_approx: adjust-color($base-color, $hue: -121deg, $saturation: 54%, $lightness: 35%);
+$color_emerald_approx: $color_bittersweet_approx;
+
+// $color_brandy_rose_approx: #b59080; // HSL: 18° 26% 61%
+$color_brandy_rose_approx: adjust-color($base-color, $hue: -121deg, $saturation: 54%, $lightness: 35%);
+
+
+
+
+
+// TODO : classify all this
+$color_casal_approx: adjust-color($base-color, $lightness: 5%);
+
+
+$color_celtic_approx: adjust-color($base-color, $hue: 1deg, $saturation: 0%, $lightness: -20%);
+$color_cod_gray_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -33%);
+$color_contessa_approx: adjust-color($base-color, $hue: -123deg, $saturation: -5%, $lightness: 21%);
+
+$color_dark_tan_approx: adjust-color($base-color, $hue: -124deg, $saturation: 35%, $lightness: -14%);
+
+$color_de_york_approx: adjust-color($base-color, $hue: 0deg, $saturation: -11%, $lightness: 30%);
+$color_dove_gray_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 6%);
+$color_dune_approx: adjust-color($base-color, $hue: -42deg, $saturation: -25%, $lightness: -16%);
+$color_eden_approx: adjust-color($base-color, $hue: 59deg, $saturation: 7%, $lightness: -13%);
+$color_elephant_approx: adjust-color($base-color, $hue: 59deg, $saturation: 7%, $lightness: -20%);
+$color_envy_approx: adjust-color($base-color, $hue: 0deg, $saturation: -29%, $lightness: 26%);
+$color_fantasy_approx: adjust-color($base-color, $hue: 219deg, $saturation: -9%, $lightness: 60%);
+$color_fern_approx: adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 20%);
+$color_forest_green_approx: adjust-color($base-color, $hue: 206deg, $saturation: 54%, $lightness: 35%);
+$color_fuscous_gray_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -3%);
+$color_granny_smith_apple_approx: adjust-color($base-color, $hue: -1deg, $saturation: -8%, $lightness: 36%);
+$color_gray_nurse_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 55%);
+$color_green_pea_approx: adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -10%);
+$color_gulf_stream_approx: adjust-color($base-color, $hue: 57deg, $saturation: -24%, $lightness: 27%);
+
+$color_heavy_metal_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -18%);
+$color_hippie_green_approx: adjust-color($base-color, $hue: 4deg, $saturation: -17%, $lightness: 7%);
+$color_hippie_pink_approx: adjust-color($base-color, $hue: 228deg, $saturation: -5%, $lightness: 13%);
+
+$color_jambalaya_approx: adjust-color($base-color, $hue: -102deg, $saturation: 17%, $lightness: -14%);
+$color_jewel_approx: adjust-color($base-color, $hue: 3deg, $saturation: 8%, $lightness: -7%);
+$color_laurel_approx: adjust-color($base-color, $hue: -1deg, $saturation: -31%, $lightness: 15%);
+$color_log_cabin_approx: adjust-color($base-color, $hue: -40deg, $saturation: -25%, $lightness: -22%);
+$color_maroon_flush_approx: adjust-color($base-color, $hue: 221deg, $saturation: 23%, $lightness: 10%);
+$color_matrix_approx: adjust-color($base-color, $hue: -123deg, $saturation: -5%, $lightness: 16%);
+
+$color_metallic_copper_approx: adjust-color($base-color, $hue: -121deg, $saturation: 9%, $lightness: -5%);
+
+$color_monsoon_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 18%);
+$color_moss_green_approx: adjust-color($base-color, $hue: 0deg, $saturation: -8%, $lightness: 41%);
+$color_mountain_mist_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 24%);
+$color_new_york_pink_approx: adjust-color($base-color, $hue: -123deg, $saturation: 10%, $lightness: 34%);
+
+//$color_opal_approx: adjust-color($base-color, $hue: 58deg, $saturation: -23%, $lightness: 37%);
+$color_opal_approx: $color_aqua_forest_approx;
+
+$color_parsley_approx: adjust-color($base-color, $hue: 0deg, $saturation: 16%, $lightness: -21%);
+$color_quicksand_approx: adjust-color($base-color, $hue: -96deg, $saturation: -20%, $lightness: 28%);
+
+$color_romance_approx: adjust-color($base-color, $hue: -124deg, $saturation: 54%, $lightness: 64%);
+
+$color_rose_bud_cherry_approx: adjust-color($base-color, $hue: 198deg, $saturation: 54%, $lightness: -11%);
+
+
+$color_sandrift_approx: adjust-color($base-color, $hue: -96deg, $saturation: -19%, $lightness: 23%);
+$color_sandy_brown_approx: adjust-color($base-color, $hue: -100deg, $saturation: 45%, $lightness: 34%);
+$color_sea_mist_approx: adjust-color($base-color, $hue: -1deg, $saturation: -8%, $lightness: 46%);
+$color_shadow_green_approx: adjust-color($base-color, $hue: 58deg, $saturation: -23%, $lightness: 32%);
+
+
+$color_spring_rain_approx: adjust-color($base-color, $hue: 2deg, $saturation: -26%, $lightness: 35%);
+//$color_stiletto_approx: adjust-color($base-color, $hue: -121deg, $saturation: 9%, $lightness: 5%);
+
+$color_suva_gray_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 17%);
+$color_tuft_bush_approx: adjust-color($base-color, $hue: -100deg, $saturation: 46%, $lightness: 54%);
+$color_tundora_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -9%);
+$color_walnut_approx: adjust-color($base-color, $hue: -102deg, $saturation: 16%, $lightness: -7%);
+
+$color_woodsmoke_approx: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: -30%);
+
+$silver: adjust-color($base-color, $hue: -124deg, $saturation: -46%, $lightness: 39%);
+$yellow: adjust-color($base-color, $hue: 206deg, $saturation: 54%, $lightness: 35%);
+

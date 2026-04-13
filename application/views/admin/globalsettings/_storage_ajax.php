@@ -7,8 +7,11 @@
 
 ?>
 
-<label><?php eT('Overview'); ?></label>
+<h2><?php eT('Overview'); ?></h2>
 <table class='table table-striped table-bordered'>
+    <caption class="visually-hidden">
+        <?php eT("Storage overview"); ?>
+    </caption>
     <tfoot>
         <tr>
             <td style='width: 70%;'><?php eT('Total storage'); ?></td>
@@ -33,8 +36,11 @@
 
 
 <?php if ($surveys) : ?>
-    <label><?php eT('Survey storage'); ?></label>
+    <h2><?php eT('Survey storage'); ?></h2>
     <table class='table table-striped table-bordered'>
+            <caption class="visually-hidden">
+                <?php eT("Survey storage details"); ?>
+            </caption>
         <?php foreach ($surveys as $survey) : ?>
         <tr>
             <td style='width: 70%;'>
@@ -49,8 +55,8 @@
                 <?php echo $survey['size']; ?>
                 <?php if ($survey['showPurgeButton']) : ?>
                     <span
-                        class='fa fa-trash text-danger pull-right btn btn-default btn-xs'
-                        data-toggle='tooltip'
+                        class='ri-delete-bin-fill text-danger float-end btn btn-outline-secondary btn-xs'
+                        data-bs-toggle='tooltip'
                         onclick='window.location = "<?php echo $this->createUrl('surveyAdministration/purge', array('purge_sid' => $survey['sid'])); ?>"'
                         title='<?php eT('Delete survey files'); ?>'
                     >
@@ -63,7 +69,7 @@
 <?php endif; ?>
 
 <?php if ($templates) : ?>
-    <label><?php eT('Themes storage'); ?></label>
+    <h2><?php eT('Themes storage'); ?></h2>
     <table class='table table-striped table-bordered'>
         <?php foreach ($templates as $templates) : ?>
         <tr>

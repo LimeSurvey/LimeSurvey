@@ -6,9 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "yarn run dev && yarn run prod",
     "prod": "vue-cli-service build",
-    "dev": "vue-cli-service build --mode developement",
+    "dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
-    "watch" : "vue-cli-service build --mode=developement --watch"
+    "watch" : "vue-cli-service build --mode=development --watch"
   },
   "dependencies": {
     "core-js": "^2.6.5",

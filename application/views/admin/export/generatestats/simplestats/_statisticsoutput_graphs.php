@@ -17,7 +17,7 @@
     <?php if(count($labels) < 70): ?>
         <!-- Charts -->
         <div class="row custom custom-padding bottom-20">
-            <div class="col-sm-12 vcenter chartjs-container" id="chartjs-container-<?php echo $qqid; ?>"
+            <div class="col-md-12 vcenter chartjs-container" id="chartjs-container-<?php echo $qqid; ?>"
                 data-chartname="<?php echo $sChartname; // The name of the jschart object ?>"
                 data-qid="<?php echo $qqid; // the question id ?>"
                 data-type="<?php echo $charttype; // the chart start type (bar, donut, etc.) ?>"
@@ -34,15 +34,15 @@
 
         <div class="row">
             <!-- legends -->
-            <div class="legend col-sm-12 vcenter">
+            <div class="legend col-md-12 vcenter">
                 <?php foreach($fullLabels as $i=>$label): ?>
                     <?php $colorindex = $color+$i; ?>
                     <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-sm-1">
+                        <div class="col-md-1">
                             <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex];?>,0.6); display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
                             </span>
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col-md-10">
                             <?php echo $label; ?>
                         </div>
                     </div>
@@ -55,10 +55,13 @@
         </div>
     <?php else: ?>
         <div class="row">
-            <div class="col-sm-12">
-                <div class="alert alert-warning" role="alert">
-                    <?php eT("Too many labels, can't generate chart");?>
-                </div>
+            <div class="col-md-12">
+                <?php
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'text' => gT("Too many labels, can't generate chart"),
+                    'type' => 'warning',
+                ]);
+                ?>
             </div>
         </div>
     <?php endif;?>

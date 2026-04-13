@@ -49,12 +49,12 @@ class RenderMultipleShortText extends QuestionBaseRenderer
 
         if (intval($this->setDefaultIfEmpty($this->getQuestionAttribute('maximum_chars'), 0)) > 0) {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-            $this->maxlength = intval(trim($this->getQuestionAttribute('maximum_chars')));
+            $this->maxlength = intval(trim((string) $this->getQuestionAttribute('maximum_chars')));
             $this->extraclass .= " ls-input-maxchars";
         }
 
-        if (ctype_digit(trim($this->getQuestionAttribute('input_size')))) {
-            $this->inputsize = trim($this->getQuestionAttribute('input_size'));
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('input_size')))) {
+            $this->inputsize = trim((string) $this->getQuestionAttribute('input_size'));
             $this->extraclass .= " ls-input-sized";
         }
     }
@@ -105,11 +105,11 @@ class RenderMultipleShortText extends QuestionBaseRenderer
 
             $dispVal       = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], '');
             if ($this->numbersonly === true) {
-                $dispVal = str_replace('.', $this->sSeparator, $dispVal);
+                $dispVal = str_replace('.', $this->sSeparator, (string) $dispVal);
             }
-            $dispVal = htmlspecialchars($dispVal, ENT_QUOTES, 'UTF-8');
+            $dispVal = htmlspecialchars((string) $dispVal, ENT_QUOTES, 'UTF-8');
 
-            if (trim($this->getQuestionAttribute('display_rows')) != '') {
+            if (trim((string) $this->getQuestionAttribute('display_rows')) != '') {
                 $aRows[] = array(
                     'textarea'               => true,
                     'sDisplayStyle'          => '',

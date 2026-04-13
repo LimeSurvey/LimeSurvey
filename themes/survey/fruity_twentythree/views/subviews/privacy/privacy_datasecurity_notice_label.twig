@@ -1,0 +1,19 @@
+{# 
+    use aSurveyInfo datasecurity_notice_label
+#}
+{% set STARTPOLICYLINK = "" %}
+{% set ENDPOLICYLINK = "" %}
+{% if(aSurveyInfo.showsurveypolicynotice == 2) %}
+    {% set STARTPOLICYLINK = "<a data-bs-target='#data-security-modal-" ~ aSurveyInfo.sid ~ "' class='show-policy' data-bs-toggle='modal'>" %}
+    {% set ENDPOLICYLINK = "</a>" %}
+    {% if( strpos( " " ~ dataSecurityNoticeLabel, '{STARTPOLICYLINK}') == false and strpos( " " ~ dataSecurityNoticeLabel, '{ENDPOLICYLINK}') == false) %}
+        {% set dataSecurityNoticeLabel = dataSecurityNoticeLabel ~ "<br/> {STARTPOLICYLINK}" ~ gT("Show policy") ~ "{ENDPOLICYLINK}" %}
+    {% endif %}
+{% endif %}
+{% set haveENDPOLICYLINK = strpos( " " ~ dataSecurityNoticeLabel, '{ENDPOLICYLINK}') %}
+{% set dataSecurityNoticeLabel = str_replace('{STARTPOLICYLINK}', STARTPOLICYLINK, dataSecurityNoticeLabel) %}
+{% set dataSecurityNoticeLabel = str_replace('{ENDPOLICYLINK}', ENDPOLICYLINK, dataSecurityNoticeLabel) %}
+{% if( haveENDPOLICYLINK == false ) %}
+    {% set dataSecurityNoticeLabel = dataSecurityNoticeLabel ~ ENDPOLICYLINK %}
+{% endif %}
+{{ dataSecurityNoticeLabel }}

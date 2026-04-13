@@ -16,7 +16,7 @@ class HashRNGProvider implements IRNGProvider
         $result = '';
         $hash = mt_rand();
         for ($i = 0; $i < $bytecount; $i++) {
-            $hash = hash($this->algorithm, $hash.mt_rand(), true);
+            $hash = hash((string) $this->algorithm, $hash.mt_rand(), true);
             $result .= $hash[mt_rand(0, strlen($hash)-1)];
         }
         return $result;

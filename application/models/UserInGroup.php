@@ -17,8 +17,8 @@
  * Class UserInGroup
  * @property integer $ugid UserGroup ID
  * @property int $uid User ID
- *
- *@property User $users Group ownre user
+ * @property User $users Group ownre user
+ * @property UserGroup $group
  */
 class UserInGroup extends LSActiveRecord
 {

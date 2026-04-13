@@ -1,0 +1,95 @@
+// Buttons START
+$line-height-16: 16px;
+$line-height-20: 20px;
+$line-height-28: 28px;
+$line-height-38: 38px;
+
+$btn-font-weight: 500;
+
+$btn-height-sm: 24px;
+$btn-height: 36px;
+$btn-height-lg: 44px;
+$btn-height-xl: 52px;
+
+$btn-font-size: $font-size-sm;
+$btn-font-size-sm: $font-size-xs;
+// Buttons END
+
+.ls-answers {
+    label.btn {
+        font-weight : $btn-font-weight;
+    }
+}
+
+.btn-primary:focus, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
+    outline : none;
+}
+
+//Why???
+//body.onStatistics .btn {
+//  display : none;
+//}
+// used anywhere?
+[data-toggle="buttons"] > .btn input[type="radio"],
+[data-toggle="buttons"] > .btn input[type="checkbox"] {
+    position       : absolute;
+    clip           : rect(0, 0, 0, 0);
+    pointer-events : none;
+}
+
+.chart-type-control {
+    margin-bottom: 4px;
+}
+
+.btnaddanswer:hover,
+.btndelanswer:hover {
+    cursor : pointer;
+}
+
+// new admin theme customization
+//Sizing
+.btn {
+    min-height    : $btn-height;
+    padding       : 8px 12px;
+    font-size     : $btn-font-size;
+    line-height   : $line-height-20;
+    border-radius : $border-radius;
+    font-weight   : $btn-font-weight;
+    & [class^="ri-"], & [class*=" ri-"] {
+        font-size : $font-size-lg;
+    }
+}
+
+.btn-sm {
+    min-height    : $btn-height-sm;
+    padding       : 4px 8px;
+    font-size     : $btn-font-size-sm;
+    line-height   : $line-height-16;
+    border-radius : 3px;
+    & [class^="ri-"], & [class*=" ri-"] {
+        font-size : $font-size-base;
+    }
+}
+
+.btn-lg {
+    min-height    : $btn-height-lg;
+    padding       : 12px;
+    font-size     : $btn-font-size;
+    line-height   : $line-height-28;
+    border-radius : $border-radius;
+}
+
+.btn-xl {
+    min-height    : $btn-height-xl;
+    padding       : 12px 16px;
+    font-size     : $btn-font-size;
+    line-height   : $line-height-38;
+    border-radius : $border-radius;
+}
+
+.btn-xs {
+    min-height : auto;
+    & [class^="ri-"], & [class*=" ri-"] {
+        font-size : $font-size-base;
+    }
+}

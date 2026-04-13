@@ -19,7 +19,7 @@ if (count($modifiedfiles)>0): ?>
         sort($modifiedfiles);
         foreach ($modifiedfiles as $modifiedfile)
         {
-            echo htmlspecialchars($modifiedfile['file'])."\n";
+            echo htmlspecialchars((string) $modifiedfile['file'])."\n";
     }?></textarea>
     <?php endif;?>
 
