@@ -19,6 +19,8 @@ export const ResponseModals = ({
   SurveyDetailsComponent,
   table,
   handleOnHide,
+  isBulkAction,
+  selectedRowsIds = [],
 }) => {
   const handleOnDeleteConfirm = () => {
     onResponsesDeleteConfirm()
@@ -30,11 +32,27 @@ export const ResponseModals = ({
     setShowAttachmentsDeleteModal(false)
   }
 
+  const deleteModalTitle = isBulkAction
+    ? t('Delete responses')
+    : t('Delete response')
+
+  const deleteModalDescription =
+    isBulkAction && selectedRowsIds?.length > 1
+      ? t(
+          'The selected {{count}} responses will be deleted. Do you want to proceed?',
+          { count: selectedRowsIds?.length }
+        )
+      : `${t('Are you sure you want to delete this response? This action cannot be reverted.')}`
+
+  const confirmModalButtonText = isBulkAction
+    ? t('Delete')
+    : t('Delete response')
+
   return (
     <>
       <ConfirmModal
-        title={t('Delete responses')}
-        description={t('Do you really want to delete this response?')}
+        title={deleteModalTitle}
+        description={deleteModalDescription}
         show={showResponsesDeleteModal}
         onConfirm={handleOnDeleteConfirm}
         onHide={() => {
@@ -42,6 +60,7 @@ export const ResponseModals = ({
           handleOnHide()
         }}
         modalBodyClassname="responses-confirm-modal-body"
+        confirmButtonText={confirmModalButtonText}
       />
       <ConfirmModal
         title={t('Delete attachments')}

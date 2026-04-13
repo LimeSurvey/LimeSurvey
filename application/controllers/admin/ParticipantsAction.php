@@ -627,7 +627,7 @@ class ParticipantsAction extends SurveyCommonAction
                 [':can_edit' => '1']
             ))
         ) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             return;
         }
@@ -1030,29 +1030,31 @@ class ParticipantsAction extends SurveyCommonAction
                 $thisduplicate = 0;
 
                 //Check for duplicate participants
-                //HACK - converting into SQL instead of doing an array search
                 if (in_array('participant_id', $firstline)) {
                     $dupreason = "participant_id";
-                    $aData = "participant_id = " . Yii::app()->db->quoteValue($writearray['participant_id']);
+                    $duplicateCriteriaAttributes = ['participant_id' => $writearray['participant_id']];
                 } else {
                     $dupreason = "nameemail";
-                    $aData = "firstname = " . Yii::app()->db->quoteValue($writearray['firstname']) . " AND lastname = " . Yii::app()->db->quoteValue($writearray['lastname']) . " AND email = " . Yii::app()->db->quoteValue($writearray['email']) . " AND owner_uid = '" . Yii::app()->session['loginID'] . "'";
+                    $duplicateCriteriaAttributes = [
+                        'firstname' => $writearray['firstname'],
+                        'lastname'  => $writearray['lastname'],
+                        'email'     => $writearray['email'],
+                        'owner_uid' => Yii::app()->session['loginID']
+                    ];
                 }
-                //End of HACK
-                $aData = Participant::model()->checkforDuplicate($aData, "participant_id");
-                if ($aData !== false) {
+                $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
+                if (!empty($existingParticipant)) {
                     $thisduplicate = 1;
                     $dupcount++;
                     if ($overwrite == "true") {
                         // We want all the non filtering internal attributes to be updated,too
-                        $oParticipant = Participant::model()->findByPk($aData);
                         foreach ($writearray as $attribute => $value) {
                             if (in_array($attribute, ['firstname', 'lastname', 'email'])) {
                                 continue;
                             }
-                            $oParticipant->$attribute = $value;
+                            $existingParticipant->$attribute = $value;
                         }
-                        $oParticipant->save();
+                        $existingParticipant->save();
                         //Although this person already exists, we want to update the mapped attribute values
                         if (!empty($mappedarray)) {
                             //The mapped array contains the attributes we are
@@ -1060,7 +1062,7 @@ class ParticipantsAction extends SurveyCommonAction
                             foreach ($mappedarray as $attid => $attname) {
                                 if (!empty($attname)) {
                                     $bData = array(
-                                        'participant_id' => $aData,
+                                        'participant_id' => $existingParticipant->participant_id,
                                         'attribute_id' => $attid,
                                         'value' => $writearray[strtolower((string) $attname)]
                                     );
@@ -1085,7 +1087,7 @@ class ParticipantsAction extends SurveyCommonAction
                     $aEmailAddresses = explode(';', $writearray['email']);
                     // Ignore additional email addresses
                     $sEmailaddress = $aEmailAddresses[0];
-                    if (!validateEmailAddress($sEmailaddress)) {
+                    if (!LimeMailer::validateAddress($sEmailaddress)) {
                         $invalidemail = true;
                         $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
                     }
@@ -1098,7 +1100,7 @@ class ParticipantsAction extends SurveyCommonAction
                         $uuid = Participant::genUuid(); //Generate a UUID for the new participant
                         $writearray['participant_id'] = $uuid;
                     }
-                    if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == '')) {
+                    if (isset($writearray['emailstatus']) && trim((string) $writearray['emailstatus']) == '') {
                         unset($writearray['emailstatus']);
                     }
                     if (!isset($writearray['language']) || $writearray['language'] == "") {
@@ -1108,10 +1110,10 @@ class ParticipantsAction extends SurveyCommonAction
                         $writearray['blacklisted'] = "N";
                     }
                     $writearray['owner_uid'] = Yii::app()->session['loginID'];
-                    if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == '')) {
+                    if (isset($writearray['validfrom']) && trim((string) $writearray['validfrom']) == '') {
                         unset($writearray['validfrom']);
                     }
-                    if (isset($writearray['validuntil']) && trim($writearray['validuntil'] == '')) {
+                    if (isset($writearray['validuntil']) && trim((string) $writearray['validuntil']) == '') {
                         unset($writearray['validuntil']);
                     }
                     $dontimport = false;

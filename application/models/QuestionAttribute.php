@@ -444,29 +444,6 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * Returns the value for attribute 'question_template'.
-     * Fetches the question_template from a question model.
-     *
-     * Be carefull this attribute is not present in all questions.
-     * Even more, standard question types where question theme are not used (or custom question theme are not used),
-     * the attribute is missing. In those cases, the deault "core" is used.
-     *
-     * @return string question_template or 'core' if it not exists
-     *
-     * @deprecated use $question->question_theme_name instead (Question model)
-     */
-    public static function getQuestionTemplateValue($questionID)
-    {
-        /**
-         * TODO: This method was modified to get the theme name from the proper place, but it should be deprecated,
-         *       as it no longer makes sense (question theme is not a QuestionAttribute anymore).
-         */
-        $question = Question::model()->findByPk($questionID);
-        $value = !empty($question) && !empty($question->question_theme_name) ? $question->question_theme_name : 'core';
-        return $value;
-    }
-
-    /**
      * Read question attributes from XML file and convert it to array
      *
      * @param string $sXmlFilePath Path to XML
@@ -590,7 +567,7 @@ class QuestionAttribute extends LSActiveRecord
      *      'category' : Where to put it
      *      'sortorder' : Qort order in this category
      *      'inputtype' : type of input
-     *      'expression' : 2 to force Expression Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
+     *      'expression' : 2 to force Expression Manager when see the survey logic overview (add { } and validate, 1 : allow it : validate in survey logic overview
      *      'options' : optional options if input type need it
      *      'default' : the default value
      *      'caption' : the label

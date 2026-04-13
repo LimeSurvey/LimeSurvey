@@ -94,6 +94,7 @@ export const InputRange = ({
             max={max}
             direction={direction}
             onChange={handleOnChange}
+            data-testid="input-range-slider"
             renderTrack={({ props, children }) => (
               <div
                 className={

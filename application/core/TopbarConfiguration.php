@@ -204,19 +204,6 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
-        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
-        
-        $enableEditorButton = true;
-        if ($oSurvey->getTemplateEffectiveName() !== 'fruity_twentythree') {
-            $enableEditorButton = false;
-        }
-
-        $editorUrl = Yii::app()->request->getUrlReferrer(
-            Yii::app()->createUrl(
-                'editorLink/index',
-                ['route' => 'survey/' . $sid]
-            )
-        );
         App()->getClientScript()->registerScriptFile(
             App()->getConfig('adminscripts') . 'newQuestionEditor.js',
             CClientScript::POS_END
@@ -252,9 +239,7 @@ class TopbarConfiguration
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
             'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
-            'editorEnabled' => $editorEnabled,
-            'editorUrl' => $editorUrl,
-            'enableEditorButton' => $enableEditorButton,
+            'editorEnabled' => App()->getConfig('editorEnabled') ?? false,
         );
     }
 

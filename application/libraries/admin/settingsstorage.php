@@ -12,6 +12,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+/** @extends ArrayObject<string, mixed> */
 final class SettingsStorage extends ArrayObject
 {
     protected static $_instance = null;

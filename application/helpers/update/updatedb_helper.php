@@ -100,7 +100,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         $file = end($fileInfo);
         Yii::app()->user->setFlash(
             'error',
-            gT('An non-recoverable error happened during the update. Error details:')
+            gT('A non-recoverable error occurred during the update. Error details:')
             . '<p>'
             . htmlspecialchars($e->getMessage())
             . '</p><br />'
@@ -125,8 +125,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     // Force User model to refresh meta data (for updates from very old versions)
     User::model()->refreshMetaData();
     Yii::app()->db->schema->getTable('{{surveys}}', true);
+    Yii::app()->db->schema->getTable('{{surveys_groupsettings}}', true);
     Yii::app()->db->schema->getTable('{{templates}}', true);
     Survey::model()->refreshMetaData();
+    SurveysGroupsettings::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
 
     // Try to clear tmp/runtime (database cache files).
@@ -1511,7 +1513,6 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         'showprogress' => "string(1) NULL DEFAULT 'Y'",
         'questionindex' => "integer NULL DEFAULT '0'",
         'navigationdelay' => "integer NULL DEFAULT '0'",
-        'nokeyboard' => "string(1) NULL DEFAULT 'N'",
         'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
     ));
     addPrimaryKey('surveys_groupsettings', array('gsid'));
@@ -1535,6 +1536,9 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     // TODO: Don't use models in updatedb_helper.
     $attributes = $settings1->attributes;
     unset($attributes['ipanonymize']);
+    // Same as ipanonymize, stale schema persists on model after column is removed from db,
+    // and interacts with older updates
+    unset($attributes['nokeyboard']);
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
@@ -1585,7 +1589,6 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         "showprogress" => "I",
         "questionindex" => -1,
         "navigationdelay" => -1,
-        "nokeyboard" => "I",
         "alloweditaftercompletion" => "I",
     );
 
@@ -2459,13 +2462,13 @@ function upgradeTokens148()
 function upgradeQuestionAttributes148()
 {
     $sSurveyQuery = "SELECT sid,language,additional_languages FROM {{surveys}}";
-    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->query();
     $aAllAttributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
         $iSurveyID = $aSurveyRow['sid'];
         $aLanguages = array_merge(array($aSurveyRow['language']), explode(' ', (string) $aSurveyRow['additional_languages']));
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
-        $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
+        $oAttributeResult =  Yii::app()->db->createCommand($sAttributeQuery)->query();
         foreach ($oAttributeResult->readAll() as $aAttributeRow) {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n']) {
                 Yii::app()->getDb()->createCommand("delete from {{question_attributes}} where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
@@ -2502,7 +2505,7 @@ function upgradeTokens145()
 function upgradeSurveys145()
 {
     $sSurveyQuery = "SELECT * FROM {{surveys}} where notification<>'0'";
-    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->query();
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
         if ($aSurveyRow['notification'] == '1' && trim((string) $aSurveyRow['adminemail']) != '') {
             $aEmailAddresses = explode(';', (string) $aSurveyRow['adminemail']);

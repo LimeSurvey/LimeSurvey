@@ -617,6 +617,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
             $results['conditions']++;
         }
     }
+
+    // Update question code references in custom conditions and relevance expressions
+    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
 
@@ -2298,9 +2302,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         // Email attachments are with relative paths on the file, but are currently expected to be saved as absolute.
         // Transforming them from relative paths to absolute paths.
         if (!empty($insertdata['attachments'])) {
+            $attachments = @json_decode($insertdata['attachments'], true);
             // NOTE: Older LSS files have attachments as a serialized array, while newer ones have it as a JSON string.
             // Serialized attachments are not supported anymore.
-            $attachments = json_decode($insertdata['attachments'], true);
+            if (is_null($attachments)) {
+                if (App()->getConfig('allow_unserialize_attachments')) {
+                    $attachments = unserialize($insertdata['attachments'], ['allowed_classes' => false]);
+                    /* If it's a broken unserialize : it's NOT a wrongAttachmentsFormat, it's just invalid */
+                } else {
+                    $wrongAttachmentsFormat = true;
+                }
+            }
             if (!empty($attachments) && is_array($attachments)) {
                 $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
                 foreach ($attachments as &$template) {
@@ -2317,11 +2329,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                         $hasOldAttachments = true;
                     }
                 }
-            } elseif (is_null($attachments)) {
-                // JSON decode failed. Most probably the attachments were in the PHP serialization format.
-                $wrongAttachmentsFormat = true;
             }
-            $insertdata['attachments'] = serialize($attachments);
+            /* Set as json only if not empty */
+            $insertdata['attachments'] = !empty($attachments) ? json_encode($attachments) : "";
         }
 
         if (isset($insertdata['surveyls_attributecaptions']) && substr((string) $insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
@@ -2330,7 +2340,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $aColumns = SurveyLanguageSetting::model()->attributes;
         $insertdata = array_intersect_key($insertdata, $aColumns);
 
-        $surveyLanguageSetting = new SurveyLanguageSetting();
+        $surveyLanguageSetting = new SurveyLanguageSetting('import');
         $surveyLanguageSetting->setAttributes($insertdata, false);
         try {
             // Clear alias if it was already in use
@@ -3058,34 +3068,40 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             if (!empty($insertdata['cfieldname'])) {
-                if (!isset($aQuestionsMapping[$insertdata['cfieldname']])) {
-                    if (strpos($insertdata['cfieldname'], 'X') !== false) {
-                        $parts = explode('X', $insertdata['cfieldname']);
-                        $qid = null;
-                        $idCandidate = $parts[2];
-                        $search = true;
-                        $knownFieldName = null;
-                        $theQ = null;
-                        while ($search && strlen($idCandidate)) {
-                            foreach ($aQuestionsMapping as $key => $value) {
-                                if (($key === "Q{$idCandidate}") || (strpos($key, "Q{$idCandidate}_") !== false)) {
-                                    $qid = substr(explode("_", $value)[0], 1);
-                                    $theQ = Question::model()->findByPk($qid);
-                                    $theQuestions = Question::model()->findAll(['condition' => "sid = {$theQ->sid} and gid = {$theQ->gid} and {$theQ->qid} in (qid, parent_qid)"]);
-                                    $knownFieldName = "{$theQ->sid}X{$theQ->gid}X{$theQ->qid}" . substr($parts[2], strlen($idCandidate));
-                                    $search = false;
-                                }
-                            }
-                            if ($search) {
-                                $idCandidate = substr($idCandidate, 0, strlen($idCandidate) - 1);
+                // Detect and preserve the "+" prefix used for M/P subquestion conditions
+                $plusPrefix = '';
+                $cfieldnameToProcess = $insertdata['cfieldname'];
+                if (substr($cfieldnameToProcess, 0, 1) === '+') {
+                    $plusPrefix = '+';
+                    $cfieldnameToProcess = substr($cfieldnameToProcess, 1);
+                }
+
+                if (isset($aQuestionsMapping[$cfieldnameToProcess])) {
+                    $insertdata['cfieldname'] = $plusPrefix . $aQuestionsMapping[$cfieldnameToProcess];
+                } elseif (strpos($cfieldnameToProcess, 'X') !== false) {
+                    $parts = explode('X', $cfieldnameToProcess);
+                    $qid = null;
+                    $idCandidate = $parts[2];
+                    $search = true;
+                    $knownFieldName = null;
+                    $theQ = null;
+                    while ($search && strlen($idCandidate)) {
+                        foreach ($aQuestionsMapping as $key => $value) {
+                            if (($key === "Q{$idCandidate}") || (strpos($key, "Q{$idCandidate}_") !== false)) {
+                                $qid = substr(explode("_", $value)[0], 1);
+                                $theQ = Question::model()->findByPk($qid);
+                                $theQuestions = Question::model()->findAll(['condition' => "sid = {$theQ->sid} and gid = {$theQ->gid} and {$theQ->qid} in (qid, parent_qid)"]);
+                                $knownFieldName = "{$theQ->sid}X{$theQ->gid}X{$theQ->qid}" . substr($parts[2], strlen($idCandidate));
+                                $search = false;
                             }
                         }
-                        if ($qid) {
-                            $insertdata['cfieldname'] = getFieldName(Yii::app()->db->tablePrefix . "responses_" . $theQ->sid, $knownFieldName, $theQuestions, $theQ->sid, $theQ->gid);
+                        if ($search) {
+                            $idCandidate = substr($idCandidate, 0, strlen($idCandidate) - 1);
                         }
                     }
-                } else {
-                    $insertdata['cfieldname'] = $aQuestionsMapping[$insertdata['cfieldname']];
+                    if ($qid) {
+                        $insertdata['cfieldname'] = $plusPrefix . getFieldName(Yii::app()->db->tablePrefix . "responses_" . $theQ->sid, $knownFieldName, $theQuestions, $theQ->sid, $theQ->gid);
+                    }
                 }
             }
             $insertdata['value'] = fixText(
@@ -3179,7 +3195,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oldid = $insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            $result = Quota::model()->insertRecords($insertdata);
+            $newQuota = new Quota();
+            $newQuota->setAttributes($insertdata, false);
+            $result = $newQuota->save();
             if (!$result) {
                 throw new Exception(gT("Error") . ": Failed to insert data[12]<br />");
             }
@@ -3803,7 +3821,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             if ($aOptions['bNotFinalized']) {
                 $oSurvey->submitdate = new CDbExpression('NULL');
             } elseif (is_int($iSubmitdateKey)) {
-                if ($aResponses[$iSubmitdateKey] == '{question_not_shown}' || trim($aResponses[$iSubmitdateKey] == '')) {
+                if ($aResponses[$iSubmitdateKey] == '{question_not_shown}' || trim((string) $aResponses[$iSubmitdateKey]) == '') {
                     $oSurvey->submitdate = new CDbExpression('NULL');
                 } else {
                     // Maybe control valid date : see http://php.net/manual/en/function.checkdate.php#78362 for example
@@ -3975,8 +3993,6 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 */
 function TSVImportSurvey($sFullFilePath)
 {
-    $baselang = 'en'; // TODO set proper default
-
     $aAttributeList = array(); //QuestionAttribute::getQuestionAttributesSettings();
     $tmp = fileCsvToUtf8($sFullFilePath);
 
@@ -4005,6 +4021,12 @@ function TSVImportSurvey($sFullFilePath)
         $adata[] = $rowarray;
     }
     fclose($tmp);
+    /* Check minimal headers */
+    $necessaryHeader = ['class', 'name', 'text'];
+    if (count(array_diff($necessaryHeader, $rowheaders)) > 0) {
+        $results['error'] = gT("The file does not seem to be a valid survey file. The necessary headers are not present.");
+        return $results;
+    }
     unset($rowheaders);
     unset($rowarray) ;
 
@@ -4039,7 +4061,11 @@ function TSVImportSurvey($sFullFilePath)
                 break;
         }
     }
-
+    if (!isset($surveyinfo['language'])) {
+        $results['error'] = gT("The file do not seem to be a valid tab-separated-values survey file. No language set.");
+        return $results;
+    }
+    $baselang = $surveyinfo['language']; // the base language
 
     // Create the survey entry
     $surveyinfo['startdate'] = null;
@@ -4070,9 +4096,6 @@ function TSVImportSurvey($sFullFilePath)
     $sqinfo = array();
     $asinfo = array();
 
-    if (isset($surveyinfo['language'])) {
-        $baselang = $surveyinfo['language']; // the base language
-    }
     /* Keep track of id for group */
     $groupIds = [];
     /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */

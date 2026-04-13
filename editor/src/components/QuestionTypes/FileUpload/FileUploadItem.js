@@ -68,7 +68,7 @@ export const FileUploadItem = ({
         <div>
           <Form.Label>{t('Title')}</Form.Label>
           <Form.Control
-            placeholder={st('Enter your answer here')}
+            placeholder={st('Enter your answer here.')}
             data-testid="text-question-answer-input"
             value={fileTitle}
             onChange={handleTitleChange}
@@ -79,7 +79,7 @@ export const FileUploadItem = ({
         <div className="mt-1">
           <Form.Label>{st('Comment')}</Form.Label>
           <Form.Control
-            placeholder={st('Enter your answer here')}
+            placeholder={st('Enter your answer here.')}
             as="textarea"
             rows={4}
             maxLength={Infinity}

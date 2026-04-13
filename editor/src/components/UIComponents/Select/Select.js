@@ -9,6 +9,11 @@ import { STATES } from '../../../helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 
+// the reason for using "==" instead of "===" is that sometimes the backend returns numbers and sometimes strings, we want to make sure it works in both cases
+// till we have a backend that is consistent in the types it returns, we need to keep this logic here
+const optionFilter = (options, fieldName, value) =>
+  options.find((option) => option[fieldName] == value)
+
 export const Select = ({
   labelText,
   options = [],
@@ -62,7 +67,7 @@ export const Select = ({
     !isMultiselect &&
     options?.length
   ) {
-    value = options.find((option) => option.value === value)
+    value = optionFilter(options, 'value', value)
   }
 
   if (
@@ -71,7 +76,7 @@ export const Select = ({
     !isMultiselect &&
     options?.length
   ) {
-    defaultValue = options.find((option) => option.value === defaultValue)
+    defaultValue = optionFilter(options, 'value', defaultValue)
   }
 
   const handleOnChange = (selectedOption) => {

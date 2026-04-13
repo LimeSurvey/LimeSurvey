@@ -59,11 +59,23 @@ class RenderRanking extends QuestionBaseRenderer
                 : $this->iMaxSubquestions
         );
 
+        $answerOptions = $this->aAnswerOptions[0];
+        // prepare display answers before sorting so randomization is reflected in ui
+        foreach ($answerOptions as $oAnswer) {
+            $this->aDisplayAnswers[$oAnswer->aid] = array_merge($oAnswer->attributes, $oAnswer->answerl10ns[$this->sLanguage]->attributes);
+        }
+
+        // sort answerOptions for selects to have the first ranks when there is randomization
+        usort($answerOptions, function ($a, $b) {
+            return $a->sortorder <=> $b->sortorder;
+        });
+
         $sSelects = '';
         $curValue = '';
+        $maxAnswersPossible = min($iMaxLine, count($answerOptions));
 
-        for ($i = 1; $i <= $iMaxLine; $i++) {
-            $myfname = $this->sSGQA . '_R' . $this->aAnswerOptions[0][$i - 1]->aid;
+        for ($i = 1; $i <= $maxAnswersPossible; $i++) {
+            $myfname = $this->sSGQA . '_R' . $answerOptions[$i - 1]->aid;
             $this->sLabeltext = ($i == 1) ? gT('First choice') : sprintf(gT('Choice of rank %s'), $i);
             $aItemData = [];
 
@@ -77,8 +89,7 @@ class RenderRanking extends QuestionBaseRenderer
                 );
             }
 
-            foreach ($this->aAnswerOptions[0] as $oAnswer) {
-                $this->aDisplayAnswers[$oAnswer->aid] = array_merge($oAnswer->attributes, $oAnswer->answerl10ns[$this->sLanguage]->attributes);
+            foreach ($answerOptions as $oAnswer) {
                 $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], false);
 
                 if ($mSessionValue == $oAnswer->code) {
@@ -102,7 +113,7 @@ class RenderRanking extends QuestionBaseRenderer
                     'myfname' => $myfname,
                     'labeltext' => $this->sLabeltext,
                     'options' => $aItemData,
-                    'thisvalue' => $curValue
+                    'thisvalue' => $curValue,
                 ),
                 true
             );

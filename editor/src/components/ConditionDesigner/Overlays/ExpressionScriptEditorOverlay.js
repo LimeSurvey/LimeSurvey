@@ -49,11 +49,9 @@ export const ExpressionScriptEditorOverlay = ({ question, onApply }) => {
       <div className="condition-designer-overlay-title">
         <p>{t('Condition code')}</p>
       </div>
-
       <p className="condition-designer-overlay-message">
         {t('Edit or copy large conditions')}
       </p>
-
       <div className="text-start condition-designer-overlay-textarea-container">
         <CodeEditor
           id="expression-script-editor"
@@ -70,8 +68,7 @@ export const ExpressionScriptEditorOverlay = ({ question, onApply }) => {
           ]}
         />
       </div>
-
-      <div className="condition-designer-overlay-actions">
+      <div className="condition-designer-overlay-actions d-flex justify-content-end">
         <Button
           variant="secondary"
           className="condition-designer-overlay-secondary-button"

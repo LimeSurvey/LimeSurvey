@@ -107,6 +107,7 @@ trait OpHandlerValidationTrait
             }
             $keys = array_keys($op->getProps());
             foreach ($keys as $key) {
+                /** @psalm-suppress TypeDoesNotContainType  */
                 $valid = $alphabetic ? !is_numeric($key) : is_numeric($key);
                 if (!$valid) {
                     $validationData = $this->addErrorToValidationData(

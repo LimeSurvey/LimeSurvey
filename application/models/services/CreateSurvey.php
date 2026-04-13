@@ -210,7 +210,6 @@ class CreateSurvey
         $this->survey->showwelcome = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->allowprev =  self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->questionindex = self::INTEGER_VALUE_FOR_INHERIT;
-        $this->survey->nokeyboard = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->showprogress = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->printanswers = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->listpublic = self::STRING_SHORT_VALUE_INHERIT;

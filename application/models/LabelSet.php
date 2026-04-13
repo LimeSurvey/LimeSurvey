@@ -101,23 +101,6 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
         }
     }
 
-    /**
-     * @param $data
-     * @return bool|int
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $lblset = new self();
-        foreach ($data as $k => $v) {
-                    $lblset->$k = $v;
-        }
-        if ($lblset->save()) {
-            return $lblset->lid;
-        }
-        return false;
-    }
-
     public function getLanguageArray()
     {
         return explode(' ', $this->languages);

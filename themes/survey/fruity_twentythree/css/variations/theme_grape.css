@@ -14817,6 +14817,9 @@ a [class^=ri-], a [class*=" ri-"] {
 .public-stats .statsNumRecords {
   color: #1E1E1E;
 }
+.public-stats .card {
+  min-width: max-content;
+}
 
 .group-container .group-title {
   font-weight: 600;

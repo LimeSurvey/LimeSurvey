@@ -103,16 +103,6 @@ class quexmlpdf extends pdf
     protected $barcodeType = 'I25';
 
     /**
-     * The x position in MM of the barcode
-     *
-     * @var bool  Defaults to 138.
-     * @since 2010-09-20
-     * @deprecated
-     * @see $barcodeMarginX
-     */
-    //protected $barcodeX = 138;
-
-    /**
      * The distance between the right hand page border and
      * the end of the barcode in MM
      *
@@ -186,15 +176,6 @@ class quexmlpdf extends pdf
      * @since 2012-01-31
      */
     protected $questionTitleSuffix = ".";
-
-    /**
-     * Width of question text in MM
-     *
-     * @var mixed  Defaults to 120.
-     * @since 2010-09-20
-     * @deprecated
-     */
-    //protected $questionTextWidth = 120;
 
     /**
      * Right margin of question text in MM
@@ -441,16 +422,6 @@ class quexmlpdf extends pdf
     protected $barcodeResponseHeight = 6;
 
     /**
-     * The maximum number of text responses per line
-     *
-     * @var mixed  Defaults to 24.
-     * @since 2010-09-20
-     * @deprecated
-     * @see $textResponseMarginX
-     */
-    //protected $textResponsesPerLine = 24;
-
-    /**
      * The left hand margin of text responses to auto calculate responses
      * per line (mm)
      *
@@ -458,16 +429,6 @@ class quexmlpdf extends pdf
      * @since 2011-10-25
      */
     protected $textResponseMarginX = 13;
-
-    /**
-     * Maximum number of text responses boxes where the label should appear on the same line
-     *
-     * @var mixed  Defaults to 16.
-     * @since 2010-09-20
-     * @deprecated
-     * @see $labelTextResponsesSameLineMarginX
-     */
-    //protected $labelTextResponsesSameLine = 16;
 
     /**
      * The left hand margin of text responses to auto calculated responses
@@ -501,16 +462,6 @@ class quexmlpdf extends pdf
      * @since 2010-09-20
      */
     protected $longTextResponseHeightMultiplier = 1;
-
-    /**
-     * Width of a long text response box
-     *
-     * @var mixed  Defaults to 145.
-     * @since 2010-09-20
-     * @deprecated
-     * @see drawLongText() for the new calculation of long text box width
-     */
-    //protected $longTextResponseWidth = 145;
 
     /**
      * Default number of characters to store in a long text field

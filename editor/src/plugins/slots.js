@@ -4,4 +4,5 @@ export const PLUGIN_SLOTS = {
   SURVEY_SETTINGS_BLOCK_TOKENS_BOTTOM: 'surveysettingsblock:tokens:bottom',
   SHARING_OVERVIEW_BOTTOM_LEFT: 'sharingoverview:bottom:left',
   SHARING_OVERVIEW_BOTTOM_RIGHT: 'sharingoverview:bottom:right',
+  TRANSLATIONS_PANEL: 'translations:panel:content',
 }

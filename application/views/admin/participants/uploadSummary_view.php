@@ -109,7 +109,7 @@ if (empty($errorinupload)) {
                 <?= $alerts ?>
             </div>
             <div class="modal-footer">
-                <a href="<?= App()->createUrl("admin/participants/sa/displayParticipants") ?>" class="btn btn-outline-secondary"><?php eT("Ok");?></a>
+                <a href="<?= App()->createUrl("admin/participants/sa/displayParticipants") ?>" class="btn btn-outline-secondary"><?php eT("OK");?></a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

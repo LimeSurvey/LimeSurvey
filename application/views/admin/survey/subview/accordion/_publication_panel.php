@@ -24,7 +24,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
 <div id='publication-panel'>
     <?php if ($bShowAllOptions === true){ ?>
     <div class="row">
-            <h1><?php eT("Publication date"); ?></h1>
+            <h2 class="h1"><?php eT("Publication date"); ?></h2>
             <!-- Start date/time -->
             <div class="col-lg-3 mb-3">
                 <label class=" form-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
@@ -69,12 +69,13 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     <div>
             <!-- List survey publicly -->
             <div class="mb-3 mt-4">
-                <h1><?php eT("Access control"); ?></h1>
+                <h2 class="h1"><?php eT("Access control"); ?></h2>
                 <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'listpublic',
                         'checkedOption' => $oSurvey->listpublic,
+                        'ariaLabel' => gT('Link survey on public index page:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->listpublic . " ᴵ" ])
                             : $optionsOnOff,
@@ -88,6 +89,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecookie',
                         'checkedOption' => $oSurvey->usecookie,
+                        'ariaLabel' => gT('Set cookie to prevent repeated participation:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->usecookie . " ᴵ" ])
                             : $optionsOnOff,
@@ -106,11 +108,12 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             
             ?>
             <div class="mb-3 mt-4">
-                <h1><?php eT("CAPTCHA"); ?></h1>
+                <h2 class="h1"><?php eT("CAPTCHA"); ?></h2>
                 <label class=" form-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecaptcha_surveyaccess',
+                        'ariaLabel' => gT('Use CAPTCHA for survey access:'),
                         'checkedOption'         => (in_array($usecap, $aCaptchaSurveyAccessYes))
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaSurveyAccessInherit)) ? ('I') : ('N')),
@@ -127,6 +130,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecaptcha_registration',
+                        'ariaLabel' => gT('Use CAPTCHA for registration:'),
                         'checkedOption' => (in_array($usecap, $aCaptchaRegistrationYes))
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaRegistrationInherit))
@@ -145,6 +149,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecaptcha_saveandload',
+                        'ariaLabel' => gT('Use CAPTCHA for save and load:'),
                         'checkedOption' => (in_array($usecap, $aCaptchaLoadSaveYes))
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaLoadSaveInherit)) ? ('I') : ('N')),

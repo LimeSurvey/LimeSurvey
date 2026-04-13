@@ -692,9 +692,9 @@ class LsDefaultDataSets
                 null,
                 4,
                 'surveyLogicFile',
-                gT('Survey logic file', 'unescaped'),
-                gT('Survey logic file', 'unescaped'),
-                gT('Survey logic file', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
                 'ri-git-branch-fill',
                 'remix',
                 '',
@@ -970,7 +970,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/variations/theme_apple.css","css/base.css","css/custom.css"], "remove":["survey.css", "template-core.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css", "awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/custom.js"], "remove":["survey.js", "template-core.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png","brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans", "bodybackgroundcolor":"#ffffff","fontcolor":"#444444", "questionbackgroundcolor":"#ffffff", "checkicon":"f00c","cssframework":"Apple"}',
+            'options'           => '{"hideprivacyinfo":"off","showpopups":"1","showclearall":"off","questionhelptextposition":"top","fixnumauto":"enable","backgroundimage":"off","backgroundimagefile":".\/files\/pattern.png","brandlogo":"off","brandlogofile":"image::theme::files\/logo.png","font":"ibm-sans", "bodybackgroundcolor":"#ffffff","fontcolor":"#444444", "questionbackgroundcolor":"#ffffff", "checkicon":"EB7A","cssframework":"Apple", "notables":"1"}',
             'cssframework_name' => '',
             'cssframework_css'  => '',
             'cssframework_js'   => '',
@@ -1005,6 +1005,28 @@ class LsDefaultDataSets
     }
 
 
+    /**
+     * Provides the default set of theme/template metadata used by the application to update database.
+     *
+     * Each element is an associative array describing a template/theme and includes the following keys:
+     * - `name`: internal template identifier
+     * - `folder`: template folder name
+     * - `title`: human-readable title
+     * - `creation_date`: creation timestamp (YYYY-MM-DD HH:MM:SS)
+     * - `author`, `author_email`, `author_url`: author metadata
+     * - `copyright`: copyright notice
+     * - `license`: license information
+     * - `version`: template version
+     * - `api_version`: compatible API/version marker
+     * - `view_folder`: folder for view files
+     * - `files_folder`: folder for asset files
+     * - `description`: localized or HTML description
+     * - `last_update`: last update timestamp or null
+     * - `owner_id`: owner user id
+     * - `extends`: name of a parent template this one extends (empty if none)
+     *
+     * @return array[] Array of template metadata records.
+     */
     public static function getTemplatesData()
     {
         $returnArray = [];
@@ -1061,7 +1083,7 @@ class LsDefaultDataSets
             'api_version'   => '3.0',
             'view_folder'   => 'views',
             'files_folder'  => 'files',
-            'description'   => gT("Based on BootsWatch Themes:") . "<br><a href='https://bootswatch.com/3/'>" . gT("Visit Bootswatch page") . "</a>",
+            'description'   => '{{gT("Based on BootsWatch Themes:")}}<br><a href=\'https://bootswatch.com/3/\' target=\'_blank\' rel=\'external\' title=\'{{gT("Visit Bootswatch page in a new window.")}}\'>{{gT("Visit Bootswatch page")}} <i class=\'ri-external-link-line\'></i><span class=\'visually-hidden\'>{{gT("(Opens in a new window)")}}</span></a>',
             'last_update'   => null,
             'owner_id'      => 1,
             'extends'       => 'vanilla',
@@ -1461,7 +1483,7 @@ class LsDefaultDataSets
                 'ordering' => 22,
                 'title' => gT('Now save the created question'),
                 'content' => gT('Next, we will create subquestions and answer options.') . '<br/>'
-                    . gT('Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter.'),
+                    . gT('Please remember that a valid code must start with a letter and may contain only letters and numbers.'),
                 'settings' => json_encode(array(
                     'element' => '#save-button',
                     'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
@@ -2837,9 +2859,7 @@ class LsDefaultDataSets
         //don't send password anymore, just send a link for the new admin to generate their own password
         //$template .= "<p><strong>" . gT("Password") . "</strong>: {PASSWORD}</p>";
         $template .= '<p><a href="{LOGINURL}">' . gT("Click here to set your password") . '</a></p>';
-        $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";
-        $template .= "<p>" . gT("Thank you") . "!</p>";
-
+        $template .= "<p>" . sprintf(gT("If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"), "{SITEADMINEMAIL}") . "</p><p> </p>";
         $default['sendadmincreationemail'] = 1;
         $default['admincreationemailsubject']  = sprintf(gT("User registration at '%s'", "unescaped"), "{SITENAME}");
         $default['admincreationemailtemplate'] = $template;

@@ -1,8 +1,6 @@
 .confirm-modal {
-  background-color: rgba(0, 0, 0, 0.5);
   @include med14-c;
-
-  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
 
   .modal-title {
     text-align: center;
@@ -14,10 +12,44 @@
     border: 2px solid $r-700;
     border-radius: 100px;
     padding: 8px;
-    color: $r-700;
+  }
+
+  .btn-close {
+    opacity: 1 !important;
+  }
+
+  .modal-body {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .description {
+      color: $g-700;
+      margin-top: 16px;
+    }
+  }
+
+  .modal-footer {
+    padding: 24px 21px !important;
   }
 
   .modal-content {
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+    min-width: 600px;
+    height: fit-content;
+    min-height: 200px;
+
+    .cancel-button {
+      background-color: $g-600 !important;
+      border-radius: 4px;
+      border: none;
+      color: $white !important;
+    }
+
+    .confirm-button {
+      border-radius: 4px;
+      border: none;
+      background-color: $error !important;
+      color: $white !important;
+    }
   }
 }

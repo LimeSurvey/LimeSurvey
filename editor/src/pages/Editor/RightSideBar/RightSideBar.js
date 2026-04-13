@@ -36,7 +36,9 @@ export const RightSideBar = ({ surveyId }) => {
       {focused && groupIndex != null && questionIndex == null && (
         <GroupSettings gid={focused.gid} />
       )}
-      {focused && <QuestionSettings surveyId={surveyId} />}
+      {focused && questionIndex != null && (
+        <QuestionSettings surveyId={surveyId} />
+      )}
       {focused?.info?.type === getQuestionTypeInfo().WELCOME_SCREEN.type && (
         <WelcomeSettings surveyId={surveyId} />
       )}

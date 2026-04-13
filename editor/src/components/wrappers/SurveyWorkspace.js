@@ -20,7 +20,7 @@ export const SurveyWorkspace = ({ children }) => {
     for (const error of errorMessages) {
       Toast({
         message: error,
-        leftIcon: <ExclamationMark />,
+        leftIcon: <ExclamationMark className="error-fill" />,
         rightIcon: <XIcon />,
       })
     }

@@ -4,7 +4,6 @@ import { PlusLg } from 'react-bootstrap-icons'
 import { Button } from 'react-bootstrap'
 import { useState } from 'react'
 import { cloneDeep } from 'lodash'
-
 import { Entities, getInfoFromObjectByIndex, Toast } from 'helpers'
 
 import { RankingAdvancedQuestionAnswersPlaceholder } from './RankingAdvancedQuestionAnswersPlaceholder'
@@ -24,6 +23,7 @@ export const RankingAdvancedQuestion = ({
   participantMode,
   language,
   onValueChange = () => {},
+  handleChildCodeUpdate,
 }) => {
   const [answersHeight, setAnswersHeight] = useState([])
   const [answersValue, setAnswersValue] = useState(cloneDeep(values))
@@ -112,6 +112,7 @@ export const RankingAdvancedQuestion = ({
                 qid={qid}
                 setAnswersHeight={setAnswersHeight}
                 language={language}
+                handleCodeUpdate={handleChildCodeUpdate}
               />
               {provided.placeholder}
             </div>

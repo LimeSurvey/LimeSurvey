@@ -30,6 +30,7 @@ class ReactEditor extends \PluginBase
         $this->subscribe('beforeControllerAction', 'redirectToDifferentCreateSurveyRoute');
         $this->subscribe('beforeRenderSurveySidemenu');
         $this->subscribe('beforeAdminMenuRender');
+        $this->subscribe('beforeSurveyAdminView');
     }
 
     public function beforeDeactivate()
@@ -77,12 +78,23 @@ class ReactEditor extends \PluginBase
     public function renderActivateEditorModal()
     {
         if ($this->isBackendAccess()) {
-            $assetsUrl = \Yii::app()->assetManager->publish(
-                dirname(__FILE__) . '/js'
-            );
-            \Yii::app()->clientScript->registerScriptFile(
-                $assetsUrl . '/activateEditor.js'
-            );
+            // Register assets as CClientScript packages so they are published
+            // during the render phase – the same code path used by all core
+            // packages (jquery, bootstrap, adminsidepanel …) that work reliably
+            // even right after a fresh installation.
+            \Yii::setPathOfAlias('reacteditor.js', dirname(__FILE__) . '/js');
+            \Yii::setPathOfAlias('reacteditor.css', dirname(__FILE__) . '/css');
+
+            App()->clientScript->addPackage('reacteditor-modal', [
+                'basePath' => 'reacteditor.js',
+                'js' => ['activateEditor.js'],
+            ]);
+            App()->clientScript->addPackage('reacteditor-modal-css', [
+                'basePath' => 'reacteditor.css',
+                'css' => ['editorModal.css'],
+            ]);
+            App()->clientScript->registerPackage('reacteditor-modal');
+            App()->clientScript->registerPackage('reacteditor-modal-css');
 
             $modalHtml = $this->renderPartial(
                 '_modalActivateDeactivateEditor',
@@ -243,5 +255,55 @@ class ReactEditor extends \PluginBase
     private function hasPathUrlFormat(): bool
     {
          return App()->getUrlManager()->getUrlFormat() === 'path';
+    }
+
+    /**
+     * Validates theme compatibility when a survey is opened in the admin view.
+     *
+     * When the React editor is enabled, this method checks whether the survey
+     * is using the 'Fruity TwentyThree' theme. If a different theme is detected,
+     * a warning flash message is displayed to inform the user.
+     *
+     * @return void
+     */
+    public function beforeSurveyAdminView()
+    {
+        if ($this->isEditorEnabled()) {
+            $survey = Survey::model()->findByPk(
+                (int) $this->getEvent()->get('surveyId')
+            );
+            $this->warnIfIncompatibleTheme($survey);
+        }
+    }
+
+    /**
+     * Shows a warning flash message if the survey's effective theme is not
+     * compatible with the React editor.
+     *
+     * If Survey::getTemplateEffectiveName() throws (e.g. when the survey
+     * inherits a missing group template), the exception is caught
+     * and the theme is treated as incompatible so the warning is still shown.
+     *
+     * @param Survey|null $survey
+     * @return void
+     */
+    private function warnIfIncompatibleTheme(?Survey $survey): void
+    {
+        if ($survey === null) {
+            return;
+        }
+
+        try {
+            $isCompatible = $survey->getTemplateEffectiveName() === 'fruity_twentythree';
+        } catch (\Throwable $e) {
+            $isCompatible = false;
+        }
+
+        if (!$isCompatible) {
+            App()->setFlashMessage(
+                gT("The new editor is currently only compatible with the 'Fruity TwentyThree' theme"),
+                'warning'
+            );
+        }
     }
 }

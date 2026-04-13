@@ -28,12 +28,12 @@ export const generateData = (responses, language, generatedColumns) => {
     data[index].lastName = response.lastName
     data[index].email = response.email
 
-    data[index].dateLastAction = dayJsHelper(response.dateLastAction).format(
-      'MM-DD-YYYY HH:mm:ss'
-    )
-    data[index].startDate = dayJsHelper(response.startDate).format(
-      'MM-DD-YYYY HH:mm:ss'
-    )
+    const formatDate = (date) =>
+      date ? dayJsHelper(date).format('MM-DD-YYYY HH:mm:ss') : 'N/A'
+    data[index].dateLastAction = formatDate(response.dateLastAction)
+    data[index].startDate = formatDate(response.startDate)
+    data[index].submitDate = formatDate(response.submitDate)
+
     data[index].ipAddr = response.ipAddr
     data[index].refUrl = response.refUrl
     data[index].completed = response.completed

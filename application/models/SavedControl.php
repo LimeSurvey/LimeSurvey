@@ -102,16 +102,6 @@ class SavedControl extends LSActiveRecord
         return $record->deleteAll($criteria);
     }
 
-    /**
-     * @param $data
-     * @return mixed
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        return $this->db->insert('saved_control', $data);
-    }
-
     public function getButtons()
     {
         $permission_respones_update = Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update');

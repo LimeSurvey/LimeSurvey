@@ -1,15 +1,22 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
-import { useBuffer, useFocused } from 'hooks'
 import {
-  confirmAlert,
+  useBuffer,
+  useFocused,
+  useSurveyRequestTimestamp,
+  useAppState,
+} from 'hooks'
+import {
   createBufferOperation,
   DuplicateQuestion,
   DuplicateQuestionGroup,
   getReorganizedQuestionGroups,
   InsertElementAndIncrementProperty,
   RandomNumber,
+  STATES,
 } from 'helpers'
+import { ConfirmModal } from 'components/Modals'
 
 import QuestionGroup from './QuestionGroup'
 
@@ -21,6 +28,12 @@ export const QuestionGroups = ({
 }) => {
   const { focused = {}, setFocused, unFocus } = useFocused()
   const { addToBuffer } = useBuffer()
+  const [deleteState, setDeleteState] = useState({ show: false, index: null })
+  const { surveyId } = useParams()
+  const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
+  const [, setSurveyRefreshRequired] = useAppState(
+    STATES.SURVEY_REFRESH_REQUIRED
+  )
 
   const keys = useMemo(() => {
     return [...Array(questionGroups.length)].map(() => `Q${RandomNumber()}`)
@@ -51,25 +64,26 @@ export const QuestionGroups = ({
   }
 
   const handleGroupDeletion = (index) => {
-    confirmAlert({ icon: 'warning' }).then(({ isConfirmed }) => {
-      if (!isConfirmed) {
-        return
-      }
+    setDeleteState({ show: true, index })
+  }
 
-      const updatedQuestionGroups = [...questionGroups]
-      updatedQuestionGroups.splice(index, 1)
-      update(updatedQuestionGroups)
+  const handleConfirmGroupDeletion = () => {
+    const { index } = deleteState
+    const updatedQuestionGroups = [...questionGroups]
+    updatedQuestionGroups.splice(index, 1)
+    update(updatedQuestionGroups)
 
-      const operation = createBufferOperation(questionGroups[index].gid)
-        .questionGroup()
-        .delete()
+    const operation = createBufferOperation(questionGroups[index].gid)
+      .questionGroup()
+      .delete()
 
-      addToBuffer(operation)
+    addToBuffer(operation)
 
-      if (!focused.qid && focused.gid === questionGroups[index].gid) {
-        unFocus()
-      }
-    })
+    if (!focused.qid && focused.gid === questionGroups[index].gid) {
+      unFocus()
+    }
+
+    setDeleteState({ show: false, index: null })
   }
 
   const handleQuestionGroupDuplication = (questionGroup, index) => {
@@ -115,6 +129,9 @@ export const QuestionGroups = ({
     addToBuffer(reorderOperation)
     update(updatedQuestionGroups)
     setFocused(duplicatedQuestionGroup, index + 1)
+
+    clearSurveyRequestTimestamp(surveyId)
+    setSurveyRefreshRequired(true)
   }
 
   // Keeps a running count on how many questions we have
@@ -122,6 +139,16 @@ export const QuestionGroups = ({
 
   return (
     <div>
+      <ConfirmModal
+        show={deleteState.show}
+        onHide={() => setDeleteState({ show: false, index: null })}
+        onConfirm={handleConfirmGroupDeletion}
+        title={t('Delete question group')}
+        description={t(
+          'Are you sure you want to delete this question group? This action cannot be reverted.'
+        )}
+        confirmButtonText={t('Delete')}
+      />
       {questionGroups.map((questionGroup, index) => {
         previousQuestionsTotal += questionGroup.questions.length
         return (

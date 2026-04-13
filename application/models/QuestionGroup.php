@@ -146,26 +146,6 @@ class QuestionGroup extends LSActiveRecord
             }
         }
     }
-    /**
-     * Insert an array into the groups table
-     * Returns false if insertion fails, otherwise the new GID
-     *
-     * @param array $data
-     * @return bool|int
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $group = new self();
-        foreach ($data as $k => $v) {
-            $group->$k = $v;
-        }
-        if (!$group->save()) {
-            return false;
-        } else {
-            return $group->gid;
-        }
-    }
 
     /**
      * Deletes a question group and all its dependencies.

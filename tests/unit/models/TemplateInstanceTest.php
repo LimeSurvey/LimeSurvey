@@ -17,8 +17,6 @@ class TemplateInstanceTest extends TestBaseClass
     public function testBasic()
     {
         if (defined('YII_DEBUG') && YII_DEBUG) {
-            \Yii::import('application.helpers.globalsettings_helper', true);
-
             \Yii::app()->setConfig('force_xmlsettings_for_survey_rendering', true);
 
             \Template::model()->resetInstance();

@@ -540,16 +540,16 @@ class Statistics extends SurveyCommonAction
         Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
-        require_once(Yii::app()->basePath . '/../vendor/pchart/pChart.class.php');
-        require_once(Yii::app()->basePath . '/../vendor/pchart/pData.class.php');
-        require_once(Yii::app()->basePath . '/../vendor/pchart/pCache.class.php');
+        require_once(Yii::app()->basePath . '/../assets/packages/pchart/pChart.class.php');
+        require_once(Yii::app()->basePath . '/../assets/packages/pchart/pData.class.php');
+        require_once(Yii::app()->basePath . '/../assets/packages/pchart/pCache.class.php');
 
         $tempdir = Yii::app()->getConfig("tempdir");
         $MyCache = new pCache($tempdir . '/');
         $aData['success'] = 1;
 
         if (isset($_POST['cmd']) && isset($_POST['id'])) {
-            $sStatisticsLanguage = sanitize_languagecode($_POST['sStatisticsLanguage']);
+            $sStatisticsLanguage = \LSYii_Validators::languageCodeFilter($_POST['sStatisticsLanguage'] ?? '');
             $sQCode = $_POST['id'];
             if (!is_numeric(substr((string) $sQCode, 0, 1))) {
                 // Strip first char when not numeric (probably T or D)

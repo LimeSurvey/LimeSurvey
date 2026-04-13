@@ -983,7 +983,9 @@ class LimeExpressionManager
                         $row['cfieldname'] = $aDictionary[$row['cfieldname']];
                     }
                     // else create name by concatenating two parts together
-                    $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
+                    $qcode = $oQuestion['title'] . '_' . $row['value'];
+                    $sgqa = array_search($qcode, $aDictionary, true);
+                    $fieldname = $sgqa . '.NAOK';
                     $subqid = $row['cfieldname'];
                     $value = 'Y';
                 }
@@ -1054,8 +1056,11 @@ class LimeExpressionManager
                     }
                 }
             }
-            if (($row['cqid'] == 0 && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname']) && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')) || substr($row['cfieldname'], 0, 1) == '+') {
-                $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a a token field)
+            if (($row['cqid'] == 0
+                    && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname'])
+                    && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')
+                ) || substr($row['cfieldname'], 0, 1) == '+') {
+                $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a token field)
             }
             $previousCondition = $row;
         }
@@ -1463,7 +1468,7 @@ class LimeExpressionManager
                             'qtype' => $type,
                             'type'  => 'default',
                             'class' => 'default',
-                            'eqn'   => 'unique(' . implode(',', $sq_names) . ') and count(' . implode(',', $sq_names) . ')==max(' . implode(',', $sq_eqPart) . ')',
+                            'eqn'   => 'unique(' . implode(',', $sq_names) . ')',
                             'qid'   => $questionNum,
                         ];
                     }
@@ -2986,22 +2991,22 @@ class LimeExpressionManager
                 /* different messages for text and checkbox questions */
                 if ($type == Question::QT_Q_MULTIPLE_SHORT_TEXT || $type == Question::QT_K_MULTIPLE_NUMERICAL || $type == Question::QT_SEMICOLON_ARRAY_TEXT || $type == Question::QT_COLON_ARRAY_NUMBERS) {
                     $_msgs = [
-                        'atleast_m' => $this->gT("Please fill in at least %s answers"),
-                        'atleast_1' => $this->gT("Please fill in at least one answer"),
-                        'atmost_m'  => $this->gT("Please fill in at most %s answers"),
-                        'atmost_1'  => $this->gT("Please fill in at most one answer"),
-                        '1'         => $this->gT("Please fill in at most one answer"),
-                        'n'         => $this->gT("Please fill in %s answers"),
+                        'atleast_m' => $this->gT("Please fill in at least %s answers."),
+                        'atleast_1' => $this->gT("Please fill in at least one answer."),
+                        'atmost_m'  => $this->gT("Please fill in at most %s answers."),
+                        'atmost_1'  => $this->gT("Please fill in at most one answer."),
+                        '1'         => $this->gT("Please fill in one answer."),
+                        'n'         => $this->gT("Please fill in %s answers."),
                         'between'   => $this->gT("Please fill in from %s to %s answers.")
                     ];
                 } else {
                     $_msgs = [
-                        'atleast_m' => $this->gT("Please select at least %s answers"),
-                        'atleast_1' => $this->gT("Please select at least one answer"),
-                        'atmost_m'  => $this->gT("Please select at most %s answers"),
-                        'atmost_1'  => $this->gT("Please select at most one answer"),
-                        '1'         => $this->gT("Please select one answer"),
-                        'n'         => $this->gT("Please select %s answers"),
+                        'atleast_m' => $this->gT("Please select at least %s answers."),
+                        'atleast_1' => $this->gT("Please select at least one answer."),
+                        'atmost_m'  => $this->gT("Please select at most %s answers."),
+                        'atmost_1'  => $this->gT("Please select at most one answer."),
+                        '1'         => $this->gT("Please select one answer."),
+                        'n'         => $this->gT("Please select %s answers."),
                         'between'   => $this->gT("Please select from %s to %s answers.")
                     ];
                 }
@@ -3021,15 +3026,15 @@ class LimeExpressionManager
                 $_maxV = (($max_num_value_n == '') ? "''" : $max_num_value_n);
                 if ($type != Question::QT_N_NUMERICAL) {
                     $qtips['value_range'] =
-                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s") . "',fixnum($_minV)), '')}" .
-                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s") . "',fixnum($_maxV)), '')}" .
-                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s") . "', fixnum($_minV)), '')}" .
+                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s.") . "',fixnum($_minV)), '')}" .
+                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s.") . "',fixnum($_maxV)), '')}" .
+                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s.") . "', fixnum($_minV)), '')}" .
                         "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Each answer must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
                 } else {
                     $qtips['value_range'] =
-                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Your answer must be at least %s") . "',fixnum($_minV)), '')}" .
-                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Your answer must be at most %s") . "',fixnum($_maxV)), '')}" .
-                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Your answer must be %s") . "', fixnum($_minV)), '')}" .
+                        "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Your answer must be at least %s.") . "',fixnum($_minV)), '')}" .
+                        "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Your answer must be at most %s.") . "',fixnum($_maxV)), '')}" .
+                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Your answer must be %s.") . "', fixnum($_minV)), '')}" .
                         "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Your answer must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
                 }
             }
@@ -3039,13 +3044,13 @@ class LimeExpressionManager
                 //Get date format of current question and convert date in help text accordingly
                 $LEM =& LimeExpressionManager::singleton();
                 $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $questionNum, $_SESSION['LEMlang']);
-                $aDateFormatData = getDateFormatDataForQID($aAttributes[$questionNum], $LEM->surveyOptions);
+                $aDateFormatData = getDateFormatDataForQID($aAttributes[$questionNum] ?? [], $LEM->surveyOptions);
                 $_minV = (($date_min == '') ? "''" : "if((strtotime(" . $date_min . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_min . ")),'')");
                 $_maxV = (($date_max == '') ? "''" : "if((strtotime(" . $date_max . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_max . ")),'')");
                 $qtips['value_range'] =
-                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Answer must be greater or equal to %s") . "',$_minV), '')}" .
-                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Answer must be less or equal to %s") . "',$_maxV), '')}" .
-                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Answer must be %s") . "', $_minV), '')}" .
+                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Answer must be greater or equal to %s.") . "',$_minV), '')}" .
+                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Answer must be less or equal to %s.") . "',$_maxV), '')}" .
+                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Answer must be %s.") . "', $_minV), '')}" .
                     "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Answer must be between %s and %s") . "', ($_minV), ($_maxV)), '')}";
             }
 
@@ -3054,9 +3059,9 @@ class LimeExpressionManager
                 $_minV = (($multiflexible_min == '') ? "''" : $multiflexible_min);
                 $_maxV = (($multiflexible_max == '') ? "''" : $multiflexible_max);
                 $qtips['value_range'] =
-                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s") . "',fixnum($_minV)), '')}" .
-                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s") . "',fixnum($_maxV)), '')}" .
-                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s") . "', fixnum($_minV)), '')}" .
+                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s.") . "',fixnum($_minV)), '')}" .
+                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s.") . "',fixnum($_maxV)), '')}" .
+                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s.") . "', fixnum($_minV)), '')}" .
                     "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Each answer must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
             }
 
@@ -3065,9 +3070,9 @@ class LimeExpressionManager
                 $_minV = (($min_num_value == '') ? "''" : $min_num_value);
                 $_maxV = (($max_num_value == '') ? "''" : $max_num_value);
                 $qtips['sum_range'] =
-                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("The sum must be at least %s") . "',fixnum($_minV)), '')}" .
-                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("The sum must be at most %s") . "',fixnum($_maxV)), '')}" .
-                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("The sum must equal %s") . "', fixnum($_minV)), '')}" .
+                    "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("The sum must be at least %s.") . "',fixnum($_minV)), '')}" .
+                    "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("The sum must be at most %s.") . "',fixnum($_maxV)), '')}" .
+                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("The sum must equal %s.") . "', fixnum($_minV)), '')}" .
                     "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("The sum must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
             }
 
@@ -3077,13 +3082,13 @@ class LimeExpressionManager
                 $_maxA = (($max_num_of_files == '') ? "''" : $max_num_of_files);
                 // TODO - create em_num_files class so can sepately style num_files vs. num_answers
                 $qtips['num_answers'] =
-                    "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)!=1,sprintf('" . $this->gT("Please upload at least %s files") . "',fixnum($_minA)),'')}" .
-                    "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)==1,sprintf('" . $this->gT("Please upload at least one file") . "',fixnum($_minA)),'')}" .
-                    "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)!=1,sprintf('" . $this->gT("Please upload at most %s files") . "',fixnum($_maxA)),'')}" .
-                    "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)==1,sprintf('" . $this->gT("Please upload at most one file") . "',fixnum($_maxA)),'')}" .
-                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) == 1,'" . $this->gT("Please upload one file") . "','')}" .
-                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) != 1,sprintf('" . $this->gT("Please upload %s files") . "',fixnum($_minA)),'')}" .
-                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('" . $this->gT("Please upload between %s and %s files") . "',fixnum($_minA),fixnum($_maxA)),'')}";
+                    "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)!=1,sprintf('" . $this->gT("Please upload at least %s files.") . "',fixnum($_minA)),'')}" .
+                    "{if(!is_empty($_minA) && is_empty($_maxA) && ($_minA)==1,sprintf('" . $this->gT("Please upload at least one file.") . "',fixnum($_minA)),'')}" .
+                    "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)!=1,sprintf('" . $this->gT("Please upload at most %s files.") . "',fixnum($_maxA)),'')}" .
+                    "{if(is_empty($_minA) && !is_empty($_maxA) && ($_maxA)==1,sprintf('" . $this->gT("Please upload at most one file.") . "',fixnum($_maxA)),'')}" .
+                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) == 1,'" . $this->gT("Please upload one file.") . "','')}" .
+                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) == ($_maxA) && ($_minA) != 1,sprintf('" . $this->gT("Please upload %s files.") . "',fixnum($_minA)),'')}" .
+                    "{if(!is_empty($_minA) && !is_empty($_maxA) && ($_minA) != ($_maxA),sprintf('" . $this->gT("Please upload between %s and %s files.") . "',fixnum($_minA),fixnum($_maxA)),'')}";
             }
 
 
@@ -3937,6 +3942,12 @@ class LimeExpressionManager
             if (!isset($this->qcode2sgqa[$varName])) {
                 $this->qcode2sgqa[$varName] = $sgqa;
             }
+            $tokens = explode("_", $varName);
+            if (count($tokens) > 1) {
+                $tokens = implode("_", $tokens);
+                $varName2 = explode("_", $sgqa)[0] . substr($tokens, strpos($tokens, "_") + 1);
+                $this->tempVars[$varName2] = $varInfo_Code;
+            }
             $this->jsVar2qid[$jsVarName] = $questionNum;
             $this->qcode2sgq[$fielddata['title']] = 'Q' . $questionNum;
 
@@ -4280,7 +4291,7 @@ class LimeExpressionManager
     {
         // These will be called in the order that questions are supposed to be asked
         // TODO - cache results and generated JavaScript equations?
-        if (!isset($eqn) || trim($eqn == '') || trim($eqn) == '1') {
+        if (!isset($eqn) || trim((string) $eqn) == '' || trim((string) $eqn) == '1') {
             $this->groupRelevanceInfo[] = [
                 'qid'           => $questionNum,
                 'gseq'          => $gseq,
@@ -4342,7 +4353,7 @@ class LimeExpressionManager
     private function _ProcessSubQRelevance($eqn, $questionNum = null, $rowdivid = null, $type = null, $qtype = null, $sgqa = null, $isExclusive = '', $irrelevantAndExclusive = '')
     {
         // These will be called in the order that questions are supposed to be asked
-        if (!isset($eqn) || trim($eqn == '') || trim($eqn) == '1') {
+        if (!isset($eqn) || trim((string) $eqn) == '' || trim((string) $eqn) == '1') {
             return true;
         }
         $questionSeq = -1;
@@ -4423,7 +4434,7 @@ class LimeExpressionManager
         }
 
         $eqn = (isset($this->gseq2info[$groupSeq]['grelevance']) ? $this->gseq2info[$groupSeq]['grelevance'] : 1);
-        if (is_null($eqn) || trim($eqn == '') || trim((string) $eqn) == '1') {
+        if (is_null($eqn) || trim((string) $eqn) == '' || trim((string) $eqn) == '1') {
             $this->gRelInfo[$groupSeq] = [
                 'gseq'          => $groupSeq,
                 'eqn'           => '',
@@ -5243,9 +5254,25 @@ class LimeExpressionManager
             }
 
             if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active']) {
-                $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                try {
+                    $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                } catch (\Exception $ex) {
+                    // The response table no longer exists (survey deactivated/deleted while user had a stale session).
+                    // Kill the stale session and redirect to the survey start page for a fresh start.
+                    killSurveySession($this->sid);
+                    $survey = Survey::model()->findByPk($this->sid);
+                    if ($survey) {
+                        App()->getController()->redirect($survey->getSurveyUrl());
+                    }
+                }
                 if (empty($oResponse)) {
-                    // This can happen if admin deletes incomple response while survey is running.
+                    // The response row was deleted (e.g. admin deleted incomplete response while survey was running).
+                    // Kill the stale session and redirect to the survey start page for a fresh start.
+                    killSurveySession($this->sid);
+                    $survey = Survey::model()->findByPk($this->sid);
+                    if ($survey) {
+                        App()->getController()->redirect($survey->getSurveyUrl());
+                    }
                     $message = submitfailed($this->gT('The data could not be saved because the response does not exist in the database.'));
                     LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
                     return $message;
@@ -5307,7 +5334,7 @@ class LimeExpressionManager
                             $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
                         }
                         if (!Response::model($this->sid)->updateByPk($oResponse->id, ['submitdate' => $submitdate]) && $submitdate != $oResponse->submitdate) {
-                            LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happened when trying to submit your response.'), $this->sid);
+                            LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error occurred when trying to submit your response.'), $this->sid);
                         }
                     }
                 }
@@ -6710,7 +6737,7 @@ class LimeExpressionManager
                                 'coreId'    => "vmsg_{$qid}_defaultvalueerror",
                                 'vclass'    => 'defaultvalueerror',
                                 'coreClass' => 'ls-em-tip em_defaultvalueerror',
-                                'vtip'      => sprintf(gT("Error in default value : %s"), $validityString)
+                                'vtip'      => sprintf(gT("Error in default value: %s"), $validityString)
                             ],
                             true
                         );
@@ -8462,7 +8489,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $where .= " and a.qid = q.qid and q.sid = " . $surveyid;
         }
         if (!is_null($lang)) {
-            $lang = sanitize_languagecode($lang);
+            $lang = \LSYii_Validators::languageCodeFilter($lang);
             $where .= " and l.language={$db->quoteValue($lang)}";
         }
 
@@ -8902,7 +8929,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_D_DATE: //DATE
                             $LEM =& LimeExpressionManager::singleton();
                             $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'], $_SESSION['LEMlang']);
-                            $aDateFormatData = getDateFormatDataForQID($aAttributes[$var['qid']], $LEM->surveyOptions);
+                            $aDateFormatData = getDateFormatDataForQID($aAttributes[$var['qid']] ?? [], $LEM->surveyOptions);
                             $shown = '';
                             if (strtotime((string) $code) !== false) {
                                 $shown = date($aDateFormatData['phpdate'], strtotime((string) $code));
@@ -9153,7 +9180,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}', ['SURVEYNAME' => $aSurveyInfo['surveyls_title']]));
 
-        $out = '<div id="showlogicfilediv" class="table-responsive"><div class="pagetitle h3">' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</div>\n";
+        $out = '<div id="showlogicfilediv" class="table-responsive"><div class="pagetitle h3">' . $LEM->gT('Logic check for Survey # ') . '[' . $LEM->sid . "]: $surveyname</div>\n";
         $out .= "<table id='logicfiletable' class='table table-bordered'>";
 
         if (is_null($gid) && is_null($qid)) {

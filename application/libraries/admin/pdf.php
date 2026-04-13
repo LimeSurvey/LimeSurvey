@@ -894,7 +894,7 @@ class pdf extends TCPDF
      */
     public function addTitle($sTitle, $sSubtitle = "")
     {
-        if (getGlobalSetting('pdfshowsurveytitle') == 'Y') {
+        if (Yii::app()->getConfig('pdfshowsurveytitle') == 'Y') {
             if (!empty($sTitle)) {
                 $this->ln(1);
                 $this->SetFontSize($this->_ibaseAnswerFontSize + 6);

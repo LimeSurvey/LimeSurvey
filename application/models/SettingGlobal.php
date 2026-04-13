@@ -114,7 +114,7 @@ class SettingGlobal extends LSActiveRecord
      */
     public static function increaseCustomAssetsversionnumber()
     {
-        $iCustomassetversionnumber = getGlobalSetting('customassetversionnumber');
+        $iCustomassetversionnumber = Yii::app()->getConfig('customassetversionnumber');
         $iCustomassetversionnumber++;
         self::setSetting('customassetversionnumber', $iCustomassetversionnumber);
         return;

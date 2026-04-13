@@ -33,7 +33,7 @@ export const ExportPopupHTML = ({ exportOptions }) => {
 
   return (
     <div className="responses-export">
-      <h2 className="title">{t('Export survey responses')}</h2>
+      <h2 className="title">{t('Export responses')}</h2>
       <hr />
       <div className="export-option ">
         <h6>{t('Export format')}</h6>
@@ -52,12 +52,12 @@ export const ExportPopupHTML = ({ exportOptions }) => {
         </div>
       </div>
       <div className="export-option ">
-        <h6>{t('Data view')}</h6>
+        <h6>{t('Scope')}</h6>
         <div>
           <ToggleButtons
             toggleOptions={[
-              { name: t('Filtered Data'), value: '0' },
-              { name: t('All Data'), value: '1' },
+              { name: t('Filtered responses'), value: '0' },
+              { name: t('All responses'), value: '1' },
             ]}
             id={`responses-export-data`}
             className="condition-toggle"

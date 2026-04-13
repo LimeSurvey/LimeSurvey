@@ -9,10 +9,6 @@ $saveUrl = \Yii::app()->createUrl(
     "plugins/direct/plugin/ReactEditor/function/saveActivateDeactivate",
 );
 
-$cssUrl = \Yii::app()->assetManager->publish(
-    dirname(dirname(__DIR__)) . '/ReactEditor/css'
-);
-\Yii::app()->clientScript->registerCssFile($cssUrl . '/editorModal.css');
 
 $colClassLeft = $hasPathUrlFormat ? 'col-md-5' : 'col-md-6';
 $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
@@ -98,7 +94,7 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                             </div>
                         </div>
                         <div class="<?= $colClassRight ?>">
-                            <img src="/application/core/plugins/ReactEditor/images//new_editor_image_small.png"
+                            <img src="<?= Yii::app()->baseUrl ?>/application/core/plugins/ReactEditor/images/new_editor_image_small.png"
                                  class="img-fluid editor-preview"
                                  alt="Editor preview">
                         </div>

@@ -181,8 +181,8 @@ class User extends LSActiveRecord
             'questionselectormode' => gT('Question selector mode'),
             'one_time_pw' => gT('One-time password'),
             'dateformat' => gT('Date format'),
-            'created' => gT('Created at'),
-            'modified' => gT('Modified at'),
+            'created' => gT('Created'),
+            'modified' => gT('Modified'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
             'user_status' => gT("Status"),
@@ -487,19 +487,6 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Adds user record
-     *
-     * @access public
-     * @param array $data
-     * @deprecated : just don't use it
-     * @return string
-     */
-    public function insertRecords($data)
-    {
-        return $this->getDb()->insert('users', $data);
-    }
-
-    /**
      * Returns User ID common in Survey_Permissions and User_in_groups
      * @param $surveyid
      * @param $postusergroupid
@@ -702,7 +689,7 @@ class User extends LSActiveRecord
                 )
         ];
         $dropdownItems[] = [
-            'title'            => gT('Delete User'),
+            'title'            => gT('Delete user'),
             'iconClass'        => "ri-delete-bin-fill text-danger",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--delete",
             'linkId'           => "UserManagement--delete-$this->uid",
@@ -827,7 +814,7 @@ class User extends LSActiveRecord
         if ($permission_read_surveys) {
             $cols[] = array(
                 "name" => 'surveysCreated',
-                "header" => gT("No of surveys"),
+                "header" => gT("Owned surveys"),
                 'filter' => false
             );
         }
@@ -840,7 +827,7 @@ class User extends LSActiveRecord
         if ($permission_read_users && $permission_read_usergroups) {
             $cols[] = array(
                 "name" => 'groupList',
-                "header" => gT("Usergroups"),
+                "header" => gT("User groups"),
                 'filter' => false
             );
         }

@@ -18,13 +18,11 @@ export const ConditionScriptOverwriteConfirmation = ({
       <div className="condition-designer-overlay-title">
         <p>{t('Overwriting condition from ExpressionScript')}</p>
       </div>
-
       <div className="condition-designer-overlay-message">
         {t(
           'The condition created inside the builder will replace your existing condition written in ExpressionScript mode. This action cannot be undone. Do you want to apply your changes?'
         )}
       </div>
-
       <div className="condition-designer-overlay-message mt-3">
         <p>{t('This script will be overwritten:')}</p>
 
@@ -44,8 +42,7 @@ export const ConditionScriptOverwriteConfirmation = ({
           />
         </div>
       </div>
-
-      <div className="condition-designer-overlay-actions">
+      <div className="condition-designer-overlay-actions d-flex justify-content-end">
         <Button
           variant="secondary"
           className="condition-designer-overlay-secondary-button"

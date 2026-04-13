@@ -118,9 +118,12 @@ var RankingQuestion = function (options) {
         updateDragDropRank = function () {
             $('#question' + questionId + ' .select-item select').val('');
             $('#sortable-rank-' + questionId + ' li').each(function (index) {
-                $('#question' + questionId + ' .select-item select').eq(index).data("old-val", $('#question' + questionId + ' .select-item select').eq(index).val());
-                $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
-                /* todo ? Set next option with same value disable ? */
+               var $targetSelect = $('#question' + questionId + ' .select-item select').eq(index);
+               if ($targetSelect.length > 0) {
+                    $targetSelect.data("old-val", $targetSelect.val());
+                    var valToSet = $(this).data("value");
+                    $targetSelect.val(valToSet);
+                }
             });
 
             // Update #relevance and lauch checkconditions function

@@ -107,7 +107,7 @@ class AdminController extends LSYii_Controller
             }
             $sURL = $sURL['url'];
         } else {
-            $sTitle = gT('Main Admin Screen');
+            $sTitle = gT('Main admin screen');
             $sURL = $this->createUrl('/admin');
         }
         $sOutput .= '<input type="submit" value="' . $sTitle . '" onclick=\'window.open("' . $sURL . '", "_top")\' /><br /><br />' . "\n";
@@ -135,7 +135,7 @@ class AdminController extends LSYii_Controller
             if (Yii::app()->request->getPost('lang') == 'auto') {
                 $sLanguage = getBrowserLanguage();
             } else {
-                $sLanguage = sanitize_languagecode(Yii::app()->request->getPost('lang'));
+                $sLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
@@ -158,7 +158,7 @@ class AdminController extends LSYii_Controller
     {
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
-            $sDBVersion = getGlobalSetting('DBVersion');
+            $sDBVersion = Yii::app()->getConfig('DBVersion');
         }
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
@@ -188,7 +188,7 @@ class AdminController extends LSYii_Controller
 
                 $this->redirect(array('/admin/authentication/sa/login'));
             } elseif (!empty($this->user_id) && $action != "remotecontrol") {
-                if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
+                if (Yii::app()->session['session_hash'] != hash('sha256', Yii::app()->getConfig('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
                     $this->redirect(array('/admin/authentication/sa/login'));

@@ -153,7 +153,6 @@ class TestHelper extends TestCase
         $db = Yii::app()->getDb();
         $db->schema->getTables();
         $db->schema->refresh();
-        $db->active = false;
         $db->active = true;
 
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null, 'isAllowRegister' => false], $result, 'Activate survey is OK');

@@ -106,7 +106,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
         $aData = $this->setSurveyIdAndObject([], $surveyid);
@@ -159,7 +159,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     public function actionEdit(int $surveyid, $gid, $landOnSideMenuTab = 'structure')
     {
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
         $aData = $this->setSurveyIdAndObject([], $surveyid);
@@ -218,7 +218,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     public function actionAdd(int $surveyid, string $landOnSideMenuTab = 'structure')
     {
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
 
@@ -284,7 +284,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 'import'
             )
         ) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(
                 $this->createUrl(
                     'questionAdministration/listQuestions/',
@@ -353,7 +353,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $this->aData = $aData;
             $this->render('importGroup_view', $aData);
         } else {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(
                 $this->createUrl(
                     'questionAdministration/listQuestions/',
@@ -591,11 +591,11 @@ class QuestionGroupsAdministrationController extends LSBaseController
         //permission check ...
         if ($oQuestionGroup == null) {
             if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create')) {
-                App()->user->setFlash('error', gT("Access denied"));
+                App()->user->setFlash('error', gT("Access denied!"));
                 $this->redirect(App()->request->urlReferrer);
             }
         } elseif (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update')) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->request->urlReferrer);
         }
 
@@ -680,7 +680,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 array(
                     'data' => [
                         'success' => false,
-                        'message' => gT("Access denied"),
+                        'message' => gT("Access denied!"),
                         'DEBUG'   => ['POST' => $_POST, 'grouparray' => []]
                     ],
                 ),

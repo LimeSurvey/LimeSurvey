@@ -508,45 +508,6 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Return the array of existing and installed template with the preview images
-     * @deprecated 2024-04-25 use directly Template::getTemplateList
-     * @return array[]
-     */
-    public static function getTemplateListWithPreviews()
-    {
-        $criteria = new CDBCriteria();
-        $criteria->select = 'template_name';
-        $criteria->condition = 'sid IS NULL AND gsid IS NULL';
-        $criteria->addInCondition('template_name', array_keys(self::getTemplateList()));
-
-        $oTemplateList = TemplateConfiguration::model()->with(array(
-            'template' => ['select' => 'id, name'],
-        ))->findAll($criteria);
-        $aTemplateList = array();
-        foreach ($oTemplateList as $oTemplate) {
-            $aTemplateList[$oTemplate->template_name]['preview'] = $oTemplate->preview;
-        }
-        return $aTemplateList;
-    }
-
-    /**
-     * isStandardTemplate returns true if a template is a standard template
-     * This function does not check if a template actually exists
-     *
-     * @param mixed $sTemplateName template name to look for
-     * @return bool True if standard template, otherwise false
-     * @deprecated Use SurveyThemeHelper::getStandardTemplateList() instead.
-     */
-    public static function isStandardTemplate($sTemplateName)
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::isStandardTemplate($sTemplateName);
-    }
-
-    /**
      * Get instance of template object.
      * Will instantiate the template object first time it is called.
      *
@@ -668,22 +629,6 @@ class Template extends LSActiveRecord
         return AssetVersion::deleteAssetVersion(self::getTemplatePath($this->name));
     }
 
-    /**
-     * Return the standard template list
-     * @return string[]
-     * @throws Exception
-     * @deprecated Use SurveyThemeHelper::getStandardTemplateList() instead.
-     */
-    public static function getStandardTemplateList()
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::getStandardTemplateList();
-    }
-
-
     public static function hasInheritance($sTemplateName)
     {
         return self::model()->countByAttributes(array('extends' => $sTemplateName));
@@ -698,42 +643,6 @@ class Template extends LSActiveRecord
             self::$aAllTemplatesDir = array_merge($aTemplatesInUpload, $aTemplatesInCore);
         }
         return self::$aAllTemplatesDir;
-    }
-
-    /**
-     * @deprecated Use SurveyThemeHelper::getTemplateInUpload() instead.
-     */
-    public static function getTemplateInUpload()
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::getTemplateInUpload();
-    }
-
-    /**
-     * @deprecated Use SurveyThemeHelper::getTemplateInStandard() instead.
-     */
-    public static function getTemplateInStandard()
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::getTemplateInStandard();
-    }
-
-    /**
-     * @deprecated Use SurveyThemeHelper::getTemplateInFolder() instead.
-     */
-    public static function getTemplateInFolder($sFolder)
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::getTemplateInFolder($sFolder);
     }
 
     /**
