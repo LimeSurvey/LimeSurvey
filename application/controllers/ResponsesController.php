@@ -145,7 +145,7 @@ class ResponsesController extends LSBaseController
         // We just check it again here to be sure.
         $exist = SurveyDynamic::model($surveyId)->exist($id);
         if (!$exist) {
-            throw new CHttpException(404, gT("Invalid response id."));
+            throw new CHttpException(404, gT("Invalid response ID"));
         }
         $next = SurveyDynamic::model($surveyId)->next($id, true);
         $previous = SurveyDynamic::model($surveyId)->previous($id, true);
@@ -461,8 +461,8 @@ class ResponsesController extends LSBaseController
             }
 
             // Model filters
-            if (isset($_SESSION['survey_' . $surveyId])) {
-                $sessionSurveyArray = App()->session->get('survey_' . $surveyId);
+            if (isset($_SESSION['responses_' . $surveyId])) {
+                $sessionSurveyArray = App()->session->get('responses_' . $surveyId);
                 $visibleColumns = $sessionSurveyArray['filteredColumns'] ?? null;
                 if (!empty($visibleColumns)) {
                     $model->setAttributes($visibleColumns, false);
@@ -489,7 +489,7 @@ class ResponsesController extends LSBaseController
             }
 
             // Sets which columns to filter
-            $filteredColumns = !empty(isset($_SESSION['survey_' . $surveyId]['filteredColumns'])) ? $_SESSION['survey_' . $surveyId]['filteredColumns'] : null;
+            $filteredColumns = !empty(isset($_SESSION['responses_' . $surveyId]['filteredColumns'])) ? $_SESSION['responses_' . $surveyId]['filteredColumns'] : null;
             $aData['filteredColumns'] = $filteredColumns;
 
             // rendering
@@ -580,9 +580,9 @@ class ResponsesController extends LSBaseController
                             $aFilteredColumns[] = $sColumn;
                         }
                     }
-                    $_SESSION['survey_' . $surveyId]['filteredColumns'] = $aFilteredColumns;
+                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = $aFilteredColumns;
                 } else {
-                    $_SESSION['survey_' . $surveyId]['filteredColumns'] = [];
+                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = [];
                 }
             }
         }
@@ -903,17 +903,17 @@ class ResponsesController extends LSBaseController
             }
 
             if ($fielddetails['type'] === 'page_time') {
-                $fnames[] = [$fielddetails['fieldname'], gT('Group') . ": " . $fielddetails['group_name']];
+                $fnames[] = [$fielddetails['fieldname'], sprintf(gT('Group: %s'), $fielddetails['group_name'])];
                 $aData['columns'][] = [
-                    'header' => gT('Group: ') . $fielddetails['group_name'],
+                    'header' => sprintf(gT('Group: %s'), $fielddetails['group_name']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
 
             if ($fielddetails['type'] === 'answer_time') {
-                $fnames[] = [$fielddetails['fieldname'], gT('Question') . ": " . $fielddetails['title']];
+                $fnames[] = [$fielddetails['fieldname'], sprintf(gT('Question: %s'), $fielddetails['title'])];
                 $aData['columns'][] = [
-                    'header' => gT('Question: ') . $fielddetails['title'],
+                    'header' => sprintf(gT('Question: %s'), $fielddetails['title']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
@@ -1075,7 +1075,7 @@ class ResponsesController extends LSBaseController
         if (!empty($responseId)) {
             /* Check if exists  */
             if (empty(SurveyDynamic::model($surveyId)->findByPk($responseId))) {
-                throw new CHttpException(404, gT("Invalid response id."));
+                throw new CHttpException(404, gT("Invalid response ID"));
             }
             $aData['iId'] = $responseId;
         }

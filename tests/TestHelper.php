@@ -78,9 +78,7 @@ class TestHelper extends TestCase
         $this->assertNotEmpty($group);
 
         $sgqa = sprintf(
-            '%sX%sX%s',
-            $surveyId,
-            $group->gid,
+            'Q%s',
             $question->qid
         );
 
@@ -155,7 +153,6 @@ class TestHelper extends TestCase
         $db = Yii::app()->getDb();
         $db->schema->getTables();
         $db->schema->refresh();
-        $db->active = false;
         $db->active = true;
 
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null, 'isAllowRegister' => false], $result, 'Activate survey is OK');
@@ -168,8 +165,8 @@ class TestHelper extends TestCase
     public function deactivateSurvey($surveyId)
     {
         $date     = date('YmdHis');
-        $oldSurveyTableName = Yii::app()->db->tablePrefix . "survey_{$surveyId}";
-        $newSurveyTableName = Yii::app()->db->tablePrefix . "old_survey_{$surveyId}_{$date}";
+        $oldSurveyTableName = Yii::app()->db->tablePrefix . "responses_{$surveyId}";
+        $newSurveyTableName = Yii::app()->db->tablePrefix . "old_responses_{$surveyId}_{$date}";
         Yii::app()->db->createCommand()->renameTable($oldSurveyTableName, $newSurveyTableName);
         $survey = \Survey::model()->findByPk($surveyId);
         $survey->active = 'N';

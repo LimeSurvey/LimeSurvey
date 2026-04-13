@@ -1,0 +1,55 @@
+.right-side-bar {
+  position: fixed;
+  right: 0;
+  left: auto;
+  width: $right-side-bar-width;
+  overflow-y: auto;
+  max-height: calc(100vh - $top-bar-height); // 56px is the topbar height.
+  background: $g-100;
+  opacity: 1 !important;
+  border-left: 1px #eeeeee solid;
+  padding: 8px 6px;
+
+  .focused-question-code {
+    cursor: pointer;
+  }
+
+  a {
+    color: black;
+  }
+
+  .right-side-bar-settings,
+  .advanced-toggle,
+  .accordion-button {
+    padding: 4px 12px 8px 16px;
+  }
+
+  .right-side-bar-settings {
+    .form-label {
+      margin-bottom: 6px;
+    }
+  }
+
+  .right-sidebar-settings {
+    .accordion {
+      .accordion-header {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-grow: 1;
+      }
+      .accordion-button {
+        padding: 0 8px;
+      }
+    }
+  }
+}
+
+.right-side-bar.active-side-bar {
+  background: $white !important;
+}
+
+.right-sidebar-attribute {
+  margin-top: 1rem;
+}

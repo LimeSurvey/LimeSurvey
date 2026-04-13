@@ -8,7 +8,7 @@ if ($result === 'success') {
     $statusClass = 'text-success';
     $okfiles = count($aImportedFilesInfo);
 } elseif ($result === 'partial') {
-    $status = gT("Partial");
+    $status = gT("Partial import");
     $class = 'message-box-warning';
     $statusClass = 'text-danger';
     $okfiles = count($aImportedFilesInfo);
@@ -43,7 +43,7 @@ if ($result === 'success') {
             </p>
             <?php if (count($aImportedFilesInfo) > 0): ?>
                 <p>
-                    <br><strong><u><?php eT("Imported files:") ?></u></strong><br>
+                    <br><strong><u><?php eT("Imported files list:") ?></u></strong><br>
                 </p>
                 <ul style="max-height: 250px; overflow-y:scroll;" class="list-unstyled">
                     <?php foreach ($aImportedFilesInfo as $entry): ?>

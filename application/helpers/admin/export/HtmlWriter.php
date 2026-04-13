@@ -52,7 +52,7 @@ class HtmlWriter extends Writer
         // Title of the survey.
         $this->tag('h1', array(
             'data-sid' => $this->survey->info['sid']
-        ), gT("Survey name (ID)") . ": {$this->survey->info['surveyls_title']} ({$this->survey->info['sid']})");
+        ), sprintf(gT("Survey name (ID): %s (%s)"), $this->survey->info['surveyls_title'], $this->survey->info['sid']));
     }
 
     protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])

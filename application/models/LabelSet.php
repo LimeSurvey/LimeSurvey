@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2011-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -99,23 +99,6 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
             $oTransaction->rollback();
             return false;
         }
-    }
-
-    /**
-     * @param $data
-     * @return bool|int
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $lblset = new self();
-        foreach ($data as $k => $v) {
-                    $lblset->$k = $v;
-        }
-        if ($lblset->save()) {
-            return $lblset->lid;
-        }
-        return false;
     }
 
     public function getLanguageArray()

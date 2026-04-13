@@ -37,12 +37,17 @@ class IntvalFloatvalTest extends TestBaseClassWeb
             /* Fill with data */
             $aMultiQuestionInfo = self::$testHelper->getSgqa('MULTI',self::$surveyId);
             $baseSgqa = $aMultiQuestionInfo[2];
-            self::$webDriver->answerTextQuestion($baseSgqa . 'float', '42.42');
-            self::$webDriver->answerTextQuestion($baseSgqa . 'text', 'LimeSurvey');
-            self::$webDriver->answerTextQuestion($baseSgqa . 'floattext', '42.42-LimeSurvey');
-            self::$webDriver->answerTextQuestion($baseSgqa . 'floatoperation', '+42.42 + 33');
-            self::$webDriver->answerTextQuestion($baseSgqa . 'floatnegative', '-3.5');
-            self::$webDriver->answerTextQuestion($baseSgqa . 'floatnegativeoperati', '-3.5+42');
+            $rawQuestions = \Question::model()->findAll("sid = :sid", [":sid" => self::$surveyId]);
+            $questions = [];
+            foreach ($rawQuestions as $rawQuestion) {
+                $questions[$rawQuestion->title] = $rawQuestion;
+            }
+            self::$webDriver->answerTextQuestion($baseSgqa . '_S' . $questions['float']->qid, '42.42');
+            self::$webDriver->answerTextQuestion($baseSgqa . '_S' . $questions['text']->qid, 'LimeSurvey');
+            self::$webDriver->answerTextQuestion($baseSgqa . '_S' . $questions['floattext']->qid, '42.42-LimeSurvey');
+            self::$webDriver->answerTextQuestion($baseSgqa . '_S' . $questions['floatoperation']->qid, '+42.42 + 33');
+            self::$webDriver->answerTextQuestion($baseSgqa . '_S' . $questions['floatnegative']->qid, '-3.5');
+            self::$webDriver->answerTextQuestion($baseSgqa . '_S' . $questions['floatnegativeoperati']->qid, '-3.5+42');
 
             /* Fill JS result */
             $intvalFloatJS = self::$webDriver->findElement(WebDriverBy::id('intval-float'))->getText();

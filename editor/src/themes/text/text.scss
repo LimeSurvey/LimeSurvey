@@ -1,0 +1,54 @@
+h1 {
+  font-size: 32pt;
+  font-weight: $font-weight-300;
+  padding: 0 !important;
+  margin: 0;
+}
+
+h2 {
+  font-size: $font-size-xl !important;
+  font-weight: $font-weight-300;
+  padding: 0;
+  margin: 0;
+}
+
+h3 {
+  font-size: $font-size-base;
+  font-weight: $font-weight-300;
+  padding: 0;
+  margin: 0;
+}
+
+h5 {
+  @include med16-c;
+}
+
+h6 {
+  @include med14-c;
+}
+
+p {
+  line-height: $line-height-28;
+  padding: 0;
+  margin: 0;
+}
+
+.text-sm {
+  font-size: $font-size-xs;
+}
+
+.text-cursor {
+  cursor: text !important;
+}
+
+.text-fade-bottom-right {
+  overflow: hidden;
+  mask-image:
+    linear-gradient(to right, black 90%, transparent 100%),
+    linear-gradient(to bottom, black 90%, transparent 100%);
+  -webkit-mask-image:
+    -webkit-linear-gradient(to right, black 90%, transparent 100%),
+    -webkit-linear-gradient(to bottom, black 90%, transparent 100%);
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+}

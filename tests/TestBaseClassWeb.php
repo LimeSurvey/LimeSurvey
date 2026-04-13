@@ -1,7 +1,7 @@
 <?php
 /**
  *  LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -18,7 +18,7 @@ use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\UnrecognizedExceptionException;
 
@@ -151,7 +151,7 @@ class TestBaseClassWeb extends TestBaseClass
                     WebDriverBy::id('user')
                 )
             );
-        } catch (TimeOutException $ex) {
+        } catch (TimeoutException $ex) {
             //$name =__DIR__ . '/_output/loginfailed.png';
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder .'/FailedLogin.png';
@@ -174,15 +174,27 @@ class TestBaseClassWeb extends TestBaseClass
         self::$webDriver->click($submit);
 
         if ($wait) {
-            self::$webDriver->wait()->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::className('welcome')
-                )
-            );
-            self::ignoreWelcomeModal();
-            self::ignoreAdminNotification();
-            sleep(3);
-            self::ignoreAdminNotification();
+            try {
+                self::$webDriver->wait(10)->until(
+                    WebDriverExpectedCondition::presenceOfElementLocated(
+                        WebDriverBy::className('welcome')
+                    )
+                );
+                self::ignoreEditorModal();
+                self::ignoreWelcomeModal();
+                self::ignoreAdminNotification();
+                sleep(3);
+                self::ignoreAdminNotification();
+            } catch (TimeoutException $ex) {
+                $screenshot = self::$webDriver->takeScreenshot();
+                $filename = self::$screenshotsFolder . '/FailedLoginWelcome.png';
+                file_put_contents($filename, $screenshot);
+                self::assertTrue(
+                    false,
+                    ' Screenshot in ' . $filename . PHP_EOL .
+                    'Could not find element with class "welcome" after login. The login might have failed or the page did not load.'
+                );
+            }
         }
 
         /*
@@ -193,7 +205,7 @@ class TestBaseClassWeb extends TestBaseClass
                     WebDriverBy::id('welcome-jumbotron')
                 )
             );
-        } catch (TimeOutException $ex) {
+        } catch (TimeoutException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder .'/FailedLogin.png';
             file_put_contents($filename, $screenshot);
@@ -301,6 +313,41 @@ class TestBaseClassWeb extends TestBaseClass
         } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder . '/ignoreWelcomeModal.png';
+            file_put_contents($filename, $screenshot);
+            self::assertTrue(
+                false,
+                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected static function ignoreEditorModal()
+    {
+        try {
+            try {
+                self::$webDriver->wait(3)->until(
+                    WebDriverExpectedCondition::visibilityOfElementLocated(
+                        WebDriverBy::id('activate_editor')
+                    )
+                );
+            } catch (TimeoutException $ex) {
+                // ignore
+                return;
+            }
+            $button = self::$webDriver->wait()->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
+                    WebDriverBy::cssSelector('#activate_editor button.btn-close')
+                )
+            );
+            // modal fade in is 1 second.
+            sleep(1);
+            self::$webDriver->click($button);
+        } catch (Exception $ex) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder . '/ignoreEditorModal.png';
             file_put_contents($filename, $screenshot);
             self::assertTrue(
                 false,

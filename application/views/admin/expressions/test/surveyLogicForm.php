@@ -12,7 +12,7 @@
                 <h3><?= gT('Check logic for the survey'); ?></h3>
                 <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post')?>
                     <div class="mb-3">
-                        <label class="form-label" for="sid"> <?=gT('Survey ID (SID)')?></label>
+                        <label class="form-label" for="sid"> <?=gT('Survey ID')?></label>
                         <select name="sid" id="sid" class="form-select">
                             <?=getSurveyList()?>
                         </select>

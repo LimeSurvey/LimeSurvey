@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -51,16 +51,5 @@ class ExpressionError extends LSActiveRecord
     public function primaryKey()
     {
         return 'scid';
-    }
-
-
-    /**
-     * @param array $data
-     * @return mixed
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        return $this->db->insert('expression_errors', $data);
     }
 }

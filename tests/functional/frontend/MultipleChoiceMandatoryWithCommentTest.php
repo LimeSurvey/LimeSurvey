@@ -12,6 +12,8 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
 {
 
+    protected $questions;
+
     /**
      *
      */
@@ -30,6 +32,11 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
     public function setUp(): void
     {
         self::$testHelper->activateSurvey(self::$surveyId);
+        $rawQuestions = \Question::model()->findAll("sid = :sid", [":sid" => self::$surveyId]);
+        $this->questions = [];
+        foreach ($rawQuestions as $rawQuestion) {
+            $this->questions[$rawQuestion->title] = $rawQuestion;
+        }
     }
 
     /**
@@ -61,18 +68,18 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
             self::$webDriver->get($url);
 
             // Click "First"
-            $label = $web->findElement(WebDriverBy::id('label-answer' . $sgqa . 'SQ001'));
+            $label = $web->findElement(WebDriverBy::id('label-answer' . $sgqa . '_S' . $this->questions['SQ001']->qid));
             $label->click();
 
             // Submit
             $web->submit();
 
-            $query = "SELECT * FROM {{survey_$sid}}";
+            $query = "SELECT * FROM {{responses_$sid}}";
             $answers = $dbo->createCommand($query)->queryAll();
 
             $this->assertCount(1, $answers, 'Exactly one answer');
-            $this->assertEquals('Y', $answers[0][$sgqa . 'SQ001'], 'Checkbox is Y');
-            $this->assertEmpty($answers[0][$sgqa . 'SQ001comment'], 'No comment');
+            $this->assertEquals('Y', $answers[0][$sgqa . '_S' . $this->questions['SQ001']->qid], 'Checkbox is Y');
+            $this->assertEmpty($answers[0][$sgqa . '_S' . $this->questions['SQ001']->qid . '_Ccomment'], 'No comment');
 
             // Check db
         } catch (\Exception $ex) {
@@ -100,16 +107,16 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
         try {
             $web->get($url);
 
-            $web->answerTextQuestion($sgqa . 'SQ001comment', 'some comment');
+            $web->answerTextQuestion($sgqa . '_S' . $this->questions['SQ001']->qid . '_Ccomment', 'some comment');
 
             $web->submit();
 
-            $query = "SELECT * FROM {{survey_$sid}}";
+            $query = "SELECT * FROM {{responses_$sid}}";
             $answers = $dbo->createCommand($query)->queryAll();
 
             $this->assertCount(1, $answers, 'Exactly one answer');
-            $this->assertEquals('Y', $answers[0][$sgqa . 'SQ001'], 'Checkbox is Y');
-            $this->assertEquals('some comment', $answers[0][$sgqa . 'SQ001comment'], 'No comment');
+            $this->assertEquals('Y', $answers[0][$sgqa . '_S' . $this->questions['SQ001']->qid], 'Checkbox is Y');
+            $this->assertEquals('some comment', $answers[0][$sgqa . '_S' . $this->questions['SQ001']->qid . '_Ccomment'], 'No comment');
 
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, 'MultipleChoiceMandatoryWithComment');
@@ -137,14 +144,14 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
             self::$webDriver->get($url);
 
             // Write a comment.
-            $web->answerTextQuestion($sgqa . 'SQ001comment', 'some comment');
+            $web->answerTextQuestion($sgqa . '_S' . $this->questions['SQ001']->qid . '_Ccomment', 'some comment');
 
             // Unclick "First".
-            $label = $web->findElement(WebDriverBy::id('label-answer' . $sgqa . 'SQ001'));
+            $label = $web->findElement(WebDriverBy::id('label-answer' . $sgqa . '_S' . $this->questions['SQ001']->qid));
             $label->click();
 
             // Check so that comment is empty.
-            $commentField = $web->findElement(WebDriverBy::id('answer' . $sgqa . 'SQ001comment'));
+            $commentField = $web->findElement(WebDriverBy::id('answer' . $sgqa . '_S' . $this->questions['SQ001']->qid . '_Ccomment'));
             $comment = $commentField->getText();
             $this->assertEmpty($comment);
 
@@ -186,7 +193,7 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
         foreach ($questions['q1']->subquestions as $subq) {
             $subquestions[$subq->title] = $subq;
         }
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['q1']->qid;
+        $sgqa = 'Q' . $questions['q1']->qid;
         return [$sgqa, $subquestions];
     }
 }

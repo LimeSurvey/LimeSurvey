@@ -692,9 +692,9 @@ class LsDefaultDataSets
                 null,
                 4,
                 'surveyLogicFile',
-                gT('Survey logic file', 'unescaped'),
-                gT('Survey logic file', 'unescaped'),
-                gT('Survey logic file', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
                 'ri-git-branch-fill',
                 'remix',
                 '',
@@ -1039,7 +1039,7 @@ class LsDefaultDataSets
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
             'author_url'    => 'https://www.limesurvey.org/',
-            'copyright'     => 'Copyright (C) 2007-2019 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+            'copyright'     => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\\r\\nAll rights reserved.',
             'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
             'version'       => '3.0',
             'api_version'   => '3.0',
@@ -1058,7 +1058,7 @@ class LsDefaultDataSets
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
             'author_url'    => 'https://www.limesurvey.org/',
-            'copyright'     => 'Copyright (C) 2007-2019 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+            'copyright'     => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\\r\\nAll rights reserved.',
             'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
             'version'       => '3.0',
             'api_version'   => '3.0',
@@ -1077,7 +1077,7 @@ class LsDefaultDataSets
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
             'author_url'    => 'https://www.limesurvey.org/',
-            'copyright'     => 'Copyright (C) 2007-2019 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+            'copyright'     => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\\r\\nAll rights reserved.',
             'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
             'version'       => '3.0',
             'api_version'   => '3.0',
@@ -1483,7 +1483,7 @@ class LsDefaultDataSets
                 'ordering' => 22,
                 'title' => gT('Now save the created question'),
                 'content' => gT('Next, we will create subquestions and answer options.') . '<br/>'
-                    . gT('Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter.'),
+                    . gT('Please remember that a valid code must start with a letter and may contain only letters and numbers.'),
                 'settings' => json_encode(array(
                     'element' => '#save-button',
                     'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
@@ -1799,7 +1799,7 @@ class LsDefaultDataSets
          * @param int $active
          * @return array
          */
-        $addRow = function ($name, $active = 0, $version = '1.0.0') {
+        $addRow = function ($name, $active = 0, $version = '1.0.0', $priority = 0) {
             return [
                 'id' => null,
                 'name'               => $name,
@@ -1807,7 +1807,8 @@ class LsDefaultDataSets
                 'active'             => $active,
                 'version'            => $version,
                 'load_error'         => 0,
-                'load_error_message' => null
+                'load_error_message' => null,
+                'priority'           => $priority,
             ];
         };
 
@@ -1816,6 +1817,7 @@ class LsDefaultDataSets
             $addRow('PasswordRequirement', 1),
             $addRow('ComfortUpdateChecker', 1),
             $addRow('Authdb', 1),
+            $addRow('ReactEditor', 1),
             // Inactive plugins below.
             $addRow('AuthLDAP'),
             $addRow('AuditLog'),
@@ -2857,9 +2859,7 @@ class LsDefaultDataSets
         //don't send password anymore, just send a link for the new admin to generate their own password
         //$template .= "<p><strong>" . gT("Password") . "</strong>: {PASSWORD}</p>";
         $template .= '<p><a href="{LOGINURL}">' . gT("Click here to set your password") . '</a></p>';
-        $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";
-        $template .= "<p>" . gT("Thank you") . "!</p>";
-
+        $template .= "<p>" . sprintf(gT("If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"), "{SITEADMINEMAIL}") . "</p><p> </p>";
         $default['sendadmincreationemail'] = 1;
         $default['admincreationemailsubject']  = sprintf(gT("User registration at '%s'", "unescaped"), "{SITENAME}");
         $default['admincreationemailtemplate'] = $template;

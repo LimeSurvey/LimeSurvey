@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -21,10 +21,9 @@ function getSurveyDefaultSettings()
     'active' => 'N',
     'questionindex'               => 0,
     'format'                   => 'G', //Group-by-group mode
-    'template'                 => getGlobalSetting('defaulttheme'),
+    'template'                 => Yii::app()->getConfig('defaulttheme'),
     'allowsave'                => 'Y',
     'allowprev'                => 'N',
-    'nokeyboard'               => 'N',
     'printanswers'             => 'N',
     'publicstatistics'         => 'N',
     'publicgraphs'             => 'N',

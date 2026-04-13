@@ -38,7 +38,7 @@ class ThemeControllerTest extends TestBaseClassWeb
         self::adminLogin($username, $password);
 
         \Yii::import('application.controllers.admin.Themes', true);
-        \Yii::import('application.helpers.globalsettings_helper', true);
+
 
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
         $_POST['templatename'] = 'vanilla_version_1';
@@ -110,7 +110,7 @@ class ThemeControllerTest extends TestBaseClassWeb
     {
         $this->markTestIncomplete();
         \Yii::import('application.controllers.admin.Themes', true);
-        \Yii::import('application.helpers.globalsettings_helper', true);
+
 
         // Delete theme vanilla_version_1 if present.
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
@@ -229,7 +229,7 @@ class ThemeControllerTest extends TestBaseClassWeb
     public function testUploadFile()
     {
         \Yii::import('application.controllers.admin.Themes', true);
-        \Yii::import('application.helpers.globalsettings_helper', true);
+
 
         // Clear flashes.
         \Yii::app()->session['aFlashMessage'] = [];
@@ -317,7 +317,7 @@ class ThemeControllerTest extends TestBaseClassWeb
         $this->markTestSkipped();
 
         \Yii::import('application.controllers.admin.Themes', true);
-        \Yii::import('application.helpers.globalsettings_helper', true);
+
 
         // Make sure there's no vanilla_test_3 yet.
         $temp = \Template::model()->findAll(

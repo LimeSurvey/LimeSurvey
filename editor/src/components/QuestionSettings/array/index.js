@@ -1,0 +1,5 @@
+export { getArrayPointChoiceSettings } from './getArrayPointChoiceSettings'
+export { getArrayTextsSettings } from './getArrayTextsSettings'
+export { getArrayNumbersSettings } from './getArrayNumbersSettings'
+export { getArrayByColumnSettings } from './getArrayByColumnSettings'
+export { getArrayDualScaleSettings } from './getArrayDualScaleSettings'

@@ -26,7 +26,7 @@
 return array(
     'components' => array(
         'db' => array(
-            'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey;',
+            'connectionString' => 'mysql:host=127.0.0.1;port=3306;dbname=limesurvey;',
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'root',
@@ -43,7 +43,9 @@ return array(
         // ),
 
         'urlManager' => array(
-            'urlFormat' => 'get',
+            // This is required for proper REST API and React Editor functionality.
+            // If you change it back to 'get', the new editor won't work
+            'urlFormat' => 'path',
             'rules' => array(
                 // You can add your own rules here
             ),

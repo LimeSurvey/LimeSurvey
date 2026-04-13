@@ -1,0 +1,121 @@
+.form-label {
+  font-weight: $font-weight-600;
+  font-size: $font-size-xs;
+  line-height: $line-height-16;
+  color: $g-900;
+}
+
+.form-control-right-input-text {
+  right: 30px;
+}
+
+.form-control {
+  padding: 8px 12px;
+  position: relative;
+  background: $white;
+  border: 2px solid $g-700;
+  font-size: $font-size-sm;
+  line-height: $line-height-16;
+  height: 36px;
+  border-radius: $border-radius;
+
+  &:disabled {
+    background-color: transparent;
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: 0;
+    box-shadow: none;
+    border: 2px solid $g-700;
+  }
+}
+
+textarea.form-control {
+  height: auto;
+}
+
+.form-select {
+  border: 2px solid $g-700;
+  font-weight: $font-weight-normal;
+  font-size: $dropdown-font-size;
+
+  &:focus {
+    border: 2px solid $g-700;
+    box-shadow: none;
+  }
+  &:disabled {
+    border: $input-border-width solid $input-border-color-disabled;
+    background-color: $g-400;
+    color: $g-600;
+  }
+}
+
+// .form-check-ui-component {
+//   * {
+//     margin: 0;
+//     padding: 0;
+//   }
+
+//   .form-check-input {
+//     margin-left: 0px; // overrides the -15px from bootstrap (no idea why they have it. Todo: check it again)
+//   }
+// }
+
+.form-check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-check-input {
+  cursor: pointer;
+  box-shadow: none;
+  width: 24px;
+  height: 24px;
+  outline: 2px solid $g-900;
+  border-radius: 3px;
+
+  padding: 0;
+  margin: 0;
+
+  &:focus {
+    box-shadow: none;
+    outline: 2px solid $g-700;
+  }
+
+  &[type='checkbox'] {
+    border-radius: 1px;
+    font-size: $font-size-xl;
+    border: none;
+    line-height: 1.1;
+  }
+
+  &:checked {
+    &[type='checkbox'] {
+      background-color: transparent;
+      color: $active-green;
+      font-family: 'remixicon';
+      border-radius: 1px;
+      outline: solid 2px $active-green;
+
+      &::before {
+        font-weight: 900;
+        content: '\eb7b';
+      }
+    }
+
+    &[type='radio'] {
+      background-size: 0;
+      background-color: $active-green;
+
+      outline: solid 2px $active-green !important;
+      border: solid 4px $white !important;
+    }
+  }
+}
+
+.ui-label {
+  @include label-s-sidebar;
+}
