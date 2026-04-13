@@ -719,11 +719,7 @@ class userstatistics_helper
                 //get SGQ data
                 $qqid = substr(explode("_", $rt)[0], 1);
 
-                //select details for this question
-                /**
-                 * FIXME $iQuestionIDlength not defined!!
-                 */
-                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0, $iQuestionIDlength)));
+                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => intval($qqid)));
                 $qtitle = $nresult->title;
                 $qtype = $nresult->type;
                 $qquestion = flattenText($nresult->question);
