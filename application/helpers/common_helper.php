@@ -1917,7 +1917,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $answers[$i - 1]->aid, "suffix" => "_R" . $answers[$i - 1]->aid, 'csuffix' => $i);
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $answers[$i - 1]->aid, "suffix" => "_R" . $aQIDReplacements['aAIDReplacements'][$answers[$i - 1]->aid], 'csuffix' => $i);
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -2929,12 +2929,15 @@ function checkOldLinks($type, $oldSurveyId, $string)
  * @param integer $iNewSID The new survey ID
  * @param array $aGIDReplacements An array with group ids (oldgid=>newgid)
  * @param array $aQIDReplacements An array with question ids (oldqid=>newqid)
+ * @param array $aAIDReplacements An array with answer ids (oldqid=>newqid)
  * @return array|bool
  */
-function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements)
+function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements, $aAIDReplacements)
 {
     $aGIDReplacements = array_flip($aGIDReplacements);
     $aQIDReplacements = array_flip($aQIDReplacements);
+    $aAIDReplacements = array_flip($aAIDReplacements);
+    $aQIDReplacements['aAIDReplacements'] = $aAIDReplacements;
 
     /** @var Survey $oNewSurvey */
     $oNewSurvey = Survey::model()->findByPk($iNewSID);
