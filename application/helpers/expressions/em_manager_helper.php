@@ -1161,7 +1161,7 @@ class LimeExpressionManager
                         foreach ($rawQuestions as $rawQuestion) {
                             $questions[$rawQuestion->title] = $rawQuestion;
                         }
-                        foreach ($this->qans[$qinfo['parent_qid']] as $k => $v) {
+                        foreach ($this->qans[$qinfo['qid']] as $k => $v) {
                             $_code = explode('~', (string) $k);
                             $subqs[] = [
                                 'rowdivid' => $qinfo['sgqa'] . "_S" . $questions[$_code[1]]->qid,
