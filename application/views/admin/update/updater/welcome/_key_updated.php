@@ -1,6 +1,6 @@
 <!-- First we show the welcome message -->
 <?php
-	// TODO : move to the controler
+	// TODO : move to the controller
 	$urlContinue = Yii::app()->createUrl("admin/update", array("update"=>'welcome', 'destinationBuild'=>$_POST["destinationBuild"]));
 ?>
 <h3 class="maintitle"><?php eT("Key update");?></h3>

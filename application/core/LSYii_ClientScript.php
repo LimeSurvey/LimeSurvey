@@ -40,7 +40,7 @@ class LSYii_ClientScript extends CClientScript
     const POS_POSTSCRIPT = 5;
     const POS_PREBEGIN = 6;
     /**
-     * cssFiles is protected on CClientScript. It can be useful to access it for debugin purpose
+     * cssFiles is protected on CClientScript. It can be useful to access it for debugging purpose
      * @return array
      */
     public function getCssFiles()

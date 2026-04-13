@@ -3426,8 +3426,8 @@ class remotecontrol_handle
 
             unset($aResponseData['token']);
 
-            foreach ($aResponseData as $sAtributeName => $value) {
-                $aResponses[0]->setAttribute($sAtributeName, $value);
+            foreach ($aResponseData as $sAttributeName => $value) {
+                $aResponses[0]->setAttribute($sAttributeName, $value);
             }
 
             $bResult = $aResponses[0]->encryptSave(true);
@@ -3702,7 +3702,7 @@ class remotecontrol_handle
             if (count($aTokens) == 0) {
                 return array('status' => 'No Data, empty tokens array parameter');
             } else {
-                $aTokensQuoted = Array();
+                $aTokensQuoted = array();
                 foreach ($aTokens as $token) {
                     array_push($aTokensQuoted, App()->db->quoteValue("$token"));
                 }
