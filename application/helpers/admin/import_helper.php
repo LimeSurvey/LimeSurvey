@@ -2221,9 +2221,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $surveyGroupName = (string) $xml->surveys_groups->rows->row[0]->name;
                 $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName]);
                 if (!empty($surveyGroup)) {
-                    $surveysInGroup = SurveysInGroup::model()->findByPK($surveyGroup->gsid);
-                    if (!empty($surveysInGroup) && $surveysInGroup->hasPermission('surveys', 'import')) {
-                        // If a survey group is found with the specified name, and the user has import permission on it, assign it to the survey.
+                    $accessibleGroups = SurveysGroups::getSurveyGroupsList();
+                    if (array_key_exists($surveyGroup->gsid, $accessibleGroups)) {
+                        // If a survey group is found with the specified name, and the user has access to it, assign it to the survey.
                         $insertdata['gsid'] = $surveyGroup->gsid;
                         $results['importwarnings'][] = sprintf(gT("The survey was assigned to the '%s' group."), $surveyGroup->title);
                     } else {
