@@ -131,6 +131,15 @@ abstract class LSYii_Controller extends CController
             Yii::app()->setConfig("displayTimezone", "UTC");
         }
 
+        // If an admin user is logged in, override with their personal timezone preference if set
+        $loginID = Yii::app()->session['loginID'] ?? null;
+        if (!empty($loginID)) {
+            $userTimezone = SettingsUser::getUserSettingValue('displayTimezone', $loginID);
+            if (!empty($userTimezone) && in_array($userTimezone, timezone_identifiers_list())) {
+                Yii::app()->setConfig("displayTimezone", $userTimezone);
+            }
+        }
+
         /* Set the default language, other controller can update if wanted */
         Yii::app()->setLanguage(Yii::app()->getConfig("defaultlang"));
     }

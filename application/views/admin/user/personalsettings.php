@@ -316,6 +316,24 @@ echo $oQuestionSelector->getModal();
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-6">
+                            <!-- Display time zone -->
+                            <div class="mb-3">
+                                <?php echo TbHtml::label(gT("Display time zone:"), 'displayTimezone', ['class' => " form-label"]); ?>
+                                <div class="">
+                                    <select name='displayTimezone' id='displayTimezone' class="form-select">
+                                        <option value=""><?php echo sprintf(gT("Use global setting (%s)"), htmlspecialchars($globalDisplayTimezone)); ?></option>
+                                        <?php foreach (DateTimeZone::listIdentifiers() as $tz) {
+                                            echo "<option value='" . $tz . "'";
+                                            if (($aUserSettings['displayTimezone'] ?? '') === $tz) {
+                                                echo " selected='selected'";
+                                            }
+                                            echo ">" . $tz . "</option>";
+                                        } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Basic non numerical part of answer options -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
