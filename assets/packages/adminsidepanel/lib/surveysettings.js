@@ -118,8 +118,8 @@ function guidGenerator() {
 
 $(document).on('change', '#importsurvey #surveysgroup', function () {
     if ($(this).val() == 'from_survey') {
-        $('#survey_group_import_warning').removeClass('hide');
+        $('#survey_group_import_warning').removeClass('d-none');
     } else {
-        $('#survey_group_import_warning').addClass('hide');
+        $('#survey_group_import_warning').addClass('d-none');
     }
 });
