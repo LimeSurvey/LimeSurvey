@@ -141,6 +141,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
             }
         }
+        releaseDatabaseUpdateLock();
         // If we're debugging, re-throw the exception.
         if (defined('YII_DEBUG') && YII_DEBUG) {
             throw $e;
@@ -197,6 +198,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
         }
     }
+    releaseDatabaseUpdateLock();
     Yii::app()->setConfig('Updating', false);
     return true;
 }
@@ -207,11 +209,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
  * another (silent or not) database update while an existing one is still running.
  * The lock is automatically released if the current process finishes
  *
- * @return boolean True if the lock was established, otherwise false
+ * @param bool $bRelease If true, release the lock instead of acquiring it.
+ * @return boolean True if the lock was established (or released), otherwise false
  */
-function getDatabaseUpdateLock()
+function getDatabaseUpdateLock($bRelease = false)
 {
     static $pLock = null;
+    if ($bRelease) {
+        if ($pLock !== null) {
+            flock($pLock, LOCK_UN);
+            fclose($pLock);
+            $pLock = null;
+        }
+        return true;
+    }
     if ($pLock !== null) {
         return false;
     }
@@ -225,6 +236,14 @@ function getDatabaseUpdateLock()
     fclose($pLock);
     $pLock = null;
     return false;
+}
+
+/**
+ * Release the database update lock acquired by getDatabaseUpdateLock().
+ */
+function releaseDatabaseUpdateLock()
+{
+    getDatabaseUpdateLock(true);
 }
 
 /**
