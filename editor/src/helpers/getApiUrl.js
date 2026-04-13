@@ -4,7 +4,7 @@ export const getApiUrl = (
 ) => {
   if (!baseUrl) {
     const host = window.location.protocol + '//' + window.location.host
-    const pathPrefix = window.location.pathname.split('/editor')[0];
+    const pathPrefix = window.location.pathname.split('/editor')[0]
     baseUrl = host + pathPrefix + '/rest'
   }
   let parts = [baseUrl]

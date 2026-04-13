@@ -126,10 +126,10 @@ export const RESPONSES_TITLES = {
   list: '',
 }
 
-const getBasePath = () => window.location.pathname.split('/editor')[0];
+const getBasePath = () => window.location.pathname.split('/editor')[0]
 
 export const URLS = {
-  ADMIN: `${getBasePath()}/admin`, 
+  ADMIN: `${getBasePath()}/admin`,
   SURVEY_OVERVIEW: `${getBasePath()}/surveyAdministration/view/`,
 }
 
