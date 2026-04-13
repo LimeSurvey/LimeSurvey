@@ -52,8 +52,8 @@
     )
 }}
 
-<!-- Ajax value -->
-<!-- Needs to be set by javascript! Because if JavaScript is disabled, ajaxmode will completely fail! -->
+<!-- Ajax form submission indicator -->
+<!-- Set to javascript to ensure the value is properly initialized for form submission detection -->
 {{
     registerScript("AJAXACTIVATE", "
     $('#limesurvey').append('<input type=\"hidden\" name=\"ajax\" value=\"off\" id=\"ajax\" />');

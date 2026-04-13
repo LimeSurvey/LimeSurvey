@@ -1068,6 +1068,11 @@ class TemplateConfig extends CActiveRecord
     {
         $optionsArray = [];
         foreach ($options as $option => $optionValue) {
+            // Skip deprecated ajaxmode option from old theme configs.
+            // Old themes may still have this in their config.xml, but it's no longer used.
+            if ($option === 'ajaxmode') {
+                continue;
+            }
             // Trim values, as they may be in a new line in the XML. For example:
             // <sample_option>
             //      default value
