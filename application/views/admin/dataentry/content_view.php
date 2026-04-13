@@ -234,7 +234,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     eT('Next choice','html',$sDataEntryLanguage);
                 }
             ?>
-            <select name="<?php echo $fieldname . "_S" . $questions[$i - 1]->qid ?>"  class='form-select' id="answer<?php echo $fieldname . "_S" . $questions[$i - 1]->qid ?>">";
+            <select name="<?php echo $fieldname . "_S" . $questions[$i - 1]->qid ?>"  class='form-select' id="answer<?php echo $fieldname . "_S" . $questions[$i - 1]->qid ?>">
                 <option value=""><?php eT('None','html',$sDataEntryLanguage) ?></option>
                 <?php
                     foreach ($questions as $qrow)
