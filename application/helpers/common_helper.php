@@ -1955,34 +1955,6 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         } elseif ($arow['type'] == Question::QT_R_RANKING) {
             // Ranking questions now use subquestions instead of answer options
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
-            if (!count($abrows)) {
-                $abrows = [];
-                $answers = Answer::model()->with('answerl10ns')->findAll("qid = :qid", ["qid" => $arow['qid']]);
-                foreach ($answers as $answer) {
-                    $question = new Question();
-                    $question->parent_qid = $answer->qid;
-                    $question->title = $answer->code;
-                    $question->question_order = $answer->sortorder;
-                    $question->scale_id = $answer->scale_id;
-                    $question->type = 'R';
-                    $question->relevance = 1;
-                    $question->sid = $arow['sid'];
-                    $question->gid = $arow['gid'];
-                    $question->save();
-                    $abrows[] = [
-                        'qid' => $question->qid,
-                        'relevance' => $question->relevance,
-                        'title'     => $answer->code,
-                    ];
-                    foreach ($answer->answerl10ns as $language => $al10n) {
-                        $questionl10n = new QuestionL10n();
-                        $questionl10n->qid = $question->qid;
-                        $questionl10n->question = $al10n->answer;
-                        $questionl10n->language = $language;
-                        $questionl10n->save();
-                    }
-                }
-            }
             $i = 0;
             foreach ($abrows as $abrow) {
                 $i++;

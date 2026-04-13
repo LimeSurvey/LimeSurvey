@@ -3640,7 +3640,7 @@ class LimeExpressionManager
 
                     break;
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
-                    $csuffix = $fielddata['csuffix'] ?? $fielddata['qid'];
+                    $csuffix = $fielddata['csuffix'] ?? $fielddata['sqid'];
                     $varName = $fielddata['title'] . '_' . $fielddata['sqid'];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505

@@ -16,7 +16,7 @@ class Update_703 extends DatabaseUpdateBase
     {
         $rankingThemes = QuestionTheme::model()->findAll("question_type = :question_type", [":question_type" => Question::QT_R_RANKING]);
         foreach ($rankingThemes as $rankingTheme) {
-            $settings = json_decode($rankingTheme->settings ?? [], true);
+            $settings = json_decode($rankingTheme->settings ?? '{}', true);
             $settings['subquestions'] = "1";
             $settings['answerscales'] = "0";
             $rankingTheme->settings = json_encode($settings);

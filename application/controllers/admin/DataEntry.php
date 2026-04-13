@@ -923,7 +923,7 @@ class DataEntry extends SurveyCommonAction
                             }
 
                             $questionInput .= "</label>";
-                            $questionInput .= "<select name=\"{$myfname}_S{$questions[$i - 1]->qid}\" id=\"answer{$myfname}_S{{$questions[$i - 1]->qid}\" class='form-select'>\n";
+                            $questionInput .= "<select name=\"{$myfname}_S{$questions[$i - 1]->qid}\" id=\"answer{$myfname}_S{$questions[$i - 1]->qid}\" class='form-select'>\n";
                             (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
                             $questionInput .= "\t<option value=\"\" $selected>" . gT('None') . "</option>\n";
                             foreach ($qresult as $qrow) {

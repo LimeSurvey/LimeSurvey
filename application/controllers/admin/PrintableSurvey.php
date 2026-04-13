@@ -678,7 +678,7 @@ class PrintableSurvey extends SurveyCommonAction
 
                             // ==================================================================
                         case Question::QT_R_RANKING:  // Ranking Type Question
-                            $rearesult = Question::model()->findAll(['condition' => "parent_qid={$arQuestion['qid']}"]);
+                            $rearesult = Question::model()->with('questionl10ns')->findAll(['condition' => "parent_qid={$arQuestion['qid']}"]);
                             $reacount = count($rearesult);
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please number each box in order of preference from 1 to") . " $reacount");
                             $question['type_help'] .= self::minMaxAnswersHelp($qidattributes, $sLanguageCode, $surveyid);
