@@ -978,6 +978,20 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Updates ranking question attributes from answer_order to subquestion_order
+     * @return string
+     */
+    public function updateRankingAnswerOrderAttribute()
+    {
+        return "
+            UPDATE {{question_attributes}}
+            SET attribute = 'subquestion_order'
+            WHERE attribute = 'answer_order'
+            AND qid IN (SELECT qid FROM {{questions}} WHERE type = '" . Question::QT_R_RANKING . "')
+        ";
+    }
+
+    /**
      * Fixes textual data, replacing old fieldname representation with new fieldname representation. We don't save the record even if changed here, because
      * outside of the method we may want to do additional things
      * @param LSActiveRecord $record the record whose fields are to be fixed
@@ -1402,5 +1416,6 @@ class Update_700 extends DatabaseUpdateBase
         }
         $this->db->createCommand($this->deleteRankingAnswers())->execute();
         $this->db->createCommand($this->deleteTranslatedRankingAnswers())->execute();
+        $this->db->createCommand($this->updateRankingAnswerOrderAttribute())->execute();
     }
 }

@@ -60,11 +60,7 @@ class RenderRanking extends QuestionBaseRenderer
                 : $this->iMaxSubquestions
         );
 
-        $subQuestions = \Question::model()->with('questionl10ns')->findAll([
-            'condition' => 'parent_qid = :qid',
-            'params' => [':qid' => $this->oQuestion->qid],
-            'order' => 'question_order'
-        ]);
+        $subQuestions = $this->aSubQuestions[0];
         
         // Prepare display subquestions for ranking interface
         $this->aDisplayAnswers = [];
