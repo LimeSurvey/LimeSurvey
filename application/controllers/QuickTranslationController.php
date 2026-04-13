@@ -182,7 +182,7 @@ class QuickTranslationController extends LSBaseController
             }
         }
 
-        $updateOccured = false;
+        $updateOccurred = false;
         foreach ($tab_names_full as $type) {
             $size = (int) Yii::app()->getRequest()->getPost("{$type}_size"); //todo: what is size here?
             // start a loop in order to update each record
@@ -199,14 +199,14 @@ class QuickTranslationController extends LSBaseController
                         $answerCode = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
                         $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
                         $quickTranslation->updateTranslations($type, $tolang, $new, $qidOrGid, $answerCode, $iScaleID);
-                        $updateOccured = true;
+                        $updateOccurred = true;
                     }
                 }
                 $i++;
             } // end while
         } // end foreach
 
-        if ($updateOccured) {
+        if ($updateOccurred) {
             $survey = Survey::model()->findByPk($surveyid);
             if ($survey) {
                 $surveyDetailService = new \LimeSurvey\Models\Services\SurveyDetailService();

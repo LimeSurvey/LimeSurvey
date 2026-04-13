@@ -182,7 +182,7 @@ class GeneralSettings
 
             $saved = $survey->save();
             if (array_key_exists('allowregister', $input)) {
-                $this->ensureTokensTableExistance($survey);
+                $this->ensureTokensTableExistence($survey);
             }
 
             if (!$saved) {
@@ -649,7 +649,7 @@ class GeneralSettings
      *
      * @return void
      */
-    private function ensureTokensTableExistance(Survey $survey): void
+    private function ensureTokensTableExistence(Survey $survey): void
     {
         $survey->setOptions($survey->gsid);
         $isSurveyActive = $survey->getIsActive();

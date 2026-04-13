@@ -268,7 +268,7 @@ class QuestionAttributeHelper
 
     /**
      * Sorts an array of question attributes by category.
-     * Sorting is based on a predefined list of orders (see QuestionAtributeHelper::getCategoryOrders()).
+     * Sorting is based on a predefined list of orders (see QuestionAttributeHelper::getCategoryOrders()).
      * Categories without a predefined order are considered less relevant.
      * Categories with the same order are sorted alphabetically.
      *

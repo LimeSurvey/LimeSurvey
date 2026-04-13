@@ -116,13 +116,13 @@ class remotecontrol_handle
      * @param string $sSetttingName Name of the setting to get
      * @return string|array The requested value or an array with the error in case of error
      */
-    public function get_site_settings($sSessionKey, $sSetttingName)
+    public function get_site_settings($sSessionKey, $sSettingName)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $sSetttingName = (string) $sSetttingName;
-                if (Yii::app()->getConfig($sSetttingName) !== false) {
-                    return Yii::app()->getConfig($sSetttingName);
+                $sSettingName = (string) $sSettingName;
+                if (Yii::app()->getConfig($sSettingName) !== false) {
+                    return Yii::app()->getConfig($sSettingName);
                 } else {
                     return array('status' => 'Invalid setting');
                 }
