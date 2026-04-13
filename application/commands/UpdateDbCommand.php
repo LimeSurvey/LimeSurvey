@@ -26,6 +26,7 @@ class UpdateDBCommand extends CConsoleCommand
      *
      * @param array|null $args Optional command-line arguments (not used by this command).
      * @throws CException If the current database version is not found (application appears uninstalled) or if the upgrade process fails and requires manual intervention.
+     * @return void
      */
     public function run($args = null)
     {
