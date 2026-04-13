@@ -2,7 +2,7 @@
 
 /**
 * LimeSurvey
-* Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v3 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -27,14 +27,12 @@ class questionHelper
 {
     /* @var array[]|null The question attribute definition for this LimeSurvey installation */
     protected static $attributes;
-    /* @var array[] The question attribute (settings) by question type*/
-    protected static $questionAttributesSettings = array();
 
     /**
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
      *
-     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic File
+     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic overview
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
     public static function getAttributesDefinitions()
@@ -433,10 +431,10 @@ class questionHelper
             'options' => array(
                 0 => gT('Bar chart'),
                 1 => gT('Pie chart'),
-                2 => gT('Radar'),
-                3 => gT('Line'),
-                4 => gT('PolarArea'),
-                5 => gT('Doughnut'),
+                2 => gT('Radar chart'),
+                3 => gT('Line chart'),
+                4 => gT('Polar chart'),
+                5 => gT('Doughnut chart'),
             ),
             'help' => gT("Select the type of chart to be displayed"),
             'caption' => gT("Chart type"),
@@ -847,7 +845,6 @@ class questionHelper
             "help" => gT('Present subquestions/answer options in random order'),
             "caption" => gT('Random order')
         );
-
         self::$attributes["answer_order"] = array(
             "types" => Question::QT_L_LIST . Question::QT_R_RANKING . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_O_LIST_WITH_COMMENT,
             'category' => gT('Display'),
@@ -864,6 +861,31 @@ class questionHelper
             'default' => 0,
             "help" => gT('Present answer options in normal, random or alphabetical order'),
             "caption" => gT('Answer options order')
+        );
+
+        self::$attributes["keep_codes_order"] = array(
+            "types" => Question::QT_L_LIST
+                . Question::QT_R_RANKING
+                . Question::QT_EXCLAMATION_LIST_DROPDOWN
+                . Question::QT_O_LIST_WITH_COMMENT
+                . Question::QT_A_ARRAY_5_POINT
+                . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS
+                . Question::QT_C_ARRAY_YES_UNCERTAIN_NO
+                . Question::QT_E_ARRAY_INC_SAME_DEC
+                . Question::QT_F_ARRAY
+                . Question::QT_H_ARRAY_COLUMN
+                . Question::QT_K_MULTIPLE_NUMERICAL
+                . Question::QT_M_MULTIPLE_CHOICE
+                . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+                . Question::QT_Q_MULTIPLE_SHORT_TEXT
+                . Question::QT_1_ARRAY_DUAL
+                . Question::QT_COLON_ARRAY_NUMBERS
+                . Question::QT_SEMICOLON_ARRAY_TEXT,
+            'category' => gT('Display'),
+            'sortorder' => 101,
+            'inputtype' => 'text',
+            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized.'),
+            "caption" => gT('Keep codes at original positions')
         );
 
         self::$attributes["subquestion_order"] = array(
@@ -941,7 +963,7 @@ class questionHelper
             'sortorder' => 110,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
             "caption" => gT('Slider minimum value')
         );
 
@@ -951,7 +973,7 @@ class questionHelper
             'sortorder' => 120,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
             "caption" => gT('Slider maximum value')
         );
 
@@ -961,7 +983,7 @@ class questionHelper
             'sortorder' => 130,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 1.'),
             "caption" => gT('Slider accuracy')
         );
 
@@ -971,7 +993,7 @@ class questionHelper
             'sortorder' => 210,
             'inputtype' => 'text',
             'expression' => 2, // must be controlled : unsure
-            "help" => gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
+            "help" => gT('Slider start as this value. You can use ExpressionScript, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
             "caption" => gT('Slider initial value')
         );
         self::$attributes["slider_default_set"] = array(
@@ -1233,7 +1255,7 @@ class questionHelper
             'inputtype' => 'buttongroup',
             'options' => array(
                 0 => gT('None', 'unescaped'),
-                1 => gT('Order - like 3)', 'unescaped'),
+                1 => gT('Numbered: 1).. 2).. 3)..', 'unescaped'),
                 // 2=>gT('Code - like A1','unescaped'), // Just an idea ;)
             ),
             'default' => 0,
@@ -1527,7 +1549,7 @@ class questionHelper
             'min' => 1,
             'default' => '1',
             "help" => gT("Maximum number of files that the participant can upload for this question"),
-            "caption" => gT("Max number of files")
+            "caption" => gT("Maximum number of files")
         );
 
         self::$attributes["min_num_of_files"] = array(
@@ -1538,7 +1560,7 @@ class questionHelper
             'default' => '0',
             'min' => 0,
             "help" => gT("Minimum number of files that the participant must upload for this question"),
-            "caption" => gT("Min number of files")
+            "caption" => gT("Minimum number of files")
         );
 
         self::$attributes["allowed_filetypes"] = array(
@@ -1617,28 +1639,5 @@ class questionHelper
         // );
 
         return self::$attributes;
-    }
-
-    /**
-     * Return the question Theme preview URL
-     * @param $sType: type pof question
-     * @return string : question theme preview URL
-     * @deprecated use QuestionTheme::getQuestionThemePreviewUrl
-     */
-    public static function getQuestionThemePreviewUrl($sType = null)
-    {
-        if ($sType == '*') {
-            $preview_filename = 'EQUATION.png';
-        } elseif ($sType == ':') {
-            $preview_filename = 'COLON.png';
-        } elseif ($sType == '|') {
-            $preview_filename = 'PIPE.png';
-        } elseif (!empty($sType)) {
-            $preview_filename = $sType . '.png';
-        } else {
-            $preview_filename = '.png';
-        }
-
-        return App()->getConfig("imageurl") . '/screenshots/' . $preview_filename;
     }
 }

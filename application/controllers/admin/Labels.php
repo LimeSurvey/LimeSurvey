@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2023 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -78,7 +78,8 @@ class Labels extends SurveyCommonAction
             // now read tempdir and copy authorized files only
             $folders = array('flash', 'files', 'images');
             foreach ($folders as $folder) {
-                list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
+                $filterImportedService = new \LimeSurvey\Models\Services\FilterImportedResources();
+                list($_aImportedFilesInfo, $_aErrorFilesInfo) = $filterImportedService->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
                 $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
                 $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
             }
@@ -237,8 +238,6 @@ class Labels extends SurveyCommonAction
         $aViewUrls = array();
         $aData = array();
 
-        // Includes some javascript files
-        App()->getClientScript()->registerPackage('jquery-json');
         $model = LabelSet::model()->findByPk($lid);
         if ($lid > 0) {
             $lid = $this->validateLabelSetId($lid, 'read');
@@ -288,7 +287,7 @@ class Labels extends SurveyCommonAction
         }
 
         if ($lid == 0) {
-            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['title'] = gT('Label set list');
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns/leftSideButtons',
                 [
@@ -305,7 +304,7 @@ class Labels extends SurveyCommonAction
                 true
             );
         } else {
-            $aData['topbar']['title'] = gT('Label sets list');
+            $aData['topbar']['title'] = gT('Label set list');
             $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_singlelabelset/leftSideButtons',
                 [
@@ -505,7 +504,7 @@ class Labels extends SurveyCommonAction
             throw new CHttpException(500, $exception->getMessage());
         }
 
-        eT('Label set successfully saved');
+        eT('Label set successfully saved.');
     }
 
     /**
@@ -610,53 +609,6 @@ class Labels extends SurveyCommonAction
         Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             ['data' => $returnArray]
-        );
-        App()->end();
-    }
-
-    /**
-     * New label set from question editor
-     * @deprecated : not used in 6.0 and before
-     * @return void
-     */
-    public function newLabelSetFromQuestionEditor()
-    {
-        $aLabelSet = Yii::app()->request->getPost('labelSet', []);
-        $oLabelSet = new LabelSet();
-        $aLabels = $aLabelSet['labels'];
-        $oLabelSet->label_name = $aLabelSet['label_name'];
-        $oLabelSet->languages = $aLabelSet['languages'];
-        $oLabelSet->owner_id = App()->user->getId();
-        $result = $oLabelSet->save();
-        $aDebug['saveLabelSet'] = $result;
-
-        foreach ($aLabelSet['labels'] as $i => $aLabel) {
-            $oLabel = new Label();
-            $oLabel->lid = $oLabelSet->lid;
-            $oLabel->code = $aLabel['code'] ?? $aLabel['title'];
-            $oLabel->sortorder = $i;
-            $oLabel->assessment_value = $aLabel['assessment_value'] ?? 0;
-            $partResult = $oLabel->save();
-            $aDebug['saveLabel_' . $i] = $partResult;
-            $result = $result && $partResult;
-            foreach ($oLabelSet->languageArray as $language) {
-                $oLabelL10n = new LabelL10n();
-                $oLabelL10n->label_id = $oLabel->id;
-                $oLabelL10n->language = $language;
-                $oLabelL10n->title = $aLabel[$language]['question'] ?? $aLabel[$language]['answer'];
-
-                $lngResult = $oLabelL10n->save();
-                $aDebug['saveLabel_' . $i . '_' . $language] = $lngResult;
-                $result = $result && $lngResult;
-            }
-        }
-
-        Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson',
-            ['data' => [
-                'success' => $result,
-                'message' => gT('Label set successfully saved')
-            ]]
         );
         App()->end();
     }

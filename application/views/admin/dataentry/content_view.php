@@ -71,6 +71,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' =>true,
                             'showClear' => true,
+                            'theme' => 'light',
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     )); ?>
@@ -405,7 +406,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
                 jsonstr += ']';
                 $('#<?php echo $fieldname ; ?>').val(jsonstr);
-                $('#<?php echo $fieldname; ?>_filecount').val(filecount);
+                $('#<?php echo $fieldname; ?>_Cfilecount').val(filecount);
             }
         </script>
 
@@ -432,7 +433,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <td align='center'><input type='file' name='<?php echo $fieldname; ?>_file_<?php echo $i; ?>' id='<?php echo $fieldname; ?>_file_<?php echo $i; ?>' onChange='updateJSON<?php echo $fieldname; ?>()' /></td></tr>
                 <?php } ?>
             <tr><td align='center'><input type='hidden' name='<?php echo $fieldname; ?>' id='<?php echo $fieldname; ?>' value='' /></td></tr>
-            <tr><td align='center'><input type='hidden' name='<?php echo $fieldname; ?>_filecount' id='<?php echo $fieldname; ?>_filecount' value='' /></td></tr>
+            <tr><td align='center'><input type='hidden' name='<?php echo $fieldname; ?>_Cfilecount' id='<?php echo $fieldname; ?>_Cfilecount' value='' /></td></tr>
         </table>
         </div>
         <?php break;

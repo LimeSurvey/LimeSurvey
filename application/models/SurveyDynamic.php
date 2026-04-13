@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -80,7 +80,7 @@ class SurveyDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . self::$sid . '}}';
+        return '{{responses_' . self::$sid . '}}';
     }
 
     /** @inheritdoc */
@@ -167,8 +167,8 @@ class SurveyDynamic extends LSActiveRecord
         }
         $alias = $this->getTableAlias();
 
-        $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " survey_timings ON $alias.id = survey_timings.id";
-        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participant list
+        $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " timings ON $alias.id = timings.id";
+        $newCriteria->select = 'timings.*'; // Otherwise we don't get records from the survey participants list
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
@@ -222,7 +222,7 @@ class SurveyDynamic extends LSActiveRecord
                           ELSE 0
                  END) AS cntpartial',
             );
-        $result = Yii::app()->db->createCommand()->select($select)->from('{{survey_' . $sid . '}}')->queryRow();
+        $result = Yii::app()->db->createCommand()->select($select)->from('{{responses_' . $sid . '}}')->queryRow();
         return $result;
     }
 
@@ -277,7 +277,7 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getGridButtons()
     {
-        $sBrowseLanguage = sanitize_languagecode(Yii::app()->request->getParam('browseLang', ''));
+        $sBrowseLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getParam('browseLang', ''));
 
         $permissionReponseUpdate = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update');
         $permissionReponseDelete = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete');
@@ -893,12 +893,12 @@ class SurveyDynamic extends LSActiveRecord
             in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
             || ($oQuestion->type == 'T' && $oQuestion->parent_qid != 0)
         ) {
-            $fieldname .= $oQuestion->title;
+            $fieldname .= "_S{$oQuestion->qid}";
         }
 
 
         if ($getCommentOnly) {
-            $fieldname .= 'comment';
+            $fieldname .= '_Ccomment';
         }
 
         $aQuestionAttributes['fieldname'] = $fieldname;
@@ -938,7 +938,7 @@ class SurveyDynamic extends LSActiveRecord
                 );
             } elseif ($oQuestion->other == 'Y') {
                 $aQuestionAttributes['answervalue'] = !empty($attributes['other_replace_text'][$sLanguage]) ? $attributes['other_replace_text'][$sLanguage] : gT("Other");
-                $aQuestionAttributes['answeroption']['answer'] = $oResponses[$fieldname . 'other'] ?? null;
+                $aQuestionAttributes['answeroption']['answer'] = $oResponses[$fieldname . '_Cother'] ?? null;
             }
         }
 
@@ -964,12 +964,12 @@ class SurveyDynamic extends LSActiveRecord
 
             $tempFieldname = $fieldname . '#0';
             $sAnswerCode = $oResponses[$tempFieldname] ?? null;
-            $sAnswerText = isset($aAnswerText[0][$oResponses[$tempFieldname]]) ? $aAnswerText[0][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[0][$sAnswerCode]) ? $aAnswerText[0][$sAnswerCode] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][0] = $sAnswerText;
 
             $tempFieldname = $fieldname . '#1';
             $sAnswerCode = $oResponses[$tempFieldname] ?? null;
-            $sAnswerText = isset($aAnswerText[1][$oResponses[$tempFieldname]]) ? $aAnswerText[1][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[1][$sAnswerCode]) ? $aAnswerText[1][$sAnswerCode] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
 
@@ -983,12 +983,15 @@ class SurveyDynamic extends LSActiveRecord
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
             $aQuestionAttributes['answervalues'] = array();
-            $iterator = 1;
-            do {
-                $currentResponse = $oResponses[$fieldname . $iterator];
+            foreach ($oQuestion->answers as $oAnswer) {
+                $answerFieldname = $fieldname . '_R' . $oAnswer->aid;
+                if (!isset($oResponses[$answerFieldname]) || $oResponses[$answerFieldname] === '') {
+                    continue;
+                }
+                $currentResponse = $oResponses[$answerFieldname];
 
-                $oSelectedAnswerOption = array_reduce($oQuestion->answers, function ($carry, $oAnswer) use ($currentResponse) {
-                    return $currentResponse == $oAnswer->code ? $oAnswer : $carry;
+                $oSelectedAnswerOption = array_reduce($oQuestion->answers, function ($carry, $oAns) use ($currentResponse) {
+                    return $currentResponse == $oAns->code ? $oAns : $carry;
                 });
 
                 $option = '';
@@ -999,9 +1002,7 @@ class SurveyDynamic extends LSActiveRecord
                     );
                 }
                 $aQuestionAttributes['answervalues'][] = ['value' => $currentResponse, 'option' => $option];
-
-                $iterator++;
-            } while (isset($oResponses[$fieldname . $iterator]));
+            }
         }
 
         /* Second (X) scale for array text and array number */
@@ -1012,7 +1013,7 @@ class SurveyDynamic extends LSActiveRecord
                 'params' => array(':parent_qid' => $aQuestionAttributes['parent_qid'], ':scale_id' => 1),
             ));
             foreach ($oScaleXSubquestions as $oScaleSubquestion) {
-                $tempFieldname = $fieldname . '_' . $oScaleSubquestion->title;
+                $tempFieldname = $fieldname . '_S' . $oScaleSubquestion->qid;
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = $oResponses[$tempFieldname] ?? null;
                 /* Isue with language, need #15907 fixed */
                 $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = $oScaleSubquestion->questionl10ns[$sLanguage]->question ?? null;

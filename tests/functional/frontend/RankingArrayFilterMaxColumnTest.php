@@ -46,8 +46,10 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             // Click next.
             $web->next();
 
+            $questions = $this->getSubquestions($survey->groups[0]->questions[0]->qid);
+
             /** @var string Answer id to first subquestion. */
-            $answerId = $this->getAnswerId($survey) . '1';
+            $answerId = $this->getAnswerId($survey) . '_S' . $questions['1']->qid;
 
             // Click it.
             /** @var RemoteWebElement */
@@ -55,7 +57,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $label->click();
 
             /** @var string Answer id to second subquestion. */
-            $answerId = $this->getAnswerId($survey) . '2';
+            $answerId = $this->getAnswerId($survey) . '_S' . $questions['2']->qid;
 
             // Click it.
             /** @var RemoteWebElement */
@@ -63,7 +65,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $label->click();
 
             /** @var string Answer id to third subquestion. */
-            $answerId = $this->getAnswerId($survey) . '3';
+            $answerId = $this->getAnswerId($survey) . '_S' . $questions['3']->qid;
 
             // Click it.
             /** @var RemoteWebElement */
@@ -77,8 +79,9 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $web->next();
             sleep(1);
 
+            $answers = $this->getAnswers($survey->groups[1]->questions[0]->qid);
             /** @var string List item id to first answer option. */
-            $sgqa1 = $this->getItemListId($survey) . '1';
+            $sgqa1 = $this->getItemListId($survey) . '_R' . $answers['1']->aid;
 
             // TODO: Can't use mouse with geckodriver and Selenium?
             sleep(1);
@@ -91,13 +94,14 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             sleep(1);
 
             /** @var string List item id to second answer option. */
-            $sgqa2 = $this->getItemListId($survey) . '2';
+            $sgqa2 = $this->getItemListId($survey) . '_R' . $answers['2']->aid;
 
             /** @var string */
             $javascript = $this->getJavascriptDoubleClick($sgqa2);
             /** @var string */
             $result = $web->executeAsyncScript($javascript, []);
             $this->assertEquals('done', $result);
+            $web->executeScript('window.scrollTo(0,document.body.scrollHeight);');
             sleep(1);
 
             // Submit survey.
@@ -105,7 +109,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
 
             // Check that answer was recorded correctly.
             /** @var string */
-            $query = sprintf('SELECT * FROM {{survey_%d}}', $survey->sid);
+            $query = sprintf('SELECT * FROM {{responses_%d}}', $survey->sid);
             /** @var CDbConnection */
             $dbo = \Yii::app()->getDb();
             /** @var array */
@@ -131,10 +135,28 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
     protected function getAnswerId(\Survey $survey)
     {
         return 'javatbd'
-            . self::$surveyId
-            . 'X' . $survey->groups[0]->gid
-            . 'X'
+            . 'Q'
             . $survey->groups[0]->questions[0]->qid;
+    }
+
+    protected function getSubquestions(int $qid)
+    {
+        $rawQuestions = \Question::model()->findAll("parent_qid = :qid", [":qid" => $qid]);
+        $questions = [];
+        foreach ($rawQuestions as $rawQuestion) {
+            $questions[$rawQuestion->title] = $rawQuestion;
+        }
+        return $questions;
+    }
+
+    protected function getAnswers(int $qid)
+    {
+        $rawAnswers = \Answer::model()->findAll("qid = :qid", [":qid" => $qid]);
+        $answers = [];
+        foreach ($rawAnswers as $rawAnswer) {
+            $answers[$rawAnswer->code] = $rawAnswer;
+        }
+        return $answers;
     }
 
     /**
@@ -143,9 +165,8 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
      */
     protected function getItemListId(\Survey $survey)
     {
-        return self::$surveyId
-            . 'X' . $survey->groups[1]->gid
-            . 'X'
+        return 
+            'Q'
             . $survey->groups[1]->questions[0]->qid;
     }
 

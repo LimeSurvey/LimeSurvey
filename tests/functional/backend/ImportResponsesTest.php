@@ -20,7 +20,7 @@ class ImportResponsesTest extends TestBaseClass
                 'sid = :sid',
                 [':sid' => $result['newsid']]
             );
-            $query = "select {$questions[0]->sid}X{$questions[0]->gid}X{$questions[0]->qid} as first, {$questions[1]->sid}X{$questions[1]->gid}X{$questions[1]->qid} as second, {$questions[2]->sid}X{$questions[2]->gid}X{$questions[2]->qid} as third from {{survey_" . $survey->sid . "}}";
+            $query = "select Q{$questions[0]->qid} as first, Q{$questions[1]->qid} as second, Q{$questions[2]->qid} as third from {{responses_" . $survey->sid . "}}";
             $permission = \Permission::model();
             $surveyLink = \SurveyLink::model();
             $savedControl = \SavedControl::model();
@@ -59,7 +59,7 @@ class ImportResponsesTest extends TestBaseClass
             $this->assertEquals($responses2[0]['third'], null);
             $survey = \Survey::model()->findByPk($result['newsid']);
             $surveyDeactivator->deactivate($survey->sid, ['ok' => true], true);
-            App()->db->createCommand("drop table {{survey_" . $survey->sid . "}}")->execute();
+            App()->db->createCommand("drop table {{responses_" . $survey->sid . "}}")->execute();
             $questions[1]->encrypted = 'N';
             $questions[1]->save();
             $surveyActivator->activate($survey->sid, ['restore' => true], true);

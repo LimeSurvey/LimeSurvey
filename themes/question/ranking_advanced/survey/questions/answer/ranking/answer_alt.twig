@@ -34,7 +34,7 @@
             <!-- @todo : move htmlblock at the good place -->
             <ul id="sortable-choice-{{ qId }}" class="sortable-choice sortable-list list-group">
                 {% for ansrow in answers %}
-                    <li id="javatbd{{ rankingName }}{{ ansrow.code }}" class="ls-choice list-group-item answer-item sortable-item sortable-enable" data-value="{{ ansrow.code }}">
+                    <li id="javatbd{{ rankingName }}_R{{ ansrow.aid }}" class="ls-choice list-group-item answer-item sortable-item sortable-enable" data-value="{{ ansrow.code }}">
                         {{ ansrow.answer }}
                     </li>
                 {% endfor %}

@@ -115,7 +115,7 @@ if ($thissurvey['active'] == "Y")
                 <td colspan='3' align='center'>";
                 <font color='red'><strong><?php eT("Error"); ?></strong></font><br />
                 <?php eT("The survey you selected does not exist"); ?><br /><br />
-                <input type='submit' value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $scriptname; ?>', '_top')" />
+                <input type='submit' value='<?php eT("Main admin screen"); ?>' onclick="window.open('<?php echo $scriptname; ?>', '_top')" />
                 </td>
                 </tr>
                 </table>

@@ -29,7 +29,7 @@
             echo '<ul><li>'.gT('The following steps will be done by this update:').'</li>';
             echo '<li>'.gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>';
             echo '<li>'.gT('New files will be downloaded and installed.').'</li>';
-            echo '<li>'.gT('If necessary the database will be updated.').'</li></ul>';
+            echo '<li>'.gT('If necessary the database will be updated in a final step.').'</li></ul>';
         ?>
     </div>
 

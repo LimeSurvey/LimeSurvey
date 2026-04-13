@@ -13,13 +13,13 @@
         <div class="mb-3">
             <label class=" form-label" for='siteadminemail'><?php eT("Default site admin email:"); ?></label>
             <div class="">
-                <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars((string) getGlobalSetting('siteadminemail')); ?>"/>
+                <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminemail')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
             <label class="  form-label" for='siteadminname'><?php eT("Administrator name:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars((string) getGlobalSetting('siteadminname')); ?>"/>
+                <input class="form-control" type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminname')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
@@ -42,14 +42,14 @@
         <div class="mb-3">
             <label class="  form-label" for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' aria-describedby="email_lb" id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtphost')); ?>"/>
+                <input class="form-control" type='text' size='50' aria-describedby="email_lb" id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('emailsmtphost')); ?>"/>
                 <span  id="email_lb" class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
             </div>
         </div>
         <div class="mb-3">
             <label class="  form-label" for='emailsmtpuser'><?php eT("SMTP username:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtpuser')); ?>"/>
+                <input class="form-control" type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('emailsmtpuser')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
@@ -65,9 +65,9 @@
                     array(
                         'name' => 'emailsmtpssl',
                         'ariaLabel' => gT("SMTP encryption:"),
-                        'checkedOption' => getGlobalSetting('emailsmtpssl'),
+                        'checkedOption' => Yii::app()->getConfig('emailsmtpssl'),
                         'selectOptions' => array(
-                            "" => gT("Off (unsafe)", 'unescaped'),
+                            "" => gT("Off", 'unescaped'),
                             "ssl" => gT("SSL/TLS", 'unescaped'),
                             "tls" => gT("StartTLS", 'unescaped')
                         )
@@ -81,7 +81,7 @@
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailsmtpdebug',
                     'ariaLabel'     => gT("SMTP debug mode:"),
-                    'checkedOption' => getGlobalSetting('emailsmtpdebug'),
+                    'checkedOption' => Yii::app()->getConfig('emailsmtpdebug'),
                     'selectOptions' => [
                         "0" => gT("Off", 'unescaped'),
                         "1" => gT("On errors", 'unescaped'),
@@ -115,13 +115,13 @@
         <div class="mb-3">
             <label class="  form-label" for='maxemails'><?php eT("Email batch size:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars((string) getGlobalSetting('maxemails')); ?>"/>
+                <input class="form-control" type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('maxemails')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
             <label class="form-label" for="sendingrate"><?php eT("Email sending rate:"); ?></label>
             <div>
-                <?php echo CHtml::numberField("sendingrate", App()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1)); ?>
+                <?php echo CHtml::numberField("sendingrate", Yii::app()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1)); ?>
                 <span class="hint"><?php eT("Number of seconds to wait until the next email batch is sent."); ?></span>
             </div>
         </div>

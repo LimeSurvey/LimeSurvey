@@ -9,7 +9,7 @@ class ArrayNumbersProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
     {
-        $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     public function process()
@@ -40,7 +40,7 @@ class ArrayNumbersProcessor extends AbstractQuestionProcessor
             $subQuestion1 = $this->question['subQuestions'][$questionId[0]];
             $subQuestion2 = $this->question['subQuestions'][$questionId[1]];
 
-            $field = $this->rt . $subQuestion1['title'] . '_' . $subQuestion2['title'];
+            $field = $this->rt . '_S' . $subQuestion1['qid'] . '_S' . $subQuestion2['qid'];
             [$legend, $dataItems] = $this->buildItemsFromCodes($field, $values, $values);
 
             $charts[] = new StatisticsChartDTO(

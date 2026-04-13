@@ -38,7 +38,7 @@ echo viewHelper::getViewTestTag('expressionsTest');
         <td>Tests whether navigation properly handles relevant and irrelevant groups</td>
     </tr>
     <tr>
-        <td><a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_file'); ?>">Show Survey logic file</a></td>
+        <td><a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_file'); ?>">Show Survey logic overview</a></td>
         <td>Shows the logic for a survey (e.g. relevance, validation), and all tailoring</td>
     </tr>
     </tbody>
@@ -82,7 +82,7 @@ echo viewHelper::getViewTestTag('expressionsTest');
             <td>Tests whether navigation properly handles relevant and irrelevant groups</td>
         </tr>
         <tr>
-            <td><a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_file'); ?>">Show Survey logic file</a></td>
+            <td><a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_file'); ?>">Show Survey logic overview</a></td>
             <td>Shows the logic for a survey (e.g. relevance, validation), and all tailoring</td>
         </tr>
         </tbody>

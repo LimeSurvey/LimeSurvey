@@ -37,7 +37,7 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'separator',
                         'checkedOption'         => 'auto',
-                        'ariaLabel'    => gT("Separator used"),
+                        'ariaLabel'    => gT("Separator used:"),
                         'selectOptions' => [
                             "auto"      => gT("Automatic", 'unescaped'),
                             "comma"     => gT("Comma", 'unescaped'),
@@ -53,7 +53,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'filterblankemail',
-                        'ariaLabel'    => gT("Filter blank email addresses"),
+                        'ariaLabel'    => gT("Filter blank email addresses:"),
                         'checkedOption' => '1',
                         'selectOptions' => [
                             "1" => gT('On'),
@@ -70,7 +70,7 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'allowinvalidemail',
                         'checkedOption' => '0',
-                        'ariaLabel'    => gT("Allow invalid email addresses"),
+                        'ariaLabel'    => gT("Allow invalid email addresses:"),
                         'selectOptions' => [
                             "1" => gT('On'),
                             "0" => gT('Off')
@@ -86,7 +86,7 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'showwarningtoken',
                         'checkedOption' => '0',
-                        'ariaLabel'    => gT("Display attribute warnings"),
+                        'ariaLabel'    => gT("Display attribute warnings:"),
                         'selectOptions' => [
                             "1" => gT('On'),
                             "0" => gT('Off')
@@ -102,7 +102,7 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'filterduplicatetoken',
                         'checkedOption' => '1',
-                        'ariaLabel'    => gT("Filter duplicate records"),
+                        'ariaLabel'    => gT("Filter duplicate records:"),
                         'selectOptions' => [
                             "1" => gT('On'),
                             "0" => gT('Off')

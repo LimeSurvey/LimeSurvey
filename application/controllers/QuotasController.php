@@ -410,13 +410,13 @@ class QuotasController extends LSBaseController
                 Yii::app()->request->getPost('QuotaLanguageSetting', [])
             );
             if (empty($errors)) {
-                eT("OK!");
+                eT("OK");
             } else {
-                eT("Error!");
+                eT("Error");
             }
         } else {
             /* 403 error ? */
-            Yii::app()->user->setFlash('error', gT("Access denied."));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
     }

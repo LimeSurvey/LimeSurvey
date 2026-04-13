@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -91,7 +91,7 @@ class DataEntry extends SurveyCommonAction
         );
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create')) {
-            if (tableExists("{{survey_$iSurveyId}}")) {
+            if (tableExists("{{responses_$iSurveyId}}")) {
                 // First load the database helper
                 Yii::app()->loadHelper('database'); // Really needed ?
 
@@ -126,9 +126,9 @@ class DataEntry extends SurveyCommonAction
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')) {
             if (Yii::app()->request->getParam('unfinalizeanswers') == 'true') {
                 SurveyDynamic::sid($surveyid);
-                Yii::app()->db->createCommand("DELETE from {{survey_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{survey_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
+                Yii::app()->db->createCommand("DELETE from {{responses_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{responses_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
                 // Then set all remaining answers to incomplete state
-                Yii::app()->db->createCommand("UPDATE {{survey_$surveyid}} SET submitdate=NULL, lastpage=NULL")->execute();
+                Yii::app()->db->createCommand("UPDATE {{responses_$surveyid}} SET submitdate=NULL, lastpage=NULL")->execute();
                 // Finally, reset the token completed and sent status
                 Yii::app()->db->createCommand("UPDATE {{tokens_$surveyid}} SET sent='N', remindersent='N', remindercount=0, completed='N', usesleft=1 where usesleft=0")->execute();
                 $aData['success'] = true;
@@ -225,7 +225,7 @@ class DataEntry extends SurveyCommonAction
         asort($aEncodings);
 
         // Get default character set from global settings
-        $thischaracterset = getGlobalSetting('characterset');
+        $thischaracterset = Yii::app()->getConfig('characterset');
 
         // If no encoding was set yet, use the old "utf8" default
         if ($thischaracterset == "") {
@@ -237,7 +237,7 @@ class DataEntry extends SurveyCommonAction
 
         $aData['charsetsout'] = $charsetsout;
         $aData['aEncodings'] = $aEncodings;
-        $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
+        $aData['tableExists'] = tableExists("{{responses_$surveyid}}");
 
         $aData['display']['menu_bars']['browse'] = gT("Import VV file");
 
@@ -365,7 +365,7 @@ class DataEntry extends SurveyCommonAction
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
-                $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
+                $targetResponse = new PluginDynamic("{{responses_$iSurveyId}}");
                 if ($preserveIDs) {
                     $targetResponse->id = $sourceResponse->id;
                 }
@@ -391,7 +391,7 @@ class DataEntry extends SurveyCommonAction
                 $oTransaction = Yii::app()->db->beginTransaction();
                 try {
                     if ($preserveIDs) {
-                        switchMSSQLIdentityInsert("survey_$iSurveyId", true);
+                        switchMSSQLIdentityInsert("responses_$iSurveyId", true);
                     }
                     if ($targetResponse->save()) {
                         $imported++;
@@ -407,7 +407,7 @@ class DataEntry extends SurveyCommonAction
                     }
                     $aSRIDConversions[$iOldID] = $targetResponse->id;
                     if ($preserveIDs) {
-                        switchMSSQLIdentityInsert("survey_$iSurveyId", false);
+                        switchMSSQLIdentityInsert("responses_$iSurveyId", false);
                     }
                 } catch (Exception $oException) {
                     $oTransaction->rollBack();
@@ -419,8 +419,8 @@ class DataEntry extends SurveyCommonAction
             if (empty($responseErrors)) {
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
-            $sOldTimingsTable = (string) substr(substr((string) $sourceTable->tableName(), 0, (string) strrpos((string) $sourceTable->tableName(), '_')) . '_timings' . (string) substr((string) $sourceTable->tableName(), (string) strrpos((string) $sourceTable->tableName(), '_')), strlen((string) Yii::app()->db->tablePrefix));
-            $sNewTimingsTable = "survey_{$surveyid}_timings";
+            $sOldTimingsTable = str_replace("responses", "timings", str_replace("timings_", "", $sourceTable->tableName()));
+            $sNewTimingsTable = Yii::app()->db->tablePrefix . "timings_{$surveyid}";
             $iRecordCountT = null;
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
                 // Import timings
@@ -553,7 +553,7 @@ class DataEntry extends SurveyCommonAction
         }
         $idresult = Response::model($surveyid)->findByPk($id);
         if (empty($idresult)) {
-            throw new CHttpException(404, gT("Invalid response id."));
+            throw new CHttpException(404, gT("Invalid response ID"));
         }
         $sDataEntryLanguage = $oSurvey->language;
         $aData = [];
@@ -894,7 +894,7 @@ class DataEntry extends SurveyCommonAction
                         $thisqid = $fname['qid'];
                         $currentvalues = array();
                         $rawvalues = [];
-                        $myfname = $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid'];
+                        $myfname = 'Q' . $fname['qid'];
                         $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                         $unseen = true;
                         while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
@@ -917,7 +917,7 @@ class DataEntry extends SurveyCommonAction
                         }
                         for ($i = 1; $i <= $anscount; $i++) {
                             $questionInput .= "\n<li class=\"select-item\">";
-                            $questionInput .= "<label for=\"answer{$myfname}{$i}\">";
+                            $questionInput .= "<label for=\"answer{$myfname}_R{$answers[$i - 1]->aid}\">";
                             if ($i == 1) {
                                 $questionInput .= gT('First choice');
                             } else {
@@ -925,7 +925,7 @@ class DataEntry extends SurveyCommonAction
                             }
 
                             $questionInput .= "</label>";
-                            $questionInput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-select'>\n";
+                            $questionInput .= "<select name=\"{$myfname}_R{$answers[$i - 1]->aid}\" id=\"answer{$myfname}_R{{$answers[$i - 1]->aid}\" class='form-select'>\n";
                             (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
                             $questionInput .= "\t<option value=\"\" $selected>" . gT('None') . "</option>\n";
                             foreach ($ansresult as $ansrow) {
@@ -946,7 +946,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInput .= "</div>";
                         $questionInput .= '</div>';
                         App()->getClientScript()->registerPackage('jquery-actual');
-                        App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
 
@@ -1038,7 +1038,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_VERTICAL_FILE_UPLOAD: //FILE UPLOAD
                         $questionInput = "<table class='table'>\n";
-                        if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0)) {
+                        if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'] . '_Cfilecount']) && ($idrow[$fname['fieldname'] . '_Cfilecount'] > 0)) {
                             //file metadata
                             $metadata = json_decode((string) $idrow[$fname['fieldname']], true);
                             for ($i = 0; ($i < $qidattributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
@@ -1063,7 +1063,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInput .= '<script type="text/javascript">
                             $(function() {
                                 $(".' . $baseFieldName . '").keyup(function() {
-                                    var filecount = $("#' . $baseFieldName . '_filecount").val();
+                                    var filecount = $("#' . $baseFieldName . '_Cfilecount").val();
                                     var jsonstr = "[";
                                     var i;
                                     for (i = 0; i < filecount; i++)
@@ -1387,6 +1387,7 @@ class DataEntry extends SurveyCommonAction
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' => true,
                                     'showClear' => true,
+                                    'theme' => 'light',
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
                                 )
                             ),
@@ -1586,7 +1587,7 @@ class DataEntry extends SurveyCommonAction
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null.
             // There are some special cases we need to handle.
             if ($irow['type'] == Question::QT_R_RANKING) {
-                $unseenFieldName = "unseen:" . $irow['sid'] . 'X' . $irow['gid'] . 'X' . $irow['qid'];
+                $unseenFieldName = "unseen:" . 'Q' . $irow['qid'];
             } elseif ($irow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 // Remove trailing "comment" from the fieldname, if present
                 $unseenFieldName = "unseen:" . preg_replace('/comment$/', '', $fieldname);
@@ -1640,7 +1641,7 @@ class DataEntry extends SurveyCommonAction
                     $oResponse->$fieldname = $thisvalue;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD:
-                    if (strpos((string) $irow['fieldname'], '_filecount')) {
+                    if (strpos((string) $irow['fieldname'], '_Cfilecount')) {
                         if (empty($thisvalue)) {
                             $oResponse->$fieldname = null;
                             break;
@@ -1740,7 +1741,7 @@ class DataEntry extends SurveyCommonAction
         }
         if ($insertSubaction && $hasResponsesCreatePermission) {
             // TODO: $surveytable is unused. Remove it.
-            $surveytable = "{{survey_{$surveyid}}}";
+            $surveytable = "{{responses_{$surveyid}}}";
             $thissurvey  = getSurveyInfo($surveyid);
             $errormsg = "";
 
@@ -1837,7 +1838,7 @@ class DataEntry extends SurveyCommonAction
                             // can't add '' in Date column
                             // Do nothing
                         } elseif ($irow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
-                            if (!strpos((string) $irow['fieldname'], "_filecount")) {
+                            if (!strpos((string) $irow['fieldname'], "_Cfilecount")) {
                                 $json = $_POST[$fieldname];
                                 $phparray = json_decode(stripslashes((string) $json));
                                 $filecount = 0;
@@ -1973,7 +1974,7 @@ class DataEntry extends SurveyCommonAction
                         }
                         if ($saver['email']) {
                             //Send email
-                            if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
+                            if (LimeMailer::validateAddress($saver['email']) && !returnGlobal('redo')) {
                                 $mailer = new \LimeMailer();
                                 $mailer->addAddress($saver['email']);
                                 $mailer->setSurvey($surveyid);
@@ -2092,7 +2093,7 @@ class DataEntry extends SurveyCommonAction
      */
     private function returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected(string $lastAnswer, int $id, string $errorMessage): string
     {
-        $errorMessage .= "<br /><br />" . gT("Follow the following link to update it") . ":\n";
+        $errorMessage .= "<br /><br />" . gT("Use the following link to update it:") . "\n";
         $errorMessage .= CHtml::link(
             "[id:$lastAnswer]",
             $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/' . $lastAnswer . '/surveyid/' . $id),
@@ -2126,7 +2127,7 @@ class DataEntry extends SurveyCommonAction
         $survey = Survey::model()->findByPk($surveyid);
         $lang = $_GET['lang'] ?? null;
         if (isset($lang)) {
-            $lang = sanitize_languagecode($lang);
+            $lang = \LSYii_Validators::languageCodeFilter($lang);
         }
         $aViewUrls = array();
 
@@ -2196,9 +2197,9 @@ class DataEntry extends SurveyCommonAction
                     $cdata['qidattributes'] = $qidattributes;
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
-                    $relevance = trim((string) $qinfo['info']['relevance']);
-                    $explanation = trim((string) $qinfo['relEqn']);
-                    $validation = trim((string) $qinfo['prettyValidTip']);
+                    $relevance = trim((string)($qinfo['info']['relevance'] ?? ''));
+                    $explanation = trim((string)($qinfo['relEqn'] ?? ''));
+                    $validation = trim((string)($qinfo['prettyValidTip'] ?? ''));
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (true || ($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
@@ -2256,7 +2257,7 @@ class DataEntry extends SurveyCommonAction
                     }
 
                     $qid = $arQuestion['qid'];
-                    $fieldname = "$surveyid" . "X" . "$gid" . "X" . "$qid";
+                    $fieldname = "Q" . "$qid";
 
                     $cdata['bgc'] = $bgc;
                     $cdata['fieldname'] = $fieldname;
@@ -2300,7 +2301,7 @@ class DataEntry extends SurveyCommonAction
                                 $optgroups = array();
 
                                 foreach ($arAnswers as $aAnswer) {
-                                    list ($categorytext, $answertext) = explode($optCategorySeparator, (string) $aAnswer->answerl10ns[$sDataEntryLanguage]->answer);
+                                    [$categorytext, $answertext] = explode($optCategorySeparator, (string) $aAnswer->answerl10ns[$sDataEntryLanguage]->answer);
                                     if ($categorytext == '') {
                                         $defaultopts[] = array('code' => $aAnswer['code'], 'answer' => $answertext, 'default_value' => $aAnswer['assessment_value']);
                                     } else {
@@ -2346,7 +2347,7 @@ class DataEntry extends SurveyCommonAction
                             $cdata['anscount'] = $anscount;
                             $cdata['answers'] = $arAnswers;
                             App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)

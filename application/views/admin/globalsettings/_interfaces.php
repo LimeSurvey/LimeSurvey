@@ -5,7 +5,7 @@
 */
 ?>
 
-<?php $RPCInterface=getGlobalSetting('RPCInterface'); ?>
+<?php $RPCInterface = Yii::app()->getConfig('RPCInterface'); ?>
 <div class="container">
 <div class="mb-3">
     <label class=" form-label"  for='RPCInterface'><?php eT("RPC interface enabled:"); ?></label>
@@ -36,7 +36,7 @@
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => "rpc_publish_api",
             'ariaLabel'=> gT('Publish API on /admin/remotecontrol:'),
-            'checkedOption' => App()->getConfig('rpc_publish_api'),
+            'checkedOption' => Yii::app()->getConfig('rpc_publish_api'),
             'selectOptions' => [
                 '1' => gT('On'),
                 '0' => gT('Off'),
@@ -51,7 +51,7 @@
         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name'          => 'add_access_control_header',
             'ariaLabel'=> gT('Set Access-Control-Allow-Origin header:'),
-            'checkedOption' => App()->getConfig('add_access_control_header'),
+            'checkedOption' => Yii::app()->getConfig('add_access_control_header'),
             'selectOptions' => [
                 '1' => gT('On'),
                 '0' => gT('Off'),

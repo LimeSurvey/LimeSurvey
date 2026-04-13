@@ -2,7 +2,6 @@
 
 class AuditLog extends \LimeSurvey\PluginManager\PluginBase
 {
-
     protected $storage = 'DbStorage';
     protected static $description = 'Core: Create an audit log of changes';
     protected static $name = 'auditlog';
@@ -233,7 +232,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (count($aValues)) {
             $oAutoLog = $this->api->newModel($this, 'log');
             $oAutoLog->uid = $currentUID;
-            $oAutoLog->entity = 'survey_' . $iSurveyID;
+            $oAutoLog->entity = 'responses_' . $iSurveyID;
             $oAutoLog->action = "create";
             $oAutoLog->newvalues = json_encode($aValues);
             $oAutoLog->save();
@@ -270,7 +269,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (count($aDiffOld)) {
             $oAutoLog = $this->api->newModel($this, 'log');
             $oAutoLog->uid = $currentUID;
-            $oAutoLog->entity = 'survey_' . $iSurveyID;
+            $oAutoLog->entity = 'responses_' . $iSurveyID;
             $oAutoLog->action = "update";
             $oAutoLog->entityid = $event->get('iResponseID');
             $oAutoLog->oldvalues = json_encode($aDiffOld);
@@ -298,7 +297,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
 
         $oAutoLog = $this->api->newModel($this, 'log');
         $oAutoLog->uid = $currentUID;
-        $oAutoLog->entity = 'survey_' . $iSurveyID;
+        $oAutoLog->entity = 'responses_' . $iSurveyID;
         $oAutoLog->action = "delete";
         $oAutoLog->entityid = $event->get('iResponseID');
         $oAutoLog->oldvalues = json_encode($oldvalues);
@@ -325,7 +324,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (count($aValues)) {
             $oAutoLog = $this->api->newModel($this, 'log');
             $oAutoLog->uid = $currentUID;
-            $oAutoLog->entity = 'survey_' . $iSurveyID;
+            $oAutoLog->entity = 'responses_' . $iSurveyID;
             $oAutoLog->action = "import";
             $oAutoLog->newvalues = json_encode($aValues);
             $oAutoLog->fields = implode(',', array_keys($aValues));

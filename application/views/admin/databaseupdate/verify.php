@@ -13,13 +13,13 @@
                 <tr><th><?php eT('Table prefix:'); ?></th><td><?php echo Yii::app()->db->tablePrefix; ?></td></tr>
                 <tr><th><?php eT('Site name:'); ?></th><td><?php echo Yii::app()->getConfig("sitename"); ?></td></tr>
                 <tr><th><?php eT('Root URL:'); ?></th><td><?php echo Yii::app()->getController()->createUrl('/'); ?></td></tr>
-                <tr><th><?php eT('Current database version:'); ?></th><td><?php echo GetGlobalSetting('DBVersion'); ?></td></tr>
+                <tr><th><?php eT('Current database version:'); ?></th><td><?php echo Yii::app()->getConfig('DBVersion'); ?></td></tr>
                 <tr><th><?php eT('Target database version:'); ?></th><td><?php echo Yii::app()->getConfig('dbversionnumber'); ?></td></tr>
             </table>
         </div>
     </div>
 
-    <?php if ((int)GetGlobalSetting('DBVersion')<132) { ?>
+    <?php if ((int) Yii::app()->getConfig('DBVersion')<132) { ?>
         <?php
         $message = '<strong>' . gT("Error:") . '</strong>' . gT("You will not be able to update because your previous LimeSurvey version is too old.") .
                 '<br>' .

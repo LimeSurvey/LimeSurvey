@@ -204,15 +204,6 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
-        $editorEnabled = $oSurvey->hasNewEditor;
-        $enableEditorButton = $oSurvey->hasNewEditor;
-
-        $editorUrl = Yii::app()->request->getUrlReferrer(
-            Yii::app()->createUrl(
-                'editorLink/index',
-                ['route' => 'survey/' . $sid]
-            )
-        );
         App()->getClientScript()->registerScriptFile(
             App()->getConfig('adminscripts') . 'newQuestionEditor.js',
             CClientScript::POS_END
@@ -248,9 +239,7 @@ class TopbarConfiguration
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
             'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
-            'editorEnabled' => $editorEnabled,
-            'editorUrl' => $editorUrl,
-            'enableEditorButton' => $enableEditorButton,
+            'editorEnabled' => App()->getConfig('editorEnabled') ?? false,
         );
     }
 

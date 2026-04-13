@@ -35,7 +35,7 @@ final class Php83
             throw new \ValueError(sprintf('json_validate(): Argument #2 ($depth) must be less than %d', self::JSON_MAX_DEPTH));
         }
 
-        json_decode($json, null, $depth, $flags);
+        json_decode($json, true, $depth, $flags);
 
         return \JSON_ERROR_NONE === json_last_error();
     }

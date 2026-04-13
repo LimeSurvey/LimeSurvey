@@ -77,9 +77,6 @@
 !/plugins/index.html
 !/plugins/Demo/
 
-# ignore editor contents - reserved for future use
-/editor/*
-
 #ignore old styles
 /styles/
 

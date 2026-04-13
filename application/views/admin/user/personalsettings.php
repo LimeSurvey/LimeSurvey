@@ -243,7 +243,7 @@ echo $oQuestionSelector->getModal();
                                         [
                                             'default' => gT("Default", 'unescaped'),
                                             'inline'  => gT("Inline HTML editor", 'unescaped'),
-                                            'popup'   => gT("Popup HTML editor", 'unescaped'),
+                                            'popup'   => gT("Pop-up HTML editor", 'unescaped'),
                                             'none'    => gT("Sourcecode editor", 'unescaped'),
                                         ],
                                         ['class' => "form-select"]
@@ -319,7 +319,7 @@ echo $oQuestionSelector->getModal();
                         <!-- Basic non numerical part of answer options -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Non-Numerical answer option prefix:"), 'answeroptionprefix', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Non-numerical answer option prefix:"), 'answeroptionprefix', ['class' => " form-label"]); ?>
                                 <?php echo TbHtml::textField(
                                     'answeroptionprefix',
                                     ($aUserSettings['answeroptionprefix'] ?? 'AO'),
@@ -333,7 +333,7 @@ echo $oQuestionSelector->getModal();
                         <!-- Basic non numerical part of subquestions -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Non-Numerical subquestions prefix:"), 'subquestionprefix', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Non-numerical subquestions prefix:"), 'subquestionprefix', ['class' => " form-label"]); ?>
                                 <?php echo TbHtml::textField(
                                     'subquestionprefix',
                                     ($aUserSettings['subquestionprefix'] ?? 'SQ'),

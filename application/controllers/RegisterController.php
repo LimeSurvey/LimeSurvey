@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -180,7 +180,7 @@ class RegisterController extends LSYii_Controller
         //Check that the email is a valid style address
         if ($aFieldValue['sEmail'] == "") {
             $this->aRegisterErrors[] = gT("You must enter a valid email. Please try again.");
-        } elseif (!validateEmailAddress(trim((string) $aFieldValue['sEmail']))) {
+        } elseif (!LimeMailer::validateAddress(trim((string) $aFieldValue['sEmail']))) {
             $this->aRegisterErrors[] = gT("The email you used is not valid. Please try again.");
         }
         //Check and validate attribute
@@ -227,6 +227,7 @@ class RegisterController extends LSYii_Controller
     public function getRegisterForm($iSurveyId)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
+        App()->getClientScript()->registerPackage('tempus-dominus');
 
         // Event to replace register form
         $event = new PluginEvent('beforeRegisterForm');
@@ -245,6 +246,26 @@ class RegisterController extends LSYii_Controller
         }
         $aFieldValue = $this->getFieldValue($iSurveyId);
         $aRegisterAttributes = $this->getExtraAttributeInfo($iSurveyId);
+        foreach ($aRegisterAttributes as $attrId => $attrConfig) {
+            if (
+                array_key_exists('type_options', $attrConfig)
+                && is_string($attrConfig['type_options'])
+                && trim($attrConfig['type_options']) !== ''
+                && trim($attrConfig['type_options']) !== '[]'
+            ) {
+                $aRegisterAttributes[$attrId]['type_options'] = json_decode(
+                    $attrConfig['type_options'],
+                    true
+                );
+                // Transform array so values become keys (to save the actual string instead of index)
+                if (is_array($aRegisterAttributes[$attrId]['type_options'])) {
+                    $aRegisterAttributes[$attrId]['type_options'] = array_combine(
+                        $aRegisterAttributes[$attrId]['type_options'],
+                        $aRegisterAttributes[$attrId]['type_options']
+                    );
+                }
+            }
+        }
 
         $aData['iSurveyId'] = $iSurveyId;
         $aData['active'] = $oSurvey->active;
@@ -309,7 +330,7 @@ class RegisterController extends LSYii_Controller
             Token::model($iSurveyId)->updateByPk($iTokenId, array('sent' => $now));
             $aMessage['mail-message'] = $this->sMailMessage;
         } else {
-            $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
+            $aMessage['mail-message-error'] = gT("You are registered but an error occurred when trying to send the email - please contact the survey administrator.");
         }
         $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
         $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage' => $aMessage), true);
@@ -362,6 +383,16 @@ class RegisterController extends LSYii_Controller
             $oToken->email = $aFieldValue['sEmail'];
             $oToken->emailstatus = 'OK';
             $oToken->language = $sLanguage;
+
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
+            $aFieldValue['aAttribute'] = $attributeService->prepareAttributesForSave(
+                $aFieldValue['aAttribute'],
+                getDateFormatData($aSurveyInfo['surveyls_dateformat'])['phpdate'],
+                $aSurveyInfo['attributedescriptions']
+            );
             $oToken->setAttributes($aFieldValue['aAttribute']);
             if ($aSurveyInfo['startdate']) {
                 $oToken->validfrom = $aSurveyInfo['startdate'];
@@ -474,6 +505,8 @@ class RegisterController extends LSYii_Controller
             $aData['aSurveyInfo']['alanguageChanger']['show']  = true;
             $aData['aSurveyInfo']['alanguageChanger']['datas'] = $alanguageChangerDatas;
         }
+        App()->loadHelper("surveytranslator");
+        $aData['aSurveyInfo']['surveyls_dateformat_js'] = getDateFormatData($aData['aSurveyInfo']['surveyls_dateformat'])['jsdate'];
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
     }

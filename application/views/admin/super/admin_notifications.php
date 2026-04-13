@@ -88,8 +88,8 @@
 <?php endif; ?>
 <?php
     $notificationLanguageString=array(
-        'errorTitle' => gT("Error : %s"),
-        'errorUnknow' => gT("unknown"),
+        'errorTitle' => gT("Error %s"),
+        'errorUnknow' => gT("Unknown error"),
         'unknowText' => gT("An unknown error occurred"),
     );
     $script = "LS.lang = $.extend(LS.lang,".json_encode($notificationLanguageString).");\n";

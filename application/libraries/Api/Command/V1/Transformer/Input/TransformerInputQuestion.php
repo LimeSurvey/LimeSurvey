@@ -58,6 +58,7 @@ class TransformerInputQuestion extends Transformer
                 'numerical' => ['min' => 1, 'max' => PHP_INT_MAX]
             ],
             'relevance' => ['filter' => 'trim'],
+            'scenarios' => ['type' => 'array'],
             'sameScript' => [
                 'key' => 'same_script',
                 'formatter' => ['intToBool' => ['revert' => true]]

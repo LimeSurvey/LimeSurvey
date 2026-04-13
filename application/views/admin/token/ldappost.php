@@ -17,7 +17,7 @@
                         <?php eT("Results from LDAP Query."); ?><br />
                         <?php printf(gT("%s records met minimum requirements"),$xv); ?><br />
                         <?php echo $xz; ?> <?php eT("Records imported"); ?>.<br />
-                        <?php echo $xy; ?> <?php eT("Duplicate records removed"); ?>                        
+                        <?php echo $xy; ?> <?php eT("Duplicate records skipped"); ?>                        
                     </p>
                     <p>
                         [<a href='#' onclick='$("#duplicateslist").toggle();'><?php eT("List"); ?></a>]
@@ -40,7 +40,7 @@
                         <?php eT("Results from LDAP Query."); ?><br />
                         <?php printf(gT("%s records met minimum requirements"),$xv); ?><br />
                         <?php echo $xz; ?> <?php eT("Records imported"); ?>.<br />
-                        <?php echo $xy; ?> <?php eT("Duplicate records removed"); ?>                        
+                        <?php echo $xy; ?> <?php eT("Duplicate records skipped"); ?>                        
                     </p>
                     <p>
                         [<a href='#' onclick='$("#duplicateslist").toggle();'><?php eT("List"); ?></a>]

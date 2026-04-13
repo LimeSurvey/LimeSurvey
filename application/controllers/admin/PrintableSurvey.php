@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -432,7 +432,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     case Question::QT_R_RANKING: // (Rank 1), (Rank 2)...
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $rankid = $thiscquestion['aid'];
-                                        $answer_section = " (" . gT("RANK") . " $rankid)";
+                                        $answer_section = " (" . sprintf(gT("Rank %s"), $rankid) . ")";
                                         break;
                                     default: // nothing to add
                                         break;
@@ -493,10 +493,10 @@ class PrintableSurvey extends SurveyCommonAction
                     //END OF GETTING CONDITIONS
 
                     $qid = $arQuestion['qid'];
-                    $fieldname = "$surveyid" . "X" . "$gid" . "X" . "$qid";
+                    $fieldname = "Q" . "$qid";
 
                     if (isset($showsgqacode) && $showsgqacode == true) {
-                        $arQuestion['question'] = $arQuestion['question'] . "<br />" . gT("ID:") . " $fieldname <br />" .
+                        $arQuestion['question'] = $arQuestion['question'] . "<br />" . sprintf(gT("ID: %s"), $fieldname) . " <br />" .
                             gT("Question code:") . " " . $arQuestion['title'];
                     }
 
@@ -569,7 +569,7 @@ class PrintableSurvey extends SurveyCommonAction
                     switch ($arQuestion['type']) {
                             // ==================================================================
                         case Question::QT_5_POINT_CHOICE:    //5 POINT CHOICE
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT('Please choose *only one* of the following:'));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT('Please choose only one of the following:'));
                             $question['answer'] .= "\n\t<ul class='list-print-answers list-unstyled'>\n";
                             for ($i = 1; $i <= 5; $i++) {
                                 $question['answer'] .= "\t\t<li>\n\t\t\t" . self::inputTypeImage('radio', $i) . "\n\t\t\t$i " . self::addsgqacode("($i)") . "\n\t\t</li>\n";
@@ -586,7 +586,7 @@ class PrintableSurvey extends SurveyCommonAction
 
                             // ==================================================================
                         case Question::QT_G_GENDER:  //GENDER
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose only one of the following:"));
 
                             $question['answer'] .= "\n\t<ul class='list-print-answers list-unstyled'>\n";
                             $question['answer'] .= "\t\t<li>\n\t\t\t" . self::inputTypeImage('radio', gT("Female")) . "\n\t\t\t" . gT("Female") . " " . self::addsgqacode("(F)") . "\n\t\t</li>\n";
@@ -604,7 +604,7 @@ class PrintableSurvey extends SurveyCommonAction
                                 unset($optCategorySeparator);
                             }
 
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose only one of the following:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
 
                             $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}"]);
@@ -655,7 +655,7 @@ class PrintableSurvey extends SurveyCommonAction
                                     $qidattributes["printable_help"][$sLanguageCode] = gT("Other");
                                 }
                                 //                    $printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".self::inputTypeImage('radio' , gT("Other"))."\n\t\t\t".gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-                                $question['answer'] .= $wrapper['item-start-other'] . self::inputTypeImage('radio', gT($qidattributes["printable_help"][$sLanguageCode])) . ' ' . gT($qidattributes["printable_help"][$sLanguageCode]) . self::addsgqacode(" (-oth-)") . "\n\t\t\t" . self::inputTypeImage('other') . self::addsgqacode(" (" . $arQuestion['sid'] . "X" . $arQuestion['gid'] . "X" . $arQuestion['qid'] . "other)") . "\n" . $wrapper['item-end'];
+                                $question['answer'] .= $wrapper['item-start-other'] . self::inputTypeImage('radio', gT($qidattributes["printable_help"][$sLanguageCode])) . ' ' . gT($qidattributes["printable_help"][$sLanguageCode]) . self::addsgqacode(" (-oth-)") . "\n\t\t\t" . self::inputTypeImage('other') . self::addsgqacode(" (" . "Q" . $arQuestion['qid'] . "_Cother)") . "\n" . $wrapper['item-end'];
                             }
                             $question['answer'] .= $wrapper['whole-end'];
                             //Let's break the presentation into columns.
@@ -663,7 +663,7 @@ class PrintableSurvey extends SurveyCommonAction
 
                             // ==================================================================
                         case Question::QT_O_LIST_WITH_COMMENT:  //LIST WITH COMMENT
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose only one of the following:"));
                             $dearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}"]);
 
                             $question['answer'] = "\t<ul class='list-print-answers list-unstyled'>\n";
@@ -673,7 +673,7 @@ class PrintableSurvey extends SurveyCommonAction
                             $question['answer'] .= "\t</ul>\n";
 
                             $question['answer'] .= "\t<div class=\"comment\">\n\t\t" . gT("Make a comment on your choice here:") . "\n";
-                            $question['answer'] .= "\t\t" . self::inputTypeImage('textarea', gT("Make a comment on your choice here:"), 50, 8) . self::addsgqacode(" (" . $arQuestion['sid'] . "X" . $arQuestion['gid'] . "X" . $arQuestion['qid'] . "comment)") . "\n\t</div>\n";
+                            $question['answer'] .= "\t\t" . self::inputTypeImage('textarea', gT("Make a comment on your choice here:"), 50, 8) . self::addsgqacode(" (" . "Q" . $arQuestion['qid'] . "_Ccomment)") . "\n\t</div>\n";
                             break;
 
                             // ==================================================================
@@ -695,7 +695,7 @@ class PrintableSurvey extends SurveyCommonAction
                             // ==================================================================
                         case Question::QT_M_MULTIPLE_CHOICE:
                             $dcols = $qidattributes['display_columns'];
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *all* that apply:"));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose all that apply:"));
                             $question['type_help'] .= self::arrayFilterHelp($qidattributes, $sLanguageCode, $surveyid);
 
                             $condition = "parent_qid={$arQuestion['qid']}";
@@ -839,7 +839,7 @@ class PrintableSurvey extends SurveyCommonAction
 
                             // ==================================================================
                         case Question::QT_Y_YES_NO_RADIO:  //YES/NO
-                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *only one* of the following:"));
+                            $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose only one of the following:"));
                             $question['answer'] = "\n<ul class='list-print-answers list-unstyled'>\n\t<li>\n\t\t" . self::inputTypeImage('radio', gT('Yes')) . "\n\t\t" . gT('Yes') . self::addsgqacode(" (Y)") . "\n\t</li>\n";
                             $question['answer'] .= "\n\t<li>\n\t\t" . self::inputTypeImage('radio', gT('No')) . "\n\t\t" . gT('No') . self::addsgqacode(" (N)") . "\n\t</li>\n</ul>\n";
                             break;

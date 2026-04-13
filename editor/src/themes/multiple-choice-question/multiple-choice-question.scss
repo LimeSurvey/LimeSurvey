@@ -1,0 +1,47 @@
+.add-child-button-container {
+  width: fit-content;
+}
+
+.multiple-choice-checkbox-subquestion {
+  min-height: 38px;
+}
+
+.multi-choice-checkbox-label {
+  width: max-content;
+}
+
+.multiple-choice-question {
+  .button {
+    font-size: 1.14rem;
+  }
+
+  .multiple-choice-subquestion-content-editor {
+    margin-left: 12px;
+  }
+
+  .answer-item {
+    margin-bottom: 12px;
+  }
+}
+
+.children-parent:has(.comment-input) {
+  .child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+
+    .comment-input {
+      flex: 0 0 auto;
+      width: 45% !important; /* Fixed width */
+      min-width: 175px;
+
+      @media screen and (max-width: 1500px) {
+        width: 100% !important;
+        margin-top: 8px;
+      }
+    }
+  }
+}

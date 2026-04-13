@@ -1,0 +1,125 @@
+.lime-toggle-btn-group {
+  width: 100%;
+  // this is set as select dropdown is overridden by
+  // below toggle buttons in the survey settings
+  position: relative;
+  z-index: 0;
+  // =================================================================
+  .btn-group {
+    width: 100%;
+    background: $g-700;
+    padding: 4px;
+    border-radius: $border-radius;
+    .btn {
+      display: block;
+      color: $white;
+      font-weight: $font-weight-500;
+      font-size: $font-size-sm;
+      line-height: $line-height-20;
+    }
+    .btn-check:active + .btn-outline-lime-toggle,
+    .btn-check:checked + .btn-outline-lime-toggle,
+    .btn-outline-lime-toggle.active,
+    .btn-outline-lime-toggle.dropdown-toggle.show,
+    .btn-outline-lime-toggle:active {
+      background-color: $white;
+      border-color: $g-700;
+      color: $g-700;
+      border-radius: 2px;
+
+      &.disabled,
+      &[disabled] {
+        border-color: $g-600;
+        background-color: $g-400;
+        color: $g-600;
+      }
+    }
+
+    .btn-check:active + .btn-outline-lime-toggle:focus,
+    .btn-check:checked + .btn-outline-lime-toggle:focus,
+    .btn-outline-lime-toggle.active:focus,
+    .btn-outline-lime-toggle.dropdown-toggle.show:focus,
+    .btn-outline-lime-toggle:active:focus,
+    .btn-outline-lime-toggle:active,
+    .btn-check:focus + .btn-outline-lime-toggle,
+    .btn-outline-lime-toggle:hover {
+      box-shadow: none;
+    }
+  }
+}
+.lime-toggle-btn-group.isSecondary {
+  .btn-group {
+    background: $grape;
+  }
+}
+.lime-align-btn-group {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .btn {
+    color: $white;
+    font-weight: $font-weight-500;
+    font-size: $font-size-sm;
+    line-height: $line-height-20;
+
+    background: $g-400;
+    padding: 2px;
+    border-radius: 1.5px;
+    min-height: 40px;
+    min-width: 68.62px;
+    width: 100%;
+    .left-side {
+      width: 50%;
+      font-size: $font-size-xxl;
+    }
+    .right-side {
+      width: 50%;
+      background-color: $g-600;
+    }
+    .center-side {
+      width: 100%;
+      font-size: $font-size-xxl;
+    }
+  }
+  .btn-check:active + .btn-outline-lime-alignment,
+  .btn-check:checked + .btn-outline-lime-alignment,
+  .btn-outline-lime-alignment.active,
+  .btn-outline-lime-alignment.dropdown-toggle.show,
+  .btn-outline-lime-alignment:active {
+    background-color: $aubergine;
+    border-color: $g-700;
+    color: $g-700;
+    border-radius: 2px;
+    .left-side {
+      color: $white;
+    }
+    .center-side {
+      color: $white;
+      background-color: $grape;
+    }
+    .right-side {
+      background-color: $grape;
+    }
+    &.disabled,
+    &[disabled] {
+      border-color: $g-600;
+      background-color: $g-400;
+      color: $g-600;
+    }
+  }
+
+  .btn-check:active + .btn-outline-lime-alignment:focus,
+  .btn-check:checked + .btn-outline-lime-alignment:focus,
+  .btn-outline-lime-alignment.active:focus,
+  .btn-outline-lime-alignment.dropdown-toggle.show:focus,
+  .btn-outline-lime-alignment:active:focus,
+  .btn-outline-lime-alignment:active,
+  .btn-check:focus + .btn-outline-lime-alignment,
+  .btn-outline-lime-alignment:hover {
+    box-shadow: none;
+    background-color: $aubergine;
+    border-color: $g-700;
+    color: $white;
+  }
+}

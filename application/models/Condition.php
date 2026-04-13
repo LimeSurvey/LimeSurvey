@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -114,8 +114,8 @@ class Condition extends LSActiveRecord
         $oResults = $this->findAllByAttributes(array('cqid' => $iQuestionID));
         foreach ($oResults as $oRow) {
             $cfnregs = [];
-            if (preg_match('/(\S*?)' . $iSurveyID . "X" . $iOldGroupID . "X" . $iQuestionID . "(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
-                $sNewCfn = $cfnregs[1] . $iSurveyID . "X" . $iNewGroupID . "X" . $iQuestionID . $cfnregs[2];
+            if (preg_match('/(\S*?)' . "Q" . $iQuestionID . "(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
+                $sNewCfn = $cfnregs[1] . "Q" . $iQuestionID . $cfnregs[2];
                 Yii::app()->db->createCommand()
                     ->update(
                         $this->tableName(),
@@ -354,5 +354,38 @@ class Condition extends LSActiveRecord
             ->bindValue(":qid", $qid, PDO::PARAM_INT)
             ->query();
         return $result;
+    }
+
+    /**
+     * A collection of cids
+     * @param array $cids an array of condition ids to copy
+     * @param int $qid the qid of the question whose conditions are to be created
+     * @return bool Whether there were conditions to copy
+     */
+    public function copyConditions(array $cids, int $qid)
+    {
+        $isArray = is_array($cids);
+        if (is_array($cids) && count($cids)) {
+            foreach ($cids as &$cid) {
+                $cid = (int) $cid;
+            }
+            $conditions = Condition::model()->findAll('cid in (' . implode(",", $cids) . ")");
+            foreach ($conditions as $condition) {
+                $newCondition = new Condition();
+                $newCondition->qid = $qid;
+                $newCondition->cqid = $condition->cqid;
+                $newCondition->cfieldname = $condition->cfieldname;
+                $newCondition->method = $condition->method;
+                $newCondition->value = $condition->value;
+                $newCondition->scenario = $condition->scenario;
+                $newCondition->save();
+            }
+            return true;
+        } else {
+            if ($isArray) {
+                throw new \Exception(gT("cids must be an array"));
+            }
+        }
+        return false;
     }
 }

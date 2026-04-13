@@ -158,7 +158,7 @@ class LSSodiumOld
         $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             . "/*" . "\n"
             . " * LimeSurvey" . "\n"
-            . " * Copyright (C) 2007-2019 The LimeSurvey Project Team / Carsten Schmitz" . "\n"
+            . " * Copyright (C) 2007-2026 The LimeSurvey Project Team" . "\n"
             . " * All rights reserved." . "\n"
             . " * License: GNU/GPL License v3 or later, see LICENSE.php" . "\n"
             . " * LimeSurvey is free software. This version may have been modified pursuant" . "\n"

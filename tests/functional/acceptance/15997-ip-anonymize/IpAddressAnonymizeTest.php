@@ -114,7 +114,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             sleep(2);
 
             //now check if ip was anonymized (ipv4, last digit should be 0)
-            //get ipadr from table survey_573837 ...
+            //get ipadr from table responses_573837 ...
             $models = \Response::model(self::$surveyId)->findAll();
 
             $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.0'));

@@ -202,7 +202,7 @@ class STATAxmlWriter extends Writer
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 0,
-                        'answer' => gT('Not Selected')
+                        'answer' => gT('Not selected')
                     );
                 } elseif ($aQuestion['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
@@ -211,7 +211,7 @@ class STATAxmlWriter extends Writer
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 0,
-                        'answer' => gT('Not Selected')
+                        'answer' => gT('Not selected')
                     );
                 } elseif ($aQuestion['type'] == Question::QT_G_GENDER) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
