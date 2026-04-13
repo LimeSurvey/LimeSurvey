@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 use TemplateConfiguration;
 
-class Update_649 extends DatabaseUpdateBase
+class Update_703 extends DatabaseUpdateBase
 {
     public function up()
     {
