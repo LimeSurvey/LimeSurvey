@@ -3595,7 +3595,6 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                             }
                                         }
                                         $fieldnameParts = explode("X", $sFieldname);
-                                        $oldSid = $fieldnameParts[0];
                                         $oldGid = $fieldnameParts[1];
                                         $newSid = $iSurveyID;
                                         $newGid = substr($aFieldReMap["G" . $oldGid], 1);
