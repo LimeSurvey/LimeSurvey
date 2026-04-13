@@ -248,7 +248,7 @@ function OSGeoInitialize(question,latLng){
                 }
             }
         });
-        var mapQuestion = $('#question'+name.split('X')[2]);
+        var mapQuestion = $('#question'+name.substring(1));
 
         function resetMapTiles(mapQuestion) {
 

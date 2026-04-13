@@ -180,9 +180,9 @@
                         'name'          => 'queXMLPageFormat',
                         'checkedOption' => $queXMLPageFormat,
                         'selectOptions' => [
-                            "A4"       => gT("A4", 'unescaped'),
-                            "A3"       => gT("A3", 'unescaped'),
-                            "USLETTER" => gT("US Letter", 'unescaped')
+                            "A4"       => "A4",
+                            "A3"       => "A3",
+                            "USLETTER" => "US Letter"
                         ]
                     ]); ?>
                 </div>

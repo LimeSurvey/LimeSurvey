@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -333,7 +333,7 @@ $config['standard_themes_readonly'] = true;
 
 /**
 * When this settings is true/1 (default = false/0) then the printable survey option will show a reference
-* to the "lime_survey_12345" table which stores the survey answers.
+* to the "lime_responses_12345" table which stores the survey answers.
 * It will show a code like "12345X22X333name":
 * 12345 = surveyID
 * 22 = groupID
@@ -834,8 +834,6 @@ $config['passwordValidationRules'] = array(
     'symbol' => 0,
 );
 
-// Enable or disable single page application editor
-$config['editorEnabled'] = false;
 
 /**
  * Default breadcrumb mode:

@@ -215,9 +215,8 @@ class Data extends Record
             $this->startData = $buffer->position();
             $buffer->writeInt(0);
         }
-        //for ($case = 0; $case < $casesCount; $case++) {
+
         $this->writeCaseData($buffer, $row, $compressed, $bias, $variables, $veryLongStrings, $sysmis);
-        //}
         $this->writeOpcode($buffer, self::OPCODE_EOF);
     }
 
@@ -376,10 +375,7 @@ class Data extends Record
         for ($index = 0; $index < $varCount; $index++) {
             $var = $variables[$index];
             $isNumeric = 0 === $var->width && \SPSS\Sav\Variable::isNumberFormat($var->write[1]);
-            $width = (isset($var->write[2]) && ($var->write[2] !== 0)) ? $var->write[2] : $var->width;
-
-            // var_dump($var);
-            // exit;
+            $width = (isset($var->write) && isset($var->write[2]) && ($var->write[2] !== 0)) ? $var->write[2] : $var->width;
 
             if ($isNumeric) {
                 if (!$compressed) {
@@ -460,10 +456,8 @@ class Data extends Record
     {
         foreach ($variables as $index => $var) {
             $value = $row[$index];
-
-            // $isNumeric = $var->width == 0;
-            $isNumeric = 0 === $var->width && \SPSS\Sav\Variable::isNumberFormat($var->write[1]);
-            $width = (isset($var->write[2]) && ($var->write[2] !== 0)) ? $var->write[2] : $var->width;
+            $isNumeric = (($var->width === 0) && \SPSS\Sav\Variable::isNumberFormat($var->write[1]));
+            $width = (isset($var->write) && isset($var->write[2]) && ($var->write[2] !== 0)) ? $var->write[2] : $var->width;
 
             if ($isNumeric) {
                 if (!$compressed) {
@@ -480,11 +474,17 @@ class Data extends Record
                 $offset = 0;
                 $width = isset($veryLongStrings[$var->name]) ? $veryLongStrings[$var->name] : $width;
                 $segmentsCount = Utils::widthToSegments($width);
+                
+                $charsetFrom = mb_internal_encoding(); //We are assuming the data in the default encode
+                $charsetTo = isset($buffer->charset) ? $buffer->charset : mb_internal_encoding();
+                if (isset($value) && (strtolower($charsetFrom) != strtolower($charsetTo))) {
+                    $value = mb_convert_encoding($value, $charsetTo, $charsetFrom);
+                }
                 for ($s = 0; $s < $segmentsCount; $s++) {
                     $segWidth = Utils::segmentAllocWidth($width, $s);
                     for ($i = $segWidth; $i > 0; $i -= 8) {
                         $chunkSize = $segWidth === 255 ? min($i, 8) : 8;
-                        $val = substr($value, $offset, $chunkSize); // Read 8 byte segments, don't use mbsubstr here
+                        $val = (isset($value)) ? substr($value, $offset, $chunkSize) : ''; // Read 8 byte segments, don't use mbsubstr here
                         if ($compressed) {
                             if ('' === $val) {
                                 $this->writeOpcode($buffer, self::OPCODE_WHITESPACES);

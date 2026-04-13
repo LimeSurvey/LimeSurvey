@@ -1,0 +1,33 @@
+.qe-input-group {
+  &.textarea {
+    .form-control {
+      height: auto;
+    }
+  }
+
+  .form-control {
+    height: 40px;
+    border-radius: $border-radius;
+    border: 2px solid $g-700;
+
+    &.textarea {
+      height: auto;
+    }
+  }
+
+  .qe-input-icon-right,
+  .qe-input-icon-left {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    z-index: 10;
+  }
+
+  .qe-input-icon-right {
+    right: 0;
+  }
+
+  .qe-input-icon-left {
+    left: 0;
+  }
+}

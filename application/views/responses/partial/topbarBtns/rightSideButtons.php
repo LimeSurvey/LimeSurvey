@@ -2,8 +2,7 @@
 
   $dataText = gT('Enter a list of response IDs that are to be deleted, separated by comma.');
   $dataText .= '<br/>';
-  $dataText .= gT('Please note that if you delete an incomplete response during a running survey,
-the participant will not be able to complete it.');
+  $dataText .= gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.');
   $this->widget(
     'ext.ButtonWidget.ButtonWidget',
     [

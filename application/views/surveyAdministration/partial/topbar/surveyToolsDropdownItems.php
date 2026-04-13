@@ -72,12 +72,12 @@
         <?php if (count($oSurvey->allLanguages) == 1): ?>
             <!-- one language -->
 
-            <!-- Survey logic file -->
+            <!-- Survey logic overview -->
             <li>
                 <a class="dropdown-item"
                    href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>'>
                     <span class="icon-expressionmanagercheck"></span>
-                    <?php eT("Survey logic file"); ?>
+                    <?php eT("Survey logic overview"); ?>
                 </a>
             </li>
         <?php else : ?>
@@ -85,8 +85,8 @@
 
             <li role="separator" class="dropdown-divider"></li>
 
-            <!-- Survey logic file -->
-            <li class="dropdown-header"><?php eT("Survey logic file"); ?></li>
+            <!-- Survey logic overview -->
+            <li class="dropdown-header"><?php eT("Survey logic overview"); ?></li>
 
             <!-- Base language -->
             <li>
@@ -120,7 +120,7 @@
                     }
 
                     $languagesModal = $this->widget('ext.OptionsModalWidget.OptionsModalWidget', [
-                        'modalTitle' => gT("Select language to show Survey Logic File"),
+                        'modalTitle' => gT("Select language to show survey logic overview"),
                         'options' => $languageOptions
                     ]);
                     $languagesModalId = $languagesModal->getModalId();

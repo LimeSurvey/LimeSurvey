@@ -147,10 +147,6 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             ],
             "questionindex" => ['key' => 'questionIndex', 'type' => 'int'],
             "navigationdelay" => ['key' => 'navigationDelay', 'type' => 'int'],
-            "nokeyboard" => [
-                'key' => 'noKeyboard',
-                'formatter' => ['ynToBool' => true]
-            ],
             "alloweditaftercompletion" => [
                 'key' => 'allowedItAfterCompletion',
                 'formatter' => ['ynToBool' => true]

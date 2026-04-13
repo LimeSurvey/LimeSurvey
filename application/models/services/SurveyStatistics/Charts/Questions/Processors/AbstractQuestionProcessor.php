@@ -60,12 +60,12 @@ abstract class AbstractQuestionProcessor
     /**
      * Build the identifier for current question.
      *
-     * Ex: sidXgidXqid
+     * Ex: Qqid
      */
     public function rt(): void
     {
         if (!empty($this->question)) {
-            $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+            $this->rt = 'Q' . $this->question['qid'];
         }
     }
 
@@ -135,7 +135,7 @@ abstract class AbstractQuestionProcessor
         $criteria->addCondition("$col != ''");
 
         if ($value !== null) {
-            $criteria->compare($fieldName, $value);
+            $criteria->compare($col, $value);
         }
 
         $this->applyFilters($criteria);

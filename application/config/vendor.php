@@ -213,17 +213,6 @@ return array(
         )
     ),
 
-    // jQuery json
-    'jquery-json' => array(
-        'basePath' => 'vendor.jquery-json',
-        'js' => array(
-            'jquery.json-2.4.min.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
         'basePath' => 'node_modules.tablesorter.dist.js',

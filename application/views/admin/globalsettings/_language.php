@@ -14,7 +14,7 @@
                 </label>
                 <select class="form-select"  name='defaultlang' id='defaultlang'>
                 <?php
-                    $actuallang=getGlobalSetting('defaultlang');
+                    $actuallang = Yii::app()->getConfig('defaultlang');
                     foreach (getLanguageData(true) as  $langkey2=>$langname)
                     {
                     ?>

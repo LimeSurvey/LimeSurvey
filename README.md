@@ -55,8 +55,8 @@ LimeSurvey is perfect for you if you are...
 
 ### Minimal
 - Apache ≥ 2.4, nginx ≥ 1.1, or any PHP-ready web server
-- PHP ≥ 7.4 with mbstring and PDO drivers
-- MySQL ≥ 8.0, PostgreSQL ≥ 12, MariaDB ≥ 10.3.38, or MSSQL ≥ 2016
+- PHP ≥ 8.1.29 with mbstring and PDO drivers
+- MySQL ≥ 8.0, PostgreSQL ≥ 14, MariaDB ≥ 10.3.38, or MSSQL ≥ 2019
 
 ### Recommended
 - Latest nginx version

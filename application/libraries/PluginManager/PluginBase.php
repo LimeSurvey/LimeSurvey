@@ -137,7 +137,7 @@ abstract class PluginBase implements iPlugin
      * @param string $model
      * @param int $id
      * @param mixed $default The default value to use when not was set
-     * @return boolean
+     * @return string
      */
     protected function get($key = null, $model = null, $id = null, $default = null)
     {
@@ -463,7 +463,7 @@ abstract class PluginBase implements iPlugin
                 libxml_disable_entity_loader(true);
             }
 
-            if ($this->config === null) {
+            if ($this->config === false) {
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
                 return false;
@@ -539,7 +539,7 @@ abstract class PluginBase implements iPlugin
             'message' =>
                 '<span class="ri-error-warning-fill"></span>&nbsp;' .
                 gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
-                gT('Config file is malformed or null.'),
+                gT('Config file is malformed or empty.'),
             'importance' => \Notification::HIGH_IMPORTANCE
             ]
         );

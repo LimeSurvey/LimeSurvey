@@ -1,0 +1,40 @@
+.meatball-menu {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+  height: 92px;
+  width: 172px;
+
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  margin-top: 13px;
+
+  z-index: 1000;
+
+  button {
+    margin: 0;
+    padding: 0;
+    line-height: 16px;
+    font-size: 11px;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: $font-weight-600;
+
+    &:hover {
+      color: blue;
+    }
+
+    &:disabled {
+      border: none;
+    }
+  }
+
+  .meat-ball-delete-button {
+    color: $r-900;
+    &:hover {
+      color: $r-700;
+    }
+  }
+}

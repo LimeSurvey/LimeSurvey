@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use SurveyThemeHelper;
 use Template;
 
 class Update_143 extends DatabaseUpdateBase
@@ -77,7 +78,7 @@ class Update_143 extends DatabaseUpdateBase
             if (
                 !in_array($entryName, array('.', '..', '.svn')) && is_dir(
                     $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
-                ) && !Template::isStandardTemplate($entryName)
+                ) && !SurveyThemeHelper::isStandardTemplate($entryName)
             ) {
                 if (
                     !rename(

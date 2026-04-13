@@ -1,0 +1,51 @@
+.feedback-container {
+  position: relative;
+  top: -40px;
+  text-align: start;
+  height: 100%;
+
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  ::-webkit-scrollbar {
+    /* WebKit */
+    width: 0;
+    height: 0;
+  }
+
+  .feedback-cover {
+    background: no-repeat url('../../assets/icons/feedback-cover.svg');
+    background-size: cover;
+    height: 208px;
+  }
+
+  .feedback-title {
+    @include title;
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .feedback-description {
+    @include label-s;
+    font-weight: $font-weight-600;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  iframe.survey {
+    width: 100%;
+    min-height: 60vh;
+    margin-top: 16px;
+  }
+}
+
+.feedback-close-button {
+  color: $g-800 !important;
+  font-size: 28px;
+  margin-right: 10px;
+  margin-top: 10px;
+
+  &:hover {
+    color: $g-800;
+  }
+}

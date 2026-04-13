@@ -41,6 +41,10 @@ class ValidatorRegex implements ValidatorInterface
      */
     public function validateByPattern($pattern, $value)
     {
+        if ($pattern === '') {
+            return "Invalid pattern provided for validation.";
+        }
+
         $matched = true;
         $match = preg_match($pattern, $value);
         if ($match !== 1) {

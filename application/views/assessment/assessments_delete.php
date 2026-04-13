@@ -19,7 +19,7 @@
                         <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
                         <input type='hidden' name='id' value='' />
                     </div>
-                    <p class='modal-body-text'><?php eT("Do you really want to delete this asessment rule?"); ?></p>
+                    <p class='modal-body-text'><?php eT("Do you really want to delete this assessment rule?"); ?></p>
                 </div>
                 <div class="modal-footer modal-footer-buttons">
                     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel'); ?></button>

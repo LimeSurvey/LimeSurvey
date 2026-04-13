@@ -6,11 +6,11 @@
         <ul id="sortable-choice-{{qId}}" class="sortable-choice sortable-list list-group">
             {% for index, ansrow in  answers %}
                 {% if show_handle is same as('yes') %} 
-                    <li id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice list-group-item answer-item sortable-item sortable-enable" data-value="{{ansrow.code}}">
+                    <li id="javatbd{{rankingName}}_R{{ansrow.aid}}" class="ls-choice list-group-item answer-item sortable-item sortable-enable" data-value="{{ansrow.code}}">
                     <i class="fa fa-bars bigIcons grabable selector__dragHandle "></i>
                     <span class="icon-divider"></span>
                 {% else %}
-                    <li id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice list-group-item answer-item sortable-item sortable-enable grabable" data-value="{{ansrow.code}}">
+                    <li id="javatbd{{rankingName}}_R{{ansrow.aid}}" class="ls-choice list-group-item answer-item sortable-item sortable-enable grabable" data-value="{{ansrow.code}}">
                 {% endif %}
                 {% if show_number is same as('yes') %} 
                     <b class="selector__index_row">#{{(index+1)}}</b>

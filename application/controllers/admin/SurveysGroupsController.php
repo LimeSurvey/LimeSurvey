@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -147,7 +147,7 @@ class SurveysGroupsController extends SurveyCommonAction
                 /* Check permission */
                 $aAvailableParents = $model->getParentGroupOptions($model->gsid);
                 if (!array_key_exists($parentId, $aAvailableParents)) {
-                    Yii::app()->setFlashMessage(sprintf(gT("You don't have rights on Survey group"), CHtml::encode($parentId)), 'error');
+                    Yii::app()->setFlashMessage(sprintf(gT("You don't have permissions for this survey group"), CHtml::encode($parentId)), 'error');
                     $postSurveysGroups['parent_id'] = $model->parent_id;
                 }
                 /* avoid loop */

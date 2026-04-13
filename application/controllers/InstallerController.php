@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey (tm)
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -902,12 +902,10 @@ class InstallerController extends CController
             //{
             $sShowScriptName = 'true';
             //}
-            if (stripos((string) $_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
-                $sURLFormat = 'path';
-            } else {
-                // Apache
-                $sURLFormat = 'get'; // Fall back to get if an Apache server cannot be determined reliably
-            }
+
+            //we set it only to 'path' from now on for new installations for the new react editor
+            $sURLFormat = 'path';
+
             $sCharset = 'utf8';
             if ($model->isMysql) {
                 $sCharset = 'utf8mb4';
@@ -989,8 +987,9 @@ class InstallerController extends CController
             ."\t\t"   . "),"                                        . "\n"
             ."\t\t"   . ""                                          . "\n"
             */
-
             . "\t\t" . "'urlManager' => array(" . "\n"
+            . "\t\t\t\t" . "// This is required for proper REST API and React Editor functionality." . "\n"
+            . "\t\t\t\t" . "// If you change it back to 'get', the new editor won't work " . "\n"
             . "\t\t\t" . "'urlFormat' => '{$sURLFormat}'," . "\n"
             . "\t\t\t" . "'rules' => array(" . "\n"
             . "\t\t\t\t" . "// You can add your own rules here" . "\n"

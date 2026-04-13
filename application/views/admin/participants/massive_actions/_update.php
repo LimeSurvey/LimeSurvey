@@ -32,7 +32,7 @@
                         <input type="checkbox" class="action_check_to_keep_old_value" />
                     </label>
                 </div>
-                <label class="col-md-3 form-label"  for='owner_uid'><?php eT("Owner?"); ?></label>
+                <label class="col-md-3 form-label"  for='owner_uid'><?php eT("Owner"); ?></label>
                 <div class="col-md-8">
                     <?php echo TbHtml::dropDownList('owner_uid', 'lskeep', ['lskeep' => gT('Keep old value')] + $model->getOwnerOptions(), ['disabled'=>'disabled','class'=>'form-select custom-data selector_submitField'] );?>
                 </div>

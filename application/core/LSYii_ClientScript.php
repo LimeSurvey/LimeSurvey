@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -433,13 +433,8 @@ class LSYii_ClientScript extends CClientScript
         }
 
         //Propagate our debug settings into the javascript realm
-        if (function_exists('getGlobalSetting')) {
-            $debugFrontend = (int) getGlobalSetting('javascriptdebugfrntnd');
-            $debugBackend  = (int) getGlobalSetting('javascriptdebugbcknd');
-        } else {
-            $debugFrontend = 0;
-            $debugBackend  = 0;
-        }
+        $debugFrontend = (int) Yii::app()->getConfig('javascriptdebugfrntnd');
+        $debugBackend  = (int) Yii::app()->getConfig('javascriptdebugbcknd');
 
         $html .= "<script type='text/javascript'>window.debugState = {frontend : (" . $debugFrontend . " === 1), backend : (" . $debugBackend . " === 1)};</script>";
 
@@ -582,7 +577,7 @@ class LSYii_ClientScript extends CClientScript
                 $scripts[] = implode("\n", $this->scripts[self::POS_POSTSCRIPT]);
             }
         }
-        if (App()->getConfig('debug') > 0) {
+        if (Yii::app()->getConfig('debug') > 0) {
             $scripts[] = "jQuery(document).off('pjax:scriptsuccess.debugger').on('pjax:scriptsuccess.debugger',function(e) { console.ls.log('PJAX scriptsuccess', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripterror.debugger').on('pjax:scripterror.debugger',function(e) { console.ls.log('PJAX scripterror', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripttimeout.debugger').on('pjax:scripttimeout.debugger',function(e) { console.ls.log('PJAX scripttimeout', e); });";

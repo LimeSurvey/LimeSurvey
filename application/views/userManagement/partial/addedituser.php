@@ -57,6 +57,7 @@ Yii::app()->getController()->renderPartial(
                     'format'           => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' => true,
                     'showClear'        => true,
+                    'theme' => 'light',
                     'locale'           => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 ]
             ]);

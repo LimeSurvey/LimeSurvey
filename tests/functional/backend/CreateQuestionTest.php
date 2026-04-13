@@ -7,7 +7,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
-use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Exception\ElementNotVisibleException;
 
 /**
@@ -74,7 +74,7 @@ class CreateQuestionTest extends TestBaseClassWeb
                 $button->click();
             } catch (NoSuchElementException $ex) {
                 // Do nothing.
-            } catch (TimeOutException $ex) {
+            } catch (TimeoutException $ex) {
                 // Do nothing.
             }
 
@@ -170,7 +170,7 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             print_r('Already here');
             // Enter answer text.
-            $sgqa = $sid . 'X' . $survey->groups[0]->gid . 'X' . $questions['question1']->qid;
+            $sgqa = 'Q' . $questions['question1']->qid;
             $question = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $question->sendKeys('foo bar');
 
@@ -193,7 +193,7 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             // Check so that response is recorded in database.
             $query = sprintf(
-                'SELECT * FROM {{survey_%d}}',
+                'SELECT * FROM {{responses_%d}}',
                 $sid
             );
             $result = $dbo->createCommand($query)->queryAll();
