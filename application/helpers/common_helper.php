@@ -1971,7 +1971,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $question->save();
                     $abrows[] = [
                         'qid' => $question->qid,
-                        'relevance' => $question->relevance
+                        'relevance' => $question->relevance,
+                        'title'     => $answer->code,
                     ];
                     foreach ($answer->answerl10ns as $language => $al10n) {
                         $questionl10n = new QuestionL10n();
