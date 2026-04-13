@@ -20,7 +20,7 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             'other' => ['formatter' => ['ynToBool' => true]],
             'mandatory' => ['formatter' => ['mandatory' => true]],
             'encrypted' => ['formatter' => ['ynToBool' => true]],
-            'question_order' => ['key' => 'questionOrder', 'type' => 'int'],
+            'question_order' => ['key' => 'sortOrder', 'type' => 'int'],
             'scale_id' => ['key' => 'scaleId', 'type' => 'int'],
             'same_default' => [
                 'key' => 'sameDefault',
@@ -45,7 +45,7 @@ class TransformerOutputQuestion extends TransformerOutputActiveRecord
             $collection,
             function ($a, $b) {
                 return (int)(
-                    (int)$a['questionOrder'] > (int)$b['questionOrder']
+                    (int)$a['sortOrder'] > (int)$b['sortOrder']
                 );
             }
         );

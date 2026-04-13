@@ -84,14 +84,11 @@ Yii::import('ext.GeneralOptionWidget.settings.*');
 Yii::import('zii.widgets.grid.*');
 Yii::import('zii.widgets.*');
 Yii::import('zii.widgets.jui.*');
-Yii::app()->loadLibrary('admin.pclzip');
 // TODO: Replace with autoload
 LoadQuestionTypes::loadAll();
 
 // TODO: PATH_SEPARATOR for Windows
 set_include_path(get_include_path() . ':' . APPPATH . 'helpers');
-require_once(APPPATH . '/helpers/Zend/XmlRpc/Client.php');
-require_once(APPPATH . '/helpers/Zend/XmlRpc/Server.php');
 Yii::import('application.libraries.LSZend_XmlRpc_Response_Http', true);
 Yii::import('application.libraries.LSjsonRPCServer', true);
 

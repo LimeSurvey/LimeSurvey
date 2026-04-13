@@ -43,11 +43,12 @@ var PrepEmailTemplates = function(){
     
             $('#attachment-relevance-editor textarea').val($(target).val());
     
-            $('#attachment-relevance-editor').modal({
+            const attachmentRelevanceModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('attachment-relevance-editor'), {
                 backdrop: 'static',
                 keyboard: false
             });
-    
+            attachmentRelevanceModal.show();
+
             $('#attachment-relevance-editor .btn-primary').one('click', function (event) {
                 var newRelevanceEquation = $('#attachment-relevance-editor textarea').val();
                 $(target).val(newRelevanceEquation);
@@ -61,7 +62,7 @@ var PrepEmailTemplates = function(){
                     $(span).html(newRelevanceEquation);
                 }
     
-                $('#attachment-relevance-editor').modal('hide');
+                attachmentRelevanceModal.hide();
             });
     
     },

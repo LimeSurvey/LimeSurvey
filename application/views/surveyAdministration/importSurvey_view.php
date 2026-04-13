@@ -52,6 +52,9 @@
         <div class="row justify-content-center">
             <div class="col-lg-2">
                 <table class="table table-striped table-condensed ">
+                    <caption class="sr-only">
+                        <?php eT("Survey copy summary"); ?>
+                    </caption>
                     <tr>
                         <td><?php eT("Surveys"); ?>:</td>
                         <td><?php echo $aImportResults['surveys']; ?></td>
@@ -162,12 +165,8 @@
             </ul>
         <?php endif; ?>
 
-        <!-- Import Result -->
-        <?php if ($action == 'importsurvey'): ?>
-            <p class="text-info"><?php eT("Import of survey is completed.");?></p>
-        <?php elseif($action == 'copysurvey'): ?>
-            <p class="text-info"><?php eT("Copy of survey is completed.");?></p>
-        <?php endif; ?>
+        <!-- Result -->
+        <p class="text-info"><?= $textCompleted?></p>
 
         <!-- Buttons -->
         <p>

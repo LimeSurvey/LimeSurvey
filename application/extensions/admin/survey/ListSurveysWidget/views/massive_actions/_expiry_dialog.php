@@ -19,7 +19,7 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'survey-expiry',)); ?>
                     'name' => 'datepickerInputField',
                     'id' => 'expiryPicker',
                     'pluginOptions' => array(
-                        'format' => $dateFormatDetails['jsdate'],
+                        'format' => $dateFormatDetails['jsdate'] . " HH:mm",
                         'allowInputToggle' => true,
                         'showClear' => true,
                         'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
@@ -31,8 +31,8 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'survey-expiry',)); ?>
                     $(function () {
                         // datepicker needs to be reinitialized, due to ajax reload of modal:
                         <?= $widget->getConfigScript('expiryPicker'); ?>
-                        document.getElementById("expiryPicker").addEventListener("change.td", function(){
-                            document.getElementById("expires").value = this.value;
+                        document.getElementById("expiryPicker_datetimepicker").addEventListener("change.td", function(){
+                            document.getElementById("expires").value = document.getElementById("expiryPicker").value;
                         });
                     });
                 </script>

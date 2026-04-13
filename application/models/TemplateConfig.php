@@ -1170,6 +1170,9 @@ class TemplateConfig extends CActiveRecord
             // we must add it.
             // (and leave it in moter template definition if it already exists.)
             foreach ($aSettings as $key => $sFileName) {
+                if (!is_string($sFileName)) {
+                    continue;
+                }
                 if (file_exists($this->path . $sFileName)) {
                     App()->clientScript->removeFileFromPackage(
                         $this->oMotherTemplate->sPackageName,

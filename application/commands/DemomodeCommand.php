@@ -99,9 +99,9 @@ class DemomodeCommand extends CConsoleCommand
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{users}} set lang='auto'";
         Yii::app()->db->createCommand($actquery)->execute();
-        $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_question%'";
+        $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_question'";
         Yii::app()->db->createCommand($actquery)->execute();
-        $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_survey%'";
+        $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_survey'";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{users}} set email = 'test@domain.test', full_name='Administrator'";
         Yii::app()->db->createCommand($actquery)->execute();
@@ -160,7 +160,7 @@ class DemomodeCommand extends CConsoleCommand
 
     private function createDemo()
     {
-        Yii::app()->loadHelper('admin/import');
+        Yii::app()->loadHelper('admin.import');
         require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/replacements_helper.php');
         require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_manager_helper.php');
         require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_core_helper.php');

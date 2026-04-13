@@ -50,7 +50,7 @@ class Variable extends Record
 
     /**
      * Print format for this variable.
-     * [decimals, width, format, 0].
+     * [0, format, width, decimals].
      *
      * @var array
      */
@@ -58,7 +58,7 @@ class Variable extends Record
 
     /**
      * Write format for this variable.
-     * [decimals, width, format, 0].
+     * [0, format, width, decimals].
      *
      * @var array
      */

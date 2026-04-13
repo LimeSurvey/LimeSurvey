@@ -166,6 +166,10 @@ class Answer extends LSActiveRecord
             if (is_null($aAnswer)) {
                 return null;
             }
+            if (!isset($aAnswer->answerl10ns[$sLanguage])) {
+                Yii::log("AnswerL10n record missing for language \"{$sLanguage}\" and aid {$aAnswer->aid}", 'warning', 'application.models.Answer.getAnswerFromCode');
+                return null;
+            }
             $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerl10ns[$sLanguage]->answer;
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         }

@@ -26,7 +26,6 @@ class OpHandlerAnswer implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
     use OpHandlerQuestionTrait;
-    use OpHandlerExceptionTrait;
     use OpHandlerValidationTrait;
 
     protected string $entity;
@@ -170,16 +169,13 @@ class OpHandlerAnswer implements OpHandlerInterface
         $this->questionAggregateService->checkUpdatePermission($surveyId);
         $question = $this->questionService->getQuestionBySidAndQid(
             $surveyId,
-            $op->getEntityId()
+            (int)$op->getEntityId()
         );
 
         $data = $this->transformer->transformAll(
             $op->getProps(),
             ['operation' => $op->getType()->getId()]
         );
-        if (empty($data)) {
-            $this->throwNoValuesException($op);
-        }
         $this->answersService->save(
             $question,
             $data

@@ -176,7 +176,7 @@ class TestBaseClassWeb extends TestBaseClass
         if ($wait) {
             self::$webDriver->wait()->until(
                 WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('welcome-jumbotron')
+                    WebDriverBy::className('welcome')
                 )
             );
             self::ignoreWelcomeModal();

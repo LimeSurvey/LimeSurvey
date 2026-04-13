@@ -17,19 +17,19 @@
 echo viewHelper::getViewTestTag('templateOptions');
 ?>
 <div class="list-themes">
-    <ul class="nav nav-tabs" id="themelist">
+    <ul class="nav nav-tabs" id="themelist" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab">
+            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Survey themes'); ?>
             </a>
         </li>
         <li>
-            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab">
+            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Admin themes'); ?>
             </a>
         </li>
         <li>
-            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab">
+            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Question themes'); ?>
             </a>
         </li>
@@ -65,7 +65,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <?php foreach ($aTemplatesWithoutDB['valid'] as $key => $oTemplate) : ?>
                                 <tr class="odd">
                                     <td class="col-lg-1"><?php echo $oTemplate->getPreview(); ?></td>
-                                    <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
+                                    <td class="col-lg-2"><?php echo CHtml::encode($oTemplate->sTemplateName); ?></td>
                                     <td class="col-lg-3"><?php echo $oTemplate->getDescription(); ?></td>
                                     <td class="col-lg-2"><?php eT('XML themes'); ?></td>
                                     <td class="col-lg-1"><?php echo $oTemplate->config->metadata->extends; ?></td>

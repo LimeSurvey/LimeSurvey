@@ -417,7 +417,14 @@ class SurveyActivator
      */
     protected function createTimingsTable()
     {
-        if ($this->survey->isSaveTimings) {
+        /**
+         * CT-1121: Needed a fix because $this->survey->isSaveTimings is incorrectly N even if it's Y in the database
+         * We will need to look into that problem later and restore the earlier code changed in 28bdcc3fde1e758756d2f4a4984e29a4105d3950
+         * once $this->survey->isSaveTimings becomes reliable again
+         * The idea for the fix was to load this value from the database for the time being until the session creation at the Question Editor is fixed
+         */
+        $prow = $this->survey->find('sid = :sid', array(':sid' => $this->survey->sid));
+        if ($prow->savetimings == "Y") {
             $this->prepareTimingsTable();
             $sTableName = $this->survey->timingsTableName;
             try {
@@ -481,6 +488,6 @@ class SurveyActivator
      */
     public function isCloseAccessMode()
     {
-        return $this->survey->isAllowRegister || tableExists('tokens_' . $this->survey->sid);
+        return $this->survey->access_mode === 'C';
     }
 }

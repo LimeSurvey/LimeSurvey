@@ -31,14 +31,13 @@ Responsive navbar-brand image CSS
     line-height: 20px;
 }
 
-.logo-container>img {
-    max-height: 90px;
-    padding: 15px;
-    width: auto;
-}
-
-.brand-logo  .top-container .top-content{
-    padding-top: 2em;
+.logo-container > img {
+  max-height: 90px;
+  padding: 15px;
+  width: auto;
+  @media(max-width: 768px) {
+    max-height: 60px;
+  }
 }
 
 /* text overflows, ellipsis and hyphens */
@@ -95,23 +94,22 @@ Responsive navbar-brand image CSS
         //    width : 100%;
         //}
     }
-    @media(max-width : 768px) {
-        padding-top    : 15px;
-        padding-bottom : 15px;
-    }
 
 }
 
 #survey-nav {
     &.navbar {
-        box-shadow: none;
+        box-shadow : none;
     }
     .navbar-toggler {
-        border: none;
-        padding-right: 0;
-        line-height: $line-height-20;
+        border        : none;
+        padding-right : 0;
+        line-height   : $line-height-20;
         .ri-more-fill {
-            font-size: $font-size-xl * 1.125;
+            font-size : $font-size-xl * 1.125;
+        }
+        &:focus {
+            box-shadow : none;
         }
     }
 
