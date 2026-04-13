@@ -81,7 +81,7 @@ $config['allowexportalldb']          = 0; // Default 0 will only export prefixed
 $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabytes to be able to download without errors
 
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
-$config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
+$config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numerical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
 $config['blacklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
@@ -429,7 +429,7 @@ $config['quexmlshowprintablehelp'] = false;
 // QueXML-PDF: If set to true, each question in the PDF will be identified by the question title instead of the section and number
 $config['quexmlusequestiontitleasid'] = false;
 
-// QueXML: If set to true, the Data/Time answers will be formatted with the survey's date format
+// QueXML: If set to true, the Date/Time answers will be formatted with the survey's date format
 $config['quexmlkeepsurveydateformat'] = false;
 
 // QueXML: Width of the question title column in MM

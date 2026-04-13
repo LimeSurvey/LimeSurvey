@@ -1,5 +1,5 @@
 <!-- Modal for confirmation -->
-<div id="massive-action-modal-<?php $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>">
+<div id="massive-action-modal-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">

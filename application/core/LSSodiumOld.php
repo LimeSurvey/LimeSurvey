@@ -114,11 +114,10 @@ class LSSodiumOld
      *
      * Decrypt encrypted string.
      * @param string $sEncryptedString Encrypted string to decrypt
-     * @param bool $bReturnFalseIfError false by default. If TRUE, return false in case of error (bad decryption). Else, return given $encryptedInput value
-     * @return string Return decrypted value (string or unserialized object) if succeeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
-     * @throws SodiumException
+     * @return string Return decrypted value (string or unserialized object) if succeeded, or empty string if library is missing, or the input string itself if empty/null.
+     * @throws SodiumException If decryption fails (e.g. wrong key)
      */
-    public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string
+    public function decrypt($sEncryptedString): string
     {
         if ($this->bLibraryExists === true) {
             if ($sEncryptedString && $sEncryptedString !== 'null') {

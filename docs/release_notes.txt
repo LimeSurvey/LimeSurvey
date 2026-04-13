@@ -5921,7 +5921,7 @@ Changes from 4.1.17 (build 200414) to 4.1.18 (build 200416) April 16, 2020
 Changes from 4.1.16 (build 200407) to 4.1.17 (build 200414) April 14, 2020
 -Fixed issue: Original superadmin should always be able to edit other users passwords (Carsten Schmitz)
 -Fixed issue #16134: Unable to disable XSS , inversion with script enable (Denis Chenu)
--Fixed issue #16132: ext.SettingsWidget.SettingsWidget add unneeded, broken and anasked buttons (Denis Chenu)
+-Fixed issue #16132: ext.SettingsWidget.SettingsWidget add unneeded, broken and unasked buttons (Denis Chenu)
 -Fixed issue #16123: TSV export does not properly export a single group/question/answer option etc. (Carsten Schmitz)
 -Fixed issue #16115: .lsg group export does not export subquestion texts (Carsten Schmitz)
 -Fixed issue #16098: Typo in survey groups (#1403) (jmantysalo)
@@ -9603,7 +9603,7 @@ Changes from 1.90 (build 9642) to 1.91+ (build 120302) Mar 3, 2012
 +New feature: Support for the "maximum_chars" attribute to the array/numbers question type, when using the text input layout. (c_schmitz)
 +New feature: Spread sheet type row and colum totals for Array Multi text (numbers only) (eric_t_cruiser)
 +New feature: Switching SSL on and off  (eric_t_cruiser)
-+New feature #4069: Differentiate String comparison and numerical comparison operators. By default numerical order is now assume. Old surveys that were using string comparisons must be updated. The stringcomparisonoperators parameter must be set to 1 in config.php in order to enable these string comparisons. (lemeur)
++New feature #4069: Differentiate String comparison and numerical comparison operators. By default numerical order is now assumed. Old surveys that were using string comparisons must be updated. The stringcomparisonoperators parameter must be set to 1 in config.php in order to enable these string comparisons. (lemeur)
 +New feature #4661 : add some placeholder : {SURVEYLANG}, {SURVEYFORMAT}, {SURVEYCONTACT} (shnoulle)
 #Updated feature: Sets "equals" as the default comparison operator for conditions (jcleeland)
 #Updated feature #4426: Separation of survey settings - survey settings and editing of survey text elements are now separated to two different icons because users had problems to find the text elemens - patch kindly provided by CarbonaCat (c_schmitz)

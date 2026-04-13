@@ -2733,7 +2733,7 @@ function fillDate($dateString)
  * Render the question view.
  *
  * By default, it just renders the required core view from application/views/survey/...
- * If user added a question template in the upload directory, add applied it to the question in its display settings, then the function will check if the required view exist in this directory
+ * If the user uploaded a question template to the upload directory and applied it to the question's display settings, this function will check whether the required view exists in that directory
  * and then will use this one to render the question.
  *
  * Rem: all the logic has been moved to LSETwigViewRenderer::renderQuestion()

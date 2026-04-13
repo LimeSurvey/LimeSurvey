@@ -393,7 +393,7 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * This function provide status information about files presents on the system that will be affected by the update : do they exist ? are they writable ? modified ?
+     * This function provides status information about files present on the system that will be affected by the update: do they exist? are they writable? modified?
      *
      * @param array $updateinfo Array of updated files
      * @return array

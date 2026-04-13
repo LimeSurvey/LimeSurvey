@@ -3223,8 +3223,8 @@ class statistics_helper
         //PCHART has to be enabled and we need some data
         //
         if ($usegraph == 1) {
-            // NOTE: in ls3, not so many tests were needed. We suscpect that a bug has been introduced (like no "show graph" attribute for certain question type, also, why now sometime $outputs['parentqid']=0 at this point? )
-            //       so if debug mode is on, we'll show a warning, so dev will not strugle to find a deeper bug.
+            // NOTE: in ls3, not so many tests were needed. We suspect that a bug has been introduced (like no "show graph" attribute for certain question type, also, why now sometime $outputs['parentqid']=0 at this point? )
+            //       so if debug mode is on, we'll show a warning, so dev will not struggle to find a deeper bug.
             if (YII_DEBUG) {
                 if (!$aattr) {
                     Yii::app()->setFlashMessage('Warning: could not get question attributes for ' . $qqid . ' parent qid: ' . $outputs['parentqid'], 'error');

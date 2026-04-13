@@ -245,7 +245,7 @@ class SurveysGroupsController extends SurveyCommonAction
         if (!$this->loadModel($id)->hasPermission('surveysettings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        /* Can not call globalsettings controller fuinction sice _construct check access … */
+        /* Cannot call the globalsettings controller function since __construct checks access… */
         $menues = Surveymenu::model()->getMenuesForGlobalSettings();
         Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }

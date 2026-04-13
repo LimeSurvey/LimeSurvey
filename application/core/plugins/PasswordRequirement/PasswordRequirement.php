@@ -156,7 +156,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
      * @param boolean $needsNumber
      * @param boolean $needsUppercase
      * @param boolean $needsNonAlphanumeric
-     * @return null|array, null mean no issue.
+     * @return null|array, null means no issue.
      */
     private function checkValidityOfPassword($password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize = 8)
     {
@@ -283,7 +283,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-     * Returns a random number using random_int if available or mt_rand f not.
+     * Returns a random number using random_int if available or mt_rand if not.
      * @param int $max The highest value to be returned
      * @param int $min The lowest value to be returned
      * @return int
@@ -298,7 +298,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     /**
      * Returns a random character from a string
-     * @param string $chars Pool fo character from where to pick
+     * @param string $chars Pool of characters from which to pick
      * @return string Picked character
      */
     private static function pickRandomChar($chars)
