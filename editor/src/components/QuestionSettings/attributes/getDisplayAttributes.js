@@ -193,6 +193,7 @@ export const getDisplayAttributes = () => ({
   ANSWER_PREFIX: {
     component: Input,
     attributePath: 'attributes.prefix',
+    languageBased: true,
     props: {
       dataTestId: 'answer-prefix',
       labelText: t('Answer prefix'),
@@ -201,6 +202,7 @@ export const getDisplayAttributes = () => ({
   ANSWER_SUFFIX: {
     component: Input,
     attributePath: 'attributes.suffix',
+    languageBased: true,
     props: {
       dataTestId: 'answer-suffix',
       labelText: t('Answer suffix'),
