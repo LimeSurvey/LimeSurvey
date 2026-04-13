@@ -1516,7 +1516,7 @@ class UserManagementController extends LSBaseController
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
             $success = true;
-            $sReturnMessage = gT('User successfully created');
+            $sReturnMessage = gT('User successfully created', 'unescaped');
 
             if (Yii::app()->getConfig("sendadmincreationemail") && $sendEmail) {
                 $user = User::model()->findByPk($newUser['uid']);
