@@ -14,17 +14,18 @@
     Show the privacy message and the data security message will be available in a modal
 
 #}
+{% set describedbyprivacy = "datasecurity_notice" %}
 {% if aSurveyInfo.datasecurity_error %}
 <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }} id="datasecurity_error">
 	<a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" aria-hidden="true"></a>
 	{{ aSurveyInfo.datasecurity_error }}
 </div>
 	{% if aSurveyInfo.datasecuritynotaccepted %}
-		{% set describeprivacy = "datasecurity_error " ~ describeprivacy %}
+		{% set describedbyprivacy = "datasecurity_error " ~ describedbyprivacy %}
 	{% endif %}
 {% endif %}
 <div class="form-check">
-    <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" />
+    <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" aria-describedbyprivacy="{{ describedbyprivacy }}/>
     <label for="datasecurity_accepted" class="form-check-label fw-bold {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">{{ aSurveyInfo.datasecurity_notice_label }}</label>
 </div>
 <div class="collapse fade" id="data-security-modal-{{aSurveyInfo.sid}}">
@@ -32,7 +33,7 @@
         <div class="card-header bg-primary">
             <h4 class="modal-title">{{gT('Privacy policy')}}</h4>
         </div>
-        <div class="card-body {{ aSurveyInfo.class.privacydatasecmodalbody }}">
+        <div id="datasecurity_notice" class="card-body {{ aSurveyInfo.class.privacydatasecmodalbody }}">
             {{ aSurveyInfo.datasecurity_notice }}
         </div>
         <div class="ls-no-js-hidden card-footer">
@@ -54,7 +55,7 @@ $(function() {
             if($('#datasecurity_error').length) {
                 /* add it in aria and role */
                 $('#datasecurity_error').attr("role", "alert");
-                $('#datasecurity_accepted').attr("aria-describedby", "datasecurity_error {{ datasecuritynotice }}");
+                $('#datasecurity_accepted').attr("aria-describedby", "datasecurity_error datasecurity_notice");
             }
         }
     });
