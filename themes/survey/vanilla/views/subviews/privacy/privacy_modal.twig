@@ -25,7 +25,7 @@
 	{% endif %}
 {% endif %}
 <div class="form-check">
-    <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" aria-describedbyprivacy="{{ describedbyprivacy }}/>
+    <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" aria-describedby="{{ describedbyprivacy }}"/>
     <label for="datasecurity_accepted" class="form-check-label fw-bold {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">{{ aSurveyInfo.datasecurity_notice_label }}</label>
 </div>
 <div class="collapse fade" id="data-security-modal-{{aSurveyInfo.sid}}">
