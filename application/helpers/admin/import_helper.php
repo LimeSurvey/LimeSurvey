@@ -3086,7 +3086,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
 
-    $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements, $aAIDReplacements);
+    $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
 
     // Import conditions ---------------------------------------------------------
     if (isset($xml->conditions)) {
@@ -3480,7 +3480,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // Set survey rights
     Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSID);
-    $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements, $aAIDReplacements);
+    $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
     $results['FieldReMap'] = $aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
     translateInsertansTags($iNewSID, $iOldSID, $aOldNewFieldmap);
@@ -3694,7 +3694,6 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                             $aInsertData[getFieldName("{{responses_" . $newSid . "}}", $oldFieldName, $qidMetadata[$newGid][$qidCandidate], $newSid, $newGid, false)] = $oXMLReader->value;
                                             $endIndex++;
                                         }
-                                    } else {
                                     }
                                 }
                                 $oXMLReader->read();
