@@ -3601,6 +3601,13 @@ class LimeExpressionManager
                 case Question::QT_I_LANGUAGE: //Language Question
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                if (preg_match('/comment$/', (string) $sgqa)) {
+                    $varName = $fielddata['title'] . '_comment'; // keep suffix
+                } else {
+                    $varName = $fielddata['title'];
+                }
+                $question = $fielddata['question'];
+                    break;
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                 case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
