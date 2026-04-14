@@ -94,7 +94,7 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                             </div>
                         </div>
                         <div class="<?= $colClassRight ?>">
-                            <img src="/application/core/plugins/ReactEditor/images//new_editor_image_small.png"
+                            <img src="<?= Yii::app()->baseUrl ?>/application/core/plugins/ReactEditor/images/new_editor_image_small.png"
                                  class="img-fluid editor-preview"
                                  alt="Editor preview">
                         </div>

@@ -1447,7 +1447,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             }
             return $aImportResults;
         default:
-            // Unknow file , return null why not throw error ?
+            // Unknown file , return null why not throw error ?
             return null;
     }
 }
@@ -2205,7 +2205,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > Token::MAX_LENGTH) {
             $insertdata['tokenlength'] = Token::MAX_LENGTH;
         }
-        /* Remove unknow column */
+        /* Remove unknown column */
         $aSurveyModelsColumns = Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
         $aBadData = array_diff_key($insertdata, $aSurveyModelsColumns);
@@ -2227,7 +2227,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
-    // Single flag to indicate if the attachements format is wrong, to avoid showing the warning multiple times
+    // Single flag to indicate if the attachments format is wrong, to avoid showing the warning multiple times
     $wrongAttachmentsFormat = false;
 
     // Import survey languagesettings table ===================================================================================
@@ -3068,34 +3068,40 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             if (!empty($insertdata['cfieldname'])) {
-                if (!isset($aQuestionsMapping[$insertdata['cfieldname']])) {
-                    if (strpos($insertdata['cfieldname'], 'X') !== false) {
-                        $parts = explode('X', $insertdata['cfieldname']);
-                        $qid = null;
-                        $idCandidate = $parts[2];
-                        $search = true;
-                        $knownFieldName = null;
-                        $theQ = null;
-                        while ($search && strlen($idCandidate)) {
-                            foreach ($aQuestionsMapping as $key => $value) {
-                                if (($key === "Q{$idCandidate}") || (strpos($key, "Q{$idCandidate}_") !== false)) {
-                                    $qid = substr(explode("_", $value)[0], 1);
-                                    $theQ = Question::model()->findByPk($qid);
-                                    $theQuestions = Question::model()->findAll(['condition' => "sid = {$theQ->sid} and gid = {$theQ->gid} and {$theQ->qid} in (qid, parent_qid)"]);
-                                    $knownFieldName = "{$theQ->sid}X{$theQ->gid}X{$theQ->qid}" . substr($parts[2], strlen($idCandidate));
-                                    $search = false;
-                                }
-                            }
-                            if ($search) {
-                                $idCandidate = substr($idCandidate, 0, strlen($idCandidate) - 1);
+                // Detect and preserve the "+" prefix used for M/P subquestion conditions
+                $plusPrefix = '';
+                $cfieldnameToProcess = $insertdata['cfieldname'];
+                if (substr($cfieldnameToProcess, 0, 1) === '+') {
+                    $plusPrefix = '+';
+                    $cfieldnameToProcess = substr($cfieldnameToProcess, 1);
+                }
+
+                if (isset($aQuestionsMapping[$cfieldnameToProcess])) {
+                    $insertdata['cfieldname'] = $plusPrefix . $aQuestionsMapping[$cfieldnameToProcess];
+                } elseif (strpos($cfieldnameToProcess, 'X') !== false) {
+                    $parts = explode('X', $cfieldnameToProcess);
+                    $qid = null;
+                    $idCandidate = $parts[2];
+                    $search = true;
+                    $knownFieldName = null;
+                    $theQ = null;
+                    while ($search && strlen($idCandidate)) {
+                        foreach ($aQuestionsMapping as $key => $value) {
+                            if (($key === "Q{$idCandidate}") || (strpos($key, "Q{$idCandidate}_") !== false)) {
+                                $qid = substr(explode("_", $value)[0], 1);
+                                $theQ = Question::model()->findByPk($qid);
+                                $theQuestions = Question::model()->findAll(['condition' => "sid = {$theQ->sid} and gid = {$theQ->gid} and {$theQ->qid} in (qid, parent_qid)"]);
+                                $knownFieldName = "{$theQ->sid}X{$theQ->gid}X{$theQ->qid}" . substr($parts[2], strlen($idCandidate));
+                                $search = false;
                             }
                         }
-                        if ($qid) {
-                            $insertdata['cfieldname'] = getFieldName(Yii::app()->db->tablePrefix . "responses_" . $theQ->sid, $knownFieldName, $theQuestions, $theQ->sid, $theQ->gid);
+                        if ($search) {
+                            $idCandidate = substr($idCandidate, 0, strlen($idCandidate) - 1);
                         }
                     }
-                } else {
-                    $insertdata['cfieldname'] = $aQuestionsMapping[$insertdata['cfieldname']];
+                    if ($qid) {
+                        $insertdata['cfieldname'] = $plusPrefix . getFieldName(Yii::app()->db->tablePrefix . "responses_" . $theQ->sid, $knownFieldName, $theQuestions, $theQ->sid, $theQ->gid);
+                    }
                 }
             }
             $insertdata['value'] = fixText(
@@ -3677,7 +3683,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $aCsvHeader = array_shift($aFileResponses);
     LimeExpressionManager::SetDirtyFlag(); // Be sure survey EM code are up to date
     $aLemFieldNames = LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
-    $aKeyForFieldNames = array(); // An array assicated each fieldname with corresponding responses key
+    $aKeyForFieldNames = array(); // An array associated each fieldname with corresponding responses key
     if (empty($aCsvHeader)) {
         $CSVImportResult['errors'][] = gT("File seems empty or has only one line");
         return $CSVImportResult;
@@ -3693,7 +3699,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             if (in_array($sLemFieldName, $aCsvHeader)) {
                 $aKeyForFieldNames[$sFieldName] = array_search($sLemFieldName, $aCsvHeader);
             } elseif ($aOptions['bForceImport']) {
-                // as fallback just map questions in order of apperance
+                // as fallback just map questions in order of appearance
 
                 // find out where the answer data columns start in CSV
                 if (!isset($csv_ans_start_index)) {
@@ -3733,7 +3739,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         return $CSVImportResult;
     }
 
-    // make sure at least one answer was imported before commiting
+    // make sure at least one answer was imported before committing
     $isAnswerMapped = array_key_exists('id', $aKeyForFieldNames) ? (count($aKeyForFieldNames) > 1) : (count($aKeyForFieldNames) > 0);
     if (!$isAnswerMapped) {
         $CSVImportResult['errors'][] = gT("Import failed: No answers could be mapped.");
@@ -4710,7 +4716,7 @@ function fileCsvToUtf8($fullfilepath, $encoding = 'auto')
     unset($file);
     // Delete not needed file
     unlink($fullfilepath);
-    /* Return the tempory ressource */
+    /* Return the temporary resource */
     rewind($tmp);
     return $tmp;
 }

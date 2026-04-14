@@ -228,7 +228,7 @@ class AdminController extends LSYii_Controller
 
     /**
      * If a module override the views of a controller, renderPartial needs to check module view directories.
-     * This work recusively with infinite depth of subdirectories.
+     * This work recursively with infinite depth of subdirectories.
      *
      * @param string $view name of the view to be rendered. See {@link getViewFile} for details
      * about how the view script is resolved.
@@ -244,7 +244,7 @@ class AdminController extends LSYii_Controller
     public function renderPartial($view, $data = null, $return = false, $processOutput = false)
     {
         if (!empty($this->currentModuleAction)) {
-          // Standard: the views are stored in a folder that has the same name as the controler file.
+          // Standard: the views are stored in a folder that has the same name as the controller file.
           // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easily extend any LS Core controller/action/view.
             $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
             $sAction = (empty($sParsedView[1])) ? '' : $sParsedView[1];
@@ -297,7 +297,7 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-     * This function is very similiar to AdminController::actions()
+     * This function is very similar to AdminController::actions()
      * Routes all the modules actions to their respective places
      *
      * todo REFACTORING we don't have to refactore this method ...
