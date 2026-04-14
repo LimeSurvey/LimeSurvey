@@ -1598,8 +1598,6 @@ class SurveyRuntimeHelper
         $this->iSurveyid   = $this->aSurveyInfo['sid'];
         $accessMode        = $this->aSurveyInfo['access_mode'];
         $preview           = $this->preview;
-        $this->setDefaultPrivacyText();
-        $this->aSurveyInfo['datasecuritynotaccepted'] = App()->getRequest()->isPostRequest && !App()->getRequest()->getPost('datasecurity_accepted');
         // Template settings
         $oTemplate         = $this->oTemplate;
         $this->sTemplateViewPath = $oTemplate->viewPath;
@@ -1731,7 +1729,12 @@ class SurveyRuntimeHelper
 
         $aEnterTokenData['aEnterErrors']    = $aEnterErrors;
         $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
-
+        if ($renderWay == 'main') {
+            /* setDefaultPrivacyText use Survey::replacePolicyLink, replacePolicyLink use twigRenderer breaking usage of token in twig */
+            /* We need only for token form */
+            $this->setDefaultPrivacyText();
+            $this->aSurveyInfo['datasecuritynotaccepted'] = App()->getRequest()->isPostRequest && !App()->getRequest()->getPost('datasecurity_accepted');
+        }
         /* This function end if an form need to be shown */
         renderRenderWayForm($renderWay, $scenarios, $this->sTemplateViewPath, $aEnterTokenData, $this->iSurveyid, $this->aSurveyInfo);
     }
