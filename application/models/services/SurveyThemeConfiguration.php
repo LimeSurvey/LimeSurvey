@@ -35,7 +35,7 @@ class SurveyThemeConfiguration
             throw new PermissionDeniedException(gT("You do not have permission to access this page."), 403);
         }
 
-        $model = $this->turnAjaxmodeOffAsDefault($surveyId, $props['templateName']);
+        $model = TemplateConfiguration::getInstance($props['templateName'] ?? null, null, $surveyId);
         $model->save();
         $model->bUseMagicInherit = true;
 
@@ -67,33 +67,7 @@ class SurveyThemeConfiguration
         $model->save();
     }
 
-    /**
-     * This method turns ajaxmode off as default.
-     * @param int $surveyId survey ID of the survey
-     * @param string $sTemplateName
-     *
-     * @return TemplateConfiguration
-     */
-    protected function turnAjaxmodeOffAsDefault(int $surveyId, $sTemplateName = null): TemplateConfiguration
-    {
-        $templateConfiguration = TemplateConfiguration::getInstance($sTemplateName, null, $surveyId);
-        $attributes = $templateConfiguration->getAttributes();
-        $hasOptions = isset($attributes['options']);
-        if ($hasOptions) {
-            $options = $attributes['options'] ?? '';
-            $optionsJSON = json_decode($options, true);
 
-            if ($options !== 'inherit' && $optionsJSON !== null) {
-                $ajaxModeOn = (!empty($optionsJSON['ajaxmode']) && $optionsJSON['ajaxmode'] == 'on');
-                if ($ajaxModeOn) {
-                    $optionsJSON['ajaxmode'] = 'off';
-                    $options = json_encode($optionsJSON);
-                    $templateConfiguration->setAttribute('options', $options);
-                }
-            }
-        }
-        return $templateConfiguration;
-    }
 
     /**
      * Returns all attributes and options needed to display the themeoptions inlcuding inheritance.
