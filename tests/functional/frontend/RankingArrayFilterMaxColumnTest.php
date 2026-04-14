@@ -30,8 +30,6 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
      */
     public function testRanking()
     {
-        $this->markTestIncomplete();
-
         /** @var string */
         $url = $this->getSurveyUrl();
 
@@ -82,8 +80,8 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             sleep(1);
 
             $subQuestions = $this->getSubquestions($survey->groups[1]->questions[0]->qid);
-            /** @var string List item id to first subquestion. */
-            $sgqa1 = $this->getItemListId($survey) . '_S' . reset($subQuestions)->qid;
+            /** @var string List item id to first subquestion (title "1"). */
+            $sgqa1 = $this->getItemListId($survey) . '_S' . $subQuestions['1']->qid;
 
             // TODO: Can't use mouse with geckodriver and Selenium?
             sleep(1);
@@ -95,9 +93,8 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $this->assertEquals('done', $result);
             sleep(1);
 
-            /** @var string List item id to second subquestion. */
-            $subQuestionsArray = array_values($subQuestions);
-            $sgqa2 = $this->getItemListId($survey) . '_S' . $subQuestionsArray[1]->qid;
+            /** @var string List item id to second subquestion (title "2"). */
+            $sgqa2 = $this->getItemListId($survey) . '_S' . $subQuestions['2']->qid;
 
             /** @var string */
             $javascript = $this->getJavascriptDoubleClick($sgqa2);

@@ -3656,7 +3656,7 @@ class LimeExpressionManager
                             $question = $this->gT('Other:');
                         }
                     }
-                    $sqsuffix = '_' . $fielddata['qid'];
+                    $sqsuffix = '_' . $fielddata['aid'];
                     $rowdivid = $sgqa;
 
                     break;
@@ -6023,8 +6023,8 @@ class LimeExpressionManager
                 /** @var integer counter to have current rank number (subquestion) */
                 $iCountRank = 0;
 
-                /** @var integer Get total of answers (all potential answers) * */
-                $answersCount = \Answer::model()->count('qid = :qid', [':qid' => $qid]);
+                /** @var integer Get total of subquestions (all potential answers) * */
+                $answersCount = \Question::model()->count('parent_qid = :qid', [':qid' => $qid]);
 
                 /** @var integer Get number of answers currently filtered (unrelevant) * */
                 $answersFilteredCount = 0; // Default : no filter

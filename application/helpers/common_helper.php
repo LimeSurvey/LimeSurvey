@@ -1971,6 +1971,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     "sqid" => $abrow['qid'],
                     "aid" => $abrow['title'],
                     "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
+                    'csuffix' => $i,
                 );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
