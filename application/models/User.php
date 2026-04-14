@@ -238,17 +238,19 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo Not used?
+     * Get formatted creation date of user to be displayed in the user list
      */
     public function getFormattedDateCreated()
     {
-        $dateCreated = $this->created;
-        /**
-         * @todo: Review this. Cast to string added to keep the original behavior (parameter can't be null since PHP 8.1).
-         *        But it returns the current date if the parameter is null (both now with the cast and pre PHP 8.1 without the cast).
-         */
-        $date = new DateTime((string) $dateCreated);
-        return $date->format($this->getDateFormat());
+        if (empty($this->created)) {
+            return null;
+        }
+        try {
+            $date = new DateTime($this->created);
+            return $date->format($this->getDateFormat());
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     /**

@@ -34,6 +34,32 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.16 (build 260408) to 6.16.17 (build 260414) April 14, 2026
+-Fixed issue #20480: Proper font support for non-Latin chars in PDF export (#4857) (Mohab Elsheikh)
+-Fixed issue #20478: Question index inherited value cannot be overridden (#4853) (Matthew)
+-Fixed issue #20466: Tablesorter dependency error in Survey permissions view (#4790) (Richard A.)
+-Fixed issue #20459: [security] SQL Injection in CPDB participant search (reported by podalirius) (#4836) (Denis Chenu)
+-Fixed issue #20433: Mandatory soft settings seem to be skipped (#4719) (Denis Chenu)
+-Fixed issue #20421: Random order still being applied after changing the question type (#4829) (Carsten Schmitz)
+-Fixed issue #20360: Bootstrap dropdown partly looks like dark theme on selected/hover (#4555) (Tõnis Ormisson)
+-Fixed issue #20317: Automatic opt-out triggered by email security scanners (#4831) (Carsten Schmitz)
+-Fixed issue #20041: No warning message if attachment is missing/inaccessible before email is sent (#4254) (Denis Chenu)
+-Fixed issue #19768: On saving a user, the success message contains HTML entities (Carsten Schmitz)
+-Fixed issue #19766: Untranslated text when creating dummy users (aisreh)
+-Fixed issue #19418: Correctly set inheritance for Captchas (#4854) (Gabriel Jenik)
+-Fixed issue #19083: Fruity23 theme invalidated after selecting Question from Screen dropdown (#3451) (Oliver Kuna)
+-Fixed issue #14390: Resetting a theme jumps back to the first page of question themes (#4830) (Carsten Schmitz)
+-Fixed issue: Missing placeholder attribute for short freetext question type (Herbert Poul)
+-Fixed issue: Error on response timings page if debug mode is active (lajosarpad)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 6.16.15 (build 260330) to 6.16.16 (build 260408) April 8, 2026
 +New feature #TB-78: New setting in global settings and config-defaults.php to set the minimum stability for ComfortUpdate notifications (Carsten Schmitz)
 -Fixed issue: Survey copy defaults for custom copy were not set (Carsten Schmitz)

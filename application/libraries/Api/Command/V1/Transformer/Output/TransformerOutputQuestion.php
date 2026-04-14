@@ -8,6 +8,15 @@ use LimeSurvey\Api\Transformer\{
 
 class TransformerOutputQuestion extends TransformerOutputActiveRecord
 {
+    /**
+     * Initialize the transformer with the data map that defines how question fields are mapped,
+     * typed, and formatted for output.
+     *
+     * The mapping configures output key renames (for example, `question_order` → `sortOrder` and
+     * `parent_qid` → `parentQid`), numeric casting for identifier and ordering fields, and
+     * boolean/other formatters for fields such as `other`, `mandatory`, `encrypted`, `same_default`,
+     * and `same_script`.
+     */
     public function __construct()
     {
         $this->setDataMap([

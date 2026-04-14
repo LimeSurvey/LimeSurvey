@@ -59,6 +59,8 @@ class SurveyUseCaptcha
      *
      * @return string
      * @throws \Exception
+     *
+     * @todo Is this used? To be deprecated?
      */
     public function convertSurveyAccessToUseCaptcha(bool $value, string $mode)
     {
@@ -241,6 +243,31 @@ class SurveyUseCaptcha
         }
 
         return $captchaValues;
+    }
+
+    /**
+     * Resolves inherited components in $current by replacing any 'I' sub-value
+     * with the corresponding component decoded from $parent, then re-encodes to
+     * the packed one-character format.
+     *
+     * This method resolves inheritance one level up. Complete resolution requires
+     * recursion up the chain (e.g., via SurveysGroupsettings::getInstance())
+     * or passing a fully-resolved $parent.
+     *
+     * @param string $current Packed usecaptcha for the child level (may contain 'I' components)
+     * @param string $parent  Packed usecaptcha from the parent level to inherit from
+     * @return string Packed usecaptcha
+     */
+    public function mergeUseCaptchaValues($current, $parent)
+    {
+        $c = $this->convertUseCaptchaFromDB((string) $current);
+        $p = $this->convertUseCaptchaFromDB((string) $parent);
+
+        return $this->convertUseCaptchaForDB(
+            $c['surveyAccess'] === 'I' ? $p['surveyAccess'] : $c['surveyAccess'],
+            $c['registration'] === 'I' ? $p['registration'] : $c['registration'],
+            $c['saveAndLoad'] === 'I' ? $p['saveAndLoad'] : $c['saveAndLoad']
+        );
     }
 
     /**

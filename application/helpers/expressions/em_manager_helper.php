@@ -6019,12 +6019,12 @@ class LimeExpressionManager
             }
             /* With ranking we don't check for relevance in each subquestion, just need the max numbers of answers */
             /* $sgqa and subQrelInfo are not the same information */
-            if ($qInfo['type'] == 'R') {
+            if ($qInfo['type'] == \Question::QT_R_RANKING) {
                 /** @var integer counter to have current rank number (subquestion) */
                 $iCountRank = 0;
 
-                /** @var integer Get total of subquestions (all potential answers) * */
-                $answersCount = \Question::model()->count('parent_qid = :qid', [':qid' => $qid]);
+                /** @var integer Get total of subquestions (all potential subquestions) * */
+                $answersCount = \Question::model()->count('parent_qid = :parent_qid', [':parent_qid' => $qid]);
 
                 /** @var integer Get number of answers currently filtered (unrelevant) * */
                 $answersFilteredCount = 0; // Default : no filter
