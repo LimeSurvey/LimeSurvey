@@ -3439,6 +3439,7 @@ class LimeExpressionManager
         $now = microtime(true);
 
         $q2subqInfo = [];
+        $rankingMapping = [];
 
         $this->multiflexiAnswers = [];
         foreach ($fieldmap as $fielddata) {
@@ -3646,7 +3647,11 @@ class LimeExpressionManager
                     break;
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     $csuffix = $fielddata['csuffix'] ?? $fielddata['sqid'];
-                    $varName = $fielddata['title'] . '_' . $fielddata['sqid'];
+                    if (!isset($rankingMapping[$fielddata['qid']])) {
+                        $rankingMapping[$fielddata['qid']] = 0;
+                    }
+                    $rankingMapping[$fielddata['qid']]++;
+                    $varName = $fielddata['title'] . '_' . $rankingMapping[$fielddata['qid']];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
                     if ($other == "Y") {
