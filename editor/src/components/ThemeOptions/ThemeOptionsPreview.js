@@ -17,7 +17,7 @@ const ThemeOptionsPreview = ({ shouldBeVisible = true }) => {
   const { subscribeToOperationFinish } = useOperationCallback()
 
   const iframeSrc = useMemo(() => {
-    const previewUrl = getSiteUrl(survey.previewLink)
+    const previewUrl = getSiteUrl(survey.previewLink, false)
     return addPopupPreviewParam(previewUrl)
   }, [survey.previewLink])
 
