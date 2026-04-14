@@ -68,7 +68,7 @@ class LimeMailer extends PHPMailer
      * Attachments by type : using different key for all this part …
      * @var string[]
      */
-    private $_aAttachementByType = array(
+    private $_aAttachmentByType = array(
         'invite' => 'invitation',
         'remind' => 'reminder',
         'register' => 'registration',
@@ -931,11 +931,11 @@ class LimeMailer extends PHPMailer
         if (empty($this->surveyId)) {
             return;
         }
-        if (!array_key_exists($this->emailType, $this->_aAttachementByType)) {
+        if (!array_key_exists($this->emailType, $this->_aAttachmentByType)) {
             return;
         }
 
-        $attachementType = $this->_aAttachementByType[$this->emailType];
+        $attachementType = $this->_aAttachmentByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
         if (!empty($oSurveyLanguageSetting->attachments)) {
             $aAttachments = $oSurveyLanguageSetting->getValidAttachments(true);
