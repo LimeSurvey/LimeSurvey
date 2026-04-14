@@ -60,7 +60,7 @@ Show the privacy message and the data security message will be available in a mo
 </div>
 <script>
     $(function () {
-        $('#ls-button-submit').on('click', function () {
+        $("#datasecurity_accepted").closest("form").find("button[type='submit']").on("click", function() {
             if (!$('#datasecurity_accepted').prop('checked')) {
                 /* dynamic show error */
                 $('#datasecurity_error').removeClass('ls-js-hidden');

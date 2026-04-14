@@ -67,7 +67,7 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard',
-                                                'alloweditaftercompletion');
+                                                'alloweditaftercompletion', 'showregisterpolicy', 'showtokenpolicy');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
 
     public $showInherited = 1;
@@ -97,6 +97,8 @@ class SurveysGroupsettings extends LSActiveRecord
         $validator = new LSYii_Validators();
         return array(
             array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly' => true),
+            array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
+            array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('admin', 'length', 'max' => 50),
             array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
@@ -110,7 +112,7 @@ class SurveysGroupsettings extends LSActiveRecord
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
 			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
+			questionindex, showregisterpolicy, showtokenpolicy, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
 
@@ -187,6 +189,8 @@ class SurveysGroupsettings extends LSActiveRecord
             'navigationdelay' => 'Navigationdelay',
             'nokeyboard' => 'Nokeyboard',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
+            'showregisterpolicy' => gT("Show privacy policy on register form"),
+            'showtokenpolicy' => gT("Show privacy policy on token form"),
         );
     }
 
@@ -253,6 +257,8 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('navigationdelay', $this->navigationdelay);
         $criteria->compare('nokeyboard', $this->nokeyboard, true);
         $criteria->compare('alloweditaftercompletion', $this->alloweditaftercompletion, true);
+        $criteria->compare('showregisterpolicy', $this->showregisterpolicy, true);
+        $criteria->compare('showtokenpolicy', $this->showtokenpolicy, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -472,9 +478,13 @@ class SurveysGroupsettings extends LSActiveRecord
             $this->$attribute = -1;
         }
         foreach ($this->optionAttributesChar as $attribute) {
-            //fix for 16179
+            //Some attribute created at specifc DBVersion
             $dbversion = App()->getConfig('DBVersion');
-            if (!($attribute === 'ipanonymize' && ( $dbversion < 412 ))) {
+            if (
+                !($attribute === 'ipanonymize' && $dbversion < 412)
+                && !($attribute === 'showregisterpolicy' && $dbversion < 649)
+                && !($attribute === 'showtokenpolicy' && $dbversion < 649)
+            ) {
                 $this->$attribute = 'I';
             }
         }

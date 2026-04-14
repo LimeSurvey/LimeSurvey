@@ -1090,17 +1090,7 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['move'] = $this->sMove ?? '';
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
-            //Failsave to have a general standard value
-            if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
-                $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
-            }
-
-            if (empty($this->aSurveyInfo['datasecurity_error'])) {
-                $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
-            }
-
-
-            $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'], $this->aSurveyInfo['sid']);
+            $this->setDefaultPrivacyText();
         }
 
         if ($bDisplayFirstPage) {
@@ -1108,6 +1098,21 @@ class SurveyRuntimeHelper
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
+    }
+
+    /**
+     * Set default privacy string if empty
+     * @return void
+     */
+    private function setDefaultPrivacyText()
+    {
+        if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
+            $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
+        }
+        if (empty($this->aSurveyInfo['datasecurity_error'])) {
+            $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
+        }
+        $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'], $this->aSurveyInfo['sid']);
     }
 
     private function checkForDataSecurityAccepted()
@@ -1593,7 +1598,8 @@ class SurveyRuntimeHelper
         $this->iSurveyid   = $this->aSurveyInfo['sid'];
         $accessMode        = $this->aSurveyInfo['access_mode'];
         $preview           = $this->preview;
-
+        $this->setDefaultPrivacyText();
+        $this->aSurveyInfo['datasecuritynotaccepted'] = App()->getRequest()->isPostRequest && !App()->getRequest()->getPost('datasecurity_accepted');
         // Template settings
         $oTemplate         = $this->oTemplate;
         $this->sTemplateViewPath = $oTemplate->viewPath;

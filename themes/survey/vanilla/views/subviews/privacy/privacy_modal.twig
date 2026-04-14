@@ -14,7 +14,6 @@
     Show the privacy message and the data security message will be available in a modal
 
 #}
-
 {% if aSurveyInfo.datasecurity_error %}
 <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }} id="datasecurity_error">
 	<a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" aria-hidden="true"></a>
@@ -48,7 +47,7 @@
 </div>
 <script>
 $(function() {
-    $("#ls-button-submit").on("click", function() {
+    $("#datasecurity_accepted").closest("form").find("button[type='submit']").on("click", function() {
         if(!$('#datasecurity_accepted').prop('checked')) {
             /* dynamic show error */
             $('#datasecurity_error').removeClass("ls-js-hidden");
