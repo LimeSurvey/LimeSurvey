@@ -176,6 +176,7 @@
         <backgroundimagefile category="Appearance"/>
         <cornerradius category="Display options"/>
         <hideprivacyinfo category="Display options" />
+        <notables category="Display options" />
         <showclearall category="Display options" />
         <questionhelptextposition category="Display options"/>
         <showpopups category="Display options" />

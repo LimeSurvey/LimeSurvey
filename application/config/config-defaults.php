@@ -372,31 +372,13 @@ $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 *  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile'] = array(
-    'ar' => 'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
-    'be' => 'dejavusans',
-    'bg' => 'dejavusans',
     'zh-Hans' => 'cid0cs',
     'zh-Hant-HK' => 'cid0ct',
     'zh-Hant-TW' => 'cid0ct',
-    'cs' => 'dejavusans',
-    'cs-informal' => 'dejavusans', // This one not really tested: no translation for Yes/No or Gender
-    'el' => 'dejavusans',
     'he' => 'freesans',
-    'hi' => 'dejavusans',
-    'hr' => 'dejavusans',
-    'hu' => 'dejavusans',
     'ja' => 'cid0jp',
     'ko' => 'cid0kr',
-    'lv' => 'dejavusans',
-    'lt' => 'dejavusans',
-    'mk' => 'dejavusans',
-    'mt' => 'dejavusans',
-    'fa' => 'dejavusans',
-    'pl' => 'dejavusans',
     'pa' => 'freesans',
-    'ro' => 'dejavusans',
-    'ru' => 'dejavusans',
-    'sr' => 'dejavusans',
 );
 /**
 *  $notsupportlanguages - array of language where no font was found for PDF
@@ -865,6 +847,12 @@ $config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
 // Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
 // @see https://www.php.net/unserialize
 $config['allow_unserialize_attributedescriptions'] = false;
+
+// Allow unserializing (with PHP unserialize function) attachments attributes when importing survey
+// In limesurvey 6.16.17: attachments attribute move from serialize to json_encode. If you need to keep attachment when upload, you have to allow it
+// Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
+// @see https://www.php.net/unserialize
+$config['allow_unserialize_attachments'] = false;
 
 return $config;
 //settings deleted

@@ -1,6 +1,6 @@
 <?php
 // Translation-source for new editor.
-// Updated on 2026-03-12 11:37:24
+// Updated on 2026-03-30 21:12:00
 gT('%d answer options');
 gT('%s bytes');
 gT('1 answer option');
@@ -476,3 +476,36 @@ gT('You still have a participants list for your survey. You can remove it under 
 gT('You will see a preview of your changes on the right side.');
 gT('You\'re now using the LimeSurvey editor. This quick tutorial will guide you through what\'s most important in just a few steps.');
 gT('Your condition will no longer be editable in the visual builder. Are you sure you want to apply these changes?');
+gT('🎉 Congrats! You have completed the tour.');
+gT('Can not be used with an active survey.');
+gT('Complete without answers');
+gT('Confirm action');
+gT('Drop XLSX file here or click here to select a file');
+gT('Embedding is disabled for this survey');
+gT('Embedding is disabled in global settings.');
+gT('Enable embedding in the survey settings under \"Publication and access\".');
+gT('Export changes');
+gT('Export translation file');
+gT('Exporting translations...');
+gT('Failed to export translations');
+gT('Failed to import translations');
+gT('Filtered responses');
+gT('Full export');
+gT('Import file');
+gT('Import responses from an archived respone table');
+gT('Import translation file');
+gT('Incomplete without answers');
+gT('Not defined');
+gT('Participant email address');
+gT('Participant first name');
+gT('Participant last name');
+gT('Please enable the embedding in the global settings under \"Security\".');
+gT('Please select a language to export translations');
+gT('Quick translations');
+gT('Select the target language you want to translate to');
+gT('This is the base language of your survey');
+gT('Translation Export Succeeded');
+gT('Translation files');
+gT('Translations');
+gT('Translations imported successfully');
+gT('Upload file');
