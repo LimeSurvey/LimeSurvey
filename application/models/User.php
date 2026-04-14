@@ -107,7 +107,7 @@ class User extends LSActiveRecord
             array('users_name', 'length','max' => 64),
             array('full_name', 'length','max' => 50),
             array('email', 'email'),
-            array('email', 'validateUniqueEmail'),
+            array('email', 'unique', 'allowEmpty' => true, 'message' => gT('E-mail address "{value}" is already used by another user.')),
             array('full_name', 'LSYii_Validators'), // XSS if non super-admin
             array('parent_id', 'default', 'value' => 0),
             array('parent_id', 'numerical', 'integerOnly' => true),
@@ -129,32 +129,6 @@ class User extends LSActiveRecord
             //todo: write a rule for date (can also be null)
             //array('lastForgotPwEmail', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
-    }
-
-    /**
-     * Validates that the email address is unique among all admin users.
-     * Empty emails are always allowed (for LDAP/Webserver auth plugins).
-     *
-     * @param string $attribute the attribute being validated
-     * @param array $params validation rule parameters
-     * @return void
-     */
-    public function validateUniqueEmail($attribute, $params)
-    {
-        $email = $this->$attribute;
-        if (empty($email)) {
-            return;
-        }
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('email = :email');
-        $criteria->params[':email'] = $email;
-        if (!$this->getIsNewRecord()) {
-            $criteria->addCondition('uid <> :uid');
-            $criteria->params[':uid'] = $this->uid;
-        }
-        if (self::model()->exists($criteria)) {
-            $this->addError($attribute, gT('This email address is already used by another user.'));
-        }
     }
 
     /** @inheritdoc */
