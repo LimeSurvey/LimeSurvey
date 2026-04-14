@@ -10,11 +10,16 @@
  */
 ?>
 
-<div class="btn-group <?= $htmlOptions['class'] ?? '' ?>" data-bs-toggle="tooltip" title="<?= $htmlOptions['title'] ?? '' ?>"
-    style="<?= $htmlOptions['style'] ?? '' ?>"
+<div class="btn-group <?= $htmlOptions['class'] ?? '' ?>" data-bs-toggle="tooltip"?>"
     id="<?= $id ?>" role="group"
-    <?= $ariaLabel ? "aria-label='" . $ariaLabel . "'" : ''  ?>
-    <?php foreach ($htmlOptions as $attribute => $value) : ?>
+    <?= $ariaLabel ? "aria-label='" . Chtml::encode($ariaLabel) . "'" : ''  ?>
+    <?php
+    $skipAttributes = ['class', 'title', 'style', 'icon', 'disabled', 'id'];
+    foreach ($htmlOptions as $attribute => $value) :
+        if (in_array($attribute, $skipAttributes, true) || is_array($value) || is_object($value)) {
+            continue;
+        }
+        ?>
         <?= $attribute ?>="<?= Chtml::encode($value) ?>"
     <?php endforeach; ?>
     >
