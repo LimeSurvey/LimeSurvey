@@ -26,6 +26,8 @@
  * @property string $refurl
  * @property string $datecreated
  * @property integer $showsurveypolicynotice
+ * @property string $showregisterpolicy
+ * @property string $showtokenpolicy
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
