@@ -133,4 +133,60 @@ class RemoteControlImportQuestionTest extends BaseTest
         $this->assertEquals('QNewHelp', $oQuestionL10n->help);
 
     }
+
+    /**
+     * Importing a question with a group that doesn't belong to the survey.
+     * This tests the mismatch error_code contract.
+     */
+    public function testImportQuestionWithMismatchedGroupId()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        // Create a separate survey to get a group that doesn't belong to our test survey
+        $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for Group Mismatch', 'en');
+        $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
+
+        // Create a group in the mismatched survey
+        $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group');
+        $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
+
+        // Attempt to import a question from our test survey into the group from the mismatched survey
+        $questionFile = self::$surveysFolder . '/limesurvey_question_import_question_test_II.lsq';
+        $question = base64_encode(file_get_contents($questionFile));
+        $result = $this->handler->import_question($sessionKey, self::$surveyId, $mismatchedGroupId, $question, 'lsq');
+
+        // Verify the error response includes the error_code contract
+        $this->assertIsArray($result, 'Response should be an array for mismatch error');
+        $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
+        $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
+        $this->assertIsString($result['error_code'], 'error_code should be a string');
+        $this->assertEquals('ERR_MISMATCH_SURVEY_GROUP', $result['error_code'], 'error_code should be ERR_MISMATCH_SURVEY_GROUP for survey/group mismatch');
+    }
+
+    /**
+     * Testing list_questions with a group that doesn't belong to the survey.
+     * This tests the mismatch error_code contract for list_questions method.
+     */
+    public function testListQuestionsWithMismatchedGroupId()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        // Create a separate survey to get a group that doesn't belong to our test survey
+        $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for List Questions Mismatch', 'en');
+        $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
+
+        // Create a group in the mismatched survey
+        $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group for List');
+        $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
+
+        // Attempt to list questions from our test survey using the group from the mismatched survey
+        $result = $this->handler->list_questions($sessionKey, self::$surveyId, $mismatchedGroupId);
+
+        // Verify the error response includes the error_code contract
+        $this->assertIsArray($result, 'Response should be an array for mismatch error');
+        $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
+        $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
+        $this->assertIsString($result['error_code'], 'error_code should be a string');
+        $this->assertEquals('ERR_MISMATCH_SURVEY_GROUP', $result['error_code'], 'error_code should be ERR_MISMATCH_SURVEY_GROUP for survey/group mismatch');
+    }
 }
