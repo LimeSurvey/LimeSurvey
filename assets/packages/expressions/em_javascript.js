@@ -1059,6 +1059,13 @@ function LEMval(alias)
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
                         answer = htmlentities(value);
+                    } else if (attr.type == 'R') {
+                        if (value) {
+                            let context = document.getElementById(whichJsName);
+                            answer = context.querySelector(`option[value='${context.value}']`).innerText.trim().substring(5);
+                        } else {
+                            answer = '';
+                        }
                     }
                     else {
                         which_ans = '0~' + value;

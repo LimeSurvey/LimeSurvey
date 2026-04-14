@@ -3661,7 +3661,8 @@ class LimeExpressionManager
                             $question = $this->gT('Other:');
                         }
                     }
-                    $sqsuffix = '_' . $fielddata['qid'];
+                    $sqsuffix = '_' . $fielddata['sqid'];
+                    echo var_dump($sqsuffix);
                     $rowdivid = $sgqa;
 
                     break;
