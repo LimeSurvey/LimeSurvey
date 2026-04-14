@@ -28,7 +28,7 @@ trait LSApplicationTrait
         if (!is_null($this->currentUserId) && $this->currentUserId == App()->session['loginID']) {
             return $this->currentUserId;
         }
-        /* use App()->session and not App()->user fot easiest unit test */
+        /* use App()->session and not App()->user for easiest unit test */
         $this->currentUserId = App()->session['loginID'];
         if ($this->currentUserId && !User::model()->notexpired()->active()->findByPk($this->currentUserId)) {
             $this->currentUserId = 0;

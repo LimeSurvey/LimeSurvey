@@ -211,7 +211,7 @@ class UserManagementController extends LSBaseController
                 $aUser['password'] =  $newPassword;
             }
 
-            //retrive the raw password
+            //retrieve the raw password
             $aUser['rawPassword'] = $aUser['password'];
 
             $passwordSetByUser = Yii::app()->request->getParam('preset_password');

@@ -49,7 +49,7 @@ class RenderLongFreeText extends QuestionBaseRenderer
             $extraclass .= " ls-input-maxchars";
         }
     
-        // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
+        // text_input_width can not be empty, except with old survey (where can be empty or up to 12 see bug #11743
         if (trim((string) $this->getQuestionAttribute('text_input_width')) != '') {
             $col         = ($this->getQuestionAttribute('text_input_width') <= 12) ? $this->getQuestionAttribute('text_input_width') : 12;
             $extraclass .= " col-md-" . trim((string) $col);

@@ -35,7 +35,7 @@ return [
             'decimalcustom', // Use by fixnum_checkconditions
         ]
     ],
-    /* For public template functionnality */
+    /* For public template functionality */
     'limesurvey-public' => [
         'devBaseUrl' => 'assets/packages/limesurvey/',
         'basePath'   => 'core.limesurvey', /* public part only : rename directory ? */
@@ -84,7 +84,7 @@ return [
 //            'bootstrap'
         ]
     ],
-    /* For public template extended functionnality (based on default template) */
+    /* For public template extended functionality (based on default template) */
     'template-core'     => [
         'devBaseUrl' => 'assets/packages/template-core/',
         'basePath'   => 'core.template-core',
