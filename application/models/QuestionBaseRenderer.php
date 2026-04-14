@@ -107,7 +107,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
         /**
          * The following lines cover for previewing questions, because no $_SESSION['responses_'.$surveyId]['fieldarray'] exists.
-         * This just stops error messages occuring
+         * This just stops error messages occurring
          */
         if (!isset($_SESSION['responses_' . $surveyId]['fieldarray'])) {
             $_SESSION['responses_' . $surveyId]['fieldarray'] = [];

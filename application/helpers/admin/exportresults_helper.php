@@ -28,7 +28,7 @@
 * format.
 *
 * Data formatting operations that may be specific to the data export routines
-* are relegated to the Writer class hierarcy and work with the Survey object
+* are relegated to the Writer class hierarchy and work with the Survey object
 * and FormattingOptions objects to provide proper style/content when exporting
 * survey information.
 *

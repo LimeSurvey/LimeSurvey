@@ -41,7 +41,7 @@ class RegisterController extends LSYii_Controller
      */
     private $sMessage;
     /**
-     * The message to diplay after sending the register email
+     * The message to display after sending the register email
      */
     private $sMailMessage;
 
@@ -104,7 +104,7 @@ class RegisterController extends LSYii_Controller
         Yii::app()->setLanguage($sLanguage);
         if (!$oSurvey) {
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        } elseif ($oSurvey->allowregister != 'Y' || !tableExists("{{tokens_{$iSurveyId}}}")) {
+        } elseif (!$oSurvey->getIsAllowRegister() || !tableExists("{{tokens_{$iSurveyId}}}")) {
             throw new CHttpException(404, "The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
         } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))) {
             $this->redirect(array('survey/index', 'sid' => $iSurveyId, 'lang' => $sLanguage));
@@ -334,7 +334,7 @@ class RegisterController extends LSYii_Controller
         }
         $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
         $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage' => $aMessage), true);
-        // Always return true : if we come here, we always trye to send an email
+        // Always return true : if we come here, we always try to send an email
         return true;
     }
 
@@ -364,7 +364,7 @@ class RegisterController extends LSYii_Controller
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");
                 }
             } elseif (!$oToken->emailstatus && $oToken->emailstatus != "OK") {
-                $this->aRegisterErrors[] = gT("This email address is already registered but email to that adress could not be delivered.");
+                $this->aRegisterErrors[] = gT("This email address is already registered but email to that address could not be delivered.");
             } else {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
                 $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));

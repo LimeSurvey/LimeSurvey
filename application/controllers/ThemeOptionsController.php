@@ -79,7 +79,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Create a new model.
-     * If creation is sucessful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * todo: function not in use (  new TemplateOptions(); there is no model class like this ..)
      *
@@ -577,7 +577,7 @@ class ThemeOptionsController extends LSBaseController
                 $themeType = App()->request->getPost('theme_type');
                 $fullTemplateFolder = QuestionTheme::getAbsolutePathForType($templateFolder, $themeType);
                 $questionTheme = new QuestionTheme();
-                //skip convertion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
+                //skip conversion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
                 $themeName = $questionTheme->importManifest($fullTemplateFolder, true);
                 if (isset($themeName)) {
                     App()->setFlashMessage(sprintf(gT('The question theme "%s" has been successfully installed'), "$themeName"), 'success');

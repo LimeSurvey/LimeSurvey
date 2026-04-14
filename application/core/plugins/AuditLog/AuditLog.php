@@ -383,7 +383,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         }
 
         // beforeTokenDelete mutated through time.
-        // At the very begining, the event was dispatched with an sTokenIds parameter.
+        // At the very beginning, the event was dispatched with an sTokenIds parameter.
         // Then, dynamic model events were introduced, and this event mutated its interface.
         // The code below accepts both kinds of interface.
         $sTokenIds = $event->get('sTokenIds');

@@ -26,7 +26,7 @@ use LimeSurvey\Models\Services\Exception\{
  * @property integer $sid Survey ID
  * @property integer $group_order Group order number (max 100 chars)
  * @property string $randomization_group  Randomization group
- * @property string $grelevance Group's relevane equation
+ * @property string $grelevance Group's relevance equation
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions

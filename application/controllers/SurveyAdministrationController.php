@@ -592,7 +592,7 @@ class SurveyAdministrationController extends LSBaseController
                 Permission::model()
             );
             if ($newSurvey) {
-                //create examlpe group and example question
+                //create example group and example question
                 $iNewGroupID = $this->createSampleGroup($newSurvey->sid);
                 $iNewQuestionID = $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
 
@@ -737,7 +737,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @param integer $sid Given Survey ID
      *
-     * is still used in sidemenu Text elemnts (see vue.js ajaxcall)
+     * is still used in sidemenu Text elements (see vue.js ajaxcall)
      *
      * @return JSON
      * @throws CException
@@ -2011,7 +2011,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
 
-        // For Text Elemnts Tab.
+        // For Text elements Tab.
         if ($menuaction === 'surveytexts') {
             $temp = [];
             $languages = $survey->allLanguages;
@@ -2072,7 +2072,18 @@ class SurveyAdministrationController extends LSBaseController
         if ($subaction === 'resources' || $subaction === 'panelintegration') {
             $aData['topBar']['showSaveButton'] = false;
         } else {
-            $aData['topBar']['showSaveButton'] = true;
+            // Since the save action for survey texts checks two permissions and survey menu entries only support one permission,
+            // we need to check the permissions here and decide whether to show the save button or not for that screen.
+            /** @todo: Generalize for other subactions */
+            if (
+                $subaction === 'surveytexts'
+                && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')
+                && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
+            ) {
+                $aData['topBar']['showSaveButton'] = false;
+            } else {
+                $aData['topBar']['showSaveButton'] = true;
+            }
         }
         $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
         $topbarData = array_merge($topbarData, $aData['topBar']);

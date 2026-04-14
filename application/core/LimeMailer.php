@@ -3,7 +3,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
- * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
  */
 class LimeMailer extends PHPMailer
@@ -63,13 +62,13 @@ class LimeMailer extends PHPMailer
      * for survey (admin or not) : admin_notification, admin_responses, savesurveydetails, errorsavingresults
      * other : addadminuser, passwordreminderadminuser, mailsendusergroup …
      **/
-    public $emailType = 'unknow';
+    public $emailType = 'unknown';
 
     /**
-     * Attachements by type : using different key for all this part …
+     * Attachments by type : using different key for all this part …
      * @var string[]
      */
-    private $_aAttachementByType = array(
+    private $_aAttachmentByType = array(
         'invite' => 'invitation',
         'remind' => 'reminder',
         'register' => 'registration',
@@ -84,13 +83,13 @@ class LimeMailer extends PHPMailer
     public $replaceTokenAttributes = false;
 
     /**
-     * @var array $aAttachements Current attachements (as string or array)
+     * @var array $aAttachments Current Attachments (as string or array)
      * @see parent::addAttachment
      **/
-    public $aAttachements = array();
+    public $aAttachments = array();
 
     /**
-     * @var boolean $aAttachements Current attachements (as string or array)
+     * @var boolean $aAttachments Current Attachments (as string or array)
      **/
     private $_bAttachementTypeDone = false;
 
@@ -506,7 +505,7 @@ class LimeMailer extends PHPMailer
      * Launch the needed event : beforeTokenEmail, beforeSurveyEmail, beforeEmail
      * and update this according to action
      * @var array $eventParams specific event parameters to add
-     * return boolean|null : sended of not, if null : no action are done by event, can use default action.
+     * return boolean|null : sent of not, if null : no action are done by event, can use default action.
      */
     private function manageEvent($eventParams = array())
     {
@@ -541,7 +540,7 @@ class LimeMailer extends PHPMailer
         $event = new PluginEvent($this->eventName);
         /**
          * plugin can get this mailer with $oEvent->get('mailer')
-         * This allow udpate of anythings : $this->getEvent()->get('mailer')->addCC or $this->getEvent()->get('mailer')->addCustomHeader etc …
+         * This allow update of anythings : $this->getEvent()->get('mailer')->addCC or $this->getEvent()->get('mailer')->addCustomHeader etc …
          * Usage of this solution can disable all other event get param …
          **/
         $event->set('mailer', $this);
@@ -550,7 +549,7 @@ class LimeMailer extends PHPMailer
             $event->set($param, $value);
         }
         /* A plugin can update any part : here true, but i really think it's best if it false */
-        /* Maybe part by part ? $event->get('updated') as arry : update only what is updated */
+        /* Maybe part by part ? $event->get('updated') as array : update only what is updated */
         $event->set('updateDisable', array());
         App()->getPluginManager()->dispatchEvent($event);
         /* Manage what can be updated */
@@ -612,7 +611,7 @@ class LimeMailer extends PHPMailer
             $this->Subject = mb_convert_encoding($this->Subject, $this->CharSet, $this->BodySubjectCharset);
             $this->Body = mb_convert_encoding($this->Body, $this->CharSet, $this->BodySubjectCharset);
         }
-        $this->addAttachementsByType();
+        $this->addAttachmentsByType();
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if (!is_null($eventResult)) {
@@ -881,7 +880,7 @@ class LimeMailer extends PHPMailer
 
     /**
      * Do the replacements : if current replacement jey is set and LimeSurvey core have it too : it reset to the needed one.
-     * @param string $string wher need to replace
+     * @param string $string where need to replace
      * @return string
      */
     public function doReplacements($string)
@@ -896,7 +895,7 @@ class LimeMailer extends PHPMailer
             if (!in_array($this->mailLanguage, $oSurvey->getAllLanguages())) {
                 $this->mailLanguage = $oSurvey->language;
             }
-            /* Get it separatly since (not Survey::model()->with('languagesetting')) since need to be sure to get current language ? */
+            /* Get it separately since (not Survey::model()->with('languagesetting')) since need to be sure to get current language ? */
             $oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
             $aReplacements["SURVEYNAME"] = $oSurveyLanguageSettings->surveyls_title;
             $aReplacements["SURVEYDESCRIPTION"] = $oSurveyLanguageSettings->surveyls_description;
@@ -923,7 +922,7 @@ class LimeMailer extends PHPMailer
      * Set the attachments according to current survey,language and emailtype
      * @ return void
      */
-    public function addAttachementsByType()
+    public function addAttachmentsByType()
     {
         if ($this->_bAttachementTypeDone) {
             return;
@@ -932,20 +931,20 @@ class LimeMailer extends PHPMailer
         if (empty($this->surveyId)) {
             return;
         }
-        if (!array_key_exists($this->emailType, $this->_aAttachementByType)) {
+        if (!array_key_exists($this->emailType, $this->_aAttachmentByType)) {
             return;
         }
 
-        $attachementType = $this->_aAttachementByType[$this->emailType];
+        $attachementType = $this->_aAttachmentByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
         if (!empty($oSurveyLanguageSetting->attachments)) {
-            $aAttachments = unserialize($oSurveyLanguageSetting->attachments);
+            $aAttachments = $oSurveyLanguageSetting->getValidAttachments(true);
             if (!empty($aAttachments[$attachementType])) {
                 if ($this->oToken) {
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
-                    if ($this->attachementExists($aAttachment) && LimeExpressionManager::ProcessRelevance($aAttachment['relevance'])) {
+                    if (LimeExpressionManager::ProcessRelevance($aAttachment['relevance'])) {
                         $this->addAttachment($aAttachment['url']);
                     }
                 }
@@ -953,30 +952,23 @@ class LimeMailer extends PHPMailer
         }
     }
 
+    /**
+     * Check if an specific attatchemnt exist
+     * Not needed anymore, SurveyLanuageSetttings return existing file only, keep it for plugin ?
+     * @deprecated 6.16.17
+     * @param string[] attachment info
+     * @return boolean
+     **/
     private function attachementExists($aAttachment)
     {
         $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId, 'surveylocale', 'update'));
-
-        $isInSurvey = Yii::app()->is_file(
-            $aAttachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyId,
-            false
-        );
-
-        $isInGlobal = Yii::app()->is_file(
-            $aAttachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
-            false
-        );
-
-        if ($isInSurvey || $isInGlobal) {
+        $SurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage]);
+        if ($SurveyLanguageSetting->getAttachmentFileExist($aAttachment['url'])) {
             return true;
         }
-
-        if ($throwError && !($isInSurvey || $isInGlobal)) {
+        if ($throwError) {
             throw new \CException(sprintf(gT("File not found: %s"), $aAttachment['url']));
         }
-
         return false;
     }
 

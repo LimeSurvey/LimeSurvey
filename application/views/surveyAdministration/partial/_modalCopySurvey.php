@@ -75,7 +75,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <input type='submit' id="copy-submit" class="btn btn-info col-3" value='<?php eT("Copy survey"); ?>' />
+                <input type='submit' id="copy-submit" class="btn btn-info" value='<?php eT("Copy survey"); ?>' />
 
                 <!-- Submit -->
             </div>

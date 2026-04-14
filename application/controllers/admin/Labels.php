@@ -194,7 +194,7 @@ class Labels extends SurveyCommonAction
 
         /* other sa ? What is the default ? */
         $langidsarray = explode(" ", trim((string) $langids)); // Make an array of it
-        /* unknow usage */
+        /* unknown usage */
         $panecookie = 'new';
         /* render data */
         $aData['langids'] = $langids;
@@ -241,7 +241,7 @@ class Labels extends SurveyCommonAction
         $model = LabelSet::model()->findByPk($lid);
         if ($lid > 0) {
             $lid = $this->validateLabelSetId($lid, 'read');
-            // Now recieve all labelset information and display it
+            // Now receive all labelset information and display it
             $aData['lid'] = $lid;
             $aData['row'] = $model->attributes;
 
@@ -731,7 +731,7 @@ class Labels extends SurveyCommonAction
     /**
      * Sanitize existence and permission of LabelSet->pk, throw exception if there are an issue.
      * @param $lid mixed, sanitized to intreger
-     * @param $permisson to check
+     * @param $permission to check
      * @return integer : the label id
      * @throws CHttpException
      */
