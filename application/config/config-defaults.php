@@ -242,20 +242,50 @@ $config['auth_webserver_autocreate_permissions'] = array(
 //          'htmleditormode' => 'inline');
 //}
 
-
-// filterxsshtml
-// Enables filtering of suspicious html tags in survey, group, questions
-// and answer texts in the administration interface
-// Only set this to false if you absolutely trust the users
-// you created for the administration of  LimeSurvey and if you want to
-// allow these users to be able to use Javascript etc. .
+/** filterxsshtml
+ * Enables filtering of suspicious html tags in survey, group, questions
+ * and answer texts in the administration interface
+ * Only set this to false if you absolutely trust the users
+ * you created for the administration of  LimeSurvey and if you want to
+ * allow these users to be able to use Javascript etc. .
+ * Can be updated via GUI after installation
+ * @var boolean
+ */
 $config['filterxsshtml'] = true;
 
-// disablescriptwithxss
-// Allow update of script in question
-// true : Default : follow XSS rules
-// false : allowed for all
+/** filterxsshtml_forcedall
+ * Force filterxsshtml to true
+ * Disable update in admin GUI
+ * Enables filtering of suspicious html tags for superadmin too
+ * @var boolean
+ */
+$config['filterxsshtml_forcedall'] = false;
+
+/** filterxsshtml_allowforcedsuperadmin
+ * Only used if filterxsshtml_forcedall is true
+ * Allow adding any script and HTML by forcedsuperadmin
+ * @var boolean
+ */
+$config['filterxsshtml_allowforcedsuperadmin'] = false;
+
+/** disablescriptwithxss
+ * Allow update of script in question
+ * true : Default : follow XSS rules
+ * false : allowed for all
+ * @var boolean
+ */
 $config['disablescriptwithxss'] = true;
+
+/** filterxsshtml_enablescript
+ * Only used if filterxsshtml_forcedall is true
+ * Enable script for specific user
+ * - gui: allow update setting via GUI
+ * - superadmin: only super admin
+ * - forcedsuperadmin: only forced superadmin
+ * - By default : no user and do not allow update via GUI
+ * @var string (''|'gui'|'superadmin'|'forcedsuperadmin')
+ */
+$config['filterxsshtml_enablescript'] = '';
 
 // usercontrolSameGroupPolicy
 // If this option is set to true, then limesurvey operators will only 'see'
@@ -372,31 +402,13 @@ $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 *  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile'] = array(
-    'ar' => 'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
-    'be' => 'dejavusans',
-    'bg' => 'dejavusans',
     'zh-Hans' => 'cid0cs',
     'zh-Hant-HK' => 'cid0ct',
     'zh-Hant-TW' => 'cid0ct',
-    'cs' => 'dejavusans',
-    'cs-informal' => 'dejavusans', // This one not really tested: no translation for Yes/No or Gender
-    'el' => 'dejavusans',
     'he' => 'freesans',
-    'hi' => 'dejavusans',
-    'hr' => 'dejavusans',
-    'hu' => 'dejavusans',
     'ja' => 'cid0jp',
     'ko' => 'cid0kr',
-    'lv' => 'dejavusans',
-    'lt' => 'dejavusans',
-    'mk' => 'dejavusans',
-    'mt' => 'dejavusans',
-    'fa' => 'dejavusans',
-    'pl' => 'dejavusans',
     'pa' => 'freesans',
-    'ro' => 'dejavusans',
-    'ru' => 'dejavusans',
-    'sr' => 'dejavusans',
 );
 /**
 *  $notsupportlanguages - array of language where no font was found for PDF

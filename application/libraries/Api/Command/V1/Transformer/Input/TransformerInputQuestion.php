@@ -8,6 +8,13 @@ use LimeSurvey\Api\Transformer\{
 
 class TransformerInputQuestion extends Transformer
 {
+    /**
+     * Initialize the transformer with an input-to-property mapping for question payloads.
+     *
+     * The mapping configures field renames, type casting, required/length constraints,
+     * boolean and numeric formatters, filters, and other validation rules used when
+     * transforming incoming question-related data into internal properties.
+     */
     public function __construct()
     {
         $this->setDataMap([
