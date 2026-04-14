@@ -645,7 +645,7 @@ class Hash
  * Counts the dimensions of an array.
  * Only considers the dimension of the first element in the array.
  *
- * If you have an un-even or heterogenous array, consider using Hash::maxDimensions()
+ * If you have an un-even or heterogeneous array, consider using Hash::maxDimensions()
  * to get the dimensions of the array.
  *
  * @return integer The number of dimensions in $data

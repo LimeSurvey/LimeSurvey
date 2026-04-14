@@ -41,7 +41,7 @@ class SurveyIndex extends CAction
         $thisstep    = (int) $param['thisstep'];
         $move        = getMove();
 
-        /* Newtest must be done bedore all other action */
+        /* Newtest must be done before all other action */
         if (isset($param['newtest']) && $param['newtest'] == "Y") {
             killSurveySession($surveyid);
             resetQuestionTimers($surveyid);
@@ -527,7 +527,7 @@ class SurveyIndex extends CAction
         //by checking that the token has not been used at each page displayed.
         // bypass only this check at first page (Step=0) because
         // this check is done in buildsurveysession and error message
-        // could be more interresting there (takes into accound captcha if used)
+        // could be more interesting there (takes into account captcha if used)
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_" . $surveyid . "}}") && !$previewmode) {
             if (empty($tokenInstance) && $oToken) {
                 $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
@@ -565,7 +565,7 @@ class SurveyIndex extends CAction
             }
         }
 
-        //Check to see if a refering URL has been captured.
+        //Check to see if a referring URL has been captured.
         if (!isset($_SESSION['responses_' . $surveyid]['refurl'])) {
             $_SESSION['responses_' . $surveyid]['refurl'] = getReferringUrl(); // do not overwrite refurl
         }

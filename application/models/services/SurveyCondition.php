@@ -1094,7 +1094,7 @@ class SurveyCondition
     }
 
     /**
-     * Resturns the question count of an array received as parameter
+     * Returns the question count of an array received as parameter
      * @param array $cquestions
      * @return int
      */
@@ -1670,7 +1670,7 @@ class SurveyCondition
     }
 
     /**
-     * Retreives scenarios and conditions of question
+     * Retrieves scenarios and conditions of question
      * @param int $qid the question id
      * @return array generates an array of the format of
      * [

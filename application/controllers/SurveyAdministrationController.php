@@ -592,7 +592,7 @@ class SurveyAdministrationController extends LSBaseController
                 Permission::model()
             );
             if ($newSurvey) {
-                //create examlpe group and example question
+                //create example group and example question
                 $iNewGroupID = $this->createSampleGroup($newSurvey->sid);
                 $iNewQuestionID = $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
 
@@ -737,7 +737,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @param integer $sid Given Survey ID
      *
-     * is still used in sidemenu Text elemnts (see vue.js ajaxcall)
+     * is still used in sidemenu Text elements (see vue.js ajaxcall)
      *
      * @return JSON
      * @throws CException
@@ -2011,7 +2011,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
 
-        // For Text Elemnts Tab.
+        // For Text elements Tab.
         if ($menuaction === 'surveytexts') {
             $temp = [];
             $languages = $survey->allLanguages;

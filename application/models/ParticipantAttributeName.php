@@ -139,7 +139,7 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         // don't show checkbox for core attributes
         if ($this->core_attribute == 'Y') {
-            // BugFix: 317(op), whithout this hidden inputfields, massive action 'delete' is not working correctly
+            // BugFix: 317(op), without this hidden inputfields, massive action 'delete' is not working correctly
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
             return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }

@@ -52,7 +52,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </a>
                     </li>
 
-                    <!-- Custom attibutes -->
+                    <!-- Custom attributes -->
                     <li role="presentation" class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#custom" aria-expanded="false">
                             <?php eT('Additional attributes'); ?>

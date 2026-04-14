@@ -63,7 +63,7 @@ class WhImageColumn extends CGridColumn
 	 * Renders the data cell content
 	 *
 	 * @param int $row the row number (zero based)
-	 * @param mixed $data teh data associated with the row
+	 * @param mixed $data the data associated with the row
 	 */
 	protected function renderDataCellContent($row, $data)
 	{

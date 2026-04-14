@@ -562,7 +562,7 @@ class Tokens extends SurveyCommonAction
                     }
                 }
 
-                // Attibutes fields
+                // Attribute fields
                 $attrfieldnames = GetParticipantAttributes($iSurveyId);
                 foreach ($attrfieldnames as $attr_name => $desc) {
                     if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep') {
@@ -1689,7 +1689,7 @@ class Tokens extends SurveyCommonAction
                         }
                         $tokenSaveError = "";
                         if (
-                            !$oToken->save( // Save only uncrypted value, no need to crypt/encryt
+                            !$oToken->save( // Save only unencrypted value, no need to crypt/encrypt
                                 true, // Validate but only the date part
                                 array(
                                     'sent',
@@ -2293,7 +2293,7 @@ class Tokens extends SurveyCommonAction
                     if ($iRecordCount == 0) {
                         // Parse first line (header) from CSV
                         $buffer = removeBOM($buffer);
-                        // We alow all field except tid because this one is really not needed.
+                        // We allow all field except tid because this one is really not needed.
                         $aAllowedFieldNames = Token::model($iSurveyId)->tableSchema->getColumnNames();
                         if (($kTid = array_search('tid', $aAllowedFieldNames)) !== false) {
                             unset($aAllowedFieldNames[$kTid]);

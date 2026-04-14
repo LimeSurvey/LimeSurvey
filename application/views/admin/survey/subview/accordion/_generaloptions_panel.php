@@ -5,7 +5,7 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
-$scriptVarsNeccessary = "
+$scriptVarsNecessary = "
         var jsonUrl = '';
         var sAction = '';
         var sParameter = '';
@@ -17,7 +17,7 @@ $scriptVarsNeccessary = "
     ";
 Yii::app()->getClientScript()->registerScript(
     "GeneralOption-variables",
-    $scriptVarsNeccessary,
+    $scriptVarsNecessary,
     LSYii_ClientScript::POS_BEGIN
 );
 ?>

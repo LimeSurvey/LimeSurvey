@@ -152,7 +152,7 @@ class PrintableSurvey extends SurveyCommonAction
                 $conditionQuestionsAttributes[$oCondition->cqid] = QuestionAttribute::model()->getQuestionAttributes($oCondition->questions);
             }
             // =========================================================
-            // START doin the business:
+            // START doing the business:
             foreach ($arGroups as $arQuestionGroup) {
                 // ---------------------------------------------------
                 // START doing groups
@@ -1315,8 +1315,8 @@ class PrintableSurvey extends SurveyCommonAction
     /**
      * A poor mans templating system.
      *
-     *     $template    template filename (path is privided by config.php)
-     *     $input        a key => value array containg all the stuff to be put into the template
+     *     $template    template filename (path is provided by config.php)
+     *     $input        a key => value array containing all the stuff to be put into the template
      *     $line         for debugging purposes only.
      *
      * Returns a formatted string containing template with

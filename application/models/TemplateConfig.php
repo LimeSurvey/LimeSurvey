@@ -136,7 +136,7 @@ class TemplateConfig extends CActiveRecord
      * @param string $sPackageName   name of the package
      * @param array  $aPackage       the package to check (as provided by Yii::app()->clientScript)
      * @param string $sType          the type of file (css or js)
-     * @param array $aFilesToRemove  an array containing the files to chech and remove
+     * @param array $aFilesToRemove  an array containing the files to check and remove
      */
     protected function removeFilesFromPackage($sPackageName, $aPackage, $sType, $aFilesToRemove)
     {
@@ -910,7 +910,7 @@ class TemplateConfig extends CActiveRecord
      */
     public static function validateTheme($themeName, $themePath, bool $redirect = true): bool
     {
-        // check compatability with current limesurvey version
+        // check compatibility with current limesurvey version
         $isCompatible = TemplateConfig::isCompatible($themePath);
         if ($isCompatible === false) {
             self::uninstallThemesRecursive($themeName);
