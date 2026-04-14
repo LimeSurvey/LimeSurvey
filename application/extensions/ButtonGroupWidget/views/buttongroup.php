@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="btn-group <?= $htmlOptions['class'] ?? '' ?>" data-bs-toggle="tooltip"?>"
+<div class="btn-group <?= $htmlOptions['class'] ?? '' ?>" data-bs-toggle="tooltip""
     id="<?= $id ?>" role="group"
     <?= $ariaLabel ? "aria-label='" . Chtml::encode($ariaLabel) . "'" : ''  ?>
     <?php
