@@ -35,6 +35,20 @@
 
 #deleteSurvey_modal {
   top: calc(50% - 140px);
+  transition: opacity 0.3s linear;
+
+  &.fade {
+    opacity: 0;
+  }
+
+  &.fade.show {
+    opacity: 1;
+  }
+
+  &.fade .modal-dialog {
+    transform: none;
+    transition: none;
+  }
 
   .modal-dialog {
     width: 800px;

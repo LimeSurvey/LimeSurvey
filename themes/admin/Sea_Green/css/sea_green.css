@@ -17687,6 +17687,17 @@ body {
 
 #deleteSurvey_modal {
   top: calc(50% - 140px);
+  transition: opacity 0.3s linear;
+}
+#deleteSurvey_modal.fade {
+  opacity: 0;
+}
+#deleteSurvey_modal.fade.show {
+  opacity: 1;
+}
+#deleteSurvey_modal.fade .modal-dialog {
+  transform: none;
+  transition: none;
 }
 #deleteSurvey_modal .modal-dialog {
   width: 800px;
