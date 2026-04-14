@@ -787,6 +787,8 @@ function populateDatabase($oDB)
             'ipanonymize' => 'N',
             'refurl' => 'N',
             'showsurveypolicynotice' => '0',
+            'showtokenpolicy' => 'N',
+            'showregisterpolicy' => 'N',
             'publicstatistics' => 'N',
             'publicgraphs' => 'N',
             'listpublic' => 'N',
