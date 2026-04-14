@@ -400,10 +400,10 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Returns the static model of the specified AR class.
-     * Please note that you should have this exact method in all your CActiveRecord descendants!
-     * @param string $className active record class name.
-     * @return SurveysGroups the static model class
+     * Get the static AR model instance for this ActiveRecord class.
+     *
+     * @param string $className Active record class name.
+     * @return SurveysGroups The static SurveysGroups model instance.
      */
     public static function model($className = __CLASS__)
     {
@@ -413,9 +413,15 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Returns the criteria for assessing user permission over the group.
-     * @return CDbCriteria
-     */
+         * Builds a CDbCriteria that restricts survey groups to those accessible by the current user.
+         *
+         * When the current user lacks global read permission for surveys or survey groups, the returned
+         * criteria limits results to groups the user owns, groups or surveys the user has read permission
+         * for, the default group (gsid = 1), and groups marked as always available. If the user has
+         * global read permission, the returned criteria is unrestricted.
+         *
+         * @return CDbCriteria The permission-based criteria for filtering survey groups.
+         */
     protected static function getPermissionCriteria()
     {
         $criteriaPerm = new CDbCriteria();

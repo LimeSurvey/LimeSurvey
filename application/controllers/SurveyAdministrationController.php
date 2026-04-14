@@ -2400,6 +2400,15 @@ class SurveyAdministrationController extends LSBaseController
         $this->redirect($redirectUrl);
     }
 
+    /**
+     * Import an uploaded survey file, create the survey if valid, and render the import summary view.
+     *
+     * Validates upload permissions and file type/size, moves the uploaded file to a temporary location,
+     * calls importSurveyFile(...) (passing the "translinksfields" flag and optional "surveysgroup" request parameter),
+     * translates import results into view data (including links to the new survey and theme-apply action),
+     * resets the expression manager for the newly created survey (if any), cleans up the temporary file,
+     * and renders the importSurvey_view with import results or error information.
+     */
     public function actionImport()
     {
         //everybody who has permission to create surveys
