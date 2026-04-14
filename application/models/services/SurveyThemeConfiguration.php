@@ -195,7 +195,7 @@ class SurveyThemeConfiguration
             $attributesCompleteData[$key] = $attributesCore[$key];
             $attributesCompleteData[$key]['category'] = $optionAttribute['category'];
             $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key ?? 'inherit';
-            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
+            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key] ?? '';
             if (
                 $attributesCompleteData[$key]['type'] === 'dropdown'
                 // "checkicon" is of type "icon" but has dropdown options

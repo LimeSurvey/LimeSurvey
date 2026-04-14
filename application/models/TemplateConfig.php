@@ -915,14 +915,16 @@ class TemplateConfig extends CActiveRecord
         if ($isCompatible === false) {
             self::uninstallThemesRecursive($themeName);
             if ($redirect) {
-                App()->setFlashMessage(
-                    sprintf(
-                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
-                        $themeName
-                    ),
-                    'error'
-                );
-                App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                if (method_exists(App(), 'setFlashMessage')) {
+                    App()->setFlashMessage(
+                        sprintf(
+                            gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                            $themeName
+                        ),
+                        'error'
+                    );
+                    App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                }
                 App()->end();
             }
         } elseif ((!$isCompatible) && $redirect) {

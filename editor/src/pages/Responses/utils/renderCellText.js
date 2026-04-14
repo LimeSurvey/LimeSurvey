@@ -47,12 +47,8 @@ export const renderCellText = ({
         <i className="ri-check-line text-success"></i>
       )}
       {isRankingQuestion(questionThemeName) && `${index + 1}. `}
-      {!isSingleChoiceQuestion(questionThemeName) &&
-        !isRankingQuestion(questionThemeName) &&
-        `${subquestionTitle}`}
-      {(isSingleChoiceQuestion(questionThemeName) ||
-        isRankingQuestion(questionThemeName)) &&
-        answerTitle}
+      {!isSingleChoiceQuestion(questionThemeName) && `${subquestionTitle}`}
+      {isSingleChoiceQuestion(questionThemeName) && answerTitle}
       {comment?.value && (
         <span>
           {answerTitle && ':'} {comment.value}

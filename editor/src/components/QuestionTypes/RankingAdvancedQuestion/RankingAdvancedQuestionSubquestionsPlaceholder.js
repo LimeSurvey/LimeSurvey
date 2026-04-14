@@ -4,22 +4,22 @@ import { CloseCircleFillIcon } from 'components/icons'
 import { ContentEditor } from 'components/UIComponents'
 import classNames from 'classnames'
 
-export const RankingAdvancedQuestionAnswersPlaceholder = ({
-  answers,
-  answersHeight = [],
-  answersValue = [],
-  clearAnswer,
+export const RankingAdvancedQuestionSubquestionsPlaceholder = ({
+  subquestions,
+  subquestionsHeight = [],
+  subquestionsValue = [],
+  clearSubquestion,
 }) => {
   return (
     <div>
-      {answers.map((answer, index) => {
-        const answerInfo = answersValue[index]
-        const hasValue = !!answerInfo?.value
-        const answerTitle = answerInfo?.answerTitle
+      {subquestions.map((subquestion, index) => {
+        const subquestionInfo = subquestionsValue[index]
+        const hasValue = !!subquestionInfo?.value
+        const subquestionTitle = subquestionInfo?.subquestionTitle
 
         return (
           <Droppable
-            key={`ranked-advanced-placeholder-${answer.qid}-${index}`}
+            key={`ranked-advanced-placeholder-${subquestion.parentQid}-${index}`}
             droppableId={`${index}`}
             index={`ranked-advanced-placeholder-${index}`}
           >
@@ -29,13 +29,13 @@ export const RankingAdvancedQuestionAnswersPlaceholder = ({
                 ref={provided.innerRef}
                 {...provided.draggableProps}
               >
-                <div className="position-relative answer-item-placeholder p-1 ms-3 d-flex align-items-center">
+                <div className="position-relative subquestion-item-placeholder p-1 ms-3 d-flex align-items-center">
                   <div
                     className={classNames(
                       'cursor-pointer position-absolute remove-option-button',
                       { 'd-none': !hasValue }
                     )}
-                    onClick={() => clearAnswer(index)}
+                    onClick={() => clearSubquestion(index)}
                   >
                     <CloseCircleFillIcon
                       className={classNames(
@@ -44,14 +44,14 @@ export const RankingAdvancedQuestionAnswersPlaceholder = ({
                     />
                   </div>
                   <ContentEditor
-                    value={hasValue ? answerTitle : index + 1}
-                    placeholder={t('Answer option')}
+                    value={hasValue ? subquestionTitle : index + 1}
+                    placeholder={t('Subquestion option')}
                     className={classNames(
                       'choice placeholder-content-editor text-center px-3',
                       { 'text-success': hasValue }
                     )}
                     style={{
-                      minHeight: answersHeight[index],
+                      minHeight: subquestionsHeight[index],
                       outline: snapshot.isDraggingOver && '1px solid #14ae5c',
                     }}
                     disabled={true}
