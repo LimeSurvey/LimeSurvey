@@ -31,15 +31,17 @@ class RenderRanking extends QuestionBaseRenderer
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->setSubquestions();  // Get ranking items as subquestions
         
-        $this->iMaxSubquestions = ((int) $this->getQuestionAttribute('max_subquestions')) > 0
-            ? ((int) $this->getQuestionAttribute('max_subquestions'))
+        $maxSubquestionsAttribute = (int) $this->getQuestionAttribute('max_subquestions');
+        $this->iMaxSubquestions = $maxSubquestionsAttribute > 0
+            ? $maxSubquestionsAttribute
             : $this->getQuestionCount();
 
-        $this->mMaxAnswers = trim((string) $this->getQuestionAttribute('max_answers')) != ''
+        $maxAnswersAttribute = trim((string) $this->getQuestionAttribute('max_answers'));
+        $this->mMaxAnswers = $maxAnswersAttribute != ''
             ? (
                 ($this->iMaxSubquestions < $this->getQuestionCount())
-                ? "min(" . trim((string) $this->getQuestionAttribute('max_answers')) . "," . $this->iMaxSubquestions . ")"
-                : trim((string) $this->getQuestionAttribute('max_answers'))
+                ? min($this->iMaxSubquestions, (int) $maxAnswersAttribute)
+                : (int) $maxAnswersAttribute
               )
             : $this->iMaxSubquestions;
 
@@ -59,6 +61,7 @@ class RenderRanking extends QuestionBaseRenderer
                 ? $this->mMaxAnswers
                 : $this->iMaxSubquestions
         );
+        $iMaxLine = min($iMaxLine, $this->getQuestionCount());
 
         $subQuestions = $this->aSubQuestions[0];
         
