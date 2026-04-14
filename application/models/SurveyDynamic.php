@@ -983,25 +983,34 @@ class SurveyDynamic extends LSActiveRecord
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
             $aQuestionAttributes['answervalues'] = array();
-            foreach ($oQuestion->answers as $oAnswer) {
-                $answerFieldname = $fieldname . '_R' . $oAnswer->aid;
-                if (!isset($oResponses[$answerFieldname]) || $oResponses[$answerFieldname] === '') {
+            // Ranking now uses subquestions instead of answers
+            $subQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(
+                array('parent_qid' => $oQuestion->qid),
+                array('order' => 'question_order')
+            );
+            foreach ($subQuestions as $oSubQuestion) {
+                $subFieldname = $fieldname . '_S' . $oSubQuestion->qid;
+                if (!isset($oResponses[$subFieldname]) || $oResponses[$subFieldname] === '') {
                     continue;
                 }
-                $currentResponse = $oResponses[$answerFieldname];
-
-                $oSelectedAnswerOption = array_reduce($oQuestion->answers, function ($carry, $oAns) use ($currentResponse) {
-                    return $currentResponse == $oAns->code ? $oAns : $carry;
-                });
-
-                $option = '';
-                if ($oSelectedAnswerOption !== null) {
-                    $option = array_merge(
-                        $oSelectedAnswerOption->attributes,
-                        $oSelectedAnswerOption->answerl10ns[$sLanguage]->attributes
-                    );
+                $currentResponse = $oResponses[$subFieldname];
+                
+                // Get the answer text for the selected rank value
+                $answerText = '';
+                if (isset($oQuestion->subquestions)) {
+                    $oSelectedAnswer = array_reduce($subQuestions, function ($carry, $oAns) use ($currentResponse) {
+                        return $currentResponse == $oAns->title ? $oAns : $carry;
+                    });
+                    if ($oSelectedAnswer !== null) {
+                        $answerText = $oSelectedAnswer->questionl10ns[$sLanguage]->question ?? '';
+                    }
                 }
-                $aQuestionAttributes['answervalues'][] = ['value' => $currentResponse, 'option' => $option];
+                
+                $aQuestionAttributes['answervalues'][] = [
+                    'value' => $currentResponse,
+                    'subquestion' => $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title,
+                    'answertext' => $answerText
+                ];
             }
         }
 

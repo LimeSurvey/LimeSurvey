@@ -3,7 +3,7 @@
  * This view display any error encoutered while getting the welcome message. Most of those errors are returned by the update server, and concern the update key.
  * @var obj $errorObject the object error
  */
-// TODO : move to the controler
+// TODO : move to the controller
 $urlNew = Yii::app()->createUrl("admin/update", array("update" => 'newKey', 'destinationBuild' => $_REQUEST['destinationBuild']));
 // We first build the error message.
 // View is right place to do this, so it's easy for further integrators to change messages.

@@ -10593,7 +10593,7 @@ textarea.form-control-lg {
   cursor: pointer;
 }
 
-.radio-item [type=radio], .checkbox-item [type=checkbox] { /* Why we must positionning at same place */
+.radio-item [type=radio], .checkbox-item [type=checkbox] { /* Why we must position them at the same place */
   cursor: pointer;
 }
 
@@ -11641,7 +11641,7 @@ body {
   background-color: rgb(219.4998571429, 212.725, 249.775);
 }
 
-/* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
+/* Define the color for Awesome Bootstrap Checkboxes ; based on bg-primary background-color*/
 body .answer-item label::after {
   background-color: #5076FF;
 }
@@ -11708,7 +11708,7 @@ body .answer-item label::after {
 *
 */
 /**
- * Used in answers : bootsrap fix (specific single choice list)
+ * Used in answers : bootstrap fix (specific single choice list)
  */
 /**
  * Expression manager relevance system
@@ -11737,7 +11737,7 @@ body .answer-item label::after {
   display: none !important;
 }
 
-/* boostrap navbar-toggle is broken without js */
+/* bootstrap navbar-toggle is broken without js */
 .no-js .navbar-toggle {
   display: none;
 }
@@ -11780,7 +11780,7 @@ body .answer-item label::after {
   }
 }
 /**
- * .ls-input-group (prefix/sufix): near same behaviour than BS input-group / input-group-addon */
+ * .ls-input-group (prefix/suffix): near same behaviour than BS input-group / input-group-addon */
 /* BUT : only with big screen : see @link https://bugs.limesurvey.org/view.php?id=11882
  * Add .suffix-prefix-force in question to force with little screen too
  **/

@@ -540,7 +540,7 @@
 
 
 
-            //similiar to the above one
+            //similar to the above one
             case Question::QT_E_ARRAY_INC_SAME_DEC: // Array of Increase/Same/Decrease questions
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $row)
@@ -795,31 +795,32 @@
 
 
 
-                case Question::QT_R_RANKING: // Ranking
+            case Question::QT_R_RANKING: // Ranking
 
-                //get some answers
+                //get ranking subquestions (items to rank)
                 //get number of columns
-                $answersCount = count($result[$key1]);
+                $subquestionsCount = count($result[$key1]);
                 $maxDbAnswer=QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'",array(':qid' => $flt[0]));
-                $columnsCount=(!$maxDbAnswer || intval($maxDbAnswer->value)<1) ? $answersCount : intval($maxDbAnswer->value); // If max_subquestions is not set or is invalid : get the answer count
-                $columnsCount = min($columnsCount,$answersCount); // Can not be upper than current answers #14899
-                //lets put the answer code and text into the answers array
+                $columnsCount=(!$maxDbAnswer || intval($maxDbAnswer->value)<1) ? $subquestionsCount : intval($maxDbAnswer->value); // If max_subquestions is not set or is invalid : get the subquestion count
+                $columnsCount = min($columnsCount,$subquestionsCount); // Can not be upper than current subquestions
+                //lets put the subquestion data into the subquestions array
                 foreach($result[$key1] as $row)
                 {
-                    $answers[]=array($row->code, $row->answerl10ns[$language]->answer, $row->aid);
+                    $subquestions[]=array($row['title'], $row['question'], $row['qid']);
+                    //$subquestions[]=array($row->code, $row->answerl10ns[$language]->answer, $row->sqid);
                 }
 
-                //loop through all answers. if there are 3 items to rate there will be 3 statistics
+                //loop through all subquestions. if there are 3 items to rank there will be 3 statistics
                 for ($i=1; $i<=$columnsCount; $i++)
                 {
-                    $j = $answers[$i - 1][2];
+                    $j = $subquestions[$i - 1][2]; // subquestion qid
                     //adjust layout depending on counter
                     //if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
                     //myfield is the SGQ identifier
                     //myfield2 is just used as comment in HTML like "R40X34X1721-1"
-                    $myfield2 = "R" . $myfield . "_R" . $j . "-" . strlen($j);
-                    $myfield3 = $myfield . "_R" . $j;
+                    $myfield2 = "R" . $myfield . "_S" . $j . "-" . strlen($j);
+                    $myfield3 = $myfield . "_S" . $j;
                     echo "<!-- $myfield2 --> ";
                     echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars((string) $_POST[$myfield2]);}
@@ -830,23 +831,23 @@
                     if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {echo " checked='checked'";}
 
                     echo " />&nbsp;"
-                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $row->answerl10ns[$language]->answer))
+                    .$flt[3]." - ".$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", (string) $subquestions[$i-1][1]))
                     ."</div>\n"
-                    ."\t<select name='Q{$flt[0]}_R{$j}[]' multiple='multiple' class='form-select'>\n";
+                    ."\t<select name='Q{$flt[0]}_S{$j}[]' multiple='multiple' class='form-select'>\n";
 
-                    //output lists of ranking items
-                    foreach ($answers as $ans)
+                    //output lists of ranking positions
+                    foreach ($subquestions as $subquestion)
                     {
-                        echo "\t<option value='$ans[0]'";
+                        echo "\t<option value='$subquestion[0]'";
 
                         //pre-select
-                        if (isset($_POST[$myfield3]) && is_array($_POST[$myfield3]) && in_array("$ans[0]", $_POST[$myfield3])) {echo " selected='selected' ";}
+                        if (isset($_POST[$myfield3]) && is_array($_POST[$myfield3]) && in_array("$subquestion[0]", $_POST[$myfield3])) {echo " selected='selected' ";}
 
-                        echo ">".flattenText($ans[1])."</option>\n";
+                        echo ">".sprintf(gT('Rank %s'), $subquestion[1])."</option>\n";
                     }
 
                     echo "\t</select>";
-                    //add averything to main array
+                    //add everything to main array
                 }
 
                 //Link to rankwinner script - awaiting completion - probably never gonna happen. Mystery creator.
@@ -855,7 +856,7 @@
                 //              ."<input type='button' value='Show Rank Summary' onclick=\"window.open('rankwinner.php?sid=$surveyid&amp;qid=$flt[0]', '_blank', 'toolbar=no, directories=no, location=no, status=yes, menubar=no, resizable=no, scrollbars=no, width=400, height=300, left=100, top=100')\">"
                 //              ."</td></tr>\n\t<tr>\n";
                 $counter=0;
-                unset($answers);
+                unset($subquestions);
                 break;
 
 
