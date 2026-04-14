@@ -143,7 +143,8 @@ abstract class AbstractQuestionProcessor
         return (int)$model->count($criteria);
     }
 
-    public function getAggregateResponses($fieldNames, $fields) {
+    public function getAggregateResponses($fieldNames, $fields)
+    {
         $model = SurveyDynamic::model($this->surveyId);
         $db = $model->getDbConnection();
         $command = $db->createCommand()
