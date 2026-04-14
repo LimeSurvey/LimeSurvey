@@ -1062,7 +1062,7 @@ function LEMval(alias)
                     } else if (attr.type == 'R') {
                         if (value) {
                             let context = document.getElementById(whichJsName);
-                            answer = context.querySelector(`option[value='${context.value}']`).innerText.trim().substring(5);
+                            answer = context.querySelector(`option[value='${CSS.escape(context.value)}']`).innerText.trim().substring(5);
                         } else {
                             answer = '';
                         }
