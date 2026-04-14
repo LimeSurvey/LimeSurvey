@@ -2446,7 +2446,10 @@ class SurveyAdministrationController extends LSBaseController
         App()->loadHelper('admin.import');
 
         if (!$aData['bFailed']) {
-            $targetSurveysGroup = App()->request->getParam('surveysgroup');
+            $targetSurveysGroup = App()->request->getPost('surveysgroup');
+            if (!in_array($targetSurveysGroup, ['default', 'from_survey'], true)) {
+                $targetSurveysGroup = 'default';
+            }
             $aImportResults = importSurveyFile($sFullFilepath, (App()->request->getPost('translinksfields') == '1'), null, null, null, $targetSurveysGroup);
             if (is_null($aImportResults)) {
                 $aImportResults = array(

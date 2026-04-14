@@ -1248,6 +1248,7 @@ function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey
  * @param string|null $baselang            Optional base language to set or ensure on the imported survey.
  * @param string|null $targetSurveyGroup   Optional target survey group strategy (e.g., 'from_survey' to attempt using the source survey's group); when null defaults to standard group assignment.
  * @return array|null Result array containing counters, warnings and mappings (including 'newsid' on success), or null for unsupported file extensions.
+ */
 function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null, $baselang = null, $targetSurveyGroup = null)
 {
     $aPathInfo = pathinfo($sFullFilePath);
