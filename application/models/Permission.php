@@ -282,7 +282,7 @@ class Permission extends LSActiveRecord
                 // Make sure that he owns the user he wants to give global permissions for
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
                 if (!$oUser) {
-                    die('You are not allowed to set permisisons for this user');
+                    die('You are not allowed to set permissions for this user');
                 }
                 $aFilteredPermissions = array();
                 foreach ($aBasePermissions as $PermissionName => $aPermission) {
@@ -542,7 +542,7 @@ class Permission extends LSActiveRecord
             return true;
         }
 
-        /* Always return false for unknow sCRUD */
+        /* Always return false for unknown sCRUD */
         // TODO: should not be necessary
         if (!in_array($sCRUD, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
             return false;
@@ -720,7 +720,7 @@ class Permission extends LSActiveRecord
      * @param integer $roleId
      * @param string $sPermission
      * @param string $sCRUD The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-     * @return bool allowed permssion
+     * @return bool allowed permission
      */
     public function roleHasPermission($iRoleId, $sPermission, $sCRUD = 'read')
     {

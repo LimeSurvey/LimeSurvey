@@ -683,12 +683,9 @@ class userstatistics_helper
             $alist[] = array("NoAnswer", gT("No answer"), $mfield);
         } // Ranking OPTION
         elseif ($firstletter == "R") {
-            // $rt format: "R" + fieldmap key = "RQ{qid}_R{aid}"
-            // Strip leading "R" to get the actual responses table column "Q{qid}_R{aid}"
-            $fieldmapKey = substr($rt, 1);           // "Q{qid}_R{aid}"
+            $fieldmapKey = substr($rt, 1);
             $qqid        = (int) ltrim(explode('_', $fieldmapKey)[0], 'Q');  // numeric qid
-            // Rank position (e.g. "3" from "Q12345_R3")
-            $rankLabel   = substr($fieldmapKey, strpos($fieldmapKey, '_R') + 2);  // the aid part
+            $rankLabel   = substr($fieldmapKey, strpos($fieldmapKey, '_S') + 2);  // the qid part
 
             //get question data
             $nresult = Question::model()->with('questionl10ns')->find(array(
@@ -711,7 +708,6 @@ class userstatistics_helper
                 'order'     => 'sortorder'
             ]);
 
-            // $fieldmapKey is "Q{qid}_R{aid}" — the actual responses table column for this rank slot
             foreach ($result as $row) {
                 $alist[] = array($row->code, flattenText($row->answerl10ns[$language]->answer), $fieldmapKey);
             }
@@ -723,11 +719,7 @@ class userstatistics_helper
                 //get SGQ data
                 $qqid = substr(explode("_", $rt)[0], 1);
 
-                //select details for this question
-                /**
-                 * FIXME $iQuestionIDlength not defined!!
-                 */
-                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0, $iQuestionIDlength)));
+                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => intval($qqid)));
                 $qtitle = $nresult->title;
                 $qtype = $nresult->type;
                 $qquestion = flattenText($nresult->question);
@@ -987,7 +979,7 @@ class userstatistics_helper
 
                     /* IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT */
                     /* IF YOU DON'T UNDERSTAND WHAT QUARTILES ARE DO NOT MODIFY THIS CODE */
-                    /* Quartiles and Median values are NOT related to average, and the sum is irrelevent */
+                    /* Quartiles and Median values are NOT related to average, and the sum is irrelevant */
 
                     if (isset($quartiles[1])) {
                         $showem[] = array(gT("1st quartile (Q1)"), $quartiles[1]);
@@ -1169,7 +1161,7 @@ class userstatistics_helper
                     // Array of Yes/No/gT("Uncertain")
                     case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                         $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
-                        //loop thorugh results
+                        //loop through results
                         foreach ($qresult as $qrow) {
                             //add results
                             $alist[] = array("Y", gT("Yes"));
@@ -1828,7 +1820,7 @@ class userstatistics_helper
             //put only the code into the array
             $justcode[] = $al[0];
 
-            //edit labels and put them into antoher array
+            //edit labels and put them into another array
 
             //first check if $tempcount is > 0. If yes, $row has been modified and $tempcount has the original count.
             if ($tempcount > -1) {
@@ -2050,7 +2042,7 @@ class userstatistics_helper
             else {
                 //check if data should be aggregated
                 if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT)) {
-                    //mark that we have done soemthing special here
+                    //mark that we have done something special here
                     $aggregated = true;
 
                     // $grawdata[5] = "No answer" count (6th alist entry for QT_5_POINT_CHOICE: choices 1-5 + No answer).
@@ -2290,8 +2282,8 @@ class userstatistics_helper
                         //2 = create square value of difference
                         $squarevalue = square($diff);
 
-                        //3 = sum up square values and multiply them with the occurence
-                        //prevent divison by zero
+                        //3 = sum up square values and multiply them with the occurrence
+                        //prevent division by zero
                         if ($squarevalue != 0 && $stddevarray[$j] != 0) {
                             $stddev += $squarevalue * $stddevarray[$j];
                         }
