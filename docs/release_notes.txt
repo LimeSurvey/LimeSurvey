@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v7.0.0-beta1!
+Welcome to LimeSurvey v7.0.0-beta2!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.0-beta1 (build 260121) to 7.0.0-beta2 (build 260415) April 14, 2026
+IMPORTANT
+-Migration script could have issues, so don't use this version for production
+
+KNOWN ISSUES
+-There are issues with the importing of groups and questions
+-Ranking question type doesn't work properly
+
+New feature: New easy-to-use survey editor - check it out!
+
+
 Changes from 6.16.16 (build 260408) to 6.16.17 (build 260414) April 14, 2026
 -Fixed issue #20480: Proper font support for non-Latin chars in PDF export (#4857) (Mohab Elsheikh)
 -Fixed issue #20478: Question index inherited value cannot be overridden (#4853) (Matthew)
