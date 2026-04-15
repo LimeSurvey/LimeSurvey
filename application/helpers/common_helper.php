@@ -2266,6 +2266,29 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
 }
 
 /**
+ * Gets subquestions mapped to their titles
+ * @param mixed $sid the survey id
+ * @return array<array> Two levels, the first level is the parent qid and the second is the title
+ */
+function getTitleSubquestionMapping($sid)
+{
+    static $questionMap;
+    if (!isset($questionMap[$sid])) {
+        $questionMap[$sid] = [];
+        $rawQuestions = Question::model()->with('questionl10ns')->findAll('sid = :sid', [":sid" => $sid]);
+        foreach ($rawQuestions as $rawQuestion) {
+            if ($rawQuestion->parent_qid) {
+                if (!isset($questionMap[$sid][$rawQuestion->parent_qid])) {
+                    $questionMap[$sid][$rawQuestion->parent_qid] = [];
+                }
+                $questionMap[$sid][$rawQuestion->parent_qid][$rawQuestion->title] = $rawQuestion;
+            }
+        }
+    }
+    return $questionMap[$sid];
+}
+
+/**
  *
  * @param mixed $needle
  * @param mixed $haystack

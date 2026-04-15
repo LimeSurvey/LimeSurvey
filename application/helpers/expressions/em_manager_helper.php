@@ -3439,6 +3439,7 @@ class LimeExpressionManager
         $now = microtime(true);
 
         $q2subqInfo = [];
+        $rankingMapping = [];
 
         $this->multiflexiAnswers = [];
         foreach ($fieldmap as $fielddata) {
@@ -3660,7 +3661,11 @@ class LimeExpressionManager
                     break;
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     $csuffix = $fielddata['csuffix'] ?? $fielddata['sqid'];
-                    $varName = $fielddata['title'] . '_' . $fielddata['sqid'];
+                    if (!isset($rankingMapping[$fielddata['qid']])) {
+                        $rankingMapping[$fielddata['qid']] = 0;
+                    }
+                    $rankingMapping[$fielddata['qid']]++;
+                    $varName = $fielddata['title'] . '_' . $rankingMapping[$fielddata['qid']];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
                     if ($other == "Y") {
@@ -3670,7 +3675,7 @@ class LimeExpressionManager
                             $question = $this->gT('Other:');
                         }
                     }
-                    $sqsuffix = '_' . $fielddata['qid'];
+                    $sqsuffix = '_' . $fielddata['sqid'];
                     $rowdivid = $sgqa;
 
                     break;
@@ -8964,6 +8969,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 $shown = $code;
                             } elseif (($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other$/', (string) $name)) {
                                 $shown = $code;
+                            } elseif ($type === Question::QT_R_RANKING) {
+                                if ($code) {
+                                    $LEM =& LimeExpressionManager::singleton();
+                                    $question = getTitleSubquestionMapping($LEM->getLEMsurveyId())[$var['qid']][$code] ?? null;
+                                    $shown = $question->questionl10ns[LimeExpressionManager::getEMlanguage()]->question ?? '';
+                                } else {
+                                    $shown = "";
+                                }
                             } else {
                                 $scale_id = $this->_GetVarAttribute($name, 'scale_id', '0', $gseq, $qseq);
                                 $which_ans = $scale_id . '~' . $code;
