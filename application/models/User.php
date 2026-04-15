@@ -266,7 +266,7 @@ class User extends LSActiveRecord
     /**
      * get a boolean and return an HTML for grid
      * @param Object $data see https://www.yiiframework.com/doc/api/1.1/CDataColumn#value-detail
-     * @param string attribute to use
+     * @param string $attribute to use
      * @return string the html for grid
      **/
     private function getFormattedBoolean($data, $attribute)
@@ -824,7 +824,7 @@ class User extends LSActiveRecord
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions' => ['class' => 'ls-sticky-column text-end'],
                 'checkBoxHtmlOptions' => ['class' => 'usermanagement--selector-userCheckbox'], // Class used in test
-                'disabled' =>function ($data) {
+                'disabled' => function ($data) {
                     return $data->uid == \App()->getCurrentUserId();
                 }
             ],
