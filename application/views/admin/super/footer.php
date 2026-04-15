@@ -89,12 +89,12 @@ $questionEditor = $questionEditor ?? false;
 
 <!-- Modal for system information -->
 
-<div id="modalSystemInformation" class="modal fade" role="dialog">
+<div id="modalSystemInformation" class="modal fade" role="dialog" aria-labelledby="modalSystemInformationTitle" aria-modal="true">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("System information"); ?></h5>
+                <h5 class="modal-title" id="modalSystemInformationTitle"><?php eT("System information"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -135,13 +135,13 @@ $questionEditor = $questionEditor ?? false;
 ?>
 
 <?php /** this one works with assets/packages/adminbasics/src/parts/confirmationModal.js */ ?>
-<div id="confirmation-modal" class="modal fade" role="dialog">
+<div id="confirmation-modal" class="modal fade" role="dialog" aria-labelledby="confirmationModalTitle" aria-modal="true">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title h5"><?php eT("Confirm"); ?></h2>
-                <button type="button"  aria-label="<?php eT('Close') ?>" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title" id="confirmationModalTitle"><?php eT("Confirm"); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
@@ -161,7 +161,7 @@ $questionEditor = $questionEditor ?? false;
             </div>
             <div class="modal-footer modal-footer-yes-no">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <a id="actionBtn" class="btn btn-ok"  tabindex="0" data-actionbtntext="<?php eT('Confirm'); ?>"></a>
+                <a id="actionBtn" class="btn btn-ok" data-actionbtntext="<?php eT('Confirm'); ?>"></a>
             </div>
             <div class="modal-footer-close modal-footer" style="display: none;">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
@@ -173,12 +173,12 @@ $questionEditor = $questionEditor ?? false;
 </div>
 
 <!-- Modal for errors -->
-<div id="error-modal" class="modal fade" role="dialog">
+<div id="error-modal" class="modal fade" role="dialog" aria-labelledby="errorModalTitle" aria-modal="true">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header card-header">
-                <h5 class="modal-title"><?php eT("Error"); ?></h5>
+                <h5 class="modal-title" id="errorModalTitle"><?php eT("Error"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -192,12 +192,12 @@ $questionEditor = $questionEditor ?? false;
 </div>
 
 <!-- Modal for success -->
-<div id="success-modal" class="modal fade" role="dialog">
+<div id="success-modal" class="modal fade" role="dialog" aria-labelledby="successModalTitle" aria-modal="true">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header card-header">
-                <h5 class="modal-title"><?php eT("Success"); ?></h5>
+                <h5 class="modal-title" id="successModalTitle"><?php eT("Success"); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
