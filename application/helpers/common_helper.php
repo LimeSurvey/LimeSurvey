@@ -2273,19 +2273,19 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
 function getTitleSubquestionMapping($sid)
 {
     static $questionMap;
-    if (!isset($questionMap)) {
-        $questionMap = [];
+    if (!isset($questionMap[$sid])) {
+        $questionMap[$sid] = [];
         $rawQuestions = Question::model()->with('questionl10ns')->findAll('sid = :sid', [":sid" => $sid]);
         foreach ($rawQuestions as $rawQuestion) {
             if ($rawQuestion->parent_qid) {
-                if (!isset($questionMap[$rawQuestion->parent_qid])) {
-                    $questionMap[$rawQuestion->parent_qid] = [];
+                if (!isset($questionMap[$sid][$rawQuestion->parent_qid])) {
+                    $questionMap[$sid][$rawQuestion->parent_qid] = [];
                 }
-                $questionMap[$rawQuestion->parent_qid][$rawQuestion->title] = $rawQuestion;
+                $questionMap[$sid][$rawQuestion->parent_qid][$rawQuestion->title] = $rawQuestion;
             }
         }
     }
-    return $questionMap;
+    return $questionMap[$sid];
 }
 
 /**

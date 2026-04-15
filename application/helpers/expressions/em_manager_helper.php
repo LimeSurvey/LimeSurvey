@@ -8941,9 +8941,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             } elseif ($type === Question::QT_R_RANKING) {
                                 if ($code) {
                                     $LEM =& LimeExpressionManager::singleton();
-                                    $question = getTitleSubquestionMapping($LEM->getLEMsurveyId())[$var['qid']][$code];
-                                    $oSurvey = Survey::model()->findByPk($LEM->getLEMsurveyId());
-                                    $shown = $question->questionl10ns[$oSurvey->language]->question;
+                                    $question = getTitleSubquestionMapping($LEM->getLEMsurveyId())[$var['qid']][$code] ?? null;
+                                    $shown = $question->questionl10ns[LimeExpressionManager::getEMlanguage()]->question ?? '';
                                 } else {
                                     $shown = "";
                                 }
