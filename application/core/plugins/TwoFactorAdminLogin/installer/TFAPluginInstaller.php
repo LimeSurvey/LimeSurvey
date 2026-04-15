@@ -69,7 +69,7 @@ class TFAPluginInstaller {
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try{
-            $oDB->createCommand()->createTable('{{twoFactorUsers}}', array(
+            $oDB->createCommand()->createTable('{{user_mfa_settings}}', array(
                 'uid' => 'integer NOT NULL',
                 'secretKey' => 'string NOT NULL',
                 'authType' => 'string NOT NULL',
@@ -96,7 +96,7 @@ class TFAPluginInstaller {
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try{
-            $oDB->createCommand()->dropTable('{{twoFactorUsers}}');
+            $oDB->createCommand()->dropTable('{{user_mfa_settings}}');
             $oTransaction->commit();
             return true;
         } catch(Exception $e) {

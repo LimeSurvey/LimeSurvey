@@ -8,14 +8,6 @@
 .scoped-toolbuttons-left .btn {
   flex: 1;
 }
-.scoped-toolbuttons-right {
-  flex: 2 1 auto;
-  align-self: flex-end;
-  white-space: nowrap;
-}
-.scoped-toolbuttons-right .btn {
-  float: left;
-}
 .list-group-item.question-question-list-item .editIcon {
   margin: 10px 5px 10px 10px;
 }
@@ -28,6 +20,9 @@
   /* position: relative; */
   /* z-index: 2; */
   min-height: 100vh;
+}
+.question-question-list-item .dropdown-menu li a.disabled {
+  opacity: 0.5;
 }
 .loader-adminpanel.loader-quickmenu .contain-pulse {
   width: 2em;
@@ -72,13 +67,6 @@
 }
 }
 
-.loader--loaderWidget[data-v-1bc94e55]{
-    position: absolute;
-    top:0;
-    right:0;
-    width: 100%;
-    height: 100%;
-}
 .loader-adminpanel .contain-pulse .square[data-v-1bc94e55]{
     display: block;
 }

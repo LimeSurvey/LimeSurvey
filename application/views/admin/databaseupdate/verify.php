@@ -6,7 +6,10 @@
         <div class="offset-lg-4 col-lg-4">
             <table class="table table-striped">
                 <tr><th><?php eT('Database type:'); ?></th><td><?php echo  Yii::app()->db->getDriverName(); ?></td></tr>
-                <tr><th><?php eT('Database name:'); ?></th><td><?php echo  getDBConnectionStringProperty('dbname'); ?></td></tr>
+                
+                <tr><th><?php eT('Database name:'); ?></th><td><?php 
+                // MySQL and Postgres use 'dbname', MSSQL uses 'Database' - just display both because only one would show
+                echo  getDBConnectionStringProperty('dbname') . getDBConnectionStringProperty('Database')  ; ?></td></tr>
                 <tr><th><?php eT('Table prefix:'); ?></th><td><?php echo Yii::app()->db->tablePrefix; ?></td></tr>
                 <tr><th><?php eT('Site name:'); ?></th><td><?php echo Yii::app()->getConfig("sitename"); ?></td></tr>
                 <tr><th><?php eT('Root URL:'); ?></th><td><?php echo Yii::app()->getController()->createUrl('/'); ?></td></tr>

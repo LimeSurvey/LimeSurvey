@@ -127,15 +127,16 @@ LS.CPDB = (function() {
                             dlForm.css('display', 'none').appendTo('body').submit();
                             $(self).modal("hide");
                         });
-                        $('#attributes')
-                            .multiselect({ 
-                                includeSelectAllOption:true, 
-                                selectAllValue: '0',
-                                selectAllText: sSelectAllText,
-                                nonSelectedText: sNonSelectedText,
-                                nSelectedText: sNSelectedText,
-                                maxHeight: 140 
-                            });
+
+                        $('#select-all').click(function () {
+                            if ($('#select-all').is(':checked')) {
+                                $('#attributes > option').prop('selected', 'selected');
+                                $('#attributes').trigger('change');
+                            } else {
+                                $('#attributes > option').removeAttr('selected');
+                                $('#attributes').trigger('change');
+                            }
+                        });
                     });
                     /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
                 }
@@ -152,7 +153,7 @@ LS.CPDB = (function() {
                 //data can be string of parameters or array/object
                 data = typeof data == 'string' ? data : jQuery.param(data);
                 //split params into form inputs
-                var inputs = '<input type="hidden" name="'+LS.data.csrfTokenName+'" value="'+LS.data.csrfToken+'">';
+                var inputs = $("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken).get(0).outerHTML;
                 jQuery.each(data.split('&'), function(){
                     var pair = this.split('=');
                     inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'">';
@@ -175,9 +176,9 @@ LS.CPDB = (function() {
             return false;
         });
 
-        $('#list_central_participants').on('click', '.action_participant_editModal', function(e){
+        $('.action_participant_editModal').on('click', function(e){
             e.preventDefault();
-            var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
+            var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).data('participantId')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
                 openModalParticipantPanel,
@@ -193,9 +194,9 @@ LS.CPDB = (function() {
             );
         });
 
-        $('#list_central_participants').on('click', '.action_participant_deleteModal', function(e) {
+        $('.action_participant_deleteModal').on('click', function(e) {
             e.preventDefault();
-            var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
+            var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).data('participantId')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
                 openModalParticipantPanel,
@@ -210,11 +211,11 @@ LS.CPDB = (function() {
                 }
                 );
         });
-        $('#list_central_participants').on('click', '.action_participant_infoModal', function(e) {
+        $('.action_participant_infoModal').on('click', function(e) {
             e.preventDefault();
             var data = {
                 modalTarget: 'showparticipantsurveys',
-                participant_id: $(this).closest('tr').data('participant_id')
+                participant_id: $(this).data('participantId')
             };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
@@ -225,9 +226,9 @@ LS.CPDB = (function() {
                     'list_central_participants'
                     );
         });
-        $('#list_central_participants').on('click', '.action_participant_shareParticipant', function(e) {
+        $('.action_participant_shareParticipant').on('click', function(e) {
             e.preventDefault();
-            var data = {modalTarget: 'shareparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
+            var data = {modalTarget: 'shareparticipant', 'participant_id' : $(this).data('participantId')};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
                 openModalParticipantPanel,
@@ -267,10 +268,10 @@ LS.CPDB = (function() {
         /**
          * Small icon, add participant to a survey
          */
-        $('#list_central_participants').on('click', '.action_participant_addToSurvey', function(e) {
+        $('.action_participant_addToSurvey').on('click', function(e) {
             var data = {
                 modalTarget: 'addToSurvey',
-                participant_id: $(this).closest('tr').data('participant_id')
+                participant_id: $(this).data('participantId')
             };
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
@@ -336,7 +337,7 @@ LS.CPDB = (function() {
         });
         $('.action_attributeNames_editModal').on('click', function(e){
             e.preventDefault();
-            var data = {modalTarget: 'editattribute','attribute_id' : $(this).closest('tr').data('attribute_id')};
+            var data = {modalTarget: 'editattribute','attribute_id' : $(this).data('attribute_id')};
             runBaseModal(
                 openModalParticipantPanel,
                 data,
@@ -472,6 +473,7 @@ LS.CPDB = (function() {
     deleteSingleParticipantShare = function(url) {
         $.ajax({
             url: url,
+            data: {},
             method: "POST",
             dataType: 'json',
             success: function(result){

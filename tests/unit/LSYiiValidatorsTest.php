@@ -140,6 +140,7 @@ class LSYiiValidatorsTest extends TestBaseClass
         $userName = \Yii::app()->securityManager->generateRandomString(8);
 
         $userData = array(
+            'full_name'  => $userName,
             'users_name' => $userName,
             'email'      => $userName . '@example.org'
         );
@@ -291,7 +292,9 @@ class LSYiiValidatorsTest extends TestBaseClass
      */
     public function testLanguageFilters()
     {
-        // Testing languageFilter.
+        \Yii::app()->session['loginID'] = 1;
+
+        // Testing languageCodeFilter.
         $survey = \Survey::model()->insertNewSurvey(array('language' => 'ko')); // Set language to Korean.
 
         $this->assertSame('ko', $survey->language, 'The language filter did not return a correctly filtered language string.');
@@ -306,7 +309,7 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         $this->assertSame('en', $survey->language, 'The language filter did not return a correctly filtered language string.');
 
-        // Testing multiLanguageFilter.
+        // Testing multiLanguageCodeFilter.
         $survey->additional_languages = 'es';
         $survey->save();
 
@@ -328,5 +331,15 @@ class LSYiiValidatorsTest extends TestBaseClass
         $this->assertSame('de-informal de-easy es', $survey->additional_languages, 'The multi language filter did not return a correctly filtered string.');
 
         $survey->delete(true);
+    }
+
+    /**
+     * Testing broken HTML.
+     */
+    public function testBrokenHtml()
+    {
+        $validator = new \LSYii_Validators();
+
+        $this->assertSame('<strong>strong </strong>', $validator->xssFilter('<strong>strong <style>'), 'Unexpected filtered broken HTML tags.');
     }
 }

@@ -16,36 +16,47 @@ See: https://getbootstrap.com/components/#navbar
 
 For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
 #}
-{% set navClass = "navbar-light bg-light" %}
-{% if( aSurveyInfo.template == "bootswatch") %}
-    {% set navClass = "navbar-default bg-primary" %}
-{% endif %}
-<!-- Bootstrap Navigation Bar -->
-<div id="survey-nav" class="navbar {{ navClass }} navbar-expand-md fixed-top border-bottom pt-0 pb-0">
-    <div class="container-fluid">
-     <a class="navbar-brand" href="#"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
-                aria-controls="small-screens-menus" aria-expanded="false">
-
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        {# Logo option #}
-        {% if( aSurveyInfo.options.brandlogo == "on") %}
-            <div class="navbar-brand logo-container d-none d-md-block">
-                {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
-            </div>
-        {% else %}
-            <div class="navbar-brand">
-                {{ aSurveyInfo.name }}
-            </div>
-        {% endif %}
-        <div id="navbar" class="collapse navbar-collapse navbar-nav-scroll pt-2">
-            <ul class="nav navbar-nav navbar-action-link navbar-right ms-auto">
-                {{ include('./subviews/navigation/save_links.twig') }}
-                {{ include('./subviews/navigation/clearall_links.twig') }}
-                {{ include('./subviews/navigation/question_index_menu.twig') }}
-                {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
-            </ul>
+{% if not aSurveyInfo.popupPreview %}
+    {% set navClass = "navbar-light bg-light" %}
+    {% if( aSurveyInfo.template == "bootswatch") %}
+        {% set navClass = "navbar-default bg-primary" %}
+    {% endif %}
+    <!-- Bootstrap Navigation Bar -->
+    {# ShowMenu used for navbar-toggler and navbar-collapse #}
+    {% set ShowMenu = (aSurveyInfo.aNavigator.load.show == "Y" or aSurveyInfo.aNavigator.save.show == "Y")
+        or ((aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null) and aSurveyInfo.options.showclearall == 'on')
+        or (aSurveyInfo.aQuestionIndex.bShow == true and aSurveyInfo.format != 'A')
+        or (aSurveyInfo.alanguageChanger.show)
+    %}
+    <div id="survey-nav" class="navbar {{ navClass }} navbar-expand-md fixed-top border-bottom pt-0 pb-0">
+        <div class="container-fluid">
+            {% if ShowMenu %}
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                        aria-controls="small-screens-menus" aria-expanded="false">
+                    <span class="visually-hidden-focusable">{{ gT("Tools") }}</span>
+                    <span class="navbar-toggler-icon" aria-hidden="true"></span>
+                </button>
+            {% endif %}
+            {# Logo option #}
+            {% if( aSurveyInfo.options.brandlogo == "on") %}
+                <div class="navbar-brand logo-container d-none d-md-block">
+                    {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
+                </div>
+            {% else %}
+                <div class="navbar-brand">
+                    {{ aSurveyInfo.name }}
+                </div>
+            {% endif %}
+            {% if ShowMenu %}
+                <div id="navbar" class="collapse navbar-collapse navbar-nav-scroll pt-2">
+                    <ul class="nav navbar-nav navbar-action-link navbar-right ms-auto">
+                        {{ include('./subviews/navigation/save_links.twig') }}
+                        {{ include('./subviews/navigation/clearall_links.twig') }}
+                        {{ include('./subviews/navigation/question_index_menu.twig') }}
+                        {{ include('./subviews/navigation/language_changer_top_menu.twig') }}
+                    </ul>
+                </div>
+            {% endif %}
         </div>
     </div>
-</div>
+{% endif %}

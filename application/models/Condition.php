@@ -19,8 +19,8 @@
  * @property integer $cid ID (primary key)
  * @property integer $qid Question id (subquestion)
  * @property integer $cqid Question id (grouping question)
- * @property string $cfieldname Condition field-name as <a href = "https://manual.limesurvey.org/SGQA_identifier">SGQA identifier</a>
- * @property string $method Logical operator see <a href="https://manual.limesurvey.org/Setting_conditions#Select_the_comparison_operator">here</a>
+ * @property string $cfieldname Condition field-name as <a href = "https://www.limesurvey.org/manual/SGQA_identifier">SGQA identifier</a>
+ * @property string $method Logical operator see <a href="https://www.limesurvey.org/manual/Setting_conditions#Select_the_comparison_operator">here</a>
  * @property string $value Value to be compared against
  * @property integer $scenario Scenario number
  *

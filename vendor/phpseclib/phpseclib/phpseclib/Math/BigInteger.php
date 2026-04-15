@@ -136,20 +136,28 @@ class BigInteger implements \JsonSerializable
     {
         if (!isset(self::$mainEngine)) {
             $engines = [
-                ['GMP'],
+                ['GMP', ['DefaultEngine']],
                 ['PHP64', ['OpenSSL']],
                 ['BCMath', ['OpenSSL']],
                 ['PHP32', ['OpenSSL']],
                 ['PHP64', ['DefaultEngine']],
                 ['PHP32', ['DefaultEngine']]
             ];
+            // per https://phpseclib.com/docs/speed PHP 8.4.0+ _significantly_ sped up BCMath
+            if (version_compare(PHP_VERSION, '8.4.0') >= 0) {
+                $engines[1][0] = 'BCMath';
+                $engines[2][0] = 'PHP64';
+            }
+
             foreach ($engines as $engine) {
                 try {
-                    self::setEngine($engine[0], isset($engine[1]) ? $engine[1] : []);
-                    break;
+                    self::setEngine($engine[0], $engine[1]);
+                    return;
                 } catch (\Exception $e) {
                 }
             }
+
+            throw new \UnexpectedValueException('No valid BigInteger found. This is only possible when JIT is enabled on Windows and neither the GMP or BCMath extensions are available so either disable JIT or install GMP / BCMath');
         }
     }
 
@@ -159,7 +167,7 @@ class BigInteger implements \JsonSerializable
      * If the second parameter - $base - is negative, then it will be assumed that the number's are encoded using
      * two's compliment.  The sole exception to this is -10, which is treated the same as 10 is.
      *
-     * @param string|int|BigInteger\Engines\Engine $x Base-10 number or base-$base number if $base set.
+     * @param string|int|Engine $x Base-10 number or base-$base number if $base set.
      * @param int $base
      */
     public function __construct($x = 0, $base = 10)
@@ -168,7 +176,7 @@ class BigInteger implements \JsonSerializable
 
         if ($x instanceof self::$mainEngine) {
             $this->value = clone $x;
-        } elseif ($x instanceof BigInteger\Engines\Engine) {
+        } elseif ($x instanceof Engine) {
             $this->value = new static("$x");
             $this->value->setPrecision($x->getPrecision());
         } else {
@@ -330,12 +338,10 @@ class BigInteger implements \JsonSerializable
      */
     public function extendedGCD(BigInteger $n)
     {
-        extract($this->value->extendedGCD($n->value));
-        /**
-         * @var BigInteger $gcd
-         * @var BigInteger $x
-         * @var BigInteger $y
-         */
+        $extended = $this->value->extendedGCD($n->value);
+        $gcd = $extended['gcd'];
+        $x = $extended['x'];
+        $y = $extended['y'];
         return [
             'gcd' => new static($gcd),
             'x' => new static($x),
@@ -396,7 +402,7 @@ class BigInteger implements \JsonSerializable
      *
      * Will be called, automatically, when serialize() is called on a BigInteger object.
      *
-     * __sleep() / __wakeup() have been around since PHP 4.0
+     * __sleep() / __wakeup() have been around since PHP 4.0 but were deprecated in PHP 8.5
      *
      * \Serializable was introduced in PHP 5.1 and deprecated in PHP 8.1:
      * https://wiki.php.net/rfc/phase_out_serializable
@@ -428,6 +434,38 @@ class BigInteger implements \JsonSerializable
         if ($this->precision > 0) {
             // recalculate $this->bitmask
             $this->setPrecision($this->precision);
+        }
+    }
+
+    /**
+     *  __serialize() magic method
+     *
+     * @see self::__unserialize()
+     * @return array
+     * @access public
+     */
+    public function __serialize()
+    {
+        $result = ['hex' => $this->toHex(true)];
+        if ($this->getPrecision() > 0) {
+            $result['precision'] = $this->getPrecision();
+        }
+        return $result;
+    }
+
+    /**
+     *  __unserialize() magic method
+     *
+     * @see self::__serialize()
+     * @access public
+     */
+    public function __unserialize(array $data)
+    {
+        $temp = new static($data['hex'], -16);
+        $this->value = $temp->value;
+        if (isset($data['precision']) && $data['precision'] > 0) {
+            // recalculate $this->bitmask
+            $this->setPrecision($data['precision']);
         }
     }
 
@@ -614,10 +652,9 @@ class BigInteger implements \JsonSerializable
         self::initialize_static_variables();
 
         $class = self::$mainEngine;
-        extract($class::minMaxBits($bits));
-        /** @var BigInteger $min
-         * @var BigInteger $max
-         */
+        $minMax = $class::minMaxBits($bits);
+        $min = $minMax['min'];
+        $max = $minMax['max'];
         return [
             'min' => new static($min),
             'max' => new static($max)

@@ -20,7 +20,7 @@
 </style>
 
 <!-- NB: These must be inside #pjax-content to work with pjax. -->
-<?= $jsVariablesHtml; ?>
+<?php echo $jsVariablesHtml; ?>
 <?= $modalsHtml; ?>
 <?php $visibilityEditor = true; //should be displayed ?>
 <?php $visibilityOverview = false; ?>

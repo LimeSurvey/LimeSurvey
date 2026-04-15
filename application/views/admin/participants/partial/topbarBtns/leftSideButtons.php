@@ -65,7 +65,7 @@ if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
         'ext.ButtonWidget.ButtonWidget',
         [
             'name' => '',
-            'text' => gT("Blacklist settings"),
+            'text' => gT("Blocklist settings"),
             'icon' => 'ri-list-settings-line',
             'link' => $this->createUrl("admin/participants/sa/blacklistControl"),
             'htmlOptions' => [
@@ -73,7 +73,9 @@ if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             ],
         ]
     );
+}
 
+if (Permission::model()->hasGlobalPermission('participantpanel', 'read')) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [

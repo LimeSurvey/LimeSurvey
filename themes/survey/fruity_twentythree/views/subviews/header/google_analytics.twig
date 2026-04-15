@@ -37,7 +37,7 @@
 
             ga('create', '{{ aSurveyInfo.googleanalyticsapikey }}', 'auto');
             ga('send', 'pageview');
-            ga('send', 'pageview', '{{ trackUrl }}');
+            ga('send', 'pageview', '{{ trackUrl|escape }}');
             </script>
         {% endif %}
     {% else %}
@@ -53,7 +53,7 @@
 
             {% if not (aSurveyInfo.googleanalyticsstyle is defined and aSurveyInfo.googleanalyticsstyle == 1) %}
                 {% set trackUrl = getGoogleAnalyticsTrackingUrl(aSurveyInfo.sid, aSurveyInfo.trackUrlPageName ?? '') %}
-                gtag('event', 'page_view', { page_title: '{{ trackUrl }}' })
+                gtag('event', 'page_view', { page_title: '{{ trackUrl|escape }}' })
             {% endif %}
         </script>
     {% endif %}

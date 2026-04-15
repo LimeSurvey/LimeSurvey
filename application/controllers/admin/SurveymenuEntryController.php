@@ -76,11 +76,18 @@ class SurveymenuEntryController extends SurveyCommonAction
         $menuentryid = Yii::app()->request->getParam('menuentryid', null);
         if ($menuentryid != null) {
             $model = SurveymenuEntries::model()->findByPk(((int) $menuentryid));
+            if (empty($model)) {
+                throw new CHttpException(404, gT("Invalid menu entry."));
+            }
         } else {
             $model = new SurveymenuEntries();
         }
         $user = Yii::app()->session['loginID'];
-        return Yii::app()->getController()->renderPartial('/admin/surveymenu_entries/_form', array('model' => $model, 'user' => $user));
+        if (App()->request->getIsAjaxRequest()) {
+            App()->getController()->renderPartial('/admin/surveymenu_entries/_form', array('model' => $model, 'user' => $user), false, false);
+        } else {
+            $this->renderWrappedTemplate(null, array('surveymenu_entries/_form'), array('model' => $model, 'user' => $user, 'ajax' => false));
+        }
     }
 
 
@@ -98,7 +105,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         if (isset($_POST['SurveymenuEntries'])) {
             $model->attributes = $_POST['SurveymenuEntries'];
             if ($model->save()) {
-                            $this->redirect(array('view', 'id' => $model->id));
+                $this->redirect(array('view', 'id' => $model->id));
             }
         }
 
@@ -119,11 +126,14 @@ class SurveymenuEntryController extends SurveyCommonAction
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
         //Update or create
-        $id = (int) $id;
+        $id = intval($id);
         if ($id != 0) {
             $model = SurveymenuEntries::model()->findByPk($id);
         } else {
             $model = new SurveymenuEntries();
+        }
+        if (empty($model)) {
+            throw new CHttpException(404, gT("Invalid menu entry."));
         }
         //Don't update  main menu entries when not superadmin
         if (($model->menu_id == 1 || $model->menu_id == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {

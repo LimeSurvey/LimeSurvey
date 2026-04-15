@@ -17915,22 +17915,10 @@
 	const globalWindowMethods = {
 	  // TODO: It seems below two functions are not used and can be deleted. Please confirm.
 	  renderBootstrapSwitch: () => {
-	    try {
-	      if (!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
-	        $('[data-is-bootstrap-switch]').bootstrapSwitch({
-	          onInit: () => adminCoreLSConsole.log("BootstrapSwitch Initialized")
-	        });
-	      }
-	    } catch (e) {
-	      adminCoreLSConsole.error(e);
-	    }
+	    adminCoreLSConsole.warn('LS.renderBootstrapSwitch is deprecated.');
 	  },
 	  unrenderBootstrapSwitch: () => {
-	    try {
-	      $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
-	    } catch (e) {
-	      adminCoreLSConsole.error(e);
-	    }
+	    adminCoreLSConsole.warn('LS.unrenderBootstrapSwitch is deprecated.');
 	  },
 	  // ==================================================================================
 	  validatefilename: (form, strmessage) => {
@@ -17970,7 +17958,7 @@
 	    return window.event ? window.event.keyCode : e ? e.which : null;
 	  },
 	  goodchars: (e, goods) => {
-	    const key = getkey(e);
+	    const key = globalWindowMethods.getkey(e);
 	    if (key == null) return true;
 
 	    // get character
@@ -19196,6 +19184,8 @@
 	      if ($(el).data('form-id') == 'addnewsurvey') {
 	        const loadingSpinner = '<i class="ri-settings-5-fill remix-spin lsLoadingStateIndicator"></i>';
 	        $(el).prop('disabled', true).append(loadingSpinner);
+	      } else if (el.id === 'save-button' || el.id === 'save-form-button' || el.id === 'save-and-close-button' || el.id === 'save-and-close-button-create-question') {
+	        $('#ls-loading').show();
 	      }
 	    },
 	    stopDisplayLoadingState = () => {
@@ -19321,8 +19311,8 @@
 	            if ($form.data('isvuecomponent') == true) {
 	              LS.EventBus.$emit('componentFormSubmit', button);
 	            } else {
-	              $form.find('[type="submit"]').first().trigger('click');
 	              displayLoadingState(this);
+	              $form.find('[type="submit"]').first().trigger('click');
 	            }
 	          },
 	          on: 'click'
@@ -20993,7 +20983,7 @@
 	        }
 	        formObject.append('<input name="' + key + '" value="' + value + '" type="' + type + '" ' + (htmlClass ? 'class="' + htmlClass + '"' : '') + ' />');
 	      }
-	      formObject.append('<input name="' + LS.data.csrfTokenName + '" value="' + LS.data.csrfToken + '" type="hidden" />');
+	      formObject.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
 	      modalObject.find('.modal-body').append(formObject);
 	      modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
 	      if (showTextArea !== '') {
@@ -21290,27 +21280,11 @@
 	}
 
 	/**
-	 * Welcome page card animations
+	 * Welcome page animations
 	 * NB: Bootstrap 5 replaced panels with cards
 	 */
 	function panelsAnimation() {
 	  setTimeout(() => {
-	    adminCoreLSConsole.log('Triggering card animation');
-	    /**
-	     * Card shown one by one
-	     */
-	    document.querySelectorAll(".card").forEach(function (e, i) {
-	      setTimeout(() => {
-	        e.animate({
-	          top: '0px',
-	          opacity: 1
-	        }, {
-	          duration: 200,
-	          fill: 'forwards'
-	        });
-	      }, i * 200);
-	    });
-
 	    /**
 	     * Rotate last survey/question
 	     */
@@ -21423,6 +21397,14 @@
 	        const url = $(that).data('url');
 	        const importance = $(that).data('importance');
 	        const status = $(that).data('status');
+
+	        // Important 2 = nag only once (used e.g. for redirect).
+	        if (importance == 2 && status == 'new') {
+	          __showNotificationModal(that, url);
+	          __notificationIsRead(that);
+	          adminCoreLSConsole.log('stoploop');
+	          return false; // Stop loop
+	        }
 
 	        // Important notifications are shown as pop-up on load
 	        if (importance == 3 && status == 'new') {

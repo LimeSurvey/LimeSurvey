@@ -1,2 +1,12 @@
 # Only for apache : Version disclosure via limesurvey.pot
-deny from all
+<IfVersion < 2.4>
+    Order Allow,Deny
+    Deny from all
+</IfVersion>
+<IfVersion >= 2.4>
+    Require all denied
+    <IfModule mod_access_compat.c>
+        Order Allow,Deny
+        Deny from all
+    </IfModule>
+</IfVersion>

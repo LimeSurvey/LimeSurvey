@@ -12,16 +12,23 @@
     padding-left: 20px;
 }
 
+.checkbox-item.othertext-label-checkox-container {
+  align-self: center ;
+  label {
+    vertical-align: unset;
+    margin-bottom: 0;
+  }
+}
+
 .checkbox-item .ls-label-xs-visibility {
     display: inline-block;
     position: relative;
     overflow: hidden;
-    width: 24px;
-    height: 24px;
-    line-height: 21px;
-    text-indent: 21px;
+    width: 30px;
+    height: 30px;
+    line-height: 34px;
+    text-indent: 34px;
 }
-
 .checkbox-item label::before {
     content: "";
     display: inline-block;
@@ -36,13 +43,23 @@
     -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
     transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
 }
-
+/* Get some space for focus */
+.checkbox-item label.ls-label-xs-visibility::before {
+    left:3px;
+    top:3px;
+}
 .checkbox-item label::after {
     display: inline-block;
     position: absolute;
     left: 2px;
     top: 2px;
     margin-left: -20px;
+}
+/* focus an reset line-height */
+.checkbox-item label.ls-label-xs-visibility::after {
+    left:5px;
+    top:5px;
+    line-height: 20px;
 }
 
 .checkbox-item input[type="checkbox"]:checked + label::after,
@@ -144,6 +161,11 @@ table.ls-answers input[type="radio"] {
     left : -10000px;
 }
 
+@media only screen and (max-width : 760px), (min-device-width : 768px) and (max-device-width : 1024px) {
+    .checkbox-item label.ls-label-xs-visibility > * {
+        left : auto;
+    }
+}
 
 /* Align privacy policy checkbox to top */
 #datasecurity_accepted {

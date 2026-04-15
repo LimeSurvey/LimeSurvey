@@ -15,16 +15,16 @@ var GcodeHighlightRules = function () {
                 token: "comment",
                 regex: "\\(.*\\)"
             }, {
-                token: "comment",
+                token: "comment", // block number
                 regex: "([N])([0-9]+)"
             }, {
-                token: "string",
+                token: "string", // " string
                 regex: "([G])([0-9]+\\.?[0-9]?)"
             }, {
-                token: "string",
+                token: "string", // ' string
                 regex: "([M])([0-9]+\\.?[0-9]?)"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: "([-+]?([0-9]*\\.?[0-9]+\\.?))|(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)"
             }, {
                 token: keywordMapper,

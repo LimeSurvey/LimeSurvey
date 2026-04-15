@@ -60,14 +60,13 @@ module.exports.overlayPage = function overlayPage(editor, contentElement, callba
 });
 
 define("ace/ext/menu_tools/get_editor_keyboard_shortcuts",["require","exports","module","ace/lib/keys"], function(require, exports, module){/*jslint indent: 4, maxerr: 50, white: true, browser: true, vars: true*/
-"use strict";
-var keys = require("../../lib/keys");
+"use strict"; var keys = require("../../lib/keys");
 module.exports.getEditorKeybordShortcuts = function (editor) {
     var KEY_MODS = keys.KEY_MODS;
     var keybindings = [];
     var commandMap = {};
     editor.keyBinding.$handlers.forEach(function (handler) {
-        var ckb = handler.commandKeyBinding;
+        var ckb = handler["commandKeyBinding"];
         for (var i in ckb) {
             var key = i.replace(/(^|-)\w/g, function (x) { return x.toUpperCase(); });
             var commands = ckb[i];
@@ -116,8 +115,12 @@ module.exports.init = function (editor) {
     };
     editor.commands.addCommands([{
             name: "showKeyboardShortcuts",
-            bindKey: { win: "Ctrl-Alt-h", mac: "Command-Alt-h" },
-            exec: function (editor, line) {
+            bindKey: {
+                win: "Ctrl-Alt-h",
+                mac: "Command-Alt-h"
+            },
+            exec: 
+            function (editor, line) {
                 editor.showKeyboardShortcuts();
             }
         }]);

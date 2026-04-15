@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class DefinitionListTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DefinitionListTest extends TestCase
 {
     public function testDefinitionList()
     {

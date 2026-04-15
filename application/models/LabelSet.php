@@ -54,6 +54,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
         return array(
             array('owner_id', 'numerical', 'integerOnly' => true),
             array('label_name', 'required'),
+            array('label_name', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('label_name', 'length', 'min' => 1, 'max' => 100),
             array('label_name', 'LSYii_Validators'),
             array('languages', 'required'),
@@ -178,8 +179,8 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
     {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
-        $criteria = new CDbCriteria();
-        // Permission : do nnot use for list : All labelSets can be used by anyone currently.
+        $criteria = new LSDbCriteria();
+        // Permission : do not use for list : All labelSets can be used by anyone currently.
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
 
@@ -285,5 +286,16 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
         }
         /* Finally : return specific one : always false if not  */
         return Permission::model()->hasPermission($this->lid, 'labelset', $sPermission, $sCRUD, $iUserID);
+    }
+
+    /**
+     * Sanitize string for any attribute, XSS and XSS in javascript function too.
+     * @todo create a Validator to be used for all such element : no need HTML, informative input used only for admin purpose.
+     * @param string $attribute to sanitize
+     * @return string sanitized attribute
+     */
+    public static function sanitizeAttribute($attribute)
+    {
+        return str_replace(['<','>','&','\'','"'], "", $attribute);
     }
 }

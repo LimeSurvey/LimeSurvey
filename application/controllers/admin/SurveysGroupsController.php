@@ -66,6 +66,13 @@ class SurveysGroupsController extends SurveyCommonAction
                 $this->getController()->redirect(
                     App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup'))
                 );
+            } else {
+                $errors = $service->getMessages('error');
+                if (!empty($errors)) {
+                    foreach ($errors as $error) {
+                        Yii::app()->setFlashMessage($error->getMessage(), 'error');
+                    }
+                }
             }
         } else {
             $model->name = SurveysGroups::getNewCode();
@@ -120,6 +127,8 @@ class SurveysGroupsController extends SurveyCommonAction
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
             $postSurveysGroups = App()->getRequest()->getPost('SurveysGroups');
+            // Remove name from post data, as it shouldn't be updated
+            unset($postSurveysGroups['name']);
             /* Mimic survey system : only owner and superadmin can update owner … */
             /* After update : potential loose of rights on SurveysGroups */
             if (
@@ -317,7 +326,6 @@ class SurveysGroupsController extends SurveyCommonAction
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);

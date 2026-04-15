@@ -92,7 +92,6 @@
             <inputtype>singleselect</inputtype>
             <options>
                 <list>List</list>
-                <bubbles>Bubbles</bubbles>
                 <blocks>Blocks</blocks>
                 <buttons>Buttons</buttons>
             </options>

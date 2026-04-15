@@ -13,9 +13,12 @@
 */
 class DemomodeCommand extends CConsoleCommand
 {
-    public function run($sArgument)
+    /**
+     * @return int
+     */
+    public function run($args)
     {
-        if (isset($sArgument) && isset($sArgument[0]) && $sArgument[0] = 'yes') {
+        if (isset($args) && isset($args[0]) && $args[0] = 'yes') {
             echo "\n###### Restoring installation to demomode #####\n";
             echo "|| Resetting Database\n";
             $this->resetDatabase();
@@ -24,10 +27,12 @@ class DemomodeCommand extends CConsoleCommand
             echo "|| Installing demo surveys\n";
             $this->createDemo();
             echo "##### Done recreating demo state #####\n";
+            return 0;
         } else {
             // TODO: a valid error process
             echo 'This CLI command wipes a LimeSurvey installation clean (including all user except for the user ID 1 and user-uploaded content). '
                . 'For security reasons this command can only started if you add the parameter \'yes\' to the command line.';
+            return 1;
         }
     }
 
@@ -94,9 +99,9 @@ class DemomodeCommand extends CConsoleCommand
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{users}} set lang='auto'";
         Yii::app()->db->createCommand($actquery)->execute();
-        $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_question%'";
+        $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_question'";
         Yii::app()->db->createCommand($actquery)->execute();
-        $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_survey%'";
+        $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_survey'";
         Yii::app()->db->createCommand($actquery)->execute();
         $actquery = "update {{users}} set email = 'test@domain.test', full_name='Administrator'";
         Yii::app()->db->createCommand($actquery)->execute();
@@ -155,7 +160,7 @@ class DemomodeCommand extends CConsoleCommand
 
     private function createDemo()
     {
-        Yii::app()->loadHelper('admin/import');
+        Yii::app()->loadHelper('admin.import');
         require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/replacements_helper.php');
         require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_manager_helper.php');
         require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_core_helper.php');

@@ -1,18 +1,6 @@
-// Body
-body {
-  background-color: $g-100;
-
-  margin: 0;
-  padding: 0;
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
+.selector_openSharePanel {
+  display: inline-block;
 }
-.full-page-wrapper {
-  // flex: 1;
-  padding-bottom: 70px;
-}
-
 .summary-table {
   font-size: $font-size-sm;
   padding-left: 0.5rem;
@@ -22,16 +10,6 @@ body {
 }
 
 // Headings
-.pagetitle {
-  padding-bottom: 4px;
-  border-bottom: solid 2px $g-400;
-  position: relative;
-  margin-bottom: 1em;
-
-  &.h3 {
-    @include h3;
-  }
-}
 .side-body {
   h3,
   h2 {
@@ -57,7 +35,7 @@ body {
   }
   .accordion-button,
   .accordion-body {
-    background: $g-100;
+    background: $g-200;
   }
   .accordion-button {
     padding-left: 0;
@@ -189,4 +167,10 @@ blockquote {
 
 #surveySettingsForThisGroup {
   column-gap: 20px;
+}
+
+#usermanagement--identity-gridPanel tr.disabled {
+  color: $g-400;
+  pointer-events: auto;
+  cursor: not-allowed;
 }

@@ -63,12 +63,13 @@ class UserManager
         if (empty($this->managingUser)) {
             return false;
         }
-
-        return Permission::model()->hasGlobalPermission('superadmin', 'read', $this->managingUser->id);
+        /* roles can have superadmin permission, then need superadmin/create permission */
+        return Permission::model()->hasGlobalPermission('superadmin', 'create', $this->managingUser->id);
     }
 
     /**
-     * Returns true if the managing user can edit the target user
+     * Returns true if the managing user can edit the attribute of the target user
+     * Return true if target is same then managing (user can always update himself)
      * @return bool
      */
     public function canEdit()
@@ -76,14 +77,7 @@ class UserManager
         if (empty($this->managingUser) || empty($this->targetUser)) {
             return false;
         }
-
-        return
-            Permission::model()->hasGlobalPermission('superadmin', 'read', $this->managingUser->id)
-            || $this->targetUser->uid == $this->managingUser->id
-            || (
-                Permission::model()->hasGlobalPermission('users', 'update', $this->managingUser->id)
-                && $this->targetUser->parent_id == $this->managingUser->id
-            );
+        return $this->targetUser->canEdit($this->managingUser->id);
     }
 
     /**

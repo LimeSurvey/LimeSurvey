@@ -18,7 +18,7 @@ class SurveyIndex extends CAction
 
     public function run()
     {
-        useFirebug();
+
         $this->action();
     }
 
@@ -61,7 +61,7 @@ class SurveyIndex extends CAction
             $event->set('surveyId', $surveyid);
             $event->set('reason', 'surveyDoesNotExist');
             App()->getPluginManager()->dispatchEvent($event);
-            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
+            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist.", 'unescaped'));
             /* Alt solution */
             //~ header("HTTP/1.0 404 Not Found",true,404);
             //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
@@ -92,11 +92,21 @@ class SurveyIndex extends CAction
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
+        $redata['popuppreview'] = Yii::app()->request->getParam('popuppreview', false);
 
+        $canPreviewSurvey = $this->canUserPreviewSurvey($surveyid);
+
+        if ($redata['popuppreview'] && !$canPreviewSurvey) {
+            $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
+            if (Permission::model()->getUserId()) {
+                throw new CHttpException(403, $message);
+            }
+            throw new CHttpException(401, $message);
+        }
 
         $previewmode = false;
         if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
-            if (!$this->canUserPreviewSurvey($surveyid)) {
+            if (!$canPreviewSurvey) {
                 $aErrors  = array(gT('Error'));
                 $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
                 if (Permission::model()->getUserId()) {
@@ -105,8 +115,18 @@ class SurveyIndex extends CAction
                 throw new CHttpException(401, $message);
             } else {
                 killSurveySession($surveyid);
-                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
+                // Check if group exists in this survey
+                $arGroup = QuestionGroup::model()->find("sid = :sid and gid = :gid", [":sid" => $surveyid, ":gid" => intval($param['gid'])]);
+                if (empty($arGroup)) {
+                    throw new CHttpException(400, gT("Invalid group ID"));
+                }
+                if ($param['action'] == 'previewquestion') {
                     $previewmode = 'question';
+                    // Check if question exists in this survey and group
+                    $arQuestion = Question::model()->find("sid = :sid and qid = :qid and gid = :gid", [":sid" => $surveyid, ":qid" => intval($param['qid']), ":gid" => intval($param['gid'])]);
+                    if (empty($arQuestion)) {
+                        throw new CHttpException(400, gT("Invalid question ID"));
+                    }
                 }
                 if ((intval($param['gid']) && $param['action'] == 'previewgroup')) {
                     $previewmode = 'group';
@@ -156,6 +176,12 @@ class SurveyIndex extends CAction
                 // #16142 quick fix : unset invalid token
                 $token = null;
             }
+        }
+
+        // If the session was already initiated before accessing the survey with a token,
+        // add it to the session to be taken into account.
+        if (empty($_SESSION['survey_' . $surveyid]['token']) && $token) {
+            $_SESSION['survey_' . $surveyid]['token'] = $token;
         }
 
         $this->loadLimesurveyLang($surveyid);
@@ -333,7 +359,12 @@ class SurveyIndex extends CAction
         }
 
         //SET THE TEMPLATE DIRECTORY
-        $oTemplate  = Template::model()->getInstance('', $surveyid);
+        if ($thissurvey['template'] == 'inherit') {
+            /* Load default theme (Global settings -> Default theme) */
+            $oTemplate  = Template::model()->getInstance();
+        } else {
+            $oTemplate  = Template::model()->getInstance('', $surveyid);
+        }
         $timeadjust = Yii::app()->getConfig("timeadjust");
 
         //MAKE SURE SURVEY HASN'T EXPIRED
@@ -421,7 +452,7 @@ class SurveyIndex extends CAction
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
             // && Yii::app()->request->isPostRequest ?
-            if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
+            if ($oSurvey->isCaptchaEnabled('saveandloadscreen') && is_null(Yii::app()->request->getQuery('scid'))) {
                 $sLoadSecurity  = Yii::app()->request->getPost('loadsecurity');
 
                 if (empty($sLoadSecurity)) {
@@ -475,7 +506,7 @@ class SurveyIndex extends CAction
             $SurveyRuntimeHelper = new SurveyRuntimeHelper();
             $SurveyRuntimeHelper->saveAllIfNeeded();
 
-            if (isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
+            if ($oSurvey->isCaptchaEnabled('saveandloadscreen')) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $surveyid));
             }
@@ -620,12 +651,13 @@ class SurveyIndex extends CAction
             initFieldArray($surveyid, $_SESSION['survey_' . $surveyid]['fieldmap']);
         }
 
+        $popuppreview = (Yii::app()->request->getParam("popuppreview", false) == "true");
         // Reset the question timers in preview
         if (!$isSurveyActive || $previewmode) {
             resetQuestionTimers($surveyid);
         }
 
-        sendCacheHeaders();
+        sendSurveyHttpHeaders();
 
         //Send local variables to the appropriate survey type
         unset($redata);
@@ -642,7 +674,7 @@ class SurveyIndex extends CAction
     private function getParameters($args = array(), $post = array())
     {
         $param = array();
-        if (@$args[0] == __CLASS__) {
+        if (isset($args[0]) && $args[0] == __CLASS__) {
             array_shift($args);
         }
         $iArgCount = count($args);

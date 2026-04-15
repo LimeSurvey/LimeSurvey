@@ -29,10 +29,12 @@ input[type="radio"] .styled:checked + label::after {
     background-color : $base-color;
 }
 
-.checkbox-item input[type="radio"]:focus + label::before {
+.radio-item input[type="radio"]:focus + label::before {
     outline : none;
 }
-
+.radio-item input[type="radio"]:focus-visible + label::before{
+    box-shadow: 0 0 0 3px $elevation-shadow;
+}
 .radio-item input[type="radio"]:checked + label {
     color : $base-color;
 }

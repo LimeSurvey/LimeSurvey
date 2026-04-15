@@ -96,15 +96,29 @@ abstract class PKCS1 extends Progenitor
             $components['isPublicKey'] = true;
         }
 
+        $components = $components + $key;
+        foreach ($components as &$val) {
+            if ($val instanceof BigInteger) {
+                $val = self::makePositive($val);
+            }
+            if (is_array($val)) {
+                foreach ($val as &$subval) {
+                    if ($subval instanceof BigInteger) {
+                        $subval = self::makePositive($subval);
+                    }
+                }
+            }
+        }
+
         return $components + $key;
     }
 
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
-     * @param \phpseclib3\Math\BigInteger $d
+     * @param BigInteger $n
+     * @param BigInteger $e
+     * @param BigInteger $d
      * @param array $primes
      * @param array $exponents
      * @param array $coefficients
@@ -142,8 +156,8 @@ abstract class PKCS1 extends Progenitor
     /**
      * Convert a public key to the appropriate format
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
+     * @param BigInteger $n
+     * @param BigInteger $e
      * @return string
      */
     public static function savePublicKey(BigInteger $n, BigInteger $e)
@@ -156,5 +170,18 @@ abstract class PKCS1 extends Progenitor
         $key = ASN1::encodeDER($key, Maps\RSAPublicKey::MAP);
 
         return self::wrapPublicKey($key, 'RSA');
+    }
+
+    /**
+     * Negative numbers make no sense in RSA so convert them to positive
+     *
+     * @param BigInteger $x
+     * @return string
+     */
+    private static function makePositive(BigInteger $x)
+    {
+        return $x->isNegative() ?
+            new BigInteger($x->toBytes(true), 256) :
+            $x;
     }
 }

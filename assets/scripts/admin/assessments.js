@@ -35,7 +35,7 @@ var assessmentTable = '#selector__assessment-table',
 var bindAction = function(){
 
     $('.action_assessments_deleteModal').on('click.assessments', function(){
-        $('#assessmentsdeleteform').find('input[name=id]').val($(this).closest('tr').data('assessment-id'));
+        $('#assessmentsdeleteform').find('input[name=id]').val($(this).data('assessment-id'));
         $('#assesements-delete').modal('show');
     });
 
@@ -45,7 +45,7 @@ var bindAction = function(){
         var loadEditUrl = linkLoadEditUrl.dataset.editurl;
         $.ajax({
             url: loadEditUrl,
-            data: {id: $(this).closest('tr').data('assessment-id')},// crsf is already in ajaxsetup
+            data: {id: $(this).data('assessment-id')},// crsf is already in ajaxsetup
             method: 'GET',
             success: function(responseData){
                 $("#in_survey_common").css({cursor: ""});

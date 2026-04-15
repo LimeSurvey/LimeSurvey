@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\V1\SurveyPatch\PatcherSurvey;
 use LimeSurvey\Api\Command\{
     CommandInterface,
@@ -18,23 +17,19 @@ class SurveyPatch implements CommandInterface
 {
     use AuthPermissionTrait;
 
-    protected AuthSession $authSession;
     protected FactoryInterface $diFactory;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param AuthSession $authSession
      * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        AuthSession $authSession,
         FactoryInterface $diFactory,
         ResponseFactory $responseFactory
     ) {
-        $this->authSession = $authSession;
         $this->diFactory = $diFactory;
         $this->responseFactory = $responseFactory;
     }
@@ -49,24 +44,14 @@ class SurveyPatch implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
         $id = (string) $request->getData('_id');
         $patch = $request->getData('patch');
 
-        if (
-            !$this->authSession
-                ->checkKey($sessionKey)
-        ) {
-            return $this->responseFactory
-                ->makeErrorUnauthorised();
-        }
-
         $patcher = $this->diFactory->make(
-            PatcherSurvey::class,
-            ['id' => $id]
+            PatcherSurvey::class
         );
         try {
-            $patcher->applyPatch($patch);
+            $returnedData = $patcher->applyPatch($patch, ['id' => $id]);
         } catch (ObjectPatchException $e) {
             return $this->responseFactory->makeErrorBadRequest(
                 $e->getMessage()
@@ -74,6 +59,6 @@ class SurveyPatch implements CommandInterface
         }
 
         return $this->responseFactory
-            ->makeSuccess(true);
+            ->makeSuccess($returnedData);
     }
 }

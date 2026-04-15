@@ -50,6 +50,16 @@ class SurveyLanguageSetting extends LSActiveRecord
     private $oldSurveyId;
     private $oldAlias;
 
+    public $surveyls_language = "";
+    public $surveyls_title = "";
+    public $surveyls_description = "";
+    public $surveyls_welcometext = "";
+    public $surveyls_endtext = "";
+    public $surveyls_policy_notice = "";
+    public $surveyls_policy_notice_label = "";
+    public $surveyls_url = "";
+    public $surveyls_urldescription = "";
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -141,14 +151,13 @@ class SurveyLanguageSetting extends LSActiveRecord
 
             array('surveyls_dateformat', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '12', 'allowEmpty' => true),
             array('surveyls_numberformat', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
-
-            array('attachments', 'attachmentsInfo'),
+            array('attachments','filter','filter' => array($this, 'filterAttachments')),
         );
     }
 
     /**
      * @inheritdoc
-     * Pass this to all findAll query : indexed by surveyls_language : return only one survey id
+     * Pass this to all findAll query : indexed by surveyls_language : return only one survey ID
      * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecord#defaultScope-detail
      * Remind to use resetScope if you need to disable this behaviour
      * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecord#resetScope-detail
@@ -192,30 +201,31 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
     /**
-     * Defines the customs validation rule attachmentsInfo
+     * Customs filter for rules attachments
      *
-     * @param mixed $attribute
+     * @param string $attribute
+     * @return null|string
+     */
+    public function filterAttachments($attribute)
+    {
+        $attachmentsByType = $this->validateAttachments($attribute, !in_array($this->scenario, ['import', 'copy']));
+        if (empty($attachmentsByType)) {
+            // Save empty attachments as null value
+            return null;
+        }
+        return json_encode($attachmentsByType);
+    }
+
+    /**
+     * Previously broken validatioin rules, replace by filter
+     *
+     * @deprecated 6.16.16
+     * @param string $attribute
+     * @return null|string
      */
     public function attachmentsInfo($attribute)
     {
-        if (empty($this->$attribute)) {
-            return;
-        }
-
-        $value = [];
-        $attachmentsByType = unserialize($this->$attribute);
-        if (is_array($attachmentsByType)) {
-            foreach ($attachmentsByType as $type => $attachments) {
-                if (is_array($attachments)) {
-                    foreach ($attachments as $key => $attachment) {
-                        if (isset($attachment['url']) && isset($attachment['size']) && isset($attachment['relevance'])) {
-                            $value[$type][$key] = $attachment;
-                        }
-                    }
-                }
-            }
-        }
-        return serialize($value);
+        return $this->filterAttachments($this->$attribute);
     }
 
     /**
@@ -226,6 +236,9 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function getAttributeCaptions()
     {
+        if (empty($this->surveyls_attributecaptions)) {
+            return [];
+        }
         $captions = @json_decode($this->surveyls_attributecaptions, true);
         return $captions !== false ? $captions : array();
     }
@@ -333,5 +346,125 @@ class SurveyLanguageSetting extends LSActiveRecord
         if (isset($this->surveyls_alias)) {
             $this->oldAlias = $this->surveyls_alias;
         }
+    }
+
+    /**
+     * Returns the array of email attachments data without exposing sensitive paths
+     * Used for export_helper
+     * @return string[][][] : array of attachments array by template, sample by key [template][][url,size,relevance]
+     */
+    public function getAttachmentsData()
+    {
+        $attachments = $this->getValidAttachments(false); // Do not check when export
+        if (is_array($attachments)) {
+            $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
+            foreach ($attachments as &$template) {
+                foreach ($template as &$attachment) {
+                    if (substr($attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
+                        $url = substr($attachment['url'], strlen($uploadDir));
+                        $url = ltrim($url, "/\\");
+                        $attachment['url'] = $url;
+                    }
+                }
+            }
+        }
+        return $attachments;
+    }
+
+    /**
+     * Get valid attachements in array
+     * @param boolean $exist check if file exist in a valid directory
+     * @return string[][][] : array of attachments array by template, sample by key [template][][url,size,relevance]
+     **/
+    public function getValidAttachments($exist = true)
+    {
+        return $this->validateAttachments($this->attachments, $exist);
+    }
+
+    /**
+     * Get valid attachements in array
+     * @param string $attachement the attahcment string to be filtered
+     * @param boolean $exist check if file exist in a valid directory
+     * @return string[][][] : array of attachments array by template, sample by key [template][][url,size,relevance]
+     **/
+    public function validateAttachments($string, $exist = true)
+    {
+        if (empty($string) || !is_string($string)) {
+            return [];
+        }
+        $attachments = json_decode($string, 1);
+        if (empty($attachments) || !is_array($attachments)) {
+            return [];
+        }
+        $validAttachements = [];
+        foreach ($attachments as $template => $templateAttachements) {
+            foreach ($templateAttachements as $attachment) {
+                if (!isset($attachment['url'])) {
+                    continue;
+                }
+                if ($exist && !$this->getAttachmentFileExist($attachment['url'])) {
+                    continue;
+                }
+                if ($exist) {
+                    $attachment['size'] = filesize($attachment['url']);
+                }
+                $validAttachements[$template][] = [
+                    'url' => $attachment['url'],
+                    'size' => $attachment['size'] ?? '0',
+                    'relevance' => $attachment['relevance'] ?? '1',
+                ];
+            }
+        }
+        return $validAttachements;
+    }
+
+    /**
+     * get if template have all attachement valid
+     * @param string $template the template
+     * @return boolean
+     **/
+    public function hasAllAttachments($template)
+    {
+        $attachments = $this->getValidAttachments(false);
+        if (empty($attachments) || empty($attachments[$template])) {
+            return true;
+        }
+        foreach ($attachments[$template] as $attachment) {
+            if (!isset($attachment['url'])) {
+                continue;
+            }
+            if (!$this->getAttachmentFileExist($attachment['url'])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check if a file for attachment exist
+     * @param string $file
+     * @return boolean
+     */
+    public function getAttachmentFileExist($file)
+    {
+        if (
+            App()->is_file(
+                realpath($file),
+                realpath(App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyls_survey_id),
+                false
+            )
+        ) {
+            return true;
+        }
+        if (
+            App()->is_file(
+                realpath($file),
+                realpath(App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global"),
+                false
+            )
+        ) {
+            return true;
+        }
+        return false;
     }
 }

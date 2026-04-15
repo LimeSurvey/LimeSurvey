@@ -29,10 +29,12 @@ class Box extends CActiveRecord
         return array(
             array('url, title, ico, position, desc, page', 'required'),
             array('url', 'match', 'pattern' => '/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
+            array('url', 'LSYii_Validators', 'isUrl' => true),
             array('position', 'numerical', 'integerOnly' => true),
             array('position', 'unique', 'message' => gT('Position {value} already exists.')),
             array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),
             array('ico', 'match', 'pattern' => '/^[A-Za-z0-9_ \-]+$/u','message' => gT('Icon name must be a simple class name (alphanumeric, space, minus and underscore).')),
+            array('title', 'LSYii_Validators'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on' => 'search'),
@@ -230,7 +232,13 @@ class Box extends CActiveRecord
             ['id' => 48, 'icon' => 'ri-settings-5-line'],
             ['id' => 49, 'icon' => 'ri-brush-line'],
             ['id' => 50, 'icon' => 'ri-add-line'],
-
+            ['id' => 51, 'icon' => 'ri-function-fill'],
+            ['id' => 52, 'icon' => 'ri-plug-line'],
+            ['id' => 53, 'icon' => 'ri-user-settings-line'],
+            ['id' => 54, 'icon' => 'ri-paint-fill'],
+            ['id' => 55, 'icon' => 'ri-settings-3-fill'],
+            ['id' => 56, 'icon' => 'ri-group-line'],
+            ['id' => 57, 'icon' => 'ri-plug-fill'],
         ];
     }
 

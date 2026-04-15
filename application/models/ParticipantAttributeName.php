@@ -108,7 +108,10 @@ class ParticipantAttributeName extends LSActiveRecord
             'title'            => gT('Edit this attribute'),
             'linkClass'        => 'action_attributeNames_editModal',
             'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => $isNotCoreAttribute
+            'enabledCondition' => $isNotCoreAttribute,
+            'linkAttributes'   => [
+                'data-attribute_id'   => $this->attribute_id,
+            ]
         ];
         $dropdownItems[] = [
             'title'            => gT('Delete this attribute'),
@@ -120,8 +123,8 @@ class ParticipantAttributeName extends LSActiveRecord
                 'data-bs-target' => "#confirmation-modal",
                 'data-title'     => gT("Delete this attribute"),
                 'data-btnclass'  => "btn-danger",
-                'data-btntext'   => gt("Delete"),
-                'data-message'   => gt('Do you really want to delete this attribute') . "?",
+                'data-btntext'   => gT("Delete"),
+                'data-message'   => gT('Do you really want to delete this attribute') . "?",
                 'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
             ]
         ];
@@ -299,7 +302,7 @@ class ParticipantAttributeName extends LSActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->compare('defaultname', $this->defaultname, true, 'AND', true);
         $criteria->compare('attribute_id', $this->attribute_id);
@@ -626,9 +629,8 @@ class ParticipantAttributeName extends LSActiveRecord
                     ':attribute_id' => $data['attribute_id'])
             );
 
-        if (count($query) == 0) {
-            Yii::app()->db->createCommand()
-                        ->insert('{{participant_attribute}}', $data);
+        if (is_null($query)) {
+            Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
         } else {
             Yii::app()->db->createCommand()
                 ->update(
@@ -901,5 +903,23 @@ class ParticipantAttributeName extends LSActiveRecord
     public function saveParticipantAttributeValue($data)
     {
         Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
+    }
+
+    /**
+     * Returns true if the attribute is encrypted
+     * @return bool
+     */
+    public function isEncrypted()
+    {
+        return $this->encrypted == 'Y';
+    }
+
+    /**
+     * Returns true if the attribute is a core attribute
+     * @return bool
+     */
+    public function isCoreAttribute()
+    {
+        return $this->core_attribute == 'Y';
     }
 }

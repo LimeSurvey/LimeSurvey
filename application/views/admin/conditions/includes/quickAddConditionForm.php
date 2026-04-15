@@ -124,7 +124,7 @@
                 </div>
             </div>
 
-            <div role='tabpanel' class='tab-pane active' id='QUICKADD-PREVQUESTIONS'>
+            <div role='tabpanel' class='tab-pane' id='QUICKADD-PREVQUESTIONS'>
                 <div class='mb-3 answer-option row'>
                     <div class='col-md-2'></div>
                     <div class='col-md-10'>

@@ -27,12 +27,14 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailmethod',
-                    'checkedOption' => getGlobalSetting('emailmethod'),
+                    'ariaLabel'     => gT('Email method:'),
+                    'checkedOption' => Yii::app()->getConfig('emailmethod'),
                     'selectOptions' => [
-                        "mail"     => "PHP",
-                        "smtp"     => "SMTP",
-                        "sendmail" => "Sendmail",
-                        "qmail"    => "qmail"
+                        LimeMailer::MethodMail => "PHP",
+                        LimeMailer::MethodSmtp => "SMTP",
+                        LimeMailer::MethodSendmail => "Sendmail",
+                        LimeMailer::MethodQmail => "qmail",
+                        LimeMailer::MethodPlugin => "Plugin",
                     ]
                 ]); ?>
             </div>
@@ -40,8 +42,8 @@
         <div class="mb-3">
             <label class="  form-label" for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtphost')); ?>"/>
-                <span class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
+                <input class="form-control" type='text' size='50' aria-describedby="email_lb" id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars((string) getGlobalSetting('emailsmtphost')); ?>"/>
+                <span  id="email_lb" class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"), "smtp.example.org:25"); ?></span>
             </div>
         </div>
         <div class="mb-3">
@@ -62,6 +64,7 @@
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget',
                     array(
                         'name' => 'emailsmtpssl',
+                        'ariaLabel' => gT("SMTP encryption:"),
                         'checkedOption' => getGlobalSetting('emailsmtpssl'),
                         'selectOptions' => array(
                             "" => gT("Off (unsafe)", 'unescaped'),
@@ -77,14 +80,37 @@
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'emailsmtpdebug',
+                    'ariaLabel'     => gT("SMTP debug mode:"),
                     'checkedOption' => getGlobalSetting('emailsmtpdebug'),
                     'selectOptions' => [
                         "0" => gT("Off", 'unescaped'),
                         "1" => gT("On errors", 'unescaped'),
-                        "2" => gT("Always", 'unescaped')
+                        "2" => gT("Always", 'unescaped'),
+                        "3" => gT("Always with connection details", 'unescaped')
                     ]
                 ]); ?>
             </div>
+        </div>
+        <!-- OAuth Plugins -->
+        <div class="mb-3">
+            <label class="col-12 form-label" for="emailplugin">
+                <?php eT("Email plugin:"); ?>
+            </label>
+            <div class="col-12">
+                <select class="form-select" name="emailplugin" id="emailplugin" <?= (Yii::app()->getConfig('emailmethod') == LimeMailer::MethodPlugin) ? '' : 'disabled' ?>>
+                    <option value=''><?php eT("None"); ?></option>
+                    <?php if (!empty($emailPlugins)): ?>
+                        <?php foreach ($emailPlugins as $emailPluginDetails): ?>
+                            <option value='<?= $emailPluginDetails->class ?>' <?= ($emailPluginDetails->class == Yii::app()->getConfig('emailplugin')) ? "selected='selected'" : "" ?>>
+                                <?= $emailPluginDetails->name ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
+            </div>
+            <?php
+                // TODO: Show message or link to plugin settings if plugin is selected. May need a way to get plugin settings URL from plugin.
+            ?>
         </div>
         <div class="mb-3">
             <label class="  form-label" for='maxemails'><?php eT("Email batch size:"); ?></label>
