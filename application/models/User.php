@@ -824,6 +824,9 @@ class User extends LSActiveRecord
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions' => ['class' => 'ls-sticky-column text-end'],
                 'checkBoxHtmlOptions' => ['class' => 'usermanagement--selector-userCheckbox'], // Class used in test
+                'disabled' =>function ($data) {
+                    return $data->uid == \App()->getCurrentUserId();
+                }
             ],
             [
                 "name"   => 'uid',
