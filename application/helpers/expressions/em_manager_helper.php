@@ -3587,13 +3587,27 @@ class LimeExpressionManager
             $varName = '';
             switch ($type) {
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                case Question::QT_L_LIST: //LIST drop-down/radio-button list
+                    if (preg_match('/other$/', (string) $sgqa)) {
+                        $varName = $fielddata['title'] . '_other'; // keep suffix
+                    } else {
+                        $varName = $fielddata['title'];
+                    }
+                    $question = $fielddata['question'];
+                    break;
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                 case Question::QT_D_DATE: //DATE
                 case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_I_LANGUAGE: //Language Question
-                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+                if (preg_match('/comment$/', (string) $sgqa)) {
+                    $varName = $fielddata['title'] . '_comment'; // keep suffix
+                } else {
+                    $varName = $fielddata['title'];
+                }
+                $question = $fielddata['question'];
+                    break;
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                 case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
@@ -3730,22 +3744,9 @@ class LimeExpressionManager
                     $jsVarName = 'java' . $sgqa;
                     break;
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                    if (preg_match("/other$/", (string) $sgqa)) {
-                        $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = 'othertext' . substr((string) $sgqa, 0, -5);
-                    } else {
-                        $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = $jsVarName;
-                    }
-                    break;
-                case Question::QT_L_LIST: //LIST drop-down/radio-button list
-                    if (preg_match("/other$/", (string) $sgqa)) {
-                        $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = 'answer' . $sgqa . "text";
-                    } else {
-                        $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = $jsVarName;
-                    }
+                case Question::QT_L_LIST: //LIST radio-button list
+                    $jsVarName = 'java' . $sgqa;
+                    $jsVarName_on = $this->resolveOtherJsVarNameOn((string) $sgqa, $type);
                     break;
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                 case Question::QT_G_GENDER: //GENDER drop-down list
@@ -4106,6 +4107,38 @@ class LimeExpressionManager
         $this->numQuestions = count($this->questionSeq2relevance);
         $this->numGroups = count($this->groupSeqInfo);
         return true;
+    }
+
+    /**
+     * Resolve the on-page JS variable name for a field that may be an "other" text input.
+     *
+     * When $sgqa ends in "other" (i.e. the field name is Q{qid}_Cother), the HTML element ID
+     * differs between question types:
+     * - QT_L_LIST uses `answer{Q{qid}}othertext`
+     * - QT_EXCLAMATION_LIST_DROPDOWN uses `othertext{Q{qid}}`
+     *
+     * For non-other fields the on-page name is identical to the off-page name `java{sgqa}`.
+     *
+     * @param string $sgqa The sub-question field name (e.g. "Q623_Cother" or "Q623")
+     * @param string $type The question type constant (Question::QT_*)
+     * @return string The resolved on-page JS variable name
+     */
+    private function resolveOtherJsVarNameOn(string $sgqa, string $type): string
+    {
+        if (!preg_match('/other$/', $sgqa)) {
+            return 'java' . $sgqa;
+        }
+
+        // Strip the trailing "_Cother" suffix (7 characters) to get the base field name
+        $basesgqa = substr($sgqa, 0, -7);
+
+        if ($type === Question::QT_L_LIST) {
+            // HTML id: answer{Q{qid}}othertext  (see listradio/rows/answer_row_other.twig)
+            return 'answer' . $basesgqa . 'othertext';
+        }
+
+        // QT_EXCLAMATION_LIST_DROPDOWN: HTML id: othertext{Q{qid}}  (see list_dropdown/rows/othertext.twig)
+        return 'othertext' . $basesgqa;
     }
 
     /**
@@ -7471,10 +7504,8 @@ class LimeExpressionManager
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                             switch ($arg['type']) {
                                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                                    $othervar = 'othertext' . substr((string) $arg['jsResultVar'], 4, -5);
-                                    break;
                                 case Question::QT_L_LIST:
-                                    $othervar = 'answer' . substr((string) $arg['jsResultVar'], 4) . 'text';
+                                    $othervar = $LEM->resolveOtherJsVarNameOn(substr((string) $arg['jsResultVar'], 4), $arg['type']);
                                     break;
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                                     $othervar = 'answer' . substr((string) $arg['jsResultVar'], 4);
