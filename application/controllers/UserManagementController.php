@@ -234,6 +234,7 @@ class UserManagementController extends LSBaseController
      * Performs permission and safety checks, may render a survey-transfer selection when the target owns surveys, transfers surveys when a destination is provided, invokes UserManager->deleteUser for the resolved user model, and returns a JSON partial describing the outcome.
      *
      * @return string JSON partial containing either:
+     *                - `success` (false) and `errors` (array|string|object) when permission or validation checks fail, or
      *                - `success` (bool) and `message` (string) after an attempted deletion, or
      *                - `success` (true) and `html` (string) with a survey-transfer selection when the target owns surveys and no transfer destination was provided.
      */

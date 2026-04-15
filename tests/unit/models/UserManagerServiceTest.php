@@ -763,8 +763,17 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
         $this->assertThat($existingUser, $this->isInstanceOf('\User'), 'Unexpected. A user should have been found.');
 
         // Creating user group.
-        \Yii::app()->session['loginID'] = $userId;
-        $groupId = \UserGroup::model()->addGroup('Test', 'A test user group.');
+        $originalLoginId = \Yii::app()->session['loginID'] ?? null;
+        try {
+            \Yii::app()->session['loginID'] = $userId;
+            $groupId = \UserGroup::model()->addGroup('Test', 'A test user group.');
+        } finally {
+            if ($originalLoginId === null) {
+                unset(\Yii::app()->session['loginID']);
+            } else {
+                \Yii::app()->session['loginID'] = $originalLoginId;
+            }
+        }
 
         // Checking that a group for this user exists.
         $existingGroup = \UserGroup::model()->findByAttributes(array('owner_id' => $userId));
@@ -917,6 +926,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
     public function testErrorDeletingUser()
     {
         $userPartialMock = $this->createPartialMock(\User::class, ['delete']);
+        $userPartialMock->uid = 9999;
 
         $userPartialMock->expects($this->once())
                                 ->method('delete')
@@ -939,6 +949,7 @@ class UserManagerServiceTest extends \ls\tests\TestBaseClass
     public function testExceptionDeletingUser()
     {
         $userPartialMock = $this->createPartialMock(\User::class, ['delete']);
+        $userPartialMock->uid = 9999;
 
         $userPartialMock->expects($this->once())
                                 ->method('delete')
