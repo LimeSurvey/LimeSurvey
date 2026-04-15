@@ -104,7 +104,7 @@ class RegisterController extends LSYii_Controller
         Yii::app()->setLanguage($sLanguage);
         if (!$oSurvey) {
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        } elseif ($oSurvey->allowregister != 'Y' || !tableExists("{{tokens_{$iSurveyId}}}")) {
+        } elseif (!$oSurvey->getIsAllowRegister() || !tableExists("{{tokens_{$iSurveyId}}}")) {
             throw new CHttpException(404, "The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
         } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))) {
             $this->redirect(array('survey/index', 'sid' => $iSurveyId, 'lang' => $sLanguage));
@@ -161,10 +161,10 @@ class RegisterController extends LSYii_Controller
      */
     public function getRegisterErrors($iSurveyId)
     {
-        $aSurveyInfo = getSurveyInfo($iSurveyId, App()->language);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         // Check the security question's answer
-        if (isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha'])) {
+        if ($oSurvey->isCaptchaEnabled('registrationscreen')) {
             $sLoadSecurity = App()->request->getPost('loadsecurity', '');
             $captcha = App()->getController()->createAction("captcha");
             $captchaCorrect = $captcha->validate($sLoadSecurity, false);
@@ -275,7 +275,7 @@ class RegisterController extends LSYii_Controller
         $aData['sEmail'] = $aFieldValue['sEmail'];
         $aData['aAttribute'] = $aFieldValue['aAttribute'];
         $aData['aExtraAttributes'] = $aRegisterAttributes;
-        $aData['bCaptcha'] = isCaptchaEnabled('registrationscreen', $oSurvey->usecaptcha);
+        $aData['bCaptcha'] = $oSurvey->isCaptchaEnabled('registrationscreen');
         $aData['sRegisterFormUrl'] = App()->createUrl('register/index', array('sid' => $iSurveyId));
 
         $aData['formAdditions'] = '';
