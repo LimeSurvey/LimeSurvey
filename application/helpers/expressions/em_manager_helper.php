@@ -8938,6 +8938,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 $shown = $code;
                             } elseif (($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other$/', (string) $name)) {
                                 $shown = $code;
+                            } elseif ($type === Question::QT_R_RANKING) {
+                                if ($code) {
+                                    $LEM =& LimeExpressionManager::singleton();
+                                    $question = getTitleSubquestionMapping($LEM->getLEMsurveyId())[$var['qid']][$code];
+                                    $oSurvey = Survey::model()->findByPk($LEM->getLEMsurveyId());
+                                    $shown = $question->questionl10ns[$oSurvey->language]->question;
+                                } else {
+                                    $shown = "";
+                                }
                             } else {
                                 $scale_id = $this->_GetVarAttribute($name, 'scale_id', '0', $gseq, $qseq);
                                 $which_ans = $scale_id . '~' . $code;
