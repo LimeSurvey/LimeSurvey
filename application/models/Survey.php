@@ -1539,8 +1539,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         $dropdownItems[] = [
             'title' => gT('Delete'),
-            'url' => App()->createUrl("/surveyAdministration/delete", array('iSurveyID' => $this->sid)),
+            'url' => '#',
             'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'delete'),
+            'linkAttributes' => [
+                'data-bs-toggle' => 'modal',
+                'data-bs-target' => '#deleteSurvey_modal',
+                'onclick' => 'deleteSurveyConfirm(' . (int)$this->sid . ')',
+            ],
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
