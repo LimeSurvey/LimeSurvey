@@ -3327,12 +3327,12 @@ class LimeExpressionManager
      */
     public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false)
     {
-        if (isset($_SESSION['LEMforceRefresh'])) {
-            unset($_SESSION['LEMforceRefresh']);
-            $forceRefresh = true;
-        } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
-            return false;   // means that those variables have been cached and no changes needed
-        }
+//        if (isset($_SESSION['LEMforceRefresh'])) {
+//            unset($_SESSION['LEMforceRefresh']);
+//            $forceRefresh = true;
+//        } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
+//            return false;   // means that those variables have been cached and no changes needed
+//        }
         $now = microtime(true);
         $this->em->SetSurveyMode($this->surveyMode);
         $survey = Survey::model()->findByPk($surveyid);
@@ -3692,8 +3692,10 @@ class LimeExpressionManager
                     $sqsuffix = '_' . substr((string) $fielddata['aid'], 0, (int)strpos((string) $fielddata['aid'], '_'));
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                    //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                    $rowdivid = substr((string) $sgqa, 0, (int)strpos((string) $sgqa, '_'));
+                    // 2D arrays: $sgqa = Q{qid}_S{rowSubqID}_S{colSubqID}, keep Q{qid}_S{rowSubqID}
+                    $firstUnderscore = strpos((string) $sgqa, '_');
+                    $secondUnderscore = strpos((string) $sgqa, '_', $firstUnderscore + 1);
+                    $rowdivid = substr((string) $sgqa, 0, $secondUnderscore);
                     break;
                 default:
                     // TODO: Internal error if this happens
