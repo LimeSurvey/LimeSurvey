@@ -534,8 +534,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('shownoanswer', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('showwelcome', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('showsurveypolicynotice', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => true),
-            array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
-            array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('showprogress', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('questionindex', 'numerical', 'min' => -1, 'max' => 2, 'allowEmpty' => false),
             array('nokeyboard', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -2263,12 +2261,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * Get the final label for survey ID
      * @param string $dataSecurityNoticeLabel current label
-     * @param integer $surveyId
-     * @deprecated 6.16.1 replaced by private function in LSETwigViewRenderer
+     * @param integer $surveyId unused
      * @return string
      */
     public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId)
     {
+        /* @var string[] to go to automatic translation */
+        $translation = [
+            gT("Show policy")
+        ];
         return App()->twigRenderer->renderPartial(
             '/subviews/privacy/privacy_datasecurity_notice_label.twig',
             [
