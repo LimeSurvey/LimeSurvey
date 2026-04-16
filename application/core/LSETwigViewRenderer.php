@@ -309,19 +309,26 @@ window.addEventListener('message', function(event) {
             // Expose Question model's attributes as 'question'
             $aData['question'] = $oQuestionModel->attributes;
 
-            // Use the cached helper to get attributes efficiently and correctly for the current language
-            $sCurrentLanguage = App()->language;
+            $questionL10ns = is_array($oQuestionModel->questionl10ns) ? $oQuestionModel->questionl10ns : [];
+            $sSurveyLanguage = $oQuestionModel->survey->language ?? null;
+            $sCurrentLanguage = $this->resolveQuestionL10nLanguage(
+                $questionL10ns,
+                App()->language,
+                $sSurveyLanguage,
+                $oQuestionModel->qid ?? 'unknown'
+            );
 
             $questionAttributesRaw = QuestionAttribute::model()->getQuestionAttributes($oQuestionModel, $sCurrentLanguage);
             if ($questionAttributesRaw === false) {
                 $questionAttributesRaw = [];
             }
 
+            $questionL10n = $questionL10ns[$sCurrentLanguage];
             $aData['sCurrentLanguage'] = $sCurrentLanguage;
             $aData['questionAttributesI18n'] = $questionAttributesRaw;
             $aData['questionAttributes'] = $this->resolveI18nQuestionAttributesForLanguage($questionAttributesRaw, $sCurrentLanguage);
-            $aData['question_text'] = $oQuestionModel->questionl10ns[$sCurrentLanguage]->question;
-            $aData['question_help'] = $oQuestionModel->questionl10ns[$sCurrentLanguage]->help;
+            $aData['question_text'] = $questionL10n->question;
+            $aData['question_help'] = $questionL10n->help;
 
             // check if this method is called from theme editor
             if (empty($aData['bIsThemeEditor'])) {
@@ -371,6 +378,40 @@ window.addEventListener('message', function(event) {
         }
 
         return $oQuestionModel;
+    }
+
+    /**
+     * @param array $questionL10ns
+     * @param string|null $currentLanguage
+     * @param string|null $surveyLanguage
+     * @param int|string $questionId
+     * @return string
+     */
+    private function resolveQuestionL10nLanguage(array $questionL10ns, $currentLanguage, $surveyLanguage, $questionId)
+    {
+        $candidateLanguages = array_unique(
+            array_filter(
+                [$currentLanguage, $surveyLanguage],
+                static function ($language) {
+                    return is_string($language) && $language !== '';
+                }
+            )
+        );
+
+        foreach ($candidateLanguages as $language) {
+            if (isset($questionL10ns[$language])) {
+                return $language;
+            }
+        }
+
+        throw new InvalidArgumentException(
+            sprintf(
+                'Question has no translation for current language "%s" or survey language "%s"; question id: %s.',
+                $currentLanguage ?? 'null',
+                $surveyLanguage ?? 'null',
+                $questionId
+            )
+        );
     }
 
     /**

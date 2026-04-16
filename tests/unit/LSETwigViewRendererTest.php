@@ -41,6 +41,46 @@ class LSETwigViewRendererTest extends TestBaseClass
         );
     }
 
+    public function testResolveQuestionL10nLanguageFallsBackToSurveyLanguage()
+    {
+        $renderer = \Yii::app()->twigRenderer;
+
+        $reflection = new \ReflectionClass($renderer);
+        $method = $reflection->getMethod('resolveQuestionL10nLanguage');
+        $method->setAccessible(true);
+
+        $resolved = $method->invoke(
+            $renderer,
+            ['en' => new \stdClass()],
+            'de',
+            'en',
+            123
+        );
+
+        $this->assertSame('en', $resolved);
+    }
+
+    public function testResolveQuestionL10nLanguageThrowsWhenNoTranslationExists()
+    {
+        $renderer = \Yii::app()->twigRenderer;
+
+        $reflection = new \ReflectionClass($renderer);
+        $method = $reflection->getMethod('resolveQuestionL10nLanguage');
+        $method->setAccessible(true);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Question has no translation');
+        $this->expectExceptionMessage('question id: 123');
+
+        $method->invoke(
+            $renderer,
+            ['fr' => new \stdClass()],
+            'de',
+            'en',
+            123
+        );
+    }
+
     public function testRenderQuestionThrowsClearExceptionWhenQuestionTemplateQuestionIsNull()
     {
         $questionTemplate = new \QuestionTemplate();
