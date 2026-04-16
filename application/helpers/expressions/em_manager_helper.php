@@ -3327,12 +3327,12 @@ class LimeExpressionManager
      */
     public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false)
     {
-//        if (isset($_SESSION['LEMforceRefresh'])) {
-//            unset($_SESSION['LEMforceRefresh']);
-//            $forceRefresh = true;
-//        } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
-//            return false;   // means that those variables have been cached and no changes needed
-//        }
+        if (isset($_SESSION['LEMforceRefresh'])) {
+            unset($_SESSION['LEMforceRefresh']);
+            $forceRefresh = true;
+        } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
+            return false;   // means that those variables have been cached and no changes needed
+        }
         $now = microtime(true);
         $this->em->SetSurveyMode($this->surveyMode);
         $survey = Survey::model()->findByPk($surveyid);
