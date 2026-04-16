@@ -135,7 +135,20 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     } ?>
                 </div>
             </div>
-
+            <div class="mb-3">
+                <label class="form-label" for='showtokenpolicy'><?php  eT("Show privacy policy on token form:") ; ?></label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'showtokenpolicy',
+                        'checkedOption' => $oSurvey->showtokenpolicy,
+                        'htmlOptions' => ['aria-describedby' => "showtokenpolicy-help"],
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->showtokenpolicy . " ᴵ" ])
+                            : $optionsOnOff
+                    ]) ?>
+                    <div id="showtokenpolicy-help" class="form-text"><?php eT("Only if show survey policy is activated."); ?> </div>
+                </div>
+            </div>
             <!-- Enable token-based response persistence -->
             <div class="mb-3">
                 <label class=" form-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the survey participant list field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) their previous answers will be reloaded."); ?>'>
@@ -147,7 +160,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                         'checkedOption' => $oSurvey->tokenanswerspersistence,
                         'ariaLabel' => gT('Enable participant-based response persistence:'),
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>$oSurveyOptions->tokenanswerspersistence . " ᴵ" ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->tokenanswerspersistence . " ᴵ" ])
                             : $optionsOnOff
                     ]) ?>
                 </div>
@@ -214,7 +227,20 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                     ]); ?>
                 </div>
             </div>
-
+            <div class="mb-3">
+                <label class="form-label" for='showregisterpolicy'><?php  eT("Show privacy policy on register form:") ; ?></label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'showregisterpolicy',
+                        'checkedOption' => $oSurvey->showregisterpolicy,
+                        'htmlOptions' => ['aria-describedby' => "showregisterpolicy-help"],
+                        'selectOptions' => ($bShowInherited)
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->showregisterpolicy . " ᴵ" ])
+                            : $optionsOnOff
+                    ]) ?>
+                    <div id="showregisterpolicy-help" class="form-text"><?php eT("Only if show survey policy is activated."); ?> </div>
+                </div>
+            </div>
             <!-- Use HTML format for token emails -->
             <div class="mb-3">
                 <label class=" form-label" for='htmlemail'><?php  eT("Use HTML format for participant emails:"); ?></label>
@@ -245,7 +271,6 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                         'checkedOption' => $oSurvey->sendconfirmation,
                          'ariaLabel' => gT('Send confirmation emails:'),
                         'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-
                             ['I' => $oSurveyOptions->sendconfirmation . " ᴵ"]) : $optionsOnOff
                     ]); ?>
                 </div>

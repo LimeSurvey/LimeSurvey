@@ -82,6 +82,11 @@
                 {{ gT('Fields marked with an asterisk are mandatory.')}}
         </div>
 
+        {# Survey policy #}
+        {% if ( aSurveyInfo.showregisterpolicy == 'Y' ) %}
+            {{include( './subviews/registration/register_privacy.twig')}}
+        {% endif %}
+
         {# Submit register button #}
         <div class='{{ aSurveyInfo.class.registersave }} ' {{ aSurveyInfo.attr.registersave }} >
             <div class='{{ aSurveyInfo.class.registersavediv }} ' {{ aSurveyInfo.attr.registersavediv }} >
