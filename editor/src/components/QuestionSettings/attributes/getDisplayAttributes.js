@@ -393,6 +393,7 @@ export const getDisplayAttributes = () => ({
   SUBQUESTION_TITLE: {
     component: Input,
     attributePath: 'attributes.other_position_code',
+    languageBased: true,
     props: {
       dataTestId: 'sub-question-title',
       labelText: t("Subquestion title for 'After specific subquestion'"),
