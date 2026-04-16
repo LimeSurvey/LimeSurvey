@@ -91,17 +91,22 @@ class LSETwigViewRendererTest extends TestBaseClass
         $reflection = new \ReflectionClass(\QuestionTemplate::class);
         $instanceProperty = $reflection->getProperty('instance');
         $instanceProperty->setAccessible(true);
+        $originalInstance = $instanceProperty->getValue();
         $instanceProperty->setValue(null, $questionTemplate);
 
         try {
-            \Yii::app()->twigRenderer->renderQuestion(
-                '/survey/questions/answer/longfreetext/answer',
-                ['bIsThemeEditor' => true]
-            );
-            $this->fail('Expected InvalidArgumentException was not thrown.');
-        } catch (\InvalidArgumentException $e) {
-            $this->assertStringContainsString('QuestionTemplate has no valid Question model', $e->getMessage());
-            $this->assertStringContainsString('question template id', $e->getMessage());
+            try {
+                \Yii::app()->twigRenderer->renderQuestion(
+                    '/survey/questions/answer/longfreetext/answer',
+                    []
+                );
+                $this->fail('Expected InvalidArgumentException was not thrown.');
+            } catch (\InvalidArgumentException $e) {
+                $this->assertStringContainsString('QuestionTemplate has no valid Question model', $e->getMessage());
+                $this->assertStringContainsString('question template id', $e->getMessage());
+            }
+        } finally {
+            $instanceProperty->setValue(null, $originalInstance);
         }
     }
 
@@ -113,17 +118,22 @@ class LSETwigViewRendererTest extends TestBaseClass
         $reflection = new \ReflectionClass(\QuestionTemplate::class);
         $instanceProperty = $reflection->getProperty('instance');
         $instanceProperty->setAccessible(true);
+        $originalInstance = $instanceProperty->getValue();
         $instanceProperty->setValue(null, $questionTemplate);
 
         try {
-            \Yii::app()->twigRenderer->renderQuestion(
-                '/survey/questions/answer/longfreetext/answer',
-                ['bIsThemeEditor' => true]
-            );
-            $this->fail('Expected InvalidArgumentException was not thrown.');
-        } catch (\InvalidArgumentException $e) {
-            $this->assertStringContainsString('QuestionTemplate has no valid Question model', $e->getMessage());
-            $this->assertStringContainsString(\stdClass::class, $e->getMessage());
+            try {
+                \Yii::app()->twigRenderer->renderQuestion(
+                    '/survey/questions/answer/longfreetext/answer',
+                    []
+                );
+                $this->fail('Expected InvalidArgumentException was not thrown.');
+            } catch (\InvalidArgumentException $e) {
+                $this->assertStringContainsString('QuestionTemplate has no valid Question model', $e->getMessage());
+                $this->assertStringContainsString(\stdClass::class, $e->getMessage());
+            }
+        } finally {
+            $instanceProperty->setValue(null, $originalInstance);
         }
     }
 }

@@ -305,37 +305,36 @@ window.addEventListener('message', function(event) {
            //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
 
-            $oQuestionModel = $this->getValidatedQuestionModel($oQuestionTemplate);
-            // Expose Question model's attributes as 'question'
-            $aData['question'] = $oQuestionModel->attributes;
-
-            $questionL10ns = is_array($oQuestionModel->questionl10ns) ? $oQuestionModel->questionl10ns : [];
-            $sSurveyLanguage = $oQuestionModel->survey->language ?? null;
-            $sCurrentLanguage = $this->resolveQuestionL10nLanguage(
-                $questionL10ns,
-                App()->language,
-                $sSurveyLanguage,
-                $oQuestionModel->qid ?? 'unknown'
-            );
-
-            $questionAttributesRaw = QuestionAttribute::model()->getQuestionAttributes($oQuestionModel, $sCurrentLanguage);
-            if ($questionAttributesRaw === false) {
-                $questionAttributesRaw = [];
-            }
-
-            $questionL10n = $questionL10ns[$sCurrentLanguage];
-            $aData['sCurrentLanguage'] = $sCurrentLanguage;
-            $aData['questionAttributesI18n'] = $questionAttributesRaw;
-            $aData['questionAttributes'] = $this->resolveI18nQuestionAttributesForLanguage($questionAttributesRaw, $sCurrentLanguage);
-            $aData['question_text'] = $questionL10n->question;
-            $aData['question_help'] = $questionL10n->help;
-
-            // check if this method is called from theme editor
+            // Theme editor previews render question fragments without a real question context.
             if (empty($aData['bIsThemeEditor'])) {
-                    $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
-                    $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-                    $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
-                    $aData['this'] = App()->getController();
+                $oQuestionModel = $this->getValidatedQuestionModel($oQuestionTemplate);
+                // Expose Question model's attributes as 'question'
+                $aData['question'] = $oQuestionModel->attributes;
+
+                $questionL10ns = is_array($oQuestionModel->questionl10ns) ? $oQuestionModel->questionl10ns : [];
+                $sSurveyLanguage = $oQuestionModel->survey->language ?? null;
+                $sCurrentLanguage = $this->resolveQuestionL10nLanguage(
+                    $questionL10ns,
+                    App()->language,
+                    $sSurveyLanguage,
+                    $oQuestionModel->qid ?? 'unknown'
+                );
+
+                $questionAttributesRaw = QuestionAttribute::model()->getQuestionAttributes($oQuestionModel, $sCurrentLanguage);
+                if ($questionAttributesRaw === false) {
+                    $questionAttributesRaw = [];
+                }
+
+                $questionL10n = $questionL10ns[$sCurrentLanguage];
+                $aData['sCurrentLanguage'] = $sCurrentLanguage;
+                $aData['questionAttributesI18n'] = $questionAttributesRaw;
+                $aData['questionAttributes'] = $this->resolveI18nQuestionAttributesForLanguage($questionAttributesRaw, $sCurrentLanguage);
+                $aData['question_text'] = $questionL10n->question;
+                $aData['question_help'] = $questionL10n->help;
+                $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+                $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
+                $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+                $aData['this'] = App()->getController();
             } else {
                 $aData['question_template_attribute'] = null;
             }
