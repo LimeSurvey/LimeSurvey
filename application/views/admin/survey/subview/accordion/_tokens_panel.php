@@ -136,12 +136,15 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 </div>
             </div>
             <div class="mb-3">
-                <label class="form-label" for='showtokenpolicy'><?php  eT("Show privacy policy on token form:") ; ?></label>
+                <label class="form-label" id='showtokenpolicy-label'><?php  eT("Show privacy policy on token form:") ; ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'showtokenpolicy',
                         'checkedOption' => $oSurvey->showtokenpolicy,
-                        'htmlOptions' => ['aria-describedby' => "showtokenpolicy-help"],
+                        'htmlOptions' => [
+                            'aria-labelledby' => "showtokenpolicy-label",
+                            'aria-describedby' => "showtokenpolicy-help"
+                        ],
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->showtokenpolicy . " ᴵ" ])
                             : $optionsOnOff
@@ -228,12 +231,15 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 </div>
             </div>
             <div class="mb-3">
-                <label class="form-label" for='showregisterpolicy'><?php  eT("Show privacy policy on register form:") ; ?></label>
+                <label class="form-label" id='showregisterpolicy-label'><?php  eT("Show privacy policy on register form:") ; ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'showregisterpolicy',
                         'checkedOption' => $oSurvey->showregisterpolicy,
-                        'htmlOptions' => ['aria-describedby' => "showregisterpolicy-help"],
+                        'htmlOptions' => [
+                            'aria-labelledby' => "showregisterpolicy-label",
+                            'aria-describedby' => "showregisterpolicy-help"
+                        ],
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->showregisterpolicy . " ᴵ" ])
                             : $optionsOnOff
