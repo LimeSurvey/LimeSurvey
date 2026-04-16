@@ -1733,7 +1733,7 @@ class SurveyRuntimeHelper
             /* setDefaultPrivacyText use Survey::replacePolicyLink, replacePolicyLink use twigRenderer breaking usage of token in twig */
             /* We need only for token form */
             $this->setDefaultPrivacyText();
-            $this->aSurveyInfo['datasecuritynotaccepted'] = App()->getRequest()->isPostRequest && !App()->getRequest()->getPost('datasecurity_accepted');
+            $this->aSurveyInfo['datasecuritynotaccepted'] = App()->getRequest()->isPostRequest && !boolval(App()->getRequest()->getPost('datasecurity_accepted', false));
         }
         /* This function end if an form need to be shown */
         renderRenderWayForm($renderWay, $scenarios, $this->sTemplateViewPath, $aEnterTokenData, $this->iSurveyid, $this->aSurveyInfo);
