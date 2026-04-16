@@ -76,7 +76,7 @@ export default {
                 :href="menuItem.link" :title="reConvertHTML(menuItem.menu_description)" 
                 :target="menuItem.link_external ? '_blank' : '_self'"
                 data-bs-toggle="tooltip"
-                class="btn btn-icon"
+                class="btn"
                 :class="compileEntryClasses(menuItem)"
                 >
                     <template v-if="menuItem.menu_icon_type == 'fontawesome'">

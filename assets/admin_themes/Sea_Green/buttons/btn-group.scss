@@ -42,11 +42,13 @@
     background-color: $g-800;
     border-color: $black;
     color: $white;
+    stroke: $white;
 
     &.disabled, &[disabled] {
       border-color: $g-600;
       background-color: $g-400;
       color: $g-600;
+      stroke: $g-600;
     }
   }
 

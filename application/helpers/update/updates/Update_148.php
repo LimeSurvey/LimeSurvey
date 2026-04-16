@@ -9,16 +9,16 @@ class Update_148 extends DatabaseUpdateBase
 {
     public function up()
     {
-        addColumn('{{users}}', 'participant_panel', "integer NOT NULL default 0");
+        addColumn('{{users}}', 'participant_panel', "integer NOT NULL DEFAULT 0");
 
         $this->db->createCommand()->createTable(
             '{{participants}}',
             array(
                 'participant_id' => 'string(50) NOT NULL',
-                'firstname' => 'string(40) default NULL',
-                'lastname' => 'string(40) default NULL',
-                'email' => 'string(80) default NULL',
-                'language' => 'string(40) default NULL',
+                'firstname' => 'string(40) DEFAULT NULL',
+                'lastname' => 'string(40) DEFAULT NULL',
+                'email' => 'string(80) DEFAULT NULL',
+                'language' => 'string(40) DEFAULT NULL',
                 'blacklisted' => 'string(1) NOT NULL',
                 'owner_uid' => "integer NOT NULL"
             )

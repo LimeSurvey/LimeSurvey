@@ -143,12 +143,6 @@ class TemplateConfiguration extends TemplateConfig
         );
     }
 
-    /** @inheritdoc */
-    public function defaultScope()
-    {
-        return array('order' => App()->db->quoteColumnName($this->getTableAlias(false, false) . '.template_name'));
-    }
-
     /**
      * @todo document me
      *
@@ -307,6 +301,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid=:sid');
         $criteria->params = array('sid' => $iSurveyId);
+
         $oTemplateConfigurations = self::model()->findAll($criteria);
 
         if ($bInherited) { // inherited values
@@ -360,7 +355,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Get an instance of a fitting TemplateConfiguration
-     * NOTE: for rendering prupose, you should never call this function directly, but rather Template::getInstance.
+     * NOTE: for rendering purpose, you should never call this function directly, but rather Template::getInstance.
      * if force_xmlsettings_for_survey_rendering is on, then the configuration from the XML file should be loaded,
      * not the one from database
      *
@@ -437,7 +432,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('packages_to_load', $this->packages_to_load, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
+            'criteria' => $criteria
         ));
     }
 
@@ -501,6 +496,9 @@ class TemplateConfiguration extends TemplateConfig
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => $pageSizeTemplateView,
+            ),
+            'sort' => array(
+                'defaultOrder' => 'template_name ASC' // Set default order here
             ),
         ));
     }
@@ -579,7 +577,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Sets all available inheritance fields of the class::TemplateConfiguration to the value inherit as string
      */
     public function setToInherit()
     {
@@ -745,8 +743,8 @@ class TemplateConfiguration extends TemplateConfig
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
             'linkAttributes'   => [
                 'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Extend'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Extend'),
                 'data-text'        => gT('Please type in the new theme name above.'),
                 'data-post'        => json_encode([
                     "copydir" => $templateName,
@@ -769,8 +767,8 @@ class TemplateConfiguration extends TemplateConfig
                                     $templateName != App()->getConfig('defaulttheme'),
             'linkAttributes'   => [
                 'title'            => gT('Uninstall this theme'),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Uninstall'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Uninstall'),
                 'data-text'        => gT('This will reset all the specific configurations of this theme.')
                                          . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
@@ -787,11 +785,14 @@ class TemplateConfiguration extends TemplateConfig
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
             'linkAttributes'   => [
                 'title'            => gT('Reset this theme'),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Reset'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Reset'),
                 'data-text'        => gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
-                'data-button-type' => "btn-warning"
+                'data-button-type' => "btn-warning",
+                'data-use-ajax'    => 'true',
+                'data-grid-reload' => 'true',
+                'data-grid-id'     => 'themeoptions-grid',
             ]
         ];
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
@@ -949,7 +950,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Fetches the imageFileList and the maxFileSize for the current theme and adds them to a new array which includes all TemplateConfiguration attributes
      *
      * @return array
      */
@@ -1006,8 +1007,6 @@ class TemplateConfiguration extends TemplateConfig
         $oSimpleInheritance->options = 'inherit';
         $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($this->template->name);
 
-        // TODO: It's not clear which class prepareTemplateRendering() returns or should return.
-        /** @var Template */
         $oTemplate = $this->prepareTemplateRendering($this->template->name);
 
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
@@ -1108,12 +1107,13 @@ class TemplateConfiguration extends TemplateConfig
 
         $files = $oTemplate->$sField;
         $oFiles = [];
-        if (!empty($files)) {
+        if (!empty($files) && $files !== 'inherit') {
             $oFiles = json_decode((string) $files, true);
             if ($oFiles === null) {
                 App()->setFlashMessage(
                     sprintf(
-                        gT('Error: Malformed JSON - field %s must be either a JSON array or the string "inherit". Found "null".'),
+                        gT('Error: Malformed JSON in template "%s" - field %s must be either a JSON array or the string "inherit". Found "null".'),
+                        $oTemplate->template->name,
                         $sField
                     ),
                     'error'
@@ -1249,7 +1249,7 @@ class TemplateConfiguration extends TemplateConfig
      * Also triggers inheritence checks
      * @return void
      */
-    protected function setOptions()
+    public function setOptions()
     {
         $this->oOptions = new stdClass();
         if (!empty($this->options)) {
@@ -1471,7 +1471,17 @@ class TemplateConfiguration extends TemplateConfig
             if ($sAttribute === 'inherit') {
                 // NOTE: this is object recursive (if parent configuration field is set to inherit,
                 // then it will lead to this method again.)
-                $sAttribute = $this->getParentConfiguration()->$name;
+                $oParentConfiguration = $this->getParentConfiguration();
+                /**
+                 * We check if $oParentConfiguration is the same as $this because if it is, $oParentConfiguration->$name will
+                 * try to directly access the property instead of calling the magic method, and it will fail for dynamic properties.
+                 * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
+                 */
+                if ($oParentConfiguration !== $this) {
+                    $sAttribute = $oParentConfiguration->$name;
+                } else {
+                    $sAttribute = $oParentConfiguration->getAttribute($name);
+                }
             }
         } else {
             $sAttribute = parent::__get($name);
@@ -1600,28 +1610,31 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Returns the html to render the previewimage of the template
-     * @return array|mixed|string|null
+     * Returns the html to render the previewimage of the template.
+     * Pass $justTheUrl = true to return just the URL of the preview image
+     * @param bool $justTheUrl
+     * @return string
      */
-    public function getPreview()
+    public function getPreview($justTheUrl = false)
     {
+        $previewUrl = '';
         if (empty($this->sPreviewImgTag)) {
             if (is_a($this->template, 'Template')) {
                 $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
                 $previewPath         = Template::getTemplatePath($this->template->name) . '/' . $sTemplateFileFolder;
 
                 if ($previewPath && file_exists($previewPath . '/preview.png')) {
-                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
+                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder . '/preview.png';
                     $this->sPreviewImgTag = '<img src="' .
                         $previewUrl .
-                        '/preview.png" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
+                        '" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
                 }
             } else {
                 $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
             }
         }
 
-        return $this->sPreviewImgTag;
+        return $justTheUrl ? $previewUrl : $this->sPreviewImgTag;
     }
 
     /**

@@ -24,14 +24,23 @@ $(document).on('click','[data-action="deletelabelset"]',function(event){
 });
 
 $(document).on('ready  pjax:scriptcomplete', function(){
-    $('#btnDumpLabelSets').click(function(){
-        if ($('#labelsets > option:selected').size()==0) {
-            alert(strSelectLabelset);
-            return false;
-        } else {
-            return true;
-        }
+    $('#exportlabelset').on('submit', function(){
+        $('#ls-loading').show();
+        const token = $(this).find('input[name="export_token"]').val();
+        const pollUrl = $(this).find('input[name="url"]').val() + encodeURIComponent(token);
+
+        const interval = setInterval(() => {
+            $.get(pollUrl, function (data) {
+                if (data.done) {
+                    clearInterval(interval);
+                    $('#ls-loading').hide();
+                }
+            }).fail(() => {
+                console.warn('Failed to poll export status');
+            });
+        }, 1000);
     });
+
 
     const answersTable = $(".answertable tbody");
     if (answersTable.length && answersTable.children().length == 0) {

@@ -33,7 +33,8 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
             {% if ShowMenu %}
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
                         aria-controls="small-screens-menus" aria-expanded="false">
-                    <span class="navbar-toggler-icon"></span>
+                    <span class="visually-hidden-focusable">{{ gT("Tools") }}</span>
+                    <span class="navbar-toggler-icon" aria-hidden="true"></span>
                 </button>
             {% endif %}
             {# Logo option #}

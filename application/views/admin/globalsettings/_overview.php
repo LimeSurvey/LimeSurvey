@@ -12,6 +12,9 @@
  */
 ?>
 <br /><table class='table table-hover'>
+    <caption class="visually-hidden">
+        <?php eT("Global settings overview"); ?>
+    </caption>
     <tr>
         <th ><?php eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
     </tr>
@@ -25,10 +28,10 @@
         <th ><?php eT("Deactivated result tables"); ?>:</th><td><?php echo $deactivatedsurveys; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Active survey participants tables"); ?>:</th><td><?php echo $activetokens; ?></td>
+        <th ><?php eT("Active survey participant lists"); ?>:</th><td><?php echo $activetokens; ?></td>
     </tr>
     <tr>
-        <th ><?php eT("Deactivated survey participants tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
+        <th ><?php eT("Deactivated survey participant lists"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
     </tr>
     <?php
         if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)

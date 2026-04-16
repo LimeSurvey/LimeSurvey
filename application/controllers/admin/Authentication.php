@@ -234,16 +234,10 @@ class Authentication extends SurveyCommonAction
 
         if (!$errorExists && !$usedLink) {
             //check if password is set correctly
-            $password = Yii::app()->request->getPost('password');
-            $passwordRepeat = Yii::app()->request->getPost('password_repeat');
-
-            $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
-            $oPasswordTestEvent->set('password', $password);
-            $oPasswordTestEvent->set('passwordOk', true);
-            $oPasswordTestEvent->set('passwordError', '');
-            Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
-            $passwordError = $oPasswordTestEvent->get('passwordError');
-            if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $oPasswordTestEvent->get('passwordOk')) {
+            $password = Yii::app()->request->getPost('password', '');
+            $passwordRepeat = Yii::app()->request->getPost('password_repeat', '');
+            $passwordStrengthError = $user->checkPasswordStrength($passwordRepeat);
+            if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $passwordStrengthError == '') {
                 //now everything is ok, save password
                 $user->setPassword($password, true);
                 // And remove validation_key
@@ -251,7 +245,7 @@ class Authentication extends SurveyCommonAction
                 $user->save(false, ['validation_key', 'validation_key_expiration']);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
             } else {
-                Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordError), 'error');
+                Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordStrengthError), 'error');
             }
         }
 
@@ -303,7 +297,7 @@ class Authentication extends SurveyCommonAction
             $aData = [];
             if (($user === null) || ($user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $user->uid))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>' . sprintf(gt('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), \LimeSurvey\Models\Services\PasswordManagement::MIN_TIME_NEXT_FORGOT_PW_EMAIL) . '<br>';
+                $aData['message'] = '<br>' . sprintf(gT('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), \LimeSurvey\Models\Services\PasswordManagement::MIN_TIME_NEXT_FORGOT_PW_EMAIL) . '<br>';
             } else {
                 $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($user);
                 $aData['message'] = $passwordManagement->sendForgotPasswordEmailLink();
@@ -326,7 +320,7 @@ class Authentication extends SurveyCommonAction
             $sDBVersion = getGlobalSetting('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber')) {
                 // Try a silent update first
-                Yii::app()->loadHelper('update/updatedb');
+                Yii::app()->loadHelper('update.updatedb');
                 if (!db_upgrade_all(intval($sDBVersion), true)) {
                     Yii::app()->getController()->redirect(array('/admin/databaseupdate/sa/db'));
                 }

@@ -8,9 +8,10 @@ $this->widget(
         'id' => 'close-button',
         'text' => gT('Close'),
         'icon' => 'ri-close-fill',
-        'link' => $this->createUrl('admin/index'),
+        'link' => $this->createUrl('dashboard/view'),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
+            'role' => 'button'
         ],
     ]
 );

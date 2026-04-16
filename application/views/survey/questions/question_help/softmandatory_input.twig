@@ -1,0 +1,11 @@
+{#
+/**
+ * Inoput part for soft mandatory
+ * @var qInfo : array, see LimeExpressionManager::
+ * @var sCheckboxLabel : core label
+#}
+<div class='ls-softmandatory-input'>
+    <label for='mandSoft_{{ qInfo.qseq }}'>{{ gT("Continue without answering to this question.") }}</label>
+    <input type='hidden' id='mandSoft_{{ qInfo.qseq }}_N' name='mandSoft[{{ qInfo.qseq }}]' value='N'>
+    <input type='checkbox' id='mandSoft_{{ qInfo.qseq }}' name='mandSoft[{{ qInfo.qseq }}]' class="ls-mandSoft-checkbox" value='Y' {% if qInfo.mandSoftForced %} checked {%endif %} >
+</div>

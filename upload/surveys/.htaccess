@@ -5,7 +5,11 @@
             Deny from all
         </IfVersion>
         <IfVersion >= 2.4>
-            Require all denied
+           Require all denied
+           <IfModule mod_access_compat.c>
+               Order deny,allow
+               Deny from all
+           </IfModule>
         </IfVersion>
     </IfModule>
     <IfModule !mod_version.c>

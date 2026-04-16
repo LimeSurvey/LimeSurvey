@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="PSR2R">
+<ruleset name="LimeSurveyTestsPSR12">
     <rule ref="PSR12">
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace" />
         <!-- TODO: This rule should be disabled when support for PHP 7.0 is dropped -->

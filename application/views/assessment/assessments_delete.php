@@ -10,7 +10,7 @@
             <?php
             Yii::app()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gt('Delete assessment rule')]
+                ['modalTitle' => gT('Delete assessment rule')]
             );
             ?>
                 <div class="modal-body">

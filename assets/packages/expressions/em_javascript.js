@@ -125,15 +125,20 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
      */
     if(LSvar.bFixNumAuto)
     {
-        if(window.correctNumberField!=null) {
-            clearTimeout(window.correctNumberField);
-            window.correctNumberField = null;
+        // If the field value needs to be auto-corrected, we will do it with a timeout in order to avoid
+        // interfering with the user's typing. We will use window.correctNumberField to track one timer
+        // per field, and clear it when the user starts typing again.
+
+        if (typeof window.correctNumberField === 'undefined') {
+            window.correctNumberField = {};
+        }
+
+        if (window.correctNumberField[name] != null) {
+            clearTimeout(window.correctNumberField[name]);
+            window.correctNumberField[name] = null;
         }
 
         var addition = "";
-        if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
-            addition = cleansedValue.split("").pop();
-        }
 
         var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/); /* 1.0 : keep .0 */
         var matchMustGetZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)([0-9]*)$/); /* Maybe have 0 */
@@ -178,7 +183,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         {
             newval=displayVal;
             if(cleansedValue == '' && value != cleansedValue) {
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 500);
+                window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 500);
             }
         }
         else{
@@ -194,7 +199,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
 
             if(value != newval){
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 1500);
+                window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 1500);
             }
         }
     }
@@ -3077,6 +3082,13 @@ function substr (str, start, len) {
     // *       returns 7: '\uD801\uDC00z'
     // Add: (?) Use unicode.runtime_encoding (e.g., with string wrapped in "binary" or "Binary" class) to
     // allow access of binary (see file_get_contents()) by: charCodeAt(x) & 0xFF (see https://developer.mozilla.org/En/Using_XMLHttpRequest ) or require conversion first?
+
+    // ensure that start/len are integers (even when strings are given)
+    if (!Number.isInteger(Number(start)) || !Number.isInteger(Number(len))) {
+       return false;
+    }
+
+
     var i = 0,
         allBMP = true,
         es = 0,

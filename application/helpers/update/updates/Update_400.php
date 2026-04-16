@@ -51,18 +51,18 @@ class Update_400 extends DatabaseUpdateBase
             '{{questions}}',
             array(
                 'qid' => "pk",
-                'parent_qid' => "integer NOT NULL default '0'",
-                'sid' => "integer NOT NULL default '0'",
-                'gid' => "integer NOT NULL default '0'",
-                'type' => "string(30) NOT NULL default 'T'",
-                'title' => "string(20) NOT NULL default ''",
+                'parent_qid' => "integer NOT NULL DEFAULT '0'",
+                'sid' => "integer NOT NULL DEFAULT '0'",
+                'gid' => "integer NOT NULL DEFAULT '0'",
+                'type' => "string(30) NOT NULL DEFAULT 'T'",
+                'title' => "string(20) NOT NULL DEFAULT ''",
                 'preg' => "text",
-                'other' => "string(1) NOT NULL default 'N'",
+                'other' => "string(1) NOT NULL DEFAULT 'N'",
                 'mandatory' => "string(1) NULL",
-                //'encrypted' =>  "string(1) NULL default 'N'", DB version 406
+                //'encrypted' =>  "string(1) NULL DEFAULT 'N'", DB version 406
                 'question_order' => "integer NOT NULL",
-                'scale_id' => "integer NOT NULL default '0'",
-                'same_default' => "integer NOT NULL default '0'",
+                'scale_id' => "integer NOT NULL DEFAULT '0'",
+                'same_default' => "integer NOT NULL DEFAULT '0'",
                 'relevance' => "text",
                 'modulename' => "string(255) NULL"
             ),
@@ -118,9 +118,9 @@ class Update_400 extends DatabaseUpdateBase
             '{{groups}}',
             array(
                 'gid' => "pk",
-                'sid' => "integer NOT NULL default '0'",
-                'group_order' => "integer NOT NULL default '0'",
-                'randomization_group' => "string(20) NOT NULL default ''",
+                'sid' => "integer NOT NULL DEFAULT '0'",
+                'group_order' => "integer NOT NULL DEFAULT '0'",
+                'randomization_group' => "string(20) NOT NULL DEFAULT ''",
                 'grelevance' => "text NULL"
             ),
             $this->options

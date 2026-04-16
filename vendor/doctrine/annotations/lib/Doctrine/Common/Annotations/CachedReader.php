@@ -11,6 +11,7 @@ use function array_map;
 use function array_merge;
 use function assert;
 use function filemtime;
+use function is_file;
 use function max;
 use function time;
 
@@ -229,7 +230,7 @@ final class CachedReader implements Reader
         $parent = $class->getParentClass();
 
         $lastModification =  max(array_merge(
-            [$filename ? filemtime($filename) : 0],
+            [$filename !== false && is_file($filename) ? filemtime($filename) : 0],
             array_map(function (ReflectionClass $reflectionTrait): int {
                 return $this->getTraitLastModificationTime($reflectionTrait);
             }, $class->getTraits()),
@@ -253,7 +254,7 @@ final class CachedReader implements Reader
         }
 
         $lastModificationTime = max(array_merge(
-            [$fileName ? filemtime($fileName) : 0],
+            [$fileName !== false && is_file($fileName) ? filemtime($fileName) : 0],
             array_map(function (ReflectionClass $reflectionTrait): int {
                 return $this->getTraitLastModificationTime($reflectionTrait);
             }, $reflectionTrait->getTraits())

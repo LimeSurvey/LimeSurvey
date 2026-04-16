@@ -27,15 +27,10 @@ class TransformerInputQuestion extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]],
                 'range' => [true, false]
             ],
-            'mandatory' => ['formatter' => ['mandatory' => true]],
+            'mandatory' => ['formatter' => ['mandatory' => ['revert' => true]]],
             'encrypted' => [
                 'formatter' => ['ynToBool' => ['revert' => true]],
                 'range' => [true, false]
-            ],
-            'questionOrder' => [
-                'key' => 'question_order',
-                'type' => 'int',
-                'numerical'
             ],
             'sortOrder' => [
                 'key' => 'question_order',
@@ -57,7 +52,11 @@ class TransformerInputQuestion extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'moduleName' => ['key' => 'modulename', 'length' => ['max' => 255]],
-            'gid' => ['type' => 'int'],
+            'gid' => [
+                'required' => 'create',
+                'type' => 'int',
+                'numerical' => ['min' => 1, 'max' => PHP_INT_MAX]
+            ],
             'relevance' => ['filter' => 'trim'],
             'sameScript' => [
                 'key' => 'same_script',

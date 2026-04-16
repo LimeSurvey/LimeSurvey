@@ -174,7 +174,7 @@ window.addEventListener('message', function(event) {
             }
 
             $sHtml     = $this->convertTwigToHtml($line, $aData, $oTemplate);
-            
+
             $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if ($sEmHiddenInputs) {
                 $sHtml = str_replace(
@@ -668,7 +668,10 @@ window.addEventListener('message', function(event) {
             if (!empty($aData["sid"]) || LimeExpressionManager::getLEMsurveyId()) {
                 $sid = empty($aData["sid"]) ? LimeExpressionManager::getLEMsurveyId() : $aData["sid"];
                 $language = empty($aData["language"]) ? App()->getLanguage() : $aData["language"];
-                $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                /* Outdated sid in LimeExpressionManager */
+                if (Survey::model()->findByPk($sid)) {
+                    $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                }
             }
         }
         // We retrieve the definition of the core class and attributes
@@ -709,7 +712,9 @@ window.addEventListener('message', function(event) {
                     if ($value instanceof stdClass) {
                         $value = 'N/A';
                     }
-                    $aData["aSurveyInfo"]["options"][$key] = (string) $value;
+                    // Note that $value can also be a SimpleXMLElement
+                    // if force_xmlsettings_for_survey_rendering is activated
+                    $aData["aSurveyInfo"]["options"][$key] = (string)$value;
                 }
             }
         } else {
@@ -741,7 +746,7 @@ window.addEventListener('message', function(event) {
         $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
 
         foreach ($aFilesOptions as $sOption => $sFileOption) {
-            if ($aData["aSurveyInfo"]["options"] !== null) {
+            if (is_array($aData["aSurveyInfo"]["options"])) {
                 if (array_key_exists($sFileOption, $aData["aSurveyInfo"]["options"])) {
                     if (empty($aData["aSurveyInfo"]["options"][$sFileOption])) {
                         $aData["aSurveyInfo"]["options"][$sOption] = "false";

@@ -114,32 +114,15 @@ abstract class LSYii_Controller extends CController
             }
         }
 
-        // The following function (when called) includes FireBug Lite if true
-        defined('FIREBUG') or define('FIREBUG', Yii::app()->getConfig('use_firebug_lite'));
-
-        //Every 50th time clean up the temp directory of old files (older than 1 day)
-        //depending on the load the  probability might be set higher or lower
-        if (rand(1, 50) == 1) {
-            cleanTempDirectory();
+        // 1% chance of cleaning up the temp/cache directories of old files (older than 1 day)
+        if (rand(1, 100) == 1) {
+            cleanCacheTempDirectoryDaily();
         }
 
         //GlobalSettings Helper
         Yii::import("application.helpers.globalsettings");
 
         enforceSSLMode(); // This really should be at the top but for it to utilise getGlobalSetting() it has to be here
-
-        if (Yii::app()->getConfig('debug') == 1) {
-            //For debug purposes - switch on in config.php
-            @ini_set("display_errors", '1');
-            error_reporting(E_ALL);
-        } elseif (Yii::app()->getConfig('debug') == 2) {
-            //For debug purposes - switch on in config.php
-            @ini_set("display_errors", '1');
-            error_reporting(E_ALL | E_STRICT);
-        } else {
-            @ini_set("display_errors", '0');
-            error_reporting(0);
-        }
 
         //SET LOCAL TIME
         $timeadjust = Yii::app()->getConfig("timeadjust");
