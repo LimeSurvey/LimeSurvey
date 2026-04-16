@@ -749,7 +749,7 @@ window.addEventListener('message', function(event) {
         if (empty($aSurveyInfo['datasecurity_error'])) {
             $aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
         }
-        /* @var string[] to go to automatic translation */
+        /* @var string[] for automatic translation */
         $translation = [
             "Show policy" => gT("Show policy")
         ];
