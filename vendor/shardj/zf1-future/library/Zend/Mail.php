@@ -1220,7 +1220,7 @@ class Zend_Mail extends Zend_Mime_Message
                       '>'  => '',
         ];
 
-        return strtr($email, $rule);
+        return strtr((string) $email, $rule);
     }
 
     /**

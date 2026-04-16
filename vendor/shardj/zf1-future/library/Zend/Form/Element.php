@@ -2346,7 +2346,7 @@ class Zend_Form_Element implements Zend_Validate_Interface
             } elseif ($this->isArray() || is_array($value)) {
                 $aggregateMessages = [];
                 foreach ($value as $val) {
-                    $aggregateMessages[] = str_replace('%value%', $val, $message);
+                    $aggregateMessages[] = str_replace('%value%', (string) $val, $message);
                 }
                 $aggregateMessages = array_unique($aggregateMessages); //prevent repeating the identical error message for multichoice-items
                 if (count($aggregateMessages)) {

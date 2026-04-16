@@ -18,6 +18,7 @@ function getConfig(options, locale, dateFormat) {
     let stepping = getValueFromConfigObject(options, 'stepping', 1);
     let mindate = getValueFromConfigObject(options, 'mindate', undefined);
     let maxdate = getValueFromConfigObject(options, 'maxdate', undefined);
+    let theme = getValueFromConfigObject(options, 'theme', 'auto');
 
     return {
         allowInputToggle: allowinputtoggle,
@@ -51,6 +52,7 @@ function getConfig(options, locale, dateFormat) {
                 clock: clock,
             },
             sideBySide: sidebyside,
+            theme: theme,
         },
     };
 }
@@ -156,7 +158,7 @@ function fixAllowInputToggle(id) {
  */
 function getOptionsFromElement(element) {
     const availableOptions = [
-        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate'
+        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate', 'theme',
         ];
     const options = {};
 

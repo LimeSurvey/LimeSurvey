@@ -441,6 +441,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hil']['rtl'] = false;
     $supportedLanguages['hil']['dateformat'] = 1;
     $supportedLanguages['hil']['radixpoint'] = 1;
+    $supportedLanguages['hil']['momentjs'] = 'tl';
+    $supportedLanguages['hil']['cldr'] = 'fil';
 
     // Hungarian
     $supportedLanguages['hu']['description'] = gT('Hungarian');

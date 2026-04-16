@@ -63,7 +63,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <input type='submit' id="import-submit" class="btn btn-info col-3" value='<?php eT("Import survey"); ?>' />
+                <input type='submit' id="import-submit" class="btn btn-info" value='<?php eT("Import survey"); ?>' />
             </div>
             </form>
         </div>

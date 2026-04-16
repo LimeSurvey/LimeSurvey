@@ -17,11 +17,11 @@
                 <!-- Scope, Total, Group -->
                 <div class='row'>
                     <div class='mb-3 col-12 row'>
-                        <label class='form-label col-md-2'>
+                        <label class='form-label col-md-2' id='scope-label'>
                             <?php eT("Scope:"); ?>
                         </label>
                         <div class='col-md-10 ls-flex wrap'>
-                            <div class="btn-group" role="group">
+                            <div class="btn-group" role="group" aria-labelledby="scope-label">
                                 <input class='btn-check' type='radio' id='radiototal' name='scope' value='T' checked='checked'/>
                                 <label class='btn btn-outline-secondary' for="radiototal"><?php eT("Total"); ?></label>
 
@@ -80,7 +80,7 @@
                             $position = 0;
                             ?>
                             <li role="presentation" class="nav-item">
-                                <a class="nav-link <?= ($assessmentlang == $baselang ? 'active' : '') ?>" data-bs-toggle="tab" href="#tablang<?= $assessmentlang ?>">
+                                <a class="nav-link <?= ($assessmentlang == $baselang ? 'active' : '') ?>"  role="tab" data-bs-toggle="tab" href="#tablang<?= $assessmentlang ?>">
                                     <?php
                                     echo getLanguageNameFromCode($assessmentlang, false);
                                     if ($assessmentlang == $baselang) {
@@ -108,7 +108,7 @@
                                     <label class='form-label col-12' for='name_<?= $assessmentlang ?>'>
                                         <?php eT("Heading"); ?>:</label>
                                     <div class='col-12'>
-                                        <input class='form-control' type='text' name='name_<?= $assessmentlang ?>' id='name_<?= $assessmentlang ?>>' size='80' value='<?= $heading ?>'/>
+                                        <input class='form-control' type='text' name='name_<?= $assessmentlang ?>' id='name_<?= $assessmentlang ?>' size='80' value='<?= $heading ?>'/>
                                     </div>
                                 </div>
                                 <div class='mb-3 col-12'>
