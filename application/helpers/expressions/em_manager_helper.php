@@ -3615,6 +3615,10 @@ class LimeExpressionManager
                 case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
+                    $varName = !empty($aid)
+                        ? $fielddata['title'] . '_' . $aid
+                        : $fielddata['title'];
+                    break;
                 case Question::QT_ASTERISK_EQUATION: //Equation
                     $csuffix = '';
                     $sqsuffix = '';
