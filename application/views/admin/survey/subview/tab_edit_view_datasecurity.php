@@ -25,9 +25,9 @@ PrepareEditorScript(false, $this);
 <!-- security notice -->
 <div class="row mb-3">
     <div class="col-lg-6">
-        <label class="form-label" id="showtokenpolicy-label">><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
+        <label class="form-label" id="showsurveypolicynotice-label">><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
         <div class="">
-            <div class="btn-group" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="showtokenpolicy-label" >
+            <div class="btn-group" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="showsurveypolicynotice-label" >
                 <input class="btn-check" type="radio" id="showsurveypolicynotice_0" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice == 0 ? 'checked' : ''?> autocomplete="off">
                 <label for="showsurveypolicynotice_0" class="btn btn-outline-secondary">
                     <?=gT("Don't show");?>
