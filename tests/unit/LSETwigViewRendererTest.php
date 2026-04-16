@@ -40,5 +40,44 @@ class LSETwigViewRendererTest extends TestBaseClass
             $resolved
         );
     }
-}
 
+    public function testRenderQuestionThrowsClearExceptionWhenQuestionTemplateQuestionIsNull()
+    {
+        $questionTemplate = new \QuestionTemplate();
+        $questionTemplate->oQuestion = null;
+
+        $reflection = new \ReflectionClass(\QuestionTemplate::class);
+        $instanceProperty = $reflection->getProperty('instance');
+        $instanceProperty->setAccessible(true);
+        $instanceProperty->setValue(null, $questionTemplate);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('QuestionTemplate has no valid Question model');
+        $this->expectExceptionMessage('question template id');
+
+        \Yii::app()->twigRenderer->renderQuestion(
+            '/survey/questions/answer/longfreetext/answer',
+            ['bIsThemeEditor' => true]
+        );
+    }
+
+    public function testRenderQuestionThrowsClearExceptionWhenQuestionTemplateQuestionHasWrongType()
+    {
+        $questionTemplate = new \QuestionTemplate();
+        $questionTemplate->oQuestion = new \stdClass();
+
+        $reflection = new \ReflectionClass(\QuestionTemplate::class);
+        $instanceProperty = $reflection->getProperty('instance');
+        $instanceProperty->setAccessible(true);
+        $instanceProperty->setValue(null, $questionTemplate);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('QuestionTemplate has no valid Question model');
+        $this->expectExceptionMessage(\stdClass::class);
+
+        \Yii::app()->twigRenderer->renderQuestion(
+            '/survey/questions/answer/longfreetext/answer',
+            ['bIsThemeEditor' => true]
+        );
+    }
+}

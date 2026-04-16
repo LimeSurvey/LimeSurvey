@@ -305,7 +305,7 @@ window.addEventListener('message', function(event) {
            //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
 
-            $oQuestionModel = $oQuestionTemplate->oQuestion;
+            $oQuestionModel = $this->getValidatedQuestionModel($oQuestionTemplate);
             // Expose Question model's attributes as 'question'
             $aData['question'] = $oQuestionModel->attributes;
 
@@ -337,6 +337,40 @@ window.addEventListener('message', function(event) {
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
         }
+    }
+
+    /**
+     * @param mixed $oQuestionTemplate
+     * @return Question
+     */
+    private function getValidatedQuestionModel($oQuestionTemplate)
+    {
+        $questionTemplateId = (is_object($oQuestionTemplate) && isset($oQuestionTemplate->id))
+            ? (string) $oQuestionTemplate->id
+            : 'unknown';
+
+        if (!$oQuestionTemplate instanceof QuestionTemplate) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Expected QuestionTemplate instance in %s::renderQuestion(), got %s.',
+                    __CLASS__,
+                    is_object($oQuestionTemplate) ? get_class($oQuestionTemplate) : gettype($oQuestionTemplate)
+                )
+            );
+        }
+
+        $oQuestionModel = $oQuestionTemplate->oQuestion;
+        if (!$oQuestionModel instanceof Question) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'QuestionTemplate has no valid Question model; question template id: %s; received: %s.',
+                    $questionTemplateId,
+                    is_object($oQuestionModel) ? get_class($oQuestionModel) : gettype($oQuestionModel)
+                )
+            );
+        }
+
+        return $oQuestionModel;
     }
 
     /**
