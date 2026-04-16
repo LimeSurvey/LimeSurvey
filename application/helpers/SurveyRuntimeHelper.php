@@ -1089,30 +1089,11 @@ class SurveyRuntimeHelper
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
         $this->aSurveyInfo['move'] = $this->sMove ?? '';
 
-        if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
-            $this->setDefaultPrivacyText();
-        }
-
         if ($bDisplayFirstPage) {
             $_SESSION[$this->LEMsessid]['test'] = time();
             display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
-    }
-
-    /**
-     * Set default privacy string if empty
-     * @return void
-     */
-    private function setDefaultPrivacyText()
-    {
-        if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
-            $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
-        }
-        if (empty($this->aSurveyInfo['datasecurity_error'])) {
-            $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
-        }
-        $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'], $this->aSurveyInfo['sid']);
     }
 
     private function checkForDataSecurityAccepted()
@@ -1730,9 +1711,7 @@ class SurveyRuntimeHelper
         $aEnterTokenData['aEnterErrors']    = $aEnterErrors;
         $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
         if ($renderWay == 'main') {
-            /* setDefaultPrivacyText use Survey::replacePolicyLink, replacePolicyLink use twigRenderer breaking usage of token in twig */
             /* We need only for token form */
-            $this->setDefaultPrivacyText();
             $this->aSurveyInfo['datasecuritynotaccepted'] = App()->getRequest()->isPostRequest && !boolval(App()->getRequest()->getPost('datasecurity_accepted', false));
         }
         /* This function end if an form need to be shown */

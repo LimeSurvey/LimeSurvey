@@ -452,7 +452,6 @@ class RegisterController extends LSYii_Controller
 
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
         $aSurveyInfo  =  getsurveyinfo($iSurveyId, $sLanguage);
-        $aSurveyInfo = $this->updatePrivacyText($aSurveyInfo);
         if ($iTokenId !== null) {
             $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId, $iTokenId);
             $aData['registerSuccess'] = true;
@@ -476,22 +475,5 @@ class RegisterController extends LSYii_Controller
         }
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
-    }
-
-    /**
-     * Set default privacy string if empty
-     * @param [] $aSurveyInfo
-     * @return [] updated $aSurveyInfo
-     */
-    private function updatePrivacyText($aSurveyInfo)
-    {
-        if (empty($aSurveyInfo['datasecurity_notice_label'])) {
-            $aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
-        }
-        if (empty($aSurveyInfo['datasecurity_error'])) {
-            $aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
-        }
-        $aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($aSurveyInfo['datasecurity_notice_label'], $aSurveyInfo['sid']);
-        return $aSurveyInfo;
     }
 }
