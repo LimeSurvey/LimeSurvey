@@ -98,12 +98,3 @@ PrepareEditorScript(false, $this);
         <?php endforeach; ?>
     </div>
 </nav>
-
-<?php App()->getClientScript()->registerScript(
-    "EditSurveyDataSecurityTabs",
-    "
-$('#edit-survey-text-element-language-selection').find('a').on('shown.bs.tab', function(e){
-    try{ $(e.relatedTarget).find('textarea').ckeditor(); } catch(e){ }
-})",
-    LSYii_ClientScript::POS_POSTSCRIPT
-); ?>
