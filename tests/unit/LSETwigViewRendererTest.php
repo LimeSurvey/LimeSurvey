@@ -68,17 +68,19 @@ class LSETwigViewRendererTest extends TestBaseClass
         $method = $reflection->getMethod('resolveQuestionL10nLanguage');
         $method->setAccessible(true);
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Question has no translation');
-        $this->expectExceptionMessage('question id: 123');
-
-        $method->invoke(
-            $renderer,
-            ['fr' => new \stdClass()],
-            'de',
-            'en',
-            123
-        );
+        try {
+            $method->invoke(
+                $renderer,
+                ['fr' => new \stdClass()],
+                'de',
+                'en',
+                123
+            );
+            $this->fail('Expected InvalidArgumentException was not thrown.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertStringContainsString('Question has no translation', $e->getMessage());
+            $this->assertStringContainsString('question id: 123', $e->getMessage());
+        }
     }
 
     public function testRenderQuestionThrowsClearExceptionWhenQuestionTemplateQuestionIsNull()
@@ -91,14 +93,16 @@ class LSETwigViewRendererTest extends TestBaseClass
         $instanceProperty->setAccessible(true);
         $instanceProperty->setValue(null, $questionTemplate);
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('QuestionTemplate has no valid Question model');
-        $this->expectExceptionMessage('question template id');
-
-        \Yii::app()->twigRenderer->renderQuestion(
-            '/survey/questions/answer/longfreetext/answer',
-            ['bIsThemeEditor' => true]
-        );
+        try {
+            \Yii::app()->twigRenderer->renderQuestion(
+                '/survey/questions/answer/longfreetext/answer',
+                ['bIsThemeEditor' => true]
+            );
+            $this->fail('Expected InvalidArgumentException was not thrown.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertStringContainsString('QuestionTemplate has no valid Question model', $e->getMessage());
+            $this->assertStringContainsString('question template id', $e->getMessage());
+        }
     }
 
     public function testRenderQuestionThrowsClearExceptionWhenQuestionTemplateQuestionHasWrongType()
@@ -111,13 +115,15 @@ class LSETwigViewRendererTest extends TestBaseClass
         $instanceProperty->setAccessible(true);
         $instanceProperty->setValue(null, $questionTemplate);
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('QuestionTemplate has no valid Question model');
-        $this->expectExceptionMessage(\stdClass::class);
-
-        \Yii::app()->twigRenderer->renderQuestion(
-            '/survey/questions/answer/longfreetext/answer',
-            ['bIsThemeEditor' => true]
-        );
+        try {
+            \Yii::app()->twigRenderer->renderQuestion(
+                '/survey/questions/answer/longfreetext/answer',
+                ['bIsThemeEditor' => true]
+            );
+            $this->fail('Expected InvalidArgumentException was not thrown.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertStringContainsString('QuestionTemplate has no valid Question model', $e->getMessage());
+            $this->assertStringContainsString(\stdClass::class, $e->getMessage());
+        }
     }
 }
