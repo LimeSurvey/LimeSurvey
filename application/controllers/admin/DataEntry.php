@@ -420,7 +420,10 @@ class DataEntry extends SurveyCommonAction
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
             $sOldTimingsTable = str_replace("responses", "timings", str_replace("timings_", "", $sourceTable->tableName()));
-            $sNewTimingsTable = Yii::app()->db->tablePrefix . "timings_{$surveyid}";
+            if (strpos($sOldTimingsTable, Yii::app()->db->tablePrefix) === 0) {
+                $sOldTimingsTable = substr($sOldTimingsTable, strlen(Yii::app()->db->tablePrefix));
+            }
+            $sNewTimingsTable = "timings_{$surveyid}";
             $iRecordCountT = null;
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
                 // Import timings
