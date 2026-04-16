@@ -15,6 +15,7 @@
     This is the registration form for participant registration on a survey.
 
 #}
+
 <div class="{{ aSurveyInfo.class.registerform }} row" {{ aSurveyInfo.attr.registerform }}>
     {{ C.Html.form(aSurveyInfo.sRegisterFormUrl,'post',({'id' : 'limesurvey', 'role' : 'form', 'class' : 'form'})) }}
 
@@ -81,11 +82,6 @@
         <div class='{{ aSurveyInfo.class.registermandatoryinfo }}' {{ aSurveyInfo.attr.registermandatoryinfo }} >
                 {{ gT('Fields marked with an asterisk are mandatory.')}}
         </div>
-
-        {# Survey policy #}
-        {% if ( aSurveyInfo.showregisterpolicy == 'Y' ) %}
-            {{include( './subviews/registration/register_privacy.twig')}}
-        {% endif %}
 
         {# Submit register button #}
         <div class='{{ aSurveyInfo.class.registersave }} mb-3' {{ aSurveyInfo.attr.registersave }} >

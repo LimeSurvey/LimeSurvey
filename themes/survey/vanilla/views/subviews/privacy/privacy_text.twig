@@ -42,7 +42,7 @@
 </div>
 <script>
 $(function() {
-    $("#datasecurity_accepted").closest("form").find("button[type='submit']").on("click", function() {
+    $("#ls-button-submit").on("click", function() {
         if(!$('#datasecurity_accepted').prop('checked')) {
             /* dynamic show error */
             $('#datasecurity_error').removeClass("ls-js-hidden");

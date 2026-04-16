@@ -96,10 +96,6 @@
                 </div>
             {% endif %}
 
-            {% if ( aSurveyInfo.showtokenpolicy == 'Y' ) %}
-                {{include( './subviews/logincomponents/token_privacy.twig')}}
-            {% endif %}
-
             {{ aSurveyInfo.aForm.hiddenFields }}
 
             <div class='{{ aSurveyInfo.class.maincolformdivc }} ' {{ aSurveyInfo.attr.maincolformdivc }}>
