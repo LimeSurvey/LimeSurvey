@@ -5639,7 +5639,9 @@ function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuest
                 $qcode = $parentTitle . '_comment.shown';
             } else {
                 // Any other suffix is a subquestion code (e.g. SQ001, F1, 1, ls1)
-                $qcode = $parentTitle . '_' . $resolvedSuffix . '.shown';
+                // If the suffix already starts with '_' (e.g. "_filecount"), don't add another one
+                $separator = str_starts_with($resolvedSuffix, '_') ? '' : '_';
+                $qcode = $parentTitle . $separator . $resolvedSuffix . '.shown';
             }
 
             return $hasBraces ? '{' . $qcode . '}' : $qcode;
