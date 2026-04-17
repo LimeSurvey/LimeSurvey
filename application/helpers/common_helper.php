@@ -5573,6 +5573,7 @@ function csvEscape($string)
  * - {INSERTANS:554233X11X1comment} → {G01Q02_comment.shown}  (comment field)
  * - {INSERTANS:554233X11X1SQ001}   → {G01Q02_SQ001.shown}    (subquestion suffix)
  * - {INSERTANS:136212X36X10921}    → {qArray5Point_1.shown}   (numeric suffix, QID=1092)
+ * - {INSERTANS:136212X36X1098money#0} → {qArrayDualScale_money_0.shown} (dual scale, # → _)
  *
  * @param string $text The text containing INSERTANS tags
  * @param array $questions The list of all question objects (parent and subquestions)
@@ -5626,6 +5627,9 @@ function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuest
             if ($parentTitle === null) {
                 return $matches[0]; // QID not found – leave unchanged
             }
+
+            // Dual-scale arrays use '#' as separator (e.g. "money#0"), convert to '_'
+            $resolvedSuffix = str_replace('#', '_', $resolvedSuffix);
 
             if ($resolvedSuffix === '') {
                 $qcode = $parentTitle . '.shown';
