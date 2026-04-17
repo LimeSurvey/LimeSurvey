@@ -1066,7 +1066,6 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
-        try {
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
         $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
         $leftSeparator = $rightSeparator = "`";
@@ -1424,9 +1423,5 @@ class Update_700 extends DatabaseUpdateBase
         $this->db->createCommand($this->deleteRankingAnswers())->execute();
         $this->db->createCommand($this->deleteTranslatedRankingAnswers())->execute();
         $this->db->createCommand($this->updateRankingAnswerOrderAttribute())->execute();
-
-        } catch (\Exception $ex) {
-            echo $ex->getTraceAsString();
-        }
     }
 }
