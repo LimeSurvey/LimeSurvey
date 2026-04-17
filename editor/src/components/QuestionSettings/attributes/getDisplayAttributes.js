@@ -600,6 +600,7 @@ export const getDisplayAttributes = () => ({
   PLACEHOLDER_ANSWER: {
     component: Input,
     attributePath: 'attributes.placeholder',
+    languageBased: true,
     props: {
       dataTestId: 'placeholder-answer',
       labelText: t('Placeholder answer'),
@@ -619,6 +620,7 @@ export const getDisplayAttributes = () => ({
   DROPDOWN_PREFIX_SUFFIX: {
     component: Input,
     attributePath: 'attributes.dropdown_prepostfix',
+    languageBased: true,
     props: {
       dataTestId: 'dropdown-prefix-suffix',
       labelText: t('Dropdown prefix/suffix'),
