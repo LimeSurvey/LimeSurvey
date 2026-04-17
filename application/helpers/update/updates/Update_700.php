@@ -1111,6 +1111,7 @@ class Update_700 extends DatabaseUpdateBase
             $scripts[$timingsTable['old_name']]['columns'] = $this->db->createCommand($this->getFieldsFromTableScript($timingsTable['old_name']))->queryAll();
         }
         $fields = $this->db->createCommand($this->scriptMapping['fields'])->queryAll();
+        echo "I AM HERE";
         $fieldMap = [];
         foreach ($fields as $field) {
             $questions = [];
