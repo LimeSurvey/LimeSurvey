@@ -1066,8 +1066,11 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
+        echo "I AM HERE1";
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
+        echo "I AM HERE2";
         $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
+        echo "I AM HERE3";
         $leftSeparator = $rightSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
@@ -1075,8 +1078,9 @@ class Update_700 extends DatabaseUpdateBase
             $leftSeparator = "[";
             $rightSeparator = "]";
         }
+        echo "I AM HERE4";
         $this->doPreparations();
-        echo "I AM HERE";
+        echo "I AM HERE5";
         $this->scriptMapping = [
             'responses' => $this->getResponsesScript(),
             'timings' => $this->getTimingScript(),
