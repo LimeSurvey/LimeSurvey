@@ -1084,6 +1084,7 @@ class Update_700 extends DatabaseUpdateBase
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
 
+        echo "I AM HERE";
         foreach ($responsesTables as $responsesTable) {
             if (((strpos($responsesTable['old_name'], "old_") === false) && (strpos($responsesTable['old_name'], "timing") === false))) {
                 $parts = explode("_", $responsesTable['old_name']);
@@ -1098,7 +1099,6 @@ class Update_700 extends DatabaseUpdateBase
             $scripts[$responsesTable['old_name']]['DROP'] = "DROP TABLE {$responsesTable['old_name']}";
             $scripts[$responsesTable['old_name']]['columns'] = $this->db->createCommand($this->getFieldsFromTableScript($responsesTable['old_name']))->queryAll();
         }
-        echo "I AM HERE";
         $timingsTables = $this->db->createCommand($this->scriptMapping['timings'])->queryAll();
         foreach ($timingsTables as $timingsTable) {
             $scripts[$timingsTable['old_name']] = [
