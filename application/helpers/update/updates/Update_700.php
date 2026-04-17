@@ -1076,13 +1076,13 @@ class Update_700 extends DatabaseUpdateBase
             $rightSeparator = "]";
         }
         $this->doPreparations();
+        echo "I AM HERE";
         $this->scriptMapping = [
             'responses' => $this->getResponsesScript(),
             'timings' => $this->getTimingScript(),
             'fields' => $this->getFieldsScript()
         ];
         $scripts = [];
-        echo "I AM HERE";
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
 
         foreach ($responsesTables as $responsesTable) {
