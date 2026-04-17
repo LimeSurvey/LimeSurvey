@@ -1069,7 +1069,11 @@ class Update_700 extends DatabaseUpdateBase
         echo "I AM HERE1";
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
         echo "I AM HERE2";
-        $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
+        try {
+            $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
+        } catch (\Exception $ex) {
+            echo $ex->getMessage();exit;
+        }
         echo "I AM HERE3";
         $leftSeparator = $rightSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
