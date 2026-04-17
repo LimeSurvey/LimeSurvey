@@ -380,6 +380,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     {
         return $this->validateAttachments($this->attachments, $exist);
     }
+
     /**
      * Get valid attachements in array
      * @param string $attachement the attahcment string to be filtered
@@ -415,6 +416,28 @@ class SurveyLanguageSetting extends LSActiveRecord
             }
         }
         return $validAttachements;
+    }
+
+    /**
+     * get if template have all attachement valid
+     * @param string $template the template
+     * @return boolean
+     **/
+    public function hasAllAttachments($template)
+    {
+        $attachments = $this->getValidAttachments(false);
+        if (empty($attachments) || empty($attachments[$template])) {
+            return true;
+        }
+        foreach ($attachments[$template] as $attachment) {
+            if (!isset($attachment['url'])) {
+                continue;
+            }
+            if (!$this->getAttachmentFileExist($attachment['url'])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
