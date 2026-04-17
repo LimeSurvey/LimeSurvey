@@ -1067,11 +1067,8 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
-        echo "I AM HERE1";
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
-        echo "I AM HERE2";
         $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
-        echo "I AM HERE3";
         $leftSeparator = $rightSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
@@ -1080,7 +1077,6 @@ class Update_700 extends DatabaseUpdateBase
             $rightSeparator = "]";
         }
         $this->doPreparations();
-        echo "I AM HERE4";
         $this->scriptMapping = [
             'responses' => $this->getResponsesScript(),
             'timings' => $this->getTimingScript(),
@@ -1088,7 +1084,6 @@ class Update_700 extends DatabaseUpdateBase
         ];
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
-        echo "I AM HERE5";
 
         foreach ($responsesTables as $responsesTable) {
             if (((strpos($responsesTable['old_name'], "old_") === false) && (strpos($responsesTable['old_name'], "timing") === false))) {
@@ -1104,7 +1099,6 @@ class Update_700 extends DatabaseUpdateBase
             $scripts[$responsesTable['old_name']]['DROP'] = "DROP TABLE {$responsesTable['old_name']}";
             $scripts[$responsesTable['old_name']]['columns'] = $this->db->createCommand($this->getFieldsFromTableScript($responsesTable['old_name']))->queryAll();
         }
-        echo "I AM HERE6";
         $timingsTables = $this->db->createCommand($this->scriptMapping['timings'])->queryAll();
         foreach ($timingsTables as $timingsTable) {
             $scripts[$timingsTable['old_name']] = [
@@ -1117,7 +1111,6 @@ class Update_700 extends DatabaseUpdateBase
             $scripts[$timingsTable['old_name']]['DROP'] = "DROP TABLE {$timingsTable['old_name']}";
             $scripts[$timingsTable['old_name']]['columns'] = $this->db->createCommand($this->getFieldsFromTableScript($timingsTable['old_name']))->queryAll();
         }
-        echo "I AM HERE7";
         $fields = $this->db->createCommand($this->scriptMapping['fields'])->queryAll();
         $fieldMap = [];
         foreach ($fields as $field) {
@@ -1165,6 +1158,9 @@ class Update_700 extends DatabaseUpdateBase
                 $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
             }
             $scripts[$TABLE_NAME]['handled'] = true;
+            if (!isset($scripts[$TABLE_NAME]['new_name'])) {
+                continue;
+            }
             $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
             foreach ($fields as $oldField => $newField) {
                 $scripts[$TABLE_NAME]['CREATE'] = str_replace($leftSeparator . "{$oldField}" . $rightSeparator, $leftSeparator . "{$newField}" . $rightSeparator, $scripts[$TABLE_NAME]['CREATE']);
