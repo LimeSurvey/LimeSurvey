@@ -7,18 +7,10 @@ import LOG from '../components/lslog';
 const globalWindowMethods = {
     // TODO: It seems below two functions are not used and can be deleted. Please confirm.
     renderBootstrapSwitch : () => {
-        try{
-            if(!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
-                $('[data-is-bootstrap-switch]').bootstrapSwitch({
-                    onInit: () => LOG.log("BootstrapSwitch Initialized")
-                });
-            }
-        } catch(e) { LOG.error(e); }
+        LOG.warn('LS.renderBootstrapSwitch is deprecated.');
     },
     unrenderBootstrapSwitch : () => {
-        try{
-            $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
-        } catch(e) { LOG.error(e); }
+        LOG.warn('LS.unrenderBootstrapSwitch is deprecated.');
     },
     // ==================================================================================
     validatefilename: (form, strmessage) => {

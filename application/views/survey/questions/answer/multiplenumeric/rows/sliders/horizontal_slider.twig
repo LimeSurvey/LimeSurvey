@@ -6,7 +6,7 @@
                     {{ slider_reversed == 'false' ? slider_min : slider_max }}
                 </div>
             {% endif %}
-            <div class="slider-container slider-{{ slider_orientation }} ls-input-group col-8 col-md-8 flex-grow-1" id="answer{{ myfname }}slid-container">
+            <div role="none" class="slider-container slider-{{ slider_orientation }} ls-input-group col-8 col-md-8 flex-grow-1" id="answer{{ myfname }}slid-container">
                 {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
                     'class': 'form-control answer-item numeric-item d-none',
                     'id' : "answer" ~ myfname ~ "slid",
@@ -24,12 +24,12 @@
             {% endif %}
             {% if sliderleft is not empty %}
                 <div class='col-6 slider-left'>
-                    {{ sliderleft }}
+                    {{ processString(sliderleft) }}
                 </div>
             {% endif %}
             {% if sliderright is not empty %}
                 <div class='col-6 slider-right text-end'>
-                    {{ sliderright }}
+                    {{ processString(sliderright) }}
                 </div>
             {% endif %}
         </div>

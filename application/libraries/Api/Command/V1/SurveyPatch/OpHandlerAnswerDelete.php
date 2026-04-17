@@ -80,7 +80,7 @@ class OpHandlerAnswerDelete implements OpHandlerInterface
         $validationData = $this->validateSurveyIdFromContext($op, []);
         $validationData = $this->validateEntityId($op, $validationData);
         return $this->getValidationReturn(
-            gt('Could not delete answer option'),
+            gT('Could not delete answer option'),
             $validationData,
             $op
         );

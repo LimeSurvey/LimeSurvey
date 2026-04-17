@@ -171,7 +171,7 @@ class SettingsWidget extends CWidget
             throw new CHttpException(405, 'invalid settings type');
         }
         $wrapperCss = '';
-        if ($metaData['type'] === 'radio' || 'checkbox') {
+        if ($metaData['type'] === 'radio') {
             $wrapperCss = "align-items-center";
         }
 
@@ -648,6 +648,17 @@ class SettingsWidget extends CWidget
                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 )
             ), true);
+    }
+
+    public function renderSeparator($name, array $metaData, $form = null)
+    {
+        $value = CHtml::tag('hr');
+        $title = $metaData['title'] ?? '';
+        if (!empty($title)) {
+            $value .= CHtml::tag('h1', ['class' => 'col-md-4 text-end'], $title);
+        }
+        $htmlOptions = $this->htmlOptions($metaData);
+        return CHtml::tag('div', $htmlOptions, $value);
     }
 
     /* Return htmlOptions for an input od seting

@@ -3,6 +3,7 @@
 namespace LimeSurvey\Api\Command\V1\Transformer\Input;
 
 use LimeSurvey\Api\Transformer\Transformer;
+use LimeSurvey\Models\Services\SurveyUseCaptcha;
 
 class TransformerInputSurvey extends Transformer
 {
@@ -24,12 +25,22 @@ class TransformerInputSurvey extends Transformer
             'adminEmail' => ['key' => 'adminemail', 'filter' => 'trim'],
             'expires' => [
                 'date' => true,
-                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+                'formatter' => [
+                    'dateTimeToJson' => [
+                        'revert' => true,
+                        'clearWithEmptyString' => true
+                    ]
+                ]
             ],
             'startDate' => [
                 'key' => 'startdate',
                 'date' => true,
-                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+                'formatter' => [
+                    'dateTimeToJson' => [
+                        'revert' => true,
+                        'clearWithEmptyString' => true
+                    ]
+                ]
             ],
             'anonymized' => ['formatter' => ['ynToBool' => ['revert' => true]]],
             'saveTimings' => [
@@ -37,8 +48,7 @@ class TransformerInputSurvey extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'additionalLanguages' => 'additional_languages',
-            'dateStamp' => [
-                'key' => 'datestamp',
+            'datestamp' => [
                 'filter' => 'trim',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
@@ -48,6 +58,10 @@ class TransformerInputSurvey extends Transformer
             ],
             'allowRegister' => [
                 'key' => 'allowregister',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'htmlEmail' => [
+                'key' => 'htmlemail',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'allowSave' => [
@@ -117,6 +131,15 @@ class TransformerInputSurvey extends Transformer
                     '1', '2', '3', '4', '5', '6'
                 ]
             ],
+            'useCaptchaAccess' => [
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'useCaptchaRegistration' => [
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
+            'useCaptchaSaveLoad' => [
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'useTokens' => [
                 'key' => 'usetokens',
                 'formatter' => ['ynToBool' => ['revert' => true]]
@@ -134,16 +157,12 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'showxquestions',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'showGroupInfo' => [
-                'key' => 'showgroupinfo', 'range' => ['B', 'N', 'D', 'X', 'I']
-            ],
+            'showGroupInfo' => 'showgroupinfo',
             'showNoAnswer' => [
                 'key' => 'shownoanswer',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
-            'showQNumCode' => [
-                'key' => 'showqnumcode', 'range' => ['B', 'N', 'C', 'X', 'I']
-            ],
+            'showQNumCode' => 'showqnumcode',
             'bounceTime' => [
                 'key' => 'bouncetime', 'type' => 'int', 'numerical'
             ],
@@ -177,7 +196,7 @@ class TransformerInputSurvey extends Transformer
             ],
             'allowedItAfterCompletion' => [
                 'key' => 'alloweditaftercompletion',
-                'formatter' => ['dateTimeToJson' => ['revert' => true]]
+                'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'googleAnalyticsStyle' => [
                 'key' => 'googleanalyticsstyle',
@@ -196,5 +215,95 @@ class TransformerInputSurvey extends Transformer
             'template' => true,
             'format' => ['range' => ['G', 'S', 'A', 'I']]
         ]);
+    }
+
+    public function transform($data, $options = [])
+    {
+        $survey = parent::transform($data);
+        if (is_array($survey)) {
+            if (array_key_exists('showgroupinfo', $survey)) {
+                $survey['showgroupinfo'] = $this->convertShowGroupInfo(
+                    $survey['showgroupinfo']
+                );
+            }
+            if (array_key_exists('showqnumcode', $survey)) {
+                $survey['showqnumcode'] = $this->convertShowQNumCode(
+                    $survey['showqnumcode']
+                );
+            }
+            //useCaptcha
+            $useCaptchaExists = (
+                array_key_exists('useCaptchaAccess', $survey) ||
+                array_key_exists('useCaptchaRegistration', $survey) ||
+                array_key_exists('useCaptchaSaveLoad', $survey)
+                );
+            if ($useCaptchaExists && !empty($options)) {
+                $survey['usecaptcha'] = $this->transformCaptcha(
+                    $survey,
+                    $options
+                );
+            }
+        }
+        return $survey;
+    }
+
+    /**
+     * Converts incoming values for showGroupName and showGroupDescription
+     * into a single value for the 'showgroupinfo' prop.
+     * @param array $showGroupInfoValueArray
+     * @return string
+     */
+    private function convertShowGroupInfo($showGroupInfoValueArray)
+    {
+        $showGroupName = $showGroupInfoValueArray['showGroupName'];
+        $showGroupDescription = $showGroupInfoValueArray['showGroupDescription'];
+        if ($showGroupName && $showGroupDescription) {
+            $combinedValue = 'B';
+        } elseif ($showGroupName) {  // implies $showGroupName is true and $showGroupDescription is false
+            $combinedValue = 'N';
+        } elseif ($showGroupDescription) {  // implies $showGroupName is false and $showGroupDescription is true
+            $combinedValue = 'D';
+        } else {
+            $combinedValue = 'X';  // both are false
+        }
+
+        return $combinedValue;
+    }
+
+    /**
+     * Converts incoming values for showNumber and showCode
+     * into a single value for the 'showqnumcode' prop.
+     * @param array $showQNumCodeValueArray
+     * @return string
+     */
+    private function convertShowQNumCode($showQNumCodeValueArray)
+    {
+        $showNumber = $showQNumCodeValueArray['showNumber'];
+        $showCode = $showQNumCodeValueArray['showCode'];
+        if ($showNumber && $showCode) {
+            $combinedValue = 'B';
+        } elseif ($showNumber) {
+            $combinedValue = 'N';
+        } elseif ($showCode) {
+            $combinedValue = 'C';
+        } else {
+            $combinedValue = 'X';
+        }
+
+        return $combinedValue;
+    }
+
+    /**
+     * Transforms the three values for useCaptcha into one.
+     *
+     * @param array $mappedData
+     * @param array $options
+     * @return string
+     */
+    private function transformCaptcha($mappedData, $options)
+    {
+        $surveyUseCaptchaService = new SurveyUseCaptcha($options['surveyID'], null);
+
+        return $surveyUseCaptchaService->reCalculateUseCaptcha($mappedData);
     }
 }

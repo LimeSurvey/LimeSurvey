@@ -139,9 +139,6 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         }
 
         var addition = "";
-        if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
-            addition = cleansedValue.split("").pop();
-        }
 
         var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/); /* 1.0 : keep .0 */
         var matchMustGetZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)([0-9]*)$/); /* Maybe have 0 */
@@ -3085,6 +3082,13 @@ function substr (str, start, len) {
     // *       returns 7: '\uD801\uDC00z'
     // Add: (?) Use unicode.runtime_encoding (e.g., with string wrapped in "binary" or "Binary" class) to
     // allow access of binary (see file_get_contents()) by: charCodeAt(x) & 0xFF (see https://developer.mozilla.org/En/Using_XMLHttpRequest ) or require conversion first?
+
+    // ensure that start/len are integers (even when strings are given)
+    if (!Number.isInteger(Number(start)) || !Number.isInteger(Number(len))) {
+       return false;
+    }
+
+
     var i = 0,
         allBMP = true,
         es = 0,

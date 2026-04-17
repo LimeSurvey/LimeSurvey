@@ -51,7 +51,7 @@ class Uri implements UriInterface, \JsonSerializable
      * @see https://datatracker.ietf.org/doc/html/rfc3986#section-2.2
      */
     private const CHAR_SUB_DELIMS = '!\$&\'\(\)\*\+,;=';
-    private const QUERY_SEPARATORS_REPLACEMENT = ['=' => '%3D', '&' => '%26'];
+    private const QUERY_SEPARATORS_REPLACEMENT = ['=' => '%3D', '&' => '%26', '+' => '%2B'];
 
     /** @var string Uri scheme. */
     private $scheme = '';
@@ -107,7 +107,7 @@ class Uri implements UriInterface, \JsonSerializable
     {
         // If IPv6
         $prefix = '';
-        if (preg_match('%^(.*://\[[0-9:a-f]+\])(.*?)$%', $url, $matches)) {
+        if (preg_match('%^(.*://\[[0-9:a-fA-F]+\])(.*?)$%', $url, $matches)) {
             /** @var array{0:string, 1:string, 2:string} $matches */
             $prefix = $matches[1];
             $url = $matches[2];
@@ -279,7 +279,7 @@ class Uri implements UriInterface, \JsonSerializable
      *
      * @see https://datatracker.ietf.org/doc/html/rfc3986#section-4.4
      */
-    public static function isSameDocumentReference(UriInterface $uri, UriInterface $base = null): bool
+    public static function isSameDocumentReference(UriInterface $uri, ?UriInterface $base = null): bool
     {
         if ($base !== null) {
             $uri = UriResolver::resolve($base, $uri);
@@ -661,7 +661,8 @@ class Uri implements UriInterface, \JsonSerializable
 
     private static function generateQueryString(string $key, ?string $value): string
     {
-        // Query string separators ("=", "&") within the key or value need to be encoded
+        // Query string separators ("=", "&") and literal plus signs ("+") within the
+        // key or value need to be encoded
         // (while preventing double-encoding) before setting the query string. All other
         // chars that need percent-encoding will be encoded by withQuery().
         $queryString = strtr($key, self::QUERY_SEPARATORS_REPLACEMENT);

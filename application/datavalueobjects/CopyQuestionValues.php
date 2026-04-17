@@ -29,6 +29,20 @@ class CopyQuestionValues
         /** @var array<string,CopyQuestionTextValues> the new question texts */
         private $questionL10nData;
 
+        /** @var int  the surveyId from which the question is copied*/
+        private $sourceSurveyId;
+
+
+    public function getSourceSurveyId(): int
+    {
+        return $this->sourceSurveyId;
+    }
+
+    public function setSourceSurveyId(int $sourceSurveyId): void
+    {
+        $this->sourceSurveyId = $sourceSurveyId;
+    }
+
     /**
      * @return int
      */

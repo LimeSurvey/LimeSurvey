@@ -208,7 +208,7 @@
        }
 
        $C_White =$this->AllocateColor($this->Picture,255,255,255);
-       imagefilledrectangle($this->Picture,0,0,$XSize,$YSize,$C_White);
+       imagefilledrectangle($this->Picture,0,0,intval($XSize),intval($YSize),$C_White);
        imagecolortransparent($this->Picture,$C_White);
 
        $this->setFontProperties("tahoma.ttf",8);
@@ -348,7 +348,7 @@
           { $Y2 = $this->GArea_Y1 + $X2 - $this->GArea_X2 +1; $X2 = $this->GArea_X2 - 1; }
 // * Fixed in 1.27 *         { $X2 = $this->GArea_X2 - 1; $Y2 = $this->GArea_Y2 - ($this->GArea_X2 - $X1); }
 
-         imageline($this->Picture,$X1,$Y1,$X2,$Y2+1,$LineColor);
+         imageline($this->Picture,intval($X1),intval($Y1),intval($X2),intval($Y2+1),$LineColor);
         }
       }
     }
@@ -560,12 +560,12 @@
 
        if ( $RightScale )
         {
-         imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X2+10,$YPos+($this->FontSize/2),$C_TextColor,$this->FontName,$Value);
+         imagettftext($this->Picture,$this->FontSize,0,intval($this->GArea_X2+10),intval($YPos+($this->FontSize/2)),$C_TextColor,$this->FontName,$Value);
          if ( $XMin < $this->GArea_X2+15+$TextWidth || $XMin == NULL ) { $XMin = $this->GArea_X2+15+$TextWidth; }
         }
        else
         {
-         imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X1-10-$TextWidth,$YPos+($this->FontSize/2),$C_TextColor,$this->FontName,$Value);
+         imagettftext($this->Picture,$this->FontSize,0,intval($this->GArea_X1-10-$TextWidth),intval($YPos+($this->FontSize/2)),$C_TextColor,$this->FontName,$Value);
          if ( $XMin > $this->GArea_X1-10-$TextWidth || $XMin == NULL ) { $XMin = $this->GArea_X1-10-$TextWidth; }
         }
 
@@ -580,9 +580,9 @@
        $TextTop    = (($this->GArea_Y2 - $this->GArea_Y1) / 2) + $this->GArea_Y1 + ($TextHeight/2);
 
        if ( $RightScale )
-        imagettftext($this->Picture,$this->FontSize,90,$XMin+$this->FontSize,$TextTop,$C_TextColor,$this->FontName,$DataDescription["Axis"]["Y"]);
+        imagettftext($this->Picture,$this->FontSize,90,intval($XMin+$this->FontSize),intval($TextTop),$C_TextColor,$this->FontName,$DataDescription["Axis"]["Y"]);
        else
-        imagettftext($this->Picture,$this->FontSize,90,$XMin-$this->FontSize,$TextTop,$C_TextColor,$this->FontName,$DataDescription["Axis"]["Y"]);
+        imagettftext($this->Picture,$this->FontSize,90,intval($XMin-$this->FontSize),intval($TextTop),$C_TextColor,$this->FontName,$DataDescription["Axis"]["Y"]);
       }
 
      /* Horizontal Axis */
@@ -612,15 +612,15 @@
          if ( $Angle == 0 )
           {
            $YPos = $this->GArea_Y2+18;
-           imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-floor($TextWidth/2),$YPos,$C_TextColor,$this->FontName,$Value);
+           imagettftext($this->Picture,$this->FontSize,$Angle,intval(floor($XPos)-floor($TextWidth/2)),intval($YPos),$C_TextColor,$this->FontName,$Value);
           }
          else
           {
            $YPos = $this->GArea_Y2+10+$TextHeight;
            if ( $Angle <= 90 )
-            imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
+            imagettftext($this->Picture,$this->FontSize,$Angle,intval(floor($XPos)-$TextWidth+5),intval($YPos),$C_TextColor,$this->FontName,$Value);
            else
-            imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)+$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
+            imagettftext($this->Picture,$this->FontSize,$Angle,intval(floor($XPos)+$TextWidth+5),intval($YPos),$C_TextColor,$this->FontName,$Value);
           }
          if ( $YMax < $YPos || $YMax == NULL ) { $YMax = $YPos; }
         }
@@ -635,7 +635,7 @@
        $Position   = imageftbbox($this->FontSize,90,$this->FontName,$DataDescription["Axis"]["X"]);
        $TextWidth  = abs($Position[2])+abs($Position[0]);
        $TextLeft   = (($this->GArea_X2 - $this->GArea_X1) / 2) + $this->GArea_X1 + ($TextWidth/2);
-       imagettftext($this->Picture,$this->FontSize,0,$TextLeft,$YMax+$this->FontSize+5,$C_TextColor,$this->FontName,$DataDescription["Axis"]["X"]);
+       imagettftext($this->Picture,$this->FontSize,0,intval($TextLeft),intval($YMax+$this->FontSize+5),$C_TextColor,$this->FontName,$DataDescription["Axis"]["X"]);
       }
     }
 
@@ -747,7 +747,7 @@
 
        $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Value);
        $TextWidth = $Position[2]-$Position[0];
-       imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X1-10-$TextWidth,$YPos+($this->FontSize/2),$C_TextColor,$this->FontName,$Value);
+       imagettftext($this->Picture,$this->FontSize,0,intval($this->GArea_X1-10-$TextWidth),intval($YPos+($this->FontSize/2)),$C_TextColor,$this->FontName,$Value);
 
        if ( $XMin > $this->GArea_X1-10-$TextWidth || $XMin == NULL ) { $XMin = $this->GArea_X1-10-$TextWidth; }
 
@@ -858,15 +858,15 @@
        if ( $Angle == 0 )
         {
          $YPos = $this->GArea_Y2+18;
-         imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-floor($TextWidth/2),$YPos,$C_TextColor,$this->FontName,$Value);
+         imagettftext($this->Picture,$this->FontSize,$Angle,intval(floor($XPos)-floor($TextWidth/2)),intval($YPos),$C_TextColor,$this->FontName,$Value);
         }
        else
         {
          $YPos = $this->GArea_Y2+10+$TextHeight;
          if ( $Angle <= 90 )
-          imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
+          imagettftext($this->Picture,$this->FontSize,$Angle,intval(floor($XPos)-$TextWidth+5),intval($YPos),$C_TextColor,$this->FontName,$Value);
          else
-          imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)+$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
+          imagettftext($this->Picture,$this->FontSize,$Angle,intval(floor($XPos)+$TextWidth+5),intval($YPos),$C_TextColor,$this->FontName,$Value);
          }
 
        if ( $YMax < $YPos || $YMax == NULL ) { $YMax = $YPos; }
@@ -880,7 +880,7 @@
        $Position   = imageftbbox($this->FontSize,90,$this->FontName,$DataDescription["Axis"]["Y"]);
        $TextHeight = abs($Position[1])+abs($Position[3]);
        $TextTop    = (($this->GArea_Y2 - $this->GArea_Y1) / 2) + $this->GArea_Y1 + ($TextHeight/2);
-       imagettftext($this->Picture,$this->FontSize,90,$XMin-$this->FontSize,$TextTop,$C_TextColor,$this->FontName,$DataDescription["Axis"]["Y"]);
+       imagettftext($this->Picture,$this->FontSize,90,intval($XMin-$this->FontSize),intval($TextTop),$C_TextColor,$this->FontName,$DataDescription["Axis"]["Y"]);
       }
 
      /* Write the X Axis caption if set */ 
@@ -889,7 +889,7 @@
        $Position   = imageftbbox($this->FontSize,90,$this->FontName,$DataDescription["Axis"]["X"]);
        $TextWidth  = abs($Position[2])+abs($Position[0]);
        $TextLeft   = (($this->GArea_X2 - $this->GArea_X1) / 2) + $this->GArea_X1 + ($TextWidth/2);
-       imagettftext($this->Picture,$this->FontSize,0,$TextLeft,$YMax+$this->FontSize+5,$C_TextColor,$this->FontName,$DataDescription["Axis"]["X"]);
+       imagettftext($this->Picture,$this->FontSize,0,intval($TextLeft),intval($YMax+$this->FontSize+5),$C_TextColor,$this->FontName,$DataDescription["Axis"]["X"]);
       }
     }
 
@@ -904,7 +904,7 @@
 
        $this->Layers[0] = imagecreatetruecolor($LayerWidth,$LayerHeight);
        $C_White         =$this->AllocateColor($this->Layers[0],255,255,255);
-       imagefilledrectangle($this->Layers[0],0,0,$LayerWidth,$LayerHeight,$C_White);
+       imagefilledrectangle($this->Layers[0],0,0,intval($LayerWidth),intval($LayerHeight),$C_White);
        imagecolortransparent($this->Layers[0],$C_White);
 
        $C_Rectangle =$this->AllocateColor($this->Layers[0],250,250,250);
@@ -920,7 +920,7 @@
 
          if ( $i % 2 == 0 )
           {
-           imagefilledrectangle($this->Layers[0],1,$YPos,$LayerWidth-1,$LastY,$C_Rectangle);
+           imagefilledrectangle($this->Layers[0],1,intval($YPos),intval($LayerWidth-1),intval($LastY),$C_Rectangle);
           }
         }
        imagecopymerge($this->Picture,$this->Layers[0],$this->GArea_X1,$this->GArea_Y1,0,0,$LayerWidth,$LayerHeight,$Alpha);
@@ -1010,7 +1010,7 @@
      foreach($DataDescription["Description"] as $Key => $Value)
       {
        $this->drawFilledRoundedRectangle($XPos+10,$YPos+$YOffset-4,$XPos+14,$YPos+$YOffset-4,2,$this->Palette[$ID]["R"],$this->Palette[$ID]["G"],$this->Palette[$ID]["B"]);
-       @imagettftext($this->Picture,$this->FontSize,0,$XPos+22,$YPos+$YOffset,$C_TextColor,$this->FontName,$Value);
+       @imagettftext($this->Picture,$this->FontSize,0,intval($XPos+22),intval($YPos+$YOffset),$C_TextColor,$this->FontName,$Value);
 
        $Position   = @imageftbbox($this->FontSize,0,$this->FontName,$Value);
        $TextHeight = $Position[1]-$Position[7];
@@ -1058,7 +1058,7 @@
        $TextHeight = $Position[1]-$Position[7];
        $this->drawFilledRectangle($XPos+10,$YPos+$YOffset-6,$XPos+14,$YPos+$YOffset-2,$this->Palette[$ID]["R"],$this->Palette[$ID]["G"],$this->Palette[$ID]["B"]);
 
-       @imagettftext($this->Picture,$this->FontSize,0,$XPos+22,$YPos+$YOffset,$C_TextColor,$this->FontName,$Value2);
+       @imagettftext($this->Picture,$this->FontSize,0,intval($XPos+22),intval($YPos+$YOffset),$C_TextColor,$this->FontName,$Value2);
        $YOffset = $YOffset + $TextHeight + 4;
        $ID++;
       }
@@ -1086,10 +1086,10 @@
      if ( $Shadow )
       {
        $C_ShadowColor = $this->AllocateColor($this->Picture,$this->ShadowRColor,$this->ShadowGColor,$this->ShadowBColor);
-       imagettftext($this->Picture,$this->FontSize,0,$XPos+$this->ShadowXDistance,$YPos+$this->ShadowYDistance,$C_ShadowColor,$this->FontName,$Value);     
+       imagettftext($this->Picture,$this->FontSize,0,intval($XPos+$this->ShadowXDistance),intval($YPos+$this->ShadowYDistance),$C_ShadowColor,$this->FontName,$Value);     
       }
 
-     imagettftext($this->Picture,$this->FontSize,0,$XPos,$YPos,$C_TextColor,$this->FontName,$Value);     
+     imagettftext($this->Picture,$this->FontSize,0,intval($XPos),intval($YPos),$C_TextColor,$this->FontName,$Value);     
     }
 
    /* Draw a text box with text align & alpha properties */
@@ -1117,9 +1117,9 @@
      $C_TextColor   =$this->AllocateColor($this->Picture,$R,$G,$B);
      $C_ShadowColor =$this->AllocateColor($this->Picture,0,0,0);
      if ( $Shadow )
-      imagettftext($this->Picture,$this->FontSize,$Angle,$X+1,$Y+1,$C_ShadowColor,$this->FontName,$Text);     
+      imagettftext($this->Picture,$this->FontSize,$Angle,intval($X+1),intval($Y+1),$C_ShadowColor,$this->FontName,$Text);     
 
-     imagettftext($this->Picture,$this->FontSize,$Angle,$X,$Y,$C_TextColor,$this->FontName,$Text);     
+     imagettftext($this->Picture,$this->FontSize,$Angle,intval($X),intval($Y),$C_TextColor,$this->FontName,$Text);     
     }
 
    /* Compute and draw the scale */
@@ -1146,9 +1146,9 @@
         { $Label = $Value; } else { $Label = $FreeText; }
 
        if ( $ShowOnRight )
-        imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X2+2,$Y+($this->FontSize/2),$C_TextColor,$this->FontName,$Label);
+        imagettftext($this->Picture,$this->FontSize,0,intval($this->GArea_X2+2),intval($Y+($this->FontSize/2)),$C_TextColor,$this->FontName,$Label);
        else
-        imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X1+2,$Y-($this->FontSize/2),$C_TextColor,$this->FontName,$Label);
+        imagettftext($this->Picture,$this->FontSize,0,intval($this->GArea_X1+2),intval($Y-($this->FontSize/2)),$C_TextColor,$this->FontName,$Label);
       }
     }
 
@@ -1194,7 +1194,7 @@
      $this->drawLine($XPos-1,$YPos,$XPos + 8,$YPos + $TextOffset + 1.2,$R,$G,$B);
      $this->drawFilledRectangle($XPos + 8,$YPos - $TextOffset - 1.2,$XPos + 12 + $TextWidth,$YPos + $TextOffset + 1.2,$R,$G,$B);
 
-     imagettftext($this->Picture,$this->FontSize,0,$XPos + 10,$YPos + $TextOffset,$C_TextColor,$this->FontName,$Caption);
+     imagettftext($this->Picture,$this->FontSize,0,intval($XPos + 10),intval($YPos + $TextOffset),$C_TextColor,$this->FontName,$Caption);
     }
 
    /* This function draw a plot graph */
@@ -1345,7 +1345,7 @@
 
      $this->Layers[0] = imagecreatetruecolor($LayerWidth,$LayerHeight);
      $C_White         =$this->AllocateColor($this->Layers[0],255,255,255);
-     imagefilledrectangle($this->Layers[0],0,0,$LayerWidth,$LayerHeight,$C_White);
+     imagefilledrectangle($this->Layers[0],0,0,intval($LayerWidth),intval($LayerHeight),$C_White);
      imagecolortransparent($this->Layers[0],$C_White);
 
      $C_Graph =$this->AllocateColor($this->Layers[0],$R,$G,$B);
@@ -1411,7 +1411,7 @@
            $Height = $Positions[3] - $Positions[7]; $YOffset = $YPos - 4;
 
            $C_TextColor =$this->AllocateColor($this->Picture,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
-           imagettftext($this->Picture,$this->FontSize,0,$XOffset,$YOffset,$C_TextColor,$this->FontName,$Value);
+           imagettftext($this->Picture,$this->FontSize,0,intval($XOffset),intval($YOffset),$C_TextColor,$this->FontName,$Value);
           }
          $XPos = $XPos + $this->DivisionWidth;
         }
@@ -1644,7 +1644,7 @@
 
        $this->Layers[0] = imagecreatetruecolor($LayerWidth,$LayerHeight);
        $C_White         =$this->AllocateColor($this->Layers[0],255,255,255);
-       imagefilledrectangle($this->Layers[0],0,0,$LayerWidth,$LayerHeight,$C_White);
+       imagefilledrectangle($this->Layers[0],0,0,intval($LayerWidth),intval($LayerHeight),$C_White);
        imagecolortransparent($this->Layers[0],$C_White);
 
        $YLast = NULL;
@@ -1775,7 +1775,7 @@
 
        $this->Layers[0] = imagecreatetruecolor($LayerWidth,$LayerHeight);
        $C_White         = $this->AllocateColor($this->Layers[0],255,255,255);
-       imagefilledrectangle($this->Layers[0],0,0,$LayerWidth,$LayerHeight,$C_White);
+       imagefilledrectangle($this->Layers[0],0,0,intval($LayerWidth),intval($LayerHeight),$C_White);
        imagecolortransparent($this->Layers[0],$C_White);
 
        $XPos  = $this->GAreaXOffset;
@@ -1865,7 +1865,7 @@
        $this->Layers[$GraphID] = imagecreatetruecolor($LayerWidth,$LayerHeight);
        $C_White                = $this->AllocateColor($this->Layers[$GraphID],255,255,255);
        $C_Graph                = $this->AllocateColor($this->Layers[$GraphID],$this->Palette[$GraphID]["R"],$this->Palette[$GraphID]["G"],$this->Palette[$GraphID]["B"]);
-       imagefilledrectangle($this->Layers[$GraphID],0,0,$LayerWidth,$LayerHeight,$C_White);
+       imagefilledrectangle($this->Layers[$GraphID],0,0,intval($LayerWidth),intval($LayerHeight),$C_White);
        imagecolortransparent($this->Layers[$GraphID],$C_White);
 
        $XWidth = $this->DivisionWidth / 4;
@@ -1881,7 +1881,7 @@
             {
              $YPos  = $LayerHeight - (($Value-$this->VMin) * $this->DivisionRatio);
 
-             imagefilledrectangle($this->Layers[$GraphID],$XPos-$XWidth,$YPos,$XPos+$XWidth,$YZero,$C_Graph);
+             imagefilledrectangle($this->Layers[$GraphID],intval($XPos-$XWidth),intval($YPos),intval($XPos+$XWidth),intval($YZero),$C_Graph);
 
              $X1 = floor($XPos - $XWidth + $this->GArea_X1); $Y1 = floor($YPos+$this->GArea_Y1) + .2;
              $X2 = floor($XPos + $XWidth + $this->GArea_X1); $Y2 = $this->GArea_Y2 - ((0-$this->VMin) * $this->DivisionRatio);
@@ -2177,7 +2177,7 @@
          if ( $Angle > 180 && $Angle <= 270 )
           { $XOffset = -$Width; }
 
-         imagettftext($this->Picture,$this->FontSize,0,$X+$XOffset,$Y+$YOffset,$C_TextColor,$this->FontName,$Label);
+         imagettftext($this->Picture,$this->FontSize,0,intval($X+$XOffset),intval($Y+$YOffset),$C_TextColor,$this->FontName,$Label);
         }
       }
 
@@ -2201,7 +2201,7 @@
 
        $this->drawFilledRoundedRectangle($X+$Positions[6]-2,$Y+$Positions[7]-1,$X+$Positions[2]+4,$Y+$Positions[3]+1,2,240,240,240);
        $this->drawRoundedRectangle($X+$Positions[6]-2,$Y+$Positions[7]-1,$X+$Positions[2]+4,$Y+$Positions[3]+1,2,220,220,220);
-       imagettftext($this->Picture,$this->FontSize,0,$X,$Y,$C_TextColor,$this->FontName,$t);
+       imagettftext($this->Picture,$this->FontSize,0,intval($X),intval($Y),$C_TextColor,$this->FontName,$t);
       }
     }
 
@@ -2329,7 +2329,7 @@
 
          $this->Layers[0] = imagecreatetruecolor($LayerWidth,$LayerHeight);
          $C_White         = $this->AllocateColor($this->Layers[0],255,255,255);
-         imagefilledrectangle($this->Layers[0],0,0,$LayerWidth,$LayerHeight,$C_White);
+         imagefilledrectangle($this->Layers[0],0,0,intval($LayerWidth),intval($LayerHeight),$C_White);
          imagecolortransparent($this->Layers[0],$C_White);
 
          $C_Graph = $this->AllocateColor($this->Layers[0],$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
@@ -2411,7 +2411,7 @@
           $TX = $TX - $TextWidth;
 
          $C_TextColor = $this->AllocateColor($this->Picture,70,70,70);
-         imagettftext($this->Picture,$this->FontSize,0,$TX,$TY,$C_TextColor,$this->FontName,$Caption);
+         imagettftext($this->Picture,$this->FontSize,0,intval($TX),intval($TY),$C_TextColor,$this->FontName,$Caption);
         }
 
        /* Process pie slices */
@@ -2539,7 +2539,7 @@
           $TX = $TX - $TextWidth;
 
          $C_TextColor = $this->AllocateColor($this->Picture,70,70,70);
-         imagettftext($this->Picture,$this->FontSize,0,$TX,$TY,$C_TextColor,$this->FontName,$Caption);
+         imagettftext($this->Picture,$this->FontSize,0,intval($TX),intval($TY),$C_TextColor,$this->FontName,$Caption);
         }
 
        /* Process pie slices */
@@ -2663,7 +2663,7 @@
           $TX = $TX - $TextWidth;
 
          $C_TextColor = $this->AllocateColor($this->Picture,70,70,70);
-         imagettftext($this->Picture,$this->FontSize,0,$TX,$TY,$C_TextColor,$this->FontName,$Caption);
+         imagettftext($this->Picture,$this->FontSize,0,intval($TX),intval($TY),$C_TextColor,$this->FontName,$Caption);
         }
 
        /* Process pie slices */
@@ -2745,7 +2745,7 @@
      if ( $B < 0 ) { $B = 0; } if ( $B > 255 ) { $B = 255; }
 
      $C_Background = $this->AllocateColor($this->Picture,$R,$G,$B);
-     imagefilledrectangle($this->Picture,0,0,$this->XSize,$this->YSize,$C_Background);
+     imagefilledrectangle($this->Picture,0,0,intval($this->XSize),intval($this->YSize),$C_Background);
     }
 
    /* This function can be used to set the background color */
@@ -2770,7 +2770,7 @@
          if ( $Yi2 >= $Yi2 ) { $Yi2 = $Y2-1; }
 
          $C_Background = $this->AllocateColor($this->Picture,$R,$G,$B);
-         imagefilledrectangle($this->Picture,$X1,$Yi1,$X2,$Yi2,$C_Background);
+         imagefilledrectangle($this->Picture,intval($X1),intval($Yi1),intval($X2),intval($Yi2),$C_Background);
         }
       }
 
@@ -2783,7 +2783,7 @@
         {
          $R+=1;$G+=1;$B+=1;
          $C_Background = $this->AllocateColor($this->Picture,$R,$G,$B);
-         imagefilledrectangle($this->Picture,$X1,$Yi1,$X2,$Yi2,$C_Background);
+         imagefilledrectangle($this->Picture,intval($X1),intval($Yi1),intval($X2),intval($Yi2),$C_Background);
 
          $Yi1+= $YStep;
          $Yi2+= $YStep;
@@ -2837,7 +2837,7 @@
         }
 
        $C_Rectangle = $this->AllocateColor($this->Picture,$R,$G,$B);
-       imagefilledrectangle($this->Picture,round($X1),round($Y1),round($X2),round($Y2),$C_Rectangle);
+       imagefilledrectangle($this->Picture,intval($X1),intval($Y1),intval($X2),intval($Y2),$C_Rectangle);
       }
      else
       {
@@ -2846,11 +2846,11 @@
 
        $this->Layers[0] = imagecreatetruecolor($LayerWidth,$LayerHeight);
        $C_White         = $this->AllocateColor($this->Layers[0],255,255,255);
-       imagefilledrectangle($this->Layers[0],0,0,$LayerWidth,$LayerHeight,$C_White);
+       imagefilledrectangle($this->Layers[0],0,0,intval($LayerWidth),intval($LayerHeight),$C_White);
        imagecolortransparent($this->Layers[0],$C_White);
 
        $C_Rectangle = $this->AllocateColor($this->Layers[0],$R,$G,$B);
-       imagefilledrectangle($this->Layers[0],round(1),round(1),round($LayerWidth-1),round($LayerHeight-1),$C_Rectangle);
+       imagefilledrectangle($this->Layers[0],round(1),round(1),intval($LayerWidth-1),intval($LayerHeight-1),$C_Rectangle);
 
        imagecopymerge($this->Picture,$this->Layers[0],round(min($X1,$X2)-1),round(min($Y1,$Y2)-1),0,0,$LayerWidth,$LayerHeight,$Alpha);
        imagedestroy($this->Layers[0]);
@@ -2927,10 +2927,10 @@
        $Xi4 = cos(($i+90)*3.1418/180) * $Radius + $X1 + $Radius;
        $Yi4 = sin(($i+90)*3.1418/180) * $Radius + $Y2 - $Radius;
 
-       imageline($this->Picture,$Xi1,$Yi1,$X1+$Radius,$Yi1,$C_Rectangle);
-       imageline($this->Picture,$X2-$Radius,$Yi2,$Xi2,$Yi2,$C_Rectangle);
-       imageline($this->Picture,$X2-$Radius,$Yi3,$Xi3,$Yi3,$C_Rectangle);
-       imageline($this->Picture,$Xi4,$Yi4,$X1+$Radius,$Yi4,$C_Rectangle);
+       imageline($this->Picture,intval($Xi1),intval($Yi1),intval($X1+$Radius),intval($Yi1),$C_Rectangle);
+       imageline($this->Picture,intval($X2-$Radius),intval($Yi2),intval($Xi2),intval($Yi2),$C_Rectangle);
+       imageline($this->Picture,intval($X2-$Radius),intval($Yi3),intval($Xi3),intval($Yi3),$C_Rectangle);
+       imageline($this->Picture,intval($Xi4),intval($Yi4),intval($X1+$Radius),intval($Yi4),$C_Rectangle);
 
        $this->drawAntialiasPixel($Xi1,$Yi1,$R,$G,$B);
        $this->drawAntialiasPixel($Xi2,$Yi2,$R,$G,$B);
@@ -2938,8 +2938,8 @@
        $this->drawAntialiasPixel($Xi4,$Yi4,$R,$G,$B);
       }
 
-     imagefilledrectangle($this->Picture,$X1,$Y1+$Radius,$X2,$Y2-$Radius,$C_Rectangle);
-     imagefilledrectangle($this->Picture,$X1+$Radius,$Y1,$X2-$Radius,$Y2,$C_Rectangle);
+     imagefilledrectangle($this->Picture,intval($X1),intval($Y1+$Radius),intval($X2),intval($Y2-$Radius),$C_Rectangle);
+     imagefilledrectangle($this->Picture,intval($X1+$Radius),intval($Y1),intval($X2-$Radius),intval($Y2),$C_Rectangle);
 
      $X1=$X1-.2;$Y1=$Y1-.2;
      $X2=$X2+.2;$Y2=$Y2+.2;
@@ -2990,7 +2990,7 @@
        $this->drawAntialiasPixel($X2-1,$Y2-1,$R,$G,$B);
 
        if ( ($Y1-1) > $Yc - max($Width,$Height) )
-        imageline($this->Picture,$X1,$Y1-1,$X2-1,$Y2-1,$C_Circle);
+        imageline($this->Picture,intval($X1),intval($Y1-1),intval($X2-1),intval($Y2-1),$C_Circle);
       }
     }
 
@@ -3150,7 +3150,7 @@
 
      $Resampled    = imagecreatetruecolor($Width,$Height);
      $C_Background = $this->AllocateColor($Resampled,$R,$G,$B);
-     imagefilledrectangle($Resampled,0,0,$Width,$Height,$C_Background);
+     imagefilledrectangle($Resampled,0,0,intval($Width),intval($Height),$C_Background);
 
      imagecopy($Resampled,$this->Picture,$Size,$Size,0,0,$this->XSize,$this->YSize);
      imagedestroy($this->Picture);
@@ -3160,7 +3160,7 @@
 
      $this->Picture = imagecreatetruecolor($this->XSize,$this->YSize);
      $C_White = $this->AllocateColor($this->Picture,255,255,255);
-     imagefilledrectangle($this->Picture,0,0,$this->XSize,$this->YSize,$C_White);
+     imagefilledrectangle($this->Picture,0,0,intval($this->XSize),intval($this->YSize),$C_White);
      imagecolortransparent($this->Picture,$C_White);
      imagecopy($this->Picture,$Resampled,0,0,0,0,$this->XSize,$this->YSize);
     }
@@ -3332,7 +3332,7 @@
        $YPos        = $this->YSize - (18 + (count($this->Errors)-1) * ($this->ErrorFontSize + 4));
        foreach($this->Errors as $key => $Value)
         {
-         imagettftext($this->Picture,$this->ErrorFontSize,0,$this->XSize-($MaxWidth+15),$YPos,$C_TextColor,$this->ErrorFontName,$Value);
+         imagettftext($this->Picture,$this->ErrorFontSize,0,intval($this->XSize-($MaxWidth+15)),intval($YPos),$C_TextColor,$this->ErrorFontName,$Value);
          $YPos = $YPos + ($this->ErrorFontSize + 4);
         }
       }

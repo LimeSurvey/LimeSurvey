@@ -15,7 +15,8 @@ class TempIdMapping
         'questionGroupsMap',
         'questionsMap',
         'subquestionsMap',
-        'answersMap'
+        'answersMap',
+        'conditionsMap'
     ];
     private array $mapItems = [];
 

@@ -49,13 +49,13 @@ class RemoteControlExportStatisticsTest extends BaseTest
 
         // No answer row.
         $this->assertSame($q1Data[3][0], 'No answer', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[3][1], '0', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[3][2], '0.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[3][1], '2', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[3][2], '20.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
         $this->assertSame($q1Data[4][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[4][1], '2', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[4][2], '20.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[4][1], '0', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[4][2], '0.00%', 'The Percentage is incorrect for this option.');
 
         // A row is left empty.
         $this->assertEmpty($q1Data[5], 'This row should be empty.');
@@ -98,13 +98,13 @@ class RemoteControlExportStatisticsTest extends BaseTest
 
         // No answer row.
         $this->assertSame($q1Data[3][0], 'No answer', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[3][1], '0', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[3][2], '0.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[3][1], '3', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[3][2], '30.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
         $this->assertSame($q1Data[4][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[4][1], '3', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[4][2], '30.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[4][1], '0', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[4][2], '0.00%', 'The Percentage is incorrect for this option.');
 
         // A row is left empty.
         $this->assertEmpty($q1Data[5], 'This row should be empty.');
@@ -149,13 +149,13 @@ class RemoteControlExportStatisticsTest extends BaseTest
 
         // No answer row.
         $this->assertSame($q1Data[6][0], 'No answer', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[6][1], '0', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[6][2], '0.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[6][1], '2', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[6][2], '20.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
         $this->assertSame($q1Data[7][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[7][1], '2', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[7][2], '20.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[7][1], '0', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[7][2], '0.00%', 'The Percentage is incorrect for this option.');
 
         // A row is left empty.
         $this->assertEmpty($q1Data[8], 'This row should be empty.');
@@ -185,13 +185,13 @@ class RemoteControlExportStatisticsTest extends BaseTest
 
         // No answer row.
         $this->assertSame($q1Data[3][0], 'No answer', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[3][1], '0', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[3][2], '0.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[3][1], '2', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[3][2], '20.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
         $this->assertSame($q1Data[4][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
-        $this->assertSame($q1Data[4][1], '2', 'The Count is incorrect for this option.');
-        $this->assertSame($q1Data[4][2], '20.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($q1Data[4][1], '0', 'The Count is incorrect for this option.');
+        $this->assertSame($q1Data[4][2], '0.00%', 'The Percentage is incorrect for this option.');
 
         // A row is left empty.
         $this->assertEmpty($q1Data[5], 'This row should be empty.');

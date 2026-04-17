@@ -125,7 +125,7 @@ highlight.render = function (input, mode, theme, lineStart, disableGutter, callb
         });
     }
     function done() {
-        var result = highlight.renderSync(input, mode, theme, lineStart, disableGutter);
+        var result = highlight.renderSync(input, mode, /**@type{Theme}*/ (theme), lineStart, disableGutter);
         return callback ? callback(result) : result;
     }
     return --waiting || done();

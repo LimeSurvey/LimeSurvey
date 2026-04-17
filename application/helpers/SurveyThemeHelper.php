@@ -482,4 +482,136 @@ class SurveyThemeHelper
         // It may look like a path (maybe a file that no longer exists), or be something completely different.
         return $value;
     }
+
+    /**
+     * Checks and updates the given configuration file if necessary.
+     *
+     * This function loads the specified XML configuration file into a DOMDocument object, checks for its validity,
+     * and if applicable, updates it by calling `checkDomDocument`. If the file is invalid or an exception occurs,
+     * a warning is logged with details about the issue.
+     *
+     * @param string $configFile Path to the configuration file to be checked and potentially updated.
+     *
+     * @return void This function does not return a value. It may either update the configuration file
+     *              or log a warning if the file is invalid or cannot be processed.
+     *
+     * @throws \Exception Propagates any exceptions thrown by `checkDomDocument`.
+     */
+    public static function checkConfigFiles($configFile)
+    {
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(false);
+        }
+        $domDocument = new \DOMDocument;
+        $domDocument->load($configFile);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(true);
+        }
+        if (!$domDocument) {
+            \Yii::log('Invalid config file at ' . $configFile, \CLogger::LEVEL_WARNING, 'application');
+            return;
+        }
+        try {
+            $newDomDocument = self::checkDomDocument($domDocument);
+            if ($newDomDocument) {
+                $newDomDocument->save($configFile);
+            }
+        } catch (\Exception $e) {
+            \Yii::log('Error: ' . $e->getMessage() . 'found in ' . $configFile, \CLogger::LEVEL_WARNING, 'application');
+        }
+    }
+
+    /**
+     * Processes a DOMDocument object to check and potentially modify its structure.
+     *
+     * This method specifically looks for 'cssframework' nodes within the given DOMDocument.
+     * If found, it examines child nodes for a default option and 'dropdownoptions'. It ensures that
+     * all 'option' nodes are wrapped within an 'optgroup' element. If any modifications are made,
+     * the DOMDocument is marked as changed.
+     *
+     * @param \DOMDocument $domDocument The DOMDocument object to be checked and potentially modified.
+     *
+     * @return \DOMDocument|null Returns the modified DOMDocument if changes were made, otherwise null.
+     *                           Changes include ensuring 'option' nodes within 'cssframework' are properly
+     *                           grouped under an 'optgroup' and setting a default option if not present.
+     *
+     * @throws \Exception If an invalid node is found within 'dropdownoptions' or if no 'dropdownoptions'
+     *                    nodes are found when expected.
+     */
+    private static function checkDomDocument($domDocument)
+    {
+        $isChangedDomDocument = false;
+
+        // Find first 'cssframework' nodes in the document
+        $cssFrameworkNodes = $domDocument->getElementsByTagName('cssframework');
+        if ($cssFrameworkNodes) {
+            $cssFrameworkNode = $cssFrameworkNodes->item(0);
+        }
+
+        if ($cssFrameworkNode) {
+
+            $defaultOption = '';
+            $dropDownOptionsNode = null;
+
+            foreach ($cssFrameworkNode->childNodes as $child) {
+                if ($child->nodeType === XML_TEXT_NODE && trim($child->nodeValue) !== '') {
+                    $defaultOption = $child->nodeValue;
+                } elseif ($child->nodeName === 'dropdownoptions') {
+                    $dropDownOptionsNode = $child;
+                }
+            }
+
+            if ($dropDownOptionsNode) {
+                $optGroupNodeList = $dropDownOptionsNode->getElementsByTagName('optgroup');
+                if ($optGroupNodeList->length === 0) {
+            
+                    // Create a new 'optgroup' element
+                    $optGroupNode = $domDocument->createElement('optgroup');
+            
+                    // Loop through all 'option' nodes and move them to 'optgroup'
+                    while ($dropDownOptionsNode->childNodes->length > 0) {
+                        $optionNode = $dropDownOptionsNode->firstChild;
+            
+                        // Skip text nodes or invalid nodes
+                        if ($optionNode->nodeName === '#text' || trim($optionNode->nodeValue) === '') {
+                            $dropDownOptionsNode->removeChild($optionNode);
+                            continue;
+                        }
+            
+                        // Check if the node is a valid 'option' node
+                        if ($optionNode->nodeName != 'option') {
+                            throw new \Exception('Invalid node in the config file.');
+                        }
+            
+                        // Append valid 'option' nodes
+                        $optGroupNode->appendChild($optionNode);
+                    }
+            
+                    // Append the 'optgroup' with all the 'option' nodes into 'dropdownoptions'
+                    if ($optGroupNode->childNodes->length > 0) {
+                        $dropDownOptionsNode->appendChild($optGroupNode);
+                        $isChangedDomDocument = true;
+                    }
+            
+                } else {
+                    $optGroupNode = $optGroupNodeList->item(0);
+                }
+            } else {
+                throw new \Exception('No "dropdownoptions" nodes were found.');
+            }            
+
+            if ($defaultOption === '' && isset($optGroupNode->firstChild)) {
+                $defaultOption = $optGroupNode->getElementsByTagName('option')->item(0)->nodeValue;
+                if (is_string($defaultOption) && trim($defaultOption) !== '') {
+                    $textNode = $domDocument->createTextNode($defaultOption);
+                    $cssFrameworkNode->insertBefore($textNode, $dropDownOptionsNode);
+                    $isChangedDomDocument = true;
+                }
+            }
+        }
+        if ($isChangedDomDocument) {
+            return $domDocument;
+        }
+        return null;
+    }
 }

@@ -878,7 +878,7 @@ var Tag = function () {
     this.end = { row: 0, column: 0 };
 };
 function is(token, type) {
-    return token.type.lastIndexOf(type + ".xml") > -1;
+    return token && token.type && token.type.lastIndexOf(type + ".xml") > -1;
 }
 (function () {
     this.getFoldWidget = function (session, foldStyle, row) {
@@ -1374,6 +1374,7 @@ var ScalaHighlightRules = require("./scala_highlight_rules").ScalaHighlightRules
 var Mode = function () {
     JavaScriptMode.call(this);
     this.HighlightRules = ScalaHighlightRules;
+    this.$behaviour = this.$defaultBehaviour;
 };
 oop.inherits(Mode, JavaScriptMode);
 (function () {

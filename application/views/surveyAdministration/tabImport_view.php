@@ -10,7 +10,7 @@
         <div class="">
             <!-- tab import survey -->
             <!-- import form -->
-            <?php echo CHtml::form(array('surveyAdministration/copy'), 'post', array('id' => 'importsurvey', 'name' => 'importsurvey', 'class' => '', 'enctype' => 'multipart/form-data', 'onsubmit' => 'return window.LS.validatefilename(this,"' . gT('Please select a file to import!', 'js') . '");')); ?>
+            <?php echo CHtml::form(array('surveyAdministration/import'), 'post', array('id' => 'importsurvey', 'name' => 'importsurvey', 'class' => '', 'enctype' => 'multipart/form-data', 'onsubmit' => 'return window.LS.validatefilename(this,"' . gT('Please select a file to import!', 'js') . '");')); ?>
             <div class="row">
 
                 <!-- Select file -->
@@ -23,6 +23,27 @@
                     </div>
                 </div>
 
+            <!-- Survey group to use -->
+            <div class='form-group col-4'>
+                <label class='control-label ' for='surveysgroup'><?php  eT("Survey group:"); ?> </label>
+                <div class=''>
+                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', [
+                        'asDropDownList' => true,
+                        'htmlOptions' => [],
+                        'data' => [
+                            'default' => gT("Import on default survey group"),
+                            'from_survey' => gT("Keep the survey group from the imported file"),
+                        ],
+                        'value' => 'default',
+                        'name' => 'surveysgroup',
+                        'pluginOptions' => ['minimumResultsForSearch' => -1]
+                    ]);?>
+                </div>
+                <div class="form-control-static hide" id="survey_group_import_warning">
+                    <span class='annotation text-warning'><?php echo  gT("Survey group will be matched by name. Please note that survey group permissions will be inherited by the imported survey."); ?> </span>
+                </div>
+            </div>
+
                 <!-- Convert resource links and INSERTANS fields? -->
                 <div class='mb-3'>
                     <input id="yttranslinksfields" name="translinksfields" type="hidden" value="0">
@@ -33,7 +54,7 @@
                 <!-- Submit -->
                 <div class="mt-3 mb-3 col-4">
                     <div>
-                        <input type='submit' id="import-submit" class="btn btn-primary col-6" value='<?php eT("Import survey"); ?>' />
+                        <input type='submit' id="import-submit" class="btn btn-primary w-auto" value='<?php eT("Import survey"); ?>' />
                     </div>
                 </div>
 

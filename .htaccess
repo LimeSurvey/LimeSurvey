@@ -14,6 +14,8 @@
 
     # deny access to composer.json that is used for remote fingerprinting
     RewriteRule ^composer.json - [F]
+    # issue #19865
+    RewriteRule ^setdebug.php - [F]
 </IfModule>
 
 # deny access to hidden files and directories without mod_rewrite

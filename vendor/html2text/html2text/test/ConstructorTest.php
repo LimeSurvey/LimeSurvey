@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class ConstructorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ConstructorTest extends TestCase
 {
     public function testConstructor()
     {
@@ -29,7 +31,10 @@ class ConstructorTest extends \PHPUnit_Framework_TestCase
         $html = 'Foo';
         $options = array('do_links' => 'none');
 
-        $this->setExpectedException('InvalidArgumentException');
+        method_exists($this, 'expectException') 
+            ? $this->expectException('InvalidArgumentException')
+            : $this->setExpectedException('InvalidArgumentException');
+
         $html2text = new Html2Text($html, true, $options);
     }
 }

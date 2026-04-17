@@ -191,11 +191,22 @@ class DateTimePicker extends CInputWidget
     {
         $localeScript = '';
         $locale = $this->getValue('locale', $this->pluginOptions, 'en');
+        $dateFormat = CHtml::encode($this->format);
         $tooltips = $this->getConvertedTempusOptions($this->getTranslatedTooltips());
         foreach ($tooltips as $key => $tooltip) {
             $localeScript .= "      $key: '$tooltip',\n";
         }
-        $localeScript .= "      dayViewHeaderFormat: { month: 'long', year: 'numeric' },\nlocale: '$locale'";
+        $localeScript .= "      dayViewHeaderFormat: { month: 'long', year: 'numeric' },\n" .
+            "      locale: '$locale',\n" .
+            "      format: '$dateFormat',\n";
+
+        // Try to guess the right hour cycle from the format
+        // The old datetimepicker did that, but Tempus Dominus does not (it guesses from the locale, not the format)
+        if (strpos(strtolower($dateFormat), 'a') === false && strpos($dateFormat, 'h') === false) {
+            $localeScript .= "      hourCycle: 'h24',\n";
+        } else {
+            $localeScript .= "      hourCycle: 'h12',\n";
+        }
 
         return "{
           $localeScript
@@ -234,7 +245,6 @@ class DateTimePicker extends CInputWidget
         $minutes = $this->getShowComponent('minutes') ? 'true' : 'false';
         $seconds = $this->getShowComponent('seconds') ? 'true' : 'false';
         return "{
-                    useTwentyfourHour: true,
                     date: $date,
                     month: $month,
                     year: $year,
@@ -295,16 +305,12 @@ class DateTimePicker extends CInputWidget
         $stepping = $stepping != 0 ? $stepping : 1;
 
         $localization = $this->getLocalizationOptionsString();
-        $restrictions = $this->getRestrictionsOptionsString();
         $calendarComponents = $this->getComponentsOptionsString();
         $icons = $this->getCustomIconsString();
-        $viewDate = $this->getViewDate();
-        $viewDateOption = !empty($viewDate) ? "viewDate: $viewDate," : '';
 
         return "
         {
             localization: $localization,
-            restrictions: $restrictions,
             display: {
                 $icons
                 components: $calendarComponents,
@@ -316,8 +322,7 @@ class DateTimePicker extends CInputWidget
                 sideBySide: $sideBySide,
                 theme : (document.body.hasAttribute('data-thememode')) ? document.body.getAttribute('data-thememode') : 'auto'
             },
-            stepping: $stepping,
-            $viewDateOption
+            stepping: $stepping
         }";
     }
 
@@ -350,13 +355,22 @@ class DateTimePicker extends CInputWidget
         $id = $this->getId();
         $date = $this->value;
         $dateFormat = CHtml::encode($this->format);
+        $minDate = $this->getValue('data-minDate', $this->htmlOptions, 'undefined');
+        $minDate = $minDate != 'undefined' ? "'$minDate'" : $minDate;
+        $maxDate = $this->getValue('data-maxDate', $this->htmlOptions, 'undefined');
+        $maxDate = $maxDate != 'undefined' ? "'$maxDate'" : $maxDate;
+        $viewDate = $this->getViewDate();
+        if (empty($viewDate)) {
+            $viewDate = 'undefined';
+        }
+
         return "
         //formatting when selected via datepicker
         picker_$id.dates.formatInput = function(date) { 
-            if(date !== null) {
+            if(typeof date !== 'undefined' && date !== null) {
                 return moment(date).format('$dateFormat');
             }
-            return null;     
+            return null;
         };
 
         //converting with moment.js
@@ -374,8 +388,8 @@ class DateTimePicker extends CInputWidget
         picker_$id.dates.setFromInput('$date');
          
         //workaround for correct minDate, maxDate settings
-        var minDate = picker_$id.optionsStore.options.restrictions.minDate;
-        var maxDate = picker_$id.optionsStore.options.restrictions.maxDate;
+        var minDate = $minDate;
+        var maxDate = $maxDate;
         var locale = picker_$id.optionsStore.options.localization.locale;
         if(minDate) {
            var min = moment(minDate);
@@ -387,7 +401,10 @@ class DateTimePicker extends CInputWidget
            max.set({h: 23, m: 59, s: 59});
            picker_$id.optionsStore.options.restrictions.maxDate = tempusDominus.DateTime.convert(max.toDate(), locale);
         }
-        ";
+        var viewDate = $viewDate;
+        if (viewDate) {
+            picker_$id.optionsStore.options.viewdate = tempusDominus.DateTime.convert(moment($viewDate, '$dateFormat').toDate(), locale);
+        }";
     }
 
     /**

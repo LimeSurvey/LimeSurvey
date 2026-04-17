@@ -29,7 +29,7 @@ class noMailToExample extends PluginBase
 
     /**
      * Set event send to false when sending an email to example.(com|org)
-     * @link https://manual.limesurvey.org/BeforeTokenEmail
+     * @link https://www.limesurvey.org/manual/BeforeTokenEmail
      */
     public function beforeEmail()
     {

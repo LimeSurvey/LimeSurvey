@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                         <li role="presentation" class="nav-item">
                             <button class="nav-link <?php echo $key == 0 ? 'active' : 'tab_action_hide_on_inherit'; ?>" data-bs-target="#category-<?php echo $key; ?>"
                                     aria-controls="category-<?php echo $key; ?>" role="tab" data-bs-toggle="tab" aria-selected="<?php echo $key == 0 ? 'true' : 'false'; ?>">
-                                <?php echo $category; ?>
+                                <?php eT($category); ?>  
                             </button>
                         </li>
                     <?php endforeach; ?>
@@ -101,7 +101,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 <?php echo $form->hiddenField($model, 'gsid'); ?>
                 <?php echo $form->hiddenField($model, 'uid'); ?>
 
-                <?php echo CHtml::hiddenField('optionInheritedValues', json_encode($optionInheritedValues)); ?>
                 <?php echo CHtml::hiddenField('optionCssFiles', $optionCssFiles); ?>
                 <?php echo CHtml::hiddenField('optionCssFramework', json_encode($optionCssFramework)); ?>
                 <?php echo CHtml::hiddenField('translationInheritedValue', gT("Inherited value:") . ' '); ?>
@@ -111,7 +110,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                     [
                         'model' => $model,
                         'form' => $form,
-                        'optionInheritedValues' => $optionInheritedValues,
                         'optionCssFiles' => $optionCssFiles,
                         'optionCssFramework' => $optionCssFramework
                     ]

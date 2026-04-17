@@ -161,7 +161,7 @@ abstract class PKCS8 extends Progenitor
     /**
      * Convert an EC public key to the appropriate format
      *
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
+     * @param BaseCurve $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param array $options optional
      * @return string
@@ -178,7 +178,8 @@ abstract class PKCS8 extends Progenitor
             return self::wrapPublicKey(
                 $curve->encodePoint($publicKey),
                 null,
-                $curve instanceof Ed25519 ? 'id-Ed25519' : 'id-Ed448'
+                $curve instanceof Ed25519 ? 'id-Ed25519' : 'id-Ed448',
+                $options
             );
         }
 
@@ -186,14 +187,14 @@ abstract class PKCS8 extends Progenitor
 
         $key = "\4" . $publicKey[0]->toBytes() . $publicKey[1]->toBytes();
 
-        return self::wrapPublicKey($key, $params, 'id-ecPublicKey');
+        return self::wrapPublicKey($key, $params, 'id-ecPublicKey', $options);
     }
 
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $privateKey
-     * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
+     * @param BigInteger $privateKey
+     * @param BaseCurve $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $secret optional
      * @param string $password optional

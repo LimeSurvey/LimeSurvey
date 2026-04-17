@@ -1146,10 +1146,8 @@ var JavaHighlightRules = function () {
         "char|final|interface|static|void|" +
         "class|finally|long|strictfp|volatile|" +
         "const|float|native|super|while|" +
-        "var|exports|opens|requires|uses|yield|" +
-        "module|permits|(?:non\\-)?sealed|var|" +
-        "provides|to|when|" +
-        "open|record|transitive|with");
+        "yield|when|record|var|" +
+        "permits|(?:non\\-)?sealed");
     var buildinConstants = ("null|Infinity|NaN|undefined");
     var langClasses = ("AbstractMethodError|AssertionError|ClassCircularityError|" +
         "ClassFormatError|Deprecated|EnumConstantNotPresentException|" +
@@ -1182,16 +1180,7 @@ var JavaHighlightRules = function () {
     }, "identifier");
     this.$rules = {
         "start": [
-            {
-                token: "comment",
-                regex: "\\/\\/.*$"
-            },
-            DocCommentHighlightRules.getStartRule("doc-start"),
-            {
-                token: "comment", // multi line comment
-                regex: "\\/\\*",
-                next: "comment"
-            },
+            { include: "comments" },
             { include: "multiline-strings" },
             { include: "strings" },
             { include: "constants" },
@@ -1201,14 +1190,18 @@ var JavaHighlightRules = function () {
                 next: [{
                         regex: "{",
                         token: "paren.lparen",
-                        next: [{
+                        push: [
+                            {
                                 regex: "}",
                                 token: "paren.rparen",
-                                next: "start"
-                            }, {
+                                next: "pop"
+                            },
+                            { include: "comments" },
+                            {
                                 regex: "\\b(requires|transitive|exports|opens|to|uses|provides|with)\\b",
                                 token: "keyword"
-                            }]
+                            }
+                        ]
                     }, {
                         token: "text",
                         regex: "\\s+"
@@ -1228,14 +1221,29 @@ var JavaHighlightRules = function () {
             },
             { include: "statements" }
         ],
-        "comment": [
+        "comments": [
             {
-                token: "comment", // closing comment
-                regex: "\\*\\/",
-                next: "start"
-            }, {
-                defaultToken: "comment"
-            }
+                token: "comment",
+                regex: "\\/\\/.*$"
+            },
+            {
+                token: "comment.doc", // doc comment
+                regex: /\/\*\*(?!\/)/,
+                push: "doc-start"
+            },
+            {
+                token: "comment", // multi line comment
+                regex: "\\/\\*",
+                push: [
+                    {
+                        token: "comment", // closing comment
+                        regex: "\\*\\/",
+                        next: "pop"
+                    }, {
+                        defaultToken: "comment"
+                    }
+                ]
+            },
         ],
         "strings": [
             {
@@ -1378,7 +1386,7 @@ var JavaHighlightRules = function () {
             }
         ]
     };
-    this.embedRules(DocCommentHighlightRules, "doc-", [DocCommentHighlightRules.getEndRule("start")]);
+    this.embedRules(DocCommentHighlightRules, "doc-", [DocCommentHighlightRules.getEndRule("pop")]);
     this.normalizeRules();
 };
 oop.inherits(JavaHighlightRules, TextHighlightRules);

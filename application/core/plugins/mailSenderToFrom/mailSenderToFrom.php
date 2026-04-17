@@ -31,7 +31,7 @@ class mailSenderToFrom extends PluginBase
 
     /**
      * Set From and Bounce of PHPmailer to siteadminemail
-     * @link https://manual.limesurvey.org/BeforeTokenEmail
+     * @link https://www.limesurvey.org/manual/BeforeTokenEmail
      */
     public function beforeEmail()
     {

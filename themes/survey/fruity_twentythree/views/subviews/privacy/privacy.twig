@@ -24,7 +24,7 @@
             {% block anonymous %}
                 {% if (aSurveyInfo.anonymized == "Y") %}
                     <div class="ls-privacy-block">
-                        <div class="{{ aSurveyInfo.class.privacyhead }} text-uppercase" {{ aSurveyInfo.attr.privacyhead }}>
+                        <div role="heading" aria-level="2" class="{{ aSurveyInfo.class.privacyhead }} text-uppercase" {{ aSurveyInfo.attr.privacyhead }}>
                             {{ gT("This survey is anonymous.") }}
                         </div>
                         <div>

@@ -13,6 +13,7 @@
 */
 
 use LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
  * This function imports a LimeSurvey .lsg question group XML file
@@ -567,6 +568,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $results['conditions']++;
         }
     }
+
+    // Update question code references in custom conditions and relevance expressions
+    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
 
@@ -1172,12 +1177,79 @@ function XMLImportLabelsets($sFullFilePath, $options)
 }
 
 /**
- * @param string $sFullFilePath
- * @param boolean $bTranslateLinksFields
- * @param string $sNewSurveyName
- * @param integer $DestSurveyID
+ * @param int|string  $newsid
+ * @param string|null $baselang
  */
-function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null)
+function finalizeSurveyImportFile($newsid, $baselang)
+{
+    if ($baselang) {
+        $survey = Survey::model()->findByPk($newsid);
+        $supportedLanguages = explode(" ", $survey->language . " " . $survey->additional_languages);
+        $found = in_array($baselang, $supportedLanguages);
+        if (!$found) {
+            $baselang = explode("-", $baselang)[0];
+            $found = in_array($baselang, $supportedLanguages);
+        }
+        if ($found) {
+            $survey->language = $baselang;
+            $survey->additional_languages = '';
+            $survey->save();
+            fixLanguageConsistency($newsid);
+        }
+    }
+}
+
+/**
+ * Returns the tables which
+ * @param int $sid
+ * @param string $baseTable
+ * @return array
+ */
+function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey')
+{
+    $tables = dbGetTablesLike("%old%\_{$sid}\_%");
+    $result = [];
+
+    foreach ($tables as $table) {
+        $parts = explode("_", $table);
+        $timestamp = $parts[count($parts) - 1];
+        if (!isset($result[$timestamp])) {
+            $result[$timestamp] = [
+                'tables' => $table,
+                'timestamp' => $timestamp,
+                'cnt' => 0
+            ];
+        } else {
+            $result[$timestamp]['tables'] .= ",{$table}";
+        }
+        if (strpos($table, 'survey') !== false) {
+            $result[$timestamp]['cnt'] = (int) Yii::app()->db->createCommand("select count(*) as cnt from " . Yii::app()->db->quoteTableName($table))->queryScalar();
+        }
+    }
+
+    $keys = array_keys($result);
+    asort($keys);
+    $finalResult = [];
+    foreach ($keys as $key) {
+        $finalResult [] = $result[$key];
+    }
+    return $finalResult;
+}
+
+/**
+ * Imports a survey file into the application by dispatching to the appropriate importer according to file extension.
+ *
+ * Handles .lss (survey XML), .txt/.tsv (TSV template) and .lsa (LimeSurvey archive) files, performing post-import integrity fixes and optional base-language finalization. For .lsa archives, imports contained survey, responses, tokens and timings files when present.
+ *
+ * @param string      $sFullFilePath       Path to the input file.
+ * @param bool        $bTranslateLinksFields If true, translate link/insertans fields during import.
+ * @param string|null $sNewSurveyName      Optional survey title to assign to the imported survey.
+ * @param int|null    $DestSurveyID        Optional desired destination survey ID.
+ * @param string|null $baselang            Optional base language to set or ensure on the imported survey.
+ * @param string|null $targetSurveyGroup   Optional target survey group strategy (e.g., 'from_survey' to attempt using the source survey's group); when null defaults to standard group assignment.
+ * @return array|null Result array containing counters, warnings and mappings (including 'newsid' on success), or null for unsupported file extensions.
+ */
+function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null, $baselang = null, $targetSurveyGroup = null)
 {
     $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension'])) {
@@ -1187,10 +1259,11 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
     }
     switch ($sExtension) {
         case 'lss':
-            $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
+            $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields, true, $targetSurveyGroup);
             if (!empty($aImportResults['newsid'])) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                 $SurveyIntegrity->fixSurveyIntegrity();
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
             }
             return $aImportResults;
         case 'txt':
@@ -1199,82 +1272,87 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             if ($aImportResults && $aImportResults['newsid']) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                 $SurveyIntegrity->fixSurveyIntegrity();
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
             }
             return $aImportResults;
         case 'lsa':
             // Import a survey archive
-            Yii::app()->loadLibrary('admin.pclzip');
-            $pclzip = new PclZip(array('p_zipname' => $sFullFilePath));
-            $aFiles = $pclzip->listContent();
+            $zipExtractor = new \LimeSurvey\Models\Services\ZipExtractor($sFullFilePath);
+            // If file extension is not lss, lsr, lsi or lst, skip it
+            $zipExtractor->setFilterCallback(fn($file) => preg_match('/(lss|lsr|lsi|lst)$/', $file['name']));
+            $zipExtractor->extractTo(Yii::app()->getConfig('tempdir'));
 
-            if ($pclzip->extract(PCLZIP_OPT_PATH, Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/') == 0) {
-                unset($pclzip);
-            }
+            $extractResults = $zipExtractor->getExtractResult();
+            $files = array_map(fn($file) => $file['name'], $extractResults);
+
             $aImportResults = [];
 
-            if (!is_array($aFiles)) {
+            if (empty($files)) {
                 $aImportResults['error'] = gT("This is not a valid LimeSurvey LSA file.");
                 return $aImportResults;
             }
             // Step 1 - import the LSS file and activate the survey
-            foreach ($aFiles as $aFile) {
-                if (pathinfo((string) $aFile['filename'], PATHINFO_EXTENSION) == 'lss') {
+            foreach ($files as $filename) {
+                if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
-                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, $sNewSurveyName, null, true, false);
+                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, null, true, false, $targetSurveyGroup);
                     if ($aImportResults && $aImportResults['newsid']) {
                         $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                         $SurveyIntegrity->fixSurveyIntegrity();
                     }
                     // Activate the survey
-                    Yii::app()->loadHelper("admin/activate");
+                    Yii::app()->loadHelper("admin.activate");
                     $survey = Survey::model()->findByPk($aImportResults['newsid']);
                     $surveyActivator = new SurveyActivator($survey);
                     $surveyActivator->activate();
-                    unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
+                    unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
             }
 
             // Step 2 - import the responses file
-            foreach ($aFiles as $aFile) {
-                if (pathinfo((string) $aFile['filename'], PATHINFO_EXTENSION) == 'lsr') {
+            foreach ($files as $filename) {
+                if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsr') {
                     //Import the LSS file
-                    $aResponseImportResults = XMLImportResponses(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
+                    $aResponseImportResults = XMLImportResponses(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, $aImportResults['newsid'], $aImportResults['FieldReMap']);
                     $aImportResults = array_merge($aResponseImportResults, $aImportResults);
                     $aImportResults['importwarnings'] = array_merge($aImportResults['importwarnings'], $aImportResults['warnings']);
-                    unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
+                    unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
             }
 
             // Step 3 - import the tokens file - if exists
-            foreach ($aFiles as $aFile) {
-                if (pathinfo((string) $aFile['filename'], PATHINFO_EXTENSION) == 'lst') {
-                    Yii::app()->loadHelper("admin/token");
+            foreach ($files as $filename) {
+                if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lst') {
+                    Yii::app()->loadHelper("admin.token");
                     $aTokenImportResults = [];
                     if (Token::createTable($aImportResults['newsid'])) {
                         $aTokenCreateResults = array('tokentablecreated' => true);
                         $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
-                        $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid']);
+                        $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, $aImportResults['newsid']);
                     } else {
-                        $aTokenImportResults['warnings'][] = gT("Unable to create survey participants table");
+                        $aTokenImportResults['warnings'][] = gT("Unable to create survey participant list");
                     }
 
                     $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
                     $aImportResults['importwarnings'] = array_merge($aImportResults['importwarnings'], $aImportResults['warnings']);
-                    unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
+                    unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
             }
             // Step 4 - import the timings file - if exists
             Yii::app()->db->schema->refresh();
-            foreach ($aFiles as $aFile) {
-                if (pathinfo((string) $aFile['filename'], PATHINFO_EXTENSION) == 'lsi' && tableExists("survey_{$aImportResults['newsid']}_timings")) {
-                    $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
+            foreach ($files as $filename) {
+                if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsi' && tableExists("survey_{$aImportResults['newsid']}_timings")) {
+                    $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, $aImportResults['newsid'], $aImportResults['FieldReMap']);
                     $aImportResults = array_merge($aTimingsImportResults, $aImportResults);
-                    unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
+                    unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
+            }
+            if ($aImportResults && isset($aImportResults['newsid'])) {
+                finalizeSurveyImportFile($aImportResults['newsid'], $baselang);
             }
             return $aImportResults;
         default:
@@ -1284,13 +1362,752 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 }
 
 /**
-* This function imports a LimeSurvey .lss survey XML file
-*
-* @param string $sFullFilePath  The full filepath of the uploaded file
-* @param string $sXMLdata
-* @todo Use transactions to prevent orphaned data and clean rollback on errors
-*/
-function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
+
+ * Creates a table based on another
+ *
+ * @param string $table
+ * @param string $pattern
+ * @param array $columns
+ * @param array $where
+ * @return integer number of rows affected by the execution.
+ * @throws CDbException execution failed
+ */
+function createTableFromPattern($table, $pattern, $columns = [], $where = [])
+{
+    if (!is_array($columns)) {
+        $columns = [];
+    }
+    if (!is_array($where)) {
+        $where = [];
+    }
+    $whereClause = "";
+    $criterias = [];
+    if (count($where)) {
+        foreach ($where as $field => $value) {
+            $criterias[] = Yii::app()->db->quoteColumnName($field) . " = " . Yii::app()->db->quoteValue($value);
+        }
+        $whereClause = " WHERE " . implode(" AND ", $criterias);
+    }
+    if (count($columns)) {
+        foreach ($columns as $index => $column) {
+            if (!ctype_alnum($column)) {
+                $columns[$index] = Yii::app()->db->quoteColumnName($column);
+            }
+        }
+        $command = "";
+        switch (Yii::app()->db->getDriverName()) {
+            case 'mysqli':
+            case 'mysql':
+            case 'pgsql':
+                $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " AS SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+                break;
+            case 'mssql':
+            case 'sqlsrv':
+                $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+                break;
+        }
+    } else {
+        $command = "";
+        switch (Yii::app()->db->getDriverName()) {
+            case 'mysqli':
+            case 'mysql':
+                $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " LIKE " . Yii::app()->db->quoteTableName($pattern) . ";";
+                break;
+            case 'pgsql':
+                $command = "CREATE TABLE " . Yii::app()->db->quoteTableName($table) . " (LIKE " . Yii::app()->db->quoteTableName($pattern) . " INCLUDING ALL);";
+                break;
+            case 'mssql':
+            case 'sqlsrv':
+                $command = "SELECT * into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . " where 1=0";
+                break;
+        }
+    }
+    return Yii::app()->db->createCommand($command)->execute();
+}
+
+function polyfillSUBSTRING_INDEX($driver)
+{
+    switch ($driver) {
+        case 'pgsql':
+            Yii::app()->db->createCommand('CREATE OR REPLACE FUNCTION public.SUBSTRING_INDEX (
+                    str text,
+                    delim text,
+                    count integer = 1,
+                    out SUBSTRING_INDEX text
+                )
+                RETURNS text AS
+                $body$
+                BEGIN
+                    IF count > 0 THEN
+                        SUBSTRING_INDEX = array_to_string((string_to_array(str, delim))[:count], delim);
+                    ELSE
+                        DECLARE
+                        _array TEXT[];
+                         BEGIN
+                             _array = string_to_array(str, delim);
+                             SUBSTRING_INDEX = array_to_string(_array[array_length(_array, 1) + count + 1:], delim);    
+                         END;  
+                    END IF;
+                END;
+                $body$
+                LANGUAGE \'plpgsql\'
+                IMMUTABLE
+                CALLED ON NULL INPUT
+                SECURITY INVOKER
+                COST 5;')->execute();
+            break;
+        case 'mssql':
+        case 'sqlsrv':
+            Yii::app()->db->createCommand("
+                IF OBJECT_ID('dbo.SUBSTRING_INDEX') IS NOT NULL
+                DROP FUNCTION SUBSTRING_INDEX
+        ")->execute();
+            Yii::app()->db->createCommand("
+                    CREATE FUNCTION dbo.SUBSTRING_INDEX (
+                        @str NVARCHAR(4000),
+                        @delim NVARCHAR(1),
+                        @count INT
+                  )
+                  RETURNS NVARCHAR(4000)
+                  WITH SCHEMABINDING
+                  BEGIN
+                  DECLARE @XmlSourceString XML;
+                  SET @XmlSourceString = (SELECT N'<root><row>' + REPLACE( (SELECT @str AS '*' FOR XML PATH('')) , @delim, N'</row><row>' ) + N'</row></root>');
+                  RETURN STUFF
+                  (
+                    ((
+                    SELECT  @delim + x.XmlCol.value(N'(text())[1]', N'NVARCHAR(4000)') AS '*'
+                    FROM    @XmlSourceString.nodes(N'(root/row)[position() <= sql:variable(\"@count\")]') x(XmlCol)
+                    FOR XML PATH(N''), TYPE
+                    ).value(N'.', N'NVARCHAR(4000)')),
+                  1, 1, N''
+                  );
+                  END
+            ")->execute();
+            break;
+    }
+}
+
+/**
+ * Generates a temporary table creation script
+ *
+ * @param string $source
+ * @param string $destination
+ * @param int $sid
+ * @return string
+ */
+function generateTemporaryTableCreate(string $source, string $destination, int $sid)
+{
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+            return  "
+            CREATE TEMPORARY TABLE {$destination}
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_SCHEMA = DATABASE() AND 
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
+        case 'pgsql':
+            polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
+            return "
+            CREATE TEMPORARY TABLE {$destination}
+            AS
+            SELECT *
+            FROM (
+                SELECT SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       SUBSTRING_INDEX(SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 2), 'X', -1) AS gid,
+                       SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', -1) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_CATALOG = current_database() AND 
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
+        case 'mssql':
+        case 'sqlsrv':
+            polyfillSUBSTRING_INDEX(Yii::app()->db->getDriverName());
+            $destination .= "_" . $sid;
+            return "
+            SELECT *
+            INTO {$destination}
+            FROM (
+                SELECT dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1) AS sid,
+                       dbo.SUBSTRING_INDEX(SUBSTRING(temp.COLUMN_NAME, 2 + LEN(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, 'X', 1)), 2000), 'X', 1) AS gid,
+                       SUBSTRING(temp.COLUMN_NAME, charindex('X', temp.COLUMN_NAME, (charindex('X', temp.COLUMN_NAME, 1))+1) + 1, 2000) AS qidsuffix,
+                       temp.COLUMN_NAME
+                FROM information_schema.columns temp
+                WHERE temp.TABLE_CATALOG = db_name() AND
+                      temp.TABLE_NAME = '{$source}'
+            ) t;
+        ";
+    }
+    //unsupported
+    return '';
+}
+
+/**
+ * Generates a drop statement for a temporary table
+ *
+ * @param string $name
+ * @param int $sid
+ * @return string
+ */
+function generateTemporaryTableDrop(string $name, int $sid)
+{
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+            return "DROP TEMPORARY TABLE {$name};";
+        case 'pgsql':
+            return "DROP TABLE {$name};";
+        case 'mssql':
+        case 'sqlsrv':
+            return "DROP TABLE {$name}_{$sid};";
+    }
+    //unsupported
+    return '';
+}
+
+/**
+ * Gets the unchanged columns
+ *
+ * @param int $sid
+ * @param int $qTimestamp
+ * @param int $sTimestamp
+ * @return array all rows of the query result. Each array element is an array representing a row.
+ * An empty array is returned if the query results in nothing.
+ * @throws CException execution failed
+ */
+function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
+{
+    $sourceTables = [
+        Yii::app()->db->tablePrefix . "survey_" . $sid,
+        Yii::app()->db->tablePrefix . "survey_" . $sid,
+        Yii::app()->db->tablePrefix . "survey_" . $sid,
+        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+        Yii::app()->db->tablePrefix . "old_survey_{$sid}_{$sTimestamp}",
+    ];
+    $destinationTables = [
+        'new_s_c',
+        'new_parent1',
+        'new_parent2',
+        'old_s_c',
+        'old_parent1',
+        'old_parent2'
+    ];
+    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableCreates($sourceTables, $destinationTables, $sid)))->execute();
+    $command = "";
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+            $command = "
+        SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+        FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+        JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+        ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+        JOIN new_s_c
+        ON new_s_c.sid = new_q.sid AND
+           new_s_c.gid = new_q.gid AND
+           new_s_c.qidsuffix like concat(new_q.qid, '%')
+        JOIN old_s_c
+        ON old_s_c.sid = old_q.sid AND
+           old_s_c.gid = old_q.gid AND
+           old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+           old_s_c.qidsuffix = new_s_c.qidsuffix
+        LEFT JOIN new_parent1
+        ON new_s_c.sid = new_parent1.sid AND
+           new_s_c.gid = new_parent1.gid AND
+           new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+           new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+        LEFT JOIN new_parent2
+        ON new_s_c.sid = new_parent2.sid AND
+           new_s_c.gid = new_parent2.gid AND
+           new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+           new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+        LEFT JOIN old_parent1
+        ON old_s_c.sid = old_parent1.sid AND
+           old_s_c.gid = old_parent1.gid AND
+           old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+           old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+        LEFT JOIN old_parent2
+           ON old_s_c.sid = old_parent2.sid AND
+              old_s_c.gid = old_parent2.gid AND
+              old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+              old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+        WHERE (new_parent2.sid IS NULL) AND
+              (old_parent2.sid IS NULL) AND
+              (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+               (
+                (new_parent1.sid = old_parent1.sid) AND
+                (new_parent1.gid = old_parent1.gid) AND
+                (new_parent1.qidsuffix = old_parent1.qidsuffix)
+               )
+              )
+        ;
+        "
+            ;
+            break;
+        case 'pgsql':
+            $command = "
+            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+            FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+            JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+            ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+            JOIN new_s_c
+            ON new_s_c.sid::text = new_q.sid::text AND
+               new_s_c.gid::text = new_q.gid::text AND
+               new_s_c.qidsuffix like concat(new_q.qid, '%')
+            JOIN old_s_c
+            ON old_s_c.sid::text = old_q.sid::text AND
+               old_s_c.gid::text = old_q.gid::text AND
+               old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+               old_s_c.qidsuffix = new_s_c.qidsuffix
+            LEFT JOIN new_parent1
+            ON new_s_c.sid = new_parent1.sid AND
+               new_s_c.gid = new_parent1.gid AND
+               new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+               new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+            LEFT JOIN new_parent2
+            ON new_s_c.sid = new_parent2.sid AND
+               new_s_c.gid = new_parent2.gid AND
+               new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+               new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+            LEFT JOIN old_parent1
+            ON old_s_c.sid = old_parent1.sid AND
+               old_s_c.gid = old_parent1.gid AND
+               old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+               old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+            LEFT JOIN old_parent2
+               ON old_s_c.sid = old_parent2.sid AND
+                  old_s_c.gid = old_parent2.gid AND
+                  old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+                  old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+            WHERE (new_parent2.sid IS NULL) AND
+                  (old_parent2.sid IS NULL) AND
+                  (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+                   (
+                    (new_parent1.sid = old_parent1.sid) AND
+                    (new_parent1.gid = old_parent1.gid) AND
+                    (new_parent1.qidsuffix = old_parent1.qidsuffix)
+                   )
+                  )
+            ;
+            "
+            ;
+            break;
+        case 'mssql':
+        case 'sqlsrv':
+            $command = "
+            SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
+                    FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
+                    JOIN " . Yii::app()->db->tablePrefix . "questions new_q
+                    ON old_q.qid = new_q.qid AND old_q.type = new_q.type
+                    JOIN new_s_c_{$sid} new_s_c
+                    ON new_s_c.sid = convert(nvarchar(255), new_q.sid) AND
+                       new_s_c.gid = convert(nvarchar(255), new_q.gid) AND
+                       new_s_c.qidsuffix like concat(new_q.qid, '%')
+                    JOIN old_s_c_{$sid} old_s_c
+                    ON old_s_c.sid = convert(nvarchar(255), old_q.sid) AND
+                       old_s_c.gid = convert(nvarchar(255), old_q.gid) AND
+                       old_s_c.qidsuffix LIKE CONCAT(old_q.qid, '%') AND
+                       old_s_c.qidsuffix = new_s_c.qidsuffix
+                    LEFT JOIN new_parent1_{$sid} new_parent1
+                    ON new_s_c.sid = new_parent1.sid AND
+                       new_s_c.gid = new_parent1.gid AND
+                       new_s_c.qidsuffix <> new_parent1.qidsuffix AND
+                       new_parent1.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+                    LEFT JOIN new_parent2_{$sid} new_parent2
+                    ON new_s_c.sid = new_parent2.sid AND
+                       new_s_c.gid = new_parent2.gid AND
+                       new_s_c.qidsuffix <> new_parent2.qidsuffix AND new_parent1.qidsuffix <> new_parent2.qidsuffix AND
+                       new_parent2.qidsuffix LIKE CONCAT(new_s_c.qidsuffix, '%')
+                    LEFT JOIN old_parent1_{$sid} old_parent1
+                    ON old_s_c.sid = old_parent1.sid AND
+                       old_s_c.gid = old_parent1.gid AND
+                       old_s_c.qidsuffix <> old_parent1.qidsuffix AND
+                       old_parent1.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+                    LEFT JOIN old_parent2_{$sid} old_parent2
+                       ON old_s_c.sid = old_parent2.sid AND
+                          old_s_c.gid = old_parent2.gid AND
+                          old_s_c.qidsuffix <> old_parent2.qidsuffix AND old_parent1.qidsuffix <> old_parent2.qidsuffix AND
+                          old_parent2.qidsuffix LIKE CONCAT(old_s_c.qidsuffix, '%')
+                    WHERE (new_parent2.sid IS NULL) AND
+                          (old_parent2.sid IS NULL) AND
+                          (((new_parent1.sid IS NULL) AND (old_parent1.sid IS NULL)) OR
+                           (
+                            (new_parent1.sid = old_parent1.sid) AND
+                            (new_parent1.gid = old_parent1.gid) AND
+                            (new_parent1.qidsuffix = old_parent1.qidsuffix)
+                           )
+                          )
+            ;            
+            "
+            ;
+            break;
+    }
+
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $results = ['old_c' => [], 'new_c' => []];
+    foreach ($rawResults as $rawResult) {
+        $results['old_c'][] = $rawResult['old_c'];
+        $results['new_c'][] = $rawResult['new_c'];
+    }
+    Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableDrops($destinationTables, $sid)))->execute();
+    return $results;
+}
+
+/**
+ * Generates temporary table creation scripts from the arrays received and returns the scripts that were generated,
+ * we expect count($sourceTables) and count($destinationTables) to be the same
+ *
+ * @param array $sourceTables
+ * @param array $destinationTables
+ * @param int $sid
+ * @return array
+ */
+function generateTemporaryTableCreates(array $sourceTables, array $destinationTables, int $sid)
+{
+    $output = [];
+    for ($index = 0; $index < count($sourceTables); $index++) {
+        $output [] = generateTemporaryTableCreate($sourceTables[$index], $destinationTables[$index], $sid);
+    }
+    return $output;
+}
+
+/**
+ * Generates temporary table drops for the tables received and returns the scripts
+ *
+ * @param array $tables
+ * @param int $sid
+ * @return array
+ */
+function generateTemporaryTableDrops(array $tables, int $sid)
+{
+    $output = [];
+    foreach ($tables as $table) {
+        $output [] = generateTemporaryTableDrop($table, $sid);
+    }
+    return $output;
+}
+
+/**
+ * Finds the newest archive table from each kind
+ *
+ * @param int $sid
+ * @return array all rows of the query result. Each array element is an array representing a row.
+ * An empty array is returned if the query results in nothing.
+ * @throws CException execution failed
+ */
+function getDeactivatedArchives($sid)
+{
+    $sid = intval($sid);
+    $command = "";
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql':
+            $command = "
+        SELECT n, GROUP_CONCAT(TABLE_NAME) AS table_name
+        FROM
+        (SELECT n, TABLE_NAME
+        FROM information_schema.tables
+        JOIN (
+            SELECT 'survey' AS n
+            UNION
+            SELECT 'tokens' AS n
+            UNION
+            SELECT 'timings' AS n
+            UNION
+            SELECT 'questions' AS n
+        ) t
+        ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ORDER BY TABLE_NAME) t
+        GROUP BY n;
+        ";
+            break;
+        case 'pgsql':
+            $command = "
+        SELECT n, array_to_string(array_agg(TABLE_NAME), ',') AS table_name
+        FROM
+        (SELECT n, TABLE_NAME
+        FROM information_schema.tables
+        JOIN (
+            SELECT 'survey' AS n
+            UNION
+            SELECT 'tokens' AS n
+            UNION
+            SELECT 'timings' AS n
+            UNION
+            SELECT 'questions' AS n
+        ) t
+        ON TABLE_CATALOG = current_database() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ORDER BY TABLE_NAME) t
+        GROUP BY n;
+            "
+            ;
+            break;
+        case 'mssql':
+        case 'sqlsrv':
+            $command = "
+		SELECT n, STRING_AGG(TABLE_NAME, ',') AS table_name
+        FROM
+        (SELECT n, TABLE_NAME
+        FROM information_schema.tables
+        JOIN (
+            SELECT 'survey' AS n
+            UNION
+            SELECT 'tokens' AS n
+            UNION
+            SELECT 'timings' AS n
+            UNION
+            SELECT 'questions' AS n
+        ) t
+        ON TABLE_CATALOG = db_name() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
+        ((n <> 'survey') OR (TABLE_NAME NOT LIKE '%timings%'))
+        ) t
+        GROUP BY n;
+        "
+            ;
+            break;
+    }
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $results = [];
+    foreach ($rawResults as $rawResult) {
+        $results[$rawResult['n']] = $rawResult["table_name"];
+    }
+    return $results;
+}
+
+/**
+ * Copying all data from source table to a target table having the same structure
+ *
+ * @param string $source
+ * @param string $destination
+ * @param bool $preserveIDs
+ * @return integer number of rows affected by the execution.
+ * @throws CDbException execution failed
+ */
+function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
+{
+    $customFilter = [
+        'mysql' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
+        'mysqli' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
+        'pgsql' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = current_database()',
+        'mssql' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = db_name()',
+        'sqlsrv' => 'a.TABLE_CATALOG = b.TABLE_CATALOG and a.TABLE_CATALOG = db_name()',
+    ];
+    $filter = ($customFilter[Yii::app()->db->getDriverName()] ?? '');
+    $command = "
+        select a.COLUMN_NAME as cname
+        from information_schema.columns a
+        join information_schema.columns b
+        on {$filter} and
+          a.TABLE_NAME = '" . $destination . "' and
+          b.TABLE_NAME = '" . $source . "' and
+          a.COLUMN_NAME = b.COLUMN_NAME
+    ";
+    if (!$preserveIDs) {
+        $command .= " where a.COLUMN_NAME not in ('id', 'tid')";
+    }
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $columns = [];
+    foreach ($rawResults as $rawResult) {
+        $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
+    }
+    $timings = count($columns) ? Yii::app()->db->createCommand("INSERT INTO " . Yii::app()->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($source))->execute() : 0;
+    if ((!$preserveIDs) && (strpos($destination, 'timings') !== false)) {
+        $oldResponsesTable = str_replace('_timings', '', $source);
+        $command = "
+            SELECT t1.id as rid, t2.id as tid
+            FROM {$oldResponsesTable} t1
+            LEFT JOIN {$source} t2
+            ON t1.id = t2.id
+            order by t1.id
+        ";
+        $newResponsesTable = str_replace('_timings', '', $destination);
+        $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+        $offset = 0;
+        foreach ($rawResults as $rawResult) {
+            if (intval($rawResult['tid']) > 0) {
+                $responseidresult = Yii::app()->db->createCommand()
+                ->select('id ')
+                ->from($newResponsesTable)
+                ->limit(1, $offset)
+                ->query()
+                ->readAll();
+                $newID = $responseidresult[0]['id'];
+                $oldID = $offset + 1;
+                $command = "
+                    UPDATE {$destination}
+                    SET id = {$newID}
+                    WHERE id = {$oldID}
+                ";
+                Yii::app()->db->createCommand($command)->execute();
+            }
+            $offset++;
+        }
+    }
+    return $timings;
+}
+
+/**
+ * Recovers archived survey responses
+ *
+ * @param int $surveyId survey ID
+ * @param string $archivedResponseTableName archived response table name to be imported
+ * @param bool $preserveIDs if archived response IDs should be preserved
+ * @param array $validatedColumns the columns that are validated and can be inserted again
+ * @return integer number of rows affected by the execution.
+ * @throws Exception execution failed
+ */
+function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName, $preserveIDs, array $validatedColumns = []): int
+{
+    if (!is_array($validatedColumns)) {
+        $validatedColumns = [];
+    }
+    $pluginDynamicArchivedResponseModel = PluginDynamic::model($archivedResponseTableName);
+    $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
+    $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
+    if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
+        $tbl_name = str_replace('old_survey', 'old_tokens', substr($archivedResponseTableName, strlen(App()->db->tablePrefix)));
+    } else {
+        $tbl_name = str_replace('old_survey', 'old_tokens', $archivedResponseTableName);
+    }
+    $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name, 'tbl_type' => 'response']);
+    $archivedEncryptedAttributes = [];
+    if ($archivedTableSettings) {
+        $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties, true);
+    }
+    $archivedResponses = new CDataProviderIterator(new CActiveDataProvider($pluginDynamicArchivedResponseModel), 500);
+
+    $tableName = "{{survey_$surveyId}}";
+    $importedResponses = 0;
+    $batchData = [];
+    foreach ($archivedResponses as $archivedResponse) {
+        $dataRow = [];
+        // Using plugindynamic model because I dont trust surveydynamic.
+        $targetResponse = new PluginDynamic($tableName);
+        if ($preserveIDs) {
+            $targetResponse->id = $archivedResponse->id;
+            $dataRow['id'] = $archivedResponse->id;
+        }
+
+        $to = 'new_c';
+        $from = 'old_c';
+        for ($index = 0; $index < count($validatedColumns[$to]); $index++) {
+            $source = $validatedColumns[$from][$index];
+            $target = $validatedColumns[$to][$index];
+            $targetResponse->{$target} = $archivedResponse[$source];
+            if (in_array($source, $archivedEncryptedAttributes, false) && !in_array($target, $encryptedAttributes, false)) {
+                $targetResponse->{$target} = $archivedResponse->decryptSingle($archivedResponse[$source]);
+            } elseif (!in_array($source, $archivedEncryptedAttributes, false) && in_array($target, $encryptedAttributes, false)) {
+                $targetResponse->{$target} = $archivedResponse->encryptSingle($archivedResponse[$source]);
+            } else {
+                $targetResponse->{$target} = $archivedResponse[$source];
+            }
+            $dataRow[$target] = $targetResponse->{$target};
+        }
+
+        $additionalFields = [
+            'token',
+            'submitdate',
+            'lastpage',
+            'startlanguage',
+            'seed',
+            'startdate',
+            'datestamp',
+            'version_number'
+        ];
+
+        if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
+            $targetResponse->{'startdate'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            $dataRow['startdate'] = $targetResponse->{'startdate'};
+        }
+
+        if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])) {
+            $targetResponse->{'datestamp'} = date("Y-m-d H:i", (int)mktime(0, 0, 0, 1, 1, 1980));
+            $dataRow['datestamp'] = $targetResponse->{'datestamp'};
+        }
+
+        foreach ($additionalFields as $additionalField) {
+            if (isset($archivedResponse->{$additionalField}) && isset($targetSchema->columns[$additionalField])) {
+                $dataRow[$additionalField] = $archivedResponse->{$additionalField};
+            }
+        }
+
+        $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+        $beforeDataEntryImport->set('iSurveyID', $surveyId);
+        $beforeDataEntryImport->set('oModel', $targetResponse);
+        App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
+        if ($targetResponse->validate()) {
+            $batchData[] = $dataRow;
+        }
+        if (count($batchData) % 500 === 0) {
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", true);
+            }
+            $builder = App()->db->getCommandBuilder();
+            $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+            $importedResponses += $command->execute();
+            if ($preserveIDs) {
+                switchMSSQLIdentityInsert("survey_$surveyId", false);
+            }
+            $batchData = [];
+        }
+
+        unset($targetResponse);
+    }
+
+    if (count($batchData)) {
+        if ($preserveIDs) {
+            switchMSSQLIdentityInsert("survey_$surveyId", true);
+        }
+        $builder = App()->db->getCommandBuilder();
+        $command = $builder->createMultipleInsertCommand($tableName, $batchData);
+        $importedResponses += $command->execute();
+        if ($preserveIDs) {
+            switchMSSQLIdentityInsert("survey_$surveyId", false);
+        }
+    }
+    return $importedResponses;
+}
+
+
+/**
+ * Import a LimeSurvey survey from an XML file or XML string into the database.
+ *
+ * Processes the provided LimeSurvey Survey XML and inserts survey metadata, languages,
+ * groups, questions (main and subquestions), answers, attributes, quotas, conditions,
+ * themes, plugin settings, and other related records while remapping IDs and translating
+ * legacy field values as needed.
+ *
+ * @param string $sFullFilePath Path to the XML file; optional when $sXMLdata is provided.
+ * @param string|null $sXMLdata XML data string to import; optional when $sFullFilePath is provided.
+ * @param string|null $sNewSurveyName If provided, the survey is treated as a copy and this name is applied.
+ * @param int|null $iDesiredSurveyId Desired numeric survey ID to assign to the new survey (may be ignored if in use).
+ * @param bool $bTranslateInsertansTags When true, embedded insertans/link fields in text are translated to the new survey.
+ * @param bool $bConvertInvalidQuestionCodes When true, invalid or colliding question codes are adjusted to valid unique codes.
+ * @param string|null $targetSurveyGroup Controls assignment of the imported survey to a survey group when not copying;
+ *                 supported value 'from_survey' attempts to reuse the original survey group when accessible.
+ * @return array An associative result array containing import counters and metadata, including:
+ *               - 'error' (string) on failure,
+ *               - 'newsid' (int) the new survey id,
+ *               - 'oldsid' (int) the original survey id from the XML,
+ *               - counters for imported entities (questions, groups, answers, etc.),
+ *               - 'importwarnings' (array) warnings produced during import,
+ *               - additional maps such as 'FieldReMap' when applicable.
+ */
+function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true, $targetSurveyGroup = null)
 {
     $isCopying = ($sNewSurveyName != null);
     Yii::app()->loadHelper('database');
@@ -1328,6 +2145,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['importwarnings'] = array();
     $results['theme_options_original_data'] = '';
     $results['theme_options_differences'] = array();
+    $results['access_mode'] = SurveyAccessModeService::$ACCESS_TYPE_OPEN;
     $sTemplateName = '';
 
     /** @var bool Indicates if the email templates have attachments with untranslated URLs or not */
@@ -1340,28 +2158,29 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     $results['languages'] = count($aLanguagesSupported);
 
-    // Import surveys table ====================================================
-
+    // Import survey entry  ====================================================
+    if (!isset($xml->surveys->rows->row)) {
+        $results['error'] = gT("XML Parsing Error: Missing or malformed element of type 'survey'");
+        return $results;
+    }
     foreach ($xml->surveys->rows->row as $row) {
         $insertdata = array();
 
         foreach ($row as $key => $value) {
-            // Set survey group id to default if not a copy
-            if ($key == 'gsid' & !$isCopying) {
-                $value = 1;
-            }
             if ($key == 'template') {
                 $sTemplateName = (string)$value;
+            }
+            if ($key == 'access_mode') {
+                $results['access_mode'] = (string)$value;
             }
             $insertdata[(string) $key] = (string) $value;
         }
         $iOldSID = $results['oldsid'] = $insertdata['sid'];
-        // Fix#14609 wishSID overwrite sid
         if (!is_null($iDesiredSurveyId)) {
             $insertdata['sid'] = $iDesiredSurveyId;
         }
-
         if ($iDBVersion < 145) {
+            // Convert to new field names
             if (isset($insertdata['private'])) {
                 $insertdata['anonymized'] = $insertdata['private'];
             }
@@ -1401,6 +2220,30 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > Token::MAX_LENGTH) {
             $insertdata['tokenlength'] = Token::MAX_LENGTH;
         }
+
+        // Fix survey group when not copying
+        if (!$isCopying) {
+            // Set to 1 by default
+            $insertdata['gsid'] = 1;
+            // If $targetSurveyGroup is set to 'from_survey' and the xml includes survey group details, try to find the group by name.
+            if ($targetSurveyGroup == 'from_survey' && !empty($xml->surveys_groups->rows->row[0]->name)) {
+                $surveyGroupName = (string) $xml->surveys_groups->rows->row[0]->name;
+                $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName]);
+                if (!empty($surveyGroup)) {
+                    $accessibleGroups = SurveysGroups::getSurveyGroupsList();
+                    if (array_key_exists($surveyGroup->gsid, $accessibleGroups)) {
+                        // If a survey group is found with the specified name, and the user has access to it, assign it to the survey.
+                        $insertdata['gsid'] = $surveyGroup->gsid;
+                        $results['importwarnings'][] = sprintf(gT("The survey was assigned to the '%s' group."), $surveyGroup->title);
+                    } else {
+                        $results['importwarnings'][] = gT("You don't have permission to import surveys into the original survey group. The survey was assigned to the default group.");
+                    }
+                } else {
+                    $results['importwarnings'][] = gT("The original survey group couldn't be found. The survey was assigned to the default group.");
+                }
+            }
+        }
+
         /* Remove unknow column */
         $aSurveyModelsColumns = Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
@@ -1498,9 +2341,17 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         // Email attachments are with relative paths on the file, but are currently expected to be saved as absolute.
         // Transforming them from relative paths to absolute paths.
         if (!empty($insertdata['attachments'])) {
+            $attachments = @json_decode($insertdata['attachments'], true);
             // NOTE: Older LSS files have attachments as a serialized array, while newer ones have it as a JSON string.
             // Serialized attachments are not supported anymore.
-            $attachments = json_decode($insertdata['attachments'], true);
+            if (is_null($attachments)) {
+                if (App()->getConfig('allow_unserialize_attachments')) {
+                    $attachments = unserialize($insertdata['attachments'], ['allowed_classes' => false]);
+                    /* If it's a broken unserialize : it's NOT a wrongAttachmentsFormat, it's just invalid */
+                } else {
+                    $wrongAttachmentsFormat = true;
+                }
+            }
             if (!empty($attachments) && is_array($attachments)) {
                 $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
                 foreach ($attachments as &$template) {
@@ -1517,11 +2368,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                         $hasOldAttachments = true;
                     }
                 }
-            } elseif (is_null($attachments)) {
-                // JSON decode failed. Most probably the attachments were in the PHP serialization format.
-                $wrongAttachmentsFormat = true;
             }
-            $insertdata['attachments'] = serialize($attachments);
+            /* Set as json only if not empty */
+            $insertdata['attachments'] = !empty($attachments) ? json_encode($attachments) : "";
         }
 
         if (isset($insertdata['surveyls_attributecaptions']) && substr((string) $insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
@@ -1530,7 +2379,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $aColumns = SurveyLanguageSetting::model()->attributes;
         $insertdata = array_intersect_key($insertdata, $aColumns);
 
-        $surveyLanguageSetting = new SurveyLanguageSetting();
+        $surveyLanguageSetting = new SurveyLanguageSetting('import');
         $surveyLanguageSetting->setAttributes($insertdata, false);
         try {
             // Clear alias if it was already in use
@@ -1545,7 +2394,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $surveyLanguageSetting->clearErrors('surveyls_alias');
             }
             if (!$surveyLanguageSetting->save()) {
-                throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
+                $errors = $surveyLanguageSetting->errors;
+                // Clean up
+                Survey::model()->deleteSurvey($iNewSID);
+                $errorsStr = '';
+                foreach ($errors as $attribute => $error) {
+                    $errorsStr .= $error[0] . "\n";
+                }
+                throw new Exception(gT("Error: Failed to import survey language settings.") . " " . $errorsStr);
             }
         } catch (CDbException $e) {
             throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid.");
@@ -1637,7 +2493,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             // #14646: fix utf8 encoding issue
             if (!mb_detect_encoding($insertdata['group_name'], 'UTF-8', true)) {
-                $insertdata['group_name'] = utf8_encode($insertdata['group_name']);
+                $insertdata['group_name'] = mb_convert_encoding($insertdata['group_name'], 'UTF-8', 'ISO-8859-1');
             }
             // Insert the new group
             $oQuestionGroupL10n = new QuestionGroupL10n();
@@ -1984,7 +2840,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $results['answers']++;
             if (isset($oAnswerL10n)) {
                 $oAnswer = Answer::model()->findByAttributes(['qid' => $insertdata['qid'], 'code' => $insertdata['code'], 'scale_id' => $insertdata['scale_id']]);
-                $oAnswerL10n->aid = $oAnswer->aid;
+                if (isset($oAnswer->aid)) {
+                    $oAnswerL10n->aid = $oAnswer->aid;
+                }
                 $oAnswerL10n->save();
                 unset($oAnswerL10n);
             }
@@ -2305,13 +3163,16 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($insertdata['quotals_quota_id']) || (int)$insertdata['quotals_quota_id'] < 1) {
                 continue;
             }
-            $insertdata['autoload_url'] = 0; // used to bypass urlValidator check in QuotaLanguageSetting model
             $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
-            $quotaLanguagesSetting = new QuotaLanguageSetting();
+            $quotaLanguagesSetting = new QuotaLanguageSetting('import');
             $quotaLanguagesSetting->setAttributes($insertdata, false);
             if (!$quotaLanguagesSetting->save()) {
-                throw new Exception(gT("Error") . ": Failed to insert data<br />");
+                $header = sprintf(gT("Unable to insert quota language settings for quota %s"), $insertdata['quotals_quota_id']);
+                if (isset($insertdata['quotals_language'])) {
+                    $header = sprintf(gT("Unable to insert quota language settings for quota %s and language %s"), $insertdata['quotals_quota_id'], $insertdata['quotals_language']);
+                }
+                $results['importwarnings'][] = CHtml::errorSummary($quotaLanguagesSetting, $header);
             }
             $results['quotals']++;
         }
@@ -2518,12 +3379,12 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
         foreach ($xml->tokens->fields->fieldname as $sFieldName) {
             $aXLMFieldNames[] = (string) $sFieldName;
         }
-        // Get a list of all fieldnames in the survey participants table
+        // Get a list of all fieldnames in the survey participant list
         $aTokenFieldNames = Yii::app()->db->getSchema()->getTable($survey->tokensTableName, true);
         $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate = array_diff($aXLMFieldNames, $aTokenFieldNames);
         if (!function_exists('db_upgrade_all')) {
-            Yii::app()->loadHelper('update/updatedb');
+            Yii::app()->loadHelper('update.updatedb');
         }
 
         foreach ($aFieldsToCreate as $sField) {
@@ -2582,6 +3443,8 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
         libxml_disable_entity_loader(true);
     }
     if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
+        // Refresh metadata to make sure it reflects the current survey
+        SurveyDynamic::model($iSurveyID)->refreshMetadata();
         $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
         while ($oXMLReader->read()) {
             if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
@@ -2618,9 +3481,15 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             }
                         }
                         try {
-                            $iNewID = SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData);
-                            if (!$iNewID) {
-                                throw new Exception("Error, no entry id was returned.", 1);
+                            // Very old survey archives may not have a startdate field or no values in the startdate field.
+                            if (in_array('startdate', $DestinationFields) && (!isset($aInsertData['startdate']) || empty($aInsertData['startdate']))) {
+                                $aInsertData['startdate'] = date('1980-01-01 00:00:00');
+                            }
+                            SurveyDynamic::sid($iSurveyID);
+                            $response = new SurveyDynamic();
+                            $response->setAttributes($aInsertData, false);
+                            if (!$response->encryptSave()) {
+                                throw new Exception("Failed to save response data.");
                             }
                         } catch (Exception $e) {
                             throw new Exception(gT("Error") . ": Failed to insert data in response table<br />");
@@ -3007,8 +3876,6 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 */
 function TSVImportSurvey($sFullFilePath)
 {
-    $baselang = 'en'; // TODO set proper default
-
     $aAttributeList = array(); //QuestionAttribute::getQuestionAttributesSettings();
     $tmp = fileCsvToUtf8($sFullFilePath);
 
@@ -3037,6 +3904,12 @@ function TSVImportSurvey($sFullFilePath)
         $adata[] = $rowarray;
     }
     fclose($tmp);
+    /* Check minimal headers */
+    $necessaryHeader = ['class', 'name', 'text'];
+    if (count(array_diff($necessaryHeader, $rowheaders)) > 0) {
+        $results['error'] = gT("The file does not seem to be a valid survey file. The necessary headers are not present.");
+        return $results;
+    }
     unset($rowheaders);
     unset($rowarray) ;
 
@@ -3071,7 +3944,11 @@ function TSVImportSurvey($sFullFilePath)
                 break;
         }
     }
-
+    if (!isset($surveyinfo['language'])) {
+        $results['error'] = gT("The file do not seem to be a valid tab-separated-values survey file. No language set.");
+        return $results;
+    }
+    $baselang = $surveyinfo['language']; // the base language
 
     // Create the survey entry
     $surveyinfo['startdate'] = null;
@@ -3102,9 +3979,6 @@ function TSVImportSurvey($sFullFilePath)
     $sqinfo = array();
     $asinfo = array();
 
-    if (isset($surveyinfo['language'])) {
-        $baselang = $surveyinfo['language']; // the base language
-    }
     /* Keep track of id for group */
     $groupIds = [];
     /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */
@@ -3184,6 +4058,7 @@ function TSVImportSurvey($sFullFilePath)
                 $question['encrypted'] = ($row['encrypted'] ?? 'N');
                 $lastother = $question['other'] = ($row['other'] ?? 'N'); // Keep trace of other settings for sub question
                 $question['same_default'] = ($row['same_default'] ?? 0);
+                $question['question_theme_name'] = ($row['question_theme_name'] ?? '');
                 $question['same_script'] = ($row['same_script'] ?? 0);
                 $question['parent_qid'] = 0;
 
@@ -3229,6 +4104,7 @@ function TSVImportSurvey($sFullFilePath)
                         case 'mandatory':
                         case 'other':
                         case 'same_default':
+                        case 'question_theme_name':
                         case 'same_script':
                         case 'default':
                             break;

@@ -56,9 +56,6 @@ class Labels extends SurveyCommonAction
         $basedestdir = Yii::app()->getConfig('uploaddir') . "/labels";
         $destdir = $basedestdir . "/$lid/";
 
-        Yii::app()->loadLibrary('admin.pclzip');
-        $zip = new PclZip($zipfilename);
-
         if (!is_writeable($basedestdir)) {
             Yii::app()->setFlashMessage(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), 'error');
             $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
@@ -72,9 +69,11 @@ class Labels extends SurveyCommonAction
         $aErrorFilesInfo = array();
 
         if (is_file($zipfilename)) {
-            if ($zip->extract($extractdir) <= 0) {
+            $zip = new LimeSurvey\Zip();
+            if ($zip->open($zipfilename) !== true || $zip->extractTo($extractdir) !== true) {
                 $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
+            $zip->close();
 
             // now read tempdir and copy authorized files only
             $folders = array('flash', 'files', 'images');
@@ -125,7 +124,7 @@ class Labels extends SurveyCommonAction
         $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl("/admin/labels/sa/newlabelset"));
 
         if ($action == 'importlabels') {
-            Yii::app()->loadHelper('admin/import');
+            Yii::app()->loadHelper('admin.import');
 
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
             $aPathInfo = pathinfo((string) $_FILES['the_file']['name']);
@@ -334,7 +333,7 @@ class Labels extends SurveyCommonAction
     public function process()
     {
         $action = App()->getRequest()->getParam('action');
-        Yii::app()->loadHelper('admin/label');
+        Yii::app()->loadHelper('admin.label');
         if ($action == "updateset") {
             $lid = $this->validateLabelSetId(App()->getRequest()->getPost('lid'), 'update');
             updateset($lid);
@@ -422,7 +421,7 @@ class Labels extends SurveyCommonAction
     {
         $aData = [];
 
-        $aData['topbar']['title'] = gt('Export multiple label sets');
+        $aData['topbar']['title'] = gT('Export multiple label sets');
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/labels/partials/topbarBtns_export/rightSideButtons',
             [],

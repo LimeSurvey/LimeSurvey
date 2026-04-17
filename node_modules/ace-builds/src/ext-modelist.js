@@ -24,7 +24,7 @@ var Mode = /** @class */ (function () {
             }) + "$";
         }
         else {
-            re = "^.*\\.(" + extensions + ")$";
+            re = "\\.(" + extensions + ")$";
         }
         this.extRe = new RegExp(re, "gi");
     }
@@ -49,6 +49,7 @@ var supportedModes = {
     Astro: ["astro"],
     AutoHotKey: ["ahk"],
     BatchFile: ["bat|cmd"],
+    Basic: ["bas|bak"],
     BibTeX: ["bib"],
     C_Cpp: ["cpp|c|cc|cxx|h|hh|hpp|ino"],
     C9Search: ["c9search_results"],
@@ -63,6 +64,7 @@ var supportedModes = {
     Csound_Orchestra: ["orc"],
     Csound_Score: ["sco"],
     CSS: ["css"],
+    CSV: ["csv"],
     Curly: ["curly"],
     Cuttlefish: ["conf"],
     D: ["d|di"],
@@ -205,6 +207,7 @@ var supportedModes = {
     Text: ["txt"],
     Textile: ["textile"],
     Toml: ["toml"],
+    TSV: ["tsv"],
     TSX: ["tsx"],
     Turtle: ["ttl"],
     Twig: ["twig|swig"],

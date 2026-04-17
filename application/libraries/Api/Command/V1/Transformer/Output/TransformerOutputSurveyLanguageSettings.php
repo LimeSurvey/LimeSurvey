@@ -17,7 +17,7 @@ class TransformerOutputSurveyLanguageSettings extends TransformerOutputActiveRec
             'surveyls_endtext' => 'endText',
             'surveyls_policy_notice' => 'policyNotice',
             'surveyls_policy_error' => 'policyError',
-            'surveyls_alias' => 'surveyAlias',
+            'surveyls_alias' => 'alias',
             'surveyls_policy_notice_label' => 'policyNoticeLabel',
             'surveyls_url' => 'url',
             'surveyls_urldescription' => 'urlDescription',
