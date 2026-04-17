@@ -1098,6 +1098,7 @@ class Update_700 extends DatabaseUpdateBase
             $scripts[$responsesTable['old_name']]['DROP'] = "DROP TABLE {$responsesTable['old_name']}";
             $scripts[$responsesTable['old_name']]['columns'] = $this->db->createCommand($this->getFieldsFromTableScript($responsesTable['old_name']))->queryAll();
         }
+        echo "I AM HERE";
         $timingsTables = $this->db->createCommand($this->scriptMapping['timings'])->queryAll();
         foreach ($timingsTables as $timingsTable) {
             $scripts[$timingsTable['old_name']] = [
@@ -1110,7 +1111,6 @@ class Update_700 extends DatabaseUpdateBase
             $scripts[$timingsTable['old_name']]['DROP'] = "DROP TABLE {$timingsTable['old_name']}";
             $scripts[$timingsTable['old_name']]['columns'] = $this->db->createCommand($this->getFieldsFromTableScript($timingsTable['old_name']))->queryAll();
         }
-        echo "I AM HERE";
         $fields = $this->db->createCommand($this->scriptMapping['fields'])->queryAll();
         $fieldMap = [];
         foreach ($fields as $field) {
