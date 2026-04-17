@@ -961,6 +961,7 @@ class Update_700 extends DatabaseUpdateBase
             ON target.parent_qid = q.qid and target.title = a.code
             LEFT JOIN {{question_l10ns}} existent
             ON existent.qid = target.qid and existent.language = al.language
+            WHERE existent.qid IS NULL
         ";
     }
 
