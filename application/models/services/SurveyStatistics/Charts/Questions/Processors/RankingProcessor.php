@@ -24,6 +24,7 @@ class RankingProcessor extends AbstractQuestionProcessor
             $legends = [];
             $dataItems = [];
             $index = 0;
+            $fields = [];
             foreach ($this->question['subQuestions'] as $subQuestionInner) {
                 $index++;
                 $fieldName = "RANK {$index}";
