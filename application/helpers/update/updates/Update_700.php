@@ -1082,9 +1082,9 @@ class Update_700 extends DatabaseUpdateBase
             'fields' => $this->getFieldsScript()
         ];
         $scripts = [];
+        echo "I AM HERE";
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
 
-        echo "I AM HERE";
         foreach ($responsesTables as $responsesTable) {
             if (((strpos($responsesTable['old_name'], "old_") === false) && (strpos($responsesTable['old_name'], "timing") === false))) {
                 $parts = explode("_", $responsesTable['old_name']);
