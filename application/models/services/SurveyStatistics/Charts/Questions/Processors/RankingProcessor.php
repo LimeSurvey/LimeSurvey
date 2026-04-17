@@ -28,7 +28,7 @@ class RankingProcessor extends AbstractQuestionProcessor
                 $index++;
                 $fieldName = "RANK {$index}";
                 $legends[] = $fieldName;
-                $fields[] = "SUM(CASE WHEN " . substr($this->rt, 1) . "_S" . $subQuestionInner['qid'] . " = :title THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($fieldName);
+                $fields[] = "SUM(CASE WHEN " . $db->quoteColumnName(substr($this->rt, 1) . "_S" . $subQuestionInner['qid']) . " = :title THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($fieldName);
             }
             $currentResults = $this->getAggregateResponses($title, $fields);
             foreach ($legends as $fieldName) {
