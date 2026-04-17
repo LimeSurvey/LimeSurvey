@@ -1066,15 +1066,8 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
-        echo "I AM HERE1";
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
-        echo "I AM HERE2";
-        try {
-            $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
-        } catch (\Exception $ex) {
-            echo $ex->getMessage();exit;
-        }
-        echo "I AM HERE3";
+        $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
         $leftSeparator = $rightSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
@@ -1082,9 +1075,7 @@ class Update_700 extends DatabaseUpdateBase
             $leftSeparator = "[";
             $rightSeparator = "]";
         }
-        echo "I AM HERE4";
         $this->doPreparations();
-        echo "I AM HERE5";
         $this->scriptMapping = [
             'responses' => $this->getResponsesScript(),
             'timings' => $this->getTimingScript(),
@@ -1161,7 +1152,6 @@ class Update_700 extends DatabaseUpdateBase
         $preinsert = "";
         $postinsert = "";
         foreach ($fieldMap as $TABLE_NAME => $fields) {
-            echo $TABLE_NAME . "\n";
             if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
                 $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
                 $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
@@ -1194,7 +1184,6 @@ class Update_700 extends DatabaseUpdateBase
                 FROM {$TABLE_NAME};
             ";
             try {
-                echo "\n" . $scripts[$TABLE_NAME]['CREATE'] . "\n";
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
                 $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
                 $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
@@ -1415,7 +1404,6 @@ class Update_700 extends DatabaseUpdateBase
         foreach ($scripts as $TABLE_NAME => $content) {
             if (!$content['handled']) {
                 $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
-                echo "\n" . $scripts[$TABLE_NAME]['CREATE'] . "\n";
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
                 $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
             }
