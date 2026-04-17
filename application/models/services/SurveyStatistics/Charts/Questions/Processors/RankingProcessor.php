@@ -16,47 +16,35 @@ class RankingProcessor extends AbstractQuestionProcessor
         $this->rt();
         $charts = [];
 
-        $legends = [];
-        $dataItems = [];
-        $codes = [];
-        $fields = [];
-        $fieldNames = [];
-        $title = flattenText($this->question['question']);
         $model = \SurveyDynamic::model($this->surveyId);
         $db = $model->getDbConnection();
-        $initialize = true;
 
         foreach ($this->question['subQuestions'] as $subQuestion) {
+            $title = $subQuestion['title'];
+            $legends = [];
+            $dataItems = [];
             $index = 0;
             foreach ($this->question['subQuestions'] as $subQuestionInner) {
                 $index++;
-                $fields[] = "SUM(CASE WHEN " . substr($this->rt, 1) . "_S" . $subQuestion['qid'] . " = :field{$index} THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($subQuestionInner['title']);
-                if ($initialize) {
-                    $fieldNames["field{$index}"] = $subQuestionInner['title'];
-                    $codes[$subQuestionInner['title']] = 0;
-                }
+                $fieldName = "RANK {$index}";
+                $legends[] = $fieldName;
+                $fields[] = "SUM(CASE WHEN " . substr($this->rt, 1) . "_S" . $subQuestionInner['qid'] . " = :title THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($fieldName);
             }
-            $currentResults = $this->getAggregateResponses($fieldNames, $fields);
-            foreach ($fieldNames as $fieldName) {
-                $codes[$fieldName] += $currentResults[$fieldName];
+            $currentResults = $this->getAggregateResponses($title, $fields);
+            foreach ($legends as $fieldName) {
+                $dataItems[] = [
+                    'key' => $subQuestion['title'],
+                    'title' => $fieldName,
+                    'value' => $currentResults[$fieldName]
+                ];
             }
-            $initialize = false;
+            $charts[] = new StatisticsChartDTO($this->question['question'] . ": " . $subQuestion['question'], $legends, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
         }
 
-        // Ranking questions now use subquestions for items to rank
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $legends[] = flattenText($this->question['question']) . " [{$subQuestion['question']}]";
-
-            $dataItems[] = [
-                'key' => $subQuestion['title'],
-                'title' => sprintf(gT('Rank %s'), $subQuestion['question']),
-                'value' => $codes[$subQuestion['title']]
-            ];
-        }
-        $legends[] = 'NoAnswer';
+        /*$legends[] = 'NoAnswer';
         $dataItems[] = ['key' => 'NoAnswer', 'value' => 0, 'title' => 'No answer'];
 
-        $charts[] = new StatisticsChartDTO($title, $legends, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
+        $charts[] = new StatisticsChartDTO($title, $legends, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);*/
 
         return $charts;
     }
