@@ -1152,6 +1152,7 @@ class Update_700 extends DatabaseUpdateBase
         $preinsert = "";
         $postinsert = "";
         foreach ($fieldMap as $TABLE_NAME => $fields) {
+            echo $TABLE_NAME . "\n";
             if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
                 $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
                 $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
