@@ -1184,6 +1184,7 @@ class Update_700 extends DatabaseUpdateBase
                 FROM {$TABLE_NAME};
             ";
             try {
+                echo "\n" . $scripts[$TABLE_NAME]['CREATE'] . "\n";
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
                 $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
                 $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
@@ -1404,6 +1405,7 @@ class Update_700 extends DatabaseUpdateBase
         foreach ($scripts as $TABLE_NAME => $content) {
             if (!$content['handled']) {
                 $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
+                echo "\n" . $scripts[$TABLE_NAME]['CREATE'] . "\n";
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
                 $this->db->createCommand($scripts[$TABLE_NAME]['DROP'])->execute();
             }
