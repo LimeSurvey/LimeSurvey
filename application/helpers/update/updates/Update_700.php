@@ -1066,6 +1066,7 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
+        echo "I AM HERE";
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
         $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
         $leftSeparator = $rightSeparator = "`";
@@ -1111,7 +1112,6 @@ class Update_700 extends DatabaseUpdateBase
             $scripts[$timingsTable['old_name']]['columns'] = $this->db->createCommand($this->getFieldsFromTableScript($timingsTable['old_name']))->queryAll();
         }
         $fields = $this->db->createCommand($this->scriptMapping['fields'])->queryAll();
-        echo "I AM HERE";
         $fieldMap = [];
         foreach ($fields as $field) {
             $questions = [];
