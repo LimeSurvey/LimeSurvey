@@ -428,7 +428,7 @@ window.addEventListener('message', function(event) {
         $resolved = [];
         foreach ($questionAttributes as $name => $value) {
             if (is_array($value)) {
-                $resolved[$name] = array_key_exists($language, $value) ? $value[$language] : (count($value) ? reset($value) : '');
+                $resolved[$name] = array_key_exists($language, $value) ? $value[$language] : '';
                 continue;
             }
             $resolved[$name] = $value;

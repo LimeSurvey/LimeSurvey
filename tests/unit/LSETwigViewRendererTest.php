@@ -21,7 +21,7 @@ class LSETwigViewRendererTest extends TestBaseClass
                 'en' => 'Test string',
                 'es' => 'Texto de prueba',
             ],
-            'missingLanguageFallsBackToFirst' => [
+            'missingLanguageReturnsEmptyString' => [
                 'de' => 'Deutsch',
                 'fr' => 'Français',
             ],
@@ -34,7 +34,7 @@ class LSETwigViewRendererTest extends TestBaseClass
             [
                 'max_answers' => 2,
                 'em_validation_q_tip' => 'Test string',
-                'missingLanguageFallsBackToFirst' => 'Deutsch',
+                'missingLanguageReturnsEmptyString' => '',
                 'emptyI18nMap' => '',
             ],
             $resolved
