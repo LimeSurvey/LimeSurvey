@@ -1036,6 +1036,7 @@ class Update_700 extends DatabaseUpdateBase
      * @param string $text The text containing INSERTANS tags
      * @param array $questionCodesByQid Mapping of QID => question title
      * @return string The text with INSERTANS tags converted to qcode.shown format
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function convertLegacyInsertans($text, array $questionCodesByQid)
     {
@@ -1152,6 +1153,7 @@ class Update_700 extends DatabaseUpdateBase
      * @param array $additionalNames SGQA→Q{qid} map for fixText (may be empty)
      * @param bool $guardRelevance When true, skip saving Question entities with relevance field
      *                              if the question's survey relation is missing (active survey guard)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function convertSurveyInsertans($sid, array $questions, array $fieldNames = [], array $additionalNames = [], $guardRelevance = false)
     {
@@ -1232,6 +1234,7 @@ class Update_700 extends DatabaseUpdateBase
             }
         }
     }
+    /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
