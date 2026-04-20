@@ -28,8 +28,30 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     private $o2FA = null;
 
+
+    /** @inheritdoc **/
+    public $allowedPublicMethods = [
+        'userindex',
+        'index'
+    ];
+
     protected $storage = 'DbStorage';
     protected $settings = array(
+        'force2fa' => array(
+            'type' => 'select',
+            'label' => 'Prompt to activate 2FA on login',
+            'default' => '0',
+            'options' => [
+                '0 ' => 'No',
+                '1' => 'Only prompt, no enforcement',
+                '2' => 'Always enforce 2FA activation',
+            ],
+            'help' => 'Upon login, users who have not enabled two-factor authentication (2FA) will be prompted to set it up.'
+        ),
+        'separatorTotp' => array(
+            'type' => 'separator',
+            'title' => 'TOTP Settings',
+        ),
         'issuer' => array(
             'type' => 'string',
             'label' => 'Issuer',
@@ -65,15 +87,31 @@ class TwoFactorAdminLogin extends AuthPluginBase
             ],
             'help' => 'Please keep in mind, that most tools only work with SHA1 hashing.'
         ),
-        'force2fa' => array(
-            'type' => 'select',
-            'label' => 'Force 2FA on login',
-            'default' => '0',
-            'options' => [
-                '0 ' => 'No',
-                '1' => 'Yes',
+        'SecretLength' => array(
+            'type' => 'int',
+            'label' => 'Secret length',
+            'default' => '',
+            'htmlOptions' => [
+                'min' => 128,
+                'placeholder' => 128
             ],
-            'help' => 'If this is active any user will be forced to create a 2FA key after first login'
+            'help' => 'Length of the secret in bits. Minimum and default are 128.'
+        ),
+        'separatorYubi' => array(
+            'type' => 'separator',
+            'title' => 'YubiKey Settings',
+        ),
+        'yubiClientId' => array(
+            'type' => 'string',
+            'label' => 'YubiCloud - Client ID',
+            'default' => '',
+            'help' => 'Your YubiCloud Client ID.'
+        ),
+        'yubiSecretKey' => array(
+            'type' => 'password',
+            'label' => 'YubiCloud - Secret Key',
+            'default' => '',
+            'help' => 'Optional - if set (recommended), the YubiCloud responses authenticity will be verified. Get it from the <a href="https://upgrade.yubico.com/getapikey/">Yubico API key signup</a>.'
         ),
     );
 
@@ -117,7 +155,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     /**
      * Event direct happen
      * Usage : index --target=value [--function=] [--option=]
-     * @return @void
+     * @return void
      */
     public function direct()
     {
@@ -163,7 +201,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $extraLine = ""
             . "<span>"
             . "<label for='twofactor'>"  . gT("2FA key (optional)") . "</label>
-            <input class='form-control' name='twofactor' id='twofactor' type='text' size='" . $this->get('digits', null, null, 6) . "' maxlength='" . $this->get('digits', null, null, 6) . "' value='' />"
+            <input class='form-control' name='twofactor' id='twofactor' type='text' value='' />"
             . "</span>";
 
         $oEvent->getContent('Authdb')->addContent($extraLine, 'append');
@@ -188,9 +226,14 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oTFAModel =  TFAUserKey::model()->findByPk($oIdentity->id);
 
         if ($oTFAModel != null) {
+            if (!in_array($oTFAModel->authType, ['totp', 'yubi'])) {
+                $this->setAuthFailure(null, gT('Authentication method not supported'));
+                return;
+            }
+            $oTFAModel->decrypt();
             $authenticationKey = Yii::app()->getRequest()->getPost('twofactor', false);
-            if (!$authenticationKey || !$this->confirmKey($oTFAModel->secretKey, $authenticationKey)) {
-                $this->setAuthFailure(null, 'Authentication key invalid');
+            if (!$authenticationKey || !$this->confirmKey($oTFAModel, $authenticationKey)) {
+                $this->setAuthFailure(null, gT('Incorrect 2FA key'));
             }
         }
         return;
@@ -241,6 +284,32 @@ class TwoFactorAdminLogin extends AuthPluginBase
         if (TFAHelper::isPluginActive()) {
             $oEvent->append('extraMenus', [$oNewMenu]);
         }
+
+        /* Admin GUI : redirect if needed (force2fa >=2) */
+        if ($this->get('force2fa', null, null, 0) < 2) {
+            return;
+        }
+        /* Already set */
+        if (TFAUserKey::model()->findByPk(App()->user->id)) {
+            return;
+        }
+        /* Page to set (already redirected) */
+        if (
+            App()->getController() && App()->getController()->getId() == 'admin'
+            && App()->getController()->getAction() && App()->getController()->getAction()->getId() == 'pluginhelper'
+            && App()->getRequest()->getQuery('plugin') == 'TwoFactorAdminLogin'
+            && App()->getRequest()->getQuery('method') == 'userindex'
+        ) {
+            return;
+        }
+        Yii::app()->getController()->redirect(
+            [
+                'admin/pluginhelper',
+                'sa' => 'fullpagewrapper',
+                'plugin' => 'TwoFactorAdminLogin',
+                'method' => 'userindex'
+            ]
+        );
     }
 
     /**
@@ -252,8 +321,15 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oEvent = $this->getEvent();
         $oTFAModel =  TFAUserKey::model()->findByPk(App()->user->id);
 
-        if ($oTFAModel == null && $this->get('force2fa', null, null, 0) == 1) {
-            Yii::app()->getController()->redirect($this->api->createUrl('admin/pluginhelper/sa/fullpagewrapper/plugin/TwoFactorAdminLogin/method/userindex', []));
+        if ($oTFAModel == null && $this->get('force2fa', null, null, 0) >= 1) {
+            Yii::app()->getController()->redirect(
+                [
+                    'admin/pluginhelper',
+                    'sa' => 'fullpagewrapper',
+                    'plugin' => 'TwoFactorAdminLogin',
+                    'method' => 'userindex'
+                ]
+            );
         }
     }
 
@@ -296,10 +372,13 @@ class TwoFactorAdminLogin extends AuthPluginBase
     {
         $iUserId = Yii::app()->getRequest()->getPost('iUserId', Yii::app()->user->id);
         $oTFAModel =  TFAUserKey::model()->findByPk($iUserId);
+        if ($oTFAModel != null) {
+            $oTFAModel->decrypt();
+        }
 
         $aData = [
             'oTFAModel' => $oTFAModel,
-            'force2FA' => $this->get('force2fa', null, null, 0) == 1
+            'force2FA' => $this->get('force2fa', null, null, 0)
         ];
 
         $this->pageScripts();
@@ -309,11 +388,13 @@ class TwoFactorAdminLogin extends AuthPluginBase
     //################ Direct access methods ###############
 
     /**
-     * Renders the content of the modal to create a 2FA key registration
+     * Renders modal content for creating a new 2FA key for a user.
      *
-     * @param PluginEvent $oEvent
-     * @param CHttpRequest $oRequest
-     * @return string
+     * Generates a secret (respecting the SecretLength setting, minimum 128 bits), builds a QR code data URI for the secret, and returns the rendered partial HTML. If the caller lacks permission to create keys for the target user, renders an error partial.
+     *
+     * @param PluginEvent $oEvent The plugin event that triggered this call.
+     * @param CHttpRequest $oRequest The current HTTP request.
+     * @return string Rendered HTML of the modal content or an error partial.
      */
     public function directCallCreateNewKey($oEvent, $oRequest)
     {
@@ -334,7 +415,11 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $o2FA = $this->get2FAObject();
 
         $oTFAModel->uid = $iUserId;
-        $oTFAModel->secretKey = $o2FA->createSecret();
+        $SecretLength = intval($this->get('SecretLength', null, null, ''));
+        if ($SecretLength < 128) {
+            $SecretLength = 128;
+        }
+        $oTFAModel->secretKey = $o2FA->createSecret($SecretLength);
         $sQRCodeContent = '<img src="' . $o2FA->getQRCodeImageAsDataUri('LimeSurvey - User ID: ' . Yii::app()->user->id, $oTFAModel->secretKey) . '">';
 
         return $this->renderPartial('_partial/create', [
@@ -356,29 +441,73 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $aTFAUserKey = Yii::app()->getRequest()->getPost('TFAUserKey', []);
         $uid = $aTFAUserKey['uid'];
         if (!(Permission::model()->hasGlobalPermission('users', 'update') || $uid == Yii::app()->user->id)) {
-            return $this->createJSONResponse(false, "No permission");
+            return $this->createJSONResponse(false, gT("No permission"));
         }
 
-        $o2FA = $this->get2FAObject();
+        $authType = $aTFAUserKey['authType'];
 
-        $sConfirmationKey = Yii::app()->getRequest()->getPost('confirmationKey', '');
-        if ($sConfirmationKey == '') {
+        switch ($authType) {
+            case 'totp':
+                $confirmationKey = Yii::app()->getRequest()->getPost('confirmationKey', '');
+                return $this->setupTotp($aTFAUserKey, $confirmationKey);
+                break;
+            case 'yubi':
+                $yubiOtp = Yii::app()->getRequest()->getPost('yubikeyOtp', '');
+                return $this->setupYubi($aTFAUserKey, $yubiOtp);
+                break;
+            default:
+                return $this->createJSONResponse(false, gT("Invalid auth type"));
+        }
+    }
+
+    private function setupTotp($tfaUserKey, $confirmationKey)
+    {
+        if ($confirmationKey == '') {
             return $this->createJSONResponse(false, gT("Please enter a confirmation key"));
         }
 
-        $result = $o2FA->verifyCode($aTFAUserKey['secretKey'], $sConfirmationKey);
+        $o2FA = $this->get2FAObject();
+        $result = $o2FA->verifyCode($tfaUserKey['secretKey'], $confirmationKey);
         if (!$result) {
             return $this->createJSONResponse(false, gT("The confirmation key is not correct."));
         }
 
+        TFAUserKey::model()->deleteAllByAttributes(['uid' => $tfaUserKey['uid']]);
+
         $oTFAModel = new TFAUserKey();
-        $oTFAModel->setAttributes($aTFAUserKey, false);
+        $oTFAModel->setAttributes($tfaUserKey, false);
         $oTFAModel->firstLogin = 0;
-        if (!$oTFAModel->save()) {
+        if (!$oTFAModel->encryptSave()) {
             return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
         }
+        return $this->createJSONResponse(true, gT("Two-factor method successfully stored"), ['reload' => true]);
+    }
 
-        return $this->createJSONResponse(true, "Two-factor method successfully stored", ['reload' => true]);
+    private function setupYubi($tfaUserKey, $yubiOtp)
+    {
+        if (empty($yubiOtp)) {
+            return $this->createJSONResponse(false, gT("Please enter a YubiKey OTP"));
+        }
+
+        $yubikeyOtpHelper = $this->getYubikeyOtpHelper($yubiOtp);
+        if (!$yubikeyOtpHelper->verifyOtp()) {
+            $error = $yubikeyOtpHelper->getLastError();
+            if (empty($error)) {
+                $error = gT("The YubiKey OTP is not correct.");
+            }
+            return $this->createJSONResponse(false, $error);
+        }
+        $tfaUserKey['secretKey'] = $yubikeyOtpHelper->getPublicId();
+
+        TFAUserKey::model()->deleteAllByAttributes(['uid' => $tfaUserKey['uid']]);
+
+        $oTFAModel = new TFAUserKey();
+        $oTFAModel->setAttributes($tfaUserKey, false);
+        $oTFAModel->firstLogin = 0;
+        if (!$oTFAModel->encryptSave()) {
+            return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
+        }
+        return $this->createJSONResponse(true, gT("Two-factor method successfully stored"), ['reload' => true]);
     }
 
     /**
@@ -447,14 +576,34 @@ class TwoFactorAdminLogin extends AuthPluginBase
     /**
      * Checks a 2FA OTP authentication code against the stored secret
      *
-     * @param string $secretKey
+     * @param TFAUserKey $tfaModel
      * @param string $authenticationCode
      * @return boolean true on authentication code matching stored secret key
      */
-    private function confirmKey($secretKey, $authenticationCode)
+    private function confirmKey($tfaModel, $authenticationCode)
     {
-        $o2FA = $this->get2FAObject();
-        return $o2FA->verifyCode($secretKey, $authenticationCode);
+        $authType = $tfaModel->authType;
+
+        if ($authType == 'totp') {
+            $o2FA = $this->get2FAObject();
+            return $o2FA->verifyCode($tfaModel->secretKey, $authenticationCode);
+        } elseif ($authType == 'yubi') {
+            $yubikeyOtpHelper = $this->getYubikeyOtpHelper($authenticationCode);
+
+            // For YubiKey OTP we need to validate two things:
+            // 1. That the OTP matches the stored key ID
+            // 2. That the OTP is valid
+
+            // Check the key ID
+            if ($yubikeyOtpHelper->getPublicId() != $tfaModel->secretKey) {
+                return false;
+            }
+
+            // Validate the OTP
+            return $yubikeyOtpHelper->verifyOtp();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -476,6 +625,18 @@ class TwoFactorAdminLogin extends AuthPluginBase
             );
         }
         return $this->o2FA;
+    }
+
+    /**
+     * Returns a TFAYubikeyOtpHelper instance for the given YubiKey OTP code.
+     * @param string $otpCode the YubiKey OTP code
+     * @return TFAYubikeyOtpHelper the YubiKey OTP helper
+     */
+    private function getYubikeyOtpHelper($otpCode)
+    {
+        $clientId = $this->get('yubiClientId', null, null, null);
+        $clientSecret = $this->get('yubiSecretKey', null, null, null);
+        return new TFAYubikeyOtpHelper($otpCode, $clientId, $clientSecret);
     }
 
     /**

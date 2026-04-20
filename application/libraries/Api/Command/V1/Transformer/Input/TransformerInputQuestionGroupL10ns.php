@@ -11,7 +11,7 @@ class TransformerInputQuestionGroupL10ns extends Transformer
         $this->setDataMap([
             'id' => ['type' => 'int'],
             'gid' => ['type' => 'int'],
-            'groupName' => 'group_name',
+            'groupName' => ['key' => 'group_name', 'required' => 'create'],
             'description' => true,
             'language' => true
         ]);

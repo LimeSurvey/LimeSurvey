@@ -368,11 +368,11 @@ class UserGroup extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-post-url'  => App()->createUrl("userGroup/deleteGroup"),
                 'data-post-datas' => $deletePostData,
-                'data-message'   => sprintf(gt("Are you sure you want to delete user group '%s'?"), CHtml::encode($this->name)),
+                'data-message'   => sprintf(gT("Are you sure you want to delete user group '%s'?"), CHtml::encode($this->name)),
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
-                'data-title'     => gt('Delete user group')
+                'data-btntext'   => gT('Delete'),
+                'data-title'     => gT('Delete user group')
             ]
         ];
 

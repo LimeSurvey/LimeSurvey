@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => 'Created random users']
+    ['modalTitle' => gT('Created random users')]
 );
 ?>
 <div class="modal-body">

@@ -1,7 +1,5 @@
 <?php
 
-use LimeSurvey\Menu\MenuButton;
-
 class TopbarWidget extends CWidget
 {
     /**
@@ -51,6 +49,7 @@ class TopbarWidget extends CWidget
                 'rightSide' => $this->rightSide,
                 'isBreadCrumb' => $this->isBreadCrumb,
                 'titleBackLink' => $this->titleBackLink,
+                'editorEnabled' => Yii::app()->getConfig('editorEnabled') ?? false,
             ]
         );
     }

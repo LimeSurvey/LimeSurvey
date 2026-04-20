@@ -43,22 +43,25 @@ use LimeSurvey\Models\Services\UserManager;
  * @property string $last_login
  * @property Permissiontemplates[] $roles
  * @property UserGroup[] $groups
+ * @property int $user_status User's account status (1: activated | 0: deactivated)
  */
+
 class User extends LSActiveRecord
 {
     /** @var int maximum time the validation_key is valid*/
-    const MAX_EXPIRATION_TIME_IN_HOURS = 48;
+    public const MAX_EXPIRATION_TIME_IN_HOURS = 48;
 
     /** @var int maximum days the validation key is valid */
-    const MAX_EXPIRATION_TIME_IN_DAYS = 2;
+    private const MAX_EXPIRATION_TIME_IN_DAYS = 2;
 
     /** @var int  maximum length for the validation_key*/
-    const MAX_VALIDATION_KEY_LENGTH = 38;
+    private const MAX_VALIDATION_KEY_LENGTH = 38;
 
     /**
      * @var string $lang Default value for user language
      */
     public $lang = 'auto';
+
     public $searched_value;
 
     /**
@@ -130,13 +133,36 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function scopes()
     {
-        return array(
-            'active' => array(
-                'condition' => "expires > :now OR expires IS NULL",
-                'params' => array(
-                    'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-                )
+        if (App()->getConfig("DBVersion") < 495) {
+            /* No expires column before 495 */
+            return array(
+                'active' => [],
+                'notexpired' => [],
+            );
+        }
+        $notExpiredScope = array(
+            'condition' => "expires > :now OR expires IS NULL",
+            'params' => array(
+                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
             )
+        );
+        if (App()->getConfig("DBVersion") < 619) {
+            /* No user_status column before 619 */
+            return array(
+                'active' => [],
+                'notexpired' => $notExpiredScope
+            );
+        }
+        $userStatusType = \Yii::app()->db->schema->getTable('{{users}}')->columns['user_status']->dbType;
+        $activeScope = array(
+            'condition' => 'user_status = :active',
+            'params' => array(
+                'active' => $userStatusType == 'boolean' ? 'TRUE' :  '1',
+            )
+        );
+        return array(
+            'active' => $activeScope,
+            'notexpired' => $notExpiredScope
         );
     }
 
@@ -159,6 +185,7 @@ class User extends LSActiveRecord
             'modified' => gT('Modified at'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
+            'user_status' => gT("Status"),
         ];
     }
 
@@ -211,13 +238,19 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo Not used?
+     * Get formatted creation date of user to be displayed in the user list
      */
     public function getFormattedDateCreated()
     {
-        $dateCreated = $this->created;
-        $date = new DateTime($dateCreated);
-        return $date->format($this->getDateFormat());
+        if (empty($this->created)) {
+            return null;
+        }
+        try {
+            $date = new DateTime($this->created);
+            return $date->format($this->getDateFormat());
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     /**
@@ -230,9 +263,10 @@ class User extends LSActiveRecord
      * @param int $parent_user
      * @param string $new_email
      * @param string|null $expires
+     * @param boolean $status
      * @return integer|boolean User ID if success
      */
-    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null)
+    public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $status = true)
     {
         $oUser = new self();
         $oUser->users_name = $new_user;
@@ -244,6 +278,7 @@ class User extends LSActiveRecord
         $oUser->created = date('Y-m-d H:i:s');
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->expires = $expires;
+        $oUser->user_status = $status;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -316,8 +351,17 @@ class User extends LSActiveRecord
         return false;
     }
 
+
     /**
-     * @todo document me
+     * Checks the strength of a given password against configured validation rules.
+     *
+     * This function evaluates the password strength based on length, presence of lowercase
+     * and uppercase letters, numbers, and special characters. It also allows for plugin-based
+     * additional password requirement checks.
+     *
+     * @param string $password The password to check for strength
+     *
+     * @return string An error message if the password doesn't meet the requirements, or an empty string if it's valid
      */
     public function checkPasswordStrength(string $password)
     {
@@ -328,39 +372,44 @@ class User extends LSActiveRecord
         $number    = preg_match_all('@[0-9]@', $password);
         $specialChars = preg_match_all('@[^\w]@', $password);
 
-        $error = "";
+        $resultDefaultRules = "";
         if ((int) $settings['min'] > 0) {
             if ($length < $settings['min']) {
-                $error = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
+                $resultDefaultRules = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
             }
         }
         if ((int) $settings['max'] > 0) {
             if ($length > $settings['max']) {
-                $error = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
+                $resultDefaultRules = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
             }
         }
         if ((int) $settings['lower'] > 0) {
             if ($lowercase < $settings['lower']) {
-                $error = sprintf(ngT('Password must include at least %d lowercase letter|Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
+                $resultDefaultRules = sprintf(ngT('Password must include at least %d lowercase letter|Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
             }
         }
         if ((int) $settings['upper'] > 0) {
             if ($uppercase < $settings['upper']) {
-                $error = sprintf(ngT('Password must include at least %d uppercase letter|Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
+                $resultDefaultRules = sprintf(ngT('Password must include at least %d uppercase letter|Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
             }
         }
         if ((int) $settings['numeric'] > 0) {
             if ($number < $settings['numeric']) {
-                $error = sprintf(ngT('Password must include at least %d number|Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
+                $resultDefaultRules = sprintf(ngT('Password must include at least %d number|Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
             }
         }
         if ((int) $settings['symbol'] > 0) {
             if ($specialChars < $settings['symbol']) {
-                $error = sprintf(ngT('Password must include at least %d special character|Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
+                $resultDefaultRules = sprintf(ngT('Password must include at least %d special character|Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
             }
         }
-
-        return($error);
+        $passwordOk = ($resultDefaultRules === '');
+        $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
+        $oPasswordTestEvent->set('password', $password);
+        $oPasswordTestEvent->set('passwordOk', $passwordOk);
+        $oPasswordTestEvent->set('passwordError', $resultDefaultRules);
+        Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
+        return ($oPasswordTestEvent->get('passwordOk') ? '' : $oPasswordTestEvent->get('passwordError'));
     }
 
     /**
@@ -373,6 +422,7 @@ class User extends LSActiveRecord
      *
      * @param string $newPassword
      * @param string $oldPassword
+
      * @param string $repeatPassword
      * @return string empty string means everything is ok, otherwise error message is returned
      */
@@ -504,7 +554,6 @@ class User extends LSActiveRecord
         $permission_users_update = Permission::model()->hasGlobalPermission('users', 'update');
         $permission_users_delete = Permission::model()->hasGlobalPermission('users', 'delete');
         $userManager = new UserManager(App()->user, $this);
-
         // User is owned or created by you
         $ownedOrCreated = $this->parent_id == App()->session['loginID'];
 
@@ -515,7 +564,6 @@ class User extends LSActiveRecord
         $setTemplatePermissionsUrl = App()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = App()->getController()->createUrl('userManagement/takeOwnership');
         $deleteUrl = App()->getController()->createUrl('userManagement/deleteConfirm', ['userid' => $this->uid, 'user' => $this->full_name]);
-
 
         $dropdownItems = [];
         $dropdownItems[] = [
@@ -540,6 +588,37 @@ class User extends LSActiveRecord
                     )
                 )
         ];
+
+        $permission = ( $permission_superadmin_read && !(Permission::isForcedSuperAdmin($this->uid) || $this->uid == App()->user->getId()))
+            || (!$permission_superadmin_read && ($this->uid != App()->session['loginID'] //Can't change your own permissions
+                    && ( $permission_users_update && $ownedOrCreated)
+                    && !Permission::isForcedSuperAdmin($this->uid)
+                )
+            );
+
+        if ($this->user_status) {
+            $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'deactivate']);
+            $dropdownItems[] = [
+                'title'            => gT('Deactivate'),
+                'iconClass'        => "ri-user-unfollow-fill text-danger",
+                'linkClass'        => $permission ? "UserManagement--action--openmodal UserManagement--action--status" : '',
+                'linkAttributes'   => [
+                    'data-href' => $permission ? $activateUrl : '#',
+                ],
+                'enabledCondition' => $permission
+            ];
+        } else {
+            $activateUrl = App()->getController()->createUrl('userManagement/activationConfirm', ['userid' => $this->uid, 'action' => 'activate']);
+            $dropdownItems[] = [
+                'title'            => gT('Activate'),
+                'iconClass'        => "ri-user-follow-fill",
+                'linkClass'        => $permission ? "UserManagement--action--openmodal UserManagement--action--status" : '',
+                'linkAttributes'   => [
+                    'data-href' => $permission ? $activateUrl : '#',
+                ],
+                'enabledCondition' => $permission
+            ];
+        }
         $dropdownItems[] = [
             'title'            => gT('Edit permissions'),
             'iconClass'        => "ri-lock-fill",
@@ -584,7 +663,7 @@ class User extends LSActiveRecord
                                 && $this->uid != App()->user->getId() // To update self : must use personal settings
         ];
         $dropdownItems[] = [
-            'title'            => gT('Template permissions'),
+            'title'            => gT('Theme permissions'),
             'iconClass'        => "ri-brush-fill",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--templatepermissions",
             'linkAttributes'   => [
@@ -708,7 +787,8 @@ class User extends LSActiveRecord
             ],
             [
                 "name"   => 'uid',
-                "header" => gT("User ID")
+                "header" => gT("User ID"),
+                'htmlOptions' => ['class' => 'uid']
             ],
             [
                 "name"   => 'users_name',
@@ -730,6 +810,12 @@ class User extends LSActiveRecord
             [
                 "name"   => "parentUserName",
                 "header" => gT("Created by"),
+            ],
+            [
+                "name"   => "user_status",
+                "header" => gT("Status"),
+                'headerHtmlOptions' => ['class' => 'hidden'],
+                'htmlOptions'       => ['class' => 'hidden activation']
             ],
         ];
 
@@ -866,7 +952,7 @@ class User extends LSActiveRecord
 
         $getUser = Yii::app()->request->getParam('User');
         if (!empty($getUser['parentUserName'])) {
-             $getParentName = $getUser['parentUserName'];
+            $getParentName = $getUser['parentUserName'];
             $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
             $criteria->compare('u.users_name', $getParentName, true, 'OR');
         }
@@ -929,15 +1015,34 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Check if user is active
+     * @return boolean
+     */
+    public function isActive()
+    {
+        /* Default is active, user_status must be set (to be tested during DB update); deactivated set user_status to 0 */
+        return !isset($this->user_status) || $this->user_status !== 0;
+    }
+
+    /**
+     * Check if user can login
+     * @return boolean
+     */
+    public function canLogin()
+    {
+        return $this->isActive() && !$this->isExpired();
+    }
+
+    /**
      * Get the decription to be used in list
-     * @return $string
+     * @return string
      */
     public function getDisplayName()
     {
         if (empty($this->full_name)) {
             return $this->users_name;
         }
-        return sprintf(gt("%s (%s)"), $this->users_name, $this->full_name);
+        return sprintf(gT("%s (%s)"), $this->users_name, $this->full_name);
     }
 
     /**
@@ -986,7 +1091,7 @@ class User extends LSActiveRecord
             'linkAttributes'   => [
                 'data-bs-toggle' => "modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-url'  => App()->createUrl("userGroup/deleteUserFromGroup"),
                 'data-post-datas' => json_encode(['ugid' => $userGroupId, 'uid' => $currentUserId]),
                 'data-message'   => sprintf(
@@ -1039,5 +1144,22 @@ class User extends LSActiveRecord
         /* Finally : simple user can update only childs users */
         return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
                 && $this->parent_id == $managerId;
+    }
+
+    /**
+     * Set user activation status
+     *
+     * @param string $status
+     * @return bool
+     */
+    public function setActivationStatus($status = 'activate')
+    {
+        if ($status == 'activate') {
+            $this->user_status = 1;
+        } else {
+            $this->user_status = 0;
+        }
+
+        return $this->save();
     }
 }

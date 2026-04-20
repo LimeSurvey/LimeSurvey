@@ -4,12 +4,12 @@ App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 
 App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'organize.css');
 ?>
 
-<div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>
+<div id='edit-survey-text-element' class='side-body'>
     <div class='row'>
         <div class='col-md-8'>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
-                    'header' => 'Reordering',
+                    'header' => gT("Reordering"),
                     'text' => gT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.") . ' ' .
                         ($surveyActivated ? gT("Survey is activated, you can not move a question to another group.") : "") . ' ' .
                         gT("After you are done, please click the 'Save' button to save your changes."),

@@ -8,6 +8,7 @@ class GroupHelper
      * Reorder groups and questions
      *
      * REFACTORED in SurveyAdministration
+     * @TODO Reordering should be handled by existing function in new QuestionGroupService class
      *
      * @param int $iSurveyID Given Survey ID
      * @param array $orgdata Data to change

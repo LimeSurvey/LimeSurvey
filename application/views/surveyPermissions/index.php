@@ -8,7 +8,7 @@
 /* @var $oSurveyPermissions \LimeSurvey\Models\Services\SurveyPermissions */
 
 ?>
-<div id='edit-permission' class='side-body position-relative  ls-settings-wrapper <?= getSideBodyClass(false) ?> "'>
+<div id='edit-permission' class='side-body position-relative  ls-settings-wrapper"'>
     <?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
     <h1> <?= gT("Survey permissions") ?> </h1>
     <div class="row pt-2 pb-2 align-items-center">
@@ -52,7 +52,7 @@
                 echo CHtml::form(
                     ["surveyPermissions/addusergroup/surveyid/{$surveyid}"],
                     'post',
-                    ['class' => "form44"]
+                    ["id" => "SurveyPermissions-addusergroup-form"]
                 ); ?>
                 <div class="row justify-content-md-end">
                     <label class='col-2 text-end control-label' for='ugidselect'>
@@ -73,7 +73,7 @@
                         </select>
                     </div>
                     <div class="col-3">
-                    <input class='btn btn-outline-secondary w-100' type='submit' value='<?= gT("Add group users") ?>'/>
+                    <button id="SurveyPermissions-addusergroup-submit" class='btn btn-outline-secondary w-100' type='button'><?= gT("Add group users") ?></button>
                     <input type='hidden' name='action' value='addusergroupsurveysecurity'/>
                     </div>
                 </div>

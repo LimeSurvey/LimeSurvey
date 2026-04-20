@@ -12,6 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use LimeSurvey\Models\Services\SurveyUseCaptcha;
 use LimeSurvey\PluginManager\PluginEvent;
 
 /**
@@ -22,8 +23,8 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property integer $gsid survey group id, from which this survey belongs to and inherits values from when set to 'I'
  * @property string $admin Survey Admin's full name
  * @property string $active Whether survey is acive or not (Y/N)
- * @property string $expires Expiry date (YYYY-MM-DD hh:mm:ss)
- * @property string $startdate Survey Start date (YYYY-MM-DD hh:mm:ss)
+ * @property string|null $expires Expiry date as SQL datetime (YYYY-MM-DD hh:mm:ss)
+ * @property string|null $startdate Survey Start date as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
  * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
@@ -43,7 +44,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $ipaddr Whether Participants IP address will be saved: (Y/N)
  * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
- * @property string $datecreated Date survey was created (YYYY-MM-DD hh:mm:ss)
+ * @property string $datecreated Date survey was created  as SQL datetime (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
  * @property string $publicgraphs Show graphs in public statistics: (Y/N)
  * @property string $listpublic List survey publicly: (Y/N)
@@ -106,6 +107,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property boolean $hasTokensTable Whether survey has a tokens table or not
  * @property boolean $hasResponsesTable Wheteher the survey responses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
+ * @property boolean $hasNewEditor Whether the new React editor should be used for this survey
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
  * @property integer $countInputQuestions Count of questions that need input (skipping text-display etc.)
@@ -141,23 +143,18 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $showsurveypolicynotice Show the security notice
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
+ * @property string $access_mode Whether the access mode is open (O) or closed (C), if O token-based participation may be supported, if C, it's enforced
  * @property SurveyLanguageSetting $defaultlanguage
+ * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
+ * @property string $lastmodified date as SQL datetime (YYYY-MM-DD HH:mm:ss)
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
 {
     use PermissionTrait;
 
-    /**
-     * This is a static cache, it lasts only during the active request. If you ever need
-     * to clear it, like on activation of a survey when in the same request a row is read,
-     * saved and read again you can use resetCache() method.
-     *
-     * @var array $findByPkCache
-     */
-    protected $findByPkCache = array();
-
+    protected static array $findByPkCache = [];
 
     // survey options
     public $oOptions;
@@ -189,6 +186,24 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->gsid = null;
             return;
         }
+        if ($this->isNewRecord) {
+            $this->setAttributeDefaults();
+        }
+        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
+        $this->attachEventHandler("onAfterSave", array($this, 'unsetFromStaticPkCache'));
+    }
+
+    /**
+     * Delete from static $findByPkCache
+     * return void
+     */
+    public function unsetFromStaticPkCache()
+    {
+        unset(self::$findByPkCache[$this->sid]);
+    }
+
+    private function setAttributeDefaults()
+    {
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
@@ -203,8 +218,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         /* default template */
         $this->template = 'inherit';
         /* default language */
-        $validator = new LSYii_Validators();
-        $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
+        $this->language = \LSYii_Validators::languageCodeFilter(App()->getConfig('defaultlang'));
         /* default user */
         $this->owner_id = 1;
         $this->admin = App()->getConfig('siteadminname');
@@ -220,8 +234,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-
-        $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
     /** @inheritdoc */
@@ -261,35 +273,25 @@ class Survey extends LSActiveRecord implements PermissionInterface
             /* Remove User/global settings part : need Question and QuestionGroup*/
             // Settings specific for this survey
             $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_%', true, 'AND', false);
-            $oCriteria->compare('stg_value', $this->sid, false, 'AND');
-            SettingGlobal::model()->deleteAll($oCriteria);
+            $oCriteria->compare('stg_name', 'last_survey');
+            $oCriteria->compare('stg_value', $this->sid);
+            SettingsUser::model()->deleteAll($oCriteria);
             // Settings specific for this survey, 2nd part
             $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_%' . $this->sid . '%', true, 'AND', false);
-            SettingGlobal::model()->deleteAll($oCriteria);
-            // All Group id from this survey for ALL users
-            $aGroupId = CHtml::listData(QuestionGroup::model()->findAll(array('select' => 'gid', 'condition' => 'sid=:sid', 'params' => array(':sid' => $this->sid))), 'gid', 'gid');
-            $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_question_gid_%', true, 'AND', false);
-            // pgsql need casting, unsure for mssql
-            if (Yii::app()->db->getDriverName() == 'pgsql') {
-                $oCriteria->addInCondition('CAST(stg_value as ' . App()->db->schema->getColumnType("integer") . ')', $aGroupId);
-            } else {
-                //mysql App()->db->schema->getColumnType("integer") give int(11), mssql seems to have issue if cast alpha to numeric
-                $oCriteria->addInCondition('stg_value', $aGroupId);
-            }
-            SettingGlobal::model()->deleteAll($oCriteria);
+            $oCriteria->compare('entity_id', $this->sid);
+            $oCriteria->compare('entity', 'Survey');
+            SettingsUser::model()->deleteAll($oCriteria);
             // All Question id from this survey for ALL users
             $aQuestionId = CHtml::listData(Question::model()->findAll(array('select' => 'qid', 'condition' => 'sid=:sid', 'params' => array(':sid' => $this->sid))), 'qid', 'qid');
             $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_question_%', true, 'OR', false);
+            $oCriteria->compare('stg_name', 'last_question');
             if (Yii::app()->db->getDriverName() == 'pgsql') {
+                // Still needed ? : CHtml::listData return only existing qid as integer
                 $oCriteria->addInCondition('CAST(NULLIF(stg_value, \'\') AS ' . App()->db->schema->getColumnType("integer") . ')', $aQuestionId);
             } else {
                 $oCriteria->addInCondition('stg_value', $aQuestionId);
             }
-            SettingGlobal::model()->deleteAll($oCriteria);
+            SettingsUser::model()->deleteAll($oCriteria);
 
             $oQuestions = Question::model()->findAllByAttributes(array('sid' => $this->sid));
             foreach ($oQuestions as $aQuestion) {
@@ -338,10 +340,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
 
         // Remove from cache
-        if (array_key_exists($this->sid, $this->findByPkCache)) {
-            unset($this->findByPkCache[$this->sid]);
+        if (array_key_exists($this->sid, self::$findByPkCache)) {
+            unset(self::$findByPkCache[$this->sid]);
         }
-
         return true;
     }
 
@@ -357,7 +358,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
-            throw new Exception('Selected Surveys language not found');
+            $searchedLanguages = App()->language;
+            if ($this->language != App()->language) {
+                $searchedLanguages .= ',' . $this->language;
+            }
+            $errorString = sprintf(gT('Survey language settings (%s) not found. Please run the integrity check from the main menu.'), $searchedLanguages);
+            throw new Exception($errorString);
         }
     }
 
@@ -614,7 +620,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
     }
 
-
     /**
      * permission scope for this model
      * Actually only test if user have minimal access to survey (read)
@@ -632,7 +637,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return $this;
     }
 
-
     /**
      * Returns additional languages formatted into a string
      *
@@ -641,6 +645,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getAdditionalLanguages()
     {
+        if (is_null($this->additional_languages)) {
+            return [];
+        }
         $sLanguages = trim($this->additional_languages);
         if ($sLanguages != '') {
             return explode(' ', $sLanguages);
@@ -671,7 +678,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions ?? '');
-
+        if (!is_array(reset($attdescriptiondata))) {
+            $attdescriptiondata = null;
+        }
         // Catches malformed data
         if ($attdescriptiondata && strpos((string) key(reset($attdescriptiondata)), 'attribute_') === false) {
             // don't know why yet but this breaks normal tokenAttributes functionning
@@ -734,7 +743,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * This function returns any valid mappings from the survey participants tables to the CPDB
+     * This function returns any valid mappings from the survey participant lists to the CPDB
      * in the form of an array [<cpdb_attribute_id>=><participant_table_attribute_name>]
      *
      * @return array Array of mappings
@@ -781,7 +790,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
 
     /**
-     * Returns true in a survey participants table exists for survey
+     * Returns true in a survey participant list exists for survey
      * @return boolean
      */
     public function getHasTokensTable()
@@ -789,6 +798,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->tokensTableName);
+    }
+
+    /**
+     * Returns true if the survey has participants
+     * @return boolean
+     */
+    public function hasTokens()
+    {
+        return $this->getHasTokensTable() && (TokenDynamic::model($this->sid)->find('1=1') !== null);
     }
 
     /**
@@ -897,6 +915,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns whether the new React editor should be used for this survey.
+     * Checks global editorEnabled config and that the survey uses a compatible theme.
+     */
+    public function getHasNewEditor(): bool
+    {
+        return App()->getConfig('editorEnabled')
+            && $this->getTemplateEffectiveName() === 'fruity_twentythree';
+    }
+
+    /**
      * Get surveymenu configuration from table surveymenu and prepares
      *
      * @todo this function can go directly into Surveymenu, why implemted it here? ($this is used here ...)
@@ -933,6 +961,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if (!isset($aData['datecreated'])) {
             $aData['datecreated'] = date('Y-m-d H:i:s');
         }
+        if (!isset($aData['lastmodified'])) {
+            $aData['lastmodified'] = $aData['datecreated'];
+        }
         if (isset($aData['wishSID'])) {
             $aData['sid'] = $aData['wishSID'];
             unset($aData['wishSID']);
@@ -956,7 +987,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $survey->sid = intval(randomChars(6, '123456789'));
             /* If it's happen : there are an issue in server … (or in randomChars function …) */
             if ($attempts > 50) {
-                throw new Exception("Unable to get a valid survey id after 50 attempts");
+                throw new Exception("Unable to get a valid survey ID after 50 attempts");
             }
         }
 
@@ -990,12 +1021,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         /** @var self $model */
         if (empty($condition) && empty($params)) {
-            if (array_key_exists($pk, $this->findByPkCache)) {
-                return $this->findByPkCache[$pk];
+            if (array_key_exists($pk, self::$findByPkCache)) {
+                return self::$findByPkCache[$pk];
             } else {
                 $model = parent::findByPk($pk, $condition, $params);
                 if (!is_null($model)) {
-                    $this->findByPkCache[$pk] = $model;
+                    self::$findByPkCache[$pk] = $model;
                 }
                 return $model;
             }
@@ -1007,9 +1038,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * findByPk uses a cache to store a result. Use this method to force clearing that cache.
      */
-    public function resetCache()
+    public function resetCache(): void
     {
-        $this->findByPkCache = array();
+        self::$findByPkCache = [];
     }
 
     /**
@@ -1102,19 +1133,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->active == 'N') {
             return 'inactive';
         }
-        if ($this->expires != '' || $this->startdate != '') {
-            // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
-
-            // Time comparison
-            $oNow   = new DateTime($sNow);
-            $oStop  = empty($sStop) ? null : new DateTime($sStop);
-            $oStart = empty($sStart) ? null : new DateTime($sStart);
-
-            $bExpired = (!is_null($sStop) && $oStop < $oNow);
-            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
+        if (!empty($this->expires) || !empty($this->startdate)) {
+            // Create DateTime for now, stop and start for date comparison
+            $oNow = self::shiftedDateTime("now");
+            $oStop = self::shiftedDateTime($this->expires);
+            $oStart = self::shiftedDateTime($this->startdate);
+            $bExpired = (!is_null($oStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
             if ($bExpired) {
                 return 'expired';
@@ -1123,7 +1148,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 // And what happen if $sStop < $sStart : must return something other ?
                 return 'willRun';
             }
-            if (!is_null($sStop)) {
+            if (!is_null($oStop)) {
                 return 'willExpire';
             }
         }
@@ -1138,12 +1163,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getIsDateExpired()
     {
         if (!empty($this->expires)) {
-            $sNow = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
-
-            $oNow = new DateTime($sNow);
-            $oStop = new DateTime($sStop);
-            return $oStop < $oNow;
+            $oNow = self::shiftedDateTime("now");
+            $oStop = self::shiftedDateTime($this->expires);
+            return !empty($oStop) && $oStop < $oNow;
         }
         return false;
     }
@@ -1156,40 +1178,37 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getRunning()
     {
+            $onclick = App()->getConfig('editorEnabled')
+                ? ' onclick="return  false;" '
+                : '';
 
         // If the survey is not active, no date test is needed
         if ($this->active === 'N') {
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><i class="ri-stop-fill text-secondary me-1"></i>' . gT('Inactive') . '</a>';
-        } elseif ($this->expires != '' || $this->startdate != '') {
-            // If it's active, then we check if not expired
-            // Time adjust
-            $sNow    = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
-            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '"' . $onclick . ' class="survey-state disabled" data-bs-toggle="tooltip" title="' . gT('Inactive') . '"><i class="ri-stop-fill text-secondary"></i>' . gT('Inactive') . '</a>';
+        } elseif (!empty($this->expires) || !empty($this->startdate)) {
+            // Create DateTime for now, stop and start for date comparison
+            $oNow = self::shiftedDateTime("now");
+            $oStop = self::shiftedDateTime($this->expires);
+            $oStart = self::shiftedDateTime($this->startdate);
 
-            // Time comparaison
-            $oNow   = new DateTime($sNow);
-            $oStop  = new DateTime($sStop);
-            $oStart = new DateTime($sStart);
+            $bExpired = (!is_null($oStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
-            $bExpired = (!is_null($sStop) && $oStop < $oNow);
-            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
-
-            $sStop = $sStop != null ? convertToGlobalSettingFormat($sStop) : null;
-            $sStart = convertToGlobalSettingFormat($sStart);
+            $sStop = !is_null($oStop) ? convertToGlobalSettingFormat($oStop->format('Y-m-d H:i:s')) : "";
+            $sStart = !is_null($oStart) ? convertToGlobalSettingFormat($oStart->format('Y-m-d H:i:s')) : "";
 
             // Icon generaton (for CGridView)
-            $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary me-1"></i>' . gT('End: Never') . '</a>';
-            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><i class="ri-play-fill text-primary me-1"></i>' . sprintf(gT('End: %s'), $sStop) . '</a>';
-            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><i class="ri-skip-forward-fill text-secondary me-1"></i>' . sprintf(gT('Expired: %s'), $sStop) . '</a>';
-            $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><i class="ri-time-line text-secondary me-1"></i>' . sprintf(gT('Start: %s'), $sStart) . '</a>';
+            $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '"' . $onclick . ' class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary"></i>' . gT('End: Never') . '</a>';
+            $sIconRunning = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '"' . $onclick . ' class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('End: %s'), $sStop) . '"><i class="ri-play-fill text-primary"></i>' . sprintf(gT('End: %s'), $sStop) . '</a>';
+            $sIconExpired = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '"' . $onclick . ' class="survey-state disabled" data-bs-toggle="tooltip" title="' . sprintf(gT('Expired: %s'), $sStop) . '"><i class="ri-skip-forward-fill text-secondary"></i>' . sprintf(gT('Expired: %s'), $sStop) . '</a>';
+            $sIconFuture  = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '"' . $onclick . ' class="survey-state" data-bs-toggle="tooltip" title="' . sprintf(gT('Start: %s'), $sStart) . '"><i class="ri-time-line text-secondary"></i>' . sprintf(gT('Start: %s'), $sStart) . '</a>';
 
             // Icon parsing
             if ($bExpired || $bWillRun) {
                 // Expire prior to will start
                 $running = ($bExpired) ? $sIconExpired : $sIconFuture;
             } else {
-                if (is_null($sStop)) {
+                if ($sStop === "") {
                     $running = $sIconRunNoEx;
                 } else {
                     $running = $sIconRunning;
@@ -1197,7 +1216,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         } else {
             // If it's active, and doesn't have expire date, it's running
-            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '" class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><i class="ri-play-fill text-primary me-1"></i>' . gT('Active') . '</a>';
+            $running = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '"' . $onclick . ' class="survey-state" data-bs-toggle="tooltip" title="' . gT('Active') . '"><i class="ri-play-fill text-primary"></i>' . gT('Active') . '</a>';
         }
 
         return $running;
@@ -1416,6 +1435,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Use the creation date for old entries when the last modified date is unavailable
+     */
+    public function getLastModifiedDate()
+    {
+        $shifted = self::shiftedDateTime($this->lastmodified);
+
+        return $shifted ? $shifted->format('d.m.Y') : null;
+    }
+
+    /**
      * @return int|string
      */
     public function getCountFullAnswers()
@@ -1485,58 +1514,257 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getButtons(): string
     {
-        $permissions = [
-            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
-            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
-            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
-        ];
 
         $dropdownItems = [];
         $dropdownItems[] = [
-            'title' => gT('Add new question'),
-            'url' => App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-circle-fill',
-            'enabledCondition' =>
-                $this->active !== "Y"
-                && $permissions['responses_create']
-                && $this->groupsCount > 0,
+            'title' => gT('General settings'),
+            'url' => App()->getConfig('editorEnabled')
+                ? App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])
+                : App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveysettings', 'read'),
         ];
         $dropdownItems[] = [
-            'title' => gT('Add new group'),
-            'url' => App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid),
-            'iconClass' => 'ri-add-circle-fill',
-            'enabledCondition' =>
-                $this->active !== "Y"
-                && $permissions['responses_create'],
+            'title'            => gT('Preview'),
+            'url'              => Yii::App()->createUrl(
+                "survey/index",
+                ['sid' => $this->sid, 'newtest' => "Y", 'lang' => $this->language]
+            ),
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'read'),
+            'linkAttributes'   => ['target' => '_blank'],
         ];
         $dropdownItems[] = [
-            'title' => gT('Statistics'),
-            'url' => App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid),
-            'iconClass' => 'ri-line-chart-line',
-            'enabledCondition' =>
-                $this->active === "Y"
-                && $permissions['statistics_read'],
+            'title' => gT('Share'),
+            'url' => App()->createUrl("/surveyAdministration/view", array('iSurveyID' => $this->sid)),
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'read'),
         ];
         $dropdownItems[] = [
-            'title' => gT('General settings & texts'),
-            'url' => App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid),
-            'iconClass' => 'ri-settings-5-line',
-            'enabledCondition' => $permissions['survey_update'],
+            'submenu' => true,
+            'title' => gT('Copy'),
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read'),
+            'submenu_items' => $this->getSubmenuItemsCopy(Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')),
+        ];
+        $dropdownItems[] = [
+            'title' => gT('Add user'),
+            'url' => App()->createUrl('/surveyPermissions/index', ['surveyid' => $this->sid]),
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveysecurity', 'create'),
+        ];
+
+        $dropdownItems[] = [
+            'title' => gT('Delete'),
+            'url' => App()->createUrl("/surveyAdministration/delete", array('iSurveyID' => $this->sid)),
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'delete'),
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
+    private function getSubmenuItemsCopy($enableCondition = true)
+    {
+        $submenuItems = [];
+        $submenuItems[] = [
+            'title' => gT('Quick copy'),
+            'url' => App()->createUrl("/surveyAdministration/copySimple", ['surveyIdToCopy' => $this->sid]),
+            'enabledCondition' => $enableCondition,
+        ];
+        $submenuItems[] = [
+            'title' => gT('Custom copy'),
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#copySurvey_modal",
+                'onclick' => "copySurveyOptions(" . (int)$this->sid . ")",
+            ],
+            'enabledCondition' => $enableCondition,
+        ];
+        return $submenuItems;
+    }
+
     /**
+     * Returns buttons for gridview.
+     * @return string
+     * @throws CException
+     * @throws Exception
+     */
+    public function getActionButtons(): string
+    {
+        $items = [];
+        $items[] = [
+            'title' => gT('Edit survey'),
+            'url' => App()->createUrl('surveyAdministration/view', ['iSurveyID' => $this->sid]),
+            'iconClass' => 'ri-edit-line',
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'),
+        ];
+        $items[] = [
+            'title' => gT('Activate'),
+            'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'iconClass' => 'ri-check-line',
+            'enabledCondition' =>
+                $this->active === "N"
+                && Permission::model()->hasSurveyPermission($this->sid, 'surveyactivation', 'update')
+                && $this->groupsCount > 0
+                && $this->getQuestionsCount() > 0
+        ];
+        $items[] = [
+            'title' => gT('Statistics'),
+            'url' => App()->getConfig('editorEnabled')
+                ? App()->createUrl('editorLink/index', ['route' => 'responses/' . $this->sid])
+                : App()->createUrl('admin/statistics/sa/simpleStatistics', ['surveyid' => $this->sid]),
+            'iconClass' => 'ri-bar-chart-2-line',
+            'enabledCondition' =>
+                $this->active === "Y"
+                && Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
+    }
+
+    public function getColumns(): array
+    {
+        $columns = [
+            [
+                'id'                => 'sid',
+                'class'             => 'CCheckBoxColumn',
+                'selectableRows'    => '100',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+            [
+                'header'            => gT('Survey ID'),
+                'name'              => 'survey_id',
+                'value'             => 'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $data->sid]))',
+                'type'              => 'raw',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            [
+                'header'            => gT('Status'),
+                'name'              => 'running',
+                'value'             => '$data->running',
+                'type'              => 'raw',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            [
+                'header'            => gT('Title'),
+                'name'              => 'title',
+                'value'             => 'isset($data->defaultlanguage) ? CHtml::link(flattenText($data->defaultlanguage->surveyls_title), Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $data->sid])) : ""',
+                'type'              => 'raw',
+                'htmlOptions'       => ['class' => 'has-link'],
+                'headerHtmlOptions' => ['class' => 'text-nowrap'],
+            ],
+            [
+                'header'            => gT('Created'),
+                'name'              => 'creation_date',
+                'value'             => '$data->creationdate',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            [
+                'header'            => gT('Responses'),
+                'name'              => 'responses',
+                'value'             => '$data->countFullAnswers',
+                'headerHtmlOptions' => ['class' => 'd-md-none d-lg-table-cell'],
+                'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
+            ],
+            [
+                'header' => gT('Action'),
+                'name'   => 'actions',
+                'value'  => '$data->actionButtons',
+                'type'   => 'raw'
+            ]
+        ];
+        return $columns;
+    }
+    public function getAdditionalColumns(): array
+    {
+        $additionalColumns = [
+            'lastModified' => [
+                'header'            => gT('Last modified'),
+                'name'              => 'lastModified',
+                'value'             => '$data->lastModifiedDate',
+                'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-none d-sm-table-cell has-link'],
+            ],
+            'group' => [
+                'header'            => gT('Group'),
+                'name'              => 'group',
+                'value'             => '$data->surveygroup->title',
+                'htmlOptions'       => ['class' => 'has-link'],
+                'headerHtmlOptions' => ['class' => 'text-nowrap'],
+            ],
+            'owner' => [
+                'header'            => gT('Owner'),
+                'name'              => 'owner',
+                'value'             => '$data->ownerUserName',
+                'headerHtmlOptions' => ['class' => 'd-md-none d-xl-table-cell text-nowrap'],
+                'htmlOptions'       => ['class' => 'd-md-none d-xl-table-cell has-link'],
+            ],
+            'anonymized_responses' => [
+                'header'            => gT('Anonymized responses'),
+                'name'              => 'anonymized_responses',
+                'value'             => '$data->anonymizedResponses',
+                'headerHtmlOptions' => ['class' => 'd-md-none d-lg-table-cell'],
+                'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
+            ],
+            'partial' => [
+                'header'      => gT('Partial'),
+                'value'       => '$data->countPartialAnswers',
+                'name'        => 'partial',
+                'htmlOptions' => ['class' => 'has-link'],
+            ],
+            'full' => [
+                'header'      => gT('Full'),
+                'name'        => 'full',
+                'value'       => '$data->countFullAnswers',
+                'htmlOptions' => ['class' => 'has-link'],
+            ],
+            'total' => [
+                'header'      => gT('Total'),
+                'name'        => 'total',
+                'value'       => '$data->countTotalAnswers',
+                'htmlOptions' => ['class' => 'has-link'],
+            ],
+            'uses_tokens' => [
+                'header'      => gT('Closed group'),
+                'name'        => 'uses_tokens',
+                'type'        => 'raw',
+                'value'       => '$data->hasTokensTable ? gT("Yes"):gT("No")',
+                'htmlOptions' => ['class' => 'has-link'],
+            ]
+        ];
+
+        return $additionalColumns;
+    }
+
+    /**
+     * Search
+     *
+     * $options = [
+     *  'pageSize' => 10,
+     *  'currentPage' => 1
+     * ];
+     *
+     * @param array $options
      * @return CActiveDataProvider
      */
-    public function search()
+    public function search($options = [])
     {
+        $options = $options ?? [];
         // Flush cache to get proper counts for partial/complete/total responses
         if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
         }
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pagination = [
+            'pageSize' => Yii::app()->user->getState(
+                'pageSize',
+                Yii::app()->params['defaultPageSize']
+            )
+        ];
+        if (isset($options['pageSize'])) {
+            $pagination['pageSize'] = $options['pageSize'];
+        }
+        if (isset($options['currentPage'])) {
+            $pagination['currentPage'] = $options['currentPage'];
+        }
 
         $sort = new CSort();
         $sort->attributes = array(
@@ -1636,15 +1864,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     $criteria->addCondition("t.startdate >'$sNow'");
                 }
 
+                // Filter for surveys that are running now
+                // Must be active, started and not expired
                 if ($this->active == "R") {
                     $criteria->compare("t.active", 'Y');
-                    $subCriteria1 = new CDbCriteria();
-                    $subCriteria2 = new CDbCriteria();
-                    $subCriteria1->addCondition("'{$sNow}' > t.startdate", 'AND');
-                    $subCriteria1->addCondition("t.startdate IS NULL", 'OR');
-                    $subCriteria2->addCondition("t.expires IS NULL", 'AND');
-                    $subCriteria2->addCondition("'{$sNow}' < t.expires", 'OR');
-                    $criteria->mergeWith($subCriteria1);
+                    $startedCriteria = new CDbCriteria();
+                    $startedCriteria->addCondition("'{$sNow}' > t.startdate");
+                    $startedCriteria->addCondition('t.startdate IS NULL', "OR");
+                    $notExpiredCriteria = new CDbCriteria();
+                    $notExpiredCriteria->addCondition("'{$sNow}' < t.expires");
+                    $notExpiredCriteria->addCondition('t.expires IS NULL', "OR");
+                    $criteria->mergeWith($startedCriteria);
+                    $criteria->mergeWith($notExpiredCriteria);
                 }
             }
         }
@@ -1659,9 +1890,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $dataProvider = new CActiveDataProvider('Survey', array(
             'sort' => $sort,
             'criteria' => $criteria,
-            'pagination' => array(
-                'pageSize' => $pageSize,
-            ),
+            'pagination' => $pagination,
         ));
 
         $dataProvider->setTotalItemCount($this->count($criteria));
@@ -1691,29 +1920,29 @@ class Survey extends LSActiveRecord implements PermissionInterface
             /* Read is set on survey */
             $criteriaPerm->mergeWith(
                 array(
-                    'join' => "LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = t.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid= :surveypermissionuserid) ",
+                    'join' => "LEFT JOIN {{permissions}} AS surveypermissions{$userid} ON (surveypermissions{$userid}.entity_id = t.sid AND surveypermissions{$userid}.permission='survey' AND surveypermissions{$userid}.entity='survey' AND surveypermissions{$userid}.uid= :surveypermissionuserid{$userid}) ",
                 )
             );
-            $criteriaPerm->params[':surveypermissionuserid'] = $userid;
-            $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
+            $criteriaPerm->params[":surveypermissionuserid{$userid}"] = $userid;
+            $criteriaPerm->compare("surveypermissions{$userid}.read_p", '1', false, 'OR');
 
             /* Read on Surveys in group */
             $criteriaPerm->mergeWith(
                 array(
-                    'join' => "LEFT JOIN {{permissions}} AS surveysingrouppermissions ON (surveysingrouppermissions.entity_id = t.gsid AND surveysingrouppermissions.entity='surveysingroup' AND surveysingrouppermissions.uid= :surveysingrouppermissionuserid) ",
+                    'join' => "LEFT JOIN {{permissions}} AS surveysingrouppermissions{$userid} ON (surveysingrouppermissions{$userid}.entity_id = t.gsid AND surveysingrouppermissions{$userid}.entity='surveysingroup' AND surveysingrouppermissions{$userid}.uid= :surveysingrouppermissionuserid{$userid}) ",
                 )
             );
-            $criteriaPerm->params[':surveysingrouppermissionuserid'] = $userid;
-            $criteriaPerm->compare('surveysingrouppermissions.read_p', '1', false, 'OR'); // This mean : update, export … didn't allow see in list
+            $criteriaPerm->params[":surveysingrouppermissionuserid{$userid}"] = $userid;
+            $criteriaPerm->compare("surveysingrouppermissions{$userid}.read_p", '1', false, 'OR'); // This mean : update, export … didn't allow see in list
 
             /* Under condition : owner of group */
             if (App()->getConfig('ownerManageAllSurveysInGroup')) {
                 $criteriaPerm->mergeWith(
                     array(
-                        'join' => "LEFT JOIN {{surveys_groups}} AS surveysgroupsowner ON (surveysgroupsowner.gsid = t.gsid) ",
+                        'join' => "LEFT JOIN {{surveys_groups}} AS surveysgroupsowner{$userid} ON (surveysgroupsowner{$userid}.gsid = t.gsid) ",
                     )
                 );
-                $criteriaPerm->compare('surveysgroupsowner.owner_id', $userid, false, 'OR');
+                $criteriaPerm->compare("surveysgroupsowner{$userid}.owner_id", $userid, false, 'OR');
             }
         }
         /* Place for a new event */
@@ -1754,7 +1983,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey = null)
+    public static function saveTranscribeCaptchaOptions(?Survey $oSurvey = null)
     {
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
@@ -1766,68 +1995,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         }
 
-        if ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'I') {
-            return 'E';
-        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'I') {
-            return 'F';
-        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'Y') {
-            return 'G';
-        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'Y') {
-            return 'H';
-        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'I') {
-            return 'I';
-        } elseif ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'Y') {
-            return 'J';
-        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'I') {
-            return 'K';
-        } elseif ($surveyaccess == 'I' && $saveandload == 'Y') {
-            return 'L';
-        } elseif ($surveyaccess == 'I' && $registration == 'Y') {
-            return 'M';
-        } elseif ($registration == 'I' && $surveyaccess == 'Y') {
-            return 'O';
-        } elseif ($registration == 'I' && $saveandload == 'Y') {
-            return 'P';
-        } elseif ($saveandload == 'I' && $surveyaccess == 'Y') {
-            return 'T';
-        } elseif ($saveandload == 'I' && $registration == 'Y') {
-            return 'U';
-        } elseif ($surveyaccess == 'I' && $registration == 'I') {
-            return '1';
-        } elseif ($surveyaccess == 'I' && $saveandload == 'I') {
-            return '2';
-        } elseif ($registration == 'I' && $saveandload == 'I') {
-            return '3';
-        } elseif ($surveyaccess == 'I') {
-            return '4';
-        } elseif ($saveandload == 'I') {
-            return '5';
-        } elseif ($registration == 'I') {
-            return '6';
-        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'Y') {
-            return 'A';
-        } elseif ($surveyaccess == 'Y' && $registration == 'Y') {
-            return 'B';
-        } elseif ($surveyaccess == 'Y' && $saveandload == 'Y') {
-            return 'C';
-        } elseif ($registration == 'Y' && $saveandload == 'Y') {
-            return 'D';
-        } elseif ($surveyaccess == 'Y') {
-            return 'X';
-        } elseif ($registration == 'Y') {
-            return 'R';
-        } elseif ($saveandload == 'Y') {
-            return 'S';
-        }
-
-        return 'N';
+        $surveyUseCaptcha = new \LimeSurvey\Models\Services\SurveyUseCaptcha(0, $oSurvey);
+        return $surveyUseCaptcha->convertUseCaptchaForDB($surveyaccess, $registration, $saveandload);
     }
 
 
     /**
      * Method to make an approximation on how long a survey will last
-     * @deprecated, unused since 3.X
      * Approx is 3 questions each minute.
+     *
+     * @deprecated Unused since 3.X
      * @return double
      */
     public function calculateEstimatedTime()
@@ -1852,7 +2029,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get all surveys that has participant table
+     * Get all surveys that has participant list
      * @return Survey[]
      */
     public static function getSurveysWithTokenTable()
@@ -1971,15 +2148,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $criteria = new CDbCriteria();
         $criteria->select = Yii::app()->db->quoteColumnName('t.*');
-        $criteria->with = array(
-            'survey.groups',
-        );
         if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-            $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->join = 'INNER JOIN {{groups}} grp ON grp.gid = t.gid';
+            $criteria->order = Yii::app()->db->quoteColumnName('grp.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
         } else {
+            $criteria->with = array('survey.groups');
             $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order') . ',' . Yii::app()->db->quoteColumnName('t.question_order');
+            $criteria->addCondition('groups.gid=t.gid', 'AND');
         }
-        $criteria->addCondition('groups.gid=t.gid', 'AND');
         return $criteria;
     }
 
@@ -1992,18 +2168,41 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @return integer
+     * Gets number of Questions inside a particular survey
      */
-    public function getCountTotalQuestions()
+    public function getQuestionsCount()
     {
-        $condn = array('sid' => $this->sid, 'parent_qid' => 0);
-        $sumresult = Question::model()->countByAttributes($condn);
+        return Question::model()->countByAttributes(['sid' => $this->sid]);
+    }
+
+    /**
+     * @param boolean $countHidden determines whether to count hidden questions or not.
+     * @return int
+     */
+    public function getCountTotalQuestions($countHidden = true)
+    {
+        $sumresult = null;
+
+        if ($countHidden) {
+            $condn = array('sid' => $this->sid, 'parent_qid' => 0);
+            $sumresult = Question::model()->countByAttributes($condn);
+        } else {
+            $query = Yii::app()->db->createCommand()
+                ->select('COUNT(DISTINCT t.qid) as count')
+                ->from('{{questions}} t')
+                ->leftJoin('{{question_attributes}} qa', 'qa.qid = t.qid AND qa.attribute = :hidden', [':hidden' => 'hidden'])
+                ->where('t.sid = :sid AND t.parent_qid = 0', [':sid' => $this->sid])
+                ->andWhere('qa.value IS NULL OR qa.value != :hidden_value', [':hidden_value' => '1']);
+            $result = $query->queryScalar();
+            return (int) $result;
+        }
+
         return (int) $sumresult;
     }
 
     /**
      * Get the coutn of questions that do not need input (skipping text-display etc.)
-     * @return integer
+     * @return int
      */
     public function getCountNoInputQuestions()
     {
@@ -2018,7 +2217,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get the coutn of questions that need input (skipping text-display etc.)
-     * @return integer
+     * @return int
      */
     public function getCountInputQuestions()
     {
@@ -2060,7 +2259,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get the final label for survey id
+     * Get the final label for survey ID
      * @param string $dataSecurityNoticeLabel current label
      * @param integer $surveyId unused
      * @return string
@@ -2075,6 +2274,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             '/subviews/privacy/privacy_datasecurity_notice_label.twig',
             [
                 'dataSecurityNoticeLabel' => $dataSecurityNoticeLabel,
+                'sid' => $surveyId,
             ]
         );
     }
@@ -2108,7 +2308,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * @param ? $tmp
+     * @param array $tmp
      */
     public function setTokenEncryptionOptions($options)
     {
@@ -2123,6 +2323,38 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->oOptionLabels = $instance->oOptionLabels;
             $this->aOptions = (array) $instance->oOptions;
             $this->showInherited = $instance->showInherited;
+        }
+    }
+
+    /**
+     * Determine whether a runtime screen should show or validate a CAPTCHA for this survey.
+     *
+     * If the GD extension is unavailable, CAPTCHA is treated as disabled.
+     *
+     * @param string $screen Runtime screen identifier (one of 'registrationscreen', 'surveyaccessscreen', 'saveandloadscreen')
+     * @return bool True when CAPTCHA is enabled for the requested screen.
+     */
+    public function isCaptchaEnabled($screen)
+    {
+        if (!extension_loaded('gd')) {
+            return false;
+        }
+
+        if ($this->oOptions === null || !property_exists($this->oOptions, 'usecaptcha')) {
+            $this->setOptions($this->gsid);
+        }
+
+        $useCaptcha = (string) $this->oOptions->usecaptcha;
+
+        switch ($screen) {
+            case 'registrationscreen':
+                return in_array($useCaptcha, SurveyUseCaptcha::REGISTRATION_YES, true);
+            case 'surveyaccessscreen':
+                return in_array($useCaptcha, SurveyUseCaptcha::SURVEY_ACCESS_YES, true);
+            case 'saveandloadscreen':
+                return in_array($useCaptcha, SurveyUseCaptcha::SAVE_LOAD_YES, true);
+            default:
+                return true;
         }
     }
 
@@ -2213,7 +2445,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey"),
-                'description' => gT("Permission on survey (delete). Read permission is used to give access to this group."),
+                'description' => gT("Permission for survey access. Read permission is a requirement to give any further permission to a survey."),
                 'img' => ' ri-list-check',
             ),
             'surveyactivation' => array(
@@ -2253,7 +2485,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey settings"),
-                'description' => gT("Permission to view, update the survey settings including survey participants table creation"),
+                'description' => gT("Permission to view, update the survey settings including survey participant list creation"),
                 'img' => ' ri-settings-5-fill',
             ),
             'tokens' => array(
@@ -2321,7 +2553,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * If $preferShortUrl is true (default), and an alias is available, it returns the short
      * version of the URL.
      * @param string|null $language
-     * @param array<string,mixed> $params   Optional parameters to include in the URL.
+     * @param array|string|mixed $params   Optional parameters to include in the URL.
      * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
      * @return string
      */
@@ -2397,5 +2629,34 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->expires < $this->startdate) {
             $this->addError('expires', gT("Expiration date can't be lower than the start date", 'unescaped'));
         }
+    }
+
+    /**
+     * Get a dateime DB and return DateTime or null adjusted
+     * @var string|null $datetime in PHP datetime formats
+     * @return \DateTime|null
+     */
+    private static function shiftedDateTime($datetime)
+    {
+        if (is_string($datetime) && strtotime($datetime)) {
+            $datetime = dateShift($datetime, "Y-m-d H:i:s", strval(Yii::app()->getConfig('timeadjust')));
+            return new DateTime($datetime);
+        }
+        return null;
+    }
+
+    /**
+     * This method is invoked before saving a record (after validation, if any).
+     * The default implementation raises the {@link onBeforeSave} event.
+     * You may override this method to do any preparation work for record saving.
+     * Use {@link isNewRecord} to determine whether the saving is
+     * for inserting or updating record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the saving should be executed. Defaults to true.
+     */
+    protected function beforeSave()
+    {
+        $this->lastmodified = gmdate('Y-m-d H:i:s');
+        return parent::beforeSave();
     }
 }

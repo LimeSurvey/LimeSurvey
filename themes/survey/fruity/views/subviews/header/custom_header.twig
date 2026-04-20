@@ -26,7 +26,7 @@
 <style>
     {% if (aSurveyInfo.options.backgroundimage == "on" and imageSrc(aSurveyInfo.options.backgroundimagefile )) %}
         body {
-            background-image: url({{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }});
+            background-image: url('{{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }}');
             background-attachment: fixed;
             background-size: cover;
 

@@ -23,7 +23,7 @@ class type_mime {
         if (!isset($config['params']))
             return "Undefined MIME types.";
 
-        $finfo = strlen($config['mime_magic'])
+        $finfo = strlen((string) $config['mime_magic'])
             ? new \finfo(FILEINFO_MIME, $config['mime_magic'])
             : new \finfo(FILEINFO_MIME);
         if (!$finfo)
@@ -33,8 +33,8 @@ class type_mime {
         $type = substr($type, 0, strrpos($type, ";"));
 
         $mimes = $config['params'];
-        if (substr($mimes, 0, 1) == "!") {
-            $mimes = trim(substr($mimes, 1));
+        if (substr((string) $mimes, 0, 1) == "!") {
+            $mimes = trim(substr((string) $mimes, 1));
             return in_array($type , explode(" ", $mimes))
                 ? "You can't upload such files."
                 : true;

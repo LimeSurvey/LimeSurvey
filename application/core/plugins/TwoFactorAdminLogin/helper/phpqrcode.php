@@ -157,7 +157,10 @@
  */
 
     class QRtools {
-    
+
+        /** @todo: Is this used? */
+        public static $frames;
+
         //----------------------------------------------------------------------
         public static function binarize($frame)
         {
@@ -1185,7 +1188,7 @@
         {
             try {
 
-                $bs = new QRbitrtream();
+                $bs = new QRbitstream();
                 
                 $bs->appendNum(4, 0x8);
                 $bs->appendNum(QRspec::lengthIndicator(QR_MODE_KANJI, $version), (int)($this->size / 2));
@@ -1399,7 +1402,7 @@
             $buf = array($size, $index, $parity);
             
             try {
-                $entry = new QRinputItem(QR_MODE_STRUCTURE, 3, buf);
+                $entry = new QRinputItem(QR_MODE_STRUCTURE, 3, $buf);
                 array_unshift($this->items, $entry);
                 return 0;
             } catch (Exception $e) {
@@ -1505,7 +1508,7 @@
         }
         
         //----------------------------------------------------------------------
-        public function estimateBitsModeKanji($size)
+        public static function estimateBitsModeKanji($size)
         {
             return (int)(($size / 2) * 13);
         }
@@ -2961,7 +2964,7 @@
         //----------------------------------------------------------------------
         public function getCode()
         {
-            $ret;
+            $ret = null;
 
             if($this->count < $this->dataLength) {
                 $row = $this->count % $this->blocks;
@@ -2969,11 +2972,11 @@
                 if($col >= $this->rsblocks[0]->dataLength) {
                     $row += $this->b1;
                 }
-                $ret = $this->rsblocks[$row]->data[$col];
+                $ret = $this->rsblocks[$row]->data[(int) $col];
             } else if($this->count < $this->dataLength + $this->eccLength) {
                 $row = ($this->count - $this->dataLength) % $this->blocks;
                 $col = ($this->count - $this->dataLength) / $this->blocks;
-                $ret = $this->rsblocks[$row]->ecc[$col];
+                $ret = $this->rsblocks[$row]->ecc[(int) $col];
             } else {
                 return 0;
             }
@@ -3254,6 +3257,7 @@
         
         public $level = QR_ECLEVEL_L;
         public $hint = QR_MODE_8;
+        public $cmyk;
         
         //----------------------------------------------------------------------
         public static function factory($level = QR_ECLEVEL_L, $size = 3, $margin = 4, $back_color = 0xFFFFFF, $fore_color = 0x000000, $cmyk = false)

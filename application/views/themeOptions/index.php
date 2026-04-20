@@ -8,6 +8,7 @@
  * @var TemplateConfig $oSurveyTheme
  * @var int $pageSize
  * @var array $aAdminThemes
+ * @var array $aTemplatesWithoutDB
  */
 
 // TODO: rename to template_list.php and move to template controller
@@ -16,19 +17,19 @@
 echo viewHelper::getViewTestTag('templateOptions');
 ?>
 <div class="list-themes">
-    <ul class="nav nav-tabs" id="themelist">
+    <ul class="nav nav-tabs" id="themelist" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab">
+            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Survey themes'); ?>
             </a>
         </li>
         <li>
-            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab">
+            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Admin themes'); ?>
             </a>
         </li>
         <li>
-            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab">
+            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab" role="tab">
                 <?php eT('Question themes'); ?>
             </a>
         </li>
@@ -43,8 +44,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                     ]
                 ); ?>
                 <!-- Available Themes -->
-                <?php $templatewithNoDb = $oSurveyTheme->getTemplatesWithNoDb()?>
-                <?php if (count($templatewithNoDb) > 0) : ?>
+                <?php if (!empty($aTemplatesWithoutDB['valid'])) : ?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
                     <div id="templates_no_db" >
                         <table class="items table table-hover">
@@ -62,10 +62,10 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <tbody>
                             <?php /** @var TemplateManifest $oTemplate */ ?>
                             <?php $surveyThemeIterator = 0 ?>
-                            <?php foreach ($templatewithNoDb as $key => $oTemplate) : ?>
+                            <?php foreach ($aTemplatesWithoutDB['valid'] as $key => $oTemplate) : ?>
                                 <tr class="odd">
                                     <td class="col-lg-1"><?php echo $oTemplate->getPreview(); ?></td>
-                                    <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
+                                    <td class="col-lg-2"><?php echo CHtml::encode($oTemplate->sTemplateName); ?></td>
                                     <td class="col-lg-3"><?php echo $oTemplate->getDescription(); ?></td>
                                     <td class="col-lg-2"><?php eT('XML themes'); ?></td>
                                     <td class="col-lg-1"><?php echo $oTemplate->config->metadata->extends; ?></td>
@@ -88,7 +88,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                             </div>
                                                             <div class="modal-body">
                                                                 <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?><br>
-                                                                    <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
+                                                                    <a href="https://www.limesurvey.org/manual/Extension_compatibility" target="_blank">
                                                                         <?= gT('For more information consult our manual.') ?>
                                                                     </a>
                                                                 </p>
@@ -134,11 +134,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <?php endif; ?>
                 <!-- End Available Themes -->
                 <!-- Broken Themes  -->
-                <?php $aBrokenThemes = Template::getBrokenThemes();
-                if (count($aBrokenThemes) > 0) : ?>
+                <?php if (!empty($aTemplatesWithoutDB['invalid'])) : ?>
                     <h3><?php eT('Broken survey themes'); ?></h3>
-
-
                     <div id="thembes_broken" >
                         <table class="items table table-hover">
                             <thead>
@@ -150,12 +147,11 @@ echo viewHelper::getViewTestTag('templateOptions');
                             </thead>
 
                             <tbody>
-                            <?php foreach ($aBrokenThemes as $sName => $oBrokenTheme) : ?>
-                                <?php // echo $oTemplate; ?>
+                            <?php foreach ($aTemplatesWithoutDB['invalid'] as $sName => $oBrokenTheme) : ?>
                                 <tr class="odd">
-                                    <td class="col-lg-1 text-danger"><?php echo $sName; ?></td>
+                                    <td class="col-lg-1 text-danger"><?= $sName ?></td>
                                     <td class="col-lg-8 ">
-                                        <blockquote><?php echo $oBrokenTheme->getMessage(); ?></blockquote>
+                                        <blockquote><?= $oBrokenTheme['error'] ?? '' ?></blockquote>
                                     </td>
                                     <td class="col-lg-2">
                                         <div class="d-grid gap-2">
@@ -274,7 +270,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                     </div>
                                                     <div class="modal-body">
                                                         <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?></p>
-                                                        <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
+                                                        <a href="https://www.limesurvey.org/manual/Extension_compatibility" target="_blank">
                                                             <?= gT('For more information consult our manual.') ?>
                                                         </a>
                                                     </div>

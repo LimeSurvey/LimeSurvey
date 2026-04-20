@@ -61,7 +61,7 @@
 		"issues": "https://github.com/yiisoft/yii/issues?state=open",
 		"forum": "https://www.yiiframework.com/forum/",
 		"wiki": "https://www.yiiframework.com/wiki/",
-		"irc": "irc://irc.freenode.net/yii",
+		"irc": "ircs://irc.libera.chat:6697/yii",
 		"source": "https://github.com/yiisoft/yii"
 	},
 	"bin": [
@@ -91,7 +91,7 @@
 		"phpunit/phpunit-selenium": "~1.4.0",
 		"phing/phing": "2.*",
 		"phpseclib/mcrypt_compat": "^1.0",
-		"pear/archive_tar": "~1.4.6"
+		"pear/archive_tar": "~1.5.0"
 	},
 	"extra": {
 		"branch-alias": {
@@ -108,7 +108,8 @@
 			"phpunit/phpunit": {
 				"Fix PHP 7 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php7.patch",
 				"Fix PHP 8 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php8.patch",
-				"Fix PHP 8.1 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php81.patch"
+				"Fix PHP 8.1 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php81.patch",
+				"Fix PHP 8.3 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php83.patch"
 			}
 		}
 	},

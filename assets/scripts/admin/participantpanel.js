@@ -127,15 +127,16 @@ LS.CPDB = (function() {
                             dlForm.css('display', 'none').appendTo('body').submit();
                             $(self).modal("hide");
                         });
-                        $('#attributes')
-                            .multiselect({ 
-                                includeSelectAllOption:true, 
-                                selectAllValue: '0',
-                                selectAllText: sSelectAllText,
-                                nonSelectedText: sNonSelectedText,
-                                nSelectedText: sNSelectedText,
-                                maxHeight: 140 
-                            });
+
+                        $('#select-all').click(function () {
+                            if ($('#select-all').is(':checked')) {
+                                $('#attributes > option').prop('selected', 'selected');
+                                $('#attributes').trigger('change');
+                            } else {
+                                $('#attributes > option').removeAttr('selected');
+                                $('#attributes').trigger('change');
+                            }
+                        });
                     });
                     /* $.download(exporttocsvall,'searchcondition=dummy',$('#exportcsvallprocessing').dialog("close"));*/
                 }
@@ -152,7 +153,7 @@ LS.CPDB = (function() {
                 //data can be string of parameters or array/object
                 data = typeof data == 'string' ? data : jQuery.param(data);
                 //split params into form inputs
-                var inputs = '<input type="hidden" name="'+LS.data.csrfTokenName+'" value="'+LS.data.csrfToken+'">';
+                var inputs = $("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken).get(0).outerHTML;
                 jQuery.each(data.split('&'), function(){
                     var pair = this.split('=');
                     inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'">';
@@ -472,6 +473,7 @@ LS.CPDB = (function() {
     deleteSingleParticipantShare = function(url) {
         $.ajax({
             url: url,
+            data: {},
             method: "POST",
             dataType: 'json',
             success: function(result){

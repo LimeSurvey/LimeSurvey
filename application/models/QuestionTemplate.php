@@ -381,9 +381,12 @@ class QuestionTemplate extends CFormModel
      * @param string $type
      * @return array
      * @todo Move to QuestionTheme?
+     * @todo This is not the same as QuestionTheme::findQuestionMetaDataForAllTypes() which is the database layer
+     * @todo this should check the filestructure instead of the database as this is the filestructure layer
      */
     public static function getQuestionTemplateList($type)
     {
+        // todo: incorrect, this should check the filestructure instead of the database as this is the filestructure layer
         /** @var QuestionTheme[] */
         $questionThemes = QuestionTheme::model()->findAllByAttributes(
             [],

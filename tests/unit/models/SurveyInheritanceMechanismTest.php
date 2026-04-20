@@ -205,7 +205,7 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $tmpGlobalUsecookie = $globalOptions->usecookie;
         $tmpGlobalAllowsave = $globalOptions->allowsave;
 
-        $globalOptions->template = 'test_global_template';
+        $globalOptions->template = 'fruity_twentythree';
         $globalOptions->usecookie = 'Y';
         $globalOptions->allowsave = 'N';
 
@@ -241,7 +241,7 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $survey->setOptions((int)self::$surveysGroup->gsid);
 
         // Asserting that the options were inherited from the global context.
-        $this->assertSame('test_global_template', $survey->oOptions->template);
+        $this->assertSame('fruity_twentythree', $survey->oOptions->template);
         $this->assertSame('Y', $survey->oOptions->usecookie);
         $this->assertSame('N', $survey->oOptions->allowsave);
 
@@ -271,7 +271,7 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $tmpDefaultUsecookie = $defaultOptions->usecookie;
         $tmpDefaultAllowsave = $defaultOptions->allowsave;
 
-        $defaultOptions->template = 'test_default_template';
+        $defaultOptions->template = 'fruity_twentythree';
         $defaultOptions->usecookie = 'Y';
         $defaultOptions->allowsave = 'N';
 
@@ -286,7 +286,7 @@ class SurveyInheritanceMechanismTest extends TestBaseClass
         $survey->setOptions((int)self::$surveysGroup->gsid);
 
         // Asserting that the options were inherited from the global context.
-        $this->assertSame('test_default_template', $survey->oOptions->template);
+        $this->assertSame('fruity_twentythree', $survey->oOptions->template);
         $this->assertSame('Y', $survey->oOptions->usecookie);
         $this->assertSame('N', $survey->oOptions->allowsave);
 

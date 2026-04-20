@@ -44,7 +44,7 @@ var VerilogHighlightRules = function () {
                 token: "string",
                 regex: "'^[']'"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: keywordMapper,

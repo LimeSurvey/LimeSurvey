@@ -40,7 +40,13 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th class='col-lg-1'>{{ gT("Code") }}</th>
+                            <th class='col-lg-1'>{{ gT("Code") }}
+                            <i
+                class="ri-information-fill"
+                data-bs-toggle="tooltip"
+                title="{{ gT("A mandatory unique alpha-numeric code for each subquestion (1-20 characters)") }}"
+            > </i>
+                            </th>
                             <th>
                                 {{ gT("Subquestion") }}
                                 <i class="ri-earth-fill" data-bs-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>

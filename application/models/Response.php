@@ -18,7 +18,7 @@ abstract class Response extends Dynamic
     }
     /**
      *
-     * @param mixed $className Either the classname or the survey id.
+     * @param mixed $className Either the classname or the survey ID.
      * @return Response
      */
     public static function model($className = null)
@@ -259,6 +259,7 @@ abstract class Response extends Dynamic
     {
     }
 
+    /** Get all encrypted questions for a survey, as array of fieldnames */
     public static function getEncryptedAttributes($surveyid = 0)
     {
         $survey = Survey::model()->findByPk($surveyid);

@@ -37,7 +37,7 @@ declare var CKEDITOR: any
 // flowlint unclear-type: error
 
 // Globals for jshint.
-/* globals $, _, alert, document, CKEDITOR */
+/* globals $, _, alert, document, CKEDITOR, ace, bootstrap */
 
 // NB: All public functions are in LS.questionEditor.
 var LS = LS || {};
@@ -52,7 +52,6 @@ var LS = LS || {};
 // TODO: Use component for quick-add
 // TODO: Use component for label sets
 $(document).on('ready pjax:scriptcomplete', function () {
-
   // TODO: Routing?
   if (window.location.href.indexOf('questionAdministration') === -1) {
     return;
@@ -69,6 +68,198 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
   }
 
+  let scriptEditorInstance = null;
+  let scriptEditorTarget = null;
+  let scriptEditorContainerElement = null;
+  let scriptEditorResizeHandler = null;
+
+  function fetchScriptModalElements() {
+    const element = document.getElementById('question-script-modal');
+    if (!element) {
+      return null;
+    }
+    const titleElement = element.querySelector('.modal-title');
+    const defaultTitle = element.getAttribute('data-default-title') || (titleElement ? titleElement.textContent : '');
+    const editorContainer = document.getElementById('question-script-modal-editor');
+
+    return {
+      element,
+      titleElement,
+      defaultTitle,
+      editorContainer
+    };
+  }
+
+  function prepareScriptModal() {
+    const elements = fetchScriptModalElements();
+    if (!elements) {
+      return null;
+    }
+
+    if (elements.element.dataset.scriptEditorBound !== 'true') {
+      elements.element.addEventListener('shown.bs.modal', () => {
+        const latestElements = fetchScriptModalElements();
+        const editor = ensureScriptEditorInstance(latestElements ? latestElements.editorContainer : null);
+        if (editor) {
+          editor.resize(true);
+          editor.focus();
+          if (scriptEditorResizeHandler) {
+            window.removeEventListener('resize', scriptEditorResizeHandler);
+          }
+          const debouncedResize = _.debounce(() => {
+            if (scriptEditorInstance) {
+              scriptEditorInstance.resize(true);
+            }
+          }, 150);
+          scriptEditorResizeHandler = () => {
+            debouncedResize();
+          };
+          window.addEventListener('resize', scriptEditorResizeHandler);
+        }
+      });
+
+      elements.element.addEventListener('hide.bs.modal', () => {
+        if (!scriptEditorTarget) {
+          return;
+        }
+        const latestElements = fetchScriptModalElements();
+        const editor = ensureScriptEditorInstance(latestElements ? latestElements.editorContainer : null);
+        if (!editor) {
+          return;
+        }
+
+        const $target = $(scriptEditorTarget);
+        if ($target.prop('readonly') === true) {
+          return;
+        }
+
+        const newValue = editor.getValue();
+
+        try {
+          if (typeof $target.ace === 'function' && $target.ace('check')) {
+            $target.ace('val', newValue);
+          } else {
+            $target.val(newValue);
+          }
+        } catch (err) {
+          $target.val(newValue);
+        }
+
+        $target.trigger('change');
+
+        try {
+          scriptEditorTarget.dispatchEvent(new Event('input', { bubbles: true }));
+        } catch (err) {
+          const inputEvent = document.createEvent('Event');
+          inputEvent.initEvent('input', true, false);
+          scriptEditorTarget.dispatchEvent(inputEvent);
+        }
+      });
+
+      elements.element.addEventListener('hidden.bs.modal', () => {
+        scriptEditorTarget = null;
+        const latestElements = fetchScriptModalElements();
+        if (latestElements && latestElements.titleElement) {
+          latestElements.titleElement.textContent = latestElements.defaultTitle;
+        }
+        if (scriptEditorResizeHandler) {
+          window.removeEventListener('resize', scriptEditorResizeHandler);
+          scriptEditorResizeHandler = null;
+        }
+      });
+
+      elements.element.dataset.scriptEditorBound = 'true';
+    }
+
+    return elements;
+  }
+
+  function ensureScriptEditorInstance(container) {
+    if (!container || typeof ace === 'undefined') {
+      return null;
+    }
+    if (!scriptEditorInstance || scriptEditorContainerElement !== container) {
+      // Clean up previous instance bound to another container to avoid leaks
+      if (scriptEditorInstance && scriptEditorContainerElement && scriptEditorContainerElement !== container) {
+        try {
+          scriptEditorInstance.destroy();
+          scriptEditorInstance.container = null;
+        } catch (e) {
+          // no-op
+        }
+      }
+      scriptEditorInstance = ace.edit(container);
+      scriptEditorContainerElement = container;
+      scriptEditorInstance.session.setMode('ace/mode/javascript');
+      scriptEditorInstance.setOptions({
+        wrap: true,
+        tabSize: 4,
+        useSoftTabs: true,
+        highlightActiveLine: true
+      });
+    }
+    return scriptEditorInstance;
+  }
+
+  prepareScriptModal();
+
+  $(document).off('click.scriptEditor', '.script-editor-fullscreen').on('click.scriptEditor', '.script-editor-fullscreen', function (event) {
+    event.preventDefault();
+    const targetFieldId = $(this).attr('data-target-field-id') || $(this).data('targetFieldId');
+    if (!targetFieldId) {
+      console.ls.warn('Script editor: missing target field id on trigger.');
+      return;
+    }
+
+    const targetElement = document.getElementById(targetFieldId);
+    if (!targetElement) {
+      console.ls.warn(`Script editor: target field ${targetFieldId} not found.`);
+      return;
+    }
+
+    const modalElements = prepareScriptModal();
+    if (!modalElements || typeof bootstrap === 'undefined') {
+      console.ls.error('Script editor modal is not available.');
+      return;
+    }
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElements.element);
+    const editor = ensureScriptEditorInstance(modalElements.editorContainer);
+    if (!modal || !editor) {
+      console.ls.error('Script editor modal is not available.');
+      return;
+    }
+
+    scriptEditorTarget = targetElement;
+    const $target = $(targetElement);
+    let currentValue = '';
+
+    try {
+      if (typeof $target.ace === 'function' && $target.ace('check')) {
+        currentValue = $target.ace('val');
+      } else {
+        currentValue = $target.val();
+      }
+    } catch (err) {
+      currentValue = $target.val();
+    }
+
+    editor.session.setValue(currentValue || '');
+    editor.session.getUndoManager().reset();
+    editor.clearSelection();
+    editor.gotoLine(1, 0, false);
+
+    const readOnly = $target.prop('readonly') === true;
+    editor.setReadOnly(readOnly);
+
+    if (modalElements.titleElement) {
+      const titleFromButton = $(this).attr('data-modal-title') || $(this).data('modalTitle');
+      modalElements.titleElement.textContent = titleFromButton || modalElements.defaultTitle;
+    }
+
+    modal.show();
+  });
+
   // TODO: Remove this when Vue topbar is removed.
   $('#vue-topbar-container').hide();
 
@@ -79,7 +270,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   try {
     languageJson = JSON.parse(unescape(value));
   } catch (e) {
-    console.error('Could not parse language JSON - not on question editor page?');
+    console.ls.error('Could not parse language JSON - not on question editor page?');
     return;
   }
 
@@ -89,7 +280,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   /** @type {number} */
   const sid = parseInt($('input[name=sid]').val());
   if (isNaN(sid)) {
-    console.error('No survey id found - not on question editor page?');
+    console.ls.error('No survey id found - not on question editor page?');
     return;
   }
 
@@ -171,11 +362,58 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function bindExpandRelevanceEquation() {
-    $('.relevance').off('click').on('click', () => {
+    $('.relevance').off('focus').on('focus', (event) => {
+      if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
+        // Don't do anything when moving between relevance fields.
+        return;
+      }
+      if ($('#rel-eq-th').hasClass('col-lg-4')) {
+        // If already expanded, do not expand again.
+        return;
+      }
       $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast');
-      $('.relevance').data('toggle', '').tooltip('destroy');
-      $('.relevance').off('click');
+      $('.relevance').tooltip('dispose');
     });
+    $('.relevance').off('blur').on('blur', (event) => {
+      if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
+        // Don't do anything when moving between relevance fields.
+        return;
+      }
+      if ($('#rel-eq-th').hasClass('col-lg-1')) {
+        // If already collapsed, do not collapse again.
+        return;
+      }
+      $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast');
+      LS.doToolTip();
+      //$('.relevance').each((index, element) => {
+      //  bootstrap.Tooltip.getOrCreateInstance(element);
+      //});
+    });
+    LS.doToolTip();
+  }
+
+  function bindSubQuestionEvents() {
+    $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
+    $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+    bindExpandRelevanceEquation();
+  }
+
+  function bindAnswerEvents() {
+    $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
+    $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+  }
+
+  function toggleLanguageElements() {
+    // get selected lang from dropdown
+    let lang = $('.active .lang-switch-button').data('lang');
+    //fallback: display main language
+    if (lang === undefined) {
+      const languages = languageJson.langs.split(';');
+      lang = languages[0];
+    }
+    const langClass = `.lang-${lang}`;
+    $('.lang-hide').hide();
+    $(langClass).show();
   }
 
   /**
@@ -214,30 +452,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
     // We get the HTML of the new row to insert
     return $.ajax({
       type: 'GET',
-      contentType: 'json',
+      contentType: 'application/json',
       url: $dataInput.data('url'),
       data: datas,
     });
-  }
-  /**
-   * @return {boolean} true if relevance equation field is expanded
-   */
-  function relevanceIsExpanded() {
-    return $('#rel-eq-th').hasClass('col-lg-4');
-  }
-
-  /**
-   * Bind click to expand relevance equation
-   * if not already expanded.
-   *
-   * @return {void}
-   */
-  function bindClickIfNotExpanded() {
-    if (!relevanceIsExpanded()) {
-      bindExpandRelevanceEquation();
-      // Activate tooltip
-      LS.doToolTip();
-    }
   }
 
   /**
@@ -405,7 +623,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const rowId = `#row_${languages[x]}_${info[2]}_${info[3]}`;
         const $tablerow = $(rowId);
         if ($tablerow.length === 0) {
-          console.error('info', info);
+          console.ls.error('info', info);
           alert('Internal error: Could not find row to delete with id ' + rowId);
           throw 'abort';
         }
@@ -527,8 +745,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const target = e.target;
     const data = $('#add-subquestion-input-javascript-datas').data();
     const rebindClickHandler = () => {
-      $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
-      $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+      bindSubQuestionEvents()
     };
     addNewInputAux(target, data, rebindClickHandler);
   }
@@ -544,8 +761,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const target = e.target;
     const data = $('#add-answer-option-input-javascript-datas').data();
     const rebindClickHandler = () => {
-      $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
-      $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+      bindAnswerEvents();
     };
     addNewInputAux(target, data, rebindClickHandler);
   }
@@ -702,7 +918,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       error(jqXHR, textStatus, errorThrown) {
         $('#labelsetpreview').empty();
         showLabelSetAlert(languageJson.labelSetFail, 'danger');
-        console.error(errorThrown);
+        console.ls.error(errorThrown);
       },
     });
   }
@@ -796,7 +1012,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       },
       error(jqXHR, textStatus, errorThrown) {
         showLabelSetAlert(languageJson.labelSetFail, 'danger');
-        console.error(errorThrown);
+        console.ls.error(errorThrown);
       },
       complete() {
         $('#labelsetsLoader').hide();
@@ -866,8 +1082,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
         var generatedIds = currentIds;
 
         // Loop the preview table and copy rows to destination (subquestions or answer options).
-        $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
-        .each((i, item) => {
+        let importedLabelset = $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row');
+        if (importedLabelset.length === 0) {
+          importedLabelset = $('#labelsetpreview').find(`.tab-pane:first`).find('.selector_label-list').find('.selector_label-list-row');
+        }
+        importedLabelset.each((i, item) => {
           try {
             const label /*: {code: string, title: string} */ = $(item).data('label');
             const $row = $(row);
@@ -951,7 +1170,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
       updateRowProperties();
       $('#labelsetbrowserModal').modal('hide');
       $('#current_scale_id').remove();
-    }).catch(error => console.error(error));
+    }).catch((error) => {
+      console.ls.error(error);
+    });
   }
 
   /**
@@ -1131,11 +1352,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 throw 'inputText is not an HTMLInputElement';
               }
               inputText.value = row.text;
-              const inputCode = tableRow.querySelector('input.code');
+              let inputCode = tableRow.querySelector('input.code');
               if (inputCode instanceof HTMLInputElement) {
                 inputCode.value = row.code;
               } else {
-                // Ignore.
+                // If there is no input for the code, it's probably a "secondary" language.
+                inputCode = tableRow.querySelector('td.code-title');
+                if (inputCode instanceof HTMLElement) {
+                  inputCode.textContent = row.code;
+                }
               }
               const relevanceEquation = tableRow.querySelector('td.relevance-equation input');
               if (relevanceEquation instanceof HTMLInputElement) {
@@ -1154,7 +1379,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('.answertable tbody').sortable('refresh');
         updateRowProperties();
         $('#quickaddModal').modal('hide');
-        bindClickIfNotExpanded();
+        bindExpandRelevanceEquation();
       },
       function () {
         /* $('#quickadd').dialog('close'); */
@@ -1162,18 +1387,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('.answertable tbody').sortable('refresh');
         updateRowProperties();
         $('#quickaddModal').modal('hide');
-        bindClickIfNotExpanded();
+        bindExpandRelevanceEquation();
 
         // Unbind and bind events.
-        $(`.btnaddanswer`).off('click.subquestions');
-        $(`.btndelanswer`).off('click.subquestions');
-        $(`.btnaddsubquestion`).off('click.subquestions');
-        $(`.btndelsubquestion`).off('click.subquestions');
         $(`.answer`).off('focus');
-        $(`.btnaddanswer`).on('click.subquestions', addAnswerOptionInput);
-        $(`.btndelanswer`).on('click.subquestions', deleteAnswerOptionInput);
-        $(`.btnaddsubquestion`).on('click.subquestions', addSubquestionInput);
-        $(`.btndelsubquestion`).on('click.subquestions', deleteSubquestionInput);
+        bindSubQuestionEvents();
+        bindAnswerEvents();
       },
     );
   }
@@ -1690,16 +1909,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const languages = languageJson.langs.split(';');
         $('.lang-switch-button[data-lang="' + languages[0] + '"]').trigger('click');
 
-        // TODO: Duplication.
-        $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
-        $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
-        $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
-        $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
+        bindSubQuestionEvents();
+        bindAnswerEvents();
       } catch (ex) {
         $('#ls-loading').hide();
         // TODO: How to show internal errors?
         // eslint-disable-next-line no-alert
-        console.error(ex);
+        console.ls.error(ex);
         alert(`Internal error in updateQuestionAttributes: ${ex}`);
       }
     },
@@ -1770,7 +1986,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {void}
      */
     checkQuestionValidateTitle: function(code, qid) {
-      $('#question-title-warning').text("");
+      $('#questionCode')[0].setCustomValidity('');
+      $('#question-title-warning').text('');
       $('#question-title-warning').addClass('d-none');
       $.ajax({
         url: languageJson.checkQuestionValidateTitleURL,
@@ -1785,6 +2002,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
           } else {
               // Continue
           }
@@ -1805,20 +2023,35 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @return {boolean}
      */
     checkIfSaveIsValid: function(event /*: Event */, tabQuestionEditor = 'editor') {
+      $('#ls-loading').show();
       event.preventDefault();
       const qid = parseInt($('input[name="question[qid]"]').val());
       const code = $('input[name="question[title]"]').val();
       const target = event.currentTarget;
       if (!(target instanceof HTMLElement)) {
         alert('Internal error in checkIfSaveIsValid: target is not an HTMLElement, but ' + typeof target);
+        $('#ls-loading').hide();
         return false;
       }
       const saveWithAjax = target.dataset.saveWithAjax === 'true';
+      const form = document.getElementById('edit-question-form');
+      if (!(form instanceof HTMLFormElement)) {
+        $('#ls-loading').hide();
+        throw 'form is not HTMLFormElement';
+      }
+      /* Check if input are HTML5 valid */
+      if (!form.checkValidity() ) {
+          // the form is invalid : show invalid part
+          form.reportValidity();
+          $('#ls-loading').hide();
+          return false;
+      }
 
       const firstSubquestionRow = document.querySelector('.subquestions-table tr');
       if (firstSubquestionRow) {
         // This will show error message if subquestion code is not unique.
         if (!LS.questionEditor.showSubquestionCodeUniqueError(firstSubquestionRow)) {
+          $('#ls-loading').hide();
           return false;
         }
       }
@@ -1827,21 +2060,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (firstAnsweroptionRow) {
         // This will show error message if answer option code is not unique.
         if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
+          $('#ls-loading').hide();
           return false;
         }
       }
 
       const updateQuestionSummary = () => {
-        const form = document.getElementById('edit-question-form');
-        if (!(form instanceof HTMLFormElement)) {
-          throw 'form is not HTMLFormElement';
-        }
+        $('#ls-loading').show();
         $.ajax({
           url: form.dataset.summaryUrl,
           method: 'GET',
           data: {},
           dataType: 'html',
           success: (summaryHtml) => {
+            $('#ls-loading').hide();
             const isVisible = $('#question-overview').is(':visible');
             const newSummary = $(summaryHtml);
             if (isVisible) {
@@ -1861,7 +2093,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
             });
           },
           error: (response) => {
+            $('#ls-loading').hide();
             alert('Internal error in updateQuestionSummary: ' + response);
+            return false;
           },
         });
       };
@@ -1874,9 +2108,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
             url: languageJson.lsextraoptionsurl,
             success: (response /*: string */, textStatus /*: string */) => {
               $('#extra-options-container').replaceWith( response );
-              $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
-              $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+              bindSubQuestionEvents();
+              bindAnswerEvents();
               makeAnswersTableSortable();
+              toggleLanguageElements();
               // Hide loading gif.
               $('#ls-loading').hide();
             },
@@ -1893,6 +2128,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         const data = {};
         const form = document.getElementById('edit-question-form');
         if (!(form instanceof HTMLFormElement)) {
+          $('#ls-loading').hide();
           throw 'form is not HTMLFormElement';
         }
 
@@ -1901,7 +2137,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             CKEDITOR.instances[instanceName].updateElement();
           }
         } catch(e) {
-          console.error('Seems no CKEDITOR4 is loaded');
+          console.ls.error('Seems no CKEDITOR4 is loaded');
         }
 
         $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {
@@ -1961,7 +2197,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
           if (message !== null) {
               $('#question-title-warning').removeClass('d-none');
               $('#question-title-warning').text(message);
+              $('#questionCode')[0].setCustomValidity(message); // must set customvalidity to avoid submit by another enter
+              $('#ls-loading').hide();
           } else {
+            $('#question-title-warning').addClass('d-none');
+            $('#question-title-warning').text('');
+            $('#questionCode')[0].setCustomValidity('');
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
@@ -1975,10 +2216,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 saveFormWithAjax();
               } else {
                 // Just submit form.
+                $('#ls-loading').show();
                 button.click();
               }
+              return true;
             }
-            $('#question-title-warning').removeClass('d-none');
           }
         },
         error: (response) => {
@@ -2002,14 +2244,41 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
-  $("#questionCode").on('blur', function() {
-    let qid = 0;
-    if ($(this).data('qid')) {
-      qid = $(this).data('qid');
-    }
-    LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
-  });
+  /**
+   * questionCode need specific ajax validation
+   */
+  /** deactivate the check when needed */
+  function deActivateQuestionCodeChecker() {
+    $('#questionCode').off('blur keypress');
+  }
+  /** activate the check when event happen on questionCode */
+  function activateQuestionCodeChecker() {
+    $('#questionCode').on('blur', function() {
+      let qid = 0;
+      if ($(this).data('qid')) {
+        qid = $(this).data('qid');
+      }
+      LS.questionEditor.checkQuestionValidateTitle($(this).val(), qid);
+    });
+    /* Check question code validatiry when press ENTER mantis #19440 */
+    $('#questionCode').on('keypress', function(e) {
+      if (e.which == 13) {
+        e.preventDefault();
+        deActivateQuestionCodeChecker();
+        /* Set CustomValidity to empty to allow check again by checkIfSaveIsValid */
+        $('#questionCode')[0].setCustomValidity('');
+        $('#question-title-warning').text('');
+        $('#question-title-warning').addClass('d-none');
+        if (!LS.questionEditor.checkIfSaveIsValid(e, 'enter')) {
+          activateQuestionCodeChecker();
+        }
+      }
+    });
 
+  }
+  /* Attach event when ready */
+  activateQuestionCodeChecker();
+  /** */
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {
       return;
@@ -2039,10 +2308,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     makeAnswersTableSortable();
 
-    $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
-    $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
-    $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
-    $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+    bindSubQuestionEvents();
+    bindAnswerEvents();
 
     $('#labelsetbrowserModal').on('hidden.bs.modal.', labelSetDestruct);
 

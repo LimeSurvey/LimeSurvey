@@ -30,7 +30,7 @@ class UserParser
         } elseif (strtolower($sExtension) == 'csv') {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
         } else {
-            Yii::app()->setFlashMessage(gT("This is not a .csv file.") . 'It is a ' . $sExtension, 'error');
+            Yii::app()->setFlashMessage(gT("This is not a .csv file."), 'error');
             Yii::app()->getController()->redirect(array('/userManagement/index'));
             Yii::app()->end();
         }
@@ -45,11 +45,16 @@ class UserParser
         $delimiter =  self::detectCsvDelimiter($sFilePath);
         $oCSVFile = fopen($sFilePath, 'r');
         if ($oCSVFile === false) {
-            safeDie('File not found.');
+            // Throw a 500 error here : file was moved by LimeSurvey at set $bMoveFileResult : there are an install issue
+            throw new \CException('File can not be read.');
         }
 
         $aFirstLine = fgetcsv($oCSVFile, 0, $delimiter, '"');
-
+        if (empty($aFirstLine)) {
+            Yii::app()->setFlashMessage(gT("This CSV file seems to be empty"), 'error');
+            Yii::app()->getController()->redirect(array('/userManagement/index'));
+            Yii::app()->end();
+        }
         $iHeaderCount = count($aFirstLine);
         $aToBeAddedUsers = [];
         while (($row = fgetcsv($oCSVFile, 0, $delimiter, '"')) !== false) {

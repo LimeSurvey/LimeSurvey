@@ -25,7 +25,7 @@ the participant will not be able to complete it.');
         'data-button-type' => 'btn-danger',
         'data-close-button-type' => 'btn-cancel',
         'data-text' => $dataText,
-        'title' => gt('Batch deletion'),
+        'title' => gT('Batch deletion'),
       ],
     ]
   );

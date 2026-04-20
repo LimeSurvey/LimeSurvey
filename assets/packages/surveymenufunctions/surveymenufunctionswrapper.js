@@ -150,8 +150,7 @@ var getBindActionForSurveymenuEntries = function (targetCreateModal, targetGrid,
         e.stopPropagation();
         e.preventDefault();
         actions.runEditModal({
-            menuentryid: $(this).closest('tr').data('surveymenu-entry-id'),
-            ajax: true
+            menuentryid: $(this).data('menuentryid'),
         });
     });
 
@@ -161,7 +160,7 @@ var getBindActionForSurveymenuEntries = function (targetCreateModal, targetGrid,
         var idDeleteModal = $('#deletemodal');
         var idDeleteModalBtn = $('#deletemodalentry-confirm');
         actions.runDeleteModal(idDeleteModal,{
-            menuEntryid: $(this).closest('tr').data('surveymenu-entry-id'),
+            menuEntryid: $(this).data('menuentryid'),
             ajax: true
         }, idDeleteModalBtn);
     });
@@ -209,7 +208,6 @@ var getBindActionForSurveymenus = function (targetCreateModal, targetGrid, urls)
         e.preventDefault();
         actions.runEditModal({
             menuid: $(this).closest('tr').data('surveymenu-id'),
-            ajax: true
         });
     });
 

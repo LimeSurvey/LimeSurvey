@@ -27,9 +27,19 @@ class SurveyActivator
     /**
      * @param Survey $survey
      */
-    public function __construct($survey)
+    public function __construct($survey = null)
     {
         $this->survey = $survey;
+    }
+
+    /**
+     * @param Survey $survey
+     * @return SurveyActivator
+     */
+    public function setSurvey(Survey $survey)
+    {
+        $this->survey = $survey;
+        return $this;
     }
 
     /**
@@ -85,7 +95,8 @@ class SurveyActivator
 
         $aResult = array(
             'status' => 'OK',
-            'pluginFeedback' => $event->get('pluginFeedback')
+            'pluginFeedback' => $event->get('pluginFeedback'),
+            'isAllowRegister' => $survey->isAllowRegister
         );
         if (!$this->createSurveyDirectory()) {
             $aResult['warning'] = 'nouploadsurveydir';
@@ -324,6 +335,7 @@ class SurveyActivator
             // Refresh schema cache just in case the table existed in the past
             Yii::app()->db->schema->getTable($sTableName, true);
         } catch (Exception $e) {
+                $this->error = 'surveytablecreation';
             if (App()->getConfig('debug')) {
                 $this->error = $e->getMessage();
             } else {
@@ -371,6 +383,7 @@ class SurveyActivator
      */
     protected function createResponseTableKeys()
     {
+
         $iAutoNumberStart = Yii::app()->db->createCommand()
             ->select('autonumber_start')
             ->from(Survey::model()->tableName())
@@ -380,7 +393,8 @@ class SurveyActivator
         //if there is an autonumber_start field, start auto numbering here
         if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
             if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-                mssql_drop_coulmn_with_constraints($this->survey->responsesTableName, 'id');
+                Yii::app()->loadHelper("admin.activate"); // needed for mssql_drop_column_with_constraints
+                mssql_drop_column_with_constraints($this->survey->responsesTableName, 'id');
                 $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
                 Yii::app()->db->createCommand($sQuery)->execute();
                 // Add back the primaryKey
@@ -403,7 +417,14 @@ class SurveyActivator
      */
     protected function createTimingsTable()
     {
-        if ($this->survey->isSaveTimings) {
+        /**
+         * CT-1121: Needed a fix because $this->survey->isSaveTimings is incorrectly N even if it's Y in the database
+         * We will need to look into that problem later and restore the earlier code changed in 28bdcc3fde1e758756d2f4a4984e29a4105d3950
+         * once $this->survey->isSaveTimings becomes reliable again
+         * The idea for the fix was to load this value from the database for the time being until the session creation at the Question Editor is fixed
+         */
+        $prow = $this->survey->find('sid = :sid', array(':sid' => $this->survey->sid));
+        if ($prow->savetimings == "Y") {
             $this->prepareTimingsTable();
             $sTableName = $this->survey->timingsTableName;
             try {
@@ -467,6 +488,6 @@ class SurveyActivator
      */
     public function isCloseAccessMode()
     {
-        return $this->survey->isAllowRegister || tableExists('tokens_' . $this->survey->sid);
+        return $this->survey->access_mode === 'C';
     }
 }

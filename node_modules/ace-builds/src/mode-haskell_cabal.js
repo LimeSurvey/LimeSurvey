@@ -14,7 +14,7 @@ var CabalHighlightRules = function () {
                 token: ["keyword"],
                 regex: /^(\s*\w.*?)(:(?:\s+|$))/
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: /[\d_]+(?:(?:[\.\d_]*)?)/
             }, {
                 token: "constant.language.boolean",

@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class SearchReplaceTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SearchReplaceTest extends TestCase
 {
     public function searchReplaceDataProvider() {
         return array(

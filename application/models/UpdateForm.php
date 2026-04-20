@@ -271,20 +271,15 @@ class UpdateForm extends CFormModel
     public function unzipUpdateFile($file_to_unzip = 'update.zip')
     {
         if (file_exists($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip)) {
-            // To debug pcl_zip, uncomment the following line :    require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pcltrace.lib.php'); require_once('/var/www/limesurvey/LimeSurvey/application/libraries/admin/pclzip/pclzip-trace.lib.php'); PclTraceOn(2);
-            // To debug pcl_zip, comment the following line:
+            $archive = new LimeSurvey\Zip();
+            $archive->open($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip);
 
-            $archive = new PclZip($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip, false);
-
-            // TODO : RESTORE REPLACE NEWER !!
-            // To debug pcl_zip, uncomment the following line :
-            //if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0)
-            if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir . DIRECTORY_SEPARATOR, PCLZIP_OPT_REPLACE_NEWER) == 0) {
-                // To debug pcl_zip, uncomment the following line :
-                //PclTraceDisplay(); die();
-                $return = array('result' => false, 'error' => 'unzip_error', 'message' => $archive->errorInfo(true));
+            if ($archive->extractTo($this->rootdir . DIRECTORY_SEPARATOR) == 0) {
+                $return = array('result' => false, 'error' => 'unzip_error', 'message' => $archive->getStatusString());
+                $archive->close();
                 return (object) $return;
             }
+            $archive->close();
             $return = array('result' => true);
             return (object) $return;
         } else {
@@ -299,7 +294,6 @@ class UpdateForm extends CFormModel
      */
     public function unzipUpdateUpdaterFile()
     {
-        Yii::app()->loadLibrary("admin/pclzip");
         $file_to_unzip = 'update_updater.zip';
         return $this->unzipUpdateFile($file_to_unzip);
     }
@@ -461,24 +455,37 @@ class UpdateForm extends CFormModel
             $sFileToZip = str_replace("..", "", (string) $file['file']);
 
             if (is_file($this->publicdir . $sFileToZip) === true && basename($sFileToZip) != 'config.php' && filesize($this->publicdir . $sFileToZip) > 0) {
-                $filestozip[] = $this->publicdir . $sFileToZip;
+                $filestozip[$sFileToZip] = $this->publicdir . $sFileToZip;
             }
         }
 
-        Yii::app()->loadLibrary("admin/pclzip");
         $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
-        $archive = new PclZip($this->tempdir . DIRECTORY_SEPARATOR . 'LimeSurvey_files_backup_' . $basefilename . '.zip');
-        $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $this->publicdir);
+        $archive = new LimeSurvey\Zip();
+        $archive->open($this->tempdir . DIRECTORY_SEPARATOR . 'LimeSurvey_files_backup_' . $basefilename . '.zip', ZipArchive::CREATE);
+        $success = false;
+        foreach ($filestozip as $fileInZip => $sourceFile) {
+            $success = $archive->addFile($sourceFile, $fileInZip);
+            if (!$success) {
+                break;
+            }
+        }
+
+        // The zip is not actually saved until we close it, se we do it if
+        // all files were added to the archive.
+        if ($success) {
+            $success = $archive->close();
+        }
+
         $backup = new stdClass();
 
-        if (!$v_list == 0) {
+        if ($success) {
             $backup->result = true;
             $backup->basefilename = $basefilename;
             $backup->tempdir = $this->tempdir;
         } else {
             $backup->result = false;
             $backup->error = 'cant_zip_backup';
-            $backup->message = $archive->errorInfo(true);
+            $backup->message = $archive->getStatusString();
         }
         return $backup;
     }
@@ -546,10 +553,52 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * Check if an update is available, and prints the update notification
-     * It also check if the assets need to be republished
+     * Determine the stability level of a version from its version string.
+     * Checks for 'alpha', 'beta', or 'rc' substrings (case-insensitive).
      *
-     * @return object
+     * @param string $versionNumber The version string, e.g. '6.17.0-beta.1'
+     * @return string One of 'alpha', 'beta', 'rc', or 'stable'
+     */
+    public static function getVersionStabilityLevel($versionNumber)
+    {
+        $version = strtolower((string) $versionNumber);
+        if (strpos($version, 'alpha') !== false) {
+            return 'alpha';
+        }
+        if (strpos($version, 'beta') !== false) {
+            return 'beta';
+        }
+        if (strpos($version, 'rc') !== false) {
+            return 'rc';
+        }
+        return 'stable';
+    }
+
+    /**
+     * Check if a version's stability level meets the minimum required stability.
+     * Stability order from lowest to highest: alpha < beta < rc < stable.
+     *
+     * @param string $versionStability The stability level of the version ('alpha', 'beta', 'rc', 'stable')
+     * @param string $minimumStability The minimum required stability level from the global setting
+     * @return bool True if the version's stability is equal to or higher than the minimum
+     */
+    public static function meetsMinimumStability($versionStability, $minimumStability)
+    {
+        $levels = ['alpha' => 0, 'beta' => 1, 'rc' => 2, 'stable' => 3];
+        $versionLevel = $levels[$versionStability] ?? 3;
+        $minimumLevel = $levels[$minimumStability] ?? 3;
+        return $versionLevel >= $minimumLevel;
+    }
+
+    /**
+     * Check if an update is available and return notification data.
+     * Also checks if assets need to be republished.
+     *
+     * Fetches update info from the server (cached in session for 1 day),
+     * filters available updates by the 'minimum_update_stability' global setting,
+     * and stores results including stability labels in the session.
+     *
+     * @return object Object with properties: result (bool), security_update (bool), unstable_update (bool)
      */
     public function getUpdateNotification()
     {
@@ -575,9 +624,23 @@ class UpdateForm extends CFormModel
                         $updates = (array) $updates;
                     }
 
-                    if (count($updates) > 0) {
+                    // Filter updates by minimum stability setting
+                    $minimumStability = Yii::app()->getConfig('minimum_update_stability');
+                    $filteredUpdates = [];
+                    $stabilityLabels = [];
+                    foreach ($updates as $update) {
+                        $stabilityLevel = self::getVersionStabilityLevel($update->versionnumber ?? '');
+                        if (self::meetsMinimumStability($stabilityLevel, $minimumStability)) {
+                            $filteredUpdates[] = $update;
+                            if ($stabilityLevel !== 'stable') {
+                                $stabilityLabels[$stabilityLevel] = true;
+                            }
+                        }
+                    }
+
+                    if (count($filteredUpdates) > 0) {
                         $update_available = true;
-                        foreach ($updates as $update) {
+                        foreach ($filteredUpdates as $update) {
                             if ($update->security_update) {
                                 $security_update_available = true;
                             }
@@ -590,10 +653,12 @@ class UpdateForm extends CFormModel
 
                     Yii::app()->session['update_result'] = $update_available;
                     Yii::app()->session['security_update'] = $security_update_available;
+                    Yii::app()->session['update_stability_labels'] = array_keys($stabilityLabels);
 
-                    // If only one update is available and it's an unstable one, then it will be displayed in a different color, and will be removed, not minified when clicked
-                    if (count((array) $updates) == 1 && $unstable_update_available) {
-                        Yii::app()->session['unstable_update'] = $unstable_update_available;
+                    // If only one update is available and it's an unstable one,
+                    // then it will be displayed in a different color
+                    if (count($filteredUpdates) == 1 && $unstable_update_available) {
+                        Yii::app()->session['unstable_update'] = true;
                     } else {
                         Yii::app()->session['unstable_update'] = false;
                     }
@@ -606,6 +671,8 @@ class UpdateForm extends CFormModel
                     Yii::app()->session['next_update_check'] = $next_update_check;
                     Yii::app()->session['update_result'] = false;
                     Yii::app()->session['unstable_update'] = false;
+                    Yii::app()->session['security_update'] = false;
+                    Yii::app()->session['update_stability_labels'] = [];
                 }
             } else {
                 $update_available = Yii::app()->session['update_result'];
@@ -638,7 +705,7 @@ class UpdateForm extends CFormModel
 
     /**
      * Return the total size of the current database in MB
-     * @return string
+     * @return double
      */
     private function getDbTotalSize()
     {
@@ -650,7 +717,7 @@ class UpdateForm extends CFormModel
             $size += $row["Data_length"] + $row["Index_length"];
         }
 
-        $dbSize = number_format($size / (1024 * 1024), 2);
+        $dbSize = $size / (1024 * 1024);
 
         return $dbSize;
     }
@@ -661,18 +728,25 @@ class UpdateForm extends CFormModel
      */
     private function createDbBackup()
     {
-        Yii::app()->loadHelper("admin/backupdb");
+        Yii::app()->loadHelper("admin.backupdb");
         $backupDb = new stdClass();
         $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
-        $sfilename = $this->tempdir . DIRECTORY_SEPARATOR . "backup_db_" . randomChars(20) . "_" . dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . ".sql";
+        $baseSqlFileName = "backup_db_" . randomChars(20) . "_" . dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . ".sql";
+        $sfilename = $this->tempdir . DIRECTORY_SEPARATOR . $baseSqlFileName;
         $dfilename = $this->tempdir . DIRECTORY_SEPARATOR . "LimeSurvey_database_backup_" . $basefilename . ".zip";
         outputDatabase('', false, $sfilename);
 
         if (is_file($sfilename) && filesize($sfilename)) {
-            $archive = new PclZip($dfilename);
-            $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $this->tempdir, PCLZIP_OPT_ADD_TEMP_FILE_ON);
+            $archive = new LimeSurvey\Zip();
+            $archive->open($dfilename, ZipArchive::CREATE);
+
+            $success = false;
+            if ($archive->addFile($sfilename, $baseSqlFileName)) {
+                $success = $archive->close();
+            }
             unlink($sfilename);
-            if ($v_list == 0) {
+
+            if (!$success) {
                 $backupDb->result = false;
                 $backupDb->message = 'db_backup_zip_failed';
             } else {
@@ -799,7 +873,7 @@ class UpdateForm extends CFormModel
         } else {
             $check->writable = 'pass';
         }
-        if ($obj->freespaceCheck) {
+        if ($obj->freespaceCheck && function_exists('disk_free_space')) {
             $check->freespace = (@disk_free_space($obj->name) > $obj->minfreespace);
         } else {
             $check->freespace = 'pass';
@@ -941,7 +1015,6 @@ class UpdateForm extends CFormModel
         curl_setopt($ch, CURLOPT_COOKIEFILE, $this->path_cookie);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false); // We don't want the header to be written in the zip file !
-        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_FILE, $pFile);
         curl_exec($ch);

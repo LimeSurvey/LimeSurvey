@@ -6,7 +6,7 @@
 */
 
 if(isset($nosidebodyblock) && $nosidebodyblock === true ){ ?>
-    <div class='side-body  <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
 <?php } ?>
 
 <div class="row" id="token-emailpost-messagebox">

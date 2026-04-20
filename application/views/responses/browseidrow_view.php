@@ -8,7 +8,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php echo sprintf(gT("View response ID %d"), $id); ?></h3>
     <div class="row">
         <div class="col-12 content-right">

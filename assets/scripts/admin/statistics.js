@@ -1,13 +1,13 @@
 
-function toggleSection(chevron, section) {
-    section.toggle();
-    chevron.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
-}
-
-function hideSection(chevron, section) {
-    section.hide();
-    chevron.removeClass('fa-chevron-up');
-    chevron.addClass('fa-chevron-down');
+function hideSection(section) {
+    var collapsible = document.getElementById(section);
+    // Try to get the bootstrap collapse instance
+    var bsCollapse = bootstrap.Collapse.getInstance(collapsible);
+    // If there is no previous instance, create a new one
+    if (!bsCollapse) {
+        bsCollapse = new bootstrap.Collapse(collapsible);
+    }
+    bsCollapse.hide();
 }
 
 /**
@@ -144,11 +144,9 @@ function init_chart_js_graph_with_datasets($type, $qid) {
 
     if (parsedType == 'bar' || parsedType == 'line') {
         options.scales = {
-            yAxes: [{
-                ticks: {
-                    suggestedMin: 0,
-                }
-            }]
+            y: {
+                suggestedMin: 0,
+            }
         };
     }
 
@@ -201,11 +199,9 @@ function init_chart_js_graph_with_datas($type, $qid) {
 
     if (parsedType == 'bar' || parsedType == 'line') {
         options.scales = {
-            yAxes: [{
-                ticks: {
-                    suggestedMin: 0,
-                }
-            }]
+            y: {
+                suggestedMin: 0,
+            }
         };
     }
 
@@ -226,7 +222,7 @@ function init_chart_js_graph_with_datas($type, $qid) {
 
 LS.Statistics2 = function () {
 
-    Chart.defaults.global.legend.display = false;
+    Chart.defaults.plugins.legend.display = false;
 
     if ($('#completionstateSimpleStat').length > 0) {
         $actionUrl = $('#completionstateSimpleStat').data('grid-display-url');
@@ -264,24 +260,10 @@ LS.Statistics2 = function () {
         $('#statisticsoutput .row').first().find('.chartjs-container').loadGraph();
     }
 
-    $('#generalfilters-chevron').click(function () {
-        toggleSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters'));
-    });
-
-    $('#responsefilters-chevron').click(function () {
-        toggleSection($('#responsefilters-chevron'), $('#filterchoices'));
-    });
-
-    $('#statistics-render-chevron').click(function () {
-        toggleSection($('#statistics-render-chevron'), $('#statisticsoutput'));
-    });
-
     $('#generate-statistics').submit(function () {
-        hideSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters'));
-        hideSection($('#responsefilters-chevron'), $('#filterchoices'))
+        hideSection('general-filters-item-body');
+        hideSection('response-filters-item-body');
         $('#statisticsoutput').show();
-        $('#statistics-render-chevron').removeClass('fa-chevron-up');
-        $('#statistics-render-chevron').addClass('fa-chevron-down');
         $('#view-stats-alert-info').hide();
         $('#statsContainerLoading').show();
         if ($('input[name=outputtype]:checked').val() != 'html') {
@@ -291,13 +273,6 @@ LS.Statistics2 = function () {
             return false;
         }
         //alert('ok');
-    });
-
-    $('.group-question-chevron').click(function () {
-        //alert('ok');
-        $group_to_hide = $('#' + $(this).data('grouptohide'));
-        toggleSection($(this), $group_to_hide)
-        //$('#'+group_to_hide).hide();
     });
 
     // If the graph are displayed
@@ -625,6 +600,15 @@ LS.Statistics2 = function () {
         };
         xhr.send(data);
     };
+
+    $('input[name=outputtype]').off('change').on('change', function () {
+        if ($('input[name=outputtype]:checked').val() != 'html') {
+            $('#charttype').prop('disabled', true);
+        } else {
+            $('#charttype').prop('disabled', false);
+        }
+    });
+    $('input[name=outputtype]').trigger('change');
 };
 
 var isWaiting = {};

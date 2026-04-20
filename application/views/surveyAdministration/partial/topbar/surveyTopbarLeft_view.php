@@ -33,12 +33,19 @@ App()->getClientScript()->registerScriptFile(
     ]); ?>
 <?php } ?>
 <!-- survey activation -->
+
+<?php
+    if (!$editorEnabled) {
+?>
 <?php if (!$oSurvey->isActive) : ?>
     <!-- activate -->
     <?php
     $htmlOptions = [
         'class' => 'btn btn-primary btntooltip',
         'role' => 'button',
+        'data-surveyid' => $sid,
+        'data-url' => Yii::app()->createUrl('surveyAdministration/activateSurvey'),
+        'onclick' => 'openModalActivate();'
     ];
     ?>
     <?php if (!$canactivate) : ?>
@@ -53,21 +60,14 @@ App()->getClientScript()->registerScriptFile(
             'text' => gT('Activate survey'),
             'icon' => 'ri-check-fill',
             //'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
-            'htmlOptions' => [
-                'class' => 'btn btn-primary btntooltip',
-                // 'data-bs-toggle' => 'modal',
-                //'data-bs-target' => '#surveyactivation-modal',
-                'data-surveyid' => $sid,
-                'data-url' => Yii::app()->createUrl('surveyAdministration/activateSurvey'),
-                'onclick' => 'openModalActivate();'
-            ],
+            'htmlOptions' => $htmlOptions,
         ]); ?>
     <?php if (!$canactivate) : ?>
         </span>
     <?php endif; ?>
 <?php else : ?>
     <!-- Stop survey -->
-    <?php if ($canactivate) : ?>
+    <?php if ($candeactivate) : ?>
         <?php
         $this->widget('ext.ButtonWidget.ButtonWidget', [
             'name' => 'stop-survey',
@@ -80,6 +80,7 @@ App()->getClientScript()->registerScriptFile(
         ]); ?>
     <?php endif; ?>
 <?php endif; ?>
+<?php }?>
 
 <!-- Preview/Run survey -->
 <?php

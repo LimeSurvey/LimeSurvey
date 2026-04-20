@@ -10,7 +10,7 @@ class GoogleOAuthSMTP extends SmtpOAuthPluginBase
     protected static $description = 'Core: Adds Google OAuth support for email sending';
     protected static $name = 'GoogleOAuthSMTP';
 
-    /** @inheritdoc, this plugin doesn't have any public method */
+    /** @inheritdoc this plugin doesn't have any public method */
     public $allowedPublicMethods = [];
 
     /** @inheritdoc */
@@ -76,8 +76,7 @@ class GoogleOAuthSMTP extends SmtpOAuthPluginBase
             gT("Setup the OAuth 2.0 Web Application in %s."),
             gT("Google Cloud Platform Console"),
             gT("Redirect URI:"),
-            gT("You can find more details %s."),
-            gT("here"),
+            gT("You can find more details %shere%s."),
             gT("Activate the plugin."),
             gT("Set the 'Client ID' and 'Client Secret' below and save the settings."),
             gT("Click the 'Get Token' button to open Google's consent screen in a new window."),
@@ -220,7 +219,7 @@ class GoogleOAuthSMTP extends SmtpOAuthPluginBase
      */
     protected function getDisplayName()
     {
-        return gT('Google');
+        return 'Google';
     }
 
     public function beforePrepareRedirectToAuthPage()

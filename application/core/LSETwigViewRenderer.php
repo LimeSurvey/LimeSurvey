@@ -174,7 +174,7 @@ window.addEventListener('message', function(event) {
             }
 
             $sHtml     = $this->convertTwigToHtml($line, $aData, $oTemplate);
-            
+
             $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if ($sEmHiddenInputs) {
                 $sHtml = str_replace(
@@ -655,10 +655,10 @@ window.addEventListener('message', function(event) {
      * (surveyRuntime, frontend_helper, etc)
      * In LS3, we did a first cycle of refactorisation. Some logic common to the different
      * files are for now here, in this function.
-     * TODO: move all the display logic to surveyRuntime so we don't need this function here
      *
+     * @todo move all the display logic to surveyRuntime so we don't need this function here
      * @param TemplateConfiguration $oTemplate
-     * @return
+     * @return array
      */
     private function getAdditionalInfos($aData, $oTemplate)
     {
@@ -668,7 +668,10 @@ window.addEventListener('message', function(event) {
             if (!empty($aData["sid"]) || LimeExpressionManager::getLEMsurveyId()) {
                 $sid = empty($aData["sid"]) ? LimeExpressionManager::getLEMsurveyId() : $aData["sid"];
                 $language = empty($aData["language"]) ? App()->getLanguage() : $aData["language"];
-                $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                /* Outdated sid in LimeExpressionManager */
+                if (Survey::model()->findByPk($sid)) {
+                    $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                }
             }
         }
         // We retrieve the definition of the core class and attributes
@@ -698,7 +701,7 @@ window.addEventListener('message', function(event) {
                 isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
             ) {
                 $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_' .
-                $aData['aSurveyInfo']['sid']]['totalquestions'];
+                $aData['aSurveyInfo']['sid']]['totalVisibleQuestions'];
             }
 
             // Add the survey theme options
@@ -709,14 +712,16 @@ window.addEventListener('message', function(event) {
                     if ($value instanceof stdClass) {
                         $value = 'N/A';
                     }
-                    $aData["aSurveyInfo"]["options"][$key] = (string) $value;
+                    // Note that $value can also be a SimpleXMLElement
+                    // if force_xmlsettings_for_survey_rendering is activated
+                    $aData["aSurveyInfo"]["options"][$key] = (string)$value;
                 }
             }
         } else {
             // Add the global theme options
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
             $aData["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])
-                ? (array) json_decode((string) $oTemplateConfigurationCurrent['options'])
+                ? json_decode((string) $oTemplateConfigurationCurrent['options'], true)
                 : $oTemplateConfigurationCurrent['options'];
         }
 
@@ -741,7 +746,7 @@ window.addEventListener('message', function(event) {
         $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
 
         foreach ($aFilesOptions as $sOption => $sFileOption) {
-            if ($aData["aSurveyInfo"]["options"] !== null) {
+            if (is_array($aData["aSurveyInfo"]["options"])) {
                 if (array_key_exists($sFileOption, $aData["aSurveyInfo"]["options"])) {
                     if (empty($aData["aSurveyInfo"]["options"][$sFileOption])) {
                         $aData["aSurveyInfo"]["options"][$sOption] = "false";

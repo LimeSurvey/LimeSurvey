@@ -136,11 +136,12 @@ class TestBaseClassWeb extends TestBaseClass
     /**
      * @param string $userName
      * @param string $password
+     * @param boolean $wait If true, wait for and disregard popups at first login; useful to set to false during local testing and development
      * @return void
      * @throws \Exception
      * @throws \Facebook\WebDriver\Exception\NoSuchElementException
      */
-    public static function adminLogin($userName, $password)
+    public static function adminLogin($userName, $password, $wait = true)
     {
         $url = self::getUrl(['login', 'route'=>'authentication/sa/login']);
         self::openView($url);
@@ -171,16 +172,18 @@ class TestBaseClassWeb extends TestBaseClass
 
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         self::$webDriver->click($submit);
-        self::$webDriver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(
-                WebDriverBy::id('welcome-jumbotron')
-            )
-        );
 
-        self::ignoreWelcomeModal();
-        self::ignoreAdminNotification();
-        sleep(3);
-        self::ignoreAdminNotification();
+        if ($wait) {
+            self::$webDriver->wait()->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::className('welcome')
+                )
+            );
+            self::ignoreWelcomeModal();
+            self::ignoreAdminNotification();
+            sleep(3);
+            self::ignoreAdminNotification();
+        }
 
         /*
         try {

@@ -99,7 +99,7 @@ class SurveyTimingDynamic extends LSActiveRecord
                 ->queryRow();
             if ($queryAvg['count']) {
                 $statistics['avgmin'] = (int) ($queryAvg['avg'] / 60);
-                $statistics['avgsec'] = $queryAvg['avg'] % 60;
+                $statistics['avgsec'] = ((int)$queryAvg['avg']) % 60;
                 $statistics['count'] = $queryAvg['count'];
                 $queryAll = Yii::app()->db->createCommand()
                     ->select("interviewtime")
@@ -117,7 +117,7 @@ class SurveyTimingDynamic extends LSActiveRecord
                 }
                 $statistics['median'] = $median;
                 $statistics['allmin'] = (int) ($median / 60);
-                $statistics['allsec'] = $median % 60;
+                $statistics['allsec'] = ((int)$median) % 60;
             } else {
                 $statistics['count'] = 0;
             }
@@ -224,7 +224,7 @@ class SurveyTimingDynamic extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => '#confirmation-modal',
                 'data-post-url'  => App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id),
-                'data-message'   => gt("Do you want to delete this response?"),
+                'data-message'   => gT("Do you want to delete this response?"),
             ],
             'enabledCondition' => $permission_responses_delete
         ];

@@ -2,9 +2,15 @@
 
 namespace LimeSurvey\Api\Rest;
 
+use LimeSurvey\Api\Rest\Renderer\RendererBasic;
 use LimeSurvey\Api\Command\{
     CommandInterface,
+    Response\ResponseFactory,
     Request\Request
+};
+use LimeSurvey\Api\Authentication\{
+    AuthenticationInterface,
+    AuthenticationTokenSimple
 };
 use LimeSurvey\Api\Rest\Renderer\RendererInterface;
 use Psr\Container\ContainerInterface;
@@ -19,6 +25,7 @@ class Endpoint
     protected $config = [];
     /** @var array */
     protected $commandParams = [];
+    protected ResponseFactory $responseFactory;
     protected ContainerInterface $diContainer;
 
     /**
@@ -29,10 +36,15 @@ class Endpoint
      * @param ContainerInterface $diContainer
      * @return string|null
      */
-    public function __construct($config, $commandParams, ContainerInterface $diContainer)
-    {
+    public function __construct(
+        $config,
+        $commandParams,
+        ResponseFactory $responseFactory,
+        ContainerInterface $diContainer
+    ) {
         $this->config = $config;
         $this->commandParams = $commandParams;
+        $this->responseFactory = $responseFactory;
         $this->diContainer = $diContainer;
     }
 
@@ -47,16 +59,36 @@ class Endpoint
     }
 
     /**
+     * Get Authenticator
+     *
+     * @return AuthenticationInterface
+     */
+    protected function getAuthenticator()
+    {
+        $authenticatorClass = !empty($this->config['authenticatorClass'])
+            ? $this->config['authenticatorClass']
+            : AuthenticationTokenSimple::class;
+        return $this->diContainer->get($authenticatorClass);
+    }
+
+    /**
      * Get Response Renderer
      *
      * @return RendererInterface
      */
     protected function getResponseRenderer()
     {
-        $apiVersion = ucfirst($this->config['apiVersion']);
-        $class = 'LimeSurvey\Api\Rest\\'
-            . $apiVersion
-            . '\RestRenderer' . $apiVersion;
+        $apiVersion = isset($this->config['apiVersion'])
+            ? ucfirst($this->config['apiVersion'])
+            : false;
+        if ($apiVersion) {
+            $class = 'LimeSurvey\Api\Rest\\'
+                . $apiVersion
+                . '\RestRenderer' . $apiVersion;
+        } else {
+            // non version specific command use RendererBasic
+            $class = RendererBasic::class;
+        }
         return $this->diContainer->get($class);
     }
 
@@ -68,13 +100,25 @@ class Endpoint
     public function run()
     {
         $renderer = $this->getResponseRenderer();
-        try {
-            $response = $this->getCommand()->run(
-                new Request($this->commandParams)
-            );
-            $renderer->returnResponse($response);
-        } catch (\Exception $e) {
-            $renderer->returnException($e);
+
+        if (!empty($this->config['auth'])) {
+            if (
+                !$this->getAuthenticator()
+                ->isAuthenticated(
+                    $this->commandParams['authToken']
+                )
+            ) {
+                $renderer->returnResponse(
+                    $this->responseFactory
+                        ->makeErrorUnauthorised()
+                );
+                return;
+            }
         }
+
+        $response = $this->getCommand()->run(
+            new Request($this->commandParams)
+        );
+        $renderer->returnResponse($response);
     }
 }

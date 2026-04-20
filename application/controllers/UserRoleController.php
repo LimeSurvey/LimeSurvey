@@ -50,7 +50,7 @@ class UserRoleController extends LSBaseController
         }
 
         $aData['topbar']['title'] = gT('User roles');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = $this->renderPartial(
             'partials/topbarBtns/leftSideButtons',
@@ -408,29 +408,22 @@ class UserRoleController extends LSBaseController
         }
         $sPtids = Yii::app()->request->getParam('sItems', '');
         $aPtids = explode(',', (string) $sPtids);
-        $sRandomFolderName = randomChars(20);
         $sRandomFileName = "RoleExport-" . randomChars(5) . '-' . time();
 
         $tempdir = Yii::app()->getConfig('tempdir');
         $zipfile = "$tempdir/$sRandomFileName.zip";
-        Yii::app()->loadLibrary('admin.pclzip');
-
-        $zip = new PclZip($zipfile);
-        $sFilePath = $tempdir . DIRECTORY_SEPARATOR . $sRandomFolderName;
-
-        mkdir($sFilePath);
-        $filesInArchive = [];
+        $zip = new LimeSurvey\Zip();
+        $zip->open($zipfile, ZipArchive::CREATE);
 
         foreach ($aPtids as $iPtid) {
             $oModel = $this->loadModel($iPtid);
             $oXML = $oModel->compileExportXML();
             $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', (string) $oModel->name) . '.xml';
 
-            file_put_contents($sFilePath . DIRECTORY_SEPARATOR . $filename, $oXML->asXML());
-            $filesInArchive[] = $sFilePath . DIRECTORY_SEPARATOR . $filename;
+            $zip->addFromString($filename, $oXML->asXML());
         }
 
-        $zip->create($filesInArchive, PCLZIP_OPT_REMOVE_ALL_PATH);
+        $zip->close();
 
         if (is_file($zipfile)) {
             // Send the file for download!
@@ -443,8 +436,6 @@ class UserRoleController extends LSBaseController
             @readfile($zipfile);
 
             // Delete the temporary file
-            array_map('unlink', glob("$sFilePath/*.*"));
-            rmdir($sFilePath);
             unlink($zipfile);
             return;
         }
