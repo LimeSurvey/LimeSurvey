@@ -1504,9 +1504,6 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             }
         }
     }
-    if (($tableName === "149326") && ($newFieldName === "")) {
-        echo "\n" . $fieldName . "\n";
-    }
     return $newFieldName;
 }
 
