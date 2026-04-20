@@ -1950,7 +1950,7 @@ class DataEntry extends SurveyCommonAction
                         $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
                         $arSaveControl->saved_thisstep = '0';
                         $arSaveControl->status = 'S';
-                        $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
+                        $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                         if ($arSaveControl->save()) {
                             $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));
                             $tokens_table = "{{tokens_$surveyid}}";
@@ -1966,8 +1966,11 @@ class DataEntry extends SurveyCommonAction
 
                                 $aToken = new TokenDynamic($surveyid);
                                 $aToken->setAttributes($tokendata, false);
-                                $aToken->encryptSave(true);
-                                $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));
+                                if ($aToken->encryptSave()) {
+                                    $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));
+                                } else {
+                                    $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'errortitle text-danger'), CHtml::errorSummary($aToken));
+                                }
                             }
                             if ($saver['email']) {
                                 //Send email
