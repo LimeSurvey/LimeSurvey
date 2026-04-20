@@ -3331,7 +3331,6 @@ class remotecontrol_handle
                         }
                     }
                 }
-
                 return $result_id;
             } else {
                 return array('status' => 'Unable to add response');
