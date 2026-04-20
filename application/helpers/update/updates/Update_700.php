@@ -1170,7 +1170,6 @@ class Update_700 extends DatabaseUpdateBase
         foreach ($defaultValues as $defaultValue) {
             $dvids[] = $defaultValue->dvid;
         }
-        $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
 
         $entityFields = [
             [
@@ -1178,7 +1177,7 @@ class Update_700 extends DatabaseUpdateBase
                 'fields' => ['cfieldname', 'value']
             ],
             [
-                'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
+                'entities' => (new QuestionL10n())->resetScope()->findAll("qid in (" . implode(",", $qids) . ")"),
                 'fields' => ["question", "script", "help"]
             ],
             [
@@ -1186,7 +1185,7 @@ class Update_700 extends DatabaseUpdateBase
                 'fields' => ['title', 'relevance']
             ],
             [
-                'entities' => SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid),
+                'entities' => (new SurveyLanguageSetting())->resetScope()->findAll("surveyls_survey_id=" . $sid),
                 'fields' => ['surveyls_urldescription', 'surveyls_url']
             ],
             [
@@ -1202,11 +1201,11 @@ class Update_700 extends DatabaseUpdateBase
                 'fields' => ['name', 'message']
             ],
             [
-                'entities' => $default10ns,
+                'entities' => (new DefaultValueL10n())->resetScope()->findAll("dvid in (" . implode(",", $dvids) . ")"),
                 'fields' => ['defaultvalue']
             ],
             [
-                'entities' => AnswerL10n::model()->findAll("aid in (" . implode(",", $aids) . ")"),
+                'entities' => (new AnswerL10n())->resetScope()->findAll("aid in (" . implode(",", $aids) . ")"),
                 'fields' => ['answer']
             ]
         ];
