@@ -1447,15 +1447,8 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                                 $isComment = true;
                             }
                         }
-                    /*} elseif (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
-                        $newFieldName = "";*/
-                    }
-                    if ($fieldName === "263157X2X14Shutterstock") {
-                        $ids = [];
-                        foreach ($rootQuestions as $rt) {
-                            $ids[] = $rt->qid;
-                        }
-                        echo json_encode($ids);
+                    } elseif (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
+                        $newFieldName = "";
                     }
                     $newFieldName .= $suffix;
                     if (strpos($fieldName, "time") !== false) {
