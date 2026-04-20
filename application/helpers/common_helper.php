@@ -1504,7 +1504,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             }
         }
     }
-    return $newFieldName;
+    return $newFieldName ?? $fieldName;
 }
 
 

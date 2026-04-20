@@ -1163,11 +1163,7 @@ class Update_700 extends DatabaseUpdateBase
             }
             $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
             foreach ($fields as $oldField => $newField) {
-                if ($newField) {
-                    $scripts[$TABLE_NAME]['CREATE'] = str_replace($leftSeparator . "{$oldField}" . $rightSeparator, $leftSeparator . "{$newField}" . $rightSeparator, $scripts[$TABLE_NAME]['CREATE']);
-                } else {
-                    $fields[$oldField] = $oldField;
-                }
+                $scripts[$TABLE_NAME]['CREATE'] = str_replace($leftSeparator . "{$oldField}" . $rightSeparator, $leftSeparator . "{$newField}" . $rightSeparator, $scripts[$TABLE_NAME]['CREATE']);
             }
             $fromColumns = [];
             $toColumns = [];
@@ -1178,7 +1174,7 @@ class Update_700 extends DatabaseUpdateBase
                     }
                 }
                 $fromColumns [] = $leftSeparator . $column['COLUMN_NAME'] . $rightSeparator;
-                if ($fieldMap[$TABLE_NAME][$column['COLUMN_NAME']] ?? '') {
+                if (isset($fieldMap[$TABLE_NAME][$column['COLUMN_NAME']])) {
                     $toColumns [] = $leftSeparator . $fieldMap[$TABLE_NAME][$column['COLUMN_NAME']] . $rightSeparator;
                 } else {
                     $toColumns [] = $leftSeparator . $column['COLUMN_NAME'] . $rightSeparator;
