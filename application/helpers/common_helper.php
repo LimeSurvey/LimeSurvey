@@ -1448,16 +1448,18 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                             }
                         }
                     }
+                    $clearIfLong = true;
                     $newFieldName .= $suffix;
                     if (strpos($fieldName, "time") !== false) {
                         $newFieldName .= "_Ctime";
+                        $clearIfLong = false;
                     } elseif (strpos($fieldName, "filecount") !== false) {
                         $newFieldName .= "_Cfilecount";
+                        $clearIfLong = false;
                     }
                     if ($isComment) {
                         $newFieldName .= "_Ccomment";
-                    }
-                    if (($isRoot) && (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}"))) {
+                    } elseif (($isRoot) && (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}"))) {
                         $newFieldName = "";
                     }
                     break;
