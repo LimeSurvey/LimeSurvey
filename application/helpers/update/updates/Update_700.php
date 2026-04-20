@@ -1110,11 +1110,14 @@ class Update_700 extends DatabaseUpdateBase
     protected function handleInsertans(LSActiveRecord &$record, $fields, $sid)
     {
         $changed = false;
+        $sid = (int) $sid;
 
-        // Lazy-load question codes for this survey (QID → title)
-        if (empty($this->questionCodes[$sid])) {
+        // Lazy-load question codes for this survey (QID → title).
+        // Only parent questions (parent_qid = 0) are included, because INSERTANS
+        // references parent QIDs with the subquestion code as suffix.
+        if (!isset($this->questionCodes[$sid])) {
             $this->questionCodes[$sid] = [];
-            $questions = Question::model()->findAll("sid = :sid", [":sid" => $sid]);
+            $questions = Question::model()->findAll("sid = :sid AND parent_qid = 0", [":sid" => $sid]);
             foreach ($questions as $question) {
                 $this->questionCodes[$sid][$question->qid] = $question->title;
             }
@@ -1152,6 +1155,7 @@ class Update_700 extends DatabaseUpdateBase
      */
     protected function convertSurveyInsertans($sid, array $questions, array $fieldNames = [], array $additionalNames = [], $guardRelevance = false)
     {
+        $sid = (int) $sid;
         $qids = [0];
         $gids = [0];
         $aids = [0];

@@ -5586,10 +5586,12 @@ function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuest
         return $text;
     }
 
-    // Map old QID → question title, built via the new→old mapping
+    // Map old QID → question title, built via the new→old mapping.
+    // Only parent questions (parent_qid = 0) are included, because INSERTANS
+    // references parent QIDs with the subquestion code as suffix.
     $questionCodesByOldQid = [];
     foreach ($questions as $question) {
-        if (!empty($newOldSurveyQuestionMap[$question->qid])) {
+        if (!empty($newOldSurveyQuestionMap[$question->qid]) && empty($question->parent_qid)) {
             $questionCodesByOldQid[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
         }
     }
