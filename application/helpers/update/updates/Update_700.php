@@ -1197,7 +1197,7 @@ class Update_700 extends DatabaseUpdateBase
                 if (strpos($TABLE_NAME, "old") !== false) {
                     continue;
                 } else {
-                    echo var_dump($scripts[$TABLE_NAME]['CREATE']);
+                    echo var_dump($ex);
                     throw $ex;
                 }
             }
