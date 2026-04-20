@@ -1165,6 +1165,8 @@ class Update_700 extends DatabaseUpdateBase
             foreach ($fields as $oldField => $newField) {
                 if ($newField) {
                     $scripts[$TABLE_NAME]['CREATE'] = str_replace($leftSeparator . "{$oldField}" . $rightSeparator, $leftSeparator . "{$newField}" . $rightSeparator, $scripts[$TABLE_NAME]['CREATE']);
+                } else {
+                    $fields[$oldField] = $oldField;
                 }
             }
             $fromColumns = [];
@@ -1197,7 +1199,7 @@ class Update_700 extends DatabaseUpdateBase
                 if (strpos($TABLE_NAME, "old") !== false) {
                     continue;
                 } else {
-                    echo var_dump($ex);
+                    echo var_dump($scripts[$TABLE_NAME]['CREATE']);
                     throw $ex;
                 }
             }
