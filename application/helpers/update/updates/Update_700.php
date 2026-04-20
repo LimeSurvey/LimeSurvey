@@ -1022,44 +1022,114 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
-     * Checks for insertans tags and replaces them with titles
-     * @param LSActiveRecord $record the record whose insertans is to be handled
-     * @param mixed $fields the fields where it may occur
-     * @param mixed $sid the id of the survey
-     * @return bool whether we changed the record
+     * Convert legacy INSERTANS tags to modern question code references.
+     *
+     * The result is wrapped in curly braces only when the source tag also used curly braces.
+     *
+     * When the QID+suffix boundary is ambiguous (e.g. purely numeric suffixes in array
+     * questions like {INSERTANS:136212X36X10921}), the function progressively tries
+     * shorter QID values until a known QID is found, treating the remainder as suffix.
+     *
+     * @param string $text The text containing INSERTANS tags
+     * @param array $questionCodesByQid Mapping of QID => question title
+     * @return string The text with INSERTANS tags converted to qcode.shown format
+     */
+    protected function convertLegacyInsertans($text, array $questionCodesByQid)
+    {
+        if (empty($text) || strpos($text, 'INSERTANS:') === false || empty($questionCodesByQid)) {
+            return $text;
+        }
+
+        return preg_replace_callback(
+            '/(\{?)INSERTANS:([^}\s]+)\}?/',
+            static function ($matches) use ($questionCodesByQid) {
+                $hasBraces = $matches[1] === '{';
+                $rawField  = $matches[2];
+
+                // Only old SGQA format is supported: SIDXGIDXQID[suffix]
+                if (!preg_match('/^(\d+)X(\d+)X(\d+)(.*)$/', $rawField, $m)) {
+                    return $matches[0]; // Not a recognised format – leave unchanged
+                }
+
+                $qidPart = $m[3];
+                $suffix  = $m[4];
+
+                // Resolve QID: the regex greedily captures all digits into $qidPart,
+                // but for array-type questions the suffix can be purely numeric
+                // (e.g. "10921" = QID 1092 + suffix "1"). Try the full number first,
+                // then progressively shorten $qidPart, moving trailing digits to $suffix.
+                $parentTitle = null;
+                $resolvedSuffix = $suffix;
+                for ($i = strlen($qidPart); $i >= 1; $i--) {
+                    $tryQid    = (int) substr($qidPart, 0, $i);
+                    $trySuffix = substr($qidPart, $i) . $suffix;
+                    if (isset($questionCodesByQid[$tryQid])) {
+                        $parentTitle    = $questionCodesByQid[$tryQid];
+                        $resolvedSuffix = $trySuffix;
+                        break;
+                    }
+                }
+
+                if ($parentTitle === null) {
+                    return $matches[0]; // QID not found – leave unchanged
+                }
+
+                // Dual-scale arrays use '#' as separator (e.g. "money#0"), convert to '_'
+                $resolvedSuffix = str_replace('#', '_', $resolvedSuffix);
+
+                if ($resolvedSuffix === '') {
+                    $qcode = $parentTitle . '.shown';
+                } elseif (strtolower($resolvedSuffix) === 'other') {
+                    $qcode = $parentTitle . '_other.shown';
+                } elseif (strtolower($resolvedSuffix) === 'comment') {
+                    $qcode = $parentTitle . '_comment.shown';
+                } else {
+                    // Any other suffix is a subquestion code (e.g. SQ001, F1, 1, ls1)
+                    // If the suffix already starts with '_' (e.g. "_filecount"), don't add another one
+                    $separator = (strpos($resolvedSuffix, '_') === 0) ? '' : '_';
+                    $qcode = $parentTitle . $separator . $resolvedSuffix . '.shown';
+                }
+
+                return $hasBraces ? '{' . $qcode . '}' : $qcode;
+            },
+            $text
+        );
+    }
+
+    /**
+     * Applies convertLegacyInsertans() to the specified fields of a record.
+     *
+     * @param LSActiveRecord $record the record whose fields are to be converted
+     * @param array $fields the field names where INSERTANS tags may occur
+     * @param int|string $sid the survey ID (used to lazy-load question codes)
+     * @return bool whether the record was changed
      */
     protected function handleInsertans(LSActiveRecord &$record, $fields, $sid)
     {
         $changed = false;
-        $txtInsertans = "{INSERTANS:";
-        foreach ($fields as $field) {
-            $insertansPos = strpos($record->{$field} ?? "", $txtInsertans);
-            if ($insertansPos !== false) {
-                $changed = true;
-                if (empty($this->questionCodes[$sid])) {
-                    $this->questionCodes[$sid] = [];
-                    $questions = Question::model()->findAll("sid = :sid", [":sid" => $sid]);
-                    foreach ($questions as $question) {
-                        $this->questionCodes[$sid][$question->qid] = $question->title;
-                    }
-                }
-                $insertansParts = explode($txtInsertans, $record->{$field});
-                for ($index = 1; $index < count($insertansParts); $index++) {
-                    $curlyPosition = strpos($insertansParts[$index], "}");
-                    $rawField = substr($insertansParts[$index], 0, $curlyPosition);
-                    $content = (strlen($insertansParts[$index]) === $curlyPosition) ? "" : substr($insertansParts[$index], $curlyPosition + 1);
-                    $subField = substr($rawField, strpos($rawField, "X") + 1);
-                    $title = substr($subField, strpos($subField, "X") + 1);
-                    if (preg_match('/[a-zA-Z]/i', $title, $match)) {
-                        $title = substr($title, strpos($title, $match[0]));
-                    } else {
-                        $title = $this->questionCodes[$sid][$title] ?? "";
-                    }
-                    $insertansParts[$index] = $title . ".shown" . $content;
-                }
-                $record->{$field} = implode($insertansParts);
+
+        // Lazy-load question codes for this survey (QID → title)
+        if (empty($this->questionCodes[$sid])) {
+            $this->questionCodes[$sid] = [];
+            $questions = Question::model()->findAll("sid = :sid", [":sid" => $sid]);
+            foreach ($questions as $question) {
+                $this->questionCodes[$sid][$question->qid] = $question->title;
             }
         }
+
+        foreach ($fields as $field) {
+            $text = $record->{$field} ?? '';
+            if ($text === '' || strpos($text, 'INSERTANS:') === false) {
+                continue;
+            }
+
+            $converted = $this->convertLegacyInsertans($text, $this->questionCodes[$sid]);
+            if ($converted !== $text) {
+                $record->{$field} = $converted;
+                $changed = true;
+            }
+        }
+
         return $changed;
     }
 
