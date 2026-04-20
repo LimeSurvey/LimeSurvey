@@ -1178,7 +1178,7 @@ class Update_700 extends DatabaseUpdateBase
                     }
                 }
                 $fromColumns [] = $leftSeparator . $column['COLUMN_NAME'] . $rightSeparator;
-                if (isset($fieldMap[$TABLE_NAME][$column['COLUMN_NAME']])) {
+                if ($fieldMap[$TABLE_NAME][$column['COLUMN_NAME']] ?? '') {
                     $toColumns [] = $leftSeparator . $fieldMap[$TABLE_NAME][$column['COLUMN_NAME']] . $rightSeparator;
                 } else {
                     $toColumns [] = $leftSeparator . $column['COLUMN_NAME'] . $rightSeparator;
@@ -1200,7 +1200,6 @@ class Update_700 extends DatabaseUpdateBase
                     continue;
                 } else {
                     echo var_dump($scripts[$TABLE_NAME]['CREATE']);
-                    echo $ex->getMessage() . " " . $ex->getTraceAsString();
                     throw $ex;
                 }
             }
