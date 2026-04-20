@@ -1200,6 +1200,7 @@ class Update_700 extends DatabaseUpdateBase
                     continue;
                 } else {
                     echo var_dump($scripts[$TABLE_NAME]['CREATE']);
+                    echo $ex->getMessage() . " " . $ex->getTraceAsString();
                     throw $ex;
                 }
             }
