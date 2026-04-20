@@ -573,3 +573,24 @@ function sanitize_alphanumeric($value)
 {
     return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
 }
+
+/**
+ * Validate that a value is safe to use as a single filesystem path component.
+ *
+ * This rejects empty values, path separators, "." / ".." and ASCII control
+ * characters so callers can safely append the value to a trusted base path
+ * without worrying about directory traversal.
+ *
+ * @param string $string
+ * @return bool
+ */
+function validate_path_component($string)
+{
+    return !(
+        $string === ''
+        || $string === '.'
+        || $string === '..'
+        || preg_match('/[\\\\\/]/', $string) === 1
+        || preg_match('/[\x00-\x1F\x7F]/', $string) === 1
+    );
+}

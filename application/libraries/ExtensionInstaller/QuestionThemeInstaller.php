@@ -31,7 +31,12 @@ class QuestionThemeInstaller extends ExtensionInstaller
     public function install()
     {
         $extConfig = $this->getConfig();
-        $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $extConfig->getName();
+        $questionThemeName = $extConfig->getName();
+        \Yii::import('application.helpers.sanitize_helper', true);
+        if (!validate_path_component($questionThemeName)) {
+            throw new Exception(gT('Invalid question theme name in config.xml'));
+        }
+        $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $questionThemeName;
 
         if ($this->fileFetcher->move($destdir)) {
             $questionTheme = new QuestionTheme();
@@ -90,12 +95,17 @@ class QuestionThemeInstaller extends ExtensionInstaller
     public function update()
     {
         $extConfig = $this->getConfig();
-        $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $extConfig->getName();
+        $questionThemeName = $extConfig->getName();
+        \Yii::import('application.helpers.sanitize_helper', true);
+        if (!validate_path_component($questionThemeName)) {
+            throw new Exception(gT('Invalid question theme name in config.xml'));
+        }
+        $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $questionThemeName;
 
         if ($this->fileFetcher->move($destdir)) {
-            $questionTheme =  QuestionTheme::model()->findByAttributes(['name' => $extConfig->getName()]);
+            $questionTheme =  QuestionTheme::model()->findByAttributes(['name' => $questionThemeName]);
             if (empty($questionTheme)) {
-                throw new Exception('Tried to update question theme but found no theme with name ' . $extConfig->getName());
+                throw new Exception('Tried to update question theme but found no theme with name ' . $questionThemeName);
             }
             $xmlFolder = $this->getXmlFolder($destdir);
             if (empty($xmlFolder)) {
