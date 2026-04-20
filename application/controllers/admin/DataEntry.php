@@ -1900,8 +1900,15 @@ class DataEntry extends SurveyCommonAction
                     /* Related token */
                     if (!empty(App()->getRequest()->getPost('closerecord')) && !empty(App()->getRequest()->getPost('token'))) {
                         // submittoken
-                        // get submit date
-                        $submitdate = App()->getRequest()->getPost('closedate', date("Y-m-d H:i:s"));
+                        // get submit date todo, use it for survey without token too
+                        $submitdate = trim(App()->getRequest()->getPost('closedate', ''));
+                        if ($submitdate === '') {
+                            if (isTokenCompletedDatestamped($thissurvey)) {
+                                $submitdate = dateShift((string) date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                            } else {
+                                $submitdate = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                            }
+                        }
                        // query for updating tokens uses left
                         $aToken = Token::model($surveyid)->findByAttributes(['token' => App()->getRequest()->getPost('token')]);
                         if (isTokenCompletedDatestamped($thissurvey)) {
@@ -1923,8 +1930,7 @@ class DataEntry extends SurveyCommonAction
                             true,
                             ['usesleft', 'completed']
                         );
-
-                        // save submitdate into survey table
+                        // save submitdate into survey table TODO, move it to previous save
                         $aResponse = Response::model($surveyid)->findByPk($last_db_id);
                         $aResponse->submitdate = $submitdate;
                         $aResponse->save(true, ['submitdate']);
@@ -1993,7 +1999,6 @@ class DataEntry extends SurveyCommonAction
                 } else {
                     $errormsg .= Chtml::errorSummary($new_response);
                 }
-                
             }
 
             $aData['errormsg'] = $errormsg;
