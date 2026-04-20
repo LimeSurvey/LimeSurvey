@@ -1447,8 +1447,6 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                                 $isComment = true;
                             }
                         }
-                    } elseif (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
-                        $newFieldName = "";
                     }
                     $newFieldName .= $suffix;
                     if (strpos($fieldName, "time") !== false) {
@@ -1458,6 +1456,9 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     }
                     if ($isComment) {
                         $newFieldName .= "_Ccomment";
+                    }
+                    if (($isRoot) && (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}"))) {
+                        $newFieldName = "";
                     }
                     break;
                 case \Question::QT_R_RANKING:
