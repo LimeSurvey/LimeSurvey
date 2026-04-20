@@ -42,9 +42,12 @@ use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 */
 
 /**
-* @param integer $iOldDBVersion The previous database version
-* @param boolean $bSilent Run update silently with no output - this checks if the update can be run silently at all. If not it will not run any updates at all.
-*/
+ * Executes all required database migrations from the given previous DB version up to the configured target DB version.
+ *
+ * @param int $iOldDBVersion The previous database version to upgrade from.
+ * @param bool $bSilent If true, attempt a silent update; the function will return `false` and perform no updates when one or more critical versions are included in the required update range.
+ * @return bool `true` if all updates were applied successfully, `false` otherwise.
+ */
 function db_upgrade_all($iOldDBVersion, $bSilent = false)
 {
     /**
@@ -69,6 +72,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     Yii::app()->loadHelper('database');
     Yii::import('application.helpers.admin.import_helper', true);
+    /** Needed in update 470 */
+    Yii::import('application.helpers.expressions.em_manager_helper', true);
     $oDB                        = Yii::app()->getDb();
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
