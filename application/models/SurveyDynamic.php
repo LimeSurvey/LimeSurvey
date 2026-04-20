@@ -111,7 +111,7 @@ class SurveyDynamic extends LSActiveRecord
      * Still used in em_manager_helper when create response (2026-04-20)
      * @deprecated Use setAttributes() and encryptSave()
      * @param array $data
-     * @return integer|
+     * @return integer|false
      */
     public function insertRecords($data)
     {
@@ -125,8 +125,8 @@ class SurveyDynamic extends LSActiveRecord
         if ($record->encryptSave()) {
             return $record->id;
         }
-        /* If error : return self to get the error */
-        return $record;
+        /* If error : return false */
+        return false;
     }
 
     /**

@@ -231,7 +231,6 @@ class LSActiveRecord extends CActiveRecord
                 }
             }
         }
-
         return parent::updateAll($attributes, $condition, $params);
     }
 
