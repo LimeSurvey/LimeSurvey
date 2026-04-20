@@ -1472,7 +1472,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                         if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
                             $qid = $cd ? $index : $subQuestions[($iRankingSuffix - 1)]->qid;
                             $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
-                        } else {
+                        } else if (count($subQuestions)) {
                             $minSortOrder = $subQuestions[0]->question_order;
                             $diff = 0;
                             if ($minSortOrder === 0) {
