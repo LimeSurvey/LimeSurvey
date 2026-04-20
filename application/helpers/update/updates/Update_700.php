@@ -29,6 +29,9 @@ class Update_700 extends DatabaseUpdateBase
 
     protected $questionCodes = [];
 
+    /** @var array Survey IDs that have already been processed for INSERTANS conversion */
+    protected $insertansProcessedSids = [];
+
     /**
      * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
      *
@@ -1133,7 +1136,99 @@ class Update_700 extends DatabaseUpdateBase
         return $changed;
     }
 
-    /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
+    /**
+     * Convert INSERTANS tags and fix SGQA references in all text fields of a survey.
+     *
+     * Loads all relevant entities (QuestionL10n, QuestionGroupL10n, SurveyLanguageSetting,
+     * Conditions, Assessments, QuotaLanguageSettings, DefaultValueL10n, AnswerL10n) and
+     * applies handleInsertans() plus optional fixText() replacements, then saves changed records.
+     *
+     * @param int|string $sid The survey ID
+     * @param Question[] $questions The survey's questions (with answers eager-loaded)
+     * @param array $fieldNames SGQA→new field name map for fixText (may be empty)
+     * @param array $additionalNames SGQA→Q{qid} map for fixText (may be empty)
+     * @param bool $guardRelevance When true, skip saving Question entities with relevance field
+     *                              if the question's survey relation is missing (active survey guard)
+     */
+    protected function convertSurveyInsertans($sid, array $questions, array $fieldNames = [], array $additionalNames = [], $guardRelevance = false)
+    {
+        $qids = [0];
+        $gids = [0];
+        $aids = [0];
+        foreach ($questions as $question) {
+            $qids[] = $question->qid;
+            if (!in_array($question->gid, $gids)) {
+                $gids[] = (int)$question->gid;
+            }
+            foreach ($question->answers as $answer) {
+                $aids[] = $answer->aid;
+            }
+        }
+
+        $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
+        $dvids = [0];
+        foreach ($defaultValues as $defaultValue) {
+            $dvids[] = $defaultValue->dvid;
+        }
+        $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
+
+        $entityFields = [
+            [
+                'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
+                'fields' => ['cfieldname', 'value']
+            ],
+            [
+                'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
+                'fields' => ["question", "script", "help"]
+            ],
+            [
+                'entities' => $questions,
+                'fields' => ['title', 'relevance']
+            ],
+            [
+                'entities' => SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid),
+                'fields' => ['surveyls_urldescription', 'surveyls_url']
+            ],
+            [
+                'entities' => QuotaLanguageSetting::model()->with(['quota' => ['condition' => 'sid=' . $sid]])->together()->findAll(),
+                'fields' => ['quotals_url', 'quotals_urldescrip']
+            ],
+            [
+                'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
+                'fields' => ['description', 'group_name']
+            ],
+            [
+                'entities' => Assessment::model()->findAll("sid = " . $sid),
+                'fields' => ['name', 'message']
+            ],
+            [
+                'entities' => $default10ns,
+                'fields' => ['defaultvalue']
+            ],
+            [
+                'entities' => AnswerL10n::model()->findAll("aid in (" . implode(",", $aids) . ")"),
+                'fields' => ['answer']
+            ]
+        ];
+
+        foreach ($entityFields as $ef) {
+            foreach ($ef['entities'] as $entity) {
+                $changed = $this->handleInsertans($entity, $ef['fields'], $sid);
+                if (!empty($fieldNames)) {
+                    $changed = $this->fixText($entity, $ef['fields'], $fieldNames) || $changed;
+                }
+                if (!empty($additionalNames)) {
+                    $changed = $this->fixText($entity, $ef['fields'], $additionalNames) || $changed;
+                }
+                if ($changed) {
+                    if ($guardRelevance && in_array('relevance', $ef['fields']) && $entity->qid && (!$entity->survey)) {
+                        continue;
+                    }
+                    $entity->save();
+                }
+            }
+        }
+    }
     public function up()
     {
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
@@ -1271,6 +1366,7 @@ class Update_700 extends DatabaseUpdateBase
                 $parts = explode("_", $TABLE_NAME);
                 $index = count($parts) - ((strpos($TABLE_NAME, "old") === false) ? 1 : 2);
                 $sid = $parts[$index];
+                $this->insertansProcessedSids[$sid] = true;
                 foreach ($keys as $oldName) {
                     $names[$oldName] = $fieldMap[$TABLE_NAME][$oldName];
                 }
@@ -1278,18 +1374,8 @@ class Update_700 extends DatabaseUpdateBase
                 $questions = Question::model()->with('answers')->findAll("sid = :sid", [
                     ":sid" => $sid
                 ]);
-                $qids = [0];
-                $gids = [0];
-                $aids = [0];
                 foreach ($questions as $question) {
                     $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
-                    $qids[] = $question->qid;
-                    if (!in_array($question->gid, $gids)) {
-                        $gids[] = (int)$question->gid;
-                    }
-                    foreach ($question->answers as $answer) {
-                        $aids[] = $answer->aid;
-                    }
                 }
                 $additionalNameKeys = array_keys($rawAdditionalNames);
                 arsort($additionalNameKeys);
@@ -1297,86 +1383,20 @@ class Update_700 extends DatabaseUpdateBase
                 foreach ($additionalNameKeys as $additionalNameKey) {
                     $additionalNames[$additionalNameKey] = $rawAdditionalNames[$additionalNameKey];
                 }
-                $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
-                $dvids = [0];
-                foreach ($defaultValues as $defaultValue) {
-                    $dvids[] = $defaultValue->dvid;
-                }
-                $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
-                $entityFields = [
-                    [
-                        'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                        'fields' => ['cfieldname', 'value']
-                    ],
-                    [
-                        'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                        'fields' => ["question", "script", "help"]
-                    ],
-                    [
-                        'entities' => $questions,
-                        'fields' => ['title', 'relevance']
-                    ],
-                    [
-                        'entities' => SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid),
-                        'fields' => ['surveyls_urldescription', 'surveyls_url']
-                    ],
-                    [
-                        'entities' => QuotaLanguageSetting::model()->with(['quota' => ['condition' => 'sid=' . $sid]])->together()->findAll(),
-                        'fields' => ['quotals_url', 'quotals_urldescrip']
-                    ],
-                    [
-                        'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
-                        'fields' => ['description', 'group_name']
-                    ],
-                    [
-                        'entities' => Assessment::model()->findAll("sid = " . $sid),
-                        'fields' => ['name', 'message']
-                    ],
-                    [
-                        'entities' => $default10ns,
-                        'fields' => ['defaultvalue']
-                    ],
-                    [
-                        'entities' => AnswerL10n::model()->findAll("aid in (" . implode(",", $aids) . ")"),
-                        'fields' => ['answer']
-                    ]
-                ];
-                foreach ($entityFields as $ef) {
-                    foreach ($ef['entities'] as $entity) {
-                        $save = [
-                            $this->handleInsertans($entity, $ef['fields'], $sid),
-                            $this->fixText($entity, $ef['fields'], $names),
-                            $this->fixText($entity, $ef['fields'], $additionalNames)
-                        ];
-                        if ($save[0] || $save[1] || $save[2]) {
-                            if (!(in_array('relevance', $ef['fields']) && $entity->qid && (!$entity->survey))) {
-                                $entity->save();
-                            }
-                        }
-                    }
-                }
+                $this->convertSurveyInsertans($sid, $questions, $names, $additionalNames, true);
             }
         }
 
         $passiveSurveys = Survey::model()->findAll("active <> 'Y'");
         foreach ($passiveSurveys as $passiveSurvey) {
             $sid = $passiveSurvey->sid;
-            $qids = [0];
-            $gids = [0];
-            $aids = [0];
+            $this->insertansProcessedSids[$sid] = true;
             $questions = Question::model()->with('answers')->findAll("sid = :sid", [
                 ":sid" => $passiveSurvey->sid
             ]);
             $rawAdditionalNames = [];
             foreach ($questions as $question) {
                 $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
-                $qids[] = $question->qid;
-                if (!in_array($question->gid, $gids)) {
-                    $gids[] = (int)$question->gid;
-                }
-                foreach ($question->answers as $answer) {
-                    $aids[] = $answer->aid;
-                }
             }
             $additionalNameKeys = array_keys($rawAdditionalNames);
             arsort($additionalNameKeys);
@@ -1412,62 +1432,20 @@ class Update_700 extends DatabaseUpdateBase
                     }
                 }
             }
-            $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
-            $dvids = [0];
-            foreach ($defaultValues as $defaultValue) {
-                $dvids[] = $defaultValue->dvid;
+            $this->convertSurveyInsertans($sid, $questions, $newFields, $additionalNames);
+        }
+
+        // Catch-all: convert INSERTANS tags for any surveys not already processed above.
+        // The active-survey loop only processes surveys that have response tables with SGQA columns,
+        // so active surveys without such columns would be missed.
+        $allSurveys = Survey::model()->findAll();
+        foreach ($allSurveys as $survey) {
+            $sid = $survey->sid;
+            if (isset($this->insertansProcessedSids[$sid])) {
+                continue;
             }
-            $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
-            $entityFields = [
-                [
-                    'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                    'fields' => ['cfieldname', 'value']
-                ],
-                [
-                    'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                    'fields' => ["question", "script", "help"]
-                ],
-                [
-                    'entities' => $questions,
-                    'fields' => ['title', 'relevance']
-                ],
-                [
-                    'entities' => SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid),
-                    'fields' => ['surveyls_urldescription', 'surveyls_url']
-                ],
-                [
-                    'entities' => QuotaLanguageSetting::model()->with(['quota' => ['condition' => 'sid=' . $sid]])->together()->findAll(),
-                    'fields' => ['quotals_url', 'quotals_urldescrip']
-                ],
-                [
-                    'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
-                    'fields' => ['description', 'group_name']
-                ],
-                [
-                    'entities' => Assessment::model()->findAll("sid = " . $sid),
-                    'fields' => ['name', 'message']
-                ],
-                [
-                    'entities' => $default10ns,
-                    'fields' => ['defaultvalue']
-                ],
-                [
-                    'entities' => AnswerL10n::model()->findAll("aid in (" . implode(",", $aids) . ")"),
-                    'fields' => ['answer']
-                ]
-            ];
-            foreach ($entityFields as $ef) {
-                foreach ($ef['entities'] as $entity) {
-                    $save = [
-                        $this->handleInsertans($entity, $ef['fields'], $sid),
-                        $this->fixText($entity, $ef['fields'], $newFields),
-                        $this->fixText($entity, $ef['fields'], $additionalNames)
-                    ];
-                    if ($save[0] || $save[1] || $save[2]) {
-                        $entity->save();
-                    }
-                }
-            }
+            $questions = Question::model()->with('answers')->findAll("sid = :sid", [":sid" => $sid]);
+            $this->convertSurveyInsertans($sid, $questions);
         }
 
         foreach ($scripts as $TABLE_NAME => $content) {
