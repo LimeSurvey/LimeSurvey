@@ -40,7 +40,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property QuestionGroup $group
  * @property Question $parent
  * @property Question[] $subquestions
- * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionAttribute Models for this QID regardless of the specified language
+ * @property QuestionAttribute[] $questionattributes NB! returns all QuestionAttribute Models for this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
@@ -82,11 +82,11 @@ class Question extends LSActiveRecord
 
     const ORDER_TYPES_SUBQUESTION = [
         self::QT_M_MULTIPLE_CHOICE,
-        self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+        self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+        self::QT_R_RANKING,
     ];
     const ORDER_TYPES_ANSWER = [
         self::QT_L_LIST,
-        self::QT_R_RANKING,
         self::QT_EXCLAMATION_LIST_DROPDOWN,
         self::QT_O_LIST_WITH_COMMENT
     ];
@@ -394,6 +394,42 @@ class Question extends LSActiveRecord
 //            //->bindParam(":language", $language, PDO::PARAM_STR)
 //            ->query();
 //    }
+
+    /**
+     * Return the key=>value answer for a given $qid
+     *
+     * @staticvar array $questionCache
+     * @param integer $parent_qid
+     * @param string $title
+     * @param string $sLanguage
+     * @param integer $iScaleID
+     * @return string|null The answer text
+     */
+    public function getQuestionFromTitle($parent_qid, $title, $sLanguage, $iScaleID = 0)
+    {
+        static $questionCache = array();
+
+        if (
+            array_key_exists($parent_qid, $questionCache)
+                && array_key_exists($title, $questionCache[$parent_qid])
+                && array_key_exists($sLanguage, $questionCache[$parent_qid][$title])
+                && array_key_exists($iScaleID, $questionCache[$parent_qid][$title][$sLanguage])
+        ) {
+            // We have a hit :)
+            return $questionCache[$parent_qid][$title][$sLanguage][$iScaleID];
+        } else {
+            $aQuestion = Question::model()->findByAttributes(array('parent_qid' => $parent_qid, 'title' => $title, 'scale_id' => $iScaleID));
+            if (is_null($aQuestion)) {
+                return null;
+            }
+            if (!isset($aQuestion->questionl10ns[$sLanguage])) {
+                Yii::log("QuestionL10n record missing for language \"{$sLanguage}\" and qid {$aQuestion->qid}", 'warning', 'application.models.Question.getQuestionFromTitle');
+                return null;
+            }
+            $questionCache[$parent_qid][$title][$sLanguage][$iScaleID] = $aQuestion->questionl10ns[$sLanguage]->question;
+            return $questionCache[$parent_qid][$title][$sLanguage][$iScaleID];
+        }
+    }
 
     /**
      * Delete a bunch of questions in one go

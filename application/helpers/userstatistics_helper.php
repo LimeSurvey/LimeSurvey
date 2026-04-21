@@ -683,12 +683,9 @@ class userstatistics_helper
             $alist[] = array("NoAnswer", gT("No answer"), $mfield);
         } // Ranking OPTION
         elseif ($firstletter == "R") {
-            // $rt format: "R" + fieldmap key = "RQ{qid}_R{aid}"
-            // Strip leading "R" to get the actual responses table column "Q{qid}_R{aid}"
-            $fieldmapKey = substr($rt, 1);           // "Q{qid}_R{aid}"
+            $fieldmapKey = substr($rt, 1);
             $qqid        = (int) ltrim(explode('_', $fieldmapKey)[0], 'Q');  // numeric qid
-            // Rank position (e.g. "3" from "Q12345_R3")
-            $rankLabel   = substr($fieldmapKey, strpos($fieldmapKey, '_R') + 2);  // the aid part
+            $rankLabel   = substr($fieldmapKey, strpos($fieldmapKey, '_S') + 2);  // the qid part
 
             //get question data
             $nresult = Question::model()->with('questionl10ns')->find(array(
@@ -711,7 +708,6 @@ class userstatistics_helper
                 'order'     => 'sortorder'
             ]);
 
-            // $fieldmapKey is "Q{qid}_R{aid}" — the actual responses table column for this rank slot
             foreach ($result as $row) {
                 $alist[] = array($row->code, flattenText($row->answerl10ns[$language]->answer), $fieldmapKey);
             }
@@ -723,11 +719,7 @@ class userstatistics_helper
                 //get SGQ data
                 $qqid = substr(explode("_", $rt)[0], 1);
 
-                //select details for this question
-                /**
-                 * FIXME $iQuestionIDlength not defined!!
-                 */
-                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0, $iQuestionIDlength)));
+                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => intval($qqid)));
                 $qtitle = $nresult->title;
                 $qtype = $nresult->type;
                 $qquestion = flattenText($nresult->question);

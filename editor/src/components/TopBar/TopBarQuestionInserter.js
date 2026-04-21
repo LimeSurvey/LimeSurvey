@@ -156,11 +156,11 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       getQuestionTypeInfo().ARRAY.theme,
       getQuestionTypeInfo().ARRAY_DUAL_SCALE.theme,
       getQuestionTypeInfo().ARRAY_COLUMN.theme,
-      getQuestionTypeInfo().RANKING.theme,
-      getQuestionTypeInfo().RANKING_ADVANCED.theme,
     ]
 
     const questionWithSubquestionsTheme = [
+      getQuestionTypeInfo().RANKING.theme,
+      getQuestionTypeInfo().RANKING_ADVANCED.theme,
       getQuestionTypeInfo().ARRAY_TEXT.theme,
       getQuestionTypeInfo().ARRAY.theme,
       getQuestionTypeInfo().ARRAY_NUMBERS.theme,

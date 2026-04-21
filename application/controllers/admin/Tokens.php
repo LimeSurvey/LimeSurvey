@@ -1624,6 +1624,7 @@ class Tokens extends SurveyCommonAction
                 $mail->setSurvey($iSurveyId);
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
+                $mail->ignoremissingattachement = boolval(App()->getRequest()->getPost('ignoremissingattachement'));
                 foreach ($emresult as $index => $emrow) {
                     $mailLanguage = $emrow['language'];
                     if (empty($mailLanguage)) {
@@ -3178,7 +3179,8 @@ class Tokens extends SurveyCommonAction
         $bHtml = (getEmailFormat($iSurveyId) == 'html');
         $bEmail = $sSubAction == 'invite';
         $aTokenIds = $this->getTokenIds();
-
+        $aData['warnings'] = [];
+        $countInvalidAttachments = 0;
         // Fill empty email template by default text
         foreach ($aSurveyLangs as $sSurveyLanguage) {
             $aData['thissurvey'][$sSurveyLanguage] = getSurveyInfo($iSurveyId, $sSurveyLanguage);
@@ -3194,11 +3196,23 @@ class Tokens extends SurveyCommonAction
                     }
                 }
             }
+            $SurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $sSurveyLanguage]);
+            $type = ($sSubAction == 'invite') ? 'invitation' : 'reminder';
+            // Check if all attachment are here : add a warning in case
+            if (!$SurveyLanguageSetting->hasAllAttachments($type)) {
+                $aData['warnings'][] = sprintf(
+                    gT("There is an issue with an attachment for language %s. You can review it in the %semail template%s."),
+                    $sSurveyLanguage,
+                    "<a href='" . App()->createUrl("admin/emailtemplates", ["sa" => "index", "surveyid" => $iSurveyId]) . "'>",
+                    "</a>"
+                );
+                $countInvalidAttachments++;
+            }
         }
         if (empty($aData['tokenids'])) {
             $aData['tokenids'] = TokenDynamic::model($iSurveyId)->findParticipantIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
         }
-
+        $aData['countInvalidAttachments'] = $countInvalidAttachments;
         if (Yii::app()->request->getParam('action') == "remind") {
             // Send Reminders Button
             $aData['topbar']['showSendReminderButton'] = true;

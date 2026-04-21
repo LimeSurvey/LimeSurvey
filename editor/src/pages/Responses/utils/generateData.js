@@ -9,6 +9,7 @@ import {
   getAnswerByProperty,
   getSubquestionById,
   getSubquestionByProperty,
+  isRankingQuestion,
   RemoveHTMLTagsInString,
 } from 'helpers'
 import { cloneDeep } from 'lodash'
@@ -80,7 +81,7 @@ export const generateData = (responses, language, generatedColumns) => {
       const questionAnswer =
         getAnswerById(actual_aid, question).answer ??
         getAnswerByProperty(answer.value, 'code', question).answer // answer.value is the answer code
-      const questionSubquestion =
+      let questionSubquestion =
         getSubquestionById(sqid, question).subquestion ??
         getSubquestionByProperty(answer.aid, 'title', question).subquestion
       const hasAnswersOrSubquestions =
@@ -93,6 +94,14 @@ export const generateData = (responses, language, generatedColumns) => {
       const idName = isQuestionWithAnswers(question.questionThemeName)
         ? 'aid'
         : 'sqid'
+
+      if (isRankingQuestion(question.questionThemeName)) {
+        questionSubquestion = getSubquestionByProperty(
+          answer.value,
+          'title',
+          question
+        ).subquestion
+      }
 
       if (
         !questionAnswer &&

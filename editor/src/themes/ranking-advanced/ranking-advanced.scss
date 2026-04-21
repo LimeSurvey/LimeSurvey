@@ -1,5 +1,5 @@
 .ranking-advanced-question {
-  .ranking-advanced-answer-content-editor,
+  .ranking-advanced-subquestion-content-editor,
   .placeholder-content-editor {
     min-width: 200px;
     min-height: 36px;
@@ -9,17 +9,17 @@
     align-items: center;
   }
 
-  .ranking-advanced-answer {
+  .ranking-advanced-subquestion {
     width: fit-content;
 
-    .ranking-advanced-answer-content-editor {
+    .ranking-advanced-subquestion-content-editor {
       outline: 1px $g-700 solid;
       padding-left: 12px;
       padding-right: 20px;
     }
   }
 
-  .answer-item-placeholder {
+  .subquestion-item-placeholder {
     background-color: $g-100;
   }
 

@@ -152,8 +152,9 @@ export const getLogicAttributes = () => ({
   SUBQUESTION_VALIDATION_TIP: {
     component: Input,
     attributePath: 'attributes.em_validation_sq_tip',
+    languageBased: true,
     props: {
-      labelText: t('Question validation tip'),
+      labelText: t('Subquestion validation tip'),
     },
   },
   QUESTION_VALIDATION_TIP: {

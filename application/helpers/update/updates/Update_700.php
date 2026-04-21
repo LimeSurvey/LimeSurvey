@@ -926,6 +926,77 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Creating subquestions for ranking instead of its answers
+     * @return string
+     */
+    public function insertRankingSubquestions()
+    {
+        return "
+            INSERT INTO {{questions}}(parent_qid, sid, gid, type, title, question_order, relevance)
+            SELECT q.qid, q.sid, q.gid, '" . Question::QT_T_LONG_FREE_TEXT . "', a.code, a.sortorder, '1'
+            FROM {{answers}} a
+            JOIN {{questions}} q
+            ON a.qid = q.qid and q.type = '" . Question::QT_R_RANKING . "'
+            LEFT JOIN {{questions}} existent
+            ON existent.parent_qid = q.qid and existent.title = a.code
+            WHERE existent.qid IS NULL
+        ";
+    }
+
+    /**
+     * Creating subquestions for ranking instead of its answers
+     * @return string
+     */
+    public function insertRankingSubquestionsL10ns()
+    {
+        return "
+            INSERT INTO {{question_l10ns}}(qid, question, language)
+            SELECT target.qid, al.answer, al.language
+            FROM {{answer_l10ns}} al
+            JOIN {{answers}} a
+            ON al.aid = a.aid
+            JOIN {{questions}} q
+            ON a.qid = q.qid and q.type = '" . Question::QT_R_RANKING . "'
+            JOIN {{questions}} target
+            ON target.parent_qid = q.qid and target.title = a.code
+            LEFT JOIN {{question_l10ns}} existent
+            ON existent.qid = target.qid and existent.language = al.language
+        ";
+    }
+
+    /**
+     * Cleanup for ranking answers
+     * @return string
+     */
+    public function deleteRankingAnswers()
+    {
+        return "DELETE FROM {{answers}} WHERE EXISTS (SELECT qid FROM {{questions}} WHERE type ='" . Question::QT_R_RANKING . "' AND {{questions}}.qid = {{answers}}.qid)";
+    }
+
+    /**
+     * Cleanup for ranking answers
+     * @return string
+     */
+    public function deleteTranslatedRankingAnswers()
+    {
+        return "DELETE FROM {{answer_l10ns}} WHERE NOT EXISTS (SELECT aid FROM {{answers}} WHERE {{answer_l10ns}}.aid = {{answers}}.aid)";
+    }
+
+    /**
+     * Updates ranking question attributes from answer_order to subquestion_order
+     * @return string
+     */
+    public function updateRankingAnswerOrderAttribute()
+    {
+        return "
+            UPDATE {{question_attributes}}
+            SET attribute = 'subquestion_order'
+            WHERE attribute = 'answer_order'
+            AND qid IN (SELECT qid FROM {{questions}} WHERE type = '" . Question::QT_R_RANKING . "')
+        ";
+    }
+
+    /**
      * Fixes textual data, replacing old fieldname representation with new fieldname representation. We don't save the record even if changed here, because
      * outside of the method we may want to do additional things
      * @param LSActiveRecord $record the record whose fields are to be fixed
@@ -995,6 +1066,8 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
+        $this->db->createCommand($this->insertRankingSubquestions())->execute();
+        $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
         $leftSeparator = $rightSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
@@ -1040,6 +1113,7 @@ class Update_700 extends DatabaseUpdateBase
         $fields = $this->db->createCommand($this->scriptMapping['fields'])->queryAll();
         $fieldMap = [];
         foreach ($fields as $field) {
+            $questions = [];
             if (!isset($field['TABLE_NAME'])) {
                 if (isset($field['table_name'])) {
                     $field['TABLE_NAME'] = $field['table_name'];
@@ -1067,11 +1141,12 @@ class Update_700 extends DatabaseUpdateBase
                 }
                 $commaSeparatedQIDs = implode(",", $qids);
                 $questions = Question::model()->with('answers')->findAll([
-                    'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                    'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
-            if (count($questions) || ((strpos($tableName, "timings") !== false) && ($split > 1))) {
-                $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questions, (int)$sid, (int)$gid);
+            $questionsToPass = $questions ?? [];
+            if (count($questionsToPass) || ((strpos($tableName, "timings") !== false) && (count($split) > 1))) {
+                $fieldMap[$tableName][$fieldName] = getFieldName($tableName, $fieldName, $questionsToPass, (int)$sid, (int)$gid);
             }
         }
         $preinsert = "";
@@ -1204,7 +1279,9 @@ class Update_700 extends DatabaseUpdateBase
                             $this->fixText($entity, $ef['fields'], $additionalNames)
                         ];
                         if ($save[0] || $save[1] || $save[2]) {
-                            $entity->save();
+                            if (!(in_array('relevance', $ef['fields']) && $entity->qid && (!$entity->survey))) {
+                                $entity->save();
+                            }
                         }
                     }
                 }
@@ -1253,7 +1330,7 @@ class Update_700 extends DatabaseUpdateBase
                         }
                         $commaSeparatedQIDs = implode(",", $tempqids);
                         $questionsTemp = Question::model()->with('answers')->findAll([
-                            'condition' => "sid = {$sid} and gid = {$gid} and (t.qid in ({$commaSeparatedQIDs}) or parent_qid in ({$commaSeparatedQIDs}))"
+                            'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                         ]);
                         $prefix = Yii::app()->db->tablePrefix ?? "";
                         if (count($questionsTemp)) {
@@ -1342,5 +1419,8 @@ class Update_700 extends DatabaseUpdateBase
                 $archivedSetting->save();
             }
         }
+        $this->db->createCommand($this->deleteRankingAnswers())->execute();
+        $this->db->createCommand($this->deleteTranslatedRankingAnswers())->execute();
+        $this->db->createCommand($this->updateRankingAnswerOrderAttribute())->execute();
     }
 }

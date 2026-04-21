@@ -42,6 +42,7 @@ const displaySettings = () => {
     displayAttributes.CSS_CLASSES,
     displayAttributes.SHOW_PLATFORM_INFORMATION,
     displayAttributes.PAGE_BREAK_IN_PRINTABLE_VIEW,
+    displayAttributes.PLACEHOLDER_ANSWER
   ]
 }
 

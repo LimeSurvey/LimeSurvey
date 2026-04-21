@@ -846,7 +846,7 @@ class questionHelper
             "caption" => gT('Random order')
         );
         self::$attributes["answer_order"] = array(
-            "types" => Question::QT_L_LIST . Question::QT_R_RANKING . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_O_LIST_WITH_COMMENT,
+            "types" => Question::QT_L_LIST . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_O_LIST_WITH_COMMENT,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'singleselect',
@@ -889,7 +889,7 @@ class questionHelper
         );
 
         self::$attributes["subquestion_order"] = array(
-            "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+            "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_R_RANKING . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'singleselect',

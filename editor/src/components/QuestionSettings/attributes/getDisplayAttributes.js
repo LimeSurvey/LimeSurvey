@@ -193,6 +193,7 @@ export const getDisplayAttributes = () => ({
   ANSWER_PREFIX: {
     component: Input,
     attributePath: 'attributes.prefix',
+    languageBased: true,
     props: {
       dataTestId: 'answer-prefix',
       labelText: t('Answer prefix'),
@@ -201,6 +202,7 @@ export const getDisplayAttributes = () => ({
   ANSWER_SUFFIX: {
     component: Input,
     attributePath: 'attributes.suffix',
+    languageBased: true,
     props: {
       dataTestId: 'answer-suffix',
       labelText: t('Answer suffix'),
@@ -391,6 +393,7 @@ export const getDisplayAttributes = () => ({
   SUBQUESTION_TITLE: {
     component: Input,
     attributePath: 'attributes.other_position_code',
+    languageBased: true,
     props: {
       dataTestId: 'sub-question-title',
       labelText: t("Subquestion title for 'After specific subquestion'"),
@@ -597,6 +600,7 @@ export const getDisplayAttributes = () => ({
   PLACEHOLDER_ANSWER: {
     component: Input,
     attributePath: 'attributes.placeholder',
+    languageBased: true,
     props: {
       dataTestId: 'placeholder-answer',
       labelText: t('Placeholder answer'),
@@ -616,6 +620,7 @@ export const getDisplayAttributes = () => ({
   DROPDOWN_PREFIX_SUFFIX: {
     component: Input,
     attributePath: 'attributes.dropdown_prepostfix',
+    languageBased: true,
     props: {
       dataTestId: 'dropdown-prefix-suffix',
       labelText: t('Dropdown prefix/suffix'),

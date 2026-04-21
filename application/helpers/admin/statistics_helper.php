@@ -719,7 +719,7 @@ class statistics_helper
         elseif ($sQuestionType == "R") {
             //getting the needed IDs somehow
             $qqid = explode("_", substr($rt, 2))[0];
-            $lengthofnumeral = strlen(substr($rt, strpos($rt, "_R") + 2));
+            $lengthofnumeral = strlen(substr($rt, strpos($rt, "_S") + 2));
 
             $qqid = (int) $qqid;
 

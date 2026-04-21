@@ -1,24 +1,24 @@
 import { Button } from 'react-bootstrap'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
-import { RankingQuestionAnswer } from './RankingQuestionAnswer'
+import { RankingQuestionSubquestion } from './RankingQuestionSubquestion'
 import { DragAndDrop } from 'components/UIComponents'
 import { Draggable } from 'react-beautiful-dnd'
 import { Entities, L10ns, STATES } from 'helpers'
 import { useAppState } from 'hooks'
 
-export const RankingQuestionAnswers = ({
-  question: { answers = [] } = {},
+export const RankingQuestionSubquestions = ({
+  question: { subquestions = [] } = {},
   isFocused,
   handleChildAdd,
-  handleAnswerUpdate,
+  handleSubquestionUpdate,
   handleOnDragEnd,
-  handleRemovingAnswers,
+  handleRemovingSubquestions,
   handleChildCodeUpdate,
 }) => {
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
 
-  const getAnswerStyle = (draggableStyle) => ({
+  const getSubquestionStyle = (draggableStyle) => ({
     userSelect: 'none',
     margin: `0 0 8px 0`,
     ...draggableStyle,
@@ -32,17 +32,17 @@ export const RankingQuestionAnswers = ({
         </div>
       )}
       <DragAndDrop onDragEnd={handleOnDragEnd} droppableId={'droppable'}>
-        {answers.map((answer, index) => (
+        {subquestions.map((subquestion, index) => (
           <Draggable
-            key={`ranking-${answer.qid}-${answer.aid}`}
-            draggableId={`ranking-${answer.qid}-${answer.aid}`}
+            key={`ranking-${subquestion.parentQid}-${subquestion.qid}`}
+            draggableId={`ranking-${subquestion.parentQid}-${subquestion.qid}`}
             index={index}
           >
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
                 {...provided.draggableProps}
-                style={getAnswerStyle(provided.draggableProps.style)}
+                style={getSubquestionStyle(provided.draggableProps.style)}
                 className={classNames(
                   {
                     'focus-element': snapshot.isDragging,
@@ -50,28 +50,28 @@ export const RankingQuestionAnswers = ({
                   'mb-2'
                 )}
               >
-                <RankingQuestionAnswer
-                  answer={L10ns({
-                    l10ns: answer.l10ns,
+                <RankingQuestionSubquestion
+                  subquestion={L10ns({
+                    l10ns: subquestion.l10ns,
                     language: activeLanguage,
-                    prop: 'answer',
+                    prop: 'question',
                   })}
-                  aid={answer.aid}
+                  qid={subquestion.qid}
                   isFocused={isFocused}
                   index={index}
-                  onChange={(value) => handleAnswerUpdate(value, index)}
+                  onChange={(value) => handleSubquestionUpdate(value, index)}
                   provided={provided}
-                  handleRemovingAnswers={handleRemovingAnswers}
+                  handleRemovingSubquestions={handleRemovingSubquestions}
                   handleCodeUpdate={(value, index) =>
                     handleChildCodeUpdate({
                       newCode: value,
                       childIndex: index,
-                      childArray: answers,
-                      entityType: Entities.answer,
-                      entityTitleKey: 'answer',
+                      childArray: subquestions,
+                      entityType: Entities.subquestion,
+                      entityTitleKey: 'subquestion',
                     })
                   }
-                  code={answer.code}
+                  title={subquestion.title}
                 />
               </div>
             )}
@@ -80,14 +80,14 @@ export const RankingQuestionAnswers = ({
       </DragAndDrop>
       <div>
         <Button
-          onClick={() => handleChildAdd(answers, Entities.answer)}
+          onClick={() => handleChildAdd(subquestions, Entities.subquestion)}
           variant={'outline'}
           className={classNames('text-primary add-choice-button px-0 mt-2', {
             'd-none disabled': !isFocused,
           })}
-          data-testid="single-choice-add-answer-button"
+          data-testid="single-choice-add-subquestion-button"
         >
-          <PlusLg /> {t('Add answer')}
+          <PlusLg /> {t('Add subquestion')}
         </Button>
       </div>
     </>
