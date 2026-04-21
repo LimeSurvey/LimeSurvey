@@ -1140,14 +1140,7 @@ class Update_700 extends DatabaseUpdateBase
                     $qids [] = (count($qids) ? ($qids[count($qids) - 1] . $split[2][$position]) : $split[2][$position]);
                     $position++;
                 }
-            }
                 $commaSeparatedQIDs = implode(",", $qids);
-            if ($fieldName === "169637X213X3011") {
-                echo json_encode([
-                    "split" => $split,
-                    "qids" => $qids,
-                    "condition" => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
-                ]);
                 $questions = Question::model()->with('answers')->findAll([
                     'condition' => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
