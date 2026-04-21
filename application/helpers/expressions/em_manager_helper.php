@@ -519,12 +519,14 @@ class LimeExpressionManager
      * 'rootVarName' => 'afDS'  // the root variable name
      * 'preg' => '/[A-Z]+/' // regular expression validation equation, if any
      * 'subqs' => array() of subquestions, where each contains:
-     *     'rowdivid' => '26626X34X702sq1' // the javascript id identifying the question row (so array_filter can hide rows)
-     *     'varName' => 'afSrcFilter_sq1' // the full variable name for the subquestion
-     *     'jsVarName_on' => 'java26626X34X702sq1' // the JavaScript variable name if the variable is defined on the current page
-     *     'jsVarName' => 'java26626X34X702sq1' // the JavaScript variable name to use if the variable is defined on a different page
-     *     'csuffix' => 'sq1' // the SGQ suffix to use for a fieldname
-     *     'sqsuffix' => '_sq1' // the suffix to use for a qcode variable name
+     *     'rowdivid' => 'Q702_S810' // the DOM element id identifying the subquestion row (for array_filter show/hide)
+     *     'sgqa'     => 'Q702_S810_S823' // the full fieldname (sgqa) of this cell; used for knownVars / SQrelevance lookups
+     *     'varName' => 'afSrcFilter_sq1' // the full qcode variable name for the subquestion
+     *     'jsVarName_on' => 'javaQ702_S810' // the JavaScript variable name if the variable is defined on the current page
+     *     'jsVarName' => 'javaQ702_S810' // the JavaScript variable name to use if the variable is defined on a different page
+     *     'csuffix' => '_S810' // the fieldname suffix; appended to the qcode2sgq base ('Q702') to form the full sgqa: 'Q702_S810'
+     *     'sqsuffix' => '_sq1' // the qcode/aid suffix (with leading underscore); used to match the same subquestion across questions in array_filter
+     *     'code'     => 'sq1'  // the raw subquestion code/title (= aid); used for attribute comparisons like exclude_all_others
      *  );
      *
      * @var array
@@ -1365,8 +1367,11 @@ class LimeExpressionManager
                             break;
                         case Question::QT_COLON_ARRAY_NUMBERS: // Array Numbers
                         case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
-                            $aCsuffix = (explode('_', (string) $sq['csuffix']));
-                            $rowdivid = $rowdivid . '_' . $aCsuffix[1];
+                            // Use the stored full sgqa for the knownVars SQrelevance lookup;
+                            // $sq['rowdivid'] is the first-level subquestion DOM row identifier.
+                            if (isset($sq['sgqa'])) {
+                                $rowdivid = $sq['sgqa'];
+                            }
                             break;
                         case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                         case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
@@ -1806,7 +1811,7 @@ class LimeExpressionManager
                         $subqs = $qinfo['subqs'];
                         foreach ($subqs as $sq) {
                             $sq_name = null;
-                            if ($sq['csuffix'] == $exclusive_option) {
+                            if ($sq['suffix'] == $exclusive_option) {
                                 continue;   // so don't make the excluded option irrelevant
                             }
                             switch ($type) {
@@ -1821,9 +1826,9 @@ class LimeExpressionManager
                                 case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                                     if ($this->sgqaNaming) {
-                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
+                                        $sq_name = $qinfo['sgqa'] . '_' . trim($exclusive_option) . '.NAOK';
                                     } else {
-                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
+                                        $sq_name = $qinfo['sgqa'] . '_' . trim($exclusive_option) . '.NAOK';
                                     }
                                     break;
                                 default:
@@ -1870,7 +1875,7 @@ class LimeExpressionManager
                                 break;
                         }
                         if (!is_null($sq_name)) {
-                            if ($sq['csuffix'] == $exclusive_option) {
+                            if ($sq['suffix'] == $exclusive_option) {
                                 $eoVarName = substr((string) $sq['jsVarName'], 4);
                             } else {
                                 $sq_names[] = $sq_name;
@@ -3439,7 +3444,6 @@ class LimeExpressionManager
         $now = microtime(true);
 
         $q2subqInfo = [];
-        $rankingMapping = [];
 
         $this->multiflexiAnswers = [];
         foreach ($fieldmap as $fielddata) {
@@ -3589,35 +3593,21 @@ class LimeExpressionManager
             switch ($type) {
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                 case Question::QT_L_LIST: //LIST drop-down/radio-button list
-                    if (preg_match('/other$/', (string) $sgqa)) {
-                        $varName = $fielddata['title'] . '_other'; // keep suffix
-                    } else {
-                        $varName = $fielddata['title'];
-                    }
-                    $question = $fielddata['question'];
-                    break;
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                 case Question::QT_D_DATE: //DATE
                 case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_I_LANGUAGE: //Language Question
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-                if (preg_match('/comment$/', (string) $sgqa)) {
-                    $varName = $fielddata['title'] . '_comment'; // keep suffix
-                } else {
-                    $varName = $fielddata['title'];
-                }
-                $question = $fielddata['question'];
-                    break;
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                 case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                 case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
                 case Question::QT_ASTERISK_EQUATION: //Equation
-                    $csuffix = '';
-                    $sqsuffix = '';
-                    $varName = $fielddata['title'];
+                    $varName = !empty($aid)
+                        ? $fielddata['title'] . '_' . $aid
+                        : $fielddata['title'];
                     $question = $fielddata['question'];
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
@@ -3626,10 +3616,10 @@ class LimeExpressionManager
                         : $fielddata['title'];
                     break;
                 case Question::QT_1_ARRAY_DUAL: // Array dual scale
-                    $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
-                    $sqsuffix = '_' . $fielddata['aid'];
+                    // csuffix = fieldname suffix: 'suffix' holds '_S{sqid}'; append '#scale_id' to reach the exact cell fieldname
+                    $csuffix = ($fielddata['suffix'] ?? '') . '#' . $fielddata['scale_id'];
+                    $sqsuffix = '_' . $fielddata['aid']; // qcode/aid suffix: '_SQ001'
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];
-                    ;
                     $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     $rowdivid = substr((string) $sgqa, 0, -2);
@@ -3643,7 +3633,8 @@ class LimeExpressionManager
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text                 // note does not have javatbd equivalent - so array filters don't work on it
-                    $csuffix = $fielddata['csuffix'] ?? $fielddata['aid'];
+                    // csuffix = fieldname suffix ('_S{sqid}'); sqsuffix = qcode/aid suffix ('_SQ001')
+                    $csuffix = $fielddata['suffix'] ?? '';
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
@@ -3664,12 +3655,9 @@ class LimeExpressionManager
 
                     break;
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
-                    $csuffix = $fielddata['csuffix'] ?? $fielddata['sqid'];
-                    if (!isset($rankingMapping[$fielddata['qid']])) {
-                        $rankingMapping[$fielddata['qid']] = 0;
-                    }
-                    $rankingMapping[$fielddata['qid']]++;
-                    $varName = $fielddata['title'] . '_' . $rankingMapping[$fielddata['qid']];
+                    // csuffix = fieldname suffix ('_S{sqid}'); sqsuffix = qcode/aid suffix ('_1', '_2', ...)
+                    $csuffix = $fielddata['suffix'] ?? '';
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
                     if ($other == "Y") {
@@ -3679,12 +3667,13 @@ class LimeExpressionManager
                             $question = $this->gT('Other:');
                         }
                     }
-                    $sqsuffix = '_' . $fielddata['sqid'];
+                    $sqsuffix = '_' . $fielddata['aid'];
                     $rowdivid = $sgqa;
 
                     break;
                 case Question::QT_H_ARRAY_COLUMN:
-                    $csuffix = $fielddata['aid'];
+                    // csuffix = fieldname suffix ('_S{sqid}'); sqsuffix = qcode/aid suffix ('_SQ001')
+                    $csuffix = $fielddata['suffix'] ?? '';
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     $sqsuffix = '_' . $fielddata['aid'];
@@ -3692,12 +3681,14 @@ class LimeExpressionManager
                     break;
                 case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                 case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
-                    $csuffix = $fielddata['aid'];
+                    // csuffix = fieldname suffix ('_S{sqid1}_S{sqid2}'); sqsuffix = qcode/aid suffix (first part only: '_SQ001')
+                    $csuffix = $fielddata['suffix'] ?? '';
                     $sqsuffix = '_' . substr((string) $fielddata['aid'], 0, (int)strpos((string) $fielddata['aid'], '_'));
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                    $rowdivid = substr((string) $sgqa, 0, (int)strpos((string) $sgqa, '_'));
+                    // rowdivid = first-level subquestion row (for DOM show/hide); $sgqa is stored separately for SQrelevance lookup
+                    $rowdivid = !empty($sqid) ? ('Q' . $questionNum . '_S' . $sqid) : substr((string) $sgqa, 0, (int)strpos((string) $sgqa, '_'));
                     break;
                 default:
                     // TODO: Internal error if this happens
@@ -3886,11 +3877,13 @@ class LimeExpressionManager
                     default:
                         $q2subqInfo[$questionNum]['subqs'][] = [
                             'rowdivid'     => $rowdivid,
+                            'sgqa'         => $sgqa,
                             'varName'      => $varName,
                             'jsVarName_on' => $jsVarName_on,
                             'jsVarName'    => $jsVarName,
-                            'csuffix'      => $csuffix,
-                            'sqsuffix'     => $sqsuffix,
+                            'csuffix'      => $csuffix,  // fieldname suffix (e.g. '_S{sqid}')
+                            'sqsuffix'     => $sqsuffix, // qcode/aid suffix (e.g. '_SQ001')
+                            'code'         => $aid,      // the subquestion code/title (e.g. 'SQ001') for attribute comparisons
                         ];
                         break;
                 }

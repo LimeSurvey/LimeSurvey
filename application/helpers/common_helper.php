@@ -1019,7 +1019,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
         }
 
         // If it is a comment field there is nothing to convert here
-        if (($fields['aid'] ?? '') == 'comment') {
+        if (str_ends_with((string)($fields['aid'] ?? ''), 'comment')) {
             return $sValue;
         }
 
@@ -1769,7 +1769,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         'sid' => $surveyid,
                         "gid" => $arow['gid'],
                         "qid" => $arow['qid'],
-                        "aid" => "_Cother");
+                        "aid" => "other");
                         if (isset($answerColumnDefinition)) {
                             $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                         }
@@ -1803,7 +1803,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     'sid' => $surveyid,
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
-                    "aid" => "_Ccomment");
+                    "aid" => "comment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }
@@ -1969,7 +1969,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
                     "sqid" => $abrow['qid'],
-                    "aid" => $abrow['title'],
+                    "aid" => $i,
                     "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
                 );
                 if (isset($answerColumnDefinition)) {
