@@ -20,9 +20,12 @@ class SanitizeHelperTest extends TestBaseClass
             '.',
             '..',
             '.git',
+            'foo/bar',
+            'foo\\bar',
             '../twig/extensions',
             '..\\twig\\extensions',
             "bad\0name",
+            "\x7F",
         ];
 
         foreach ($cases as $case) {
