@@ -1538,7 +1538,9 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     unset($attributes['ipanonymize']);
     // Same as ipanonymize, stale schema persists on model after column is removed from db,
     // and interacts with older updates
-    unset($attributes['nokeyboard']);
+    if (isset($attributes['nokeyboard'])) {
+        unset($attributes['nokeyboard']);
+    }
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
