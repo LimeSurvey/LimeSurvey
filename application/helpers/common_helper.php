@@ -1318,7 +1318,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             return $b->qid - $a->qid;
         });
                         if (in_array($fieldName, ["169637X213X3011", "169637X213X3012", "169637X214X3013", "169637X214X3014", "169637X214X3015", "169637X214X3016", "169637X214X3017"])) {
-                            debug_backtrace();
+                            echo json_encode(debug_backtrace());
                         }
         foreach ($rootQuestions as $rootQuestion) {
             $questions = [$rootQuestion];
