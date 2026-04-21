@@ -1143,7 +1143,8 @@ class Update_700 extends DatabaseUpdateBase
             if ($fieldName === "169637X213X3011") {
                 echo json_encode([
                     "split" => $split,
-                    "qids" => $qids
+                    "qids" => $qids,
+                    "condition" => "sid = {$sid} and ((t.qid in ({$commaSeparatedQIDs}) and gid = {$gid}) or parent_qid in ({$commaSeparatedQIDs}))"
                 ]);
             }
                 $commaSeparatedQIDs = implode(",", $qids);
