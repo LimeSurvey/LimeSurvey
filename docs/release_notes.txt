@@ -50,7 +50,6 @@ Changes from 6.16.17 (build 260414) to 6.17.0 (build 260421) April 21, 2026
 -Fixed issue #20492: [security] Stored Cross-Site Scripting (SXSS) in theme administration (Thank you to lavie3k for reporting the issue) (#4888) (Denis Chenu)
 -Fixed issue #20491: Missing feedback when registering with the same email (#4882) (tiborpacalat)
 -Fixed issue #20472: Unable to update DB from 470 to 471 via CLI (#4817) (Denis Chenu)
--Fixed issue #19958: Public registration is not compliant to GDPR (Denis Chenu)
 -Fixed issue #19773: Translation missing in reordering title (aisreh)
 -Fixed issue #19663: Users without creation date from older installations show exception in user list (#3968) (Johannes Weberhofer)
 -Fixed issue #19519: When re-activating a token based survey the user is not asked to re-active the token table (#3963) (Gabriel Jenik)
