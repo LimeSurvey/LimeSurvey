@@ -83,7 +83,7 @@ class LayoutHelper
     }
 
     /**
-     * This is the topbar for the whole application consiting of:
+     * This is the topbar for the whole application consisting of:
      * -- Create survey (link)
      * -- Surveys
      * -- Help
@@ -105,9 +105,9 @@ class LayoutHelper
      */
     public function showadminmenu($aData): ?string
     {
-        // We don't wont the admin menu to be shown in login page
+        // We don't want the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
-            if (!(Yii::app()->getConfig('ssl_disable_alert')) && strtolower(Yii::app()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
+            if (!(Yii::app()->getConfig('ssl_disable_alert')) && strtolower(Yii::app()->getConfig('force_ssl')) != 'on' && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
@@ -138,7 +138,7 @@ class LayoutHelper
 
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
-            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && !$updateNotification->unstable_update;
+            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result;
 
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
@@ -292,7 +292,10 @@ class LayoutHelper
     }
 
     /**
-     * Display the update notification
+     * Display the update notification bar.
+     * Passes security_update_available and stability_labels to the notification view.
+     *
+     * @return string|void Rendered notification HTML, or void if no update
      * @throws CException
      */
     public function updatenotification()
@@ -324,7 +327,10 @@ class LayoutHelper
                 App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
                 return App()->getController()->renderPartial(
                     "/admin/update/_update_notification",
-                    array('security_update_available' => $updateNotification->security_update)
+                    array(
+                        'security_update_available' => $updateNotification->security_update,
+                        'stability_labels' => Yii::app()->session['update_stability_labels'] ?? [],
+                    )
                 );
             }
         }

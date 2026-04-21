@@ -129,7 +129,7 @@ class SurveyCommonAction extends CAction
         // Foreach pseudo, take the key, if it exists,
         // Populate the values (taken as an array) as keys in params
         // with that key's value in the params
-        // Chek is 2 params are equal for security issue.
+        // Check whether two params differ (security check)
         foreach ($pseudos as $key => $pseudo) {
             // We care only for user parameters, not by code parameters (see issue #15221)
             if ($checkParam = Yii::app()->getRequest()->getParam($key)) {
@@ -370,6 +370,10 @@ class SurveyCommonAction extends CAction
      *
      *
      * REFACTORED (in LayoutHelper.php)
+     *
+     * Passes security_update_available and stability_labels to the notification view.
+     *
+     * @return string|void Rendered notification HTML, or void if no update
      * @throws CException
      */
     protected function updatenotification()
@@ -388,7 +392,10 @@ class SurveyCommonAction extends CAction
             if ($updateNotification->result) {
                 $scriptToRegister = Yii::app()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js';
                 App()->getClientScript()->registerScriptFile($scriptToRegister);
-                return $this->getController()->renderPartial("/admin/update/_update_notification", array('security_update_available' => $updateNotification->security_update));
+                return $this->getController()->renderPartial("/admin/update/_update_notification", array(
+                    'security_update_available' => $updateNotification->security_update,
+                    'stability_labels' => Yii::app()->session['update_stability_labels'] ?? [],
+                ));
             }
         }
     }

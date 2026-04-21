@@ -254,7 +254,7 @@ class StatisticsUserController extends SurveyController
                         'order'     => 'question_order'
                     ]);
                     foreach ($results as $row) {
-                        $allfields[] = $flt->type . $SGQidentifier . $row->title;
+                        $allfields[] = $flt->type . $SGQidentifier . "_S" . $row->qid;
                     }
                     break;
                 case Question::QT_A_ARRAY_5_POINT: // Array of 5 point choice questions
@@ -269,7 +269,7 @@ class StatisticsUserController extends SurveyController
                         'order'     => 'question_order'
                     ]);
                     foreach ($results as $row) {
-                        $allfields[] = $SGQidentifier . $row->title;
+                        $allfields[] = $SGQidentifier . "_S" . $row->qid;
                     }
                     break;
                 // all "free text" types (T, U, S)  get the same prefix ("T")
@@ -292,20 +292,19 @@ class StatisticsUserController extends SurveyController
                     ]);
                     foreach ($resultsScale0 as $rowScale0) {
                         foreach ($resultsScale1 as $rowScale1) {
-                            $allfields[] = $SGQidentifier . $rowScale0['title'] . "_" . $rowScale1['title'];
+                            $allfields[] = $SGQidentifier . "_S" . $rowScale0->qid . "_S" . $rowScale1->qid;
                         }
                     }
                     break;
                 case Question::QT_R_RANKING: // Ranking
-                    $results = Answer::model()->with('answerl10ns')->findAll([
-                        'condition' => 'language=:language AND qid=:qid',
-                        'params'    => [':language' => $this->sLanguage, ':qid' => $flt->qid],
-                        'order'     => 'sortorder'
+                    // Ranking questions now use subquestions for ranking items
+                    $results = Question::model()->with('questionl10ns')->findAll([
+                        'condition' => 'language=:language AND parent_qid=:parent_qid',
+                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
+                        'order'     => 'question_order'
                     ]);
-                    $count = count($results);
-                    //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                    for ($i = 1; $i <= $count; $i++) {
-                        $allfields[] = $flt->type . $SGQidentifier . $i . "-" . strlen($i);
+                    foreach ($results as $subQuestion) {
+                        $allfields[] = 'R' . $SGQidentifier . '_S' . $subQuestion->qid;
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
@@ -319,8 +318,8 @@ class StatisticsUserController extends SurveyController
                     ]);
                     //loop through answers
                     foreach ($results as $row) {
-                        $allfields[] = $SGQidentifier . $row['title'] . "#0";
-                        $allfields[] = $SGQidentifier . $row['title'] . "#1";
+                        $allfields[] = $SGQidentifier . "_S" . $row['qid'] . "#0";
+                        $allfields[] = $SGQidentifier . "_S" . $row['qid'] . "#1";
                     }    //end WHILE -> loop through all answers
                     break;
 

@@ -29,16 +29,19 @@ class RenderRanking extends QuestionBaseRenderer
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
-        $this->setAnsweroptions();
-        $this->iMaxSubquestions = ((int) $this->getQuestionAttribute('max_subquestions')) > 0
-            ? ((int) $this->getQuestionAttribute('max_subquestions'))
-            : $this->getAnswerCount();
+        $this->setSubquestions();  // Get ranking items as subquestions
+        
+        $maxSubquestionsAttribute = (int) $this->getQuestionAttribute('max_subquestions');
+        $this->iMaxSubquestions = $maxSubquestionsAttribute > 0
+            ? $maxSubquestionsAttribute
+            : $this->getQuestionCount();
 
-        $this->mMaxAnswers = trim((string) $this->getQuestionAttribute('max_answers')) != ''
+        $maxAnswersAttribute = trim((string) $this->getQuestionAttribute('max_answers'));
+        $this->mMaxAnswers = $maxAnswersAttribute != ''
             ? (
-                ($this->iMaxSubquestions < $this->getAnswerCount())
-                ? "min(" . trim((string) $this->getQuestionAttribute('max_answers')) . "," . $this->iMaxSubquestions . ")"
-                : trim((string) $this->getQuestionAttribute('max_answers'))
+                ($this->iMaxSubquestions < $this->getQuestionCount())
+                ? min($this->iMaxSubquestions, (int) $maxAnswersAttribute)
+                : (int) $maxAnswersAttribute
               )
             : $this->iMaxSubquestions;
 
@@ -58,16 +61,39 @@ class RenderRanking extends QuestionBaseRenderer
                 ? $this->mMaxAnswers
                 : $this->iMaxSubquestions
         );
+        $iMaxLine = min($iMaxLine, $this->getQuestionCount());
+
+        $subQuestions = $this->aSubQuestions[0];
+        
+        // Prepare display subquestions for ranking interface
+        $this->aDisplayAnswers = [];
+        foreach ($subQuestions as $oSubQuestion) {
+            $this->aDisplayAnswers[$oSubQuestion->qid] = array(
+                'title' => (string)$oSubQuestion->title,
+                //The renderer still believes it is an answer
+                'answer' => $oSubQuestion->questionl10ns[$this->sLanguage]->question,
+                'sqid' => $oSubQuestion->qid
+            );
+        }
+        
+        // Sort subquestions by question_order if available
+        usort($subQuestions, function ($a, $b) {
+            return ($a->question_order ?? 0) <=> ($b->question_order ?? 0);
+        });
 
         $sSelects = '';
-        $curValue = '';
+        $inputnames = [];
 
+        // Iterate through subquestions instead of answer options
         for ($i = 1; $i <= $iMaxLine; $i++) {
-            $myfname = $this->sSGQA . '_R' . $this->aAnswerOptions[0][$i - 1]->aid;
-            $this->sLabeltext = ($i == 1) ? gT('First choice') : sprintf(gT('Choice of rank %s'), $i);
+            $oSubQuestion = $subQuestions[$i - 1];
+            $myfname = $this->sSGQA . '_S' . $oSubQuestion->qid;
+            $this->sLabeltext = $oSubQuestion->questionl10ns[$this->sLanguage]->question;
             $aItemData = [];
 
-            if (!$_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) {
+            $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], false);
+
+            if (!$mSessionValue) {
                 $aItemData[] = array(
                     'value'      => '',
                     'selected'   => 'SELECTED',
@@ -77,22 +103,19 @@ class RenderRanking extends QuestionBaseRenderer
                 );
             }
 
-            foreach ($this->aAnswerOptions[0] as $oAnswer) {
-                $this->aDisplayAnswers[$oAnswer->aid] = array_merge($oAnswer->attributes, $oAnswer->answerl10ns[$this->sLanguage]->attributes);
-                $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], false);
-
-                if ($mSessionValue == $oAnswer->code) {
+            // Show ranking positions (1, 2, 3, ...)
+            foreach ($subQuestions as $oSubQuestion) {
+                if ($mSessionValue == $oSubQuestion->title) {
                     $selected = SELECTED;
-                    $curValue = $mSessionValue;
                 } else {
                     $selected = '';
                 }
 
                 $aItemData[] = array(
-                    'value' => $oAnswer->code,
+                    'value' => $oSubQuestion->title,
                     'selected' => $selected,
                     'classes' => '',
-                    'optiontext' => $oAnswer->answerl10ns[$this->sLanguage]->answer
+                    'optiontext' => sprintf(gT('Rank %s'), $oSubQuestion->questionl10ns[$this->sLanguage]->question)
                 );
             }
 
@@ -102,7 +125,7 @@ class RenderRanking extends QuestionBaseRenderer
                     'myfname' => $myfname,
                     'labeltext' => $this->sLabeltext,
                     'options' => $aItemData,
-                    'thisvalue' => $curValue
+                    'thisvalue' => $mSessionValue ?? '',
                 ),
                 true
             );
@@ -138,7 +161,6 @@ class RenderRanking extends QuestionBaseRenderer
         } else {
             $rank_title = gT("Your ranking", 'html');
         }
-
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'coreClass'         => $sCoreClasses,
             'sSelects'          => $this->getRows(),

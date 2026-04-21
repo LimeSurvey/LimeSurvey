@@ -32,7 +32,7 @@ class viewHelper
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
      * @param string $linkClass Optional class to add to the link
-     * @param array  $attribs Optional array of attirbutes to set on the link
+     * @param array  $attribs Optional array of attributes to set on the link
      */
     public static function getImageLink($imgName, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
     {
@@ -69,7 +69,7 @@ class viewHelper
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
      * @param string $linkClass Optional class to add to the link
-     * @param array  $attribs Optional array of attirbutes to set on the link
+     * @param array  $attribs Optional array of attributes to set on the link
      */
     public static function getIconLink($icoClasses, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
     {
@@ -242,7 +242,7 @@ class viewHelper
     }
 
     /**
-     * Deactivate script but show it for debuging
+     * Deactivate script but show it for debugging
      * This only filter script tag
      * @todo : filter inline javascript (onclick etc ..., but don't filter EM javascript)
      * Maybe doing it directly in LEM->GetLastPrettyPrintExpression();
@@ -257,13 +257,20 @@ class viewHelper
     }
 
     /**
-     * Show purified html
-     * @param string : Html to purify
-     * @return string
+     * Purifies HTML and returns the cleaned markup.
+     *
+     * Configures the purifier to allow target="_blank" and the `rel` values "external", "noreferrer", and "noopener".
+     *
+     * @param string $sHtml HTML to purify.
+     * @return string The purified HTML string.
      */
     public static function purified($sHtml)
     {
         $oPurifier = new CHtmlPurifier();
+        $oPurifier->options = array(
+            'HTML.TargetBlank' => true,
+            'Attr.AllowedRel' => ['external', 'noreferrer', 'noopener'],
+        );
         return $oPurifier->purify($sHtml);
     }
 

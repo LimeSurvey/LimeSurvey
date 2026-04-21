@@ -234,7 +234,7 @@ class InstallerConfigForm extends CFormModel
     }
 
     /**
-     * Chek whether system meets minimum requirements
+     * Check whether system meets minimum requirements
      * @return bool
      */
     public function getHasMinimumRequirements()

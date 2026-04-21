@@ -126,9 +126,11 @@ export const RESPONSES_TITLES = {
   list: '',
 }
 
+const getBasePath = () => window.location.pathname.split('/editor')[0]
+
 export const URLS = {
-  ADMIN: '/admin',
-  SURVEY_OVERVIEW: '/surveyAdministration/view/',
+  ADMIN: `${getBasePath()}/admin`,
+  SURVEY_OVERVIEW: `${getBasePath()}/surveyAdministration/view/`,
 }
 
 export const placeholderStandardFields = {

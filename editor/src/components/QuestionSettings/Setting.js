@@ -37,19 +37,32 @@ export const Setting = ({
     return undefined
   }
 
+  const getFullAttributeValueFromPath = (attributePath) => {
+    const path = attributePath.split('.')
+    return path.reduce((acc, key) => acc[key], question) || ''
+  }
+
   const getUpdateValueFromPath = (value, attribute) => {
     const attributePath = attribute?.attributePath ?? ''
     const attributeName = attributePath.toString().includes('attributes.')
       ? attributePath.replace('attributes.', '')
       : ''
 
+    // Todo: why is it called advanced attribute?
     const isAdvancedAttribute = attributePath.includes('attributes.')
 
     const updateValue = {}
 
     if (isAdvancedAttribute) {
-      updateValue[attributeName] = {
-        [attribute.languageBased ? language : '']: value,
+      if (attribute.languageBased) {
+        updateValue[attributeName] = {
+          ...getFullAttributeValueFromPath(attributePath),
+          [language]: value,
+        }
+      } else {
+        updateValue[attributeName] = {
+          ['']: value,
+        }
       }
     } else {
       attribute.returnValues.map((returnValue) => {

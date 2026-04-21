@@ -132,7 +132,7 @@ class Surveymenu extends LSActiveRecord
      */
     public function createSurveymenuArray($oSurveyMenuObjects, $collapsed = false, $oSurvey = null)
     {
-        //Posibility to add more languages to the database is given, so it is possible to add a call by language
+        //Possibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
         $aResultCollected = [];
         foreach ($oSurveyMenuObjects as $oSurveyMenuObject) {

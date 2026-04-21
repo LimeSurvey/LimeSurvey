@@ -25,9 +25,9 @@ use LimeSurvey\Models\Services\UserManager;
  * @property integer $parent_id
  * @property string $lang User's preferred language: (auto: automatic | languagecodes eg 'en')
  * @property string $email User's e-mail address
- * @property string $htmleditormode User's prefferred HTML editor mode:(default|inline|popup|none)
- * @property string $templateeditormode User's prefferred template editor mode:(default|full|none)
- * @property string $questionselectormode User's prefferred Question type selector:(default|full|none)
+ * @property string $htmleditormode User's preferred HTML editor mode:(default|inline|popup|none)
+ * @property string $templateeditormode User's preferred template editor mode:(default|full|none)
+ * @property string $questionselectormode User's preferred Question type selector:(default|full|none)
  * @property string $one_time_pw User's one-time-password hash
  * @property integer $dateformat Date format type 1-12
  * @property string $created Time created Time user was created as 'YYYY-MM-DD hh:mm:ss'
@@ -238,17 +238,19 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo Not used?
+     * Get formatted creation date of user to be displayed in the user list
      */
     public function getFormattedDateCreated()
     {
-        $dateCreated = $this->created;
-        /**
-         * @todo: Review this. Cast to string added to keep the original behavior (parameter can't be null since PHP 8.1).
-         *        But it returns the current date if the parameter is null (both now with the cast and pre PHP 8.1 without the cast).
-         */
-        $date = new DateTime((string) $dateCreated);
-        return $date->format($this->getDateFormat());
+        if (empty($this->created)) {
+            return null;
+        }
+        try {
+            $date = new DateTime($this->created);
+            return $date->format($this->getDateFormat());
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     /**
@@ -1019,7 +1021,7 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Get the decription to be used in list
+     * Get the description to be used in list
      * @return string
      */
     public function getDisplayName()

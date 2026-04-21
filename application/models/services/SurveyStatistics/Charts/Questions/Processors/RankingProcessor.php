@@ -15,27 +15,37 @@ class RankingProcessor extends AbstractQuestionProcessor
     {
         $this->rt();
         $charts = [];
-        $i = 0;
+
+        $model = \SurveyDynamic::model($this->surveyId);
+        $db = $model->getDbConnection();
 
         foreach ($this->question['subQuestions'] as $subQuestion) {
-            $title = flattenText($this->question['question']) . " [{$subQuestion['question']}]";
+            $title = $subQuestion['title'];
+            $legends = [];
             $dataItems = [];
-            $legend = [];
-
-            foreach ($this->answers as $answer) {
-                $rt = $this->rt . "_R" . $answer['aid'];
-
-                if ((int)$answer->scale_id === 0) {
-                    $value = $this->getResponseCount($rt, $answer['code']);
-                    $dataItems[] = ['key' => $answer['code'], 'title' => $answer['answer'], 'value' => $value];
-                }
+            $index = 0;
+            $fields = [];
+            foreach ($this->question['subQuestions'] as $subQuestionInner) {
+                $index++;
+                $fieldName = "RANK {$index}";
+                $legends[] = $fieldName;
+                $fields[] = "SUM(CASE WHEN " . $db->quoteColumnName(substr($this->rt, 1) . "_S" . $subQuestionInner['qid']) . " = :title THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($fieldName);
             }
-            $legend[] = 'NoAnswer';
-            $dataItems[] = ['key' => 'NoAnswer', 'value' => 0, 'title' => 'No answer'];
-
-            $charts[] = new StatisticsChartDTO($title, $legend, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
-            $i++;
+            $currentResults = $this->getAggregateResponses($title, $fields);
+            foreach ($legends as $fieldName) {
+                $dataItems[] = [
+                    'key' => $subQuestion['title'],
+                    'title' => $fieldName,
+                    'value' => $currentResults[$fieldName]
+                ];
+            }
+            $charts[] = new StatisticsChartDTO($this->question['question'] . ": " . $subQuestion['question'], $legends, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
         }
+
+        /*$legends[] = 'NoAnswer';
+        $dataItems[] = ['key' => 'NoAnswer', 'value' => 0, 'title' => 'No answer'];
+
+        $charts[] = new StatisticsChartDTO($title, $legends, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);*/
 
         return $charts;
     }
