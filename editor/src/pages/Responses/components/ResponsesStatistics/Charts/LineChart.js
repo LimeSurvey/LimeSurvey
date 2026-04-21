@@ -24,7 +24,7 @@ export const LineChart = ({ data }) => {
     <ResponsiveContainer width="100%" minHeight={500} height="100%">
       <RechartsLineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="key" />
+        <XAxis dataKey="title" />
         <YAxis />
         <Tooltip content={<CustomTooltip />} />
         <Legend />
