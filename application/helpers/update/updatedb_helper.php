@@ -62,9 +62,35 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if ($bSilent && (count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0)) {
         return false;
     }
-    // If DBVersion is older than 184 don't allow database update
+    // If DBVersion is older than 132 don't allow database update
     if ($iOldDBVersion < 132) {
         return false;
+    }
+
+    // Try to acquire database update lock
+    if (!getDatabaseUpdateLock()) {
+        return false;
+    }
+
+    // Enable maintenance mode during critical updates so survey participants
+    // see a maintenance page. Preserve the previous value to restore it afterwards.
+    $bIsCriticalUpdate = count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0;
+    $sPreviousMaintenanceMode = App()->getConfig('maintenancemode');
+    $bMaintenanceModeRestored = true;
+    if ($bIsCriticalUpdate && $sPreviousMaintenanceMode !== 'hard') {
+        SettingGlobal::setSetting('maintenancemode', 'hard');
+        $bMaintenanceModeRestored = false;
+
+        // Safety net: restore maintenance mode even on fatal error / timeout.
+        register_shutdown_function(function () use ($sPreviousMaintenanceMode, &$bMaintenanceModeRestored) {
+            if (!$bMaintenanceModeRestored) {
+                try {
+                    SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                } catch (\Throwable $t) {
+                    // DB may be unavailable at this point, nothing we can do.
+                }
+            }
+        });
     }
 
     /// This function does anything necessary to upgrade
@@ -111,6 +137,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             . '</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
+        // Restore previous maintenance mode if it was changed
+        if (!$bMaintenanceModeRestored) {
+            try {
+                SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                $bMaintenanceModeRestored = true;
+            } catch (\Throwable $t) {
+                Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
+            }
+        }
+        releaseDatabaseUpdateLock();
         // If we're debugging, re-throw the exception.
         if (defined('YII_DEBUG') && YII_DEBUG) {
             throw $e;
@@ -158,8 +194,61 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     fixLanguageConsistencyAllSurveys();
 
+    // Restore previous maintenance mode if it was changed
+    if (!$bMaintenanceModeRestored) {
+        try {
+            SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+            $bMaintenanceModeRestored = true;
+        } catch (\Throwable $t) {
+            Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
+        }
+    }
+    releaseDatabaseUpdateLock();
     Yii::app()->setConfig('Updating', false);
     return true;
+}
+
+/**
+ * This function sets the database update lock.
+ * The database update lock is used to prevent another process / client to start
+ * another (silent or not) database update while an existing one is still running.
+ * The lock is automatically released if the current process finishes
+ *
+ * @param bool $bRelease If true, release the lock instead of acquiring it.
+ * @return boolean True if the lock was established (or released), otherwise false
+ */
+function getDatabaseUpdateLock($bRelease = false)
+{
+    static $pLock = null;
+    if ($bRelease) {
+        if ($pLock !== null) {
+            flock($pLock, LOCK_UN);
+            fclose($pLock);
+            $pLock = null;
+        }
+        return true;
+    }
+    if ($pLock !== null) {
+        return false;
+    }
+    $pLock = @fopen(Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock', 'w+');
+    if (!$pLock) {
+        return false;
+    }
+    if (flock($pLock, LOCK_EX | LOCK_NB)) {
+        return true;
+    }
+    fclose($pLock);
+    $pLock = null;
+    return false;
+}
+
+/**
+ * Release the database update lock acquired by getDatabaseUpdateLock().
+ */
+function releaseDatabaseUpdateLock()
+{
+    getDatabaseUpdateLock(true);
 }
 
 /**
