@@ -149,7 +149,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->showtokenpolicy . " ᴵ" ])
                             : $optionsOnOff
                     ]) ?>
-                    <div id="showtokenpolicy-help" class="form-text"><?php eT("Only if show survey policy is activated."); ?> </div>
+                    <div id="showtokenpolicy-help" class="form-text"><?php eT("Only applies when 'Show privacy policy text with mandatory checkbox' is set to Inline text or Collapsible text.", 'unescaped'); ?></div>
                 </div>
             </div>
             <!-- Enable token-based response persistence -->
@@ -244,7 +244,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->showregisterpolicy . " ᴵ" ])
                             : $optionsOnOff
                     ]) ?>
-                    <div id="showregisterpolicy-help" class="form-text"><?php eT("Only if show survey policy is activated."); ?> </div>
+                    <div id="showregisterpolicy-help" class="form-text"><?php eT("Only applies when 'Show privacy policy text with mandatory checkbox' is set to Inline text or Collapsible text.", 'unescaped'); ?></div>
                 </div>
             </div>
             <!-- Use HTML format for token emails -->
