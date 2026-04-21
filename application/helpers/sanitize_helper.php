@@ -586,9 +586,11 @@ function sanitize_alphanumeric($value)
  */
 function validate_path_component($string)
 {
+    $string = (string) $string;
+
     return !(
         $string === ''
-        || strpos((string) $string, '.') === 0
+        || strpos($string, '.') === 0
         || preg_match('/[\\\\\/]/', $string) === 1
         || preg_match('/[\x00-\x1F\x7F]/', $string) === 1
     );
