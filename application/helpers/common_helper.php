@@ -1302,9 +1302,6 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false)
 {
     $newFieldName = "";
-                        if (in_array($fieldName, ["169637X213X3011", "169637X213X3012", "169637X214X3013", "169637X214X3014", "169637X214X3015", "169637X214X3016", "169637X214X3017"])) {
-                            echo "\n{$fieldName}\n";
-                        }
     if (strpos($tableName, "timings") !== false) {
         $X = explode("X", $fieldName);
         $newFieldName = ((count($X) > 2) ? "Q" : "G") . $X[count($X) - 1];
@@ -1320,6 +1317,12 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
         usort($rootQuestions, function($a, $b) {
             return $b->qid - $a->qid;
         });
+                        if (in_array($fieldName, ["169637X213X3011", "169637X213X3012", "169637X214X3013", "169637X214X3014", "169637X214X3015", "169637X214X3016", "169637X214X3017"])) {
+                            echo "\n{$fieldName}\n";
+                            foreach ($rootQuestions as $rootQuestion) {
+                                echo $rootQuestion->qid . " " . $rootQuestion->type . "\n";
+                            }
+                        }
         foreach ($rootQuestions as $rootQuestion) {
             $questions = [$rootQuestion];
             foreach ($rawQuestions as $rawQuestion) {
