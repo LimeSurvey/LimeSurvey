@@ -1811,7 +1811,7 @@ class LimeExpressionManager
                         $subqs = $qinfo['subqs'];
                         foreach ($subqs as $sq) {
                             $sq_name = null;
-                            if ($sq['code'] == $exclusive_option) {
+                            if ($sq['suffix'] == $exclusive_option) {
                                 continue;   // so don't make the excluded option irrelevant
                             }
                             switch ($type) {
@@ -1826,9 +1826,9 @@ class LimeExpressionManager
                                 case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
                                     if ($this->sgqaNaming) {
-                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
+                                        $sq_name = $qinfo['sgqa'] . '_' . trim($exclusive_option) . '.NAOK';
                                     } else {
-                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
+                                        $sq_name = $qinfo['sgqa'] . '_' . trim($exclusive_option) . '.NAOK';
                                     }
                                     break;
                                 default:
@@ -1875,7 +1875,7 @@ class LimeExpressionManager
                                 break;
                         }
                         if (!is_null($sq_name)) {
-                            if ($sq['code'] == $exclusive_option) {
+                            if ($sq['suffix'] == $exclusive_option) {
                                 $eoVarName = substr((string) $sq['jsVarName'], 4);
                             } else {
                                 $sq_names[] = $sq_name;
