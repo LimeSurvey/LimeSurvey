@@ -19,6 +19,7 @@ class SanitizeHelperTest extends TestBaseClass
             '',
             '.',
             '..',
+            '.git',
             '../twig/extensions',
             '..\\twig\\extensions',
             "bad\0name",

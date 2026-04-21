@@ -23,6 +23,7 @@ class QuestionThemeInstallerTest extends TestBaseClass
             '',
             '.',
             '..',
+            '.hidden',
             '../twig/extensions',
             '..\\twig\\extensions',
             str_repeat('a', 151),
