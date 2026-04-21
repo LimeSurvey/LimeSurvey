@@ -33,13 +33,14 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                     $pageSize,
                     Yii::app()->params['pageSizeOptions'],
                     array(
+                        'id' => 'themeoptions-pageSize',
                         'class' => 'changePageSize form-select',
                         'style' => 'display: inline; width: auto',
-                        'aria-labelledby' => 'rows-per-page-label',
+                        'aria-label' => gT('Rows per page'),
                     )
-                ) . '<span id="rows-per-page-label">'
+                )
             ) .
-            '</span>'
+            ''
         ),
 
         'columns' => [
@@ -109,7 +110,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
 <!-- To update rows per page via ajax setSession-->
 <?php
 $script = '
-                jQuery(document).on("change", "#pageSize", function(){
+                jQuery(document).on("change", "#themeoptions-pageSize", function(){
                     $.fn.yiiGridView.update("themeoptions-grid",{ data:{ pageSize: $(this).val() }});
                 });
                 ';

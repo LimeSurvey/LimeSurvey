@@ -30,7 +30,12 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'pageSize',
                 $pageSize,
                 App()->params['pageSizeOptions'],
-                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                [
+                    'id' => 'questionthemes-pageSize',
+                    'class' => 'changePageSize form-select',
+                    'style' => 'display: inline; width: auto',
+                    'aria-label' => gT('Rows per page')
+                ]
             )
         ),
     'columns'               => [
@@ -106,7 +111,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
 <?php
 // todo create a new javascript file and call function from here, related: 1573120573738
 $script = '
-                jQuery(document).on("change", "#pageSize", function () {
+                jQuery(document).on("change", "#questionthemes-pageSize", function () {
                     $.fn.yiiGridView.update("questionthemes-grid", {
                         data: {
                             pageSize: $(this).val()
