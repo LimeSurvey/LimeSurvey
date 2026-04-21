@@ -43,7 +43,7 @@ class LSYii_EmailIDNAValidator extends CValidator
         }
 
         foreach ($aEmailAddresses as $sEmailAddress) {
-              if (!LimeMailer::validateAddress($sEmailAddress)) {
+            if (!LimeMailer::validateAddress($sEmailAddress)) {
                 $this->addError($object, $attribute, gT('Invalid email address.'));
                 return;
             }

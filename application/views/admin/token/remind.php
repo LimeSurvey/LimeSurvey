@@ -22,10 +22,10 @@
                     </div>
                 <?php endif; ?>
             <?php endif; ?>
-            <?php if (count($warnings)): ?>
+            <?php if (count($warnings)) : ?>
                 <div class="alert alert-warning">
                     <ul class='list-unstyled'>
-                    <?php foreach($warnings as $warning): ?>
+                    <?php foreach ($warnings as $warning) : ?>
                         <li>
                             <?= $warning ?>
                         </li>

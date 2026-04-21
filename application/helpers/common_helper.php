@@ -286,7 +286,7 @@ function convertGETtoPOST($url)
         }
     }
     // params: script-name (string) / empty string / parameters as json
-    return 'window.LS.sendPost('. json_encode($calledscript) . ',"",' . json_encode($postArray) . ');';
+    return 'window.LS.sendPost(' . json_encode($calledscript) . ',"",' . json_encode($postArray) . ');';
 }
 
 
@@ -1289,14 +1289,14 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
 /**
  * Returns the field name of a table's question or subquestion
- * 
+ *
  * @param string $tableName
  * @param string $fieldName
  * @param array $rawQuestions a collection of questions containing a question and its subquestions
  * @param int $sid
  * @param int $gid
  * @param bool $cd is it the condition designer
- * 
+ *
  * @return string the field's name
  */
 function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false)
@@ -1314,7 +1314,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             }
             $questionIndex++;
         }
-        usort($rootQuestions, function($a, $b) {
+        usort($rootQuestions, function ($a, $b) {
             return $b->qid - $a->qid;
         });
         foreach ($rootQuestions as $rootQuestion) {
@@ -1339,7 +1339,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     foreach ($questions as $question) {
                         if ($hashPos && ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null))) {
                             $currentQuestion = $question;
-                        } else if ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
+                        } elseif ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
                             $currentQuestion = $question;
                         }
                     }
@@ -1415,7 +1415,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                                     return "Q{$qid}_S{$qid1}_S{$qid2}";
                                 }
                             }
-                        } else if ($fieldName === "{$partialFieldName}{$title1}") {
+                        } elseif ($fieldName === "{$partialFieldName}{$title1}") {
                             return "Q{$qid}_S{$qid1}";
                         }
                     }
@@ -1477,7 +1477,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                             $diff = 0;
                             if ($minSortOrder === 0) {
                                 $diff = -1;
-                            } else if ($minSortOrder > 1) {
+                            } elseif ($minSortOrder > 1) {
                                 $diff = $minSortOrder;
                             }
                             foreach ($subQuestions as $question) {
@@ -3028,7 +3028,7 @@ function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQID
         $forceRefresh = false;
     }
     $dupes = [];
-    $aFieldMap = createFieldMap($oNewSurvey, 'short', $forceRefresh, false, $oNewSurvey->language, $dupes ,$aQIDReplacements);
+    $aFieldMap = createFieldMap($oNewSurvey, 'short', $forceRefresh, false, $oNewSurvey->language, $dupes, $aQIDReplacements);
 
     $aFieldMappings = array();
     foreach ($aFieldMap as $sFieldname => $aFieldinfo) {
@@ -5596,8 +5596,9 @@ function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuest
             if (preg_match('/^(\d+)([a-zA-Z].*)$/', $title, $match)) {
                 $oldQid = (int) $match[1];
                 $title = $match[2];
-                if(!isset($questionCodes[$oldQid]))
+                if (!isset($questionCodes[$oldQid])) {
                     $title = "";
+                }
             } else {
                 $title = $questionCodes[$title] ?? "";
             }
@@ -5618,7 +5619,7 @@ function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuest
 function sortByKeyLengthDescending($input)
 {
     $keys = array_keys($input);
-    usort($keys, function($a, $b) {
+    usort($keys, function ($a, $b) {
         return strlen($b) - strlen($a);
     });
     $output = [];

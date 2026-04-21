@@ -1,4 +1,5 @@
 <?php
+
 // Translation-source for new editor.
 // Updated on 2026-03-30 21:12:00
 gT('%d answer options');

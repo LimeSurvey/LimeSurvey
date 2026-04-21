@@ -1058,10 +1058,12 @@ class LimeExpressionManager
                     }
                 }
             }
-            if (($row['cqid'] == 0
+            if (
+                ($row['cqid'] == 0
                     && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname'])
                     && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')
-                ) || substr($row['cfieldname'], 0, 1) == '+') {
+                ) || substr($row['cfieldname'], 0, 1) == '+'
+            ) {
                 $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a token field)
             }
             $previousCondition = $row;

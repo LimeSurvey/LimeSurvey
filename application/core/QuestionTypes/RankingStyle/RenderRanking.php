@@ -30,7 +30,7 @@ class RenderRanking extends QuestionBaseRenderer
     {
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->setSubquestions();  // Get ranking items as subquestions
-        
+
         $maxSubquestionsAttribute = (int) $this->getQuestionAttribute('max_subquestions');
         $this->iMaxSubquestions = $maxSubquestionsAttribute > 0
             ? $maxSubquestionsAttribute
@@ -64,7 +64,7 @@ class RenderRanking extends QuestionBaseRenderer
         $iMaxLine = min($iMaxLine, $this->getQuestionCount());
 
         $subQuestions = $this->aSubQuestions[0];
-        
+
         // Prepare display subquestions for ranking interface
         $this->aDisplayAnswers = [];
         foreach ($subQuestions as $oSubQuestion) {
@@ -75,7 +75,7 @@ class RenderRanking extends QuestionBaseRenderer
                 'sqid' => $oSubQuestion->qid
             );
         }
-        
+
         // Sort subquestions by question_order if available
         usort($subQuestions, function ($a, $b) {
             return ($a->question_order ?? 0) <=> ($b->question_order ?? 0);

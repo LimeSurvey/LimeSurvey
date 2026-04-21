@@ -454,8 +454,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING)
+            if (isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING) {
                 continue;
+            }
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 $oAnswerL10n = new AnswerL10n();
@@ -495,8 +496,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 continue; //Skip invalid answer ID
             }
 
-            if(isset($raids[$insertdata['aid']]))
+            if (isset($raids[$insertdata['aid']])) {
                 continue;
+            }
 
             $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
@@ -1013,8 +1015,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING)
+            if (isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING) {
                 continue;
+            }
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
@@ -1079,8 +1082,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 continue; //Skip invalid answer ID
             }
 
-            if(isset($raids[$insertdata['aid']]))
+            if (isset($raids[$insertdata['aid']])) {
                 continue;
+            }
 
             $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
@@ -2899,8 +2903,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING)
+            if (isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING) {
                 continue;
+            }
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
@@ -2962,8 +2967,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 continue; //Skip invalid answer ID
             }
 
-            if(isset($raids[$insertdata['aid']]))
+            if (isset($raids[$insertdata['aid']])) {
                 continue;
+            }
 
             $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
