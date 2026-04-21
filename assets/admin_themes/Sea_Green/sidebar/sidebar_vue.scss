@@ -158,6 +158,13 @@
     }
     .subpanel {
         font-size : 14px;
+        /* Keyboard focus: ring on sidebar links; extra specificity when .selected (current page e.g. Theme options) */
+        a.list-group-item.selected:focus-visible {
+            outline        : 2px solid $g-900 !important;
+            outline-offset : 2px;
+            position       : relative;
+            z-index        : 2;
+        }
         .list-group-item .wrapper {
             .title {
                 color : $g-700;
