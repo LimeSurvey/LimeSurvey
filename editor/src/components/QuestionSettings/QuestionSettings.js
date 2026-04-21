@@ -38,6 +38,7 @@ export const QuestionSettings = ({ surveyId }) => {
     isExpressionScriptPanelOpen: false,
   })
   const [scenarioToPatch, setScenarioToPatch] = useState(null)
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
 
   // holds the scenario ID currently has a new conditions (waiting for temp condition IDs to be replaced)
   const [pendingScenarioName, setPendingScenarioName] = useState(null)
@@ -213,7 +214,7 @@ export const QuestionSettings = ({ surveyId }) => {
                 handleUpdate={updateAttribute}
                 title={setting.title}
                 attributes={setting.attributes}
-                language={language}
+                language={activeLanguage}
               />
             )
           })}

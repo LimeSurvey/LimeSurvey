@@ -29,6 +29,9 @@ class Update_700 extends DatabaseUpdateBase
 
     protected $questionCodes = [];
 
+    /** @var array Survey IDs that have already been processed for INSERTANS conversion */
+    protected $insertansProcessedSids = [];
+
     /**
      * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
      *
@@ -1023,47 +1026,211 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
-     * Checks for insertans tags and replaces them with titles
-     * @param LSActiveRecord $record the record whose insertans is to be handled
-     * @param mixed $fields the fields where it may occur
-     * @param mixed $sid the id of the survey
-     * @return bool whether we changed the record
+     * Convert legacy INSERTANS tags to modern question code references.
+     *
+     * The result is wrapped in curly braces only when the source tag also used curly braces.
+     *
+     * When the QID+suffix boundary is ambiguous (e.g. purely numeric suffixes in array
+     * questions like {INSERTANS:136212X36X10921}), the function progressively tries
+     * shorter QID values until a known QID is found, treating the remainder as suffix.
+     *
+     * @param string $text The text containing INSERTANS tags
+     * @param array $questionCodesByQid Mapping of QID => question title
+     * @return string The text with INSERTANS tags converted to qcode.shown format
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    protected function convertLegacyInsertans($text, array $questionCodesByQid)
+    {
+        if (empty($text) || strpos($text, 'INSERTANS:') === false || empty($questionCodesByQid)) {
+            return $text;
+        }
+
+        return preg_replace_callback(
+            '/(\{?)INSERTANS:([^}\s]+)\}?/',
+            static function ($matches) use ($questionCodesByQid) {
+                $hasBraces = $matches[1] === '{';
+                $rawField  = $matches[2];
+
+                // Only old SGQA format is supported: SIDXGIDXQID[suffix]
+                if (!preg_match('/^(\d+)X(\d+)X(\d+)(.*)$/', $rawField, $m)) {
+                    return $matches[0]; // Not a recognised format – leave unchanged
+                }
+
+                $qidPart = $m[3];
+                $suffix  = $m[4];
+
+                // Resolve QID: the regex greedily captures all digits into $qidPart,
+                // but for array-type questions the suffix can be purely numeric
+                // (e.g. "10921" = QID 1092 + suffix "1"). Try the full number first,
+                // then progressively shorten $qidPart, moving trailing digits to $suffix.
+                $parentTitle = null;
+                $resolvedSuffix = $suffix;
+                for ($i = strlen($qidPart); $i >= 1; $i--) {
+                    $tryQid    = (int) substr($qidPart, 0, $i);
+                    $trySuffix = substr($qidPart, $i) . $suffix;
+                    if (isset($questionCodesByQid[$tryQid])) {
+                        $parentTitle    = $questionCodesByQid[$tryQid];
+                        $resolvedSuffix = $trySuffix;
+                        break;
+                    }
+                }
+
+                if ($parentTitle === null) {
+                    return $matches[0]; // QID not found – leave unchanged
+                }
+
+                // Dual-scale arrays use '#' as separator (e.g. "money#0"), convert to '_'
+                $resolvedSuffix = str_replace('#', '_', $resolvedSuffix);
+
+                if ($resolvedSuffix === '') {
+                    $qcode = $parentTitle . '.shown';
+                } else {
+                    // Suffix is a subquestion code (e.g. SQ001, other, comment, F1, 1, ls1)
+                    // If the suffix already starts with '_' (e.g. "_filecount"), don't add another one
+                    $separator = (strpos($resolvedSuffix, '_') === 0) ? '' : '_';
+                    $qcode = $parentTitle . $separator . $resolvedSuffix . '.shown';
+                }
+
+                return $hasBraces ? '{' . $qcode . '}' : $qcode;
+            },
+            $text
+        );
+    }
+
+    /**
+     * Applies convertLegacyInsertans() to the specified fields of a record.
+     *
+     * @param LSActiveRecord $record the record whose fields are to be converted
+     * @param array $fields the field names where INSERTANS tags may occur
+     * @param int|string $sid the survey ID (used to lazy-load question codes)
+     * @return bool whether the record was changed
      */
     protected function handleInsertans(LSActiveRecord &$record, $fields, $sid)
     {
         $changed = false;
-        $txtInsertans = "{INSERTANS:";
-        foreach ($fields as $field) {
-            $insertansPos = strpos($record->{$field} ?? "", $txtInsertans);
-            if ($insertansPos !== false) {
-                $changed = true;
-                if (empty($this->questionCodes[$sid])) {
-                    $this->questionCodes[$sid] = [];
-                    $questions = Question::model()->findAll("sid = :sid", [":sid" => $sid]);
-                    foreach ($questions as $question) {
-                        $this->questionCodes[$sid][$question->qid] = $question->title;
-                    }
-                }
-                $insertansParts = explode($txtInsertans, $record->{$field});
-                for ($index = 1; $index < count($insertansParts); $index++) {
-                    $curlyPosition = strpos($insertansParts[$index], "}");
-                    $rawField = substr($insertansParts[$index], 0, $curlyPosition);
-                    $content = (strlen($insertansParts[$index]) === $curlyPosition) ? "" : substr($insertansParts[$index], $curlyPosition + 1);
-                    $subField = substr($rawField, strpos($rawField, "X") + 1);
-                    $title = substr($subField, strpos($subField, "X") + 1);
-                    if (preg_match('/[a-zA-Z]/i', $title, $match)) {
-                        $title = substr($title, strpos($title, $match[0]));
-                    } else {
-                        $title = $this->questionCodes[$sid][$title] ?? "";
-                    }
-                    $insertansParts[$index] = $title . ".shown" . $content;
-                }
-                $record->{$field} = implode($insertansParts);
+        $sid = (int) $sid;
+
+        // Lazy-load question codes for this survey (QID → title).
+        // Only parent questions (parent_qid = 0) are included, because INSERTANS
+        // references parent QIDs with the subquestion code as suffix.
+        if (!isset($this->questionCodes[$sid])) {
+            $this->questionCodes[$sid] = [];
+            $questions = Question::model()->findAll("sid = :sid AND parent_qid = 0", [":sid" => $sid]);
+            foreach ($questions as $question) {
+                $this->questionCodes[$sid][$question->qid] = $question->title;
             }
         }
+
+        foreach ($fields as $field) {
+            $text = $record->{$field} ?? '';
+            if ($text === '' || strpos($text, 'INSERTANS:') === false) {
+                continue;
+            }
+
+            $converted = $this->convertLegacyInsertans($text, $this->questionCodes[$sid]);
+            if ($converted !== $text) {
+                $record->{$field} = $converted;
+                $changed = true;
+            }
+        }
+
         return $changed;
     }
 
+    /**
+     * Convert INSERTANS tags and fix SGQA references in all text fields of a survey.
+     *
+     * Loads all relevant entities (QuestionL10n, QuestionGroupL10n, SurveyLanguageSetting,
+     * Conditions, Assessments, QuotaLanguageSettings, DefaultValueL10n, AnswerL10n) and
+     * applies handleInsertans() plus optional fixText() replacements, then saves changed records.
+     *
+     * @param int|string $sid The survey ID
+     * @param Question[] $questions The survey's questions (with answers eager-loaded)
+     * @param array $fieldNames SGQA→new field name map for fixText (may be empty)
+     * @param array $additionalNames SGQA→Q{qid} map for fixText (may be empty)
+     * @param bool $guardRelevance When true, skip saving Question entities with relevance field
+     *                              if the question's survey relation is missing (active survey guard)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    protected function convertSurveyInsertans($sid, array $questions, array $fieldNames = [], array $additionalNames = [], $guardRelevance = false)
+    {
+        $sid = (int) $sid;
+        $qids = [0];
+        $gids = [0];
+        $aids = [0];
+        foreach ($questions as $question) {
+            $qids[] = $question->qid;
+            if (!in_array($question->gid, $gids)) {
+                $gids[] = (int)$question->gid;
+            }
+            foreach ($question->answers as $answer) {
+                $aids[] = $answer->aid;
+            }
+        }
+
+        $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
+        $dvids = [0];
+        foreach ($defaultValues as $defaultValue) {
+            $dvids[] = $defaultValue->dvid;
+        }
+
+        $entityFields = [
+            [
+                'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
+                'fields' => ['cfieldname', 'value']
+            ],
+            [
+                'entities' => (new QuestionL10n())->resetScope()->findAll("qid in (" . implode(",", $qids) . ")"),
+                'fields' => ["question", "script", "help"]
+            ],
+            [
+                'entities' => $questions,
+                'fields' => ['title', 'relevance']
+            ],
+            [
+                'entities' => (new SurveyLanguageSetting())->resetScope()->findAll("surveyls_survey_id=" . $sid),
+                'fields' => ['surveyls_urldescription', 'surveyls_url']
+            ],
+            [
+                'entities' => QuotaLanguageSetting::model()->with(['quota' => ['condition' => 'sid=' . $sid]])->together()->findAll(),
+                'fields' => ['quotals_url', 'quotals_urldescrip']
+            ],
+            [
+                'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
+                'fields' => ['description', 'group_name']
+            ],
+            [
+                'entities' => Assessment::model()->findAll("sid = " . $sid),
+                'fields' => ['name', 'message']
+            ],
+            [
+                'entities' => (new DefaultValueL10n())->resetScope()->findAll("dvid in (" . implode(",", $dvids) . ")"),
+                'fields' => ['defaultvalue']
+            ],
+            [
+                'entities' => (new AnswerL10n())->resetScope()->findAll("aid in (" . implode(",", $aids) . ")"),
+                'fields' => ['answer']
+            ]
+        ];
+
+        foreach ($entityFields as $ef) {
+            foreach ($ef['entities'] as $entity) {
+                $changed = $this->handleInsertans($entity, $ef['fields'], $sid);
+                if (!empty($fieldNames)) {
+                    $changed = $this->fixText($entity, $ef['fields'], $fieldNames) || $changed;
+                }
+                if (!empty($additionalNames)) {
+                    $changed = $this->fixText($entity, $ef['fields'], $additionalNames) || $changed;
+                }
+                if ($changed) {
+                    if ($guardRelevance && in_array('relevance', $ef['fields']) && $entity->qid && (!$entity->survey)) {
+                        continue;
+                    }
+                    $entity->save();
+                }
+            }
+        }
+    }
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
@@ -1206,6 +1373,7 @@ class Update_700 extends DatabaseUpdateBase
                 $parts = explode("_", $TABLE_NAME);
                 $index = count($parts) - ((strpos($TABLE_NAME, "old") === false) ? 1 : 2);
                 $sid = $parts[$index];
+                $this->insertansProcessedSids[$sid] = true;
                 foreach ($keys as $oldName) {
                     $names[$oldName] = $fieldMap[$TABLE_NAME][$oldName];
                 }
@@ -1213,18 +1381,8 @@ class Update_700 extends DatabaseUpdateBase
                 $questions = Question::model()->with('answers')->findAll("sid = :sid", [
                     ":sid" => $sid
                 ]);
-                $qids = [0];
-                $gids = [0];
-                $aids = [0];
                 foreach ($questions as $question) {
                     $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
-                    $qids[] = $question->qid;
-                    if (!in_array($question->gid, $gids)) {
-                        $gids[] = (int)$question->gid;
-                    }
-                    foreach ($question->answers as $answer) {
-                        $aids[] = $answer->aid;
-                    }
                 }
                 $additionalNameKeys = array_keys($rawAdditionalNames);
                 arsort($additionalNameKeys);
@@ -1232,86 +1390,20 @@ class Update_700 extends DatabaseUpdateBase
                 foreach ($additionalNameKeys as $additionalNameKey) {
                     $additionalNames[$additionalNameKey] = $rawAdditionalNames[$additionalNameKey];
                 }
-                $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
-                $dvids = [0];
-                foreach ($defaultValues as $defaultValue) {
-                    $dvids[] = $defaultValue->dvid;
-                }
-                $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
-                $entityFields = [
-                    [
-                        'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                        'fields' => ['cfieldname', 'value']
-                    ],
-                    [
-                        'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                        'fields' => ["question", "script", "help"]
-                    ],
-                    [
-                        'entities' => $questions,
-                        'fields' => ['title', 'relevance']
-                    ],
-                    [
-                        'entities' => SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid),
-                        'fields' => ['surveyls_urldescription', 'surveyls_url']
-                    ],
-                    [
-                        'entities' => QuotaLanguageSetting::model()->with(['quota' => ['condition' => 'sid=' . $sid]])->together()->findAll(),
-                        'fields' => ['quotals_url', 'quotals_urldescrip']
-                    ],
-                    [
-                        'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
-                        'fields' => ['description', 'group_name']
-                    ],
-                    [
-                        'entities' => Assessment::model()->findAll("sid = " . $sid),
-                        'fields' => ['name', 'message']
-                    ],
-                    [
-                        'entities' => $default10ns,
-                        'fields' => ['defaultvalue']
-                    ],
-                    [
-                        'entities' => AnswerL10n::model()->findAll("aid in (" . implode(",", $aids) . ")"),
-                        'fields' => ['answer']
-                    ]
-                ];
-                foreach ($entityFields as $ef) {
-                    foreach ($ef['entities'] as $entity) {
-                        $save = [
-                            $this->handleInsertans($entity, $ef['fields'], $sid),
-                            $this->fixText($entity, $ef['fields'], $names),
-                            $this->fixText($entity, $ef['fields'], $additionalNames)
-                        ];
-                        if ($save[0] || $save[1] || $save[2]) {
-                            if (!(in_array('relevance', $ef['fields']) && $entity->qid && (!$entity->survey))) {
-                                $entity->save();
-                            }
-                        }
-                    }
-                }
+                $this->convertSurveyInsertans($sid, $questions, $names, $additionalNames, true);
             }
         }
 
         $passiveSurveys = Survey::model()->findAll("active <> 'Y'");
         foreach ($passiveSurveys as $passiveSurvey) {
             $sid = $passiveSurvey->sid;
-            $qids = [0];
-            $gids = [0];
-            $aids = [0];
+            $this->insertansProcessedSids[$sid] = true;
             $questions = Question::model()->with('answers')->findAll("sid = :sid", [
                 ":sid" => $passiveSurvey->sid
             ]);
             $rawAdditionalNames = [];
             foreach ($questions as $question) {
                 $rawAdditionalNames["{$question->sid}X{$question->gid}X{$question->qid}"] = "Q{$question->qid}";
-                $qids[] = $question->qid;
-                if (!in_array($question->gid, $gids)) {
-                    $gids[] = (int)$question->gid;
-                }
-                foreach ($question->answers as $answer) {
-                    $aids[] = $answer->aid;
-                }
             }
             $additionalNameKeys = array_keys($rawAdditionalNames);
             arsort($additionalNameKeys);
@@ -1347,62 +1439,20 @@ class Update_700 extends DatabaseUpdateBase
                     }
                 }
             }
-            $defaultValues = DefaultValue::model()->findAll("qid in (" . implode(",", $qids) . ")");
-            $dvids = [0];
-            foreach ($defaultValues as $defaultValue) {
-                $dvids[] = $defaultValue->dvid;
+            $this->convertSurveyInsertans($sid, $questions, $newFields, $additionalNames);
+        }
+
+        // Catch-all: convert INSERTANS tags for any surveys not already processed above.
+        // The active-survey loop only processes surveys that have response tables with SGQA columns,
+        // so active surveys without such columns would be missed.
+        $allSurveys = Survey::model()->findAll();
+        foreach ($allSurveys as $survey) {
+            $sid = $survey->sid;
+            if (isset($this->insertansProcessedSids[$sid])) {
+                continue;
             }
-            $default10ns = DefaultValueL10n::model()->findAll("dvid in (" . implode(",", $dvids) . ")");
-            $entityFields = [
-                [
-                    'entities' => Condition::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                    'fields' => ['cfieldname', 'value']
-                ],
-                [
-                    'entities' => QuestionL10n::model()->findAll("qid in (" . implode(",", $qids) . ")"),
-                    'fields' => ["question", "script", "help"]
-                ],
-                [
-                    'entities' => $questions,
-                    'fields' => ['title', 'relevance']
-                ],
-                [
-                    'entities' => SurveyLanguageSetting::model()->findAll("surveyls_survey_id=" . $sid),
-                    'fields' => ['surveyls_urldescription', 'surveyls_url']
-                ],
-                [
-                    'entities' => QuotaLanguageSetting::model()->with(['quota' => ['condition' => 'sid=' . $sid]])->together()->findAll(),
-                    'fields' => ['quotals_url', 'quotals_urldescrip']
-                ],
-                [
-                    'entities' => (new QuestionGroupL10n())->resetScope()->findAll("gid in (" . implode(",", $gids) . ")"),
-                    'fields' => ['description', 'group_name']
-                ],
-                [
-                    'entities' => Assessment::model()->findAll("sid = " . $sid),
-                    'fields' => ['name', 'message']
-                ],
-                [
-                    'entities' => $default10ns,
-                    'fields' => ['defaultvalue']
-                ],
-                [
-                    'entities' => AnswerL10n::model()->findAll("aid in (" . implode(",", $aids) . ")"),
-                    'fields' => ['answer']
-                ]
-            ];
-            foreach ($entityFields as $ef) {
-                foreach ($ef['entities'] as $entity) {
-                    $save = [
-                        $this->handleInsertans($entity, $ef['fields'], $sid),
-                        $this->fixText($entity, $ef['fields'], $newFields),
-                        $this->fixText($entity, $ef['fields'], $additionalNames)
-                    ];
-                    if ($save[0] || $save[1] || $save[2]) {
-                        $entity->save();
-                    }
-                }
-            }
+            $questions = Question::model()->with('answers')->findAll("sid = :sid", [":sid" => $sid]);
+            $this->convertSurveyInsertans($sid, $questions);
         }
 
         foreach ($scripts as $TABLE_NAME => $content) {

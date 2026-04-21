@@ -1019,7 +1019,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
         }
 
         // If it is a comment field there is nothing to convert here
-        if (($fields['aid'] ?? '') == 'comment') {
+        if (str_ends_with((string)($fields['aid'] ?? ''), 'comment')) {
             return $sValue;
         }
 
@@ -1774,7 +1774,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         'sid' => $surveyid,
                         "gid" => $arow['gid'],
                         "qid" => $arow['qid'],
-                        "aid" => "_Cother");
+                        "aid" => "other");
                         if (isset($answerColumnDefinition)) {
                             $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                         }
@@ -1808,7 +1808,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     'sid' => $surveyid,
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
-                    "aid" => "_Ccomment");
+                    "aid" => "comment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }
@@ -1974,7 +1974,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
                     "sqid" => $abrow['qid'],
-                    "aid" => $abrow['title'],
+                    "aid" => $i,
                     "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
                 );
                 if (isset($answerColumnDefinition)) {
@@ -5562,57 +5562,95 @@ function csvEscape($string)
 }
 
 /**
- * Convert legacy INSERTANS tags to modern question code references
+ * Convert legacy INSERTANS tags to modern question code references.
  *
- * Converts {INSERTANS:SIDXGIDXQID} format to questionTitle.shown format
+ * The result is wrapped in curly braces only when the source tag also used curly braces.
+ *
+ * When the QID+suffix boundary is ambiguous (e.g. purely numeric suffixes in array
+ * questions like {INSERTANS:136212X36X10921}), the function progressively tries
+ * shorter QID values until a known QID is found, treating the remainder as suffix.
+ *
  * Examples:
- * - {INSERTANS:554233X11X1} ? G01Q02.shown (if QID 1 exists)
- * - {INSERTANS:554233X11X11} ? {INSERTANS:554233X11X11} (if QID 11 doesn't exist)
- * - {INSERTANS:554233X11X1someText} ? someText.shown (if QID 1 exists)
- * - {INSERTANS:554233X11X11someText} ? {INSERTANS:554233X11X11someText} (if QID 11 doesn't exist)
+ * - {INSERTANS:554233X11X1}        → {G01Q02.shown}          (with braces, QID exists)
+ * - INSERTANS:554233X11X1          → G01Q02.shown             (without braces, QID exists)
+ * - {INSERTANS:554233X11X99}       → {INSERTANS:554233X11X99} (unchanged, QID not found)
+ * - {INSERTANS:554233X11X1other}   → {G01Q02_other.shown}    (other field)
+ * - {INSERTANS:554233X11X1comment} → {G01Q02_comment.shown}  (comment field)
+ * - {INSERTANS:554233X11X1SQ001}   → {G01Q02_SQ001.shown}    (subquestion suffix)
+ * - {INSERTANS:136212X36X10921}    → {qArray5Point_1.shown}   (numeric suffix, QID=1092)
+ * - {INSERTANS:136212X36X1098money#0} → {qArrayDualScale_money_0.shown} (dual scale, # → _)
  *
  * @param string $text The text containing INSERTANS tags
- * @param array $questions The list of all questions
- * @param array $newOldSurveyQuestionMap The mapping between the old question IDs and the new question IDs in the new survey
- * @return string The text with INSERTANS tags converted
+ * @param array $questions The list of all question objects (parent and subquestions)
+ * @param array $newOldSurveyQuestionMap Mapping from new question IDs to old question IDs
+ * @return string The text with INSERTANS tags converted to qcode.shown format
  */
 function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuestionMap = [])
 {
-    $txtInsertans = "{INSERTANS:";
-
-    if (empty($text) || !str_contains($text, $txtInsertans) || empty($questions) || empty($newOldSurveyQuestionMap)) {
+    if (empty($text) || !str_contains($text, 'INSERTANS:') || empty($questions)) {
         return $text;
     }
 
-    $questionCodes = [];
+    // Map old QID → question title, built via the new→old mapping.
+    // Only parent questions (parent_qid = 0) are included, because INSERTANS
+    // references parent QIDs with the subquestion code as suffix.
+    $questionCodesByOldQid = [];
     foreach ($questions as $question) {
-        $questionCodes[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
-    }
-
-    $insertansPos = strpos($text, $txtInsertans);
-    if ($insertansPos !== false) {
-        $insertansParts = explode($txtInsertans, $text);
-        for ($index = 1; $index < count($insertansParts); $index++) {
-            $curlyPosition = strpos($insertansParts[$index], "}");
-            $rawField = substr($insertansParts[$index], 0, $curlyPosition);
-            $content = (strlen($insertansParts[$index]) === $curlyPosition) ? "" : substr($insertansParts[$index], $curlyPosition + 1);
-            $subField = substr($rawField, strpos($rawField, "X") + 1);
-            $title = substr($subField, strpos($subField, "X") + 1);
-            if (preg_match('/^(\d+)([a-zA-Z].*)$/', $title, $match)) {
-                $oldQid = (int) $match[1];
-                $title = $match[2];
-                if(!isset($questionCodes[$oldQid]))
-                    $title = "";
-            } else {
-                $title = $questionCodes[$title] ?? "";
-            }
-            $insertansParts[$index] = !empty($title) ?  $title . ".shown" . $content : $txtInsertans . $rawField . '}' . $content;
+        if (!empty($newOldSurveyQuestionMap[$question->qid]) && empty($question->parent_qid)) {
+            $questionCodesByOldQid[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
         }
-
-        return implode($insertansParts);
     }
 
-    return $text;
+    return preg_replace_callback(
+        '/(\{?)INSERTANS:([^}\s]+)\}?/',
+        static function ($matches) use ($questionCodesByOldQid) {
+            $hasBraces = $matches[1] === '{';
+            $rawField  = $matches[2];
+
+            // Only old SGQA format is supported: SIDXGIDXQID[suffix]
+            if (!preg_match('/^(\d+)X(\d+)X(\d+)(.*)$/', $rawField, $m)) {
+                return $matches[0]; // Not a recognised format – leave unchanged
+            }
+
+            $qidPart = $m[3];
+            $suffix  = $m[4];
+
+            // Resolve QID: the regex greedily captures all digits into $qidPart,
+            // but for array-type questions the suffix can be purely numeric
+            // (e.g. "10921" = QID 1092 + suffix "1"). Try the full number first,
+            // then progressively shorten $qidPart, moving trailing digits to $suffix.
+            $parentTitle = null;
+            $resolvedSuffix = $suffix;
+            for ($i = strlen($qidPart); $i >= 1; $i--) {
+                $tryQid    = (int) substr($qidPart, 0, $i);
+                $trySuffix = substr($qidPart, $i) . $suffix;
+                if (isset($questionCodesByOldQid[$tryQid])) {
+                    $parentTitle    = $questionCodesByOldQid[$tryQid];
+                    $resolvedSuffix = $trySuffix;
+                    break;
+                }
+            }
+
+            if ($parentTitle === null) {
+                return $matches[0]; // QID not found – leave unchanged
+            }
+
+            // Dual-scale arrays use '#' as separator (e.g. "money#0"), convert to '_'
+            $resolvedSuffix = str_replace('#', '_', $resolvedSuffix);
+
+            if ($resolvedSuffix === '') {
+                $qcode = $parentTitle . '.shown';
+            } else {
+                // Suffix is a subquestion code (e.g. SQ001, other, comment, F1, 1, ls1)
+                // If the suffix already starts with '_' (e.g. "_filecount"), don't add another one
+                $separator = str_starts_with($resolvedSuffix, '_') ? '' : '_';
+                $qcode = $parentTitle . $separator . $resolvedSuffix . '.shown';
+            }
+
+            return $hasBraces ? '{' . $qcode . '}' : $qcode;
+        },
+        $text
+    );
 }
 
 /**
