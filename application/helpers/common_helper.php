@@ -1460,6 +1460,9 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     if ($isComment) {
                         $newFieldName .= "_Ccomment";
                     } elseif ($isRoot && $clearIfLong && (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}"))) {
+                        if (in_array($fieldName, ["169637X213X3011", "169637X213X3012", "169637X214X3013", "169637X214X3014", "169637X214X3015", "169637X214X3016", "169637X214X3017"])) {
+                            echo "\nFieldname: {$fieldName}, {$sid}X{$gid}X{$qid}, numbers: " . strlen($fieldName) . ", " . strlen("{$sid}X{$gid}X{$qid}") . "\n";
+                        }
                         $newFieldName = "";
                     }
                     break;
