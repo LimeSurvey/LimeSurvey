@@ -2,7 +2,7 @@
 <?php
 
 $aActionsArray = array(
-    'pk'          => 'selectedUser',
+    'pk'          => 'uid',
     'gridid'      => 'usermanagement--identity-gridPanel',
     'dropupId'    => 'usermanagement--actions',
     'dropUpText'  => gT('Selected user(s)...'),
@@ -78,6 +78,25 @@ $aActionsArray = array(
             'sModalTitle'       => gT('Edit status'),
             //'htmlFooterButtons' => [],
             'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatestatus', [], true)
+        ),
+        array(
+            'type'              => 'action',
+            'id'                => 'edit-expires',
+            'action'            => 'batchExpires',
+            'url'               => App()->createUrl('userManagement/batchExpires'),
+            'iconClasses'       => 'ri-user-follow-fill',
+            'text'              => gT('Set expire date'),
+            'grid-reload'       => 'yes',
+            //modal
+            'actionType'        => 'modal',
+            'modalType'         => 'cancel-apply',
+            'largeModalView'    => true,
+            'keepopen'          => 'yes',
+            'showSelected'      => 'yes',
+            'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
+            'sModalTitle'       => gT('Set expire date'),
+            //'htmlFooterButtons' => [],
+            'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updateexpires', [], true)
         ),
     ),
 );

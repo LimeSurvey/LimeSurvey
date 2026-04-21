@@ -35,8 +35,9 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                             'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate']." H:i",strtotime((string) $oSurvey->startdate)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                'allowInputToggle' =>true,
+                                'allowInputToggle' => true,
                                 'showClear' => true,
+                                'theme' => 'light',
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
@@ -56,6 +57,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
                                 'showClear' => true,
+                                'theme' => 'light',
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
