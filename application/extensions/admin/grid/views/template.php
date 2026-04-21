@@ -19,10 +19,11 @@
 <?php
 if (!empty($this->lsAdditionalColumns)) {
     App()->getController()->widget('ext.admin.grid.ColumnFilterWidget.ColumnFilterWidget', [
-        'modalId'           => 'survey-column-filter-modal',
+        'modalId'           => 'column-filter-modal',
         'filterableColumns' => $this->lsAdditionalColumns,
         'filteredColumns'   => $this->lsAdditionalColumnsSelected,
         'columnsData'       => $this->columns,
+        'ajaxUpdate'        => $this->id,
     ]);
 }
 ?>
