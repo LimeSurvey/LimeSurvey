@@ -50,7 +50,7 @@
 
                         <!-- Languages -->
                         <div class="mb-3 col-lg-6">
-                            <label class=" form-label"><?php eT("Languages:"); ?></label>
+                            <label class="form-label" id="languageids-label" for="languageids"><?php eT("Languages:"); ?></label>
                             <div class="">
                                 <?php
                                 $aAllLanguages = getLanguageDataRestricted(false, 'short');
@@ -60,7 +60,13 @@
                                 Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2',
                                     [
                                         'asDropDownList' => true,
-                                        'htmlOptions'    => ['multiple' => 'multiple', 'style' => "width: 80%", 'required' => 'required'],
+                                        'htmlOptions'    => [
+                                            'id' => 'languageids',
+                                            'multiple' => 'multiple',
+                                            'style' => "width: 80%",
+                                            'required' => 'required',
+                                            'aria-labelledby' => 'languageids-label',
+                                        ],
                                         'data'           => $aAllLanguages,
                                         'value'          => $langidsarray,
                                         'name'           => 'languageids',
