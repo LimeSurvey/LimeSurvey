@@ -206,6 +206,8 @@ $ldap_queries[$query_id]['attr2'] = '';
  //Copy previous definition lines
  ********/
 
+/*--- LDAP Group list loader ---*/
+include_once "ldap-group-list-loader.php";
 
 //DO NOT CHANGE BELOW HERE --------------------
 
