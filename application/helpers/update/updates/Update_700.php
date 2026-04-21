@@ -1083,12 +1083,8 @@ class Update_700 extends DatabaseUpdateBase
 
                 if ($resolvedSuffix === '') {
                     $qcode = $parentTitle . '.shown';
-                } elseif (strtolower($resolvedSuffix) === 'other') {
-                    $qcode = $parentTitle . '_other.shown';
-                } elseif (strtolower($resolvedSuffix) === 'comment') {
-                    $qcode = $parentTitle . '_comment.shown';
                 } else {
-                    // Any other suffix is a subquestion code (e.g. SQ001, F1, 1, ls1)
+                    // Suffix is a subquestion code (e.g. SQ001, other, comment, F1, 1, ls1)
                     // If the suffix already starts with '_' (e.g. "_filecount"), don't add another one
                     $separator = (strpos($resolvedSuffix, '_') === 0) ? '' : '_';
                     $qcode = $parentTitle . $separator . $resolvedSuffix . '.shown';
