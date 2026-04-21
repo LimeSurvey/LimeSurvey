@@ -3883,7 +3883,7 @@ class LimeExpressionManager
                             'jsVarName'    => $jsVarName,
                             'csuffix'      => $csuffix,  // fieldname suffix (e.g. '_S{sqid}')
                             'sqsuffix'     => $sqsuffix, // qcode/aid suffix (e.g. '_SQ001')
-                            'code'         => $aid,      // the subquestion code/title (e.g. 'SQ001') for attribute comparisons
+                            'suffix'         => $aid,      // the subquestion code/title (e.g. 'SQ001') for attribute comparisons
                         ];
                         break;
                 }
