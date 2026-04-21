@@ -315,8 +315,7 @@ class Themes extends SurveyCommonAction
                     throw new Exception(gT('The question theme is not compatible with your version of LimeSurvey.'));
                 }
                 $questionThemeName = $config->getName();
-                \Yii::import('application.helpers.sanitize_helper', true);
-                if (!validate_path_component($questionThemeName)) {
+                if (!$installer->validateQuestionThemeName($questionThemeName)) {
                     $installer->abort();
                     throw new Exception(gT('Invalid question theme name in config.xml'));
                 }

@@ -32,8 +32,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
     {
         $extConfig = $this->getConfig();
         $questionThemeName = $extConfig->getName();
-        \Yii::import('application.helpers.sanitize_helper', true);
-        if (!validate_path_component($questionThemeName)) {
+        if (!$this->validateQuestionThemeName($questionThemeName)) {
             throw new Exception(gT('Invalid question theme name in config.xml'));
         }
         $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $questionThemeName;
@@ -96,8 +95,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
     {
         $extConfig = $this->getConfig();
         $questionThemeName = $extConfig->getName();
-        \Yii::import('application.helpers.sanitize_helper', true);
-        if (!validate_path_component($questionThemeName)) {
+        if (!$this->validateQuestionThemeName($questionThemeName)) {
             throw new Exception(gT('Invalid question theme name in config.xml'));
         }
         $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $questionThemeName;
@@ -143,5 +141,29 @@ class QuestionThemeInstaller extends ExtensionInstaller
             }
         }
         return null;
+    }
+
+    /**
+     * Validate that a question theme name is safe to use for installation.
+     *
+     * @param string $questionThemeName
+     * @return bool
+     */
+    public function validateQuestionThemeName($questionThemeName)
+    {
+        // TODO: Should this be stricter, e.g. only allow alphanumeric characters plus hyphens and underscores?
+
+        // Reject path traversal and other unsafe path component values.
+        \Yii::import('application.helpers.sanitize_helper', true);
+        if (!validate_path_component($questionThemeName)) {
+            return false;
+        }
+
+        // Match the QuestionTheme model validation limit for the name field.
+        if (mb_strlen((string) $questionThemeName, 'UTF-8') > 150) {
+            return false;
+        }
+
+        return true;
     }
 }
