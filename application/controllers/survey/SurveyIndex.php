@@ -411,7 +411,7 @@ class SurveyIndex extends CAction
         //CHECK FOR PREVIOUSLY COMPLETED COOKIE
         //If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
         $sCookieName = "LS_" . $surveyid . "_STATUS";
-        if (!$previewmode && isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1) {
+        if (!$previewmode && isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && !($tokenInstance ?? false)) {
             $aErrors  = array(gT('Error'));
             $aMessage = array(
                 gT("You have already completed this survey.")
