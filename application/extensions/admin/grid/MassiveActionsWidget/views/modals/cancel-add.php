@@ -17,28 +17,33 @@ if (isset($aAction['largeModalView']) && $aAction['largeModalView']) {
 }else{
     $largeModalView = '';
 }
+$massiveModalDomId = 'massive-actions-modal-' . $this->gridid . '-' . $aAction['action'] . '-' . $key;
+$massiveModalTitleId = $massiveModalDomId . '-title';
+$massiveModalDialogSrId = $massiveModalTitleId . '-dialogsr';
 ?>
 
 <!-- Modal confirmation for <?php
 echo $aAction['action']; ?> -->
 
-<div id="massive-actions-modal-<?php
-echo $this->gridid; ?>-<?php
-echo $aAction['action']; ?>-<?php
-echo $key; ?>"
+<div id="<?php echo CHtml::encode($massiveModalDomId); ?>"
      class="modal fade"
      role="dialog"
+     aria-modal="true"
+     aria-labelledby="<?php echo CHtml::encode($massiveModalTitleId . ' ' . $massiveModalDialogSrId); ?>"
      data-keepopen="<?php echo $aAction['keepopen']; ?>"
      data-show-selected="<?php echo $showSelected; ?>"
      data-selected-url="<?php echo $selectedUrl ?>"
 >
-    <div class="modal-dialog <?php echo $largeModalView?>">
+    <div class="modal-dialog <?php echo $largeModalView?>" role="document">
         <!-- Modal content-->
         <div class="modal-content" style="text-align:left; color:#000">
             <?php
             Yii::app()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => $aAction['sModalTitle']]
+                [
+                    'modalTitle' => $aAction['sModalTitle'],
+                    'modalTitleId' => $massiveModalTitleId,
+                ]
             );
             ?>
             <div class="modal-body">
