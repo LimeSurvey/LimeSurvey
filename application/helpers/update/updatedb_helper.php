@@ -1629,6 +1629,9 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     // TODO: Don't use models in updatedb_helper.
     $attributes = $settings1->attributes;
     unset($attributes['ipanonymize']);
+    /* Added in 649 update */
+    unset($attributes['showregisterpolicy']);
+    unset($attributes['showtokenpolicy']);
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
