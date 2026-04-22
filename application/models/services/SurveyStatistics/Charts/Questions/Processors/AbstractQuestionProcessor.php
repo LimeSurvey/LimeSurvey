@@ -101,19 +101,69 @@ abstract class AbstractQuestionProcessor
     public function setCompleted(?bool $completed): AbstractQuestionProcessor
     {
         $this->completed = $completed;
+        $this->columnCountsCache = [];
         return $this;
     }
 
     public function setMinId(?int $minId): AbstractQuestionProcessor
     {
         $this->minId = $minId;
+        $this->columnCountsCache = [];
         return $this;
     }
 
     public function setMaxId(?int $maxId): AbstractQuestionProcessor
     {
         $this->maxId = $maxId;
+        $this->columnCountsCache = [];
         return $this;
+    }
+
+    /**
+     * Cache for getCountsByColumn() results, keyed by fieldName.
+     * @var array<string, array<string, int>>
+     */
+    private array $columnCountsCache = [];
+
+    /**
+     * Returns all value count pairs for a response column
+     * plus a '_null' key for unanswered/empty rows.
+     *
+     * @param string $fieldName Column name in the response table
+     * @return array<string, int>  e.g. ['A' => 42, 'B' => 17, '_null' => 5]
+     */
+    protected function getCountsByColumn(string $fieldName): array
+    {
+        if (isset($this->columnCountsCache[$fieldName])) {
+            return $this->columnCountsCache[$fieldName];
+        }
+
+        $model = SurveyDynamic::model($this->surveyId);
+        $db    = $model->getDbConnection();
+        $col   = $db->quoteColumnName($fieldName);
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+
+        $criteria = new LSDbCriteria();
+        $this->applyFilters($criteria);
+        $where  = $criteria->condition ? ('WHERE ' . $criteria->condition) : '';
+        $params = $criteria->params ?? [];
+
+        // Answered rows grouped by value
+        $sql = "SELECT $col AS val, COUNT(*) AS cnt FROM $table $where GROUP BY $col";
+        $rows = $db->createCommand($sql)->queryAll(true, $params);
+
+        $counts = ['_null' => 0];
+        foreach ($rows as $row) {
+            $val = $row['val'];
+            if ($val === null || $val === '') {
+                $counts['_null'] += (int)$row['cnt'];
+            } else {
+                $counts[$val] = (int)$row['cnt'];
+            }
+        }
+
+        $this->columnCountsCache[$fieldName] = $counts;
+        return $counts;
     }
 
     /**
@@ -125,31 +175,27 @@ abstract class AbstractQuestionProcessor
      */
     protected function getResponseCount(string $fieldName, $value = null): int
     {
-        $model = SurveyDynamic::model($this->surveyId);
-        $db = $model->getDbConnection();
-        $col = $db->quoteColumnName($fieldName);
-
-        $criteria = new LSDbCriteria();
-
-        $criteria->addCondition("$col IS NOT NULL");
-        $criteria->addCondition("$col != ''");
-
+        $counts = $this->getCountsByColumn($fieldName);
         if ($value !== null) {
-            $criteria->compare($col, $value);
+            return $counts[$value] ?? 0;
         }
 
-        $this->applyFilters($criteria);
-
-        return (int)$model->count($criteria);
+        $total  = 0;
+        foreach ($counts as $key => $cnt) {
+            if ($key !== '_null') {
+                $total += $cnt;
+            }
+        }
+        return $total;
     }
 
     /**
      * Gets column aggregate response
-     * @param mixed $title
      * @param mixed $fields
+     * @param mixed $params
      * @return array|bool
      */
-    public function getAggregateResponses($title, $fields)
+    public function getAggregateResponses($fields, $params)
     {
         $model = SurveyDynamic::model($this->surveyId);
         $db = $model->getDbConnection();
@@ -157,21 +203,14 @@ abstract class AbstractQuestionProcessor
             ->select(implode(",", $fields))
             ->from("{{responses_" . $this->surveyId . "}}")
         ;
-        return $command->query([":title" => $title])->read();
+        return $command->query($params)->read();
     }
 
 
     protected function getResponseNotAnsweredCount(string $fieldName): int
     {
-        $model = SurveyDynamic::model($this->surveyId);
-        $db = $model->getDbConnection();
-        $col = $db->quoteColumnName($fieldName);
-
-        $criteria = new LSDbCriteria();
-        $criteria->addCondition("($col IS NULL OR $col = '')");
-        $this->applyFilters($criteria);
-
-        return (int)$model->count($criteria);
+        $counts = $this->getCountsByColumn($fieldName);
+        return $counts['_null'] ?? 0;
     }
     /**
      * Apply common filters to criteria
