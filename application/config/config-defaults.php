@@ -644,6 +644,7 @@ $config['restrictToLanguages'] = '';
 */
 $config['RPCInterface'] = 'off';
 $config['add_access_control_header'] = 1;
+$config['rpc_plugin_api'] = 0;
 
 /**
 * This parameter sets the default session expiration time in seconds
