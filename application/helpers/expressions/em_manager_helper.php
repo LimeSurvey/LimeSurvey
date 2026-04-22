@@ -1808,10 +1808,14 @@ class LimeExpressionManager
                         if ($exclusive_option == '') {
                             continue;
                         }
+                        $exclusiveOptionSGQA = $this->qcode2sgqa[$qinfo['rootVarName'] . '_' . $exclusive_option] ?? '';
+                        if ($exclusiveOptionSGQA === ''){
+                            continue;
+                        }
                         $subqs = $qinfo['subqs'];
                         foreach ($subqs as $sq) {
                             $sq_name = null;
-                            if ($sq['suffix'] == $exclusive_option) {
+                            if ($sq['suffix'] === $exclusive_option) {
                                 continue;   // so don't make the excluded option irrelevant
                             }
                             switch ($type) {
@@ -1825,24 +1829,18 @@ class LimeExpressionManager
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                 case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
-                                    if ($this->sgqaNaming) {
-                                        $sq_name = $qinfo['sgqa'] . '_' . trim($exclusive_option) . '.NAOK';
-                                    } else {
-                                        $sq_name = $qinfo['sgqa'] . '_' . trim($exclusive_option) . '.NAOK';
-                                    }
+                                    $sq_name = $exclusiveOptionSGQA . '.NAOK';
+                                    $subQrels[] = [
+                                        'qtype'    => $type,
+                                        'type'     => 'exclude_all_others',
+                                        'rowdivid' => $sq['rowdivid'],
+                                        'eqn'      => 'is_empty(' . $sq_name . ')',
+                                        'qid'      => $questionNum,
+                                        'sgqa'     => $qinfo['sgqa'],
+                                    ];
                                     break;
                                 default:
                                     break;
-                            }
-                            if (!is_null($sq_name)) {
-                                $subQrels[] = [
-                                    'qtype'    => $type,
-                                    'type'     => 'exclude_all_others',
-                                    'rowdivid' => $sq['rowdivid'],
-                                    'eqn'      => 'is_empty(' . $sq_name . ')',
-                                    'qid'      => $questionNum,
-                                    'sgqa'     => $qinfo['sgqa'],
-                                ];
                             }
                         }
                     }
