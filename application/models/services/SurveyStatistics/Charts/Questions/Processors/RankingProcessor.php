@@ -27,6 +27,9 @@ class RankingProcessor extends AbstractQuestionProcessor
             $rankColumns[] = $db->quoteColumnName(substr($this->rt, 1) . '_S' . $subQuestion['qid']);
         }
 
+        $columnLimit = 1500;
+        $exceedsLimit = count($subQuestions) ** 2 > $columnLimit;
+
         // Build all cases with aliases SQ{sqid}_RANK{i}
         $params = [];
         $selectParts = [];
@@ -41,7 +44,8 @@ class RankingProcessor extends AbstractQuestionProcessor
             }
         }
 
-        $row = $this->getAggregateResponses($selectParts, $params);
+        // empty chart if exceeds limit TODO: revisit to split in chunks if needed
+        $row = $exceedsLimit ? [] : $this->getAggregateResponses($selectParts, $params);
 
         // Re-assemble into charts
         foreach ($subQuestions as $sqid => $subQuestion) {
