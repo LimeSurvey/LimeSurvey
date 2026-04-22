@@ -24,7 +24,6 @@ class RankingProcessor extends AbstractQuestionProcessor
         foreach ($subQuestions as $subQuestion) {
             $rankColumns[] = $db->quoteColumnName(substr($this->rt, 1) . '_S' . $subQuestion['qid']);
         }
-
         $columnLimit = 1500;
         $exceedsLimit = count($subQuestions) ** 2 > $columnLimit;
 
