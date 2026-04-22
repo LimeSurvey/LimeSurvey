@@ -8388,6 +8388,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         if (!$lang && isset($_SESSION['LEMlang'])) {
             $lang = $_SESSION['LEMlang'];
         }
+
+        // todo: commented out for 13 years
         // Actually seem uncesserry : only one call for each page, then commented
 #            static $aStaticQuestionAttributesForEM=array();
 #            if(isset($aStaticQuestionAttributesForEM[$surveyid][$qid][$lang]))
