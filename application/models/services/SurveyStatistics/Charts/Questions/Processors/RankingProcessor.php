@@ -47,9 +47,8 @@ class RankingProcessor extends AbstractQuestionProcessor
         foreach ($subQuestions as $sqid => $subQuestion) {
             $legends   = [];
             $dataItems = [];
-            $rank = 0;
-            foreach ($subQuestions as $sqInner) {
-                $rank++;
+            $rankCount = count($subQuestions);
+            for ($rank = 1; $rank <= $rankCount; $rank++) {
                 $fieldName = 'RANK ' . $rank;
                 $legends[] = $fieldName;
                 $alias = 'SQ' . $sqid . '_RANK' . $rank;
