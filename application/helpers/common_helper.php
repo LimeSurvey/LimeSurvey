@@ -259,34 +259,34 @@ function getGidNext($surveyid, $gid)
  */
 function convertGETtoPOST($url)
 {
-    $url = preg_replace('/&amp;/i', '&', (string) $url);
+    $url = str_replace('&amp;', '&', (string) $url);
     $stack = explode('?', $url);
     $calledscript = array_shift($stack);
     $query = array_shift($stack);
-    $aqueryitems = explode('&', (string) $query);
     $postArray = [];
     $getArray = [];
-    foreach ($aqueryitems as $queryitem) {
-        $stack = explode('=', $queryitem);
-        $paramname = array_shift($stack);
-        $value = array_shift($stack);
-        if (in_array($paramname, array(Yii::app()->getComponent('urlManager')->routeVar))) {
-            $getArray[$paramname] = $value;
-        } else {
-            $postArray[$paramname] = $value;
+    if (!empty($query)) {
+        $aqueryitems = explode('&', $query);
+        foreach ($aqueryitems as $queryitem) {
+            [$paramname, $value] = array_pad(explode('=', $queryitem, 2), 2, '');
+            if (in_array($paramname, array(Yii::app()->getComponent('urlManager')->routeVar))) {
+                $getArray[$paramname] = $value;
+            } else {
+                $postArray[$paramname] = $value;
+            }
+        }
+        if (!empty($getArray)) {
+            $calledscript .= '?' . implode('&', array_map(
+                function ($v, $k) {
+                    return $k . '=' . $v;
+                },
+                $getArray,
+                array_keys($getArray)
+            ));
         }
     }
-    if (!empty($getArray)) {
-        $calledscript = $calledscript . "?" . implode('&', array_map(
-            function ($v, $k) {
-                return $k . '=' . $v;
-            },
-            $getArray,
-            array_keys($getArray)
-        ));
-    }
-    $callscript = "window.LS.sendPost(\"" . $calledscript . "\",\"\"," . json_encode($postArray) . ");";
-    return $callscript;
+    // params: script-name (string) / empty string / parameters as json
+    return 'window.LS.sendPost('. json_encode($calledscript) . ',"",' . json_encode($postArray) . ');';
 }
 
 
@@ -1484,7 +1484,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     . " g.sid={$surveyid} AND"
     . " q.parent_qid=0";
     if ($questionid !== false) {
-        $aquery .= " and questions.qid={$questionid} ";
+        $aquery .= " and q.qid={$questionid} ";
     }
     $aquery .= " ORDER BY group_order, question_order";
     /** @var Question[] $questions */
@@ -2001,7 +2001,7 @@ function hasFileUploadQuestion($iSurveyID)
 * @param string $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
-* @param int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param int|false $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sQuestionLanguage The language to use
 * @return array
 */
@@ -2577,9 +2577,13 @@ function incompleteAnsFilterState()
 
 /**
 * isCaptchaEnabled($screen, $usecaptchamode)
+* @deprecated Use Survey::isCaptchaEnabled($screen) with a loaded survey model.
+*             This helper only receives the packed usecaptcha value, so it
+*             cannot guarantee inheritance has already been resolved.
 * @param string $screen - the screen name for which to test captcha activation
+* @param string $captchamode - packed usecaptcha value
 *
-* @return boolean|null - returns true if captcha must be enabled
+* @return bool - returns true if captcha must be enabled
 **/
 function isCaptchaEnabled($screen, $captchamode = '')
 {
@@ -2775,6 +2779,36 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     }
 }
 
+/**
+* Translate links which are in any email template set to their new counterpart
+* Used only for local file
+*
+* @param mixed $iOldSurveyID Source SurveyId to be replaced
+* @param mixed $iNewSurveyID New SurveyId to be used
+* @param string $sString Link (local path) to be translated
+* @return string
+*/
+function translateJsonLinks($iOldSurveyID, $iNewSurveyID, $sString)
+{
+    if ($sString == '') {
+        return $sString;
+    }
+    /* Avoid regexp injection */
+    $iOldSurveyID = (int) $iOldSurveyID;
+    $iNewSurveyID = (int) $iNewSurveyID;
+    $decodedString = json_decode($sString, true);
+    if (empty($decodedString) || !is_array($decodedString)) {
+        return $sString;
+    }
+    $sPattern = '(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+    $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+    array_walk_recursive($decodedString, function (&$value) use ($sPattern, $sReplace) {
+        if (is_string($value)) {
+            $value = preg_replace('/' . $sPattern . '/u', $sReplace, $value);
+        }
+    });
+    return json_encode($decodedString);
+}
 /**
  * Returns true if there are old links in answer/question/survey/email template/label set texts.
  *
@@ -3003,9 +3037,34 @@ function getParticipantAttributes($iSurveyID)
     return getTokenFieldsAndNames($iSurveyID, true);
 }
 
+/**
+ * Decodes and formats attribute select options from JSON string to associative array.
+ *
+ * This method checks if the 'type_options' key exists in the provided attribute data array
+ * and if it contains a JSON string. If so, it decodes the JSON and converts a numeric array
+ * into an associative array where each value serves as both the key and value. This is useful
+ * for formatting select/dropdown options for form rendering.
+ *
+ * @param array $attrData The attribute data array that may contain a 'type_options' key with JSON string value
+ * @return array The modified attribute data array with decoded and formatted type_options, or the original array if no changes were made
+ */
+function decodeAttributeSelectOptions(array $attrData)
+{
+    if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
+        static $attributeService = null;
+        if ($attributeService === null) {
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
+        }
+        $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
+        // Always normalize to array for downstream form rendering (even if empty / invalid -> []).
+        $attrData['type_options'] = $decodedOptions;
+    }
 
-
-
+    return $attrData;
+}
 
 /**
 * Retrieves the attribute names from the related survey participant list
@@ -3092,6 +3151,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         } elseif (empty($aSavedExtraTokenFields[$sField]['description'])) {
             $aSavedExtraTokenFields[$sField]['description'] = $sField;
         }
+        $aSavedExtraTokenFields[$sField] = decodeAttributeSelectOptions($aSavedExtraTokenFields[$sField]);
     }
     if ($bOnlyAttributes) {
         return $aSavedExtraTokenFields;
@@ -4694,17 +4754,21 @@ function ls_json_encode($content)
 }
 
 /**
- * Decode a json string, sometimes needs stripslashes
+ * Decodes a json string, sometimes needs stripslashes
  *
  * @param string $jsonString
  * @return mixed
  */
 function json_decode_ls($jsonString)
 {
+    if ($jsonString === null) {
+        return null;
+    }
+
     $decoded = json_decode($jsonString, true);
 
     if (is_null($decoded) && !empty($jsonString)) {
-        // probably we need stipslahes
+        // probably we need stripslashes
         $decoded = json_decode(stripslashes($jsonString), true);
     }
 

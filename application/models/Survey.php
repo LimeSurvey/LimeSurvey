@@ -12,6 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use LimeSurvey\Models\Services\SurveyUseCaptcha;
 use LimeSurvey\PluginManager\PluginEvent;
 
 /**
@@ -106,6 +107,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property boolean $hasTokensTable Whether survey has a tokens table or not
  * @property boolean $hasResponsesTable Wheteher the survey responses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
+ * @property boolean $hasNewEditor Whether the new React editor should be used for this survey
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
  * @property integer $countInputQuestions Count of questions that need input (skipping text-display etc.)
@@ -913,6 +915,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns whether the new React editor should be used for this survey.
+     * Checks global editorEnabled config and that the survey uses a compatible theme.
+     */
+    public function getHasNewEditor(): bool
+    {
+        return App()->getConfig('editorEnabled')
+            && $this->getTemplateEffectiveName() === 'fruity_twentythree';
+    }
+
+    /**
      * Get surveymenu configuration from table surveymenu and prepares
      *
      * @todo this function can go directly into Surveymenu, why implemted it here? ($this is used here ...)
@@ -1502,11 +1514,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getButtons(): string
     {
-        $permissions = [
-            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
-            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
-            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
-        ];
 
         $dropdownItems = [];
         $dropdownItems[] = [
@@ -1514,7 +1521,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'url' => App()->getConfig('editorEnabled')
                 ? App()->createUrl('editorLink/index', ['route' => 'survey/' . $this->sid . '/settings/generalsettings'])
                 : App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveysettings', 'read'),
         ];
         $dropdownItems[] = [
             'title'            => gT('Preview'),
@@ -1522,30 +1529,30 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 "survey/index",
                 ['sid' => $this->sid, 'newtest' => "Y", 'lang' => $this->language]
             ),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'read'),
             'linkAttributes'   => ['target' => '_blank'],
         ];
         $dropdownItems[] = [
             'title' => gT('Share'),
             'url' => App()->createUrl("/surveyAdministration/view", array('iSurveyID' => $this->sid)),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'read'),
         ];
         $dropdownItems[] = [
             'submenu' => true,
             'title' => gT('Copy'),
-            'enabledCondition' => $permissions['survey_update'],
-            'submenu_items' => $this->getSubmenuItemsCopy($permissions['survey_update']),
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read'),
+            'submenu_items' => $this->getSubmenuItemsCopy(Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')),
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
             'url' => App()->createUrl('/surveyPermissions/index', ['surveyid' => $this->sid]),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveysecurity', 'create'),
         ];
 
         $dropdownItems[] = [
             'title' => gT('Delete'),
             'url' => App()->createUrl("/surveyAdministration/delete", array('iSurveyID' => $this->sid)),
-            'enabledCondition' => $permissions['survey_update'],
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'delete'),
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
@@ -1579,27 +1586,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getActionButtons(): string
     {
-        $permissions = [
-            'statistics_read'  => Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
-            'survey_update'    => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update'),
-            'responses_create' => Permission::model()->hasSurveyPermission($this->sid, 'responses', 'create'),
-        ];
-
         $items = [];
         $items[] = [
             'title' => gT('Edit survey'),
             'url' => App()->createUrl('surveyAdministration/view', ['iSurveyID' => $this->sid]),
             'iconClass' => 'ri-edit-line',
-            'enabledCondition' => $this->active !== "Y" && $permissions['responses_create']
+            'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'),
         ];
-
         $items[] = [
             'title' => gT('Activate'),
             'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
             'iconClass' => 'ri-check-line',
             'enabledCondition' =>
                 $this->active === "N"
-                && $permissions['survey_update']
+                && Permission::model()->hasSurveyPermission($this->sid, 'surveyactivation', 'update')
                 && $this->groupsCount > 0
                 && $this->getQuestionsCount() > 0
         ];
@@ -1611,7 +1611,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'iconClass' => 'ri-bar-chart-2-line',
             'enabledCondition' =>
                 $this->active === "Y"
-                && $permissions['statistics_read'],
+                && Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read'),
         ];
 
         return App()->getController()->widget('ext.admin.grid.BarActionsWidget.BarActionsWidget', ['items' => $items], true);
@@ -1983,7 +1983,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey = null)
+    public static function saveTranscribeCaptchaOptions(?Survey $oSurvey = null)
     {
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
@@ -2323,6 +2323,38 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->oOptionLabels = $instance->oOptionLabels;
             $this->aOptions = (array) $instance->oOptions;
             $this->showInherited = $instance->showInherited;
+        }
+    }
+
+    /**
+     * Determine whether a runtime screen should show or validate a CAPTCHA for this survey.
+     *
+     * If the GD extension is unavailable, CAPTCHA is treated as disabled.
+     *
+     * @param string $screen Runtime screen identifier (one of 'registrationscreen', 'surveyaccessscreen', 'saveandloadscreen')
+     * @return bool True when CAPTCHA is enabled for the requested screen.
+     */
+    public function isCaptchaEnabled($screen)
+    {
+        if (!extension_loaded('gd')) {
+            return false;
+        }
+
+        if ($this->oOptions === null || !property_exists($this->oOptions, 'usecaptcha')) {
+            $this->setOptions($this->gsid);
+        }
+
+        $useCaptcha = (string) $this->oOptions->usecaptcha;
+
+        switch ($screen) {
+            case 'registrationscreen':
+                return in_array($useCaptcha, SurveyUseCaptcha::REGISTRATION_YES, true);
+            case 'surveyaccessscreen':
+                return in_array($useCaptcha, SurveyUseCaptcha::SURVEY_ACCESS_YES, true);
+            case 'saveandloadscreen':
+                return in_array($useCaptcha, SurveyUseCaptcha::SAVE_LOAD_YES, true);
+            default:
+                return true;
         }
     }
 

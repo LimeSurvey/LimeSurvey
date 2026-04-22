@@ -1047,7 +1047,7 @@ class ResponsesController extends LSBaseController
      * @param string|null $language
      * @return array
      */
-    private function getData(int $surveyId = null, int $responseId = null, string $language = null): array
+    private function getData(?int $surveyId = null, ?int $responseId = null, ?string $language = null): array
     {
         if (!isset($surveyId)) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');

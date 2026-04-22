@@ -227,6 +227,7 @@ return array(
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
         'basePath' => 'node_modules.tablesorter.dist.js',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.tablesorter' . $minVersion . '.js'
         ),
@@ -330,13 +331,6 @@ return array(
         )
     ),
 
-    'es6promise' => array(
-        'basePath' => 'vendor.es6promise',
-        'js' => array(
-            'es6-promise.auto.min.js'
-        )
-    ),
-
     'dom2image' => array(
         'basePath' => 'node_modules.dom-to-image',
         'js' => array(
@@ -352,7 +346,6 @@ return array(
         ),
         'depends' => array(
             'dom2image',
-            'es6promise',
             'jquery',
             'jszip'
         )
