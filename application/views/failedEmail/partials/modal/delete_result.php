@@ -1,4 +1,6 @@
-<?php /**
+<?php
+
+/**
  * @var int $deletedCount how many emails have been deleted
  **/ ?>
 <div class="modal-header">

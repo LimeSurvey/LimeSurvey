@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Outsourced get logic file form
  */
+
 ?>
 
 <div id='edit-survey-text-element' class='side-body'>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbActiveForm class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
@@ -48,7 +49,7 @@ class TbActiveForm extends CActiveForm
      */
     public function init()
     {
-        $this->attachBehavior('TbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget());
         $this->copyId();
         if ($this->stateful) {
             echo TbHtml::statefulFormTb($this->layout, $this->action, $this->method, $this->htmlOptions);
@@ -120,8 +121,7 @@ class TbActiveForm extends CActiveForm
         if ($enableClientValidation) {
             $validators = (array) TbArray::popValue('clientValidation', $htmlOptions, array());
             $attributeName = $attribute;
-            if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) // e.g. [a]name
-            {
+            if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) { // e.g. [a]name
                 $attributeName = substr($attribute, $pos + 1);
             }
             /** @var CValidator $validator */

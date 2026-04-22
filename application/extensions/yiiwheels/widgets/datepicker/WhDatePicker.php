@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhDatePicker widget class
  *
@@ -8,6 +9,7 @@
  * @package YiiWheels.widgets.datepicker
  * @uses YiiStrap.helpers.TbHtml
  */
+
 Yii::import('yiistrap_fork.helpers.TbHtml');
 Yii::import('yiistrap_fork.helpers.TbArray');
 
@@ -66,7 +68,6 @@ class WhDatePicker extends CInputWidget
 
         if ($this->hasModel()) {
             echo TbHtml::activeTextField($this->model, $this->attribute, $this->htmlOptions);
-
         } else {
             echo TbHtml::textField($name, $this->value, $this->htmlOptions);
         }
@@ -99,6 +100,5 @@ class WhDatePicker extends CInputWidget
 
         $this->getApi()->registerPlugin('bdatepicker', $selector, $this->pluginOptions);
         $this->getApi()->registerEvents($selector, $this->events);
-
     }
 }

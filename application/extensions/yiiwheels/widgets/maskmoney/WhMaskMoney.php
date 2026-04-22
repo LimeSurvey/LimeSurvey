@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhMaskMoney widget class
  *
@@ -13,7 +14,6 @@ Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhMaskMoney extends CInputWidget
 {
-
     /**
      * @var array the plugin options
      */

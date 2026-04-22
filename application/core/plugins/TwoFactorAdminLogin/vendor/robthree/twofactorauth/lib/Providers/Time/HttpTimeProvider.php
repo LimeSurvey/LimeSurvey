@@ -34,7 +34,8 @@ class HttpTimeProvider implements ITimeProvider
         }
     }
 
-    public function getTime() {
+    public function getTime()
+    {
         try {
             $context  = stream_context_create($this->options);
             $fd = fopen($this->url, 'rb', false, $context);
@@ -42,12 +43,12 @@ class HttpTimeProvider implements ITimeProvider
             fclose($fd);
 
             foreach ($headers['wrapper_data'] as $h) {
-                if (strcasecmp(substr((string) $h, 0, 5), 'Date:') === 0)
-                    return \DateTime::createFromFormat($this->expectedtimeformat, trim(substr((string) $h,5)))->getTimestamp();
+                if (strcasecmp(substr((string) $h, 0, 5), 'Date:') === 0) {
+                    return \DateTime::createFromFormat($this->expectedtimeformat, trim(substr((string) $h, 5)))->getTimestamp();
+                }
             }
             throw new \TimeException(sprintf('Unable to retrieve time from %s (Invalid or no "Date:" header found)', $this->url));
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             throw new \TimeException(sprintf('Unable to retrieve time from %s (%s)', $this->url, $ex->getMessage()));
         }
     }

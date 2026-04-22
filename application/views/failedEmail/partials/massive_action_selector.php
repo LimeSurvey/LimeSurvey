@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var int $surveyId
  * @var array $permissions

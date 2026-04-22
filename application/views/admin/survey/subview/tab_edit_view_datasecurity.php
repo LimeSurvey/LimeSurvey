@@ -27,15 +27,15 @@ PrepareEditorScript(false, $this);
             <label class="form-label" for='showsurveypolicynotice'><?php  eT("Show privacy policy text with mandatory checkbox:") ; ?></label>
     <div class="">
                 <div class="btn-group" data-bs-toggle="buttons">
-                    <input class="btn-check" type="radio" id="showsurveypolicynotice_0" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice==0 ? 'checked' : ''?> autocomplete="off">
+                    <input class="btn-check" type="radio" id="showsurveypolicynotice_0" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice == 0 ? 'checked' : ''?> autocomplete="off">
                     <label for="showsurveypolicynotice_0" class="btn btn-outline-secondary">
                         <?=gT("Don't show");?>
             </label>
-                    <input class="btn-check" type="radio" id="showsurveypolicynotice_1" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice==1 ? 'checked' : ''?> autocomplete="off">
+                    <input class="btn-check" type="radio" id="showsurveypolicynotice_1" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice == 1 ? 'checked' : ''?> autocomplete="off">
                     <label for="showsurveypolicynotice_1" class="btn btn-outline-secondary">
                         <?=gT("Inline text");?>
             </label>
-                    <input class="btn-check" type="radio" id="showsurveypolicynotice_2" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off">
+                    <input class="btn-check" type="radio" id="showsurveypolicynotice_2" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice == 2 ? 'checked' : ''?> autocomplete="off">
                     <label for="showsurveypolicynotice_2" class="btn btn-outline-secondary">
                         <?=gT("Collapsible text");?>
             </label>
@@ -44,17 +44,17 @@ PrepareEditorScript(false, $this);
 </div>
 <nav>
     <div class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection" role="tablist">
-        <?php foreach ($aTabTitles as $i => $eachtitle): ?>
+        <?php foreach ($aTabTitles as $i => $eachtitle) : ?>
             <button class="nav-link <?php if ($count == 0) {
                 echo "active";
-            } ?>"  role="tab" data-bs-toggle="tab" data-bs-target="#editdatasecele-<?php echo $count;
+                                    } ?>"  role="tab" data-bs-toggle="tab" data-bs-target="#editdatasecele-<?php echo $count;
             $count++; ?>" type="button">
                 <?php echo $eachtitle; ?>
             </button>
         <?php endforeach; ?>
     </div>
     <div class="tab-content">
-        <?php foreach ($aTabContents as $i => $sTabContent): ?>
+        <?php foreach ($aTabContents as $i => $sTabContent) : ?>
             <?php
             echo $sTabContent;
             ?>
@@ -62,7 +62,8 @@ PrepareEditorScript(false, $this);
     </div>
 </nav>
 
-<?php App()->getClientScript()->registerScript("EditSurveyDataSecurityTabs",
+<?php App()->getClientScript()->registerScript(
+    "EditSurveyDataSecurityTabs",
     "
 $('#edit-survey-text-element-language-selection').find('a').on('shown.bs.tab', function(e){
     try{ $(e.relatedTarget).find('textarea').ckeditor(); } catch(e){ }

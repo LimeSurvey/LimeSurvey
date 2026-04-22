@@ -22,7 +22,7 @@ class RenderArray5ChoiceQuestion extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/dummy/answer';
     }
-    
+
     public function getRows()
     {
         return;
@@ -32,7 +32,7 @@ class RenderArray5ChoiceQuestion extends QuestionBaseRenderer
     {
         $this->registerAssets();
         return do_array_5point($this->aFieldArray);
-        
+
         $answer = '';
         $inputnames = [];
 

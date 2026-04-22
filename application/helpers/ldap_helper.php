@@ -26,7 +26,7 @@
 function ldap_getCnx($server_id = null)
 {
     $ldap_server = Yii::app()->getConfig('ldap_server');
-     if (is_null($server_id) || empty($ldap_server[$server_id])) {
+    if (is_null($server_id) || empty($ldap_server[$server_id])) {
         return false;
     }
     if ($ldap_server[$server_id]['encrypt'] == 'ldaps') {

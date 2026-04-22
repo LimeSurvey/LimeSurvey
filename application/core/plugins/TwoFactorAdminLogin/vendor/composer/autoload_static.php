@@ -7,14 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInit2659d7f00f449de3862d7a6e5ccde300
 {
     public static $prefixLengthsPsr4 = array (
-        'R' => 
+        'R' =>
         array (
             'RobThree\\Auth\\' => 14,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'RobThree\\Auth\\' => 
+        'RobThree\\Auth\\' =>
         array (
             0 => __DIR__ . '/..' . '/robthree/twofactorauth/lib',
         ),
@@ -30,7 +30,6 @@ class ComposerStaticInit2659d7f00f449de3862d7a6e5ccde300
             $loader->prefixLengthsPsr4 = ComposerStaticInit2659d7f00f449de3862d7a6e5ccde300::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit2659d7f00f449de3862d7a6e5ccde300::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit2659d7f00f449de3862d7a6e5ccde300::$classMap;
-
         }, null, ClassLoader::class);
     }
 }

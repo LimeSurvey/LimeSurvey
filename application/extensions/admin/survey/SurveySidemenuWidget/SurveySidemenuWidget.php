@@ -75,7 +75,7 @@ class SurveySidemenuWidget extends WhSelect2
 
         foreach ($this->sideMenu as $menutype => $menu) {
             foreach ($menu as $i => $menuItem) {
-                if ((new SideMenuActiveItemMapper)->match($menuItem['url'], $menuItem['name'], $this->sid)) {
+                if ((new SideMenuActiveItemMapper())->match($menuItem['url'], $menuItem['name'], $this->sid)) {
                     $this->sideMenu[$menutype][$i]['selected'] = true;
                 }
             }

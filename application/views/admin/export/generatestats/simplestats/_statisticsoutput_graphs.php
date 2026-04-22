@@ -14,7 +14,7 @@
  */
 ?>
 <!-- _statisticsoutput_graphs -->
-    <?php if(count($labels) < 70): ?>
+    <?php if (count($labels) < 70) : ?>
         <!-- Charts -->
         <div class="row custom custom-padding bottom-20">
             <div class="col-md-12 vcenter chartjs-container" id="chartjs-container-<?php echo $qqid; ?>"
@@ -35,8 +35,8 @@
         <div class="row">
             <!-- legends -->
             <div class="legend col-md-12 vcenter">
-                <?php foreach($fullLabels as $i=>$label): ?>
-                    <?php $colorindex = $color+$i; ?>
+                <?php foreach ($fullLabels as $i => $label) : ?>
+                    <?php $colorindex = $color + $i; ?>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-1">
                             <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex];?>,0.6); display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
@@ -53,7 +53,7 @@
 <!-- Buttons to change graph type -->
         <div id='stats_<?php echo $rt;?>' class='graphdisplay' style="text-align:center">
         </div>
-    <?php else: ?>
+    <?php else : ?>
         <div class="row">
             <div class="col-md-12">
                 <?php

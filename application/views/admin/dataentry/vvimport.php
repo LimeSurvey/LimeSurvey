@@ -1,6 +1,6 @@
 <div class="side-body">
-<?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>''));?>
-    <?php if($tableExists):?>
+<?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/' . $surveyid), 'post', array('enctype' => 'multipart/form-data', 'id' => 'vvexport',  'class' => ''));?>
+    <?php if ($tableExists) :?>
         <div class="row">
         <div class="col-12">
             <div class="col-lg-6 text-start">
@@ -18,21 +18,21 @@
             <div class="col-12 content-right">
 
 <?php
-    if ($tableExists) {
+if ($tableExists) {
     ?>
     
     
     <div class="card card-primary" id="panel-1">
         <div class="card-header ">
             <div class="">
-                <?php eT("General");?>
+            <?php eT("General");?>
             </div>
         </div>
 
         <div class="card-body">
             <div class="mb-3">
                 <label for="csv_vv_file" class=" form-label">
-                    <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
+                <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                 </label>
                 <div class="">
                     <input type="file" value="" name="csv_vv_file" id="csv_vv_file" class="form-control"  accept='.csv,.vv,.txt' required>
@@ -41,17 +41,17 @@
 
             <div class="mb-3">
                 <label for="noid" class=" form-label">
-                    <?php eT("Exclude record IDs?"); ?>
+                <?php eT("Exclude record IDs?"); ?>
                 </label>
                 <div>
-                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name' => 'noid',
-                        'checkedOption' => '1',
-                        'selectOptions' => [
-                            '1' => gT('Yes'),
-                            '0' => gT('No'),
-                        ]
-                    ]); ?>
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name' => 'noid',
+                    'checkedOption' => '1',
+                    'selectOptions' => [
+                        '1' => gT('Yes'),
+                        '0' => gT('No'),
+                    ]
+                ]); ?>
                 </div>
             </div>
 
@@ -61,12 +61,12 @@
                 </label>
                 <div class="">
                     <?php  echo CHtml::dropDownList('insertmethod', 'ignore', array(
-                            'skip' => gT("Report and skip the new record."),
-                            'renumber' => gT("Renumber the new record."),
-                            'replace' => gT("Replace the existing record."),
-                            'replaceanswers' => gT("Replace answers in file in the existing record."),
-                            ),array('class'=>'form-control'));
-                     ?>
+                        'skip' => gT("Report and skip the new record."),
+                        'renumber' => gT("Renumber the new record."),
+                        'replace' => gT("Replace the existing record."),
+                        'replaceanswers' => gT("Replace answers in file in the existing record."),
+                        ), array('class' => 'form-control'));
+                    ?>
                 </div>
             </div>
 
@@ -76,13 +76,13 @@
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name' => 'notfinalized',
-                        'checkedOption' => '0',
-                        'selectOptions' => [
-                            '1' => gT('Yes'),
-                            '0' => gT('No'),
-                        ]
-                    ]); ?>
+                    'name' => 'notfinalized',
+                    'checkedOption' => '0',
+                    'selectOptions' => [
+                        '1' => gT('Yes'),
+                        '0' => gT('No'),
+                    ]
+                ]); ?>
                 </div>
             </div>
 
@@ -91,7 +91,7 @@
                     <?php eT("Character set of the file:"); ?>
                 </label>
                 <div class="">
-                    <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('class'=>'form-select', 'empty' => gT('Automatic (UTF-8)'))); ?>
+                    <?php  echo CHtml::dropDownList('vvcharset', false, $aEncodings, array('class' => 'form-select', 'empty' => gT('Automatic (UTF-8)'))); ?>
                 </div>
             </div>
 
@@ -101,13 +101,13 @@
                 </label>
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name' => 'dontdeletefirstline',
-                        'checkedOption' => '0',
-                        'selectOptions' => [
-                            '1' => gT('Yes'),
-                            '0' => gT('No'),
-                        ]
-                    ]); ?>
+                    'name' => 'dontdeletefirstline',
+                    'checkedOption' => '0',
+                    'selectOptions' => [
+                        '1' => gT('Yes'),
+                        '0' => gT('No'),
+                    ]
+                ]); ?>
                 </div>
             </div>
 
@@ -117,13 +117,13 @@
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                        'name' => 'forceimport',
-                        'checkedOption' => '0',
-                        'selectOptions' => [
-                            '1' => gT('Yes'),
-                            '0' => gT('No'),
-                        ]
-                    ]); ?>
+                    'name' => 'forceimport',
+                    'checkedOption' => '0',
+                    'selectOptions' => [
+                        '1' => gT('Yes'),
+                        '0' => gT('No'),
+                    ]
+                ]); ?>
                 </div>
             </div>
 
@@ -140,8 +140,7 @@
     </form>
     <br />
 
-    <?php } else { ?>
-
+<?php } else { ?>
     <div class="jumbotron message-box message-box-error">
         <h2 class="danger"><?php eT("Import a VV response data file"); ?>:</h2>
         <p class="lead text-danger">
@@ -151,11 +150,11 @@
             <?php eT("This survey is not active. You must activate the survey before attempting to import a VVexport file."); ?>
         </p>
         <p>
-            <a class="btn btn-lg btn-outline-secondary" href='<?php echo $this->createUrl('surveyAdministration/view/'.$surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
+            <a class="btn btn-lg btn-outline-secondary" href='<?php echo $this->createUrl('surveyAdministration/view/' . $surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
         </p>
     </div>
 
-        <?php } ?>
+<?php } ?>
 
 </div></div></div>
 <?php

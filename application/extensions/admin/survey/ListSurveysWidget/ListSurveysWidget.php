@@ -80,6 +80,5 @@ class ListSurveysWidget extends CWidget
 
     public function registerClientScript()
     {
-
     }
 }

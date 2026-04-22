@@ -9,7 +9,7 @@
  */
 ?>
 <?php /* Register needed script used at different point even if not needed in loaded page see #20391 */
-	App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- admin menu bar -->
 <nav class="navbar navbar-expand-md">

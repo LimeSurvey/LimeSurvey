@@ -168,7 +168,7 @@ class PluginManager extends \CApplicationComponent
             !$withoutNamespace && $withNamespace
         ) {
             $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
-        } else if (!($withoutNamespace || $withNamespace)) {
+        } elseif (!($withoutNamespace || $withNamespace)) {
             $relativePath = App()->getConfig('rootdir') . "/application/libraries/PluginManager/Storage/{$storageClass}.php";
             if (file_exists($relativePath)) {
                 require_once $relativePath;

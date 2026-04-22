@@ -1,4 +1,4 @@
-<?php if (isset($aImportResults['fatalerror'])):?>
+<?php if (isset($aImportResults['fatalerror'])) :?>
     <div class="jumbotron message-box message-box-error">
             <h2 class="text-danger"><?php eT("Import label set(s)") ?></h2>
             <p class="lead text-danger"><?php eT("Error") ?></p>
@@ -10,17 +10,17 @@
                 </a>
             </p>
     </div>
-<?php else:?>
+<?php else :?>
     <div class="jumbotron message-box">
             <h2 class="text-success"><?php eT("Import label set(s)") ?></h2>
             <p class="lead"><?php eT("File upload succeeded.") ?></p>
-            <?php if (count($aImportResults['warnings']) > 0): ?>
+            <?php if (count($aImportResults['warnings']) > 0) : ?>
                 <p  class="lead text-danger">
                     <?php eT("Warnings") ?>
                 </p>
                 <p>
                     <ul class="list-unstyled">
-                        <?php foreach ($aImportResults['warnings'] as $warning):?>
+                        <?php foreach ($aImportResults['warnings'] as $warning) :?>
                             <li><?php echo $warning ?></li>
                         <?php endforeach;?>
                     </ul>

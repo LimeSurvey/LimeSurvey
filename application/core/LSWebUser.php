@@ -196,8 +196,7 @@ class LSWebUser extends CWebUser
     public function isScriptUpdateAllowed()
     {
         if (App()->getConfig('filterxsshtml_forcedall')) {
-            switch (App()->getConfig('filterxsshtml_enablescript'))
-            {
+            switch (App()->getConfig('filterxsshtml_enablescript')) {
                 case 'gui':
                     // Break and continue
                     break;

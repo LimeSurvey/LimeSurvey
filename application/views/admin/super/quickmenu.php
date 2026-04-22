@@ -11,7 +11,7 @@
         </div>
     </a>
 
-    <?php foreach ($quickMenuItems as $quickMenuItem): ?>
+    <?php foreach ($quickMenuItems as $quickMenuItem) : ?>
         <div
             class='quick-menu-item'
             data-bs-toggle="tooltip"
@@ -26,7 +26,7 @@
         >
             <a
                 href='<?php echo $quickMenuItem['href']; ?>'
-                <?php if ($quickMenuItem['openInNewTab']): ?>
+                <?php if ($quickMenuItem['openInNewTab']) : ?>
                     target='_blank'
                 <?php endif; ?>
             >
@@ -39,7 +39,7 @@
                 </div>
             </a>
         </div>
-<?php endforeach; ?>
+    <?php endforeach; ?>
 </div>
 <script>
     // TODO: Needs to be moved to QuickMenu core plugin

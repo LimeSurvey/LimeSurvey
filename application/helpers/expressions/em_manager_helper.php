@@ -1058,10 +1058,12 @@ class LimeExpressionManager
                     }
                 }
             }
-            if (($row['cqid'] == 0
+            if (
+                ($row['cqid'] == 0
                     && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname'])
                     && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')
-                ) || substr($row['cfieldname'], 0, 1) == '+') {
+                ) || substr($row['cfieldname'], 0, 1) == '+'
+            ) {
                 $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a token field)
             }
             $previousCondition = $row;
@@ -5061,7 +5063,7 @@ class LimeExpressionManager
                 $message = '';
                 $result = [];
                 $notRelevantSteps = $LEM->lastMoveResult['notRelevantSteps'] ?? 0;
-                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps']?? 0;
+                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps'] ?? 0;
                 if (!$force && $LEM->currentQuestionSeq != -1) {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
@@ -5716,7 +5718,7 @@ class LimeExpressionManager
                         return $LEM->lastMoveResult;
                     }
                 }
-            break;
+                break;
         }
     }
 

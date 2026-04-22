@@ -53,7 +53,9 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     name='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' class="form-select">
                 <?php foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata) : ?>
                     <option value='<?php echo $index; ?>' 
-                      <?php if ($aSurveyLanguageSettings['surveyls_dateformat'] == $index) : ?> selected='selected' <?php endif; ?>>
+                      <?php if ($aSurveyLanguageSettings['surveyls_dateformat'] == $index) :
+                            ?> selected='selected' <?php
+                      endif; ?>>
                         <?php echo $dateformatdata['dateformat']; ?></option>
                 <?php endforeach; ?>
             </select>
@@ -184,7 +186,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 <?php echo CHtml::textField(
                     "urldescrip_{$aSurveyLanguageSettings['surveyls_language']}",
                     $aSurveyLanguageSettings['surveyls_urldescription'],
-                    array('class' => 'form-control', 'size' => "80", 'maxlength' => 255, 
+                    array('class' => 'form-control', 'size' => "80", 'maxlength' => 255,
                     'id' => "urldescrip_{$aSurveyLanguageSettings['surveyls_language']}")
                 ); ?>
             </div>

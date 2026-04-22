@@ -1,12 +1,14 @@
 <?php
+
 /**
  * Render the result of the survey copy action
  *
  */
+
 ?>
 
 <!-- Copy Error -->
-<?php if (isset($aImportResults['error']) && $aImportResults['error']!=false): ?>
+<?php if (isset($aImportResults['error']) && $aImportResults['error'] != false) : ?>
     <div class="jumbotron message-box message-box-error">
         <h2 ><?php eT("Copy survey"); ?></h2>
         <p class="lead text-danger"><?php eT("Error"); ?></p>
@@ -16,8 +18,7 @@
         <?php $importerror = true; ?>
         </p>
     </div>
-<?php else: ?>
-
+<?php else : ?>
 <!-- Copy success -->
 <div class="jumbotron message-box ">
     <h2> <?php eT("Success"); ?></h2>
@@ -30,24 +31,21 @@
         <li><?php eT("Question groups:"); ?> <?php echo $aImportResults['groups']; ?></li>
         <li><?php eT("Questions:"); ?> <?php echo $aImportResults['questions']; ?></li>
         <li><?php eT("Answers:"); ?> <?php echo $aImportResults['answers']; ?></li>
-        <?php if (isset($aImportResults['subquestions']))
-        { ?>
+        <?php if (isset($aImportResults['subquestions'])) { ?>
             <li><?php eT("Subquestions:"); ?> <?php echo $aImportResults['subquestions']; ?></li>
         <?php }
-        if (isset($aImportResults['defaultvalues']))
-        { ?>
+        if (isset($aImportResults['defaultvalues'])) { ?>
             <li><?php eT("Default answers:"); ?> <?php echo $aImportResults['defaultvalues']; ?></li>
         <?php }
-        if (isset($aImportResults['conditions']))
-        { ?>
+        if (isset($aImportResults['conditions'])) { ?>
             <li><?php eT("Conditions:"); ?> <?php echo $aImportResults['conditions']; ?></li>
         <?php }
-        if (isset($aImportResults['labelsets']))
-        { ?>
+        if (isset($aImportResults['labelsets'])) { ?>
             <li><?php eT("Label sets:"); ?> <?php echo $aImportResults['labelsets']; ?></li>
         <?php }
         if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls'] > 0) { ?>
-            <li><?php eT("Skipped label sets:"); ?> <?php echo $aImportResults['deniedcountls']; eT("(Label sets were not imported since you do not have the permission to create label sets.)"); ?></li>
+            <li><?php eT("Skipped label sets:"); ?> <?php echo $aImportResults['deniedcountls'];
+            eT("(Label sets were not imported since you do not have the permission to create label sets.)"); ?></li>
         <?php } ?>
         <li><?php eT("Question attributes:"); ?> <?php echo $aImportResults['question_attributes']; ?></li>
         <li><?php eT("Assessments:"); ?> <?php echo $aImportResults['assessments']; ?></li>
@@ -55,12 +53,11 @@
     </p>
 
     <!-- Warnings -->
-    <?php if (count($aImportResults['importwarnings'])>0):?>
+    <?php if (count($aImportResults['importwarnings']) > 0) :?>
         <h2 class='text-danger'><?php eT("Warnings"); ?>:</h2>
         <p>
                 <ul style="text-align:left;">
-                <?php foreach ($aImportResults['importwarnings'] as $warning)
-                { ?>
+                <?php foreach ($aImportResults['importwarnings'] as $warning) { ?>
                     <li><?php echo $warning; ?></li>
                 <?php } ?>
                 </ul><br />

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhSwitch widget class
  *
@@ -11,6 +12,7 @@
  * @uses YiiStrap.helpers.TbArray
  * @uses YiiStrap.helpers.TbHtml
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 Yii::import('yiistrap_fork.helpers.TbHtml');
 
@@ -85,9 +87,8 @@ class WhSwitch extends CInputWidget
             $this->htmlOptions['data-animate'] = 'false';
         }
 
-        if (!isset($this->htmlOptions['uncheckValue']))
-        {
-            $this->htmlOptions['uncheckValue']='0';
+        if (!isset($this->htmlOptions['uncheckValue'])) {
+            $this->htmlOptions['uncheckValue'] = '0';
         }
 
         $this->htmlOptions['data-on-text'] = $this->onLabel;
@@ -136,6 +137,5 @@ class WhSwitch extends CInputWidget
      */
     public function registerClientScript()
     {
-
     }
 }

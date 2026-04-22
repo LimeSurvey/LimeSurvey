@@ -10,14 +10,14 @@ $labelAttr .= CHtml::getIdByName($inputBaseName) . '"';
                 <?= gT($this->setting['caption']) ?>
             </label>
         <!-- TODO: Object method $setting->isLocalized(). -->
-        <?php if ($this->setting['i18n']): ?>
+        <?php if ($this->setting['i18n']) : ?>
             <i
                 class="ri-earth-fil"
                 data-bs-toggle="tooltip"
                 title="<?= gT("This setting is localized") ?>"
             ></i>
         <?php endif; ?>
-        <?php if ($this->setting['help']): ?>
+        <?php if ($this->setting['help']) : ?>
             <a
                 role="button"
                 data-bs-toggle="collapse"

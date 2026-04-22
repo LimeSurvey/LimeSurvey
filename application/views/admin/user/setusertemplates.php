@@ -1,4 +1,4 @@
-<div class="pagetitle h3"><?php printf(gT('Edit theme permissions for user %s'),"<em>".\CHtml::encode($oUser->users_name)."</em>");?></div>
+<div class="pagetitle h3"><?php printf(gT('Edit theme permissions for user %s'), "<em>" . \CHtml::encode($oUser->users_name) . "</em>");?></div>
 <div class="row">
     <div class="col-12">
         <p><?php eT("If the user doesn't have global view/read global permission for themes, please select the themes he should be able to use for surveys."); ?></p>
@@ -7,7 +7,7 @@
 <div class="row" style="margin-bottom: 100px">
     <div class="col-xl-6 offset-xl-3 content-right">
 
-        <?php echo CHtml::form(array("admin/user/sa/usertemplates"), 'post', array('name'=>'modtemplaterightsform', 'id'=>'modtemplaterightsform')); ?>
+        <?php echo CHtml::form(array("admin/user/sa/usertemplates"), 'post', array('name' => 'modtemplaterightsform', 'id' => 'modtemplaterightsform')); ?>
         <table id="user-template-permissions" class="table table-striped activecell" style="margin:0 auto;">
             <thead>
                 <tr>
@@ -48,11 +48,9 @@
             <tbody>
 
                 <?php
-                $templaterights=$data['templaterights'];
+                $templaterights = $data['templaterights'];
                 $table_row_odd_even = 'odd';
-                foreach ($data['templates'] as $trow)
-                {?>
-
+                foreach ($data['templates'] as $trow) {?>
                     <tr>
                         <td><?php echo $trow["folder"];?></td>
                         <td>
@@ -67,7 +65,7 @@
                             ]); ?>
                         </td>
                     </tr>
-                    <?php } ?>
+                <?php } ?>
             </tbody>
         </table>
         </form>

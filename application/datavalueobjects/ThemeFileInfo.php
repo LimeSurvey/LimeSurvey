@@ -8,7 +8,7 @@ namespace LimeSurvey\Datavalueobjects;
  * This class represents a theme file. It includes the real path, the virtual path, and the category.
  *
  * Virtual paths are a special notation for relative paths, including a prefix to give context.
- * Eg.: the path "image::theme::files/logo.png" is relative to the theme folder, while 
+ * Eg.: the path "image::theme::files/logo.png" is relative to the theme folder, while
  *      "image::generalfiles::" is relative to the general files folder.
  * If $path is not valid, returns null.
  * Paths can be
@@ -20,7 +20,6 @@ namespace LimeSurvey\Datavalueobjects;
  */
 class ThemeFileInfo
 {
-
     /** @var string the real path to the file (eg. '/var/www/html/limesurvey/themes/survey/vanilla/files/logo.png') */
     public $realPath;
 

@@ -1,5 +1,5 @@
 <?php
-$pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+$pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('tutorialentries');
@@ -14,7 +14,7 @@ echo viewHelper::getViewTestTag('tutorialentries');
             &nbsp;
             <?php eT('New') ?>
         </a>
-        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
+        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
             <a class="btn btn-danger float-end ls-space margin right-10 col-xs-6 col-sm-3 col-md-2"
                href="#restoremodal" data-bs-toggle="modal">
                 <i class="ri-refresh-line"></i>&nbsp;
@@ -31,21 +31,22 @@ echo viewHelper::getViewTestTag('tutorialentries');
                 'columns'                  => $model->getColumns(),
                 'filter'                   => $model,
                 'emptyText'                => gT('No customizable entries found.'),
-                'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                        )
-                    ),
+                'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                    gT('%s rows per page'),
+                    CHtml::dropDownList(
+                        'pageSize',
+                        $pageSize,
+                        Yii::app()->params['pageSizeOptions'],
+                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                    )
+                ),
                 'rowHtmlOptionsExpression' => '["data-tutorialentry-id" => $data->teid]',
                 'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                 'ajaxType'                 => 'POST',
                 'ajaxUpdate'               => 'tutorial-grid',
                 'lsAfterAjaxUpdate'        => ['bindAction()'],
             ]);
-            ?>
+?>
         </div>
     </div>
 </div>

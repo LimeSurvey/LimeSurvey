@@ -15,7 +15,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'surveyPreview_require_Auth',
-                        'ariaLabel'=> gT('Survey preview only for administration users:'),
+                        'ariaLabel' => gT('Survey preview only for administration users:'),
                         'checkedOption' => App()->getConfig('surveyPreview_require_Auth'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -32,15 +32,15 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'filterxsshtml',
                         'checkedOption' => App()->getConfig('filterxsshtml_forcedall') ? 1 : App()->getConfig('filterxsshtml'),
-                        'ariaLabel'=> gT('Filter HTML for XSS:'),
+                        'ariaLabel' => gT('Filter HTML for XSS:'),
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),
                         ],
-                        'htmlOptions'=> [
+                        'htmlOptions' => [
                             'disabled' => App()->getConfig('filterxsshtml_forcedall')
                         ]
-                    ]); ?>
+                                                                ]); ?>
                 </div>
                 <div class="help-block mt-1">
                     <?php if (!App()->getConfig('filterxsshtml_forcedall')) {
@@ -68,12 +68,12 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'disablescriptwithxss',
                         'checkedOption' => (App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui') ? 1 : App()->getConfig('disablescriptwithxss'),
-                        'ariaLabel'=> gT('Disable question script for XSS restricted user:'),
+                        'ariaLabel' => gT('Disable question script for XSS restricted user:'),
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),
                         ],
-                        'htmlOptions'=> [
+                        'htmlOptions' => [
                             'disabled' => App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui'
                         ]
                     ]); ?>
@@ -106,7 +106,7 @@
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usercontrolSameGroupPolicy',
-                        'ariaLabel'=> gT('Group member can only see own group:'),
+                        'ariaLabel' => gT('Group member can only see own group:'),
                         'id'            => 'usercontrolSameGroupPolicy',
                         'checkedOption' => App()->getConfig('usercontrolSameGroupPolicy'),
                         'selectOptions' => [
@@ -126,7 +126,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'x_frame_options',
-                        'ariaLabel'=> gT('IFrame embedding allowed:'),
+                        'ariaLabel' => gT('IFrame embedding allowed:'),
                         'checkedOption' => Yii::app()->getConfig('x_frame_options'),
                         'selectOptions' => [
                             "allow"      => gT("Allow", 'unescaped'),
@@ -146,7 +146,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'force_ssl',
-                        'ariaLabel'=> gT('Force HTTPS:'),
+                        'ariaLabel' => gT('Force HTTPS:'),
                         'checkedOption' => App()->getConfig('force_ssl'),
                         'selectOptions' => [
                             "on"  => gT("On", 'unescaped'),
@@ -158,12 +158,12 @@
 
             <div class="mb-3">
                 <span style='font-size:1em;'><?php echo sprintf(
-                                                    gT('%sWarning:%s Before turning on HTTPS,%s check this link.%s'),
-                                                    '<b>',
-                                                    '</b>',
-                                                    '<a href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
-                                                    '</a>'
-                                                )
+                    gT('%sWarning:%s Before turning on HTTPS,%s check this link.%s'),
+                    '<b>',
+                    '</b>',
+                    '<a href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
+                    '</a>'
+                )
                                                     . '<br/> '
                                                     . gT("If the link does not work and you turn on HTTPS, you will not be able to access and use your LimeSurvey application!"); ?></span>
             </div>

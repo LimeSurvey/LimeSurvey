@@ -2,9 +2,9 @@
     <div class="card-body">
         <h5 class="card-title"><?= sprintf(gT("Authenticate with %s"), $providerName) ?></h5>
         <p class="card-text">
-            <?php if (!empty($description)): ?>
+            <?php if (!empty($description)) : ?>
                 <?= $description ?>
-            <?php else: ?>
+            <?php else : ?>
                 <?= gT("Please click the button below to authenticate with your account.") ?>
             <?php endif; ?>
         </p>
