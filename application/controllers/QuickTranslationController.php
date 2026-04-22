@@ -118,7 +118,7 @@ class QuickTranslationController extends LSBaseController
             // Only save if the administration user has the correct permission
             //todo: this is only necessary on save ...
             if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
-                $this->translateSave($languageToTranslate, $quickTranslation);
+                $this->translateSave($languageToTranslate, $quickTranslation, $surveyid);
                 Yii::app()->setFlashMessage(gT("Saved"), 'success');
             }
 
@@ -164,9 +164,10 @@ class QuickTranslationController extends LSBaseController
      * @param $tolang
      * @param $baselang
      * @param $quickTranslation \LimeSurvey\Models\Services\QuickTranslation the quicktranslation object
+     * @param $surveyid
      * @return void
      */
-    private function translateSave($tolang, $quickTranslation)
+    private function translateSave($tolang, $quickTranslation, $surveyid)
     {
         $tab_names = $quickTranslation->getTabNames();
         $tab_names_full = $tab_names;
@@ -181,6 +182,7 @@ class QuickTranslationController extends LSBaseController
             }
         }
 
+        $updateOccured = false;
         foreach ($tab_names_full as $type) {
             $size = (int) Yii::app()->getRequest()->getPost("{$type}_size"); //todo: what is size here?
             // start a loop in order to update each record
@@ -197,11 +199,20 @@ class QuickTranslationController extends LSBaseController
                         $answerCode = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
                         $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
                         $quickTranslation->updateTranslations($type, $tolang, $new, $qidOrGid, $answerCode, $iScaleID);
+                        $updateOccured = true;
                     }
                 }
                 $i++;
             } // end while
         } // end foreach
+
+        if ($updateOccured) {
+            $survey = Survey::model()->findByPk($surveyid);
+            if ($survey) {
+                $surveyDetailService = new \LimeSurvey\Models\Services\SurveyDetailService();
+                $surveyDetailService->updateSurveyLastModified($survey);
+            }
+        }
     }
 
     /**

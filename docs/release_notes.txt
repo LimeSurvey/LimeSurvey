@@ -34,6 +34,48 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.16.17 (build 260414) to 6.17.0 (build 260421) April 21, 2026
++New feature: Translatable maintenance page (#2987) (aisreh)
++New feature #AT-1771: Added field type for additional attributes of survey participants (#4609) (Tim Willig)
++New feature #20387: Keep certain subquestions/answer options at original positions on randomization (#4613) (Tõnis Ormisson)
++New feature #20316: XSS settings for superadmin (#4753) (Denis Chenu)
++New feature #20291: Cannot set expiration date for multiple users at once (#4806) (Denis Chenu)
++New feature #20288: More columns and filters in user management view (#4787) (Denis Chenu)
+-Fixed issue: Database update may be run twice (if run in parallel), leading to a corrupted database (#4593) (Carsten Schmitz)
+-Fixed issue #LE-653: Fixed token creation issue (#4804) (lajosarpad)
+-Fixed issue #LE-593: sidemenu widget item translations (#4699) (haythem chibani)
+-Fixed issue #LE-491: copy survey details improved caching (#4528) (haythem chibani)
+-Fixed issue #LE-489: Ensure survey details update correctly when translations change via quick translation (#4522) (haythem chibani)
+-Fixed issue #CT-1611: Copy conditions while copying a group (#4734) (lajosarpad)
+-Fixed issue #20492: [security] Stored Cross-Site Scripting (SXSS) in theme administration (Thank you to lavie3k for reporting the issue) (#4888) (Denis Chenu)
+-Fixed issue #20491: Missing feedback when registering with the same email (#4882) (tiborpacalat)
+-Fixed issue #20472: Unable to update DB from 470 to 471 via CLI (#4817) (Denis Chenu)
+-Fixed issue #19773: Translation missing in reordering title (aisreh)
+-Fixed issue #19663: Users without creation date from older installations show exception in user list (#3968) (Johannes Weberhofer)
+-Fixed issue #19519: When re-activating a token based survey the user is not asked to re-active the token table (#3963) (Gabriel Jenik)
+-Fixed issue #18936: User count in group is not OK after deleting a user. (#3344) (Gabriel Jenik)
+-Fixed issue #18460: Assigned survey group is gone after survey export/import (#2745) (Gabriel Jenik)
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Mongolian by amidral
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by lemonia1
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bengali by Mazi
+#Updated translation: Basque by naiara.maya
+#Updated translation: Azerbaijani by nemoralis
+#Updated translation: Armenian by Mazi
+#Updated translation: Armenian (Western) by aghjoyan
+
+
 Changes from 6.16.16 (build 260408) to 6.16.17 (build 260414) April 14, 2026
 -Fixed issue #20480: Proper font support for non-Latin chars in PDF export (#4857) (Mohab Elsheikh)
 -Fixed issue #20478: Question index inherited value cannot be overridden (#4853) (Matthew)
