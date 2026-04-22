@@ -15,10 +15,8 @@ class RankingProcessor extends AbstractQuestionProcessor
     {
         $this->rt();
         $charts = [];
-
         $model = \SurveyDynamic::model($this->surveyId);
         $db = $model->getDbConnection();
-
         $subQuestions = $this->question['subQuestions'];
 
         // Build the rank column names
