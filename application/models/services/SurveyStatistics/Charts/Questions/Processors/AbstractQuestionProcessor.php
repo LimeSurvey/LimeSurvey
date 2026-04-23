@@ -192,26 +192,57 @@ abstract class AbstractQuestionProcessor
     /**
      * Build chart items (legend + values) from a list of answer codes.
      *
-     * @param string $rt Question key (sidXgidXqid)
+     * @param string $rt Question key Q{qid}
      * @param array $codes Answer codes
      * @param array $labels Optional display labels (aligned with $codes)
      * @return array [legend[], items[]]
      */
     protected function buildItemsFromCodes($rt, array $codes, array $labels = []): array
     {
+        if (empty($codes)) {
+            return [[], []];
+        }
+
+        $model = SurveyDynamic::model($this->surveyId);
+        $db = $model->getDbConnection();
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $col = $db->quoteColumnName($rt);
+
+        $criteria = new LSDbCriteria();
+        $this->applyFilters($criteria);
+        $where = $criteria->condition ?? '';
+        $params = $criteria->params   ?? [];
+
+        $fields = [];
+        foreach ($codes as $i => $code) {
+            $paramName = ':code_' . $i;
+            $alias = $db->quoteColumnName('code_' . $i);
+            $fields[] = "SUM(CASE WHEN $col = $paramName THEN 1 ELSE 0 END) AS $alias";
+            $params[$paramName] = (string)$code;
+        }
+
+        // Add a field for unanswered/empty responses if question type has no answer option
+        $shouldAddEmpty = in_array($this->question['type'], $this->noAnswerTypes);
+        $emptyAlias = '_no_answer';
+        if ($shouldAddEmpty) {
+            $fields[] = "SUM(CASE WHEN $col IS NULL OR $col = '' THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($emptyAlias);
+        }
+
+        $sql = 'SELECT ' . implode(', ', $fields) . " FROM $table" . ($where !== '' ? ' WHERE ' . $where : '');
+        $row = $db->createCommand($sql)->queryRow(true, $params) ?: [];
+
         $legend = [];
         $items = [];
 
         foreach ($codes as $i => $code) {
-            $count = $this->getResponseCount($rt, (string)$code);
             $title = $labels[$i] ?? (string)$code;
             $legend[] = $title;
-
+            $count = (int)($row['code_' . $i] ?? 0);
             $items[] = ['key' => (string)$code, 'title' => $title, 'value' => $count];
         }
 
-        if (in_array($this->question['type'], $this->noAnswerTypes)) {
-            $items[] = ['key' => 'NoAnswer', 'title' => 'No Answer', 'value' => $this->getResponseNotAnsweredCount($rt)];
+        if ($shouldAddEmpty) {
+            $items[] = ['key' => 'NoAnswer', 'title' => 'No Answer', 'value' => (int)($row[$emptyAlias] ?? 0)];
         }
 
         return [$legend, $items];
