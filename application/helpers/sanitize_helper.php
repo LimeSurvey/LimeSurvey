@@ -586,7 +586,9 @@ function sanitize_alphanumeric($value)
  */
 function validate_path_component($string)
 {
-    $string = (string) $string;
+    if (!is_string($string)) {
+        return false;
+    }
 
     return !(
         $string === ''
