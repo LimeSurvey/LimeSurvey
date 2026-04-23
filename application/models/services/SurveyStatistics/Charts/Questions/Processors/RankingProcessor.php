@@ -15,7 +15,7 @@ class RankingProcessor extends AbstractQuestionProcessor
     {
         $this->rt();
         $charts = [];
-        $subQuestions = array_values($this->question['subQuestions']);
+        $subQuestions = $this->question['subQuestions'];
 
         // Build the rank column names
         $rankColumns = [];
@@ -29,14 +29,16 @@ class RankingProcessor extends AbstractQuestionProcessor
 
         // Re-assemble into per-item charts
         $rankCount = count($subQuestions);
-        foreach ($subQuestions as $sqidx => $subQuestion) {
+        $index = 0;
+        foreach ($subQuestions as $subQuestion) {
+            $index++;
             $legends = [];
             $dataItems = [];
             for ($rank = 1; $rank <= $rankCount; $rank++) {
                 $fieldName = 'RANK ' . $rank;
                 $legends[] = $fieldName;
                 $rankCol = $rankColumns[$rank - 1];
-                $count = (int)(($items[$rankCol][1][$sqidx]['value'] ?? 0));
+                $count = (int)(($items[$rankCol][1][$index - 1]['value'] ?? 0));
                 $dataItems[] = [
                     'key' => $subQuestion['title'],
                     'title' => $fieldName,
