@@ -9,9 +9,9 @@
                 // Survey structure
                 [
                     'onClick' => "window.location='" . App()->createUrl(
-                            'editorLink/index',
-                            ['route' => 'survey/' . $sid]
-                        ) . "'",
+                        'editorLink/index',
+                        ['route' => 'survey/' . $sid]
+                    ) . "'",
                     'tooltip' => gT('Survey structure'),
                     'iconClass' => 'ri-bar-chart-horizontal-line'
                 ],
@@ -19,12 +19,12 @@
                 [
                     'dataTarget' => '#survey-settings-panel',
                     'onClick' => "window.location='" . App()->createUrl(
-                            'editorLink/index',
-                            [
+                        'editorLink/index',
+                        [
                                 'route' => 'survey/' . $sid
                                     . '/settings/generalsettings'
                             ]
-                        ) . "'",
+                    ) . "'",
                     'tooltip' => gT('Survey settings'),
                     'activePanel' => $this->activePanel == 'survey-settings-panel',
                     'iconClass' => 'ri-settings-3-fill'
@@ -33,12 +33,12 @@
                 [
                     'dataTarget' => '#survey-presentation-panel',
                     'onClick' => "window.location='" . App()->createUrl(
-                            'editorLink/index',
-                            [
+                        'editorLink/index',
+                        [
                                 'route' => 'survey/' . $sid
                                     . '/presentation/theme_options'
                             ]
-                        ) . "'",
+                    ) . "'",
                     'tooltip' => gT('Survey presentation'),
                     'activePanel' => $this->activePanel == 'survey-presentation-panel',
                     'iconClass' => 'ri-paint-fill'
@@ -47,9 +47,9 @@
                 [
                     'dataTarget' => '#survey-menu-panel',
                     'onClick' => "window.location='" . App()->createUrl(
-                            'admin/tokens/sa/index/surveyid/'
+                        'admin/tokens/sa/index/surveyid/'
                             . $sid
-                        ) . "'",
+                    ) . "'",
                     'tooltip' => gT('Survey menu'),
                     'activePanel' => $this->activePanel == 'survey-menu-panel',
                     'iconClass' => 'ri-file-text-line'
@@ -58,9 +58,9 @@
                 [
                     'dataTarget' => '#survey-permissions-panel',
                     'onClick' => "window.location='" . App()->createUrl(
-                            'surveyPermissions/index/',
-                            ['surveyid' => $sid]
-                        ) . "'",
+                        'surveyPermissions/index/',
+                        ['surveyid' => $sid]
+                    ) . "'",
                     'tooltip' => gT('Survey permissions'),
                     'activePanel' => $this->activePanel == 'survey-permissions-panel',
                     'iconClass' => 'ri-group-line'
@@ -70,9 +70,9 @@
                     'dataTarget' => '#survey-quick-translation',
                     'disabled' => count($this->allLanguages) <= 1,
                     'onClick' => "window.location='" . App()->createUrl(
-                            'quickTranslation/index/',
-                            ['surveyid' => $sid]
-                        ) . "'",
+                        'quickTranslation/index/',
+                        ['surveyid' => $sid]
+                    ) . "'",
                     'tooltip' => gT('Quick translation'),
                     'tooltipDisabled' => gT('Quick translation') . ': '
                         . gT(
@@ -143,7 +143,7 @@
                         <?php foreach ($sideMenu['menu'] as $item) : ?>
                             <a href="<?php echo $item['disabled'] ?? false ? '#' : $item['url']; ?>" class="<?php echo $item['disabled'] ?? false ? 'disabled' : ''; ?>">
                                 <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
-                                    <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected'])? ' text-white' : ' text-black'; ?>">
+                                    <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
                                         <?php echo gT($item['name']); ?>
                                     </label>
                                 </div>
@@ -172,7 +172,7 @@
                         </div>
                         <?php foreach ($sideMenu['presentation'] as $item) : ?>
                             <a href="<?php echo $item['url']; ?>">
-                                <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected'])? ' bg-primary' : ''; ?>">
+                                <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
                                         <?php echo gT($item['name']); ?>
                                     </label>

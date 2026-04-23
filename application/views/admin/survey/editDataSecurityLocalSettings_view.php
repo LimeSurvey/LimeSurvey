@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
 
 <div id="editdatasecele-<?php echo $i; ?>" class="tab-pane fade <?php if ($i == 0) {
                                                                     echo "show active";
-                                                                } ?> center-box">
+                        } ?> center-box">
     <div class="row mt-4">
         <div class="col-12 col-xl-6 mb-3">
             <!-- Privacy policy checkbox label -->

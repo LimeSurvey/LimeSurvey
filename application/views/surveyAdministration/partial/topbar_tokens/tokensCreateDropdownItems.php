@@ -1,6 +1,6 @@
 <!-- Add new token entry" -->
 <ul class="dropdown-menu" role="menu" aria-label="<?php echo CHtml::encode(gT('Add participants')); ?>">
-    <?php if ($hasTokensCreatePermission): ?>
+    <?php if ($hasTokensCreatePermission) : ?>
         <li role="none">
             <a class="pjax dropdown-item" role="menuitem" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/addnew/surveyid/$oSurvey->sid"); ?>" >
                 <span class="ri-add-circle-fill" aria-hidden="true"></span>
@@ -16,12 +16,11 @@
             </a>
         </li>
     <?php endif; ?>
-    <?php if ($hasTokensCreatePermission && $hasTokensImportPermission): ?>
+    <?php if ($hasTokensCreatePermission && $hasTokensImportPermission) : ?>
         <li role="presentation" class="dropdown-divider" aria-hidden="true"></li>
     <?php endif; ?>
     <!-- Import tokens -->
-    <?php if ($hasTokensImportPermission): ?>
-
+    <?php if ($hasTokensImportPermission) : ?>
         <li role="presentation">
             <h6 class="dropdown-header"><?php eT("Import participants from:"); ?></h6>
         </li>

@@ -165,7 +165,7 @@ switch ($errorObject->error) {
                role="button" aria-disabled="false">
                 <?php eT("Enter a new key"); ?>
             </a>
-        <?php endif; ?>
+    <?php endif; ?>
         <a class="btn btn-outline-secondary" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button"
            aria-disabled="false">
             <?php eT("Cancel"); ?>

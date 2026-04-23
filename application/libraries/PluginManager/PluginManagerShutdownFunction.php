@@ -12,7 +12,6 @@ namespace LimeSurvey\PluginManager;
  */
 class PluginManagerShutdownFunction
 {
-
     /**
      * @var boolean
      */

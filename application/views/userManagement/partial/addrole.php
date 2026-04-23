@@ -9,8 +9,8 @@ Yii::app()->getController()->renderPartial(
 <?php $form = $this->beginWidget('TbActiveForm', array(
     'id' => 'UserManagement--modalform',
     'action' => App()->createUrl('userManagement/SaveRole'),
-    'enableAjaxValidation'=>false,
-    'enableClientValidation'=>false,
+    'enableAjaxValidation' => false,
+    'enableClientValidation' => false,
 ));?>
 
 <div class="modal-body selector--edit-role-container">

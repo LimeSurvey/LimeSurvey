@@ -14,7 +14,6 @@
  */
 class InstallCommand extends CConsoleCommand
 {
-
     /**
      * If true, output trace.
      * @var boolean

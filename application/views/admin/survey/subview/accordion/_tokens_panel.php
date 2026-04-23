@@ -8,15 +8,18 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyParticipantTokenOptions');
 
-App()->getClientScript()->registerScript("tokens-panel-variables",
+App()->getClientScript()->registerScript(
+    "tokens-panel-variables",
     "
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '" . gT("If you are using participants or notification emails you need to set an administrator email address.",
-        'js') . "'
+    var sAdminEmailAddressNeeded = '" . gT(
+        "If you are using participants or notification emails you need to set an administrator email address.",
+        'js'
+    ) . "'
     var sURLParameters = '';
     var sAddParam = '';
     
@@ -44,7 +47,8 @@ App()->getClientScript()->registerScript("tokens-panel-variables",
     });
     
 ",
-    LSYii_ClientScript::POS_BEGIN);
+    LSYii_ClientScript::POS_BEGIN
+);
 
 App()->getClientScript()->registerScript("edit-after-completion-message", "
     (function(){
@@ -129,8 +133,10 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             'name' => 'anonymized',
                             'checkedOption' => $oSurvey->anonymized,
                             'ariaLabel' => gT('Anonymized responses:'),
-                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-                                ['I' => $oSurveyOptions->anonymized . " ᴵ" ]) : $optionsOnOff,
+                            'selectOptions' => ($bShowInherited) ? array_merge(
+                                $optionsOnOff,
+                                ['I' => $oSurveyOptions->anonymized . " ᴵ" ]
+                            ) : $optionsOnOff,
                         ]);
                     } ?>
                 </div>
@@ -147,7 +153,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                         'checkedOption' => $oSurvey->tokenanswerspersistence,
                         'ariaLabel' => gT('Enable participant-based response persistence:'),
                         'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' =>$oSurveyOptions->tokenanswerspersistence . " ᴵ" ])
+                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->tokenanswerspersistence . " ᴵ" ])
                             : $optionsOnOff
                     ]) ?>
                 </div>
@@ -227,12 +233,12 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->htmlemail . " ᴵ" ])
                             : $optionsOnOff,
                     ]);
-                    $this->widget('yiistrap_fork.widgets.TbModal', [
-                        'id'      => 'htmlemailModal',
-                        'header'  => gT('Warning', 'unescaped'),
-                        'content' => '<p>' . gT("If you change the email format, you'll have to review your email templates to fit the new format") . '</p>',
-                        'footer'  => TbHtml::button('Close', ['data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'])
-                    ]); ?>
+                                                           $this->widget('yiistrap_fork.widgets.TbModal', [
+                                                           'id'      => 'htmlemailModal',
+                                                           'header'  => gT('Warning', 'unescaped'),
+                                                           'content' => '<p>' . gT("If you change the email format, you'll have to review your email templates to fit the new format") . '</p>',
+                                                           'footer'  => TbHtml::button('Close', ['data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'])
+                                                           ]); ?>
                 </div>
             </div>
 
@@ -244,9 +250,10 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                         'name' => 'sendconfirmation',
                         'checkedOption' => $oSurvey->sendconfirmation,
                          'ariaLabel' => gT('Send confirmation emails:'),
-                        'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff,
-
-                            ['I' => $oSurveyOptions->sendconfirmation . " ᴵ"]) : $optionsOnOff
+                        'selectOptions' => ($bShowInherited) ? array_merge(
+                            $optionsOnOff,
+                            ['I' => $oSurveyOptions->sendconfirmation . " ᴵ"]
+                        ) : $optionsOnOff
                     ]); ?>
                 </div>
             </div>
@@ -259,14 +266,14 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
     <?php
     $this->widget('yiistrap_fork.widgets.TbModal', array(
         'id' => 'alertPrivacy1',
-        'header' => gT('Warning','unescaped'),                    
-        'content' => '<p>'.gT("You can't use 'Anonymized responses' when participant-based response persistence is enabled.").'</p>',
+        'header' => gT('Warning', 'unescaped'),
+        'content' => '<p>' . gT("You can't use 'Anonymized responses' when participant-based response persistence is enabled.") . '</p>',
         'footer' => TbHtml::button('Close', array('data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'))
     ));
     $this->widget('yiistrap_fork.widgets.TbModal', array(
         'id' => 'alertPrivacy2',
-        'header' => gT('Warning','unescaped'),
-        'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
+        'header' => gT('Warning', 'unescaped'),
+        'content' => '<p>' . gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.") . '</p>',
         'footer' => TbHtml::button('Close', array('data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'))
     ));
     ?>

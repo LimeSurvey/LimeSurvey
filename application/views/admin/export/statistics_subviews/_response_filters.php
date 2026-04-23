@@ -24,7 +24,7 @@
             'dshresults2' => $dshresults2,
         )
     );
-    ?>
+?>
 
 </div>
 

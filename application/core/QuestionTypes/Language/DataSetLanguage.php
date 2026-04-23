@@ -2,5 +2,4 @@
 
 class DataSetLanguage extends QuestionBaseDataSet
 {
-
 }

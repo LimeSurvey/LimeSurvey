@@ -994,7 +994,7 @@ class SurveyDynamic extends LSActiveRecord
                     continue;
                 }
                 $currentResponse = $oResponses[$subFieldname];
-                
+
                 // Get the answer text for the selected rank value
                 $answerText = '';
                 if (isset($oQuestion->subquestions)) {
@@ -1005,7 +1005,7 @@ class SurveyDynamic extends LSActiveRecord
                         $answerText = $oSelectedAnswer->questionl10ns[$sLanguage]->question ?? '';
                     }
                 }
-                
+
                 $aQuestionAttributes['answervalues'][] = [
                     'value' => $currentResponse,
                     'subquestion' => $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title,

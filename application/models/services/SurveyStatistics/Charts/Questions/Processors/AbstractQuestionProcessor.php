@@ -145,11 +145,11 @@ abstract class AbstractQuestionProcessor
 
     /**
      * Gets column aggregate response
-     * @param mixed $title
      * @param mixed $fields
+     * @param mixed $params
      * @return array|bool
      */
-    public function getAggregateResponses($title, $fields)
+    public function getAggregateResponses($fields, $params)
     {
         $model = SurveyDynamic::model($this->surveyId);
         $db = $model->getDbConnection();
@@ -157,7 +157,7 @@ abstract class AbstractQuestionProcessor
             ->select(implode(",", $fields))
             ->from("{{responses_" . $this->surveyId . "}}")
         ;
-        return $command->query([":title" => $title])->read();
+        return $command->query($params)->read();
     }
 
 

@@ -418,7 +418,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ha']['rtl'] = false;
     $supportedLanguages['ha']['dateformat'] = 1;
     $supportedLanguages['ha']['radixpoint'] = 1;
-    
+
     // Hebrew
     $supportedLanguages['he']['description'] = gT('Hebrew');
     $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';

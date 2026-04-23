@@ -1,4 +1,5 @@
 <?php
+
 /* @var     $surveyId int */
 /* @var     $gid  int */
 /* @var     $qid int */
@@ -42,12 +43,12 @@ $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$j}", $textto);
 $translateoutput .= '<div class="row">';
 
 $cols = 73;
-if($amTypeOptions['HTMLeditorDisplay'] === 'Modal'){
+if ($amTypeOptions['HTMLeditorDisplay'] === 'Modal') {
     $translateoutput .= '<div class="col-sm-10">';
-    if($type == 'question_help' || $type == 'question' || $type == 'subquestion' || $type == 'answer'){
+    if ($type == 'question_help' || $type == 'question' || $type == 'subquestion' || $type == 'answer') {
         $cols = 50;
     }
-}else{
+} else {
     $translateoutput .= '<div class="col-sm-12">';
 }
 $aDisplayOptions = array(

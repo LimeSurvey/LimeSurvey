@@ -7,11 +7,11 @@
 
 //todo: this view comes from old TobarWidget and should be use in new topbar
 
-$notActive = $survey->active=='N';
-if(!isset($id)) {
+$notActive = $survey->active == 'N';
+if (!isset($id)) {
     $id = $notActive ? 'ls-preview-button' : 'ls-run-button';
 }
-if(!isset($name)) {
+if (!isset($name)) {
     $name = $notActive ? 'ls-preview-button' : 'ls-run-button';
 }
 

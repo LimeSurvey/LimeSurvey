@@ -342,7 +342,7 @@ echo $oQuestionSelector->getModal();
                                         'pattern' => "[A-Za-z]{0,3}"
                                     ]
                                 );
-                                ?>
+?>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6">

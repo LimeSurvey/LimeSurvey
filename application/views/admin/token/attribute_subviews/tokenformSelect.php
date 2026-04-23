@@ -17,9 +17,11 @@ $emptyOptionValue = $batchEdit ? 'lskeep' : '';
     <?= $batchEdit ? 'disabled' : '' ?>
 >
     <option value="<?= $emptyOptionValue ?>"></option>  <!-- Nothing selected -->
-    <?php foreach ($attrDescription['type_options'] as $optionKey => $optionValue): ?>
+    <?php foreach ($attrDescription['type_options'] as $optionKey => $optionValue) : ?>
         <option
-            <?php if ($optionValue == $inputValue): echo 'selected'; endif; ?>
+            <?php if ($optionValue == $inputValue) :
+                echo 'selected';
+            endif; ?>
             value='<?= CHtml::encode($optionValue); ?>'
         >
             <?php echo CHtml::encode($optionValue); ?>

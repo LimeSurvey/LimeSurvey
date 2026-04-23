@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * WhCountries.php
@@ -9,11 +10,11 @@
  * @link http://www.ramirezcobos.com/
  * @link http://www.2amigos.us/
  */
+
 Yii::import('yiiwheels.widgets.formhelpers.WhDropDownInputWidget');
 
 class WhFontSizes extends WhDropDownInputWidget
 {
-
     public function init()
     {
         parent::init();

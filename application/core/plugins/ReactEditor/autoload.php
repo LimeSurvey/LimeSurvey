@@ -12,6 +12,7 @@
  * @return void Returns nothing if the class doesn't match the namespace prefix or if the file is successfully loaded.
  *              Returns early without loading if the class is not in the ReactEditor namespace.
  */
+
 spl_autoload_register(function ($class) {
     $prefix = 'ReactEditor\\';
     $baseDir = __DIR__ . '/';

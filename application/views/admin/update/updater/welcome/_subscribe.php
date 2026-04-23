@@ -1,14 +1,17 @@
 <?php
+
 /**
 * This file display the subscribe view
 * The javascript inject it inside the div#updaterContainer, in the _updater view. (like any steps)
 */
+
 ?>
 <h3 class="maintitle"><?php eT("Subscribe to ComfortUpdate!");?></h3>
 
 <?php
-if( isset($serverAnswer->html) )
+if (isset($serverAnswer->html)) {
     echo $serverAnswer->html;
+}
 ?>
 
 <div class="updater-background">
@@ -19,29 +22,29 @@ if( isset($serverAnswer->html) )
         $aopen  = '<a href="https://account.limesurvey.org/get-your-free-comfortupdate-trial-key" target="_blank">';
         $aclose = '</a>';
         ?>
-        <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."),$aopen, $aclose); ?>
+        <?php echo sprintf(gT("You can get a free trial update key from %syour account on the limesurvey.org website%s."), $aopen, $aclose); ?>
         <?php
         $aopen  = '<a href="https://account.limesurvey.org/sign-up">';
         $aclose = '</a>';
         ?><br>
-    <?php echo sprintf(gT("If you don't have an account on limesurvey.org, please %sregister first%s."),$aopen, $aclose);?></p>
+    <?php echo sprintf(gT("If you don't have an account on limesurvey.org, please %sregister first%s."), $aopen, $aclose);?></p>
 
     <?php
     $url = Yii::app()->createUrl('/admin/update/sa/submitkey');
-    echo CHtml::beginForm($url, 'post', array("id"=>"submitKeyForm"));
-    echo CHtml::hiddenField('destinationBuild', Yii::app()->request->getParam('destinationBuild',''));?>
+    echo CHtml::beginForm($url, 'post', array("id" => "submitKeyForm"));
+    echo CHtml::hiddenField('destinationBuild', Yii::app()->request->getParam('destinationBuild', ''));?>
     <div class="mb-3">
         <?php
-        echo CHtml::label(gT('Enter your update key:'),'inputKey', array('class'=>'col-md-2'));
+        echo CHtml::label(gT('Enter your update key:'), 'inputKey', array('class' => 'col-md-2'));
         ?>
         <div class='col-md-2'>
             <?php
-            echo CHtml::textField('keyid', '', array("id"=>"inputKey",'class'=>'form-control','required' => true));
+            echo CHtml::textField('keyid', '', array("id" => "inputKey",'class' => 'form-control','required' => true));
             ?>
         </div>
     </div>
     <?php
-    echo CHtml::submitButton(gT('Submit'), array("class"=>"btn btn-outline-secondary", "id"=>"submitKeyButton"));
+    echo CHtml::submitButton(gT('Submit'), array("class" => "btn btn-outline-secondary", "id" => "submitKeyButton"));
     ?>
     <a class="btn btn-cancel" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>

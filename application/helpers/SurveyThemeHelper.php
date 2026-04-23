@@ -13,7 +13,7 @@
 *
 */
 
-/** 
+/**
  * About Theme Options Path Treatment - Theme Options Path Prefix
  * =========================
  *
@@ -25,25 +25,24 @@
  * - Theme Files: Files under the theme folder
  * - Survey Files: Files under <uploaddir>/surveys/<sid>/images
  *
- * Please note that the paths must point to files inside those folders, so path traversal is not allowed.  
+ * Please note that the paths must point to files inside those folders, so path traversal is not allowed.
  *
- * To be clear about which of those categories the path belongs to, a prefix is added, making it a "virtual" path. 
+ * To be clear about which of those categories the path belongs to, a prefix is added, making it a "virtual" path.
  * - General Files: image::generalfiles::
  * - Theme Files: image::theme::
  * - Survey Files: image::survey::
  *
- * Paths are considered invalid if:  
- * - The path starts with one of the prefixes mentioned above but the file doesn't exist inside the category's folder.  
- * - The path matches a real path to an existing file 
+ * Paths are considered invalid if:
+ * - The path starts with one of the prefixes mentioned above but the file doesn't exist inside the category's folder.
+ * - The path matches a real path to an existing file
  *   (either relative to the root of LS installation, to the current working dir or absolute),
  *   but the file is not inside one of the categories folders.
- * 
+ *
  * After sanitization, valid paths are converted to virtual paths, and invalid paths are prefixed with "invalid:".
  *
- * NOTE: Paths that don't have one of the category prefixes but don't match an existing file are left untouched, 
+ * NOTE: Paths that don't have one of the category prefixes but don't match an existing file are left untouched,
  *       because there is no way to be  100% * sure that they are actual paths.
  */
-
 
 use LimeSurvey\Datavalueobjects\ThemeFileCategory;
 use LimeSurvey\Datavalueobjects\ThemeFileInfo;
@@ -111,7 +110,8 @@ class SurveyThemeHelper
         return  $templateList;
     }
 
-    public static function getNestedThemeConfigPath($templateName) {
+    public static function getNestedThemeConfigPath($templateName)
+    {
         $directory = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $templateName;
         $paths = CFileHelper::findFiles($directory, ['level' => 200]);
         foreach ($paths as $path) {
@@ -502,7 +502,7 @@ class SurveyThemeHelper
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader(false);
         }
-        $domDocument = new \DOMDocument;
+        $domDocument = new \DOMDocument();
         $domDocument->load($configFile);
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader(true);
@@ -549,7 +549,6 @@ class SurveyThemeHelper
         }
 
         if ($cssFrameworkNode) {
-
             $defaultOption = '';
             $dropDownOptionsNode = null;
 
@@ -564,41 +563,39 @@ class SurveyThemeHelper
             if ($dropDownOptionsNode) {
                 $optGroupNodeList = $dropDownOptionsNode->getElementsByTagName('optgroup');
                 if ($optGroupNodeList->length === 0) {
-            
                     // Create a new 'optgroup' element
                     $optGroupNode = $domDocument->createElement('optgroup');
-            
+
                     // Loop through all 'option' nodes and move them to 'optgroup'
                     while ($dropDownOptionsNode->childNodes->length > 0) {
                         $optionNode = $dropDownOptionsNode->firstChild;
-            
+
                         // Skip text nodes or invalid nodes
                         if ($optionNode->nodeName === '#text' || trim($optionNode->nodeValue) === '') {
                             $dropDownOptionsNode->removeChild($optionNode);
                             continue;
                         }
-            
+
                         // Check if the node is a valid 'option' node
                         if ($optionNode->nodeName != 'option') {
                             throw new \Exception('Invalid node in the config file.');
                         }
-            
+
                         // Append valid 'option' nodes
                         $optGroupNode->appendChild($optionNode);
                     }
-            
+
                     // Append the 'optgroup' with all the 'option' nodes into 'dropdownoptions'
                     if ($optGroupNode->childNodes->length > 0) {
                         $dropDownOptionsNode->appendChild($optGroupNode);
                         $isChangedDomDocument = true;
                     }
-            
                 } else {
                     $optGroupNode = $optGroupNodeList->item(0);
                 }
             } else {
                 throw new \Exception('No "dropdownoptions" nodes were found.');
-            }            
+            }
 
             if ($defaultOption === '' && isset($optGroupNode->firstChild)) {
                 $defaultOption = $optGroupNode->getElementsByTagName('option')->item(0)->nodeValue;

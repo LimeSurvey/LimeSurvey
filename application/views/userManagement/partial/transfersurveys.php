@@ -3,8 +3,12 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 <div class="modal-body">
-    <?= TbHtml::formTb(null, App()->createUrl('userManagement/deleteUser'), 'post',
-        ["id" => "UserManagement--modalform"]) ?>
+    <?= TbHtml::formTb(
+        null,
+        App()->createUrl('userManagement/deleteUser'),
+        'post',
+        ["id" => "UserManagement--modalform"]
+    ) ?>
     <div class="row ls-space margin top-5">
         <label for="transfer_surveys_to"><?php eT("Transfer the surveys of this user to: "); ?></label>
         <select id='transfer_surveys_to' name='transfer_surveys_to' class='form-select'>

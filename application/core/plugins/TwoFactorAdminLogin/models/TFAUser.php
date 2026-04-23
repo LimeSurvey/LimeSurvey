@@ -42,9 +42,9 @@ class TFAUser extends User
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = ['users_name', 'safe', 'on'=>'search'];
-        $rules[] = ['email', 'safe', 'on'=>'search'];
-        $rules[] = ['full_name', 'safe', 'on'=>'search'];
+        $rules[] = ['users_name', 'safe', 'on' => 'search'];
+        $rules[] = ['email', 'safe', 'on' => 'search'];
+        $rules[] = ['full_name', 'safe', 'on' => 'search'];
         return $rules;
     }
 
@@ -65,7 +65,7 @@ class TFAUser extends User
             'linkAttributes'   => [
                 'data-bs-toggle'   => "modal",
                 'data-confirmtext' => gT("Are you sure you want to delete this 2FA key?"),
-                'data-buttons'     => json_encode (['confirm_cancel' => gT("Cancel"), 'confirm_ok' => gT('Delete')]),
+                'data-buttons'     => json_encode(['confirm_cancel' => gT("Cancel"), 'confirm_ok' => gT('Delete')]),
                 'data-href'        => App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey"),
                 'data-uid'         => $this->uid,
                 'data-errortext'   => gT('An error has occurred, and the key could not be deleted.'),
@@ -152,7 +152,7 @@ class TFAUser extends User
         // @todo Please modify the following code to remove attributes that should not be searched.
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->with = 'userkeys';
         $criteria->compare('users_name', $this->users_name);
         $criteria->compare('full_name', $this->full_name);
@@ -165,9 +165,9 @@ class TFAUser extends User
         if ($paramHasAuthSet === '0') {
             $criteria->addCondition('secretKey IS NULL');
         }
-         
+
         $oDataProvider =  new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
             'pagination' => [
                 'pageSize' => $pageSize
             ],

@@ -85,7 +85,7 @@ class ConsoleApplication extends CConsoleApplication
             }
         }
         $this->config = array_merge($this->config, $lsConfig);
-        
+
         /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
            it would be decrypted in LimeMailer when needed */
            $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);

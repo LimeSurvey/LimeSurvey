@@ -15,37 +15,58 @@ class RankingProcessor extends AbstractQuestionProcessor
     {
         $this->rt();
         $charts = [];
-
         $model = \SurveyDynamic::model($this->surveyId);
         $db = $model->getDbConnection();
+        $subQuestions = $this->question['subQuestions'];
 
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $title = $subQuestion['title'];
-            $legends = [];
-            $dataItems = [];
-            $index = 0;
-            $fields = [];
-            foreach ($this->question['subQuestions'] as $subQuestionInner) {
-                $index++;
-                $fieldName = "RANK {$index}";
-                $legends[] = $fieldName;
-                $fields[] = "SUM(CASE WHEN " . $db->quoteColumnName(substr($this->rt, 1) . "_S" . $subQuestionInner['qid']) . " = :title THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($fieldName);
+        // Build the rank column names
+        $rankColumns = [];
+        foreach ($subQuestions as $subQuestion) {
+            $rankColumns[] = $db->quoteColumnName(substr($this->rt, 1) . '_S' . $subQuestion['qid']);
+        }
+        $columnLimit = 1500;
+        $exceedsLimit = count($subQuestions) ** 2 > $columnLimit;
+
+        // Build all cases with aliases SQ{sqid}_RANK{i}
+        $params = [];
+        $selectParts = [];
+        foreach ($subQuestions as $sqid => $subQuestion) {
+            $paramKey = ':title_' . $sqid;
+            $params[$paramKey] = $subQuestion['title'];
+            $rank = 0;
+            foreach ($rankColumns as $rankCol) {
+                $rank++;
+                $alias = 'SQ' . $sqid . '_RANK' . $rank;
+                $selectParts[] = "SUM(CASE WHEN {$rankCol} = {$paramKey} THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($alias);
             }
-            $currentResults = $this->getAggregateResponses($title, $fields);
-            foreach ($legends as $fieldName) {
+        }
+
+        // empty chart if exceeds limit TODO: revisit to split in chunks if needed
+        $row = $exceedsLimit ? [] : $this->getAggregateResponses($selectParts, $params);
+
+        // Re-assemble into charts
+        foreach ($subQuestions as $sqid => $subQuestion) {
+            $legends   = [];
+            $dataItems = [];
+            $rankCount = count($subQuestions);
+            for ($rank = 1; $rank <= $rankCount; $rank++) {
+                $fieldName = 'RANK ' . $rank;
+                $legends[] = $fieldName;
+                $alias = 'SQ' . $sqid . '_RANK' . $rank;
                 $dataItems[] = [
                     'key' => $subQuestion['title'],
                     'title' => $fieldName,
-                    'value' => $currentResults[$fieldName]
+                    'value' => (int)($row[$alias] ?? 0),
                 ];
             }
-            $charts[] = new StatisticsChartDTO($this->question['question'] . ": " . $subQuestion['question'], $legends, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
+            $charts[] = new StatisticsChartDTO(
+                $this->question['question'] . ': ' . $subQuestion['question'],
+                $legends,
+                $dataItems,
+                $this->calculateTotal($dataItems),
+                ['question' => $this->question]
+            );
         }
-
-        /*$legends[] = 'NoAnswer';
-        $dataItems[] = ['key' => 'NoAnswer', 'value' => 0, 'title' => 'No answer'];
-
-        $charts[] = new StatisticsChartDTO($title, $legends, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);*/
 
         return $charts;
     }

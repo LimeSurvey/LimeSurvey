@@ -24,5 +24,9 @@
             </div>
         <?php endforeach; ?>
     </div>
-    <?php /** here we could at the menu part of the sidebar */ ?>
+    <?php
+
+/** here we could at the menu part of the sidebar */
+
+    ?>
 </div>

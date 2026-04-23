@@ -224,7 +224,8 @@ class ReactEditor extends \PluginBase
      * @return bool True if the React editor is enabled and URL format requirements are met
      *              (when checked), false otherwise.
      */
-    private function isEditorEnabled(bool $urlFormatCheck = true): bool {
+    private function isEditorEnabled(bool $urlFormatCheck = true): bool
+    {
         //first check db settings_user
         $userSetting = SettingsUser::getUserSetting(self::STG_NAME_REACT_EDITOR);
         $hasPathUrlFormat = $urlFormatCheck ? $this->hasPathUrlFormat() : true;

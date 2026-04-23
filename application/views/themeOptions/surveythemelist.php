@@ -15,7 +15,8 @@ $massiveAction = App()->getController()->renderPartial(
     true,
     false
 );
-$this->widget('application.extensions.admin.grid.CLSGridView',
+$this->widget(
+    'application.extensions.admin.grid.CLSGridView',
     [
         'dataProvider' => $oSurveyTheme->searchGrid(),
         'filter' => $oSurveyTheme,

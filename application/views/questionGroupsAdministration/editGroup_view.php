@@ -7,12 +7,12 @@ $count = 0;
         <div class="col-12 content-right">
             <div class="pagetitle h1"><?php eT("Edit group"); ?></div>
             <ul class="nav nav-tabs" id="edit-group-language-selection">
-                <?php foreach ($tabtitles as $i => $eachtitle): ?>
+                <?php foreach ($tabtitles as $i => $eachtitle) : ?>
                     <li role="presentation" class="nav-item">
                         <a class="nav-link <?php if ($count == 0) {
                             echo "active";
                             $count++;
-                        } ?>" role="tab" data-bs-toggle="tab" href="#editgrp_<?php echo $i; ?>">
+                                           } ?>" role="tab" data-bs-toggle="tab" href="#editgrp_<?php echo $i; ?>">
                             <?php echo $eachtitle; ?>
                         </a>
                     </li>
@@ -27,11 +27,11 @@ $count = 0;
         <input type="hidden" name="questionGroup[group_order]" id="questionGroup[group_order]"
                value="<?= $oQuestionGroup['group_order'] ?>">
         <div class="tab-content bg-white ps-2 pe-2">
-            <?php foreach ($tabtitles as $i => $eachtitle): ?>
+            <?php foreach ($tabtitles as $i => $eachtitle) : ?>
                 <div id="editgrp_<?php echo $i; ?>" class="tab-pane fade <?php if ($count == 1) {
                     echo "show active";
                     $count++;
-                } ?> center-box">
+                                 } ?> center-box">
                     <div class="mb-3">
                         <label class="form-label "
                                id="question-group-title-<?= $aGroupData[$i]['language'] ?>"><?php eT("Title:"); ?></label>
@@ -79,7 +79,8 @@ $count = 0;
 // Reset topbar to "non-extended" mode.
 // If this view wasn't loaded by ajax (ex: from the side menu) this wouldn't be necessary
 Yii::app()->getClientScript()->registerScript(
-    "EditGroup_topbar_switch", 'window.EventBus.$emit("doFadeEvent", false);',
+    "EditGroup_topbar_switch",
+    'window.EventBus.$emit("doFadeEvent", false);',
     LSYii_ClientScript::POS_END
 );
 ?>

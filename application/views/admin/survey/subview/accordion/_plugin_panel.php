@@ -21,7 +21,7 @@ App()->getClientScript()->registerScript(
 ",
     LSYii_ClientScript::POS_BEGIN
 );
-if (!empty($plugin['settings'])): ?>
+if (!empty($plugin['settings'])) : ?>
     <div class="accordion p-2" id="accordion">
         <div class="accordion-item ">
             <h2 class="accordion-header"  id="heading-plugin<?php echo $id; ?>">
@@ -41,7 +41,7 @@ if (!empty($plugin['settings'])): ?>
                             'aria-labelledby' => "button-plugin{$id}"
                         ]
                     ]);
-                    ?>
+                ?>
                 </div>
             </div>
         </div>

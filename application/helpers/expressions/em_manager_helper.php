@@ -1058,10 +1058,12 @@ class LimeExpressionManager
                     }
                 }
             }
-            if (($row['cqid'] == 0
+            if (
+                ($row['cqid'] == 0
                     && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname'])
                     && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')
-                ) || substr($row['cfieldname'], 0, 1) == '+') {
+                ) || substr($row['cfieldname'], 0, 1) == '+'
+            ) {
                 $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a token field)
             }
             $previousCondition = $row;
@@ -1808,10 +1810,14 @@ class LimeExpressionManager
                         if ($exclusive_option == '') {
                             continue;
                         }
+                        $exclusiveOptionSGQA = $this->qcode2sgqa[$qinfo['rootVarName'] . '_' . $exclusive_option] ?? '';
+                        if ($exclusiveOptionSGQA === ''){
+                            continue;
+                        }
                         $subqs = $qinfo['subqs'];
                         foreach ($subqs as $sq) {
                             $sq_name = null;
-                            if ($sq['suffix'] == $exclusive_option) {
+                            if ($sq['suffix'] === $exclusive_option) {
                                 continue;   // so don't make the excluded option irrelevant
                             }
                             switch ($type) {
@@ -1825,24 +1831,18 @@ class LimeExpressionManager
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                 case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
-                                    if ($this->sgqaNaming) {
-                                        $sq_name = $qinfo['sgqa'] . '_' . trim($exclusive_option) . '.NAOK';
-                                    } else {
-                                        $sq_name = $qinfo['sgqa'] . '_' . trim($exclusive_option) . '.NAOK';
-                                    }
+                                    $sq_name = $exclusiveOptionSGQA . '.NAOK';
+                                    $subQrels[] = [
+                                        'qtype'    => $type,
+                                        'type'     => 'exclude_all_others',
+                                        'rowdivid' => $sq['rowdivid'],
+                                        'eqn'      => 'is_empty(' . $sq_name . ')',
+                                        'qid'      => $questionNum,
+                                        'sgqa'     => $qinfo['sgqa'],
+                                    ];
                                     break;
                                 default:
                                     break;
-                            }
-                            if (!is_null($sq_name)) {
-                                $subQrels[] = [
-                                    'qtype'    => $type,
-                                    'type'     => 'exclude_all_others',
-                                    'rowdivid' => $sq['rowdivid'],
-                                    'eqn'      => 'is_empty(' . $sq_name . ')',
-                                    'qid'      => $questionNum,
-                                    'sgqa'     => $qinfo['sgqa'],
-                                ];
                             }
                         }
                     }
@@ -5063,7 +5063,7 @@ class LimeExpressionManager
                 $message = '';
                 $result = [];
                 $notRelevantSteps = $LEM->lastMoveResult['notRelevantSteps'] ?? 0;
-                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps']?? 0;
+                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps'] ?? 0;
                 if (!$force && $LEM->currentQuestionSeq != -1) {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
@@ -5718,7 +5718,7 @@ class LimeExpressionManager
                         return $LEM->lastMoveResult;
                     }
                 }
-            break;
+                break;
         }
     }
 

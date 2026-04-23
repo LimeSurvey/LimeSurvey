@@ -15,7 +15,7 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
     </div>
 </div>
 
-<?php if ($oSurvey->getIsDateExpired()): ?>
+<?php if ($oSurvey->getIsDateExpired()) : ?>
     <div class="row">
         <div class='col-md-12'>
             <?php
@@ -182,7 +182,7 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
         </div>
     </div>
     <?php
-?>
+    ?>
 
 <input type="hidden" name="surveyId" value="<?php echo $aSurveysettings['sid']; ?>">
 <input type="submit" class="d-none" id="submitActivateSurvey">

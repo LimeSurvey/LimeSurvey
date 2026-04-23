@@ -35,7 +35,7 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
                             )
                         ),
                 ]);
-            ?>
+                ?>
         </div>
     </div>
     <span id="locator" data-location="sharepanel">&nbsp;</span>

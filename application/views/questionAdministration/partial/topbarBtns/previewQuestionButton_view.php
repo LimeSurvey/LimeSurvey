@@ -1,4 +1,4 @@
-<?php if($hasSurveyContentUpdatePermission): ?>
+<?php if ($hasSurveyContentUpdatePermission) : ?>
     <?php
     $languagesDropDownItems = '';
     if (count($surveyLanguages) > 1) {

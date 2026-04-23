@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhMaskMoney widget class
  *
@@ -13,7 +14,6 @@ Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhMaskInput extends CInputWidget
 {
-
     /**
      * @var array the plugin options
      * @see http://igorescobar.github.io/jQuery-Mask-Plugin/

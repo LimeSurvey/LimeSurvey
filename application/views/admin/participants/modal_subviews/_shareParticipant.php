@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
-'/layouts/partial_modals/modal_header',
-['modalTitle' => gT('Share participant(s)')]
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => gT('Share participant(s)')]
 );
 ?>
 
@@ -15,12 +15,12 @@ Yii::app()->getController()->renderPartial(
             'htmlOptions' => array('class' => 'form '), // for inset effect
         )
     );
-?>
-    <?php if (isset($participantIds)): ?>
-        <?php foreach ($participantIds as $id): ?>
+    ?>
+    <?php if (isset($participantIds)) : ?>
+        <?php foreach ($participantIds as $id) : ?>
             <input type="hidden" name="participant_id[]" value="<?php echo $id; ?>" />
         <?php endforeach;?>
-    <?php else: ?>
+    <?php else : ?>
         <input type="hidden" name="participant_id" value="<?php echo $model->participant_id; ?>" />
     <?php endif; ?>
     <div class="row">
@@ -33,7 +33,7 @@ Yii::app()->getController()->renderPartial(
                 <div class='col-12'>
                     <select class='form-select' id='shareuser' name='shareuser'>
                         <option value=''><?php eT('Share with all users'); ?></option>
-                        <?php foreach ($users as $user): ?>
+                        <?php foreach ($users as $user) : ?>
                             <option value='<?php echo $user->uid; ?>'>
                                 <?php echo $user->full_name; ?>
                             </option>

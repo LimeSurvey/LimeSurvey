@@ -36,10 +36,10 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         $this->setSubquestions();
         $this->setPrefixAndSuffix();
         $this->setPlaceholder();
-        
+
         $this->widthArray = $this->getLabelInputWidth();
         $this->numbersonly = ($this->getQuestionAttribute('numbers_only') == 1);
-        
+
 
         if ($this->getQuestionAttribute('numbers_only') == 1) {
             $this->sSeparator   = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
@@ -66,7 +66,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
             $this->prefix = $sPrefix;
             $this->extraclass .= " withprefix";
         }
-        
+
         $sSuffix = $this->getQuestionAttribute('suffix', $this->sLanguage);
         if ($sSuffix != '') {
             $this->suffix = $sSuffix;
@@ -86,7 +86,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/multipleshorttext';
     }
-    
+
     public function getRows()
     {
         $aRows = [];

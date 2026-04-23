@@ -2,5 +2,4 @@
 
 class DataSetHugeFreeText extends QuestionBaseDataSet
 {
-
 }

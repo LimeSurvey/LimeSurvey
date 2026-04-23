@@ -39,9 +39,9 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
 <div class="ls-card-grid">
 <?php
     //survey has been activated in open-access mode
-   if (isset($surveyActivationFeedback)) {
-       $this->renderPartial('/surveyAdministration/surveyActivation/_feedbackOpenAccess', ['surveyId' => $iSurveyID]);
-   }
+if (isset($surveyActivationFeedback)) {
+    $this->renderPartial('/surveyAdministration/surveyActivation/_feedbackOpenAccess', ['surveyId' => $iSurveyID]);
+}
 ?>
 <div class="row survey-summary mt-4">
         <?php
@@ -49,14 +49,14 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
         $possiblePanels = scandir($possiblePanelFolder);
         foreach ($possiblePanels as $i => $panel) {
         // If it's no twig file => ignore
-        if (!preg_match('/^.*\.twig$/', (string)$panel)) {
-            continue;
-        }
+            if (!preg_match('/^.*\.twig$/', (string)$panel)) {
+                continue;
+            }
         //every two entries close it up
-        if ($i % 2 === 0) { ?>
+            if ($i % 2 === 0) { ?>
     </div>
 <div class="row survey-summary mt-4">
-        <?php } ?>
+            <?php } ?>
         <div class="col-12 col-xl-6 mb-4">
             <?php $surveyTextContent = $oSurvey->currentLanguageSettings->attributes; ?>
             <?= App()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/' . $panel, get_defined_vars(), true) ?>
