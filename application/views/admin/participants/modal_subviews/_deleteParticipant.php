@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Delete participant')]
+    ['modalTitle' => gT('Delete participant'), 'modalTitleId' => 'participant_edit_modal']
 );
 ?>
 

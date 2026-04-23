@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
 '/layouts/partial_modals/modal_header',
-['modalTitle' => gT('Share participant(s)')]
+['modalTitle' => gT('Share participant(s)'), 'modalTitleId' => 'participant_edit_modal']
 );
 ?>
 
