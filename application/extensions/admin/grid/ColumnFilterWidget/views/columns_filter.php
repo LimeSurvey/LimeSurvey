@@ -9,7 +9,7 @@
 ?>
 
 <!-- Modal -->
-<div class="modal fade" id="<?= $modalId ?>" tabindex="-1" role="dialog" aria-labelledby="<?= $modalId ?>-label" aria-modal="true">
+<div class="modal fade" id="<?= $modalId ?>" tabindex="-1" role="dialog" data-target="<?= $ajaxUpdate ?>" aria-labelledby="<?= $modalId ?>-label" aria-modal="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form
@@ -41,7 +41,7 @@
                                 <div class="checkbox">
                                     <label>
                                         <input name="columns[]" type="checkbox" value="" checked disabled>
-                                        <?= $column->name ?>
+                                        <?= $column->header ?>
                                     </label>
                                 </div>
                             <?php endif; ?>

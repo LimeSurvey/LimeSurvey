@@ -102,6 +102,7 @@
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' => true,
                                     'showClear' => true,
+                                    'theme' => 'light',
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 ]
                             ]);
@@ -140,13 +141,19 @@
                 </div>
             </div>
                 <!-- Attribute fields  -->
-                <?php foreach ($aAttributeFields as $attr_name => $attr_description): ?>
-                    <div class="mb-3 col-6">
-                        <label  class=" form-label" for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
-                        <div class="">
-                            <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
-                        </div>
-                    </div>
+                <?php foreach ($aAttributeFields as $attrName => $attrDescription): ?>
+                    <?php
+                    $this->renderPartial(
+                            '/admin/token/attribute_subviews/tokenformAttributesWrapper',
+                            [
+                                    'attrDescription' => $attrDescription,
+                                    'attrName' => $attrName,
+                                    'inputValue' => null,
+                                    'jsDate' => $dateformatdetails['jsdate'],
+                                    'addClass' => 'col-6',
+                            ]
+                    );
+                    ?>
                 <?php endforeach; ?>
 
                 <!--Hidden Buttons (default action) -->
