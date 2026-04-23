@@ -1259,11 +1259,7 @@ class LimeExpressionManager
                                 }
                                 foreach ($cascadedAFE as $_cafe) {
                                     $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                    $fkey = explode("_", $sq['varName'])[0] . "_" . trim($_cafe);
-                                    if (!isset($this->qcode2sgqa[$fkey])) {
-                                        continue;
-                                    }
-                                    $fqid = substr(explode("_", $this->qcode2sgqa[$fkey])[0], 1);
+                                    $fqid = substr(explode("_", $sgq)[0], 1);
                                     if (!isset($this->q2subqInfo[$fqid])) {
                                         continue;
                                     }
