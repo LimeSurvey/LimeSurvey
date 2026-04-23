@@ -58,12 +58,6 @@ abstract class AbstractQuestionProcessor
     private $maxId = null;
 
     /**
-     * Cache for getCountsByColumn() results, keyed by fieldName.
-     * @var array<string, array<string, int>>
-     */
-    private array $columnCountsCache = [];
-
-    /**
      * Build the identifier for current question.
      *
      * Ex: Qqid
@@ -107,45 +101,51 @@ abstract class AbstractQuestionProcessor
     public function setCompleted(?bool $completed): AbstractQuestionProcessor
     {
         $this->completed = $completed;
-        $this->resetColumnCountsCache();
         return $this;
     }
 
     public function setMinId(?int $minId): AbstractQuestionProcessor
     {
         $this->minId = $minId;
-        $this->resetColumnCountsCache();
         return $this;
     }
 
     public function setMaxId(?int $maxId): AbstractQuestionProcessor
     {
         $this->maxId = $maxId;
-        $this->resetColumnCountsCache();
         return $this;
     }
 
     /**
-     * Gets the number of responses where the field is answered.
+     * Returns the count of non-empty responses for a column.
      *
-     * @param string $fieldName Field name (column in survey table)
-     * @param string|null $value Specific value to filter on (optional)
-     * @return int Response count
+     * @param string $fieldName Column name in the response table
+     * @return int
      */
-    protected function getResponseCount(string $fieldName, $value = null): int
+    protected function countFieldResponses(string $fieldName): int
     {
-        $counts = $this->getCountsByColumn($fieldName);
-        if ($value !== null) {
-            return $counts[$value] ?? 0;
-        }
+        $db = $this->getDb();
+        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
+        $col = $db->quoteColumnName($fieldName);
 
-        $total  = 0;
-        foreach ($counts as $key => $cnt) {
-            if ($key !== '_null') {
-                $total += $cnt;
-            }
-        }
-        return $total;
+        $sql = "SELECT SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END) AS cnt FROM $table" . $where;
+        return (int)$db->createCommand($sql)->queryScalar($params);
+    }
+
+    /**
+     * Returns the count of null/empty responses for a column.
+     *
+     * @param string $fieldName Column name in the response table
+     * @return int
+     */
+    protected function countFieldNullResponses(string $fieldName): int
+    {
+        $db = $this->getDb();
+        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
+        $col = $db->quoteColumnName($fieldName);
+
+        $sql = "SELECT SUM(CASE WHEN $col IS NULL OR $col = '' THEN 1 ELSE 0 END) AS cnt FROM $table" . $where;
+        return (int)$db->createCommand($sql)->queryScalar($params);
     }
 
     /**
@@ -165,128 +165,138 @@ abstract class AbstractQuestionProcessor
         return $command->query([":title" => $title])->read();
     }
 
-
-    protected function getResponseNotAnsweredCount(string $fieldName): int
-    {
-        $counts = $this->getCountsByColumn($fieldName);
-        return $counts['_null'] ?? 0;
-    }
     /**
-     * Apply common filters to criteria
+     * Returns non-empty response counts for multiple columns in ONE SQL query.
+     *
+     * @param  string[] $fieldNames  Column names in the response table
+     * @return array<string, int>    fieldName → non-empty response count
      */
-    protected function applyFilters(LSDbCriteria &$criteria): void
+    protected function batchGetResponseCounts(array $fieldNames): array
     {
-        if ($this->completed !== null) {
-            $criteria->addCondition('submitdate IS' . ($this->completed ? ' NOT ' : ' ') . 'NULL');
+        if (empty($fieldNames)) {
+            return [];
         }
 
-        if ($this->minId !== null) {
-            $criteria->compare('id', '>=' . (int)$this->minId);
+        $db = $this->getDb();
+        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
+        $selects = [];
+
+        foreach ($fieldNames as $i => $field) {
+            $col       = $db->quoteColumnName($field);
+            $alias     = $db->quoteColumnName('_ctn' . $i);
+            $selects[] = "SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END) AS $alias";
         }
 
-        if ($this->maxId !== null) {
-            $criteria->compare('id', '<=' . (int)$this->maxId);
+        $sql = 'SELECT ' . implode(', ', $selects) . " FROM $table" . $where;
+        $row = $db->createCommand($sql)->queryRow(true, $params) ?: [];
+
+        $result = [];
+        foreach ($fieldNames as $i => $field) {
+            $result[$field] = (int)($row['_ctn' . $i] ?? 0);
         }
+
+        return $result;
     }
 
     /**
      * Build chart items (legend + values) from a list of answer codes.
      *
-     * @param string $rt Question key Q{qid}
-     * @param array $codes Answer codes
-     * @param array $labels Optional display labels (aligned with $codes)
+     * @param string $fieldname Column name in the response table
+     * @param string[] $codes  Answer codes
+     * @param string[] $labels Display labels aligned with $codes
      * @return array [legend[], items[]]
      */
-    protected function buildItemsFromCodes($rt, array $codes, array $labels = []): array
+    protected function buildItemsFromCodes(string $fieldname, array $codes, array $labels = []): array
     {
         if (empty($codes)) {
             return [[], []];
         }
 
-        $model = SurveyDynamic::model($this->surveyId);
-        $db = $model->getDbConnection();
-        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
-        $col = $db->quoteColumnName($rt);
+        $result = $this->runAggregateSelect([$fieldname], $codes, $labels);
 
-        $criteria = new LSDbCriteria();
-        $this->applyFilters($criteria);
-        $where = $criteria->condition ?? '';
-        $params = $criteria->params   ?? [];
-
-        $fields = [];
-        foreach ($codes as $i => $code) {
-            $paramName = ':code_' . $i;
-            $alias = $db->quoteColumnName('code_' . $i);
-            $fields[] = "SUM(CASE WHEN $col = $paramName THEN 1 ELSE 0 END) AS $alias";
-            $params[$paramName] = (string)$code;
-        }
-
-        // Add a field for unanswered/empty responses if question type has no answer option
-        $shouldAddEmpty = in_array($this->question['type'], $this->noAnswerTypes);
-        $emptyAlias = '_no_answer';
-        if ($shouldAddEmpty) {
-            $fields[] = "SUM(CASE WHEN $col IS NULL OR $col = '' THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($emptyAlias);
-        }
-
-        $sql = 'SELECT ' . implode(', ', $fields) . " FROM $table" . ($where !== '' ? ' WHERE ' . $where : '');
-        $row = $db->createCommand($sql)->queryRow(true, $params) ?: [];
-
-        $legend = [];
-        $items = [];
-
-        foreach ($codes as $i => $code) {
-            $title = $labels[$i] ?? (string)$code;
-            $legend[] = $title;
-            $count = (int)($row['code_' . $i] ?? 0);
-            $items[] = ['key' => (string)$code, 'title' => $title, 'value' => $count];
-        }
-
-        if ($shouldAddEmpty) {
-            $items[] = ['key' => 'NoAnswer', 'title' => 'No Answer', 'value' => (int)($row[$emptyAlias] ?? 0)];
-        }
-
-        return [$legend, $items];
+        return $result[$fieldname] ?? [[], []];
     }
 
     /**
-     * Returns all value count pairs for a response column
-     * plus a '_null' key for unanswered/empty rows.
+     * Process multiple subquestion fields × answer codes in a query.
      *
-     * @param string $fieldName Column name in the response table
-     * @return array<string, int>  e.g. ['A' => 42, 'B' => 17, '_null' => 5]
+     * @param string[] $fieldNames Column names (one per subquestion)
+     * @param string[] $codes Answer codes to count
+     * @param string[] $labels Display labels aligned with $codes
+     * @return array<string, array{0: string[], 1: array[]}> fieldName => [legend[], items[]]
      */
-    protected function getCountsByColumn(string $fieldName): array
+    protected function buildBatchItemsForSubquestions(array $fieldNames, array $codes, array $labels = []): array
     {
-        if (isset($this->columnCountsCache[$fieldName])) {
-            return $this->columnCountsCache[$fieldName];
+        if (empty($fieldNames) || empty($codes)) {
+            return [];
         }
 
-        $model = SurveyDynamic::model($this->surveyId);
-        $db    = $model->getDbConnection();
-        $col   = $db->quoteColumnName($fieldName);
-        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        return $this->runAggregateSelect($fieldNames, $codes, $labels);
+    }
 
-        $criteria = new LSDbCriteria();
-        $this->applyFilters($criteria);
-        $where  = $criteria->condition ? ('WHERE ' . $criteria->condition) : '';
-        $params = $criteria->params ?? [];
+    /**
+     * Get aggregate counts for fields with specific values
+     *
+     * @param string[] $fieldNames
+     * @param string[] $codes
+     * @param string[] $labels
+     * @return array<string, array{0: string[], 1: array[]}>
+     */
+    private function runAggregateSelect(array $fieldNames, array $codes, array $labels): array
+    {
+        $addNoAnswer = in_array($this->question['type'], $this->noAnswerTypes);
+        $db = $this->getDb();
+        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
 
-        // Answered rows grouped by value
-        $sql = "SELECT $col AS val, COUNT(*) AS cnt FROM $table $where GROUP BY $col";
-        $rows = $db->createCommand($sql)->queryAll(true, $params);
+        $selects = [];
+        $aliasMap = [];
 
-        $counts = ['_null' => 0];
-        foreach ($rows as $row) {
-            $val = $row['val'];
-            if ($val === null || $val === '') {
-                $counts['_null'] += (int)$row['cnt'];
-            } else {
-                $counts[$val] = (int)$row['cnt'];
+        foreach ($fieldNames as $fi => $field) {
+            $col = $db->quoteColumnName($field);
+            $fieldKey = '_f' . $fi;
+
+            foreach ($codes as $ci => $code) {
+                $paramKey = ':' . $fieldKey . '_c' . $ci;
+                $rawAlias = '_alias' . $fieldKey . '_c' . $ci;
+                $selects[] = "SUM(CASE WHEN $col = $paramKey THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($rawAlias);
+                $params[$paramKey] = (string)$code;
+                $aliasMap[$field]['codes'][$ci] = $rawAlias;
+            }
+
+            if ($addNoAnswer) {
+                $blankRaw = '_blank' . $fieldKey;
+                $selects[] = "SUM(CASE WHEN $col IS NULL OR $col = '' THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($blankRaw);
+                $aliasMap[$field]['blank'] = $blankRaw;
             }
         }
 
-        $this->columnCountsCache[$fieldName] = $counts;
-        return $counts;
+        $sql = 'SELECT ' . implode(', ', $selects) . " FROM $table" . $where;
+        $row = $db->createCommand($sql)->queryRow(true, $params) ?: [];
+
+        $output = [];
+        foreach ($fieldNames as $field) {
+            $legend = [];
+            $items = [];
+
+            foreach ($codes as $ci => $code) {
+                $label = $labels[$ci] ?? (string)$code;
+                $count = (int)($row[$aliasMap[$field]['codes'][$ci]] ?? 0);
+                $legend[] = $label;
+                $items[] = ['key' => (string)$code, 'title' => $label, 'value' => $count];
+            }
+
+            if ($addNoAnswer) {
+                $items[] = [
+                    'key' => 'NoAnswer',
+                    'title' => 'No Answer',
+                    'value' => (int)($row[$aliasMap[$field]['blank']] ?? 0),
+                ];
+            }
+
+            $output[$field] = [$legend, $items];
+        }
+
+        return $output;
     }
 
     /**
@@ -299,9 +309,41 @@ abstract class AbstractQuestionProcessor
         return array_sum(array_column($data, $key));
     }
 
-    protected function resetColumnCountsCache(): void
+    /**
+     * Returns the active DB connection
+     */
+    private function getDb(): \CDbConnection
     {
-        $this->columnCountsCache = [];
+        return SurveyDynamic::model($this->surveyId)->getDbConnection();
+    }
+
+    /**
+     * Returns the response table name and (where, params) with filters applied.
+     *
+     * @return array{table: string, where: string, params: array}
+     */
+    private function buildFilteredQuery(): array
+    {
+        $db     = $this->getDb();
+        $table  = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $criteria = new LSDbCriteria();
+
+        if ($this->completed !== null) {
+            $criteria->addCondition('submitdate IS' . ($this->completed ? ' NOT ' : ' ') . 'NULL');
+        }
+
+        if ($this->minId !== null) {
+            $criteria->compare('id', '>=' . (int)$this->minId);
+        }
+
+        if ($this->maxId !== null) {
+            $criteria->compare('id', '<=' . (int)$this->maxId);
+        }
+
+        $where  = $criteria->condition ? (' WHERE ' . $criteria->condition) : '';
+        $params = $criteria->params ?? [];
+
+        return compact('table', 'where', 'params');
     }
 
     /**

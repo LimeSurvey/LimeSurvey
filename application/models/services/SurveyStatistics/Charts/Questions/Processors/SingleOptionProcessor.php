@@ -79,7 +79,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     {
         $mfield = $this->rt . '_Cother';
         $legend[] = 'other';
-        $count = $this->getResponseCount($mfield);
+        $count = $this->countFieldResponses($mfield);
         $dataItems[] = [
             'key' => 'other',
             'value' => $count,
@@ -95,7 +95,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     {
         $mfield = $this->rt . '_Ccomment';
         $legend[] = 'comment';
-        $count = $this->getResponseCount($mfield);
+        $count = $this->countFieldResponses($mfield);
         $dataItems[] = [
             'key' => 'comment',
             'value' => $count,
@@ -202,23 +202,11 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
      */
     private function handleDefault(): array
     {
-        $legend = [];
-        $items = [];
+        $codes  = array_column($this->answers, 'code');
+        $labels = array_map(fn($a) => flattenText($a['answer']), $this->answers);
 
-        foreach ($this->answers as $answer) {
-            if (!isset($answer['code'], $answer['answer'])) {
-                continue;
-            }
+        [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
 
-            $code = $answer['code'];
-            $title = flattenText($answer['answer']);
-
-            $legend[] = $title;
-            $count = $this->getResponseCount($this->rt, $code);
-            $items[] = ['key' => $code, 'title' => $title, 'value' => $count];
-        }
-
-        $items[] = ['key' => 'NoAnswer', 'title' => 'No Answer', 'value' => $this->getResponseNotAnsweredCount($this->rt)];
         return [
             'title' => $this->question['question'],
             'legend' => $legend,

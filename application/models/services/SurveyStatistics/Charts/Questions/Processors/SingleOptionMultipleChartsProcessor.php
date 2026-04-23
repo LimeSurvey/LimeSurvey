@@ -40,11 +40,17 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
         $max = $this->question['type'] == Question::QT_A_ARRAY_5_POINT ? 5 : 10;
         $codes = array_map('strval', range(1, $max));
 
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $rt = $this->rt . "_S" . $subQuestion['qid'];
-            [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $codes);
-            $title = $this->question['question'] . '(' . $subQuestion['question'] . ')';
+        $fieldMap = [];
+        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
+            $fieldMap[$qid] = $this->rt . "_S" . $subQuestion['qid'];
+        }
 
+        $batch = $this->buildBatchItemsForSubquestions(array_values($fieldMap), $codes, $codes);
+
+        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
+            $field = $fieldMap[$qid];
+            [$legend, $items] = $batch[$field];
+            $title = $this->question['question'] . '(' . $subQuestion['question'] . ')';
             $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
         }
 
@@ -55,13 +61,19 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
     {
         $codes = ['Y', 'N', 'U'];
         $labels = ['Yes', 'No', 'Uncertain'];
+
+        $fieldMap = [];
+        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
+            $fieldMap[$qid] = $this->rt . "_S" . $subQuestion['qid'];
+        }
+
+        $batch  = $this->buildBatchItemsForSubquestions(array_values($fieldMap), $codes, $labels);
+
         $charts = [];
-
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $rt = $this->rt . "_S" . $subQuestion['qid'];
-            [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
-            $title = $this->question['question'] . "[{$subQuestion['question']}]";
-
+        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
+            $field = $fieldMap[$qid];
+            [$legend, $items] = $batch[$field];
+            $title = $this->question['question'] . '[' . $subQuestion['question'] . ']';
             $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
         }
 
@@ -70,13 +82,21 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
 
     private function handleIncSameDec(): array
     {
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $title = $this->question['question'] . "[{$subQuestion['question']}]";
-            $codes = ['I', 'S', 'D'];
-            $labels = ['Increase', 'Same', 'Decrease'];
-            $rt = $this->rt . "_S" . $subQuestion['qid'];
-            [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
+        $codes = ['I', 'S', 'D'];
+        $labels = ['Increase', 'Same', 'Decrease'];
 
+        $fieldMap = [];
+        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
+            $fieldMap[$qid] = $this->rt . "_S" . $subQuestion['qid'];
+        }
+
+        $batch = $this->buildBatchItemsForSubquestions(array_values($fieldMap), $codes, $labels);
+
+        $charts = [];
+        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
+            $field = $fieldMap[$qid];
+            [$legend, $items] = $batch[$field];
+            $title = $this->question['question'] . '[' . $subQuestion['question'] . ']';
             $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
         }
 
@@ -86,15 +106,24 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
     private function handleFOrHArray(): array
     {
         $mainQuestionTitle = $this->question['question'];
-        $stats = [];
 
+        $scale0Fields = [];
+        foreach ($this->question['subQuestions'] as $subQuestion) {
+            if ((int)$subQuestion['scale_id'] === 0) {
+                $scale0Fields[] = $this->rt . "_S" . $subQuestion['qid'];
+            }
+        }
+        $counts = $this->batchGetResponseCounts($scale0Fields);
+
+        $stats = [];
         foreach ($this->question['subQuestions'] as $subQuestion) {
             $title = $mainQuestionTitle . "[{$subQuestion['question']}]";
             $legend = [];
             $items = [];
 
             if ((int)$subQuestion['scale_id'] === 0) {
-                $count = $this->getResponseCount($this->rt . "_S" . $subQuestion['qid']);
+                $field = $this->rt . "_S" . $subQuestion['qid'];
+                $count = $counts[$field] ?? 0;
                 $legend[] = $subQuestion['question'];
                 $items[] = ['key' => $subQuestion['title'], 'value' => $count, 'title' => $subQuestion['question']];
             }
