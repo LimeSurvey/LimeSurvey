@@ -10,15 +10,18 @@
         <div class="row">
             <!-- Title or breadcrumb -->
             <div class="ls-breadcrumb col-12">
-                <h1 role="presentation" class="align-items-center d-flex">
+                <div class="align-items-center d-flex">
                     <?php
-                        if ($titleBackLink !== null) {
-                            echo '<a class="h1" href="'.$titleBackLink.'">
-                            <i class="ri-arrow-left-s-line"></i></a>' ;
-                        }
+                    if ($titleBackLink !== null) {
+                        // Keep the back link outside <h1> so it is announced only as a link, not with heading level.
+                        echo '<a class="h1 me-1 text-decoration-none" href="' . CHtml::encode($titleBackLink) . '" aria-label="' . CHtml::encode(gT('Back')) . '">'
+                            . '<i class="ri-arrow-left-s-line" aria-hidden="true"></i></a>';
+                    }
                     ?>
-                    <?= $leftSide ?>
-                </h1>
+                    <h1 class="h1 mb-0">
+                        <?= $leftSide ?>
+                    </h1>
+                </div>
             </div>
 
             <!-- middle part with buttons -->
