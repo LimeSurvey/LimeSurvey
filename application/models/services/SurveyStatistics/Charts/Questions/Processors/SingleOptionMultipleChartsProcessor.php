@@ -67,7 +67,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             $fieldMap[$qid] = $this->rt . "_S" . $subQuestion['qid'];
         }
 
-        $batch  = $this->buildBatchItemsForSubquestions(array_values($fieldMap), $codes, $labels);
+        $batch = $this->buildBatchItemsForSubquestions(array_values($fieldMap), $codes, $labels);
 
         $charts = [];
         foreach ($this->question['subQuestions'] as $qid => $subQuestion) {

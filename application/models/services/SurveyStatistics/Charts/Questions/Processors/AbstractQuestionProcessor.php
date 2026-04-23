@@ -166,10 +166,10 @@ abstract class AbstractQuestionProcessor
     }
 
     /**
-     * Returns non-empty response counts for multiple columns in ONE SQL query.
+     * Returns non-empty response counts for multiple columns.
      *
-     * @param  string[] $fieldNames  Column names in the response table
-     * @return array<string, int>    fieldName → non-empty response count
+     * @param  string[] $fieldNames Column names in the response table
+     * @return array<string, int> fieldName => count
      */
     protected function batchGetResponseCounts(array $fieldNames): array
     {
@@ -182,8 +182,8 @@ abstract class AbstractQuestionProcessor
         $selects = [];
 
         foreach ($fieldNames as $i => $field) {
-            $col       = $db->quoteColumnName($field);
-            $alias     = $db->quoteColumnName('_ctn' . $i);
+            $col = $db->quoteColumnName($field);
+            $alias = $db->quoteColumnName('_ctn' . $i);
             $selects[] = "SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END) AS $alias";
         }
 
@@ -235,7 +235,7 @@ abstract class AbstractQuestionProcessor
     }
 
     /**
-     * Get aggregate counts for fields with specific values
+     * Get aggregate response counts for fields to specific values
      *
      * @param string[] $fieldNames
      * @param string[] $codes
@@ -324,8 +324,8 @@ abstract class AbstractQuestionProcessor
      */
     private function buildFilteredQuery(): array
     {
-        $db     = $this->getDb();
-        $table  = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $db = $this->getDb();
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
         $criteria = new LSDbCriteria();
 
         if ($this->completed !== null) {
@@ -340,7 +340,7 @@ abstract class AbstractQuestionProcessor
             $criteria->compare('id', '<=' . (int)$this->maxId);
         }
 
-        $where  = $criteria->condition ? (' WHERE ' . $criteria->condition) : '';
+        $where = $criteria->condition ? (' WHERE ' . $criteria->condition) : '';
         $params = $criteria->params ?? [];
 
         return compact('table', 'where', 'params');
