@@ -203,7 +203,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     private function handleDefault(): array
     {
         $codes = array_column($this->answers, 'code');
-        $labels = array_map(fn($a) => flattenText($a['answer']), $this->answers);
+        $labels = array_map('flattenText', array_column($this->answers, 'answer'));
 
         [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
 
