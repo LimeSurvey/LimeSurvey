@@ -54,7 +54,7 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-        <button role="button" type="submit" class="btn btn-primary action_save_modal_shareparticipant">
+        <button type="submit" class="btn btn-primary action_save_modal_shareparticipant">
             <?php eT('Add')?>
         </button>
     </div>

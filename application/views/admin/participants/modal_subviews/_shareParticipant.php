@@ -49,7 +49,7 @@ Yii::app()->getController()->renderPartial(
                 <label id="can_edit_group_label" class='form-label text-start'>
                     <?php eT("Other users may edit this participant"); ?>
                 </label>
-                <div class='col-12' role="group" aria-labelledby="can_edit_group_label">
+                <div class='col-12'>
                     <?php App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => "can_edit",
                         'ariaLabel'     => gT('Other users may edit this participant'),
@@ -67,7 +67,7 @@ Yii::app()->getController()->renderPartial(
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-    <button role="button" type="button" class="btn btn-primary action_save_modal_shareparticipant">
+    <button type="button" class="btn btn-primary action_save_modal_shareparticipant">
         <?php eT("Share")?>
     </button>
 </div>
