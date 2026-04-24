@@ -46,8 +46,19 @@ export const ResponsesStatistics = ({
         style={{ height: '100vh' }}
         className="d-flex flex-column justify-content-center align-items-center"
       >
-        {isFetching && <span style={{ width: 48, height: 48 }} className="loader mb-4"></span>}
-        <h2>{isFetching ? t('Loading statistics...') : t('No responses or compatible data available to display statistics.')}</h2>
+        {isFetching && (
+          <span
+            style={{ width: 48, height: 48 }}
+            className="loader mb-4"
+          ></span>
+        )}
+        <h2>
+          {isFetching
+            ? t('Loading statistics...')
+            : t(
+                'No responses or compatible data available to display statistics.'
+              )}
+        </h2>
       </div>
     )
   }
