@@ -10,7 +10,7 @@ export const ResponsesStatistics = ({
   filters = {},
   isRightBarOpen = false,
 }) => {
-  const { statistics } = useStatistics(surveyId, filters)
+  const { statistics, isFetching } = useStatistics(surveyId, filters)
   const [selectedCharts, setSelectedCharts] = useState([])
   const [formattedStatistics, setFormattedStatistics] = useState(null)
 
@@ -46,8 +46,19 @@ export const ResponsesStatistics = ({
         style={{ height: '100vh' }}
         className="d-flex flex-column justify-content-center align-items-center"
       >
-        <span style={{ width: 48, height: 48 }} className="loader mb-4"></span>
-        <h1>{t('Loading statistics...')}</h1>
+        {isFetching && (
+          <span
+            style={{ width: 48, height: 48 }}
+            className="loader mb-4"
+          ></span>
+        )}
+        <h2>
+          {isFetching
+            ? t('Loading statistics...')
+            : t(
+                'No responses or compatible data available to display statistics.'
+              )}
+        </h2>
       </div>
     )
   }
