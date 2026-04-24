@@ -40,9 +40,6 @@ export const ResponsesStatistics = ({
     setSelectedCharts(questionsChartTypes)
   }, [statistics])
 
-    console.log('statistics', statistics)
-    console.log('formattedStatistics', formattedStatistics)
-
   if (!statistics?.length || !formattedStatistics || !selectedCharts.length) {
     return (
       <div
