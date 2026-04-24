@@ -1,13 +1,14 @@
 <?php
+
 /**
  * Render the result of the import survey action
  */
- ?>
+
+?>
 
 
 <!-- Import Failed because of page reload -->
-<?php if (!isset($bFailed)):?>
-
+<?php if (!isset($bFailed)) :?>
     <div class="jumbotron message-box message-box-error">
         <h2 class="danger"><?php echo gT("Import survey data"); ?></h2>
         <p class="lead text-danger">
@@ -24,8 +25,7 @@
     </div>
 
 <!-- Import Failed -->
-<?php elseif ($bFailed):?>
-
+<?php elseif ($bFailed) :?>
     <div class="jumbotron message-box message-box-error">
         <h2 class="danger"><?php echo $sHeader;?></h2>
         <p class="lead text-danger">
@@ -42,7 +42,7 @@
     </div>
 
 <!-- Success -->
-<?php else:?>
+<?php else :?>
     <div class="jumbotron message-box">
         <h2 class="text-success"><?php eT("Success"); ?></h2>
 
@@ -145,7 +145,7 @@
         </div>
 
         <!-- Response import summary -->
-        <?php if (isset($aImportResults['responses'])): ?>
+        <?php if (isset($aImportResults['responses'])) : ?>
             <strong><?php eT("Response import summary"); ?></strong><br />
             <ul class="list-unstyled">
                 <li><?php eT("Responses");?>: <?php echo $aImportResults['responses'];?></li>
@@ -153,12 +153,11 @@
         <?php endif;?>
 
         <!-- Warnings -->
-        <?php if (count($aImportResults['importwarnings'])>0): ?>
+        <?php if (count($aImportResults['importwarnings']) > 0) : ?>
             <h2 class="warning"><?php eT("Warnings");?>:</h2>
             <ul  class="list-unstyled">
                 <?php
-                    foreach ($aImportResults['importwarnings'] as $warning)
-                    { ?>
+                foreach ($aImportResults['importwarnings'] as $warning) { ?>
                     <li><?php echo $warning; ?></li>
                     <?php
                 } ?>
@@ -174,12 +173,12 @@
         </p>
 
         <!-- Theme doesn't exist -->
-        <?php if (!empty($aImportResults['template_deleted'])): ?>
+        <?php if (!empty($aImportResults['template_deleted'])) : ?>
             <p class="lead"><?php echo eT("Warning: original survey theme doesn't exist!"); ?></p>
         <?php endif; ?>
 
         <!-- Theme options differences warnings -->
-        <?php if (!empty($aImportResults['theme_options_differences'])): ?>
+        <?php if (!empty($aImportResults['theme_options_differences'])) : ?>
             <p class="lead"><?php echo eT('Warning: There are some differences between current theme options and original theme options!'); ?></p>
             <p class="lead"><?php echo eT('Current theme options are applied for this survey.'); ?></p>
             <h2 class="warning"><?php eT("Theme options differences"); ?>:</h2>

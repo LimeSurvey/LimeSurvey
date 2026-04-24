@@ -18,7 +18,6 @@ if (!defined('BASEPATH')) {
 
 class LSCActiveDataProvider extends CActiveDataProvider
 {
-    
     /**
      * Fetches the data from the persistent data storage.
      *
@@ -51,7 +50,7 @@ class LSCActiveDataProvider extends CActiveDataProvider
 
         $this->model->setDbCriteria($baseCriteria !== null ? clone $baseCriteria : null);
         $data = $this->model->findAll($criteria);
-        
+
         // decryption
         if ($this->model->bEncryption) {
             foreach ($data as $row) {
@@ -71,7 +70,7 @@ class LSCActiveDataProvider extends CActiveDataProvider
         $this->model->setDbCriteria($baseCriteria);  // restore original criteria
         return $data;
     }
-    
+
 
     /**
      * Fetches the data item keys from the persistent data storage.

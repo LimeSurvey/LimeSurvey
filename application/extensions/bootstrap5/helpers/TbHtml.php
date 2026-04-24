@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbHtml class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
@@ -270,7 +271,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const AFFIX_POSITION_TOP = 'top';
     const AFFIX_POSITION_BOTTOM = 'bottom';
 
-	//
+    //
     // COLUMNS
     // --------------------------------------------------
 
@@ -1934,7 +1935,6 @@ EOD;
         } else {
             return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
         }
-
     }
 
     /**
@@ -2731,7 +2731,8 @@ EOD;
             if (strpos((string) $addOn, 'btn') === false) {
                 $normal[] = $addOn;
             } else { // TbHtml::butonDropdown() requires special parsing
-                if (preg_match('/^<div.*class="(.*)".*>(.*)<\/div>$/U', (string) $addOn, $matches) > 0
+                if (
+                    preg_match('/^<div.*class="(.*)".*>(.*)<\/div>$/U', (string) $addOn, $matches) > 0
                     && (isset($matches[1]))
                     && strpos($matches[1], 'btn-group') !== false
                 ) {
@@ -3014,17 +3015,19 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function inputButton($label, $htmlOptions = array()) {
+    public static function inputButton($label, $htmlOptions = array())
+    {
         return self::btn(self::BUTTON_TYPE_INPUTBUTTON, $label, $htmlOptions);
     }
 
-	/**
+    /**
      * Generates a form input submit push button.
      * @param string $label the button label
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function inputSubmit($label = 'Submit', $htmlOptions = array()) {
+    public static function inputSubmit($label = 'Submit', $htmlOptions = array())
+    {
         return self::btn(self::BUTTON_TYPE_INPUTSUBMIT, $label, $htmlOptions);
     }
 
@@ -3099,9 +3102,9 @@ EOD;
         if (TbArray::popValue('split', $htmlOptions, false)) {
             $output .= self::createButton($type, $label, $htmlOptions);
             $label = '';
-        }        
-        if(in_array($toggleButtonType, array(self::BUTTON_TYPE_LINKBUTTON, self::BUTTON_TYPE_LINK))){
-            $output .= self::dropdownToggleLink($label, $htmlOptions);       
+        }
+        if (in_array($toggleButtonType, array(self::BUTTON_TYPE_LINKBUTTON, self::BUTTON_TYPE_LINK))) {
+            $output .= self::dropdownToggleLink($label, $htmlOptions);
         } else {
             $output .= self::dropdownToggleButton($label, $htmlOptions);
         }

@@ -8,7 +8,8 @@
 ?>
 
 <!-- Configuration -->
-<?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')
+<?php if (
+    Permission::model()->hasGlobalPermission('superadmin', 'read')
     || Permission::model()->hasGlobalPermission('templates', 'read')
     || Permission::model()->hasGlobalPermission('labelsets', 'read')
     || Permission::model()->hasGlobalPermission('labelsets', 'create')
@@ -20,7 +21,7 @@
     || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
     || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
     || Permission::model()->hasGlobalPermission('settings', 'read')
-): ?>
+) : ?>
     <li class="dropdown mega-dropdown nav-item">
         <a href="#" class="nav-link dropdown-toggle mainmenu-dropdown-toggle" data-bs-toggle="dropdown">
             <!-- <i class="ri-settings-5-fill"></i> -->
@@ -32,8 +33,7 @@
                 <!-- System overview -->
                 <div class="mega-dropdown__column col-md-3">
                     <!-- System overview -->
-                    <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
-
+                    <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                         <div class="box" id="systemoverview">
                             <div class="box-icon">
                                 <span class="ri-information-fill" id="info-header"></span>
@@ -64,7 +64,7 @@
                 </div>
                 <!-- ExpressionScript Engine -->
                 <div class="mega-dropdown__column col-md-3">
-                    <?php if (YII_DEBUG): ?>
+                    <?php if (YII_DEBUG) : ?>
                         <ul>
 
                             <!-- ExpressionScript Engine -->
@@ -140,7 +140,7 @@
                             <span class="ri-tools-fill"></span>
                             <?php eT('Advanced'); ?>
                         </li>
-                        <?php if (Permission::model()->hasGlobalPermission('templates', 'read')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('templates', 'read')) : ?>
                             <!-- Theme Editor -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("themeOptions/index"); ?>" class="link-themes">
@@ -148,7 +148,7 @@
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'read') || Permission::model()->hasGlobalPermission('labelsets', 'create')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'read') || Permission::model()->hasGlobalPermission('labelsets', 'create')) : ?>
                             <?php /* Can remove permission check when we have way to : update owner or complete Permission system */ ?>
                             <!-- Edit label sets -->
                             <li class="dropdown-item">
@@ -159,8 +159,7 @@
                         <?php endif; ?>
 
                         <!-- Data Integrity -->
-                        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
-
+                        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
                                     <?php eT("Data integrity"); ?>
@@ -177,7 +176,7 @@
                         <?php endif; ?>
 
                         <!-- Comfort update -->
-                        <?php if (Permission::model()->hasGlobalPermission('superadmin')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('superadmin')) : ?>
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("admin/update"); ?>">
                                     <?php eT("ComfortUpdate"); ?>
@@ -201,15 +200,14 @@
                         </li>
 
                         <!-- User management -->
-                        <?php if (Permission::model()->hasGlobalPermission('users', 'read')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('users', 'read')) : ?>
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("userManagement/index"); ?>">
                                     <?php eT("User management"); ?>
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (Permission::model()->hasGlobalPermission('usergroups', 'read')): ?>
-
+                        <?php if (Permission::model()->hasGlobalPermission('usergroups', 'read')) : ?>
                             <!-- User groups -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("userGroup/index"); ?>">
@@ -219,8 +217,7 @@
 
                         <?php endif; ?>
 
-                        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
-
+                        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                             <!-- User groups -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("userRole/index"); ?>">
@@ -231,12 +228,13 @@
                         <?php endif; ?>
 
                         <!-- Central participant management -->
-                        <?php if (Permission::model()->hasGlobalPermission('participantpanel', 'read')
+                        <?php if (
+                        Permission::model()->hasGlobalPermission('participantpanel', 'read')
                             || Permission::model()->hasGlobalPermission('participantpanel', 'create')
                             || Permission::model()->hasGlobalPermission('participantpanel', 'update')
                             || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
                             || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
-                        ): ?>
+) : ?>
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
                                     <?php eT("Central participant management"); ?>
@@ -255,7 +253,7 @@
                             <?php eT('Settings'); ?>
                         </li>
 
-                        <?php if (Permission::model()->hasGlobalPermission('settings', 'read')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('settings', 'read')) : ?>
                             <!-- Dashboard  -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("homepageSettings/index"); ?>">
@@ -286,7 +284,7 @@
 
                             <!-- Surveymenu Editor -->
                             <!-- Survey Menu -->
-                            <?php if (Permission::model()->hasGlobalPermission('settings', 'read')): ?>
+                            <?php if (Permission::model()->hasGlobalPermission('settings', 'read')) : ?>
                                 <li class="dropdown-item">
                                     <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
                                         <?php eT("Survey menus"); ?>

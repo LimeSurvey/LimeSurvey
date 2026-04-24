@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Import tokens from LDAP
  */
+
 ?>
 
 <div class='side-body'>
@@ -11,7 +13,7 @@
         <div class="col-12 content-right">
 
             <!-- Alert error -->
-            <?php if (!empty($sError)): ?>
+            <?php if (!empty($sError)) : ?>
                 <?php
                 $message = '<strong>' . gT("Error") . '</strong>: ' .  $sError;
                 $this->widget('ext.AlertWidget.AlertWidget', [
@@ -22,14 +24,14 @@
             <?php endif; ?>
 
             <!-- LDAP module is missing -->
-            <?php if (!function_exists('ldap_connect')): ?>
+            <?php if (!function_exists('ldap_connect')) : ?>
                 <?php
                 $this->widget('ext.AlertWidget.AlertWidget', [
                     'text' => gT('Sorry, but the LDAP module is missing in your PHP configuration.'),
                     'type' => 'danger',
                 ]);
                 ?>
-            <?php elseif (empty($ldap_queries) || !is_array($ldap_queries) || count($ldap_queries) == 0): ?>
+            <?php elseif (empty($ldap_queries) || !is_array($ldap_queries) || count($ldap_queries) == 0) : ?>
                 <br />
                 <?php
                 $this->widget('ext.AlertWidget.AlertWidget', [
@@ -38,10 +40,9 @@
                 ]);
                 ?>
             <br /><br /><br />
-            <?php else: ?>
-
+            <?php else : ?>
             <!-- Form -->
-                <?php echo CHtml::form(array("admin/tokens/sa/importldap/surveyid/{$iSurveyId}"), 'post', array('class'=>'')); ?>
+                <?php echo CHtml::form(array("admin/tokens/sa/importldap/surveyid/{$iSurveyId}"), 'post', array('class' => '')); ?>
 
                     <!-- LDAP query  -->
                     <div class="mb-3">
@@ -50,12 +51,11 @@
                         </label>
                         <div class="">
                             <select name='ldapQueries' class="form-select">
-                                <?php 
-                                uasort ( $ldap_queries , function ($a, $b) {
-                                    return strnatcmp((string) $a['name'],(string) $b['name']); // or other function/code
-                                    }
-                                );                                      
-                                foreach ($ldap_queries as $q_number => $q): ?>
+                                <?php
+                                uasort($ldap_queries, function ($a, $b) {
+                                    return strnatcmp((string) $a['name'], (string) $b['name']); // or other function/code
+                                });
+                                foreach ($ldap_queries as $q_number => $q) : ?>
                                     <option value="<?php echo $q_number; ?>"><?php echo $q['name']; ?></option>
                                 <?php endforeach; ?>
                             </select>

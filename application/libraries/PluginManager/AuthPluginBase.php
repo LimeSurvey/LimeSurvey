@@ -8,7 +8,6 @@ use LimeSurvey\PluginManager\PluginEvent;
 
 abstract class AuthPluginBase extends PluginBase
 {
-
     /**
      * These constants reflect the error codes to be used by the identity, they
      * are copied from LSUserIdentity and CBaseUserIdentity for easier access.

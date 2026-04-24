@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Core plugin for LimeSurvey : password requirement settings
  * @version 1.1.0
@@ -115,7 +116,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         }
     }
 
-    /** @see event 
+    /** @see event
      * get the current save action password and add errors if needed
      * @return void
      * */
@@ -191,7 +192,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $nonAlpha = $this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC);
 
         $randomPassword = $this->getRandomString($targetSize, $uppercase, $numeric, $nonAlpha);
-        
+
         $oEvent->set('password', $randomPassword);
     }
 
@@ -275,7 +276,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         /**
          * Wrap up
          */
-        
+
         // Shuffle, as to not have always to start with the loweracse, then uppercase, ...
         $str = str_shuffle($str);
 

@@ -29,14 +29,14 @@
             'caption'               => gT('List of surveys'),
             'emptyText'             => gT('No surveys found.'),
             'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'surveygrid--pageSize',
-                        $this->pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                    )
-                ),
+                gT('%s rows per page'),
+                CHtml::dropDownList(
+                    'surveygrid--pageSize',
+                    $this->pageSize,
+                    Yii::app()->params['pageSizeOptions'],
+                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                )
+            ),
             'ajaxUpdate'            => 'survey-grid',
             'lsAfterAjaxUpdate'     => [
                 'window.LS.doToolTip();',

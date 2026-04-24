@@ -14,7 +14,6 @@
  */
 class CompileAssetsCommand extends CConsoleCommand
 {
-
     /**
      * @param array $args
      * @return int
@@ -84,9 +83,9 @@ class CompileAssetsCommand extends CConsoleCommand
 
     private function liveExecuteCommand($cmd, $logfile = false)
     {
-    
+
         while (@ ob_end_flush()); // end all output buffers if any
-    
+
         if ($logfile !== false) {
             $proc = popen("$cmd >{$logfile} 2>&1; echo Exit status : $?", 'r');
         } else {
@@ -95,7 +94,7 @@ class CompileAssetsCommand extends CConsoleCommand
 
         $live_output     = "";
         $complete_output = "";
-    
+
         while (!feof($proc)) {
             $live_output     = fread($proc, 4096);
             $complete_output = $complete_output . $live_output;
@@ -103,12 +102,12 @@ class CompileAssetsCommand extends CConsoleCommand
             echo "$live_output";
             @ flush();
         }
-    
+
         pclose($proc);
-    
+
         // get exit status
         preg_match('/[0-9]+$/', $complete_output, $matches);
-    
+
         // return exit status and intended output
         return array(
                         'exit_status'  => intval($matches[0]),

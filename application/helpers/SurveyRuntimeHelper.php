@@ -1075,7 +1075,7 @@ class SurveyRuntimeHelper
             if ($this->aMoveResult['finished'] != true) {
                 $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1; // step is index base 1
                 $_SESSION[$this->LEMsessid]['notRelevantSteps'] = $this->aMoveResult['notRelevantSteps'] ?? 0;
-                $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps']?? 0;
+                $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps'] ?? 0;
                 $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
             }
         }
@@ -1643,7 +1643,7 @@ class SurveyRuntimeHelper
         if ($scenarios['captchaRequired']) {
             //Check if the Captcha was correct
             $captcha                        = Yii::app()->getController()->createAction('captcha');
-            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity',''), false);
+            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity', ''), false);
         } else {
             $subscenarios['captchaCorrect'] = true;
         }
@@ -1824,7 +1824,7 @@ class SurveyRuntimeHelper
 
             $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1; // step is index base 1?
             $_SESSION[$this->LEMsessid]['notRelevantSteps'] = $this->aMoveResult['notRelevantSteps'] ?? 0;
-            $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps']?? 0;
+            $_SESSION[$this->LEMsessid]['hiddenSteps'] = $this->aMoveResult['hiddenSteps'] ?? 0;
 
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
 

@@ -64,7 +64,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/multiplechoice';
     }
-    
+
     public function getRows()
     {
         $otherAdded = false;

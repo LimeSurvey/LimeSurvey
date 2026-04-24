@@ -443,7 +443,7 @@ class ExpressionManager
                     $result = array(($arg1[0] < $arg2[0]), $token[1], 'NUMBER');
                 }
                 break;
-            case '<=';
+            case '<=':
             case 'le':
                 if ($bMismatchType) {
                     if ($isForcedString) {
@@ -485,7 +485,7 @@ class ExpressionManager
                     }
                 }
                 break;
-            case '>=';
+            case '>=':
             case 'ge':
                 if ($bMismatchType) {
                     if ($isForcedString) {
@@ -524,7 +524,7 @@ class ExpressionManager
                     $result = array(NAN, $token[1], 'NUMBER');
                 }
                 break;
-            case '/';
+            case '/':
                 if ($bBothNumeric) {
                     if ($arg2[0] == 0) {
                         $result = array(NAN, $token[1], 'NUMBER');
@@ -570,7 +570,7 @@ class ExpressionManager
             case '-':
                 $result = array((-$arg1[0]), $token[1], 'NUMBER');
                 break;
-            case '!';
+            case '!':
                 $result = array((!$arg1[0]), $token[1], 'NUMBER');
                 break;
         }
@@ -642,7 +642,7 @@ class ExpressionManager
             if ($token[2] == 'BINARYOP') {
                 switch ($token[0]) {
                     case '+':
-                    case '-';
+                    case '-':
                         if ($this->RDP_EvaluateMultiplicativeExpression()) {
                             if (!$this->RDP_EvaluateBinary($token)) {
                                 return false;
@@ -975,7 +975,7 @@ class ExpressionManager
             if ($token[2] == 'BINARYOP') {
                 switch ($token[0]) {
                     case '*':
-                    case '/';
+                    case '/':
                         if ($this->RDP_EvaluateUnaryExpression()) {
                             if (!$this->RDP_EvaluateBinary($token)) {
                                 return false;
@@ -1041,11 +1041,11 @@ class ExpressionManager
             switch (strtolower((string) $token[0])) {
                 case '<':
                 case 'lt':
-                case '<=';
+                case '<=':
                 case 'le':
                 case '>':
                 case 'gt':
-                case '>=';
+                case '>=':
                 case 'ge':
                     if ($this->RDP_EvaluateAdditiveExpression()) {
                         if (!$this->RDP_EvaluateBinary($token)) {
@@ -2078,10 +2078,10 @@ class ExpressionManager
                         $expandedVar .= $token[0];
                     }
                     break;
-                case 'DQ_STRING';
+                case 'DQ_STRING':
                     $expandedVar .= "\"{$token[0]}\"";
                     break;
-                case 'SQ_STRING';
+                case 'SQ_STRING':
                     $expandedVar .= "'{$token[0]}'";
                     break;
                 case 'SPACE':

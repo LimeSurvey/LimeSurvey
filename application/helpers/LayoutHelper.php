@@ -160,7 +160,8 @@ class LayoutHelper
      *
      * @return Menu
      */
-    public function getCreateMenu() {
+    public function getCreateMenu()
+    {
         $itemClass = 'create-menu-item';
         $menuItemHeader = [
             'isDivider' => false,

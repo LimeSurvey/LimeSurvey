@@ -1,8 +1,10 @@
 <?php
+
 /**
  * View for a selector modal with preview capabilities and a grouped structure
  * Used by "Export" modal on survey overview page.
  */
+
 ?>
 <?php //The hidden input ?>
 <input id="<?= $this->widgetsJsName ?>" name="<?= $this->widgetsJsName ?>" value="<?= $this->value ?>" type="hidden"/>

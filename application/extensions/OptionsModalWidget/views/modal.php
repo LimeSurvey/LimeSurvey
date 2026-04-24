@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <ul class="list-group">
-                <?php foreach ($options as $optionData): ?>
+                <?php foreach ($options as $optionData) : ?>
                     <li class="list-group-item">
                         <?php $targetAttribute = isset($optionData['target']) ? 'target="' . $optionData['target'] . '"' : '' ?>
                         <a class="<?= $optionData['linkClass'] ?>" href="<?= $optionData['href'] ?>" <?= $targetAttribute ?>><?= $optionData['text'] ?></a>

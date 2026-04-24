@@ -1475,7 +1475,7 @@ class userstatistics_helper
         if (!empty($sql)) {
             $criteria->addCondition($sql);
         }
-        
+
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
         foreach ($oResponses as $key => $oResponse) {

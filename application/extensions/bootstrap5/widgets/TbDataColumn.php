@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbDataColumn class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
@@ -75,7 +76,8 @@ class TbDataColumn extends CDataColumn
         if (is_string($this->filter)) {
             echo $this->filter;
         } else {
-            if ($this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
+            if (
+                $this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
                     (string) $this->name,
                     '.'
                 ) === false

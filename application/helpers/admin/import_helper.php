@@ -454,8 +454,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING)
+            if (isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING) {
                 continue;
+            }
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 $oAnswerL10n = new AnswerL10n();
@@ -495,8 +496,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 continue; //Skip invalid answer ID
             }
 
-            if(isset($raids[$insertdata['aid']]))
+            if (isset($raids[$insertdata['aid']])) {
                 continue;
+            }
 
             $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'], $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
@@ -627,8 +629,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $insertdata["method"] = '==';
             }
 
-            $insertdata['value'] = fixText(convertLegacyInsertans($insertdata['value']?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
-            $insertdata['cfieldname'] = fixText($insertdata['cfieldname']?? "", $allImportedQuestions, $oldNewFieldRoots);
+            $insertdata['value'] = fixText(convertLegacyInsertans($insertdata['value'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
+            $insertdata['cfieldname'] = fixText($insertdata['cfieldname'] ?? "", $allImportedQuestions, $oldNewFieldRoots);
 
             // now translate any links
             Yii::app()->db->createCommand()->insert('{{conditions}}', $insertdata);
@@ -792,7 +794,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 );
                 return $results;
             }
-            if($supportArchivedFields) {
+            if ($supportArchivedFields) {
                 $oldNewFieldRoots["{$iOldSID}X{$iOldGID}X{$iOldQID}"] = "{$oQuestion->sid}X{$oQuestion->gid}X{$oQuestion->qid}";
             }
             switchMSSQLIdentityInsert('questions', false);
@@ -1013,8 +1015,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING)
+            if (isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING) {
                 continue;
+            }
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
@@ -1079,8 +1082,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 continue; //Skip invalid answer ID
             }
 
-            if(isset($raids[$insertdata['aid']]))
+            if (isset($raids[$insertdata['aid']])) {
                 continue;
+            }
 
             $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
@@ -1741,7 +1745,7 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
             ;
             break;
         case 'pgsql':
-        $command = "
+            $command = "
         SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
         FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
         JOIN " . Yii::app()->db->tablePrefix . "questions new_q
@@ -1752,11 +1756,11 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
         ;
         "
-        ;
-        break;
+            ;
+            break;
         case 'mssql':
         case 'sqlsrv':
-        $command = "
+            $command = "
         SELECT old_s_c.COLUMN_NAME AS old_c, new_s_c.COLUMN_NAME AS new_c
         FROM " . Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp . " old_q
         JOIN " . Yii::app()->db->tablePrefix . "questions new_q
@@ -1767,8 +1771,8 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         ON old_s_c.COLUMN_NAME = new_s_c.COLUMN_NAME
         ;
         "
-        ;
-        break;
+            ;
+            break;
     }
 
     $rawResults = Yii::app()->db->createCommand($command)->queryAll();
@@ -2899,8 +2903,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            if(isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING)
+            if (isset($questionTypeMap[$insertdata['qid']]) && $questionTypeMap[$insertdata['qid']] == Question::QT_R_RANKING) {
                 continue;
+            }
 
             if (!isset($xml->answer_l10ns->rows->row)) {
                 // now translate any links
@@ -2962,8 +2967,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 continue; //Skip invalid answer ID
             }
 
-            if(isset($raids[$insertdata['aid']]))
+            if (isset($raids[$insertdata['aid']])) {
                 continue;
+            }
 
             $insertdata['answer'] = fixText(convertLegacyInsertans($insertdata['answer'] ?? "", $allImportedQuestions, $newOldQidMapping), $allImportedQuestions, $oldNewFieldRoots);
 
@@ -4679,7 +4685,7 @@ function createXMLfromData($aData = array())
  * @param array &$results
  * @return void
  */
-function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDReplacements, array &$results, $allImportedQuestions = [] , $newOldQidMapping = [], $oldNewFieldRoots = [])
+function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDReplacements, array &$results, $allImportedQuestions = [], $newOldQidMapping = [], $oldNewFieldRoots = [])
 {
     // Default value id replacements
     $aDvidReplacements = [];
@@ -4914,7 +4920,7 @@ function processPendingInsertansUpdates(&$pendingInsertansUpdates, $allImportedQ
 
         $models = $modelClass::model()->findAllByAttributes($idCriteria);
 
-        if(!empty($models)) {
+        if (!empty($models)) {
             foreach ($models as $model) {
                 $changed = false;
                 foreach ($record['fields'] as $fieldName => $fieldValue) {

@@ -21,7 +21,6 @@ if (!defined('BASEPATH')) {
  */
 class viewHelper
 {
-
     /**
      * getImageLink returns HTML needed for a link that consists of only an image with alt text.
      *

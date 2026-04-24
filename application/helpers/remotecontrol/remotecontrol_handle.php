@@ -3685,7 +3685,7 @@ class remotecontrol_handle
             if (count($aTokens) == 0) {
                 return array('status' => 'No Data, empty tokens array parameter');
             } else {
-                $aTokensQuoted = Array();
+                $aTokensQuoted = array();
                 foreach ($aTokens as $token) {
                     array_push($aTokensQuoted, App()->db->quoteValue("$token"));
                 }

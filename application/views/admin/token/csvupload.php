@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Import tokens from CSV file
  *
  */
+
 ?>
 
 <div class='side-body'>
@@ -10,9 +12,11 @@
 
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(["admin/tokens/sa/import/surveyid/{$iSurveyId}"],
+            <?php echo CHtml::form(
+                ["admin/tokens/sa/import/surveyid/{$iSurveyId}"],
                 'post',
-                ['id' => 'tokenimport', 'name' => 'tokenimport', 'class' => '', 'enctype' => 'multipart/form-data']); ?>
+                ['id' => 'tokenimport', 'name' => 'tokenimport', 'class' => '', 'enctype' => 'multipart/form-data']
+            ); ?>
 
             <!-- Choose the CSV file to upload -->
             <div class="mb-3">
@@ -124,10 +128,12 @@
                 <div class="">
                     <?php
                     unset($aTokenTableFields['token']); // token are already duplicate forbidden mantis #14334, remove it
-                    echo CHtml::listBox('filterduplicatefields',
+                    echo CHtml::listBox(
+                        'filterduplicatefields',
                         ['firstname', 'lastname', 'email'],
                         $aTokenTableFields,
-                        ['multiple' => 'multiple', 'size' => '7', 'class' => 'form-control']);
+                        ['multiple' => 'multiple', 'size' => '7', 'class' => 'form-control']
+                    );
                     ?>
                 </div>
             </div>

@@ -20,7 +20,7 @@
         <input type="radio" class="btn-check" name="<?= $name ?>" id="<?= $id . '_' . $count ?>" autocomplete="off"
             value="<?= $value ?>" <?= $checkedOption == $value ? 'checked' : '' ?> <?= isset($htmlOptions['disabled']) && $htmlOptions['disabled'] ? 'disabled' : '' ?>>
         <label class="btn btn-outline-secondary" for="<?= $id . '_' . $count ?>">
-            <?php if (isset($htmlOptions['icon']) &&  $htmlOptions['icon']): ?>
+            <?php if (isset($htmlOptions['icon']) &&  $htmlOptions['icon']) : ?>
                 <span class="<?= $htmlOptions['icon'][$value] ?>" style="margin-right: 5px;"></span>
             <?php endif; ?>
             <?= $caption ?>

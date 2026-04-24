@@ -91,7 +91,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             ]
         ]
     ]);
-?>
+    ?>
 
 
 

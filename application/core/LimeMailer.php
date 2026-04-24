@@ -616,7 +616,7 @@ class LimeMailer extends PHPMailer
             $this->Subject = mb_convert_encoding($this->Subject, $this->CharSet, $this->BodySubjectCharset);
             $this->Body = mb_convert_encoding($this->Body, $this->CharSet, $this->BodySubjectCharset);
         }
-        if (!$this->addAttachmentsByType() && !$this->ignoremissingattachement ) {
+        if (!$this->addAttachmentsByType() && !$this->ignoremissingattachement) {
             $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
             return false;
         }

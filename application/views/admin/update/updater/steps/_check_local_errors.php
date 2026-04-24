@@ -9,15 +9,16 @@
 ?>
 
 <?php
-        $urlNew = Yii::app()->createUrl("admin/update", array("update"=>'checkLocalErrors', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token));
-        $errors = FALSE;
+        $urlNew = Yii::app()->createUrl("admin/update", array("update" => 'checkLocalErrors', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token));
+        $errors = false;
 ?>
 
 <h3 class="maintitle"><?php eT('Checking basic requirements...'); ?></h3>
 
 <?php
-    if( isset($localChecks->html) )
-        echo $localChecks->html;
+if (isset($localChecks->html)) {
+    echo $localChecks->html;
+}
 ?>
 <div class="row">
     <div class="col-12">
@@ -30,27 +31,29 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($localChecks->files as $file):?>
-                    <?php if($file->freespace !== 'pass'): ?>
+                <?php foreach ($localChecks->files as $file) :?>
+                    <?php if ($file->freespace !== 'pass') : ?>
                         <tr>
                             <td><?php echo $file->name;?></td>
                             <td></td>
-                            <?php if($file->freespace): ?>
+                            <?php if ($file->freespace) : ?>
                                 <td><span class="ri-check-fill text-success" alt="right"></span></td>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <td>
                                     <h3 class="badge bg-danger">
                                         <?php eT('Not enough space'); ?>
                                     </h3>
                                 </td>
-                                <?php $errors = true; $cant_ignore = false; $ignore = true; ?>
+                                <?php $errors = true;
+                                $cant_ignore = false;
+                                $ignore = true; ?>
                             <?php endif; ?>
                         </tr>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <?php if($errors): ?>
+        <?php if ($errors) : ?>
             <div>
             <em>
                 <?php eT("Note: With some shared hosting configuration, it can happen that the available free space is not correctly evaluated. If you checked manually that you have enough free space to update, just ignore this error."); ?>
@@ -59,7 +62,7 @@
             </div>
         <?php endif;?>
 
-        <?php if($localChecks->mysql->docheck !== 'pass'): ?>
+        <?php if ($localChecks->mysql->docheck !== 'pass') : ?>
             <table class="table">
                 <thead>
                     <tr>
@@ -72,15 +75,17 @@
                     <tr>
                         <td><?php echo $localChecks->mysql->mysql_ver;?></td>
                         <td></td>
-                        <?php if($localChecks->mysql->result): ?>
+                        <?php if ($localChecks->mysql->result) : ?>
                             <td><span class="ri-check-fill text-success" alt="right"></span></td>
-                        <?php else: ?>
+                        <?php else : ?>
                             <td>
                                 <h3 class="badge bg-danger">
-                                    <?php printf(gT('MariaDB/MySQL version is only %s'),$localChecks->mysql->local_mysql_ver);?>
+                                    <?php printf(gT('MariaDB/MySQL version is only %s'), $localChecks->mysql->local_mysql_ver);?>
                                 </h3>
                             </td>
-                            <?php $errors = TRUE; $cant_ignore = true; $ignore = false; ?>
+                            <?php $errors = true;
+                            $cant_ignore = true;
+                            $ignore = false; ?>
                         <?php endif; ?>
                     </tr>
                 </tbody>
@@ -101,17 +106,19 @@
 
                     <td class="col-md-1"></td>
 
-                    <?php if($localChecks->php->result): ?>
+                    <?php if ($localChecks->php->result) : ?>
                         <td>
                             <span class="ri-check-fill text-success" alt="right"></span>
                         </td>
-                    <?php else: ?>
+                    <?php else : ?>
                         <td>
                             <span class="badge bg-danger">
-                                <?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?>
+                                <?php printf(gT('PHP version is only %s'), $localChecks->php->local_php_ver);?>
                             </span>
                         </td>
-                        <?php $errors = TRUE; $cant_ignore = true; $ignore = false;?>
+                        <?php $errors = true;
+                        $cant_ignore = true;
+                        $ignore = false;?>
                     <?php endif; ?>
                 </tr>
             </tbody>
@@ -126,23 +133,25 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($localChecks->php_modules as $name => $module):?>
+                <?php foreach ($localChecks->php_modules as $name => $module) :?>
                 <tr>
                     <td><?php echo $name;?></td>
                     <td></td>
 
-                    <?php if($module->installed): ?>
+                    <?php if ($module->installed) : ?>
                         <td>
                             <span class="ri-check-fill text-success" alt="right"></span>
                         </td>
-                    <?php elseif(isset($module->required)): ?>
+                    <?php elseif (isset($module->required)) : ?>
                         <td>
                             <span class="badge bg-danger">
                                 <?php eT('Not found'); ?>
                             </span>
                         </td>
-                        <?php $errors = TRUE; $cant_ignore = true; $ignore = false;?>
-                    <?php else: ?>
+                        <?php $errors = true;
+                        $cant_ignore = true;
+                        $ignore = false;?>
+                    <?php else : ?>
                         <td>
                             <span class="badge bg-danger">
                                 <?php eT('No (but optional)'); ?>
@@ -156,14 +165,13 @@
         </table>
     </div>
 </div>
-<?php if($errors): ?>
+<?php if ($errors) : ?>
     <?php
-    if($ignore && ! $cant_ignore )
-    {
+    if ($ignore && ! $cant_ignore) {
             $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/changeLog/");
-            echo CHtml::beginForm($formUrl, 'post', array("id"=>"launchChangeLogForm"));
-            echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
-            echo CHtml::hiddenField('access_token' , $access_token);
+            echo CHtml::beginForm($formUrl, 'post', array("id" => "launchChangeLogForm"));
+            echo CHtml::hiddenField('destinationBuild', $destinationBuild);
+            echo CHtml::hiddenField('access_token', $access_token);
     }
     ?>
 
@@ -176,8 +184,7 @@
         <?php eT('Check again');?>
     </a>
 
-    <?php if($ignore  && ! $cant_ignore): ?>
-
+    <?php if ($ignore  && ! $cant_ignore) : ?>
         <?php
             echo CHtml::submitButton(
                 gT('Ignore', 'unescaped'),
@@ -187,11 +194,12 @@
     <?php endif;?>
     </div>
 </div>
-<?php if($ignore  && ! $cant_ignore)
+    <?php if ($ignore  && ! $cant_ignore) {
             echo CHtml::endForm();
-?>
+    }
+    ?>
 
-<?php else:?>
+<?php else :?>
 <div class="row">
     <div class="col-12 mt-2">
         <?php
@@ -200,9 +208,9 @@
                 'type' => 'success',
             ]);
             $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/changeLog/");
-            echo CHtml::beginForm($formUrl, 'post', array("id"=>"launchChangeLogForm"));
-            echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
-            echo CHtml::hiddenField('access_token' , $access_token);
+            echo CHtml::beginForm($formUrl, 'post', array("id" => "launchChangeLogForm"));
+            echo CHtml::hiddenField('destinationBuild', $destinationBuild);
+            echo CHtml::hiddenField('access_token', $access_token);
         ?>
             <a class="btn btn-cancel me-1"
                href="<?= Yii::app()->createUrl("admin/update"); ?>"

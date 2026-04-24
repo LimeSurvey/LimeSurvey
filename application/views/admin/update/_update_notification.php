@@ -13,9 +13,9 @@
     $urlUpdateNotificationState = Yii::app()->createUrl("admin/update/sa/notificationstate");
 ?>
 
-<?php if(Yii::app()->session['notificationstate']==1):?>
+<?php if (Yii::app()->session['notificationstate'] == 1) :?>
     <div class="col-12" id="update-container">
-        <?php if($security_update_available):?>
+        <?php if ($security_update_available) :?>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'text' => '<strong>' . gT("Security update!") . '</strong> ' . gT("A security update is available.") . ' <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate.') . '</a>',
@@ -24,7 +24,7 @@
                 'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]
             ]);
             ?>
-        <?php elseif(Yii::app()->session['unstable_update']):?>
+        <?php elseif (Yii::app()->session['unstable_update']) :?>
             <?php
             $labelMap = ['alpha' => gT('Alpha'), 'beta' => gT('Beta'), 'rc' => gT('Release Candidate')];
             $labelNames = [];
@@ -41,7 +41,7 @@
                 'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]
             ]);
             ?>
-        <?php else:?>
+        <?php else :?>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'text' => '<strong>' . gT("New update available:") . '</strong> <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate or to download it.') . '</a>',

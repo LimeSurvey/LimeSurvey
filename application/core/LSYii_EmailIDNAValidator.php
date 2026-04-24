@@ -18,7 +18,6 @@ if (!defined('BASEPATH')) {
 
 class LSYii_EmailIDNAValidator extends CValidator
 {
-
     public $allowEmpty = false;
     public $allowMultiple = false;
     public $allowInherit = false;
@@ -44,7 +43,7 @@ class LSYii_EmailIDNAValidator extends CValidator
         }
 
         foreach ($aEmailAddresses as $sEmailAddress) {
-              if (!LimeMailer::validateAddress($sEmailAddress)) {
+            if (!LimeMailer::validateAddress($sEmailAddress)) {
                 $this->addError($object, $attribute, gT('Invalid email address.'));
                 return;
             }
