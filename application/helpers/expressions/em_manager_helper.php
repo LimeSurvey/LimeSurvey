@@ -1955,146 +1955,80 @@ class LimeExpressionManager
                 $input_boxes = "";
             }
 
-            // min_answers
-            // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
-            if (isset($qattr['min_answers']) && trim((string) $qattr['min_answers']) != '' && trim((string) $qattr['min_answers']) != '0') {
-                $min_answers = $qattr['min_answers'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = [];
-                    foreach ($subqs as $sq) {
-                        $sq_name = null;
-                        switch ($type) {
-                            case Question::QT_1_ARRAY_DUAL:   // Array dual scale
-                                if (substr((string) $sq['varName'], -1, 1) == '0') {
-                                    if ($this->sgqaNaming) {
-                                        $base = $sq['rowdivid'] . "#";
-                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
-                                    } else {
-                                        $base = (string)substr((string) $sq['varName'], 0, -1);
-                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
-                                    }
-                                }
-                                break;
-                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
-                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
-                            case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
-                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
-                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
-                            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
-                            case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
-                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
-                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                            case Question::QT_R_RANKING: // Ranking STYLE
-                                if ($this->sgqaNaming) {
-                                    $sq_name = (string)substr((string) $sq['jsVarName'], 4) . '.NAOK';
-                                } else {
-                                    $sq_name = $sq['varName'] . '.NAOK';
-                                }
-                                break;
-                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                                if (!preg_match('/comment$/', (string) $sq['varName'])) {
-                                    if ($this->sgqaNaming) {
-                                        $sq_name = $sq['rowdivid'] . '.NAOK';
-                                    } else {
-                                        $sq_name = $sq['rowdivid'] . '.NAOK';
-                                    }
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                        }
+            // min_answers and max_answers
+            // Both use the same subquestion name list, so build it once.
+            $hasMinAnswers = isset($qattr['min_answers']) && trim((string) $qattr['min_answers']) != '' && trim((string) $qattr['min_answers']) != '0';
+            $hasMaxAnswers = isset($qattr['max_answers']) && trim((string) $qattr['max_answers']) != '';
+            $min_answers = $hasMinAnswers ? $qattr['min_answers'] : '';
+            $max_answers = $hasMaxAnswers ? $qattr['max_answers'] : '';
+
+            if (($hasMinAnswers || $hasMaxAnswers) && $hasSubqs) {
+                $subqs = $qinfo['subqs'];
+                $sq_names = [];
+                foreach ($subqs as $sq) {
+                    $sq_name = null;
+                    switch ($type) {
+                        case Question::QT_1_ARRAY_DUAL:   // Array dual scale
+                            if (substr((string) $sq['varName'], -1, 1) == '0') {
+                                $base = substr((string) $sq['varName'], 0, -1);
+                                $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+                            }
+                            break;
+                        case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                        case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                        case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                        case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                        case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                        case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                        case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                        case Question::QT_R_RANKING: // Ranking STYLE
+                            if ($this->sgqaNaming) {
+                                $sq_name = substr((string) $sq['jsVarName'], 4) . '.NAOK';
+                            } else {
+                                $sq_name = $sq['varName'] . '.NAOK';
+                            }
+                            break;
+                        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                            if (!preg_match('/comment$/', (string) $sq['varName'])) {
+                                $sq_name = $sq['rowdivid'] . '.NAOK';
+                            }
+                            break;
+                        default:
+                            break;
                     }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum])) {
-                            $validationEqn[$questionNum] = [];
-                        }
+                    if (!is_null($sq_name)) {
+                        $sq_names[] = $sq_name;
+                    }
+                }
+                if (count($sq_names) > 0) {
+                    if (!isset($validationEqn[$questionNum])) {
+                        $validationEqn[$questionNum] = [];
+                    }
+                    $countExpr = 'count(' . implode(', ', $sq_names) . ')';
+                    if ($hasMinAnswers) {
+                        // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
                         $validationEqn[$questionNum][] = [
                             'qtype' => $type,
                             'type'  => 'min_answers',
                             'class' => 'num_answers',
-                            'eqn'   => 'if(is_empty(' . $min_answers . '),1,(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . ')))',
+                            'eqn'   => 'if(is_empty(' . $min_answers . '),1,(' . $countExpr . ' >= (' . $min_answers . ')))',
                             'qid'   => $questionNum,
                         ];
                     }
-                }
-            } else {
-                $min_answers = '';
-            }
-
-            // max_answers
-            // Validation:= count(sq1,...,sqN) <= value (which could be an expression).
-            if (isset($qattr['max_answers']) && trim((string) $qattr['max_answers']) != '') {
-                $max_answers = $qattr['max_answers'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = [];
-                    foreach ($subqs as $sq) {
-                        $sq_name = null;
-                        switch ($type) {
-                            case Question::QT_1_ARRAY_DUAL:   // Array dual scale
-                                if (substr((string) $sq['varName'], -1, 1) == '0') {
-                                    if ($this->sgqaNaming) {
-                                        $base = $sq['rowdivid'] . "#";
-                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
-                                    } else {
-                                        $base = substr((string) $sq['varName'], 0, -1);
-                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
-                                    }
-                                }
-                                break;
-                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
-                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
-                            case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
-                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
-                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
-                            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
-                            case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
-                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
-                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                            case Question::QT_R_RANKING: // Ranking STYLE
-                                if ($this->sgqaNaming) {
-                                    $sq_name = substr((string) $sq['jsVarName'], 4) . '.NAOK';
-                                } else {
-                                    $sq_name = $sq['varName'] . '.NAOK';
-                                }
-                                break;
-                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                                if (!preg_match('/comment$/', (string) $sq['varName'])) {
-                                    if ($this->sgqaNaming) {
-                                        $sq_name = $sq['rowdivid'] . '.NAOK';
-                                    } else {
-                                        $sq_name = $sq['varName'] . '.NAOK';
-                                    }
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                        }
-                    }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum])) {
-                            $validationEqn[$questionNum] = [];
-                        }
+                    if ($hasMaxAnswers) {
+                        // Validation:= count(sq1,...,sqN) <= value (which could be an expression).
                         $validationEqn[$questionNum][] = [
                             'qtype' => $type,
                             'type'  => 'max_answers',
                             'class' => 'num_answers',
-                            'eqn'   => '(if(is_empty(' . $max_answers . '),1,count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . ')))',
+                            'eqn'   => '(if(is_empty(' . $max_answers . '),1,' . $countExpr . ' <= (' . $max_answers . ')))',
                             'qid'   => $questionNum,
                         ];
                     }
                 }
-            } else {
-                $max_answers = '';
             }
             /* Specific for ranking : fix only the alert : test if needed (max_subquestions < count(subquestions) )*/
             if ($type == Question::QT_R_RANKING && (isset($qattr['max_subquestions']) && intval($qattr['max_subquestions']) > 0)) {
