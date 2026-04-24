@@ -423,7 +423,7 @@ abstract class Token extends Dynamic
             array('lastname', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('language', 'LSYii_Validators', 'isLanguage' => true),
             array('language','in','range' => array_merge(array($this->survey->language), explode(' ', $this->survey->additional_languages)),'allowEmpty' => true,'message' => gT('Language code is invalid in this survey')),
-            array(implode(',', $this->tableSchema->columnNames), 'safe'),
+            array(implode(',', $this->tableSchema->columnNames ?? []), 'safe'),
             /* pseudo date : force date or specific string ? */
             array('remindersent', 'length', 'min' => 0, 'max' => 17),
             array('remindersent', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
@@ -527,9 +527,29 @@ abstract class Token extends Dynamic
         if (Yii::app()->getConfig('blacklistnewsurveys') == "Y" && $this->getIsNewRecord()) {
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             if ($blacklistHandler->isTokenBlacklisted($this)) {
-                $this->emailstatus = "OptOut";
+                $this->optOut();
             }
         }
         return parent::onBeforeSave($event);
+    }
+
+    /**
+     * Get opt out status of token from email status
+     * @return bool true if token is opted out, false if not
+     */
+    public function getOptOutStatus()
+    {
+        // This must be something for backwards compatibility
+        // the query above also has OptOut% in the summary function
+        // implying something comes after
+        return substr((string) $this->emailstatus, 0, strlen('OptOut')) === 'OptOut';
+    }
+
+    /**
+     * Opt out the token by updating the email status
+     */
+    public function optOut()
+    {
+        $this->emailstatus = 'OptOut';
     }
 }

@@ -66,7 +66,7 @@ class OptinController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            if ($token->emailstatus != 'OptOut') {
+            if (!$token->optOutStatus) {
                 $message = gT('You are already a participant of this survey.');
             } else {
                 $message = gT('Please confirm that you want to be added back to this survey by clicking the button below.') . '<br>' . gT("After confirmation you may start receiving invitations and reminders for this survey.");
@@ -91,7 +91,7 @@ class OptinController extends LSYii_Controller
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
 
         //IF there is no survey ID, redirect back to the default public page
-        if (!$surveyId) {
+        if (!$surveyId || !$accessToken) {
             $this->redirect(['/']);
         }
 
@@ -119,8 +119,6 @@ class OptinController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            $optedOutFromSurvey = substr((string) $token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
-
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             $participant = $blacklistHandler->getCentralParticipantFromToken($token);
             $isBlacklisted = !empty($participant) && $participant->blacklisted == 'Y';
@@ -130,7 +128,7 @@ class OptinController extends LSYii_Controller
             } elseif ($isBlacklisted) {
                 $message = gT('Please confirm that you want to be added back to the central participant list for this site.');
                 $link = Yii::app()->createUrl('optin/addtokens', ['surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true]);
-            } elseif ($optedOutFromSurvey) {
+            } elseif ($token->optOutStatus) {
                 $message = gT('Please confirm that you want to be added back to this survey by clicking the button below.') . '<br>' . gT("After confirmation you may start receiving invitations and reminders for this survey.");
                 $link = Yii::app()->createUrl('optin/addtokens', ['surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken]);
             } elseif (empty($participant)) {
@@ -162,7 +160,7 @@ class OptinController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        if (!$surveyId) {
+        if (!$surveyId || !$accessToken) {
             $this->redirect(['/']);
         }
 
@@ -189,9 +187,11 @@ class OptinController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            if ($token->emailstatus == 'OptOut') {
+            if ($token->optOutStatus) {
                 $token->emailstatus = 'OK';
-                $token->save();
+                if (!$token->save(true, ['emailstatus'])) {
+                    throw new CHttpException(500, gT('An internal error occurred while the Web server was processing your request.'));
+                }
                 $message = gT('You have been successfully added back to this survey.');
             } elseif ($token->emailstatus == 'OK') {
                 $message = gT('You are already a participant of this survey.');
