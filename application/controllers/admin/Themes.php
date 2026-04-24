@@ -305,9 +305,6 @@ class Themes extends SurveyCommonAction
             }
 
             try {
-                $src = $_FILES['the_file']['tmp_name'];
-                $extConfig = ExtensionConfig::loadFromZip($src);
-                $destdir = $extConfig->getName();
                 // TODO: Replace with extension installer factory.
                 $installer = $this->getQuestionThemeInstaller();
                 $installer->fetchFiles();
@@ -317,7 +314,12 @@ class Themes extends SurveyCommonAction
                     $installer->abort();
                     throw new Exception(gT('The question theme is not compatible with your version of LimeSurvey.'));
                 }
-                $questionTheme = QuestionTheme::model()->findByAttributes(['name' => $config->getName()]);
+                $questionThemeName = $config->getName();
+                if (!$installer->validateQuestionThemeName($questionThemeName)) {
+                    $installer->abort();
+                    throw new Exception(gT('Invalid question theme name in config.xml'));
+                }
+                $questionTheme = QuestionTheme::model()->findByAttributes(['name' => $questionThemeName]);
                 try {
                     if (empty($questionTheme)) {
                         $installer->install();
@@ -353,6 +355,7 @@ class Themes extends SurveyCommonAction
             }
         }
 
+        // Question theme uploads should already have returned from the branch above.
         $sNewDirectoryName = $this->getNewDirectoryName($themeType, $_FILES['the_file']['tmp_name']);
 
         if ($themeType == 'survey') {
