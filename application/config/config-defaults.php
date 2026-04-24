@@ -884,5 +884,14 @@ $config['allow_unserialize_attributedescriptions'] = false;
 // @see https://www.php.net/unserialize
 $config['allow_unserialize_attachments'] = false;
 
+// Allow to use a allow list for getConfig function in twig
+// used only if it's an array, else use a fixed denylist and the extra denylist in config
+// @see https://bugs.limesurvey.org/view.php?id=20495
+$config['twig_getConfig_allowlist'] = null;
+
+// Allow to add more global settings to a deny for getConfig function in twig
+// @see https://bugs.limesurvey.org/view.php?id=20495
+$config['twig_getConfig_extradenylist'] = [];
+
 return $config;
 //settings deleted

@@ -652,8 +652,80 @@ class LS_Twig_Extension extends AbstractExtension
         return 'rgba(' . join(', ', $return) . ',' . $alpha . ')';
     }
 
+    /**
+     * Shortcut to get configuration value
+     * @see ConsoleApplication->getConfig and LSYii_Application->getConfig
+     * @param string $name
+     * @return mixed
+     */
     public static function getConfig($item)
     {
+        /* if allowlist is an array, use it */
+        if (is_array(App()->getConfig('twig_getConfig_allowlist'))) {
+            if (!in_array($item, App()->getConfig('twig_getConfig_allowlist'))) {
+                return false;
+            }
+        }
+        /* @var string[] $forcedDeny list of config forced to deny */
+        $forcedDeny = [
+            /* encryption security inlcude deprecated */
+            'encryptionkeypair',
+            'encryptionpublickey',
+            'encryptionsecretkey',
+            'encryptionnonce',
+            'encryptionsecretboxkey',
+            /* security related */
+            'forcedsuperadmin',
+            'loginIpWhitelist',
+            'tokenIpWhitelist',
+            'ssl_disable_alert',
+            'ssl_emergency_override',
+            'registrationEmailDelay',
+            /* connexion related */
+            'proxy_host_name',
+            'proxy_host_port',
+            'reverseProxyIpHeader',
+            'reverseProxyIpAddresses',
+            /* Setting keys and password */
+            'googleMapsAPIKey',
+            'ipInfoDbAPIKey',
+            'googleanalyticsapikey',
+            'googletranslateapikey',
+            'GeoNamesUsername',
+            'emailsmtppassword',
+            'bounceaccountpass',
+            /* directory related */
+            'magic_file',
+            'magic_database',
+            'rootdir',
+            'publicdir',
+            'homedir',
+            'configdir',
+            'tempdir',
+            'imagedir',
+            'uploaddir',
+            'standardthemerootdir',
+            'publicstylepath',
+            'corequestiontypedir',
+            'corequestionthemedir',
+            'corequestionthemerootdir',
+            'styledir',
+            'questiontypedir',
+            'userthemerootdir',
+            'usertwigextensionrootdir',
+            'customquestionthemedir',
+            'userquestionthemerootdir',
+            'userfontsrootdir',
+            'lsadminmodulesrootdir',
+        ];
+        /* if in core deny list is an array, return false */
+        if (!in_array($item, $forcedDeny)) {
+            return false;
+        }
+        /* if in config deny list is an array, return false */
+        if (!in_array($item, App()->getConfig('twig_getConfig_extradenylist'))) {
+            return false;
+        }
         return Yii::app()->getConfig($item);
     }
 
