@@ -1,5 +1,5 @@
 <?php $selectId = 'Attributes_' . CHtml::encode($name); ?>
-<label id="<?php echo $selectId; ?>_label" class="form-label" for="<?= $selectId ?>"><?= $defaultname ?></label>
+<label id="<?= $selectId ?>_label" class="form-label" for="<?= $selectId ?>"><?= $defaultname ?></label>
 <div class='mb-3'>
     <select class="form-select" name="Attributes[<?= CHtml::encode($name) ?>]" id="<?= $selectId ?>">
         <option></option>  <!-- Nothing selected -->
