@@ -154,6 +154,7 @@ export const Setting = ({
             'questionThemeName',
             'encrypted',
             'attributes.save_as_default',
+            'other',
           ].includes(attribute.attributePath) && isSurveyActive
 
         return (
