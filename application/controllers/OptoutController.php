@@ -13,6 +13,42 @@
  *
  */
 
+/*
+    there are a few different flows through this controller
+
+    GET optout/actiontokens -> GET optout/removetokens
+
+    user vists optouturl and for older themes there is a button
+    that actually opts out via a GET request when clicked. the
+    problem with this is that some mail filters crawl the optout url
+    and perform that GET request, causing participants to be opted out
+
+    GET optout/actiontokens -> POST optout/removetoken
+
+    user vists optouturl and for newer themes there is a form
+    which POSTs to an endpoint intead. the automated filters will
+    not perform the POST request. this prevents the above problem.
+
+    POST optout/actiontokens
+
+    this is one click unsubscribe, a special post request is sent
+    to the list unsubscribe url (the same url a user would visit
+    to manually opt out, first flow above) when mail clients have
+    this available, if a user reports a message as spam, the client
+    can then offer to unsubscribe the user instead.
+
+    GET optout/participants -> GET optout/removetokens
+
+    similar to the first flow above, but opts out the participant
+    from the central participant database as well as the survey
+    and all other surveys if they request it
+
+    GET optout/participants -> POST optout/removetokens
+
+    similar to the second flow above, solves the get vs post request
+    issue. similar functionality to the previous flow.
+*/
+
 /**
  * optout
  *
@@ -34,6 +70,19 @@ class OptoutController extends LSYii_Controller
      */
     public function actiontokens()
     {
+        // handle a one click unsubscribe post request
+        // this is distinct from the "secure POST link"
+        // mentioned above which is a different endpoint
+        // per rfc8058
+        // "The target of
+        // the POST action is the same as the one in the GET action for a manual
+        // unsubscription, so this is intended to allow the same server code to
+        // handle both."
+        if(Yii::app()->request->isPostRequest) {
+            $this->oneClickUnsubscribe();
+            return;
+        }
+
         $iSurveyID     = Yii::app()->request->getQuery('surveyid');
         $sLanguageCode = Yii::app()->request->getQuery('langcode');
         $sToken        = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
@@ -65,7 +114,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($oToken)) {
             $sMessage = gT('You are not a participant of this survey.');
         } else {
-            if (substr((string) $oToken->emailstatus, 0, strlen('OptOut')) == 'OptOut') {
+            if ($oToken->optOutStatus) {
                 $sMessage = gT('You have already been removed from this survey.');
             } else {
                 $sMessage = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
@@ -75,6 +124,33 @@ class OptoutController extends LSYii_Controller
             $tokenAttributes = $oToken->getAttributes();
         }
         $this->renderHtml($sMessage, $oSurvey, $link, $tokenAttributes, [], $postLink ?? '');
+    }
+
+    /**
+     * Handle post request for one click unsubcribe
+     * See: https://datatracker.ietf.org/doc/html/rfc8058
+     *
+     * Note the following explicit requirement:
+     * The mail sender MUST NOT return an HTTPS redirect, since redirected
+     * POST actions have historically not worked reliably, and many browsers
+     * have turned redirected HTTP POSTs into GETs.
+     */
+    public function oneClickUnsubscribe()
+    {
+        // per rfc8058
+        // "A mail receiver can do a one-click unsubscription by performing an
+        // HTTPS POST to the HTTPS URI in the List-Unsubscribe header.  It sends
+        // the key/value pair in the List-Unsubscribe-Post header as the request
+        // body."
+        // and
+        // "The List-Unsubscribe-Post header MUST contain the single
+        // key/value pair "List-Unsubscribe=One-Click"."
+        $unSubAction = Yii::app()->request->getPost('List-Unsubscribe');
+        if (!$unSubAction || $unSubAction !== "One-Click") {
+            throw new CHttpException(400, gT('Invalid request.'));
+        }
+
+        $result = $this->handleOptout();
     }
 
     /**
@@ -119,8 +195,6 @@ class OptoutController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            $optedOutFromSurvey = substr((string) $token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
-
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             $participant = $blacklistHandler->getCentralParticipantFromToken($token);
 
@@ -128,7 +202,7 @@ class OptoutController extends LSYii_Controller
                 $message = gT('Please confirm that you want to be removed from the central participant list for this site.');
                 $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
                 $postLink = Yii::app()->createUrl('optout/removetoken', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true));
-            } elseif (!$optedOutFromSurvey) {
+            } elseif (!$token->optOutStatus) {
                 $message = gT('Please confirm that you want to opt out of this survey by clicking the button below.') . '<br>' . gT("After confirmation you won't receive any invitations or reminders for this survey anymore.");
                 $link = Yii::app()->createUrl('optout/removetokens', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken));
                 $postLink = Yii::app()->createUrl('optout/removetoken', array('surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken));
@@ -214,9 +288,11 @@ class OptoutController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant in this survey.');
         } else {
-            if (substr((string) $token->emailstatus, 0, strlen('OptOut')) !== 'OptOut') {
-                $token->emailstatus = 'OptOut';
-                $token->save();
+            if (!$token->optOutStatus) {
+                $token->optOut();
+                if (!$token->save(true, ['emailstatus'])) {
+                    throw new CHttpException(500, gT('An internal error occurred while the Web server was processing your request.'));
+                }
                 $message = gT('You have been successfully removed from this survey.');
             } else {
                 $message = gT('You have already been removed from this survey.');
