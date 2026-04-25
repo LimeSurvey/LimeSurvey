@@ -676,6 +676,8 @@ class LS_Twig_Extension extends AbstractExtension
             'encryptionsecretboxkey',
             /* security related */
             'forcedsuperadmin',
+            'defaultuser',
+            'defaultpass',
             'loginIpWhitelist',
             'tokenIpWhitelist',
             'ssl_disable_alert',
