@@ -725,7 +725,7 @@ class LS_Twig_Extension extends AbstractExtension
             return false;
         }
         /* if in config deny list is an array, return false */
-        if (in_array($name, App()->getConfig('twig_getConfig_extradenylist'))) {
+        if (is_array(App()->getConfig('twig_getConfig_extradenylist')) && in_array($name, App()->getConfig('twig_getConfig_extradenylist'))) {
             return false;
         }
         return App()->getConfig($name);
