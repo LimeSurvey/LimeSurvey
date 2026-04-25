@@ -668,7 +668,7 @@ class LS_Twig_Extension extends AbstractExtension
         }
         /* @var string[] $forcedDeny list of config forced to deny */
         $forcedDeny = [
-            /* encryption security inlcude deprecated */
+            /* encryption security include deprecated */
             'encryptionkeypair',
             'encryptionpublickey',
             'encryptionsecretkey',
@@ -683,6 +683,12 @@ class LS_Twig_Extension extends AbstractExtension
             'ssl_disable_alert',
             'ssl_emergency_override',
             'registrationEmailDelay',
+             /* autentication related */
+            'auth_webserver',
+            'auth_webserver_user_map',
+            'auth_webserver_autocreate_user',
+            'auth_webserver_autocreate_profile',
+            'auth_webserver_autocreate_permissions',
             /* connexion related */
             'proxy_host_name',
             'proxy_host_port',
@@ -696,6 +702,21 @@ class LS_Twig_Extension extends AbstractExtension
             'GeoNamesUsername',
             'emailsmtppassword',
             'bounceaccountpass',
+            /* email related */
+            'emailmethod',
+            'emailsmtphost',
+            'emailsmtpuser',
+            'emailsmtpssl',
+            'emailplugin',
+            'bounceaccounthost',
+            'bounceaccountuser',
+            'bounceaccounttype',
+            'bounceencryption',
+            'bounceencryption',
+            /* password related */
+            'display_user_password_in_html',
+            'display_user_password_in_email',
+            'passwordvalidationrules',
             /* directory related */
             'magic_file',
             'magic_database',
