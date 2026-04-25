@@ -658,11 +658,11 @@ class LS_Twig_Extension extends AbstractExtension
      * @param string $name
      * @return mixed
      */
-    public static function getConfig($item)
+    public static function getConfig($name)
     {
         /* if allowlist is an array, use it */
         if (is_array(App()->getConfig('twig_getConfig_allowlist'))) {
-            if (!in_array($item, App()->getConfig('twig_getConfig_allowlist'))) {
+            if (!in_array($name, App()->getConfig('twig_getConfig_allowlist'))) {
                 return false;
             }
         }
@@ -719,14 +719,14 @@ class LS_Twig_Extension extends AbstractExtension
             'lsadminmodulesrootdir',
         ];
         /* if in core deny list is an array, return false */
-        if (!in_array($item, $forcedDeny)) {
+        if (in_array($name, $forcedDeny)) {
             return false;
         }
         /* if in config deny list is an array, return false */
-        if (!in_array($item, App()->getConfig('twig_getConfig_extradenylist'))) {
+        if (in_array($name, App()->getConfig('twig_getConfig_extradenylist'))) {
             return false;
         }
-        return Yii::app()->getConfig($item);
+        return App()->getConfig($name);
     }
 
 
