@@ -89,9 +89,9 @@
   },
   "scripts": {
     "dev": "rsbuild dev",
-    "start": "export REACT_APP_COMMIT_HASH=$(git rev-parse HEAD) && rsbuild dev",
+    "start": "node start.cjs",
     "start-https": "HTTPS=true rsbuild preview",
-    "build": "export REACT_APP_COMMIT_HASH=$(git rev-parse HEAD) && rsbuild build",
+    "build": "node build.cjs",
     "build-https": "HTTPS=true rsbuild build",
     "build-demo": "PUBLIC_URL=/ REACT_APP_DEV_MODE= REACT_APP_DEMO_MODE=true rsbuild build",
     "postbuild": "node scripts/postbuild.js",
