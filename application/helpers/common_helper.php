@@ -1448,14 +1448,19 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                             }
                         }
                     }
+                    $clearIfLong = true;
                     $newFieldName .= $suffix;
                     if (strpos($fieldName, "time") !== false) {
                         $newFieldName .= "_Ctime";
+                        $clearIfLong = false;
                     } elseif (strpos($fieldName, "filecount") !== false) {
                         $newFieldName .= "_Cfilecount";
+                        $clearIfLong = false;
                     }
                     if ($isComment) {
                         $newFieldName .= "_Ccomment";
+                    } elseif ($isRoot && $clearIfLong && (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}"))) {
+                        $newFieldName = "";
                     }
                     break;
                 case \Question::QT_R_RANKING:
@@ -1472,7 +1477,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                         if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
                             $qid = $cd ? $index : $subQuestions[($iRankingSuffix - 1)]->qid;
                             $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
-                        } else {
+                        } else if (count($subQuestions)) {
                             $minSortOrder = $subQuestions[0]->question_order;
                             $diff = 0;
                             if ($minSortOrder === 0) {
@@ -1499,7 +1504,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             }
         }
     }
-    return $newFieldName;
+    return $newFieldName ?? $fieldName;
 }
 
 

@@ -49,7 +49,7 @@ const displaySettings = () => {
     displayAttributes.TEXT_INPUT_WIDTH,
     displayAttributes.TEXT_INPUT_BOX_SIZE,
     displayAttributes.DISPLAY_ROWS,
-    displayAttributes.PLACEHOLDER_ANSWER
+    displayAttributes.PLACEHOLDER_ANSWER,
   ]
 }
 
