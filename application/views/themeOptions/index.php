@@ -243,8 +243,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                         <?php foreach ($aAdminThemes as $key => $oTheme) : ?>
                             <tr class="odd">
                                 <td class="col-lg-1"><?php echo $oTheme->preview; ?></td>
-                                <td class="col-lg-2"><?php echo $oTheme->metadata->name; ?></td>
-                                <td class="col-lg-3"><?php echo $oTheme->metadata->description; ?></td>
+                                <td class="col-lg-2"><?php echo CHtml::encode($oTheme->metadata->name); ?></td>
+                                <td class="col-lg-3"><?php echo CHtml::encode($oTheme->metadata->description); ?></td>
                                 <td class="col-lg-2"><?php eT('Core admin theme'); ?></td>
                                 <td class="col-lg-1">
                                     <?php if (TemplateConfig::isCompatible($oTheme->path . 'config.xml')): ?>

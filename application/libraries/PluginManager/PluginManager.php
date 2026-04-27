@@ -137,6 +137,9 @@ class PluginManager extends \CApplicationComponent
         }
 
         $newName = (string) $extensionConfig->xml->metadata->name;
+        if (!$this->validatePluginName($newName)) {
+            return [false, gT('Invalid plugin name in config.xml.')];
+        }
         if (!$this->isWhitelisted($newName)) {
             return [false, gT('The plugin is not in the plugin allowlist.')];
         }
@@ -424,8 +427,24 @@ class PluginManager extends \CApplicationComponent
         if (empty($alias)) {
             return null;
         }
-        $folder = Yii::getPathOfAlias($alias) . '/' . $config->getName();
+        $pluginName = $config->getName();
+        if (!$this->validatePluginName($pluginName)) {
+            throw new \InvalidArgumentException(gT('Invalid plugin name in config.xml.'));
+        }
+        $folder = Yii::getPathOfAlias($alias) . '/' . $pluginName;
         return $folder;
+    }
+
+    /**
+     * Validate that a plugin name can safely serve as folder, file and class name.
+     * Plugin names are used as a flat class identifier throughout the plugin manager.
+     *
+     * @param string $pluginName
+     * @return bool
+     */
+    public function validatePluginName($pluginName)
+    {
+        return preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', (string) $pluginName) === 1;
     }
 
     /**

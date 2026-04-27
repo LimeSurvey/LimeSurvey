@@ -195,7 +195,7 @@ class Quota extends LSActiveRecord
         foreach ($this->quotaMembers as $quotaMember) {
             $members[] = $quotaMember->memberInfo;
         }
-        $attributes = $this->attributes;
+        $attributes = $this->attributes ?? [];
 
         $defaultLanguageAttributes = [
             'quotals_message'     => gT("Sorry your responses have exceeded a quota on this survey."),

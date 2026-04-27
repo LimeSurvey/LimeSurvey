@@ -12,6 +12,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+use LimeSurvey\Models\Services\SurveyUseCaptcha;
 use LimeSurvey\PluginManager\PluginEvent;
 
 /**
@@ -106,6 +107,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property boolean $hasTokensTable Whether survey has a tokens table or not
  * @property boolean $hasResponsesTable Wheteher the survey responses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
+ * @property boolean $hasNewEditor Whether the new React editor should be used for this survey
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
  * @property integer $countInputQuestions Count of questions that need input (skipping text-display etc.)
@@ -206,7 +208,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->htmlemail = 'Y';
         $this->format = 'G';
         $this->tokenencryptionoptions = '';
-
+        $this->showregisterpolicy = 'I';
+        $this->showtokenpolicy = 'I';
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = App()->getConfig('googleanalyticsapikey');
         if ($globalKey != "") {
@@ -532,6 +535,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('shownoanswer', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('showwelcome', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('showsurveypolicynotice', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => true),
+            array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
+            array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('showprogress', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('questionindex', 'numerical', 'min' => -1, 'max' => 2, 'allowEmpty' => false),
             array('nokeyboard', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -910,6 +915,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
 
         return $sTemplateName;
+    }
+
+    /**
+     * Returns whether the new React editor should be used for this survey.
+     * Checks global editorEnabled config and that the survey uses a compatible theme.
+     */
+    public function getHasNewEditor(): bool
+    {
+        return App()->getConfig('editorEnabled')
+            && $this->getTemplateEffectiveName() === 'fruity_twentythree';
     }
 
     /**
@@ -1971,7 +1986,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey = null)
+    public static function saveTranscribeCaptchaOptions(?Survey $oSurvey = null)
     {
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
@@ -2249,15 +2264,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * Get the final label for survey ID
      * @param string $dataSecurityNoticeLabel current label
-     * @param integer $surveyId unused
+     * @param integer $surveyId
+     * @deprecated 6.16.1 replaced by private function in LSETwigViewRenderer
      * @return string
      */
     public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId)
     {
-        /* @var string[] to go to automatic translation */
-        $translation = [
-            gT("Show policy")
-        ];
         return App()->twigRenderer->renderPartial(
             '/subviews/privacy/privacy_datasecurity_notice_label.twig',
             [
@@ -2311,6 +2323,38 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $this->oOptionLabels = $instance->oOptionLabels;
             $this->aOptions = (array) $instance->oOptions;
             $this->showInherited = $instance->showInherited;
+        }
+    }
+
+    /**
+     * Determine whether a runtime screen should show or validate a CAPTCHA for this survey.
+     *
+     * If the GD extension is unavailable, CAPTCHA is treated as disabled.
+     *
+     * @param string $screen Runtime screen identifier (one of 'registrationscreen', 'surveyaccessscreen', 'saveandloadscreen')
+     * @return bool True when CAPTCHA is enabled for the requested screen.
+     */
+    public function isCaptchaEnabled($screen)
+    {
+        if (!extension_loaded('gd')) {
+            return false;
+        }
+
+        if ($this->oOptions === null || !property_exists($this->oOptions, 'usecaptcha')) {
+            $this->setOptions($this->gsid);
+        }
+
+        $useCaptcha = (string) $this->oOptions->usecaptcha;
+
+        switch ($screen) {
+            case 'registrationscreen':
+                return in_array($useCaptcha, SurveyUseCaptcha::REGISTRATION_YES, true);
+            case 'surveyaccessscreen':
+                return in_array($useCaptcha, SurveyUseCaptcha::SURVEY_ACCESS_YES, true);
+            case 'saveandloadscreen':
+                return in_array($useCaptcha, SurveyUseCaptcha::SAVE_LOAD_YES, true);
+            default:
+                return true;
         }
     }
 

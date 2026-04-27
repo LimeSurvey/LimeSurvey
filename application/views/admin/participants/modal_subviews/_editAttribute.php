@@ -108,15 +108,15 @@ $form = $this->beginWidget(
         </div>
         <div id='languagesList' class="row">
             <?php if ($editType !== 'edit') : $languageKey = Yii::app()->getLanguage(); ?>
-                <div class="ex-form-group mb-3" data-lang="<?= $languageKey ?>">
-                    <label class="col-12 form-label" for="ParticipantAttributeNameLanguages_<?= $languageKey ?>">
+                <div class="col-12 ex-form-group mb-3" data-lang="<?= $languageKey ?>">
+                    <label class="form-label" for="ParticipantAttributeNameLanguages_<?= $languageKey ?>">
                         <?= getLanguageNameFromCode($languageKey, false) ?>
                     </label>
                     <div class="d-flex flex-row align-items-center flex-wrap">
-                        <div class="col-10">
+                        <div class="col-11">
                             <input required class="form-control" type="text" value=""
-                                name="ParticipantAttributeNameLanguages[<?= $languageKey ?>]"
-                                id="ParticipantAttributeNameLanguages_<?= $languageKey ?>">
+                                   name="ParticipantAttributeNameLanguages[<?= $languageKey ?>]"
+                                   id="ParticipantAttributeNameLanguages_<?= $languageKey ?>">
                         </div>
                         <div class="col-1">
                             <button type="button" class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
@@ -134,9 +134,9 @@ $form = $this->beginWidget(
                     <div class="d-flex flex-row align-items-center flex-wrap">
                         <div class="col-11">
                             <input class="form-control" type="text"
-                                name="ParticipantAttributeNameLanguages[<?= $languageKey ?>]"
-                                id="ParticipantAttributeNameLanguages_<?= $languageKey ?>"
-                                value="<?= CHtml::encode($languageOfAttribute) ?>">
+                                   name="ParticipantAttributeNameLanguages[<?= $languageKey ?>]"
+                                   id="ParticipantAttributeNameLanguages_<?= $languageKey ?>"
+                                   value="<?= CHtml::encode($languageOfAttribute) ?>">
                         </div>
                         <div class="col-1">
                             <button type="button" class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
@@ -149,9 +149,14 @@ $form = $this->beginWidget(
             <div class="d-none">
                 <div class="ex-form-group mb-3" id="dummyLanguageInputGroup">
                     <label class=" form-label selector_languageAddLabel" for="dummyNameForInputLabel"></label>
-                    <div>
-                        <div class="">
+                    <div class="d-flex flex-row align-items-center flex-wrap">
+                        <div class="col-11">
                             <input class="form-control selector_languageAddInput" name="dummyParticipantAttributeNameLanguages" type="text" value="">
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-outline-secondary ex-form-group ms-2 action_delNewLanguageField">
+                                <i class="ri-delete-bin-fill text-danger"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -171,7 +176,6 @@ $form = $this->beginWidget(
 </div>
 <script>
     jQuery('#ParticipantAttributeName_attribute_type').on('change', function () {
-        console.log($(this).val() == 'DD');
         if ($(this).val() == 'DD') {
             $('#ParticipantAttributeNamesDropdownEdit').slideDown();
         } else {
@@ -215,8 +219,15 @@ $form = $this->beginWidget(
         e.preventDefault();
         var self = this,
             attribute_id = $('#ParticipantAttributeName_attribute_id').val(),
-            formGroup = $(this).closest('div.ex-form-group.'),
+            formGroup = $(this).closest('div.ex-form-group'),
             lang = formGroup.data('lang');
+
+        // Adding new attribute no id yet, can't delete
+        if (!attribute_id) {
+            window.LS.ajaxAlerts('<?php eT("There has to be at least one language."); ?>', 'danger');
+            return false;
+        }
+
         $.ajax({
             url: deleteLanguageFromAttributeUrl,
             data: {attribute_id: attribute_id, lang: lang},
@@ -228,11 +239,19 @@ $form = $this->beginWidget(
                         formGroup.remove()
                     });
                 } else {
-                    window.LS.ajaxAlerts(result.errorMessage, 'danger');
+                    window.LS.ajaxAlerts(result.error.message, 'danger');
                 }
             }
         })
 
+        return false;
+    });
+    jQuery(document).on('click', '.action_delNewLanguageField', function (e) {
+        e.preventDefault();
+        var formGroup = $(this).closest('div.ex-form-group');
+        formGroup.fadeOut(400, function () {
+            formGroup.remove();
+        });
         return false;
     });
     jQuery(function () {
