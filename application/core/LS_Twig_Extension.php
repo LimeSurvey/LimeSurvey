@@ -660,7 +660,7 @@ class LS_Twig_Extension extends AbstractExtension
      */
     public static function getConfig($name)
     {
-        /* if allowlist is an array, use it */
+        /* if allowlist is an array, use it but only for deny; not for allowing */
         $allowlist = App()->getConfig('twig_getConfig_allowlist');
         if (is_array($allowlist) && !in_array($name, $allowlist, true)) {
             return false;
@@ -701,13 +701,13 @@ class LS_Twig_Extension extends AbstractExtension
             'ssl_disable_alert',
             'ssl_emergency_override',
             'registrationEmailDelay',
-             /* autentication related */
+             /* authentication related */
             'auth_webserver',
             'auth_webserver_user_map',
             'auth_webserver_autocreate_user',
             'auth_webserver_autocreate_profile',
             'auth_webserver_autocreate_permissions',
-            /* connexion related */
+            /* connection related */
             'proxy_host_name',
             'proxy_host_port',
             'reverseProxyIpHeader',
