@@ -286,6 +286,7 @@ abstract class AbstractQuestionProcessor
             }
 
             if ($addNoAnswer) {
+                $legend[] = 'NoAnswer';
                 $items[] = [
                     'key' => 'NoAnswer',
                     'title' => 'No Answer',
