@@ -712,7 +712,6 @@ class LS_Twig_Extension extends AbstractExtension
             'bounceaccountuser',
             'bounceaccounttype',
             'bounceencryption',
-            'bounceencryption',
             /* password related */
             'display_user_password_in_html',
             'display_user_password_in_email',
