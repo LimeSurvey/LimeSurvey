@@ -60,7 +60,7 @@ $form = $this->beginWidget(
         <div id="ParticipantAttributeNamesDropdownEdit" class="row ex-form-group mb-3" style="display: none;">
             <div class="row">
                 <div class="col-2">
-                    <button class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i
+                    <button type="button" class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i
                             class="ri-add-circle-fill text-success"></i></button>
                 </div>
                 <h4 class="col-8 col-offset-2"><?php eT("Dropdown fields") ?></h4>
@@ -83,7 +83,7 @@ $form = $this->beginWidget(
                         <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value=''/>
                     </div>
                     <div class="col-1">
-                        <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
                             <i class="ri-delete-bin-fill text-danger"></i>
                         </button>
                     </div>
@@ -100,7 +100,7 @@ $form = $this->beginWidget(
                     <?= TbHtml::dropDownList("ParticipantAttributeName_addLanguage_language", '', $languagesForDropdown, ['encode' => false, 'class' => 'form-select']) ?>
                 </div>
                 <div class="col-1">
-                    <button class="btn btn-outline-secondary ex-form-group ms-2" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                    <button type="button" class="btn btn-outline-secondary ex-form-group ms-2" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
                         <i class="ri-add-circle-fill text-success"></i>
                     </button>
                 </div>
@@ -154,7 +154,7 @@ $form = $this->beginWidget(
                             <input class="form-control selector_languageAddInput" name="dummyParticipantAttributeNameLanguages" type="text" value="">
                         </div>
                         <div class="col-1">
-                            <button class="btn btn-outline-secondary ex-form-group ms-2 action_delNewLanguageField">
+                            <button type="button" class="btn btn-outline-secondary ex-form-group ms-2 action_delNewLanguageField">
                                 <i class="ri-delete-bin-fill text-danger"></i>
                             </button>
                         </div>
@@ -165,7 +165,7 @@ $form = $this->beginWidget(
                         <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value=''/>
                     </div>
                     <div class="col-1">
-                        <button class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
                             <i class="ri-delete-bin-fill text-danger"></i>
                         </button>
                     </div>
