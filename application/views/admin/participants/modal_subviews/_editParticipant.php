@@ -13,17 +13,17 @@ Yii::app()->getController()->renderPartial(
     ['modalTitle' => $modalTitle, 'modalTitleId' => 'participant_edit_modal']
 );
 ?>
+<?php
+$form = $this->beginWidget(
+    'yiistrap_fork.widgets.TbActiveForm',
+    [
+        'id'          => 'editPartcipantActiveForm',
+        'action'      => ['admin/participants/sa/editParticipant'],
+        'htmlOptions' => ['class' => 'form'], // for inset effect
+    ]
+);
+?>
 <div class="modal-body edit-participant-modal-body ">
-    <?php
-    $form = $this->beginWidget(
-        'yiistrap_fork.widgets.TbActiveForm',
-        [
-            'id'          => 'editPartcipantActiveForm',
-            'action'      => ['admin/participants/sa/editParticipant'],
-            'htmlOptions' => ['class' => 'form'], // for inset effect
-        ]
-    );
-    ?>
     <input type="hidden" name="oper" value="<?php echo $editType; ?>"/>
     <?= $form->hiddenField($model, 'participant_id') ?>
     <fieldset>
@@ -127,9 +127,6 @@ Yii::app()->getController()->renderPartial(
             <?php endforeach; ?>
         </fieldset>
     <?php endif; ?>
-    <?php
-    $this->endWidget();
-    ?>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
@@ -137,3 +134,6 @@ Yii::app()->getController()->renderPartial(
         <?php echo $buttonTitle; ?>
     </button>
 </div>
+<?php
+$this->endWidget();
+?>

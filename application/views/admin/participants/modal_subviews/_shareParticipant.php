@@ -4,18 +4,17 @@ Yii::app()->getController()->renderPartial(
 ['modalTitle' => gT('Share participant(s)'), 'modalTitleId' => 'participant_edit_modal']
 );
 ?>
-
-<div class="modal-body ">
 <?php
-    $form = $this->beginWidget(
-        'yiistrap_fork.widgets.TbActiveForm',
-        array(
-            'id' => 'shareParticipantActiveForm',
-            'action' => array('admin/participants/sa/shareParticipants'),
-            'htmlOptions' => array('class' => 'form '), // for inset effect
-        )
-    );
+$form = $this->beginWidget(
+    'yiistrap_fork.widgets.TbActiveForm',
+    array(
+        'id' => 'shareParticipantActiveForm',
+        'action' => array('admin/participants/sa/shareParticipants'),
+        'htmlOptions' => array('class' => 'form '), // for inset effect
+    )
+);
 ?>
+<div class="modal-body ">
     <?php if (isset($participantIds)): ?>
         <?php foreach ($participantIds as $id): ?>
             <input type="hidden" name="participant_id[]" value="<?php echo $id; ?>" />
