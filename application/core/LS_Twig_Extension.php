@@ -661,13 +661,31 @@ class LS_Twig_Extension extends AbstractExtension
     public static function getConfig($name)
     {
         /* if allowlist is an array, use it */
-        if (is_array(App()->getConfig('twig_getConfig_allowlist'))) {
-            if (!in_array($name, App()->getConfig('twig_getConfig_allowlist'))) {
-                return false;
-            }
+        $allowlist = App()->getConfig('twig_getConfig_allowlist');
+        if (is_array($allowlist) && !in_array($name, $allowlist, true)) {
+            return false;
         }
         /* @var string[] $forcedDeny list of config forced to deny */
-        $forcedDeny = [
+        $forcedDeny = self::getForcedDenyConfig();
+        /* if in core deny list, return false */
+        if (in_array($name, $forcedDeny, true)) {
+            return false;
+        }
+        /* if in config deny list, return false */
+        $extraDeny = App()->getConfig('twig_getConfig_extradenylist');
+        if (is_array($extraDeny) && in_array($name, $extraDeny, true)) {
+            return false;
+        }
+        return App()->getConfig($name);
+    }
+
+    /**
+     * List of fixed deny getConfig
+     * @return string[]
+     */
+    private static function getForcedDenyConfig()
+    {
+        return [
             /* encryption security include deprecated */
             'encryptionkeypair',
             'encryptionpublickey',
@@ -740,17 +758,7 @@ class LS_Twig_Extension extends AbstractExtension
             'userfontsrootdir',
             'lsadminmodulesrootdir',
         ];
-        /* if in core deny list is an array, return false */
-        if (in_array($name, $forcedDeny)) {
-            return false;
-        }
-        /* if in config deny list is an array, return false */
-        if (is_array(App()->getConfig('twig_getConfig_extradenylist')) && in_array($name, App()->getConfig('twig_getConfig_extradenylist'))) {
-            return false;
-        }
-        return App()->getConfig($name);
     }
-
 
     /**
      * Retrieve all the previous answers from a given token
