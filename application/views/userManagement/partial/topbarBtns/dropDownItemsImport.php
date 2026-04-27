@@ -4,6 +4,7 @@
 <ul class="dropdown-menu" aria-labelledby="example2">
     <li>
         <a
+        role="button"
             data-href="<?= $this->createUrl("userManagement/renderUserImport", ["importFormat" => "csv"]) ?>"
             class="dropdown-item UserManagement--action--openmodal"
             data-bs-toggle="modal"
@@ -11,7 +12,7 @@
         </a>
     </li>
     <li>
-        <a
+        <a       role="button"
             data-href="<?= App()->createUrl("userManagement/renderUserImport", ["importFormat" => "json"]) ?>"
             data-bs-toggle="modal"
             class="dropdown-item UserManagement--action--openmodal"
