@@ -2,12 +2,10 @@ import React, { useMemo, useCallback } from 'react'
 
 import {
   dayJsHelper,
-  htmlPopup,
   getFeedbackConfigs,
   FEEDBACK_TYPES,
 } from 'helpers'
 import { useAuth, useCookieFeedbackStore } from 'hooks'
-import { FeedbackSurveyModal } from 'components'
 
 export const useFeedbackForm = () => {
   const { userId } = useAuth()
@@ -70,31 +68,13 @@ export const useFeedbackForm = () => {
   const showFeedbackForm = useCallback(
     (feedbackType = FEEDBACK_TYPES.GENERAL) => {
       const config = feedbackConfigs[feedbackType]
-      const modalCompatibleDomains = ['.limequery.', '.limesurvey.']
-
-      const isModalCompatible = modalCompatibleDomains.some((domain) =>
-        window.location.hostname.includes(domain)
-      )
-
-      if (isModalCompatible) {
-        showFeedbackModal(config.surveyId)
-      } else {
         window.open(
           `https://survey.limesurvey.org/${config.surveyId}?${urlParams.toString()}`,
           '_blank'
         )
-      }
     },
     [urlParams]
   )
-
-  const showFeedbackModal = (surveyId) => {
-    htmlPopup({
-      html: <FeedbackSurveyModal surveyId={surveyId} urlParams={urlParams} />,
-      showCloseButton: true,
-      closeButtonClass: 'feedback-close-button',
-    })
-  }
 
   return {
     trackInitialLoad,
