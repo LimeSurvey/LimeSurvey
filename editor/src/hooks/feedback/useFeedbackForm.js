@@ -1,10 +1,6 @@
-import React, { useMemo, useCallback } from 'react'
+import { useMemo, useCallback } from 'react'
 
-import {
-  dayJsHelper,
-  getFeedbackConfigs,
-  FEEDBACK_TYPES,
-} from 'helpers'
+import { dayJsHelper, getFeedbackConfigs, FEEDBACK_TYPES } from 'helpers'
 import { useAuth, useCookieFeedbackStore } from 'hooks'
 
 export const useFeedbackForm = () => {
@@ -68,10 +64,10 @@ export const useFeedbackForm = () => {
   const showFeedbackForm = useCallback(
     (feedbackType = FEEDBACK_TYPES.GENERAL) => {
       const config = feedbackConfigs[feedbackType]
-        window.open(
-          `https://survey.limesurvey.org/${config.surveyId}?${urlParams.toString()}`,
-          '_blank'
-        )
+      window.open(
+        `https://survey.limesurvey.org/${config.surveyId}?${urlParams.toString()}`,
+        '_blank'
+      )
     },
     [urlParams]
   )
