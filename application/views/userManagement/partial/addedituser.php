@@ -124,10 +124,10 @@ Yii::app()->getController()->renderPartial(
         </div>
         <?php if ($oUser->isNewRecord) { ?>
             <div class="mb-3">
-                <label class="form-label">
+                <label class="form-label" for="random_example_password">
                     <?= gT('Random password (suggestion):') ?>
                 </label>
-                <input type="text" class="form-control" readonly name="random_example_password"
+                <input type="text" class="form-control" readonly name="random_example_password" id="random_example_password"
                        value="<?= htmlspecialchars((string) $randomPassword) ?>"/>
             </div>
         <?php } ?>
