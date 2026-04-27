@@ -289,7 +289,7 @@ abstract class AbstractQuestionProcessor
                 $legend[] = 'NoAnswer';
                 $items[] = [
                     'key' => 'NoAnswer',
-                    'title' => 'No Answer',
+                    'title' => 'No answer',
                     'value' => (int)($row[$aliasMap[$field]['blank']] ?? 0),
                 ];
             }
