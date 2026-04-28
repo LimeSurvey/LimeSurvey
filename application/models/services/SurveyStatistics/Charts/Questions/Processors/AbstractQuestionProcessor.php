@@ -117,38 +117,43 @@ abstract class AbstractQuestionProcessor
     }
 
     /**
-     * Gets the number of responses where the field is answered.
+     * Returns the count of non-empty responses for a column.
      *
-     * @param string $fieldName Field name (column in survey table)
-     * @param string|null $value Specific value to filter on (optional)
-     * @return int Response count
+     * @param string $fieldName Column name in the response table
+     * @return int
      */
-    protected function getResponseCount(string $fieldName, $value = null): int
+    protected function countFieldResponses(string $fieldName): int
     {
-        $model = SurveyDynamic::model($this->surveyId);
-        $db = $model->getDbConnection();
+        $db = $this->getDb();
+        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
         $col = $db->quoteColumnName($fieldName);
 
-        $criteria = new LSDbCriteria();
-
-        $criteria->addCondition("$col IS NOT NULL");
-        $criteria->addCondition("$col != ''");
-
-        if ($value !== null) {
-            $criteria->compare($col, $value);
-        }
-
-        $this->applyFilters($criteria);
-
-        return (int)$model->count($criteria);
+        $sql = "SELECT SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END) AS cnt FROM $table" . $where;
+        return (int)$db->createCommand($sql)->queryScalar($params);
     }
 
     /**
-     * Gets column aggregate response
-     * @param mixed $fields
-     * @param mixed $params
-     * @return array|bool
+     * Returns the count of null/empty responses for a column.
+     *
+     * @param string $fieldName Column name in the response table
+     * @return int
      */
+    protected function countFieldNullResponses(string $fieldName): int
+    {
+        $db = $this->getDb();
+        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
+        $col = $db->quoteColumnName($fieldName);
+
+        $sql = "SELECT SUM(CASE WHEN $col IS NULL OR $col = '' THEN 1 ELSE 0 END) AS cnt FROM $table" . $where;
+        return (int)$db->createCommand($sql)->queryScalar($params);
+    }
+
+    /**
+    * Gets column aggregate response
+    * @param mixed $fields
+    * @param mixed $params
+    * @return array|bool
+    */
     public function getAggregateResponses($fields, $params)
     {
         $model = SurveyDynamic::model($this->surveyId);
@@ -160,24 +165,170 @@ abstract class AbstractQuestionProcessor
         return $command->query($params)->read();
     }
 
-
-    protected function getResponseNotAnsweredCount(string $fieldName): int
-    {
-        $model = SurveyDynamic::model($this->surveyId);
-        $db = $model->getDbConnection();
-        $col = $db->quoteColumnName($fieldName);
-
-        $criteria = new LSDbCriteria();
-        $criteria->addCondition("($col IS NULL OR $col = '')");
-        $this->applyFilters($criteria);
-
-        return (int)$model->count($criteria);
-    }
     /**
-     * Apply common filters to criteria
+     * Returns non-empty response counts for multiple columns.
+     *
+     * @param  string[] $fieldNames Column names in the response table
+     * @return array<string, int> fieldName => count
      */
-    protected function applyFilters(LSDbCriteria &$criteria): void
+    protected function batchGetResponseCounts(array $fieldNames): array
     {
+        if (empty($fieldNames)) {
+            return [];
+        }
+
+        $db = $this->getDb();
+        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
+        $selects = [];
+
+        foreach ($fieldNames as $i => $field) {
+            $col = $db->quoteColumnName($field);
+            $alias = $db->quoteColumnName('_ctn' . $i);
+            $selects[] = "SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END) AS $alias";
+        }
+
+        $sql = 'SELECT ' . implode(', ', $selects) . " FROM $table" . $where;
+        $row = $db->createCommand($sql)->queryRow(true, $params) ?: [];
+
+        $result = [];
+        foreach ($fieldNames as $i => $field) {
+            $result[$field] = (int)($row['_ctn' . $i] ?? 0);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Build chart items (legend + values) from a list of answer codes.
+     *
+     * @param string $fieldname Column name in the response table
+     * @param string[] $codes  Answer codes
+     * @param string[] $labels Display labels aligned with $codes
+     * @return array [legend[], items[]]
+     */
+    protected function buildItemsFromCodes(string $fieldname, array $codes, array $labels = []): array
+    {
+        if (empty($codes)) {
+            return [[], []];
+        }
+
+        $result = $this->runAggregateSelect([$fieldname], $codes, $labels);
+
+        return $result[$fieldname] ?? [[], []];
+    }
+
+    /**
+     * Process multiple subquestion fields × answer codes in a query.
+     *
+     * @param string[] $fieldNames Column names (one per subquestion)
+     * @param string[] $codes Answer codes to count
+     * @param string[] $labels Display labels aligned with $codes
+     * @return array<string, array{0: string[], 1: array[]}> fieldName => [legend[], items[]]
+     */
+    protected function buildBatchItemsForSubquestions(array $fieldNames, array $codes, array $labels = []): array
+    {
+        if (empty($fieldNames) || empty($codes)) {
+            return [];
+        }
+
+        return $this->runAggregateSelect($fieldNames, $codes, $labels);
+    }
+
+    /**
+     * Get aggregate response counts for fields to specific values
+     *
+     * @param string[] $fieldNames
+     * @param string[] $codes
+     * @param string[] $labels
+     * @return array<string, array{0: string[], 1: array[]}>
+     */
+    private function runAggregateSelect(array $fieldNames, array $codes, array $labels): array
+    {
+        $addNoAnswer = in_array($this->question['type'], $this->noAnswerTypes);
+        $db = $this->getDb();
+        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
+
+        $selects = [];
+        $aliasMap = [];
+
+        foreach ($fieldNames as $fi => $field) {
+            $col = $db->quoteColumnName($field);
+            $fieldKey = '_f' . $fi;
+
+            foreach ($codes as $ci => $code) {
+                $paramKey = ':' . $fieldKey . '_c' . $ci;
+                $rawAlias = '_alias' . $fieldKey . '_c' . $ci;
+                $selects[] = "SUM(CASE WHEN $col = $paramKey THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($rawAlias);
+                $params[$paramKey] = (string)$code;
+                $aliasMap[$field]['codes'][$ci] = $rawAlias;
+            }
+
+            if ($addNoAnswer) {
+                $blankRaw = '_blank' . $fieldKey;
+                $selects[] = "SUM(CASE WHEN $col IS NULL OR $col = '' THEN 1 ELSE 0 END) AS " . $db->quoteColumnName($blankRaw);
+                $aliasMap[$field]['blank'] = $blankRaw;
+            }
+        }
+
+        $sql = 'SELECT ' . implode(', ', $selects) . " FROM $table" . $where;
+        $row = $db->createCommand($sql)->queryRow(true, $params) ?: [];
+
+        $output = [];
+        foreach ($fieldNames as $field) {
+            $legend = [];
+            $items = [];
+
+            foreach ($codes as $ci => $code) {
+                $label = $labels[$ci] ?? (string)$code;
+                $count = (int)($row[$aliasMap[$field]['codes'][$ci]] ?? 0);
+                $legend[] = $label;
+                $items[] = ['key' => (string)$code, 'title' => $label, 'value' => $count];
+            }
+
+            if ($addNoAnswer) {
+                $legend[] = 'NoAnswer';
+                $items[] = [
+                    'key' => 'NoAnswer',
+                    'title' => 'No answer',
+                    'value' => (int)($row[$aliasMap[$field]['blank']] ?? 0),
+                ];
+            }
+
+            $output[$field] = [$legend, $items];
+        }
+
+        return $output;
+    }
+
+    /**
+     * @param array $data
+     * @param string $key
+     * @return float|int
+     */
+    protected function calculateTotal($data, $key = 'value')
+    {
+        return array_sum(array_column($data, $key));
+    }
+
+    /**
+     * Returns the active DB connection
+     */
+    private function getDb(): \CDbConnection
+    {
+        return SurveyDynamic::model($this->surveyId)->getDbConnection();
+    }
+
+    /**
+     * Returns the response table name and (where, params) with filters applied.
+     *
+     * @return array{table: string, where: string, params: array}
+     */
+    private function buildFilteredQuery(): array
+    {
+        $db = $this->getDb();
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $criteria = new LSDbCriteria();
+
         if ($this->completed !== null) {
             $criteria->addCondition('submitdate IS' . ($this->completed ? ' NOT ' : ' ') . 'NULL');
         }
@@ -189,44 +340,11 @@ abstract class AbstractQuestionProcessor
         if ($this->maxId !== null) {
             $criteria->compare('id', '<=' . (int)$this->maxId);
         }
-    }
 
-    /**
-     * Build chart items (legend + values) from a list of answer codes.
-     *
-     * @param string $rt Question key (sidXgidXqid)
-     * @param array $codes Answer codes
-     * @param array $labels Optional display labels (aligned with $codes)
-     * @return array [legend[], items[]]
-     */
-    protected function buildItemsFromCodes($rt, array $codes, array $labels = []): array
-    {
-        $legend = [];
-        $items = [];
+        $where = $criteria->condition ? (' WHERE ' . $criteria->condition) : '';
+        $params = $criteria->params ?? [];
 
-        foreach ($codes as $i => $code) {
-            $count = $this->getResponseCount($rt, (string)$code);
-            $title = $labels[$i] ?? (string)$code;
-            $legend[] = $title;
-
-            $items[] = ['key' => (string)$code, 'title' => $title, 'value' => $count];
-        }
-
-        if (in_array($this->question['type'], $this->noAnswerTypes)) {
-            $items[] = ['key' => 'NoAnswer', 'title' => 'No Answer', 'value' => $this->getResponseNotAnsweredCount($rt)];
-        }
-
-        return [$legend, $items];
-    }
-
-    /**
-     * @param array $data
-     * @param string $key
-     * @return float|int
-     */
-    protected function calculateTotal($data, $key = 'value')
-    {
-        return array_sum(array_column($data, $key));
+        return compact('table', 'where', 'params');
     }
 
     /**
