@@ -1518,7 +1518,10 @@ class remotecontrol_handle
      * @param string $sNewQuestionTitle  (optional) new title for the question
      * @param string $sNewqQuestion (optional) new question text
      * @param string $sNewQuestionHelp (optional) new question help text
-     * @return array|integer The id of the new question in case of success. Array if errors
+     * @return array|integer The id of the new question in case of success. Array with error status on failure.
+     *         Error arrays include:
+     *         - 'status': Human-readable error message
+     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification
      */
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
@@ -1546,7 +1549,10 @@ class remotecontrol_handle
 
         $sGroupSurveyID = $oGroup['sid'];
         if ($sGroupSurveyID != $iSurveyID) {
-            return array('status' => 'Error: Missmatch in surveyid and groupid');
+            return array(
+                'status' => 'Error: Mismatch in surveyid and groupid',
+                'error_code' => 'ERR_MISMATCH_SURVEY_GROUP'
+            );
         }
         /* Check unicity of title, and set autorename to true if it's set */
         $importOptions = ['autorename' => false];
@@ -1704,7 +1710,7 @@ class remotecontrol_handle
                 array_push($aBasicDestinationFields, 'script');
                 /* Push questionl10ns data but complete */
                 array_push($aBasicDestinationFields, 'questionl10ns');
-                /* Other fileds */
+                /* Other fields */
                 array_push($aBasicDestinationFields, 'available_answers');
                 array_push($aBasicDestinationFields, 'subquestions');
                 array_push($aBasicDestinationFields, 'attributes');
@@ -1859,7 +1865,7 @@ class remotecontrol_handle
      * * parent_qid
      * * language
      * * type
-     * * question_order in some condition (with dependecies)
+     * * question_order in some condition (with dependencies)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -2019,7 +2025,7 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey
      * @param array $aParticipantData Data of the participants to be added
-     * @param bool $bCreateToken Optional - Defaults to true and determins if the access token automatically created
+     * @param bool $bCreateToken Optional - Defaults to true and determines if the access token automatically created
      * @return array The values added
      */
     public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken = true)
@@ -2169,7 +2175,7 @@ class remotecontrol_handle
     /**
      * Set properties of a survey participant (RPC function)
      *
-     * Allow to set properties about a specific participant, only one particpant can be updated.
+     * Allow to set properties about a specific participant, only one participant can be updated.
      * @see \Token for available properties
      *
      * @access public
@@ -2308,7 +2314,7 @@ class remotecontrol_handle
      * @param int $iStart Start id of the token list
      * @param int  $iLimit Number of participants to return
      * @param bool $bUnused If you want unused tokens, set true
-     * @param bool|array $aAttributes The extented attributes that we want
+     * @param bool|array $aAttributes The extended attributes that we want
      * @param array $aConditions Optional conditions to limit the list, either as a
      *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
@@ -2396,7 +2402,10 @@ class remotecontrol_handle
      * @param int $iSurveyID ID of the Survey to list questions
      * @param int $iGroupID Optional id of the group to list questions
      * @param string $sLanguage Optional parameter language for multilingual questions
-     * @return array The list of questions
+     * @return array The list of questions on success. Array with error status on failure.
+     *         Error arrays include:
+     *         - 'status': Human-readable error message
+     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification
      */
     public function list_questions($sSessionKey, $iSurveyID, $iGroupID = null, $sLanguage = null)
     {
@@ -2427,7 +2436,10 @@ class remotecontrol_handle
                     }
 
                     if ($oGroup->sid != $oSurvey->sid) {
-                        return ['status' => 'Error: Mismatch in surveyid and groupid'];
+                        return [
+                            'status' => 'Error: Mismatch in surveyid and groupid',
+                            'error_code' => 'ERR_MISMATCH_SURVEY_GROUP'
+                        ];
                     } else {
                         $aQuestionList = $oGroup->allQuestions;
                     }
@@ -2711,7 +2723,7 @@ class remotecontrol_handle
     /**
      * Set quota attributes (RPC function)
      *
-     * Retuns an array containing the boolean 'success' and 'message' with either errors or Quota attributes (on success)
+     * Returns an array containing the boolean 'success' and 'message' with either errors or Quota attributes (on success)
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iQuotaId Quota ID
@@ -3353,7 +3365,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
      * @param array $aResponseData The actual response
-     * @return array|boolean TRUE(bool) on success. Array with error status on failure.
+     * @return array|boolean TRUE(bool) on success. Array with error status on failure. Error arrays include:
+     *         - 'status': Human-readable error message
+     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MULTIPLE_MATCHES') for reliable error identification
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
@@ -3398,7 +3412,10 @@ class remotecontrol_handle
                 return array('status' => 'No matching Response');
             }
             if (count($aResponses) > 1) {
-                return array('status' => 'More then one matching response, updateing multiple responses at once is not supported');
+                return array(
+                    'status' => 'More than one matching response, updating multiple responses at once is not supported',
+                    'error_code' => 'ERR_MULTIPLE_MATCHES'
+                );
             }
 
             $aBasicDestinationFields = $oSurveyDynamic->tableSchema->columnNames;
@@ -3454,7 +3471,7 @@ class remotecontrol_handle
                     if ($Response->delete()) {
                         return array($iResponseID => 'deleted');
                     }
-                    return array('status' => 'Response not deleted for unknow reason');
+                    return array('status' => 'Response not deleted for unknown reason');
                 } else {
                     return array('status' => 'Response Id not found');
                 }
