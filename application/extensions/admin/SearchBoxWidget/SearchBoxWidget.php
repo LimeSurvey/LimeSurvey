@@ -65,7 +65,7 @@ class SearchBoxWidget extends CWidget
     }
 
     /**
-     * Registers the necessary JavaScript and CSS files for the widget.
+     * Registers the necessary JavaScript and CSS files for the widget if needed.
      */
     public function registerClientScript()
     {
