@@ -75,6 +75,21 @@ foreach ($rest as $path => $config) {
         [$version, $entity, $id] = $pathParts;
     } elseif ($pathPartsCount == 2) {
         [$version, $entity] = $pathParts;
+    } elseif ($pathPartsCount > 3) {
+        // handle complex paths
+        [$version, $entity] = $pathParts;
+        $subPathParts = array_slice($pathParts, 2);
+        $subPath = '';
+        $complexPathParams = [];
+
+        foreach ($subPathParts as $subPathPart) {
+            $subPath.= '/'. $subPathPart;
+            if (str_starts_with($subPathPart, '$')) {
+                $paramName = ltrim($subPathPart, '$');
+                $subPath = str_replace($subPathPart, '{_' . $paramName . '}', $subPath);
+                array_push($complexPathParams, $paramName);
+            }
+        }
     } elseif ($pathPartsCount < 2) {
         continue;
     }
@@ -122,10 +137,18 @@ foreach ($rest as $path => $config) {
         // Params
         $params = [];
 
-        // Entity id param
-        if ($id) {
-            $params[] = Parameter::path()->name('_id');
-        }
+             if($pathPartsCount > 3) {
+                if(isset($complexPathParams) && $complexPathParams  && count($complexPathParams) > 0) {
+                    foreach ($complexPathParams as $paramName) {
+                        $params[] = Parameter::path()->name('_' . $paramName);
+                    }
+                }
+            } else {
+           // Entity id param
+            if ($id) {
+                $params[] = Parameter::path()->name('_id');
+            }
+        } 
 
         // Query params
         $paramsConfig = !empty($methodConfig['params']) ? $methodConfig['params'] : [];
@@ -261,16 +284,22 @@ foreach ($rest as $path => $config) {
     /////////////////////////////////////////////////////////////////////////
     // Path
     $oaPathString = '/rest/' . implode('/', [$version, $entity]);
-    if (!empty($id)) {
-        $oaPathString = $oaPathString . '/{_id}';
+    if($pathPartsCount > 3) {
+        $oaPathString = $oaPathString . $subPath;
+        
+    } else {
+        if (!empty($id)) {
+            $oaPathString = $oaPathString . '/{_id}';
+        }
+
     }
+    
     $oaPath = PathItem::create()
         ->route($oaPathString);
 
     if (!empty($operations)) {
         $oaPath = $oaPath->operations(...$operations);
     }
-
     $paths[] = $oaPath;
 }
 
@@ -278,7 +307,7 @@ $openApi = $openApi->paths(...$paths);
 
 file_put_contents(
     $outputFile,
-    $openApi->toJson()
+    $openApi->toJson(JSON_PRETTY_PRINT)
 );
 
 function createMultipartFormDataMediaType($schema = null)

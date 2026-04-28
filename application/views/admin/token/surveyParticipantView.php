@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             <div class="accordion-item">
                 <h2 class="accordion-header" id="panelsStayOpen-headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                        <span class="summary-title py-1"><?php eT("Survey participant summary"); ?></span>
+                        <span class="summary-title py-1"><?php eT("Summary"); ?></span>
                     </button>
                 </h2>
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total records"); ?>
+                                        <?php eT("Total"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['count']; ?>
@@ -34,27 +34,27 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                                 </div>
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total with no unique participant access code"); ?>
+                                        <?php eT("Having an invitation sent"); ?>
+                                    </div>
+                                    <div class="col">
+                                        <?php echo $queries['sent']; ?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col summary-detail">
+                                        <?php eT("Missing an access code"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['invalid']; ?>
                                     </div>
 
                                 </div>
-                                <div class="row">
-                                    <div class="col summary-detail">
-                                        <?php eT("Total invitations sent"); ?>
-                                    </div>
-                                    <div class="col">
-                                        <?php echo $queries['sent']; ?>
-                                    </div>
 
-                                </div>
                             </div>
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total opted out"); ?>
+                                        <?php eT("Opted out"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['optout']; ?>
@@ -63,7 +63,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                                 </div>
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total screened out"); ?>
+                                        <?php eT("Screened out"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['screenout']; ?>
@@ -72,7 +72,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                                 </div>
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total surveys completed"); ?>
+                                        <?php eT("Completed"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['completed']; ?>
@@ -138,7 +138,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
         </div>
 
         <?php
-        if ((!$oSurvey->hasTokensTable) && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
+        if ((!$oSurvey->hasTokens()) && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
             echo eT("No survey participants found.");
         ?>
                 <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Add participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/" . $surveyid); ?>', '_top')" />
@@ -168,7 +168,13 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                                     ?>
                                 </select><br /><br />
                                 <input type='submit' value='<?php eT("Restore"); ?>' class="btn btn-outline-secondary btn-lg"/>
+                                <?php
+                                if (!$oSurvey->hasTokensTable) {
+                                ?>
                                 <input type="button" onclick="$.post('<?php echo Yii::app()->createUrl("admin/tokens/sa/startfromscratch/surveyId/" . $oSurvey->sid); ?>', { createtable: 'Y', redirect: 'N' }).done(function (data) { window.location.reload(); });" value="<?php eT("Start from scratch"); ?>" class="btn btn-outline-secondary btn-lg">
+                                <?php
+                                }
+                                ?>
                                 <input type='hidden' name='restoretable' value='Y' />
                                 <input type='hidden' name='sid' value='<?php echo $oSurvey->sid; ?>' />
                             <?php echo CHtml::endForm() ?>

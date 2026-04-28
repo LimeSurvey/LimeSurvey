@@ -197,11 +197,13 @@ class SurveyAccessModeService
             );
         }
         $survey->access_mode = $accessMode;
+        $isPublicRegistrationAllowed = $survey->getIsAllowRegister();
         if ($oldAccessMode === self::$ACCESS_TYPE_OPEN) {
             $this->newParticipantTable($survey);
-        } elseif ($accessMode === self::$ACCESS_TYPE_OPEN) {
+        } elseif ($accessMode === self::$ACCESS_TYPE_OPEN && !$isPublicRegistrationAllowed) {
             $this->dropTokenTable($survey, $action);
         }
+        $survey->lastmodified = gmdate('Y-m-d H:i:s');
         $survey->save();
         return true;
     }

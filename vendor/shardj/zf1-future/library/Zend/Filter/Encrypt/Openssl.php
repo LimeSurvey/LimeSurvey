@@ -341,7 +341,7 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
      */
     public function setPackage($package)
     {
-        $this->_package = (boolean) $package;
+        $this->_package = (bool) $package;
         return $this;
     }
 

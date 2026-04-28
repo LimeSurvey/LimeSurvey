@@ -73,25 +73,12 @@ class QuotaLanguageSetting extends LSActiveRecord
             array('quotals_url', 'LSYii_Validators', 'isUrl' => true),
             array('quotals_urldescrip', 'LSYii_Validators'),
             array('quotals_url', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
-            // Validate if quotals_url is  not empty if quota->autoload_url is set,
-            // disable the rules when copying/import survey, valid survey can have empty quotals_url with autoload_url, for example if autoload_url wa set after ir language added aftgr
-            array('quotals_url', 'urlValidator', 'except' => 'import'),
+            // URL field is optional and can be left empty even when autoload_url is enabled
+            // (e.g., for multi-language surveys where only some languages have redirect URLs)
             array('quotals_name', 'length', 'min' => 0, 'max' => 255),
             array('quotals_url', 'length', 'min' => 0, 'max' => 255),
             array('quotals_urldescrip', 'length', 'min' => 0, 'max' => 255),
         );
-    }
-
-    /**
-     * Validate if url is set and not empty if autoload_url is activated
-     * To be used in rules
-     */
-    public function urlValidator()
-    {
-        // $quota might be still empty while doing an import
-        if (!empty($this->quota) && $this->quota->autoload_url == 1 && !$this->quotals_url) {
-            $this->addError('quotals_url', gT('URL must be set if autoload URL is turned on!'));
-        }
     }
 
     public function attributeLabels()

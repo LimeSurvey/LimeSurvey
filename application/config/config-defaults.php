@@ -111,7 +111,7 @@ $config['allowedfileuploads'] = [
     'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
 ];
 // NB: Allowing XML enables XSS, since XML can be an HTML page.
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,dotx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 $config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,otf,ttf,woff,txt,md,xml,woff2,twig,php,html,po,mo,xsd,lss,lsa,lsq,lsg';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
@@ -242,20 +242,50 @@ $config['auth_webserver_autocreate_permissions'] = array(
 //          'htmleditormode' => 'inline');
 //}
 
-
-// filterxsshtml
-// Enables filtering of suspicious html tags in survey, group, questions
-// and answer texts in the administration interface
-// Only set this to false if you absolutely trust the users
-// you created for the administration of  LimeSurvey and if you want to
-// allow these users to be able to use Javascript etc. .
+/** filterxsshtml
+ * Enables filtering of suspicious html tags in survey, group, questions
+ * and answer texts in the administration interface
+ * Only set this to false if you absolutely trust the users
+ * you created for the administration of  LimeSurvey and if you want to
+ * allow these users to be able to use Javascript etc. .
+ * Can be updated via GUI after installation
+ * @var boolean
+ */
 $config['filterxsshtml'] = true;
 
-// disablescriptwithxss
-// Allow update of script in question
-// true : Default : follow XSS rules
-// false : allowed for all
+/** filterxsshtml_forcedall
+ * Force filterxsshtml to true
+ * Disable update in admin GUI
+ * Enables filtering of suspicious html tags for superadmin too
+ * @var boolean
+ */
+$config['filterxsshtml_forcedall'] = false;
+
+/** filterxsshtml_allowforcedsuperadmin
+ * Only used if filterxsshtml_forcedall is true
+ * Allow adding any script and HTML by forcedsuperadmin
+ * @var boolean
+ */
+$config['filterxsshtml_allowforcedsuperadmin'] = false;
+
+/** disablescriptwithxss
+ * Allow update of script in question
+ * true : Default : follow XSS rules
+ * false : allowed for all
+ * @var boolean
+ */
 $config['disablescriptwithxss'] = true;
+
+/** filterxsshtml_enablescript
+ * Only used if filterxsshtml_forcedall is true
+ * Enable script for specific user
+ * - gui: allow update setting via GUI
+ * - superadmin: only super admin
+ * - forcedsuperadmin: only forced superadmin
+ * - By default : no user and do not allow update via GUI
+ * @var string (''|'gui'|'superadmin'|'forcedsuperadmin')
+ */
+$config['filterxsshtml_enablescript'] = '';
 
 // usercontrolSameGroupPolicy
 // If this option is set to true, then limesurvey operators will only 'see'
@@ -312,15 +342,6 @@ $config['column_style'] = 'ul';
 * hide_groupdescr_allinone can be set to true or false (default: true)
 */
 $config['hide_groupdescr_allinone'] = true;
-
-
-/**
-* use_firebug_lite
-* Use FireBug Lite for JavaScript and theme development and testing.
-* This allows you to use all the features of Firebug in any browser.
-* see http://getfirebug.com/lite.html for more info.
-*/
-$config['use_firebug_lite'] = false;
 
 /*
 * showaggregateddata
@@ -381,31 +402,13 @@ $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 *  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile'] = array(
-    'ar' => 'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
-    'be' => 'dejavusans',
-    'bg' => 'dejavusans',
     'zh-Hans' => 'cid0cs',
     'zh-Hant-HK' => 'cid0ct',
     'zh-Hant-TW' => 'cid0ct',
-    'cs' => 'dejavusans',
-    'cs-informal' => 'dejavusans', // This one not really tested: no translation for Yes/No or Gender
-    'el' => 'dejavusans',
     'he' => 'freesans',
-    'hi' => 'dejavusans',
-    'hr' => 'dejavusans',
-    'hu' => 'dejavusans',
     'ja' => 'cid0jp',
     'ko' => 'cid0kr',
-    'lv' => 'dejavusans',
-    'lt' => 'dejavusans',
-    'mk' => 'dejavusans',
-    'mt' => 'dejavusans',
-    'fa' => 'dejavusans',
-    'pl' => 'dejavusans',
     'pa' => 'freesans',
-    'ro' => 'dejavusans',
-    'ru' => 'dejavusans',
-    'sr' => 'dejavusans',
 );
 /**
 *  $notsupportlanguages - array of language where no font was found for PDF
@@ -792,6 +795,13 @@ $config['sideMenuBehaviour'] = 'adaptive';
 // Hide update key
 $config['hide_update_key'] = false;
 
+/**
+ * Minimum stability level for update notifications.
+ * Valid values: 'alpha', 'beta', 'rc', 'stable'
+ * 'alpha' shows all updates, 'stable' shows only stable releases.
+ */
+$config['minimum_update_stability'] = 'rc';
+
 // Dev part
 // 1 : looking for errors, 2 : PHP STRICT error messages
 $config['debug'] = 0;
@@ -867,6 +877,12 @@ $config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
 // Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
 // @see https://www.php.net/unserialize
 $config['allow_unserialize_attributedescriptions'] = false;
+
+// Allow unserializing (with PHP unserialize function) attachments attributes when importing survey
+// In limesurvey 6.16.17: attachments attribute move from serialize to json_encode. If you need to keep attachment when upload, you have to allow it
+// Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
+// @see https://www.php.net/unserialize
+$config['allow_unserialize_attachments'] = false;
 
 return $config;
 //settings deleted

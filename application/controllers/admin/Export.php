@@ -106,7 +106,7 @@ class Export extends SurveyCommonAction
             $this->getController()->redirect($this->getController()->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
         }
 
-        Yii::app()->loadHelper("admin/exportresults");
+        Yii::app()->loadHelper("admin.exportresults");
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . '/exportresults.js');
 
@@ -225,12 +225,21 @@ class Export extends SurveyCommonAction
             $data['topBar']['showExportButton'] = true;
             $data['topBar']['showCloseButton'] = true;
 
+            // If editor is enabled, redirect to editor results list
+            $editorEnabled = Yii::app()->getConfig('editorEnabled');
+            if ($editorEnabled) {
+                $closeUrl = Yii::app()->createUrl('editorLink/index', ['route' => 'responses/' . $survey->sid . '/results/list']);
+            } else {
+                // Default redirect to responses browse
+                $closeUrl = Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid]);
+            }
+
             $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
                 [
                     'showExportButton' => true,
                     'showCloseButton' => true,
-                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid])
+                    'closeUrl' => $closeUrl
                 ],
                 true
             );
@@ -420,7 +429,7 @@ class Export extends SurveyCommonAction
         }
         App()->setLanguage($sLanguage);
 
-        Yii::app()->loadHelper("admin/exportresults");
+        Yii::app()->loadHelper("admin.exportresults");
         viewHelper::disableHtmlLogging();
 
         if ($subaction == 'dldata') {

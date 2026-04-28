@@ -700,6 +700,7 @@ class Permission extends LSActiveRecord
 
     /**
      * Checks if a user has a certain permission in the given survey
+     * Note: This function automatically also takes global permissions into account
      *
      * @param $iSurveyID integer The survey ID
      * @param $sPermission string Name of the permission

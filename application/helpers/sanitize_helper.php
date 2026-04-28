@@ -116,7 +116,7 @@ function nice_addslashes($string)
  *     $force_lowercase - Force the string to lowercase?
  *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
-function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true, $directory=false)
+function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true, $directory = false)
 {
     // sanitize filename
     $filename = mb_ereg_replace(
@@ -465,13 +465,32 @@ function check($input, $flags, $min = '', $max = '')
     return true;
 }
 
+/**
+ * Sanitizes a language code by removing all non-alphanumeric and non-dash characters.
+ *
+ * This function removes any characters that are not letters (a-z), numbers (0-9),
+ * or hyphens (-) from the input string. It is case-insensitive in its matching.
+ * @todo deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
+ *
+ * @param string $codetosanitize The language code string to sanitize.
+ * @return string The sanitized language code containing only letters and hyphens.
+ */
 function sanitize_languagecode($codetosanitize)
 {
-    return preg_replace('/[^a-z0-9-]/i', '', (string) $codetosanitize);
+    return preg_replace('/[^a-z-]/i', '', (string) $codetosanitize);
 }
 
+
 /**
- * @param string $codestringtosanitize
+ * Sanitizes a space-separated string of language codes.
+ *
+ * This function takes a space-separated string of language codes, splits them into an array,
+ * sanitizes each individual language code by removing all non-alphanumeric and non-dash characters,
+ * and then rejoins them back into a space-separated string.
+ * @todo deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter
+ *
+ * @param string $codestringtosanitize A space-separated string of language codes to sanitize.
+ * @return string A space-separated string of sanitized language codes containing only alphanumeric characters and hyphens.
  */
 function sanitize_languagecodeS($codestringtosanitize)
 {
@@ -553,4 +572,28 @@ function check_absolute_url($string)
 function sanitize_alphanumeric($value)
 {
     return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
+}
+
+/**
+ * Validate that a value is safe to use as a single filesystem path component.
+ *
+ * This rejects empty values, leading-dot names, path separators and ASCII
+ * control characters so callers can safely append the value to a trusted
+ * base path without worrying about directory traversal or hidden directories.
+ *
+ * @param string $string
+ * @return bool
+ */
+function validate_path_component($string)
+{
+    if (!is_string($string)) {
+        return false;
+    }
+
+    return !(
+        $string === ''
+        || strpos($string, '.') === 0
+        || preg_match('/[\\\\\/]/', $string) === 1
+        || preg_match('/[\x00-\x1F\x7F]/', $string) === 1
+    );
 }

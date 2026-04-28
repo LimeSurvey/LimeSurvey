@@ -228,7 +228,6 @@ class SurveyRuntimeHelper
                 }
                 if (isset($_SESSION[$this->LEMsessid]['token'])) {
                     $_SESSION[$this->LEMsessid]['tokenused'] = $_SESSION[$this->LEMsessid]['token'];
-                    unset($_SESSION[$this->LEMsessid]['token']);
                 }
                 $oSurveyResponse->save();
                 $survey = Survey::model()->findByPk($surveyid);
@@ -321,12 +320,12 @@ class SurveyRuntimeHelper
 
                         //Display the "mandatory" popup if necessary
                         // TMSW - get question-level error messages - don't call **_popup() directly
-                        if ($okToShowErrors && $this->aStepInfo['mandViolation'] && empty(App()->request->getPost('mandSoft'))) {
+                        if ($okToShowErrors && $this->aStepInfo['mandViolation']) {
                             list($mandatorypopup, $this->popup) = mandatory_popup($ia, $this->notanswered);
                         }
 
                         //Display the "validation" popup if necessary
-                        if ($okToShowErrors && !$this->aStepInfo['valid'] && empty(App()->request->getPost('mandSoft'))) {
+                        if ($okToShowErrors && !$this->aStepInfo['valid']) {
                             list($validationpopup, $vpopup) = validation_popup($ia, $this->notvalidated);
                         }
 
@@ -461,15 +460,8 @@ class SurveyRuntimeHelper
                 'GROUPNAME' => $aGroup['name'],
             ));
             $aGroup['gseq']        = $_gseq;
-            $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
-            $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
-
-            // Look up if there is a global Setting to hide/show the Questiongroup => In that case Globals will override Local Settings
-            if (($aSurveyinfo['showgroupinfo'] == $showgroupinfo_global_) || ($showgroupinfo_global_ == 'choose')) {
-                $showgroupinfo_ = $aSurveyinfo['showgroupinfo'];
-            } else {
-                $showgroupinfo_ = $showgroupinfo_global_;
-            }
+            // Use survey level settings
+            $showgroupinfo_ = $this->aSurveyInfo['showgroupinfo'];
 
             $showgroupdesc_ = $showgroupinfo_ == 'B' /* both */ || $showgroupinfo_ == 'D'; /* (group-) description */
 
@@ -615,17 +607,8 @@ class SurveyRuntimeHelper
      */
     public function getShowNumAndCode()
     {
-        $showqnumcode_global_ = getGlobalSetting('showqnumcode');
-        $showqnumcode_survey_ = $this->aSurveyInfo['showqnumcode'];
-
-        // Check global setting to see if survey level setting should be applied
-        if ($showqnumcode_global_ == 'choose') {
-            // Use survey level settings
-            $showqnumcode_ = $showqnumcode_survey_; //B, N, C, or X
-        } else {
-            // Use global setting
-            $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
-        }
+        // Use survey level settings
+        $showqnumcode_ = $this->aSurveyInfo['showqnumcode']; //B, N, C, or X
 
         $aShow = [];
 
@@ -719,7 +702,17 @@ class SurveyRuntimeHelper
             //Before doing the "templatereplace()" function, check the $this->aSurveyInfo['url']
             //field for limereplace stuff, and do transformations!
             $this->aSurveyInfo['surveyls_url'] = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
-            $this->aSurveyInfo['surveyls_url'] = templatereplace((string) $this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, null, array(), true); // to do INSERTANS substitutions
+            $this->aSurveyInfo['surveyls_url'] = templatereplace(
+                (string)$this->aSurveyInfo['surveyls_url'],
+                array(),
+                $redata,
+                'URLReplace',
+                false,
+                null,
+                array(),
+                true,
+                $this->oTemplate
+            ); // to do INSERTANS substitutions
         }
     }
 
@@ -1061,9 +1054,8 @@ class SurveyRuntimeHelper
                 }
             }
 
-            if ($this->aMoveResult['finished'] == true || (!empty($this->aMoveResult['mandSoft']) && App()->request->getPost('mandSoft') == 'movesubmit')) {
+            if ($this->aMoveResult['finished'] == true) {
                 $this->sMove = 'movesubmit';
-                $this->aMoveResult['finished'] = true;
             }
 
             if ($this->sMove == "movesubmit" && $this->aMoveResult['finished'] == false) {
@@ -1096,20 +1088,6 @@ class SurveyRuntimeHelper
     {
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
         $this->aSurveyInfo['move'] = $this->sMove ?? '';
-
-        if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
-            //Failsave to have a general standard value
-            if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
-                $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
-            }
-
-            if (empty($this->aSurveyInfo['datasecurity_error'])) {
-                $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
-            }
-
-
-            $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'], $this->aSurveyInfo['sid']);
-        }
 
         if ($bDisplayFirstPage) {
             $_SESSION[$this->LEMsessid]['test'] = time();
@@ -1331,9 +1309,7 @@ class SurveyRuntimeHelper
 
             // cookies
             if ($surveyActive && $this->aSurveyInfo['usecookie'] == "Y") {
-                if (!$oSurvey->getHasTokensTable()) {
-                    setcookie("LS_" . $this->iSurveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
-                }
+                setcookie("LS_" . $this->iSurveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
             }
 
             $redata['completed'] = $this->completed;
@@ -1601,7 +1577,6 @@ class SurveyRuntimeHelper
         $this->iSurveyid   = $this->aSurveyInfo['sid'];
         $accessMode        = $this->aSurveyInfo['access_mode'];
         $preview           = $this->preview;
-
         // Template settings
         $oTemplate         = $this->oTemplate;
         $this->sTemplateViewPath = $oTemplate->viewPath;
@@ -1623,7 +1598,7 @@ class SurveyRuntimeHelper
 
         $scenarios = array(
             "tokenRequired"   => ($this->aSurveyInfo['active'] === 'Y') && (($accessMode === SurveyAccessModeService::$ACCESS_TYPE_CLOSED) || (Yii::app()->request->getParam('filltoken') === 'true')),
-            "captchaRequired" => (isCaptchaEnabled('surveyaccessscreen', $this->aSurveyInfo['usecaptcha']) && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
+            "captchaRequired" => (Survey::model()->findByPk($this->iSurveyid)->isCaptchaEnabled('surveyaccessscreen') && !isset($_SESSION['survey_' . $this->iSurveyid]['captcha_surveyaccessscreen']))
         );
 
         /**
@@ -1651,7 +1626,7 @@ class SurveyRuntimeHelper
         if ($scenarios['captchaRequired']) {
             //Check if the Captcha was correct
             $captcha                        = Yii::app()->getController()->createAction('captcha');
-            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity'), false);
+            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity',''), false);
         } else {
             $subscenarios['captchaCorrect'] = true;
         }
@@ -1733,7 +1708,10 @@ class SurveyRuntimeHelper
 
         $aEnterTokenData['aEnterErrors']    = $aEnterErrors;
         $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
-
+        if ($renderWay == 'main') {
+            /* We need only for token form */
+            $this->aSurveyInfo['datasecuritynotaccepted'] = App()->getRequest()->isPostRequest && !boolval(App()->getRequest()->getPost('datasecurity_accepted', false));
+        }
         /* This function end if an form need to be shown */
         renderRenderWayForm($renderWay, $scenarios, $this->sTemplateViewPath, $aEnterTokenData, $this->iSurveyid, $this->aSurveyInfo);
     }

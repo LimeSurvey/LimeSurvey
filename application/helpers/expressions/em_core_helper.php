@@ -2233,7 +2233,18 @@ class ExpressionManager
                             break;
                         case 3:
                             if (!$this->RDP_onlyparse) {
-                                $result = call_user_func($funcName, $params[0], $params[1], $params[2]);
+                                switch ($funcName) {
+                                    case 'substr':
+                                        // check if params1 and 2 are integer representations
+                                        if (filter_var($params[1], FILTER_VALIDATE_INT) && filter_var($params[2], FILTER_VALIDATE_INT)) {
+                                            $result = $funcName(floatval($params[0]), floatval($params[1]));
+                                        } else {
+                                            $result = false; // Not same than other
+                                        }
+                                        break;
+                                    default:
+                                        $result = call_user_func($funcName, $params[0], $params[1], $params[2]);
+                                }
                             }
                             break;
                         case 4:

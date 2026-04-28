@@ -19,7 +19,7 @@ extract($viewData ?? []);
 
 <script type="text/javascript">
     sGoogleApiError = "<?php eT("There was an error using the Google API.");?>";
-    sDetailedError = "<?php eT("Detailed Error");?>";
+    sDetailedError = "<?php eT("Error message: %s");?>";
     translateJsonUrl = "<?php echo $this->createUrl("quickTranslation/ajaxtranslategoogleapi", ['surveyid' => $surveyid]); ?>";
 </script>
 

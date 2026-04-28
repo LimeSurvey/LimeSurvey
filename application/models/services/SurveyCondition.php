@@ -22,6 +22,7 @@ class SurveyCondition
     protected array $tokenFieldsAndNames;
     protected string $language;
     protected const X = 'X';
+    protected $processedSurveys = [];
 
     /**
      * Constructor
@@ -166,7 +167,6 @@ class SurveyCondition
 
                 if ($count_caseinsensitivedupes == 0) {
                     $results[] = \Condition::model()->insertRecords($condition_data);
-                    ;
                 }
             }
 
@@ -254,7 +254,6 @@ class SurveyCondition
         }
 
         $results = array();
-
         if ($editTargetTab == '#CANSWERSTAB') {
             if (isset($p_csrctoken) && $p_csrctoken != '') {
                 $conditionCfieldname = $p_csrctoken;
@@ -936,6 +935,14 @@ class SurveyCondition
                     $canswers[] = array("+" . $fieldNameWithTitle, 'Y', gT("checked"));
                     $canswers[] = array("+" . $fieldNameWithTitle, '', gT("not checked"));
                 }
+                if ($rows['other'] == "Y") {
+                    $fieldNameWithTitle = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], 'other');
+                    $theanswer = gT("Other");
+                    $shortanswer = "other: [" . strip_tags((string) $theanswer) . "]";
+                    $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
+                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'] . 'other', $fieldNameWithTitle); // Set QTypes to specific for javascript
+                    $canswers[] = array($fieldNameWithTitle, '', gT("No answer"));
+                }
             } else {
                 $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid']);
                 $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $fieldName);
@@ -1270,7 +1277,6 @@ class SurveyCondition
 
         $theserows = $this->getTheseRows($questionlist);
         $postrows  = $this->getPostRows($postquestionlist);
-
         $questionscount = count($theserows);
         $postquestionscount = count($postrows);
 
@@ -1722,8 +1728,11 @@ class SurveyCondition
      */
     protected function renderFormAux(\Question $question)
     {
-        \LimeExpressionManager::SetSurveyId($question->sid);
-        \LimeExpressionManager::StartProcessingPage(false, true);
+        if (!($this->processedSurveys[$question->sid] ?? false)) {
+            \LimeExpressionManager::SetSurveyId($question->sid);
+            \LimeExpressionManager::StartProcessingPage(true, true);
+            $this->processedSurveys[$question->sid] = true;
+        }
         \LimeExpressionManager::ProcessString(
             "{" . trim((string) $question->relevance) . "}",
             $question->qid

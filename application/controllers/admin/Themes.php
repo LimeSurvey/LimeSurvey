@@ -189,7 +189,7 @@ class Themes extends SurveyCommonAction
         // It's not going to fail, but it's checking for a permission with an empty templatename.
         // Surely it works as expected, but it would be nice if the code was clearer.
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
-            App()->loadHelper('admin/template');
+            App()->loadHelper('admin.template');
             // NB: lid = label id
             $lid = returnGlobal('lid');
             if ($action == 'templateuploadimagefile') {
@@ -305,9 +305,6 @@ class Themes extends SurveyCommonAction
             }
 
             try {
-                $src = $_FILES['the_file']['tmp_name'];
-                $extConfig = ExtensionConfig::loadFromZip($src);
-                $destdir = $extConfig->getName();
                 // TODO: Replace with extension installer factory.
                 $installer = $this->getQuestionThemeInstaller();
                 $installer->fetchFiles();
@@ -317,7 +314,12 @@ class Themes extends SurveyCommonAction
                     $installer->abort();
                     throw new Exception(gT('The question theme is not compatible with your version of LimeSurvey.'));
                 }
-                $questionTheme = QuestionTheme::model()->findByAttributes(['name' => $config->getName()]);
+                $questionThemeName = $config->getName();
+                if (!$installer->validateQuestionThemeName($questionThemeName)) {
+                    $installer->abort();
+                    throw new Exception(gT('Invalid question theme name in config.xml'));
+                }
+                $questionTheme = QuestionTheme::model()->findByAttributes(['name' => $questionThemeName]);
                 try {
                     if (empty($questionTheme)) {
                         $installer->install();
@@ -353,6 +355,7 @@ class Themes extends SurveyCommonAction
             }
         }
 
+        // Question theme uploads should already have returned from the branch above.
         $sNewDirectoryName = $this->getNewDirectoryName($themeType, $_FILES['the_file']['tmp_name']);
 
         if ($themeType == 'survey') {
@@ -736,7 +739,7 @@ JAVASCRIPT
 
             if ($newname && $copydir) {
                 // Copies all the files from one template directory to a new one
-                Yii::app()->loadHelper('admin/template');
+                Yii::app()->loadHelper('admin.template');
                 $newdirname  = Yii::app()->getConfig('userthemerootdir') . "/" . $newname;
                 $copydirname = getTemplatePath($copydir);
                 $oFileHelper = new CFileHelper();
@@ -778,7 +781,7 @@ JAVASCRIPT
     {
         $templatename = trim(Yii::app()->request->getPost('templatename', ''));
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            Yii::app()->loadHelper("admin/template");
+            Yii::app()->loadHelper("admin.template");
 
             Yii::import('application.helpers.SurveyThemeHelper');
             if (Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
@@ -914,7 +917,7 @@ JAVASCRIPT
             $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
 
             if ($action == "templatesavechanges" && $changedtext) {
-                Yii::app()->loadHelper('admin/template');
+                Yii::app()->loadHelper('admin.template');
                 $changedtext = str_replace("\r\n", "\n", $changedtext);
 
 
@@ -1014,7 +1017,7 @@ JAVASCRIPT
     {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
-        Yii::app()->loadHelper("admin/template");
+        Yii::app()->loadHelper("admin.template");
         $aData = array();
         $time = date("ymdHis");
         // Prepare textarea class for optional javascript
@@ -1117,7 +1120,7 @@ JAVASCRIPT
 
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
-        Yii::app()->loadHelper('admin/template');
+        Yii::app()->loadHelper('admin.template');
 
         $files        = $oEditedTemplate->getValidScreenFiles("view", $screenname);
         $sLayoutFile  = $oEditedTemplate->getLayoutForScreen($screenname);

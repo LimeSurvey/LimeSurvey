@@ -90,8 +90,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             );
             $link->click();
 
-            //click on "Survey" to create a new survey with default values
-            // Open menu by clicking the "+" sign in top bar
+            //click on "Survey" to create a new survey
             $link = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('create-survey-link')
@@ -99,15 +98,22 @@ class CreateSurveyTest extends TestBaseClassWeb
             );
             $link->click();
 
-            sleep(3); //wait until survey is created
+            // Fill in title.
+            $titleInput = self::$webDriver->findElement(WebDriverBy::id('surveyTitle'));
+            $nr = rand(1, 100000);
+            $title = 'test survey ' . $nr;
+            $titleInput->clear()->sendKeys($title);
 
-            //title is set to a default value
-            $title = 'Untitled survey';
+            // Click save.
+            $save = self::$webDriver->findElement(WebDriverBy::id('create-survey-submit'));
+            $save->click();
 
+            sleep(1);
+
+            // Make sure survey was saved in database.
             $survey = \Survey::model()
                 ->with(['defaultlanguage' => ['condition' => 'surveyls_title=' . \Yii::app()->db->quoteValue($title)]])
                 ->findAll();
-
             $this->assertCount(1, $survey);
         } catch (\Throwable $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);

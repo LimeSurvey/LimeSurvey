@@ -160,7 +160,7 @@ class DemomodeCommand extends CConsoleCommand
 
     private function createDemo()
     {
-        Yii::app()->loadHelper('admin/import');
+        Yii::app()->loadHelper('admin.import');
         require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/replacements_helper.php');
         require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_manager_helper.php');
         require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_core_helper.php');
