@@ -8,15 +8,19 @@
  * @var $sDisable
  * @var $myfname
  * @var $othertext
+ * @var $otherTextRight
+ * @var $otherItemExtraClass
  * @var $checkedState
  * @var $kpclass
  * @var $sValue
  * @var $checkconditionFunction
+ * @var $otherInputSize
+ * @var $otherMaxLength
  */
 #}
 
 <!-- answer_row_other -->
-<li id='javatbd{{ myfname }}' class='row answer-item radio-text-item radio-item d-flex' role='group' {{ sDisplayStyle }} >
+<li id='javatbd{{ myfname }}' class='row answer-item radio-text-item radio-item d-flex {{ otherItemExtraClass }}' role='group' {{ sDisplayStyle }} >
         <!-- Checkbox + label -->
         <div class="othertext-label-checkox-container  col-auto">
             <input
@@ -41,8 +45,16 @@
             {{ answer_other }}
             aria-labelledby="label-id-{{ name }}"
             {% if numbers_only %} data-number="1" {% endif %}
+            {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
+            {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
             />
         </div>
+
+        {% if otherTextRight is defined and otherTextRight|length >0 %}
+            <div class="othertext-right-label col-auto">
+                {{ processString(otherTextRight) }}
+            </div>
+        {% endif %}
     <script>
         $("#answer{{ name }}othertext").on("keyup",function(){
             if($.trim($(this).val())!=''){ $('#SOTH{{ name }}').click(); };

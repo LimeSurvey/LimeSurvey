@@ -39,12 +39,34 @@ $dropdown-font-size: $font-size-sm;
     border-bottom-right-radius: 0;
 }
 
-.ls-answers label, .answer-item label, .control-label {
+.ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-right-label {
     @include h2;
 
     .radio-label {
         padding-left : 12px;
     }
+}
+
+.ls-answers.answers-list .answer-item .othertext-right-label {
+    color : $g-700;
+}
+
+.no-left-othertext {
+    .othertext-label-checkox-container {
+        padding-right: 0;
+    }
+
+    .control-label {
+        padding: 0;
+    }
+
+    .other-text-item {
+        padding-left: calc(var(--bs-gutter-x) * 0.2);
+    }
+}
+
+.ls-input-sized .other-text-item.col {
+    flex-grow: 0;
 }
 
 textarea {
