@@ -224,7 +224,7 @@ export const QuestionSettings = ({ surveyId }) => {
         <>
           <p style={{ paddingLeft: '18px' }}>
             {t(
-              'This question type isn’t supported in the new editor yet, but your responses will still be collected. If you want to make edits you can switch to a similar question type or edit it in the classic editor.'
+              'This question type isn\'t supported in the new editor yet, but your responses will still be collected. If you want to make edits you can switch to a similar question type or edit it in the classic editor.'
             )}
           </p>
         </>

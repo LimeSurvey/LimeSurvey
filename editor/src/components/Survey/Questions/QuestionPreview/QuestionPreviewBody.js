@@ -37,7 +37,7 @@ export const QuestionBodyPreview = ({
     return (
       <h6 className="pb-5">
         {t(
-          `This question type isn't supported in the Limesurvey Editor, so the detail view can't be shown. Your response is still collected.`
+          `This question type isn't supported in the LimeSurvey Editor, so the detail view can't be shown. Your response is still collected.`
         )}
       </h6>
     )

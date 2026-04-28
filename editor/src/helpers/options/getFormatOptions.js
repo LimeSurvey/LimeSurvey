@@ -5,11 +5,11 @@ export const getFormatOptions = () => {
       value: 'A',
     },
     {
-      label: t('Question by Question'),
+      label: t('Question by question'),
       value: 'S',
     },
     {
-      label: t('Group by Group'),
+      label: t('Group by group'),
       value: 'G',
     },
   ]

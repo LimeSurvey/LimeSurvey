@@ -50,7 +50,7 @@ export const getDefaultColumns = ({
           shouldDisableIfSurveyActive={false}
           items={[
             {
-              label: t('View/Edit response details'),
+              label: t('View/edit response details'),
               icon: <EyeIcon />,
               onClick: onResponseDetailViewClick,
             },

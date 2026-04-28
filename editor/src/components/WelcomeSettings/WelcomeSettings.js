@@ -71,7 +71,7 @@ export const WelcomeSettings = ({ surveyId }) => {
         <div className="ms-3 mt-3">
           <ToggleButtons
             id="question-counter"
-            labelText={t('Show “There are X questions in this survey.”')}
+            labelText={t('Show "There are X questions in this survey."')}
             value={isTrue(showXQuestions)}
             onChange={(showXQuestions) => handleUpdate({ showXQuestions })}
             onOffToggle

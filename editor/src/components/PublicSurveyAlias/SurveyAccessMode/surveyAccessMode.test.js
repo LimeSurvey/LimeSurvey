@@ -98,7 +98,7 @@ describe('PublicSurveyAlias - Access Mode Change', () => {
       it('should show the correct description text', () => {
         expect(
           screen.getByText(
-            t('Only participants with the link and access code can access.')
+            t('Only participants with a personalized link or a general link with access code can access.')
           )
         ).toBeInTheDocument()
       })

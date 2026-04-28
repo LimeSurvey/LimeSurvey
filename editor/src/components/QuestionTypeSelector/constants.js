@@ -81,7 +81,7 @@ export const getQuestionItemsList = () => [
     ],
   },
   {
-    title: t('Ranking & Rating'),
+    title: t('Ranking & rating'),
     icon: <QuestionInserterRankIcon />,
     items: [
       {
