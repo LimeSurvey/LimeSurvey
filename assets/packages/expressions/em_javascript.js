@@ -1301,9 +1301,6 @@ function LEMval(alias)
                 return value;
             }
             else if (isNaN(value)) {
-                if (value==='false') {
-                    return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
-                }
                 return value;
             }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
