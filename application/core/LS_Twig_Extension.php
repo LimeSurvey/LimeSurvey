@@ -633,6 +633,14 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
 
+    /**
+     * Lightens a CSS hex color by a given amount and returns a CSS color string.
+     *
+     * @param string $cssColor Hex color string in the form `#RRGGBB`.
+     * @param int $grade Amount to increase each RGB channel (positive to lighten, negative to darken).
+     * @param float|int $alpha Alpha channel value between 0 and 1. When equal to `1`, a hex color is returned.
+     * @return string A color string: a hex color (`#RRGGBB`) when `$alpha === 1`, otherwise an `rgba(r, g, b, a)` string.
+     */
     public static function lightencss($cssColor, $grade = 10, $alpha = 1)
     {
         $aColors = str_split(substr((string) $cssColor, 1), 2);
@@ -653,10 +661,14 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
     /**
-     * Shortcut to get configuration value
-     * @see ConsoleApplication->getConfig and LSYii_Application->getConfig
-     * @param string $name
-     * @return mixed
+     * Retrieve a configuration value restricted to an internal allowlist.
+     *
+     * Returns the configuration value for $name when $name is present in the built-in allowlist
+     * or in the `twig_getConfig_extraallowlist` configuration (when that extra list is an array).
+     * Returns `false` for any key that is not allowed.
+     *
+     * @param string $name The configuration key to read.
+     * @return mixed The configuration value when allowed, `false` otherwise.
      */
     public static function getConfig($name)
     {
@@ -674,8 +686,12 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
     /**
-     * List of fixed allowed setting in getConfig
-     * @return string[]
+     * Fixed allowlist of configuration keys considered safe for exposure to templates.
+     *
+     * The array contains the configuration key names that are permitted to be read
+     * by template-level configuration accessors.
+     *
+     * @return string[] Array of allowed configuration key names.
      */
     private static function getAllowedConfig()
     {
