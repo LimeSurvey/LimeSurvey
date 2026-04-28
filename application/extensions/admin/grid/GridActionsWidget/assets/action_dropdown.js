@@ -1,7 +1,6 @@
 LS.actionDropdown = {
     DropdownClass: class extends bootstrap.Dropdown {
-        _getMenuElement()
-        {
+        _getMenuElement() {
             return this._config.lsMenuElement;
         }
     },
@@ -24,7 +23,7 @@ LS.actionDropdown = {
             let dropdownMenu = dropdownToggleEl.nextElementSibling;
             if (dropdownMenu !== null) {
                 dropdownMenu.setAttribute('data-for-ls-dropdown-toggle-id', dropdownToggleId);
-                new LS.actionDropdown.DropdownClass(dropdownToggleEl, {
+                let dropdownInstance = new LS.actionDropdown.DropdownClass(dropdownToggleEl, {
                     lsMenuElement: dropdownMenu,
                     boundary: body,
                     popperConfig: {
@@ -32,11 +31,82 @@ LS.actionDropdown = {
                     },
                 });
                 body.append(dropdownMenu);
+
+                // ✅ Add focus trap logic
+                dropdownToggleEl.addEventListener('shown.bs.dropdown', function () {
+                    trapFocus(dropdownMenu, dropdownToggleEl, dropdownInstance);
+                });
+
+                dropdownToggleEl.addEventListener('hidden.bs.dropdown', function () {
+                    LS.actionDropdown.releaseFocusTrap(dropdownMenu);
+                });
             }
         });
-        //here we need the functionality implemented below to position the submenu to the right of the toggle element
 
+        // ✅ Focus Trap Helpers
+        function trapFocus(container, toggleButton, dropdownInstance) {
+            let focusableSelectors = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+            let focusableEls = Array.from(container.querySelectorAll(focusableSelectors));
+            if (focusableEls.length === 0) return;
+
+            let firstEl = focusableEls[0];
+            let lastEl = focusableEls[focusableEls.length - 1];
+
+            // Tab trap on the container (bubble phase is fine for Tab)
+            container._tabHandler = function (e) {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstEl) {
+                            e.preventDefault();
+                            lastEl.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastEl) {
+                            e.preventDefault();
+                            firstEl.focus();
+                        }
+                    }
+                }
+            };
+
+            // Escape handler on document capture phase — fires before Bootstrap's delegated handler
+            container._escHandler = function (e) {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    // Only handle if the event target is inside this container
+                    if (container.contains(e.target)) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+
+                        if (dropdownInstance) {
+                            dropdownInstance.hide();
+                        }
+                        if (toggleButton) {
+                            toggleButton.focus();
+                        }
+                    }
+                }
+            };
+
+            container.addEventListener('keydown', container._tabHandler);
+            document.addEventListener('keydown', container._escHandler, true);
+            firstEl.focus();
+        }
     },
+
+    /**
+     * Cleans up focus-trap listeners (Tab on container, Escape on document) for a given menu element.
+     */
+    releaseFocusTrap: function (container) {
+        if (container._tabHandler) {
+            container.removeEventListener('keydown', container._tabHandler);
+            delete container._tabHandler;
+        }
+        if (container._escHandler) {
+            document.removeEventListener('keydown', container._escHandler, true);
+            delete container._escHandler;
+        }
+    },
+
     /**
      * Removes dropdown menus that no longer have a toggle element (i.e. the toggle was in a table row
      * and the table was filtered or sorted).
@@ -52,6 +122,7 @@ LS.actionDropdown = {
             const toggleId = menu.getAttribute('data-for-ls-dropdown-toggle-id');
             // If the toggle doesn't exist, remove the menu.
             if (!document.querySelector(`.ls-dropdown-toggle[data-ls-dropdown-toggle-id="${toggleId}"]`)) {
+                LS.actionDropdown.releaseFocusTrap(menu);
                 menu.remove();
             }
         });
