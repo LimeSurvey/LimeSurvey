@@ -438,9 +438,19 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('bPdfQuestionBold', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBold')));
         SettingGlobal::setSetting('bPdfQuestionBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBorder')));
         SettingGlobal::setSetting('bPdfResponseBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfResponseBorder')));
-        SettingGlobal::setSetting('googleMapsAPIKey', Yii::app()->getRequest()->getPost('googleMapsAPIKey'));
-        SettingGlobal::setSetting('googleanalyticsapikey', Yii::app()->getRequest()->getPost('googleanalyticsapikey'));
-        SettingGlobal::setSetting('googletranslateapikey', Yii::app()->getRequest()->getPost('googletranslateapikey'));
+        /* @see https://docs.cloud.google.com/docs/authentication/api-keys#components */
+        $googleapikeys = ['googleMapsAPIKey', 'googleanalyticsapikey', 'googletranslateapikey'];
+        foreach ($googleapikeys as $googleapikey) {
+            $value = trim(App()->getRequest()->getPost($googleapikey));
+            $fixedValue = preg_replace('/[^A-Za-z0-9_-]/', '', $fixedValue);
+            if ($value !== $fixedValue) {
+                /* Add an alert to the user */
+                Yii::app()->setFlashMessage(sprintf(gT("Invalue value set for %s, reset to %s"), $value, $fixedValue), 'warning');
+                /* Add a warning for log for server admin */
+                Yii::log("Invalid value %s set for %s in global settings", 'warning', 'application.controller.admin.globalsettings');
+            }
+            SettingGlobal::setSetting($googleapikey, $fixedValue);
+        }
         SettingGlobal::setSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
         SettingGlobal::setSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
         SettingGlobal::setSetting('rpc_publish_api', Yii::app()->getRequest()->getPost('rpc_publish_api'));
