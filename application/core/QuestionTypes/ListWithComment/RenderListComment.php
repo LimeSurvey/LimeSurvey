@@ -34,6 +34,16 @@ class RenderListComment extends QuestionBaseRenderer
         return '/survey/questions/answer/list_with_comment';
     }
 
+    /**
+     * Render the list-style answer options with an associated free-text comment input.
+     *
+     * Renders radio-list rows for each configured answer (including an optional "No answer" choice when allowed),
+     * appends the provided CSS classes to the renderer's core class, registers required assets, and returns the rendered
+     * HTML together with the names of the input fields that were produced.
+     *
+     * @param string $sCoreClasses Additional CSS classes to append to the renderer's base core class.
+     * @return array An array whose first element is the rendered HTML string for the answer list and comment block, and whose second element is an array of input names (the answer SGQA and its comment SGQA).
+     */
     public function renderList($sCoreClasses)
     {
         $sRows = '';
@@ -57,7 +67,7 @@ class RenderListComment extends QuestionBaseRenderer
                 'name' => $this->sSGQA,
                 'id' => 'answer' . $this->sSGQA,
                 'value' => '',
-                'check_ans' => ($this->mSessionValue == '' || $this->mSessionValue == ' ') ? CHECKED : '',
+                'check_ans' => $this->isNoAnswerChecked() ? CHECKED : '',
                 'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
                 'labeltext' => gT('No answer'),
             );
