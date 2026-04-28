@@ -121,9 +121,20 @@ function quickaddfunction() {
 
     console.log('lsrows', lsrows);
 
+    // Collect all existing codes to avoid duplicates and generate next codes
+    var existingCodes = [];
+    $(".answertable tbody").find('.codeval').each(function() {
+        existingCodes.push($(this).val());
+    });
+
     // parsedRows is an array of objects with the parsed row data (ie: [{code:"code", titles:{"en":"Title"}}])
     let parsedRows = [];
     $(lsrows).each(function(index, row) {
+        // Skip empty rows
+        if (!row.trim()) {
+            return true; // Continue to next iteration
+        }
+
         var code = undefined;
 
         var params = row.split(separatorchar);
@@ -132,6 +143,33 @@ function quickaddfunction() {
             code = params[0].replace(/[^a-zA-Z 0-9]+/g,'').substr(0,5);
             k++;
         }
+
+        // If no code was provided, generate one
+        if (!code || code === '') {
+            if (existingCodes.length > 0) {
+                // Generate next code based on the last existing code
+                code = getNextCode(existingCodes[existingCodes.length - 1]);
+            } else {
+                // Default to L001 if no existing codes
+                code = 'L001';
+            }
+            
+            // Ensure the generated code is unique
+            // NOTE: getNextCode() may return the same value if code has no numeric suffix
+            // To prevent infinite loops, we append '1' if getNextCode returns unchanged
+            while (existingCodes.indexOf(code) !== -1) {
+                const nextCode = getNextCode(code);
+                // If no numeric suffix exists, getNextCode returns unchanged value
+                if (nextCode === code) {
+                    code = code + '1';
+                } else {
+                    code = nextCode;
+                }
+            }
+        }
+
+        // Track this code to prevent duplicates
+        existingCodes.push(code);
 
         let parsedRow = {
             code: code,
