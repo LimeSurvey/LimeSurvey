@@ -22,7 +22,7 @@ LS.actionDropdown = {
             let dropdownMenu = dropdownToggleEl.nextElementSibling;
             if (dropdownMenu !== null) {
                 dropdownMenu.setAttribute('data-for-ls-dropdown-toggle-id', dropdownToggleId);
-                new LS.actionDropdown.DropdownClass(dropdownToggleEl, {
+                let dropdownInstance = new LS.actionDropdown.DropdownClass(dropdownToggleEl, {
                     lsMenuElement: dropdownMenu,
                     boundary: body,
                     popperConfig: {
@@ -32,9 +32,10 @@ LS.actionDropdown = {
                 body.append(dropdownMenu);
 
 
+
                 // ✅ Add focus trap logic
                 dropdownToggleEl.addEventListener('shown.bs.dropdown', function () {
-                    trapFocus(dropdownMenu);
+                    trapFocus(dropdownMenu, dropdownToggleEl, dropdownInstance);
                 });
 
                 dropdownToggleEl.addEventListener('hidden.bs.dropdown', function () {
@@ -44,7 +45,7 @@ LS.actionDropdown = {
         });
 
         // ✅ Focus Trap Helpers
-        function trapFocus(container) {
+        function trapFocus(container, toggleButton, dropdownInstance) {
             let focusableSelectors = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
             let focusableEls = Array.from(container.querySelectorAll(focusableSelectors));
             if (focusableEls.length === 0) return;
@@ -52,7 +53,8 @@ LS.actionDropdown = {
             let firstEl = focusableEls[0];
             let lastEl = focusableEls[focusableEls.length - 1];
 
-            container._focusHandler = function (e) {
+            // Tab trap on the container (bubble phase is fine for Tab)
+            container._tabHandler = function (e) {
                 if (e.key === 'Tab') {
                     if (e.shiftKey) {
                         if (document.activeElement === firstEl) {
@@ -65,45 +67,40 @@ LS.actionDropdown = {
                             firstEl.focus();
                         }
                     }
-                } else if (e.key === 'Escape' || e.key === 'Esc') {
-                    // Find the dropdown toggle button and return focus to it
-                    let toggleId = container.getAttribute('data-for-ls-dropdown-toggle-id');
-                    let toggleButton = document.querySelector(`.ls-dropdown-toggle[data-ls-dropdown-toggle-id="${toggleId}"]`);
-                    if (toggleButton) {
+                }
+            };
+
+            // Escape handler on document capture phase — fires before Bootstrap's delegated handler
+            container._escHandler = function (e) {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    // Handle if the event target is inside the menu or on the toggle itself
+                    if (container.contains(e.target) || e.target === toggleButton) {
                         e.preventDefault();
-                        e.stopPropagation();
+                        e.stopImmediatePropagation();
 
-                        // Store reference to toggle button for focus
-                        let targetToggle = toggleButton;
-
-                        // Close the dropdown first
-                        let dropdownInstance = bootstrap.Dropdown.getInstance(toggleButton);
                         if (dropdownInstance) {
                             dropdownInstance.hide();
-                        } else {
-                            // Fallback: manually hide the dropdown
-                            container.style.display = 'none';
-                            container.classList.remove('show');
                         }
-
-                        // Return focus to the toggle button after a short delay
-                        setTimeout(() => {
-                            if (targetToggle) {
-                                targetToggle.focus();
-                            }
-                        }, 50);
+                        if (toggleButton) {
+                            toggleButton.focus();
+                        }
                     }
                 }
             };
 
-            container.addEventListener('keydown', container._focusHandler);
+            container.addEventListener('keydown', container._tabHandler);
+            document.addEventListener('keydown', container._escHandler, true);
             firstEl.focus();
         }
 
         function releaseFocusTrap(container) {
-            if (container._focusHandler) {
-                container.removeEventListener('keydown', container._focusHandler);
-                delete container._focusHandler;
+            if (container._tabHandler) {
+                container.removeEventListener('keydown', container._tabHandler);
+                delete container._tabHandler;
+            }
+            if (container._escHandler) {
+                document.removeEventListener('keydown', container._escHandler, true);
+                delete container._escHandler;
             }
         }
     },
