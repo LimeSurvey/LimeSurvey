@@ -203,6 +203,7 @@ class SurveyAccessModeService
         } elseif ($accessMode === self::$ACCESS_TYPE_OPEN && !$isPublicRegistrationAllowed) {
             $this->dropTokenTable($survey, $action);
         }
+        $survey->lastmodified = gmdate('Y-m-d H:i:s');
         $survey->save();
         return true;
     }

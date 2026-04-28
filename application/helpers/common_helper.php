@@ -107,7 +107,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $timeadjust = getGlobalSetting('timeadjust');
+    $timeadjust = Yii::app()->getConfig('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
@@ -259,34 +259,34 @@ function getGidNext($surveyid, $gid)
  */
 function convertGETtoPOST($url)
 {
-    $url = preg_replace('/&amp;/i', '&', (string) $url);
+    $url = str_replace('&amp;', '&', (string) $url);
     $stack = explode('?', $url);
     $calledscript = array_shift($stack);
     $query = array_shift($stack);
-    $aqueryitems = explode('&', (string) $query);
     $postArray = [];
     $getArray = [];
-    foreach ($aqueryitems as $queryitem) {
-        $stack = explode('=', $queryitem);
-        $paramname = array_shift($stack);
-        $value = array_shift($stack);
-        if (in_array($paramname, array(Yii::app()->getComponent('urlManager')->routeVar))) {
-            $getArray[$paramname] = $value;
-        } else {
-            $postArray[$paramname] = $value;
+    if (!empty($query)) {
+        $aqueryitems = explode('&', $query);
+        foreach ($aqueryitems as $queryitem) {
+            [$paramname, $value] = array_pad(explode('=', $queryitem, 2), 2, '');
+            if (in_array($paramname, array(Yii::app()->getComponent('urlManager')->routeVar))) {
+                $getArray[$paramname] = $value;
+            } else {
+                $postArray[$paramname] = $value;
+            }
+        }
+        if (!empty($getArray)) {
+            $calledscript .= '?' . implode('&', array_map(
+                function ($v, $k) {
+                    return $k . '=' . $v;
+                },
+                $getArray,
+                array_keys($getArray)
+            ));
         }
     }
-    if (!empty($getArray)) {
-        $calledscript = $calledscript . "?" . implode('&', array_map(
-            function ($v, $k) {
-                return $k . '=' . $v;
-            },
-            $getArray,
-            array_keys($getArray)
-        ));
-    }
-    $callscript = "window.LS.sendPost(\"" . $calledscript . "\",\"\"," . json_encode($postArray) . ");";
-    return $callscript;
+    // params: script-name (string) / empty string / parameters as json
+    return 'window.LS.sendPost(' . json_encode($calledscript) . ',"",' . json_encode($postArray) . ');';
 }
 
 
@@ -391,8 +391,8 @@ function getMaxQuestionOrder($gid)
 * It returns an array with the following items:
 *    $wrapper['whole-start']   = Opening wrapper for the whole list
 *    $wrapper['whole-end']     = closing wrapper for the whole list
-*    $wrapper['col-devide']    = normal column devider
-*    $wrapper['col-devide-last'] = the last column devider (to allow
+*    $wrapper['col-devide']    = normal column divider
+*    $wrapper['col-devide-last'] = the last column divider (to allow
 *                                for different styling of the last
 *                                column
 *    $wrapper['item-start']    = opening wrapper tag for individual
@@ -417,8 +417,8 @@ function getMaxQuestionOrder($gid)
 * -  Using inline or float to create columns, causes the answers
 *    flows horizontally, not vertically which is not ideal visually.
 * -  Using CSS3 columns is also a problem because of browser support
-*    and also because if you have answeres split across two or more
-*    lines, and those answeres happen to fall at the bottom of a
+*    and also because if you have answers split across two or more
+*    lines, and those answers happen to fall at the bottom of a
 *    column, the answer might be split across columns as well as
 *    lines.
 * -  Using nested unordered list with the first level of <LI>s
@@ -534,7 +534,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
 function alternation($alternate = '', $type = 'col')
 {
     /**
-     * alternation() Returns a class identifyer for alternating between
+     * alternation() Returns a class identifier for alternating between
      * two options. Used to style alternate elements differently. creates
      * or alternates between the odd string and the even string used in
      * as column and row classes for array type questions.
@@ -670,7 +670,7 @@ function getUserList($outputformat = 'fullinfoarray')
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
+    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
         !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
@@ -749,7 +749,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
     }
 
     $surveyid = sanitize_int($surveyid);
-    $languagecode = sanitize_languagecode($languagecode);
+    $languagecode = \LSYii_Validators::languageCodeFilter($languagecode);
     $thissurvey = false;
     $oSurvey = Survey::model()->findByPk($surveyid);
     // Do job only if this survey exist
@@ -775,8 +775,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $result = $resultBaseLanguage;
         }
         if ($result) {
-            $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
-            $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
+            $aSurveyAttributes = array_replace($result->survey->attributes, $aSurveyOptions);
+            $thissurvey = array_merge($aSurveyAttributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
             if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
                 $thissurvey['name'] = $resultBaseLanguage->surveyls_title;
@@ -936,9 +936,9 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
     } elseif ($stringname == "lang" || $stringname == "adminlang") {
         if ($bUrlParamIsArray) {
-            return array_map("sanitize_languagecode", $urlParam);
+            return array_map(['\\LSYii_Validators', 'languageCodeFilter'], $urlParam);
         } else {
-            return sanitize_languagecode($urlParam);
+            return \LSYii_Validators::languageCodeFilter($urlParam);
         }
     } elseif (
         $stringname == "htmleditormode" ||
@@ -965,7 +965,7 @@ function returnGlobal($stringname, $bRestrictToString = false)
 function sendSurveyHttpHeaders()
 {
     if (!headers_sent()) {
-        // Default headers für surveys
+        // Default headers for surveys
         $headers = [
                      'Cache-Control: no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0',
                      'Pragma: no-cache',
@@ -1019,7 +1019,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
         }
 
         // If it is a comment field there is nothing to convert here
-        if ($fields['aid'] == 'comment') {
+        if (str_ends_with((string)($fields['aid'] ?? ''), 'comment')) {
             return $sValue;
         }
 
@@ -1051,7 +1051,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             case Question::QT_O_LIST_WITH_COMMENT:
             case Question::QT_I_LANGUAGE:
             case Question::QT_R_RANKING:
-                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
+                $this_answer = Question::model()->getQuestionFromTitle($fields['qid'], $sValue, $sLanguage);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
@@ -1177,31 +1177,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
 }
 
 /**
-* Validate an email address - also supports IDN email addresses
-* @deprecated : use LimeMailer::validateAddress($sEmailAddress);
-* @returns True/false for valid/invalid
-*
-* @param mixed $sEmailAddress  Email address to check
-*/
-function validateEmailAddress($sEmailAddress)
-{
-    return LimeMailer::validateAddress($sEmailAddress);
-}
-
-/**
-* Validate an list of email addresses - either as array or as semicolon-limited text
-* @deprecated : use LimeMailer::validateAddresses($aEmailAddressList);
-* @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
-*
-* @param string $aEmailAddressList  Email address to check
-* @returns array
-*/
-function validateEmailAddresses($aEmailAddressList)
-{
-    return LimeMailer::validateAddresses($aEmailAddressList);
-}
-
-/**
  * This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
  * It can be used for the generation of statistics. Derived from StatisticsUserController
  * @param int $iSurveyID Id of the Survey in question
@@ -1268,7 +1243,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 break;
             case Question::QT_R_RANKING: // Ranking
                 //get some answers
-                $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
+                $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
                 //get number of answers
                 //loop through all answers. if there are 3 items to rate there will be 3 statistics
                 $i = 0;
@@ -1314,166 +1289,222 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
 /**
  * Returns the field name of a table's question or subquestion
- * 
+ *
  * @param string $tableName
  * @param string $fieldName
- * @param array $questions a collection of questions containing a question and its subquestions
+ * @param array $rawQuestions a collection of questions containing a question and its subquestions
  * @param int $sid
  * @param int $gid
  * @param bool $cd is it the condition designer
- * 
+ *
  * @return string the field's name
  */
-function getFieldName(string $tableName, string $fieldName, array $questions, int $sid, int $gid, bool $cd = false)
+function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false)
 {
     $newFieldName = "";
     if (strpos($tableName, "timings") !== false) {
         $X = explode("X", $fieldName);
         $newFieldName = ((count($X) > 2) ? "Q" : "G") . $X[count($X) - 1];
     } else {
-        $rootQuestion = $questions[0];
+        $rootQuestions = [];
         $questionIndex = 0;
-        while ($questionIndex < count($questions)) {
-            if (!$questions[$questionIndex]->parent_qid) {
-                if ($rootQuestion->parent_qid || ($rootQuestion->qid < $questions[$questionIndex]->qid)) {
-                    $rootQuestion = $questions[$questionIndex];
-                }
+        while ($questionIndex < count($rawQuestions)) {
+            if (($rawQuestions[$questionIndex]->gid == $gid) && (!$rawQuestions[$questionIndex]->parent_qid)) {
+                $rootQuestions[] = $rawQuestions[$questionIndex];
             }
             $questionIndex++;
         }
-        $qid = $rootQuestion->qid;
-        switch ($rootQuestion->type) {
-            case \Question::QT_1_ARRAY_DUAL:
-            case \Question::QT_5_POINT_CHOICE:
-            case \Question::QT_L_LIST:
-            case \Question::QT_M_MULTIPLE_CHOICE:
-            case \Question::QT_N_NUMERICAL:
-            case \Question::QT_O_LIST_WITH_COMMENT:
-            case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                $currentQuestion = null;
-                $length = strlen("{$sid}X{$gid}X{$qid}");
-                $hashPos = strpos($fieldName, '#');
-                foreach ($questions as $question) {
-                    if ($hashPos && ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null))) {
-                        $currentQuestion = $question;
-                    } else if ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
-                        $currentQuestion = $question;
-                    }
+        usort($rootQuestions, function ($a, $b) {
+            return $b->qid - $a->qid;
+        });
+        foreach ($rootQuestions as $rootQuestion) {
+            $questions = [$rootQuestion];
+            foreach ($rawQuestions as $rawQuestion) {
+                if ($rawQuestion->parent_qid == $rootQuestion->qid) {
+                    $questions[] = $rawQuestion;
                 }
-                $hashTags = explode("#", $fieldName);
-                if ($currentQuestion === null) {
-                    $newFieldName = "Q{$qid}";
-                    if (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
-                        $newFieldName .= "_C" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
-                    }
-                } else {
-                    $newFieldName = "Q{$qid}_S{$currentQuestion->qid}";
-                    if (count($hashTags)) {
-                        for ($index = 1; $index < count($hashTags); $index++) {
-                            $newFieldName .= "#{$hashTags[$index]}";
-                        }
-                    }
-                }
-                break;
-            case \Question::QT_A_ARRAY_5_POINT:
-            case \Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
-            case \Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-            case \Question::QT_E_ARRAY_INC_SAME_DEC:
-            case \Question::QT_F_ARRAY:
-            case \Question::QT_H_ARRAY_COLUMN:
-            case \Question::QT_K_MULTIPLE_NUMERICAL:
-            case \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
-            case \Question::QT_Q_MULTIPLE_SHORT_TEXT:
-                $code = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
-                $commentText = false;
-                $currentQuestion = null;
-                $excludeSubquestion = false;
-                foreach ($questions as $question) {
-                    if (($question->title === $code) || ($code === "")) {
-                        $currentQuestion = $question;
-                    } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
-                        $currentQuestion = $question;
-                        $commentText = $code;
-                        if (strpos($code, $question->title) === 0) {
-                            $commentText = substr($code, strlen($question->title));
-                        } else {
-                            $excludeSubquestion = true;
-                        }
-                    }
-                }
-                if ($currentQuestion) {
-                    $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
-                    if ($commentText) {
-                        $newFieldName = $newFieldName . "_C" . $commentText;
-                    }
-                }
-                break;
-            case \Question::QT_SEMICOLON_ARRAY_TEXT:
-            case \Question::QT_COLON_ARRAY_NUMBERS:
-                if (strpos($tableName, "timings") !== false) {
-                    $newFieldName = "Q{$qid}_Ctime";
-                } else {
-                    $suffix = explode("_", substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")));
-                    $scales = [];
-                    foreach ($questions as $question) {
-                        if (($suffix[$question->scale_id] ?? null) === $question->title) {
-                            $scales[$question->scale_id] = $question->qid;
-                        }
-                    }
-                    $suffixText = "";
-                    for ($index = 0; $index < count($scales); $index++) {
-                        $suffixText .= "_S" . $scales[$index];
-                    }
-                    $newFieldName = "Q{$qid}" . $suffixText;
-                }
-                break;
-            case \Question::QT_D_DATE:
-            case \Question::QT_G_GENDER:
-            case \Question::QT_I_LANGUAGE:
-            case \Question::QT_S_SHORT_FREE_TEXT:
-            case \Question::QT_T_LONG_FREE_TEXT:
-            case \Question::QT_U_HUGE_FREE_TEXT:
-            case \Question::QT_X_TEXT_DISPLAY:
-            case \Question::QT_Y_YES_NO_RADIO:
-            case \Question::QT_VERTICAL_FILE_UPLOAD:
-            case \Question::QT_ASTERISK_EQUATION:
-                $isRoot = ((strpos($tableName, "timings") !== false) || (($rootQuestion->parent_qid ?? 0) == "0"));
-                $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$rootQuestion->parent_qid}");
-                $suffix = "";
-                $isComment = false;
-                if (!$isRoot) {
+            }
+            $qid = $rootQuestion->qid;
+            switch ($rootQuestion->type) {
+                case \Question::QT_1_ARRAY_DUAL:
+                case \Question::QT_5_POINT_CHOICE:
+                case \Question::QT_L_LIST:
+                case \Question::QT_M_MULTIPLE_CHOICE:
+                case \Question::QT_N_NUMERICAL:
+                case \Question::QT_O_LIST_WITH_COMMENT:
+                case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                    $currentQuestion = null;
                     $length = strlen("{$sid}X{$gid}X{$qid}");
                     $hashPos = strpos($fieldName, '#');
-                    $code = substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : 2000);
-                    $suffix = "_C{$code}";
                     foreach ($questions as $question) {
-                        if ($question->title === $code) {
-                            $suffix = "_S{$question->qid}";
-                        } elseif ($question->title . "comment" === $code) {
-                            $suffix = "_S{$question->qid}";
-                            $isComment = true;
+                        if ($hashPos && ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null))) {
+                            $currentQuestion = $question;
+                        } elseif ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
+                            $currentQuestion = $question;
                         }
                     }
-                }
-                $newFieldName .= $suffix;
-                if (strpos($fieldName, "time") !== false) {
-                    $newFieldName .= "_Ctime";
-                } elseif (strpos($fieldName, "filecount") !== false) {
-                    $newFieldName .= "_Cfilecount";
-                }
-                if ($isComment) {
-                    $newFieldName .= "_Ccomment";
-                }
-                break;
-            case \Question::QT_R_RANKING:
-                $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "R");
-                $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
-                $aid = $cd ? $index : $questions[0]->answers[(substr($fieldName, strlen("{$sid}X{$gid}X{$qid}")) - 1)]->aid;
-                $newFieldName = "Q{$qid}_{$prefix}" . $aid;
-                break;
+                    $hashTags = explode("#", $fieldName);
+                    if ((!$currentQuestion) && ($rootQuestion->type === \Question::QT_M_MULTIPLE_CHOICE) && ($length < strlen($hashTags[0]))) {
+                        $currentQuestion = \Question::model()->find("parent_qid = {$qid} and title = :title", [
+                            ":title" => substr($hashTags[0], $length)
+                        ]);
+                    }
+                    if (!$currentQuestion) {
+                        $newFieldName = "Q{$qid}";
+                        if (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
+                            $newFieldName .= "_C" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                        }
+                    } else {
+                        $newFieldName = "Q{$qid}_S{$currentQuestion->qid}";
+                        if (count($hashTags)) {
+                            for ($index = 1; $index < count($hashTags); $index++) {
+                                $newFieldName .= "#{$hashTags[$index]}";
+                            }
+                        }
+                    }
+                    break;
+                case \Question::QT_A_ARRAY_5_POINT:
+                case \Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+                case \Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+                case \Question::QT_E_ARRAY_INC_SAME_DEC:
+                case \Question::QT_F_ARRAY:
+                case \Question::QT_H_ARRAY_COLUMN:
+                case \Question::QT_K_MULTIPLE_NUMERICAL:
+                case \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                case \Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                    $code = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                    if ($code === '') {
+                        return "Q{$qid}";
+                    }
+                    $commentText = false;
+                    $currentQuestion = null;
+                    $excludeSubquestion = false;
+                    foreach ($questions as $question) {
+                        if ($question->title === $code) {
+                            $currentQuestion = $question;
+                        } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
+                            $currentQuestion = $question;
+                            $commentText = $code;
+                            if (strpos($code, $question->title) === 0) {
+                                $commentText = substr($code, strlen($question->title));
+                            } else {
+                                $excludeSubquestion = true;
+                            }
+                        }
+                    }
+                    if ($currentQuestion) {
+                        $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
+                        if ($commentText) {
+                            $newFieldName = $newFieldName . "_C" . $commentText;
+                        }
+                    }
+                    break;
+                case \Question::QT_SEMICOLON_ARRAY_TEXT:
+                case \Question::QT_COLON_ARRAY_NUMBERS:
+                    $scales = [0 => [], 1 => []];
+                    foreach ($questions as $question) {
+                        if ($question->parent_qid != 0) {
+                            $scales[$question->scale_id][$question->title] = $question->qid;
+                        }
+                    }
+                    $partialFieldName = substr($fieldName, 0, strlen("{$sid}X{$gid}X{$qid}"));
+                    foreach ($scales[0] as $title1 => $qid1) {
+                        if (count($scales[1])) {
+                            foreach ($scales[1] as $title2 => $qid2) {
+                                if ($fieldName === "{$partialFieldName}{$title1}_{$title2}") {
+                                    return "Q{$qid}_S{$qid1}_S{$qid2}";
+                                }
+                            }
+                        } elseif ($fieldName === "{$partialFieldName}{$title1}") {
+                            return "Q{$qid}_S{$qid1}";
+                        }
+                    }
+                    break;
+                case \Question::QT_D_DATE:
+                case \Question::QT_G_GENDER:
+                case \Question::QT_I_LANGUAGE:
+                case \Question::QT_S_SHORT_FREE_TEXT:
+                case \Question::QT_T_LONG_FREE_TEXT:
+                case \Question::QT_U_HUGE_FREE_TEXT:
+                case \Question::QT_X_TEXT_DISPLAY:
+                case \Question::QT_Y_YES_NO_RADIO:
+                case \Question::QT_VERTICAL_FILE_UPLOAD:
+                case \Question::QT_ASTERISK_EQUATION:
+                    $isRoot = (($rootQuestion->parent_qid ?? 0) == "0");
+                    $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$rootQuestion->parent_qid}");
+                    $suffix = "";
+                    $isComment = false;
+                    if (!$isRoot) {
+                        $length = strlen("{$sid}X{$gid}X{$qid}");
+                        $hashPos = strpos($fieldName, '#');
+                        $code = substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : 2000);
+                        $suffix = "_C{$code}";
+                        foreach ($questions as $question) {
+                            if ($question->title === $code) {
+                                $suffix = "_S{$question->qid}";
+                            } elseif ($question->title . "comment" === $code) {
+                                $suffix = "_S{$question->qid}";
+                                $isComment = true;
+                            }
+                        }
+                    }
+                    $clearIfLong = true;
+                    $newFieldName .= $suffix;
+                    if (strpos($fieldName, "time") !== false) {
+                        $newFieldName .= "_Ctime";
+                        $clearIfLong = false;
+                    } elseif (strpos($fieldName, "filecount") !== false) {
+                        $newFieldName .= "_Cfilecount";
+                        $clearIfLong = false;
+                    }
+                    if ($isComment) {
+                        $newFieldName .= "_Ccomment";
+                    } elseif ($isRoot && $clearIfLong && (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}"))) {
+                        $newFieldName = "";
+                    }
+                    break;
+                case \Question::QT_R_RANKING:
+                    $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "S");
+                    $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                    try {
+                        $rankingSuffix = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                        $iRankingSuffix = intval($rankingSuffix);
+                        $subQuestions = \Question::model()->findAll([
+                            'condition' => "parent_qid = :qid",
+                            'params' => [":qid" => $qid],
+                            'order' => 'question_order'
+                        ]);
+                        if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
+                            $qid = $cd ? $index : $subQuestions[($iRankingSuffix - 1)]->qid;
+                            $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
+                        } else if (count($subQuestions)) {
+                            $minSortOrder = $subQuestions[0]->question_order;
+                            $diff = 0;
+                            if ($minSortOrder === 0) {
+                                $diff = -1;
+                            } elseif ($minSortOrder > 1) {
+                                $diff = $minSortOrder;
+                            }
+                            foreach ($subQuestions as $question) {
+                                if (($rankingSuffix == $question->title) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question->question_order))) {
+                                    return "Q{$rootQuestion->qid}_{$prefix}{$question->qid}";
+                                }
+                            }
+                        }
+                    } catch (\Exception $ex) {
+                        // Ignore inconsistencies in archive rankings
+                        if (strpos($tableName, 'old') === false) {
+                            throw $ex;
+                        }
+                    }
+                    break;
+            }
+            if ($newFieldName) {
+                return $newFieldName;
+            }
         }
     }
-    return $newFieldName;
+    return $newFieldName ?? $fieldName;
 }
 
 
@@ -1495,7 +1526,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 {
 
     static $aQIDReplacementMappings = [];
-    $sLanguage = sanitize_languagecode($sLanguage);
+    $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
     $surveyid = $survey->sid;
     if (!isset($aQIDReplacementMappings[$surveyid])) {
         $aQIDReplacementMappings[$surveyid] = $surveyReplacements;
@@ -1658,7 +1689,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     . " g.sid={$surveyid} AND"
     . " q.parent_qid=0";
     if ($questionid !== false) {
-        $aquery .= " and questions.qid={$questionid} ";
+        $aquery .= " and q.qid={$questionid} ";
     }
     $aquery .= " ORDER BY group_order, question_order";
     /** @var Question[] $questions */
@@ -1743,7 +1774,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         'sid' => $surveyid,
                         "gid" => $arow['gid'],
                         "qid" => $arow['qid'],
-                        "aid" => "_Cother");
+                        "aid" => "other");
                         if (isset($answerColumnDefinition)) {
                             $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                         }
@@ -1777,7 +1808,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     'sid' => $surveyid,
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
-                    "aid" => "_Ccomment");
+                    "aid" => "comment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }
@@ -1927,22 +1958,25 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
         } elseif ($arow['type'] == Question::QT_R_RANKING) {
-            // Sub question by answer number OR attribute
-            $answers = Answer::model()->findAll('qid = :qid', [':qid' => $arow['qid']]);
-            $answersCount = count($answers);
-            $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
-            $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
-            $columnsCount = min($columnsCount, $answersCount); // Can not be upper than current answers #14899
-
-            if($includeAllAnswerOptions)
-                $columnsCount = $answersCount;
-
-            for ($i = 1; $i <= $columnsCount; $i++) {
-                $fieldname = "Q{$arow['qid']}_R" . $answers[$i - 1]->aid;
+            // Ranking questions now use subquestions instead of answer options
+            $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
+            $i = 0;
+            foreach ($abrows as $abrow) {
+                $i++;
+                $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $answers[$i - 1]->aid, "suffix" => "_R" . $answers[$i - 1]->aid, 'csuffix' => $i);
+                $fieldmap[$fieldname] = array(
+                    "fieldname" => $fieldname,
+                    'type' => $arow['type'],
+                    'sid' => $surveyid,
+                    "gid" => $arow['gid'],
+                    "qid" => $arow['qid'],
+                    "sqid" => $abrow['qid'],
+                    "aid" => $i,
+                    "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
+                );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1958,6 +1992,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+                    $fieldmap[$fieldname]['sqid'] = $abrow['qid'];
+                    $fieldmap[$fieldname]['SQrelevance'] = $abrow['relevance'];
                 }
             }
         } elseif ($arow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
@@ -2189,7 +2225,7 @@ function hasFileUploadQuestion($iSurveyID)
 * @param string $surveyid The Survey ID
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
-* @param int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param int|false $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sQuestionLanguage The language to use
 * @return array
 */
@@ -2197,7 +2233,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
 {
     static $timingsFieldMap;
 
-    $sLanguage = sanitize_languagecode($sQuestionLanguage);
+    $sLanguage = \LSYii_Validators::languageCodeFilter($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
     $survey = Survey::model()->findByPk($surveyid);
 
@@ -2210,7 +2246,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     }
 
     //do something
-    $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sQuestionLanguage);
+    $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sLanguage);
     $fieldmap = [];
     $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
     foreach ($fields as $field) {
@@ -2232,6 +2268,29 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     $timingsFieldMap[$surveyid][$style][$sLanguage] = $fieldmap;
     App()->setLanguage($sOldLanguage);
     return $timingsFieldMap[$surveyid][$style][$sLanguage];
+}
+
+/**
+ * Gets subquestions mapped to their titles
+ * @param mixed $sid the survey id
+ * @return array<array> Two levels, the first level is the parent qid and the second is the title
+ */
+function getTitleSubquestionMapping($sid)
+{
+    static $questionMap;
+    if (!isset($questionMap[$sid])) {
+        $questionMap[$sid] = [];
+        $rawQuestions = Question::model()->with('questionl10ns')->findAll('sid = :sid', [":sid" => $sid]);
+        foreach ($rawQuestions as $rawQuestion) {
+            if ($rawQuestion->parent_qid) {
+                if (!isset($questionMap[$sid][$rawQuestion->parent_qid])) {
+                    $questionMap[$sid][$rawQuestion->parent_qid] = [];
+                }
+                $questionMap[$sid][$rawQuestion->parent_qid][$rawQuestion->title] = $rawQuestion;
+            }
+        }
+    }
+    return $questionMap[$sid];
 }
 
 /**
@@ -2288,7 +2347,7 @@ function buildLabelSetCheckSumArray()
 * @author: lemeur
 * @param $questionAttributeArray
 * @param string $attributeName
-* @param $language string Optional: The language if the particualr attributes is localizable
+* @param $language string Optional: The language if the particular attributes is localizable
 * @return string
 */
 function getQuestionAttributeValue($questionAttributeArray, $attributeName, $language = '')
@@ -2365,78 +2424,6 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
     }
     return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
 }
-
-/**
-* This function mails a text $body to the recipient $to.
-* You can use more than one recipient when using a semicolon separated string with recipients.
-* @deprecated : leave it in 4.0 for plugins ? Must remove in 5.0 at minima.
-*
-* @param string $body Body text of the email in plain text or HTML
-* @param mixed $subject Email subject
-* @param mixed $to Array with several email addresses or single string with one email address
-* @param string $from
-* @param mixed $sitename
-* @param boolean $ishtml
-* @param mixed $bouncemail
-* @param mixed $attachments
-* @return bool If successful returns true
-*/
-function SendEmailMessage($body, $subject, $to, string $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
-{
-    global $maildebug;
-
-    if (!is_array($to)) {
-        $to = array($to);
-    }
-
-    if (!is_array($customheaders) && $customheaders == '') {
-        $customheaders = array();
-    }
-
-    $mail =  new LimeMailer();
-    $mail->emailType = 'deprecated';
-
-    $fromname = '';
-    $fromemail = $from;
-    if (strpos($from, '<')) {
-        $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
-        $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
-    }
-    if (is_null($bouncemail)) {
-        $senderemail = $fromemail;
-    } else {
-        $senderemail = $bouncemail;
-    }
-
-    $mail->SetFrom($fromemail, $fromname);
-    $mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    foreach ($to as $singletoemail) {
-        $mail->addAddress($singletoemail);
-    }
-    if (is_array($customheaders)) {
-        foreach ($customheaders as $key => $val) {
-            $mail->AddCustomHeader($val);
-        }
-    }
-    $mail->Subject = $subject;
-    $mail->Body = $body;
-    $mail->IsHTML($ishtml);
-    // Add attachments if they are there.
-    if (is_array($attachments)) {
-        foreach ($attachments as $attachment) {
-            // Attachment is either an array with filename and attachment name.
-            if (is_array($attachment)) {
-                $mail->AddAttachment($attachment[0], $attachment[1]);
-            } else {
-                // Or a string with the filename.
-                $mail->AddAttachment($attachment);
-            }
-        }
-    }
-    $mail->Subject = $subject;
-    return $mail->Send();
-}
-
 
 /**
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
@@ -2765,9 +2752,13 @@ function incompleteAnsFilterState()
 
 /**
 * isCaptchaEnabled($screen, $usecaptchamode)
+* @deprecated Use Survey::isCaptchaEnabled($screen) with a loaded survey model.
+*             This helper only receives the packed usecaptcha value, so it
+*             cannot guarantee inheritance has already been resolved.
 * @param string $screen - the screen name for which to test captcha activation
+* @param string $captchamode - packed usecaptcha value
 *
-* @return boolean|null - returns true if captcha must be enabled
+* @return bool - returns true if captcha must be enabled
 **/
 function isCaptchaEnabled($screen, $captchamode = '')
 {
@@ -2927,10 +2918,10 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     if ($sType == 'survey') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         if ($isLocalPath) {
-            $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+            $sReplace = rtrim(Yii::app()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
             return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
         } else {
-            // Make the replacement conditionaly.
+            // Make the replacement conditionally.
             // If the URL is absolute, make sure we keep it absolute.
             // If it is relative, use the publicurl config (if the publicurl is absolute we assume it
             // makes sense to make the urls absolute)
@@ -2939,9 +2930,9 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
                 $parsedUrl = parse_url($url);
                 $replacementUrl = "/upload/surveys/{$iNewSurveyID}/";
                 if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
-                    return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+                    return rtrim(Yii::app()->getPublicBaseUrl(true), "/") . $replacementUrl;
                 } else {
-                    return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                    return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
                 }
             }, $sString);
         }
@@ -2954,7 +2945,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
             if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
                 return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
             } else {
-                return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
             }
         }, $sString);
     } else // unknown type
@@ -2963,6 +2954,36 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     }
 }
 
+/**
+* Translate links which are in any email template set to their new counterpart
+* Used only for local file
+*
+* @param mixed $iOldSurveyID Source SurveyId to be replaced
+* @param mixed $iNewSurveyID New SurveyId to be used
+* @param string $sString Link (local path) to be translated
+* @return string
+*/
+function translateJsonLinks($iOldSurveyID, $iNewSurveyID, $sString)
+{
+    if ($sString == '') {
+        return $sString;
+    }
+    /* Avoid regexp injection */
+    $iOldSurveyID = (int) $iOldSurveyID;
+    $iNewSurveyID = (int) $iNewSurveyID;
+    $decodedString = json_decode($sString, true);
+    if (empty($decodedString) || !is_array($decodedString)) {
+        return $sString;
+    }
+    $sPattern = '(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
+    $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+    array_walk_recursive($decodedString, function (&$value) use ($sPattern, $sReplace) {
+        if (is_string($value)) {
+            $value = preg_replace('/' . $sPattern . '/u', $sReplace, $value);
+        }
+    });
+    return json_encode($decodedString);
+}
 /**
  * Returns true if there are old links in answer/question/survey/email template/label set texts.
  *
@@ -3012,7 +3033,7 @@ function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQID
         $forceRefresh = false;
     }
     $dupes = [];
-    $aFieldMap = createFieldMap($oNewSurvey, 'short', $forceRefresh, false, $oNewSurvey->language, $dupes ,$aQIDReplacements);
+    $aFieldMap = createFieldMap($oNewSurvey, 'short', $forceRefresh, false, $oNewSurvey->language, $dupes, $aQIDReplacements);
 
     $aFieldMappings = array();
     foreach ($aFieldMap as $sFieldname => $aFieldinfo) {
@@ -3192,15 +3213,40 @@ function getParticipantAttributes($iSurveyID)
     return getTokenFieldsAndNames($iSurveyID, true);
 }
 
+/**
+ * Decodes and formats attribute select options from JSON string to associative array.
+ *
+ * This method checks if the 'type_options' key exists in the provided attribute data array
+ * and if it contains a JSON string. If so, it decodes the JSON and converts a numeric array
+ * into an associative array where each value serves as both the key and value. This is useful
+ * for formatting select/dropdown options for form rendering.
+ *
+ * @param array $attrData The attribute data array that may contain a 'type_options' key with JSON string value
+ * @return array The modified attribute data array with decoded and formatted type_options, or the original array if no changes were made
+ */
+function decodeAttributeSelectOptions(array $attrData)
+{
+    if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
+        static $attributeService = null;
+        if ($attributeService === null) {
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
+        }
+        $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
+        // Always normalize to array for downstream form rendering (even if empty / invalid -> []).
+        $attrData['type_options'] = $decodedOptions;
+    }
 
-
-
+    return $attrData;
+}
 
 /**
 * Retrieves the attribute names from the related survey participant list
 *
 * @param mixed $surveyid  The survey ID
-* @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
+* @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribute fields - defaults to false
 * @return array The fieldnames as key and names as value in an Array
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
@@ -3281,6 +3327,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         } elseif (empty($aSavedExtraTokenFields[$sField]['description'])) {
             $aSavedExtraTokenFields[$sField]['description'] = $sField;
         }
+        $aSavedExtraTokenFields[$sField] = decodeAttributeSelectOptions($aSavedExtraTokenFields[$sField]);
     }
     if ($bOnlyAttributes) {
         return $aSavedExtraTokenFields;
@@ -3428,7 +3475,7 @@ function cleanTwigCacheDirectory()
 }
 
 /**
-* This is a convenience function for the coversion of datetime values
+* This is a convenience function for the conversion of datetime values
 *
 * @param mixed $value
 * @param string $fromdateformat
@@ -3448,7 +3495,7 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 
 /**
 * This is a convenience function to convert any date, in any date format, to the global setting date format
-* Check if the time shoul be rendered also
+* Check if the time should be rendered also
 *
 * @param string $sDate
 * @param boolean $withTime
@@ -3593,7 +3640,7 @@ function enforceSSLMode()
     (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO'] == "https") ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == "https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true) {
-        $bForceSSL = strtolower((string) getGlobalSetting('force_ssl'));
+        $bForceSSL = strtolower((string) Yii::app()->getConfig('force_ssl'));
     }
     if ($bForceSSL == 'on' && !$bSSLActive) {
         SSLRedirect('s');
@@ -3753,21 +3800,6 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
         return $sResult;
     }
 }
-
-/**
-* Include Keypad headers
-*/
-function includeKeypad()
-{
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir') . '/vendor/jquery-keypad/jquery.keypad-' . App()->language . '.js';
-    if (App()->language != 'en' && file_exists($localefile)) {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
-    }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
-}
-
 
 /**
 * This function replaces the old insertans tags with new ones across a survey
@@ -4056,13 +4088,13 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = sanitize_languagecode($baselang);
+    $baselang = \LSYii_Validators::languageCodeFilter($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
     }
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
-        $availlangs = sanitize_languagecodeS($availlangs);
+        $availlangs = \LSYii_Validators::multiLanguageCodeFilter($availlangs);
         $aLanguages = explode(" ", (string) $availlangs);
         if ($aLanguages[count($aLanguages) - 1] == "") {
             array_pop($aLanguages);
@@ -4116,12 +4148,12 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
-    $baselang = sanitize_languagecode($baselang);
+    $baselang = \LSYii_Validators::languageCodeFilter($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($sid)->language;
     }
     if (trim($availlangs) != '') {
-        $availlangs = sanitize_languagecodeS($availlangs);
+        $availlangs = \LSYii_Validators::multiLanguageCodeFilter($availlangs);
         $languagesToCheck = explode(" ", (string) $availlangs);
         if ($languagesToCheck[count($languagesToCheck) - 1] == "") {
             array_pop($languagesToCheck);
@@ -4254,7 +4286,7 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 }
 
 /**
- * Retrieves the last Insert ID realiable for cross-DB applications
+ * Retrieves the last Insert ID reliable for cross-DB applications
  *
  * @param string $sTableName Needed for Postgres and MSSQL
  * @return string
@@ -4277,9 +4309,9 @@ function getLastInsertID($sTableName)
 * @param string $targgid - (optional) get only the dependencies for groups dependents on group targgid
 * @param string $indexby - (optional) "by-depgid" for result indexed with $res[$depgid][$targgid]
 *                   "by-targgid" for result indexed with $res[$targgid][$depgid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
+* @return array - returns an array describing the conditions or NULL if no dependency is found
 *
-* Example outupt assumin $index-by="by-depgid":
+* Example output assuming $index-by="by-depgid":
 *Array
 *(
 *    [125] => Array             // Group Id 125 is dependent on
@@ -4397,14 +4429,14 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
 /**
 * getQuestDepsForConditions() get Dependencies between groups caused by conditions
 * @param string $sid - the currently selected survey
-* @param string $gid - (optional) only search dependecies inside the Group Id $gid
+* @param string $gid - (optional) only search dependencies inside the Group Id $gid
 * @param string $depqid - (optional) get only the dependencies applying to the question with qid depqid
 * @param string $targqid - (optional) get only the dependencies for questions dependents on question Id targqid
 * @param string $indexby - (optional) "by-depqid" for result indexed with $res[$depqid][$targqid]
 *                   "by-targqid" for result indexed with $res[$targqid][$depqid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
+* @return array - returns an array describing the conditions or NULL if no dependency is found
 *
-* Example outupt assumin $index-by="by-depqid":
+* Example output assuming $index-by="by-depqid":
 *Array
 *(
 *    [184] => Array     // Question Id 184
@@ -4603,7 +4635,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 */
 function shouldFilterUserGroupList()
 {
-    $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
+    $bUserControlSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy', true);
     $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
     return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
 }
@@ -4730,7 +4762,7 @@ function getLabelSets($languages = null)
 {
     $aLanguages = array();
     if (!empty($languages)) {
-        $languages = sanitize_languagecodeS($languages);
+        $languages = \LSYii_Validators::multiLanguageCodeFilter($languages);
         $aLanguages = explode(' ', trim((string) $languages));
     }
 
@@ -4768,7 +4800,7 @@ function getHeader($meta = false)
     $oSurvey = Survey::model()->findByPk($surveyid);
     Yii::app()->loadHelper('surveytranslator');
 
-    // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
+    // Set Language // TODO remove one of the Yii::app()->session see bug #5901
     if (Yii::app()->session['responses_' . $surveyid]['s_lang']) {
         $languagecode = Yii::app()->session['responses_' . $surveyid]['s_lang'];
     } elseif (isset($surveyid) && $surveyid && $oSurvey) {
@@ -4883,17 +4915,21 @@ function ls_json_encode($content)
 }
 
 /**
- * Decode a json string, sometimes needs stripslashes
+ * Decodes a json string, sometimes needs stripslashes
  *
  * @param string $jsonString
  * @return mixed
  */
 function json_decode_ls($jsonString)
 {
+    if ($jsonString === null) {
+        return null;
+    }
+
     $decoded = json_decode($jsonString, true);
 
     if (is_null($decoded) && !empty($jsonString)) {
-        // probably we need stipslahes
+        // probably we need stripslashes
         $decoded = json_decode(stripslashes($jsonString), true);
     }
 
@@ -5150,7 +5186,7 @@ function decodeTokenAttributes(string $tokenAttributeData)
         return array();
     }
     if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
-        if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
+        if (!Yii::app()->getConfig('allow_unserialize_attributedescriptions')) {
             return array();
         }
         // minimal broken securisation, mantis issue #20144
@@ -5279,7 +5315,7 @@ function createRandomTempDir($dir = null, $prefix = '', $mode = 0700)
 
 /**
  * Generate a random string, using openssl if available, else using md5
- * @param  int    $length wanted lenght of the random string (only for openssl mode)
+ * @param  int    $length wanted length of the random string (only for openssl mode)
  * @return string
  */
 function getRandomString($length = 32)
@@ -5454,9 +5490,16 @@ function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &
  */
 function standardDeviation(array $numbers): float
 {
-    // Filter empty "" records
-    $numbers = array_filter($numbers);
+    // Filter empty ("" and null) records (keeping zeroes)
+    $numbers = array_filter($numbers, fn($value) => $value !== "" && $value !== null);
     $numberOfElements = count($numbers);
+
+    if ($numberOfElements === 0) {
+        /**
+         * @todo Should this be null? Function signature says float
+         */
+        return 0.0;
+    }
 
     $variance = 0.0;
     $average = array_sum($numbers) / $numberOfElements;
@@ -5519,57 +5562,95 @@ function csvEscape($string)
 }
 
 /**
- * Convert legacy INSERTANS tags to modern question code references
+ * Convert legacy INSERTANS tags to modern question code references.
  *
- * Converts {INSERTANS:SIDXGIDXQID} format to questionTitle.shown format
+ * The result is wrapped in curly braces only when the source tag also used curly braces.
+ *
+ * When the QID+suffix boundary is ambiguous (e.g. purely numeric suffixes in array
+ * questions like {INSERTANS:136212X36X10921}), the function progressively tries
+ * shorter QID values until a known QID is found, treating the remainder as suffix.
+ *
  * Examples:
- * - {INSERTANS:554233X11X1} → G01Q02.shown (if QID 1 exists)
- * - {INSERTANS:554233X11X11} → {INSERTANS:554233X11X11} (if QID 11 doesn't exist)
- * - {INSERTANS:554233X11X1someText} → someText.shown (if QID 1 exists)
- * - {INSERTANS:554233X11X11someText} → {INSERTANS:554233X11X11someText} (if QID 11 doesn't exist)
+ * - {INSERTANS:554233X11X1}        → {G01Q02.shown}          (with braces, QID exists)
+ * - INSERTANS:554233X11X1          → G01Q02.shown             (without braces, QID exists)
+ * - {INSERTANS:554233X11X99}       → {INSERTANS:554233X11X99} (unchanged, QID not found)
+ * - {INSERTANS:554233X11X1other}   → {G01Q02_other.shown}    (other field)
+ * - {INSERTANS:554233X11X1comment} → {G01Q02_comment.shown}  (comment field)
+ * - {INSERTANS:554233X11X1SQ001}   → {G01Q02_SQ001.shown}    (subquestion suffix)
+ * - {INSERTANS:136212X36X10921}    → {qArray5Point_1.shown}   (numeric suffix, QID=1092)
+ * - {INSERTANS:136212X36X1098money#0} → {qArrayDualScale_money_0.shown} (dual scale, # → _)
  *
  * @param string $text The text containing INSERTANS tags
- * @param array $questions The list of all questions
- * @param array $newOldSurveyQuestionMap The mapping between the old question IDs and the new question IDs in the new survey
- * @return string The text with INSERTANS tags converted
+ * @param array $questions The list of all question objects (parent and subquestions)
+ * @param array $newOldSurveyQuestionMap Mapping from new question IDs to old question IDs
+ * @return string The text with INSERTANS tags converted to qcode.shown format
  */
 function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuestionMap = [])
 {
-    $txtInsertans = "{INSERTANS:";
-
-    if (empty($text) || !str_contains($text, $txtInsertans) || empty($questions) || empty($newOldSurveyQuestionMap)) {
+    if (empty($text) || !str_contains($text, 'INSERTANS:') || empty($questions)) {
         return $text;
     }
 
-    $questionCodes = [];
+    // Map old QID → question title, built via the new→old mapping.
+    // Only parent questions (parent_qid = 0) are included, because INSERTANS
+    // references parent QIDs with the subquestion code as suffix.
+    $questionCodesByOldQid = [];
     foreach ($questions as $question) {
-        $questionCodes[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
-    }
-
-    $insertansPos = strpos($text, $txtInsertans);
-    if ($insertansPos !== false) {
-        $insertansParts = explode($txtInsertans, $text);
-        for ($index = 1; $index < count($insertansParts); $index++) {
-            $curlyPosition = strpos($insertansParts[$index], "}");
-            $rawField = substr($insertansParts[$index], 0, $curlyPosition);
-            $content = (strlen($insertansParts[$index]) === $curlyPosition) ? "" : substr($insertansParts[$index], $curlyPosition + 1);
-            $subField = substr($rawField, strpos($rawField, "X") + 1);
-            $title = substr($subField, strpos($subField, "X") + 1);
-            if (preg_match('/^(\d+)([a-zA-Z].*)$/', $title, $match)) {
-                $oldQid = (int) $match[1];
-                $title = $match[2];
-                if(!isset($questionCodes[$oldQid]))
-                    $title = "";
-            } else {
-                $title = $questionCodes[$title] ?? "";
-            }
-            $insertansParts[$index] = !empty($title) ?  $title . ".shown" . $content : $txtInsertans . $rawField . '}' . $content;
+        if (!empty($newOldSurveyQuestionMap[$question->qid]) && empty($question->parent_qid)) {
+            $questionCodesByOldQid[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
         }
-
-        return implode($insertansParts);
     }
 
-    return $text;
+    return preg_replace_callback(
+        '/(\{?)INSERTANS:([^}\s]+)\}?/',
+        static function ($matches) use ($questionCodesByOldQid) {
+            $hasBraces = $matches[1] === '{';
+            $rawField  = $matches[2];
+
+            // Only old SGQA format is supported: SIDXGIDXQID[suffix]
+            if (!preg_match('/^(\d+)X(\d+)X(\d+)(.*)$/', $rawField, $m)) {
+                return $matches[0]; // Not a recognised format – leave unchanged
+            }
+
+            $qidPart = $m[3];
+            $suffix  = $m[4];
+
+            // Resolve QID: the regex greedily captures all digits into $qidPart,
+            // but for array-type questions the suffix can be purely numeric
+            // (e.g. "10921" = QID 1092 + suffix "1"). Try the full number first,
+            // then progressively shorten $qidPart, moving trailing digits to $suffix.
+            $parentTitle = null;
+            $resolvedSuffix = $suffix;
+            for ($i = strlen($qidPart); $i >= 1; $i--) {
+                $tryQid    = (int) substr($qidPart, 0, $i);
+                $trySuffix = substr($qidPart, $i) . $suffix;
+                if (isset($questionCodesByOldQid[$tryQid])) {
+                    $parentTitle    = $questionCodesByOldQid[$tryQid];
+                    $resolvedSuffix = $trySuffix;
+                    break;
+                }
+            }
+
+            if ($parentTitle === null) {
+                return $matches[0]; // QID not found – leave unchanged
+            }
+
+            // Dual-scale arrays use '#' as separator (e.g. "money#0"), convert to '_'
+            $resolvedSuffix = str_replace('#', '_', $resolvedSuffix);
+
+            if ($resolvedSuffix === '') {
+                $qcode = $parentTitle . '.shown';
+            } else {
+                // Suffix is a subquestion code (e.g. SQ001, other, comment, F1, 1, ls1)
+                // If the suffix already starts with '_' (e.g. "_filecount"), don't add another one
+                $separator = str_starts_with($resolvedSuffix, '_') ? '' : '_';
+                $qcode = $parentTitle . $separator . $resolvedSuffix . '.shown';
+            }
+
+            return $hasBraces ? '{' . $qcode . '}' : $qcode;
+        },
+        $text
+    );
 }
 
 /**
@@ -5580,7 +5661,7 @@ function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuest
 function sortByKeyLengthDescending($input)
 {
     $keys = array_keys($input);
-    usort($keys, function($a, $b) {
+    usort($keys, function ($a, $b) {
         return strlen($b) - strlen($a);
     });
     $output = [];

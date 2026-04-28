@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhHtml5Editor widget
  *
@@ -12,6 +13,7 @@
  * @package YiiWheels.widgets.highcharts
  * @uses YiiStrap.helpers.TbArray
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhHtml5Editor extends CInputWidget
@@ -44,16 +46,16 @@ class WhHtml5Editor extends CInputWidget
 
     public function init()
     {
-    
-    	$this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
-    
-    	if (!$style = TbArray::popValue('style', $this->htmlOptions, '')) {
-    		$this->htmlOptions['style'] = $style;
-    	}
-    
-    	$width                      = TbArray::getValue('width', $this->htmlOptions, '100%');
-    	$height                     = TbArray::popValue('height', $this->htmlOptions, '450px');
-    	$this->htmlOptions['style'] = "width:{$width};height:{$height};" . $this->htmlOptions['style'];
+
+        $this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
+
+        if (!$style = TbArray::popValue('style', $this->htmlOptions, '')) {
+            $this->htmlOptions['style'] = $style;
+        }
+
+        $width                      = TbArray::getValue('width', $this->htmlOptions, '100%');
+        $height                     = TbArray::popValue('height', $this->htmlOptions, '450px');
+        $this->htmlOptions['style'] = "width:{$width};height:{$height};" . $this->htmlOptions['style'];
     }
 
     /**
@@ -68,13 +70,15 @@ class WhHtml5Editor extends CInputWidget
 
         $this->registerClientScript();
 
-        if (!array_key_exists('style', $this->htmlOptions))
+        if (!array_key_exists('style', $this->htmlOptions)) {
             $this->htmlOptions['style'] = "width:{$this->width};height:{$this->height};";
+        }
         // Do we have a model?
-        if ($this->hasModel())
+        if ($this->hasModel()) {
             echo CHtml::activeTextArea($this->model, $this->attribute, $this->htmlOptions);
-        else
+        } else {
             echo CHtml::textArea($name, $this->value, $this->htmlOptions);
+        }
     }
 
     /**
@@ -112,7 +116,6 @@ class WhHtml5Editor extends CInputWidget
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
 
         $this->getApi()->registerPlugin('wysihtml5', $selector, $this->pluginOptions);
-
     }
 
     /**
@@ -120,13 +123,14 @@ class WhHtml5Editor extends CInputWidget
      */
     private function normalizeStylesheetsProperty()
     {
-        if (empty($this->pluginOptions['stylesheets']))
+        if (empty($this->pluginOptions['stylesheets'])) {
             $this->pluginOptions['stylesheets'] = array();
-        else if (is_array($this->pluginOptions['stylesheets']))
+        } elseif (is_array($this->pluginOptions['stylesheets'])) {
             $this->pluginOptions['stylesheets'] = array_filter($this->pluginOptions['stylesheets'], 'is_string');
-        else if (is_string($this->pluginOptions['stylesheets']))
+        } elseif (is_string($this->pluginOptions['stylesheets'])) {
             $this->pluginOptions['stylesheets'] = array($this->pluginOptions['stylesheets']);
-        else
+        } else {
             $this->pluginOptions['stylesheets'] = array();
+        }
     }
 }

@@ -881,13 +881,13 @@ class SurveyCondition
                 } //foreach
             } elseif ($rows['type'] == \Question::QT_R_RANKING) {
                 //Answer Ranking
-                $aresult = \Answer::model()->with(array(
-                            'answerl10ns' => array(
-                                'condition' => 'answerl10ns.language = :lang',
+                $aresult = \Question::model()->with(array(
+                            'questionl10ns' => array(
+                                'condition' => 'questionl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(
                                 array(
-                                    "qid" => $rows['qid'],
+                                    "parent_qid" => $rows['qid'],
                                     "scale_id" => 0,
                                 )
                             );
@@ -896,8 +896,8 @@ class SurveyCondition
 
                 $quicky = [];
                 foreach ($aresult as $arow) {
-                    $theanswer = $arow->answerl10ns[$this->language]->answer;
-                    $quicky[] = array($arow['code'], $theanswer);
+                    $thesubquestion = $arow->questionl10ns[$this->language]->question;
+                    $quicky[] = array($arow['title'], $thesubquestion);
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
@@ -932,8 +932,8 @@ class SurveyCondition
                     $shortanswer .= "[" . gT("Single checkbox") . "]";
                     $shortquestion = $rows['title'] . ":$shortanswer " . strip_tags((string) $rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+" . $fieldNameWithTitle);
-                    $canswers[] = array("+" . $fieldNameWithTitle, 'Y', gT("checked"));
-                    $canswers[] = array("+" . $fieldNameWithTitle, '', gT("not checked"));
+                    $canswers[] = array("+" . $fieldNameWithTitle, 'Y', gT("Checked"));
+                    $canswers[] = array("+" . $fieldNameWithTitle, '', gT("Not checked"));
                 }
                 if ($rows['other'] == "Y") {
                     $fieldNameWithTitle = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], 'other');
@@ -1049,7 +1049,7 @@ class SurveyCondition
         $theserows2 = array();
         foreach ($theserows as $row) {
             $question = strip_tags((string) $row['question']);
-            $questionselecter = \viewHelper::flatEllipsizeText($question, true, '40');
+            $questionselecter = \viewHelper::flatEllipsizeText($question, true, 40);
             $theserows2[] = array(
                 'value' => $caller->createNavigatorUrl($row['gid'], $row['qid']),
                 'text' => strip_tags((string) $row['title']) . ':' . $questionselecter
@@ -1059,7 +1059,7 @@ class SurveyCondition
         $postrows2 = array();
         foreach ($postrows as $row) {
             $question = strip_tags((string) $row['question']);
-            $questionselecter = \viewHelper::flatEllipsizeText($question, true, '40');
+            $questionselecter = \viewHelper::flatEllipsizeText($question, true, 40);
             $postrows2[] = array(
                 'value' => $caller->createNavigatorUrl($row['gid'], $row['qid']),
                 'text' => strip_tags((string) $row['title']) . ':' . $questionselecter
@@ -1070,7 +1070,7 @@ class SurveyCondition
             'theserows' => $theserows2,
             'postrows' => $postrows2,
             'currentValue' => $caller->createNavigatorUrl($gid, $qid),
-            'currentText' => $questiontitle . ':' . \viewHelper::flatEllipsizeText(strip_tags((string) $sCurrentFullQuestionText), true, '40')
+            'currentText' => $questiontitle . ':' . \viewHelper::flatEllipsizeText(strip_tags((string) $sCurrentFullQuestionText), true, 40)
         );
 
         return $caller->renderPartialView('navigator', $data, true);
@@ -1094,7 +1094,7 @@ class SurveyCondition
     }
 
     /**
-     * Resturns the question count of an array received as parameter
+     * Returns the question count of an array received as parameter
      * @param array $cquestions
      * @return int
      */
@@ -1387,7 +1387,7 @@ class SurveyCondition
             $aData['extraGetParams'] = $extraGetParams;
             $aData['questionNavOptions'] = $questionNavOptions;
             $aData['javascriptpre'] = $javascriptpre;
-            $aData['sCurrentQuestionText'] = $questiontitle . ': ' . \viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, '120');
+            $aData['sCurrentQuestionText'] = $questiontitle . ': ' . \viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, 120);
 
             $aData['scenariocount'] = $scenariocount;
             if (empty(trim((string) $oQuestion->relevance)) || !empty($oQuestion->conditions)) {
@@ -1670,7 +1670,7 @@ class SurveyCondition
     }
 
     /**
-     * Retreives scenarios and conditions of question
+     * Retrieves scenarios and conditions of question
      * @param int $qid the question id
      * @return array generates an array of the format of
      * [

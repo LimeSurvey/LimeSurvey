@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var int $surveyId
  * @var array $permissions
@@ -29,7 +30,7 @@ $buttons[] = [
     'action'      => 'resend',
     'url'         => App()->createUrl('failedEmail/resend/', ['surveyid' => $surveyId]),
     'iconClasses' => 'ri-mail-fill',
-    'text'        => gT('Resend emails'),
+    'text'        => gT('Resend'),
     'grid-reload' => 'yes',
     'disabled'    => !$permissions['update'],
     //modal

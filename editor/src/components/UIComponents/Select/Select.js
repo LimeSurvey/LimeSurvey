@@ -9,6 +9,11 @@ import { STATES } from '../../../helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 
+// the reason for using "==" instead of "===" is that sometimes the backend returns numbers and sometimes strings, we want to make sure it works in both cases
+// till we have a backend that is consistent in the types it returns, we need to keep this logic here
+const optionFilter = (options, fieldName, value) =>
+  options.find((option) => option[fieldName] == value)
+
 export const Select = ({
   labelText,
   options = [],
@@ -26,7 +31,7 @@ export const Select = ({
   defaultValue = options[0],
   menuStyle = {},
   placeholder = t('Please choose...'),
-  menuPlacement = 'bottom',
+  menuPlacement = 'auto',
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [canUseAppState, setCanUseAppState] = useState(false)
@@ -62,7 +67,7 @@ export const Select = ({
     !isMultiselect &&
     options?.length
   ) {
-    value = options.find((option) => option.value === value)
+    value = optionFilter(options, 'value', value)
   }
 
   if (
@@ -71,7 +76,7 @@ export const Select = ({
     !isMultiselect &&
     options?.length
   ) {
-    defaultValue = options.find((option) => option.value === defaultValue)
+    defaultValue = optionFilter(options, 'value', defaultValue)
   }
 
   const handleOnChange = (selectedOption) => {
@@ -116,6 +121,7 @@ export const Select = ({
           placeholder={placeholder}
           isMulti={isMultiselect}
           menuPlacement={menuPlacement}
+          menuPortalTarget={document.body}
           components={{
             IndicatorSeparator: () => null,
           }}
@@ -129,7 +135,7 @@ export const Select = ({
           styles={{
             menuPortal: (base) => ({
               ...base,
-              zIndex: 4,
+              zIndex: 9999,
             }),
             dropdownIndicator: (base) => ({
               ...base,
@@ -157,8 +163,7 @@ export const Select = ({
             menu: (baseStyles) => ({
               ...baseStyles,
               ...menuStyle,
-              width: '100%',
-              minWidth: 'min-content',
+              zIndex: 9999,
               whiteSpace: 'normal',
               wordWrap: 'break-word',
             }),

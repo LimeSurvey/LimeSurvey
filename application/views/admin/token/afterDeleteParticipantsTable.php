@@ -1,7 +1,9 @@
 <?php
+
     /**
      * View which will appear, if the particpants table is deleted.
      */
+
 ?>
 <div class="side-body">
     <div class="row welcom survey-action">
@@ -21,7 +23,7 @@
                     <a
                         class="btn btn-outline-secondary"
                         href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/{$iSurveyId}"); ?>"
-                    ><?php eT('Main Admin Screen'); ?></a>
+                    ><?php eT('Main admin screen'); ?></a>
             </div>
         </div>
     </div>

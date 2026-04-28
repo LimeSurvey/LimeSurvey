@@ -190,10 +190,6 @@ class TransformerInputSurvey extends Transformer
             'navigationDelay' => [
                 'key' => 'navigationdelay', 'type' => 'int', 'numerical'
             ],
-            'noKeyboard' => [
-                'key' => 'nokeyboard',
-                'formatter' => ['ynToBool' => ['revert' => true]]
-            ],
             'allowedItAfterCompletion' => [
                 'key' => 'alloweditaftercompletion',
                 'formatter' => ['ynToBool' => ['revert' => true]]

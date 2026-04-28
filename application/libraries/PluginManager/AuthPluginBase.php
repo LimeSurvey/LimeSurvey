@@ -8,7 +8,6 @@ use LimeSurvey\PluginManager\PluginEvent;
 
 abstract class AuthPluginBase extends PluginBase
 {
-
     /**
      * These constants reflect the error codes to be used by the identity, they
      * are copied from LSUserIdentity and CBaseUserIdentity for easier access.
@@ -127,7 +126,7 @@ abstract class AuthPluginBase extends PluginBase
      * @param \LimeSurvey\PluginManager\PluginEvent, current event if not set
      * @return AuthPluginBase
      */
-    public function setAuthPlugin(PluginEvent $event = null)
+    public function setAuthPlugin(?PluginEvent $event = null)
     {
         if (empty($event)) {
             $event = $this->getEvent();

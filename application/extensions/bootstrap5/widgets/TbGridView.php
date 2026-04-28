@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbGridView class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
@@ -84,7 +85,8 @@ class TbGridView extends CGridView
     protected function createDataColumn($text)
     {
         if (!preg_match('/^([a-zA-Z0-9_#\.]+)(:([a-zA-Z0-9_#]*))?(:(.*))?$/', (string) $text, $matches)) {
-            var_dump($text); var_dump($matches);
+            var_dump($text);
+            var_dump($matches);
             die('TbGridView exception');
             throw new CException(Yii::t(
                 'zii',

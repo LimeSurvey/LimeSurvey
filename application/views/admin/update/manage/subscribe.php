@@ -1,8 +1,10 @@
 <?php
+
 /**
  * This file display the subscribe view
  * The javascript inject it inside the div#updaterContainer, in the _updater view. (like any steps)
  */
+
 ?>
 
 <div class="col-12 list-surveys" id="comfortUpdateGeneralWrap">

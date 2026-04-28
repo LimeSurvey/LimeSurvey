@@ -75,13 +75,13 @@ $config['minrepeatheadings']         = 3; // The minimum number of remaining ans
 $config['defaultlang']               = 'en'; // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 $config['timeadjust']                = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
 
-$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be output in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 means that the default will be determined by the ComfortUpdate server (currently 50 MB)
 $config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
 $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabytes to be able to download without errors
 
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
-$config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
+$config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numerical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
 $config['blacklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
@@ -153,7 +153,7 @@ $config['strip_query_from_referer_url'] = false;
 $config['defaulthtmleditormode'] = 'inline';
 
 // surveyPreview_require_Auth
-// Enforce Authentication to the LS system before beeing able to preview a survey (testing a non active survey)
+// Enforce Authentication to the LS system before being able to preview a survey (testing a non active survey)
 // Default is true
 $config['surveyPreview_require_Auth'] = true;
 
@@ -197,7 +197,7 @@ $config['auth_webserver'] = false;
 // Enable username mapping
 // This parameter is an array mapping username from the webserver to username
 // defined in LimeSurvey
-// Can be usefull if you have no way to add an 'admin' user to the database
+// Can be useful if you have no way to add an 'admin' user to the database
 // used by the webserver, then you could map your true loginame to admin with
 // $config['auth_webserver_user_map'] = array ('mylogin' => 'admin');
 $config['auth_webserver_user_map'] = array();
@@ -242,20 +242,50 @@ $config['auth_webserver_autocreate_permissions'] = array(
 //          'htmleditormode' => 'inline');
 //}
 
-
-// filterxsshtml
-// Enables filtering of suspicious html tags in survey, group, questions
-// and answer texts in the administration interface
-// Only set this to false if you absolutely trust the users
-// you created for the administration of  LimeSurvey and if you want to
-// allow these users to be able to use Javascript etc. .
+/** filterxsshtml
+ * Enables filtering of suspicious html tags in survey, group, questions
+ * and answer texts in the administration interface
+ * Only set this to false if you absolutely trust the users
+ * you created for the administration of  LimeSurvey and if you want to
+ * allow these users to be able to use Javascript etc. .
+ * Can be updated via GUI after installation
+ * @var boolean
+ */
 $config['filterxsshtml'] = true;
 
-// disablescriptwithxss
-// Allow update of script in question
-// true : Default : follow XSS rules
-// false : allowed for all
+/** filterxsshtml_forcedall
+ * Force filterxsshtml to true
+ * Disable update in admin GUI
+ * Enables filtering of suspicious html tags for superadmin too
+ * @var boolean
+ */
+$config['filterxsshtml_forcedall'] = false;
+
+/** filterxsshtml_allowforcedsuperadmin
+ * Only used if filterxsshtml_forcedall is true
+ * Allow adding any script and HTML by forcedsuperadmin
+ * @var boolean
+ */
+$config['filterxsshtml_allowforcedsuperadmin'] = false;
+
+/** disablescriptwithxss
+ * Allow update of script in question
+ * true : Default : follow XSS rules
+ * false : allowed for all
+ * @var boolean
+ */
 $config['disablescriptwithxss'] = true;
+
+/** filterxsshtml_enablescript
+ * Only used if filterxsshtml_forcedall is true
+ * Enable script for specific user
+ * - gui: allow update setting via GUI
+ * - superadmin: only super admin
+ * - forcedsuperadmin: only forced superadmin
+ * - By default : no user and do not allow update via GUI
+ * @var string (''|'gui'|'superadmin'|'forcedsuperadmin')
+ */
+$config['filterxsshtml_enablescript'] = '';
 
 // usercontrolSameGroupPolicy
 // If this option is set to true, then limesurvey operators will only 'see'
@@ -284,7 +314,7 @@ $config['demoMode'] = false;
 * Prefill the login mask using the parameters 'defaultuser' and  'default pass'. This works only if demo mode (demoMode) is activated.
 * Also a notice will be shown that the user knows that he can just login by using the Login button.
 *
-* @var $config['demoModePrefill']  boolan  If set to true prefill the login mask
+* @var $config['demoModePrefill']  boolean  If set to true prefill the login mask
 */
 $config['demoModePrefill'] = false;
 
@@ -372,31 +402,13 @@ $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 *  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
 */
 $config['alternatepdffontfile'] = array(
-    'ar' => 'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
-    'be' => 'dejavusans',
-    'bg' => 'dejavusans',
     'zh-Hans' => 'cid0cs',
     'zh-Hant-HK' => 'cid0ct',
     'zh-Hant-TW' => 'cid0ct',
-    'cs' => 'dejavusans',
-    'cs-informal' => 'dejavusans', // This one not really tested: no translation for Yes/No or Gender
-    'el' => 'dejavusans',
     'he' => 'freesans',
-    'hi' => 'dejavusans',
-    'hr' => 'dejavusans',
-    'hu' => 'dejavusans',
     'ja' => 'cid0jp',
     'ko' => 'cid0kr',
-    'lv' => 'dejavusans',
-    'lt' => 'dejavusans',
-    'mk' => 'dejavusans',
-    'mt' => 'dejavusans',
-    'fa' => 'dejavusans',
-    'pl' => 'dejavusans',
     'pa' => 'freesans',
-    'ro' => 'dejavusans',
-    'ru' => 'dejavusans',
-    'sr' => 'dejavusans',
 );
 /**
 *  $notsupportlanguages - array of language where no font was found for PDF
@@ -429,7 +441,7 @@ $config['quexmlshowprintablehelp'] = false;
 // QueXML-PDF: If set to true, each question in the PDF will be identified by the question title instead of the section and number
 $config['quexmlusequestiontitleasid'] = false;
 
-// QueXML: If set to true, the Data/Time answers will be formated with the survey's date format
+// QueXML: If set to true, the Date/Time answers will be formatted with the survey's date format
 $config['quexmlkeepsurveydateformat'] = false;
 
 // QueXML: Width of the question title column in MM
@@ -699,7 +711,7 @@ if (!isset($argv[0]) && Yii::app() != null) {
 
 $config['assets'] = 'assets/';
 
-// URL defintions
+// URL definitions
 $config['homeurl']                = $config['publicurl'] . 'admin'; // The website location (url) of the admin scripts
 $config['tempurl']                = $config['publicurl'] . 'tmp';
 $config['imageurl']               = $config['publicurl'] . 'assets/images'; // Location of button bar files for admin script
@@ -783,6 +795,13 @@ $config['sideMenuBehaviour'] = 'adaptive';
 // Hide update key
 $config['hide_update_key'] = false;
 
+/**
+ * Minimum stability level for update notifications.
+ * Valid values: 'alpha', 'beta', 'rc', 'stable'
+ * 'alpha' shows all updates, 'stable' shows only stable releases.
+ */
+$config['minimum_update_stability'] = 'rc';
+
 // Dev part
 // 1 : looking for errors, 2 : PHP STRICT error messages
 $config['debug'] = 0;
@@ -856,6 +875,12 @@ $config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
 // Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
 // @see https://www.php.net/unserialize
 $config['allow_unserialize_attributedescriptions'] = false;
+
+// Allow unserializing (with PHP unserialize function) attachments attributes when importing survey
+// In limesurvey 6.16.17: attachments attribute move from serialize to json_encode. If you need to keep attachment when upload, you have to allow it
+// Warning: Unserialization can result in code being loaded and executed due to object instantiation and autoloading, and a malicious user may be able to exploit this.
+// @see https://www.php.net/unserialize
+$config['allow_unserialize_attachments'] = false;
 
 return $config;
 //settings deleted

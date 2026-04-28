@@ -41,7 +41,7 @@ class SurveyIndex extends CAction
         $thisstep    = (int) $param['thisstep'];
         $move        = getMove();
 
-        /* Newtest must be done bedore all other action */
+        /* Newtest must be done before all other action */
         if (isset($param['newtest']) && $param['newtest'] == "Y") {
             killSurveySession($surveyid);
             resetQuestionTimers($surveyid);
@@ -60,7 +60,7 @@ class SurveyIndex extends CAction
             $event->set('surveyId', $surveyid);
             $event->set('reason', 'surveyDoesNotExist');
             App()->getPluginManager()->dispatchEvent($event);
-            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
+            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist.", 'unescaped'));
             /* Alt solution */
             //~ header("HTTP/1.0 404 Not Found",true,404);
             //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
@@ -148,7 +148,7 @@ class SurveyIndex extends CAction
         }
 
         // maintenance mode
-        $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
         if ($sMaintenanceMode == 'hard') {
             if ($previewmode === false) {
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
@@ -267,8 +267,7 @@ class SurveyIndex extends CAction
             }
 
             $aErrors  = array(gT('Previous session is set to be finished.'));
-            $aMessage = array(gT('Your browser reports that it was used previously to answer this survey.
-            We are resetting the session so that you can start from the beginning.'),);
+            $aMessage = array(gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),);
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'restart-survey',
@@ -451,7 +450,7 @@ class SurveyIndex extends CAction
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
             // && Yii::app()->request->isPostRequest ?
-            if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
+            if ($oSurvey->isCaptchaEnabled('saveandloadscreen') && is_null(Yii::app()->request->getQuery('scid'))) {
                 $sLoadSecurity  = Yii::app()->request->getPost('loadsecurity');
 
                 if (empty($sLoadSecurity)) {
@@ -466,7 +465,7 @@ class SurveyIndex extends CAction
             }
 
             if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
-                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutParticipants') / 60);
+                $aLoadErrorMsg['tooManyRetries'] = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), Yii::app()->getConfig('timeOutParticipants') / 60);
             }
 
             if (empty($aLoadErrorMsg)) {
@@ -505,7 +504,7 @@ class SurveyIndex extends CAction
             $SurveyRuntimeHelper = new SurveyRuntimeHelper();
             $SurveyRuntimeHelper->saveAllIfNeeded();
 
-            if (isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
+            if ($oSurvey->isCaptchaEnabled('saveandloadscreen')) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $surveyid));
             }
@@ -528,7 +527,7 @@ class SurveyIndex extends CAction
         //by checking that the token has not been used at each page displayed.
         // bypass only this check at first page (Step=0) because
         // this check is done in buildsurveysession and error message
-        // could be more interresting there (takes into accound captcha if used)
+        // could be more interesting there (takes into account captcha if used)
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_" . $surveyid . "}}") && !$previewmode) {
             if (empty($tokenInstance) && $oToken) {
                 $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
@@ -566,7 +565,7 @@ class SurveyIndex extends CAction
             }
         }
 
-        //Check to see if a refering URL has been captured.
+        //Check to see if a referring URL has been captured.
         if (!isset($_SESSION['responses_' . $surveyid]['refurl'])) {
             $_SESSION['responses_' . $surveyid]['refurl'] = getReferringUrl(); // do not overwrite refurl
         }

@@ -29,7 +29,7 @@ class DbConnection extends \CDbConnection
             }
         }
     }
-        
+
     /**
      * Quotes a string value for use in a query.
      * @param string $str string to be quoted

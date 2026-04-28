@@ -237,7 +237,7 @@ class TemplateManifest extends TemplateConfiguration
          * It implies they respect the convention :
          * $aSurveyData[custom screen name][custom variable] = custom variable value
          * Where custom variable value can't be an array.
-         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convetion.
+         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convention.
          * Eg: don't use arrays like $thissurvey['aAssessments']["datas"]["total"][0] or $thissurvey['aGroups'][1]["aQuestions"][1]
         */
         $thissurvey = $this->getCustomScreenData($thissurvey);
@@ -435,14 +435,14 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aLoadForm']['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => 1));
 
         // Those values can be overwritten by XML
-        $thissurvey['name'] = gT("Template Sample");
+        $thissurvey['name'] = gT("Template sample");
         $thissurvey['description'] =
         "<p>" . gT('This is a sample survey description. It could be quite long.') . "</p>" .
         "<p>" . gT("But this one isn't.") . "<p>";
         $thissurvey['welcome'] =
         "<p>" . gT('Welcome to this sample survey') . "<p>" .
-        "<p>" . gT('You should have a great time doing this') . "<p>";
-        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
+        "<p>" . gT('You should have a great time doing this.') . "<p>";
+        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey.');
         $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
 
@@ -502,7 +502,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Retreives the absolute path for a file to edit (current template, mother template, etc)
+     * Retrieves the absolute path for a file to edit (current template, mother template, etc)
      * Also perform few checks (permission to edit? etc)
      *
      * @param string $sFile relative path to the file to edit
@@ -731,7 +731,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
         $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
         $aDatas['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
-        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormated($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
+        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormatted($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
         $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
         $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
 
@@ -979,7 +979,7 @@ class TemplateManifest extends TemplateConfiguration
      * 1. Delete files and engine nodes
      * 2. Update the name of the template
      * 3. Change the creation/modification date to the current date
-     * 4. Change the autor name to the current logged in user
+     * 4. Change the author name to the current logged in user
      * 5. Change the author email to the admin email
      *
      * Used in template editor
@@ -1229,7 +1229,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Proxy for Yii::app()->clientScript->removeFileFromPackage()
-     * It's not realy needed here, but it is needed for TemplateConfiguration model.
+     * It's not really needed here, but it is needed for TemplateConfiguration model.
      * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
      * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
      *
@@ -1298,7 +1298,7 @@ class TemplateManifest extends TemplateConfiguration
             $this->oOptions = new stdClass();
         }
 
-        // Not mandatory (use package dependances)
+        // Not mandatory (use package dependencies)
         $this->cssFramework             = (!empty($this->config->xpath("//cssframework"))) ? $this->config->engine->cssframework : '';
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
@@ -1356,7 +1356,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param boolean $bInlcudeRemove   also get the files to remove
      * @return stdClass
      */
-    public static function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    public static function getAssetsToReplaceFormatted($oEngine, $sType, $bInlcudeRemove = false)
     {
         $oAssetsToReplaceFormated = new stdClass();
         if (!empty($oEngine->cssframework->$sType) && !empty($oEngine->cssframework->$sType->attributes()->replace)) {
@@ -1367,6 +1367,19 @@ class TemplateManifest extends TemplateConfiguration
             $oAssetsToReplaceFormated->replace = array(array($sAssetsToReplace, $sAssetsReplacement));
         }
         return $oAssetsToReplaceFormated;
+    }
+
+    /**
+     * Deprecated alias for getAssetsToReplaceFormatted()
+     * @deprecated Use getAssetsToReplaceFormatted() instead
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return stdClass
+     */
+    public static function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    {
+        trigger_error('getAssetsToReplaceFormated() is deprecated, use getAssetsToReplaceFormatted() instead', E_USER_DEPRECATED);
+        return self::getAssetsToReplaceFormatted($oEngine, $sType, $bInlcudeRemove);
     }
 
     /**
@@ -1435,6 +1448,7 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string)$option['category'] : gT('Simple options');
                 $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string)$option['width'] : '2';
                 $aOptions['optionAttributes'][$key]['library'] = !empty($option['library']) ? (string)$option['library'] : '';
+                $aOptions['optionAttributes'][$key]['colorSwatch'] = !empty($option['colorSwatch']) ? (bool)$option['colorSwatch'] : '';
                 /* rows for textarea */
                 $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
@@ -1534,7 +1548,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($coreFontPackages as $coreKey => $corePackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("Core") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("Core") . '">';
             }
             $fontOptions .= '<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
         }
@@ -1547,7 +1561,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($userFontPackages as $userKey => $userPackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("User") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("User") . '">';
             }
             $fontOptions .= '<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
         }
@@ -1574,7 +1588,7 @@ class TemplateManifest extends TemplateConfiguration
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
             $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
-            // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to annoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .

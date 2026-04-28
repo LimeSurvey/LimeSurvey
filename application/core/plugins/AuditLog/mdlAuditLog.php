@@ -18,7 +18,6 @@
  */
 class mdlAuditlog extends LSActiveRecord
 {
-
     /**
      * @param type $className
      * @return Plugin

@@ -125,7 +125,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         $oAddGroupList  = array();
 
         if ($model->hasPermission('permission', 'create')) {
-            /* Search user withouth rights on SurveyGroup */
+            /* Search user without rights on SurveyGroup */
             /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
             $oCriteria = new CDbCriteria();
             if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true && !Permission::model()->hasGlobalPermission('superadmin')) {
@@ -329,7 +329,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     {
         $oUserGroup = UserGroup::model()->findByPk($to);
         if (empty($oUserGroup)) {
-            throw new CHttpException(401, gT("User group not found"));
+            throw new CHttpException(401, gT("User group not found."));
         }
         /* Check if logged user can see user group */
         if (shouldFilterUserGroupList() && !in_array($to, getUserGroupList())) {
@@ -398,7 +398,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         if ($success) {
             App()->setFlashMessage(gT("Survey group permissions were successfully updated."));
         } else {
-            App()->setFlashMessage(gT("An error happened while updating survey group permissions."), 'danger');
+            App()->setFlashMessage(gT("An error occurred while updating survey group permissions."), 'danger');
         }
         if ($type == 'group') {
             App()->request->redirect(App()->getController()->createUrl('surveysGroupsPermission/index', array('id' => $id)));

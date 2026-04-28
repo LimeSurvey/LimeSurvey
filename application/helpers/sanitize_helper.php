@@ -228,7 +228,7 @@ function sanitize_system_string($string, $min = '', $max = '')
         // background processing, special commands (backspace, etc.), quotes
         // newlines, or some other special characters
         $string = preg_replace($pattern, '', (string) $string);
-        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpretted as ONE argument
+        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpreted as ONE argument
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
             return false;
@@ -266,7 +266,7 @@ function sanitize_ldap_string($string, $min = '', $max = '')
 }
 
 
-// sanitize a string for HTML (make sure nothing gets interpretted!)
+// sanitize a string for HTML (make sure nothing gets interpreted!)
 function sanitize_html_string($string)
 {
     $pattern[0] = '/\&/';
@@ -316,7 +316,7 @@ function sanitize_int($integer, $min = '', $max = '')
 function sanitize_user($string)
 {
     $username_length = 64;
-    $string = mb_substr($string, 0, $username_length);
+    $string = mb_substr((string) $string, 0, $username_length);
     return $string;
 }
 
@@ -470,7 +470,7 @@ function check($input, $flags, $min = '', $max = '')
  *
  * This function removes any characters that are not letters (a-z), numbers (0-9),
  * or hyphens (-) from the input string. It is case-insensitive in its matching.
- * @todo deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
+ * @deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
  *
  * @param string $codetosanitize The language code string to sanitize.
  * @return string The sanitized language code containing only letters and hyphens.
@@ -487,7 +487,7 @@ function sanitize_languagecode($codetosanitize)
  * This function takes a space-separated string of language codes, splits them into an array,
  * sanitizes each individual language code by removing all non-alphanumeric and non-dash characters,
  * and then rejoins them back into a space-separated string.
- * @todo deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter
+ * @deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter
  *
  * @param string $codestringtosanitize A space-separated string of language codes to sanitize.
  * @return string A space-separated string of sanitized language codes containing only alphanumeric characters and hyphens.

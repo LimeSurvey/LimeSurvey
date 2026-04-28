@@ -10,17 +10,17 @@ echo viewHelper::getViewTestTag('exportSpss');
 ?>
 <div class='side-body'>
     <h3><?php eT("Export response data to SPSS");?></h3>
-    <?php echo CHtml::form(array("admin/export/sa/exportspss/sid/{$surveyid}/"), 'post', array('id'=>'exportspss', 'class'=>''));?>
+    <?php echo CHtml::form(array("admin/export/sa/exportspss/sid/{$surveyid}/"), 'post', array('id' => 'exportspss', 'class' => ''));?>
     <div class="mb-3 row">
         <label for='completionstate' class='col-md-2  form-form-label'><?php eT("Data selection:");?></label>
         <div class="col-md-10">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                 'name' => 'completionstate',
-                'checkedOption'=> 'all' ,
-                'selectOptions'=>array(
-                    "all"=>gT("All responses",'unescaped'),
-                    "complete"=>gT("Complete only",'unescaped'),
-                    "incomplete"=>gT("Incomplete only",'unescaped'),
+                'checkedOption' => 'all' ,
+                'selectOptions' => array(
+                    "all" => gT("All responses", 'unescaped'),
+                    "complete" => gT("Complete only", 'unescaped'),
+                    "incomplete" => gT("Incomplete only", 'unescaped'),
                 )
             ));?>
         </div>
@@ -30,33 +30,32 @@ echo viewHelper::getViewTestTag('exportSpss');
         <div class="col-md-10">
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                 'name' => 'spssver',
-                'checkedOption'=> $spssver ,
-                'selectOptions'=> array(
-                    "1"=>gT("Prior to 16 / PSPP",'unescaped'),
-                    "2"=>gT("16 or up",'unescaped'),
-                    "3"=>gT("16 or up with Python Plugin / Essentials",'unescaped')
+                'checkedOption' => $spssver ,
+                'selectOptions' => array(
+                    "1" => gT("Prior to 16 / PSPP", 'unescaped'),
+                    "2" => gT("16 or up", 'unescaped'),
+                    "3" => gT("16 or up with Python Plugin / Essentials", 'unescaped')
                 )
             ));?>
         </div>
     </div>
     <?php
-    if (count($aLanguages)>1)
-    { ?>
+    if (count($aLanguages) > 1) { ?>
         <div class="mb-3 row">
             <label for='exportlang'  class='col-md-2  form-form-label'><?php eT("Language:");?></label>
             <div class="col-md-2">
-                <?php echo CHtml::dropDownList('exportlang', $sBaseLanguage, $aLanguages, array('class'=>'form-select')); ?>
+                <?php echo CHtml::dropDownList('exportlang', $sBaseLanguage, $aLanguages, array('class' => 'form-select')); ?>
             </div>
         </div>
-        <?php } else { ?>
+    <?php } else { ?>
             <?php echo CHtml::hiddenField('exportlang', $sBaseLanguage); ?>
 
-        <?php } ?>
+    <?php } ?>
     <div class="mb-3 row">
         <label for='limit' class='col-md-2  form-form-label'><?php eT("Limit:");?></label>
         <div class="col-md-1">
             <?php
-                echo CHtml::textField('limit',App()->getRequest()->getParam('limit'),array('class'=>'form-control'));
+                echo CHtml::textField('limit', App()->getRequest()->getParam('limit'), array('class' => 'form-control'));
             ?>
         </div>
     </div>
@@ -64,7 +63,7 @@ echo viewHelper::getViewTestTag('exportSpss');
         <label for='offset' class='col-md-2  form-form-label'><?php eT("Offset:");?></label>
         <div class="col-md-1">
             <?php
-                echo CHtml::textField('offset',App()->getRequest()->getParam('offset'),array('class'=>'form-control'));
+                echo CHtml::textField('offset', App()->getRequest()->getParam('offset'), array('class' => 'form-control'));
             ?>
         </div>
     </div>
@@ -73,7 +72,7 @@ echo viewHelper::getViewTestTag('exportSpss');
         <label for='offset' class='col-md-2  form-form-label'><?php eT("No answer:");?></label>
         <div class="col-md-1">
             <?php
-                echo CHtml::textField('noanswervalue',App()->getRequest()->getParam('noanswervalue'),array('class'=>'form-control'));
+                echo CHtml::textField('noanswervalue', App()->getRequest()->getParam('noanswervalue'), array('class' => 'form-control'));
             ?>
         </div>
     </div>
@@ -81,8 +80,8 @@ echo viewHelper::getViewTestTag('exportSpss');
 
     <div class="mb-3 row">
         <?php
-            echo CHtml::hiddenField('sid',$surveyid);
-            echo CHtml::hiddenField('action','exportspss');
+            echo CHtml::hiddenField('sid', $surveyid);
+            echo CHtml::hiddenField('action', 'exportspss');
         ?>
         <label for='dlstructure' class='col-md-1 form-form-label'><?php eT("Step 1:");?></label>
         <div class="col-md-10">

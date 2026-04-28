@@ -8,8 +8,30 @@ const { publicVars, rawPublicVars } = loadEnv({
   prefixes: ['REACT_APP_', 'HTTPS', 'HOST', 'PORT', 'PUBLIC_URL'],
 })
 
+const isProduction = process.env.NODE_ENV === 'production'
+const isDevBuild = !isProduction
+    || process.env.REACT_APP_DEV_MODE === 'true'
+    || process.env.REACT_APP_DEMO_MODE === 'true'
+
+const buildInfoMessage =
+  `\x1b[1m${isDevBuild ? '\x1b[33m' : '\x1b[32m'}\n` +
+  '================================================================================\n' +
+  ` NODE_ENV=${process.env.NODE_ENV}\n` +
+  ` REACT_APP_DEV_MODE=${process.env.REACT_APP_DEV_MODE ?? 'undefined'}\n` +
+  ` REACT_APP_DEMO_MODE=${process.env.REACT_APP_DEMO_MODE ?? 'undefined'}\n` +
+  (isDevBuild ? ' DO NOT deploy this build to production.\n' : '') +
+  '================================================================================\n' +
+  '\x1b[0m'
+
 export default defineConfig({
   plugins: [
+    {
+      name: 'build-info',
+      setup(api) {
+        api.onAfterBuild(() => console.log(buildInfoMessage)) // eslint-disable-line no-console
+        api.onAfterStartDevServer(() => console.log(buildInfoMessage)) // eslint-disable-line no-console
+      },
+    },
     pluginEslint({
       enable: process.env.NODE_ENV === 'development',
     }),
@@ -51,7 +73,7 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0',
-    port: process.env.PORT || 5000,
+    port: process.env.PORT || 3001,
     https: process.env.HTTPS === 'true',
   },
   output: {

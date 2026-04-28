@@ -25,14 +25,14 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
     'id'                    => 'questionthemes-grid',
     'massiveActionTemplate' => $massiveAction,
     'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-            gT('%s rows per page'),
-            CHtml::dropDownList(
-                'pageSize',
-                $pageSize,
-                App()->params['pageSizeOptions'],
-                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-            )
-        ),
+        gT('%s rows per page'),
+        CHtml::dropDownList(
+            'pageSize',
+            $pageSize,
+            App()->params['pageSizeOptions'],
+            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+        )
+    ),
     'columns'               => [
         [
             'id'             => 'questionId',
@@ -59,10 +59,10 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
         [
             'header'      => gT('Type'),
             'name'        => 'core_theme',
-            'value'       => '($data->core_theme == 1) ? gT("Core Theme") : gT("User Theme")',
+            'value'       => '($data->core_theme == 1) ? gT("Core theme") : gT("User theme")',
             'type'        => 'raw',
             'htmlOptions' => ['class' => 'col-lg-2'],
-            "filter"      => [1 => gT("Core Theme"), 0 => gT('User Theme')]
+            "filter"      => [1 => gT("Core theme"), 0 => gT('User theme')]
         ],
 
         [
@@ -73,7 +73,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
         ],
         [
             'header'            => gT('Visibility'),
-            'headerHtmlOptions' => ['title' => gT('Visible inside the Question Selector')],
+            'headerHtmlOptions' => ['title' => gT('Visible inside the question selector')],
             'name'              => 'visible',
             'value'             => '$data->getVisibilityButton()',
             'type'              => 'raw',
@@ -126,5 +126,5 @@ $script = '
                 }
                 ';
 App()->getClientScript()->registerScript('questionthemes-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
-?>
+
 

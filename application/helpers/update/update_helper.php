@@ -23,7 +23,7 @@ if (!defined('BASEPATH')) {
 function CheckForDBUpgrades($subaction = null)
 {
     $dbversionnumber = Yii::app()->getConfig('dbversionnumber');
-    $currentDBVersion = GetGlobalSetting('DBVersion');
+    $currentDBVersion = Yii::app()->getConfig('DBVersion');
     if (intval($dbversionnumber) > intval($currentDBVersion)) {
         Yii::app()->loadHelper('update.updatedb');
         if (isset($subaction) && $subaction == "yes") {

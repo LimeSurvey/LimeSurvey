@@ -96,7 +96,7 @@ class SurveyThemeConfiguration
     }
 
     /**
-     * Returns all attributes and options needed to display the themeoptions inlcuding inheritance.
+     * Returns all attributes and options needed to display the themeoptions including inheritance.
      *
      * @param TemplateConfiguration $themeConfiguration Template Configuration
      * @param int|null $sid Survey ID
@@ -195,7 +195,7 @@ class SurveyThemeConfiguration
             $attributesCompleteData[$key] = $attributesCore[$key];
             $attributesCompleteData[$key]['category'] = $optionAttribute['category'];
             $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key ?? 'inherit';
-            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
+            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key] ?? '';
             if (
                 $attributesCompleteData[$key]['type'] === 'dropdown'
                 // "checkicon" is of type "icon" but has dropdown options
@@ -210,6 +210,11 @@ class SurveyThemeConfiguration
             // TODO: incorporate this option type into the theme properly
             if (in_array($key, ['brandlogofile', 'backgroundimagefile'])) {
                 $attributesCompleteData[$key]['hasFileUpload'] = true;
+            }
+
+            // TODO: AT-1896 - force temporary theme color to be of icon type for the API
+            if ($attributesCompleteData[$key]['title'] === 'Theme color') {
+                $attributesCompleteData[$key]['type'] = 'icon';
             }
         }
 

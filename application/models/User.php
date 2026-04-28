@@ -25,9 +25,9 @@ use LimeSurvey\Models\Services\UserManager;
  * @property integer $parent_id
  * @property string $lang User's preferred language: (auto: automatic | languagecodes eg 'en')
  * @property string $email User's e-mail address
- * @property string $htmleditormode User's prefferred HTML editor mode:(default|inline|popup|none)
- * @property string $templateeditormode User's prefferred template editor mode:(default|full|none)
- * @property string $questionselectormode User's prefferred Question type selector:(default|full|none)
+ * @property string $htmleditormode User's preferred HTML editor mode:(default|inline|popup|none)
+ * @property string $templateeditormode User's preferred template editor mode:(default|full|none)
+ * @property string $questionselectormode User's preferred Question type selector:(default|full|none)
  * @property string $one_time_pw User's one-time-password hash
  * @property integer $dateformat Date format type 1-12
  * @property string $created Time created Time user was created as 'YYYY-MM-DD hh:mm:ss'
@@ -181,8 +181,8 @@ class User extends LSActiveRecord
             'questionselectormode' => gT('Question selector mode'),
             'one_time_pw' => gT('One-time password'),
             'dateformat' => gT('Date format'),
-            'created' => gT('Created at'),
-            'modified' => gT('Modified at'),
+            'created' => gT('Created'),
+            'modified' => gT('Modified'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
             'user_status' => gT("Status"),
@@ -238,17 +238,19 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo Not used?
+     * Get formatted creation date of user to be displayed in the user list
      */
     public function getFormattedDateCreated()
     {
-        $dateCreated = $this->created;
-        /**
-         * @todo: Review this. Cast to string added to keep the original behavior (parameter can't be null since PHP 8.1).
-         *        But it returns the current date if the parameter is null (both now with the cast and pre PHP 8.1 without the cast).
-         */
-        $date = new DateTime((string) $dateCreated);
-        return $date->format($this->getDateFormat());
+        if (empty($this->created)) {
+            return null;
+        }
+        try {
+            $date = new DateTime($this->created);
+            return $date->format($this->getDateFormat());
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     /**
@@ -487,19 +489,6 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Adds user record
-     *
-     * @access public
-     * @param array $data
-     * @deprecated : just don't use it
-     * @return string
-     */
-    public function insertRecords($data)
-    {
-        return $this->getDb()->insert('users', $data);
-    }
-
-    /**
      * Returns User ID common in Survey_Permissions and User_in_groups
      * @param $surveyid
      * @param $postusergroupid
@@ -702,7 +691,7 @@ class User extends LSActiveRecord
                 )
         ];
         $dropdownItems[] = [
-            'title'            => gT('Delete User'),
+            'title'            => gT('Delete user'),
             'iconClass'        => "ri-delete-bin-fill text-danger",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--delete",
             'linkId'           => "UserManagement--delete-$this->uid",
@@ -827,7 +816,7 @@ class User extends LSActiveRecord
         if ($permission_read_surveys) {
             $cols[] = array(
                 "name" => 'surveysCreated',
-                "header" => gT("No of surveys"),
+                "header" => gT("Owned surveys"),
                 'filter' => false
             );
         }
@@ -840,7 +829,7 @@ class User extends LSActiveRecord
         if ($permission_read_users && $permission_read_usergroups) {
             $cols[] = array(
                 "name" => 'groupList',
-                "header" => gT("Usergroups"),
+                "header" => gT("User groups"),
                 'filter' => false
             );
         }
@@ -1032,7 +1021,7 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Get the decription to be used in list
+     * Get the description to be used in list
      * @return string
      */
     public function getDisplayName()

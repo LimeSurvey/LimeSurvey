@@ -199,25 +199,6 @@ class Answer extends LSActiveRecord
     }
 
     /**
-     * @param array $data
-     * @return boolean|null
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     *
-     */
-    public function insertRecords($data)
-    {
-        $oRecord = new self();
-        foreach ($data as $k => $v) {
-            $oRecord->$k = $v;
-        }
-        if ($oRecord->validate()) {
-            return $oRecord->save();
-        }
-        Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Answer.insertRecords');
-        return null;
-    }
-
-    /**
      * Updates sort order of answers inside a question
      *
      * @static

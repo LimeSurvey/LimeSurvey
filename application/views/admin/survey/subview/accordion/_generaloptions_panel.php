@@ -5,7 +5,7 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
-$scriptVarsNeccessary = "
+$scriptVarsNecessary = "
         var jsonUrl = '';
         var sAction = '';
         var sParameter = '';
@@ -17,7 +17,7 @@ $scriptVarsNeccessary = "
     ";
 Yii::app()->getClientScript()->registerScript(
     "GeneralOption-variables",
-    $scriptVarsNeccessary,
+    $scriptVarsNecessary,
     LSYii_ClientScript::POS_BEGIN
 );
 ?>
@@ -28,8 +28,8 @@ $controller = $yii->getController();
 $action = 'editsurveysettings';
 
 $formatSelectOptions = array(
-    'S' => gT('Question by Question', 'unescaped'),
-    'G' => gT('Group by Group', 'unescaped'),
+    'S' => gT('Question by question', 'unescaped'),
+    'G' => gT('Group by group', 'unescaped'),
     'A' => gT('All in one', 'unescaped')
 );
 $bGlobalSettings = !empty($this->currentModuleAction) && $this->currentModuleAction == 'globalsettings';

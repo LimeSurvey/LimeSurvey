@@ -24,7 +24,7 @@
                         <?php echo $tabitem; ?>
                     </a>
                 </li>
-                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
+                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
                     <li class="nav-item">
                         <a class="nav-link" href='#neweditlblset1' data-bs-toggle="tab">
                             <?php eT("Import label set(s)"); ?>
@@ -57,7 +57,8 @@
                                 if (isset($esrow)) {
                                     unset($aAllLanguages[$esrow['language']]);
                                 }
-                                Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2',
+                                Yii::app()->getController()->widget(
+                                    'yiiwheels.widgets.select2.WhSelect2',
                                     [
                                         'asDropDownList' => true,
                                         'htmlOptions'    => ['multiple' => 'multiple', 'style' => "width: 80%", 'required' => 'required'],
@@ -67,7 +68,8 @@
                                         'pluginOptions'  => [
                                             'placeholder' => gT('Select languages', 'unescaped'),
                                         ]
-                                    ]); ?>
+                                    ]
+                                ); ?>
                                 <input type='hidden' name='oldlanguageids' id='oldlanguageids' value='<?php echo $langids; ?>'/>
                             </div>
                         </div>
@@ -77,14 +79,14 @@
                     <p>
                     <input type='submit' class="d-none" value='<?php if ($action === "newlabelset") {
                             eT("Save");
-                        } else {
-                            eT("Update");
-                        } ?>'/>
+                                                               } else {
+                                                                   eT("Update");
+                                                               } ?>'/>
                         <input type='hidden' name='action' value='<?php if ($action === "newlabelset") {
                             echo "insertlabelset";
-                        } else {
-                            echo "updateset";
-                        } ?>'/>
+                                                                  } else {
+                                                                      echo "updateset";
+                                                                  } ?>'/>
 
                         <?php if ($action === "editlabelset") { ?>
                             <input type='hidden' name='lid' value='<?php echo $lblid; ?>'/>
@@ -93,7 +95,7 @@
                     <?php echo CHtml::endForm() ?>
                 </div>
                 <!-- Import -->
-                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
+                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
                     <div id='neweditlblset1' class="tab-pane fade">
                         <?php echo CHtml::form(["admin/labels/sa/import"], 'post', ['enctype' => 'multipart/form-data', 'class' => 'form', 'id' => 'importlabels', 'name' => "importlabels"]); ?>
                         <div class="mb-3 col-6">

@@ -18,7 +18,6 @@ if (!defined('BASEPATH')) {
 
 class LSYii_HtmlPurifier extends CHtmlPurifier
 {
-
     /**
      * Get the config object for the HTML Purifier instance.
      * @return mixed the HTML Purifier instance config
@@ -96,7 +95,7 @@ class LSYii_HtmlPurifier extends CHtmlPurifier
                 );
             }
         }
-        
+
         return $instance;
     }
 }

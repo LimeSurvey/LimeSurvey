@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhBasicFileUpload widget class
  *
@@ -8,6 +9,7 @@
  * @package YiiWheels.widgets.fileupload
  * @uses YiiStrap.helpers.TbArray
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhBasicFileUpload extends CInputWidget
@@ -58,7 +60,6 @@ class WhBasicFileUpload extends CInputWidget
         $this->pluginOptions['url']    = $this->uploadAction;
         if ($this->hasModel()) {
             echo CHtml::activeFileField($this->model, $this->attribute, $this->htmlOptions);
-
         } else {
             echo CHtml::fileField($name, $this->value, $this->htmlOptions);
         }
@@ -86,5 +87,4 @@ class WhBasicFileUpload extends CInputWidget
 
         $this->getApi()->registerPlugin('fileupload', $selector, $this->pluginOptions);
     }
-
 }

@@ -41,7 +41,7 @@ class RegisterController extends LSYii_Controller
      */
     private $sMessage;
     /**
-     * The message to diplay after sending the register email
+     * The message to display after sending the register email
      */
     private $sMailMessage;
 
@@ -104,7 +104,7 @@ class RegisterController extends LSYii_Controller
         Yii::app()->setLanguage($sLanguage);
         if (!$oSurvey) {
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        } elseif ($oSurvey->allowregister != 'Y' || !tableExists("{{tokens_{$iSurveyId}}}")) {
+        } elseif (!$oSurvey->getIsAllowRegister() || !tableExists("{{tokens_{$iSurveyId}}}")) {
             throw new CHttpException(404, "The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
         } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))) {
             $this->redirect(array('survey/index', 'sid' => $iSurveyId, 'lang' => $sLanguage));
@@ -161,10 +161,10 @@ class RegisterController extends LSYii_Controller
      */
     public function getRegisterErrors($iSurveyId)
     {
-        $aSurveyInfo = getSurveyInfo($iSurveyId, App()->language);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         // Check the security question's answer
-        if (isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha'])) {
+        if ($oSurvey->isCaptchaEnabled('registrationscreen')) {
             $sLoadSecurity = App()->request->getPost('loadsecurity', '');
             $captcha = App()->getController()->createAction("captcha");
             $captchaCorrect = $captcha->validate($sLoadSecurity, false);
@@ -180,7 +180,7 @@ class RegisterController extends LSYii_Controller
         //Check that the email is a valid style address
         if ($aFieldValue['sEmail'] == "") {
             $this->aRegisterErrors[] = gT("You must enter a valid email. Please try again.");
-        } elseif (!validateEmailAddress(trim((string) $aFieldValue['sEmail']))) {
+        } elseif (!LimeMailer::validateAddress(trim((string) $aFieldValue['sEmail']))) {
             $this->aRegisterErrors[] = gT("The email you used is not valid. Please try again.");
         }
         //Check and validate attribute
@@ -227,6 +227,7 @@ class RegisterController extends LSYii_Controller
     public function getRegisterForm($iSurveyId)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
+        App()->getClientScript()->registerPackage('tempus-dominus');
 
         // Event to replace register form
         $event = new PluginEvent('beforeRegisterForm');
@@ -245,6 +246,26 @@ class RegisterController extends LSYii_Controller
         }
         $aFieldValue = $this->getFieldValue($iSurveyId);
         $aRegisterAttributes = $this->getExtraAttributeInfo($iSurveyId);
+        foreach ($aRegisterAttributes as $attrId => $attrConfig) {
+            if (
+                array_key_exists('type_options', $attrConfig)
+                && is_string($attrConfig['type_options'])
+                && trim($attrConfig['type_options']) !== ''
+                && trim($attrConfig['type_options']) !== '[]'
+            ) {
+                $aRegisterAttributes[$attrId]['type_options'] = json_decode(
+                    $attrConfig['type_options'],
+                    true
+                );
+                // Transform array so values become keys (to save the actual string instead of index)
+                if (is_array($aRegisterAttributes[$attrId]['type_options'])) {
+                    $aRegisterAttributes[$attrId]['type_options'] = array_combine(
+                        $aRegisterAttributes[$attrId]['type_options'],
+                        $aRegisterAttributes[$attrId]['type_options']
+                    );
+                }
+            }
+        }
 
         $aData['iSurveyId'] = $iSurveyId;
         $aData['active'] = $oSurvey->active;
@@ -254,7 +275,7 @@ class RegisterController extends LSYii_Controller
         $aData['sEmail'] = $aFieldValue['sEmail'];
         $aData['aAttribute'] = $aFieldValue['aAttribute'];
         $aData['aExtraAttributes'] = $aRegisterAttributes;
-        $aData['bCaptcha'] = isCaptchaEnabled('registrationscreen', $oSurvey->usecaptcha);
+        $aData['bCaptcha'] = $oSurvey->isCaptchaEnabled('registrationscreen');
         $aData['sRegisterFormUrl'] = App()->createUrl('register/index', array('sid' => $iSurveyId));
 
         $aData['formAdditions'] = '';
@@ -309,11 +330,11 @@ class RegisterController extends LSYii_Controller
             Token::model($iSurveyId)->updateByPk($iTokenId, array('sent' => $now));
             $aMessage['mail-message'] = $this->sMailMessage;
         } else {
-            $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
+            $aMessage['mail-message-error'] = gT("You are registered but an error occurred when trying to send the email - please contact the survey administrator.");
         }
         $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
         $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage' => $aMessage), true);
-        // Always return true : if we come here, we always trye to send an email
+        // Always return true : if we come here, we always try to send an email
         return true;
     }
 
@@ -343,7 +364,7 @@ class RegisterController extends LSYii_Controller
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");
                 }
             } elseif (!$oToken->emailstatus && $oToken->emailstatus != "OK") {
-                $this->aRegisterErrors[] = gT("This email address is already registered but email to that adress could not be delivered.");
+                $this->aRegisterErrors[] = gT("This email address is already registered but email to that address could not be delivered.");
             } else {
                 $this->sMailMessage = gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
                 $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
@@ -362,6 +383,16 @@ class RegisterController extends LSYii_Controller
             $oToken->email = $aFieldValue['sEmail'];
             $oToken->emailstatus = 'OK';
             $oToken->language = $sLanguage;
+
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
+            $aFieldValue['aAttribute'] = $attributeService->prepareAttributesForSave(
+                $aFieldValue['aAttribute'],
+                getDateFormatData($aSurveyInfo['surveyls_dateformat'])['phpdate'],
+                $aSurveyInfo['attributedescriptions']
+            );
             $oToken->setAttributes($aFieldValue['aAttribute']);
             if ($aSurveyInfo['startdate']) {
                 $oToken->validfrom = $aSurveyInfo['startdate'];
@@ -474,6 +505,8 @@ class RegisterController extends LSYii_Controller
             $aData['aSurveyInfo']['alanguageChanger']['show']  = true;
             $aData['aSurveyInfo']['alanguageChanger']['datas'] = $alanguageChangerDatas;
         }
+        App()->loadHelper("surveytranslator");
+        $aData['aSurveyInfo']['surveyls_dateformat_js'] = getDateFormatData($aData['aSurveyInfo']['surveyls_dateformat'])['jsdate'];
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
     }

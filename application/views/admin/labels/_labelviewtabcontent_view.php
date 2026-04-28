@@ -12,7 +12,7 @@ $codeids = '';
             <table class='answertable table table-hover'>
                 <thead>
                 <tr>
-                    <?php if ($first): ?>
+                    <?php if ($first) : ?>
                         <th><?php eT('Position'); ?></th>
                     <?php endif; ?>
                     <th><?php eT("Code") ?></th>
@@ -26,11 +26,10 @@ $codeids = '';
                 <?php $position = 0;
                 $alternate = false; ?>
 
-                    <?php foreach ($results as $row): ?>
+                    <?php foreach ($results as $row) : ?>
                         <?php
                         $sortorderids = $sortorderids . ' ' . $lslanguage . '_' . $row['sortorder'];
-                        if ($first)
-                        {
+                        if ($first) {
                             $codeids = $codeids . ' ' . $row['sortorder'];
                         }
                         ?>
@@ -58,7 +57,7 @@ $codeids = '';
                 if ($updatePermission) : ?>
                     <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-outline-secondary " data-bs-toggle="modal"
                             data-bs-target="#quickadd">
-                        <?php eT('Quick add labels') ?>
+                        <?php eT('Quick-add labels') ?>
                     </button>
                 <?php endif; ?>
             </div>

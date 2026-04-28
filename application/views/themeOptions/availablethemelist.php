@@ -4,7 +4,7 @@
  */
 $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
 ?>
-<?php if (!empty($aQuestionThemes['available_themes'])): ?>
+<?php if (!empty($aQuestionThemes['available_themes'])) : ?>
     <h3><?php eT('Available question themes:'); ?></h3>
     <div class="row">
         <div class="col-sm-12 content-right">
@@ -23,7 +23,7 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
                     </thead>
 
                     <tbody>
-                    <?php foreach ($aQuestionThemes['available_themes'] as $oTheme): ?>
+                    <?php foreach ($aQuestionThemes['available_themes'] as $oTheme) : ?>
                         <tr class="odd">
                             <td class="col-lg-1">preview</td>
                             <td class="col-lg-2"><?php echo $oTheme->name; ?></td>
@@ -40,7 +40,7 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
     </div>
 <?php endif; ?>
 
-<?php if (!empty($aQuestionThemes['broken_themes'])): ?>
+<?php if (!empty($aQuestionThemes['broken_themes'])) : ?>
     <h3><?php eT('Broken question themes'); ?></h3>
     <div id="templates_no_db" >
         <table class="items table table-hover">
@@ -53,7 +53,7 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
             </thead>
 
             <tbody>
-            <?php foreach ($aQuestionThemes['broken_themes'] as $oTheme): ?>
+            <?php foreach ($aQuestionThemes['broken_themes'] as $oTheme) : ?>
                 <?php // echo $oTemplate; ?>
                 <tr class="odd">
                     <td class="col-lg-1 text-danger"><?php echo $oTheme['path']; ?></td>

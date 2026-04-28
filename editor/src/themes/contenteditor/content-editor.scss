@@ -162,15 +162,6 @@
   }
 }
 
-.sidebar-row-title {
-  .mce-content-body,
-  .content-editable {
-    width: 170px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
 .survey-privacy {
   .mce-content-body,
   .content-editable {
@@ -355,20 +346,6 @@
     font-size: $font-size-sm;
     line-height: $line-height-20;
     color: $g-900;
-  }
-}
-
-[data-placeholder]:empty {
-  text-align: left !important;
-  font-style: italic;
-
-  &:before {
-    color: $g-700;
-    cursor: text;
-    content: attr(data-placeholder);
-    -webkit-content: attr(data-placeholder);
-    -moz-content: attr(data-placeholder);
-    -ms-content: attr(data-placeholder);
   }
 }
 

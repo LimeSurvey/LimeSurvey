@@ -26,7 +26,7 @@ use LimeSurvey\Models\Services\Exception\{
  * @property integer $sid Survey ID
  * @property integer $group_order Group order number (max 100 chars)
  * @property string $randomization_group  Randomization group
- * @property string $grelevance Group's relevane equation
+ * @property string $grelevance Group's relevance equation
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions
@@ -144,26 +144,6 @@ class QuestionGroup extends LSActiveRecord
                     $oQuestion->save(true);
                 }
             }
-        }
-    }
-    /**
-     * Insert an array into the groups table
-     * Returns false if insertion fails, otherwise the new GID
-     *
-     * @param array $data
-     * @return bool|int
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $group = new self();
-        foreach ($data as $k => $v) {
-            $group->$k = $v;
-        }
-        if (!$group->save()) {
-            return false;
-        } else {
-            return $group->gid;
         }
     }
 

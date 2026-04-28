@@ -1,7 +1,9 @@
 <?php
+
 /**
  * This is shown when the question has a customized relevance equation
  */
+
 ?>
 
 <div class="row">

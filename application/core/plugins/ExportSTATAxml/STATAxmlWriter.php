@@ -202,7 +202,7 @@ class STATAxmlWriter extends Writer
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 0,
-                        'answer' => gT('Not Selected')
+                        'answer' => gT('Not selected')
                     );
                 } elseif ($aQuestion['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
@@ -211,7 +211,7 @@ class STATAxmlWriter extends Writer
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 0,
-                        'answer' => gT('Not Selected')
+                        'answer' => gT('Not selected')
                     );
                 } elseif ($aQuestion['type'] == Question::QT_G_GENDER) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
@@ -357,8 +357,8 @@ class STATAxmlWriter extends Writer
                         $response = trim((string) $this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer']); // get answertext instead of answercode
                     }
                 }
-                
-                
+
+
                 if ($response != '') {
                     // recode some values from letters to numeric, so we can attach value labels and have more time doing statistics
                     switch ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type']) {
@@ -462,12 +462,12 @@ class STATAxmlWriter extends Writer
                 if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['format'])) {
                                     $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = 0;
                 }
-                
+
                 // Does the variable need a higher datatype because of the current response?
                 if ($aStatatypelist[$this->headersSGQA[$iVarid]]['type'] < $iDatatype) {
                                     $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = $iDatatype;
                 }
-                
+
                 // if datatype is a string, set needed stringlength
                 if ($iDatatype == 7) {
                     // Does the variable need a higher stringlength because of the current response?

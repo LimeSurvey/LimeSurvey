@@ -30,7 +30,7 @@ class AdvancedSettingWidget extends CWidget
 
         // The 'expression' property comes from the question attribute definition (either from the theme's config.xml
         // or from newQuestionAttributes() plugin event).
-        // The value 2 indicates that the attribute must be treated as an EM expression (survey logic file and question
+        // The value 2 indicates that the attribute must be treated as an EM expression (survey logic overview and question
         // summary automatically add the brackets before evaluation).
         if (isset($this->setting['expression']) && $this->setting['expression'] == 2) {
             $this->setting['aFormElementOptions']['inputGroup'] = ['prefix' => '{', 'suffix' => '}'];
@@ -50,12 +50,14 @@ class AdvancedSettingWidget extends CWidget
             }
         }
 
-        $inputBaseName = "advancedSettings[" . strtolower((string) $this->setting['category']) . "][" . $this->setting['name'] ."]";
-        $content = $this->render($this->setting['inputtype'],
-            ['inputBaseName' => $inputBaseName]
-            , true
+        $inputBaseName = "advancedSettings[" . strtolower((string) $this->setting['category']) . "][" . $this->setting['name'] . "]";
+        $content = $this->render(
+            $this->setting['inputtype'],
+            ['inputBaseName' => $inputBaseName],
+            true
         );
-        $this->render('layout',
+        $this->render(
+            'layout',
             [
                 'content' => $content,
                 'inputBaseName' => $inputBaseName

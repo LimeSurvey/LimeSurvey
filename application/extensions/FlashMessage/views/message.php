@@ -1,13 +1,11 @@
 <div id="notif-container col-12" style="position: relative; top: 70px;" >
-    <?php foreach($aMessage as $message):?>
+    <?php foreach ($aMessage as $message) :?>
         <?php
-        if (!isset($message['type']) || (isset($message['type']) && !in_array($message['type'],array('success','info','warning','danger','error'))))
-        {
-            $message['type']='success';
+        if (!isset($message['type']) || (isset($message['type']) && !in_array($message['type'], array('success','info','warning','danger','error')))) {
+            $message['type'] = 'success';
         }
-        if ($message['type']=='error')
-        {
-            $message['type']='danger';
+        if ($message['type'] == 'error') {
+            $message['type'] = 'danger';
         }
         ?>
 

@@ -3,7 +3,7 @@ export const getNotSupportedQuestionTypeInfo = () => {
     HUGE_FREE_TEXT: {
       type: 'U',
       theme: 'hugefreetext',
-      title: t('Huge text'),
+      title: t('Huge free text'),
     },
     INPUT_ON_DEMAND: {
       type: 'Q',
@@ -18,27 +18,27 @@ export const getNotSupportedQuestionTypeInfo = () => {
     LIST_DROPDOWN_DEFAULT: {
       type: '!',
       theme: 'list_dropdown',
-      title: t('List dropdown'),
+      title: t('List (Dropdown)'),
     },
     ARRAY_FIVE_POINT: {
       type: 'A',
       theme: 'arrays/5point',
-      title: t('Array five points'),
+      title: t('Array (5 point choice)'),
     },
     ARRAY_TEN_POINT: {
       type: 'B',
       theme: 'arrays/10point',
-      title: t('Array ten points'),
+      title: t('Array (10 point choice)'),
     },
     ARRAY_INCREASE_SAME_DECREASE: {
       type: 'E',
       theme: 'arrays/increasesamedecrease',
-      title: t('Array increase, same, and decrease'),
+      title: t('Array (Increase/Same/Decrease)'),
     },
     ARRAY_YES_NO_UNCERTAIN: {
       type: 'C',
       theme: 'arrays/yesnouncertain',
-      title: t('Array yes, no, and uncertain'),
+      title: t('Array (Yes/No/Uncertain)'),
     },
   }
 }

@@ -1,8 +1,10 @@
 <?php
+
 /**
  * No condition view
  *
  */
+
 ?>
 
 <div class="row">

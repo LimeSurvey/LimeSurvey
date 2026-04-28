@@ -16,7 +16,7 @@ class Update_345 extends DatabaseUpdateBase
            ->where('template_name=:template_name', ['template_name' => 'fruity'])
            ->queryRow();
         if ($fruityConf) {
-            // Brute force way. Just have to hope noone changed the default
+            // Brute force way. Just have to hope no one changed the default
             // config yet.
             $this->db->createCommand()->update(
                 '{{template_configuration}}',

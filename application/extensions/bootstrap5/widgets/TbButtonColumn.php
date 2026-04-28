@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbButtonColumn class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
@@ -55,7 +56,8 @@ class TbButtonColumn extends CButtonColumn
      */
     protected function renderButton($id, $button, $row, $data)
     {
-        if (isset($button['visible']) && !$this->evaluateExpression(
+        if (
+            isset($button['visible']) && !$this->evaluateExpression(
                 $button['visible'],
                 array('row' => $row, 'data' => $data)
             )
@@ -73,11 +75,9 @@ class TbButtonColumn extends CButtonColumn
         $options = TbArray::popValue('options', $button, array());
 
         // Start of modification
-        if (isset( $options['evaluateOptions']))
-        {
-            foreach ($options['evaluateOptions'] as $key => $value)
-            {
-                $options[$value] = $this->evaluateExpression($options[$value], array('data'=>$data,'row'=>$row));
+        if (isset($options['evaluateOptions'])) {
+            foreach ($options['evaluateOptions'] as $key => $value) {
+                $options[$value] = $this->evaluateExpression($options[$value], array('data' => $data,'row' => $row));
             }
 
             unset($options['evaluateOptions']);

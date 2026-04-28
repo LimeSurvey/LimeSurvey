@@ -6,9 +6,6 @@
      */
 class BigData
 {
-
-
-
     /**
      * This function combines json_encode and echo.
      * If a stream is passed (or is part of the array) it's content will be
@@ -213,7 +210,6 @@ class BigData
 
 class BigFile
 {
-
     public $fileName;
     protected $deleteAfterUse;
     protected $defaultEcho;

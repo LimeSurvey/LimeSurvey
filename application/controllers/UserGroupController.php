@@ -103,14 +103,14 @@ class UserGroupController extends LSBaseController
     {
         $ugid = (int)$ugid;
         if (empty($ugid)) {
-            throw new CHttpException(400, gT('GroupId missing'));
+            throw new CHttpException(400, gT('Group ID missing'));
         }
 
         $userGroup = UserGroup::model()->findByPk($ugid);
         if (empty($userGroup)) {
             throw new CHttpException(404, gT("User group not found."));
         }
-        /* Check Permssion to view */
+        /* Check Permission to view */
         if (
             !(
                 Permission::model()->hasGlobalPermission('superadmin', 'read') // superadmin
@@ -393,7 +393,7 @@ class UserGroupController extends LSBaseController
         $aRet = [];
 
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
-            $aRet['errorMsg'] = gT('Access denied');
+            $aRet['errorMsg'] = gT('Access denied!');
             $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $userGroupId;
             return $aRet;
         }
@@ -488,13 +488,13 @@ class UserGroupController extends LSBaseController
                 App()->user->setFlash('success', $emailSendingResults);
             } catch (Exception $e) {
                 // TODO: Show error message?
-                App()->user->setFlash('error', gT("Error: no email has been send."));
+                App()->user->setFlash('error', gT("Error: No email has been sent."));
             }
             $this->redirect($redirectUrl);
             App()->end(); // redirect end : add it here for clarity
         }
 
-        $aData['topbar']['title'] = gT('Mail to all Members');
+        $aData['topbar']['title'] = gT('Mail to all members');
         $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbarBtns_mail/rightSideButtons',

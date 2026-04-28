@@ -4,18 +4,24 @@
  * Manage token attribute fields/ Add or delete token attributes
  * @var AdminController $this
  * @var Survey $oSurvey
+ * @var array $tokenFields
+ * @var array $attributeTypeDropdownArray
  */
 ?>
 <div class='side-body'>
-    <h3 aria-level="1"><?php eT("Manage attribute fields"); ?></h3>
+    <h1 class="h3"><?php eT("Manage attribute fields"); ?></h1>
 
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
+            <?php echo CHtml::form(
+                array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"),
+                'post',
+                ['id' => 'manage_token_attributes_form']
+            ); ?>
             <div>
                 <ul class="nav nav-tabs">
                     <?php $c = true; ?>
-                    <?php foreach ($oSurvey->allLanguages as $sLanguage): ?>
+                    <?php foreach ($oSurvey->allLanguages as $sLanguage) : ?>
                         <?php $sTabTitle = getLanguageNameFromCode($sLanguage, false) . " " . (($sLanguage == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
                         <li class="nav-item">
                             <a class="nav-link <?= $c ? "active" : "" ?>" data-bs-toggle="tab" href="#language_<?php echo $sLanguage ?>">
@@ -27,50 +33,55 @@
                 </ul>
 
                 <div class="tab-content">
-                    <?php $c=true;?>
+                    <?php $c = true;?>
                     <?php foreach ($oSurvey->allLanguages as $sLanguage) { ?>
                         <div id="language_<?php echo $sLanguage ?>"  class="table-responsive tab-pane fade <?= $c ? "show active" : "" ?>">
-                            <?php $c=false; ?>
+                            <?php $c = false; ?>
                             <table class='listtokenattributes table table-hover'>
                                 <thead> <tr>
                                     <th><?php eT("Attribute field"); ?></th>
                                     <th><?php eT("Field description"); ?></th>
                                     <th><?php eT("Show during registration?") ?></th>
                                     <th><?php eT("Mandatory during registration?"); ?></th>
-                                    <th title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT("Encrypted?"); ?></th>
+                                    <th title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT("Encrypted"); ?></th>
                                     <th><?php eT("Field caption"); ?></th>
+                                    <th><?php eT("Field type"); ?></th>
                                     <th><?php eT("CPDB mapping"); ?></th>
                                     <th><?php eT("Example data"); ?></th>
                                 </tr> </thead>
                                 <tbody>
-                                <?php $nrofattributes = 0;
-                                foreach ($tokenfields as $sTokenField) {
-                                    if (isset($tokenfielddata[$sTokenField])) {
-                                        $tokenvalues = $tokenfielddata[$sTokenField];
-                                        if (!array_key_exists('encrypted', $tokenvalues)){
-                                            $tokenvalues['encrypted'] = 'N';   
-                                        }
-                                        if (!array_key_exists('cpdbmap', $tokenvalues)){
-                                            $tokenvalues['cpdbmap'] = '';   
-                                        }
-                                    } else {
-                                        $tokenvalues = array('description' => '','mandatory' => 'N','encrypted' => 'N','show_register' => 'N','cpdbmap'=>'');
-                                    }
+                                <?php
+                                $nrofattributes = 0;
+                                $defaultTokenValues = [
+                                        'description' => '',
+                                        'mandatory' => 'N',
+                                        'encrypted' => 'N',
+                                        'show_register' => 'N',
+                                        'type' => 'TB',
+                                        'type_options' => '[]',
+                                        'cpdbmap' => ''
+                                ];
+
+                                foreach ($tokenFields as $sTokenField) {
+                                    $tokenValues = array_merge(
+                                        $defaultTokenValues,
+                                        $tokenfielddata[$sTokenField] ?? []
+                                    );
+                                    $customAttribute = empty($tokenValues['coreattribute']);
                                     // add count only if not core token attribute
-                                    if (!in_array($sTokenField, array('firstname', 'lastname', 'email'))){
+                                    if (!in_array($sTokenField, array('firstname', 'lastname', 'email'))) {
                                         $nrofattributes++;
                                     }
                                     echo "
                                     <tr>
                                     <td>{$sTokenField}</td>";
-                                    if ($sLanguage == $oSurvey->language)
-                                    { ?>
+                                    if ($sLanguage == $oSurvey->language) { ?>
                                         <td>
-                                            <?php if (empty($tokenvalues['coreattribute'])){ ?>
+                                            <?php if ($customAttribute) { ?>
                                                 <?php
                                                     echo CHtml::textField(
                                                         "description_{$sTokenField}",
-                                                        $tokenvalues['description'],
+                                                        $tokenValues['description'],
                                                         array('class' => 'form-control')
                                                     );
                                                 ?>
@@ -81,33 +92,33 @@
                                         <td>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "show_register_{$sTokenField}",
-                                                'checkedOption' => $tokenvalues['show_register'] === 'Y' ? '1' : '0',
+                                                'checkedOption' => $tokenValues['show_register'] === 'Y' ? '1' : '0',
                                                 'selectOptions' => [
                                                     '1' => gT('On'),
                                                     '0' => gT('Off'),
                                                 ],
                                                 'htmlOptions'   => [
-                                                    'disabled' => !empty($tokenvalues['coreattribute']),
+                                                    'disabled' => !$customAttribute,
                                                 ]
                                             ]); ?>
                                         </td>
                                         <td>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "mandatory_{$sTokenField}",
-                                                'checkedOption' => $tokenvalues['mandatory'] === 'Y' ? '1' : '0',
+                                                'checkedOption' => $tokenValues['mandatory'] === 'Y' ? '1' : '0',
                                                 'selectOptions' => [
                                                     '1' => gT('On'),
                                                     '0' => gT('Off'),
                                                 ],
                                                 'htmlOptions'   => [
-                                                    'disabled' => !empty($tokenvalues['coreattribute']),
+                                                    'disabled' => !$customAttribute,
                                                 ]
                                             ]); ?>
                                         </td>
                                         <td>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "encrypted_{$sTokenField}",
-                                                'checkedOption' => $tokenvalues['encrypted'] === 'Y' ? '1' : '0',
+                                                'checkedOption' => $tokenValues['encrypted'] === 'Y' ? '1' : '0',
                                                 'selectOptions' => [
                                                     '1' => gT('On'),
                                                     '0' => gT('Off'),
@@ -118,14 +129,12 @@
                                             ]); ?>
                                         </td>
                                         <?php
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         echo "
-                                        <td>", htmlspecialchars((string) $tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
-                                        <td>", $tokenvalues['mandatory'] == 'Y' ? eT('Yes') : eT('No'), "</td>
-                                        <td>", $tokenvalues['encrypted'] == 'Y' ? eT('Yes') : eT('No'), "</td>
-                                        <td>", $tokenvalues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";
+                                        <td>", htmlspecialchars((string) $tokenValues['description'], ENT_QUOTES, 'UTF-8'), "</td>
+                                        <td>", $tokenValues['show_register'] == 'Y' ? gT('Yes') : gT('No'), "</td>
+                                        <td>", $tokenValues['mandatory'] == 'Y' ? gT('Yes') : gT('No'), "</td>
+                                        <td>", $tokenValues['encrypted'] == 'Y' ? gT('Yes') : gT('No'), "</td>";
                                     }; ?>
                                     <td>
                                         <?php
@@ -136,21 +145,54 @@
                                             );
                                         ?>
                                     </td>
+                                    <td class="text-nowrap">
+                                        <?php
+                                        $attributeType = $tokenValues['type'];
+                                        $attributeTypeOptions = $tokenValues['type_options'];
+                                        if ($sLanguage == $oSurvey->language) :
+                                            echo CHtml::hiddenField(
+                                                "type_{$sTokenField}",
+                                                $attributeType
+                                            );
+                                            echo CHtml::hiddenField(
+                                                "type_options_{$sTokenField}",
+                                                $attributeTypeOptions
+                                            );
+                                            ?>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="type_display_<?php echo $sTokenField; ?> me-1">
+                                                    <?php echo $attributeTypeDropdownArray[$attributeType]; ?>
+                                                </span>
+                                                <?php if ($customAttribute) : ?>
+                                                    <a href='#' class='btn btn-sm btn-outline-secondary edit-attribute-type ms-2'
+                                                       data-token-field='<?php echo $sTokenField; ?>'
+                                                       data-bs-toggle='modal'
+                                                       data-bs-target='#attributeTypeModal'
+                                                       title='<?php eT("Edit attribute type"); ?>'>
+                                                        <i class='ri-pencil-fill'></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php else :?>
+                                            <span class="type_display_<?php echo $sTokenField;?> text-muted">
+                                                <?php echo $attributeTypeDropdownArray[$attributeType]; ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?php
-                                        if ($sLanguage == $oSurvey->language){
-                                            if (empty($tokenvalues['coreattribute'])){
-                                                echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-select'));
-                                            }
+                                    if ($sLanguage == $oSurvey->language) {
+                                        if ($customAttribute) {
+                                            echo CHtml::dropDownList('cpdbmap_' . $sTokenField, $tokenValues['cpdbmap'], $aCPDBAttributes, array('class' => 'form-select'));
                                         }
-                                        else
-                                        {
-                                            echo $aCPDBAttributes[$tokenvalues['cpdbmap']];
+                                    } else {
+                                        if (array_key_exists($tokenValues['cpdbmap'], $aCPDBAttributes)) {
+                                            echo $aCPDBAttributes[$tokenValues['cpdbmap']];
                                         }
+                                    }
                                     ?></td>
                                     <td>
                                     <?php
-                                    if (empty($tokenvalues['coreattribute']) && !empty($examplerow))
-                                    {
+                                    if ($customAttribute && !empty($examplerow)) {
                                         echo CHTml::encode($examplerow[$sTokenField]);
                                     }
                                     echo "</td>";
@@ -158,25 +200,24 @@
                                 }
                                 ?>
                                 <tbody></table></div>
-                        <?php } ?>
+                    <?php } ?>
                 </div>
             </div>
             <p>
-                <input type="submit" class="btn btn-primary" value="<?php eT('Save'); ?>" />
+                <input type="submit" class="btn btn-primary mt-2" value="<?php eT('Save'); ?>" />
                 <input type='hidden' name='action' value='tokens' />
                 <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
             </p>
             <?php echo CHtml::endForm() ?>
-
         </div>
     </div>
 
-    <h3 aria-level="2"><?php eT("Add/delete survey participant attributes"); ?></h3>
+    <h2 class="h3"><?php eT("Add/delete survey participant attributes"); ?></h2>
 
     <div class="row">
         <div class="col-12 content-right">
             <p><?php neT('There is {n} user attribute field in this survey participant list.|There are {n} user attribute fields in this survey participant list.', $nrofattributes); ?></p>
-            <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
+            <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post', array('id' => 'addattribute')); ?>
             <p>
                 <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>
                 <div class=''>
@@ -184,28 +225,32 @@
                 </div>
             </p>
             <p>
-                <?php echo CHtml::submitButton(gT('Add fields','unescaped'), array('class'=>'btn btn-warning')); ?>
-                <?php echo CHtml::hiddenField('action','tokens'); ?>
-                <?php echo CHtml::hiddenField('subaction','updatetokenattributes'); ?>
-                <?php echo CHtml::hiddenField('sid',$surveyid); ?>
+                <?php echo CHtml::submitButton(gT('Add fields', 'unescaped'), array('class' => 'btn btn-warning')); ?>
+                <?php echo CHtml::hiddenField('action', 'tokens'); ?>
+                <?php echo CHtml::hiddenField('subaction', 'updatetokenattributes'); ?>
+                <?php echo CHtml::hiddenField('sid', $surveyid); ?>
             </p>
             <?php echo CHtml::endForm() ?>
-            <?php if( count($tokenfieldlist)) { ?>
-                <?php echo CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'attributenumber')); ?>
+            <?php if (count($tokenfieldlist)) { ?>
+                <?php echo CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$surveyid}"), 'post', array('id' => 'attributenumber')); ?>
                 <p>
                     <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
                     <div class=''>
-                        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','description'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-select')); ?>
+                        <?php  echo CHtml::dropDownList('deleteattribute', "", CHtml::listData($tokenfieldlist, 'id', 'description'), array('empty' => gT('(none)', 'unescaped'), 'class' => 'form-select')); ?>
                     </div>
                 </p>
                 <p>
-                    <?php echo CHtml::submitButton(gT('Delete attribute','unescaped'), array('class'=>'btn btn-danger')); ?>
-                    <?php echo CHtml::hiddenField('action','tokens'); ?>
-                    <?php echo CHtml::hiddenField('subaction','deletetokenattributes'); ?>
-                    <?php echo CHtml::hiddenField('sid',$surveyid); ?>
+                    <?php echo CHtml::submitButton(gT('Delete attribute', 'unescaped'), array('class' => 'btn btn-danger')); ?>
+                    <?php echo CHtml::hiddenField('action', 'tokens'); ?>
+                    <?php echo CHtml::hiddenField('subaction', 'deletetokenattributes'); ?>
+                    <?php echo CHtml::hiddenField('sid', $surveyid); ?>
                 </p>
                 <?php echo CHtml::endForm() ?>
-                <?php } ?>
+            <?php } ?>
         </div>
     </div>
 </div>
+<?php App()->getController()->renderPartial(
+    'token/_attributeTypeModal',
+    ['attributeTypeDropdownArray' => $attributeTypeDropdownArray]
+); ?>

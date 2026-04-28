@@ -44,9 +44,7 @@ class SubQuestionsService
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
-     * @param array {
-     *  ...<array-key, mixed>
-     * } $subquestions
+     * @param array<array-key, mixed> $subquestions
      * @return void
      * @throws PersistErrorException
      * @throws NotFoundException

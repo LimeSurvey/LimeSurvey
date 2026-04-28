@@ -27,39 +27,6 @@ $(document).on('ready pjax:scriptcomplete',function()
         $(focus_element).focus();
     }
 
-    // Keypad functions
-    var kp = $("input.num-keypad");
-    if(kp.length)
-    {
-        kp.keypad({
-            showAnim: 'fadeIn', keypadOnly: false,
-            onKeypress: function(key, value, inst) {
-                $(this).trigger('keyup');
-            }
-        });
-    }
-    kp = $(".text-keypad");
-    if(kp.length)
-    {
-        var spacer = $.keypad.HALF_SPACE;
-        for(var i = 0; i != 8; ++i) spacer += $.keypad.SPACE;
-        kp.keypad({
-            showAnim: 'fadeIn',
-            keypadOnly: false,
-            layout: [
-                spacer + $.keypad.CLEAR + $.keypad.CLOSE, $.keypad.SPACE,
-                '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
-                $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
-                'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
-                $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
-                $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
-                $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
-                onKeypress: function(key, value, inst) {
-                    $(this).trigger('keyup');
-                }
-            });
-    }
-
     // Maxlength for textareas TODO limit to not CSS3 compatible browser
     maxlengthtextarea();
 

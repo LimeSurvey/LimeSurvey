@@ -8,6 +8,7 @@ import {
   createBufferOperation,
   getDisabledQuestionTypes,
   errorToast,
+  isTempId,
 } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
@@ -37,6 +38,7 @@ export const QuestionSettings = ({ surveyId }) => {
     isExpressionScriptPanelOpen: false,
   })
   const [scenarioToPatch, setScenarioToPatch] = useState(null)
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
 
   // holds the scenario ID currently has a new conditions (waiting for temp condition IDs to be replaced)
   const [pendingScenarioName, setPendingScenarioName] = useState(null)
@@ -212,7 +214,7 @@ export const QuestionSettings = ({ surveyId }) => {
                 handleUpdate={updateAttribute}
                 title={setting.title}
                 attributes={setting.attributes}
-                language={language}
+                language={activeLanguage}
               />
             )
           })}
@@ -228,7 +230,7 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!focused ? null : (
+        {!focused || (focused && isTempId(focused.qid)) ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}

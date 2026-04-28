@@ -14,17 +14,17 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
+    var sAdminEmailAddressNeeded = '" . gT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js') . "'
     var sURLParameters = '';
     var sAddParam = '';
     var expirationLowerThanStartError = '" . gT("Expiration date can't be lower than the start date") . "';
 ", LSYii_ClientScript::POS_BEGIN);
-?>
+    ?>
 <!-- Publication panel -->
 <div id='publication-panel'>
-    <?php if ($bShowAllOptions === true){ ?>
+    <?php if ($bShowAllOptions === true) { ?>
     <div class="row">
-            <h1><?php eT("Publication date"); ?></h1>
+            <h2 class="h1"><?php eT("Publication date"); ?></h2>
             <!-- Start date/time -->
             <div class="col-lg-3 mb-3">
                 <label class=" form-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
@@ -32,11 +32,12 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate']." H:i",strtotime((string) $oSurvey->startdate)) : ''),
+                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate'] . " H:i", strtotime((string) $oSurvey->startdate)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                'allowInputToggle' =>true,
+                                'allowInputToggle' => true,
                                 'showClear' => true,
+                                'theme' => 'light',
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
@@ -51,11 +52,12 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "expires",
                             'id' => 'expires',
-                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate']." H:i",strtotime((string) $oSurvey->expires)) : ''),
+                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate'] . " H:i", strtotime((string) $oSurvey->expires)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                'allowInputToggle' =>true,
+                                'allowInputToggle' => true,
                                 'showClear' => true,
+                                'theme' => 'light',
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                             )
                         ));
@@ -67,12 +69,13 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     <div>
             <!-- List survey publicly -->
             <div class="mb-3 mt-4">
-                <h1><?php eT("Access control"); ?></h1>
+                <h2 class="h1"><?php eT("Access control"); ?></h2>
                 <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'listpublic',
                         'checkedOption' => $oSurvey->listpublic,
+                        'ariaLabel' => gT('Link survey on public index page:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->listpublic . " ᴵ" ])
                             : $optionsOnOff,
@@ -86,6 +89,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecookie',
                         'checkedOption' => $oSurvey->usecookie,
+                        'ariaLabel' => gT('Set cookie to prevent repeated participation:'),
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->usecookie . " ᴵ" ])
                             : $optionsOnOff,
@@ -94,21 +98,22 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             </div>
 
             <!-- Use CAPTCHA for survey access -->
-            <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand 
+            <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand
             $aCaptchaSurveyAccessYes        = array('A', 'B', 'C', 'X', 'F', 'H', 'K', 'O', 'T');
             $aCaptchaSurveyAccessInherit    = array('E', 'G', 'I', 'J', 'L', 'M', '1', '2', '4');
             $aCaptchaRegistrationYes        = array('A', 'B', 'D', 'R', 'F', 'G', 'I', 'M', 'U');
             $aCaptchaRegistrationInherit    = array('E', 'H', 'J', 'K', 'O', 'P', '1', '3', '6');
             $aCaptchaLoadSaveYes            = array('A', 'C', 'D', 'S', 'G', 'H', 'J', 'L', 'P');
             $aCaptchaLoadSaveInherit        = array('E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5');
-            
+
             ?>
             <div class="mb-3 mt-4">
-                <h1><?php eT("CAPTCHA"); ?></h1>
+                <h2 class="h1"><?php eT("CAPTCHA"); ?></h2>
                 <label class=" form-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecaptcha_surveyaccess',
+                        'ariaLabel' => gT('Use CAPTCHA for survey access:'),
                         'checkedOption'         => (in_array($usecap, $aCaptchaSurveyAccessYes))
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaSurveyAccessInherit)) ? ('I') : ('N')),
@@ -125,14 +130,15 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecaptcha_registration',
+                        'ariaLabel' => gT('Use CAPTCHA for registration:'),
                         'checkedOption' => (in_array($usecap, $aCaptchaRegistrationYes))
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaRegistrationInherit))
                                 ? ('I')
                                 : ('N')),
-                        'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
-                            : $optionsOnOff,
+                                                                         'selectOptions' => ($bShowInherited)
+                                                                         ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
+                                                                         : $optionsOnOff,
                     ]); ?>
                 </div>
             </div>
@@ -143,6 +149,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usecaptcha_saveandload',
+                        'ariaLabel' => gT('Use CAPTCHA for save and load:'),
                         'checkedOption' => (in_array($usecap, $aCaptchaLoadSaveYes))
                             ? 'Y'
                             : ((in_array($usecap, $aCaptchaLoadSaveInherit)) ? ('I') : ('N')),

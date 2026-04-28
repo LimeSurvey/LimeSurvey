@@ -79,7 +79,7 @@ class UserAction extends SurveyCommonAction
 
             if (Yii::app()->request->getPost('newemailshown') == "1") {
                 if (Yii::app()->getConfig('demoMode')) {
-                    Yii::app()->setFlashMessage(gT("You can't change your email adress if demo mode is active."), 'error');
+                    Yii::app()->setFlashMessage(gT("You can't change your email address if demo mode is active."), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 }
 
@@ -156,7 +156,7 @@ class UserAction extends SurveyCommonAction
         $aData['sSavedLanguage'] = $oUser->lang;
         $aData['sUsername'] = $oUser->users_name;
         $aData['sFullname'] = $oUser->full_name;
-        $aData['sEmailAdress'] = $oUser->email;
+        $aData['sEmailAddress'] = $oUser->email;
         $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
 
         $aData['topbar']['title'] = gT('Account');

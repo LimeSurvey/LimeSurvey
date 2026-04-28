@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhTimePicker widget class
  *
@@ -8,6 +9,7 @@
  * @package YiiWheels.widgets.timepicker
  * @uses YiiStrap.helpers.TbArray
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhTimePicker extends CInputWidget
@@ -66,7 +68,6 @@ class WhTimePicker extends CInputWidget
         $this->renderField();
 
         $this->registerClientScript();
-
     }
 
     /**

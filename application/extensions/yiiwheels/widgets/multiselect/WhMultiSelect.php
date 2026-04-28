@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhMultiSelect widget class
  *
@@ -13,7 +14,6 @@ Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhMultiSelect extends CInputWidget
 {
-
     /**
      * @var array @param data for generating the list options (value=>display)
      */
@@ -86,7 +86,7 @@ class WhMultiSelect extends CInputWidget
 
         $cs->registerPackage('bootstrap-multiselect');
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
-        
+
         /* initialize plugin */
 
         $this->getApi()->registerPlugin('multiselect', $selector, $this->pluginOptions);

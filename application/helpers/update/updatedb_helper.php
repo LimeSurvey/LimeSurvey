@@ -50,12 +50,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
      * @link https://www.limesurvey.org/manual/Database_versioning for explanations
-     * @var array $aCriticalDBVersions An array of cricital database version.
+     * @var array $aCriticalDBVersions An array of critical database version.
      */
     $aCriticalDBVersions = array(310, 400, 450, 600, 700);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
-    // If trying to update silenty check if it is really possible
+    // If trying to update silently check if it is really possible
     if ($bSilent && (count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0)) {
         return false;
     }
@@ -73,7 +73,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
     $options = "";
-    // The engine has to be explicitely set because MYSQL 8 switches the default engine to INNODB
+    // The engine has to be explicitly set because MYSQL 8 switches the default engine to INNODB
     if (Yii::app()->db->driverName == 'mysql') {
         $options = 'ENGINE=' . Yii::app()->getConfig('mysqlEngine') . ' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
         if (Yii::app()->getConfig('mysqlEngine') == 'INNODB') {
@@ -100,7 +100,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         $file = end($fileInfo);
         Yii::app()->user->setFlash(
             'error',
-            gT('An non-recoverable error happened during the update. Error details:')
+            gT('A non-recoverable error occurred during the update. Error details:')
             . '<p>'
             . htmlspecialchars($e->getMessage())
             . '</p><br />'
@@ -125,8 +125,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     // Force User model to refresh meta data (for updates from very old versions)
     User::model()->refreshMetaData();
     Yii::app()->db->schema->getTable('{{surveys}}', true);
+    Yii::app()->db->schema->getTable('{{surveys_groupsettings}}', true);
     Yii::app()->db->schema->getTable('{{templates}}', true);
     Survey::model()->refreshMetaData();
+    SurveysGroupsettings::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
 
     // Try to clear tmp/runtime (database cache files).
@@ -158,7 +160,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 }
 
 /**
- * Update previous encrpted values to new encryption
+ * Update previous encrypted values to new encryption
  * @param CDbConnection $oDB
  * @throws CException
  */
@@ -1013,7 +1015,7 @@ function upgradeArchivedTableSettings446()
         $type = $tableNameParts[1] ?? '';
         $surveyID = $tableNameParts[2] ?? '';
         $typeExtended = $tableNameParts[3] ?? '';
-        // skip if table entry allready exists
+        // skip if table entry already exists
         foreach ($archivedTableSettings as $archivedTableSetting) {
             if ($archivedTableSetting['tbl_name'] === $tableName) {
                 continue 2;
@@ -1328,7 +1330,7 @@ function upgrade328($oDB)
 */
 function upgrade327($oDB)
 {
-    // Update the box value so it uses to the the themeoptions controler
+    // Update the box value so it uses the themeoptions controller
     $oDB->createCommand()->update('{{boxes}}', array(
         'position' =>  '6',
         'url'      =>  'admin/themeoptions',
@@ -1511,7 +1513,6 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         'showprogress' => "string(1) NULL DEFAULT 'Y'",
         'questionindex' => "integer NULL DEFAULT '0'",
         'navigationdelay' => "integer NULL DEFAULT '0'",
-        'nokeyboard' => "string(1) NULL DEFAULT 'N'",
         'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
     ));
     addPrimaryKey('surveys_groupsettings', array('gsid'));
@@ -1535,6 +1536,11 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     // TODO: Don't use models in updatedb_helper.
     $attributes = $settings1->attributes;
     unset($attributes['ipanonymize']);
+    // Same as ipanonymize, stale schema persists on model after column is removed from db,
+    // and interacts with older updates
+    if (isset($attributes['nokeyboard'])) {
+        unset($attributes['nokeyboard']);
+    }
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
@@ -1585,7 +1591,6 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         "showprogress" => "I",
         "questionindex" => -1,
         "navigationdelay" => -1,
-        "nokeyboard" => "I",
         "alloweditaftercompletion" => "I",
     );
 
@@ -2459,13 +2464,13 @@ function upgradeTokens148()
 function upgradeQuestionAttributes148()
 {
     $sSurveyQuery = "SELECT sid,language,additional_languages FROM {{surveys}}";
-    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->query();
     $aAllAttributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
         $iSurveyID = $aSurveyRow['sid'];
         $aLanguages = array_merge(array($aSurveyRow['language']), explode(' ', (string) $aSurveyRow['additional_languages']));
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
-        $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
+        $oAttributeResult =  Yii::app()->db->createCommand($sAttributeQuery)->query();
         foreach ($oAttributeResult->readAll() as $aAttributeRow) {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n']) {
                 Yii::app()->getDb()->createCommand("delete from {{question_attributes}} where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
@@ -2502,7 +2507,7 @@ function upgradeTokens145()
 function upgradeSurveys145()
 {
     $sSurveyQuery = "SELECT * FROM {{surveys}} where notification<>'0'";
-    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->query();
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
         if ($aSurveyRow['notification'] == '1' && trim((string) $aSurveyRow['adminemail']) != '') {
             $aEmailAddresses = explode(';', (string) $aSurveyRow['adminemail']);

@@ -21,6 +21,19 @@ export const useSurveyRequestTimestamp = () => {
     return getCurrentUtcTimestamp()
   }, [])
 
+  const clearSurveyRequestTimestamp = useCallback((surveyId) => {
+    queryClient.setQueryData(
+      [STATES.SURVEY_REQUEST_UTC_TIMESTAMP],
+      (old = {}) => {
+        const updated = { ...old }
+        if (surveyId) {
+          delete updated[surveyId]
+        }
+        return updated
+      }
+    )
+  }, [])
+
   useEffect(() => {
     const handleBeforeUnload = () => {
       queryClient.removeQueries({
@@ -37,5 +50,6 @@ export const useSurveyRequestTimestamp = () => {
   return {
     getSurveyRequestTimestamp,
     setSurveyRequestTimestamp,
+    clearSurveyRequestTimestamp,
   }
 }

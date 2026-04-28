@@ -14,7 +14,6 @@
  */
 class FlushAssetsCommand extends CConsoleCommand
 {
-
     /**
      * @param array $args
      * @return void

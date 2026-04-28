@@ -44,6 +44,15 @@
   }
 }
 
+.focus-bg-purple {
+  [data-placeholder]:empty {
+    &:before {
+      color: white !important;
+      cursor: pointer;
+    }
+  }
+}
+
 .sidebar-row {
   @include med14-c;
 
@@ -68,12 +77,9 @@
     white-space: nowrap;
     width: 170px;
     margin-left: 5px;
-
-    [data-placeholder]:empty {
-      &:before {
-        color: $g-400;
-      }
-    }
+    min-height: 32px;
+    display: flex;
+    align-items: center;
   }
 
   .sidebar-row-tag {

@@ -7,7 +7,7 @@
     </div>
     <div class="card-body">
         <input type='hidden' name='sid' value='<?php echo $surveyid; ?>'/>
-        <?php if ($SingleResponse): ?>
+        <?php if ($SingleResponse) : ?>
             <input type='hidden' name='response_id' value="<?php echo $SingleResponse; ?>"/>
         <?php endif; ?>
         <label for='colselect' class="col-md-12 form-label">
@@ -21,7 +21,7 @@
         <div class="col-md-12 text-center">
             <strong id='columncount'>&nbsp;</strong>
         </div>
-        <?php if (count($aFields) + 20 > (int)ini_get('max_input_vars')): ?>
+        <?php if (count($aFields) + 20 > (int)ini_get('max_input_vars')) : ?>
             <div class="col-md-12">
                 <?php
                 $message = gT("The number of fields in your survey exceeds the maximum numbers of fields you can export.") .

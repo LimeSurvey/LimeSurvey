@@ -7,8 +7,9 @@ export const ConfirmModal = ({
   show = false,
   onHide = () => {},
   onConfirm,
-  title = t('Confirm Action'),
+  title = t('Confirm action'),
   description = t('Are you sure you want to perform this action?'),
+  confirmButtonText = t('Confirm'),
   ...props
 }) => {
   return (
@@ -17,21 +18,20 @@ export const ConfirmModal = ({
       show={show}
       centered
       onHide={onHide}
-      className="w-fit confirm-modal"
+      className="confirm-modal"
     >
       <Modal.Header
         className="border-none d-flex align-items-center gap-2 text-center"
         closeButton
       ></Modal.Header>
       <Modal.Body>
-        <i className="ri-close-large-line body-icon"></i>
-        <h1 className="my-4">{title}</h1>
-        <h3>{description}</h3>
+        <h1 className="reg24">{title}</h1>
+        <h3 className="reg14 description">{description}</h3>
       </Modal.Body>
-      <Modal.Footer className="border-none d-flex justify-content-end text-center">
+      <Modal.Footer className="border-none  p-0 d-flex justify-content-end text-center">
         <Button
           size="lg"
-          className="text-light"
+          className="cancel-button"
           variant="secondary"
           onClick={onHide}
         >
@@ -39,11 +39,12 @@ export const ConfirmModal = ({
         </Button>
         <Button
           size="lg"
-          className="text-light"
+          className="text-light confirm-button"
           variant="danger"
           onClick={onConfirm}
+          testId="confirm-modal-confirm-button"
         >
-          {t('Confirm')}
+          {confirmButtonText}
         </Button>
       </Modal.Footer>
     </Modal>

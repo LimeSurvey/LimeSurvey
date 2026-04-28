@@ -47,6 +47,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'urlparams',
+                    'caption' => gT('URL Parameters'),
                     'dataProvider'    => $model->search(),
                     'emptyText'       => gT('No parameters defined'),
                     'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
@@ -76,7 +77,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                             'header' => gT('Target question'),
                             'name'   => 'target_question',
                             'value'  => '$data->questionTitle',
-                            'type'=>'raw'
+                            'type' => 'raw'
                         ],
                         // Action buttons (defined in model)
                         [

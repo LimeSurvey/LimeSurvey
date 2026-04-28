@@ -72,12 +72,13 @@ class Save
         //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
         $thisstep    = $_SESSION['responses_' . $iSurveyId]['step'] ?? 0;
         $clienttoken = $_SESSION['responses_' . $iSurveyId]['token'] ?? '';
+        $survey = Survey::model()->findByPk($iSurveyId);
 
         $aSaveForm['aErrors'] = $this->aSaveErrors;
         $this->launchSaveFormEvent($iSurveyId);
         /* Construction of the form */
         $aSaveForm['aCaptcha']['show'] = false;
-        if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)) {
+        if ($survey->isCaptchaEnabled('saveandloadscreen')) {
             $aSaveForm['aCaptcha']['show'] = true;
             $aSaveForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $iSurveyId));
         }
@@ -114,7 +115,7 @@ class Save
         $survey = Survey::model()->findByPk($surveyid);
 
         $aSaveForm  = array();
-        $timeadjust = getGlobalSetting('timeadjust');
+        $timeadjust = Yii::app()->getConfig('timeadjust');
         $this->saveData = array(
             'identifier'  => App()->request->getPost('savename'),
             'email' => App()->request->getPost('saveemail'),
@@ -145,7 +146,7 @@ class Save
         }
 
         // Check captcha
-        if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
+        if ($survey->isCaptchaEnabled('saveandloadscreen')) {
             if (
                 !Yii::app()->request->getPost('loadsecurity')
                 || !isset($_SESSION['responses_' . $surveyid]['secanswer'])
@@ -205,7 +206,7 @@ class Save
             $_SESSION['responses_' . $surveyid]['holdpass'] = $this->saveData['clearpassword']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 
             //Email if needed
-            if ($this->saveData['email'] && validateEmailAddress($this->saveData['email'])) {
+            if ($this->saveData['email'] && LimeMailer::validateAddress($this->saveData['email'])) {
                 $mailer = new \LimeMailer();
                 $mailer->setSurvey($thissurvey['sid']);
                 $mailer->emailType = 'savesurveydetails';

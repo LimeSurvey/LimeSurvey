@@ -100,14 +100,14 @@ abstract class QuestionBaseRenderer extends StaticModel
         $surveyId = App()->getConfig('surveyID');
         $langTimer = array(
             'hours' => gT("hours"),
-            'mins' => gT("mins"),
+            'mins' => gT("minutes"),
             'seconds' => gT("seconds"),
         );
         /* Registering script : don't go to EM : no need usage of ls_json_encode */
         App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
         /**
          * The following lines cover for previewing questions, because no $_SESSION['responses_'.$surveyId]['fieldarray'] exists.
-         * This just stops error messages occuring
+         * This just stops error messages occurring
          */
         if (!isset($_SESSION['responses_' . $surveyId]['fieldarray'])) {
             $_SESSION['responses_' . $surveyId]['fieldarray'] = [];
@@ -426,21 +426,6 @@ abstract class QuestionBaseRenderer extends StaticModel
             'sInputContainerWidth' => $sInputContainerWidth,
             'defaultWidth' => $defaultWidth,
         );
-    }
-
-    /**
-    * Include Keypad headers
-    */
-    public function includeKeypad()
-    {
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
-
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $localefile = Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js';
-        if (App()->language != 'en' && file_exists($localefile)) {
-            $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        }
     }
 
     /**

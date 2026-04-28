@@ -72,7 +72,7 @@ class UpdateForm extends CFormModel
         if (Yii::app()->getConfig("updatable")) {
             if ($this->build != '') {
                 $crosscheck = (int) $crosscheck;
-                $getters = '/index.php?r=updates/updateinfo&currentbuild=' . $this->build . '&id=' . md5((string) getGlobalSetting('SessionName')) . '&crosscheck=' . $crosscheck;
+                $getters = '/index.php?r=updates/updateinfo&currentbuild=' . $this->build . '&id=' . md5((string) Yii::app()->getConfig('SessionName')) . '&crosscheck=' . $crosscheck;
                 $content = $this->performRequest($getters);
             } else {
                 $content = new stdClass();
@@ -88,7 +88,7 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * The server will do some checks and will ask for the correct view to be diplayed.
+     * The server will do some checks and will ask for the correct view to be displayed.
      *
      * @param string $updateKey the update key -
      * @param string $destinationBuild
@@ -210,7 +210,7 @@ class UpdateForm extends CFormModel
 
 
     /**
-     * This function requests the change log between the curent build and the destination build
+     * This function requests the change log between the current build and the destination build
      *
      * @param int $destinationBuild
      * @return mixed|stdClass
@@ -393,7 +393,7 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * This function provide status information about files presents on the system that will be afected by the update : do they exist ? are they writable ? modified ?
+     * This function provides status information about files present on the system that will be affected by the update: do they exist? are they writable? modified?
      *
      * @param array $updateinfo Array of updated files
      * @return array
@@ -543,7 +543,7 @@ class UpdateForm extends CFormModel
     private function checkAssets()
     {
         $iAssetVersionNumber  = Yii::app()->getConfig('assetsversionnumber'); // From version.php
-        $iCurrentAssetVersion = GetGlobalSetting('AssetsVersion'); // From setting_global table
+        $iCurrentAssetVersion = Yii::app()->getConfig('AssetsVersion'); // From setting_global table
 
         if ($iAssetVersionNumber != $iCurrentAssetVersion) {
             self::republishAssets();
@@ -553,10 +553,52 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * Check if an update is available, and prints the update notification
-     * It also check if the assets need to be republished
+     * Determine the stability level of a version from its version string.
+     * Checks for 'alpha', 'beta', or 'rc' substrings (case-insensitive).
      *
-     * @return object
+     * @param string $versionNumber The version string, e.g. '6.17.0-beta.1'
+     * @return string One of 'alpha', 'beta', 'rc', or 'stable'
+     */
+    public static function getVersionStabilityLevel($versionNumber)
+    {
+        $version = strtolower((string) $versionNumber);
+        if (strpos($version, 'alpha') !== false) {
+            return 'alpha';
+        }
+        if (strpos($version, 'beta') !== false) {
+            return 'beta';
+        }
+        if (strpos($version, 'rc') !== false) {
+            return 'rc';
+        }
+        return 'stable';
+    }
+
+    /**
+     * Check if a version's stability level meets the minimum required stability.
+     * Stability order from lowest to highest: alpha < beta < rc < stable.
+     *
+     * @param string $versionStability The stability level of the version ('alpha', 'beta', 'rc', 'stable')
+     * @param string $minimumStability The minimum required stability level from the global setting
+     * @return bool True if the version's stability is equal to or higher than the minimum
+     */
+    public static function meetsMinimumStability($versionStability, $minimumStability)
+    {
+        $levels = ['alpha' => 0, 'beta' => 1, 'rc' => 2, 'stable' => 3];
+        $versionLevel = $levels[$versionStability] ?? 3;
+        $minimumLevel = $levels[$minimumStability] ?? 3;
+        return $versionLevel >= $minimumLevel;
+    }
+
+    /**
+     * Check if an update is available and return notification data.
+     * Also checks if assets need to be republished.
+     *
+     * Fetches update info from the server (cached in session for 1 day),
+     * filters available updates by the 'minimum_update_stability' global setting,
+     * and stores results including stability labels in the session.
+     *
+     * @return object Object with properties: result (bool), security_update (bool), unstable_update (bool)
      */
     public function getUpdateNotification()
     {
@@ -582,9 +624,23 @@ class UpdateForm extends CFormModel
                         $updates = (array) $updates;
                     }
 
-                    if (count($updates) > 0) {
+                    // Filter updates by minimum stability setting
+                    $minimumStability = Yii::app()->getConfig('minimum_update_stability');
+                    $filteredUpdates = [];
+                    $stabilityLabels = [];
+                    foreach ($updates as $update) {
+                        $stabilityLevel = self::getVersionStabilityLevel($update->versionnumber ?? '');
+                        if (self::meetsMinimumStability($stabilityLevel, $minimumStability)) {
+                            $filteredUpdates[] = $update;
+                            if ($stabilityLevel !== 'stable') {
+                                $stabilityLabels[$stabilityLevel] = true;
+                            }
+                        }
+                    }
+
+                    if (count($filteredUpdates) > 0) {
                         $update_available = true;
-                        foreach ($updates as $update) {
+                        foreach ($filteredUpdates as $update) {
                             if ($update->security_update) {
                                 $security_update_available = true;
                             }
@@ -597,10 +653,12 @@ class UpdateForm extends CFormModel
 
                     Yii::app()->session['update_result'] = $update_available;
                     Yii::app()->session['security_update'] = $security_update_available;
+                    Yii::app()->session['update_stability_labels'] = array_keys($stabilityLabels);
 
-                    // If only one update is available and it's an unstable one, then it will be displayed in a different color, and will be removed, not minified when clicked
-                    if (count((array) $updates) == 1 && $unstable_update_available) {
-                        Yii::app()->session['unstable_update'] = $unstable_update_available;
+                    // If only one update is available and it's an unstable one,
+                    // then it will be displayed in a different color
+                    if (count($filteredUpdates) == 1 && $unstable_update_available) {
+                        Yii::app()->session['unstable_update'] = true;
                     } else {
                         Yii::app()->session['unstable_update'] = false;
                     }
@@ -613,6 +671,8 @@ class UpdateForm extends CFormModel
                     Yii::app()->session['next_update_check'] = $next_update_check;
                     Yii::app()->session['update_result'] = false;
                     Yii::app()->session['unstable_update'] = false;
+                    Yii::app()->session['security_update'] = false;
+                    Yii::app()->session['update_stability_labels'] = [];
                 }
             } else {
                 $update_available = Yii::app()->session['update_result'];
@@ -747,7 +807,7 @@ class UpdateForm extends CFormModel
     /**
      * Check if a file (added/deleted/) on the update yet exists on the server, or has been modified
      *
-     * @param array $file  array of files to update (must contain file, type and chekcsum indexes)
+     * @param array $file  array of files to update (must contain file, type and checksum indexes)
      * @return stdClass containing a list of read only files
      */
     private function getCheckedFile($file)
@@ -786,7 +846,7 @@ class UpdateForm extends CFormModel
         $content = $this->performRequest($getters);
         $fileSystemCheck = $content->list;
 
-        // Strategy Pattern : different way to buil the path of the file
+        // Strategy Pattern : different way to build the path of the file
         // Right now, calling fileSystemCheckAppath() or fileSystemCheckConfig()
         // Could also use params in the futur : YAGNI !!!!!
         $files = array();
@@ -1009,7 +1069,7 @@ class UpdateForm extends CFormModel
             }
             return $content_decoded;
         } else {
-            // Should happen only on first step (get buttons), diplayed in check_updates/update_buttons/_updatesavailable_error.php
+            // Should happen only on first step (get buttons), displayed in check_updates/update_buttons/_updatesavailable_error.php
             // Could rather define a call to httprequest2 functions.
             return (object) array('result' => false, 'error' => "php_curl_not_loaded");
         }

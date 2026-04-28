@@ -43,10 +43,10 @@ class LSHttpRequest extends CHttpRequest
     private $queryParams;
 
     /**
-     * Return the referal url,
+     * Return the referral url,
      * it's used for the "close" buttons, and the "save and close" buttons
      * So it checks if the referrer url is the same than the current url to avoid looping.
-     * If it the case, a paramater can be set to tell what referrer to return.
+     * If it the case, a parameter can be set to tell what referrer to return.
      * If the referrer is an external url, Yii return by default the current url.
      *
      * DEPRECATED

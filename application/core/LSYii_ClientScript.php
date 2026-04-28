@@ -32,7 +32,6 @@ if (!defined('BASEPATH')) {
 
 class LSYii_ClientScript extends CClientScript
 {
-
     /**
      * The script is rendered at the end of the body section.
      * only for scripts not script files
@@ -40,7 +39,7 @@ class LSYii_ClientScript extends CClientScript
     const POS_POSTSCRIPT = 5;
     const POS_PREBEGIN = 6;
     /**
-     * cssFiles is protected on CClientScript. It can be useful to access it for debugin purpose
+     * cssFiles is protected on CClientScript. It can be useful to access it for debugging purpose
      * @return array
      */
     public function getCssFiles()
@@ -168,7 +167,7 @@ class LSYii_ClientScript extends CClientScript
 
     /**
      * In LimeSurvey, if debug mode is OFF we use the asset manager (so participants never needs to update their webbrowser cache).
-     * If debug mode is ON, we don't use the asset manager, so developpers just have to refresh their browser cache to reload the new scripts.
+     * If debug mode is ON, we don't use the asset manager, so developers just have to refresh their browser cache to reload the new scripts.
      * To make developer life easier, if they want to register a single script file, they can use App()->getClientScript()->registerScriptFile({url to script file})
      * if the file exist in local file system and debug mode is off, it will find the path to the file, and it will publish it via the asset manager
      * @param string $url
@@ -204,7 +203,7 @@ class LSYii_ClientScript extends CClientScript
 
     /**
      * The method will first check if a devbaseUrl parameter is provided,
-     * so when debug mode is on, it doens't use the asset manager
+     * so when debug mode is on, it doesn't use the asset manager
      * @param string $name
      * @return void|static
      */
@@ -433,13 +432,8 @@ class LSYii_ClientScript extends CClientScript
         }
 
         //Propagate our debug settings into the javascript realm
-        if (function_exists('getGlobalSetting')) {
-            $debugFrontend = (int) getGlobalSetting('javascriptdebugfrntnd');
-            $debugBackend  = (int) getGlobalSetting('javascriptdebugbcknd');
-        } else {
-            $debugFrontend = 0;
-            $debugBackend  = 0;
-        }
+        $debugFrontend = (int) Yii::app()->getConfig('javascriptdebugfrntnd');
+        $debugBackend  = (int) Yii::app()->getConfig('javascriptdebugbcknd');
 
         $html .= "<script type='text/javascript'>window.debugState = {frontend : (" . $debugFrontend . " === 1), backend : (" . $debugBackend . " === 1)};</script>";
 
@@ -582,7 +576,7 @@ class LSYii_ClientScript extends CClientScript
                 $scripts[] = implode("\n", $this->scripts[self::POS_POSTSCRIPT]);
             }
         }
-        if (App()->getConfig('debug') > 0) {
+        if (Yii::app()->getConfig('debug') > 0) {
             $scripts[] = "jQuery(document).off('pjax:scriptsuccess.debugger').on('pjax:scriptsuccess.debugger',function(e) { console.ls.log('PJAX scriptsuccess', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripterror.debugger').on('pjax:scripterror.debugger',function(e) { console.ls.log('PJAX scripterror', e); });";
             $scripts[] = "jQuery(document).off('pjax:scripttimeout.debugger').on('pjax:scripttimeout.debugger',function(e) { console.ls.log('PJAX scripttimeout', e); });";

@@ -85,7 +85,7 @@ export const toolbarActions = (
             },
             {
               type: 'menuitem',
-              text: t('Question ID group'),
+              text: t('Question group ID'),
               onAction: () => editor.insertContent('{GID} '),
             },
           ]
@@ -122,17 +122,17 @@ export const toolbarActions = (
           getSubmenuItems: () => [
             {
               type: 'menuitem',
-              text: t('Email address participant'),
+              text: t('Participant email address'),
               onAction: () => editor.insertContent('{TOKEN:EMAIL} '),
             },
             {
               type: 'menuitem',
-              text: t('First name participant'),
+              text: t('Participant first name'),
               onAction: () => editor.insertContent('{TOKEN:FIRSTNAME} '),
             },
             {
               type: 'menuitem',
-              text: t('Last name participant'),
+              text: t('Participant last name'),
               onAction: () => editor.insertContent('{TOKEN:LASTNAME} '),
             },
             ...participantAttributes,

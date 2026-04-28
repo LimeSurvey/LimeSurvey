@@ -2,10 +2,15 @@
 
 namespace LimeSurvey\Models\Services;
 
+use App;
 use Assessment;
+use CDbCriteria;
 use Condition;
 use DefaultValue;
+use DefaultValueL10n;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
+use LimeSurvey\Models\Services\Exception\PersistErrorException;
+use PluginSetting;
 use Question;
 use QuestionGroup;
 use QuestionL10n;
@@ -74,18 +79,32 @@ class CopySurvey
         $destinationSurvey->datecreated = date("Y-m-d H:i:s");
         $destinationSurvey->lastmodified = date("Y-m-d H:i:s");
         $destinationSurvey->attributedescriptions = $this->sourceSurvey->attributedescriptions;
-        if (!$destinationSurvey->save()) {
-            throw new \Exception(gT("Failed to copy survey"));
-        }
+        $transaction = App()->db->beginTransaction();
 
-        //this call is necessary to prevent errors when copying the survey with the configured template
-        Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
+        try {
+            if (!$destinationSurvey->save()) {
+                throw new \Exception(gT("Failed to copy survey"));
+            }
+
+            //this call is necessary to prevent errors when copying the survey with the configured template
+            Template::model()->getTemplateConfiguration(null, $destinationSurvey->sid)->getApiVersion();
+            $this->copySurveyPluginSettings($destinationSurvey);
+
+            $transaction->commit();
+        } catch (\Throwable $exception) {
+            if ($transaction->getActive()) {
+                $transaction->rollBack();
+            }
+
+            throw $exception;
+        }
 
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
 
         $this->copySurveyLanguages($copySurveyResult, $destinationSurvey);
         $destinationSurvey->currentLanguageSettings->surveyls_title = $this->sourceSurvey->currentLanguageSettings->surveyls_title . ' - Copy';
-        $destinationSurvey->currentLanguageSettings->save();
+        /* Only save surveyls_title to diable other filter (email attachements) */
+        $destinationSurvey->currentLanguageSettings->save(true, ['surveyls_title']);
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
         $this->copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIdsAndQuestionIds['questionGroupIds']);
 
@@ -159,7 +178,7 @@ class CopySurvey
         );
         $cntCopiedLanguageSettings = 0;
         foreach ($sourceLanguageSettings as $sourceLanguageSetting) {
-            $destLangSet = new SurveyLanguageSetting();
+            $destLangSet = new SurveyLanguageSetting('copy');
             $destLangSet->attributes = $sourceLanguageSetting->attributes;
             $destLangSet->surveyls_attributecaptions = $sourceLanguageSetting->surveyls_attributecaptions;
             if ($this->options->isResourcesAndLinks()) {
@@ -229,12 +248,10 @@ class CopySurvey
                     $destinationSurvey->sid,
                     $destLangSet->email_admin_responses
                 );
-                $destLangSet->attachments = translateLinks(
-                    'survey',
+                $destLangSet->attachments = translateJsonLinks(
                     $this->sourceSurvey->sid,
                     $destinationSurvey->sid,
-                    $destLangSet->attachments,
-                    true
+                    $destLangSet->attachments
                 );
             }
             $destLangSet->surveyls_survey_id = $destinationSurvey->sid;
@@ -247,6 +264,38 @@ class CopySurvey
             }
         }
         $copySurveyResult->setCntSurveyLanguages($cntCopiedLanguageSettings);
+    }
+
+    /**
+     * Copy survey-scoped plugin settings to the destination survey.
+     *
+     * @param Survey $destinationSurvey
+     * @return void
+     * @throws PersistErrorException
+     */
+    private function copySurveyPluginSettings($destinationSurvey)
+    {
+        $sourcePluginSettings = PluginSetting::model()->findAllByAttributes([
+            'model' => 'Survey',
+            'model_id' => $this->sourceSurvey->sid,
+        ]);
+
+        foreach ($sourcePluginSettings as $sourcePluginSetting) {
+            $destinationPluginSetting = new PluginSetting();
+            $destinationPluginSetting->plugin_id = $sourcePluginSetting->plugin_id;
+            $destinationPluginSetting->model = $sourcePluginSetting->model;
+            $destinationPluginSetting->model_id = $destinationSurvey->sid;
+            $destinationPluginSetting->key = $sourcePluginSetting->key;
+            $destinationPluginSetting->value = $sourcePluginSetting->value;
+
+            if (!$destinationPluginSetting->save()) {
+                throw new PersistErrorException(
+                    gT("Failed to copy survey plugin settings")
+                    . ': '
+                    . json_encode($destinationPluginSetting->getErrors())
+                );
+            }
+        }
     }
 
     /**
@@ -321,11 +370,17 @@ class CopySurvey
                 //change sid and gip for the new question
                 $destinationQuestion->sid = $destinationSurvey->sid;
                 $destinationQuestion->gid = $mapping['questionGroupIds'][$question->gid];
-                $destinationQuestion->save();
-                $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
-                $cntCopiedQuestions++;
-                if (!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds())) {
-                    $mappedSubquestionIds += $copyQuestion->getMappedSubquestionIds();
+                if ($destinationQuestion->save()) {
+                    $this->mapGroupIdsToSubquestions( //subquestion need mapping of groupids
+                        $destinationQuestion,
+                        $destinationSurvey->sid,
+                        $mapping['questionGroupIds'][$question->gid]
+                    );
+                    $mappingQuestionIds[$question->qid] = $destinationQuestion->qid;
+                    $cntCopiedQuestions++;
+                    if (!empty($copyQuestion->getMappedSubquestionIds()) && is_array($copyQuestion->getMappedSubquestionIds())) {
+                        $mappedSubquestionIds += $copyQuestion->getMappedSubquestionIds();
+                    }
                 }
             }
         }
@@ -334,6 +389,28 @@ class CopySurvey
         $this->copyDefaultAnswers($mappingQuestionIds, $mappedSubquestionIds);
 
         return $mapping;
+    }
+
+    /**
+     * Assigns the correct group ids to the subquestions of the main question.
+     *
+     * @param Question $parentQuestion
+     * @param int $destinationSurveyId
+     * @param int $groupId
+     * @return void
+     */
+    public function mapGroupIdsToSubquestions($parentQuestion, $destinationSurveyId, $groupId)
+    {
+        //search for all subquestions for the main question
+        $subquestions = Question::model()->findAllByAttributes([
+            'parent_qid' => $parentQuestion->qid,
+           'sid' => $destinationSurveyId,
+        ]);
+
+        foreach ($subquestions as $subquestion) {
+            $subquestion->gid = $groupId;
+            $subquestion->save();   //update the group id for the subquestion
+        }
     }
 
     /**
@@ -512,20 +589,20 @@ class CopySurvey
     private function copyDefaultAnswers($mappingQuestionIds, $mappedSuquestionIds)
     {
         //get all entries from defaultvalues table where the qid belongs to the source survey
-        $defaultAnswerRows = Yii::app()->db->createCommand()
-            ->select('defaultvalues.*')
-            ->from('{{defaultvalues}} defaultvalues')
-            ->join('{{questions}} questions', 'questions.qid=defaultvalues.qid')
-            ->where('questions.sid=:sid and questions.parent_qid=:parent_qid', [
-                ':sid' => $this->sourceSurvey->sid,
-                ':parent_qid' => 0
-            ])
-            ->queryAll();
+        $criteria = new CDbCriteria();
+        $criteria->join = 'JOIN {{questions}} questions ON questions.qid=t.qid';
+        $criteria->condition = 'questions.sid=:sid and questions.parent_qid=:parent_qid';
+        $criteria->params = [
+            ':sid' => $this->sourceSurvey->sid,
+            ':parent_qid' => 0
+        ];
+        $defaultAnswerRows = DefaultValue::model()->findAll($criteria);
+
         $cntDefaultAnswers = 0;
         //now copy the default answers and map them to the corresponding question ids
         foreach ($defaultAnswerRows as $defaultAnswerRow) {
-            $defaultAnswer = new Defaultvalue();
-            $defaultAnswer->dvid = null;
+            $defaultAnswer = new DefaultValue();
+            $defaultAnswer->dvid = null; //generate new id
             $defaultAnswer->qid = $mappingQuestionIds[$defaultAnswerRow['qid']];
             //find the correct subquestion id
             if ($defaultAnswerRow['sqid'] === 0) {
@@ -540,6 +617,14 @@ class CopySurvey
             $defaultAnswer->scale_id = $defaultAnswerRow['scale_id'];
             $defaultAnswer->specialtype = $defaultAnswerRow['specialtype'];
             if ($defaultAnswer->save()) {
+                $defaultValLng = DefaultValueL10n::model()->findAllByAttributes(['dvid' => $defaultAnswerRow->dvid]);
+                foreach ($defaultValLng as $defaultValLngEntry) {
+                    $langDefaultVal = new DefaultValueL10n();
+                    $langDefaultVal->attributes = $defaultValLngEntry->attributes;
+                    $langDefaultVal->id = null; //new id needed...
+                    $langDefaultVal->dvid = $defaultAnswer->dvid;
+                    $langDefaultVal->save();
+                }
                 $cntDefaultAnswers++;
             }
         }

@@ -82,7 +82,7 @@
                     var editor = evt.editor;
                     editor.setData(window.opener.document.getElementById("<?php echo $sFieldName; ?>").value);
                     editor.execCommand('maximize');
-                    window.status='LimeSurvey <?php eT('Editing', 'js') . ' ' . 'javascriptEscape(' . $sFieldText . ', true)'; ?>';
+                    window.status='<?php echo sprintf(gT('Editing %s', 'js'), javascriptEscape($sFieldText, true)); ?>';
                 }
 
                 function html_transfert()
@@ -91,14 +91,14 @@
 
                     <?php
                     if (in_array($sFieldType, array('editanswer', 'addanswer', 'editlabel', 'addlabel'))) {
-                    ?>
+                        ?>
                     var editedtext = oEditor.getData().replace(new RegExp( "\n", "g" ),'');
                     var editedtext = oEditor.getData().replace(new RegExp( "\r", "g" ),'');
-                    <?php
+                        <?php
                     } else {
-                    ?>
+                        ?>
                     var editedtext = oEditor.getData('no strip new line'); // adding a parameter avoids stripping \n
-                    <?php
+                        <?php
                     }
                     ?>
 

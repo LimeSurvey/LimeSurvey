@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
-
 import { ContentEditor } from 'components'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { STATES } from 'helpers'
 import { useAppState, useSurvey } from 'hooks'
+import { SubquestionCodeInput } from '../../subquestionCodeComponents'
 
 export const ArrayColumnTitle = ({
   isFocused,
@@ -18,81 +18,74 @@ export const ArrayColumnTitle = ({
   placeholder = 'Answer option',
   itemsKey,
   isNoAnswer = false,
-  entity,
+  code,
+  handleChildCodeUpdate,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
-  const type = itemsKey === 'answers' ? 'code' : 'title'
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
   const showQNumCode = survey.showQNumCode
 
   return (
-    <div
-      className={classNames(
-        'd-flex array-question-item position-relative remove-option-button-parent'
-      )}
-    >
+    <div>
       <div
-        {...provided.dragHandleProps}
         className={classNames(
-          {
-            'disabled opacity-0': !provided.dragHandleProps,
-          },
-          'd-flex align-items-center'
+          'd-flex array-question-item position-relative remove-option-button-parent'
         )}
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '10px',
-          transform: 'translate(-50%, -50%)',
-        }}
       >
-        {isFocused && <DragIcon className="text-secondary fill-current" />}
-      </div>
-      {!(isSurveyActive && itemsKey === 'subquestions') && (
         <div
-          className="cursor-pointer remove-option-button remove-item-button"
-          onClick={() => removeItem(index)}
-          style={{
-            position: 'absolute',
-            top: '-10px',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-          data-testid="remove-horizontal-option-button"
+          {...provided.dragHandleProps}
+          className={classNames(
+            {
+              'disabled opacity-0': !provided.dragHandleProps,
+            },
+            'd-flex align-items-center action-item-button drag column'
+          )}
         >
-          <CloseCircleFillIcon
-            className={classNames('text-danger fill-current', {
-              'd-none disabled': !isFocused || isNoAnswer,
-            })}
-          />
+          {isFocused && <DragIcon className="text-secondary fill-current" />}
         </div>
-      )}
-      <div>
-        {isFocused && showQNumCode?.showNumber && entity && entity[type] && (
-          <div className="question-code-tag" style={{ marginLeft: '20px' }}>
-            {entity[type]}
+        {!(isSurveyActive && itemsKey === 'subquestions') && (
+          <div
+            className="cursor-pointer remove-option-button action-item-button remove column"
+            onClick={() => removeItem(index)}
+            data-testid="remove-horizontal-option-button"
+          >
+            <CloseCircleFillIcon
+              className={classNames('text-danger fill-current', {
+                'd-none disabled': !isFocused || isNoAnswer,
+              })}
+            />
           </div>
         )}
-      </div>
-      <div
-        style={{
-          minHeight: highestHeight,
-          paddingLeft: isFocused && showQNumCode?.showNumber ? 0 : dragIconSize,
-          paddingRight:
-            isFocused && showQNumCode?.showNumber ? 0 : dragIconSize,
-          marginLeft: isNoAnswer && isFocused ? '40px' : 0,
-        }}
-      >
-        <ContentEditor
-          className={classNames(
-            'text-start choice array-answer-content-editor'
+        <div
+          style={{
+            minHeight: highestHeight,
+            paddingLeft:
+              isFocused && showQNumCode?.showNumber ? '40px' : dragIconSize,
+            paddingRight:
+              isFocused && showQNumCode?.showNumber ? '40px' : dragIconSize,
+            marginTop:
+              isNoAnswer && isFocused && showQNumCode?.showNumber ? '28px' : 0,
+          }}
+        >
+          {isFocused && showQNumCode?.showNumber && !isNoAnswer && (
+            <SubquestionCodeInput
+              isColumnTitle={true}
+              isSurveyActive={isSurveyActive}
+              onChange={(e) => handleChildCodeUpdate(e.target.value, index)}
+              code={code}
+            />
           )}
-          placeholder={placeholder}
-          value={title}
-          update={(value) => handleUpdateL10ns(value, index)}
-          disabled={isNoAnswer}
-        />
+          <ContentEditor
+            className={classNames(
+              'text-start choice array-answer-content-editor'
+            )}
+            placeholder={placeholder}
+            value={title}
+            update={(value) => handleUpdateL10ns(value, index)}
+            disabled={isNoAnswer}
+          />
+        </div>
       </div>
     </div>
   )

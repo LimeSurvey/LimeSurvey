@@ -101,23 +101,6 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
         }
     }
 
-    /**
-     * @param $data
-     * @return bool|int
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $lblset = new self();
-        foreach ($data as $k => $v) {
-                    $lblset->$k = $v;
-        }
-        if ($lblset->save()) {
-            return $lblset->lid;
-        }
-        return false;
-    }
-
     public function getLanguageArray()
     {
         return explode(' ', $this->languages);
@@ -147,7 +130,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
             'title'     => gT('View labels'),
             'iconClass' => 'ri-list-unordered',
             'url'       => App()->createUrl("admin/labels/sa/view/lid/$this->lid"),
-            'enabledCondition' => $permissions['read'] // Must not appear, filtered by seacrh criteria
+            'enabledCondition' => $permissions['read'] // Must not appear, filtered by search criteria
         ];
         $dropdownItems[] = [
             'title'            => gT('Export label set'),
@@ -227,7 +210,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get criteria from Permission
-     * If currrent user didn't have global permission (read) : add Permission criteria, currentky only owner_id check
+     * If current user didn't have global permission (read) : add Permission criteria, currently only owner_id check
      * @param int|null $userid for this user id , if not set : get current one
      * @return CDbCriteria
      */

@@ -37,19 +37,32 @@ export const Setting = ({
     return undefined
   }
 
+  const getFullAttributeValueFromPath = (attributePath) => {
+    const path = attributePath.split('.')
+    return path.reduce((acc, key) => acc[key], question) || ''
+  }
+
   const getUpdateValueFromPath = (value, attribute) => {
     const attributePath = attribute?.attributePath ?? ''
     const attributeName = attributePath.toString().includes('attributes.')
       ? attributePath.replace('attributes.', '')
       : ''
 
+    // Todo: why is it called advanced attribute?
     const isAdvancedAttribute = attributePath.includes('attributes.')
 
     const updateValue = {}
 
     if (isAdvancedAttribute) {
-      updateValue[attributeName] = {
-        [attribute.languageBased ? language : '']: value,
+      if (attribute.languageBased) {
+        updateValue[attributeName] = {
+          ...getFullAttributeValueFromPath(attributePath),
+          [language]: value,
+        }
+      } else {
+        updateValue[attributeName] = {
+          ['']: value,
+        }
       }
     } else {
       attribute.returnValues.map((returnValue) => {
@@ -136,19 +149,26 @@ export const Setting = ({
           attribute.languageBased
         )
 
+        const isDisabled =
+          [
+            'questionThemeName',
+            'encrypted',
+            'attributes.save_as_default',
+            'other',
+          ].includes(attribute.attributePath) && isSurveyActive
+
         return (
           <div
             className="right-side-bar-settings"
             key={`${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
           >
-            {/*Globally disabled when survey is active for beta */}
             <TooltipContainer
               tip={getTooltipMessages().ACTIVE_DISABLED}
-              showTip={isSurveyActive}
+              showTip={isDisabled}
             >
               <attribute.component
                 {...attribute.props}
-                activeDisabled={isSurveyActive}
+                activeDisabled={isDisabled}
                 noPermissionDisabled={true}
                 value={
                   value
