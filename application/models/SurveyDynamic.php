@@ -1100,6 +1100,15 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
+     * @inheritdoc
+     * Here return sid by getSurveyId function
+     */
+    public function getDynamicId()
+    {
+        return $this->getSurveyId();
+    }
+
+    /**
      * Get current survey for other model/function
      * Using a getter to avoid query during model creation
      * @return Survey
