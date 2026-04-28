@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ CKEditor 4 LTS ("Long Term Support") is available under the terms of the Extended Support Model.
 */
 CKEDITOR.plugins.setLang("specialchar","id",{euro:"Tanda Euro",lsquo:"Tanda kutip tunggal kiri",rsquo:"Tanda kutip tunggal kanan",ldquo:"Tanda kutip ganda kiri",rdquo:"Tanda kutip ganda kanan",ndash:"Tanda hubung",mdash:"Sisipan",iexcl:"Tanda seru terbalik",cent:"Tanda cent",pound:"Tanda pound",curren:"Tanda mata uang",yen:"Tanda Yen",brvbar:"Broken bar",sect:"Penanda bagian",uml:"Diaeresis",copy:"Tanda Hak Cipta",ordf:"Indikator ordinal feminin",laquo:"Tanda kutip sudut ganda mengarah ke kiri",not:"Bukan tanda",
 reg:"Tanda Telah Terdaftar",macr:"Garis makron",deg:"Tanda derajat",sup2:"Superskrip dua",sup3:"Superskrip tiga",acute:"Aksen akut",micro:"Tanda mikro",para:"Tanda Pilcrow",middot:"Titik tengah",cedil:"Cedilla",sup1:"Superskrip satu",ordm:"Indikator ordinal maskulin",raquo:"Tanda kutip sudut ganda menunjuk ke kanan",frac14:"Bilangan Pecahan seperempat",frac12:"Bilangan Pecahan setengah",frac34:"Bilangan Pecahan tigaperempat",iquest:"Tanda baca terbalik",Agrave:"Huruf kapital Latin A dengan aksen grave",

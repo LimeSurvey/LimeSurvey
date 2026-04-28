@@ -1,5 +1,5 @@
 <div id="help-button-dropup" class="dropup">
-    <button type="button" class="btn btn-black60 btn-circle" data-bs-toggle="dropdown" aria-expanded="false">
+    <button type="button" class="btn btn-black60 btn-circle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="<?php eT("Useful Resources"); ?>">
         <i class="ri-questionnaire-line remix-xl"></i>
     </button>
     <ul class="dropdown-menu">

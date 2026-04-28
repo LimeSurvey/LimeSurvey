@@ -15,6 +15,8 @@
 
 /**
  * Class DefaultValue
+ * The default values are default answers for questions that could be selected by the user.
+ * (e.g. a subquestion that is selected as the default answer for the question in advance)
  *
  * @property integer $dvid primary key
  * @property integer $qid The question id

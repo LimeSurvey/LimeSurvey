@@ -42,14 +42,17 @@ use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 */
 
 /**
-* @param integer $iOldDBVersion The previous database version
-* @param boolean $bSilent Run update silently with no output - this checks if the update can be run silently at all. If not it will not run any updates at all.
-*/
+ * Executes all required database migrations from the given previous DB version up to the configured target DB version.
+ *
+ * @param int $iOldDBVersion The previous database version to upgrade from.
+ * @param bool $bSilent If true, attempt a silent update; the function will return `false` and perform no updates when one or more critical versions are included in the required update range.
+ * @return bool `true` if all updates were applied successfully, `false` otherwise.
+ */
 function db_upgrade_all($iOldDBVersion, $bSilent = false)
 {
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
-     * @link https://manual.limesurvey.org/Database_versioning for explanations
+     * @link https://www.limesurvey.org/manual/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
     $aCriticalDBVersions = array(310, 400, 450, 600);
@@ -59,9 +62,35 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if ($bSilent && (count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0)) {
         return false;
     }
-    // If DBVersion is older than 184 don't allow database update
+    // If DBVersion is older than 132 don't allow database update
     if ($iOldDBVersion < 132) {
         return false;
+    }
+
+    // Try to acquire database update lock
+    if (!getDatabaseUpdateLock()) {
+        return false;
+    }
+
+    // Enable maintenance mode during critical updates so survey participants
+    // see a maintenance page. Preserve the previous value to restore it afterwards.
+    $bIsCriticalUpdate = count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0;
+    $sPreviousMaintenanceMode = App()->getConfig('maintenancemode');
+    $bMaintenanceModeRestored = true;
+    if ($bIsCriticalUpdate && $sPreviousMaintenanceMode !== 'hard') {
+        SettingGlobal::setSetting('maintenancemode', 'hard');
+        $bMaintenanceModeRestored = false;
+
+        // Safety net: restore maintenance mode even on fatal error / timeout.
+        register_shutdown_function(function () use ($sPreviousMaintenanceMode, &$bMaintenanceModeRestored) {
+            if (!$bMaintenanceModeRestored) {
+                try {
+                    SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                } catch (\Throwable $t) {
+                    // DB may be unavailable at this point, nothing we can do.
+                }
+            }
+        });
     }
 
     /// This function does anything necessary to upgrade
@@ -69,6 +98,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     Yii::app()->loadHelper('database');
     Yii::import('application.helpers.admin.import_helper', true);
+    /** Needed in update 470 */
+    Yii::import('application.helpers.expressions.em_manager_helper', true);
     $oDB                        = Yii::app()->getDb();
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
@@ -106,6 +137,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             . '</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
+        // Restore previous maintenance mode if it was changed
+        if (!$bMaintenanceModeRestored) {
+            try {
+                SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                $bMaintenanceModeRestored = true;
+            } catch (\Throwable $t) {
+                Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
+            }
+        }
+        releaseDatabaseUpdateLock();
         // If we're debugging, re-throw the exception.
         if (defined('YII_DEBUG') && YII_DEBUG) {
             throw $e;
@@ -153,8 +194,61 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     fixLanguageConsistencyAllSurveys();
 
+    // Restore previous maintenance mode if it was changed
+    if (!$bMaintenanceModeRestored) {
+        try {
+            SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+            $bMaintenanceModeRestored = true;
+        } catch (\Throwable $t) {
+            Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
+        }
+    }
+    releaseDatabaseUpdateLock();
     Yii::app()->setConfig('Updating', false);
     return true;
+}
+
+/**
+ * This function sets the database update lock.
+ * The database update lock is used to prevent another process / client to start
+ * another (silent or not) database update while an existing one is still running.
+ * The lock is automatically released if the current process finishes
+ *
+ * @param bool $bRelease If true, release the lock instead of acquiring it.
+ * @return boolean True if the lock was established (or released), otherwise false
+ */
+function getDatabaseUpdateLock($bRelease = false)
+{
+    static $pLock = null;
+    if ($bRelease) {
+        if ($pLock !== null) {
+            flock($pLock, LOCK_UN);
+            fclose($pLock);
+            $pLock = null;
+        }
+        return true;
+    }
+    if ($pLock !== null) {
+        return false;
+    }
+    $pLock = @fopen(Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock', 'w+');
+    if (!$pLock) {
+        return false;
+    }
+    if (flock($pLock, LOCK_EX | LOCK_NB)) {
+        return true;
+    }
+    fclose($pLock);
+    $pLock = null;
+    return false;
+}
+
+/**
+ * Release the database update lock acquired by getDatabaseUpdateLock().
+ */
+function releaseDatabaseUpdateLock()
+{
+    getDatabaseUpdateLock(true);
 }
 
 /**
@@ -1535,6 +1629,9 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     // TODO: Don't use models in updatedb_helper.
     $attributes = $settings1->attributes;
     unset($attributes['ipanonymize']);
+    /* Added in 649 update */
+    unset($attributes['showregisterpolicy']);
+    unset($attributes['showtokenpolicy']);
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
@@ -2494,7 +2591,7 @@ function upgradeTokens145()
 {
     $aTables = dbGetTablesLike("tokens%");
     foreach ($aTables as $sTable) {
-        addColumn($sTable, 'usesleft', "integer NOT NULL default 1");
+        addColumn($sTable, 'usesleft', "integer NOT NULL DEFAULT 1");
         Yii::app()->getDb()->createCommand()->update($sTable, array('usesleft' => '0'), "completed<>'N'");
     }
 }
@@ -2807,7 +2904,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
             }
             $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
             if ($sDefault != 'NULL') {
-                $oDB->createCommand("ALTER TABLE {$sTable} ADD default '{$sDefault}' FOR [{$sColumn}];")->execute();
+                $oDB->createCommand("ALTER TABLE {$sTable} ADD DEFAULT '{$sDefault}' FOR [{$sColumn}];")->execute();
             }
             break;
         case 'pgsql':

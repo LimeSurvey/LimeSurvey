@@ -23,6 +23,7 @@ class QuestionAttributeFetcher
                 new CoreQuestionAttributeProvider(),
                 new ThemeQuestionAttributeProvider(),
                 new PluginQuestionAttributeProvider(),
+                new HiddenQuestionAttributeProvider(),
             ];
         }
         $this->providers = $providers;
@@ -83,9 +84,15 @@ class QuestionAttributeFetcher
             return $attributeDefinitions;
         }
 
-        $survey = $this->question->survey;
-        if (empty($survey)) {
-            throw new \Exception(gT(sprintf('This question has no survey - qid = %s', json_encode($this->question->qid))));
+        static $survey = null;
+        if ($survey === null) {
+            $survey = $this->question->survey;
+        }
+        if (isset($survey->sid) && $survey->sid !== $this->question->sid) {
+            $survey = $this->question->survey;
+        }
+        if ($survey === null) {
+            throw new \Exception(sprintf('This question has no survey - qid = %s', json_encode($this->question->qid)));
         }
 
         $questionAttributeHelper = new QuestionAttributeHelper();

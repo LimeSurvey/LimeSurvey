@@ -12,7 +12,7 @@ class Update_488 extends DatabaseUpdateBase
         $this->db->createCommand()->addColumn(
             '{{questions}}',
             'same_script',
-            "integer NOT NULL default '0'"
+            "integer NOT NULL DEFAULT 0"
         );
     }
 }

@@ -8,10 +8,11 @@ Yii::import('application.helpers.admin.import_helper', true);
 class ImportSurveyCommand extends CConsoleCommand
 {
     /**
-     * @param string $filename
-     * @return array Import result
+     * @param string $filename the name of the file
+     * @param string|null $baselang the base language either chosen or defaulted to null in the run method
+     * @return array|null Import result
      */
-    protected function importFile($filename)
+    protected function importFile($filename, $baselang)
     {
         // TODO: Add support to customize these.
         $params = [
@@ -24,19 +25,27 @@ class ImportSurveyCommand extends CConsoleCommand
             $params["bTranslateLinkFields"],
             $params["sNewSurveyName"],
             $params["DestSurveyID"],
+            $baselang
         );
     }
 
     /**
      * Sample command: php application/commands/console.php importsurvey tmp/upload/youfile.lss
      *
-     * @param string[] $arguments
+     * @param array $args
      * @return void
      */
-    public function run($arguments)
+    public function run($args)
     {
-        $file = $arguments[0];
-        $result = $this->importFile($file);
+        $source = $args[0];
+        $baselang = null;
+        if (strpos($args[0], ':') !== 0) {
+            $split = explode(":", $args[0]);
+            $source = $split[0];
+            $baselang = $split[1];
+        }
+        $file = $source;
+        $result = $this->importFile($file, $baselang);
         if (is_array($result) && isset($result['newsid'])) {
             echo $result['newsid'];
         } else {

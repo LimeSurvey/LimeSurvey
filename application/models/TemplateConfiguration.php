@@ -67,7 +67,7 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aInstancesFromTemplateName cache for method getInstanceFromTemplateName*/
     public static $aInstancesFromTemplateName;
 
-    /** @var array $aInstancesFromTemplateName cache for method prepareTemplateRendering*/
+    /** @var array $aPreparedToRender cache for method prepareTemplateRendering*/
     public static $aPreparedToRender;
 
     /** @var boolean $bTemplateCheckResult is the template valid?*/
@@ -141,12 +141,6 @@ class TemplateConfiguration extends TemplateConfig
         return array(
             'template' => array(self::HAS_ONE, 'Template', array('name' => 'template_name'), 'together' => true),
         );
-    }
-
-    /** @inheritdoc */
-    public function defaultScope()
-    {
-        return array('order' => App()->db->quoteColumnName($this->getTableAlias(false, false) . '.template_name'));
     }
 
     /**
@@ -275,9 +269,8 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
-        // No specific template configuration for this surveygroup => create one
-        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
+        // If the TemplateConfiguration could not be found go up the inheritance hierarchy
+        if (empty($oTemplateConfigurationModel)) {
             $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName(
                 $sTemplateName,
                 $abstractInstance
@@ -308,6 +301,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid=:sid');
         $criteria->params = array('sid' => $iSurveyId);
+
         $oTemplateConfigurations = self::model()->findAll($criteria);
 
         if ($bInherited) { // inherited values
@@ -329,7 +323,7 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
                 $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])
-                    ? (array)json_decode((string) $oAttributes['options'])
+                    ? json_decode((string) $oAttributes['options'], true)
                     : $oAttributes['options'];
             }
         }
@@ -340,59 +334,28 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * For a given survey, it checks if its theme have a all the needed configuration entries (survey + survey group).
      * Else, it will create it.
-     * @TODO: recursivity for survey group
      * @param int $iSurveyId
      * @return TemplateConfiguration the template configuration for the survey group
      */
     public static function checkAndcreateSurveyConfig($iSurveyId)
     {
-        //if a template name is given also check against that
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $sTemplateName  = $oSurvey->oOptions->template;
         $iSurveyGroupId = $oSurvey->gsid;
+        // set real value from inheritance
+        $sTemplateName = $oSurvey->oOptions->template;
 
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('sid=:sid');
-        $criteria->addCondition('template_name=:template_name');
-        $criteria->params = array('sid' => $iSurveyId, 'template_name' => $sTemplateName);
+        // load or create a new entry if none is found based on $iSurveyId
+        self::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
 
-        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+        // load or create a new entry if none is found based on $iSurveyGroupId
+        $oGroupTemplateConfigurationModel = self::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
 
-        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-            $oTemplateConfigurationModel->bUseMagicInherit = false;
-            $oTemplateConfigurationModel->id = null;
-            $oTemplateConfigurationModel->isNewRecord = true;
-            $oTemplateConfigurationModel->gsid = null;
-            $oTemplateConfigurationModel->sid = $iSurveyId;
-            $oTemplateConfigurationModel->setToInherit();
-            $oTemplateConfigurationModel->save();
-        }
-
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('gsid=:gsid');
-        $criteria->addCondition('template_name=:template_name');
-        $criteria->params = array('gsid' => $iSurveyGroupId, 'template_name' => $sTemplateName);
-        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
-
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
-            $oTemplateConfigurationModel->bUseMagicInherit = false;
-            $oTemplateConfigurationModel->id = null;
-            $oTemplateConfigurationModel->isNewRecord = true;
-            $oTemplateConfigurationModel->sid = null;
-            $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
-            $oTemplateConfigurationModel->setToInherit();
-            $oTemplateConfigurationModel->save();
-        }
-
-        return $oTemplateConfigurationModel;
+        return $oGroupTemplateConfigurationModel;
     }
 
     /**
      * Get an instance of a fitting TemplateConfiguration
-     * NOTE: for rendering prupose, you should never call this function directly, but rather Template::getInstance.
+     * NOTE: for rendering purpose, you should never call this function directly, but rather Template::getInstance.
      * if force_xmlsettings_for_survey_rendering is on, then the configuration from the XML file should be loaded,
      * not the one from database
      *
@@ -447,15 +410,15 @@ class TemplateConfiguration extends TemplateConfig
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
-        $criteria->join = 'INNER JOIN {{templates}} AS template ON ' .
+        $criteria->join = 'INNER JOIN {{templates}} AS tmpl ON ' .
             App()->db->quoteColumnName("t.template_name") .
-            ' = template.name';
-        //Don't show surveyspecifi settings on the overview
+            ' = tmpl.name';
+        //Don't show survey specific settings on the overview
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('t.gsid IS NULL');
-        $criteria->addCondition('template.name IS NOT NULL');
+        $criteria->addInCondition('tmpl.name', array_keys(Template::getTemplateList()));
 
         $criteria->compare('id', $this->id);
         $criteria->compare('template_name', $this->template_name, true);
@@ -469,7 +432,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('packages_to_load', $this->packages_to_load, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
+            'criteria' => $criteria
         ));
     }
 
@@ -485,7 +448,7 @@ class TemplateConfiguration extends TemplateConfig
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $pageSizeTemplateView = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']);
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->join = 'INNER JOIN {{templates}} AS template ON ' .
             App()->db->quoteColumnName("t.template_name") .
@@ -493,7 +456,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->together = true;
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
-        $criteria->addCondition('template.name IS NOT NULL');
+        $criteria->addInCondition('template.name', array_keys(Template::getTemplateList()));
 
         if ($gsid !== null) {
             /* Group configuration */
@@ -533,6 +496,9 @@ class TemplateConfiguration extends TemplateConfig
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => $pageSizeTemplateView,
+            ),
+            'sort' => array(
+                'defaultOrder' => 'template_name ASC' // Set default order here
             ),
         ));
     }
@@ -611,7 +577,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Sets all available inheritance fields of the class::TemplateConfiguration to the value inherit as string
      */
     public function setToInherit()
     {
@@ -636,7 +602,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->bTemplateCheckResult = true;
             if (
                 !is_object($this->template) ||
-                (is_object($this->template) && !Template::checkTemplateXML($this->template->name, $this->template->folder))
+                (is_object($this->template) && !Template::checkTemplateXML($this->template))
             ) {
                 $this->bTemplateCheckResult = false;
             }
@@ -645,7 +611,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Sets bUseMagicInherit sTemplate isStandard and path of the theme
      *
      * @param string $sTemplateName
      * @param string $iSurveyId
@@ -674,7 +640,7 @@ class TemplateConfiguration extends TemplateConfig
     public function addFileReplacement($sFile, $sType)
     {
         $sField = 'files_' . $sType;
-        $oFiles = (array) json_decode((string) $this->$sField);
+        $oFiles = json_decode((string) $this->$sField, true);
 
         $oFiles['replace'][] = $sFile;
 
@@ -777,8 +743,8 @@ class TemplateConfiguration extends TemplateConfig
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
             'linkAttributes'   => [
                 'title'            => sprintf(gT('Type in the new name to extend %s'), $templateName),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Extend'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Extend'),
                 'data-text'        => gT('Please type in the new theme name above.'),
                 'data-post'        => json_encode([
                     "copydir" => $templateName,
@@ -801,8 +767,8 @@ class TemplateConfiguration extends TemplateConfig
                                     $templateName != App()->getConfig('defaulttheme'),
             'linkAttributes'   => [
                 'title'            => gT('Uninstall this theme'),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Uninstall'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Uninstall'),
                 'data-text'        => gT('This will reset all the specific configurations of this theme.')
                                          . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
@@ -819,11 +785,14 @@ class TemplateConfiguration extends TemplateConfig
             'enabledCondition' => App()->getController()->action->id !== "surveysgroups",
             'linkAttributes'   => [
                 'title'            => gT('Reset this theme'),
-                'data-button-no'   => gt('Cancel'),
-                'data-button-yes'  => gt('Reset'),
+                'data-button-no'   => gT('Cancel'),
+                'data-button-yes'  => gT('Reset'),
                 'data-text'        => gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
-                'data-button-type' => "btn-warning"
+                'data-button-type' => "btn-warning",
+                'data-use-ajax'    => 'true',
+                'data-grid-reload' => 'true',
+                'data-grid-id'     => 'themeoptions-grid',
             ]
         ];
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
@@ -981,7 +950,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Fetches the imageFileList and the maxFileSize for the current theme and adds them to a new array which includes all TemplateConfiguration attributes
      *
      * @return array
      */
@@ -1014,7 +983,7 @@ class TemplateConfiguration extends TemplateConfig
             foreach ($fileList as $file) {
                 $imageInfo = $this->getImageInfo($basePath . $file['name'], $pathPrefix);
                 if ($imageInfo) {
-                    $aData['imageFileList'][] = array_merge(
+                    $aData['imageFileList'][$imageInfo['filepath']] = array_merge(
                         [
                             'group' => $category->title,
                         ],
@@ -1028,7 +997,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Prepares the rendering of the custom options.js and options.twig that can be used in every theme
      *
      * @return mixed
      */
@@ -1038,8 +1007,6 @@ class TemplateConfiguration extends TemplateConfig
         $oSimpleInheritance->options = 'inherit';
         $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($this->template->name);
 
-        // TODO: It's not clear which class prepareTemplateRendering() returns or should return.
-        /** @var Template */
         $oTemplate = $this->prepareTemplateRendering($this->template->name);
 
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
@@ -1104,7 +1071,7 @@ class TemplateConfiguration extends TemplateConfig
                     if ($action == $sAction) {
                         // Specific inheritance of one of the value of the json array
                         if ($aFileList[0] == 'inherit') {
-                            $aParentjFiles = (array) json_decode((string) $oTemplate->getParentConfiguration->$sField);
+                            $aParentjFiles = json_decode((string) $oTemplate->getParentConfiguration->$sField, true);
                             $aFileList = $aParentjFiles[$action];
                         }
 
@@ -1140,12 +1107,13 @@ class TemplateConfiguration extends TemplateConfig
 
         $files = $oTemplate->$sField;
         $oFiles = [];
-        if (!empty($files)) {
+        if (!empty($files) && $files !== 'inherit') {
             $oFiles = json_decode((string) $files, true);
             if ($oFiles === null) {
                 App()->setFlashMessage(
                     sprintf(
-                        gT('Error: Malformed JSON - field %s must be either a JSON array or the string "inherit". Found "null".'),
+                        gT('Error: Malformed JSON in template "%s" - field %s must be either a JSON array or the string "inherit". Found "null".'),
+                        $oTemplate->template->name,
                         $sField
                     ),
                     'error'
@@ -1281,7 +1249,7 @@ class TemplateConfiguration extends TemplateConfig
      * Also triggers inheritence checks
      * @return void
      */
-    protected function setOptions()
+    public function setOptions()
     {
         $this->oOptions = new stdClass();
         if (!empty($this->options)) {
@@ -1315,7 +1283,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getOptionKey($key)
     {
-        $aOptions = (array) json_decode($this->options);
+        $aOptions = json_decode($this->options, true);
         if (isset($aOptions[$key])) {
             $value = $aOptions[$key];
             if ($value === 'inherit') {
@@ -1362,7 +1330,7 @@ class TemplateConfiguration extends TemplateConfig
         $this->aFrameworkAssetsToReplace[$sType] = array();
 
         $sFieldName  = 'cssframework_' . $sType;
-        $aFieldValue = (array) json_decode((string) $this->$sFieldName);
+        $aFieldValue = json_decode((string) $this->$sFieldName, true);
 
         if (!empty($aFieldValue) && !empty($aFieldValue['replace'])) {
             $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'];
@@ -1503,7 +1471,17 @@ class TemplateConfiguration extends TemplateConfig
             if ($sAttribute === 'inherit') {
                 // NOTE: this is object recursive (if parent configuration field is set to inherit,
                 // then it will lead to this method again.)
-                $sAttribute = $this->getParentConfiguration()->$name;
+                $oParentConfiguration = $this->getParentConfiguration();
+                /**
+                 * We check if $oParentConfiguration is the same as $this because if it is, $oParentConfiguration->$name will
+                 * try to directly access the property instead of calling the magic method, and it will fail for dynamic properties.
+                 * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
+                 */
+                if ($oParentConfiguration !== $this) {
+                    $sAttribute = $oParentConfiguration->$name;
+                } else {
+                    $sAttribute = $oParentConfiguration->getAttribute($name);
+                }
             }
         } else {
             $sAttribute = parent::__get($name);
@@ -1632,28 +1610,31 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
-     * @return array|mixed|string|null
+     * Returns the html to render the previewimage of the template.
+     * Pass $justTheUrl = true to return just the URL of the preview image
+     * @param bool $justTheUrl
+     * @return string
      */
-    public function getPreview()
+    public function getPreview($justTheUrl = false)
     {
+        $previewUrl = '';
         if (empty($this->sPreviewImgTag)) {
             if (is_a($this->template, 'Template')) {
                 $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
                 $previewPath         = Template::getTemplatePath($this->template->name) . '/' . $sTemplateFileFolder;
 
                 if ($previewPath && file_exists($previewPath . '/preview.png')) {
-                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
+                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder . '/preview.png';
                     $this->sPreviewImgTag = '<img src="' .
                         $previewUrl .
-                        '/preview.png" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
+                        '" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
                 }
             } else {
                 $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
             }
         }
 
-        return $this->sPreviewImgTag;
+        return $justTheUrl ? $previewUrl : $this->sPreviewImgTag;
     }
 
     /**
@@ -1673,25 +1654,10 @@ class TemplateConfiguration extends TemplateConfig
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
         if (!empty($sTemplateName) && !empty($iSurveyId)) {
-            if (!empty(self::$aPreparedToRender[$sTemplateName])) {
-                if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId])) {
-                    if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-                        return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
-                    } else {
-                        /** @psalm-supress InvalidArrayOffset */
-                        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                    }
-                } else {
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                    /** @psalm-suppress InvalidArrayOffset */
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                }
-            } else {
-                self::$aPreparedToRender = array();
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
-                /** @psalm-suppress InvalidArrayOffset */
-                self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+            if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+                return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
             }
+            self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = [];
         }
 
         $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);

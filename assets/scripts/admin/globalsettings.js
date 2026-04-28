@@ -112,19 +112,14 @@ function Emailchange(ui,evt)
 {
     const selectedMethod = $('#emailmethod input:radio:checked').val();
 
-    const smtp_enabled = (selectedMethod == 'smtp');
-    if (smtp_enabled) {
-        $('#emailsmtpssl label').removeClass('disabled');
-        $('#emailsmtpdebug label').removeClass('disabled');
-    } else {
-        $('#emailsmtpdebug label').addClass('disabled');
-        $('#emailsmtpssl label').addClass('disabled');
-    }
-    $("#emailsmtphost").prop('disabled', true);
-    $("#emailsmtpuser").prop('disabled', true);
-    $("#emailsmtppassword").prop('disabled', true);
+    const smtp_enabled = selectedMethod === 'smtp';
+    $('#emailsmtpssl label').toggleClass('disabled', !smtp_enabled);
+    $('#emailsmtpdebug label').toggleClass('disabled', !smtp_enabled);
+    $("#emailsmtphost").prop('disabled', !smtp_enabled);
+    $("#emailsmtpuser").prop('disabled', !smtp_enabled);
+    $("#emailsmtppassword").prop('disabled', !smtp_enabled);
 
-    const plugin_enabled = (selectedMethod == 'plugin');
+    const plugin_enabled = selectedMethod === 'plugin';
     $("#emailplugin").prop('disabled', !plugin_enabled);
 }
 

@@ -1,5 +1,12 @@
 <?php
 
+use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\Models\Services\Exception\{
+    NotFoundException,
+    PermissionDeniedException,
+    QuestionHasConditionsException
+};
+
 /**
  * Class QuestionAdministrationController
  */
@@ -67,7 +74,37 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
     {
-        $this->actionEdit($qid);
+        $qid = (int) $qid;
+
+        /** @var Question|null $question */
+        $question = Question::model()->findByPk($qid);
+        if (empty($question)) {
+            throw new CHttpException(404, gT("Invalid question id"));
+        }
+
+        // Check read permission (required to view question)
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        SettingsUser::setUserSetting('last_question', $qid);
+
+        // Check update permission to determine view mode
+        $hasUpdatePermission = Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update');
+
+        if ($hasUpdatePermission) {
+            // User can edit - call actionEdit which will handle noViewMode setting
+            $this->actionEdit($qid);
+        } else {
+            // User can only view - show overview mode (read-only summary)
+            $this->aData['tabOverviewEditor'] = 'overview';
+            $this->aData['closeUrl'] = Yii::app()->createUrl(
+                'questionAdministration/listquestions',
+                ['surveyid' => $question->sid]
+            );
+            $this->renderFormAux($question);
+        }
     }
 
     /**
@@ -309,7 +346,7 @@ class QuestionAdministrationController extends LSBaseController
         if (!in_array($landOnSideMenuTab, ['settings', 'structure', ''])) {
             $landOnSideMenuTab = 'settings';
         }
-        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey ID
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
         LimeExpressionManager::SetSurveyId($iSurveyID);
@@ -351,7 +388,7 @@ class QuestionAdministrationController extends LSBaseController
             App()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
         $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
-        // We filter the current survey id
+        // We filter the current survey ID
         $questionModel->sid = $oSurvey->sid;
         $aData['questionModel'] = $questionModel;
 
@@ -359,10 +396,20 @@ class QuestionAdministrationController extends LSBaseController
         $aData['surveybar'] = [];
 
         // for newly combined groups and reorder parts
-        $aData['groupModel'] = $this->getGroupData($oSurvey);
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionGroupService = $diContainer->get(
+            LimeSurvey\Models\Services\QuestionGroupService::class
+        );
+
+        if (App()->request->getParam('pageSize', 0) > 0) {
+            App()->user->setState('pageSize', (int)$pageSize);
+        }
+        $aData['groupModel'] = $questionGroupService->getGroupData(
+            $aData['oSurvey'],
+            App()->request->getParam('QuestionGroup', [])
+        );
         $aData['aGroupsAndQuestions'] = $this->getReorderData($oSurvey);
         $aData['surveyActivated'] = $oSurvey->getIsActive();
-
         $this->aData = $aData;
 
          $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
@@ -373,23 +420,6 @@ class QuestionAdministrationController extends LSBaseController
 
 
         $this->render("listquestions", $aData);
-    }
-
-    public function getGroupData($oSurvey)
-    {
-        $model    = new QuestionGroup('search');
-
-        if (isset($_GET['QuestionGroup']['group_name'])) {
-            $model->group_name = $_GET['QuestionGroup']['group_name'];
-        }
-
-        if (isset($_GET['pageSize'])) {
-            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
-        }
-        $model['sid'] = $oSurvey->primaryKey;
-        $model['language'] = $oSurvey->language;
-
-        return $model;
     }
 
     public function getReorderData($oSurvey)
@@ -441,7 +471,7 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Returns all languages in a specific survey as a JSON document
      *
-     * todo: is this action still in use?? where in the frontend?
+     * @todo is this action still in use?? where in the frontend?
      *
      * @param int $iSurveyId
      *
@@ -464,140 +494,77 @@ class QuestionAdministrationController extends LSBaseController
     public function actionSaveQuestionData()
     {
         $request = App()->request;
-        $iSurveyId = (int) $request->getPost('sid');
-        $sScenario = App()->request->getPost('scenario', '');
-
-        $questionData = [];
-        $questionData['question']         = (array) $request->getPost('question');
-        // TODO: It's l10n, not i10n.
-        $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
-        $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
-        $questionData['question']['sid']  = $iSurveyId;
-
         $calledWithAjax = (int) $request->getPost('ajax');
-
-        $question = Question::model()->findByPk((int) $questionData['question']['qid']);
-
-        // Different permission check when sid vs qid is given.
-        // This double permission check is needed if user manipulates the post data.
-        if (empty($question)) {
-            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
-                Yii::app()->user->setFlash('error', gT("Access denied"));
-                $this->redirect(Yii::app()->request->urlReferrer);
-            }
-        } else {
-            if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
-                Yii::app()->user->setFlash('error', gT("Access denied"));
-                $this->redirect(Yii::app()->request->urlReferrer);
-            }
-        }
+        $sScenario = $request->getPost('scenario', '');
+        $surveyId = (int) $request->getPost('sid');
 
         // Check the POST data is not truncated
         if (!$request->getPost('bFullPOST')) {
-            $message = gT("The data received seems incomplete. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
-
+            $message = gT('The data received seems incomplete. This usually happens due to server limitations (PHP setting max_input_vars). Please contact your system administrator.');
             if ($calledWithAjax) {
                 echo json_encode(['message' => $message]);
                 Yii::app()->end();
             } else {
-                $sRedirectUrl = $this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId]);
+                $sRedirectUrl = $this->createUrl(
+                    'questionAdministration/listQuestions',
+                    ['surveyid' => $surveyId]
+                );
                 Yii::app()->setFlashMessage($message, 'error');
                 $this->redirect($sRedirectUrl);
             }
         }
 
-        // Rollback at failure.
-        $transaction = Yii::app()->db->beginTransaction();
+        $data = !empty($_POST) ? $_POST : [];
+
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionAggregateService = $diContainer->get(
+            QuestionAggregateService::class
+        );
+
+        $question = null;
         try {
-            if ($questionData['question']['qid'] == 0) {
-                $questionData['question']['qid'] = null;
-                $question = $this->storeNewQuestionData($questionData['question']);
-            } else {
-                // Store changes to the actual question data, by either storing it, or updating an old one
-                $question = $this->updateQuestionData($question, $questionData['question']);
-            }
-
-            // Apply the changes to general settings, advanced settings and translations
-            $setApplied = [];
-
-            $setApplied['questionI10N'] = $this->applyL10n($question, $questionData['questionI10N']);
-
-            $setApplied['advancedSettings'] = $this->unparseAndSetAdvancedOptions(
-                $question,
-                $questionData['advancedSettings']
+            $question = $questionAggregateService->save(
+                $surveyId,
+                $data
             );
 
-            $setApplied['question'] = $this->unparseAndSetGeneralOptions(
-                $question,
-                $questionData['question']
-            );
-
-            // save advanced attributes default values for given question type
-            if (
-                array_key_exists('save_as_default', $questionData['question'])
-                && $questionData['question']['save_as_default'] == 'Y'
-            ) {
-                SettingsUser::setUserSetting(
-                    'question_default_values_' . $questionData['question']['type'],
-                    ls_json_encode($questionData['advancedSettings'])
-                );
-            } elseif (
-                array_key_exists('clear_default', $questionData['question'])
-                && $questionData['question']['clear_default'] == 'Y'
-            ) {
-                SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
-            }
-
-            // Clean answer options before save.
-            // NB: Still inside a database transaction.
-            $question->deleteAllAnswers();
-            // If question type has answeroptions, save them.
-            if ($question->questionType->answerscales > 0) {
-                $this->storeAnswerOptions(
-                    $question,
-                    $request->getPost('answeroptions')
-                );
-            }
-
-            if ($question->survey->active == 'N') {
-                // If question type has subquestions, save them.
-                if ($question->questionType->subquestions > 0) {
-                    $this->storeSubquestions(
-                        $question,
-                        $request->getPost('subquestions')
-                    );
-                }
-            } else {
-                if ($question->questionType->subquestions > 0) {
-                    $this->updateSubquestions(
-                        $question,
-                        $request->getPost('subquestions')
-                    );
-                }
-            }
-            $transaction->commit();
-
-            // All done, redirect to edit form.
-            $question->refresh();
-            LimeExpressionManager::SetDirtyFlag();
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
-            //only those two values are valid
-            if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
+            // only those two values are valid
+            if (
+                !(
+                    $tabOverviewEditorValue === 'overview'
+                    || $tabOverviewEditorValue === 'editor'
+                )
+            ) {
                 $tabOverviewEditorValue = 'overview';
             }
 
             if ($calledWithAjax) {
-                echo json_encode(['message' => gT('Question saved')]);
+                echo json_encode(
+                    ['message' => gT('Question saved')]
+                );
                 Yii::app()->end();
             } else {
-                App()->setFlashMessage(gT('Question saved'), 'success');
+                App()->setFlashMessage(
+                    gT('Question saved'),
+                    'success'
+                );
                 $landOnSideMenuTab = 'structure';
                 if (empty($sScenario)) {
-                    if (App()->request->getPost('save-and-close', '')) {
+                    if (
+                        App()->request
+                            ->getPost('save-and-close', '')
+                    ) {
                         $sScenario = 'save-and-close';
-                    } elseif (App()->request->getPost('saveandnew', '')) {
+                    } elseif (
+                        App()->request
+                            ->getPost('saveandnew', '')
+                    ) {
                         $sScenario = 'save-and-new';
-                    } elseif (App()->request->getPost('saveandnewquestion', '')) {
+                    } elseif (
+                        App()->request
+                            ->getPost('saveandnewquestion', '')
+                    ) {
                         $sScenario = 'save-and-new-question';
                     }
                 }
@@ -607,7 +574,7 @@ class QuestionAdministrationController extends LSBaseController
                             // TODO: Double check
                             'questionAdministration/create/',
                             [
-                                'surveyid' => $iSurveyId,
+                                'surveyid' => $surveyId,
                                 'gid' => $question->gid,
                             ]
                         );
@@ -616,7 +583,7 @@ class QuestionAdministrationController extends LSBaseController
                         $sRedirectUrl = $this->createUrl(
                             'questionGroupsAdministration/add/',
                             [
-                                'surveyid' => $iSurveyId,
+                                'surveyid' => $surveyId,
                             ]
                         );
                         break;
@@ -624,10 +591,10 @@ class QuestionAdministrationController extends LSBaseController
                         $sRedirectUrl = $this->createUrl(
                             'questionGroupsAdministration/view/',
                             [
-                                'surveyid' => $iSurveyId,
+                                'surveyid' => $surveyId,
                                 'gid' => $question->gid,
                                 'landOnSideMenuTab' => $landOnSideMenuTab,
-                                'mode' => 'overview',
+                                'mode' => 'overview'
                             ]
                         );
                         break;
@@ -638,20 +605,28 @@ class QuestionAdministrationController extends LSBaseController
                                 'questionId' => $question->qid,
                                 'landOnSideMenuTab' => $landOnSideMenuTab,
                                 'tabOverviewEditor' => $tabOverviewEditorValue,
+                                'gid' => $question->gid    // Needed by adminsidepanel to know the context (ie. in createFullQuestionLink)
                             ]
                         );
                 }
                 $this->redirect($sRedirectUrl);
             }
-        } catch (CException $ex) {
-            $transaction->rollback();
-
+        } catch (PermissionDeniedException $e) {
+            Yii::app()->user->setFlash('error', gT('Access denied'));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        } catch (\Exception $e) {
             // Determine the proper redirect URL
             if (empty($question)) {
-                $redirectUrl = $this->createUrl('surveyAdministration/view/', ["surveyid" => $iSurveyId]);
+                $redirectUrl = $this->createUrl(
+                    'surveyAdministration/view/',
+                    ["surveyid" => $surveyId]
+                );
             } else {
                 $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
-                if ($tabOverviewEditorValue !== 'overview' && $tabOverviewEditorValue !== 'editor') {
+                if (
+                    $tabOverviewEditorValue !== 'overview'
+                    && $tabOverviewEditorValue !== 'editor'
+                ) {
                     $tabOverviewEditorValue = 'overview';
                 }
                 $redirectUrl = $this->createUrl(
@@ -664,15 +639,16 @@ class QuestionAdministrationController extends LSBaseController
                 );
             }
 
-            // If we are already dealing with a friendly exception (may include detailed errors),
-            // just set the redirect URL and rethrow.
-            if ($ex instanceof LSUserException) {
-                throw $ex->setRedirectUrl($redirectUrl);
+            // If we are already dealing with a friendly exception
+            // (may include detailed errors),
+            // just set the redirect URL and re-throw.
+            if ($e instanceof LSUserException) {
+                throw $e->setRedirectUrl($redirectUrl);
             }
 
             throw new LSUserException(
                 500,
-                $ex->getMessage(),
+                $e->getMessage(),
                 0,
                 $redirectUrl
             );
@@ -761,7 +737,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (empty($oSurvey)) {
-            throw new CHttpException(404, gT("Invalid survey id"));
+            throw new CHttpException(404, gT("Invalid survey ID"));
         }
         if (!Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT("No permission"));
@@ -833,7 +809,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (empty($oSurvey)) {
-            throw new CHttpException(404, gT("Invalid survey id"));
+            throw new CHttpException(404, gT("Invalid survey ID"));
         }
         if (!Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT("No permission"));
@@ -889,7 +865,7 @@ class QuestionAdministrationController extends LSBaseController
         list($oSubquestion->title, $newPosition) = $this->calculateNextCode($stringCodes);
 
         $activated = false; // You can't add ne subquestion when survey is active
-        Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
+        Yii::app()->loadHelper('admin.htmleditor'); // Prepare the editor helper for the view
 
         $view = 'subquestionRow.twig';
         $aData = array(
@@ -921,7 +897,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $oldCode = false;
 
-        // TODO: Fix question type 'A'. Needed?
+        // @todo Fix question type 'A'. Needed?
         $oQuestion = $this->getQuestionObject($qid, 'A', $gid);
         $answerOption = $oQuestion->getEmptyAnswerOption();
         $answerOption->aid = $qid;
@@ -936,7 +912,7 @@ class QuestionAdministrationController extends LSBaseController
         list($answerOption->code, $newPosition) = $this->calculateNextCode($stringCodes);
 
         $activated = false; // You can't add ne subquestion when survey is active
-        Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
+        Yii::app()->loadHelper('admin.htmleditor'); // Prepare the editor helper for the view
 
         $view = 'answerOptionRow.twig';
         $aData = array(
@@ -1166,6 +1142,12 @@ class QuestionAdministrationController extends LSBaseController
         $iSurveyID = (int) App()->request->getPost('sid', 0);
         $gid = (int) App()->request->getPost('gid', 0);
 
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
+            App()->session['flashmessage'] = gT("We are sorry but you don't have permissions to do this.");
+            /* Same redirect than importView */
+            $this->redirect(['questionAdministration/listquestions/surveyid/' . $iSurveyID]);
+        }
+
         $jumptoquestion = (bool)App()->request->getPost('jumptoquestion', 1);
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -1206,7 +1188,7 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         // load import_helper and import the file
-        App()->loadHelper('admin/import');
+        App()->loadHelper('admin.import');
         $aImportResults = [];
         if (strtolower($sExtension) === 'lsq') {
             $aImportResults = XMLImportQuestion(
@@ -1230,6 +1212,13 @@ class QuestionAdministrationController extends LSBaseController
             App()->setFlashMessage($aImportResults['fatalerror'], 'error');
             $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
+        }
+
+        // If there are warnings, we don't jump to the question.
+        // We need to show the warnings to the user, and they may be too important
+        // and/or too many to be shown in a flash message.
+        if (!empty($aImportResults['importwarnings'])) {
+            $jumptoquestion = false;
         }
 
         unlink($sFullFilepath);
@@ -1404,28 +1393,23 @@ class QuestionAdministrationController extends LSBaseController
      * @access public
      * @param int $qid
      * @param bool $massAction
-     * @param string $redirectTo Redirect to question list ('questionlist' or empty), or group overview ('groupoverview')
-     * @return array|void
+     * @param string $redirectTo 'questionlist' or 'groupoverview' or empty
      * @throws CDbException
      * @throws CHttpException
      */
     public function actionDelete($qid = null, $massAction = false, $redirectTo = null)
     {
+        if (!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT('Invalid action'));
+        }
         if (is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
         }
+
+        // @todo: request should specify the survey ID of the question to be deleted
+        // - survey ID is verified before deletion
         $oQuestion = Question::model()->findByPk($qid);
-        if (empty($oQuestion)) {
-            throw new CHttpException(404, gT("Invalid question id"));
-        }
-        /* Test the surveyid from question, not from submitted value */
         $surveyid = $oQuestion->sid;
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
-            throw new CHttpException(403, gT("You are not authorized to delete questions."));
-        }
-        if (!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("Invalid action"));
-        }
 
         if (empty($redirectTo)) {
             $redirectTo = Yii::app()->getRequest()->getPost('redirectTo', 'questionlist');
@@ -1449,39 +1433,52 @@ class QuestionAdministrationController extends LSBaseController
             );
         }
 
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionAggregateService = $diContainer->get(
+            QuestionAggregateService::class
+        );
 
-        LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
-
-        // Check if any other questions have conditions which rely on this question. Don't delete if there are.
-        $oConditions = Condition::model()->findAllByAttributes(['cqid' => $qid]);
-        $iConditionsCount = count($oConditions);
-        // There are conditions dependent on this question
-        if ($iConditionsCount) {
-            $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
-            Yii::app()->setFlashMessage($sMessage, 'error');
+        try {
+            $questionAggregateService->delete($surveyid, $qid);
+        } catch (NotFoundException $e) {
+            throw new CHttpException(404, gT('Invalid question id'));
+        } catch (QuestionHasConditionsException $e) {
+            $message = gT(
+                'Question could not be deleted. '
+                . 'There are conditions for other questions that rely '
+                . 'on this question. '
+                . 'You cannot delete this question until those conditions '
+                . 'are removed.'
+            );
+            Yii::app()->setFlashMessage($message, 'error');
             $this->redirect($redirect);
-        } else {
-            QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
-            $result = $oQuestion->delete();
-            $sMessage = gT("Question was successfully deleted.");
+        } catch (PermissionDeniedException $e) {
+            throw new CHttpException(
+                403,
+                gT('You are not authorized to delete questions.')
+            );
         }
+
+        $message = gT(
+            'Question was successfully deleted.'
+        );
 
         if ($massAction) {
             return [
-                'message' => $sMessage,
-                'status'  => $result
+                'message' => $message,
+                'status'  => true
             ];
         }
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [
                     'status'   => true,
-                    'message'  => $sMessage,
+                    'message'  => $message,
                     'redirect' => $redirect
                 ]
             );
         }
-        Yii::app()->session['flashmessage'] = $sMessage;
+        Yii::app()->session['flashmessage'] = $message;
         $this->redirect($redirect);
     }
 
@@ -1541,26 +1538,38 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Change attributes for multiple questions
-     * ajax request (this is a massive action for questionlists view)
+     * Change attributes for multiple questions simultaneously
      *
+     * This action handles AJAX requests from massive actions for questionList.
+     * It processes the request data and calls the model function to save those attributes.
      */
     public function actionChangeMultipleQuestionAttributes()
     {
-        $aQidsAndLang        = json_decode((string) $_POST['sItems']); // List of question ids to update
-        $iSid                = Yii::app()->request->getPost('sid'); // The survey (for permission check)
-        $aAttributesToUpdate = json_decode((string) $_POST['aAttributesToUpdate']); // The list of attributes to updates
-        // TODO 1591979134468: this should be get from the question model
-        $aValidQuestionTypes = str_split((string) $_POST['aValidQuestionTypes']); //The valid question types for those attributes
+        $questionIds = json_decode((string)App()->request->getPost('sItems'));
+        $surveyId = App()->request->getPost('sid');
+        $attributesToUpdate = json_decode(
+            (string)App()->request->getPost('aAttributesToUpdate')
+        );
+        $attributesWithValue = [];
+        foreach ($attributesToUpdate as $attribute) {
+            $attributesWithValue[$attribute] = App()->request->getPost(
+                $attribute
+            );
+        }
+        $validQuestionTypes = str_split((string)App()->request->getPost('aValidQuestionTypes'));
 
-        // Calling th model
-        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
+        QuestionAttribute::model()->setMultipleAttributes(
+            (int)$surveyId,
+            $questionIds,
+            $attributesWithValue,
+            $validQuestionTypes
+        );
     }
 
     /**
      * Loads the possible Positions where a Question could be inserted to
      *
-     * @param $gid
+     * @param int $gid
      * @param string $classes
      * @return CWidget|mixed|void
      * @throws Exception
@@ -1694,6 +1703,7 @@ class QuestionAdministrationController extends LSBaseController
         $surveyId = (int)Yii::app()->request->getParam('surveyId');
         $questionGroupId = (int)Yii::app()->request->getParam('questionGroupId');
         $questionIdToCopy = (int)Yii::app()->request->getParam('questionId');
+        $newGroupId = (int)Yii::app()->request->getParam('gid');
 
         //permission check ...
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'create')) {
@@ -1759,7 +1769,7 @@ class QuestionAdministrationController extends LSBaseController
             $copyQuestionValues = new \LimeSurvey\Datavalueobjects\CopyQuestionValues();
             $copyQuestionValues->setOSurvey($oSurvey);
             $copyQuestionValues->setQuestionCode($newTitle);
-            $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
+            $copyQuestionValues->setQuestionGroupId($newGroupId);
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
             if (!empty($copyQuestionTextValues)) {
                 $copyQuestionValues->setQuestionL10nData($copyQuestionTextValues);
@@ -1769,27 +1779,28 @@ class QuestionAdministrationController extends LSBaseController
                 $questionPosition = -1; //integer indicator for "end"
             }
             //first ensure that all questions for the group have a question_order>0 and possibly set to this state
-            Question::setQuestionOrderForGroup($questionGroupId);
+            Question::setQuestionOrderForGroup($newGroupId);
             switch ((int)$questionPosition) {
                 case -1: //at the end
-                    $newQuestionPosition = Question::getHighestQuestionOrderNumberInGroup($questionGroupId) + 1;
+                    $newQuestionPosition = Question::getHighestQuestionOrderNumberInGroup($newGroupId) + 1;
                     break;
                 case 0: //at beginning
                     //set all existing order numbers to +1, and the copied question to order number 1
-                    Question::increaseAllOrderNumbersForGroup($questionGroupId);
+                    Question::increaseAllOrderNumbersForGroup($newGroupId);
                     $newQuestionPosition = 1;
                     break;
                 default: //all other cases means after question X (the value coming from frontend is already correct)
+                    Question::increaseAllOrderNumbersForGroup($newGroupId, $questionPosition);
                     $newQuestionPosition = $questionPosition;
             }
             $copyQuestionValues->setQuestionPositionInGroup($newQuestionPosition);
 
-            $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues);
             $copyOptions['copySubquestions'] = (int)Yii::app()->request->getParam('copysubquestions') === 1;
             $copyOptions['copyAnswerOptions'] = (int)Yii::app()->request->getParam('copyanswers') === 1;
             $copyOptions['copyDefaultAnswers'] = (int)Yii::app()->request->getParam('copydefaultanswers') === 1;
             $copyOptions['copySettings'] = (int)Yii::app()->request->getParam('copyattributes') === 1;
-            if ($copyQuestionService->copyQuestion($copyOptions)) {
+            $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues, $copyOptions);
+            if ($copyQuestionService->copyQuestion()) {
                 App()->user->setFlash('success', gT("Saved copied question"));
                 $newQuestion = $copyQuestionService->getNewCopiedQuestion();
                 $this->redirect(
@@ -1823,6 +1834,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['jsVariablesHtml'] = $this->renderPartial(
             '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
             [
+                'qid'               => $oQuestion->qid,
                 'anslangs'          => $oQuestion->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
@@ -1849,7 +1861,7 @@ class QuestionAdministrationController extends LSBaseController
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
         }
-        // TODO: Difference between create and update permissions?
+        // @todo Difference between create and update permissions?
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT('No permission'));
         }
@@ -1891,7 +1903,7 @@ class QuestionAdministrationController extends LSBaseController
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
         }
-        // TODO: Difference between create and update permissions?
+        // @todo Difference between create and update permissions?
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT('No permission'));
         }
@@ -1998,11 +2010,11 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Check if label set is what???
+     * Check if label set can be replaced without problems
      *
      * @param int $lid
-     * @param ??? $languages
-     * @param ??? $checkAssessments
+     * @param array $languages
+     * @param boolean $checkAssessments
      * @return void
      */
     public function actionCheckLabel($lid, $languages, $checkAssessments)
@@ -2029,33 +2041,8 @@ class QuestionAdministrationController extends LSBaseController
         }
     }
 
-    /** ++++++++++++  TODO: The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
+    /** @todo The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
 
-    /**
-     * Try to get the get-parameter from request.
-     * At the moment there are three namings for a survey id:
-     * 'sid'
-     * 'surveyid'
-     * 'iSurveyID'
-     *
-     * Returns the id as integer or null if not exists any of them.
-     *
-     * @return int | null
-     *
-     * @todo While refactoring (at some point) this function should be removed and only one unique identifier should be used
-     */
-    private function getSurveyIdFromGetRequest()
-    {
-        $surveyId = Yii::app()->request->getParam('sid');
-        if ($surveyId === null) {
-            $surveyId = Yii::app()->request->getParam('surveyid');
-        }
-        if ($surveyId === null) {
-            $surveyId = Yii::app()->request->getParam('iSurveyID');
-        }
-
-        return (int) $surveyId;
-    }
 
     /**
      * Returns true if $class is a valid CSS class (alphanumeric + '-' and '_')
@@ -2074,7 +2061,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param array $aQids All question id's affected
      * @param string $sOther the "other" value 'Y' or 'N'
-     * @param int $iSid survey id
+     * @param int $iSid survey ID
      */
     public static function setMultipleQuestionOtherState($aQids, $sOther, $iSid)
     {
@@ -2094,7 +2081,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param array $aQids All question id's affected
      * @param string $sMandatory The mandatory va
-     * @param int $iSid survey id
+     * @param int $iSid survey ID
      */
     public static function setMultipleQuestionMandatoryState($aQids, $sMandatory, $iSid)
     {
@@ -2400,7 +2387,11 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
         $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questiongroupl10ns);
 
-        $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $questionOrderingService = $diContainer->get(
+            \LimeSurvey\Models\Services\QuestionOrderingService\QuestionOrderingService::class
+        );
+        $aScaledSubquestions = $questionOrderingService->getOrderedSubQuestions($oQuestion);
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {
             $aScaledSubquestions[$scaleId] = array_map(
                 function ($oSubQuestion) {
@@ -2410,7 +2401,7 @@ class QuestionAdministrationController extends LSBaseController
             );
         }
 
-        $aScaledAnswerOptions = $oQuestion->getOrderedAnswers();
+        $aScaledAnswerOptions = $questionOrderingService->getOrderedAnswers($oQuestion);
         foreach ($aScaledAnswerOptions as $scaleId => $aAnswerOptions) {
             $aScaledAnswerOptions[$scaleId] = array_map(
                 function ($oAnswerOption) {
@@ -2475,7 +2466,7 @@ class QuestionAdministrationController extends LSBaseController
         $advancedSettings = $questionAttributeHelper->groupAttributesByCategory($advancedSettings);
 
         // This category is "general setting".
-        unset($advancedSettings['Attribute']);
+        unset($advancedSettings[gT('Attribute')]);
 
         return $advancedSettings;
     }
@@ -2505,313 +2496,6 @@ class QuestionAdministrationController extends LSBaseController
             "questionCount"   => $questionCount,
             "groupCount"      => $groupCount,
         ];
-    }
-
-    /**
-     * Method to store and filter questionData for a new question
-     *
-     * todo: move to model or service class
-     *
-     * @param array $aQuestionData what is inside this array ??
-     * @param boolean $subquestion
-     * @return Question
-     * @throws CHttpException
-     */
-    private function storeNewQuestionData($aQuestionData = null, $subquestion = false)
-    {
-        $iSurveyId = $aQuestionData['sid'];
-        $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $iQuestionGroupId = (int) $aQuestionData['gid'];
-        $type = SettingsUser::getUserSettingValue(
-            'preselectquestiontype',
-            null,
-            null,
-            null,
-            App()->getConfig('preselectquestiontype')
-        );
-
-        if (isset($aQuestionData['same_default'])) {
-            if ($aQuestionData['same_default'] == 1) {
-                $aQuestionData['same_default'] = 0;
-            } else {
-                $aQuestionData['same_default'] = 1;
-            }
-        }
-
-        if (!isset($aQuestionData['same_script'])) {
-            $aQuestionData['same_script'] = 0;
-        }
-
-        $aQuestionData = array_merge(
-            [
-                'sid'        => $iSurveyId,
-                'gid'        => $iQuestionGroupId,
-                'type'       => $type,
-                'other'      => 'N',
-                'mandatory'  => 'N',
-                'relevance'  => 1,
-                'group_name' => '',
-                'modulename' => '',
-                'encrypted'  => 'N'
-            ],
-            $aQuestionData
-        );
-        unset($aQuestionData['qid']);
-
-        if ($subquestion) {
-            foreach ($oSurvey->allLanguages as $sLanguage) {
-                unset($aQuestionData[$sLanguage]);
-            }
-        } else {
-            $aQuestionData['question_order'] = getMaxQuestionOrder($iQuestionGroupId);
-        }
-
-        $oQuestion = new Question();
-        $oQuestion->setAttributes($aQuestionData, false);
-
-        //set the question_order the highest existing number +1, if no question exists for the group
-        //set the question_order to 1
-        $highestOrderNumber = Question::getHighestQuestionOrderNumberInGroup($iQuestionGroupId);
-        if ($highestOrderNumber === null) { //this means there is no question inside this group ...
-            $oQuestion->question_order = Question::START_SORTING_VALUE;
-        } else {
-            $oQuestion->question_order = $highestOrderNumber + 1;
-        }
-
-
-        if ($oQuestion == null) {
-            throw new LSUserException(
-                500,
-                gT("Question creation failed - input was malformed or invalid"),
-                0,
-                null,
-                true
-            );
-        }
-
-        $saved = $oQuestion->save();
-        if ($saved == false) {
-            throw (new LSUserException(
-                500,
-                gT('Could not save question'),
-                0,
-                null,
-                true
-            ))->setDetailedErrorsFromModel($oQuestion);
-        }
-
-        $i10N = [];
-        foreach ($oSurvey->allLanguages as $sLanguage) {
-            $i10N[$sLanguage] = new QuestionL10n();
-            $i10N[$sLanguage]->setAttributes(
-                [
-                    'qid'      => $oQuestion->qid,
-                    'language' => $sLanguage,
-                    'question' => '',
-                    'help'     => '',
-                    'script'   => '',
-                ],
-                false
-            );
-            $i10N[$sLanguage]->save();
-        }
-
-        return $oQuestion;
-    }
-
-    /**
-     * Method to store and filter questionData for editing a question
-     *
-     * @param Question $oQuestion
-     * @param array $aQuestionData
-     * @return Question
-     * @throws CHttpException
-     */
-    private function updateQuestionData(&$oQuestion, $aQuestionData)
-    {
-        //todo something wrong in frontend ... (?what is wrong?)
-
-        if (isset($aQuestionData['same_default'])) {
-            if ($aQuestionData['same_default'] == 1) {
-                $aQuestionData['same_default'] = 0;
-            } else {
-                $aQuestionData['same_default'] = 1;
-            }
-        }
-
-        if (!isset($aQuestionData['same_script'])) {
-            $aQuestionData['same_script'] = 0;
-        }
-
-        $originalRelevance = $oQuestion->relevance;
-
-        $oQuestion->setAttributes($aQuestionData, false);
-        if ($oQuestion == null) {
-            throw new LSUserException(
-                500,
-                gT("Question update failed, input array malformed or invalid"),
-                0,
-                null,
-                true
-            );
-        }
-
-        $saved = $oQuestion->save();
-        if ($saved == false) {
-            throw (new LSUserException(
-                500,
-                gT("Update failed, could not save."),
-                0,
-                null,
-                true
-            ))->setDetailedErrorsFromModel($oQuestion);
-        }
-
-        // If relevance equation was manually edited, existing conditions must be cleared
-        if ($oQuestion->relevance != $originalRelevance && !empty($oQuestion->conditions)) {
-            Condition::model()->deleteAllByAttributes(['qid' => $oQuestion->qid]);
-        }
-
-        return $oQuestion;
-    }
-
-    /**
-     * @todo document me
-     *
-     * @param Question $oQuestion
-     * @param array $dataSet
-     * @return boolean
-     * @throws CHttpException
-     */
-    private function applyL10n($oQuestion, $dataSet)
-    {
-        foreach ($dataSet as $sLanguage => $aI10NBlock) {
-            $i10N = QuestionL10n::model()->findByAttributes(['qid' => $oQuestion->qid, 'language' => $sLanguage]);
-            if (empty($i10N)) {
-                throw new Exception('Found no L10n object');
-            }
-            $i10N->setAttributes(
-                [
-                    'question' => $aI10NBlock['question'],
-                    'help'     => $aI10NBlock['help'],
-                    'script'   => $aI10NBlock['script'] ?? ''
-                ],
-                false
-            );
-            if (!$i10N->save()) {
-                throw new CHttpException(500, gT("Could not store translation"));
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @todo document me
-     *
-     * @param Question $oQuestion
-     * @param array $dataSet
-     * @return boolean
-     * @throws CHttpException
-     */
-    private function unparseAndSetGeneralOptions($oQuestion, $dataSet)
-    {
-        $aQuestionBaseAttributes = $oQuestion->attributes;
-
-        foreach ($dataSet as $sAttributeKey => $attributeValue) {
-            if ($sAttributeKey === 'debug' || !isset($attributeValue)) {
-                continue;
-            }
-            if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
-                $oQuestion->$sAttributeKey = $attributeValue;
-            } elseif (
-                !QuestionAttribute::model()->setQuestionAttribute(
-                    $oQuestion->qid,
-                    $sAttributeKey,
-                    $attributeValue
-                )
-            ) {
-                throw new CHttpException(500, gT("Could not save question attributes"));
-            }
-        }
-
-        if (!$oQuestion->save()) {
-            throw (new LSUserException(500, gT("Could not save question")))
-                ->setDetailedErrorsFromModel($oQuestion);
-        }
-
-        return true;
-    }
-
-    /**
-     * @todo document me
-     *
-     * @param Question $oQuestion
-     * @param array $dataSet these are the advancedSettings in an array like
-     *                       [display]
-     *                         [hidden]
-     *                         ...
-     *                       [logic]
-     *                       ...
-     *
-     * @return boolean
-     * @throws CHttpException
-     */
-    private function unparseAndSetAdvancedOptions($oQuestion, $dataSet)
-    {
-        $aQuestionBaseAttributes = $oQuestion->attributes;
-
-        foreach ($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
-            if ($sAttributeCategory === 'debug') {
-                continue;
-            }
-            foreach ($aAttributeCategorySettings as $sAttributeKey => $attributeValue) {
-                $newValue = $attributeValue;
-
-                // Set default value if empty.
-                // TODO: Default value
-                if (
-                    $newValue === ""
-                    && isset($attributeValue['aFormElementOptions']['default'])
-                ) {
-                    $newValue = $attributeValue['aFormElementOptions']['default'];
-                }
-
-                if (is_array($newValue)) {
-                    foreach ($newValue as $lngKey => $content) {
-                        if ($lngKey === 'expression') {
-                            continue;
-                        }
-                        if (
-                            !QuestionAttribute::model()->setQuestionAttributeWithLanguage(
-                                $oQuestion->qid,
-                                $sAttributeKey,
-                                $content,
-                                $lngKey
-                            )
-                        ) {
-                            throw new CHttpException(500, gT("Could not store advanced options"));
-                        }
-                    }
-                } elseif (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
-                    $oQuestion->$sAttributeKey = $newValue;
-                } elseif (
-                    !QuestionAttribute::model()->setQuestionAttribute(
-                        $oQuestion->qid,
-                        $sAttributeKey,
-                        $newValue
-                    )
-                ) {
-                    throw new CHttpException(500, gT("Could not store advanced options"));
-                }
-            }
-        }
-
-        if (!$oQuestion->save()) {
-            throw new CHttpException(500, gT("Could not store advanced options"));
-        }
-
-        return true;
     }
 
     /**
@@ -2870,229 +2554,6 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Save subquestion.
-     * Used when survey is *not* activated.
-     *
-     * @param Question $question
-     * @param array $subquestionsArray Data from request.
-     * @return void
-     * @throws CHttpException
-     */
-    private function storeSubquestions($question, $subquestionsArray)
-    {
-        $this->validateSubquestionCodes($subquestionsArray);
-        $questionOrder = 0;
-        $errorQuestions = [];
-        $subquestions = [];
-        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
-            foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = Question::model()->findByPk($subquestionId);
-                if (!$subquestion) {
-                    $subquestion = new Question();
-                }
-                $subquestion->sid = $question->sid;
-                $subquestion->gid = $question->gid;
-                $subquestion->parent_qid = $question->qid;
-                $subquestion->question_order = $questionOrder;
-                $questionOrder++;
-                if (!isset($data['code'])) {
-                    throw new CHttpException(
-                        500,
-                        'Internal error: Missing mandatory field code for question: ' . json_encode($data)
-                    );
-                }
-                $subquestion->title = $data['code'];
-                if ($scaleId === 0) {
-                    $subquestion->relevance = $data['relevance'];
-                }
-                $subquestion->scale_id = $scaleId;
-                $subquestion->setScenario('saveall');
-                if (!$subquestion->save()) {
-                    array_push($errorQuestions, $subquestion);
-                    continue;
-                }
-                $subquestion->refresh();
-                $subquestions[] = $subquestion;
-                foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = QuestionL10n::model()->findByAttributes([
-                        'qid' => $subquestion->qid,
-                        'language' => $lang
-                    ]);
-                    $l10n = $l10n ?? new QuestionL10n();
-                    $l10n->qid = $subquestion->qid;
-                    $l10n->language = $lang;
-                    $l10n->question = $questionText;
-                    if (!$l10n->save()) {
-                        throw (new LSUserException(500, gT("Could not save subquestion")))
-                            ->setDetailedErrorsFromModel($l10n);
-                    }
-                }
-            }
-        }
-        $subquestionIds = array_map(function ($subquestion) {
-            return $subquestion->qid;
-        }, $subquestions);
-        $question->deleteAllSubquestions($subquestionIds);
-        foreach ($errorQuestions as $errorQuestion) {
-            throw (new LSUserException(500, gT("Could not save subquestion")))
-                ->setDetailedErrorsFromModel($errorQuestion);
-        }
-    }
-
-    /**
-     * Validate subquestion codes.
-     *
-     * @param array $subquestionsArray Data from request.
-     * @return void
-     * @throws LSUserException
-     */
-    private function validateSubquestionCodes($subquestionsArray)
-    {
-        // ensure uniquness of codes
-        $codes = [];
-        foreach ($subquestionsArray as $subquestionArray) {
-            foreach ($subquestionArray as $scaleId => $data) {
-                if (!isset($codes[$scaleId])) {
-                    $codes[$scaleId] = [];
-                }
-                if (
-                    in_array(
-                        $data['code'],
-                        $codes[$scaleId]
-                    )
-                ) {
-                    throw (
-                        new LSUserException(
-                            500,
-                            gT('Could not save subquestion')
-                        )
-                    )->setDetailedErrors(
-                        ['Subquestion codes must be unique.']
-                    );
-                }
-                $codes[$scaleId][] = $data['code'];
-            }
-        }
-    }
-
-    /**
-     * Save subquestion.
-     * Used when survey *is* activated.
-     *
-     * @param Question $question
-     * @param array $subquestionsArray Data from request.
-     * @return void
-     * @throws CHttpException
-     */
-    private function updateSubquestions($question, $subquestionsArray)
-    {
-        $questionOrder = 0;
-        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
-            foreach ($subquestionArray as $scaleId => $data) {
-                $subquestion = Question::model()->findByAttributes(
-                    [
-                        'parent_qid' => $question->qid,
-                        'title'      => $data['code'],
-                        'scale_id'   => $scaleId
-                    ]
-                );
-                if (empty($subquestion)) {
-                    throw new Exception('Found no subquestion with code ' . $data['code']);
-                }
-                $subquestion->sid        = $question->sid;
-                $subquestion->gid        = $question->gid;
-                $subquestion->parent_qid = $question->qid;
-                $subquestion->question_order = $questionOrder;
-                $questionOrder++;
-                if (!isset($data['code'])) {
-                    throw new CHttpException(
-                        500,
-                        'Internal error: Missing mandatory field code for question: ' . json_encode($data)
-                    );
-                }
-                $subquestion->title      = $data['code'];
-                if ($scaleId === 0) {
-                    $subquestion->relevance  = $data['relevance'];
-                }
-                $subquestion->scale_id   = $scaleId;
-                if (!$subquestion->update()) {
-                    throw (new LSUserException(500, gT("Could not save subquestion")))
-                        ->setDetailedErrorsFromModel($subquestion);
-                }
-                $subquestion->refresh();
-                foreach ($data['subquestionl10n'] as $lang => $questionText) {
-                    $l10n = QuestionL10n::model()->findByAttributes(
-                        [
-                            'qid' => $subquestion->qid,
-                            'language' => $lang
-                        ]
-                    );
-                    if (empty($l10n)) {
-                        $l10n = new QuestionL10n();
-                    }
-                    $l10n->qid = $subquestion->qid;
-                    $l10n->language = $lang;
-                    $l10n->question = $questionText;
-                    if (!$l10n->save()) {
-                        throw (new LSUserException(500, gT("Could not save subquestion")))
-                            ->setDetailedErrorsFromModel($l10n);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Store new answer options.
-     * Different from update during active survey?
-     *
-     * @param Question $question
-     * @param array $answerOptionsArray
-     * @return void
-     * @throws CHttpException
-     */
-    private function storeAnswerOptions($question, $answerOptionsArray)
-    {
-        $i = 0;
-        foreach ($answerOptionsArray as $answerOptionId => $answerOptionArray) {
-            foreach ($answerOptionArray as $scaleId => $data) {
-                if (!isset($data['code'])) {
-                    throw new Exception(
-                        'code is not set in data: ' . json_encode($data)
-                    );
-                }
-                $answer = new Answer();
-                $answer->qid = $question->qid;
-                $answer->code = $data['code'];
-                $answer->sortorder = $i;
-                $i++;
-                if (isset($data['assessment'])) {
-                    $answer->assessment_value = $data['assessment'];
-                } else {
-                    $answer->assessment_value = 0;
-                }
-                $answer->scale_id = $scaleId;
-                if (!$answer->save()) {
-                    throw (new LSUserException(500, gT("Could not save answer option")))
-                        ->setDetailedErrorsFromModel($answer);
-                }
-                $answer->refresh();
-                foreach ($data['answeroptionl10n'] as $lang => $answerOptionText) {
-                    $l10n = new AnswerL10n();
-                    $l10n->aid = $answer->aid;
-                    $l10n->language = $lang;
-                    $l10n->answer = $answerOptionText;
-                    if (!$l10n->save()) {
-                        throw (new LSUserException(500, gT("Could not save answer option")))
-                            ->setDetailedErrorsFromModel($l10n);
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
      * @param QuestionTheme[] $questionThemes Question theme List
      * @return array
      * @todo Move to PreviewModalWidget?
@@ -3109,14 +2570,7 @@ class QuestionAdministrationController extends LSBaseController
                     'questionGroupName' => $questionTheme->group
                 );
             }
-            $imageName = $questionTheme->question_type;
-            if ($imageName == ":") {
-                $imageName = "COLON";
-            } elseif ($imageName == "|") {
-                $imageName = "PIPE";
-            } elseif ($imageName == "*") {
-                $imageName = "EQUATION";
-            }
+
             $questionThemeData = [];
             $questionThemeData['title'] = $questionTheme->title;
             $questionThemeData['name'] = $questionTheme->name;
@@ -3125,13 +2579,7 @@ class QuestionAdministrationController extends LSBaseController
                 <div class="col-12 currentImageContainer">
                 <img src="' . $questionTheme->image_path . '" />
                 </div>';
-            if ($imageName == 'S') {
-                $questionThemeData['detailpage'] = '
-                    <div class="col-12 currentImageContainer">
-                    <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
-                    <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
-                    </div>';
-            }
+
             $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionThemeData;
         }
         return $aQuestionTypeGroups;
@@ -3191,7 +2639,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $survey = Survey::model()->findByPk($sid);
         if (empty($survey)) {
-            throw new CHttpException(404, gT("Invalid survey id"));
+            throw new CHttpException(404, gT("Invalid survey ID"));
         }
         if ($qid) {
             $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'sid' => $sid]);

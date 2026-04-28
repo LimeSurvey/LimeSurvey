@@ -17,50 +17,52 @@ class Update_614 extends DatabaseUpdateBase
             foreach ($templateConfigurations as $templateConfiguration) {
                 if ($templateConfiguration['options'] !== 'inherit') {
                     if ($templateConfiguration['template_name'] == 'vanilla') {
-                        $sOptionsJson = $templateConfiguration['options'];
-                        $oOldOptions = json_decode($sOptionsJson);
-                        if (empty($oOldOptions->animatebody)) {
-                            $oOldOptions->animatebody = 'off';
+                        $optionsJson = $templateConfiguration['options'];
+                        $oldOptions = json_decode($optionsJson);
+                        if (is_object($oldOptions)) {
+                            if (empty($oldOptions->animatebody)) {
+                                $oldOptions->animatebody = 'off';
+                            }
+                            if (empty($oldOptions->fixnumauto)) {
+                                $oldOptions->fixnumauto = 'enable';
+                            }
+                            $newOptionsJson = json_encode($oldOptions);
+                            $this->templateConfigurationOptionsUpdate(
+                                $templateConfiguration['id'],
+                                $newOptionsJson
+                            );
                         }
-                        if (empty($oOldOptions->fixnumauto)) {
-                            $oOldOptions->fixnumauto = 'enable';
-                        }
-                        $oNewOtionsJson = json_encode($oOldOptions);
-                        $this->db->createCommand()->update(
-                            '{{template_configuration}}',
-                            ['options' => $oNewOtionsJson],
-                            'id = :id',
-                            [':id' => $templateConfiguration['id']]
-                        );
                     } elseif ($templateConfiguration['template_name'] == 'fruity') {
-                        $sOptionsJson = $templateConfiguration['options'];
-                        $oOldOptions = json_decode($sOptionsJson);
-                        if (empty($oOldOptions->fixnumauto)) {
-                            $oOldOptions->fixnumauto = 'enable';
+                        $optionsJson = $templateConfiguration['options'];
+                        // fixnumauto is not guaranteed to exist in older version of fruity,
+                        // so rather decode as array, not as object
+                        $oldOptions = json_decode($optionsJson);
+                        if (is_object($oldOptions)) {
+                            if (empty($oldOptions->fixnumauto)) {
+                                $oldOptions->fixnumauto = 'enable';
+                            }
+                            $newOptionsJson = json_encode($oldOptions);
+                            $this->templateConfigurationOptionsUpdate(
+                                $templateConfiguration['id'],
+                                $newOptionsJson
+                            );
                         }
-                        $oNewOtionsJson = json_encode($oOldOptions);
-                        $this->db->createCommand()->update(
-                            '{{template_configuration}}',
-                            ['options' => $oNewOtionsJson],
-                            'id = :id',
-                            [':id' => $templateConfiguration['id']]
-                        );
                     } elseif ($templateConfiguration['template_name'] == 'bootswatch') {
-                        $sOptionsJson = $templateConfiguration['options'];
-                        $oOldOptions = json_decode($sOptionsJson);
-                        if (empty($oOldOptions->hideprivacyinfo)) {
-                            $oOldOptions->hideprivacyinfo = 'off';
+                        $optionsJson = $templateConfiguration['options'];
+                        $oldOptions = json_decode($optionsJson);
+                        if (is_object($oldOptions)) {
+                            if (empty($oldOptions->hideprivacyinfo)) {
+                                $oldOptions->hideprivacyinfo = 'off';
+                            }
+                            if (empty($oldOptions->fixnumauto)) {
+                                $oldOptions->fixnumauto = 'enable';
+                            }
+                            $newOptionsJson = json_encode($oldOptions);
+                            $this->templateConfigurationOptionsUpdate(
+                                $templateConfiguration['id'],
+                                $newOptionsJson
+                            );
                         }
-                        if (empty($oOldOptions->fixnumauto)) {
-                            $oOldOptions->fixnumauto = 'enable';
-                        }
-                        $oNewOtionsJson = json_encode($oOldOptions);
-                        $this->db->createCommand()->update(
-                            '{{template_configuration}}',
-                            ['options' => $oNewOtionsJson],
-                            'id = :id',
-                            [':id' => $templateConfiguration['id']]
-                        );
                     }
                 }
             }
@@ -72,8 +74,22 @@ class Update_614 extends DatabaseUpdateBase
         return $this->db->createCommand()
             ->select('id, template_name, options')
             ->from('{{template_configuration}}')
-            ->where(['in', 'template_name', ['vanilla', 'fruity', 'bootswatch']])
+            ->where([
+                'in',
+                'template_name',
+                ['vanilla', 'fruity', 'bootswatch']
+            ])
             ->andWhere(['NOT IN', 'options', 'inherit'])
             ->queryAll();
+    }
+
+    public function templateConfigurationOptionsUpdate($id, $options)
+    {
+        $this->db->createCommand()->update(
+            '{{template_configuration}}',
+            ['options' => $options],
+            'id = :id',
+            [':id' => $id]
+        );
     }
 }

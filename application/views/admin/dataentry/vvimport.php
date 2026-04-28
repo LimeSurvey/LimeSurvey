@@ -1,4 +1,4 @@
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
+<div class="side-body">
 <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>''));?>
     <?php if($tableExists):?>
         <div class="row">

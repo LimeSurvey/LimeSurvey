@@ -13,7 +13,7 @@ See COPYRIGHT.php for copyright notices and details.
 
 Show the privacy message and the data security message will be available in a modal
 #}
-
+{% set describedbyprivacy = "datasecurity_notice" %}
 {% if aSurveyInfo.datasecurity_error %}
     <div class="ls-privacy-block">
         <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }}
@@ -22,14 +22,14 @@ Show the privacy message and the data security message will be available in a mo
             {{ aSurveyInfo.datasecurity_error }}
         </div>
         {% if aSurveyInfo.datasecuritynotaccepted %}
-            {% set describeprivacy = "datasecurity_error " ~ describeprivacy %}
+            {% set describedbyprivacy = "datasecurity_error " ~ describedbyprivacy %}
         {% endif %}
     </div>
 {% endif %}
 <div class="ls-privacy-block">
     <div class="row row-cols-lg-auto align-items-center datasecurity-checkbox-container">
         <div class="col-12 checkbox-item">
-            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted"/>
+            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" aria-describedby="{{ describedbyprivacy }}"/>
             <label for="datasecurity_accepted"
                    class="control-label checkbox-label form-check-label datasecurity-checkbox-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">
                 {{ aSurveyInfo.datasecurity_notice_label }}
@@ -38,7 +38,7 @@ Show the privacy message and the data security message will be available in a mo
     </div>
 </div>
 <div id="data-security-modal-{{ aSurveyInfo.sid }}" class="modal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ gT('Privacy policy') }}</h5>
@@ -60,14 +60,14 @@ Show the privacy message and the data security message will be available in a mo
 </div>
 <script>
     $(function () {
-        $('#ls-button-submit').on('click', function () {
+        $("#datasecurity_accepted").closest("form").find("button[type='submit']").on("click", function() {
             if (!$('#datasecurity_accepted').prop('checked')) {
                 /* dynamic show error */
                 $('#datasecurity_error').removeClass('ls-js-hidden');
                 if ($('#datasecurity_error').length) {
                     /* add it in aria and role */
                     $('#datasecurity_error').attr('role', 'alert');
-                    $('#datasecurity_accepted').attr('aria-describedby', "datasecurity_error {{ datasecuritynotice }}");
+                    $('#datasecurity_accepted').attr('aria-describedby', "datasecurity_error datasecurity_notice");
                 }
             }
         });

@@ -30,8 +30,12 @@ Yii::app()->getController()->renderPartial(
             <tr>
                 <!-- Icon -->
                 <td>
-                    <i class="<?php echo $aCRUDPermissions['img']; ?> text-success"></i>
-                    <?php echo $aCRUDPermissions['description']; ?>
+                    <div><i class="<?php echo $aCRUDPermissions['img']; ?> text-success"></i>
+                    <?php echo $aCRUDPermissions['description']; ?></div>
+                    <?php if (!empty($aCRUDPermissions['warning'])) : ?>
+                        <div class="text-danger"><i class="ri-error-warning-fill" aria-hidden="true"></i>
+                        <?php echo $aCRUDPermissions['warning']; ?></div>
+                    <?php endif; ?>
                 </td>
 
                 <!-- Warning super admin -->

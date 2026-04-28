@@ -26,7 +26,7 @@ class expressionQuestionHelp extends PluginBase
     protected static $description = 'Add .help to properties of questions.';
     protected static $name = 'expressionQuestionHelp';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
@@ -36,7 +36,7 @@ class expressionQuestionHelp extends PluginBase
 
     /**
      * Add the question.help if exist in existing knowVars
-     * @link https://manual.limesurvey.org/ExpressionManagerStart
+     * @link https://www.limesurvey.org/manual/ExpressionManagerStart
      */
     public function addQuestionHelp()
     {

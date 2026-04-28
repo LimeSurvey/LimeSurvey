@@ -1,6 +1,6 @@
-<?php if ($showToolsMenu) {
-    $toolsDropDownItems = $this->renderPartial(
-        '/surveyAdministration/partial/topbar/surveyToolsDropdownItems',
+<?php if ($showToolsMenu) : ?>
+    <?php $toolsDropDownItems = $this->renderPartial(
+        '/questionAdministration/partial/topbarBtns/questionToolsDropdownMenu',
         get_defined_vars(),
         true
     ); ?>
@@ -8,8 +8,8 @@
     <!-- Main button dropdown -->
     <?php
     $this->widget('ext.ButtonWidget.ButtonWidget', [
-        'name' => 'ls-tools-button',
-        'id' => 'ls-tools-button',
+        'name' => 'ls-question-view-button',
+        'id' => 'ls-question-view-button',
         'text' => gT('Tools'),
         'isDropDown' => true,
         'dropDownContent' => $toolsDropDownItems,
@@ -17,12 +17,14 @@
             'class' => 'btn btn-outline-secondary',
         ],
     ]); ?>
-<?php } ?>
+<?php endif;?>
 
 <?php
+
     /**
      * Include the Survey Preview and Group Preview buttons
      */
+
     $this->renderPartial(
         '/surveyAdministration/partial/topbar/previewOrRunButton_view',
         [
@@ -32,5 +34,5 @@
     );
     $this->renderPartial('/questionGroupsAdministration/partial/topbarBtns/previewGroupButton_view', get_defined_vars());
     $this->renderPartial('partial/topbarBtns/previewQuestionButton_view', get_defined_vars());
-?>
+    ?>
 

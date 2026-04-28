@@ -3,14 +3,14 @@ import forEach from 'lodash/forEach';
 import LOG from '../components/lslog';
 
 const SaveController = () => {
-    
+
        let formSubmitting = false;
 
         // Attach this <input> tag to form to check for closing after save
         const closeAfterSaveInput = $("<input>")
             .attr("type", "hidden")
             .attr("name", "close-after-save");
-    
+
 
 
     /**
@@ -38,9 +38,11 @@ const SaveController = () => {
     },
     isSubmitting = () => formSubmitting,
     displayLoadingState = (el) => {
-        if($(el).data('form-id') == 'addnewsurvey') {
+        if(($(el).data('form-id') == 'addnewsurvey')) {
             const loadingSpinner = '<i class="ri-settings-5-fill remix-spin lsLoadingStateIndicator"></i>';
             $(el).prop('disabled', true).append(loadingSpinner);
+        } else if ((el.id === 'save-button') || (el.id === 'save-form-button') || (el.id === 'save-and-close-button') || (el.id === 'save-and-close-button-create-question')) {
+            $('#ls-loading').show();
         }
     },
     stopDisplayLoadingState = () => {
@@ -63,7 +65,7 @@ const SaveController = () => {
                     ev.preventDefault();
                     const $form = getForm(this);
                     formSubmitting = true;
-                    
+
                     if ($form.data('isvuecomponent') == true) {
                         LS.EventBus.$emit('componentFormSubmit', button)
                     } else {
@@ -122,7 +124,7 @@ const SaveController = () => {
                     } else {
                         $form.submit();
                     }
-                    
+
                     // check if there are any required inputs that are not filled
                     var cntInvalid = 0;
                     var requiredInputs =  $form.find('input,select').filter("[required='required']");
@@ -173,8 +175,8 @@ const SaveController = () => {
                     if ($form.data('isvuecomponent') == true) {
                         LS.EventBus.$emit('componentFormSubmit', button)
                     } else {
-                        $form.find('[type="submit"]').first().trigger('click');
                         displayLoadingState(this);
+                        $form.find('[type="submit"]').first().trigger('click');
                     }
                 },
                 on: 'click'
@@ -192,7 +194,7 @@ const SaveController = () => {
                         name: 'saveandclose',
                         value: '1'
                     }).appendTo($form);
-                    
+
                     const submitButton = $form.find('[type="submit"]').first();
                     if (submitButton.length) {
                         submitButton.trigger('click');
@@ -200,7 +202,7 @@ const SaveController = () => {
                         $form.submit();
                     }
                     displayLoadingState(this);
-                        
+
                     return false;
                 },
                 on: 'click'
@@ -267,7 +269,7 @@ const SaveController = () => {
 
         LS.EventBus.$off("saveButtonCalled");
         LS.EventBus.$emit("saveButtonFlushed");
-        
+
         LS.EventBus.$on("saveButtonCalled", (button) => {
             if(!isSubmitting()) {
                 forEach(checks(), (checkItem) => {

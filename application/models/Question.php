@@ -40,7 +40,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property QuestionGroup $group
  * @property Question $parent
  * @property Question[] $subquestions
- * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
+ * @property QuestionAttribute[] $questionattributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
@@ -79,6 +79,17 @@ class Question extends LSActiveRecord
     const QT_ASTERISK_EQUATION = '*';
     const QT_COLON_ARRAY_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_TEXT = ';';
+
+    const ORDER_TYPES_SUBQUESTION = [
+        self::QT_M_MULTIPLE_CHOICE,
+        self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+    ];
+    const ORDER_TYPES_ANSWER = [
+        self::QT_L_LIST,
+        self::QT_R_RANKING,
+        self::QT_EXCLAMATION_LIST_DROPDOWN,
+        self::QT_O_LIST_WITH_COMMENT
+    ];
 
     const START_SORTING_VALUE = 1; //this is the start value for question_order
 
@@ -140,6 +151,18 @@ class Question extends LSActiveRecord
             // when using question editor on create mode. Better use getQuestionTheme()
             'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['question_type' => 'type', 'name' => 'question_theme_name']],
         );
+    }
+
+    /**
+     * @inheritdoc
+     * replace under condition $oQuestion->survey to use Survey::$findByPkCache
+     */
+    public function getRelated($name, $refresh = false, $params = array())
+    {
+        if ($name == 'survey' && !$refresh && empty($params)) {
+            return Survey::model()->findByPk($this->sid);
+        }
+        return parent::getRelated($name, $refresh, $params);
     }
 
     /**
@@ -478,9 +501,9 @@ class Question extends LSActiveRecord
     public function removeFromLastVisited()
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
-        $oCriteria->compare('stg_value', $this->qid, false, 'AND');
-        SettingGlobal::model()->deleteAll($oCriteria);
+        $oCriteria->compare('stg_name', 'last_question');
+        $oCriteria->compare('stg_value', $this->qid);
+        SettingsUser::model()->deleteAll($oCriteria);
     }
 
     /**
@@ -488,45 +511,38 @@ class Question extends LSActiveRecord
      *
      * @param ?array $exceptIds Don't delete subquestions with these ids.
      * @return void
-     * @todo Duplication from delete()
      */
     public function deleteAllSubquestions($exceptIds = [])
     {
         $ids = !empty($exceptIds)
             ? array_diff($this->allSubQuestionIds, $exceptIds)
             : $this->allSubQuestionIds;
-        $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
-        $res = Question::model()->deleteAll((new CDbCriteria())->addInCondition('qid', $ids));
-        QuestionAttribute::model()->deleteAll($qidsCriteria);
-        QuestionL10n::model()->deleteAll($qidsCriteria);
-        QuotaMember::model()->deleteAll($qidsCriteria);
-        $defaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
-        foreach ($defaultValues as $defaultValue) {
-            DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
-            DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
+
+        $questions = Question::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
+        foreach ($questions as $question) {
+            $question->delete();
         }
     }
 
     /**
      * Delete all question and its subQuestion Answers
-     *
+     * @param array $exceptIds Don't delete answers with these ids.
      * @return void
      */
-    public function deleteAllAnswers()
+    public function deleteAllAnswers(array $exceptIds = [])
     {
         $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
-
-        $answerIds = [];
+        $qidsCriteria->addNotInCondition('aid', $exceptIds);
         $answers = Answer::model()->findAll($qidsCriteria);
         if (!empty($answers)) {
             foreach ($answers as $answer) {
-                $answerIds[] = $answer->aid;
+                $answerId = $answer->aid;
+                if ($answer->delete()) {
+                    AnswerL10n::model()->deleteAllByAttributes(['aid' => $answerId]);
+                }
             }
         }
-        $aidsCriteria = (new CDbCriteria())->addInCondition('aid', $answerIds);
-        AnswerL10n::model()->deleteAll($aidsCriteria);
-        Answer::model()->deleteAll($qidsCriteria);
     }
 
     /**
@@ -767,176 +783,6 @@ class Question extends LSActiveRecord
         );
     }
 
-    public function getOrderedAnswers($scale_id = null)
-    {
-        //reset answers set prior to this call
-        $aAnswerOptions = [
-            0 => []
-        ];
-
-        foreach ($this->answers as $oAnswer) {
-            if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
-                continue;
-            }
-            $aAnswerOptions[$oAnswer->scale_id][] = $oAnswer;
-        }
-
-
-        if ($scale_id !== null) {
-            return $aAnswerOptions[$scale_id];
-        }
-
-        $aAnswerOptions = $this->sortAnswerOptions($aAnswerOptions);
-        return $aAnswerOptions;
-    }
-
-    /**
-     * Returns the specified answer options sorted according to the question attributes.
-     * Refactored from getOrderedAnswers();
-     * @param array<int,Answer[]> The answer options to sort
-     * @return array<int,Answer[]>
-     */
-    private function sortAnswerOptions($answerOptions)
-    {
-        // Sort randomly if applicable
-        if ($this->shouldOrderAnswersRandomly()) {
-            foreach ($answerOptions as $scaleId => $scaleArray) {
-                $keys = array_keys($scaleArray);
-                shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
-
-                $sortedScaleAnswers = array();
-                foreach ($keys as $key) {
-                    $sortedScaleAnswers[$key] = $scaleArray[$key];
-                }
-                $answerOptions[$scaleId] = $sortedScaleAnswers;
-            }
-            return $answerOptions;
-        }
-
-        // Sort alphabetically if applicable
-        if ($this->shouldOrderAnswersAlphabetically()) {
-            foreach ($answerOptions as $scaleId => $scaleArray) {
-                $sorted = array();
-
-                // We create an aray sorted that will use the answer in the current language as key, and that will store its old index as value
-                foreach ($scaleArray as $key => $answer) {
-                    $sorted[$answer->answerl10ns[$this->survey->language]->answer] = $key;
-                }
-                ksort($sorted);
-
-                // Now, we create a new array that store the old values of $answerOptions in the order of $sorted
-                $sortedScaleAnswers = array();
-                foreach ($sorted as $answer => $key) {
-                    $sortedScaleAnswers[] = $scaleArray[$key];
-                }
-                $answerOptions[$scaleId] = $sortedScaleAnswers;
-            }
-            return $answerOptions;
-        }
-
-        // Sort by Answer's own sort order
-        foreach ($answerOptions as $scaleId => $scaleArray) {
-            usort($scaleArray, function ($a, $b) {
-                return $a->sortorder > $b->sortorder
-                    ? 1
-                    : ($a->sortorder < $b->sortorder ? -1 : 0);
-            });
-            $answerOptions[$scaleId] = $scaleArray;
-        }
-        return $answerOptions;
-    }
-
-    /**
-     * Returns true if the answer options should be ordered randomly.
-     * @return bool
-     */
-    private function shouldOrderAnswersRandomly()
-    {
-        // Question types supporting both Random Order and Alphabetical Order should
-        // implement the 'answer_order' attribute instead of using separate attributes.
-        $answerOrder = $this->getQuestionAttribute('answer_order');
-        if (!is_null($answerOrder)) {
-            return $answerOrder == 'random';
-        }
-        return $this->getQuestionAttribute('random_order') == 1 && $this->getQuestionType()->subquestions == 0;
-    }
-
-    /**
-     * Returns true if the answer options should be ordered alphabetically.
-     * @return bool
-     */
-    private function shouldOrderAnswersAlphabetically()
-    {
-        // Question types supporting both Random Order and Alphabetical Order should
-        // implement the 'answer_order' attribute instead of using separate attributes.
-        $answerOrder = $this->getQuestionAttribute('answer_order');
-        if (!is_null($answerOrder)) {
-            return $answerOrder == 'alphabetical';
-        }
-        return $this->getQuestionAttribute('alphasort') == 1;
-    }
-
-    /**
-     * get subquestions fort the current question object in the right order
-     * @param int $random
-     * @param string $exclude_all_others
-     * @return array
-     */
-    public function getOrderedSubQuestions($scale_id = null)
-    {
-
-
-        //reset subquestions set prior to this call
-        $aSubQuestions = [
-            0 => []
-        ];
-
-        $aOrderedSubquestions = $this->subquestions;
-
-        if ($this->getQuestionAttribute('random_order') == 1) {
-            require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
-            ls\mersenne\setSeed($this->sid);
-
-            $aOrderedSubquestions = ls\mersenne\shuffle($aOrderedSubquestions);
-        } else {
-            usort($aOrderedSubquestions, function ($oQuestionA, $oQuestionB) {
-                if ($oQuestionA->question_order == $oQuestionB->question_order) {
-                    return 0;
-                }
-                return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
-            });
-        }
-
-
-        $excludedSubquestion = null;
-        foreach ($aOrderedSubquestions as $i => $oSubquestion) {
-            if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {
-                continue;
-            }
-            //if  exclude_all_others is set then the related answer should keep its position at all times
-            //thats why we have to re-position it if it has been randomized
-            if (
-                ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
-                && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
-            ) {
-                $excludedSubquestionPosition = (safecount($aSubQuestions[$oSubquestion->scale_id]) - 1);
-                $excludedSubquestion = $oSubquestion;
-                continue;
-            }
-            $aSubQuestions[$oSubquestion->scale_id][] = $oSubquestion;
-        }
-
-        if ($excludedSubquestion != null) {
-            array_splice($aSubQuestions[$excludedSubquestion->scale_id], ($excludedSubquestion->question_order - 1), 0, [$excludedSubquestion]);
-        }
-
-        if ($scale_id !== null) {
-            return $aSubQuestions[$scale_id];
-        }
-
-        return $aSubQuestions;
-    }
-
     public function getMandatoryIcon()
     {
         if ($this->type != Question::QT_X_TEXT_DISPLAY && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
@@ -990,6 +836,18 @@ class Question extends LSActiveRecord
         return (
             !$this->parent_qid
             && $this->getQuestionType()->subquestions
+        );
+    }
+
+    /**
+     * Return true if the question type supports answer options
+     * @return boolean
+     */
+    public function getAllowAnswerOptions()
+    {
+        return (
+            !$this->parent_qid
+            && $this->getQuestionType()->answerscales > 0
         );
     }
 
@@ -1069,7 +927,7 @@ class Question extends LSActiveRecord
                 'header' => gT('Question type'),
                 'name' => 'type',
                 'type' => 'raw',
-                'value' => '$data->question_theme->title . (YII_DEBUG ? " <em>{$data->type}</em>" : "")',
+                'value' => 'gT($data->question_theme->title) . (YII_DEBUG ? " <em>{$data->type}</em>" : "")',
                 'htmlOptions' => array('class' => ''),
             ),
 
@@ -1153,7 +1011,7 @@ class Question extends LSActiveRecord
             'question_order' => CSort::SORT_ASC,
         );
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
         //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
@@ -1164,7 +1022,7 @@ class Question extends LSActiveRecord
         ];
 
         if (!empty($this->title)) {
-            $criteria2 = new CDbCriteria();
+            $criteria2 = new LSDbCriteria();
             $criteria2->compare('t.title', $this->title, true, 'OR');
             $criteria2->compare('ql10n.question', $this->title, true, 'OR');
             $criteria2->compare('t.type', $this->title, true, 'OR');
@@ -1276,7 +1134,7 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @return QuestionAttribute[]
+     * @return mixed
      */
     public function getQuestionAttribute($sAttribute)
     {
@@ -1537,6 +1395,7 @@ class Question extends LSActiveRecord
         return !$isAlreadySorted;
     }
 
+
     /**
      * Returns the highest question_order value that exists for a questiongroup inside the related questions.
      * ($question->question_order).
@@ -1563,10 +1422,16 @@ class Question extends LSActiveRecord
      * Increases all question_order numbers for questions belonging to the group by +1
      *
      * @param int $questionGroupId
+     * @param integer|null $after questionorder
      */
-    public static function increaseAllOrderNumbersForGroup($questionGroupId)
+    public static function increaseAllOrderNumbersForGroup($questionGroupId, $after = null)
     {
-        $questionsInGroup = Question::model()->findAllByAttributes(["gid" => $questionGroupId]);
+        $criteria = new CDbCriteria();
+        $criteria->compare("gid", $questionGroupId);
+        if ($after) {
+            $criteria->compare("question_order", ">=" . $after);
+        }
+        $questionsInGroup = Question::model()->findAll($criteria);
         foreach ($questionsInGroup as $question) {
             $question->question_order = $question->question_order + 1;
             $question->save();
@@ -1612,6 +1477,7 @@ class Question extends LSActiveRecord
     {
         if (parent::update($attributes)) {
             $this->removeInvalidSubquestions();
+            $this->removeInvalidAnswerOptions();
             return true;
         } else {
             return false;
@@ -1634,6 +1500,25 @@ class Question extends LSActiveRecord
             foreach ($aSubquestions as $oSubquestion) {
                 /* Use delete to delete related model */
                 $oSubquestion->delete();
+            }
+        }
+    }
+
+    /**
+     * Removes all answer options if the question's type doesn't allow answer options.
+     * @return void
+     */
+    protected function removeInvalidAnswerOptions()
+    {
+        if ($this->getAllowAnswerOptions()) {
+            return;
+        }
+
+        // Remove answer options if the question's type doesn't allow answer options
+        $answerOptions = Answer::model()->findAll("qid=:qid", array("qid" => $this->qid));
+        if (!empty($answerOptions)) {
+            foreach ($answerOptions as $answerOption) {
+                $answerOption->delete();
             }
         }
     }

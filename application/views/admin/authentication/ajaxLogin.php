@@ -77,6 +77,7 @@
                         {
                             $languageData[$sLangKey] =  html_entity_decode((string) $aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
                         }
+                        echo '<div id="language-selector">';
                         echo CHtml::label(gT('Language'), 'loginlang');
 
                         $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
@@ -91,6 +92,7 @@
                             'value' => 'default'
                         )));
                         ?>
+                        </div>
 
                         <?php   if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
                         { ?>

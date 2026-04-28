@@ -102,6 +102,13 @@ export default {
         questionHasCondition(question) {
             return question.relevance !== '1';
         },
+        hasQuestionGroupName(questionGroup) {
+            return typeof questionGroup.group_name === "string" &&
+                questionGroup.group_name.trim().length > 0;
+        },
+        formatQuestionGroupNumber(groupOrder) {
+            return window.sprintf(this.translate('groupNumber'), groupOrder);
+        },
 
         itemActivated(question){
             return  this.$store.state.lastQuestionOpen === question.qid;
@@ -308,7 +315,14 @@ export default {
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">
         <div class="ls-flex-row button-sub-bar mb-2">
-          <div class="scoped-toolbuttons-right me-2">
+          <div class="scoped-toolbuttons-right">
+           <button
+                class="btn btn-sm btn-outline-secondary me-2"
+                @click="collapseAll"
+                :title="translate('collapseAll')"
+            >
+              <i class="ri-link-unlink" />
+            </button>
             <button
                 class="btn btn-sm btn-outline-secondary"
                 @click="toggleOrganizer"
@@ -316,18 +330,12 @@ export default {
             >
               <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
             </button>
-            <button
-                class="btn btn-sm btn-outline-secondary me-2"
-                @click="collapseAll"
-                :title="translate('collapseAll')"
-            >
-              <i class="ri-link-unlink" />
-            </button>
+           
           </div>
         </div>
 		<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">
 			<div class="scoped-toolbuttons-left mb-2 d-flex align-items-center">
-                <div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" :title="translate(createQuestionAllowed ? '' : 'deactivateSurvey')">
+                <div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-original-title="createQuestionAllowed ? '' : translate('deactivateSurvey')" :title="createQuestionAllowed ? '' : translate('deactivateSurvey')">
                     <a id="adminsidepanel__sidebar--selectorCreateQuestion" :href="createFullQuestionLink()"
                         class="btn btn-primary pjax" v-bind:class="createQuestionAllowedClass">
                         <i class="ri-add-circle-fill"></i>
@@ -336,7 +344,7 @@ export default {
                     </a>
                 </div>
 
-                <div data-bs-toggle="tooltip" data-bs-placement="top" :title="translate(createQuestionAllowed ? '' : 'deactivateSurvey')">
+                <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-original-title="createQuestionAllowed ? '' : translate('deactivateSurvey')" :title="createQuestionAllowed ? '' : translate('deactivateSurvey')">
                     <a id="adminsidepanel__sidebar--selectorCreateQuestionGroup" v-bind:class="createQuestionGroupAllowedClass"
                         :href="createQuestionGroupLink" class="btn btn-secondary pjax">
                         <!-- <i class="ri-add-line"></i> -->
@@ -386,8 +394,13 @@ export default {
                                 class="d-flex pjax"
                                 :href="questiongroup.link"
                             >
-                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }">
-                                    {{ questiongroup.group_name }}
+                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }" tabindex="0">
+                                    <template v-if="hasQuestionGroupName(questiongroup)">
+                                        {{ questiongroup.group_name }}
+                                    </template>
+                                    <template v-else>
+                                        {{ formatQuestionGroupNumber(questiongroup.group_order) }}
+                                    </template>
                                 </span>
                             </a>
                         </div>
@@ -398,9 +411,9 @@ export default {
                                 </span>
                             </div>
 
-                            <div v-if="groupActivated(questiongroup) || (hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid)"
-                                class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <div>
+                            <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false" role="button" tabindex="0">
                                 <i class="ri-more-fill"></i>
                             </div>
 
@@ -432,7 +445,7 @@ export default {
 
                                 </li>
                             </ul>
-        
+                            </div>
 
                         </div>
                     </div>
@@ -487,9 +500,9 @@ export default {
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }}
                                     </span>
                                 </a>
-                                <div v-if="itemActivated(question)||(hoveredQuestion && hoveredQuestion.qid === question.qid)" class="dropdown position-absolute" style="right:10px" >
+                                <div  class="dropdown position-absolute" style="right:10px" >
                                     <div class="ls-question-tools ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                     aria-expanded="false">
+                                     aria-expanded="false" role="button" tabindex="0">
                                         <i class="ri-more-fill"></i>
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -568,14 +581,7 @@ export default {
         flex: 1;
     }
 }
-.scoped-toolbuttons-right {
-    flex: 2 1 auto;
-    align-self: flex-end;
-    white-space: nowrap;
-    .btn {
-        float: right;
-    }
-}
+
 .list-group-item.question-question-list-item .editIcon {
     margin: 10px 10px 10px 5px;
 }

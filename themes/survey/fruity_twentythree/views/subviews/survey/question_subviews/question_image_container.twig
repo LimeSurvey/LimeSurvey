@@ -1,0 +1,24 @@
+{% set imageAlign = aQuestion.image['image_align'] is defined ? aQuestion.image['image_align'] : 'left' %}
+{% if imageAlign == 'center' %}
+    <div class="position-relative w-100">
+        <div class="question-image-container w-100">
+            <div class="w-100 text-center">
+                {{ include('./subviews/survey/question_subviews/question_image.twig') }}
+            </div>
+        </div>
+        <div class="question-content-container position-absolute top-0 start-0 w-100 d-flex align-items-start">
+            <div class="p-5 w-100">
+                {{ include('./subviews/survey/question.twig') }}
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="d-flex flex-wrap {% if imageAlign == 'right' %}flex-row-reverse{% endif %}">
+        <div class="question-image-container col-12 col-md-6">
+            {{ include('./subviews/survey/question_subviews/question_image.twig') }}
+        </div>
+        <div class="question-content-container col-12 col-md-6 pt-3">
+            {{ include('./subviews/survey/question.twig') }}
+        </div>
+    </div>
+{% endif %}

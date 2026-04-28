@@ -29,9 +29,9 @@
     <div class="{{ aSurveyInfo.class.navigatorbuttonl }} col-6 text-start" {{ aSurveyInfo.attr.navigatorbuttonl }}>
 
         {# Previous button must be set to ON in survey settings (and it's not shown in first page, in All in One survey mode, etc) #}
-        {% if aNavigator.aMovePrev.show %}
+        {% if (not aSurveyInfo.popupPreview) and aNavigator.aMovePrev.show %}
             <!-- Button previous -->
-            <button {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-outline-secondary " >
+            <button aria-label="{{ gT("Previous page") }}" {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-outline-secondary " >
                 {{ gT("Previous") }}
             </button>
         {% endif %}
@@ -39,10 +39,10 @@
     <div class="{{ aSurveyInfo.class.navigatorbuttonr }} col-6 text-end">
 
         {# Next button is not always shown (last page, all in one mode, etc) #}
-        {% if aNavigator.aMoveNext.show %}
+        {% if (not aSurveyInfo.popupPreview) and aNavigator.aMoveNext.show %}
 
             {# On last page, Next button become submit button. #}
-            {% if aNavigator.aMoveNext.value == "movesubmit" %}
+            {% if (not aSurveyInfo.popupPreview) and aNavigator.aMoveNext.value == "movesubmit" %}
                 {% if not empty(aSurveyInfo.mandViolation) and not empty(aSurveyInfo.mandSoft) and empty(aSurveyInfo.mandNonSoft) and aSurveyInfo.showPopups != 1 %}
                 <span class="checkbox-item">
                     <input class="{{ aSurveyInfo.class.mandsoftcheckbox }}" type="checkbox" name="mandSoft" id="mandSoft" value="{{ aSurveyInfo.aNavigator.aMoveNext.value }}" />
@@ -55,7 +55,7 @@
                 </button>
             {% else %}
                 <!-- Button Next -->
-                <button {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
+                <button aria-label="{{ gT("Next page") }}" {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
                     {{ gT("Next") }}
                 </button>
             {% endif %}

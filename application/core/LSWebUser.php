@@ -14,6 +14,49 @@ class LSWebUser extends CWebUser
     }
 
     /**
+     * @inheritDoc
+     * Replace auto getter to check if current user is valid or not
+     */
+    public function getId()
+    {
+        if (empty(parent::getId())) {
+            return parent::getId();
+        }
+        $id = App()->getCurrentUserId();
+        if ($id === 0) {
+            /* User is still connected but invalid : logout */
+            $this->logout();
+        }
+        return $id;
+    }
+
+    /**
+     * @inheritDoc
+     * Set id in session too
+     */
+    public function setId($id)
+    {
+        parent::setId($id);
+        \Yii::app()->session['loginID'] = $id;
+    }
+
+    /**
+     * @inheritDoc
+     * Add the specific plugin event and regenerate CSRF
+     */
+    public function logout($destroySession = true)
+    {
+        /* Adding beforeLogout event */
+        $beforeLogout = new PluginEvent('beforeLogout');
+        App()->getPluginManager()->dispatchEvent($beforeLogout);
+        regenerateCSRFToken();
+        parent::logout($destroySession);
+        /* Adding afterLogout event */
+        $event = new PluginEvent('afterLogout');
+        App()->getPluginManager()->dispatchEvent($event);
+    }
+
+    /**
      * @inheritdoc
      */
     public function checkAccess($operation, $params = array(), $allowCaching = true)
@@ -130,11 +173,17 @@ class LSWebUser extends CWebUser
      */
     public function isXssFiltered()
     {
-        if (Yii::app()->getConfig('DBVersion') < 172) {
-            // Permission::model exist only after 172 DB version
-            return Yii::app()->getConfig('filterxsshtml');
+        if (App()->getConfig('filterxsshtml_forcedall')) {
+            if (App()->getConfig('filterxsshtml_allowforcedsuperadmin') && Permission::isForcedSuperAdmin($this->getId())) {
+                return false;
+            }
+            return true;
         }
-        if (Yii::app()->getConfig('filterxsshtml')) {
+        if (App()->getConfig('DBVersion') < 172) {
+            // Permission::model exist only after 172 DB version
+            return App()->getConfig('filterxsshtml');
+        }
+        if (App()->getConfig('filterxsshtml')) {
             return !\Permission::model()->hasGlobalPermission('superadmin', 'read');
         }
         return false;
@@ -146,7 +195,25 @@ class LSWebUser extends CWebUser
      */
     public function isScriptUpdateAllowed()
     {
-        if (!Yii::app()->getConfig('disablescriptwithxss')) {
+        if (App()->getConfig('filterxsshtml_forcedall')) {
+            switch (App()->getConfig('filterxsshtml_enablescript'))
+            {
+                case 'gui':
+                    // Break and continue
+                    break;
+                case 'forcedsuperadmin':
+                    return Permission::isForcedSuperAdmin($this->getId());
+                case 'superadmin':
+                    if (App()->getConfig('DBVersion') < 172) {
+                        return Permission::isForcedSuperAdmin($this->getId());
+                    }
+                    return \Permission::model()->hasGlobalPermission('superadmin', 'read');
+                default:
+                    // No action : use admin GUI (can allow forcedsuperadmin)
+            }
+        }
+        /* filterxsshtml_forcedall is set but still use GUI */
+        if (!App()->getConfig('disablescriptwithxss')) {
             return true;
         }
         return !$this->isXssFiltered();

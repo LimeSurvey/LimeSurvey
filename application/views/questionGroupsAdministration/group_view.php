@@ -5,7 +5,7 @@
  */
 
 ?>
-<div class='side-body <?= getSideBodyClass(true); ?>'>
+<div class='side-body'>
     <div class="pagetitle h1"><?php eT('Group summary'); ?></div>
     <div id="groupdetails" class="summary-table">
         <div class="row">
@@ -13,7 +13,9 @@
                     <?php
                     eT("Title"); ?>:</strong></div>
             <div class="col-10">
+                <strong>
                 <?= $grow['group_name']; ?> (<?= $grow['gid']; ?>)
+                </strong>
             </div>
         </div>
         <div class="row">

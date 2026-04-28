@@ -88,7 +88,7 @@ class browser extends uploader {
         if ($this->config['disabled']) {
             $message = $this->label("You don't have permissions to browse server.");
             if (in_array($act, array("browser", "upload")) ||
-                (substr($act, 0, 8) == "download")
+                (substr((string) $act, 0, 8) == "download")
             )
                 $this->backMsg($message);
             else {
@@ -99,7 +99,7 @@ class browser extends uploader {
         if($crsfControl=$this->controlCSRFToken())
         {
             if (in_array($act, array("browser", "upload")) ||
-                (substr($act, 0, 8) == "download")
+                (substr((string) $act, 0, 8) == "download")
             )
                 $this->backMsg($crsfControl);
             else {
@@ -124,7 +124,7 @@ class browser extends uploader {
 
         // Ajax requests
         } elseif (
-            (substr($act, 0, 8) != "download") &&
+            (substr((string) $act, 0, 8) != "download") &&
             !in_array($act, array("thumb", "upload"))
         )
             header("Content-Type: text/plain; charset={$this->charset}");
@@ -167,7 +167,7 @@ class browser extends uploader {
             $this->sendDefaultThumb();
 
         $dir = $this->getDir();
-        $file = "{$this->thumbsTypeDir}/{$_GET['dir']}/${_GET['file']}";
+        $file = "{$this->thumbsTypeDir}/{$_GET['dir']}/{$_GET['file']}";
 
         // Create thumbnail
         if (!is_file($file) || !is_readable($file)) {
@@ -224,11 +224,11 @@ class browser extends uploader {
 
         $dir = $this->postDir();
         $newDir = $this->normalizeDirname(trim($_POST['newDir']));
-        if (!strlen($newDir))
+        if (!strlen((string) $newDir))
             $this->errorMsg("Please enter new folder name.");
-        if (preg_match('/[\/\\\\]/s', $newDir))
+        if (preg_match('/[\/\\\\]/s', (string) $newDir))
             $this->errorMsg("Unallowable characters in folder name.");
-        if (substr($newDir, 0, 1) == ".")
+        if (substr((string) $newDir, 0, 1) == ".")
             $this->errorMsg("Folder name shouldn't begins with '.'");
         if (file_exists("$dir/$newDir"))
             $this->errorMsg("A file or folder with that name already exists.");
@@ -248,13 +248,13 @@ class browser extends uploader {
 
         $dir = $this->postDir();
         $newName = $this->normalizeDirname(trim($_POST['newName']));
-        if (!strlen($newName))
+        if (!strlen((string) $newName))
             $this->errorMsg("Please enter new folder name.");
-        if (preg_match('/[\/\\\\]/s', $newName))
+        if (preg_match('/[\/\\\\]/s', (string) $newName))
             $this->errorMsg("Unallowable characters in folder name.");
-        if (substr($newName, 0, 1) == ".")
+        if (substr((string) $newName, 0, 1) == ".")
             $this->errorMsg("Folder name shouldn't begins with '.'");
-        if (!@rename($dir, dirname($dir) . "/$newName"))
+        if (!@rename($dir, dirname((string) $dir) . "/$newName"))
             $this->errorMsg("Cannot rename the folder.");
         $thumbDir = "$this->thumbsTypeDir/{$_POST['dir']}";
         if (is_dir($thumbDir))
@@ -323,7 +323,7 @@ class browser extends uploader {
         header("Expires: 0");
         header("Cache-Control: must-revalidate,private");
         header("Content-Type: application/octet-stream");
-        header('Content-Disposition: attachment; filename="' . str_replace('"', "_", $_POST['file']) . '"');
+        header('Content-Disposition: attachment; filename="' . str_replace('"', "_", (string) $_POST['file']) . '"');
         header("Content-Transfer-Encoding: binary");
         header("Content-Length: " . filesize($file));
         readfile($file);
@@ -352,11 +352,11 @@ class browser extends uploader {
             $this->errorMsg("You cannot rename the extension of files!");
 
         $newName = $this->normalizeFilename(trim($_POST['newName']));
-        if (!strlen($newName))
+        if (!strlen((string) $newName))
             $this->errorMsg("Please enter new file name.");
-        if (preg_match('/[\/\\\\]/s', $newName))
+        if (preg_match('/[\/\\\\]/s', (string) $newName))
             $this->errorMsg("Unallowable characters in file name.");
-        if (substr($newName, 0, 1) == ".")
+        if (substr((string) $newName, 0, 1) == ".")
             $this->errorMsg("File name shouldn't begins with '.'");
         $newName = "$dir/$newName";
         if (file_exists($newName))
@@ -533,7 +533,7 @@ class browser extends uploader {
         $dir = $this->postDir();
         if (!isset($_POST['dir']) || $this->config['denyZipDownload'])
             $this->errorMsg("Unknown error.");
-        $filename = basename($dir) . ".zip";
+        $filename = basename((string) $dir) . ".zip";
         do {
             $file = md5(time() . session_id());
             $file = "{$this->config['uploadDir']}/$file.zip";
@@ -756,7 +756,7 @@ class browser extends uploader {
             if ($type !== false) {
                 $size = $img->getSize($file);
                 if (is_array($size) && count($size)) {
-                    $thumb_file = "$thumbDir/" . basename($file);
+                    $thumb_file = "$thumbDir/" . basename((string) $file);
                     if (!is_file($thumb_file))
                         $this->makeThumb($file, false);
                     $smallThumb =
@@ -772,7 +772,7 @@ class browser extends uploader {
 
             $stat = stat($file);
             if ($stat === false) continue;
-            $name = basename($file);
+            $name = basename((string) $file);
             $ext = file::getExtension($file);
             $bigIcon = file_exists("themes/{$this->config['theme']}/img/files/big/$ext.png");
             $smallIcon = file_exists("themes/{$this->config['theme']}/img/files/small/$ext.png");
@@ -867,12 +867,12 @@ class browser extends uploader {
     }
 
     protected function getDirInfo($dir, $removable=false) {
-        if ((substr(basename($dir), 0, 1) == ".") || !is_dir($dir) || !is_readable($dir))
+        if ((substr(basename((string) $dir), 0, 1) == ".") || !is_dir($dir) || !is_readable($dir))
             return false;
         $dirs = dir::content($dir, array('types' => "dir"));
         if (is_array($dirs)) {
             foreach ($dirs as $key => $cdir)
-                if (substr(basename($cdir), 0, 1) == ".")
+                if (substr(basename((string) $cdir), 0, 1) == ".")
                     unset($dirs[$key]);
             $hasDirs = count($dirs) ? true : false;
         } else
@@ -880,10 +880,10 @@ class browser extends uploader {
 
         $writable = dir::isWritable($dir);
         $info = array(
-            'name' => stripslashes(basename($dir)),
+            'name' => stripslashes(basename((string) $dir)),
             'readable' => is_readable($dir),
             'writable' => $writable,
-            'removable' => $removable && $writable && dir::isWritable(dirname($dir)),
+            'removable' => $removable && $writable && dir::isWritable(dirname((string) $dir)),
             'hasDirs' => $hasDirs
         );
 
@@ -919,7 +919,7 @@ class browser extends uploader {
     }
 
     protected function htmlData($str) {
-        return htmlentities($str, null, strtoupper($this->charset));
+        return htmlentities((string) $str, null, strtoupper($this->charset));
     }
 }
 

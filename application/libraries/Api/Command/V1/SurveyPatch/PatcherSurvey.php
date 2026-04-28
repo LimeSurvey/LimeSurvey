@@ -2,161 +2,108 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use Survey;
-use SurveyLanguageSetting;
-use Answer;
-use QuestionGroup;
-use QuestionGroupL10n;
-use Question;
-use QuestionL10n;
-use QuestionAttribute;
-use LimeSurvey\Api\Command\V1\Transformer\Input\{
-    TransformerInputSurvey,
-    TransformerInputAnswer,
-    TransformerInputQuestionGroup,
-    TransformerInputQuestionGroupL10ns,
-    TransformerInputQuestion,
-    TransformerInputQuestionL10ns,
-    TransformerInputQuestionAttribute,
-    TransformerInputSurveyLanguageSettings
-};
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ExceptionErrorItem,
+    ExceptionErrors,
+    SurveyResponse,
+    TempIdMapItem,
+    TempIdMapping,
+    ValidationErrors};
 use LimeSurvey\ObjectPatch\{
-    Patcher,
-    OpHandler\OpHandlerActiveRecordUpdate
+    ObjectPatchException,
+    Op\OpStandard,
+    OpHandler\OpHandlerException,
+    Patcher
 };
-use DI\FactoryInterface;
 use Psr\Container\ContainerInterface;
+use LimeSurvey\Models\Services\SurveyDetailService;
+use Survey;
 
 class PatcherSurvey extends Patcher
 {
+    protected SurveyResponse $surveyResponse;
+    protected SurveyDetailService $surveyDetailService;
+
     /**
      * Constructor
      *
-     * @param FactoryInterface $diFactory
      * @param ContainerInterface $diContainer
+     * @param SurveyResponse $surveyResponse,
+     * @param SurveyDetailService $surveyDetailService
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function __construct(FactoryInterface $diFactory, ContainerInterface $diContainer)
-    {
-        $this->addOpHandlerSurvey($diFactory, $diContainer);
-        $this->addOpHandlerLanguageSetting($diFactory, $diContainer);
-        $this->addOpHandlerQuestionGroup($diFactory, $diContainer);
-        $this->addOpHandlerQuestionGroupL10n($diFactory, $diContainer);
-        $this->addOpHandlerQuestion($diFactory, $diContainer);
-        $this->addOpHandlerQuestionL10n($diFactory, $diContainer);
-        $this->addOpHandlerQuestionAttribute($diFactory, $diContainer);
-        $this->addOpHandlerQuestionAnswer($diFactory, $diContainer);
+    public function __construct(
+        ContainerInterface $diContainer,
+        SurveyResponse $surveyResponse,
+        SurveyDetailService $surveyDetailService
+    ) {
+        $this->surveyResponse = $surveyResponse;
+        $this->surveyDetailService = $surveyDetailService;
+        $classes = [
+            OpHandlerSurveyUpdate::class,
+            OpHandlerLanguageSettingsUpdate::class,
+            OpHandlerQuestionGroup::class,
+            OpHandlerQuestionGroupL10n::class,
+            OpHandlerQuestionDelete::class,
+            OpHandlerQuestionCreate::class,
+            OpHandlerQuestionUpdate::class,
+            OpHandlerQuestionL10nUpdate::class,
+            OpHandlerAnswer::class,
+            OpHandlerQuestionAttributeUpdate::class,
+            OpHandlerQuestionGroupReorder::class,
+            OpHandlerSubquestionDelete::class,
+            OpHandlerAnswerDelete::class,
+            OpHandlerSubQuestion::class,
+            OpHandlerSurveyStatus::class,
+            OpHandlerQuestionCondition::class,
+            OpHandlerImport::class,
+            OpHandlerThemeSettings::class,
+            OpHandlerSurveyAccessMode::class,
+        ];
+
+        foreach ($classes as $class) {
+            $this->addOpHandler(
+                $diContainer->get(
+                    $class
+                )
+            );
+        }
     }
 
-    private function addOpHandlerSurvey(FactoryInterface $diFactory, ContainerInterface $diContainer): void
+    /**
+     * Apply patch
+     *
+     * @param ?mixed $patch
+     * @param ?array $context
+     * @return array
+     * @throws ObjectPatchException
+     * @throws OpHandlerException
+     */
+    public function applyPatch($patch, $context = []): array
     {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'survey',
-                'model' => Survey::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurvey::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerLanguageSetting(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'languageSetting',
-                'model' => SurveyLanguageSetting::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputSurveyLanguageSettings::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestionGroup(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionGroup',
-                'model' => QuestionGroup::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionGroup::class
-                )
-            ]
-        ));
-    }
-
-
-    private function addOpHandlerQuestionGroupL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionGroupL10n',
-                'model' => QuestionGroupL10n::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionGroupL10ns::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestion(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'question',
-                'model' => Question::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestion::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestionL10n(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionL10n',
-                'model' => QuestionL10n::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionL10ns::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestionAttribute(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionAttribute',
-                'model' => QuestionAttribute::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputQuestionAttribute::class
-                )
-            ]
-        ));
-    }
-
-    private function addOpHandlerQuestionAnswer(FactoryInterface $diFactory, ContainerInterface $diContainer): void
-    {
-        $this->addOpHandler($diFactory->make(
-            OpHandlerActiveRecordUpdate::class,
-            [
-                'entity' => 'questionAnswer',
-                'model' => Answer::model(),
-                'transformer' => $diContainer->get(
-                    TransformerInputAnswer::class
-                )
-            ]
-        ));
+        if (is_array($patch) && !empty($patch)) {
+            $entityMap = [];
+            foreach ($patch as $patchOpData) {
+                $op = OpStandard::factory(
+                    $patchOpData['entity'] ?? '',
+                    $patchOpData['op'] ?? '',
+                    $patchOpData['id'] ?? null,
+                    $patchOpData['props'] ?? [],
+                    $context ?? []
+                );
+                try {
+                    $response = $this->handleOp($op);
+                    $this->surveyResponse->handleResponse($response);
+                    $entityMap[$patchOpData['entity']] = $patchOpData['id'] ?? null;
+                } catch (\Exception $e) {
+                    $this->surveyResponse->handleException($e, $op);
+                }
+            }
+            $sid = \Yii::app()->getRequest()->getQuery('_id') ?? 0;
+            $survey = ($sid ? Survey::model()->findByPk($sid) : $this->surveyDetailService->getSurveyFromEntityMap($entityMap));
+            if ($survey) {
+                $this->surveyDetailService->updateSurveyLastModified($survey);
+            }
+        }
+        return $this->surveyResponse->buildResponseObject();
     }
 }

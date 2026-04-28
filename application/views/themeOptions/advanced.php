@@ -18,18 +18,13 @@
                 </label>
             </div>
             <div class="col-8">
-                <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'uploadimage', 'name' => 'uploadimage', 'enctype' => 'multipart/form-data']); ?>
+                <?php // loaded through upload_frontend form in themeOptions/update.php ?>
                 <span id="fileselector">
                     <label class="btn btn-outline-secondary" for="upload_image">
                         <input class="d-none" id="upload_image" name="upload_image" type="file">
                         <i class="ri-upload-fill ls-space margin right-10"></i><?php eT("Upload"); ?>
                     </label>
                 </span>
-
-                <input type='hidden' name='templatename' value='<?php echo $model->template_name; ?>'/>
-                <input type='hidden' name='templateconfig' value='<?php echo $model->id; ?>'/>
-                <input type='hidden' name='action' value='templateuploadimagefile'/>
-                <?php echo TbHtml::endForm() ?>
             </div>
         </div>
         <div class="row">
@@ -46,15 +41,8 @@
         <hr/>
     </div>
     <div class="row">
-
         <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
-        <?php
-        $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]);
-        ?>
-
-
-   
-
+        <?php $this->widget('ext.AlertWidget.AlertWidget', ['errorSummaryModel' => $model]); ?>
         <div class="row">
             <div class="mb-3">
                 <?php echo $form->labelEx($model, 'files_css'); ?>

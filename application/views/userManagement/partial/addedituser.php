@@ -43,7 +43,7 @@ Yii::app()->getController()->renderPartial(
         <?php echo $form->error($oUser, 'email'); ?>
     </div>
     <div class="mb-3">
-        <label class="form-label" for='expires'><?php eT("Expire date/time:"); ?></label>
+        <label class="form-label" for='expires'><?php eT("Expiry date/time"); ?></label>
         <div class="has-feedback">
             <?php
             Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
@@ -57,6 +57,7 @@ Yii::app()->getController()->renderPartial(
                     'format'           => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' => true,
                     'showClear'        => true,
+                    'theme' => 'light',
                     'locale'           => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 ]
             ]);
@@ -107,10 +108,9 @@ Yii::app()->getController()->renderPartial(
                 $oUser,
                 'password',
                 ($oUser->isNewRecord
-                    ? ['id' => 'User_Form_password', 'value' => '', 'placeholder' => '********']
+                    ? ['id' => 'User_Form_password', 'value' => '']
                     : ['id'          => 'User_Form_password',
                        'value'       => '',
-                       'placeholder' => '********',
                        "disabled"    => "disabled"
                     ]
                 )
@@ -118,10 +118,10 @@ Yii::app()->getController()->renderPartial(
             <?php echo $form->error($oUser, 'password'); ?>
         </div>
         <div class="mb-3">
-            <label for="password_repeat" class="required" required><?= gT("Password safety") ?> <span
+            <label for="password_repeat" class="required" required><?= gT("Repeat password") ?> <span
                     class="required">*</span></label>
             <input name="password_repeat"
-                   placeholder='********' <?= ($oUser->isNewRecord ? '' : 'disabled="disabled"') ?> id="password_repeat"
+                   <?= ($oUser->isNewRecord ? '' : 'disabled="disabled"') ?> id="password_repeat"
                    class="form-control" type="password">
         </div>
         <?php if ($oUser->isNewRecord) { ?>
@@ -137,7 +137,7 @@ Yii::app()->getController()->renderPartial(
 </div>
 
 <div class="modal-footer modal-footer-buttons" style="margin-top: 15px;">
-    <button class="btn btn-cancel" id="exitForm" data-bs-dismiss="modal">
+    <button type="button" class="btn btn-cancel" id="exitForm" data-bs-dismiss="modal">
         <?= gT('Cancel') ?>
     </button>
     <button class="btn btn-primary" id="submitForm">

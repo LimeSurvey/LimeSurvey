@@ -20,7 +20,7 @@
 #}
 
 <!-- LimeSurvey valid message and help -->
-<div class="{{ aSurveyInfo.class.questionvalidcontainer }} text-info col-12" {{ aSurveyInfo.attr.questionvalidcontainer }}>
+<div id="ls-question-validation-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.questionvalidcontainer }} text-info col-12" {{ aSurveyInfo.attr.questionvalidcontainer }}>
     {{ aQuestion.valid_message      | raw }} {# The validation message, eg: "Only numbers may be entered in this field.". This text is inside EM Helper, and can be changed by creating a translation file #}
     {{ aQuestion.man_message        | raw }} {# The question mandatory error message: "This question is mandatory!". This text is inside EM Helper, and can be changed by creating a translation file #}
     {{ aQuestion.file_valid_message | raw }} {# Used only for file upload question type... TODO: check if we can remove it and use valid_message for file upload question type too #}

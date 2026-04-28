@@ -106,6 +106,19 @@
     }
 }
 
+.btn-orange-light {
+    color : $g-900;
+    &:hover, &:focus, &:active, &.active, &:active:focus {
+        color            : $g-900;
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
+    }
+    &:focus, &:active, &.active, &:active:focus {
+        box-shadow : $btn-focus-boxshadow;
+    }
+}
+
 .btn-info {
     color : $white;
     &:hover, &:focus, &:active, &.active, &:active:focus {
@@ -127,6 +140,36 @@
         color            : $g-900;
         background-color : var(--bs-light);
         border-color     : var(--bs-light);
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
+    }
+    &:focus, &:active, &.active, &:active:focus {
+        box-shadow : $btn-focus-boxshadow;
+    }
+}
+
+.btn-g-700 {
+    color : $white;
+    &:hover, &:focus, &:active, &.active, &:active:focus {
+        color            : $white;
+        background-color : $g-700;
+        border-color     : $g-700;
+    }
+    &:hover {
+        box-shadow : $btn-hover-boxshadow;
+    }
+    &:focus, &:active, &.active, &:active:focus {
+        box-shadow : $btn-focus-boxshadow;
+    }
+}
+
+.btn-g-800 {
+    color : $white;
+    &:hover, &:focus, &:active, &.active, &:active:focus {
+        color            : $white;
+        background-color : $g-800;
+        border-color     : $g-800;
     }
     &:hover {
         box-shadow : $btn-hover-boxshadow;
@@ -169,6 +212,7 @@
         background-color : $white;
         border           : 1px solid $g-600;
         color            : $g-600;
+        stroke           : $g-600;
         &:hover, &:focus, &:active, &.active {
             background-color : $white;
             border           : 1px solid $g-600;
@@ -176,130 +220,12 @@
     }
 }
 
-.btn-outline-primary {
-    color        : var(--bs-primary);
-    border-color : var(--bs-primary);
-    &:hover {
-        color        : var(--bs-primary);
-        border-color : var(--bs-primary);
-        box-shadow   : $btn-hover-boxshadow;
-    }
-    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-        color        : var(--bs-primary);
-        border-color : var(--bs-primary);
-        box-shadow   : $btn-focus-boxshadow;
-    }
-}
-
-.btn-outline-secondary {
-    color        : $g-900;
-    border-color : $g-900;
-    &:hover {
-        color        : $g-900;
-        border-color : $g-900;
-        box-shadow   : $btn-hover-boxshadow;
-    }
-    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-        color        : $g-900;
-        border-color : $g-900;
-        box-shadow   : $btn-focus-boxshadow;
-    }
-}
-
-.btn-outline-success {
-    color        : var(--bs-success);
-    border-color : var(--bs-success);
-    &:hover {
-        color        : var(--bs-success);
-        border-color : var(--bs-success);
-        box-shadow   : $btn-hover-boxshadow;
-    }
-    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-        color        : var(--bs-success);
-        border-color : var(--bs-success);
-        box-shadow   : $btn-focus-boxshadow;
-    }
-}
-
-.btn-outline-danger {
-    color        : var(--bs-danger);
-    border-color : var(--bs-danger);
-    &:hover {
-        color        : var(--bs-danger);
-        border-color : var(--bs-danger);
-        box-shadow   : $btn-hover-boxshadow;
-    }
-    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-        color        : var(--bs-danger);
-        border-color : var(--bs-danger);
-        box-shadow   : $btn-focus-boxshadow;
-    }
-}
-
-.btn-outline-warning {
-    color        : var(--bs-warning);
-    border-color : var(--bs-warning);
-    &:hover {
-        color        : var(--bs-warning);
-        border-color : var(--bs-warning);
-        box-shadow   : $btn-hover-boxshadow;
-    }
-    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-        color        : var(--bs-warning);
-        border-color : var(--bs-warning);
-        box-shadow   : $btn-focus-boxshadow;
-    }
-}
-
-.btn-outline-info {
-    color        : var(--bs-info);
-    border-color : var(--bs-info);
-    &:hover {
-        color        : var(--bs-info);
-        border-color : var(--bs-info);
-        box-shadow   : $btn-hover-boxshadow;
-    }
-    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-        color        : var(--bs-info);
-        border-color : var(--bs-info);
-        box-shadow   : $btn-focus-boxshadow;
-    }
-}
-
-.btn-outline-light {
-    color        : var(--bs-light);
-    border-color : var(--bs-light);
-    &:hover {
-        color        : var(--bs-light);
-        border-color : var(--bs-light);
-        box-shadow   : $btn-hover-boxshadow;
-    }
-    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-        color        : var(--bs-light);
-        border-color : var(--bs-light);
-        box-shadow   : $btn-focus-boxshadow;
-    }
-}
-
-.btn-outline-dark {
-    color        : var(--bs-dark);
-    border-color : var(--bs-dark);
-    &:hover {
-        color        : var(--bs-dark);
-        border-color : var(--bs-dark);
-        box-shadow   : $btn-hover-boxshadow;
-    }
-    &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
-        color        : var(--bs-dark);
-        border-color : var(--bs-dark);
-        box-shadow   : $btn-focus-boxshadow;
-    }
-}
+@import "buttons-mixins.scss";
 
 // btn-link should be outsourced to links.scss or whatever it will be called
 .btn-link {
     color : $active-green;
-    &:hover, &:focus {
+    &:hover, &:focus, &:active, &:active:focus {
         color : $active-green;
     }
 }
@@ -387,6 +313,28 @@
     min-height : auto;
     & [class^="ri-"], & [class*=" ri-"] {
         font-size : $font-size-base;
+    }
+}
+
+.btn-icon {
+    height          : 36px;
+    width           : 36px;
+    padding         : 0;
+    border          : none;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    cursor          : pointer;
+    &.btn-g-800 {
+        &:hover, &:focus {
+            background-color : $g-700;
+            box-shadow       : none;
+        }
+        &:active, &.active, &:active:focus {
+            color            : $g-800;
+            background-color : $g-200;
+            box-shadow       : none;
+        }
     }
 }
 

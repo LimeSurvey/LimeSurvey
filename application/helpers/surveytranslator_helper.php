@@ -111,12 +111,20 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ar']['momentjs'] = 'ar';
 
     // Armenian
-    $supportedLanguages['hy']['description'] = gT('Armenian');
+    $supportedLanguages['hy']['description'] = gT('Armenian (Eastern)');
     $supportedLanguages['hy']['nativedescription'] = '&#1392;&#1377;&#1397;&#1381;&#1408;&#1381;&#1398;';
     $supportedLanguages['hy']['rtl'] = false;
     $supportedLanguages['hy']['dateformat'] = 1;
     $supportedLanguages['hy']['radixpoint'] = 1;
     $supportedLanguages['hy']['momentjs'] = 'hy-am';
+
+    // Western Armenian
+    $supportedLanguages['hyw']['description'] = gT('Armenian (Western)');
+    $supportedLanguages['hyw']['nativedescription'] = '&#x531;&#x580;&#x565;&#x582;&#x574;&#x57F;&#x561;&#x570;&#x561;&#x575;&#x565;&#x580;&#x567;&#x576;';
+    $supportedLanguages['hyw']['rtl'] = false;
+    $supportedLanguages['hyw']['dateformat'] = 1;
+    $supportedLanguages['hyw']['radixpoint'] = 1;
+    $supportedLanguages['hyw']['momentjs'] = 'hy-am';
 
     // Azerbaijani
     $supportedLanguages['az']['description'] = gT('Azerbaijani');
@@ -204,6 +212,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['zh-Hans']['dateformat'] = 6;
     $supportedLanguages['zh-Hans']['radixpoint'] = 0;
     $supportedLanguages['zh-Hans']['momentjs'] = 'zh-cn';
+
+    // Creole (Haiti)
+    $supportedLanguages['hat']['description'] = gT('Creole (Haitian)');
+    $supportedLanguages['hat']['nativedescription'] = 'Kreyòl ayisyen';
+    $supportedLanguages['hat']['rtl'] = false;
+    $supportedLanguages['hat']['dateformat'] = 6;
+    $supportedLanguages['hat']['radixpoint'] = 1;
+    $supportedLanguages['hat']['cldr'] = 'fr_ht';
 
     // Chinese (Traditional - Hong Kong)
     $supportedLanguages['zh-Hant-HK']['description'] = gT('Chinese (Traditional - Hong Kong)');
@@ -395,6 +411,22 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['kal']['radixpoint'] = 1;
     $supportedLanguages['kal']['momentjs'] = null;
 
+    // Hazaragi
+    $supportedLanguages['haz']['description'] = gT('Hazaragi');
+    $supportedLanguages['haz']['nativedescription'] = '&#x622;&#x632;&#x631;&#x6AF;&#x6CC;';
+    $supportedLanguages['haz']['rtl'] = true;
+    $supportedLanguages['haz']['dateformat'] = 2;
+    $supportedLanguages['haz']['radixpoint'] = 0;
+    $supportedLanguages['haz']['momentjs'] = 'fa';
+    $supportedLanguages['haz']['cldr'] = 'fa';
+
+    // Hausa
+    $supportedLanguages['ha']['description'] = gT('Hausa');
+    $supportedLanguages['ha']['nativedescription'] = 'Hausa';
+    $supportedLanguages['ha']['rtl'] = false;
+    $supportedLanguages['ha']['dateformat'] = 1;
+    $supportedLanguages['ha']['radixpoint'] = 1;
+    
     // Hebrew
     $supportedLanguages['he']['description'] = gT('Hebrew');
     $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';
@@ -417,6 +449,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hil']['rtl'] = false;
     $supportedLanguages['hil']['dateformat'] = 1;
     $supportedLanguages['hil']['radixpoint'] = 1;
+    $supportedLanguages['hil']['momentjs'] = 'tl';
+    $supportedLanguages['hil']['cldr'] = 'fil';
 
     // Hungarian
     $supportedLanguages['hu']['description'] = gT('Hungarian');
@@ -425,6 +459,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hu']['dateformat'] = 6;
     $supportedLanguages['hu']['radixpoint'] = 1;
     $supportedLanguages['hu']['momentjs'] = 'hu';
+
+    // Hungarian informal
+    $supportedLanguages['hu-informal']['description'] = gT('Hungarian (informal)');
+    $supportedLanguages['hu-informal']['nativedescription'] = 'Magyar (tegez&#337;d&#337;)';
+    $supportedLanguages['hu-informal']['rtl'] = false;
+    $supportedLanguages['hu-informal']['dateformat'] = 6;
+    $supportedLanguages['hu-informal']['radixpoint'] = 1;
+    $supportedLanguages['hu-informal']['cldr'] = 'hu';
+    $supportedLanguages['hu-informal']['momentjs'] = 'hu';
 
     // Icelandic
     $supportedLanguages['is']['description'] = gT('Icelandic');
@@ -538,6 +581,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['run']['rtl'] = false;
     $supportedLanguages['run']['dateformat'] = 1;
     $supportedLanguages['run']['radixpoint'] = 1;
+    $supportedLanguages['run']['cldr'] = 'rn';
     $supportedLanguages['run']['momentjs'] = null;
 
     // Kurdish (Sorani)
@@ -588,6 +632,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['lb']['rtl'] = false;
     $supportedLanguages['lb']['dateformat'] = 1;
     $supportedLanguages['lb']['radixpoint'] = 1;
+    $supportedLanguages['lb']['cldr'] = 'fr_lu';
     $supportedLanguages['lb']['momentjs'] = 'lb';
 
     // Macedonian
@@ -663,6 +708,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['nb']['radixpoint'] = 1;
     $supportedLanguages['nb']['momentjs'] = 'nb';
 
+    // Nepali
+    $supportedLanguages['ne']['description'] = gT('Nepali');
+    $supportedLanguages['ne']['nativedescription'] = 'Nepali';
+    $supportedLanguages['ne']['rtl'] = false;
+    $supportedLanguages['ne']['dateformat'] = 6;
+    $supportedLanguages['ne']['radixpoint'] = 0;
+    $supportedLanguages['ne']['momentjs'] = 'ne';
+
     // Norwegian Nynorsk
     $supportedLanguages['nn']['description'] = gT('Norwegian (Nynorsk)');
     $supportedLanguages['nn']['nativedescription'] = 'Norsk Nynorsk';
@@ -678,6 +731,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['oc']['dateformat'] = 5;
     $supportedLanguages['oc']['radixpoint'] = 1;
     $supportedLanguages['oc']['momentjs'] = 'oc-lnc';
+
+    // Odia
+    $supportedLanguages['ory']['description'] = gT('Odia');
+    $supportedLanguages['ory']['nativedescription'] = "&#xB13;&#xB21;&#xB3C;&#xB3F;&#xB06;";
+    $supportedLanguages['ory']['rtl'] = false;
+    $supportedLanguages['ory']['dateformat'] = 5;
+    $supportedLanguages['ory']['radixpoint'] = 1;
 
     // Pashto
     $supportedLanguages['ps']['description'] = gT('Pashto');
@@ -816,14 +876,6 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['sl']['dateformat'] = 4;
     $supportedLanguages['sl']['radixpoint'] = 1;
     $supportedLanguages['sl']['momentjs'] = 'sl';
-
-    // Somali
-    $supportedLanguages['so']['description'] = gT('Somali');
-    $supportedLanguages['so']['nativedescription'] = 'Af-Soomaali';
-    $supportedLanguages['so']['rtl'] = false;
-    $supportedLanguages['so']['dateformat'] = 9;
-    $supportedLanguages['so']['radixpoint'] = 1;
-    $supportedLanguages['so']['momentjs'] = null;
 
     // Somali
     $supportedLanguages['so']['description'] = gT('Somali');
@@ -980,6 +1032,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ur']['dateformat'] = 2;
     $supportedLanguages['ur']['radixpoint'] = 0;
     $supportedLanguages['ur']['momentjs'] = 'ur';
+
+    //Uzbek
+    $supportedLanguages['uz']['description'] = gT('Uzbek');
+    $supportedLanguages['uz']['nativedescription'] = "O'zbek";
+    $supportedLanguages['uz']['rtl'] = false;
+    $supportedLanguages['uz']['dateformat'] = 1;
+    $supportedLanguages['uz']['radixpoint'] = 1;
+    $supportedLanguages['uz']['momentjs'] = 'uz';
 
     //Uyghur
     $supportedLanguages['ug']['description'] = gT('Uyghur');

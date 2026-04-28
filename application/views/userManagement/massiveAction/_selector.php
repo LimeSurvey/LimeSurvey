@@ -2,13 +2,13 @@
 <?php
 
 $aActionsArray = array(
-    'pk'          => 'selectedUser',
+    'pk'          => 'uid',
     'gridid'      => 'usermanagement--identity-gridPanel',
     'dropupId'    => 'usermanagement--actions',
     'dropUpText'  => gT('Selected user(s)...'),
 
     'aActions'    => array(
-        
+
         // Delete
         array(
             'type'          => 'action',
@@ -41,7 +41,7 @@ $aActionsArray = array(
             'sModalTitle'   => gT('Resend login data'),
             'htmlModalBody' => gT('Are you sure you want to reset and resend selected users login data?'),
         ),
-        // Mass Edit
+        // Mass EditnderPartial('/userManagement/massiveAction/_updatepermissions', [], true)
         array(
             'type'              => 'action',
             'action'            => 'batchPermissions',
@@ -60,11 +60,48 @@ $aActionsArray = array(
             //'htmlFooterButtons' => [],
             'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatepermissions', [], true)
         ),
-        
+        array(
+            'type'              => 'action',
+            'id'                => 'edit-status',
+            'action'            => 'batchStatus',
+            'url'               => App()->createUrl('userManagement/batchStatus'),
+            'iconClasses'       => 'ri-user-follow-fill',
+            'text'              => gT('Edit status'),
+            'grid-reload'       => 'yes',
+            //modal
+            'actionType'        => 'modal',
+            'modalType'         => 'cancel-apply',
+            'largeModalView'    => true,
+            'keepopen'          => 'yes',
+            'showSelected'      => 'yes',
+            'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
+            'sModalTitle'       => gT('Edit status'),
+            //'htmlFooterButtons' => [],
+            'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatestatus', [], true)
+        ),
+        array(
+            'type'              => 'action',
+            'id'                => 'edit-expires',
+            'action'            => 'batchExpires',
+            'url'               => App()->createUrl('userManagement/batchExpires'),
+            'iconClasses'       => 'ri-user-follow-fill',
+            'text'              => gT('Set expire date'),
+            'grid-reload'       => 'yes',
+            //modal
+            'actionType'        => 'modal',
+            'modalType'         => 'cancel-apply',
+            'largeModalView'    => true,
+            'keepopen'          => 'yes',
+            'showSelected'      => 'yes',
+            'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
+            'sModalTitle'       => gT('Set expire date'),
+            //'htmlFooterButtons' => [],
+            'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updateexpires', [], true)
+        ),
     ),
 );
 
-if(Permission::model()->hasGlobalPermission('users', 'update')) {
+if (Permission::model()->hasGlobalPermission('users', 'update')) {
     // Mass Edit -> roles only for superadmins
     $aActionsArray['aActions'][] = array(
         'type'          => 'action',
@@ -84,7 +121,7 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
     );
 }
 
-if(Permission::model()->hasGlobalPermission('superadmin','read')) {
+if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
     // Mass Edit -> roles only for superadmins
     $aActionsArray['aActions'][] = array(
         'type'              => 'action',

@@ -14,7 +14,7 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
 
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/' . $surveyid), 'post', array('id' => 'resultexport', 'class' => '')); ?>
     <div class="row">
         <div class="col-12">

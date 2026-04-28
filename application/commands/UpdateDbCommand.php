@@ -22,10 +22,10 @@
 class UpdateDBCommand extends CConsoleCommand
 {
     /**
-     * Update database
-     * @param array $args
-     * @return void
-     * @throws CException
+     * Performs a database schema upgrade when the configured target version is greater than the current installed version.
+     *
+     * @param array|null $args Optional command-line arguments (not used by this command).
+     * @throws CException If the current database version is not found (application appears uninstalled) or if the upgrade process fails and requires manual intervention.
      */
     public function run($args = null)
     {
@@ -33,7 +33,7 @@ class UpdateDBCommand extends CConsoleCommand
         $currentDbVersion = intval(Yii::app()->getConfig('DBVersion'));
 
         if (!$currentDbVersion) {
-            throw new CException("DataBase version are not found, seems LimeSurvey are not installed.");
+            throw new CException("Database version was not found, LimeSurvey is not correctly installed.");
         }
 
         if ($newDbVersion > $currentDbVersion) {
@@ -42,15 +42,17 @@ class UpdateDBCommand extends CConsoleCommand
             Yii::import('application.helpers.common_helper', true);
             Yii::import('application.helpers.update.update_helper', true);
             Yii::import('application.helpers.update.updatedb_helper', true);
-            Yii::import('application.helpers.update.update_helper', true);
+
             $result = db_upgrade_all($currentDbVersion);
             if ($result) {
                 echo "Database has been successfully upgraded to version $newDbVersion \n";
+                return 0;
             } else {
                 throw new CException("Please fix this error in your database and try again");
             }
         } else {
             echo "no need update : DB is uptodate\n";
+            return 0;
         }
     }
 }

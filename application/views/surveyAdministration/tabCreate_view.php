@@ -61,12 +61,12 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
                 ?>
 
-                <div class="col-4">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="surveyTitle"><?= gT('Survey title:') ?></label>
-                        <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
+                        <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" aria-required="true" aria-describedby="surveyTitle-required" maxlength="200">
                         <div class="form-control-static">
-                            <span class='annotation text-danger'><?php echo  gT("Required"); ?> </span>
+                            <span id="surveyTitle-required" class="annotation text-danger"><?php echo gT("Required"); ?></span>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -102,8 +102,9 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                 'name'          => 'administrator',
                                 'checkedOption' => 'default',
                                 'selectOptions' => $optionsAdmin ?? [],
+                                'ariaLabel' => gT("Administrator"),
                             ]); ?>
-                        </div>
+                        </div>        
                     </div>
                     <div id="conditional-administrator-fields" style="display: none;">
                         <div class="mb-3">
@@ -126,7 +127,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                     </div>
                     <!-- Submit -->
                     <div class="pt-3">
-                        <input id="create-survey-submit" type='submit' class="btn btn-primary col-6" value='<?php eT("Create survey"); ?>' />
+                        <input id="create-survey-submit" type='submit' class="btn btn-primary w-auto" value='<?php eT("Create survey"); ?>' />
                     </div>
                 </div>
 
