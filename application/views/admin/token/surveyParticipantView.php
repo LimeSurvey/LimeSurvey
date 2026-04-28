@@ -131,7 +131,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                     'columns'               => $model->getAttributesForGrid(),
                     'ajaxUpdate'            => 'token-grid',
                     'ajaxType'              => 'POST',
-                    'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();', 'switchStatusOfListActions();']
+                    'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();', 'switchStatusOfListActions();', 'restoreFocusAfterSort();']
                 ]);
                 ?>
             </div>
@@ -197,6 +197,40 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             "if($('#token-grid').length > 0){
             reinstallParticipantsFilterDatePicker();
         }",
+            LSYii_ClientScript::POS_POSTSCRIPT
+        );
+        // Keep focus on the clicked sort column after grid AJAX update (e.g. Code) instead of moving to checkbox.
+        // Re-attach listener after each update because #token-grid is replaced on pagination/sort.
+        App()->getClientScript()->registerScript(
+            "Tokens:restoreFocusAfterSort",
+            "
+        window._lastSortColumnIndex = null;
+        var _sortFocusCaptureHandler = function(e) {
+            var link = e.target.closest && e.target.closest('a.sort-link');
+            if (link) {
+                var th = link.closest('th');
+                if (th) {
+                    window._lastSortColumnIndex = Array.prototype.indexOf.call(th.parentNode.children, th);
+                }
+            }
+        };
+        function attachSortFocusCapture() {
+            var grid = document.getElementById('token-grid');
+            if (!grid) return;
+            grid.removeEventListener('click', _sortFocusCaptureHandler, true);
+            grid.addEventListener('click', _sortFocusCaptureHandler, true);
+        }
+        function restoreFocusAfterSort() {
+            if (window._lastSortColumnIndex != null) {
+                var \$th = jQuery('#token-grid table thead th').eq(window._lastSortColumnIndex);
+                var \$link = \$th.find('a.sort-link');
+                if (\$link.length) { \$link[0].focus(); }
+                window._lastSortColumnIndex = null;
+            }
+            attachSortFocusCapture();
+        }
+        jQuery(function() { attachSortFocusCapture(); });
+        ",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
         ?>
