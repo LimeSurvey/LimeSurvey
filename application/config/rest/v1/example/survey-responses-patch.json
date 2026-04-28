@@ -1,0 +1,12 @@
+{
+  "patch": [
+    {
+      "entity": "response",
+      "op": "update",
+      "id": 1,
+      "props": {
+        "896595X696X14782SQ001": "Y"
+      }
+    }
+  ]
+}

@@ -71,6 +71,7 @@ if (class_exists('SurveyCommonAction')) {
     }
 } else {
     // try to include the old one
+    /** @psalm-suppress UndefinedClass */ 
     class DynamicSurveyCommonAction extends Survey_Common_Action
     {
     }
@@ -113,7 +114,7 @@ class Update extends DynamicSurveyCommonAction
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
 
-        $aData['topbar']['title'] = gt('ComfortUpdate');
+        $aData['topbar']['title'] = gT('ComfortUpdate');
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/update/partials/topbarBtns/rightSideButtons',
             [],
@@ -137,9 +138,9 @@ class Update extends DynamicSurveyCommonAction
             $updateKey = $aData['updateKey'] = getGlobalSetting('update_key');
 
             if (!$updateKey) {
-                $pageTitle = gt('Subscribe to ComfortUpdate');
+                $pageTitle = gT('Subscribe to ComfortUpdate');
             } else {
-                $pageTitle = gt('ComfortUpdate');
+                $pageTitle = gT('ComfortUpdate');
             }
 
             $aData['topbar']['title'] = $pageTitle;
@@ -380,7 +381,7 @@ class Update extends DynamicSurveyCommonAction
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
                     } else {
-                        $error = $backup->error;
+                        $error = $backupInfos->error;
                     }
                 } else {
                     $error = "no_updates_infos";
@@ -398,7 +399,6 @@ class Update extends DynamicSurveyCommonAction
      */
     public function step4()
     {
-        Yii::app()->loadLibrary("admin/pclzip");
         $event = new CExceptionEvent($this, new Exception());  // Dummy line to preload CExceptionEvent class.
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
@@ -410,7 +410,6 @@ class Update extends DynamicSurveyCommonAction
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
 
                     $updateModel = new UpdateForm();
-                    Yii::app()->loadLibrary("admin/pclzip"); //Preload PCLZip library in case it is moved to a different location in the update
                     $remove = $updateModel->removeDeletedFiles((array)$changedFiles);
                     if (!$remove->result) {
                         return $this->renderErrorString($remove->error, $remove->message);
@@ -543,7 +542,7 @@ class Update extends DynamicSurveyCommonAction
      */
     public function db($continue = null)
     {
-        App()->loadHelper("update/update");
+        App()->loadHelper("update.update");
         if (isset($continue) && $continue == "yes") {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
             $aData['display']['header'] = false;
@@ -654,7 +653,7 @@ class Update extends DynamicSurveyCommonAction
      * This function convert the huge updateinfos array to a base64 string, so it can be parsed to the view to be inserted in an hidden input element.
      *
      * @param array $updateinfos the udpadte infos array returned by the update server
-     * @return $string
+     * @return string
      */
     private function parseToView($updateinfos)
     {

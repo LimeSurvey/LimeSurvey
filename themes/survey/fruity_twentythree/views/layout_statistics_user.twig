@@ -1,0 +1,33 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2020 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Public Statistics Layout  ·._.·´¯)·._.·´¯)
+
+    This is the layout that will be used to show the public statistics. 
+
+#}
+{% extends 'layout_global.twig' %}
+{% block ajaxindicator %}{% endblock %}
+{% block pjaxbegin %}{% endblock %}
+{% block body %}
+    {% block nav_bar %}
+        {{ parent() }}
+    {% endblock %}
+    {{ registerScript("StatisticsUserBaseScripts", "var graphUrl = '" ~ graphUrl ~ "';", "POS_BEGIN") }}
+    {% block content %}
+        {% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content ~ '.twig' %}
+        {% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}
+    {% endblock %}
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+{% endblock %}
+{% block pjaxend %}{% endblock %}

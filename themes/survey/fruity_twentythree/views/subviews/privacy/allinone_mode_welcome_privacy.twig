@@ -1,0 +1,26 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.·  Test Welcome / Privacy for All in one mode  ·._.·´¯)·._.·´¯)
+
+    This file is only a piece of logic, it doesn't show nothing. We use it to hide complexity in layout.twig
+
+    When survey is in All In One mode, if welcome or privacy message are activated, they must be shown on the page.
+#}
+{% if aSurveyInfo.format == 'A' %}
+    {% if not aSurveyInfo.showwelcome is defined or not aSurveyInfo.showwelcome != 'N' %}
+        {{ include('./subviews/messages/welcome.twig') }}
+    {% endif %}
+
+    {{ include('./subviews/privacy/privacy.twig') }}
+{% endif %}

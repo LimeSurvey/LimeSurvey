@@ -26,7 +26,7 @@ class Themes extends SurveyCommonAction
 {
     public function runWithParams($params)
     {
-        $sTemplateName = Yii::app()->request->getPost('templatename', '');
+        $sTemplateName = trim(Yii::app()->request->getPost('templatename', ''));
         if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             parent::runWithParams($params);
         } else {
@@ -44,16 +44,20 @@ class Themes extends SurveyCommonAction
      */
     public function templatezip($templatename)
     {
-        $oEditedTemplate = Template::getInstance($templatename);
+        $oEditedTemplate = Template::getInstance($templatename, null, null, true);
 
         if (Permission::model()->hasGlobalPermission('templates', 'export')) {
             $templatedir = $oEditedTemplate->path;
             $tempdir = Yii::app()->getConfig('tempdir');
 
             $zipfile = "$tempdir/$templatename.zip";
-            Yii::app()->loadLibrary('admin.pclzip');
-            $zip = new PclZip($zipfile, false);
-            $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->path);
+            $zip = new LimeSurvey\Zip();
+            $zip->open($zipfile, ZipArchive::CREATE);
+
+            $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);
+            $zipHelper->addFolder($templatedir);
+
+            $zip->close();
 
             if (is_file($zipfile)) {
                 // Send the file for download!
@@ -125,9 +129,14 @@ class Themes extends SurveyCommonAction
         $tempdir = Yii::app()->getConfig('tempdir');
 
         $zipfile = "$tempdir/$templatename.zip";
-        Yii::app()->loadLibrary('admin.pclzip');
-        $zip = new PclZip($zipfile);
-        $zip->create($templatePath, PCLZIP_OPT_REMOVE_PATH, $templatePath);
+
+        $zip = new LimeSurvey\Zip();
+        $zip->open($zipfile, ZipArchive::CREATE);
+
+        $zipHelper = new LimeSurvey\Helpers\ZipHelper($zip);
+        $zipHelper->addFolder($templatePath);
+
+        $zip->close();
 
         if (is_file($zipfile)) {
             // Send the file for download!
@@ -174,9 +183,13 @@ class Themes extends SurveyCommonAction
             App()->getController()->forward("/surveyAdministration/uploadimagefile/");
             App()->end();
         }
-        $sTemplateName = App()->request->getPost('templatename');
+        $sTemplateName = trim(App()->request->getPost('templatename', ''));
+        // This controller has several actions. Even actions that manage multiple subactions.
+        // In case you are uploading a template, the templatename does not exist in the POST.
+        // It's not going to fail, but it's checking for a permission with an empty templatename.
+        // Surely it works as expected, but it would be nice if the code was clearer.
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
-            App()->loadHelper('admin/template');
+            App()->loadHelper('admin.template');
             // NB: lid = label id
             $lid = returnGlobal('lid');
             if ($action == 'templateuploadimagefile') {
@@ -273,8 +286,6 @@ class Themes extends SurveyCommonAction
      */
     protected function uploadTemplate()
     {
-        App()->loadLibrary('admin.pclzip');
-
         // Redirect back if demo mode is set.
         $this->checkDemoMode();
 
@@ -294,9 +305,6 @@ class Themes extends SurveyCommonAction
             }
 
             try {
-                $src = $_FILES['the_file']['tmp_name'];
-                $extConfig = ExtensionConfig::loadFromZip($src);
-                $destdir = $extConfig->getName();
                 // TODO: Replace with extension installer factory.
                 $installer = $this->getQuestionThemeInstaller();
                 $installer->fetchFiles();
@@ -306,7 +314,12 @@ class Themes extends SurveyCommonAction
                     $installer->abort();
                     throw new Exception(gT('The question theme is not compatible with your version of LimeSurvey.'));
                 }
-                $questionTheme = QuestionTheme::model()->findByAttributes(['name' => $config->getName()]);
+                $questionThemeName = $config->getName();
+                if (!$installer->validateQuestionThemeName($questionThemeName)) {
+                    $installer->abort();
+                    throw new Exception(gT('Invalid question theme name in config.xml'));
+                }
+                $questionTheme = QuestionTheme::model()->findByAttributes(['name' => $questionThemeName]);
                 try {
                     if (empty($questionTheme)) {
                         $installer->install();
@@ -342,6 +355,7 @@ class Themes extends SurveyCommonAction
             }
         }
 
+        // Question theme uploads should already have returned from the branch above.
         $sNewDirectoryName = $this->getNewDirectoryName($themeType, $_FILES['the_file']['tmp_name']);
 
         if ($themeType == 'survey') {
@@ -370,29 +384,32 @@ class Themes extends SurveyCommonAction
 
         // TODO: Move all this to new SurveyThemeInstaller class (same as done for QuestionThemeInstaller).
         if (is_file($_FILES['the_file']['tmp_name'])) {
-            $zip = new PclZip($_FILES['the_file']['tmp_name']);
-            $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $extractDir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
+            $zipExtractor = new \LimeSurvey\Models\Services\ZipExtractor($_FILES['the_file']['tmp_name']);
+            $zipExtractor->setFilterCallback('templateExtractFilter');
 
-            if ($aExtractResult === 0) {
+            if (!$zipExtractor->extractTo($extractDir)) {
                 App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
                 rmdirr($destdir);
                 $this->getController()->redirect(array("admin/themes/sa/upload"));
             } else {
                 // Successfully unpacked
+                $aExtractResult = $zipExtractor->getExtractResult();
                 foreach ($aExtractResult as $sFile) {
-                    if ($sFile['status'] == 'skipped' && !$sFile['folder']) {
+                    if ($sFile['status'] == 'skipped' && !$sFile['is_folder']) {
                         $aErrorFilesInfo[] = array(
-                            "filename" => $sFile['stored_filename'],
+                            "filename" => $sFile['name'],
                         );
                     } else {
                         $aImportedFilesInfo[] = [
-                            "filename" => $sFile['stored_filename'],
+                            "filename" => $sFile['name'],
                             "status" => gT("OK"),
-                            'is_folder' => $sFile['folder']
+                            'is_folder' => $sFile['is_folder']
                         ];
                     }
+                    if ($sFile['name'] == "config.xml") {
+                        SurveyThemeHelper::checkConfigFiles($sFile['target_filename']);
+                    }
                 }
-
                 if (Template::checkIfTemplateExists($sNewDirectoryName)) {
                     App()->user->setFlash('error', gT("Can not import a theme that already exists!"));
                     rmdirr($destdir);
@@ -538,11 +555,11 @@ class Themes extends SurveyCommonAction
     public function index(string $editfile = '', string $screenname = 'welcome', string $templatename = '')
     {
         if ($templatename == '') {
-            // @todo getGlobalSetting is deprecated!
-            $templatename = getGlobalSetting('defaulttheme');
+            $templatename = App()->getConfig('defaulttheme');
         }
 
         // This can happen if the global default template is deleted
+        // TODO: check if we can load template without needing the model, only from xml, so we can load the theme editor even when it is not installed
         if (!Template::checkIfTemplateExists($templatename)) {
             // Redirect to the default template
             Yii::app()->setFlashMessage(sprintf(gT('Theme %s does not exist.'), htmlspecialchars((string) $templatename, ENT_QUOTES)), 'error');
@@ -580,8 +597,9 @@ JAVASCRIPT
         // page title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
 
-        //$aData['pageTitle'] = $pageTitle;
         $aData['topbar']['title'] = $pageTitle;
+        $aData['topbar']['backLink'] = App()->createUrl('themeOptions/index');
+
 
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/themes/partial/topbarBtns/leftSideButtons',
@@ -590,12 +608,6 @@ JAVASCRIPT
                 'templatename' => $templatename,
                 'isExtend' => true,
             ],
-            true
-        );
-
-        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-            '/admin/themes/partial/topbarBtns/rightSideButtons',
-            [],
             true
         );
 
@@ -621,7 +633,7 @@ JAVASCRIPT
     public function templatefiledelete()
     {
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
+            $sTemplateName   = Template::templateNameFilter(trim(App()->request->getPost('templatename', '')));
             $oEditedTemplate = Template::getInstance($sTemplateName);
             $templatedir     = $oEditedTemplate->viewPath;
             $sPostedFiletype = CHtml::decode(App()->request->getPost('filetype'));
@@ -668,8 +680,10 @@ JAVASCRIPT
      */
     public function templaterename()
     {
-        $sNewName = sanitize_dirname(App()->getRequest()->getPost('newname'));
+        $sNewName = trim(sanitize_dirname(App()->getRequest()->getPost('newname')));
         $sOldName = sanitize_dirname(App()->getRequest()->getPost('copydir'));
+        $sNewName = CHtml::encode($sNewName);
+        Template::validateTemplateName($sNewName);
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if ($sNewName && $sOldName) {
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewName;
@@ -713,7 +727,9 @@ JAVASCRIPT
         $copydir = sanitize_dirname(Yii::app()->request->getPost("copydir"));
 
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
-            $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
+            $newname = trim(sanitize_dirname(Yii::app()->request->getPost("newname")));
+            $newname = CHtml::encode($newname);
+            Template::validateTemplateName($newname);
 
             Yii::import('application.helpers.SurveyThemeHelper');
             if (SurveyThemeHelper::isStandardTemplate($newname)) {
@@ -723,7 +739,7 @@ JAVASCRIPT
 
             if ($newname && $copydir) {
                 // Copies all the files from one template directory to a new one
-                Yii::app()->loadHelper('admin/template');
+                Yii::app()->loadHelper('admin.template');
                 $newdirname  = Yii::app()->getConfig('userthemerootdir') . "/" . $newname;
                 $copydirname = getTemplatePath($copydir);
                 $oFileHelper = new CFileHelper();
@@ -754,17 +770,18 @@ JAVASCRIPT
     }
 
     /**
-     * Function responsible to delete a template.
+     * Function responsible to delete a template while inside the theme editor
      *
      * @access public
-     * @param string $templatename
      * @return void
+     * @throws CDbException
+     * @throws CException
      */
     public function delete()
     {
         $templatename = trim(Yii::app()->request->getPost('templatename', ''));
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            Yii::app()->loadHelper("admin/template");
+            Yii::app()->loadHelper("admin.template");
 
             Yii::import('application.helpers.SurveyThemeHelper');
             if (Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
@@ -813,7 +830,11 @@ JAVASCRIPT
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             // First we check that the theme is really broken
-            $aBrokenThemes = Template::getBrokenThemes();
+            $aBrokenThemes = [];
+            $aTemplatesWithNoDB = TemplateConfig::getTemplatesWithNoDb();
+            if (!empty($aTemplatesWithNoDB['invalid'])) {
+                $aBrokenThemes = $aTemplatesWithNoDB['invalid'];
+            }
             $templatename  = sanitize_dirname($templatename);
             if (array_key_exists($templatename, $aBrokenThemes)) {
                 if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
@@ -828,27 +849,35 @@ JAVASCRIPT
     }
 
 
+    /**
+     * Deletes a survey theme from the "Available survey themes", after it has been uninstalled TemplateConfig::uninstall.
+     * This will delete all local files.
+     * @return void
+     * @throws CException
+     * @throws CHttpException
+     */
     public function deleteAvailableTheme()
     {
-        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
+        $templatename = trim(App()->request->getPost('templatename', ''));
+        $templatename = CHtml::decode($templatename);
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename);
+            $completeFileName = realpath(App()->getConfig('userthemerootdir') . "/" . $templatename);
             /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
-            if (!is_dir($completeFileName) || substr($completeFileName, 0, strlen((string) Yii::app()->getConfig('userthemerootdir'))) !== Yii::app()->getConfig('userthemerootdir')) {
+            if (!is_dir($completeFileName) || strpos($completeFileName, App()->getConfig('userthemerootdir')) !== 0) {
                 throw new CHttpException(403, "Disable for security reasons.");
             }
             // CheckIfTemplateExists check if the template is installed....
                 Yii::import('application.helpers.SurveyThemeHelper');
             if (! Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
-                if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
-                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+                if (rmdirr(App()->getConfig('userthemerootdir') . "/" . $templatename)) {
+                    App()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 } else {
-                    Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
+                    App()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
                 }
             } else {
                 // This should never happen... trying to submit the form via a script? so no translation
-                Yii::app()->setFlashMessage("You're trying to delete a theme that is installed. Please, uninstall it first", 'error');
+                App()->setFlashMessage("You're trying to delete a theme that is installed. Please, uninstall it first", 'error');
             }
         }
 
@@ -879,7 +908,7 @@ JAVASCRIPT
             $action               = returnGlobal('action');
             $editfile             = returnGlobal('editfile');
             $relativePathEditfile = returnGlobal('relativePathEditfile');
-            $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
+            $sTemplateName        = Template::templateNameFilter(trim(App()->request->getPost('templatename', '')));
             $screenname           = returnGlobal('screenname');
             $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null, null, true)->prepareTemplateRendering($sTemplateName);
 
@@ -888,7 +917,7 @@ JAVASCRIPT
             $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
 
             if ($action == "templatesavechanges" && $changedtext) {
-                Yii::app()->loadHelper('admin/template');
+                Yii::app()->loadHelper('admin.template');
                 $changedtext = str_replace("\r\n", "\n", $changedtext);
 
 
@@ -988,7 +1017,7 @@ JAVASCRIPT
     {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
-        Yii::app()->loadHelper("admin/template");
+        Yii::app()->loadHelper("admin.template");
         $aData = array();
         $time = date("ymdHis");
         // Prepare textarea class for optional javascript
@@ -1082,7 +1111,7 @@ JAVASCRIPT
      * @param string $screenname
      * @param string $editfile
      * @param bool $showsummary
-     * @return
+     * @return void
      */
     protected function initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
@@ -1091,7 +1120,7 @@ JAVASCRIPT
 
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
-        Yii::app()->loadHelper('admin/template');
+        Yii::app()->loadHelper('admin.template');
 
         $files        = $oEditedTemplate->getValidScreenFiles("view", $screenname);
         $sLayoutFile  = $oEditedTemplate->getLayoutForScreen($screenname);
@@ -1335,7 +1364,7 @@ JAVASCRIPT
             'importance' => Notification::HIGH_IMPORTANCE,
             'message'    => sprintf(
                 gT('Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
-                '<a target="_blank" href="https://manual.limesurvey.org/New_Template_System_in_LS3.x">',
+                '<a target="_blank" href="https://www.limesurvey.org/manual/New_Template_System_in_LS3.x">',
                 '</a>',
                 '<a target="_blank" href="https://forums.limesurvey.org">',
                 '</a>'
@@ -1441,6 +1470,7 @@ JAVASCRIPT
     /**
      * @param ZipArchive $zip
      * @return string|null
+     * @todo Remove this? Doesn't seem to be used anymore.
      */
     public function findConfigXml(ZipArchive $zip)
     {

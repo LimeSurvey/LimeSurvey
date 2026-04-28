@@ -35,12 +35,14 @@
  */
 class Quota extends LSActiveRecord
 {
-    public const ACTION_TERMINATE = 1;
-    public const ACTION_CONFIRM_TERMINATE = 2;
+    public const TERMINATE_VISIBLE_QUOTA_QUESTIONS = 1;
+    public const SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS = 2;
+    public const TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS = 3;
+    public const TERMINATE_ALL_PAGES = 4;
 
     /* Default attributes */
     public $active = 1;
-    public $action = self::ACTION_TERMINATE;
+    public $action = self::TERMINATE_VISIBLE_QUOTA_QUESTIONS;
 
     /**
      * Returns the static model of Settings table
@@ -81,8 +83,9 @@ class Quota extends LSActiveRecord
         return array(
             array('name,qlimit,action', 'required'),
             array('name', 'LSYii_Validators'), // Maybe more restrictive
+            array('name', 'LSYii_NonFormulaValidator'), // Avoid CSV injection
             array('qlimit', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => 2147483647, 'allowEmpty' => true),
-            array('action', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '2', 'allowEmpty' => true), // Default is null ?
+            array('action', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '4', 'allowEmpty' => true), // Default is null ?
             array('active', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
             array('autoload_url', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
             array('name', 'length', 'min' => 0, 'max' => 255),
@@ -192,9 +195,21 @@ class Quota extends LSActiveRecord
         foreach ($this->quotaMembers as $quotaMember) {
             $members[] = $quotaMember->memberInfo;
         }
-        $attributes = $this->attributes;
+        $attributes = $this->attributes ?? [];
 
-        return array_merge(array(), $languageSettings->attributes, array('members' => $members), $attributes);
+        $defaultLanguageAttributes = [
+            'quotals_message'     => gT("Sorry your responses have exceeded a quota on this survey."),
+            'quotals_url'         => '',
+            'quotals_urldescrip'  => '',
+        ];
+
+        $quotaLanguageAttributes = ($languageSettings && $languageSettings->attributes) ? $languageSettings->attributes : $defaultLanguageAttributes;
+
+        return array_merge(
+            $quotaLanguageAttributes,
+            array('members' => $members),
+            $attributes
+        );
     }
 
     /**
@@ -243,7 +258,7 @@ class Quota extends LSActiveRecord
                 'data-message'   => gT("Are you sure you want to delete the selected quotas?"),
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-datas' => $deletePostData
             ]
         ];

@@ -1,0 +1,24 @@
+{#
+    This file is part of LimeSurvey
+    Copyright (C) 2018 The LimeSurvey Project Team
+    This file render extra part for navigator
+#}
+{% if aSurveyInfo.aNavigator.load.show == "Y" or aSurveyInfo.aNavigator.save.show == "Y" or aSurveyInfo.aQuestionIndex.bShow == true or aSurveyInfo.bShowClearAll == true %}
+    <!-- extra tools, can be shown with javascript too (just remove ls-js-hidden class -->
+    <div class="row ls-js-hidden">
+        <!-- Extra button container -->
+        <div class="col-md-6 clearall-saveall-wrapper d-flex justify-content-start">
+            {% if aSurveyInfo.aNavigator.load.show == "Y" or aSurveyInfo.aNavigator.save.show == "Y" %}
+                {{ include('./subviews/navigation/save_buttons.twig') }}
+            {% endif %}
+            {% if aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null %}
+                {{ include('./subviews/navigation/clearall_buttons.twig') }}
+            {% endif %}
+        </div>
+         <!-- Index container -->
+        {% if (aSurveyInfo.aQuestionIndex.bShow == true) %}
+            {{ include('./subviews/navigation/question_index_buttons.twig') }}
+        {% endif %}
+    </div>
+{% endif %}
+

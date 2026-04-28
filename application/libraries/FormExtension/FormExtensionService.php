@@ -67,7 +67,7 @@ class FormExtensionService
 
     /**
      * Returns false if position is not yet supported by LS.
-     * This works as a whitelist of supported forms.
+     * This works as a allowlist of supported forms.
      */
     private function validatePosition(string $position): bool
     {

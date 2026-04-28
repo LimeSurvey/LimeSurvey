@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var string $ariaLabel
  * @var string $name
@@ -9,15 +10,29 @@
  */
 ?>
 
-<div class="btn-group <?= $htmlOptions['class'] ?? '' ?>"
-     id="<?= $id ?>" role="group"
-     aria-label="<?= $ariaLabel ?? '' ?>"
-    <?= isset($htmlOptions['data-url']) ? "data-url='" . $htmlOptions["data-url"] . "'" : '' ?>>
+<div class="btn-group <?= $htmlOptions['class'] ?? '' ?>" data-bs-toggle="tooltip"
+    id="<?= $id ?>" role="group"
+    <?= $ariaLabel ? "aria-label='" . Chtml::encode($ariaLabel) . "'" : ''  ?>
+    <?php
+    $skipAttributes = ['class', 'icon', 'disabled', 'id'];
+    foreach ($htmlOptions as $attribute => $value) :
+        if (in_array($attribute, $skipAttributes, true) || is_array($value) || is_object($value)) {
+            continue;
+        }
+        ?>
+        <?= $attribute ?>="<?= Chtml::encode($value) ?>"
+    <?php endforeach; ?>
+    >
     <?php $count = 1 ?>
     <?php foreach ($selectOptions as $value => $caption) : ?>
         <input type="radio" class="btn-check" name="<?= $name ?>" id="<?= $id . '_' . $count ?>" autocomplete="off"
-               value="<?= $value ?>" <?= $checkedOption == $value ? 'checked' : '' ?> <?= isset($htmlOptions['disabled']) && $htmlOptions['disabled'] ? 'disabled' : '' ?>>
-        <label class="btn btn-outline-secondary" for="<?= $id . '_' . $count ?>"><?= $caption ?></label>
+            value="<?= $value ?>" <?= $checkedOption == $value ? 'checked' : '' ?> <?= isset($htmlOptions['disabled']) && $htmlOptions['disabled'] ? 'disabled' : '' ?>>
+        <label class="btn btn-outline-secondary" for="<?= $id . '_' . $count ?>">
+            <?php if (isset($htmlOptions['icon']) && isset($htmlOptions['icon'][$value])) : ?>
+                <span class="<?= $htmlOptions['icon'][$value] ?>" style="margin-right: 5px;"></span>
+            <?php endif; ?>
+            <?= $caption ?>
+        </label>
         <?php $count++ ?>
     <?php endforeach; ?>
 </div>

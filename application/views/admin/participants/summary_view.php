@@ -17,6 +17,9 @@ echo viewHelper::getViewTestTag('participantsSummary');
         <div class="row">
             <div class="col-12 content-right table-responsive">
                 <table class='ls-statisticssummary table table-hover'>
+                    <caption class="visually-hidden">
+                            <?php eT("Participants summary"); ?>
+                    </caption>
                     <tr>
                         <th>
                             <?php eT("Total participants in central table"); ?>
@@ -51,7 +54,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
                     </tr>
                     <tr>
                         <th>
-                            <?php eT("Blacklisted participants"); ?>
+                            <?php eT("Blocklisted participants"); ?>
                         </th>
                         <td>
                             <?php echo $blacklisted; ?>

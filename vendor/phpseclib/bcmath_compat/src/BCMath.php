@@ -71,11 +71,7 @@ abstract class BCMath
         } elseif ($scale) {
             $temp[1] = str_repeat('0', $scale);
         }
-        $result = rtrim(implode('.', $temp), '.');
-        if ($sign == '-' && preg_match('#^0\.?0*$#', $result)) {
-            $sign = '';
-        }
-        return $sign . $result;
+        return $sign . rtrim(implode('.', $temp), '.');
     }
 
     /**
@@ -137,11 +133,9 @@ abstract class BCMath
         }
 
         $z = $x->abs()->multiply($y->abs());
-        $result = self::format($z, $scale, 2 * $pad);
+        $sign = (self::isNegative($x) ^ self::isNegative($y)) ? '-' : '';
 
-        $sign = (self::isNegative($x) ^ self::isNegative($y)) && !preg_match('#^0\.?0*$#', $result) ? '-' : '';
-
-        return $sign . $result;
+        return $sign . self::format($z, $scale, 2 * $pad);
     }
 
     /**
@@ -369,12 +363,13 @@ abstract class BCMath
             'sqrt' => 2,
             'sub' => 3
         ];
-        if (count($arguments) < $params[$name] - 1) {
+        $cnt = count($arguments);
+        if ($cnt < $params[$name] - 1) {
             $min = $params[$name] - 1;
-            throw new \ArgumentCountError("bc$name() expects at least $min parameters, " . func_num_args() . " given");
+            throw new \ArgumentCountError("bc$name() expects at least $min parameters, " . $cnt . " given");
         }
-        if (count($arguments) > $params[$name]) {
-            $str = "bc$name() expects at most {$params[$name]} parameters, " . func_num_args() . " given";
+        if ($cnt > $params[$name]) {
+            $str = "bc$name() expects at most {$params[$name]} parameters, " . $cnt . " given";
             throw new \ArgumentCountError($str);
         }
         $numbers = array_slice($arguments, 0, $params[$name] - 1);
@@ -489,6 +484,7 @@ abstract class BCMath
         }
 
         $arguments = array_merge($numbers, $ints, [$scale, $pad]);
-        return call_user_func_array('self::' . $name, $arguments);
+        $result = call_user_func_array(self::class . "::$name", $arguments);
+        return preg_match('#^-0\.?0*$#', $result) ? substr($result, 1) : $result;
     }
 }

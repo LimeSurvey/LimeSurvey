@@ -71,7 +71,9 @@ class TemplateManifest extends TemplateConfiguration
 
         foreach ($filesFromXML as $file) {
             if ($file->attributes()->type == $sType) {
-                $aScreenFiles[] = (string) $file;
+                // prevent accidental linebreaks and empty spaces in xml file string from breaking file path when loading it
+                $file = trim(str_replace(["\r", "\n"], '', $file));
+                $aScreenFiles[] = $file;
             }
         }
 
@@ -613,38 +615,41 @@ class TemplateManifest extends TemplateConfiguration
         return $otherfiles;
     }
 
-
     /**
+     * Returns the complete URL path to a given template name
      *
+     * @return string template url
+     * @throws CException
      */
     public function getTemplateURL()
     {
         Yii::import('application.helpers.SurveyThemeHelper');
         // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
         if (SurveyThemeHelper::isStandardTemplate($this->sTemplateName)) {
-            return Yii::app()->getConfig("standardthemerooturl") . '/' . $this->sTemplateName . '/';
-        } else {
-            return  Yii::app()->getConfig("userthemerooturl") . '/' . $this->sTemplateName . '/';
+            return App()->getConfig("standardthemerooturl") . '/' . $this->sTemplateName . '/';
         }
 
-    //    return Template::getTemplateURL($this->sTemplateName);
+        return  App()->getConfig("userthemerooturl") . '/' . $this->sTemplateName . '/';
     }
 
-
-    // TODO: please write documentation here, seems to be no entrypoints for this
+    /**
+     * Get buttons/actions for the "Available admin themes", not installed
+     * @return string
+     * @throws CException
+     */
     public function getButtons()
     {
-        $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
+        //$sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->sTemplateName));
         $sDeleteUrl   = Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/');
-
+        $templatezip = Yii::app()->getController()->createUrl('admin/themes/sa/templatezip/templatename/' . $this->sTemplateName);
 
         // TODO: load to DB
-        $sEditorLink = "<a
-            id='template_editor_link_" . $this->sTemplateName . "'
-            href='" . $sEditorUrl . "'
+        $sExportLink = "<a
+            id='button-export'
+            href='" . $templatezip . "'
             class='btn btn-outline-secondary btn-sm'>
-                <span class='ri-brush-fill'></span>
-                " . gT('Theme editor') . "
+                <span class='ri-upload-2-fill'></span>
+                " . gT('Export') . "
             </a>";
 
             //
@@ -676,10 +681,10 @@ class TemplateManifest extends TemplateConfiguration
             $sDeleteLink = '<a
               id="template_delete_link_' . $this->sTemplateName . '"
               href="' . $sDeleteUrl . '"
-              data-post=\'{ "templatename": "' . $this->sTemplateName . '" }\'
+              data-post=\'{ "templatename": "' . CHtml::encode($this->sTemplateName) . '" }\'
               data-text="' . gT('Are you sure you want to delete this theme? ') . '"
-              data-button-no="' . gt('Cancel') . '"  
-              data-button-yes="' . gt('Delete') . '"
+              data-button-no="' . gT('Cancel') . '"  
+              data-button-yes="' . gT('Delete') . '"
               data-button-type="btn-danger"
               title="' . gT('Delete') . '"
               class="btn btn-danger btn-sm selector--ConfirmModal">
@@ -688,10 +693,11 @@ class TemplateManifest extends TemplateConfiguration
                   </a>';
         }
 
-        return '<div class="d-grid gap-2">' . $sEditorLink . $sLoadLink . $sDeleteLink . '</div>';
+        return '<div class="d-grid gap-2">' . $sLoadLink . $sExportLink . $sDeleteLink . '</div>';
     }
 
     /**
+     * Installs an available theme
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
      * @return boolean true on success | exception
@@ -715,6 +721,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['version']          = (string) $oTemplate->config->metadata->version;
         $aDatas['license']          = (string) $oTemplate->config->metadata->license;
         $aDatas['description']      = (string) $oTemplate->config->metadata->description;
+        $aDatas['title']            = (string) $oTemplate->config->metadata->title;
 
         // Engine, files, and options can be inherited from a moter template
         // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)
@@ -762,7 +769,7 @@ class TemplateManifest extends TemplateConfiguration
             $oTemplateConfiguration->sid = $iSurveyId;
 
             if (isAssociativeArray((array)$xml->config->options)) {
-                $oTemplateConfiguration->options  = TemplateConfig::formatToJsonArray($xml->config->options);
+                $oTemplateConfiguration->options  = TemplateConfig::convertOptionsToJson($xml->config->options[0]);
             }
 
             if ($oTemplateConfiguration->save()) {
@@ -1008,33 +1015,54 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Read the config.xml file of the template and push its contents to $this->config
+     * @throws Exception
      */
-    private function readManifest()
+    private function readManifest(): void
     {
         $this->xmlFile = $this->path . 'config.xml';
 
+        if (!file_exists(realpath($this->xmlFile)) && $path = SurveyThemeHelper::getNestedThemeConfigPath($this->sTemplateName)) {
+            $templateDir = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName;
+            $tempDir = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . '_tmp';
+
+            mkdir($tempDir);
+            rename($path, $tempDir);
+            rmdirr($templateDir);
+            rename($tempDir, $templateDir);
+
+            $this->xmlFile = $templateDir . DIRECTORY_SEPARATOR .  'config.xml';
+        }
+
         if (file_exists(realpath($this->xmlFile))) {
             if (\PHP_VERSION_ID < 80000) {
-                $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                $bOldEntityLoaderState = libxml_disable_entity_loader(
+                    true
+                ); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
             }
-            $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            SurveyThemeHelper::checkConfigFiles($this->xmlFile);
+            $sXMLConfigFile = file_get_contents(
+                realpath($this->xmlFile)
+            ); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oDOMConfig = new DOMDocument();
-            $oDOMConfig->loadXML($sXMLConfigFile);
-            $oXPath = new DOMXpath($oDOMConfig);
-            foreach ($oXPath->query('//comment()') as $oComment) {
-                $oComment->parentNode->removeChild($oComment);
-            }
-            $oXMLConfig = simplexml_import_dom($oDOMConfig);
-            $filenames = $oXMLConfig->config->xpath("//file");
-            if ($filenames) {
-                foreach ($filenames as $oFileName) {
-                    $oFileName[0] = get_absolute_path($oFileName[0]);
+            // the loadXML is error suppressed, so we can check the return value
+            $bLoadXMLSuccess = @$oDOMConfig->loadXML($sXMLConfigFile);
+            if ($bLoadXMLSuccess) {
+                $oXPath = new DOMXpath($oDOMConfig);
+                foreach ($oXPath->query('//comment()') as $oComment) {
+                    $oComment->parentNode->removeChild($oComment);
                 }
-            }
+                $oXMLConfig = simplexml_import_dom($oDOMConfig);
+                $filenames = $oXMLConfig->config->xpath("//file");
+                if ($filenames) {
+                    foreach ($filenames as $oFileName) {
+                        $oFileName[0] = get_absolute_path($oFileName[0]);
+                    }
+                }
 
-            $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+                if (\PHP_VERSION_ID < 80000) {
+                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                }
             }
         } else {
             throw new Exception(" Error: Can't find a manifest for $this->sTemplateName in ' $this->path ' ");
@@ -1078,7 +1106,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Set the template name.
-     * If no templateName provided, then a survey id should be given (it will then load the template related to the survey)
+     * If no templateName provided, then a survey ID should be given (it will then load the template related to the survey)
      *
      * @var     $sTemplateName  string the name of the template
      * @var     $iSurveyId      int    the id of the survey
@@ -1086,9 +1114,9 @@ class TemplateManifest extends TemplateConfiguration
     private function setTemplateName($sTemplateName = '', $iSurveyId = '')
     {
         // If it is called from the template editor, a template name will be provided.
-        // If it is called for survey taking, a survey id will be provided
+        // If it is called for survey taking, a survey ID will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
-            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
+            /* Some controller didn't test completely survey ID (PrintAnswersController for example), then set to default here */
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 
@@ -1384,7 +1412,8 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Get options_page value from template configuration
+     * Loads the options definition from XML file
+     * @return array|false returns the array of options or false on failing to load the file
      */
     public static function getOptionAttributes($path)
     {
@@ -1405,26 +1434,80 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string)$option['title'] : '';
                 $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string)$option['category'] : gT('Simple options');
                 $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string)$option['width'] : '2';
+                $aOptions['optionAttributes'][$key]['library'] = !empty($option['library']) ? (string)$option['library'] : '';
+                $aOptions['optionAttributes'][$key]['colorSwatch'] = !empty($option['colorSwatch']) ? (bool)$option['colorSwatch'] : '';
+                /* rows for textarea */
+                $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
                 $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
+                $aOptions['optionAttributes'][$key]['optionimages'] = !empty($option['optionimages']) ? (string)$option['optionimages'] : '';
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';
 
                 if (!empty($option->dropdownoptions)) {
-                    $dropdownOptions = '';
-                    if ($key == 'font') {
-                        $dropdownOptions .= TemplateManifest::getFontDropdownOptions();
+                    $dropdownOptions = $option->dropdownoptions; // The element to insert into
+                    $dropdownOptionsDom = dom_import_simplexml($dropdownOptions);
+                    if ($key === 'font') {
+                        $dropdownOptionsFonts = TemplateManifest::getFontDropdownOptions();
+                        if (!empty($dropdownOptionsFonts)) {
+                            $fontDropdownOptions = simplexml_load_string($dropdownOptionsFonts); // The element to insert
+                            if ($fontDropdownOptions !== false) {
+                                $child_dom = dom_import_simplexml($fontDropdownOptions);
+                                // Import the child node into the parent's document
+                                $child_imported = $dropdownOptionsDom->ownerDocument->importNode($child_dom, true);
+                                // If the parent has children, insert before the first one.
+                                if ($dropdownOptionsDom->firstChild) {
+                                    $dropdownOptionsDom->insertBefore($child_imported, $dropdownOptionsDom->firstChild);
+                                } else {
+                                    // If the parent has no children, you can just append it (which makes it the first)
+                                    $dropdownOptionsDom->appendChild($child_imported);
+                                }
+                            }
+                        }
                     }
-                    foreach ($option->xpath('//options/' . $key . '/dropdownoptions') as $option) {
-                        $dropdownOptions .= $option->asXml();
+                    $dropdownOptionsString = $dropdownOptions->asXML();
+                    $dropdownOptionsArray = [];
+                    if (isset($dropdownOptions->optgroup)) {
+                        $optgroup = 0;
+                        foreach ($dropdownOptions->optgroup as $XMLElementKey => $XMLElement) {
+                            foreach ($XMLElement->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator = 0;
+                            /** @var SimpleXMLElement $options */
+                            foreach ($XMLElement->children() as $optionKey => $options) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['value'] = (string)$options[0];
+                                foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                    $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['attributes'][$attributeKey]  = (string)$attributeValue;
+                                }
+                                $optionIterator++;
+                            }
+                            $optgroup++;
+                        }
+                    } else {
+                        $optionIterator = 0;
+                        /** @var SimpleXMLElement $options */
+                        foreach ($dropdownOptions->children() as $optionKey => $options) {
+                            $dropdownOptionsArray[$optionKey][$optionIterator]['value'] = (string)$options[0];
+                            foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$optionKey][$optionIterator]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator++;
+                        }
                     }
-
-                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptions;
+                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptionsString;
+                    $aOptions['optionAttributes'][$key]['dropdownoptionsArray'] = $dropdownOptionsArray;
                 } else {
                     $aOptions['optionAttributes'][$key]['dropdownoptions'] = '';
                 }
 
                 if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])) {
                     $aOptions['categories'][] = $aOptions['optionAttributes'][$key]['category'];
+                }
+            }
+            // different sorting for react part
+            if (isset($oXMLConfig->optionsOrderReact)) {
+                foreach ($oXMLConfig->optionsOrderReact->children() as $key => $optionOrderReact) {
+                    $aOptions['optionsOrderReact'][$key]['category'] = !empty($optionOrderReact['category']) ? (string)$optionOrderReact['category'] : gT('Display options');
                 }
             }
 
@@ -1440,7 +1523,7 @@ class TemplateManifest extends TemplateConfiguration
         $fontOptions = '';
         $fontPackages = App()->getClientScript()->fontPackages;
         $coreFontPackages = $fontPackages['core'];
-        // TODO: Why not set?
+        // user fonts can only be added while manually inserting files into the uploaddir see fonts.php
         if (isset($fontPackages['user'])) {
             $userFontPackages = $fontPackages['user'];
         } else {
@@ -1486,12 +1569,13 @@ class TemplateManifest extends TemplateConfiguration
     {
         $sDescription = $this->config->metadata->description;
 
-          // If wrong Twig in manifest, we don't want to block the whole list rendering
-          // Note: if no twig statement in the description, twig will just render it as usual
+        // If wrong Twig in manifest, we don't want to block the whole list rendering
+        // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
+            $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
-          // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .

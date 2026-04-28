@@ -13,8 +13,8 @@ class UploadValidator
     /**
      * UploadValidator constructor.
      *
-     * @param array<string,mixed>|null  $post   HTTP POST variables. If null, $_POST is used.
-     * @param array<string,mixed>|null  $post   HTTP File Upload variables. If null, $_FILES is used.
+     * @param array|null $post   HTTP POST variables. If null, $_POST is used.
+     * @param array|null $files  HTTP File Upload variables. If null, $_FILES is used.
      */
     public function __construct($post = null, $files = null)
     {
@@ -96,5 +96,37 @@ class UploadValidator
                 false
             );
         }
+    }
+
+    /**
+     * Sets the post property of the UploadValidator instance.
+     *
+     * This method allows for updating the post array after the object has been instantiated.
+     * It's useful for testing or when post data needs to be modified after initial creation.
+     *
+     * @param array $post An associative array of POST data, typically in the format of $_POST.
+     *                    This array contains key-value pairs of form data submitted via HTTP POST.
+     *
+     * @return void This method does not return a value.
+     */
+    public function setPost($post)
+    {
+        $this->post = $post;
+    }
+
+    /**
+     * Sets the files property of the UploadValidator instance.
+     *
+     * This method allows for updating the files array after the object has been instantiated.
+     * It's useful for testing or when file data needs to be modified after initial creation.
+     *
+     * @param array $files An associative array of uploaded file information, typically in the format of $_FILES.
+     *                     Each element should contain file details like name, type, size, tmp_name, and error.
+     *
+     * @return void This method does not return a value.
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
     }
 }

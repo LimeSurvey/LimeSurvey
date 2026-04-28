@@ -6,7 +6,22 @@
 class SurveymenuController extends SurveyCommonAction
 {
     /**
+     * SurveymenuController Constructor
+     * @param $controller
+     * @param $id
+     **/
+    public function __construct($controller, $id)
+    {
+        parent::__construct($controller, $id);
+
+        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+    }
+
+    /**
      * @return string[] action filters
+     * @todo: Review if this code is actually running.
      */
     public function filters()
     {
@@ -194,7 +209,7 @@ class SurveymenuController extends SurveyCommonAction
                 }
             }
 
-            $debug = $userConfig['config']['debug'] ?? 0;
+            $debug = App()->getConfig('debug');
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -230,6 +245,7 @@ class SurveymenuController extends SurveyCommonAction
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
+        $debug = App()->getConfig('debug');
 
         if (Yii::app()->request->isPostRequest) {
             $menuid = Yii::app()->request->getPost('menuid', 0);
@@ -239,7 +255,6 @@ class SurveymenuController extends SurveyCommonAction
                 $model->delete();
                 $success = true;
             }
-            $debug = $userConfig['config']['debug'] ?? 0;
             $returnData = array(
                 'data' => [
                     'success' => $success,
@@ -270,52 +285,27 @@ class SurveymenuController extends SurveyCommonAction
      */
     public function restore()
     {
+        $this->requirePostRequest();
+
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete') && Permission::model()->hasGlobalPermission('settings', 'update'))) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
-        if (Yii::app()->request->isPostRequest) {
-            //Check for permission!
-            if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $debug = $userConfig['config']['debug'] ?? 0;
-                $returnData = array(
-                    'data' => [
-                        'success' => $success,
-                        'redirect' => false,
-                        'settings' => array(
-                            'extrasettings' => false,
-                            'parseHTML' => false,
-                        ),
-                        'message' => gT("You don't have the right to restore the settings to default")
-                    ]
-                );
+        $model = Surveymenu::model();
 
-                if ($debug > 0) {
-                    $returnData['data']['debug'] = [$model, $_POST];
-                    $returnData['data']['debugErrors'] = $model->getErrors();
-                }
-
-                return Yii::app()->getController()->renderPartial(
-                    '/admin/super/_renderJson',
-                    $returnData,
-                    false,
-                    false
-                );
-            }
-            //get model to do the work
-            $model = Surveymenu::model();
-            $success = $model->restoreDefaults();
-            $debug = $userConfig['config']['debug'] ?? 0;
+        //Check for permission!
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            $debug = App()->getConfig('debug');
             $returnData = array(
                 'data' => [
-                    'success' => $success,
+                    'success' => 0,
                     'redirect' => false,
                     'settings' => array(
                         'extrasettings' => false,
                         'parseHTML' => false,
                     ),
-                    'message' =>  ($success ? gT("Default survey menus restored.") : gT("Something went wrong!"))
+                    'message' => gT("You don't have the right to restore the settings to default")
                 ]
             );
 
@@ -331,6 +321,32 @@ class SurveymenuController extends SurveyCommonAction
                 false
             );
         }
+        //get model to do the work
+        $success = $model->restoreDefaults();
+        $debug = App()->getConfig('debug');
+        $returnData = array(
+            'data' => [
+                'success' => $success,
+                'redirect' => false,
+                'settings' => array(
+                    'extrasettings' => false,
+                    'parseHTML' => false,
+                ),
+                'message' =>  ($success ? gT("Default survey menus restored.") : gT("Something went wrong!"))
+            ]
+        );
+
+        if ($debug > 0) {
+            $returnData['data']['debug'] = [$model, $_POST];
+            $returnData['data']['debugErrors'] = $model->getErrors();
+        }
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            $returnData,
+            false,
+            false
+        );
     }
 
     /**
@@ -367,6 +383,7 @@ class SurveymenuController extends SurveyCommonAction
      **/
     public function index()
     {
+        // Permission check is done in the constructor.
         $this->getController()->redirect(array('admin/menus/sa/view'));
     }
 
@@ -376,6 +393,8 @@ class SurveymenuController extends SurveyCommonAction
      */
     public function view()
     {
+        // Permission check is done in the constructor.
+
         $aData = array();
         $aData['model'] = Surveymenu::model();
 
@@ -391,6 +410,8 @@ class SurveymenuController extends SurveyCommonAction
 
 
         $aData['topbar']['title'] = gT('Survey menus');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
+
         $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/surveymenu/partial/topbarBtns/rightSideButtons',
             [

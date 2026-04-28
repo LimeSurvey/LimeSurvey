@@ -123,7 +123,7 @@ class TokenDynamic extends LSActiveRecord
      * (some older tokens tables dont' get udated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
-     * once per survey participants table / backup survey participants table
+     * once per survey participant list / backup survey participant list
      */
     public function checkColumns()
     {
@@ -135,7 +135,7 @@ class TokenDynamic extends LSActiveRecord
         $missingcolumns = array_diff($columncheck, $columns);
         //Some columns are missing - we need to create them
         if (count($missingcolumns) > 0) {
-            Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+            Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
             $columninfo = array(
                     'validfrom' => 'datetime',
                     'validuntil' => 'datetime',
@@ -149,13 +149,13 @@ class TokenDynamic extends LSActiveRecord
             }
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         } else {
-            // On some installs we have created not null for participant_id and blacklisted fix this
+            // On some installs we have created not null for participant_id and blocklisted fix this
             $columns = array('blacklisted', 'participant_id');
 
             foreach ($columns as $columnname) {
                 $definition = $tableSchema->getColumn($columnname);
                 if ($definition->allowNull != true) {
-                    Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
+                    Yii::app()->loadHelper('update.updatedb'); //Load the admin helper to allow column creation
                     Yii::app()->db->createCommand()->alterColumn($sTableName, $columnname, "string({$definition->size}})");
                     Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
                 }
@@ -222,20 +222,71 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * @param int[]|bool $aTokenIds
-     * @param int $iMaxEmails
-     * @param bool $bEmail
-     * @param string $SQLemailstatuscondition
-     * @param string $SQLremindercountcondition
-     * @param string $SQLreminderdelaycondition
-     * @return array|CDbDataReader
+     * Find participant IDs matching email criteria (invitations or reminders)
+     * Optimized to fetch only IDs without loading full token records (issue #20465)
+     * @param int[]|bool $aTokenIds Optional array of specific token IDs to filter
+     * @param int $iMaxEmails Maximum number of records to return
+     * @param bool $bEmail If true, find uninvited participants; if false, find reminded participants
+     * @param string $SQLemailstatuscondition Additional email status condition
+     * @param string $SQLremindercountcondition Reminder count condition
+     * @param string $SQLreminderdelaycondition Reminder delay condition
+     * @return array Array of token IDs
      */
-    public function findUninvitedIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
+    public function findParticipantIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
-        $tokens = $this->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
-        $ids = array_map(function ($item) {
-            return $item->tid;
-        }, $tokens);
+        // Optimized version that only fetches and returns IDs to avoid memory exhaustion (issue #20465)
+        // Use CDbCommand for safe SQL generation with proper column quoting
+        $db = Yii::app()->db;
+        $command = $db->createCommand()
+            ->select('tid, participant_id')
+            ->from($this->tableName());
+
+        // Build conditions using Yii's safe quoting methods
+        $command->andWhere($db->quoteColumnName('completed') . " IN ('N', '')");
+        $command->andWhere($db->quoteColumnName('token') . ' <> ' . $db->quoteValue(''));
+        $command->andWhere($db->quoteColumnName('email') . ' <> ' . $db->quoteValue(''));
+
+        if ($bEmail) {
+            $command->andWhere($db->quoteColumnName('sent') . " IN ('N', '')");
+        } else {
+            $command->andWhere($db->quoteColumnName('sent') . " NOT IN ('N', '')");
+        }
+
+        if ($SQLemailstatuscondition) {
+            $command->andWhere($SQLemailstatuscondition);
+        }
+
+        if ($SQLremindercountcondition) {
+            $command->andWhere($SQLremindercountcondition);
+        }
+
+        if ($SQLreminderdelaycondition) {
+            $command->andWhere($SQLreminderdelaycondition);
+        }
+
+        if ($aTokenIds) {
+            $ids = array_map('intval', $aTokenIds);
+            $placeholders = implode(',', array_fill(0, count($ids), '?'));
+            $command->andWhere($db->quoteColumnName('tid') . " IN ($placeholders)", $ids);
+        }
+
+        $command->order('tid');
+
+        if ($iMaxEmails) {
+            $command->limit($iMaxEmails);
+        }
+
+        $results = $command->queryAll();
+
+        // Filter out blocklisted participants (same approach as findUninvited)
+        $cpdbBlocklisted = Participant::model()->getBlacklistedParticipantIds();
+        $results = array_filter($results, function ($item) use ($cpdbBlocklisted) {
+            return empty($item['participant_id']) || !in_array($item['participant_id'], $cpdbBlocklisted);
+        });
+
+        // Extract IDs only
+        $ids = array_column($results, 'tid');
+
         return $ids;
     }
 
@@ -566,6 +617,20 @@ class TokenDynamic extends LSActiveRecord
         return $this->getYesNoDateFormated($field);
     }
 
+    public function getCustomDateAttrFormatted($attrName)
+    {
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $attributeService = $diContainer->get(
+            LimeSurvey\Models\Services\ParticipantAttributeService::class
+        );
+        $field = $this->{$attrName};
+        return $attributeService->convertDateAttributeToDisplayFormat(
+            0,
+            $field,
+            false
+        );
+    }
+
     /**
      * @param string $field
      * @return string
@@ -577,7 +642,7 @@ class TokenDynamic extends LSActiveRecord
                 $field     = '<span class="text-danger">' . gT('Quota out') . '</span>';
             } elseif ($field != 'Y') {
                 $fieldDate = convertToGlobalSettingFormat($field);
-                $field     = '<span class="text-success">' . $fieldDate . '</span>';
+                $field     = '<span class="text-success">' . CHtml::encode($fieldDate) . '</span>';
             } else {
                 $field     = '<span class="text-success ri-check-fill"></span>';
             }
@@ -746,11 +811,19 @@ class TokenDynamic extends LSActiveRecord
         // Custom attributes
         foreach ($aCustomAttributes as $sColName => $oColumn) {
             $desc = ($oColumn['description'] != '') ? $oColumn['description'] : $sColName;
+            if (array_key_exists('type', $oColumn) && $oColumn['type'] == 'DP') {
+                $value = '$data->getCustomDateAttrFormatted(\'' . $sColName . '\')';
+                $type = 'raw';
+            } else {
+                $value = '$data->' . $sColName;
+                $type = 'longtext';
+            }
+
             $aCustomAttributesCols[] = array(
                 'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
-                'type' => 'longtext',
-                'value' => '$data->' . $sColName,
+                'type' => $type,
+                'value' => $value,
                 'headerHtmlOptions' => array('class' => ''),
                 'htmlOptions' => array('class' => ''),
             );
@@ -810,11 +883,7 @@ class TokenDynamic extends LSActiveRecord
             'iconClass'        => 'ri-eye-fill',
             'enabledCondition' => $permission_reponses_create
                 && !$this->survey->isActive
-                && !empty($this->token)
-                && ($this->completed == "N"
-                    || empty($this->completed)
-                    || $this->survey->alloweditaftercompletion == "Y"
-                )
+                && $this->canBeUsed()
         ];
         $dropdownItems[] = [
             'title'            => gT('Launch the survey with this participant'),
@@ -827,10 +896,7 @@ class TokenDynamic extends LSActiveRecord
             'iconClass'        => 'ri-play-fill',
             'enabledCondition' => $permission_reponses_create
                 && $this->survey->isActive
-                && !empty($this->token)
-                && ($this->completed === "N"
-                    || empty($this->completed)
-                    || $this->survey->alloweditaftercompletion === "Y")
+                && $this->canBeUsed()
         ];
         $dropdownItems[] = [
             'title'            => gT('Send email invitation'),
@@ -840,18 +906,8 @@ class TokenDynamic extends LSActiveRecord
             ]),
             'iconClass'        => 'ri-mail-send-fill',
             'enabledCondition' => $permission_tokens_update
-                && !empty($this->token)
                 && ($this->sent === "N" || empty($this->sent))
-                && $this->emailstatus === "OK"
-                && $this->email
-                && $this->completed === "N"
-                && ($this->usesleft > 0 || $this->survey->alloweditaftercompletion === "Y")
-                && $this->survey->isActive
-                && !empty($this->token)
-                && ($this->completed === "N"
-                    || empty($this->completed)
-                    || $this->survey->alloweditaftercompletion === "Y"
-                )
+                && $this->canBeEmailed()
         ];
         $dropdownItems[] = [
             'title'            => gT('Send email reminder'),
@@ -861,19 +917,14 @@ class TokenDynamic extends LSActiveRecord
             ]),
             'iconClass'        => 'ri-mail-send-fill',
             'enabledCondition' => $permission_tokens_update
-                && !empty($this->token)
                 && !($this->sent === "N" || empty($this->sent))
-                && $this->emailstatus === "OK"
-                && $this->email
-                && $this->completed === "N"
-                && ($this->usesleft > 0 || $this->survey->alloweditaftercompletion === "Y")
+                && $this->canBeEmailed()
         ];
         $dropdownItems[] = [
             'title'            => gT('Edit this survey participant'),
             'url'              => App()->createUrl("/admin/tokens/sa/edit", [
                 "iSurveyId" => self::$sid,
-                "iTokenId"  => $this->tid,
-                "ajax"      => "true"
+                "iTokenId"  => $this->tid
             ]),
             'iconClass'        => 'ri-pencil-fill',
             'linkAttributes'    => [
@@ -889,12 +940,12 @@ class TokenDynamic extends LSActiveRecord
                 'data-bs-toggle'  => "modal",
                 'data-bs-target'  => '#confirmation-modal',
                 'data-btnclass' => 'btn-danger',
-                'data-message'    => gt('Do you really want to delete this participant'),
+                'data-message'    => gT('Do you really want to delete this participant'),
                 'data-post-url'   => App()->createUrl("/admin/tokens/sa/deleteToken", [
                     "sid"   => self::$sid,
                     "sItem" => $this->tid
                 ]),
-                'data-btntext'    => gt('Delete'),
+                'data-btntext'    => gT('Delete'),
             ],
             'enabledCondition' => $permission_tokens_delete
         ];
@@ -1023,6 +1074,7 @@ class TokenDynamic extends LSActiveRecord
                 'desc' => $sColName . ' desc',
             );
         }
+        $this->decryptEncryptAttributes('encrypt');
 
         $criteria = new LSDbCriteria();
         $criteria->compare('tid', $this->tid, false);
@@ -1067,6 +1119,7 @@ class TokenDynamic extends LSActiveRecord
                 'pageSize' => $pageSizeTokenView,
             ),
         ));
+        $this->decryptEncryptAttributes();
 
         return $dataProvider;
     }
@@ -1087,5 +1140,31 @@ class TokenDynamic extends LSActiveRecord
     public function getDynamicId()
     {
         return $this->getSurveyId();
+    }
+
+    /**
+     * Returns true if the token can be used
+     * @return bool
+     */
+    public function canBeUsed()
+    {
+        return !empty($this->token)
+            && (
+                $this->completed == "N"
+                || empty($this->completed)
+                || $this->survey->isAllowEditAfterCompletion
+            );
+    }
+
+    public function canBeEmailed()
+    {
+        return !empty($this->token)
+            && $this->emailstatus == "OK"
+            && $this->email
+            && $this->completed == "N"
+            && (
+                $this->usesleft > 0
+                || $this->survey->isAllowEditAfterCompletion
+            );
     }
 }

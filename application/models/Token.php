@@ -42,7 +42,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $emailstatus Participant's e-mail address status: OK/bounced/OptOut
  * @property string $token Participant's token
  * @property string $language Participant's language eg: en
- * @property string $blacklisted Whether participant is blacklisted: (Y/N)
+ * @property string $blacklisted Whether participant is blocklisted: (Y/N)
  * @property string $sent
  * @property string $remindersent
  * @property integer $remindercount
@@ -95,7 +95,7 @@ abstract class Token extends Dynamic
             'emailstatus' => gT('Email status'),
             'token' => gT('Access code'),
             'language' => gT('Language code'),
-            'blacklisted' => gT('Blacklisted'),
+            'blacklisted' => gT('Blocklisted'),
             'sent' => gT('Invitation sent date'),
             'remindersent' => gT('Last reminder sent date'),
             'remindercount' => gT('Total numbers of sent reminders'),
@@ -155,13 +155,11 @@ abstract class Token extends Dynamic
     public static function createTable($surveyId, array $extraFields = array())
     {
         $surveyId = intval($surveyId);
-        $options = '';
 
         // Specify case sensitive collations for the token
         $sCollation = '';
         if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli') {
             $sCollation = "COLLATE 'utf8mb4_bin'";
-            $options = sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
         }
 
         if (
@@ -206,24 +204,27 @@ abstract class Token extends Dynamic
         $db = \Yii::app()->db;
         $sTableName = $oSurvey->tokensTableName;
 
-        $db->createCommand()->createTable($sTableName, $fields, $options);
+        try {
+            $db->createCommand()->createTable($sTableName, $fields);
+            /**
+             * The random component in the index name is needed because Postgres is being the dorky kid and
+             * complaining about duplicates when renaming the table and trying to use the same index again
+             * on a new token table (for example on reactivation)
+             */
+            $db->createCommand()->createIndex("idx_token_token_{$surveyId}_" . rand(1, 50000), $sTableName, 'token');
 
-        /**
-         * The random component in the index name is needed because Postgres is being the dorky kid and
-         * complaining about duplicates when renaming the table and trying to use the same index again
-         * on a new token table (for example on reactivation)
-         */
-        $db->createCommand()->createIndex("idx_token_token_{$surveyId}_" . rand(1, 50000), $sTableName, 'token');
-
-        // MSSQL does not support indexes on text fields so not needed here
-        switch (Yii::app()->db->driverName) {
-            case 'mysql':
-            case 'mysqli':
-                $db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
-                break;
-            case 'pgsql':
-                $db->createCommand()->createIndex('idx_email_' . $surveyId . '_' . rand(1, 50000), $sTableName, 'email', false);
-                break;
+            // MSSQL does not support indexes on text fields so not needed here
+            switch (Yii::app()->db->driverName) {
+                case 'mysql':
+                case 'mysqli':
+                    $db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
+                    break;
+                case 'pgsql':
+                    $db->createCommand()->createIndex('idx_email_' . $surveyId . '_' . rand(1, 50000), $sTableName, 'email', false);
+                    break;
+            }
+        } catch (CDbException $ex) {
+            //table already exists, skipping
         }
 
         // Refresh schema cache just in case the table existed in the past, and return if table exist
@@ -305,13 +306,17 @@ abstract class Token extends Dynamic
 
     /**
      * Sanitize token show to the user (replace sanitize_helper sanitize_token)
-     * @param string $token to sanitize
+     * @param string|null $token to sanitize
      * @return string sanitized token
      */
     public static function sanitizeToken($token)
     {
+        if (is_null($token)) {
+            return "";
+        }
         // According to Yii doc : http://www.yiiframework.com/doc/api/1.1/CSecurityManager#generateRandomString-detail
-        return preg_replace('/[^0-9a-zA-Z_~]/', '', $token);
+        $pattern = Yii::app()->getConfig("allowedcharacters_pattern_token");
+        return preg_replace($pattern, '', $token);
     }
 
     /**
@@ -518,7 +523,7 @@ abstract class Token extends Dynamic
 
     public function onBeforeSave($event)
     {
-        // Mark token as "OptOut" if globally blacklisted and 'blacklistnewsurveys' is enabled
+        // Mark token as "OptOut" if globally blocklisted and 'blacklistnewsurveys' is enabled
         if (Yii::app()->getConfig('blacklistnewsurveys') == "Y" && $this->getIsNewRecord()) {
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             if ($blacklistHandler->isTokenBlacklisted($this)) {

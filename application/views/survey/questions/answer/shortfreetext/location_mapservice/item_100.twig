@@ -22,23 +22,20 @@
     <div class="geoname_search col-12 " >
         <div class="input-group">
             <div class="input-group-text search-icon">
-                <span class="fa fa-search"></span>
+                <span class="fa fa-search ri-search-line"></span>
             </div>
                 <input
                     id="searchbox_{{ name }}"
                     placeholder="{{ gT("Search (3 characters minimum)") }}"
-                    class="form-control"
+                    class="form-control ls-geoloc-search"
                     type="text"
                  />
 
             <div class="input-group-text checkbox">
-                    <label for="restrictToExtent_{{ name }}">
-                    <input
-                        type="checkbox"
-                        id="restrictToExtent_{{ name }}"
-                        />
-                        {{ gT("Restrict search to map extent") }}
-                    </label>
+                <label for="restrictToExtent_{{ name }}">
+                    <input type="checkbox" id="restrictToExtent_{{ name }}"/>
+                    {{ gT("Restrict search to map extent") }}
+                </label>
             </div>
         </div>
     </div>

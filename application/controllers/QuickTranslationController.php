@@ -1,7 +1,40 @@
 <?php
 
+use Anper\Iuliia\Iuliia;
+
 class QuickTranslationController extends LSBaseController
 {
+    // Define the language code mappings from LimeSurvey to Google Translate API
+    // where the codes are different
+    public $languageCodeMappings = array(
+        'cs-informal' => 'cs',
+        'de-informal' => 'de',
+        'de-easy' => 'de',
+        'es-informal' => 'es',
+        'es-AR' => 'es',
+        'es-AR-informal' => 'es',
+        'es-CL' => 'es',
+        'es-CO' => 'es',
+        'es-MX' => 'es',
+        'hat' => 'ht',
+        'he' => 'iw',
+        'ie' => 'ga',
+        'it-informal' => 'it',
+        'mya' => 'my',
+        'nb' => 'no',
+        'nl-informal' => 'nl',
+        'nn' => 'no',
+        'prs' => 'fa',
+        'roh' => 'rm',
+        'smi' => 'se',
+        'swh' => 'sw',
+        'xho' => 'xh',
+        'yor' => 'yo',
+        'zh-Hans' => 'zh-CN',
+        'zh-Hant-HK' => 'zh-TW',
+        'zh-Hant-TW' => 'zh-TW',
+    );
+
     /**
      * Here we have to use the correct layout (NOT main.php)
      *
@@ -85,7 +118,7 @@ class QuickTranslationController extends LSBaseController
             // Only save if the administration user has the correct permission
             //todo: this is only necessary on save ...
             if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
-                $this->translateSave($languageToTranslate, $quickTranslation);
+                $this->translateSave($languageToTranslate, $quickTranslation, $surveyid);
                 Yii::app()->setFlashMessage(gT("Saved"), 'success');
             }
 
@@ -131,9 +164,10 @@ class QuickTranslationController extends LSBaseController
      * @param $tolang
      * @param $baselang
      * @param $quickTranslation \LimeSurvey\Models\Services\QuickTranslation the quicktranslation object
+     * @param $surveyid
      * @return void
      */
-    private function translateSave($tolang, $quickTranslation)
+    private function translateSave($tolang, $quickTranslation, $surveyid)
     {
         $tab_names = $quickTranslation->getTabNames();
         $tab_names_full = $tab_names;
@@ -148,6 +182,7 @@ class QuickTranslationController extends LSBaseController
             }
         }
 
+        $updateOccured = false;
         foreach ($tab_names_full as $type) {
             $size = (int) Yii::app()->getRequest()->getPost("{$type}_size"); //todo: what is size here?
             // start a loop in order to update each record
@@ -164,11 +199,20 @@ class QuickTranslationController extends LSBaseController
                         $answerCode = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
                         $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
                         $quickTranslation->updateTranslations($type, $tolang, $new, $qidOrGid, $answerCode, $iScaleID);
+                        $updateOccured = true;
                     }
                 }
                 $i++;
             } // end while
         } // end foreach
+
+        if ($updateOccured) {
+            $survey = Survey::model()->findByPk($surveyid);
+            if ($survey) {
+                $surveyDetailService = new \LimeSurvey\Models\Services\SurveyDetailService();
+                $surveyDetailService->updateSurveyLastModified($survey);
+            }
+        }
     }
 
     /**
@@ -212,126 +256,107 @@ class QuickTranslationController extends LSBaseController
         //iterate through all tabs and define content of each tab
         foreach ($tabsViewData['tab_names'] as $tabName) {
             $singleTabData = [];
-            $amTypeOptions = $quickTranslation->setupTranslateFields($tabName);
-
-            $resultbase = $quickTranslation->getTranslations($tabName, $baselang);
-            $resultto =  $quickTranslation->getTranslations($tabName, $tolang);
-
-            $type2 = $amTypeOptions["associated"];
+            $translateFieldOptions = $quickTranslation->setupTranslateFields($tabName);
+            $translationsBase = $quickTranslation->getTranslations($tabName, $baselang);
+            $translationsTo = $quickTranslation->getTranslations($tabName, $tolang);
+            $associatedName = $translateFieldOptions["associated"];
             $associated = false;
-            if (!empty($type2)) {
+            if (!empty($associatedName)) {
                 $associated = true;
                 //get type options again
-                $amTypeOptions2 = $quickTranslation->setupTranslateFields($type2);
-                $resultbase2 = $quickTranslation->getTranslations($tabName, $baselang);
-                $resultto2 = $quickTranslation->getTranslations($tabName, $tolang);
-            } else {
-                $resultbase2 = $resultbase;
-                $resultto2 = $resultto;
+                $associatedData = $quickTranslation->setupTranslateFields($associatedName);
             }
-
             $singleTabData['type'] = $tabName;
-
             //always set first tab active
             $singleTabData['activeTab'] = $tabName === 'title';
 
             //iterates through active record results depending on the tab
-            $countResultBase = count($resultbase);
+            $countResultBase = count($translationsBase);
             for ($j = 0; $j < $countResultBase; $j++) {
                 $singleTabFieldsData = [];
-                $oRowfrom = $resultbase[$j];
-                $oResultBase2 = $resultbase2[$j];
-                $oResultTo = $resultto[$j];
-                $oResultTo2 = $resultto2[$j];
+                $translationBase = $translationsBase[$j];
+                $translationTo = $translationsTo[$j];
 
-                $aRowfrom = array();
-                $aResultBase2 = array();
-                $aResultTo = array();
-                $aResultTo2 = array();
-
-                $class = get_class($oRowfrom);
-                if ($class == 'QuestionGroup') {
-                    $aRowfrom = $oRowfrom->questiongroupl10ns[$baselang]->getAttributes();
-                    $aResultBase2 = !empty($type2) ? $oResultBase2->questiongroupl10ns[$baselang]->getAttributes() : $aRowfrom;
-                    $aResultTo = $oResultTo->questiongroupl10ns[$tolang]->getAttributes();
-                    $aResultTo2 = !empty($type2) ? $oResultTo2->questiongroupl10ns[$tolang]->getAttributes() : $aResultTo;
-                } elseif ($class == 'Question' || $class == 'Subquestion') {
-                    $aRowfrom = $oRowfrom->questionl10ns[$baselang]->getAttributes();
-                    if (!empty($oRowfrom['parent_qid'])) {
-                        $aRowfrom['parent'] = $oRowfrom->parent->getAttributes();
+                $translationAttributesBase = [];
+                $translationAttributesTo = [];
+                $class = get_class($translationBase);
+                if ($class === 'QuestionGroup') {
+                    $translationAttributesBase = $translationBase->questiongroupl10ns[$baselang]->getAttributes();
+                    $translationAttributesTo = array_key_exists($tolang, $translationTo->questiongroupl10ns)
+                        ? $translationTo->questiongroupl10ns[$tolang]->getAttributes()
+                        : $translationAttributesBase;
+                } elseif ($class === 'Question' || $class === 'Subquestion') {
+                    $translationAttributesBase = $translationBase->questionl10ns[$baselang]->getAttributes();
+                    if (!empty($translationBase['parent_qid'])) {
+                        $translationAttributesBase['parent'] = $translationBase->parent->getAttributes();
                     }
-                    $aResultBase2 = !empty($type2) ? $oResultBase2->questionl10ns[$baselang]->getAttributes() : $aRowfrom;
-                    $aResultTo = $oResultTo->questionl10ns[$tolang]->getAttributes();
-                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionl10ns[$tolang]->getAttributes() : $aResultTo;
-                } elseif ($class == 'Answer') {
-                    $aRowfrom = $oRowfrom->answerl10ns[$baselang]->getAttributes();
-                    $aRowfrom['question_title'] = $oRowfrom->question->title; ///this is the question code
-                    $aResultBase2 = !empty($type2) ? $oResultBase2->answerl10ns[$baselang]->getAttributes() : $aRowfrom;
-                    $aResultTo = $oResultTo->answerl10ns[$tolang]->getAttributes();
-                    $aResultTo2 = !empty($type2) ? $oResultTo2->answerl10ns[$tolang]->getAttributes() : $aResultTo;
+                    $translationAttributesTo = array_key_exists($tolang, $translationTo->questionl10ns)
+                        ? $translationTo->questionl10ns[$tolang]->getAttributes()
+                        : $translationAttributesBase;
+                } elseif ($class === 'Answer') {
+                    $translationAttributesBase = $translationBase->answerl10ns[$baselang]->getAttributes();
+                    $translationAttributesBase['question_title'] = $translationBase->question->title; ///this is the question code
+                    $translationAttributesTo = array_key_exists($tolang, $translationTo->answerl10ns)
+                        ? $translationTo->answerl10ns[$tolang]->getAttributes()
+                        : $translationAttributesBase;
                 }
-                $aRowfrom = array_merge($aRowfrom, $oRowfrom->getAttributes());
-                $aResultBase2 = array_merge($aResultBase2, $oResultBase2->getAttributes());
-                $aResultTo = array_merge($aResultTo, $oResultTo->getAttributes());
-                $aResultTo2 = array_merge($aResultTo2, $oResultTo2->getAttributes());
+                $translationAttributesBase = array_merge($translationAttributesBase, $translationBase->getAttributes());
+                $translationAttributesTo = array_merge($translationAttributesTo, $translationTo->getAttributes());
 
-                $textfrom = htmlspecialchars_decode((string) $aRowfrom[$amTypeOptions["dbColumn"]]);
+                $textfrom = htmlspecialchars_decode((string)$translationAttributesBase[$translateFieldOptions["dbColumn"]]);
 
-                $textto = $aResultTo[$amTypeOptions["dbColumn"]];
+                $textto = $translationAttributesTo[$translateFieldOptions["dbColumn"]];
                 if ($associated) {
-                    $textfrom2 = htmlspecialchars_decode((string) $aResultBase2[$amTypeOptions2["dbColumn"]]);
-                    $textto2 = $aResultTo2[$amTypeOptions2["dbColumn"]];
+                    $associatedResultBase = htmlspecialchars_decode((string)$translationAttributesBase[$associatedData["dbColumn"]]);
+                    $associatedResultTo = $translationAttributesTo[$associatedData["dbColumn"]];
                 }
 
-                $gid = ($amTypeOptions["gid"] == true) ? $aRowfrom['gid'] : null;
-                $qid = ($amTypeOptions["qid"] == true) ? $aRowfrom['qid'] : null;
+                $gid = ($translateFieldOptions["gid"] == true) ? $translationAttributesBase['gid'] : null;
+                $qid = ($translateFieldOptions["qid"] == true) ? $translationAttributesBase['qid'] : null;
 
                 $textform_length = strlen(trim($textfrom));
-                $textfrom2_length = $associated ? strlen(trim((string) $textfrom2)) : 0;
+                $textfrom2_length = $associated ? strlen(trim((string)$associatedResultBase)) : 0;
 
                 $singleTabFieldsData['all_fields_empty'] = ($textform_length == 0) && ($textfrom2_length == 0);
 
-                $singleTabFieldsData['fieldData'] = array(
-                    'textfrom' => $this->cleanup($textfrom),
-                    'textfrom2' => $this->cleanup($textfrom2),
-                    'textto' => $this->cleanup($textto),
-                    'textto2' => $this->cleanup($textto2),
-                    'rowfrom' => $aRowfrom,
-                    'rowfrom2' => $aResultBase2,
-                    'gid' => $gid,
-                    'qid' => $qid,
-                    'amTypeOptions' => $amTypeOptions,
-                    'amTypeOptions2' => $amTypeOptions2,
-                    'i' => $j,
-                    'type' => $tabName,
-                    'type2' => $type2,
-                    'associated' => $associated,
-                );
+                $singleTabFieldsData['fieldData'] = [
+                    'textfrom'       => $this->cleanup($textfrom),
+                    'textto'         => $this->cleanup($textto),
+                    'rowfrom'        => $translationAttributesBase,
+                    'gid'            => $gid,
+                    'qid'            => $qid,
+                    'amTypeOptions'  => $translateFieldOptions,
+                    'associatedData' => $associatedData,
+                    'i'              => $j,
+                    'type'           => $tabName,
+                    'associatedName' => $associatedName,
+                    'associated'     => $associated,
+                ];
                 $singleTabFieldsData['translateFields'] = [];
                 $singleTabFieldsData['translateFields'][] = [
-                    'surveyId' => $survey->sid,
-                    'gid'      => $gid,
-                    'qid'      => $qid,
-                    'type'  => $tabName,
-                    'amTypeOptions' => $amTypeOptions,
+                    'surveyId'      => $survey->sid,
+                    'gid'           => $gid,
+                    'qid'           => $qid,
+                    'type'          => $tabName,
+                    'amTypeOptions' => $translateFieldOptions,
                     'textfrom'      => $textfrom,
                     'textto'        => $textto,
                     'j'             => $j,
-                    'rowfrom'      => $aRowfrom,
-                    'nrows' => max($this->calcNRows($textfrom), $this->calcNRows($textto))
+                    'rowfrom'       => $translationAttributesBase,
+                    'nrows'         => max($this->calcNRows($textfrom), $this->calcNRows($textto))
                 ];
-                if ($associated && strlen(trim((string) $textfrom2)) > 0) {
+                if ($associated && strlen(trim((string)$associatedResultBase)) > 0) {
                     $singleTabFieldsData['translateFields'][] = [
-                        'surveyId' => $survey->sid,
-                        'gid'      => $gid,
-                        'qid'      => $qid,
-                        'type'  => $type2,
-                        'amTypeOptions' => $amTypeOptions2,
-                        'textfrom'      => $textfrom2,
-                        'textto'        => $textto2,
+                        'surveyId'      => $survey->sid,
+                        'gid'           => $gid,
+                        'qid'           => $qid,
+                        'type'          => $associatedName,
+                        'amTypeOptions' => $associatedData,
+                        'textfrom'      => $associatedResultBase,
+                        'textto'        => $associatedResultTo,
                         'j'             => $j,
-                        'rowfrom'      => $aResultBase2,
-                        'nrows' => max($this->calcNRows($textfrom2), $this->calcNRows($textto2))
+                        'rowfrom'       => $translationAttributesBase,
+                        'nrows'         => max($this->calcNRows($associatedResultBase), $this->calcNRows($associatedResultTo))
                     ];
                 }
                 $singleTabData['singleTabFieldsData'][] = $singleTabFieldsData;
@@ -346,7 +371,7 @@ class QuickTranslationController extends LSBaseController
     /**
      *
      *
-     * @param $string
+     * @param string $string
      * @return string|null
      */
     private function cleanup($string): ?string
@@ -397,6 +422,9 @@ class QuickTranslationController extends LSBaseController
      */
     private function calcNRows($subject)
     {
+        if ($subject === null) {
+            $subject = "";
+        }
         // Determines the size of the text box
         // A proxy for box sixe is string length divided by 80
         $pattern = "(<br..?>)";
@@ -415,7 +443,7 @@ class QuickTranslationController extends LSBaseController
      *
      * @return void
      */
-    public function actionAjaxtranslategoogleapi()
+    public function actionAjaxtranslategoogleapi($surveyid)
     {
         // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
         /* No Permission check on survey, seems unneded (return a josn with current string posted */
@@ -429,31 +457,28 @@ class QuickTranslationController extends LSBaseController
         }
     }
 
-    /*
+    /**
      * translateGoogleApi.php
      * Creates a JSON interface for the auto-translate feature
+     *
+     * @psalm-suppress UndefinedClass TODO: Dead code?
+     * @psalm-suppress MissingFile
      */
     private function translateGoogleApi()
     {
-        $sBaselang   = Yii::app()->getRequest()->getPost('baselang', '');
-        $sTolang     = Yii::app()->getRequest()->getPost('tolang', '');
+        $sourceLanguage   = Yii::app()->getRequest()->getPost('baselang', '');
+        $destinationLanguage     = Yii::app()->getRequest()->getPost('tolang', '');
         $sToconvert  = Yii::app()->getRequest()->getPost('text', '');
 
-        $aSearch     = array('zh-Hans', 'zh-Hant-HK', 'zh-Hant-TW', 'nl-informal', 'de-informal', 'de-easy', 'it-formal', 'pt-BR', 'es-MX', 'nb', 'nn');
-        $aReplace    = array('zh-CN', 'zh-TW', 'zh-TW', 'nl', 'de', 'de', 'it', 'pt', 'es', 'no', 'no');
-        $sBaselang = str_replace($aSearch, $aReplace, $sBaselang);
-        $sTolang = str_replace($aSearch, $aReplace, $sTolang);
-
-        $error = false;
-
+        $replacements = $this->languageCodeMappings;
+        $sourceLanguage = isset($replacements[$sourceLanguage]) ? $replacements[$sourceLanguage] : $sourceLanguage;
+        $destinationLanguage = isset($replacements[$destinationLanguage]) ? $replacements[$destinationLanguage] : $destinationLanguage;
+        $translateApiKey = App()->getConfig('googletranslateapikey');
+        $errorMessageText = false;
+        $sOutput = '';
         try {
-            require_once(APPPATH . '/third_party/gtranslate-api/GTranslate.php');
-            $gtranslate = new Gtranslate();
-            $objGt = $gtranslate;
-
-            // Gtranslate requires you to run function named XXLANG_to_XXLANG
-            $sProcedure = $sBaselang . "_to_" . $sTolang;
-
+            $gtranslate = new \GoogleTranslate\Client($translateApiKey);
+            // use curl because http with fopen is disabled
             $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
 
             $sparts = array();
@@ -461,23 +486,36 @@ class QuickTranslationController extends LSBaseController
                 if ($part[2] == 'EXPRESSION') {
                     $sparts[] = $part[0];
                 } else {
-                    $convertedPart = (string) $objGt->$sProcedure($part[0]);
+                    $convertedPart = $gtranslate->translate($part[0], $destinationLanguage, $sourceLanguage);
+
                     $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
                     $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
+                    if ($destinationLanguage == 'sr-Latn') {
+                        $convertedPart = Iuliia::translate($convertedPart, Iuliia::TELEGRAM);
+                    }
                     $sparts[] = $convertedPart;
                 }
             }
             $sOutput = implode(' ', $sparts);
-        } catch (GTranslateException $ge) {
-            // Get the error message and build the ouput array
-            $error = true;
-            $sOutput = $ge->getMessage();
+        } catch (\Exception $ge) {
+            // Get the error message and remove the key for security reasons
+            $errorMessage = $ge->getMessage();
+            if ($translateApiKey) {
+                $errorMessage = str_replace($translateApiKey, '*****', $errorMessage);
+            }
+
+            // Use regex to extract the first "message": "..." pattern
+            if (preg_match('/"message"\s*:\s*"([^"]+)"/', $errorMessage, $matches)) {
+                $errorMessageText = $matches[1];
+            } else {
+                $errorMessageText = $errorMessage;
+            }
         }
 
         $aOutput = array(
-            'error'     =>  $error,
-            'baselang'  =>  $sBaselang,
-            'tolang'    =>  $sTolang,
+            'error'     =>  $errorMessageText,
+            'baselang'  =>  $sourceLanguage,
+            'tolang'    =>  $destinationLanguage,
             'converted' =>  $sOutput
         );
 

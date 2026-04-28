@@ -1,0 +1,12 @@
+.completed-wrapper {
+  .completed-heading {
+    @include largeheading;
+    margin: 0 0 10px;
+  }
+  .completed-Content {
+    font-size: $font-size-md;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-24;
+    margin: 0 0 10px;
+  }
+}

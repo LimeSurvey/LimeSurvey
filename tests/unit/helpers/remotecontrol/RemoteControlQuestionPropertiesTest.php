@@ -81,7 +81,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q02'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q02'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid);
@@ -93,6 +93,11 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertEquals('2', $result['question_order'], 'The question order is not correct.');
+        // Checking L10n properties
+        $this->assertEquals('Dual scale question.', $result['question'], 'The question text is not correct.');
+        $this->assertIsArray($result['questionl10ns'], 'The questionl10ns are included');
+        $this->assertEquals('Dual scale question.', $result['questionl10ns']['question'], 'The question text is not correct inside questionl10ns.');
+
     }
 
     public function testGetDualQuestionPropertiesSpecificLanguage()
@@ -150,7 +155,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q02'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q02'));
         $qid = $question->qid;
 
         //Get properties in Spanish
@@ -163,6 +168,10 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertEquals('2', $result['question_order'], 'The question order is not correct.');
+        // Checking L10n properties
+        $this->assertEquals('Pregunta de doble escala.', $result['question'], 'The question text is not correct.');
+        $this->assertIsArray($result['questionl10ns'], 'The questionl10ns are included');
+        $this->assertEquals('Pregunta de doble escala.', $result['questionl10ns']['question'], 'The question text is not correct inside questionl10ns.');
     }
 
     public function testGetArrayByColumnQuestionProperties()
@@ -190,7 +199,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q03'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q03'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
@@ -229,7 +238,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q04'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q04'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
@@ -244,8 +253,8 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
             'scale_id' => '0'
         );
 
-        $subquestionsRestult = array_values($result['subquestions'])[0];
-        $this->assertEquals($subquestions, $subquestionsRestult, 'The returned subquestion is not correct.');
+        $subquestionsResult = array_values($result['subquestions'])[0];
+        $this->assertEquals($subquestions, $subquestionsResult, 'The returned subquestion is not correct.');
 
         //Checking other properties
         $this->assertSame('F', $result['type'], 'The question type is not correct.');
@@ -259,7 +268,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q05'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q05'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
@@ -319,7 +328,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q06'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q06'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
@@ -333,13 +342,17 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         $this->assertSame('N', $result['mandatory'], 'The question should not be mandatory.');
         $this->assertSame('N', $result['encrypted'], 'The question should not be encrypted.');
         $this->assertEquals('6', $result['question_order'], 'The question order is not correct.');
+        // Checking L10n properties
+        $this->assertEquals('List question', $result['question'], 'The question text is not correct.');
+        $this->assertIsArray($result['questionl10ns'], 'The questionl10ns are included');
+        $this->assertEquals('List question', $result['questionl10ns']['question'], 'The question text is not correct inside questionl10ns.');
     }
 
     public function testGetMultipleChoiceQuestionProperties()
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $question = \Question::model()->findByAttributes(array('title' => 'G01Q07'));
+        $question = \Question::model()->findByAttributes(array('sid' => self::$surveyId,'title' => 'G01Q07'));
         $qid = $question->qid;
 
         $result = $this->handler->get_question_properties($sessionKey, $qid, null);
@@ -371,9 +384,9 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
             )
         );
 
-        $englishSubquestionsRestult = array_values($result['subquestions']);
+        $englishSubquestionsResult = array_values($result['subquestions']);
 
-        $this->assertEquals($subquestions, $subquestionsRestult, 'The returned subquestions are not correct.');
+        $this->assertEquals($subquestions, $subquestionsResult, 'The returned subquestions are not correct.');
 
         $spanishSubquestions = array(
             array(
@@ -399,9 +412,12 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
         );
 
         $spanishResult = $this->handler->get_question_properties($sessionKey, $qid, null, 'es');
-        $spanishSubquestionsRestult = array_values($spanishResult['subquestions']);
+        $spanishSubquestionsResult = array_values($spanishResult['subquestions']);
 
-        $this->assertEquals($spanishSubquestions, $spanishSubquestionsRestult, 'The returned subquestions (multilanguage) are not correct.');
+        $title = array_column($spanishSubquestionsResult, 'title');
+        array_multisort($title, SORT_ASC, $spanishSubquestionsResult);
+
+        $this->assertEquals($spanishSubquestions, $spanishSubquestionsResult, 'The returned subquestions (multilanguage) are not correct.');
 
         //Checking other properties
         $this->assertSame('M', $result['type'], 'The question type is not correct.');

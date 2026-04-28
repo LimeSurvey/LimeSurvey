@@ -6,11 +6,14 @@
 */
 
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
+require_once __DIR__ . '/Traits/LSApplicationTrait.php';
 
 use LimeSurvey\PluginManager\LimesurveyApi;
 
 class ConsoleApplication extends CConsoleApplication
 {
+    use LSApplicationTrait;
+
     protected $config = array();
 
     /**
@@ -23,6 +26,13 @@ class ConsoleApplication extends CConsoleApplication
         return $this->getComponent('session');
     }
 
+    /**
+     * Initialize the console application, assemble and store the merged configuration, and prepare runtime helpers.
+     *
+     * Loads default, console-specific, email, version, updater, security, and optional user configuration files, merges them (and any available global settings from the database) into the application's config, ensures a runtimePath is set when absent, sets the `webroot` path alias, encrypts the `emailsmtppassword` config value, and loads the common helper.
+     *
+     * @param array|null $aApplicationConfig Application configuration overrides; if `runtimePath` is not provided it will be set to `<tempdir>/runtime` based on the loaded defaults.
+     */
     public function __construct($aApplicationConfig = null)
     {
 
@@ -85,7 +95,7 @@ class ConsoleApplication extends CConsoleApplication
         
         /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
            it would be decrypted in LimeMailer when needed */
-           $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+       $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
 
         /* Load the database settings : if available */
         try {
@@ -97,6 +107,8 @@ class ConsoleApplication extends CConsoleApplication
         } catch (Exception $exception) {
             // Allow exception (install for example)
         }
+        /* Always need common helper */
+        $this->loadHelper("common");
     }
 
     /**
@@ -119,22 +131,27 @@ class ConsoleApplication extends CConsoleApplication
         return $this;
     }
 
-
     /**
-     * Returns a config variable from the config
+     * Returns a configuration variable from the config array or object properties.
+     *
+     * This method searches for the requested configuration value in the following order:
+     * 1. As a property of the current object
+     * 2. In the config array
+     * 3. If not found, returns the provided default value, otherwise false.
      *
      * @access public
-     * @param string $name
-     * @return mixed
+     * @param string|null $name The name of the configuration variable to retrieve. If null, the default value will be returned.
+     * @param mixed $default The default value to return if the configuration variable is not found. Defaults to false.
+     * @return mixed The value of the configuration variable if found, otherwise the default value or false if no default value was provided
      */
-    public function getConfig($name = null)
+    public function getConfig($name = null, $default = false)
     {
         if (isset($this->$name)) {
             return $this->name;
         } elseif (isset($this->config[$name])) {
             return $this->config[$name];
         } else {
-            return false;
+            return $default;
         }
     }
 

@@ -12,13 +12,13 @@ class Update_312 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropColumn('{{template_configuration}}', 'packages_ltr');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropColumn('{{template_configuration}}', 'packages_rtl');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
 

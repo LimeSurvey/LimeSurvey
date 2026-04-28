@@ -45,9 +45,14 @@ Tokens = {
                  $elHiddenInput.value = 'N';
              }
          });
-
+         let initialized = false;
          // When user change date
          $elDate.addEventListener('change', function (e) {
+             // skip the first change (triggered on init)
+             if (!initialized) {
+                 initialized = true;
+                 return;
+             }
              $elHiddenInput.value = $elDate.value;
          });
      },
@@ -61,6 +66,18 @@ Tokens = {
              } else {
                  $elHiddenInput.value = 'N';
              }
+         });
+     },
+     DatePicker: function (el) {
+         var $elDate = el.querySelector('.DatePicker'), // date time picker element
+             $elHiddenInput = el.querySelector('.selector_submitField'); // input form
+
+         // Generate the date time picker
+         initDatePicker($elDate);
+
+         // When user change date
+         $elDate.addEventListener('change', function (e) {
+             $elHiddenInput.value = $elDate.value;
          });
      }
  };
@@ -113,7 +130,6 @@ function submitEditToken(){
     var $datas      = $form.serialize();
     var $actionUrl  = $form.attr('action');
     var $modal      = $('#editTokenModal');
-    const modal = new bootstrap.Modal(document.getElementById('editTokenModal'));
     var $gridId     = '';
 
     if (!$form[0].reportValidity()) {
@@ -209,8 +225,14 @@ function validateNotEmptyTokenForm() {
     }
     var isFormEmpty = $('#email').val() == '' && $('#firstname').val() == '' && $('#lastname').val() == '';
     if (isFormEmpty) {
-        const modal = new bootstrap.Modal(document.getElementById('emptyTokenConfirmationModal'));
+        const modalElement = document.getElementById('emptyTokenConfirmationModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            // Enable the Save and Close button
+            $("#save-and-close-button").removeClass("disabled");
+        });
         modal.show();
+        $('#ls-loading').hide();
         return false;
     }
     return true;
@@ -235,7 +257,7 @@ $(document).on('ready pjax:scriptcomplete', function(){
         initValidFromValidUntilPickers();
     }
 
-    var modal = $('#massive-actions-modal-edit-0');
+    var modal = $('#massive-actions-modal-token-grid-edit-0');
     if (modal.length) {
         modal.on('shown.bs.modal', function () {
             $('.yes-no-date-container').each(function(i,el){
@@ -244,6 +266,10 @@ $(document).on('ready pjax:scriptcomplete', function(){
 
             $('.yes-no-container').each(function(i,el){
                 Tokens.YesNo(el);
+            });
+
+            $('.date-picker-container').each(function(i,el){
+                Tokens.DatePicker(el);
             });
         });
     }
@@ -305,7 +331,11 @@ $(document).on('ready pjax:scriptcomplete', function(){
         })
     });
 
-    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event, params){
+    $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', function (event) {
+        startEditToken(event, $(this));
+    });
+
+    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function (event, params) {
         var eventParams = params || {};
         // When saving from the Edit Participant modal, handle the event in submitEditToken().
         if($('#editTokenModal').length > 0 ){
@@ -338,11 +368,6 @@ $(document).on('ready pjax:scriptcomplete', function(){
         }
     });
 
-    // Disable Save and Close button on click
-    $("#save-and-close-button").on('click', function() {
-        $(this).addClass('disabled');
-    });
-
     /**
      * Handle form inputs 'invalid' event.
      */
@@ -370,6 +395,7 @@ $(document).on('ready pjax:scriptcomplete', function(){
      * Confirm save empty token
      */
     $("#save-empty-token").off('click.token-save').on('click.token-save', function() {
+        $('#ls-loading').show();
         $('#edittoken').trigger('submit', {confirm_empty_save: true});
     });
 
@@ -565,8 +591,11 @@ function centerInfoDialog() {
     infoDialog.css({ 'left': Math.round((dialogparent.width() - infoDialog.width()) / 2)+'px' });
 }
 
-function onUpdateTokenGrid(){
+function onUpdateTokenGrid() {
     reinstallParticipantsFilterDatePicker();
+    $('.edit-token').off('click.edittoken').on('click.edittoken', function (event) {
+        startEditToken(event, $(this));
+    });
 }
 
 /**

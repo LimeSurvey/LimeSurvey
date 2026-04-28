@@ -19,8 +19,8 @@
  * @property integer $cid ID (primary key)
  * @property integer $qid Question id (subquestion)
  * @property integer $cqid Question id (grouping question)
- * @property string $cfieldname Condition field-name as <a href = "https://manual.limesurvey.org/SGQA_identifier">SGQA identifier</a>
- * @property string $method Logical operator see <a href="https://manual.limesurvey.org/Setting_conditions#Select_the_comparison_operator">here</a>
+ * @property string $cfieldname Condition field-name as <a href = "https://www.limesurvey.org/manual/SGQA_identifier">SGQA identifier</a>
+ * @property string $method Logical operator see <a href="https://www.limesurvey.org/manual/Setting_conditions#Select_the_comparison_operator">here</a>
  * @property string $value Value to be compared against
  * @property integer $scenario Scenario number
  *
@@ -354,5 +354,38 @@ class Condition extends LSActiveRecord
             ->bindValue(":qid", $qid, PDO::PARAM_INT)
             ->query();
         return $result;
+    }
+
+    /**
+     * A collection of cids
+     * @param array $cids an array of condition ids to copy
+     * @param int $qid the qid of the question whose conditions are to be created
+     * @return bool Whether there were conditions to copy
+     */
+    public function copyConditions(array $cids, int $qid)
+    {
+        $isArray = is_array($cids);
+        if (is_array($cids) && count($cids)) {
+            foreach ($cids as &$cid) {
+                $cid = (int) $cid;
+            }
+            $conditions = Condition::model()->findAll('cid in (' . implode(",", $cids) . ")");
+            foreach ($conditions as $condition) {
+                $newCondition = new Condition();
+                $newCondition->qid = $qid;
+                $newCondition->cqid = $condition->cqid;
+                $newCondition->cfieldname = $condition->cfieldname;
+                $newCondition->method = $condition->method;
+                $newCondition->value = $condition->value;
+                $newCondition->scenario = $condition->scenario;
+                $newCondition->save();
+            }
+            return true;
+        } else {
+            if ($isArray) {
+                throw new \Exception(gT("cids must be an array"));
+            }
+        }
+        return false;
     }
 }

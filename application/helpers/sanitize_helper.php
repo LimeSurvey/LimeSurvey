@@ -116,7 +116,7 @@ function nice_addslashes($string)
  *     $force_lowercase - Force the string to lowercase?
  *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
-function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true)
+function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true, $directory = false)
 {
     // sanitize filename
     $filename = mb_ereg_replace(
@@ -138,7 +138,8 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
     }
     // maximise filename length to 255 bytes http://serverfault.com/a/9548/44086
     $ext = pathinfo((string) $filename, PATHINFO_EXTENSION);
-    $filename = mb_strcut(pathinfo((string) $filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding((string) $filename)) . ($ext ? '.' . $ext : '');
+    $filename_info = $directory ? $filename : pathinfo((string) $filename, PATHINFO_FILENAME);
+    $filename = mb_strcut($filename_info, 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding((string) $filename)) . ($ext ? '.' . $ext : '');
     $filename = ($alphanumeric) ? mb_ereg_replace("[^a-zA-Z0-9]", "", $filename) : $filename;
 
     if ($force_lowercase) {
@@ -189,7 +190,7 @@ function beautify_filename($filename)
 function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = false)
 {
     $string = str_replace(".", "", (string) $string);
-    return sanitize_filename($string, $force_lowercase, $alphanumeric, false);
+    return sanitize_filename($string, $force_lowercase, $alphanumeric, false, true);
 }
 
 
@@ -416,15 +417,6 @@ function check_html_string($input, $min = '', $max = '')
 }
 
 
-function check_ldap_string($input, $min = '', $max = '')
-{
-    // FIXME undefined function sanitize_string
-    if ($input != sanitize_string($input, $min, $max)) {
-        return false;
-    }
-    return true;
-}
-
 function check_system_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_system_string($input, $min, $max)) {
@@ -440,13 +432,14 @@ function check_system_string($input, $min = '', $max = '')
  * @param string $min
  * @param string $max
  * @return bool
- * @deprecated  2018-01-29 has undefined function my_utf8_decode inside !!
+ * @throws Exception
  */
 function check($input, $flags, $min = '', $max = '')
 {
     $oldput = $input;
     if ($flags & UTF8) {
-        $input = my_utf8_decode($input);
+        // This case used before function my_utf8_decode, which doesn't exist.
+        throw new Exception('UTF8 not supported');
     }
     if ($flags & PARANOID) {
         $input = sanitize_paranoid_string($input, $min, $max);
@@ -472,13 +465,32 @@ function check($input, $flags, $min = '', $max = '')
     return true;
 }
 
+/**
+ * Sanitizes a language code by removing all non-alphanumeric and non-dash characters.
+ *
+ * This function removes any characters that are not letters (a-z), numbers (0-9),
+ * or hyphens (-) from the input string. It is case-insensitive in its matching.
+ * @todo deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
+ *
+ * @param string $codetosanitize The language code string to sanitize.
+ * @return string The sanitized language code containing only letters and hyphens.
+ */
 function sanitize_languagecode($codetosanitize)
 {
-    return preg_replace('/[^a-z0-9-]/i', '', (string) $codetosanitize);
+    return preg_replace('/[^a-z-]/i', '', (string) $codetosanitize);
 }
 
+
 /**
- * @param string $codestringtosanitize
+ * Sanitizes a space-separated string of language codes.
+ *
+ * This function takes a space-separated string of language codes, splits them into an array,
+ * sanitizes each individual language code by removing all non-alphanumeric and non-dash characters,
+ * and then rejoins them back into a space-separated string.
+ * @todo deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter
+ *
+ * @param string $codestringtosanitize A space-separated string of language codes to sanitize.
+ * @return string A space-separated string of sanitized language codes containing only alphanumeric characters and hyphens.
  */
 function sanitize_languagecodeS($codestringtosanitize)
 {
@@ -559,5 +571,29 @@ function check_absolute_url($string)
  */
 function sanitize_alphanumeric($value)
 {
-    return preg_replace("[^a-zA-Z0-9\-\_]", "", $value);
+    return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
+}
+
+/**
+ * Validate that a value is safe to use as a single filesystem path component.
+ *
+ * This rejects empty values, leading-dot names, path separators and ASCII
+ * control characters so callers can safely append the value to a trusted
+ * base path without worrying about directory traversal or hidden directories.
+ *
+ * @param string $string
+ * @return bool
+ */
+function validate_path_component($string)
+{
+    if (!is_string($string)) {
+        return false;
+    }
+
+    return !(
+        $string === ''
+        || strpos($string, '.') === 0
+        || preg_match('/[\\\\\/]/', $string) === 1
+        || preg_match('/[\x00-\x1F\x7F]/', $string) === 1
+    );
 }

@@ -1,0 +1,109 @@
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 100;
+  font-style: normal;
+  src: url("./IBMPlexSerif-Thin.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 200;
+  font-style: normal;
+  src: url("./IBMPlexSerif-ExtraLight.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 300;
+  font-style: normal;
+  src: url("./IBMPlexSerif-Light.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 400;
+  font-style: normal;
+  src: url("./IBMPlexSerif-Regular.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 500;
+  font-style: normal;
+  src: url("./IBMPlexSerif-Medium.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 600;
+  font-style: normal;
+  src: url("./IBMPlexSerif-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 700;
+  font-style: normal;
+  src: url("./IBMPlexSerif-Bold.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 100;
+  font-style: italic;
+  src: url("./IBMPlexSerif-ThinItalic.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 200;
+  font-style: italic;
+  src: url("./IBMPlexSerif-ExtraLightItalic.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 300;
+  font-style: italic;
+  src: url("./IBMPlexSerif-LightItalic.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 400;
+  font-style: italic;
+  src: url("./IBMPlexSerif-Italic.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 500;
+  font-style: italic;
+  src: url("./IBMPlexSerif-MediumItalic.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 600;
+  font-style: italic;
+  src: url("./IBMPlexSerif-SemiBoldItalic.ttf");
+}
+
+@font-face {
+  font-family: "IBMPlexSerif";
+  font-weight: 700;
+  font-style: italic;
+  src: url("./IBMPlexSerif-BoldItalic.ttf");
+}
+
+body {
+  font-family: "IBMPlexSerif",
+    /* Cross-platform generic font family (default user interface font)*/
+      system-ui,
+    /* Safari for macOS and iOS (San Francisco)*/ -apple-system,
+    /* Windows*/ "Segoe UI", /* Android*/ Roboto,
+    /* Basic web fallback*/ "Helvetica Neue", Arial, /* Linux*/ "Noto Sans",
+    "Liberation Sans", /* Sans serif fallback*/ sans-serif,
+    /* Emoji fonts*/ "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+}

@@ -1,4 +1,4 @@
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <div class="pagetitle h1 pt-3 pb-2">
         <?php eT("Conditions designer"); ?>
 

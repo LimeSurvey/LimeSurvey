@@ -1,6 +1,6 @@
 <div class="modal-header">
-    <h5 class="modal-title"><?php eT("Test email settings"); ?></h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <h2 class="modal-title h5"><?php eT("Test email settings"); ?></h2>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"></button>
 </div>
 <div class="modal-body">
     <p><?php printf(gT("Test email will be sent to: %s"), "<strong>" . $testEmail . "</strong>"); ?></p>
@@ -9,10 +9,10 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button role="button" class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>">
+    <a role="button" class="btn btn-primary btn-ok" href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa" => "sendTestEmail")); ?>">
         <span class='ri-check-fill'></span>
         &nbsp;<?php eT("Send email"); ?>
-    </button>
+    </a>
     <button role="button" class="btn btn-outline-dark btn-ok"><?php eT("Close"); ?></button>
 </div>
 

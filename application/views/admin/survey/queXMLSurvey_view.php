@@ -1,4 +1,4 @@
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <?php echo CHtml::form(["admin/export/sa/quexml/surveyid/{$surveyid}/"], 'post'); ?>
     <h3 class="col-12">
         <?php eT("queXML PDF export"); ?>
@@ -226,8 +226,3 @@
          </div>
     </div>
 </div>
-<?php
-App()->getClientScript()->registerScript('QueXMLExportBSSwitcher', "
-LS.renderBootstrapSwitch();
-", LSYii_ClientScript::POS_POSTSCRIPT);
-?>

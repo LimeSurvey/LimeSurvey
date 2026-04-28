@@ -1,0 +1,69 @@
+.navbar-collapse {
+    box-shadow : inset 0 1px 0 $white_10;
+}
+
+.navbar-form {
+    box-shadow : inset 0 1px 0 $white_10, 0 1px 0 $white_10;
+}
+
+.navbar {
+    background-color : $white !important;
+    box-shadow       : 0 1px 20px 0 rgba(196, 196, 196, 1);
+
+    @media(max-width : 768px) {
+        box-shadow : 1px 2px 3px $color_gunsmoke_10_approx;
+    }
+}
+
+// Collapsed button for menu
+.navbar-toggle {
+    border : solid 1px $base-color;
+}
+
+.navbar-toggle .icon-bar {
+    background-color : $base-color;
+}
+
+#survey-nav {
+    .navbar-toggler {
+        .ri-more-fill {
+            color : $g-700;
+        }
+    }
+
+    .dropdown-menu > li > a {
+        color : $g-900;
+        //&:hover {
+        //    background  : none !important;
+        //    border-left : $base-color solid 8px;
+        //}
+    }
+
+    #main-dropdown {
+        .list-group-item {
+            border : none;
+
+            a.disabled {
+                color: $g-600;
+            }
+            a.index-warning {
+                background  : none;
+                border-left : $warning solid 8px;
+            }
+
+            a.index-danger {
+                background  : none;
+                border-left : $error solid 8px;
+            }
+
+            a:not(.index-danger):not(.index-warning) {
+                background  : none;
+                border-left : transparent solid 8px;
+            }
+        }
+        .dropdown-divider {
+            border-top: 1px solid $g-400;
+        }
+    }
+
+}

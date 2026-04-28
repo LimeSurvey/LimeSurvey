@@ -559,9 +559,10 @@ class userstatistics_helper
      *
      * @param string $rt The code passed from the statistics form listing the field/answer (SGQA) combination to be displayed
      * @param mixed $language The language to present output in
-     * @param mixed $surveyid The survey id
+     * @param mixed $surveyid The survey ID
      * @param string $outputType
      * @param boolean $browse
+     * @psalm-suppress UndefinedVariable
      *
      * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
      *                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
@@ -1203,22 +1204,33 @@ class userstatistics_helper
 
                     case Question::QT_COLON_ARRAY_NUMBERS: // Array (Multiple Flexi) (Numbers)
                         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($qiqid);
-                        if (trim((string) $aQuestionAttributes['multiflexible_max']) != '') {
+                        $minvalue = 1;
+                        $maxvalue = 10;
+                        if (trim((string) $aQuestionAttributes['multiflexible_max']) != '' && trim((string) $aQuestionAttributes['multiflexible_min']) == '') {
                             $maxvalue = $aQuestionAttributes['multiflexible_max'];
-                        } else {
-                            $maxvalue = 10;
-                        }
-
-                        if (trim((string) $aQuestionAttributes['multiflexible_min']) != '') {
-                            $minvalue = $aQuestionAttributes['multiflexible_min'];
-                        } else {
                             $minvalue = 1;
                         }
+                        if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) == '') {
+                            $minvalue = $aQuestionAttributes['multiflexible_min'];
+                            $maxvalue = $aQuestionAttributes['multiflexible_min'] + 10;
+                        }
+                        if (trim((string) $aQuestionAttributes['multiflexible_min']) != '' && trim((string) $aQuestionAttributes['multiflexible_max']) != '') {
+                            if ($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max']) {
+                                $minvalue = $aQuestionAttributes['multiflexible_min'];
+                                $maxvalue = $aQuestionAttributes['multiflexible_max'];
+                            }
+                        }
 
-                        if (trim((string) $aQuestionAttributes['multiflexible_step']) != '') {
-                            $stepvalue = $aQuestionAttributes['multiflexible_step'];
+                        $stepvalue = (trim((string) $aQuestionAttributes['multiflexible_step']) != '' && $aQuestionAttributes['multiflexible_step'] > 0) ? $aQuestionAttributes['multiflexible_step'] : 1;
+
+                        if ($aQuestionAttributes['reverse'] == 1) {
+                            $tmp = $minvalue;
+                            $minvalue = $maxvalue;
+                            $maxvalue = $tmp;
+                            $reverse = true;
+                            $stepvalue = -$stepvalue;
                         } else {
-                            $stepvalue = 1;
+                            $reverse = false;
                         }
 
                         if ($aQuestionAttributes['multiflexible_checkbox'] != 0) {
@@ -1372,6 +1384,7 @@ class userstatistics_helper
      * @param integer $usegraph
      * @param boolean $browse
      * @return array
+     * @psalm-suppress UndefinedVariable
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -1386,9 +1399,9 @@ class userstatistics_helper
         $sColumnName = null;
         if ($usegraph == 1) {
             //for creating graphs we need some more scripts which are included here
-            require_once(APPPATH . '/../vendor/pchart/pChart.class.php');
-            require_once(APPPATH . '/../vendor/pchart/pData.class.php');
-            require_once(APPPATH . '/../vendor/pchart/pCache.class.php');
+            require_once(APPPATH . '/../assets/packages/pchart/pChart.class.php');
+            require_once(APPPATH . '/../assets/packages/pchart/pData.class.php');
+            require_once(APPPATH . '/../assets/packages/pchart/pCache.class.php');
             $MyCache = new pCache($tempdir . '/');
         }
 
@@ -1597,7 +1610,7 @@ class userstatistics_helper
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $tablePDF2 = array();
@@ -1608,7 +1621,7 @@ class userstatistics_helper
                     }
                 }
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'xls') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'xls') {
                     $headXLS = array();
                     $tableXLS = array();
                     $headXLS[] = array(gT("ID"), gT("Response"));
@@ -1651,7 +1664,7 @@ class userstatistics_helper
                 . "<strong>" . gT("Percentage") . "</strong></th>\n"
                 . "\t</tr></thead>\n";
 
-                if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
+                if ($browse === true && !empty($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
                     $headPDF2[] = array(gT("ID"), gT("Response"));
                     $tablePDF2 = array();
@@ -2369,10 +2382,6 @@ class userstatistics_helper
                 $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 if ($cachefilename) {
                     // Add the image only if constructed
-                    //introduce new counter
-                    if (!isset($ci)) {
-                        $ci = 0;
-                    }
 
                     switch ($outputType) {
                         case 'xls':
@@ -2435,7 +2444,7 @@ class userstatistics_helper
     /**
      * Generates statistics
      *
-     * @param int $surveyid The survey id
+     * @param int $surveyid The survey ID
      * @param mixed $allfields
      * @param mixed $q2show
      * @param integer $usegraph
@@ -2612,7 +2621,7 @@ class userstatistics_helper
             }
 
             // Creating the first worksheet
-            $this->sheet = $this->workbook->addWorksheet(utf8_decode('results-survey' . $surveyid));
+            $this->sheet = $this->workbook->addWorksheet(mb_convert_encoding('results-survey' . $surveyid, 'ISO-8859-1', 'UTF-8'));
             $this->xlsPercents = &$this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
             $this->formatBold = &$this->workbook->addFormat(array('Bold' => 1));
@@ -2722,8 +2731,6 @@ class userstatistics_helper
         //browse these results
         if (isset($selects) && $selects) {
             $sql = implode(" AND ", $selects);
-        } elseif (!empty($newsql)) {
-            $sql = $newsql;
         }
 
         if (!isset($sql) || !$sql) {

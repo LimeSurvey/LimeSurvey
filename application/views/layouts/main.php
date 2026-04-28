@@ -17,10 +17,16 @@ $layoutHelper->showHeaders($aData);
 $layoutHelper->showadminmenu($aData);
 
 echo "<!-- BEGIN LAYOUT MAIN (refactored controllers-->";
+echo "<div id='layout_sidebar'>";
 
+App()->getController()->widget('ext.SideBarWidget.SideBarWidget');
+
+echo "<div class='container-40'>";
 echo $layoutHelper->renderTopbarTemplate($aData);
 
+echo "<div class='container-fluid'>";
 $layoutHelper->updatenotification();
+echo "</div>";
 
 $layoutHelper->notifications();
 
@@ -28,10 +34,14 @@ $layoutHelper->notifications();
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
 
 echo '<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
-      <div class="full-page-wrapper container-fluid" id="in_survey_common_action">';
+      <div class="container-fluid" id="in_survey_common_action">';
 
 echo $content;
 
+echo '</div>';
+
+// close container-40 and layout_sidebar
+echo '</div>';
 echo '</div>';
 
 // Footer

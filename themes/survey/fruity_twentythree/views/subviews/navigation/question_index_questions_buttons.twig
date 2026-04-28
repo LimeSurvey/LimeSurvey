@@ -1,0 +1,32 @@
+{#
+    This file is part of LimeSurvey
+    Copyright (C) 2018 The LimeSurvey Project Team
+    This file render question index
+#}
+<div class="list-group index-button index-button-{{ aSurveyInfo.aQuestionIndex.type }}">
+    <div class="list-group-item">
+        <div class="h4 list-group-item-heading">{{ gT("Question index") }}</div>
+    </div>
+    {% for indexGroup in aSurveyInfo.aQuestionIndex.items %}
+    <div class="list-group" data-gid="{{ indexGroup.gid }}">
+        <div class="list-group-item">
+            <div class="h5 list-group-item-heading">{{ flatString(indexGroup.text) }}</div>
+        </div>
+        {% for indexQuestion in indexGroup.questions %}
+        {% set templateClass = ''  %}
+        {% if attribute(indexQuestion.stepStatus, 'index-item-unanswered') is defined and attribute(indexQuestion.stepStatus, 'index-item-unanswered') == true  %}
+            {% set templateClass = templateClass ~ ' list-group-item-warning'  %}
+        {% endif %}
+        {% if attribute(indexQuestion.stepStatus, 'index-item-error') is defined and attribute(indexQuestion.stepStatus, 'index-item-error') == true   %}
+            {% set templateClass = templateClass ~ ' list-group-item-danger'  %}
+        {% endif %}
+        {% if attribute(indexQuestion.stepStatus, 'index-item-current') is defined and attribute(indexQuestion.stepStatus, 'index-item-current') == true %}
+            {% set templateClass = statusClass ~  ' disabled'  %}
+        {% endif %}
+            <button type="submit" name="move" value="{{ indexQuestion.step }}" class="list-group-item {{ indexQuestion.coreClass }} {{ templateClass }}" data-qid="{{ indexQuestion.qid }}">
+                {{ ellipsizeString(indexQuestion.text, 80, 0.6, "…" ) }}
+            </button>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>

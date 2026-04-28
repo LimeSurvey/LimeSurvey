@@ -11,6 +11,7 @@
 <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')
     || Permission::model()->hasGlobalPermission('templates', 'read')
     || Permission::model()->hasGlobalPermission('labelsets', 'read')
+    || Permission::model()->hasGlobalPermission('labelsets', 'create')
     || Permission::model()->hasGlobalPermission('users', 'read')
     || Permission::model()->hasGlobalPermission('usergroups', 'read')
     || Permission::model()->hasGlobalPermission('participantpanel', 'read')
@@ -21,7 +22,7 @@
     || Permission::model()->hasGlobalPermission('settings', 'read')
 ): ?>
     <li class="dropdown mega-dropdown nav-item">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle mainmenu-dropdown-toggle" data-bs-toggle="dropdown">
             <!-- <i class="ri-settings-5-fill"></i> -->
             <?php eT('Configuration'); ?>
             <span class="caret"></span>
@@ -39,7 +40,7 @@
                             </div>
                             <div class="box--info">
                                 <div class="box__title text-center"><?php eT("System overview"); ?></div>
-                                <dl class="dl-horizontal">
+                                <dl class="dl-horizontal" role="none">
                                     <div class="row">
                                         <dt class="col-8 text-truncate text-end"><?php eT('Users'); ?></dt>
                                         <dd class="col-4 text-end"><?php echo $userscount; ?></dd>
@@ -137,20 +138,21 @@
                         <!-- Advanced -->
                         <li class="dropdown-header">
                             <span class="ri-tools-fill"></span>
-                            <?php eT('Advanced'); ?>
+                            <span role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
                         </li>
                         <?php if (Permission::model()->hasGlobalPermission('templates', 'read')): ?>
                             <!-- Theme Editor -->
                             <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("themeOptions/index"); ?>">
+                             <a href="<?php echo $this->createUrl("themeOptions/index"); ?>" class="link-themes">
                                     <?php eT("Themes"); ?>
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'read')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'read') || Permission::model()->hasGlobalPermission('labelsets', 'create')): ?>
+                            <?php /* Can remove permission check when we have way to : update owner or complete Permission system */ ?>
                             <!-- Edit label sets -->
                             <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>">
+                                <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>" class="link-labels">
                                     <?php eT("Label sets"); ?>
                                 </a>
                             </li>
@@ -195,7 +197,7 @@
                         <li class="dropdown-header">
 
                             <i class="ri-user-fill"></i>
-                            <?php eT('Users'); ?>
+                           <span role="heading" aria-level="2"> <?php eT('Users'); ?></span>
                         </li>
 
                         <!-- User management -->
@@ -250,7 +252,7 @@
                         <!-- Settings -->
                         <li class="dropdown-header">
                             <span class="ri-list-settings-line"></span>
-                            <?php eT('Settings'); ?>
+                          <span role="heading" aria-level="2">  <?php eT('Settings'); ?></span>
                         </li>
 
                         <?php if (Permission::model()->hasGlobalPermission('settings', 'read')): ?>

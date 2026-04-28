@@ -1159,6 +1159,7 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
         $daylight = function_exists('adodb_daylight_sv');
     }
     if ($daylight) {
+        /** @psalm-suppress UndefinedFunction */
         adodb_daylight_sv($arr, $is_gmt);
     }
 

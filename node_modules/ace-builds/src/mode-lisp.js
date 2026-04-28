@@ -34,11 +34,11 @@ var LispHighlightRules = function () {
                     regex: "(\\*)(\\S*)(\\*)"
                 },
                 {
-                    token: "constant.numeric",
+                    token: "constant.numeric", // hex
                     regex: "0[xX][0-9a-fA-F]+(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\\b"
                 },
                 {
-                    token: "constant.numeric",
+                    token: "constant.numeric", // float
                     regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\\b"
                 },
                 {

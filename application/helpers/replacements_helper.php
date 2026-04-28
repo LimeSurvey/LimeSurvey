@@ -15,8 +15,12 @@ if (!defined('BASEPATH')) {
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+
 /**
 * This function replaces keywords in a text and is mainly intended for templates
+* Replacement done on this function can not be used in Expression for condition or equation
+* If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
+* Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
 * If you use this functions put your replacement strings into the $replacements variable
 * instead of using global variables
 * NOTE - Don't do any embedded replacements in this function.  Create the array of replacement values and
@@ -28,10 +32,12 @@ if (!defined('BASEPATH')) {
 * @param null $debugSrc unused
 * @param null $anonymized unused (all done in EM now)
 * @param integer|null $questionNum - needed to support dynamic JavaScript-based tailoring within questions
-* @param void $registerdata - deprecated
+* @param null|void $registerdata - deprecated
 * @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
 * @param object|string - the template object to be used
 * @return string Text with replaced strings
+*
+* @psalm-suppress UndefinedVariable
 */
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = null, $anonymized = null, $questionNum = null, $registerdata = array(), $bStaticReplacement = false, $oTemplate = '')
 {
@@ -65,7 +71,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         'totalquestions',
         'flashmessage'
     );
-
     $varsPassed = array();
 
     foreach ($allowedvars as $var) {
@@ -160,7 +165,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     // If there are non-bracketed replacements to be made do so above this line.
     // Only continue in this routine if there are bracketed items to replace {}
-    if (strpos($line, "{") === false) {
+    if (empty($line) || strpos($line, "{") === false) {
         // process string anyway so that it can be pretty-printed
         return LimeExpressionManager::ProcessString($line, $questionNum, null, 1, 1, true);
     }
@@ -207,7 +212,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_therearexquestions = "<div class='question-count-text'>" . $_therearexquestions . "</div>";
     } else {
         $_therearexquestions = '';
-    };
+    }
 
     if (isset($token)) {
         $_token = $token;
@@ -291,7 +296,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
     $coreReplacements['GROUPNAME'] = $_groupname;
-    $coreReplacements['LANG'] = App()->language;
     $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
     $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
     $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global
@@ -333,6 +337,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     return $line;
 }
 
+/**
+ * This function replaces keywords in a text
+ * Replacement done on this function can not be used in Expression for condition or equation
+ * If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
+ * Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
+ * @psalm-suppress UndefinedVariable TODO
+ */
 function getStandardsReplacementFields($thissurvey)
 {
     $surveyid = $_SESSION['LEMsid'];
@@ -411,8 +422,6 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['ADMINNAME'] = $thissurvey['admin'] ?? '';
     $coreReplacements['ADMINEMAIL'] = $thissurvey['adminemail'] ?? '';
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
-
-    $coreReplacements['LANG'] = App()->language;
     $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
     $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
     $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global

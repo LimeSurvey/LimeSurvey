@@ -47,7 +47,7 @@ class AnswerOptionsFunctions
         }
         if (empty($oQuestion)) {
             if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) { // update ???
-                return sprintf(gT("Invalid question code or ID “%s”"), CHtml::encode($qidortitle));
+                return sprintf(gT("Invalid question code or ID “%s”"), CHtml::encode((string) $qidortitle));
             }
             return null;
         }

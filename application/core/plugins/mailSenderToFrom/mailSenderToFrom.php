@@ -19,7 +19,7 @@ class mailSenderToFrom extends PluginBase
     protected static $description = 'Set sender to the SMTP user.';
     protected static $name = 'mailSenderToFrom';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
@@ -31,7 +31,7 @@ class mailSenderToFrom extends PluginBase
 
     /**
      * Set From and Bounce of PHPmailer to siteadminemail
-     * @link https://manual.limesurvey.org/BeforeTokenEmail
+     * @link https://www.limesurvey.org/manual/BeforeTokenEmail
      */
     public function beforeEmail()
     {

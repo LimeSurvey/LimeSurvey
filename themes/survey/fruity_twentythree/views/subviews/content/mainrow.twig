@@ -1,0 +1,34 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Main Row  ·._.·´¯)·._.·´¯)
+
+#}
+
+<!-- Main Row -->
+<div id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }} >
+    <!-- Main Col -->
+    <div class="{{ aSurveyInfo.class.maincol }} col-centered  space-col" id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
+
+        {# This is the main block that will be replaced/extended by other layouts#}
+            {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
+            {{ include('./subviews/messages/warnings.twig') }}
+            {# Include the just saved success #}
+            {{ include('./subviews/messages/justsaved.twig') }}
+
+            {# Wich file to include for content is decided inside the layout #}
+            {% if(include_content) != "./subviews/content/" %}
+                {{ include(include_content) }}
+            {% endif %}
+
+
+    </div> <!-- main col -->
+</div> <!-- main row -->

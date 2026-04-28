@@ -1,0 +1,28 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+ <div class="col-lg-8">
+    <table class="table table-condensed table-striped">
+    {% for subquestionId, subquestion in question.subquestions %}
+        {% if subquestion.question_order == 1 %}
+            <tr>
+                <th></th>
+                {% for colname, value in subquestion.answervalueslabels %}
+                    <th class="text-center"><b>{{value}} - {{colname}}</b></th>
+                {% endfor %}                    
+            </tr>
+        {% endif %}
+        
+        <tr>
+            <td>
+                {{subquestion.question}} - {{subquestion.title}}
+            </td>
+            {% for colname, value in subquestion.answervalues %}
+                <td class="text-center">
+                    {{value}}
+                </td>    
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

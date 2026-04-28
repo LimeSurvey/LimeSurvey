@@ -34,9 +34,22 @@ class JsonWriter extends Writer
         }
     }
 
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
+    protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
-        $aJson = array_combine($headers, $values);
+        $uniqueHeaders = [];
+        // Major Problem: We can't just combine headers and values using
+        // array_combine, because same header can be there multiple times.
+        // If a header is not unique, we add the fieldname at the end of the
+        // duplicated header.
+        foreach ($headers as $key => $header) {
+            if (!in_array($header, $uniqueHeaders)) {
+                $uniqueHeaders[$key] = $header;
+            }else{
+                $fieldName = array_key_exists($key, $fieldNames) ? $fieldNames[$key] : $key;
+                $uniqueHeaders[$key] = $header . ' (' . $fieldName . ')';
+            }
+        }
+        $aJson = array_combine($uniqueHeaders, $values);
         $sJson = json_encode($aJson);
         Yii::log($this->havePrev, 'info', 'info');
         if ($this->havePrev) {

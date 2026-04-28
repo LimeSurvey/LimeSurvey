@@ -10,6 +10,9 @@ if (!isset($tableLabels)) {
     $tableLabels = array(gT('ID'), gT('Title'), gT('Status'));
 }
 ?>
+<?php if(isset($additionalMessage)):?>
+    <?php echo $additionalMessage?>
+<?php endif;?>
 <table class="table table-striped">
     <thead>
         <?php foreach($tableLabels as $label):?>

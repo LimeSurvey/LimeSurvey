@@ -1,0 +1,62 @@
+.has-success {
+    .help-block {
+        color : $base-color;
+    }
+    .control-label {
+        color : $base-color;
+    }
+    .radio {
+        color : $base-color;
+    }
+    .checkbox {
+        color : $base-color;
+    }
+    .radio-inline {
+        color : $base-color;
+    }
+    .checkbox-inline {
+        color : $base-color;
+    }
+}
+
+.has-warning {
+    .help-block {
+        color : $warning;
+    }
+    .control-label {
+        color : $warning;
+    }
+    .radio {
+        color : $warning;
+    }
+    .checkbox {
+        color : $warning;
+    }
+    .radio-inline {
+        color : $warning;
+    }
+    .checkbox-inline {
+        color : $warning;
+    }
+}
+
+.has-error {
+    .help-block {
+        color : $error;
+    }
+    .control-label {
+        color : $error;
+    }
+    .radio {
+        color : $error;
+    }
+    .checkbox {
+        color : $error;
+    }
+    .radio-inline {
+        color : $error;
+    }
+    .checkbox-inline {
+        color : $error;
+    }
+}

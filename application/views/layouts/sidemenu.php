@@ -52,8 +52,8 @@
             getMenuUrl: "'.$getMenuUrl.'",
             createQuestionGroupLink: "'.$createQuestionGroupLink.'",
             createQuestionLink: "'.$createQuestionLink.'",
-            buttonDisabledTooltipQuestions: "'. gt('It is not possible to add questions to an active survey.') .'",
-            buttonDisabledTooltipGroups: "'. gt('It is not possible to add groups to an active survey.') . '",
+            buttonDisabledTooltipQuestions: "'. gT('It is not possible to add questions to an active survey.') .'",
+            buttonDisabledTooltipGroups: "'. gT('It is not possible to add groups to an active survey.') . '",
             gid: '.($gid ?? 'null').',
             options: [],
             surveyid: '.$surveyid.',
@@ -72,6 +72,8 @@
                     "lockOrganizerTitle" => gT("Lock question organizer"),
                     "unlockOrganizerTitle" => gT("Unlock question organizer"),
                     "collapseAll" => gT("Collapse all question groups"),
+                    "groupNumber" => gT("Group #%d"),
+                    "deactivateSurvey" => gT("Deactivate your survey to enable this setting"),
                 ]
             )
         .'};', 

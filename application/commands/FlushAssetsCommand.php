@@ -16,10 +16,10 @@ class FlushAssetsCommand extends CConsoleCommand
 {
 
     /**
-     * @param array $aArguments
+     * @param array $args
      * @return void
      */
-    public function run($aArguments)
+    public function run($args)
     {
         $sCurrentDir = dirname(__FILE__);
         $tmpFolder = realpath($sCurrentDir . '/../../tmp/');

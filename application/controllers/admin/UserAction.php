@@ -125,6 +125,7 @@ class UserAction extends SurveyCommonAction
                 SettingsUser::setUserSetting('subquestionprefix', Yii::app()->request->getPost('subquestionprefix'));
                 SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
                 SettingsUser::setUserSetting('createsample', Yii::app()->request->getPost('createsample'));
+                SettingsUser::setUserSetting('breadcrumbMode', Yii::app()->request->getPost('breadcrumbMode'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -133,7 +134,7 @@ class UserAction extends SurveyCommonAction
             }
 
             if (Yii::app()->request->getPost("saveandclose")) {
-                $this->getController()->redirect(array("admin/index"));
+                $this->getController()->redirect(array("dashboard/view"));
             }
         }
 
@@ -143,7 +144,6 @@ class UserAction extends SurveyCommonAction
         }
 
         // Get user lang
-        unset($oUser);
         $oUser = User::model()->findByPk(Yii::app()->session['loginID']);
 
         $aLanguageData = array('auto' => gT("(Autodetect)"));

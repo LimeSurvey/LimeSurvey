@@ -1,13 +1,13 @@
 <?php
 
-use LimeSurvey\Menu\MenuButton;
-
 class TopbarWidget extends CWidget
 {
     /**
      * @var string this can be a simple text (string) or a breadcrumb
      */
     public $leftSide = null;
+
+    public $titleBackLink = null;
 
     /**
      * @var bool true if leftSide is a breadcrumb, defaults to false
@@ -47,7 +47,9 @@ class TopbarWidget extends CWidget
                 'leftSide' => $this->leftSide,
                 'middle' => $this->middle,
                 'rightSide' => $this->rightSide,
-                'isBreadCrumb' => $this->isBreadCrumb
+                'isBreadCrumb' => $this->isBreadCrumb,
+                'titleBackLink' => $this->titleBackLink,
+                'editorEnabled' => Yii::app()->getConfig('editorEnabled') ?? false,
             ]
         );
     }

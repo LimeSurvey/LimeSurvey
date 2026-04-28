@@ -15,10 +15,11 @@ class Update_601 extends DatabaseUpdateBase
         try {
             setTransactionBookmark();
             $this->db->createCommand()->addColumn('{{boxes}}', 'buttontext', 'string(255)');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Column already exists - ignore
             rollBackToTransactionBookmark();
         }
+
         $this->updateCreateSurvey();
         $this->updateSurveyList();
         $this->updateGlobalSettings();
@@ -92,7 +93,7 @@ class Update_601 extends DatabaseUpdateBase
                 [
                     'ico' => 'ri-price-tag-3-line',
                     'title' => 'Label sets',
-                    'desc' => 'Label sets are templayes which can be loaded in most question types to speed up.',
+                    'desc' => 'Label sets can be used as answer options or subquestions to speed up creation of similar questions.',
                     'buttontext' => 'Edit label sets',
                     'url' => 'admin/labels/sa/view'
                 ],

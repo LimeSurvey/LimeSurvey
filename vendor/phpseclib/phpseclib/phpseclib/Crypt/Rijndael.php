@@ -74,8 +74,8 @@ class Rijndael extends BlockCipher
      * or not for the current $block_size/$key_length.
      * In case of, $cipher_name_mcrypt will be set dynamically at run time accordingly.
      *
-     * @see \phpseclib3\Crypt\Common\SymmetricKey::cipher_name_mcrypt
-     * @see \phpseclib3\Crypt\Common\SymmetricKey::engine
+     * @see Common\SymmetricKey::cipher_name_mcrypt
+     * @see Common\SymmetricKey::engine
      * @see self::isValidEngine()
      * @var string
      */
@@ -833,7 +833,6 @@ class Rijndael extends BlockCipher
 
         // Generating encrypt code:
         $init_encrypt .= '
-            static $tables;
             if (empty($tables)) {
                 $tables = &$this->getTables();
             }
@@ -890,7 +889,6 @@ class Rijndael extends BlockCipher
 
         // Generating decrypt code:
         $init_decrypt .= '
-            static $invtables;
             if (empty($invtables)) {
                 $invtables = &$this->getInvTables();
             }
@@ -947,7 +945,7 @@ class Rijndael extends BlockCipher
 
         $this->inline_crypt = $this->createInlineCryptFunction(
             [
-               'init_crypt'    => '',
+               'init_crypt'    => 'static $tables; static $invtables;',
                'init_encrypt'  => $init_encrypt,
                'init_decrypt'  => $init_decrypt,
                'encrypt_block' => $encrypt_block,

@@ -4,13 +4,12 @@ App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 
 App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'organize.css');
 ?>
 
-<div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <h3><?php eT('Organize question group/questions'); ?></h3>
+<div id='edit-survey-text-element' class='side-body'>
     <div class='row'>
         <div class='col-md-8'>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
-                    'header' => 'Reordering',
+                    'header' => gT("Reordering"),
                     'text' => gT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.") . ' ' .
                         ($surveyActivated ? gT("Survey is activated, you can not move a question to another group.") : "") . ' ' .
                         gT("After you are done, please click the 'Save' button to save your changes."),
@@ -54,11 +53,13 @@ App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl'
         </ol>
     </div>
 
-    <?php echo CHtml::form(array("surveyAdministration/organize/surveyid/{$surveyid}"), 'post', array('id' => 'frmOrganize')); ?>
+    <?php echo CHtml::form(array("surveyAdministration/organize/surveyid/{$surveyid}"), 'post', array('id' => 'frmOrganize', 'style'=>'height:40px')); ?>
     <p>
         <input type='hidden' id='orgdata' name='orgdata' value='' />
-        <input type='hidden' id='close-after-save' name='close-after-save' value='' />
-        <button class="d-none" type="submit" id='btnSave'>
+        <!-- set close-after-save true for redirecting to listQuestion page after save -->
+        <input type='hidden' id='close-after-save' name='close-after-save' value='true' />
+        <button class="btn btn-primary float-end" type="submit" id='btnSave'>
+            <i class="ri-check-fill"></i>
             <?php echo eT('Save'); ?>
         </button>
     </p>

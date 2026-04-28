@@ -1,20 +1,20 @@
 <?php
 /**
- * Delete Participants Table view
+ * Delete participant list view
  */
 ?>
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
+<div class="side-body">
     <div class="row welcom survey-action">
         <div class="col-12 content-right">
-            <div class="jumbotron message-box message-box-error">
+            <div class="card card-primary border-left-danger">
                 <?php echo CHtml::form(
                     array("admin/tokens/sa/kill", 'surveyid' => $surveyid),
                     'post',
                     array('id' => 'deletetokentable', 'name' => 'deletetokentable')
                 ); ?>
-                <h3 class="lead"><?php eT('Delete survey participants table'); ?></h3>
+                <h3 class="lead"><?php eT('Delete survey participant list'); ?></h3>
                 <p>
-                    <?php eT('Deleting the participants table will switch the survey back to open-access mode.'); ?>
+                    <?php eT('Deleting the participant list will switch the survey back to open-access mode.'); ?>
                     <br /> <br />
                     <?php eT('Access codes will no longer be required to access this survey.'); ?>
                     <br /> <br />

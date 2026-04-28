@@ -77,25 +77,25 @@ switch ($errorObject->error) {
 
     case 'file_locked':
         $title = gT('Update server busy');
-        $message = gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.') . '<br/>' . gT('Please be patient and try again in about 5 minutes.');
+        $message = gT('The update server is currently busy.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support.');
         $buttons = 0;
         break;
 
     case 'server_error_creating_zip_update':
         $title = gT('Server error!');
-        $message = gT('An error occurred while creating your update package file.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occurred while creating your update package file.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support.');
         $buttons = 0;
         break;
 
     case 'server_error_getting_checksums':
         $title = gT('Server error!');
-        $message = gT('An error occurred while getting checksums.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occurred while getting checksums.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support.');
         $buttons = 0;
         break;
 
     case 'cant_get_changeset':
         $title = gT('Server error!');
-        $message = gT('An error occurred while getting the changeset.') . ' ' . gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occurred while getting the changeset.') . ' ' . gT('Most likely this is a temporary problem, so please try again in 5 minutes. If the issue persists, please contact LimeSurvey support.');
         $buttons = 0;
         break;
 
@@ -123,7 +123,7 @@ switch ($errorObject->error) {
         break;
 
     case 'cant_remove_deleted_directory':
-        $title = gT("Could not remove the deleted directories");
+        $title = gT("Could not remove deleted directories");
         $message =  gT("ComfortUpdate couldn't remove one or more directories that were deleted with the update.");
         break;
 

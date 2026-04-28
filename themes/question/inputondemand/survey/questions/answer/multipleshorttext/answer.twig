@@ -25,7 +25,19 @@
         </div>
         <div class="col-12 text-end">
             <button class="btn btn-outline-secondary selector--inputondemand-addlinebutton">
-                <i class="fa fa-{{question_template_attribute.addlineicon}}"></i>
+                {% set riClass = '' %}
+                {% if question_template_attribute.addlineicon is same as("plus") %}
+                    {% set riClass = 'ri-add-line' %}
+                {% elseif question_template_attribute.addlineicon is same as("plus-circle") %}
+                    {% set riClass = 'ri-add-circle-fill' %}
+                {% elseif question_template_attribute.addlineicon is same as("chevron-down") %}
+                    {% set riClass = 'ri-arrow-down-s-line' %}
+                {% elseif question_template_attribute.addlineicon is same as("user-plus") %}
+                    {% set riClass = 'ri-user-add-fill' %}
+                {% elseif question_template_attribute.addlineicon is same as("arrow-down") %}
+                    {% set riClass = 'ri-arrow-down-fill' %}
+                {% endif %}
+                <i class="fa fa-{{question_template_attribute.addlineicon}} {{ riClass }}"></i>
                 &nbsp;{{gT("Add line")}}
             </button>
         </div>

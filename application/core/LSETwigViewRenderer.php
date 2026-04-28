@@ -174,7 +174,7 @@ window.addEventListener('message', function(event) {
             }
 
             $sHtml     = $this->convertTwigToHtml($line, $aData, $oTemplate);
-            
+
             $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if ($sEmHiddenInputs) {
                 $sHtml = str_replace(
@@ -245,6 +245,7 @@ window.addEventListener('message', function(event) {
             if ($bReturn) {
                 return $sHtml;
             } else {
+                /** @psalm-suppress UndefinedVariable TODO: $oTemplate is never defined */
                 $this->renderHtmlPage($sHtml, $oTemplate);
             }
         } else {
@@ -654,10 +655,10 @@ window.addEventListener('message', function(event) {
      * (surveyRuntime, frontend_helper, etc)
      * In LS3, we did a first cycle of refactorisation. Some logic common to the different
      * files are for now here, in this function.
-     * TODO: move all the display logic to surveyRuntime so we don't need this function here
      *
+     * @todo move all the display logic to surveyRuntime so we don't need this function here
      * @param TemplateConfiguration $oTemplate
-     * @return
+     * @return array
      */
     private function getAdditionalInfos($aData, $oTemplate)
     {
@@ -667,7 +668,10 @@ window.addEventListener('message', function(event) {
             if (!empty($aData["sid"]) || LimeExpressionManager::getLEMsurveyId()) {
                 $sid = empty($aData["sid"]) ? LimeExpressionManager::getLEMsurveyId() : $aData["sid"];
                 $language = empty($aData["language"]) ? App()->getLanguage() : $aData["language"];
-                $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                /* Outdated sid in LimeExpressionManager */
+                if (Survey::model()->findByPk($sid)) {
+                    $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
+                }
             }
         }
         // We retrieve the definition of the core class and attributes
@@ -697,7 +701,7 @@ window.addEventListener('message', function(event) {
                 isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
             ) {
                 $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_' .
-                $aData['aSurveyInfo']['sid']]['totalquestions'];
+                $aData['aSurveyInfo']['sid']]['totalVisibleQuestions'];
             }
 
             // Add the survey theme options
@@ -708,14 +712,17 @@ window.addEventListener('message', function(event) {
                     if ($value instanceof stdClass) {
                         $value = 'N/A';
                     }
-                    $aData["aSurveyInfo"]["options"][$key] = (string) $value;
+                    // Note that $value can also be a SimpleXMLElement
+                    // if force_xmlsettings_for_survey_rendering is activated
+                    $aData["aSurveyInfo"]["options"][$key] = (string)$value;
                 }
             }
+            $aData["aSurveyInfo"] = $this->setDefaultPrivacyText($aData["aSurveyInfo"]);
         } else {
             // Add the global theme options
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
             $aData["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])
-                ? (array) json_decode((string) $oTemplateConfigurationCurrent['options'])
+                ? json_decode((string) $oTemplateConfigurationCurrent['options'], true)
                 : $oTemplateConfigurationCurrent['options'];
         }
 
@@ -724,6 +731,37 @@ window.addEventListener('message', function(event) {
         return $aData;
     }
 
+    /**
+     * Set default privacy string if empty
+     * @return void
+     */
+    private function setDefaultPrivacyText($aSurveyInfo)
+    {
+        /* Do it one time only (and do not recall self when using renderPartial) */
+        static $DefaultPrivacyDone = false;
+        if ($DefaultPrivacyDone) {
+            return $aSurveyInfo;
+        }
+        $DefaultPrivacyDone = true;
+        if (empty($aSurveyInfo['datasecurity_notice_label'])) {
+            $aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
+        }
+        if (empty($aSurveyInfo['datasecurity_error'])) {
+            $aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
+        }
+        /* @var string[] for automatic translation */
+        $translation = [
+            "Show policy" => gT("Show policy")
+        ];
+        $aSurveyInfo['datasecurity_notice_label'] =  $this->renderPartial(
+            './subviews/privacy/privacy_datasecurity_notice_label.twig',
+            [
+                'dataSecurityNoticeLabel' => $aSurveyInfo['datasecurity_notice_label'],
+                'sid' => $aSurveyInfo['sid'],
+            ]
+        );
+        return $aSurveyInfo;
+    }
 
     /**
      * It can happen that user set incoherent values for options (like background is on, but no image file is selected)
@@ -740,7 +778,7 @@ window.addEventListener('message', function(event) {
         $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
 
         foreach ($aFilesOptions as $sOption => $sFileOption) {
-            if ($aData["aSurveyInfo"]["options"] !== null) {
+            if (is_array($aData["aSurveyInfo"]["options"])) {
                 if (array_key_exists($sFileOption, $aData["aSurveyInfo"]["options"])) {
                     if (empty($aData["aSurveyInfo"]["options"][$sFileOption])) {
                         $aData["aSurveyInfo"]["options"][$sOption] = "false";

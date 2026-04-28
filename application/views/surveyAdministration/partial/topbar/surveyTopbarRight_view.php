@@ -2,8 +2,22 @@
 /**
  * @var string $closeUrl
  * @var string $returnUrl
+ * @var string $editorUrl
+ * @var bool   $enableEditorButton
+ * @var bool   $editorEnabled
  */
 
+?>
+
+<?php
+// new question editor btn
+if (isset($editorUrl)) {
+ $this->renderPartial('/surveyAdministration/partial/topbar/_newQuestionEditorBtn', [
+     'editorUrl' => $editorUrl,
+     'enableEditorButton' => $enableEditorButton,
+     'editorEnabled' => $editorEnabled
+ ]);
+}
 ?>
 
 <!-- White Close button -->
@@ -40,26 +54,6 @@ if (!empty($showSaveAndCloseButton)) {
                 'class' => 'btn btn-outline-secondary',
                 'role' => 'button',
                 'onclick' => "$(this).addClass('disabled').attr('onclick', 'return false;');",
-            ],
-        ]
-    );
-}
-?>
-
-
-<!-- Return -->
-<?php
-if (!empty($showBackButton)) {
-    $this->widget(
-        'ext.ButtonWidget.ButtonWidget',
-        [
-            'name' => '',
-            'text' => gT('Back'),
-            'icon' => 'ri-rewind-fill',
-            'link' => $returnUrl,
-            'htmlOptions' => [
-                'class' => 'btn btn-outline-secondary',
-                'role' => 'button',
             ],
         ]
     );
@@ -164,4 +158,3 @@ if (!empty($showImportButton)) {
     );
 }
 ?>
-

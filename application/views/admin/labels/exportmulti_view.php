@@ -21,7 +21,7 @@
                     <select id='labelsets' multiple='multiple' name='lids[]' size='20' class="form-select">
                         <?php if (count($labelsets) > 0) {
                             foreach ($labelsets as $lb) {
-                                echo "<option value='{$lb[0]}'>{$lb[0]}: {$lb[1]}</option>\n";
+                                echo "<option value='{$lb[0]}'>{$lb[0]}: " . CHtml::encode($lb[1]) . "</option>\n";
                             }
                         } ?>
                     </select>
@@ -30,6 +30,9 @@
                     <br/>
                     <input type='submit' id='btnDumpLabelSets' value='<?php eT('Export selected label sets'); ?>' class="d-none"/>
                     <input type='hidden' name='action' value='dumplabel'/>
+                    <?php $exportToken = 'labelExport_' . uniqid(mt_rand(), true); ?>
+                    <input type="hidden" name="export_token" value="<?php echo CHtml::encode($exportToken); ?>">
+                    <input type="hidden" name="url" value="<?php echo CHtml::encode(Yii::app()->createUrl('admin/export', ['sa' => 'exportstatus', 'token' => ''])); ?>"/>
                 </p>
             </div>
             <?php echo CHtml::endForm() ?>
@@ -53,6 +56,9 @@
             isSelected = true;
             return isSelected;
         });
+
+        if ($('#labelsets option:selected').length === 0)
+            isSelected = false;
 
         if (isSelected) {
             saveButton.removeAttribute('disabled');

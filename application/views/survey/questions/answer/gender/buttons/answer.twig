@@ -18,20 +18,20 @@
 
     <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}F" value="F" {{ fChecked }}>
         <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}F" for="answer{{ name }}F">
-        <span class="fa fa-venus ls-icon" aria-hidden="true"></span> {{ gT('Female') }}
+        <span class="fa fa-venus ri-women-line ls-icon" aria-hidden="true"></span> {{ gT('Female') }}
     </label>
 
     <!-- Male -->
     <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}M" value="M" {{ mChecked }}>
         <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}M" for="answer{{ name }}M">
-        <span class="fa fa-mars ls-icon" aria-hidden="true"></span> {{ gT('Male') }}
+        <span class="fa fa-mars ri-men-line ls-icon" aria-hidden="true"></span> {{ gT('Male') }}
     </label>
 
 <!-- No answer -->
     {% if noAnswer %}
         <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}" value="" {{ naChecked }}>
         <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}" for="answer{{ name }}">
-            <span class="fa fa-circle-thin ls-icon" aria-hidden="true"></span> {{ gT('No answer') }}
+            <span class="fa fa-circle-thin ri-checkbox-blank-circle-line ls-icon" aria-hidden="true"></span> {{ gT('No answer') }}
         </label>
 
     {% endif %}

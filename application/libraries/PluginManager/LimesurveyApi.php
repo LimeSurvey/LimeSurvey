@@ -180,7 +180,7 @@ class LimesurveyApi
 
     /**
      * Returns an array of all available template names - does a basic check if the template might be valid
-     * @return array
+     * @return array|string
      */
     public function getTemplateList()
     {
@@ -291,7 +291,7 @@ class LimesurveyApi
     }
 
     /**
-     * Return a token object from a token id and a survey id
+     * Return a token object from a token id and a survey ID
      *
      * @param int $iSurveyId
      * @param int $iTokenId
@@ -310,7 +310,7 @@ class LimesurveyApi
      */
     public function getGroupList($surveyId)
     {
-        $result = \QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
+        $result = \QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyId), 'group_name');
         return $result;
     }
 
@@ -327,7 +327,7 @@ class LimesurveyApi
     }
 
     /**
-     * Gets the table name for responses for the specified survey id.
+     * Gets the table name for responses for the specified survey ID.
      * @param int $surveyId
      * @return string
      */
@@ -419,14 +419,18 @@ class LimesurveyApi
     /**
      * @param int $surveyId
      * @param string $language
-     * $param array $conditions
+     * @param array $conditions
      * @return \Question[]
      */
     public function getQuestions($surveyId, $language = 'en', $conditions = array())
     {
-        $conditions['sid'] = $surveyId;
-        $conditions['language'] = $language;
-        return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
+        $criteria = new \CDbCriteria();
+        $criteria->addCondition('t.sid = :sid');
+        $criteria->addCondition('questionl10ns.language = :language');
+        $criteria->params[':sid'] = $surveyId;
+        $criteria->params[':language'] = $language;
+
+        return \Question::model()->with('subquestions', 'questionl10ns')->findAllByAttributes($conditions, $criteria);
     }
 
     /**

@@ -7,8 +7,8 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Send email invitations"); ?></h3>
+<div class='side-body'>
+    <h1 class="h3"><?php eT("Send email invitations"); ?></h1>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
@@ -21,60 +21,80 @@
                         </p>
                     </div>
                 <?php endif; ?>
-
+                <?php if (count($warnings)): ?>
+                    <div class="alert alert-warning">
+                        <ul class='list-unstyled'>
+                        <?php foreach($warnings as $warning): ?>
+                            <li>
+                                <?= $warning ?>
+                            </li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
                 <div>
                     <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$oSurvey->sid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'')); ?>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <?php if (count($tokenids)>0): ?>
-                                <div class='mb-3'>
-                                    <label class='form-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
-                                    <div class=''>
-                                        <?php echo short_implode(", ", "-", (array) $tokenids); ?>
-                                    </div>
+                                <label class='form-label '><?php eT("Send invitation email to participant ID(s):"); ?></label>
+                                <div class=''>
+                                    <?php echo short_implode(", ", "-", (array) $tokenids); ?>
                                 </div>
 
                             <?php endif; ?>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class='mb-3'>
-
-                                <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
-                                <div>
-                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                        'name'          => "bypassbademails",
-                                        'checkedOption' => '1',
-                                        'selectOptions' => [
-                                            '1' => gT('On'),
-                                            '0' => gT('Off'),
-                                        ],
-                                    ]); ?>
-                                </div>
+                        <div class="col-md-3">
+                            <label class='form-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
+                            <div>
+                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'name'          => "bypassbademails",
+                                    'ariaLabel'    => gT("Bypass participants with failing email addresses"),
+                                    'checkedOption' => '1',
+                                    'selectOptions' => [
+                                        '1' => gT('On'),
+                                        '0' => gT('Off'),
+                                    ],
+                                ]); ?>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class='mb-3'>
-                                <?php echo CHtml::label(
-                                    gT("Bypass date control before sending email:"),
-                                    'bypassdatecontrol', 
-                                    array(
-                                        'title'=>gt("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
-                                        'unescaped' => 'unescaped', 
-                                        'class' => 'form-label ')
-                                    ); ?>
-                                <div>
-                                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                        'name'          => "bypassdatecontrol",
-                                        'checkedOption' => '0',
-                                        'selectOptions' => [
-                                            '1' => gT('On'),
-                                            '0' => gT('Off'),
-                                        ],
-                                    ]); ?>
-                                </div>
+                        <div class="col-md-3">
+                            <?php echo CHtml::label(
+                                gT("Bypass date control before sending email:"),
+                                'bypassdatecontrol',
+                                array(
+                                    'title'=>gT("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
+                                    'unescaped' => 'unescaped',
+                                    'class' => 'form-label ')
+                                ); ?>
+                            <div>
+                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'name'          => "bypassdatecontrol",
+                                    'ariaLabel'    => gT("Bypass date control before sending email"),
+                                    'checkedOption' => '0',
+                                    'selectOptions' => [
+                                        '1' => gT('On'),
+                                        '0' => gT('Off'),
+                                    ],
+                                ]); ?>
                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <?php if ($countInvalidAttachments > 0): ?>
+                                <label class='form-label' for='ignoremissingattachement'><?php eT("Ignore missing attachments:"); ?></label>
+                                <div class=''>
+                                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                    'name'          => "ignoremissingattachement",
+                                    'checkedOption' => '0',
+                                    'selectOptions' => [
+                                        '1' => gT('On'),
+                                        '0' => gT('Off'),
+                                    ],
+                                ]); ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <ul class="nav nav-tabs">
@@ -101,7 +121,7 @@
                                 $fieldsarray["{ADMINEMAIL}"] = $admin_email;
                                 $fieldsarray["{SURVEYNAME}"] = $oSurvey->languagesettings[$language]->surveyls_title;
                                 $fieldsarray["{SURVEYDESCRIPTION}"] = $oSurvey->languagesettings[$language]->surveyls_description;
-                                $fieldsarray["{EXPIRY}"] = $oSurvey->expires;
+                                $fieldsarray["{EXPIRY}"] = strval($oSurvey->expires);
 
                                 $subject = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite_subj, $fieldsarray, false);
                                 $textarea = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite, $fieldsarray, false);
@@ -174,7 +194,6 @@
 <?php
 
 App()->getClientScript()->registerScript("Tokens:BindInviteView", "
-        LS.renderBootstrapSwitch();
         $('#send-invitation-button').on('click', function(){
             $('#sendinvitation').submit();
         })

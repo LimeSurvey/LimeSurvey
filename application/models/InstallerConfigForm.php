@@ -85,7 +85,7 @@ class InstallerConfigForm extends CFormModel
     /** @var string $adminName */
     public $adminName = 'Administrator';
     /** @var string $adminEmail */
-    public $adminEmail = 'your-email@example.net';
+    public $adminEmail = '';
     /** @var string $siteName */
     public $siteName = 'LimeSurvey';
     /** @var string $surveylang */
@@ -122,6 +122,9 @@ class InstallerConfigForm extends CFormModel
     public $phpGdHasJpegSupport = false;
 
     /** @var bool */
+    public $phpGdHasFreeTypeSupport = false;
+
+    /** @var bool */
     public $isPhpLdapPresent = false;
 
     /** @var bool */
@@ -135,6 +138,9 @@ class InstallerConfigForm extends CFormModel
 
     /** @var bool */
     public $isSodiumPresent = false;
+
+    /** @var bool */
+    public $isCollatorPresent = false;
 
     /** @var bool */
     public $isConfigPresent = false;
@@ -190,7 +196,7 @@ class InstallerConfigForm extends CFormModel
     {
         return [
             'dbtype' => gT("The type of your database management system"),
-            'dblocation' => gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with complete socket path.') . ' ' . gT('If your database is using a custom port attach it using a colon. Example: db.host.com:5431'),
+            'dblocation' => gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with socket path.') . ' ' . gT('If your database is using a custom port, attach it using a colon. Example: db.host.com:5431'),
             'dbname' => gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation."),
             'dbuser' => gT('Your database server user name. In most cases "root" will work.'),
             'dbpwd' => gT("Your database server password."),
@@ -206,19 +212,22 @@ class InstallerConfigForm extends CFormModel
 
     private function checkStatus()
     {
-        $this->isPhpMbStringPresent = function_exists('mb_convert_encoding');
-        $this->isPhpFileInfoPresent = function_exists('finfo_open');
-        $this->isPhpZlibPresent = function_exists('zlib_get_coding_type');
+        $this->isPhpMbStringPresent = extension_loaded('mbstring');
+        $this->isPhpFileInfoPresent = extension_loaded('fileinfo');
+        $this->isPhpZlibPresent =  extension_loaded('zlib');
+        $this->isPhpGdPresent =  extension_loaded('gd');
         $this->isPhpJsonPresent = function_exists('json_encode');
         $this->isMemoryLimitOK = $this->checkMemoryLimit();
-        $this->isPhpLdapPresent = function_exists('ldap_connect');
-        $this->isPhpImapPresent = function_exists('imap_open');
-        $this->isPhpZipPresent = class_exists('ZipArchive');
+        $this->isPhpLdapPresent = extension_loaded('ldap');
+        $this->isPhpImapPresent = extension_loaded('imap');
+        $this->isPhpZipPresent = extension_loaded('zip');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
+        $this->isCollatorPresent = class_exists('Collator');
 
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();
             $this->phpGdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            $this->phpGdHasFreeTypeSupport = !empty($gdInfo['FreeType Support']);
             $this->isPhpGdPresent = true;
         }
         $this->isPhpVersionOK = version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');
@@ -240,6 +249,8 @@ class InstallerConfigForm extends CFormModel
             or !$this->isPhpMbStringPresent
             or !$this->isPhpFileInfoPresent
             or !$this->isPhpZlibPresent
+            or !$this->isPhpGdPresent
+            or !$this->isPhpZipPresent
             or !$this->isPhpJsonPresent
         ) {
             return false;

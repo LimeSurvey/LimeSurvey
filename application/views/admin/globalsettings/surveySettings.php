@@ -25,7 +25,7 @@ $optionsOnOff = array(
                 <global-sidemenu/>
              </div>
         </div>
-        <div id="pjax-content" class="tab-content col-lg-10 flex-lg-shrink-1 ps-4">
+        <div id="pjax-content" class="tab-content col-lg-12 flex-lg-shrink-1 ps-4">
             <div class="row">
                 <div class="col-12">
                     <?php
@@ -107,8 +107,6 @@ $optionsOnOff = array(
 </div>
 
 <script>
-    window.LS.unrenderBootstrapSwitch();
-    window.LS.renderBootstrapSwitch();
 
     $('#surveySettings a').click(function (e) {
         window.location.hash = $(this).attr('href');

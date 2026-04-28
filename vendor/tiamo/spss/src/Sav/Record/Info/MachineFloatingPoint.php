@@ -52,15 +52,15 @@ class MachineFloatingPoint extends Info
 
     public function write(Buffer $buffer)
     {
-        if ($this->sysmis === 0.0) {
+        if (!isset($this->sysmis)) {
             $this->sysmis = -PHP_FLOAT_MAX;
         }
 
-        if ($this->highest === 0.0) {
+        if (!isset($this->highest)) {
             $this->highest = PHP_FLOAT_MAX;
         }
 
-        if ($this->lowest === 0.0) {
+        if (!isset($this->lowest)) {
             $this->lowest = -PHP_FLOAT_MAX;
         }
 
