@@ -1,15 +1,15 @@
 <?php
 /** @var array $questions */
 ?>
-<div id="dlgEditParameter" role="dialog" tabindex="-1" class="modal fade"
+<div id="dlgEditParameter" class="modal fade" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="dlgEditParameter-title"
      data-save-url='<?= Yii::app()->createUrl("surveyAdministration/saveUrlParam") ?>'
 >
 
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title h5"><?php eT("Add URL parameter"); ?> </h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h2 id="dlgEditParameter-title" class="modal-title h5"><?php eT("Add URL parameter"); ?></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo gT('Close'); ?>"></button>
             </div>
             <div class="modal-body">
                 <div class='mb-3 row'>
