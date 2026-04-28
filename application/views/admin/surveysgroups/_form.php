@@ -37,8 +37,8 @@
     </div>
     <div class="mb-3">
         <?php echo $form->labelEx($model, 'title'); ?>
-        <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 100, 'readonly' => !$updateRigth)); ?>
-        <?php echo $form->error($model, 'title', array('errorCssClass' => 'text-danger')); ?>
+        <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 100, 'readonly' => !$updateRigth, 'aria-describedby' => CHtml::activeId($model, 'title') . '_em_')); ?>
+        <?php echo $form->error($model, 'title', array('errorCssClass' => 'text-danger', 'id' => CHtml::activeId($model, 'title') . '_em_')); ?>
     </div>
 
     <div class="mb-3">
@@ -63,8 +63,8 @@
 
     <!-- User list -->
     <div class="mb-3">
-        <?php echo $form->labelEx($model, 'owner_id'); ?>
-        <?php echo $form->dropDownList($model, 'owner_id', CHtml::listData($oUsers, 'uid', 'full_name'), array('disabled' => !$aRigths['owner_id'], 'class' => 'form-select')); ?>
+        <?php echo $form->labelEx($model, 'owner_id', array('for' => CHtml::activeId($model, 'owner_id') . '_select')); ?>
+        <?php echo $form->dropDownList($model, 'owner_id', CHtml::listData($oUsers, 'uid', 'full_name'), array('disabled' => !$aRigths['owner_id'], 'class' => 'form-select', 'id' => CHtml::activeId($model, 'owner_id') . '_select')); ?>
         <?php echo $form->error($model, 'owner_id', array('errorCssClass' => 'text-danger')); ?>
     </div>
 
