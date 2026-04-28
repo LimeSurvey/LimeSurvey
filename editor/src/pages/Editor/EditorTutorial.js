@@ -114,7 +114,7 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
     {
       title: t('Delete question'),
       content: t(
-          'Use the trash icon to delete questions or the X icon to delete answer options.'
+        'Use the trash icon to delete questions or the X icon to delete answer options.'
       ),
       spotlightPadding: 10,
       placement: 'top',

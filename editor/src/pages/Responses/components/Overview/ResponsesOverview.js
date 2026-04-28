@@ -155,7 +155,7 @@ export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
             emptyMessage={
               !survey.datestamp
                 ? t(
-                    'Daily activity isn\'t available when datestamps are turned off.'
+                    "Daily activity isn't available when datestamps are turned off."
                   )
                 : null
             }
