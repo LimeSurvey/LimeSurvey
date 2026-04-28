@@ -27,7 +27,7 @@ const SurveyDeactivationPopup = ({
   const title = useMemo(
     () => (
       <>
-        {t('You want to stop your survey?')} <b>({surveyId})</b>
+        {t('Do you want to stop your survey?')} <b>({surveyId})</b>
       </>
     ),
     [surveyId]

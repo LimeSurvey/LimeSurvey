@@ -37,7 +37,7 @@ export const generateColumns = (surveyQuestions, survey) => {
   columns.push({
     id: completedColumnKey,
     accessorKey: completedColumnKey,
-    header: t('completed'),
+    header: t('Completed'),
     meta: {
       survey,
       filterType: multiSelectFilter,
@@ -89,7 +89,7 @@ export const generateColumns = (surveyQuestions, survey) => {
   columns.push({
     id: 'dateLastAction',
     accessorKey: 'dateLastAction',
-    header: t('Date last action'),
+    header: t('Date of last action'),
     meta: {
       survey,
       filterType: dateRangeFilter,

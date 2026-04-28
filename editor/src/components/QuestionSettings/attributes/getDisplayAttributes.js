@@ -64,7 +64,7 @@ export const getDisplayAttributes = () => ({
     attributePath: 'attributes.date_max',
     props: {
       type: 'date',
-      labelText: t('Max date'),
+      labelText: t('Maximum date'),
       id: 'maximum-date',
       inputClass: 'selected',
       showClassWhenValue: true,
@@ -75,7 +75,7 @@ export const getDisplayAttributes = () => ({
     attributePath: 'attributes.date_min',
     props: {
       type: 'date',
-      labelText: t('Min date'),
+      labelText: t('Minimum date'),
       id: 'minimum-date',
       inputClass: 'selected',
       showClassWhenValue: true,

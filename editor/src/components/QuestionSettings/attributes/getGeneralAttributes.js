@@ -54,7 +54,7 @@ export const getGeneralAttributes = () => ({
     component: Input,
     attributePath: 'attributes.maximum_chars',
     props: {
-      labelText: t('Max characters'),
+      labelText: t('Maximum characters'),
       id: 'maximum-characters',
       allowEmpty: true,
       placeholder: 500,

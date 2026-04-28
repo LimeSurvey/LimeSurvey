@@ -326,7 +326,7 @@ export const getPresentationSettingsBlocks = () => ({
         keyPath: 'autoRedirect',
         props: {
           id: 'auto-load-end-url',
-          mainText: t('Automatically load end URL when survey complete'),
+          mainText: t('Automatically load end URL when the survey is complete'),
           childComponent: ToggleButtons,
           toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
           noPermissionDisabled: true,

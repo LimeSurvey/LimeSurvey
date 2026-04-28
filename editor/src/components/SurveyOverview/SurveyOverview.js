@@ -130,7 +130,7 @@ export const SurveyOverview = ({
                         <span className="reg14">{t('Response rate')}</span>
                       </>
                     ) : (
-                      <span className="reg14">{t('No responses yet.')}</span>
+                      <span className="reg14">{t('No responses')}</span>
                     )}
                   </Card.Body>
                 </Card>
