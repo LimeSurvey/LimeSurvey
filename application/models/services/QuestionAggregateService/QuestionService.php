@@ -284,7 +284,8 @@ class QuestionService
         }
 
         $originalRelevance = $question->relevance;
-
+        $originalTitle = $question->title;
+        
         if ($question->type !== ($data['type'] ?? $question->type)) {
             $answers = Answer::model()->findAll('qid = :qid', [':qid' => $question->qid]);
             $qids = [];
@@ -310,6 +311,19 @@ class QuestionService
             );
         }
 
+        if ($question->title !== $originalTitle) {
+            $dependentConditions = Condition::model()->findAllByAttributes([
+                'cqid' => $question->qid
+            ]);
+            $dependentQuestionIds = [];
+            foreach ($dependentConditions as $condition) {
+                $dependentQuestionIds[(int) $condition->qid] = true;
+            }
+            foreach (array_keys($dependentQuestionIds) as $dependentQuestionId) {
+                LimeExpressionManager::UpgradeConditionsToRelevance(null, $dependentQuestionId);
+            }
+        }
+        
         // If relevance equation was manually edited,
         // existing conditions must be cleared
         if (
