@@ -2797,7 +2797,7 @@ class userstatistics_helper
 
                 break;
             case 'html':
-                $sGoogleMapsAPIKey = preg_replace('/[^A-Za-z0-9_-]/', '', trim(strval(App()->getConfig("googleMapsAPIKey"))));
+                $sGoogleMapsAPIKey = sanitize_googleapikey(App()->getConfig("googleMapsAPIKey"));
                 if (!empty($sGoogleMapsAPIKey)) {
                     $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
                 }

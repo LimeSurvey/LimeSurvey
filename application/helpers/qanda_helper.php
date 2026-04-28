@@ -2208,7 +2208,7 @@ function do_shortfreetext($ia)
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
 
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "map.js", LSYii_ClientScript::POS_END);
-        $sGoogleMapsAPIKey = preg_replace('/[^A-Za-z0-9_-]/', '', trim(strval(App()->getConfig("googleMapsAPIKey"))));
+        $sGoogleMapsAPIKey = sanitize_googleapikey(App()->getConfig("googleMapsAPIKey"));
         if ($aQuestionAttributes['location_mapservice'] == 1 && !empty($sGoogleMapsAPIKey)) {
             Yii::app()->getClientScript()->registerScriptFile("//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}", LSYii_ClientScript::POS_BEGIN);
         } elseif ($aQuestionAttributes['location_mapservice'] == 2) {

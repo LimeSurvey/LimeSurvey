@@ -442,7 +442,7 @@ class GlobalSettings extends SurveyCommonAction
         $googleapikeys = ['googleMapsAPIKey', 'googleanalyticsapikey', 'googletranslateapikey'];
         foreach ($googleapikeys as $googleapikey) {
             $value = trim(App()->getRequest()->getPost($googleapikey));
-            $fixedValue = preg_replace('/[^A-Za-z0-9_-]/', '', $fixedValue);
+            $fixedValue = sanitize_googleapikey($value);
             if ($value !== $fixedValue) {
                 /* Add an alert to the user */
                 Yii::app()->setFlashMessage(sprintf(gT("Invalue value set for %s, reset to %s"), $value, $fixedValue), 'warning');
