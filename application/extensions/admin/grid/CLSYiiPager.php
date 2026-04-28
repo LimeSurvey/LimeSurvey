@@ -95,7 +95,7 @@ class CLSYiiPager extends CLinkPager
     {
         if ($hidden || $selected) {
             $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
-            +$attrs = ['class' => 'page-link'];
+            $attrs = ['class' => 'page-link'];
             if ($selected) {
                 $attrs['aria-current'] = 'page';
             }
