@@ -28,8 +28,8 @@ class SurveysController extends LSYii_Controller
         } else {
             $lang = App()->getConfig('defaultlang');
         }
-            App()->setLanguage($lang);
-
+        App()->setLanguage($lang);
+        LimeExpressionManager::SetSurveyId(0);
 
         $oTemplate       = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
         $this->sTemplate = $oTemplate->sTemplateName;
