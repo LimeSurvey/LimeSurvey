@@ -5988,7 +5988,7 @@ class LimeExpressionManager
                 /** @var integer counter to have current rank number (subquestion) */
                 $iCountRank = 0;
 
-                /** @var integer Get total of answers (all potential answers) * */
+                /** @var integer Get total of subquestions (all potential subquestions) * */
                 $answersCount = \Question::model()->count('parent_qid = :parent_qid', [':parent_qid' => $qid]);
 
                 /** @var integer Get number of answers currently filtered (unrelevant) * */
