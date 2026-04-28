@@ -1495,7 +1495,6 @@ class userstatistics_helper
                         foreach ($oResponses as $oResponse) {
                             $digitIndex = strcspn($al[2] ?? '', '0123456789');
                             $sResponseColumn = ($digitIndex > 1) ? substr($al[2], $digitIndex - 1) : $al[2];
-                            $sResponseColumn = $al[2];
                             $column = substr((string) $sResponseColumn, 0, strlen((string) $sResponseColumn) - 5);
                             if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
                                 $row += 1;
@@ -1504,7 +1503,8 @@ class userstatistics_helper
                     } else {
                         //get data - select a count of responses where no answer is provided
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
+                            $digitIndex = strcspn($al[2] ?? '', '0123456789');
+                            $sResponseColumn = ($digitIndex > 1) ? substr($al[2], $digitIndex - 1) : $al[2];
                             if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
