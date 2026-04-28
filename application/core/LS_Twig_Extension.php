@@ -652,11 +652,74 @@ class LS_Twig_Extension extends AbstractExtension
         return 'rgba(' . join(', ', $return) . ',' . $alpha . ')';
     }
 
-    public static function getConfig($item)
+    /**
+     * Shortcut to get configuration value
+     * @see ConsoleApplication->getConfig and LSYii_Application->getConfig
+     * @param string $name
+     * @return mixed
+     */
+    public static function getConfig($name)
     {
-        return Yii::app()->getConfig($item);
+        /* Core allowedlist */
+        $coreAllowedList = self::getAllowedConfig();
+        if (in_array($name, $coreAllowedList, true)) {
+            return App()->getConfig($name);
+        }
+        /* if allowlist is an array, use it but only for deny; not for allowing */
+        $extraAllowedList = App()->getConfig('twig_getConfig_extraallowlist');
+        if (is_array($extraAllowedList) && in_array($name, $extraAllowedList, true)) {
+            return App()->getConfig($name);
+        }
+        return false;
     }
 
+    /**
+     * List of fixed allowed setting in getConfig
+     * @return string[]
+     */
+    private static function getAllowedConfig()
+    {
+        return [
+            /* Used for global and error page */
+            'sitename',
+            'siteadminname',
+            'siteadminemail',
+            /* Needed by question view */
+            'surveyID',
+            /* Clearly public */
+            'defaultlang',
+            'defaulttheme',
+            'defaultfixedtheme',
+            'maintenancemode',
+            'repeatheadings',
+            'minrepeatheadings',
+            'printanswershonorsconditions',
+            /* Potential usage in theme */
+            'generalscripts', // Used in core Questions
+            'shownoanswer',
+            'showpopups',
+            'demoMode',
+            /* url */
+            'publicurl',
+            'tempurl',
+            'assets',
+            'imageurl',
+            'uploadurl',
+            'standardthemerooturl',
+            'adminscripts',
+            'generalscripts',
+            'styleurl',
+            'publicstyle',
+            'publicstyleurl',
+            'sCKEditorURL',
+            'userthemerooturl',
+            'adminimageurl',
+            'applicationurl',
+            'extensionsurl',
+            'adminstyleurl',
+            'userfontsurl',
+        ];
+    }
 
     /**
      * Retrieve all the previous answers from a given token
