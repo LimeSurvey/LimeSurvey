@@ -1541,10 +1541,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'survey', 'read'),
         ];
         $dropdownItems[] = [
-            'submenu' => true,
             'title' => gT('Copy'),
             'enabledCondition' => Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read'),
-            'submenu_items' => $this->getSubmenuItemsCopy(Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')),
+            'linkAttributes'   => [
+                'data-bs-toggle' => "modal",
+                'data-bs-target' => "#copySurvey_modal",
+                'onclick' => "copySurveyOptions(" . (int)$this->sid . ", " . json_encode(sprintf(gT('Copy of %s', 'unescaped'), $this->currentLanguageSettings->surveyls_title)) . ", " . json_encode($this->sid . ' - ' . $this->currentLanguageSettings->surveyls_title) . ")",
+            ],
         ];
         $dropdownItems[] = [
             'title' => gT('Add user'),
@@ -1561,25 +1564,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
-    private function getSubmenuItemsCopy($enableCondition = true)
-    {
-        $submenuItems = [];
-        $submenuItems[] = [
-            'title' => gT('Quick copy'),
-            'url' => App()->createUrl("/surveyAdministration/copySimple", ['surveyIdToCopy' => $this->sid]),
-            'enabledCondition' => $enableCondition,
-        ];
-        $submenuItems[] = [
-            'title' => gT('Custom copy'),
-            'linkAttributes'   => [
-                'data-bs-toggle' => "modal",
-                'data-bs-target' => "#copySurvey_modal",
-                'onclick' => "copySurveyOptions(" . (int)$this->sid . ")",
-            ],
-            'enabledCondition' => $enableCondition,
-        ];
-        return $submenuItems;
-    }
+
 
     /**
      * Returns buttons for gridview.
@@ -1743,7 +1728,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
      *
      * $options = [
      *  'pageSize' => 10,
-     *  'currentPage' => 1
+     *  'currentPage' => 1,
+     *  'skipCacheFlush' => false  // Set to true to skip cache flush (useful for AJAX/modal queries)
      * ];
      *
      * @param array $options
@@ -1753,7 +1739,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         $options = $options ?? [];
         // Flush cache to get proper counts for partial/complete/total responses
-        if (method_exists(Yii::app()->cache, 'flush')) {
+        // Skip flush for AJAX/modal queries to avoid overhead (e.g., Select2 survey picker)
+        $skipCacheFlush = isset($options['skipCacheFlush']) && $options['skipCacheFlush'];
+        if (!$skipCacheFlush && method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
         }
         $pagination = [

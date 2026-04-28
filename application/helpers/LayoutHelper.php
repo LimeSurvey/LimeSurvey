@@ -156,7 +156,7 @@ class LayoutHelper
     }
 
     /**
-     * Returns extra menu for the new create process (including survey, survey group, import survey)
+     * Returns extra menu for the new create process (including create, copy, and import survey).
      *
      * @return Menu
      */
@@ -165,7 +165,7 @@ class LayoutHelper
         $menuItemHeader = [
             'isDivider' => false,
             'isSmallText' => true,
-            'label' => gT('Create new...'),
+            'label' => gT('New survey...'),
             'href' => '#',
             'iconClass' => 'ri-add-line',
         ];
@@ -174,7 +174,7 @@ class LayoutHelper
         $menuItemNewSurvey = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => gT('Survey'),
+            'label' => gT('Create'),
             'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
             'iconClass' => 'ri-add-line',
             'id' => 'create-survey-link',
@@ -182,26 +182,27 @@ class LayoutHelper
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
-        $menuItemNewSurvey = [
+        $menuItemCopySurvey = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => gT('Survey group'),
-            'href' => \Yii::app()->createUrl('admin/surveysgroups/sa/create'),
-            'iconClass' => 'ri-add-circle-line',
+            'label' => gT('Copy'),
+            'isModal' => true,
+            'modalId' => 'copySurvey_modal',
+            'iconClass' => 'ri-file-copy-line',
             'itemClass' => $itemClass
         ];
-        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+        $menuItems[] = (new MenuItem($menuItemCopySurvey));
 
-        $menuItemNewSurvey = [
+        $menuItemImport = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => gT('Import survey'),
+            'label' => gT('Import'),
             'isModal' => true,
             'modalId' => 'importSurvey_modal',
             'iconClass' => 'ri-upload-line',
             'itemClass' => $itemClass
         ];
-        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+        $menuItems[] = (new MenuItem($menuItemImport));
 
         $options = [
             'id' => 'createMenuButton',
