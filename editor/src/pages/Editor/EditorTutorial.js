@@ -308,7 +308,7 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
           <div className="green-mark"></div>
           <span className="reg14">
             <SmallCheckMarkIcon />
-            {'🎉 ' + t('Congratulations! You have completed the tour.')}
+            {t('🎉 Congratulations! You have completed the tour.')}
           </span>
         </div>
       ),
