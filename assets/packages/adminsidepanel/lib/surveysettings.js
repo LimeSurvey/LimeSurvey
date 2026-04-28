@@ -109,9 +109,21 @@ function in_array(needle, haystack, argStrict) {
     return false;
 }
 
+/**
+ * Generate a GUID-like identifier string.
+ * @returns {string} A lowercase hexadecimal identifier in the form `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` (groups of 8-4-4-4-12 hex digits).
+ */
 function guidGenerator() {
     var S4 = function () {
         return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     };
     return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4());
 }
+
+$(document).on('change', '#importsurvey #surveysgroup', function () {
+    if ($(this).val() == 'from_survey') {
+        $('#survey_group_import_warning').removeClass('d-none');
+    } else {
+        $('#survey_group_import_warning').addClass('d-none');
+    }
+});

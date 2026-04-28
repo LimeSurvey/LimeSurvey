@@ -1,21 +1,20 @@
 <?php
 Yii::app()->getController()->renderPartial(
 '/layouts/partial_modals/modal_header',
-['modalTitle' => gT('Share participant(s)')]
+['modalTitle' => gT('Share participant(s)'), 'modalTitleId' => 'participant_edit_modal']
 );
 ?>
-
-<div class="modal-body ">
 <?php
-    $form = $this->beginWidget(
-        'yiistrap_fork.widgets.TbActiveForm',
-        array(
-            'id' => 'shareParticipantActiveForm',
-            'action' => array('admin/participants/sa/shareParticipants'),
-            'htmlOptions' => array('class' => 'form '), // for inset effect
-        )
-    );
+$form = $this->beginWidget(
+    'yiistrap_fork.widgets.TbActiveForm',
+    array(
+        'id' => 'shareParticipantActiveForm',
+        'action' => array('admin/participants/sa/shareParticipants'),
+        'htmlOptions' => array('class' => 'form '), // for inset effect
+    )
+);
 ?>
+<div class="modal-body ">
     <?php if (isset($participantIds)): ?>
         <?php foreach ($participantIds as $id): ?>
             <input type="hidden" name="participant_id[]" value="<?php echo $id; ?>" />
@@ -26,12 +25,12 @@ Yii::app()->getController()->renderPartial(
     <div class="row">
         <div class="col-lg-6">
             <div class='mb-3'>
-                <label class='form-label'>
+                <label id="shareuser_label" class='form-label' for="shareuser">
                     <?php eT("User with whom the participants are to be shared:"); ?>
                 </label>
 
                 <div class='col-12'>
-                    <select class='form-select' id='shareuser' name='shareuser'>
+                    <select class='form-select' id='shareuser' name='shareuser' aria-labelledby="shareuser_label">
                         <option value=''><?php eT('Share with all users'); ?></option>
                         <?php foreach ($users as $user): ?>
                             <option value='<?php echo $user->uid; ?>'>
@@ -46,12 +45,13 @@ Yii::app()->getController()->renderPartial(
 
         <div class="col-lg-6">
             <div class='mb-3'>
-                <label class='form-label text-start'>
+                <label id="can_edit_group_label" class='form-label text-start'>
                     <?php eT("Other users may edit this participant"); ?>
                 </label>
                 <div class='col-12'>
                     <?php App()->getController()->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => "can_edit",
+                        'ariaLabel'     => gT('Other users may edit this participant'),
                         'checkedOption' => "0",
                         'selectOptions' => [
                             '1' => gT('Yes'),
@@ -66,7 +66,7 @@ Yii::app()->getController()->renderPartial(
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-    <button role="button" type="button" class="btn btn-primary action_save_modal_shareparticipant">
+    <button type="button" class="btn btn-primary action_save_modal_shareparticipant">
         <?php eT("Share")?>
     </button>
 </div>

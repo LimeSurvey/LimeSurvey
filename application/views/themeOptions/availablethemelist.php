@@ -26,8 +26,8 @@ $aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
                     <?php foreach ($aQuestionThemes['available_themes'] as $oTheme): ?>
                         <tr class="odd">
                             <td class="col-lg-1">preview</td>
-                            <td class="col-lg-2"><?php echo $oTheme->name; ?></td>
-                            <td class="col-lg-3"><?php echo $oTheme->description; ?></td>
+                            <td class="col-lg-2"><?php echo CHtml::encode($oTheme->name); ?></td>
+                            <td class="col-lg-3"><?php echo CHtml::encode($oTheme->description); ?></td>
                             <td class="col-lg-2"><?php eT('XML themes'); ?></td>
                             <td class="col-lg-2"><?php echo $oTheme->extends; ?></td>
                             <td class="col-lg-1"><?php echo $oTheme->manifestbuttons; ?></td>

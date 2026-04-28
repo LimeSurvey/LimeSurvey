@@ -3,7 +3,7 @@
     ), 'post'
 ); ?>
     <div class="modal-header">
-        <h5 class="modal-title" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></h5>
+        <h2 class="modal-title h5" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
 
@@ -11,18 +11,18 @@
 
         <div class='col-md-4'></div>
         <div class='col-md-8'>
-            <p><?php echo ngT('Add the selected participant to survey.|Add the {n} selected participants to survey.', $count); ?></p>
+            <p role="heading" aria-level="3"><?php echo ngT('Add the selected participant to survey.|Add the {n} selected participants to survey.', $count); ?></p>
         </div>
 
         <!-- Comma separated list -->
         <input type='hidden' name='participant_id' value='<?php echo $participant_id; ?>'/>
         <div class="row ls-space margin top-10 bottom-10">
             <div class='mb-3'>
-                <label class='form-label col-md-4'>
+                <label id="addToSurvey_survey_label" class='form-label col-md-4' for="addToSurvey_survey_id">
                     <?php eT('Survey'); ?>
                 </label>
                 <div class='col-md-8'>
-                    <select name='survey_id' class='form-select'>
+                    <select name='survey_id' id="addToSurvey_survey_id" class='form-select' aria-labelledby="addToSurvey_survey_label">
                         <?php foreach ($surveys as $survey): ?>
                             <?php if ($hasGlobalPermission || Permission::model()->hasSurveyPermission($survey->sid, 'tokens', 'update')): ?>
                                 <option value='<?php echo $survey->sid; ?>'><?php echo $survey->languagesettings[$survey->language]->surveyls_title; ?> (<?php echo $survey->sid; ?>)</option>
@@ -54,7 +54,7 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT('Cancel') ?></button>
-        <button role="button" type="submit" class="btn btn-primary action_save_modal_shareparticipant">
+        <button type="submit" class="btn btn-primary action_save_modal_shareparticipant">
             <?php eT('Add')?>
         </button>
     </div>
