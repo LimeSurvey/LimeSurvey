@@ -43,7 +43,6 @@ class TbDataColumn extends CDataColumn
 
             echo $sort->link($this->name, $label, [
                 'class' => 'sort-link',
-                'role'  => 'button',
             ]);
         } elseif ($this->name !== null && $this->header === null) {
             if ($this->grid->dataProvider instanceof CActiveDataProvider) {
