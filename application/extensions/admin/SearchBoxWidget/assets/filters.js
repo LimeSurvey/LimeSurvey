@@ -8,8 +8,9 @@ $('#survey_reset').click(function (e) {
     location.href = url + '?' + new URLSearchParams(params).toString()
 });
 
-$('.view-switch').on('click keydown', function (e) {  
-    if (e.type === 'click' || e.key === "Enter" || e.key === " ") {
+$('.view-switch').on('click keydown', function (e) {
+    // click, enter, spacebar
+    if (e.type === 'click' || e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         var viewtype = $(this).data('action');
         $(this).append('<input type="hidden" name="viewtype" value="' + viewtype + '" />');
