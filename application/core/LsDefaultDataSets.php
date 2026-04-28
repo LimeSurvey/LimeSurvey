@@ -1816,7 +1816,7 @@ class LsDefaultDataSets
             $addRow('UpdateCheck', 1),
             $addRow('PasswordRequirement', 1),
             $addRow('ComfortUpdateChecker', 1),
-            $addRow('Authdb', 1),
+            $addRow('Authdb', 1, '1.0.0', 1),
             $addRow('ReactEditor', 1),
             // Inactive plugins below.
             $addRow('AuthLDAP'),
