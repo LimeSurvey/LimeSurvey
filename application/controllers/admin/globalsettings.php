@@ -447,7 +447,7 @@ class GlobalSettings extends SurveyCommonAction
                 /* Add an alert to the user */
                 Yii::app()->setFlashMessage(sprintf(gT("Invalue value set for %s, reset to %s"), $value, $fixedValue), 'warning');
                 /* Add a warning for log for server admin */
-                Yii::log("Invalid value %s set for %s in global settings", 'warning', 'application.controller.admin.globalsettings');
+                Yii::log("Invalid value set for {$googleapikey} in global settings.", 'warning', 'application.controller.admin.globalsettings');
             }
             SettingGlobal::setSetting($googleapikey, $fixedValue);
         }
