@@ -886,10 +886,14 @@ $config['allow_unserialize_attachments'] = false;
 
 // Allow to use a allow list for getConfig function in twig
 // used only if it's an array, else use a fixed denylist and the extra denylist in config
+// If you want to allow 'securesetting', set this to ['securesetting'].
+// All settings except 'securesetting' will be denied. 'securesetting' will be allowed.
 // @see https://bugs.limesurvey.org/view.php?id=20495
 $config['twig_getConfig_allowlist'] = null;
 
 // Allow to add more global settings to a deny for getConfig function in twig
+// LimeSurvye already disallow most unsecure settings.
+// If you want to disallow 'unsecuresetting', set this to ['unsecuresetting']
 // @see https://bugs.limesurvey.org/view.php?id=20495
 $config['twig_getConfig_extradenylist'] = [];
 
