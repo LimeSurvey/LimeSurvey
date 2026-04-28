@@ -604,14 +604,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function filterTemplateSave($sTemplateName)
     {
-        if (!Permission::model()->hasTemplatePermission($sTemplateName)) {
-            // Reset to default only if different from actual value
+        // Make sure the user has permission to use the template.
+        // 'inherit' is always permitted — the dropdown shows it without any permission check
+        if ($sTemplateName !== 'inherit' && !Permission::model()->hasTemplatePermission($sTemplateName)) {
+            // For new records we can just set it to inherit, for existing ones we keep the old value.
             if (!$this->isNewRecord) {
-                $oSurvey = self::model()->findByPk($this->sid);
-                if ($oSurvey->template != $sTemplateName) {
-                    // No need to test !is_null($oSurvey)
-                    $sTemplateName = getGlobalSetting('defaulttheme');
-                }
+                $oSurvey = self::model()->findByPkNoCache($this->sid);
+                $sTemplateName = $oSurvey->template ?? 'inherit';
             } else {
                 $sTemplateName = 'inherit';
             }
@@ -1036,6 +1035,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         $model = parent::findByPk($pk, $condition, $params);
         return $model;
+    }
+
+    /**
+     * Finds a single active record with the specified primary key, skipping the cache used by findByPk.
+     * @param mixed $pk primary key value(s). Use array for multiple primary keys. For composite key, each key value must be an array (column name=>column value).
+     * @param mixed $condition query condition or criteria.
+     * @param array $params parameters to be bound to an SQL statement.
+     * @return static|null the record found. Null if none is found.
+     */
+    public function findByPkNoCache($pk, $condition = '', $params = array())
+    {
+        return parent::findByPk($pk, $condition, $params);
     }
 
     /**
