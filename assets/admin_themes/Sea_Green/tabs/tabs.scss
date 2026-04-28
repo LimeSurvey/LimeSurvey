@@ -9,14 +9,18 @@
         border-bottom    : 2px solid $g-400;
         background-color : $g-200;
         padding          : 6px 20px;
-        &:hover,
         &:focus {
-            border-top : 2px solid $g-200;
+            border: 2px solid $grape90;
+            border-bottom: 4px solid $grape90;
         }
-        &:hover:not(.active) {
+        &.active:hover, &:hover {
+            border: 1px solid $grape75;
             border-bottom : 2px solid $grape75;
-            border-top    : 2px solid $g-200;
-            box-shadow    : inset 0 0 0 1px $grape75;
+        }
+        &:active {
+            border: 1px solid $grape75;
+            border-bottom: 3px solid $grape75;
+            background-color: $g-400;
         }
         &.disabled,
         &:disabled {

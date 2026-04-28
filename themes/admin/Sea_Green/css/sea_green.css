@@ -18800,13 +18800,18 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   background-color: #EEEFF7;
   padding: 6px 20px;
 }
-.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
-  border-top: 2px solid #EEEFF7;
+.nav-tabs .nav-link:focus {
+  border: 2px solid rgba(123, 97, 255, 0.9);
+  border-bottom: 4px solid rgba(123, 97, 255, 0.9);
 }
-.nav-tabs .nav-link:hover:not(.active) {
+.nav-tabs .nav-link.active:hover, .nav-tabs .nav-link:hover {
+  border: 1px solid rgba(123, 97, 255, 0.4);
   border-bottom: 2px solid rgba(123, 97, 255, 0.4);
-  border-top: 2px solid #EEEFF7;
-  box-shadow: inset 0 0 0 1px rgba(123, 97, 255, 0.4);
+}
+.nav-tabs .nav-link:active {
+  border: 1px solid rgba(123, 97, 255, 0.4);
+  border-bottom: 3px solid rgba(123, 97, 255, 0.4);
+  background-color: #D3D5DA;
 }
 .nav-tabs .nav-link.disabled, .nav-tabs .nav-link:disabled {
   color: #9094A7;
