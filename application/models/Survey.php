@@ -172,8 +172,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public $bShowRealOptionValues = true;
 
 
-    private $sSurveyUrl;
-
     /**
      * Set defaults
      * @inheritdoc
@@ -2045,8 +2043,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Fix invalid question in this survey
-     * Delete question that don't exist in primary language
+     * Removes questions and subquestions from this survey that are not present in the survey's primary language.
+     *
+     * Deletes base questions (parent_qid = 0) whose `qid` is not found in the primary-language question set, and deletes subquestions (parent_qid != 0) whose `title` is not found in the primary-language subquestion set. Changes are persisted to the database for this survey's `sid`.
      */
     public function fixInvalidQuestions()
     {
@@ -2074,23 +2073,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion, 'title', 'title'));
         Question::model()->deleteAll($criteria); // Must log count of deleted ?
     }
-
-    /**
-     * TODO: Not used anywhere. Deprecate it?
-     */
-    public function getsSurveyUrl()
-    {
-        if ($this->sSurveyUrl == '') {
-            if (!in_array(App()->language, $this->getAllLanguages())) {
-                $surveylang = $this->language;
-            } else {
-                $surveylang = App()->language;
-            }
-            $this->sSurveyUrl = App()->createUrl('survey/index', array('sid' => $this->sid, 'lang' => $surveylang));
-        }
-        return $this->sSurveyUrl;
-    }
-
 
     /**
      * @return Question[]
@@ -2530,9 +2512,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return Permission::model()->hasPermission($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
-    /*
-     * Find all public surveys
-     * @return Survey[]
+    /**
+     * Get surveys configured to be listed publicly.
+     *
+     * Filters surveys whose `listpublic` setting is `'Y'` (public) or `'I'` (inherit) and that evaluate as list-public.
+     *
+     * @return Survey[] Array of Survey models that are publicly listable.
      */
     public function findAllPublic()
     {
@@ -2555,6 +2540,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @param string|null $language
      * @param array|string|mixed $params   Optional parameters to include in the URL.
      * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
+     * @deprecated please use the new service class SurveyUrl
      * @return string
      */
     public function getSurveyUrl($language = null, $params = [], $preferShortUrl = true)

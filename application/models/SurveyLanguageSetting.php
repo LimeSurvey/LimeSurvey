@@ -40,6 +40,7 @@
  * @property string $surveyls_admin_responses_subj Subject of detailed admin notification e-mail in this language
  * @property string $surveyls_admin_responses Body of detailed admin notification e-mail in this language
  * @property integer $surveyls_numberformat Survey decimal mark for this language (0: '.', 1: ',')
+ * @property string $surveyls_alias the alias name for the survey
  * @property string $attachments
  *
  * @property Survey $survey

@@ -112,13 +112,16 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Load complete view of survey properties and actions specified by $iSurveyID
-     *
-     * @return void
-     *
-     * @access public
-     * @throws CException
-     */
+         * Prepare and render the survey administration overview page for the requested survey.
+         *
+         * Builds view data (titles, topbar buttons, last-visited question, template API version,
+         * owner info, per-language public URLs, and survey summary) and renders the sidebody view.
+         * May redirect if the current user lacks read permission for the survey.
+         *
+         * @return void
+         *
+         * @access public
+         */
     public function actionView()
     {
         $iSurveyID = $this->getSurveyIdFromGetRequest();
@@ -204,13 +207,14 @@ class SurveyAdministrationController extends LSBaseController
         $user = User::model()->findByPk(App()->session['loginID']);
         $aData['owner'] = $user->attributes;
 
-      //  if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
-        //    $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
-       // }
-
         $surveyUrls = [];
         foreach ($survey->allLanguages as $language) {
-            $surveyUrls[$language] = $survey->getSurveyUrl($language);
+            $surveyUrlCreator = new \LimeSurvey\Models\Services\SurveyUrl($language);
+            $surveyUrls[$language] = $surveyUrlCreator->getUrl(
+                $survey->sid,
+                $survey->languagesettings,
+                $survey->getAliasForLanguage($language)
+            );
         }
         $aData['surveyUrls'] = $surveyUrls;
 
