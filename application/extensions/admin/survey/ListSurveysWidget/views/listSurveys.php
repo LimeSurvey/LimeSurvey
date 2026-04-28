@@ -34,7 +34,7 @@
                         $this->pageSize,
                         Yii::app()->params['pageSizeOptions'],
                         ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto',
-                         'aria-label' => gT('pagination filter')]
+                         'aria-label' => gT('Change page size')]
                     )
                 ),
             'ajaxUpdate'            => 'survey-grid',
