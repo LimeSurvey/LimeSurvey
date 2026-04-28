@@ -3556,7 +3556,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $CSVImportResult = array();
     $tmpVVFile = fileCsvToUtf8($sFullFilePath, $aOptions['sCharset']);
     $aFileResponses = array();
-    while (($aLineResponse = fgetcsv($tmpVVFile, 0, $aOptions['sSeparator'], $aOptions['sQuoted'])) !== false) {
+    while (($aLineResponse = fgetcsv($tmpVVFile, 0, $aOptions['sSeparator'], $aOptions['sQuoted'], "\\")) !== false) {
         $aFileResponses[] = $aLineResponse;
     }
     if (empty($aFileResponses)) {
@@ -3879,7 +3879,7 @@ function TSVImportSurvey($sFullFilePath)
     $aAttributeList = array(); //QuestionAttribute::getQuestionAttributesSettings();
     $tmp = fileCsvToUtf8($sFullFilePath);
 
-    $rowheaders = fgetcsv($tmp, 0, "\t", '"');
+    $rowheaders = fgetcsv($tmp, 0, "\t", '"', "\\");
     $rowheaders = array_map('trim', $rowheaders);
     // remove BOM from the first header cell, if needed
     $rowheaders[0] = preg_replace("/^\W+/", "", $rowheaders[0]);
@@ -3889,7 +3889,7 @@ function TSVImportSurvey($sFullFilePath)
 
     $adata = array();
     $iHeaderCount = count($rowheaders);
-    while (($row = fgetcsv($tmp, 0, "\t", '"')) !== false) {
+    while (($row = fgetcsv($tmp, 0, "\t", '"', "\\")) !== false) {
         $rowarray = array();
         for ($i = 0; $i < $iHeaderCount; ++$i) {
             $val = ($row[$i] ?? '');
