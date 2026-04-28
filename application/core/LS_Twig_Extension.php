@@ -665,7 +665,7 @@ class LS_Twig_Extension extends AbstractExtension
         if (in_array($name, $coreAllowedList, true)) {
             return App()->getConfig($name);
         }
-        /* if allowlist is an array, use it but only for deny; not for allowing */
+        /* if allowlist is an array, use it */
         $extraAllowedList = App()->getConfig('twig_getConfig_extraallowlist');
         if (is_array($extraAllowedList) && in_array($name, $extraAllowedList, true)) {
             return App()->getConfig($name);
