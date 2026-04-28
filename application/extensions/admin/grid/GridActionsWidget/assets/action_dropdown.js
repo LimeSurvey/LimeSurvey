@@ -31,15 +31,13 @@ LS.actionDropdown = {
                 });
                 body.append(dropdownMenu);
 
-
-
                 // ✅ Add focus trap logic
                 dropdownToggleEl.addEventListener('shown.bs.dropdown', function () {
                     trapFocus(dropdownMenu, dropdownToggleEl, dropdownInstance);
                 });
 
                 dropdownToggleEl.addEventListener('hidden.bs.dropdown', function () {
-                    releaseFocusTrap(dropdownMenu);
+                    LS.actionDropdown.releaseFocusTrap(dropdownMenu);
                 });
             }
         });
@@ -73,8 +71,8 @@ LS.actionDropdown = {
             // Escape handler on document capture phase — fires before Bootstrap's delegated handler
             container._escHandler = function (e) {
                 if (e.key === 'Escape' || e.key === 'Esc') {
-                    // Handle if the event target is inside the menu or on the toggle itself
-                    if (container.contains(e.target) || e.target === toggleButton) {
+                    // Only handle if the event target is inside this container
+                    if (container.contains(e.target)) {
                         e.preventDefault();
                         e.stopImmediatePropagation();
 
@@ -92,16 +90,19 @@ LS.actionDropdown = {
             document.addEventListener('keydown', container._escHandler, true);
             firstEl.focus();
         }
+    },
 
-        function releaseFocusTrap(container) {
-            if (container._tabHandler) {
-                container.removeEventListener('keydown', container._tabHandler);
-                delete container._tabHandler;
-            }
-            if (container._escHandler) {
-                document.removeEventListener('keydown', container._escHandler, true);
-                delete container._escHandler;
-            }
+    /**
+     * Cleans up focus-trap listeners (Tab on container, Escape on document) for a given menu element.
+     */
+    releaseFocusTrap: function (container) {
+        if (container._tabHandler) {
+            container.removeEventListener('keydown', container._tabHandler);
+            delete container._tabHandler;
+        }
+        if (container._escHandler) {
+            document.removeEventListener('keydown', container._escHandler, true);
+            delete container._escHandler;
         }
     },
 
@@ -120,6 +121,7 @@ LS.actionDropdown = {
             const toggleId = menu.getAttribute('data-for-ls-dropdown-toggle-id');
             // If the toggle doesn't exist, remove the menu.
             if (!document.querySelector(`.ls-dropdown-toggle[data-ls-dropdown-toggle-id="${toggleId}"]`)) {
+                LS.actionDropdown.releaseFocusTrap(menu);
                 menu.remove();
             }
         });
