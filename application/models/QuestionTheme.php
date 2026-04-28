@@ -894,26 +894,34 @@ class QuestionTheme extends LSActiveRecord
             $oThemeConfig->metadata->type = 'question_theme';
         } else {
             $oThemeConfig->metadata->addChild('type', 'question_theme');
-        };
+        }
 
-        // set compatibility version
-        if (
-            $oThemeConfig->compatibility->version
-            && count($oThemeConfig->compatibility->version) > 1
-        ) {
-            $length = count($oThemeConfig->compatibility->version);
-            $compatibility = $oThemeConfig->addChild('compatibility');
-            $compatibility->addChild('version');
-            $oThemeConfig->compatibility->version[$length] = '5.0';
-        } elseif (
-            $oThemeConfig->compatibility->version
-            && count($oThemeConfig->compatibility->version) === 1
-        ) {
-            $oThemeConfig->compatibility->version = '5.0';
+        // set compatibility version only if missing or below 5.0
+        $shouldUpdateCompatibility = false;
+        if (isset($oThemeConfig->compatibility)) {
+            $existingVersions = [];
+            foreach ($oThemeConfig->compatibility->version as $ver) {
+                $existingVersions[] = (string)$ver;
+            }
+            // If no version or any version < 5.0, update
+            if (empty($existingVersions)) {
+                $shouldUpdateCompatibility = true;
+            } else {
+                foreach ($existingVersions as $ver) {
+                    if (version_compare($ver, '5.0', '<')) {
+                        $shouldUpdateCompatibility = true;
+                        break;
+                    }
+                }
+            }
+            if ($shouldUpdateCompatibility) {
+                // Remove all <version> children
+                unset($oThemeConfig->compatibility->version);
+                $oThemeConfig->compatibility->addChild('version', '5.0');
+            }
         } else {
             $compatibility = $oThemeConfig->addChild('compatibility');
-            $compatibility->addChild('version');
-            $oThemeConfig->compatibility->version = '5.0';
+            $compatibility->addChild('version', '5.0');
         }
 
         $sThemeDirectoryName = self::getThemeDirectoryPath($sQuestionConfigFilePath);
@@ -940,9 +948,9 @@ class QuestionTheme extends LSActiveRecord
         // get questiontype from core if it is missing
         if (!isset($oThemeConfig->metadata->questionType)) {
             $oThemeConfig->metadata->addChild('questionType', $oThemeCoreConfig->metadata->questionType);
-        };
+        }
 
-        // search missing new tags and copy theme from the core theme
+        // search missing new tags and copy theme from the core theme, avoid duplicates
         $aNewMetadataTagsToRecoverFromCoreType = ['group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
         foreach ($aNewMetadataTagsToRecoverFromCoreType as $sMetaTag) {
             if (!isset($oThemeConfig->metadata->$sMetaTag)) {
