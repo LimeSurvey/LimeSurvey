@@ -633,6 +633,14 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
 
+    /**
+     * Lightens a CSS hex color by a given amount and returns a CSS color string.
+     *
+     * @param string $cssColor Hex color string in the form `#RRGGBB`.
+     * @param int $grade Amount to increase each RGB channel (positive to lighten, negative to darken).
+     * @param float|int $alpha Alpha channel value between 0 and 1. When equal to `1`, a hex color is returned.
+     * @return string A color string: a hex color (`#RRGGBB`) when `$alpha === 1`, otherwise an `rgba(r, g, b, a)` string.
+     */
     public static function lightencss($cssColor, $grade = 10, $alpha = 1)
     {
         $aColors = str_split(substr((string) $cssColor, 1), 2);
@@ -652,11 +660,82 @@ class LS_Twig_Extension extends AbstractExtension
         return 'rgba(' . join(', ', $return) . ',' . $alpha . ')';
     }
 
-    public static function getConfig($item)
+    /**
+     * Retrieve a configuration value restricted to an internal allowlist.
+     *
+     * Returns the configuration value for $name when $name is present in the built-in allowlist
+     * or in the `twig_getConfig_extraallowlist` configuration (when that extra list is an array).
+     * Returns `false` for any key that is not allowed.
+     *
+     * @param string $name The configuration key to read.
+     * @return mixed The configuration value when allowed, `false` otherwise.
+     */
+    public static function getConfig($name)
     {
-        return Yii::app()->getConfig($item);
+        /* Core allowedlist */
+        $coreAllowedList = self::getAllowedConfig();
+        if (in_array($name, $coreAllowedList, true)) {
+            return App()->getConfig($name);
+        }
+        /* if allowlist is an array, use it */
+        $extraAllowedList = App()->getConfig('twig_getConfig_extraallowlist');
+        if (is_array($extraAllowedList) && in_array($name, $extraAllowedList, true)) {
+            return App()->getConfig($name);
+        }
+        return false;
     }
 
+    /**
+     * Fixed allowlist of configuration keys considered safe for exposure to templates.
+     *
+     * The array contains the configuration key names that are permitted to be read
+     * by template-level configuration accessors.
+     *
+     * @return string[] Array of allowed configuration key names.
+     */
+    private static function getAllowedConfig()
+    {
+        return [
+            /* Used for global and error page */
+            'sitename',
+            'siteadminname',
+            'siteadminemail',
+            /* Needed by question view */
+            'surveyID',
+            /* Clearly public */
+            'defaultlang',
+            'defaulttheme',
+            'defaultfixedtheme',
+            'maintenancemode',
+            'repeatheadings',
+            'minrepeatheadings',
+            'printanswershonorsconditions',
+            /* Potential usage in theme */
+            'generalscripts', // Used in core Questions
+            'shownoanswer',
+            'showpopups',
+            'demoMode',
+            /* url */
+            'publicurl',
+            'tempurl',
+            'assets',
+            'imageurl',
+            'uploadurl',
+            'standardthemerooturl',
+            'adminscripts',
+            'generalscripts',
+            'styleurl',
+            'publicstyle',
+            'publicstyleurl',
+            'sCKEditorURL',
+            'userthemerooturl',
+            'adminimageurl',
+            'applicationurl',
+            'extensionsurl',
+            'adminstyleurl',
+            'userfontsurl',
+        ];
+    }
 
     /**
      * Retrieve all the previous answers from a given token

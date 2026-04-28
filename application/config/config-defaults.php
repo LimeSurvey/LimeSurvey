@@ -884,5 +884,11 @@ $config['allow_unserialize_attributedescriptions'] = false;
 // @see https://www.php.net/unserialize
 $config['allow_unserialize_attachments'] = false;
 
+// Allow to allow specific element for getConfig function in twig
+// LimeSurvey already allow most needed and used setting, but you can need more.
+// If you want to allow 'securesetting', set this to ['securesetting']
+// @see https://bugs.limesurvey.org/view.php?id=20495
+$config['twig_getConfig_extraallowlist'] = null;
+
 return $config;
 //settings deleted
