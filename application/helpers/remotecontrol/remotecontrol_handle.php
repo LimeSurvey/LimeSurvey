@@ -3532,7 +3532,7 @@ class remotecontrol_handle
         // This also accounts for BASE64 overhead
         $size = (0.001 * 3 * strlen($sFileContent)) / 4;
 
-        $randfilename = 'fu_' . randomChars(15) . '_' . $pathinfo['extension'];
+        $randfilename = 'fu_' . randomChars(15);
         $randfileloc = $sUploadDir . $randfilename;
 
         if ($size > $maxfilesize) {
