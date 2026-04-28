@@ -165,16 +165,8 @@ class TopbarConfiguration
         $sumcount = Question::model()->countByAttributes($condition);
         $hasAdditionalLanguages = (count($oSurvey->additionalLanguages) > 0);
         $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
-        $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
-        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(
-            date("Y-m-d H:i:s"),
-            "Y-m-d H:i",
-            Yii::app()->getConfig('timeadjust')
-        ));
+        $expired = $oSurvey->expires != '' && ($oSurvey->expires < gmdate("Y-m-d H:i"));
+        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > gmdate("Y-m-d H:i"));
 
         if (!$isActive) {
             $context = gT("Preview survey");

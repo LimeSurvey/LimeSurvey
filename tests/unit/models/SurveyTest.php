@@ -35,6 +35,7 @@ class SurveyTest extends TestBaseClass
     public function setUp(): void
     {
         \SettingGlobal::setSetting('timeadjust', '+0 minutes');
+        \Yii::app()->setConfig('displayTimezone', '');
     }
 
     /**
@@ -195,17 +196,17 @@ class SurveyTest extends TestBaseClass
 
         $survey->expires = $inFourDays;
 
-        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
+        $sExpires = convertToGlobalSettingFormat(dateShift($survey->expires, "Y-m-d H:i:s"));
 
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
         $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
 
-        //Test with time adjust.
-        \SettingGlobal::setSetting('timeadjust', '+120 minutes');
+        //Test with display timezone.
+        \Yii::app()->setConfig('displayTimezone', 'Pacific/Auckland');
 
-        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
+        $sExpires = convertToGlobalSettingFormat(dateShift($survey->expires, "Y-m-d H:i:s"));
 
         $newIcon = $survey->getRunning();
 
@@ -228,17 +229,17 @@ class SurveyTest extends TestBaseClass
         $survey->startdate = $oneDayAgo;
         $survey->expires = $inFiveDays;
 
-        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
+        $sExpires = convertToGlobalSettingFormat(dateShift($survey->expires, "Y-m-d H:i:s"));
 
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('End: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
         $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
 
-        //Test with time adjust.
-        \SettingGlobal::setSetting('timeadjust', '+180 minutes');
+        //Test with display timezone.
+        \Yii::app()->setConfig('displayTimezone', 'Pacific/Auckland');
 
-        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
+        $sExpires = convertToGlobalSettingFormat(dateShift($survey->expires, "Y-m-d H:i:s"));
 
         $newIcon = $survey->getRunning();
 
@@ -259,16 +260,16 @@ class SurveyTest extends TestBaseClass
 
         $survey->startdate = $inSixDays;
 
-        $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
+        $sStart = convertToGlobalSettingFormat(dateShift($survey->startdate, "Y-m-d H:i:s"));
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('Start: %s'), $sStart), $icon, 'The icon link does not have the right text.');
         $this->assertStringContainsString('ri-time-line text-secondary', $icon, 'The icon link does not have the right css classes.');
 
-        //Test with time adjust.
-        \SettingGlobal::setSetting('timeadjust', '+240 minutes');
+        //Test with display timezone.
+        \Yii::app()->setConfig('displayTimezone', 'Pacific/Auckland');
 
-        $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
+        $sStart = convertToGlobalSettingFormat(dateShift($survey->startdate, "Y-m-d H:i:s"));
 
         $newIcon = $survey->getRunning();
 
@@ -291,16 +292,16 @@ class SurveyTest extends TestBaseClass
         $survey->startdate = $inFourDays;
         $survey->expires = $inSevenDays;
 
-        $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
+        $sStart = convertToGlobalSettingFormat(dateShift($survey->startdate, "Y-m-d H:i:s"));
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('Start: %s'), $sStart), $icon, 'The icon link does not have the right text.');
         $this->assertStringContainsString('ri-time-line text-secondary', $icon, 'The icon link does not have the right css classes.');
 
-        //Test with time adjust.
-        \SettingGlobal::setSetting('timeadjust', '+300 minutes');
+        //Test with display timezone.
+        \Yii::app()->setConfig('displayTimezone', 'Pacific/Auckland');
 
-        $sStart = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->startdate))));
+        $sStart = convertToGlobalSettingFormat(dateShift($survey->startdate, "Y-m-d H:i:s"));
 
         $newIcon = $survey->getRunning();
 
@@ -321,15 +322,15 @@ class SurveyTest extends TestBaseClass
 
         $survey->expires = $threeDaysAgo;
 
-        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
+        $sExpires = convertToGlobalSettingFormat(dateShift($survey->expires, "Y-m-d H:i:s"));
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
         $this->assertStringContainsString('ri-skip-forward-fill text-secondary', $icon, 'The icon link does not have the right css classes.');
 
-        //Test with time adjust.
-        \SettingGlobal::setSetting('timeadjust', '+360 minutes');
-        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
+        //Test with display timezone.
+        \Yii::app()->setConfig('displayTimezone', 'Pacific/Auckland');
+        $sExpires = convertToGlobalSettingFormat(dateShift($survey->expires, "Y-m-d H:i:s"));
 
         $newIcon = $survey->getRunning();
 
@@ -351,16 +352,16 @@ class SurveyTest extends TestBaseClass
         $survey->startdate = $sevenDaysAgo;
         $survey->expires = $fiveDaysAgo;
 
-        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
+        $sExpires = convertToGlobalSettingFormat(dateShift($survey->expires, "Y-m-d H:i:s"));
         $icon = $survey->getRunning();
 
         $this->assertStringContainsString(sprintf(gT('Expired: %s'), $sExpires), $icon, 'The icon link does not have the right text.');
         $this->assertStringContainsString('ri-skip-forward-fill text-secondary', $icon, 'The icon link does not have the right css classes.');
 
-        //Test with time adjust.
-        \SettingGlobal::setSetting('timeadjust', '+60 minutes');
+        //Test with display timezone.
+        \Yii::app()->setConfig('displayTimezone', 'Pacific/Auckland');
 
-        $sExpires = convertToGlobalSettingFormat(date("Y-m-d H:i:s", strtotime(\Yii::app()->getConfig('timeadjust'), strtotime($survey->expires))));
+        $sExpires = convertToGlobalSettingFormat(dateShift($survey->expires, "Y-m-d H:i:s"));
 
         $newIcon = $survey->getRunning();
 

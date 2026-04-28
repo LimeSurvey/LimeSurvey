@@ -93,22 +93,30 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <?php endif; ?>
         </div>
 
-        <!-- Time difference -->
+        <!-- Time zone selector -->
         <div class="mb-3">
-            <label class="col-12 form-label" for='timeadjust'>
-                <?php eT("Time difference (in hours):"); ?>
+            <label class="col-12 form-label" for='displayTimezone'>
+                <?php eT("Default display time zone:"); ?>
             </label>
             <div class="col-md-4">
-                    <span>
-                        <input class="form-control" type='text' id='timeadjust' name='timeadjust'
-                               value="<?php echo htmlspecialchars((string) (str_replace(array('+', ' hours', ' minutes'), array('', '', ''), (string) getGlobalSetting('timeadjust')) / 60)); ?>"/>
-                    </span>
-            </div>
-            <div class="col-md-8">
-                <?php echo gT("Server time:") . ' ' . convertDateTimeFormat(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', $dateformatdata['phpdate'] . ' H:i')
-                    . "<br>"
-                    . gT("Corrected time:") . ' '
-                    . convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s', $dateformatdata['phpdate'] . ' H:i'); ?>
+                <span>
+                    <select class="form-select" name="displayTimezone" id="displayTimezone">
+                    <?php // show a select box with all available time zones
+                    $displayTimezone = App()->getConfig('displayTimezone');
+                    foreach (DateTimeZone::listIdentifiers() as $timezone) {
+                        echo "<option value='" . $timezone . "'";
+                        if ($displayTimezone == $timezone) {
+                            echo " selected='selected'";
+                        }
+                        echo ">" . $timezone . "</option>";
+                    } ?>
+                    </select>                  
+                </span>
+            </div>                
+            <div class="col-12 form-label ">
+                <span class="hint">
+                <?php echo sprintf(gT("Server time zone: %s"), date_default_timezone_get());?>  
+                </span>
             </div>
         </div>
 

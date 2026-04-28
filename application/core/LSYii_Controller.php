@@ -125,13 +125,21 @@ abstract class LSYii_Controller extends CController
         enforceSSLMode(); // This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
         //SET LOCAL TIME
-        $timeadjust = Yii::app()->getConfig("timeadjust");
-        if (substr((string) $timeadjust, 0, 1) != '-' && substr((string) $timeadjust, 0, 1) != '+') {
-            $timeadjust = '+' . $timeadjust;
+        $displayTimezone = Yii::app()->getConfig("displayTimezone");
+        // if the time zone is empty or does not exist, use UTC
+        if (empty($displayTimezone) || !in_array($displayTimezone, timezone_identifiers_list())) {
+            Yii::app()->setConfig("displayTimezone", "UTC");
         }
-        if (strpos((string) $timeadjust, 'hours') === false && strpos((string) $timeadjust, 'minutes') === false && strpos((string) $timeadjust, 'days') === false) {
-            Yii::app()->setConfig("timeadjust", $timeadjust . ' hours');
+
+        // If an admin user is logged in, override with their personal timezone preference if set
+        $loginID = Yii::app()->session['loginID'] ?? null;
+        if (!empty($loginID)) {
+            $userTimezone = SettingsUser::getUserSettingValue('displayTimezone', $loginID);
+            if (!empty($userTimezone) && in_array($userTimezone, timezone_identifiers_list())) {
+                Yii::app()->setConfig("displayTimezone", $userTimezone);
+            }
         }
+
         /* Set the default language, other controller can update if wanted */
         Yii::app()->setLanguage(Yii::app()->getConfig("defaultlang"));
     }

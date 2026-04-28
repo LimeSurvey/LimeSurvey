@@ -3204,7 +3204,6 @@ class remotecontrol_handle
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
-            $timeadjust = Yii::app()->getConfig('timeadjust');
 
             if (!tableExists("{{tokens_$iSurveyID}}")) {
                 return array('status' => 'Error: No survey participant list');
@@ -3217,7 +3216,7 @@ class remotecontrol_handle
 
             if (!is_null($iMinDaysBetween)) {
                 $iMinDaysBetween = (int) $iMinDaysBetween;
-                $compareddate = dateShift(date('Y-m-d H:i:s', time() - 86400 * $iMinDaysBetween), 'Y-m-d H:i', $timeadjust);
+                $compareddate = gmdate("Y-m-d H:i", time() - 86400 * $iMinDaysBetween);
                 $SQLreminderdelaycondition = " ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";
             }
 
@@ -3285,7 +3284,7 @@ class remotecontrol_handle
             if (array_key_exists('submitdate', $aResponseData) && empty($aResponseData['submitdate'])) {
                 unset($aResponseData['submitdate']);
             } elseif (!isset($aResponseData['submitdate'])) {
-                $aResponseData['submitdate'] = date('Y-m-d H:i:s');
+                $aResponseData['submitdate'] = gmdate('Y-m-d H:i:s');
             }
             if (!isset($aResponseData['startlanguage'])) {
                 $aResponseData['startlanguage'] = $oSurvey->language;
@@ -3295,12 +3294,12 @@ class remotecontrol_handle
                 if (array_key_exists('datestamp', $aResponseData) && empty($aResponseData['datestamp'])) {
                     unset($aResponseData['datestamp']);
                 } elseif (!isset($aResponseData['datestamp'])) {
-                    $aResponseData['datestamp'] = date('Y-m-d H:i:s');
+                    $aResponseData['datestamp'] = gmdate('Y-m-d H:i:s');
                 }
                 if (array_key_exists('startdate', $aResponseData) && empty($aResponseData['startdate'])) {
                     unset($aResponseData['startdate']);
                 } elseif (!isset($aResponseData['startdate'])) {
-                    $aResponseData['startdate'] = date('Y-m-d H:i:s');
+                    $aResponseData['startdate'] = gmdate('Y-m-d H:i:s');
                 }
             }
 
