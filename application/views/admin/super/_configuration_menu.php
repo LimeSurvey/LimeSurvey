@@ -252,7 +252,7 @@
                         <!-- Settings -->
                         <li class="dropdown-header">
                             <span class="ri-list-settings-line"></span>
-                          <span role="heading" aria-level="h2">  <?php eT('Settings'); ?></span>
+                          <span role="heading" aria-level="2">  <?php eT('Settings'); ?></span>
                         </li>
 
                         <?php if (Permission::model()->hasGlobalPermission('settings', 'read')): ?>
