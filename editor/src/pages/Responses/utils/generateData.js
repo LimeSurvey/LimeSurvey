@@ -168,14 +168,14 @@ export const generateData = (responses, language, generatedColumns) => {
 }
 
 const handleFileUploadQuestionType = (
-  key,
+  key = '',
   data,
   value,
   qid,
   index,
   response
 ) => {
-  if (key?.endsWith('_filecount') || !value) {
+  if (key.endsWith('filecount') || !value) {
     return
   }
 
