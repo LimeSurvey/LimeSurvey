@@ -29,7 +29,7 @@ class SessionUtil
         $app = Yii::app();
 
         $userLang = $aUserData['lang'];
-        if($userLang === 'auto' || $userLang === '' || $userLang === null) {
+        if ($userLang === 'auto' || $userLang === '' || $userLang === null) {
             $app->loadHelper('common');
             $userLang = getBrowserLanguage();
         }
