@@ -48,6 +48,9 @@ abstract class AbstractQuestionProcessor
         Question::QT_Q_MULTIPLE_SHORT_TEXT,
     ];
 
+    /** @var array<int, int> Cache of total response counts by survey ID */
+    private static array $totalCountCache = [];
+
     /** @var bool Completed responses filter */
     private $completed = null;
 
@@ -117,6 +120,23 @@ abstract class AbstractQuestionProcessor
     }
 
     /**
+     * Returns the total response count for a survey, with results cached per survey ID.
+     *
+     * @param int $sid Survey ID
+     * @return int
+     */
+    public static function getTotalCount(int $sid): int
+    {
+        if (!isset(self::$totalCountCache[$sid])) {
+            $db = SurveyDynamic::model($sid)->getDbConnection();
+            $table = $db->quoteTableName('{{responses_' . $sid . '}}');
+            self::$totalCountCache[$sid] = (int)$db->createCommand("SELECT COUNT(*) FROM $table")->queryScalar();
+        }
+
+        return self::$totalCountCache[$sid];
+    }
+
+    /**
      * Returns the count of non-empty responses for a column.
      *
      * @param string $fieldName Column name in the response table
@@ -128,23 +148,7 @@ abstract class AbstractQuestionProcessor
         ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
         $col = $db->quoteColumnName($fieldName);
 
-        $sql = "SELECT SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END) AS cnt FROM $table" . $where;
-        return (int)$db->createCommand($sql)->queryScalar($params);
-    }
-
-    /**
-     * Returns the count of null/empty responses for a column.
-     *
-     * @param string $fieldName Column name in the response table
-     * @return int
-     */
-    protected function countFieldNullResponses(string $fieldName): int
-    {
-        $db = $this->getDb();
-        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
-        $col = $db->quoteColumnName($fieldName);
-
-        $sql = "SELECT SUM(CASE WHEN $col IS NULL OR $col = '' THEN 1 ELSE 0 END) AS cnt FROM $table" . $where;
+        $sql = "SELECT " . $this->getColSumClause($col, 'cnt') . " FROM $table" . $where;
         return (int)$db->createCommand($sql)->queryScalar($params);
     }
 
@@ -184,7 +188,7 @@ abstract class AbstractQuestionProcessor
         foreach ($fieldNames as $i => $field) {
             $col = $db->quoteColumnName($field);
             $alias = $db->quoteColumnName('_ctn' . $i);
-            $selects[] = "SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END) AS $alias";
+            $selects[] = $this->getColSumClause($col, $alias);
         }
 
         $sql = 'SELECT ' . implode(', ', $selects) . " FROM $table" . $where;
@@ -308,6 +312,18 @@ abstract class AbstractQuestionProcessor
     protected function calculateTotal($data, $key = 'value')
     {
         return array_sum(array_column($data, $key));
+    }
+
+    /**
+     * Returns clause that counts non-empty values in a column.
+     *
+     * @param string $col column name
+     * @param string $alias alias
+     * @return string
+     */
+    private function getColSumClause(string $col, string $alias): string
+    {
+        return "SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END) AS " . $alias;
     }
 
     /**
