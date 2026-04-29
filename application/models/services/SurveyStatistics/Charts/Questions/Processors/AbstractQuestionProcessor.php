@@ -244,7 +244,7 @@ abstract class AbstractQuestionProcessor
      * @param string[] $fieldNames
      * @param string[] $codes
      * @param string[] $labels
-     * @return array<string, array{0: string[], 1: array[]}>
+     * @return array<string, array{0: string[], 1: array[]}> fieldName => [legend[], items[]]
      */
     private function runAggregateSelect(array $fieldNames, array $codes, array $labels): array
     {
