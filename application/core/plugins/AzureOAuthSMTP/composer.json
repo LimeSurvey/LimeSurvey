@@ -1,5 +1,0 @@
-{
-    "require": {
-        "greew/oauth2-azure-provider": "^1.0"
-    }
-}

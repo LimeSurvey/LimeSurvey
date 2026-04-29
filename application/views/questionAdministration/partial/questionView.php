@@ -45,7 +45,7 @@
                     <?php
                     echo $form->label(
                         $questionModel,
-                        'search',
+                        'title',
                         array('label' => gT('Search:'), 'class' => 'col-sm-3 col-form-label col-form-label-sm')
                     ); ?>
                 </div>
@@ -64,7 +64,7 @@
                     ); ?>
                 </div>
                 <div class="col-12">
-                    <select name="gid" class="form-select">
+                    <select name="gid" id="<?php echo CHtml::getIdByName(CHtml::activeName($questionModel, 'group')); ?>" class="form-select">
                         <option value=""><?php eT('(Any group)'); ?></option>
                         <?php foreach ($oSurvey->groups as $group) : ?>
                             <option value="<?php echo $group->gid; ?>" <?php if ($group->gid == $questionModel->gid) {
@@ -109,29 +109,33 @@
                 true,
                 false
             );
-            $this->widget('ext.admin.grid.CLSGridView', array( //done
+            $this->widget('ext.admin.grid.CLSGridView', [ //done
                 'dataProvider' => $questionModel->search(),
                 'id' => 'question-grid',
                 'caption'      => gT("List of questions in this survey"),
                 'emptyText' => gT('No questions found.'),
                 'massiveActionTemplate' => $massiveAction,
-                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                    . sprintf(
+                'summaryText'           => html_entity_decode(
+                    gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+                    sprintf(
                         gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
                             App()->params['pageSizeOptions'],
-                            array(
-                                'class' => 'changePageSize form-select',
-                                'style' => 'display: inline; width: auto'
-                            )
-                        )
-                    ),
-                'columns' => $questionModel->questionListColumns,
-                'ajaxUpdate' => 'question-grid',
-                'afterAjaxUpdate' => "bindPageSizeChange"
-            ));
+                            [
+                                'class'           => 'changePageSize form-select',
+                                'style'           => 'display: inline; width: auto',
+                                'aria-labelledby' => 'rows-per-page-label',
+                            ]
+                        ) . '<span id="rows-per-page-label">'
+                    ) .
+                    '</span>'
+                ),
+                'columns'               => $questionModel->questionListColumns,
+                'ajaxUpdate'            => 'question-grid',
+                'afterAjaxUpdate'       => "bindPageSizeChange"
+            ]);
             ?>
         </div>
     </div>

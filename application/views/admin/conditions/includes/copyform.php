@@ -22,7 +22,7 @@
         </div>
         <div class='condition-tbl-full'>
             <br/>
-            <input class='btn btn-outline-secondary' type='submit' value='<?php eT("Copy conditions"); ?>' onclick="prepareCopyconditions(); return true;" />
+            <input class='btn btn-outline-secondary' type='submit' id='copy-conditions-btn' value='<?php eT("Copy conditions"); ?>' onclick="prepareCopyconditions(); return true;" disabled />
             <input type='hidden' name='subaction' value='copyconditions' />
             <input type='hidden' name='sid' value='<?php echo $iSurveyID; ?>' />
             <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
@@ -41,11 +41,21 @@
 
 <script>
 function prepareCopyconditions() {
-    $('input:checked[name^=\"aConditionFromScenario\"]').each(function(i,val) {
+    $('input:checked[name^="aConditionFromScenario"]').each(function(i,val) {
         var thecid = val.value;
         var theform = document.getElementById('copyconditions');
         window.LS.addHiddenElement(theform,'copyconditionsfrom[]',thecid);
         return true;
     });
 }
+
+// Enable/disable the Copy button based on selection
+$(document).ready(function() {
+    function toggleCopyButton() {
+        var anySelected = $('#copytomultiselect option:selected').length > 0;
+        $('#copy-conditions-btn').prop('disabled', !anySelected);
+    }
+    $('#copytomultiselect').on('change', toggleCopyButton);
+    toggleCopyButton(); // Initial state
+});
 </script>

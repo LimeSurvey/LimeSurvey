@@ -10,16 +10,17 @@
         <?php foreach ($icons as $icon) : ?>
             <div class="sidebar-icon">
                 <div data-bs-toggle="tooltip"
-                     title="<?= $icon['title'] ?>"
+                     title="<?= CHtml::encode($icon['title']) ?>"
                      data-bs-offset="0, 20"
                      data-bs-placement="right">
-                    <a href="<?= $icon['url'] ?>"
+                    <a href="<?= CHtml::encode($icon['url']) ?>"
                        target="<?= $icon['external'] ? '_blank' : '' ?>"
-                       class="btn btn-g-800 btn-icon"
-                        <?= $icon['selected'] ? 'selected' : '' ?>
-                    >
-                        <i class="<?php echo CHtml::encode($icon['ico']); ?>"></i>
+                       class="btn btn-g-800 btn-icon <?= $icon['selected'] ? 'active' : '' ?>"
+                       aria-label="<?= $icon['title'] ?>"
+                        <?= $icon['selected'] ? 'aria-current="page" selected' : '' ?>>
+                        <i class="<?= CHtml::encode($icon['ico']); ?>" aria-hidden="true"></i>
                     </a>
+
                 </div>
             </div>
         <?php endforeach; ?>

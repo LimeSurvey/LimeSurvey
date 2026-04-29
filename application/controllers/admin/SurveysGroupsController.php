@@ -326,7 +326,6 @@ class SurveysGroupsController extends SurveyCommonAction
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);

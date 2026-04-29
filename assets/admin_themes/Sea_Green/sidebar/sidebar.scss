@@ -18,4 +18,12 @@
             }
         }
     }
+    .scoped-toolbuttons-right {
+        flex: 2 1 auto;
+        align-self: flex-end;
+        white-space: nowrap;
+        display: flex;
+        justify-content: flex-end;
+        gap: 5px;
+    }
 }

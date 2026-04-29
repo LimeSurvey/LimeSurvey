@@ -14,14 +14,14 @@
 
 echo CHtml::openTag($tag, $htmlOptions);
 if ($showIcon && $header == '') {
-    echo CHtml::openTag("span", ['class' => $icon . ' me-2']);
+    echo CHtml::openTag("span", ['class' => $icon . ' me-2 float-start']);
     echo CHtml::closeTag("span");
 }
 
 if ($header != '') {
     echo CHtml::openTag("span", ['class' => 'alert-header']);
     if ($showIcon) {
-        echo CHtml::openTag("span", ['class' => $icon . ' me-2']);
+        echo CHtml::openTag("span", ['class' => $icon . ' me-2 float-start']);
         echo CHtml::closeTag("span");
     }
     echo $header;

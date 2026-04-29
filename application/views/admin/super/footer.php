@@ -215,6 +215,11 @@ $questionEditor = $questionEditor ?? false;
 App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_modalSurveyActivation');
 ?>
 
+<?php
+//modal for copying a survey
+App()->getController()->renderPartial('/surveyAdministration/partial/_modalCopySurvey');
+?>
+
 <!-- Modal for admin notifications -->
 <div id="admin-notification-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">

@@ -81,15 +81,19 @@ class UserManager
     }
 
     /**
-     * Deletes the user with the given id.
-     * @param int $userId
-     * @return OperationResult
-     */
-    public function deleteUser($userId)
+         * Delete the given User and reassign their owned records to the site administrator.
+         *
+         * Transfers any UserGroup.owner_id and Participant.owner_uid owned by the user to the site admin (uid=1), removes the user's group memberships, and then deletes the user. The whole operation is performed inside a database transaction and will be rolled back if an error occurs. Note: user permissions are not removed by this method.
+         *
+         * @param User $user The User model to delete; the method uses $user->uid to identify related records.
+         * @return OperationResult An OperationResult whose success flag indicates whether the deletion committed, and whose messages describe actions taken or errors encountered.
+         */
+    public function deleteUser($user)
     {
         $messages = [];
 
         $siteAdminName = \User::model()->findByPk(1)->users_name;
+        $userId = $user->uid;
 
         $transaction = \Yii::app()->db->beginTransaction();
         try {
@@ -116,7 +120,6 @@ class UserManager
             // TODO: User permissions should be deleted also...
 
             // Delete the user
-            $user = \User::model()->findByPk($userId);
             $success = $user->delete();
             if (!$success) {
                 $messages = [new TypedMessage(gT("User could not be deleted."), 'error')];

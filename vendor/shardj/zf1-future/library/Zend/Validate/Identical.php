@@ -124,7 +124,7 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
      */
     public function setStrict($strict)
     {
-        $this->_strict = (boolean) $strict;
+        $this->_strict = (bool) $strict;
         return $this;
     }
 

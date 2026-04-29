@@ -26,6 +26,8 @@
  * @property string $refurl
  * @property string $datecreated
  * @property integer $showsurveypolicynotice
+ * @property string $showregisterpolicy
+ * @property string $showtokenpolicy
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
@@ -67,7 +69,7 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard',
-                                                'alloweditaftercompletion');
+                                                'alloweditaftercompletion', 'showregisterpolicy', 'showtokenpolicy');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
 
     public $showInherited = 1;
@@ -97,6 +99,8 @@ class SurveysGroupsettings extends LSActiveRecord
         $validator = new LSYii_Validators();
         return array(
             array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly' => true),
+            array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
+            array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('admin', 'length', 'max' => 50),
             array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
@@ -110,7 +114,7 @@ class SurveysGroupsettings extends LSActiveRecord
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
 			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
+			questionindex, showregisterpolicy, showtokenpolicy, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
 
@@ -187,6 +191,8 @@ class SurveysGroupsettings extends LSActiveRecord
             'navigationdelay' => 'Navigationdelay',
             'nokeyboard' => 'Nokeyboard',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
+            'showregisterpolicy' => gT("Show privacy policy on register form"),
+            'showtokenpolicy' => gT("Show privacy policy on token form"),
         );
     }
 
@@ -253,6 +259,8 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('navigationdelay', $this->navigationdelay);
         $criteria->compare('nokeyboard', $this->nokeyboard, true);
         $criteria->compare('alloweditaftercompletion', $this->alloweditaftercompletion, true);
+        $criteria->compare('showregisterpolicy', $this->showregisterpolicy, true);
+        $criteria->compare('showtokenpolicy', $this->showtokenpolicy, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -314,8 +322,8 @@ class SurveysGroupsettings extends LSActiveRecord
             if ($iSurveyGroupId > 0) {
                 self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
             } else {
-                //this is the default group setting with gsid=0 !!!
-                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
+                // SurveysGroupsettings with gsid=0 is how "Global survey settings" are stored.
+                self::$aSurveysGroupSettings[$iSurveyGroupId] = SurveysGroupsettings::model()->findByPk(0);
             }
         }
         $model = self::$aSurveysGroupSettings[$iSurveyGroupId];
@@ -361,6 +369,10 @@ class SurveysGroupsettings extends LSActiveRecord
         // set instance options only if option needs to be inherited
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
+                if ($attribute === 'usecaptcha') {
+                    $instance->setCaptchaOptions($model);
+                    continue;
+                }
                 if ($instance->shouldInherit($attribute)) {
                     $instance->oOptions->{$attribute} = $model->$attribute;
                     $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);
@@ -411,22 +423,10 @@ class SurveysGroupsettings extends LSActiveRecord
         }
         // replace option labels on forms
         if ($attribute == 'usecaptcha') {
-            $usecap = $value;
-            if ($usecap === 'A' || $usecap === 'B' || $usecap === 'C' || $usecap === 'X' || $usecap === 'F' || $usecap === 'H' || $usecap === 'K' || $usecap === '0') {
-                $instance->oOptionLabels->useCaptchaSurveyAccess = gT("On");
-            } else {
-                $instance->oOptionLabels->useCaptchaSurveyAccess = gT("Off");
-            }
-            if ($usecap === 'A' || $usecap === 'B' || $usecap === 'D' || $usecap === 'R' || $usecap === 'F' || $usecap === 'G' || $usecap === 'I' || $usecap === 'M') {
-                $instance->oOptionLabels->useCaptchaRegistration = gT("On");
-            } else {
-                $instance->oOptionLabels->useCaptchaRegistration = gT("Off");
-            }
-            if ($usecap === 'A' || $usecap === 'C' || $usecap === 'D' || $usecap === 'S' || $usecap === 'G' || $usecap === 'H' || $usecap === 'J' || $usecap === 'L') {
-                $instance->oOptionLabels->useCaptchaSaveAndLoad = gT("On");
-            } else {
-                $instance->oOptionLabels->useCaptchaSaveAndLoad = gT("Off");
-            }
+            $parts = (new \LimeSurvey\Models\Services\SurveyUseCaptcha())->convertUseCaptchaFromDB((string) $value);
+            $instance->oOptionLabels->useCaptchaSurveyAccess = $parts['surveyAccess'] === 'Y' ? gT("On") : gT("Off");
+            $instance->oOptionLabels->useCaptchaRegistration = $parts['registration'] === 'Y' ? gT("On") : gT("Off");
+            $instance->oOptionLabels->useCaptchaSaveAndLoad = $parts['saveAndLoad'] === 'Y' ? gT("On") : gT("Off");
         } elseif ($attribute == 'owner_id' && $value != -1) {
             $instance->oOptions->owner = "";
             $instance->oOptions->ownerLabel = "";
@@ -480,9 +480,13 @@ class SurveysGroupsettings extends LSActiveRecord
             $this->$attribute = -1;
         }
         foreach ($this->optionAttributesChar as $attribute) {
-            //fix for 16179
+            //Some attribute created at specifc DBVersion
             $dbversion = App()->getConfig('DBVersion');
-            if (!($attribute === 'ipanonymize' && ( $dbversion < 412 ))) {
+            if (
+                !($attribute === 'ipanonymize' && $dbversion < 412)
+                && !($attribute === 'showregisterpolicy' && $dbversion < 649)
+                && !($attribute === 'showtokenpolicy' && $dbversion < 649)
+            ) {
                 $this->$attribute = 'I';
             }
         }
@@ -530,11 +534,47 @@ class SurveysGroupsettings extends LSActiveRecord
         // Since survey settings inheritance have been introduced, empty
         // attributes have always been inherited. But for some attributes,
         // an empty value is actually a valid attribute.
+
+        // this needs the zero check because empty considers int(0) true
+        // so int based attributes where zero is a valid value will be
+        // always forced to inherit here
         $attributesAllowedToBeEmpty = ['emailnotificationto', 'emailresponseto'];
-        if (empty($this->oOptions->{$attribute}) && !in_array($attribute, $attributesAllowedToBeEmpty)) {
+        if (
+            empty($this->oOptions->{$attribute}) &&
+            $this->oOptions->{$attribute} !== 0 &&
+            !in_array($attribute, $attributesAllowedToBeEmpty)
+        ) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Resolve and set usecaptcha options and labels on this instance, merging any inherited
+     * components from $model (the parent group/global settings).
+     *
+     * @param self $model The parent settings model whose usecaptcha value supplies inherited components.
+     * @return void
+     */
+    private function setCaptchaOptions($model)
+    {
+        // Mirror shouldInherit's oOptions-or-raw-attribute pattern:
+        // if oOptions was seeded (bRealValues=true) use it; otherwise fall back
+        // to the raw model value, exactly as shouldInherit() does for scalars.
+        $currentUseCaptcha = property_exists($this->oOptions, 'usecaptcha')
+            ? $this->oOptions->usecaptcha
+            : $this->usecaptcha;
+        $captchaService = new \LimeSurvey\Models\Services\SurveyUseCaptcha();
+        $mergedUseCaptcha = $captchaService->mergeUseCaptchaValues(
+            (string) $currentUseCaptcha,
+            (string) $model->usecaptcha
+        );
+        $this->oOptions->usecaptcha = $mergedUseCaptcha;
+        $this->oOptionLabels->usecaptcha = self::translateOptionLabels(
+            $this,
+            'usecaptcha',
+            $mergedUseCaptcha
+        );
     }
 }

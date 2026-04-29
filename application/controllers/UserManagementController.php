@@ -23,7 +23,7 @@ class UserManagementController extends LSBaseController
                 'allow',
                 'actions' => array(
                     'index', 'addEditUser', 'applyEdit',
-                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
+                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions', 'batchExpires',
                     'batchSendAndResetLoginData', 'deleteConfirm',  'deleteMultiple', 'exportUser', 'importUser',
                     'renderSelectedItems', 'renderUserImport', 'saveRole', 'saveThemePermissions',
                     'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'
@@ -42,7 +42,7 @@ class UserManagementController extends LSBaseController
         return [
             'postOnly + applyEdit, deleteUser, userActivateDeactivate,'
             . ' batchStatus, saveUserPermissions, saveThemePermissions, saveRole, importUsers, deleteMultiple,'
-            . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles,'
+            . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles, batchExpires, '
             . ' TakeOwnership'
         ];
     }
@@ -229,10 +229,14 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Deletes a user after  confirmation
+     * Handle user deletion request: validates permissions, optionally transfers surveys, deletes the user, and returns a JSON response.
      *
-     * @return void|string
-     * @throws CException
+     * Performs permission and safety checks, may render a survey-transfer selection when the target owns surveys, transfers surveys when a destination is provided, invokes UserManager->deleteUser for the resolved user model, and returns a JSON partial describing the outcome.
+     *
+     * @return string JSON partial containing either:
+     *                - `success` (false) and `errors` (array|string|object) when permission or validation checks fail, or
+     *                - `success` (bool) and `message` (string) after an attempted deletion, or
+     *                - `success` (true) and `html` (string) with a survey-transfer selection when the target owns surveys and no transfer destination was provided.
      */
     public function actionDeleteUser()
     {
@@ -355,7 +359,7 @@ class UserManagementController extends LSBaseController
         }
 
         $userManager = new UserManager();
-        $result = $userManager->deleteUser($userId);
+        $result = $userManager->deleteUser($oUser);
         $messages = array_merge($messages, $result->getRawMessages());
 
         return App()->getController()->renderPartial('/admin/super/_renderJson', [
@@ -733,7 +737,7 @@ class UserManagementController extends LSBaseController
         return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             "data" => [
                 'success' => true,
-                'message' => gT("Saved template permissions successfully.")
+                'message' => gT("Saved theme permissions successfully.")
             ]
         ]);
     }
@@ -821,11 +825,11 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Calls up a modal to import users via csv/json file
+     * Render the import-users modal part for a given import format.
      *
-     * @param string $importFormat - Importformat (csv/json) to render
-     * @return string
-     * @throws CException
+     * @param string $importFormat The import format to render; allowed values are 'csv' or 'json'.
+     * @return string The rendered HTML partial for the import modal.
+     * @throws LSUserException If an unsupported import format is provided.
      */
     public function actionRenderUserImport(string $importFormat = 'csv')
     {
@@ -841,12 +845,12 @@ class UserManagementController extends LSBaseController
 
         switch ($importFormat) {
             case "json":
-                $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $importNote = sprintf(gT("Please make sure that your JSON arrays contain the fields '%s', '%s'; '%s' and '%s' are not imported."), '<b>users_name</b>', '<b>email</b>', '<b>uid</b>', '<b>parent_id</b>');
                 $allowFileType = ".json,application/json";
                 break;
             case "csv":
             default:
-                $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+                $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s'; '%s' and '%s' are not imported."), '<b>users_name</b>', '<b>email</b>', '<b>uid</b>', '<b>parent_id</b>');
                 $allowFileType = ".csv";
         }
         return $this->renderPartial('partial/importuser', [
@@ -857,11 +861,11 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Creates users from an uploaded CSV / JSON file
+     * Imports users from an uploaded CSV or JSON file, creating new users or updating existing ones, then redirects to the user index after adding alert message.
      *
-     * @param string $importFormat - format of the imported file - Choice between csv / json
-     * @return string
-     * @throws CException
+     * @param string $importFormat Format of the uploaded file; must be "csv" or "json".
+     * @return string The rendered error partial when the current user lacks create permission; or redirect.
+     * @throws LSUserException If an unsupported $importFormat is provided.
      */
     public function actionImportUsers(string $importFormat = 'csv'): string
     {
@@ -891,10 +895,14 @@ class UserManagementController extends LSBaseController
         }
         $created = [];
         $updated = [];
-
+        $existingAttributes = User::model()->attributeNames();
+        $dateAttributes = ['last_login', 'validation_key_expiration','last_forgot_email_password','expires'];
         foreach ($aNewUsers as $aNewUser) {
+            // Unset not imported or invalid attribute
+            $aNewUser = array_intersect_key($aNewUser, array_flip($existingAttributes));
+            $aNewUser = array_diff_key($aNewUser, array_flip(['uid','parent_id', 'created', 'modified']));
+            /* Find if exist */
             $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
-
             if ($oUser  !== null) {
                 if ($overwriteUsers) {
                     /* Check permission to edit this user */
@@ -907,45 +915,49 @@ class UserManagementController extends LSBaseController
                         Yii::app()->setFlashMessage(gT("You can't use the import function to update your own account."), 'warning');
                         continue;
                     }
-                    $oUser->full_name = $aNewUser['full_name'];
-                    $oUser->email = $aNewUser['email'];
-                    $oUser->parent_id = App()->user->id;
-                    $oUser->modified = date('Y-m-d H:i:s');
-                    if ($aNewUser['password'] != ' ') {
-                        $oUser->password = password_hash((string) $aNewUser['password'], PASSWORD_DEFAULT);
+                    foreach ($aNewUser as $attribute => $value) {
+                        if ($attribute === 'password') {
+                            continue; // Handle password separately via setPassword()
+                        }
+                        if (!empty($value) || !in_array($attribute, $dateAttributes)) {
+                            $oUser->setAttribute($attribute, $value);
+                        }
                     }
-
-                    $save = $oUser->save();
+                    if (!empty($aNewUser['password']) && $aNewUser['password'] != ' ') {
+                        $oUser->setPassword($aNewUser['password'], false);
+                    }
+                    $save = $oUser->save(true, array_keys($aNewUser));
                     if ($save) {
-                        $updated[] = [
-                            'username' => $aNewUser['users_name'],
-                            'full_name' => $aNewUser['full_name'],
-                            'email' => $aNewUser['email'],
-                        ];
+                        $updated[] = $aNewUser;
                     }
                 }
             } else {
-                $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
-                $passwordText = $password;
-                if ($aNewUser['password'] != ' ') {
-                    $password = password_hash((string) $aNewUser['password'], PASSWORD_DEFAULT);
+                if (empty($aNewUser['password']) || $aNewUser['password'] == ' ') {
+                    $aNewUser['password'] = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 }
-
-                $save = $this->createNewUser([
+                /* Some default */
+                $aNewUser['full_name'] = $aNewUser['full_name'] ?? "";
+                $aNewUser['lang'] = $aNewUser['lang'] ?? "auto";
+                $newUserAttributes = $this->createNewUser([
                     'users_name' => $aNewUser['users_name'],
                     'full_name' => $aNewUser['full_name'],
-                    'password' => $password,
+                    'password' => $aNewUser['password'], // AuthDB use User::insertUser this use User::setPassword
                     'email' => $aNewUser['email'],
                     'lang' => $aNewUser['lang'],
                 ]);
-
-                if ($save) {
-                    $created[] = [
-                        'username' => $aNewUser['users_name'],
-                        'full_name' => $aNewUser['full_name'],
-                        'email' => $aNewUser['email'],
-                        'password' => $passwordText,
-                    ];
+                if ($newUserAttributes) {
+                    /* Update it with other attributes */
+                    $oUser = User::model()->findByPk($newUserAttributes['uid']);
+                    $aNewUserExtra = array_diff_key($aNewUser, array_flip(['users_name','full_name', 'password', 'email', 'lang']));
+                    if (!empty($aNewUserExtra)) {
+                        foreach ($aNewUserExtra as $attribute => $value) {
+                            if (!empty($value) || !in_array($attribute, $dateAttributes)) {
+                                $oUser->setAttribute($attribute, $value);
+                            }
+                        }
+                        $oUser->save(true, array_keys($aNewUserExtra));
+                    }
+                    $created[] = $aNewUser;
                 }
             }
         }
@@ -957,12 +969,15 @@ class UserManagementController extends LSBaseController
 
 
     /**
-     * Export users with specific format (json or csv)
+     * Export user records to a downloadable CSV or JSON file.
      *
-     * @param string $outputFormat json or csv
-     * @param int $uid userId   if 0, all users will be exported
-     * @return mixed
-     * @throws CException
+     * Exports either a single user (when $uid > 0) or all users to a temporary file and sends it as a file download.
+     * The exported records are the user attributes with the `password` field cleared.
+     * CSV output uses a UTF-8 BOM and semicolon (;) as the field delimiter with double-quote enclosure.
+     *
+     * @param string $outputFormat 'json' or 'csv' (defaults to 'csv' for unrecognized values)
+     * @param int $uid User ID to export; 0 exports all users
+     * @return string in case of error
      */
     public function actionExportUser(string $outputFormat, int $uid = 0)
     {
@@ -992,14 +1007,10 @@ class UserManagementController extends LSBaseController
         $aUsers = array();
         $sTempDir = Yii::app()->getConfig("tempdir");
         $exportFile = $sTempDir . DIRECTORY_SEPARATOR . 'users_export.' . $outputFormat;
-
         foreach ($oUsers as $user) {
-            $exportUser['uid'] = $user->attributes['uid'];
-            $exportUser['users_name'] = $user->attributes['users_name'];
-            $exportUser['full_name'] = $user->attributes['full_name'];
-            $exportUser['email'] = $user->attributes['email'];
-            $exportUser['lang'] = $user->attributes['lang'];
+            $exportUser = $user->getAttributes();
             $exportUser['password'] = '';
+            // Leave one_time_pw and validation_key ?
             array_push($aUsers, $exportUser);
         }
 
@@ -1018,7 +1029,7 @@ class UserManagementController extends LSBaseController
 
                 //Add utf-8 encoding
                 fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
-                $header = array('uid', 'users_name', 'full_name', 'email', 'lang', 'password');
+                $header = array_keys($exportUser);
                 //Add csv header
                 fputcsv($fp, $header, ';', '"');
 
@@ -1290,6 +1301,65 @@ class UserManagementController extends LSBaseController
     }
 
     /**
+     * Mass action to set expires
+     *
+     * @return string
+     * @throws CException
+     */
+    public function actionBatchExpires()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
+        $expires = App()->request->getPost('batchExpires');
+        $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        if (trim((string) $expires) === "") {
+            $expires = null;
+        } else {
+            $datetimeobj = DateTime::createFromFormat('!' . $formatdata['phpdate'] . ' H:i', $expires);
+            if (!is_object($datetimeobj)) {
+                throw new CHttpException(400, sprintf(gT('Invalid date, please use "%s" format.', 'unescaped'), $formatdata['phpdate'] . " H:i"));
+            }
+            $expires = $datetimeobj->format('Y-m-d H:i:s');
+        }
+        $aResults = [];
+        foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+            if (!$model->canEdit()) {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT("You are not allowed to update this user expiration date.");
+                continue;
+            }
+            if ($model->uid == Yii::app()->user->id) {
+                 $aResults[$sItem]['result'] = false;
+                 $aResults[$sItem]['error'] = gT("You are not allowed to update your own expiration date.");
+                 continue;
+            }
+            $model->expires = $expires;
+            if ($model->save(true, ['expires'])) {
+                $aResults[$sItem]['result'] = true;
+            } else {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT('An error happened when setting the expiration date.');
+            }
+        }
+
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Expires'));
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => $expires ? gT('Expiration date updated') : gT('Expiration date deleted'),
+                'tableLabels' =>  $tableLabels
+            )
+        );
+    }
+
+    /**
      * Mass edition apply roles
      *
      * @return string
@@ -1370,11 +1440,15 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Deletes a user
-     * @todo : move to a private function
+     * Attempt to delete the specified user while enforcing permission and safety checks.
      *
-     * @param int $uid
-     * @return boolean
+     * Performs permission checks (requires global `users:delete`), prevents deleting the current user,
+     * blocks deletion of forced superadmin accounts, enforces ownership constraints for non-superadmins,
+     * and prevents deletion if the user owns any surveys. If all checks pass, delegates deletion to
+     * UserManager and returns the deletion result.
+     *
+     * @param int $uid The ID of the user to delete.
+     * @return bool `true` if the user was deleted successfully, `false` otherwise.
      * @throws CException
      */
     public function deleteUser(int $uid): bool
@@ -1430,7 +1504,7 @@ class UserManagementController extends LSBaseController
         }
 
         $userManager = new UserManager();
-        $result = $userManager->deleteUser($userId);
+        $result = $userManager->deleteUser($oUser);
         return $result->isSuccess();
     }
 
@@ -1441,7 +1515,7 @@ class UserManagementController extends LSBaseController
      *
      * @param int $id the ID of the model to be loaded
      *
-     * @return User|null  object
+     * @return User object
      * @throws CHttpException
      */
     public function loadModel(int $id): User
@@ -1509,7 +1583,7 @@ class UserManagementController extends LSBaseController
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
             $success = true;
-            $sReturnMessage = gT('User successfully created');
+            $sReturnMessage = gT('User successfully created', 'unescaped');
 
             if (Yii::app()->getConfig("sendadmincreationemail") && $sendEmail) {
                 $user = User::model()->findByPk($newUser['uid']);

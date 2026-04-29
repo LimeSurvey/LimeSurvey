@@ -24,14 +24,15 @@ var LS = LS || {};  // namespace
 
 ?>
 <div class="side-body">
-    <h3><?php eT("Edit email templates"); ?></h3>
+    <h1 class="h3"  ><?php eT("Edit email templates"); ?></h1>
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" role="tablist">
                 <?php foreach ($oSurvey->allLanguages as $grouplang): ?>
+                    <?php $langTabId = 'tab-lang-' . CHtml::encode($grouplang); ?>
                     <li role="presentation" class="nav-item">
-                        <a class="nav-link <?= ($count == 0) ? 'active' : '' ?>" data-bs-toggle="tab" href='#tab-<?= $grouplang ?>'>
+                        <a class="nav-link <?= ($count == 0) ? 'active' : '' ?>" id="<?= $langTabId ?>" role="tab" aria-selected="<?= ($count == 0) ? 'true' : 'false' ?>" aria-controls="tab-<?= $grouplang ?>" data-bs-toggle="tab" href="#tab-<?= $grouplang ?>">
                             <?php $count++ ?>
                             <?= getLanguageNameFromCode($grouplang, false) . " " . (($grouplang == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
                         </a>
@@ -72,7 +73,7 @@ var LS = LS || {};  // namespace
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?= gT("Choose file to add") ?></h5>
+                <h2 class="modal-title h5"><?= gT("Choose file to add") ?></h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="padding: 0;">

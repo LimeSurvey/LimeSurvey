@@ -13,16 +13,10 @@
 <!-- answer -->
 {# What is the usage of this input ? #}
 <input type="hidden" name="MULTI{{ name }}" value="{{ anscount }}" />
-<div class="{{ coreClass }} row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+<ul class="list-unstyled {{coreClass}} {% if iNbCols > 1 %} ls-column-count-{{iNbCols}}{% endif %}"{% if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}>
     {% for aRow in aRows %}
-        {% if loop.index0 is divisible by(iMaxRowsByColumn) and loop.index0 != 0  %}
-            </ul>
-            <ul class="list-unstyled col-12 col-md-{{iColumnWidth}}">
-        {% endif %}
-
         {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
         {% include rowTemplate with aRow %}
-
     {% endfor %}
+</ul>
 <!-- end of answer -->
-</div>

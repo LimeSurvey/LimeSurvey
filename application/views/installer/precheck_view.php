@@ -13,7 +13,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="col-lg-9">
-        <?php if (empty($next) && empty($cookiesAllowed)): ?>
+        <?php if (empty($next) && empty($cookiesAllowed)) : ?>
             <div class="alert alert-warning" role="alert">
                 <?= gT("Cookies seem to be disabled. Please use the \"Check again\" button instead of refreshing the page."); ?>
             </div>
@@ -35,9 +35,9 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <td><?php eT("PHP version"); ?></td>
                        <td><?= $model::MINIMUM_PHP_VERSION?></td>
                        <td>
-                           <?php if($model->isPhpVersionOK):?>
-                               <?= phpversion(); ?>
-                           <?php else:?>
+                           <?php if ($model->isPhpVersionOK) :?>
+                                <?= phpversion(); ?>
+                           <?php else :?>
                                <span style='font-weight:bold; color: red'><?php eT("Outdated"); ?>: <?= phpversion(); ?></span>
                            <?php endif;?>
                         </td>
@@ -46,9 +46,9 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <td><?php eT("Minimum memory available"); ?></td>
                        <td><?=$model::MINIMUM_MEMORY_LIMIT?></td>
                        <td>
-                           <?php if($model->isMemoryLimitOK):?>
-                                <?= $model->memoryLimit == -1 ? gT("Unlimited") : $model->memoryLimit."MB" ?>
-                           <?php else:?>
+                           <?php if ($model->isMemoryLimitOK) :?>
+                                <?= $model->memoryLimit == -1 ? gT("Unlimited") : $model->memoryLimit . "MB" ?>
+                           <?php else :?>
                                 <span style='font-weight:bold; color: red'><?= gT("Too low"); ?>: <?=$model->memoryLimit?>MB</span>
                            <?php endif;?>
                        </td>
@@ -57,10 +57,10 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <td><?php eT("PHP PDO driver library"); ?></td>
                        <td><?php eT("At least one installed"); ?></td>
                        <td>
-                           <?php if(empty($model->supportedDbTypes)):?>
+                           <?php if (empty($model->supportedDbTypes)) :?>
                                <span style='font-weight:bold; color: red'><?php eT("None found"); ?></span>
-                           <?php else:?>
-                               <?= implode(', ',$model->supportedDbTypes); ?>
+                           <?php else :?>
+                               <?= implode(', ', $model->supportedDbTypes); ?>
                            <?php endif;?>
                        </td>
                 </tr>
@@ -91,12 +91,12 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <td><?= $model->isPhpJsonPresent ? $iconOk : $iconFail ?></td>
                 </tr>
                 <tr>
-                        <td><?php eT("PHP GD library"); ?></td>
+                        <td><?php eT("PHP GD library (with JPEG & Freetype support)"); ?></td>
                         <td><span class='ri-check-fill text-success'></span></td>
                         <td>
-                        <?php if ($model->isPhpGdPresent): ?>
-                        <?= $model->phpGdHasJpegSupport ? $iconOk : $iconFail . '<br/>' . gT("The GD extension found doesn't support JPEG") ?>
-                        <?php else: ?>
+                        <?php if ($model->isPhpGdPresent) : ?>
+                            <?= ($model->phpGdHasFreeTypeSupport && $model->phpGdHasJpegSupport) ? $iconOk : $iconFail . '<br/>' . gT("GD extension doesn't support JPEG and/or Freetype") ?>
+                        <?php else : ?>
                             <?= $iconFail ?>
                         <?php endif; ?>
                </td>
@@ -120,7 +120,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <td><?php eT("Session writable"); ?></td>
                        <td><span class='ri-check-fill text-success'></span></td>
                        <td>
-                           <?= $sessionWritable ? $iconOk : $iconFail.'<br/>session.save_path: ' . session_save_path(); ?>
+                           <?= $sessionWritable ? $iconOk : $iconFail . '<br/>session.save_path: ' . session_save_path(); ?>
                        </td>
                 </tr>
             </tbody>
@@ -169,7 +169,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
             </div>
             <div class="col-lg-4">
 
-                <?php if (isset($next) && $next == true):?>
+                <?php if (isset($next) && $next == true) :?>
                     <input id="ls-next" class="btn btn-outline-secondary" type="button" value="<?php eT('Next'); ?>" onclick="window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
                 <?php endif; ?>
             </div>
