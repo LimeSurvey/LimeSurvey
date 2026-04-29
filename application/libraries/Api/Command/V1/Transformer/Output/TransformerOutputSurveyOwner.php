@@ -43,10 +43,12 @@ class TransformerOutputSurveyOwner extends TransformerOutputActiveRecord
     public function transform($data, $options = [])
     {
         $result = parent::transform($data, $options);
-        $lang = $result['lang'];
-        if ($lang === 'auto') {
-            \Yii::app()->loadHelper('common');
-            $result['lang'] = getBrowserLanguage();
+        if (is_array($result) && array_key_exists('lang', $result)) {
+            $lang = $result['lang'];
+            if ($lang === 'auto') {
+                \Yii::app()->loadHelper('common');
+                $result['lang'] = getBrowserLanguage();
+            }
         }
         return $result;
     }
