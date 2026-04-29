@@ -259,34 +259,34 @@ function getGidNext($surveyid, $gid)
  */
 function convertGETtoPOST($url)
 {
-    $url = preg_replace('/&amp;/i', '&', (string) $url);
+    $url = str_replace('&amp;', '&', (string) $url);
     $stack = explode('?', $url);
     $calledscript = array_shift($stack);
     $query = array_shift($stack);
-    $aqueryitems = explode('&', (string) $query);
     $postArray = [];
     $getArray = [];
-    foreach ($aqueryitems as $queryitem) {
-        $stack = explode('=', $queryitem);
-        $paramname = array_shift($stack);
-        $value = array_shift($stack);
-        if (in_array($paramname, array(Yii::app()->getComponent('urlManager')->routeVar))) {
-            $getArray[$paramname] = $value;
-        } else {
-            $postArray[$paramname] = $value;
+    if (!empty($query)) {
+        $aqueryitems = explode('&', $query);
+        foreach ($aqueryitems as $queryitem) {
+            [$paramname, $value] = array_pad(explode('=', $queryitem, 2), 2, '');
+            if (in_array($paramname, array(Yii::app()->getComponent('urlManager')->routeVar))) {
+                $getArray[$paramname] = $value;
+            } else {
+                $postArray[$paramname] = $value;
+            }
+        }
+        if (!empty($getArray)) {
+            $calledscript .= '?' . implode('&', array_map(
+                function ($v, $k) {
+                    return $k . '=' . $v;
+                },
+                $getArray,
+                array_keys($getArray)
+            ));
         }
     }
-    if (!empty($getArray)) {
-        $calledscript = $calledscript . "?" . implode('&', array_map(
-            function ($v, $k) {
-                return $k . '=' . $v;
-            },
-            $getArray,
-            array_keys($getArray)
-        ));
-    }
-    $callscript = "window.LS.sendPost(\"" . $calledscript . "\",\"\"," . json_encode($postArray) . ");";
-    return $callscript;
+    // params: script-name (string) / empty string / parameters as json
+    return 'window.LS.sendPost('. json_encode($calledscript) . ',"",' . json_encode($postArray) . ');';
 }
 
 
@@ -2577,9 +2577,13 @@ function incompleteAnsFilterState()
 
 /**
 * isCaptchaEnabled($screen, $usecaptchamode)
+* @deprecated Use Survey::isCaptchaEnabled($screen) with a loaded survey model.
+*             This helper only receives the packed usecaptcha value, so it
+*             cannot guarantee inheritance has already been resolved.
 * @param string $screen - the screen name for which to test captcha activation
+* @param string $captchamode - packed usecaptcha value
 *
-* @return boolean|null - returns true if captcha must be enabled
+* @return bool - returns true if captcha must be enabled
 **/
 function isCaptchaEnabled($screen, $captchamode = '')
 {
@@ -3033,9 +3037,34 @@ function getParticipantAttributes($iSurveyID)
     return getTokenFieldsAndNames($iSurveyID, true);
 }
 
+/**
+ * Decodes and formats attribute select options from JSON string to associative array.
+ *
+ * This method checks if the 'type_options' key exists in the provided attribute data array
+ * and if it contains a JSON string. If so, it decodes the JSON and converts a numeric array
+ * into an associative array where each value serves as both the key and value. This is useful
+ * for formatting select/dropdown options for form rendering.
+ *
+ * @param array $attrData The attribute data array that may contain a 'type_options' key with JSON string value
+ * @return array The modified attribute data array with decoded and formatted type_options, or the original array if no changes were made
+ */
+function decodeAttributeSelectOptions(array $attrData)
+{
+    if (array_key_exists('type_options', $attrData) && is_string($attrData['type_options'])) {
+        static $attributeService = null;
+        if ($attributeService === null) {
+            $diContainer = \LimeSurvey\DI::getContainer();
+            $attributeService = $diContainer->get(
+                LimeSurvey\Models\Services\ParticipantAttributeService::class
+            );
+        }
+        $decodedOptions = $attributeService->decodeJsonEncodedTypeOptions($attrData['type_options']);
+        // Always normalize to array for downstream form rendering (even if empty / invalid -> []).
+        $attrData['type_options'] = $decodedOptions;
+    }
 
-
-
+    return $attrData;
+}
 
 /**
 * Retrieves the attribute names from the related survey participant list
@@ -3122,6 +3151,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
         } elseif (empty($aSavedExtraTokenFields[$sField]['description'])) {
             $aSavedExtraTokenFields[$sField]['description'] = $sField;
         }
+        $aSavedExtraTokenFields[$sField] = decodeAttributeSelectOptions($aSavedExtraTokenFields[$sField]);
     }
     if ($bOnlyAttributes) {
         return $aSavedExtraTokenFields;
