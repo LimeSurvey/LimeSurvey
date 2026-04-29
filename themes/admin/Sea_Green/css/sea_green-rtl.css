@@ -17595,6 +17595,10 @@ body {
   outline-offset: 2px;
 }
 
+.modal .select2-container {
+  width: 100% !important;
+}
+
 body {
   color: #1E1E1E;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";

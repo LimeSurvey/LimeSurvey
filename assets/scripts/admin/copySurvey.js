@@ -9,6 +9,7 @@ $(document).ready(function () {
             $select.select2({
                 dropdownParent: $('#copySurvey_modal'),
                 theme: 'bootstrap-5',
+                width: '100%',
                 ajax: {
                     url: LS.createUrl('surveyAdministration/getAjaxSurveyList'),
                     dataType: 'json',
@@ -46,6 +47,21 @@ $(document).ready(function () {
         }
     });
 
+    // Clear all / Select all toggle button
+    $('#btn-clear-select-all').on('click', function () {
+        var $btn = $(this);
+        var $checkboxes = $('#copySurveyAdvanced input[type="checkbox"]');
+        var isSelectAll = $btn.data('mode') === 'select';
+
+        $checkboxes.prop('checked', isSelectAll);
+
+        if (isSelectAll) {
+            $btn.data('mode', 'clear').text($btn.data('text-clear'));
+        } else {
+            $btn.data('mode', 'select').text($btn.data('text-select'));
+        }
+    });
+
     // Reset modal state when it closes to ensure clean state on next open
     $('#copySurvey_modal').on('hidden.bs.modal', function () {
         var $modal = $('#copySurvey_modal');
@@ -65,6 +81,10 @@ $(document).ready(function () {
 
         // Collapse the advanced options section
         $('#copySurveyAdvanced').removeClass('show');
+
+        // Reset clear/select all button to initial state
+        var $btn = $('#btn-clear-select-all');
+        $btn.data('mode', 'clear').text($btn.data('text-clear'));
     });
 });
 

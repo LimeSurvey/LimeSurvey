@@ -20,71 +20,76 @@
 
                     <div class="row mb-3">
                         <!-- Source survey -->
-                        <label class=" form-label" for='surveyIdToCopy'><?php echo eT("Source survey:"); ?> </label>
-                        <select id='surveyIdToCopy' name='surveyIdToCopy' class="form-control" style="width:100%" data-copy-format="<?php echo CHtml::encode(gT('Copy of %s')); ?>"></select>
+                        <label class="form-label" for='surveyIdToCopy'><?= gT("Source survey:"); ?> </label>
+                        <select id='surveyIdToCopy' name='surveyIdToCopy' class="form-select w-100"></select>
                     </div>
-                    <div class="row mb-3">
+                    <div class="mb-3">
                         <!-- New survey title -->
-                        <label class=" form-label" for='copysurveytitle'><?php echo  eT("New survey title:"); ?> </label>
-                        <input type='text' id='copysurveytitle' name='copysurveytitle' value='' class="form-control" />
+                        <label  class="form-label" for='copysurveytitle'><?php eT("New survey title:"); ?> </label>
+                        <input type='text' id='copysurveytitle' name='copysurveytitle' value='' class="form-control"/>
                     </div>
 
                     <div class="mb-3">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#copySurveyAdvanced" aria-expanded="false" aria-controls="copySurveyAdvanced" aria-label="<?php echo eT('Toggle advanced options'); ?>">
-                            <?php eT("Advanced options"); ?>
-                        </button>
+                        <p  class="reg12 fw-bold" data-bs-toggle="collapse" data-bs-target="#copySurveyAdvanced" aria-expanded="false" aria-controls="copySurveyAdvanced" aria-label="<?php echo eT('Toggle advanced options'); ?>">
+                            <?php eT("Advanced options"); ?><span class="ri-arrow-down-s-line"> </span>
+                        </p>
                     </div>
                     <div class="collapse" id="copySurveyAdvanced">
-                        <div class="row mb-3">
+                        <div class="mb-3">
                             <!-- New survey ID -->
-                            <label class=" form-label" for='copysurveyid'><?php echo  eT("New survey ID:"); ?> </label>
+                            <label class=" form-label" for='copysurveyid'><?php eT("New survey ID:"); ?> </label>
                             <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" aria-describedby="copysurveyidHelp" />
                             <p class="form-control-static" id="copysurveyidHelp">
-                                <span class='reg12'><?php echo  gT("Optional - Leave this field empty to assign a new ID automatically"); ?> </span>
+                                <span class='reg12'><?=  gT("Optional - Leave this field empty to assign a new ID automatically"); ?> </span>
                             </p>
                         </div>
 
                         <fieldset>
-                            <legend class=" form-label semibold12"><?php echo  eT("Select the elements to include:"); ?></legend>
+                            <label  class="form-label" ><?php eT("Select the elements to include:"); ?> </label>
                             <!-- Convert resource links -->
-                            <div class="form-check">
+                            <div class="mb-2">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-clear-select-all"
+                                        data-text-clear="<?php eT('Clear all'); ?>"
+                                        data-text-select="<?php eT('Select all'); ?>"><?php eT("Clear all"); ?></button>
+                            </div>
+                            <div>
                                 <input id="copyResourcesAndLinks" name="copyResourcesAndLinks" type="checkbox" value="1" checked>
-                                <label class=" form-label reg16" for='copyResourcesAndLinks'><?php echo  eT("Survey resource files and adapt links"); ?> </label>
+                                <label class=" form-label reg16" for='copyResourcesAndLinks'><?php eT("Survey resource files and adapt links"); ?> </label>
                             </div>
 
                             <!-- Exclude quotas -->
-                            <div class="form-check">
+                            <div >
                                 <input id="copySurveyQuotas" name="copySurveyQuotas" type="checkbox" value="1" checked>
-                                <label class=" form-label reg16" for='copySurveyQuotas'><?php echo  eT("Survey quotas"); ?> </label>
+                                <label class=" form-label reg16" for='copySurveyQuotas'><?php eT("Survey quotas"); ?> </label>
                             </div>
 
                             <!-- Exclude survey permissions -->
-                            <div class="form-check">
+                            <div>
                                 <input id="copySurveyPermissions" name="copySurveyPermissions" type="checkbox" value="1" checked>
-                                <label class=" form-label reg16" for='copySurveyPermissions'><?php echo  eT("Survey permissions"); ?> </label>
+                                <label class=" form-label reg16" for='copySurveyPermissions'><?php eT("Survey permissions"); ?> </label>
                             </div>
 
                             <!-- include answers -->
-                            <div class="form-check">
+                            <div>
                                 <input id="copyAnswerOptions" name="copyAnswerOptions" type="checkbox" value="1" checked>
-                                <label class=" form-label reg16" for='copyAnswerOptions'><?php echo  eT("Answer options from the original survey"); ?> </label>
+                                <label class=" form-label reg16" for='copyAnswerOptions'><?php eT("Answer options from the original survey"); ?> </label>
                             </div>
 
                             <!-- Reset conditions/relevance -->
-                            <div class="form-check">
+                            <div>
                                 <input id="copySurveyConditions" name="copySurveyConditions" type="checkbox" value="1" checked>
-                                <label class=" form-label reg16" for='copySurveyConditions'><?php echo  eT("Survey conditions"); ?> </label>
+                                <label class=" form-label reg16" for='copySurveyConditions'><?php eT("Survey conditions"); ?> </label>
                             </div>
 
                             <!-- Reset start/end date/time -->
-                            <div class="form-check">
+                            <div>
                                 <input id="copyStartEndDate" name="copyStartEndDate" type="checkbox" value="1" checked>
-                                <label class=" form-label reg16" for='copyStartEndDate'><?php echo  eT("Start/end date/time"); ?> </label>
+                                <label class=" form-label reg16" for='copyStartEndDate'><?php eT("Start/end date/time"); ?> </label>
                             </div>
 
-                            <div class="form-check">
+                            <div>
                                 <input id="resetResponseStartId" name="resetResponseStartId" type="checkbox" value="1" checked>
-                                <label class=" form-label reg16" for='resetResponseStartId'><?php echo  eT("Reset response start ID"); ?> </label>
+                                <label class=" form-label reg16" for='resetResponseStartId'><?php eT("Reset response start ID"); ?> </label>
                             </div>
                         </fieldset>
                     </div>
@@ -92,8 +97,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
                 <input type='submit' id="copy-submit" class="btn btn-info" style="min-width:25%" value='<?php eT("Copy survey"); ?>' />
-
-                <!-- Submit -->
             </div>
             </form>
         </div>
