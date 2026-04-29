@@ -1380,6 +1380,18 @@ class userstatistics_helper
     }
 
     /**
+     * Sometimes we get a raw name that starts with multiple letters due to statistics convention which the object will not recognize.
+     * So we extract the fieldname from the raw name to map between statistics conventions and actual fieldnames
+     * @param string $rawName
+     * @param int $digitIndex
+     * @return string
+     */
+    protected function getFieldNameFromRawName(string $rawName, int $digitIndex)
+    {
+        return ($digitIndex > 1) ? substr($rawName, $digitIndex - 1) : $rawName;
+    }
+
+    /**
      * displayResults builds html output to display the actual results from a survey
      *
      * @param mixed $outputs
@@ -1486,6 +1498,7 @@ class userstatistics_helper
             $row = 0;
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
+                $digitIndex = strcspn($al[2] ?? '', '0123456789');
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
@@ -1493,8 +1506,7 @@ class userstatistics_helper
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
                         foreach ($oResponses as $oResponse) {
-                            $digitIndex = strcspn($al[2] ?? '', '0123456789');
-                            $sResponseColumn = ($digitIndex > 1) ? substr($al[2], $digitIndex - 1) : $al[2];
+                            $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                             $column = substr((string) $sResponseColumn, 0, strlen((string) $sResponseColumn) - 5);
                             if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
                                 $row += 1;
@@ -1503,8 +1515,7 @@ class userstatistics_helper
                     } else {
                         //get data - select a count of responses where no answer is provided
                         foreach ($oResponses as $oResponse) {
-                            $digitIndex = strcspn($al[2] ?? '', '0123456789');
-                            $sResponseColumn = ($digitIndex > 1) ? substr($al[2], $digitIndex - 1) : $al[2];
+                            $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                             if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
@@ -1522,12 +1533,11 @@ class userstatistics_helper
                 */
                 elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
                     $sDatabaseType = Yii::app()->db->getDriverName();
-                    $digitIndex = strcspn($al[2] ?? '', '0123456789');
 
                     //free text answers
                     if ($al[0] == "Answer") {
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = ($digitIndex > 1) ? substr($al[2], $digitIndex - 1) : $al[2];
+                            $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                             if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
@@ -1536,16 +1546,15 @@ class userstatistics_helper
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = ($digitIndex > 1) ? substr($al[2], $digitIndex - 1) : $al[2];
+                            $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                             if ($oResponse->$sResponseColumn == '') {
                                 $row += 1;
                             }
                         }
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
-                    $digitIndex = strcspn($al[2] ?? '', '0123456789');
                     foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = ($digitIndex > 1) ? substr($al[2], $digitIndex - 1) : $al[2];
+                        $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                         if ($oResponse->$sResponseColumn != '') {
                             $row += 1;
                         }
@@ -1553,8 +1562,7 @@ class userstatistics_helper
                 // all other question types
                 } else {
                     foreach ($oResponses as $oResponse) {
-                        $digitIndex = strcspn($al[2] ?? '', '0123456789');
-                        $sResponseColumn = ($digitIndex > 1) ? substr($al[2], $digitIndex - 1) : $al[2];
+                        $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                         if (substr((string) $rt, 0, 1) == "R") {
                             if ($al[0] === "") {
                                 // Ranking No answer: column is NULL or empty
