@@ -48,7 +48,7 @@ $(document).ready(function () {
     });
 
     // Clear all / Select all toggle button
-    $('#btn-clear-select-all').on('click', function () {
+    $(document).on('click', '#btn-clear-select-all', function () {
         var $btn = $(this);
         var $checkboxes = $('#copySurveyAdvanced input[type="checkbox"]');
         var isSelectAll = $btn.data('mode') === 'select';
@@ -56,9 +56,13 @@ $(document).ready(function () {
         $checkboxes.prop('checked', isSelectAll);
 
         if (isSelectAll) {
-            $btn.data('mode', 'clear').text($btn.data('text-clear'));
+            $btn.data('mode', 'clear');
+            $btn.find('i').attr('class', $btn.data('icon-clear'));
+            $btn.contents().filter(function () { return this.nodeType === 3; }).last().replaceWith(' ' + $btn.data('text-clear'));
         } else {
-            $btn.data('mode', 'select').text($btn.data('text-select'));
+            $btn.data('mode', 'select');
+            $btn.find('i').attr('class', $btn.data('icon-select'));
+            $btn.contents().filter(function () { return this.nodeType === 3; }).last().replaceWith(' ' + $btn.data('text-select'));
         }
     });
 
@@ -84,7 +88,9 @@ $(document).ready(function () {
 
         // Reset clear/select all button to initial state
         var $btn = $('#btn-clear-select-all');
-        $btn.data('mode', 'clear').text($btn.data('text-clear'));
+        $btn.data('mode', 'clear');
+        $btn.find('i').attr('class', $btn.data('icon-clear'));
+        $btn.contents().filter(function () { return this.nodeType === 3; }).last().replaceWith(' ' + $btn.data('text-clear'));
     });
 });
 

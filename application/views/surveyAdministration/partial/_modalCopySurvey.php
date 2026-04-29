@@ -50,7 +50,12 @@
                             <div class="mb-2">
                                 <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-clear-select-all"
                                         data-text-clear="<?php eT('Clear all'); ?>"
-                                        data-text-select="<?php eT('Select all'); ?>"><?php eT("Clear all"); ?></button>
+                                        data-text-select="<?php eT('Select all'); ?>"
+                                        data-icon-clear="ri-close-circle-line"
+                                        data-icon-select="ri-check-line">
+                                    <i class="ri-close-circle-line"></i>
+                                    <?php eT("Clear all"); ?>
+                                </button>
                             </div>
                             <div>
                                 <input id="copyResourcesAndLinks" name="copyResourcesAndLinks" type="checkbox" value="1" checked>
