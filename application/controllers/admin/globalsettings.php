@@ -445,7 +445,7 @@ class GlobalSettings extends SurveyCommonAction
             $fixedValue = sanitize_googleapikey($value);
             if ($value !== $fixedValue) {
                 /* Add an alert to the user */
-                Yii::app()->setFlashMessage(sprintf(gT("Invalue value set for %s, reset to %s"), $value, $fixedValue), 'warning');
+                Yii::app()->setFlashMessage(sprintf(gT("Invalid value set for %s, reset to %s"), $value, $fixedValue), 'warning');
                 /* Add a warning for log for server admin */
                 Yii::log("Invalid value set for {$googleapikey} in global settings.", 'warning', 'application.controller.admin.globalsettings');
             }
