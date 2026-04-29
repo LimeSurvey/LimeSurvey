@@ -28,6 +28,12 @@ class SessionUtil
         /** @var \LSYii_Application */
         $app = Yii::app();
 
+        $userLang = $aUserData['lang'];
+        if($userLang === 'auto' || $userLang === '' || $userLang === null) {
+            $app->loadHelper('common');
+            $userLang = getBrowserLanguage();
+        }
+
         $session = array(
             'loginID' => intval($aUserData['uid']),
             'user' => $aUserData['users_name'],
@@ -40,7 +46,7 @@ class SessionUtil
             // This format is defined as '6' in
             // insurveytranslator_helper.php / getDateFormatData()
             'dateformat' => 6,
-            'adminlang' => $aUserData['lang']
+            'adminlang' => $userLang
         );
         foreach ($session as $k => $v) {
             $app->session[$k] = $v;
