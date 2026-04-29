@@ -3,37 +3,43 @@
     .nav-link {
         font-size        : $font-size-sm;
         color            : $nav-tabs-link-active-color;
-        border           : 0;
         border-radius    : 0;
         border-top       : 2px solid $g-200;
         border-bottom    : 2px solid $g-400;
         background-color : $g-200;
         padding          : 6px 20px;
         &:focus {
-            border: 2px solid $grape90;
-            border-bottom: 4px solid $grape90;
+            border-bottom: 2px solid $grape90;
+            box-shadow    : inset 2px 0 0 $grape90, /* left */
+            inset -2px 0 0 $grape90, /* right */
+            inset 0 -2px 0 $grape90, /* bottom */
+            inset 0 2px 0 $grape90; /* top */
         }
-        &.active:hover, &:hover {
-            border: 1px solid $grape75;
+
+        &.active:hover, &:hover, &:active {
+            box-shadow    : inset 1px 0 0 $grape75, /* left */
+            inset -1px 0 0 $grape75, /* right */
+            inset 0 -1px 0 $grape75, /* bottom */
+            inset 0 1px 0 $grape75; /* top */
             border-bottom : 2px solid $grape75;
         }
         &:active {
-            border: 1px solid $grape75;
-            border-bottom: 3px solid $grape75;
-            background-color: $g-400;
+            background-color: $g-300;
         }
         &.disabled,
         &:disabled {
             color            : $g-600;
-            border-bottom    : 2px solid $g-400;
             background-color : $g-200;
         }
     }
     .nav-link.active,
     .nav-item.show .nav-link {
-        color            : $nav-tabs-link-active-color;
         background-color : $white;
         border-top       : 2px solid $active-green;
+        border-bottom    : 2px solid $white;
+    }
+    .nav-link.active:focus {
+        box-shadow: none;
     }
 }
 .tab-content {
