@@ -37,7 +37,7 @@ export const QuestionFooter = ({
         onConfirm={handleConfirmRemove}
         title={t('Delete question')}
         description={t(
-          'Are you sure you want to delete this question? this action cannot be reverted.'
+          'Are you sure you want to delete this question? This action cannot be reverted.'
         )}
         confirmButtonText={t('Delete')}
       />

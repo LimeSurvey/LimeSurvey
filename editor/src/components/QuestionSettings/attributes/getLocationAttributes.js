@@ -11,7 +11,7 @@ export const getLocationAttributes = () => ({
       optionTextClassName: 'text-sm',
       toggleOptions: [
         { name: t('Google Maps'), value: '1' },
-        { name: t('OpenStreetMap'), value: '100' },
+        { name: t('OpenStreetMap via MapQuest'), value: '100' },
         { name: t('Off'), value: '0' },
       ],
       defaultValue: '100',

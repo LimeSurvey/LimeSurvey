@@ -1533,6 +1533,7 @@ class userstatistics_helper
                 */
                 elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
                     $sDatabaseType = Yii::app()->db->getDriverName();
+                    $digitIndex = strcspn($al[2] ?? '', '0123456789');
 
                     //free text answers
                     if ($al[0] == "Answer") {
@@ -1553,6 +1554,7 @@ class userstatistics_helper
                         }
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
+                    $digitIndex = strcspn($al[2] ?? '', '0123456789');
                     foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                         if ($oResponse->$sResponseColumn != '') {
