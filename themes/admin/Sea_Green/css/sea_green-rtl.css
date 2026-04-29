@@ -15140,59 +15140,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   word-wrap: break-word;
 }
 
-.grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {
-  white-space: nowrap;
-  text-align: initial;
-}
-.grid-view .table th > .sort-link .caret, .grid-view-ls .table th > .sort-link .caret {
-  left: -10px;
-}
-.grid-view .table .filters > td .filter-container, .grid-view-ls .table .filters > td .filter-container {
-  padding: 0;
-}
-
-.grid-view-ls .table td {
-  vertical-align: middle;
-}
-.grid-view-ls .table td input[type=checkbox]:after {
-  margin-top: -3px;
-  margin-left: -3px;
-}
-
-.grid-view-ls .table .button-column {
-  white-space: nowrap;
-  text-align: initial;
-  min-width: 50px;
-}
-
-.grid-view-ls .summary {
-  color: #999999;
-  font-size: 12px;
-  text-align: left;
-}
-
-.grid-view-ls.grid-view-loading {
-  background: url(../img/loader.gif) no-repeat 0% 10px;
-}
-
-.grid-view-ls.grid-view-loading .table {
-  opacity: 0.3;
-}
-
-.grid-view-ls.grid-view-loading .table th > .sort-link .caret {
-  display: none;
-}
-
-.grid-view-ls .table td .longtext-content {
-  min-width: 8em;
-  max-width: 16em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  height: 1.5em;
-  display: inline-block;
-}
-
 .dropdown-menu.larger-dropdown {
   min-width: 240px;
 }
@@ -17643,24 +17590,6 @@ dl dt {
   font-weight: 600 !important;
 }
 
-a {
-  color: #14AE5C;
-  font-weight: 500;
-}
-
-.has-link {
-  cursor: pointer;
-}
-
-.has-link a:hover {
-  text-decoration: none;
-}
-
-.has-link a {
-  color: #1E1E1E;
-  font-weight: 400;
-}
-
 .reg12 {
   color: #6E748C;
   font-weight: 400;
@@ -17686,6 +17615,87 @@ a {
   line-height: 16px;
   letter-spacing: -0.204px;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+a {
+  color: #14AE5C;
+  font-weight: 500;
+}
+a:hover {
+  color: #14AE5C;
+  text-decoration: underline;
+}
+a:focus, a:active {
+  padding: 1px 4px;
+  border-radius: 2px;
+  border: 2px solid rgba(123, 97, 255, 0.9);
+}
+a:active {
+  color: #1E1E1E;
+  border: 1px solid rgba(123, 97, 255, 0.4);
+}
+
+.grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {
+  white-space: nowrap;
+  text-align: initial;
+}
+.grid-view .table th > .sort-link .caret, .grid-view-ls .table th > .sort-link .caret {
+  left: -10px;
+}
+.grid-view .table .filters > td .filter-container, .grid-view-ls .table .filters > td .filter-container {
+  padding: 0;
+}
+.grid-view .has-link, .grid-view-ls .has-link {
+  cursor: pointer;
+}
+.grid-view .has-link a:hover, .grid-view-ls .has-link a:hover {
+  text-decoration: none;
+}
+.grid-view .has-link a, .grid-view-ls .has-link a {
+  color: #1E1E1E;
+  font-weight: 400;
+}
+
+.grid-view-ls .table td {
+  vertical-align: middle;
+}
+.grid-view-ls .table td input[type=checkbox]:after {
+  margin-top: -3px;
+  margin-left: -3px;
+}
+
+.grid-view-ls .table .button-column {
+  white-space: nowrap;
+  text-align: initial;
+  min-width: 50px;
+}
+
+.grid-view-ls .summary {
+  color: #999999;
+  font-size: 12px;
+  text-align: left;
+}
+
+.grid-view-ls.grid-view-loading {
+  background: url(../img/loader.gif) no-repeat 0% 10px;
+}
+
+.grid-view-ls.grid-view-loading .table {
+  opacity: 0.3;
+}
+
+.grid-view-ls.grid-view-loading .table th > .sort-link .caret {
+  display: none;
+}
+
+.grid-view-ls .table td .longtext-content {
+  min-width: 8em;
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 1.5em;
+  display: inline-block;
 }
 
 .tooltip {
@@ -17755,6 +17765,7 @@ ol.breadcrumb.title-bar-breadcrumb a {
 }
 ol.breadcrumb.title-bar-breadcrumb a:hover {
   border: 1px solid rgba(123, 97, 255, 0.4);
+  text-decoration: none;
 }
 ol.breadcrumb.title-bar-breadcrumb a:focus {
   outline: none;
@@ -18783,6 +18794,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link:hover, .nav-tabs .nav-link:active {
   box-shadow: inset -1px 0 0 rgba(123, 97, 255, 0.4), inset 1px 0 0 rgba(123, 97, 255, 0.4), inset 0 -1px 0 rgba(123, 97, 255, 0.4), inset 0 1px 0 rgba(123, 97, 255, 0.4); /* top */
   border-bottom: 2px solid rgba(123, 97, 255, 0.4);
+  text-decoration: none;
 }
 .nav-tabs .nav-link:active {
   background-color: #DDDEE8;

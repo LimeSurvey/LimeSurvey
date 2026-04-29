@@ -36,6 +36,7 @@ ol.breadcrumb.title-bar-breadcrumb {
 
         &:hover {
             border : $hover-border;
+            text-decoration: none;
         }
 
         &:focus {

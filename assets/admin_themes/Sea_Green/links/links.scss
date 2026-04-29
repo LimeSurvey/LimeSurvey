@@ -1,0 +1,20 @@
+a {
+    color       : $link-color;
+    font-weight : $font-weight-500;
+
+    &:hover {
+        color           : $link-color;
+        text-decoration : underline;
+    }
+
+    &:focus, &:active {
+        padding       : 1px 4px;
+        border-radius : 2px;
+        border        : 2px solid $grape90;
+    }
+
+    &:active {
+        color  : $g-900;
+        border : 1px solid $grape75;
+    }
+}

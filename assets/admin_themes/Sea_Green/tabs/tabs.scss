@@ -22,6 +22,7 @@
             inset 0 -1px 0 $grape75, /* bottom */
             inset 0 1px 0 $grape75; /* top */
             border-bottom : 2px solid $grape75;
+            text-decoration: none;
         }
         &:active {
             background-color: $g-300;
