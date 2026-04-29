@@ -441,7 +441,7 @@ class GlobalSettings extends SurveyCommonAction
         /* @see https://docs.cloud.google.com/docs/authentication/api-keys#components */
         $googleapikeys = ['googleMapsAPIKey', 'googleanalyticsapikey', 'googletranslateapikey'];
         foreach ($googleapikeys as $googleapikey) {
-            $value = trim(App()->getRequest()->getPost($googleapikey));
+            $value = trim(strval(App()->getRequest()->getPost($googleapikey)));
             $fixedValue = sanitize_googleapikey($value);
             if ($value !== $fixedValue) {
                 /* Add an alert to the user */
