@@ -32,4 +32,22 @@ class TransformerOutputSurveyOwner extends TransformerOutputActiveRecord
             'user_status' => 'userStatus',
         ]);
     }
+
+    /**
+     * Transform data and resolve 'auto' lang to the browser language.
+     *
+     * @param mixed $data
+     * @param mixed $options
+     * @return mixed
+     */
+    public function transform($data, $options = [])
+    {
+        $result = parent::transform($data, $options);
+        $lang = $result['lang'];
+        if ($lang === 'auto') {
+            \Yii::app()->loadHelper('common');
+            $result['lang'] = getBrowserLanguage();
+        }
+        return $result;
+    }
 }
