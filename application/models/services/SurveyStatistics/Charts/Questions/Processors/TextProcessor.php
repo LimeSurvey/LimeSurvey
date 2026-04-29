@@ -15,7 +15,7 @@ class TextProcessor extends AbstractQuestionProcessor
     {
         $this->rt();
 
-        $totalResponses = AbstractQuestionProcessor::getTotalCount($this->surveyId);
+        $totalResponses = $this->getTotalCount();
         $answered = $this->countFieldResponses($this->rt);
         $notAnswered = $totalResponses - $answered;
 

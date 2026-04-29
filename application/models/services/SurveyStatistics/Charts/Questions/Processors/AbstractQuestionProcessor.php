@@ -122,18 +122,18 @@ abstract class AbstractQuestionProcessor
     /**
      * Returns the total response count for a survey, with results cached per survey ID.
      *
-     * @param int $sid Survey ID
      * @return int
      */
-    public static function getTotalCount(int $sid): int
+    public function getTotalCount(): int
     {
-        if (!isset(self::$totalCountCache[$sid])) {
-            $db = SurveyDynamic::model($sid)->getDbConnection();
-            $table = $db->quoteTableName('{{responses_' . $sid . '}}');
-            self::$totalCountCache[$sid] = (int)$db->createCommand("SELECT COUNT(*) FROM $table")->queryScalar();
+        if (!isset(self::$totalCountCache[$this->surveyId])) {
+            $db = $this->getDb();
+            ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
+            $totalCount = (int)$db->createCommand("SELECT COUNT(*) FROM $table" . $where)->queryScalar($params);
+            self::$totalCountCache[$this->surveyId] = $totalCount;
         }
 
-        return self::$totalCountCache[$sid];
+        return self::$totalCountCache[$this->surveyId];
     }
 
     /**
