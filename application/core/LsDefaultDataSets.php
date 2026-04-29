@@ -1799,7 +1799,7 @@ class LsDefaultDataSets
          * @param int $active
          * @return array
          */
-        $addRow = function ($name, $active = 0, $version = '1.0.0', $priority = 0) {
+        $addRow = function ($name, $active = 0, $version = '1.0.0', $priority = 1) {
             return [
                 'id' => null,
                 'name'               => $name,
@@ -1816,8 +1816,8 @@ class LsDefaultDataSets
             $addRow('UpdateCheck', 1),
             $addRow('PasswordRequirement', 1),
             $addRow('ComfortUpdateChecker', 1),
-            $addRow('Authdb', 1, '1.0.0', 1),
-            $addRow('ReactEditor', 1),
+            $addRow('Authdb', 1),
+            $addRow('ReactEditor', 1, '1.0.0', 0),
             // Inactive plugins below.
             $addRow('AuthLDAP'),
             $addRow('AuditLog'),
