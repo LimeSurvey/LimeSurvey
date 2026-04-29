@@ -53,8 +53,32 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
             }
             // Create array of attribute with name as key
             foreach ($xmlAttributes['attribute'] as $attribute) {
-                if (!empty($attribute['name'])) {
-                    $attributes[$attribute['name']] = array_merge(self::getBaseDefinition(), $attribute);
+                if (empty($attribute['name'])) {
+                    /* Allow comments in attributes */
+                    continue;
+                }
+                /* settings the default value */
+                $attributes[$attribute['name']] = self::getBaseDefinition();
+                /* settings the xml value */
+                foreach ($attribute as $property => $propertyValue) {
+                    if ($property === 'options' && !empty($propertyValue)) {
+                        if (isset($propertyValue['option']) && is_array($propertyValue['option'])) {
+                            foreach ($propertyValue['option'] as $option) {
+                                if (isset($option['value'])) {
+                                    $value = is_array($option['value']) ? '' : $option['value'];
+                                    $attributes[$attribute['name']]['options'][$value] = $option['text'];
+                                }
+                            }
+                        } else {
+                            // Remove comments
+                            if (isset($propertyValue['comment']) && is_array($propertyValue['comment'])) {
+                                unset($propertyValue['comment']);
+                            }
+                            $attributes[$attribute['name']]['options'] = $propertyValue;
+                        }
+                    } else {
+                        $attributes[$attribute['name']][$property] = $propertyValue;
+                    }
                 }
             }
         }

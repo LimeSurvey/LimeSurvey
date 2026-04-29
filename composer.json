@@ -45,7 +45,7 @@
 		"tiamo/spss": "dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
 		"yiisoft/yii": "^1.1.26",
-		"phpmailer/phpmailer": "^6.6",
+		"phpmailer/phpmailer": "6.12.0",
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",
 		"mk-j/php_xlsxwriter": "0.39",
@@ -59,7 +59,9 @@
 		"php-di/php-di": "6.4.0",
 		"doctrine/annotations": "~1.10",
 		"anper/iuliia": "^1.2",
-		"shardj/zf1-future": "^1.24"
+		"shardj/zf1-future": "^1.24",
+		"viniciusgava/google-translate-api": "^3.1",
+		"greew/oauth2-azure-provider": "^1.0"
 	},
     "config": {
         "vendor-dir": "vendor",

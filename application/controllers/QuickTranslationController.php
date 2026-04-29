@@ -4,6 +4,37 @@ use Anper\Iuliia\Iuliia;
 
 class QuickTranslationController extends LSBaseController
 {
+    // Define the language code mappings from LimeSurvey to Google Translate API
+    // where the codes are different
+    public $languageCodeMappings = array(
+        'cs-informal' => 'cs',
+        'de-informal' => 'de',
+        'de-easy' => 'de',
+        'es-informal' => 'es',
+        'es-AR' => 'es',
+        'es-AR-informal' => 'es',
+        'es-CL' => 'es',
+        'es-CO' => 'es',
+        'es-MX' => 'es',
+        'hat' => 'ht',
+        'he' => 'iw',
+        'ie' => 'ga',
+        'it-informal' => 'it',
+        'mya' => 'my',
+        'nb' => 'no',
+        'nl-informal' => 'nl',
+        'nn' => 'no',
+        'prs' => 'fa',
+        'roh' => 'rm',
+        'smi' => 'se',
+        'swh' => 'sw',
+        'xho' => 'xh',
+        'yor' => 'yo',
+        'zh-Hans' => 'zh-CN',
+        'zh-Hant-HK' => 'zh-TW',
+        'zh-Hant-TW' => 'zh-TW',
+    );
+
     /**
      * Here we have to use the correct layout (NOT main.php)
      *
@@ -87,7 +118,7 @@ class QuickTranslationController extends LSBaseController
             // Only save if the administration user has the correct permission
             //todo: this is only necessary on save ...
             if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
-                $this->translateSave($languageToTranslate, $quickTranslation);
+                $this->translateSave($languageToTranslate, $quickTranslation, $surveyid);
                 Yii::app()->setFlashMessage(gT("Saved"), 'success');
             }
 
@@ -133,9 +164,10 @@ class QuickTranslationController extends LSBaseController
      * @param $tolang
      * @param $baselang
      * @param $quickTranslation \LimeSurvey\Models\Services\QuickTranslation the quicktranslation object
+     * @param $surveyid
      * @return void
      */
-    private function translateSave($tolang, $quickTranslation)
+    private function translateSave($tolang, $quickTranslation, $surveyid)
     {
         $tab_names = $quickTranslation->getTabNames();
         $tab_names_full = $tab_names;
@@ -150,6 +182,7 @@ class QuickTranslationController extends LSBaseController
             }
         }
 
+        $updateOccured = false;
         foreach ($tab_names_full as $type) {
             $size = (int) Yii::app()->getRequest()->getPost("{$type}_size"); //todo: what is size here?
             // start a loop in order to update each record
@@ -166,11 +199,20 @@ class QuickTranslationController extends LSBaseController
                         $answerCode = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
                         $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
                         $quickTranslation->updateTranslations($type, $tolang, $new, $qidOrGid, $answerCode, $iScaleID);
+                        $updateOccured = true;
                     }
                 }
                 $i++;
             } // end while
         } // end foreach
+
+        if ($updateOccured) {
+            $survey = Survey::model()->findByPk($surveyid);
+            if ($survey) {
+                $surveyDetailService = new \LimeSurvey\Models\Services\SurveyDetailService();
+                $surveyDetailService->updateSurveyLastModified($survey);
+            }
+        }
     }
 
     /**
@@ -424,39 +466,19 @@ class QuickTranslationController extends LSBaseController
      */
     private function translateGoogleApi()
     {
-        $sBaselang   = Yii::app()->getRequest()->getPost('baselang', '');
-        $sTolang     = Yii::app()->getRequest()->getPost('tolang', '');
+        $sourceLanguage   = Yii::app()->getRequest()->getPost('baselang', '');
+        $destinationLanguage     = Yii::app()->getRequest()->getPost('tolang', '');
         $sToconvert  = Yii::app()->getRequest()->getPost('text', '');
 
-        $replacements = array(
-            'zh-Hans' => 'zh-CN',
-            'zh-Hant-HK' => 'zh-TW',
-            'zh-Hant-TW' => 'zh-TW',
-            'nl-informal' => 'nl',
-            'de-informal' => 'de',
-            'de-easy' => 'de',
-            'it-formal' => 'it',
-            'pt-BR' => 'pt',
-            'es-MX' => 'es',
-            'nb' => 'no',
-            'nn' => 'no',
-            'hat' => 'ht',
-        );
-        $sBaselang = isset($replacements[$sBaselang]) ? $replacements[$sBaselang] : $sBaselang;
-        $sTolang = isset($replacements[$sTolang]) ? $replacements[$sTolang] : $sTolang;
-
-        $error = false;
-
+        $replacements = $this->languageCodeMappings;
+        $sourceLanguage = isset($replacements[$sourceLanguage]) ? $replacements[$sourceLanguage] : $sourceLanguage;
+        $destinationLanguage = isset($replacements[$destinationLanguage]) ? $replacements[$destinationLanguage] : $destinationLanguage;
+        $translateApiKey = App()->getConfig('googletranslateapikey');
+        $errorMessageText = false;
+        $sOutput = '';
         try {
-            require_once(APPPATH . '/../vendor/gtranslate-api/GTranslate.php');
-            $gtranslate = new Gtranslate();
+            $gtranslate = new \GoogleTranslate\Client($translateApiKey);
             // use curl because http with fopen is disabled
-            $gtranslate->setRequestType('curl');
-            $objGt = $gtranslate;
-
-            // Gtranslate requires you to run function named XXLANG_to_XXLANG
-            $sProcedure = $sBaselang . "_to_" . $sTolang;
-
             $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
 
             $sparts = array();
@@ -464,26 +486,36 @@ class QuickTranslationController extends LSBaseController
                 if ($part[2] == 'EXPRESSION') {
                     $sparts[] = $part[0];
                 } else {
-                    $convertedPart = (string) $objGt->$sProcedure($part[0]);
+                    $convertedPart = $gtranslate->translate($part[0], $destinationLanguage, $sourceLanguage);
+
                     $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
                     $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
-                    if ($sTolang == 'sr-Latn') {
+                    if ($destinationLanguage == 'sr-Latn') {
                         $convertedPart = Iuliia::translate($convertedPart, Iuliia::TELEGRAM);
                     }
                     $sparts[] = $convertedPart;
                 }
             }
             $sOutput = implode(' ', $sparts);
-        } catch (GTranslateException $ge) {
-            // Get the error message and build the ouput array
-            $error = true;
-            $sOutput = $ge->getMessage();
+        } catch (\Exception $ge) {
+            // Get the error message and remove the key for security reasons
+            $errorMessage = $ge->getMessage();
+            if ($translateApiKey) {
+                $errorMessage = str_replace($translateApiKey, '*****', $errorMessage);
+            }
+
+            // Use regex to extract the first "message": "..." pattern
+            if (preg_match('/"message"\s*:\s*"([^"]+)"/', $errorMessage, $matches)) {
+                $errorMessageText = $matches[1];
+            } else {
+                $errorMessageText = $errorMessage;
+            }
         }
 
         $aOutput = array(
-            'error'     =>  $error,
-            'baselang'  =>  $sBaselang,
-            'tolang'    =>  $sTolang,
+            'error'     =>  $errorMessageText,
+            'baselang'  =>  $sourceLanguage,
+            'tolang'    =>  $destinationLanguage,
             'converted' =>  $sOutput
         );
 

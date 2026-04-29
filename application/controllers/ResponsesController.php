@@ -96,7 +96,7 @@ class ResponsesController extends LSBaseController
             $quexmlpdf->setLanguage($sBrowseLanguage);
             set_time_limit(120);
             App()->loadHelper('export');
-            $quexml = quexml_export($surveyId, $sBrowseLanguage, $id);
+            $quexml = quexml_export($surveyId, $sBrowseLanguage, $id, false);
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
             $quexmlpdf->write_out("$surveyId-$id-queXML.pdf");
         } else {
@@ -1047,7 +1047,7 @@ class ResponsesController extends LSBaseController
      * @param string|null $language
      * @return array
      */
-    private function getData(int $surveyId = null, int $responseId = null, string $language = null): array
+    private function getData(?int $surveyId = null, ?int $responseId = null, ?string $language = null): array
     {
         if (!isset($surveyId)) {
             App()->setFlashMessage(gT("Invalid survey ID"), 'warning');

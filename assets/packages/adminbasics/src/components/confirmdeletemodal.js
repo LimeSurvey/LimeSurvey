@@ -79,7 +79,7 @@ const ConfirmDeleteModal = function (options) {
                 formObject.append('<input name="' + key + '" value="' + value + '" type="' + type + '" ' + (htmlClass ? 'class="' + htmlClass + '"' : '') + ' />');
             }
 
-            formObject.append('<input name="' + LS.data.csrfTokenName + '" value="' + LS.data.csrfToken + '" type="hidden" />');
+            formObject.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
             modalObject.find('.modal-body').append(formObject)
             modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
 

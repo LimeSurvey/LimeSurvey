@@ -47,7 +47,6 @@ $this->widget('ext.ButtonWidget.ButtonWidget', [
     'htmlOptions' => [
         'class' => 'btn btn-secondary btntooltip',
         'role' => 'button',
-        'accesskey' => 'd',
         'target' => '_blank',
     ],
 ]); ?>

@@ -48,7 +48,7 @@
                 <?php eT('Branch'); ?>
             </th>
             <th>
-                <?php eT('Update type'); ?>
+                <?php eT('Security update'); ?>
             </th>
             <th>
 
@@ -88,11 +88,11 @@
             <!-- security / regular -->
             <?php if($aUpdateVersion['security_update']):?>
             <td class="text-danger">
-                    <?php eT("Security update");?>
+                    <?php eT("Yes");?>
             </td>
             <?php else: ?>
             <td>
-                <?php eT("Regular update");?>
+                <?php eT("No");?>
             </td>
             <?php endif; ?>
 

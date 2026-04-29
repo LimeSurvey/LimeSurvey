@@ -29,10 +29,12 @@ class Box extends CActiveRecord
         return array(
             array('url, title, ico, position, desc, page', 'required'),
             array('url', 'match', 'pattern' => '/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
+            array('url', 'LSYii_Validators', 'isUrl' => true),
             array('position', 'numerical', 'integerOnly' => true),
             array('position', 'unique', 'message' => gT('Position {value} already exists.')),
             array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),
             array('ico', 'match', 'pattern' => '/^[A-Za-z0-9_ \-]+$/u','message' => gT('Icon name must be a simple class name (alphanumeric, space, minus and underscore).')),
+            array('title', 'LSYii_Validators'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on' => 'search'),

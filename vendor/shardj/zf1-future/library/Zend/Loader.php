@@ -51,7 +51,7 @@ class Zend_Loader
      */
     public static function loadClass($class, $dirs = null)
     {
-        if (class_exists($class, false) || interface_exists($class, false)) {
+        if (self::classExists($class)) {
             return;
         }
 
@@ -82,10 +82,24 @@ class Zend_Loader
             self::loadFile($file, null, true);
         }
 
-        if (!class_exists($class, false) && !interface_exists($class, false)) {
+        if (self::classNotExists($class)) {
             require_once 'Zend/Exception.php';
             throw new Zend_Exception("File \"$file\" does not exist or class \"$class\" was not found in the file");
         }
+    }
+
+    public static function classExists(string $class): bool
+    {
+        return class_exists($class, false)
+            || interface_exists($class, false)
+            || trait_exists($class, false);
+    }
+
+    public static function classNotExists(string $class): bool
+    {
+        return !class_exists($class, false)
+            && !interface_exists($class, false)
+            && !trait_exists($class, false);
     }
 
     /**

@@ -111,12 +111,20 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ar']['momentjs'] = 'ar';
 
     // Armenian
-    $supportedLanguages['hy']['description'] = gT('Armenian');
+    $supportedLanguages['hy']['description'] = gT('Armenian (Eastern)');
     $supportedLanguages['hy']['nativedescription'] = '&#1392;&#1377;&#1397;&#1381;&#1408;&#1381;&#1398;';
     $supportedLanguages['hy']['rtl'] = false;
     $supportedLanguages['hy']['dateformat'] = 1;
     $supportedLanguages['hy']['radixpoint'] = 1;
     $supportedLanguages['hy']['momentjs'] = 'hy-am';
+
+    // Western Armenian
+    $supportedLanguages['hyw']['description'] = gT('Armenian (Western)');
+    $supportedLanguages['hyw']['nativedescription'] = '&#x531;&#x580;&#x565;&#x582;&#x574;&#x57F;&#x561;&#x570;&#x561;&#x575;&#x565;&#x580;&#x567;&#x576;';
+    $supportedLanguages['hyw']['rtl'] = false;
+    $supportedLanguages['hyw']['dateformat'] = 1;
+    $supportedLanguages['hyw']['radixpoint'] = 1;
+    $supportedLanguages['hyw']['momentjs'] = 'hy-am';
 
     // Azerbaijani
     $supportedLanguages['az']['description'] = gT('Azerbaijani');
@@ -441,6 +449,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hil']['rtl'] = false;
     $supportedLanguages['hil']['dateformat'] = 1;
     $supportedLanguages['hil']['radixpoint'] = 1;
+    $supportedLanguages['hil']['momentjs'] = 'tl';
+    $supportedLanguages['hil']['cldr'] = 'fil';
 
     // Hungarian
     $supportedLanguages['hu']['description'] = gT('Hungarian');

@@ -38,7 +38,7 @@ class TransformerInputAnswer extends Transformer
     {
         $collection = parent::transformAll($collection, $options);
         $output = [];
-        foreach ($collection as $index => $answer) {
+        foreach ($collection as $answer) {
             // second array index needs to be the scaleId
             $scaleId = array_key_exists(
                 'scale_id',
@@ -47,8 +47,7 @@ class TransformerInputAnswer extends Transformer
             $index = array_key_exists(
                 'aid',
                 $answer
-            ) && (int)$answer['aid'] > 0
-                ? (int)$answer['aid'] : (int)$index;
+            ) ? $answer['aid'] : 'notFound';
             $output[$index][$scaleId] = $answer;
         }
         return $output;

@@ -34,6 +34,6 @@ class FormatterDateTimeToJsonTest extends TestBaseClass
 
     private function getConfig($revert = false)
     {
-        return $revert ? ['revert' => true] : [true];
+        return ['revert' => $revert, 'inputTimezone' => 'UTC'];
     }
 }

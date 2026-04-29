@@ -29,7 +29,7 @@ class DatabaseUpdate extends SurveyCommonAction
      */
     public function db($continue = null)
     {
-        Yii::app()->loadHelper("update/update");
+        Yii::app()->loadHelper("update.update");
         $aData = $aViewUrls = [];
         if (isset($continue) && $continue == "yes") {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);

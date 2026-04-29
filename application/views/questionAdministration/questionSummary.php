@@ -13,13 +13,8 @@
     if ($question->qid !== 0): ?>
             <!-- Question summary -->
             <div class="pagetitle">
-                <span class="h1"><?php
-                    eT('Question summary'); ?>&nbsp;</span>
-                <small>
-                    <em>
-                        <?= $question->title; ?> (ID: <?= (int)$question->qid; ?>)
-                    </em>&nbsp;
-                </small>
+                <h1 aria-describedby="question-summary-meta"><?php eT('Question summary'); ?></h1>
+                <small id="question-summary-meta" class="pagetitle__description"><em><?= $question->title; ?> (ID: <?= (int)$question->qid; ?>)</em></small>
             </div>
             <?php
             $this->renderPartial(

@@ -45,6 +45,8 @@ class LSYii_HtmlPurifier extends CHtmlPurifier
             'Output.FlashCompat' => true,
             'Attr.EnableID' => true, // Allow to set id
             'Attr.AllowedFrameTargets' => array('_blank', '_self'),
+            'HTML.TargetNoopener' => true,
+            'HTML.TargetNoreferrer' => true,
             'URI.AllowedSchemes' => array(
                 'http' => true,
                 'https' => true,
