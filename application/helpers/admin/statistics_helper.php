@@ -3517,7 +3517,7 @@ class statistics_helper
 
         $sOutputHTML .= '</div>';
 
-        $sGoogleMapsAPIKey = trim((string) Yii::app()->getConfig("googleMapsAPIKey"));
+        $sGoogleMapsAPIKey = sanitize_googleapikey(App()->getConfig("googleMapsAPIKey"));
         if (!empty($sGoogleMapsAPIKey)) {
             $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
         }
@@ -3736,7 +3736,7 @@ class statistics_helper
             }
         }    //end if -> show summary results
 
-        $sGoogleMapsAPIKey = trim((string) Yii::app()->getConfig("googleMapsAPIKey"));
+        $sGoogleMapsAPIKey = sanitize_googleapikey(App()->getConfig("googleMapsAPIKey"));
         if (!empty($sGoogleMapsAPIKey)) {
             $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
         }
@@ -4070,7 +4070,7 @@ class statistics_helper
 
                 break;
             case 'html':
-                $sGoogleMapsAPIKey = trim((string) Yii::app()->getConfig("googleMapsAPIKey"));
+                $sGoogleMapsAPIKey = sanitize_googleapikey(App()->getConfig("googleMapsAPIKey"));
                 if (!empty($sGoogleMapsAPIKey)) {
                     $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
                 }
