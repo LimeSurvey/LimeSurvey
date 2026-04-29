@@ -7,7 +7,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
 <div class='<?= (!isset($ajax) || $ajax = false) ? 'col-12 side-body' : ''?>'>
     <?php if (!isset($ajax) || $ajax = false) { ?>
-        <h3 role="heading" aria-level="1">
+        <h1 class="h3">
             <?php
 
             if ($token_subaction == "edit") {
@@ -16,7 +16,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 eT("Add survey participant");
             }
             ?>
-        </h3>
+        </h1>
     <?php } ?>
     <?php
     foreach ($tokendata as $Key => $Value) {
@@ -203,16 +203,14 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     ]
                                 ); ?>
                                 <?php if ($token_subaction == "addnew") : ?>
-                                    <?php
-                                    $this->widget('ext.AlertWidget.AlertWidget', [
+                                    <?php $this->widget('ext.AlertWidget.AlertWidget', [
                                         'text'        => gT(
                                             "You can leave this blank, and automatically generate access codes using 'Generate access codes'"
                                         ),
                                         'type'        => 'info',
                                         'htmlOptions' => ['class' => 'mt-1'
                                     ,'id' => 'generate-token-info-desc'],
-                                    ]);
-                                    ?>
+                                    ]); ?>
                                 <?php endif; ?>
                             </div>
                         </div>

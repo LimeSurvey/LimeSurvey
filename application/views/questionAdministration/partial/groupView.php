@@ -86,11 +86,11 @@
         $this->widget(
             'ext.admin.grid.CLSGridView', //done
             [
-                'id'              => 'question-group-grid',
-                'caption'        => gT("List of question groups in this survey"),
-                'dataProvider'    => $groupModel->search(),
-                'emptyText'       => gT('No question groups found.'),
-                'summaryText' => html_entity_decode(
+                'id'           => 'question-group-grid',
+                'caption'      => gT("Question groups"),
+                'dataProvider' => $groupModel->search(),
+                'emptyText'    => gT('No question groups found.'),
+                'summaryText'  => html_entity_decode(
                     gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
                     sprintf(
                         gT('%s rows per page'),
