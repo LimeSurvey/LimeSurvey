@@ -713,8 +713,24 @@ class Export extends SurveyCommonAction
                 }
                 $secondline[] = $fieldcode;
             }
-            fputcsv($vvOutput, $firstline, "\t");
-            fputcsv($vvOutput, $secondline, "\t");
+            $phpVersion = (int)explode(".", phpversion())[0];
+            if ($phpVersion >= 8) {
+                fputcsv(
+                    stream: $vvOutput,
+                    fields: $firstline,
+                    separator: "\t",
+                    escape: "\\"
+                );
+                fputcsv(
+                    stream: $vvOutput,
+                    fields: $secondline,
+                    separator: "\t",
+                    escape: "\\"
+                );
+            } else {
+                fputcsv($vvOutput, $firstline, "\t");
+                fputcsv($vvOutput, $secondline, "\t");
+            }
             $query = "SELECT * FROM " . Yii::app()->db->quoteTableName($surveytable);
 
             if (incompleteAnsFilterState() == "incomplete") {
@@ -773,7 +789,16 @@ class Export extends SurveyCommonAction
                 /* it is important here to stream output data, line by line
                  * in order to avoid huge memory consumption when exporting large
                  * quantities of answers */
-                fputcsv($vvOutput, $responseLine, "\t");
+                if ($phpVersion >= 8) {
+                    fputcsv(
+                        stream: $vvOutput,
+                        fields: $responseLine,
+                        separator: "\t",
+                        escape: "\\"
+                    );
+                } else {
+                    fputcsv($vvOutput, $responseLine, "\t");
+                }
                 unset($responseLine);
             }
             fclose($vvOutput);
