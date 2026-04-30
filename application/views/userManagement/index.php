@@ -26,8 +26,10 @@ echo viewHelper::getViewTestTag('usersIndex');
         'application.extensions.admin.grid.CLSGridView',
         [
             'id' => 'usermanagement--identity-gridPanel',
+            'ajaxUpdate' => 'usermanagement--identity-gridPanel',
             'dataProvider' => $model->search(),
             'columns' => $model->getManagementColums(),
+            'lsAdditionalColumns' => $model->getAdditionalColumns(),
             'massiveActionTemplate' => $massiveAction,
             'lsAfterAjaxUpdate' => [
                 'bindListItemclick();',

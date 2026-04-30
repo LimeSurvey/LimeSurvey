@@ -7,9 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     $vendorDir . '/pear/console_getopt',
-    $vendorDir . '/pear/pear_exception',
-    $vendorDir . '/pear/pear-core-minimal/src',
     $vendorDir . '/pear/ole',
+    $vendorDir . '/pear/pear-core-minimal/src',
+    $vendorDir . '/pear/pear_exception',
     $vendorDir . '/pear/spreadsheet_excel_writer',
     $vendorDir . '/shardj/zf1-future/library',
 );

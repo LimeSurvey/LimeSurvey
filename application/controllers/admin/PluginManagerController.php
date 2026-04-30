@@ -568,6 +568,12 @@ class PluginManagerController extends SurveyCommonAction
                 $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
             }
 
+            $pluginManager = App()->getPluginManager();
+            if (!$pluginManager->validatePluginName($config->getName())) {
+                $installer->abort();
+                $this->errorAndRedirect(gT('Invalid plugin name in config.xml.'));
+            }
+
             // Show confirmation page.
             $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
             $plugin = Plugin::model()->find('name = :name', [':name' => $config->getName()]);

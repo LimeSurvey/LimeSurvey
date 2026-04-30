@@ -76,6 +76,7 @@ if ($activated || !$createPermission) {
                     "lockOrganizerTitle" => gT("Lock question organizer"),
                     "unlockOrganizerTitle" => gT("Unlock question organizer"),
                     "collapseAll" => gT("Collapse all question groups"),
+                    "groupNumber" => gT("Group #%d"),
                     "deactivateSurvey" => gT("Deactivate your survey to enable this setting"),
                 ]
             )
