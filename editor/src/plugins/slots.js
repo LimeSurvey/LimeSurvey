@@ -5,4 +5,5 @@ export const PLUGIN_SLOTS = {
   SHARING_OVERVIEW_BOTTOM_LEFT: 'sharingoverview:bottom:left',
   SHARING_OVERVIEW_BOTTOM_RIGHT: 'sharingoverview:bottom:right',
   TRANSLATIONS_PANEL: 'translations:panel:content',
+  FEEDBACK_FORM_OPEN: 'feedback:form:open',
 }
