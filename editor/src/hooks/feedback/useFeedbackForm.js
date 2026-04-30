@@ -1,6 +1,11 @@
 import { useMemo, useCallback } from 'react'
 
-import { dayJsHelper, getFeedbackConfigs, FEEDBACK_TYPES, openFeedbackSurveyInNewTab } from 'helpers'
+import {
+  dayJsHelper,
+  getFeedbackConfigs,
+  FEEDBACK_TYPES,
+  openFeedbackSurveyInNewTab,
+} from 'helpers'
 import { useAuth, useCookieFeedbackStore } from 'hooks'
 import pluginManager from 'plugins/PluginManager'
 import { PLUGIN_SLOTS } from 'plugins/slots'
@@ -66,11 +71,15 @@ export const useFeedbackForm = () => {
   const showFeedbackForm = useCallback(
     (feedbackType = FEEDBACK_TYPES.GENERAL) => {
       const config = feedbackConfigs[feedbackType]
-      const pluginHandlerExists = pluginManager.hasPlugin(PLUGIN_SLOTS.FEEDBACK_FORM_OPEN)
+      const pluginHandlerExists = pluginManager.hasPlugin(
+        PLUGIN_SLOTS.FEEDBACK_FORM_OPEN
+      )
 
       // use plugin to display custom feedback form
       if (pluginHandlerExists) {
-        const pluginHandler = pluginManager.getPlugin(PLUGIN_SLOTS.FEEDBACK_FORM_OPEN)
+        const pluginHandler = pluginManager.getPlugin(
+          PLUGIN_SLOTS.FEEDBACK_FORM_OPEN
+        )
         pluginHandler({ config, urlParams })
         return
       }
