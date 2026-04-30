@@ -713,24 +713,18 @@ class Export extends SurveyCommonAction
                 }
                 $secondline[] = $fieldcode;
             }
-            $phpVersion = (int)explode(".", phpversion())[0];
-            if ($phpVersion >= 8) {
-                fputcsv(
-                    stream: $vvOutput,
-                    fields: $firstline,
-                    separator: "\t",
-                    escape: "\\"
-                );
-                fputcsv(
-                    stream: $vvOutput,
-                    fields: $secondline,
-                    separator: "\t",
-                    escape: "\\"
-                );
-            } else {
-                fputcsv($vvOutput, $firstline, "\t");
-                fputcsv($vvOutput, $secondline, "\t");
-            }
+            fputcsv(
+                stream: $vvOutput,
+                fields: $firstline,
+                separator: "\t",
+                escape: "\\"
+            );
+            fputcsv(
+                stream: $vvOutput,
+                fields: $secondline,
+                separator: "\t",
+                escape: "\\"
+            );
             $query = "SELECT * FROM " . Yii::app()->db->quoteTableName($surveytable);
 
             if (incompleteAnsFilterState() == "incomplete") {
@@ -789,16 +783,12 @@ class Export extends SurveyCommonAction
                 /* it is important here to stream output data, line by line
                  * in order to avoid huge memory consumption when exporting large
                  * quantities of answers */
-                if ($phpVersion >= 8) {
-                    fputcsv(
-                        stream: $vvOutput,
-                        fields: $responseLine,
-                        separator: "\t",
-                        escape: "\\"
-                    );
-                } else {
-                    fputcsv($vvOutput, $responseLine, "\t");
-                }
+                fputcsv(
+                    stream: $vvOutput,
+                    fields: $responseLine,
+                    separator: "\t",
+                    escape: "\\"
+                );
                 unset($responseLine);
             }
             fclose($vvOutput);
