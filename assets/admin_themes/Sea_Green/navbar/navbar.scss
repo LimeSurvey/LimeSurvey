@@ -175,34 +175,25 @@
 
 .create-menu-item {
   width: 222px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-
-  // Hover state - grey background, no border
-  &:hover {
-    border-color: transparent !important;
-    background-color: $g-200 !important;
-  }
-
-  // Focus/active/clicked state - purple border
-  &:focus-within,
-  &:has(.dropdown-item:focus),
-  &:has(.dropdown-item:active) {
-    border-color: $grape !important;
-    background-color: $white !important;
-  }
 
   // Style for dropdown-item inside
   .dropdown-item {
+    border: 1px solid transparent;
+    border-radius: 2px;
+    // Hover state - grey background, no border
     &:hover {
-      background-color: transparent;
-      color: $g-800;
+      border-color: transparent;
+      background-color: $g-200;
     }
+    // Focus/active/clicked state - purple border
+    &:focus-within,
     &:focus,
-    &:active {
-      background-color: transparent;
+    &:active
+    {
       color: $g-800;
       outline: none;
+      border-color: $grape;
+      background-color: $white;
     }
   }
 }
