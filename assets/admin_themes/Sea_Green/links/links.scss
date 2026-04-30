@@ -2,17 +2,17 @@ a {
     color       : $link-color;
     font-weight : $font-weight-500;
 
-    &:hover {
+    &.ls-link:hover {
         color           : $link-color;
         text-decoration : underline;
     }
 
-    &:focus, &:active {
+    &.ls-link:focus, &.ls-link:active {
         padding       : 1px 4px;
         @include state-border(2px, $grape90);
     }
 
-    &:active {
+    &.ls-link:active {
         color  : $g-900;
         border : 1px solid $grape75;
     }

@@ -16668,6 +16668,7 @@ body {
 .btn:hover {
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
   color: #fff;
+  text-decoration: none;
 }
 .btn:focus, .btn:active, .btn.active, .btn:active:focus, .btn.dropdown-toggle.show, .btn.dropdown-toggle.show:focus {
   box-shadow: 4px 4px 0px rgba(123, 97, 255, 0.4);
@@ -17643,16 +17644,16 @@ a {
   color: #14AE5C;
   font-weight: 500;
 }
-a:hover {
+a.ls-link:hover {
   color: #14AE5C;
   text-decoration: underline;
 }
-a:focus, a:active {
+a.ls-link:focus, a.ls-link:active {
   padding: 1px 4px;
   border-radius: 2px;
   border: 2px solid rgba(123, 97, 255, 0.9);
 }
-a:active {
+a.ls-link:active {
   color: #1E1E1E;
   border: 1px solid rgba(123, 97, 255, 0.4);
 }
@@ -17787,7 +17788,6 @@ ol.breadcrumb.title-bar-breadcrumb a {
 }
 ol.breadcrumb.title-bar-breadcrumb a:hover {
   border: 1px solid rgba(123, 97, 255, 0.4);
-  text-decoration: none;
 }
 ol.breadcrumb.title-bar-breadcrumb a:focus {
   outline: none;
@@ -17832,7 +17832,6 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   margin-bottom: 0.65em;
 }
 .ls-breadcrumb a:hover {
-  text-decoration: none;
   color: inherit;
 }
 .ls-breadcrumb a:focus {
@@ -17894,7 +17893,6 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 .navbar .nav-item a {
   display: flex;
   align-items: center;
-  text-decoration: none;
 }
 .navbar .nav-item a:hover {
   color: inherit;
@@ -18840,7 +18838,6 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link:hover, .nav-tabs .nav-link:active {
   box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.4), inset -1px 0 0 rgba(123, 97, 255, 0.4), inset 0 -1px 0 rgba(123, 97, 255, 0.4), inset 0 1px 0 rgba(123, 97, 255, 0.4);
   border-bottom: 2px solid rgba(123, 97, 255, 0.4);
-  text-decoration: none;
 }
 .nav-tabs .nav-link:active {
   background-color: #DDDEE8;
