@@ -22,6 +22,7 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
 
 <div class="selector--edit-permissions-container">
     <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>
+        <caption class="sr-only"><?php eT('Edit permissions'); ?></caption>
         <thead>
             <tr>
                 <th></th>

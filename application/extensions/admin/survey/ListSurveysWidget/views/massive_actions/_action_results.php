@@ -1,5 +1,6 @@
 <?php
 /** @var string $successLabel */
+/** @var string|null $tableCaption Optional table caption; when not set, MassiveActionsWidget listActions.js sets it from the modal title. */
 
 /**
  * This view display the result of delete multiple action. It's rendered via ajax for the confirmation modal in survey list
@@ -14,6 +15,11 @@ if (!isset($tableLabels)) {
     <?php echo $additionalMessage?>
 <?php endif;?>
 <table class="table table-striped">
+    <caption class="massive-action-results-caption "><?php
+        if (isset($tableCaption) && $tableCaption !== '') {
+            echo CHtml::encode($tableCaption);
+        }
+    ?></caption>
     <thead>
         <?php foreach($tableLabels as $label):?>
             <th><?php echo $label?></th>
