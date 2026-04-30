@@ -132,6 +132,17 @@ class User extends LSActiveRecord
     }
 
     /** @inheritdoc */
+    protected function beforeSave()
+    {
+        // Normalize empty email to NULL so the database unique index
+        // allows multiple users without an email address.
+        if ($this->email === '') {
+            $this->email = null;
+        }
+        return parent::beforeSave();
+    }
+
+    /** @inheritdoc */
     public function scopes()
     {
         if (App()->getConfig("DBVersion") < 495) {
@@ -280,9 +291,16 @@ class User extends LSActiveRecord
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->expires = $expires;
         $oUser->user_status = $status;
-        if ($oUser->save()) {
-            return $oUser->uid;
-        } else {
+        try {
+            if ($oUser->save()) {
+                return $oUser->uid;
+            } else {
+                return $oUser;
+            }
+        } catch (\CDbException $e) {
+            // Catch unique constraint violation (e.g. race condition on email)
+            // and translate it to a validation error on the model.
+            $oUser->addError('email', gT("E-mail address is already used by another user."));
             return $oUser;
         }
     }
