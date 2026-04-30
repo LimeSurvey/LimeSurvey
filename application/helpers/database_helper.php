@@ -84,3 +84,19 @@ function dbGetTablesLike($table)
 {
     return (array) Yii::app()->db->createCommand(dbSelectTablesLike("{{{$table}}}"))->queryColumn();
 }
+
+/**
+ * Getting a two-item array for RDBMS-sensitive separators
+ * @return string[]
+ */
+function getFieldWrappers()
+{
+        $leftSeparator = $rightSeparator = "`";
+        if (Yii::app()->db->getDriverName() === 'pgsql') {
+            $leftSeparator = $rightSeparator = '"';
+        } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
+            $leftSeparator = "[";
+            $rightSeparator = "]";
+        }
+        return [$leftSeparator, $rightSeparator];
+}
