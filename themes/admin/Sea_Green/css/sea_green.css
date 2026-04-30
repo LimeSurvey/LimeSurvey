@@ -17685,6 +17685,20 @@ body {
   background-color: #EEEFF7;
 }
 
+.modal-title {
+  color: #1E1E1E;
+  line-height: 26px;
+}
+
+.modal-footer {
+  border-top: none;
+  padding: 1.5rem;
+}
+
+#selector__exportTypeSelector-modal .modal-dialog {
+  border: 1px solid #1E1E1E;
+}
+
 #deleteSurvey_modal {
   top: calc(50% - 140px);
   transition: opacity 0.3s linear;
@@ -17725,20 +17739,6 @@ body {
   color: #1E1E1E;
   font-size: 0.9975rem;
   line-height: 20px;
-}
-
-.modal-title {
-  color: #1E1E1E;
-  line-height: 26px;
-}
-
-.modal-footer {
-  border-top: none;
-  padding: 1.5rem;
-}
-
-#selector__exportTypeSelector-modal .modal-dialog {
-  border: 1px solid #1E1E1E;
 }
 
 body {
