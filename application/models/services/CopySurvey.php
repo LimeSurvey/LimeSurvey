@@ -151,7 +151,8 @@ class CopySurvey
                 ->from("{{responses_" . $this->sourceSurvey->sid . "}}")
                 ->queryAll()
             ;
-            if (count($lastResponse)) {
+            $result = $lastResponse[0]['maxrecordid'] ?? null;
+            if ($result) {
                 $destinationSurvey->autonumber_start = $lastResponse[0]['maxrecordid'] + 1;
                 $destinationSurvey->save();
             }
