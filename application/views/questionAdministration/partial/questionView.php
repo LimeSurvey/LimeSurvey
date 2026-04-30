@@ -77,19 +77,11 @@
                 </div>
 
                 <div class="col-12">
-                    <?php
-                    echo CHtml::submitButton(
-                        gT('Search', 'unescaped'),
-                        ['class' => 'btn btn-primary']
-                    ); ?>
-                    <a href="<?php
-                                echo App()->createUrl(
-                                    'questionAdministration/listquestions',
-                                    ['surveyid' => $oSurvey->primaryKey]
-                                ); ?>" class="btn btn-warning">
+                    <?= CHtml::submitButton(gT('Search', 'unescaped'), ['class' => 'btn btn-primary']) ?>
+                    <a href="<?= App()->createUrl('questionAdministration/listquestions', ['surveyid' => $oSurvey->primaryKey]) ?>"
+                       class="btn btn-warning" role="button" aria-label="<?= gT('Reset') ?>">
                         <span class="ri-refresh-line"></span>
-                        <?php
-                        eT('Reset'); ?>
+                        <?= gT('Reset') ?>
                     </a>
                 </div>
             </div>
@@ -109,10 +101,11 @@
                 true,
                 false
             );
-            $this->widget('ext.admin.grid.CLSGridView', [
-                'dataProvider'          => $questionModel->search(),
-                'id'                    => 'question-grid',
-                'emptyText'             => gT('No questions found.'),
+            $this->widget('ext.admin.grid.CLSGridView', [ //done
+                'dataProvider' => $questionModel->search(),
+                'id' => 'question-grid',
+                'caption'      => gT("Questions"),
+                'emptyText' => gT('No questions found.'),
                 'massiveActionTemplate' => $massiveAction,
                 'summaryText'           => html_entity_decode(
                     gT('Displaying {start}-{end} of {count} result(s).') . ' ' .

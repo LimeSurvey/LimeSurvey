@@ -5,13 +5,13 @@
  */
 
 ?>
-<div id="<?= 'dropdown_' . $id; ?>" class="dropdown ls-action_dropdown">
-    <button class="ls-dropdown-toggle"  aria-label="<?= gT('Action Menu'); ?>" data-bs-toggle="dropdown" type="button"
+<div id="<?= 'dropdown_' . $id; ?>" class="dropdown ls-action_dropdown" tabindex="0">
+    <button class="ls-dropdown-toggle" aria-label="<?= gT('Action Menu'); ?>" data-bs-toggle="dropdown" type="button"
             aria-expanded="false">
         <i class="ri-more-fill"></i>
     </button>
     <ul id="<?= 'dropdownmenu_' . $id; ?>" class="dropdown-menu">
-        <?php foreach ($dropdownItems as $dropdownItem) : ?>
+        <?php foreach ($dropdownItems as $dropdownItem): ?>
             <?php $enabledCondition = $dropdownItem['enabledCondition'] ?? true ?>
             <?php
             if (isset($dropdownItem['submenu']) && $dropdownItem['submenu']) { ?>

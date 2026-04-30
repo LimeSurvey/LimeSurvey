@@ -3,27 +3,28 @@
     $script = [];
     $hideAttacehemtTable = true;
     $attachmentsHaveErrors = false;
-if (isset($esrow->attachments[$tab])) {
-    foreach ($esrow->attachments[$tab] as $attachment) {
-        $script[] = sprintf(
-            "prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s, %s);",
-            $grouplang,
-            $tab,
-            json_encode($attachment['url']),
-            json_encode($attachment['relevance']),
-            json_encode($attachment['size']),
-            json_encode($attachment['error'] ?? '')
-        );
-        if (!empty($attachment['error'])) {
-            $attachmentsHaveErrors = true;
+    if (isset($esrow->attachments[$tab])) {
+        foreach ($esrow->attachments[$tab] as $attachment) {
+            $script[] = sprintf(
+                "prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s, %s);",
+                $grouplang,
+                $tab,
+                json_encode($attachment['url']),
+                json_encode($attachment['relevance']),
+                json_encode($attachment['size']),
+                json_encode($attachment['error'] ?? '')
+            );
+            if (!empty($attachment['error'])) {
+                $attachmentsHaveErrors = true;
+            }
         }
+        $hideAttacehemtTable = false;
     }
-    $hideAttacehemtTable = false;
-}
 ?>
 
-<div id='<?php echo "tab-" . CHtml::encode($grouplang) . "-" . CHtml::encode($tab); ?>' class="tab-pane fade in <?=CHtml::encode($active); ?>">
-    <?php if ($attachmentsHaveErrors) : ?>
+<div id='<?php echo "tab-" . CHtml::encode($grouplang) . "-" . CHtml::encode($tab); ?>' class="tab-pane fade in <?= CHtml::encode($active); ?>" role="tabpanel"
+     aria-labelledby="<?php echo "tab-" . CHtml::encode($grouplang) . "-" . CHtml::encode($tab) . "-tab"; ?>">
+    <?php if ($attachmentsHaveErrors): ?>
         <div class="row">
             <div class='col-sm-12'>
                 <div class="alert alert-danger"><?= gT("There are errors with this template's attachments. Please check them below.") ?></div>
@@ -58,21 +59,33 @@ if (isset($esrow->attachments[$tab])) {
     </div>
     <div class="row">
         <div class='mb-3 col-md-12'>
-            <label class=' form-label'><?php et('Actions:');?></label>
+            <label class=' form-label' id="actions-label-<?= $grouplang ?>-<?= $tab ?>"><?php et('Actions:');?></label>
             <div class=''>
-                <a class='btn btn-outline-secondary' 
-                   id="validate_expression_<?=$grouplang?>_<?=$tab?>" 
-                   data-parent-element="#in_survey_common" 
-                   data-bs-target="modal" 
-                   data-remote-link="<?=App()->createUrl('admin/validate', ['sa' => 'email','sid' => $surveyid,'lang' => $grouplang,'type' => $tab])?>" 
-                   data-footer="false" 
-                   data-modal-title="<?=$details['title']?>" > 
-                    <?=gT("Validate ExpressionScript")?> 
-                </a> 
+                <button type="button" class='btn btn-outline-secondary'
+                   id="validate_expression_<?=$grouplang?>_<?=$tab?>"
+                   aria-describedby="actions-label-<?= $grouplang ?>-<?= $tab ?>"
+                   data-parent-element="#in_survey_common"
+                   data-bs-target="modal"
+                   data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>"
+                   data-footer="false"
+                   data-modal-title="<?=$details['title']?>">
+                    <?=gT("Validate ExpressionScript")?>
+                </button>
                 <?php
-                $details['default']['body'] = ($tab == 'admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'], $ishtml) ;
+                $details['default']['body'] = ($tab === 'admin_detailed_notification')
+                    ? $details['default']['body']
+                    : conditionalNewlineToBreak($details['default']['body'], $ishtml);
                 echo CHtml::button(gT("Reset email template"), array( 'id' => 'reset_template_' . $grouplang . '_' . $tab, 'class' => 'fillin btn btn-outline-secondary selector__reset_template','data-target' => "email_{$tab}_{$grouplang}",'data-value' => $details['default']['body']));
                 ?>
+                <?= CHtml::htmlButton(
+                        gT("Reset this template"),
+                        ['type'             => 'button',
+                         'id'               => 'reset_template_' . $grouplang . '_' . $tab,
+                         'class'            => 'fillin btn btn-outline-secondary selector__reset_template',
+                         'data-target'      => "email_{$tab}_{$grouplang}",
+                         'data-value'       => $details['default']['body'],
+                         'aria-describedby' => 'actions-label-' . $grouplang . '-' . $tab,
+                        ]); ?>
             </div>
         </div>
     </div>
@@ -82,9 +95,9 @@ if (isset($esrow->attachments[$tab])) {
     <?php
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) { ?>
     <div class="row">
-            <label class='form-label col-12' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
+            <label class='form-label col-12' id="attachments-label-<?= $grouplang ?>-<?= $tab ?>" for="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
             <div class="col-12">
-                <button class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button> &nbsp;
+                <button class="add-attachment btn btn-outline-secondary" data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>" aria-describedby="attachments-label-<?= $grouplang ?>-<?= $tab ?>"><?php eT("Add file"); ?></button> &nbsp;
             </div>
     </div>
 
@@ -131,8 +144,8 @@ if (isset($esrow->attachments[$tab])) {
         <td>
             <span class="relevance"></span>
             <button class="btn btn-xs btn-outline-secondary edit-relevance-equation" 
-                    title="<?php eT('Edit condition') ?>" 
-                    data-bs-toggle="tooltip" 
+                    title="<?php eT('Edit condition') ?>"
+                    data-bs-toggle="tooltip"
                     data-bs-placement="bottom">
                 <i class="ri-pencil-fill" aria-hidden="true"></i><span class="visually-hidden"><?php eT('Edit condition')?></span>
             </button>

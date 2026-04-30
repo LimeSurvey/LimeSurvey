@@ -33,13 +33,13 @@ export const getQuestionTypeInfo = () => {
     DATE_TIME: {
       type: 'D',
       theme: 'date',
-      title: t('Date/Time'),
+      title: t('Date/time'),
     },
     FILE_UPLOAD: { type: '|', theme: 'file_upload', title: t('File upload') },
     FIVE_POINT_CHOICE: {
       type: 'A',
       theme: '5pointchoice',
-      title: t('5 Point Choice'),
+      title: t('5 point choice'),
     },
     EQUATION: { type: '*', theme: 'equation', title: t('Equation') },
     GENDER: { type: 'G', theme: 'gender', title: t('Gender') },
@@ -66,12 +66,12 @@ export const getQuestionTypeInfo = () => {
     MULTIPLE_SHORT_TEXTS: {
       type: 'Q',
       theme: 'multipleshorttext',
-      title: t('Multiple short texts'),
+      title: t('Multiple short text'),
     },
     MULTIPLE_NUMERICAL_INPUTS: {
       type: 'K',
       theme: 'multiplenumeric',
-      title: t('Multiple numerical inputs'),
+      title: t('Multiple numerical input'),
     },
     MULTIPLE_CHOICE_BUTTONS: {
       type: 'M',
@@ -139,7 +139,7 @@ export const getQuestionTypeInfo = () => {
     TEN_POINT_CHOICE: {
       type: 'B',
       theme: '5pointchoice',
-      title: t('10 Point Choice'),
+      title: t('10 point choice'),
     },
     TEXT_DISPLAY: { type: 'X', theme: 'boilerplate', title: t('Text display') },
     YES_NO: { type: 'Y', theme: 'yesno', title: t('Yes/No') },
