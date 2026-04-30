@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v7.0.0-beta2!
+Welcome to LimeSurvey v7.0.0-RC1!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.1 (build 260427) to 7.0.0-RC1 (build 260430) April 30, 2026
+IMPORTANT
+-Do not use this version for production
+ 
+New feature: New easy-to-use survey editor - check it out!
+New feature: Response table name & schema changes
+New feature #20387: Keep certain subquestions/answer options at original positions on randomization (#4613) (Tõnis Ormisson)
+
 Changes from 6.17.0 (build 260421) to 6.17.1 (build 260427) April 27, 2026
 -Fixed issue #LB-137: Fixed cookie creation when there is a tokens table (#4903) (lajosarpad)
 -Fixed issue #20494: Conditional Remote Code Execution via Question Theme Path Traversal and Custom Twig Extension Injection (Thank you to lavie3k for reporting the issue) (#4900) (Gabriel Jenik)
