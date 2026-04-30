@@ -296,17 +296,17 @@ function activateActionLink(){
             var submitbtn=false;
             if(!confirmedby){
                 $.each(submit, function(name, value) {
-                    if ($("[name='"+name+"']").length == 0) {
+                    if ($("form#limesurvey [name='"+name+"']").length == 0) {
                         $("<input/>",{
                             'type':"hidden",
                             'name':name,
                             'value':value,
                         }).appendTo('form#limesurvey');
                     } else {
-                        $("[name='"+name+"']").last().attr('value',value);
+                        $("form#limesurvey [name='"+name+"']").last().attr('value',value);
                         /* If it was a submit button : choose it for jquery action done on load */
-                        if ($("[name='"+name+"']").last().attr('type') == "submit") {
-                            submitbtn = $("[name='"+name+"']");
+                        if ($("form#limesurvey [name='"+name+"']").last().attr('type') == "submit") {
+                            submitbtn = $("form#limesurvey [name='"+name+"']").last();
                         }
                     }
                 });
@@ -317,8 +317,8 @@ function activateActionLink(){
                             'type':"submit",
                             'id':"js-limesurvey-submit",
                             'name':"js-limesurvey-submit",
-                            'class':"",
-                            'style':"display:block",
+                            'class':"d-none ls-hidden",
+                            'style':"display:none",
                             'value':"js-limesurvey-submit",
                         }).appendTo('form#limesurvey');
                     }
