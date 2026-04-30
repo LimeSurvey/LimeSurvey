@@ -17590,10 +17590,6 @@ body {
   border: 1px solid #1E1E1E;
 }
 
-.modal .select2-container {
-  width: 100% !important;
-}
-
 #selector__exportTypeSelector-modal .modal-dialog {
   border: 1px solid #1E1E1E;
 }

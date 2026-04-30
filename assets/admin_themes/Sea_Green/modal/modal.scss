@@ -44,12 +44,6 @@
     border : 1px solid $g-900;
 }
 
-
-// Ensure Select2 dropdowns inside modals take full width like other form controls
-.modal .select2-container {
-    width : 100% !important;
-}
-
 #selector__exportTypeSelector-modal .modal-dialog {
   border : 1px solid $g-900;
 }
