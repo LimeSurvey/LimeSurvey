@@ -1826,7 +1826,7 @@ class LsDefaultDataSets
             $addRow('ExportSTATAxml', 1),
             $addRow('ExportSPSSsav', 1),
             $addRow('oldUrlCompat'),
-            $addRow('expressionQuestionHelp'),
+            $addRow('expressionQuestionHelp', 0, '1.0.1', 0),
             $addRow('expressionQuestionForAll'),
             $addRow('expressionFixedDbVar'),
             $addRow('customToken', 0, '1.0.1'),

@@ -9,23 +9,39 @@ class Update_705 extends DatabaseUpdateBase
 {
     public function up()
     {
-        // Set all plugins except ReactEditor to priority += 1
-        $this->db->createCommand()->update(
-            '{{plugins}}',
-            ['priority' => new CDbExpression('priority + 1')],
-            '`name` NOT IN (:re, :lsp)',
-            [
+        // Check if any plugin (excluding exceptions) has priority = 0
+        $exists = $this->db->createCommand()
+            ->select('COUNT(*)')
+            ->from('{{plugins}}')
+            ->where('priority = 0 AND name NOT IN (:re, :eqh)', [
                 ':re' => 'ReactEditor',
-                ':lsp' => 'LimeSurveyProfessional',
-            ]
-        );
+                ':eqh' => 'expressionQuestionHelp',
+            ])
+            ->queryScalar();
 
-        // Set ReactEditor to priority = 0
+        if ($exists > 0) {
+            // Increment all except ReactEditor and LimeSurveyProfessional
+            // LimeSurveyProfessional was already incremented in Update_701
+            $this->db->createCommand()->update(
+                '{{plugins}}',
+                ['priority' => new CDbExpression('priority + 1')],
+                '`name` NOT IN (:re, :lsp)',
+                [
+                    ':re' => 'ReactEditor',
+                    ':lsp' => 'LimeSurveyProfessional',
+                ]
+            );
+        }
+
+        // Set ReactEditor & expressionQuestionHelp to priority = 0
         $this->db->createCommand()->update(
             '{{plugins}}',
             ['priority' => 0],
-            'name = :name',
-            [':name' => 'ReactEditor']
+            'name IN (:re, :eqh)',
+            [
+                ':re' => 'ReactEditor',
+                ':eqh' => 'expressionQuestionHelp',
+            ]
         );
     }
 }
