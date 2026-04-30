@@ -770,44 +770,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
   //}
 
   /**
-   * @param {any} mixedVar
-   * @return {boolean}
-   */
-  function isNumeric(mixedVar /*: mixed */) {
-    return (typeof (mixedVar) === 'number' || typeof (mixedVar) === 'string') && mixedVar !== '' &&
-      (typeof mixedVar === 'number' && !isNaN(mixedVar));
-  }
-
-  /**
-   * @param {string} sSourceCode
-   * @return {string}
-   * @todo Used in label sets? But not in question editor?
-   * @todo Remove
-   */
-  function getNextCode(sSourceCode) {  // jshint ignore: line
-    const sourcecode = sSourceCode;
-    let i = 1;
-    let found = true;
-    let foundnumber = -1;
-    const sclength = sourcecode.length;
-    while (i <= sclength && found === true) {
-      found = isNumeric(sourcecode.substr(sclength - i, i));
-      if (found) {
-        foundnumber = parseInt(sourcecode.substr(sclength - i, i));
-        i++;
-      }
-    }
-    if (foundnumber === -1) {
-      return sourcecode;
-    }
-
-    foundnumber++;
-    const foundnumberString = foundnumber.toString();
-    const result = sourcecode.substr(0, sclength - foundnumberString.length) + foundnumberString;
-    return (result);
-  }
-
-  /**
    * @return {void}
    */
   //function popupeditor() {
