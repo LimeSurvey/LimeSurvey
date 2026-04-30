@@ -44,12 +44,12 @@
     border : 1px solid $g-900;
 }
 
-.modal-header .btn-close:focus {
-    outline        : 2px solid currentColor;
-    outline-offset : 2px;
-}
 
 // Ensure Select2 dropdowns inside modals take full width like other form controls
 .modal .select2-container {
     width : 100% !important;
+}
+
+#selector__exportTypeSelector-modal .modal-dialog {
+  border : 1px solid $g-900;
 }

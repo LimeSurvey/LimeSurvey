@@ -10,7 +10,7 @@
 ?>
 <div id='edit-permission' class='side-body position-relative  ls-settings-wrapper"'>
     <?php echo viewHelper::getViewTestTag('surveyPermissions'); ?>
-    <h1> <?= gT("Survey permissions") ?> </h1>
+    <h1><?= gT("Survey permissions") ?></h1>
     <div class="row pt-2 pb-2 align-items-center">
         <div class="col-12 align-items-center">
             <?php
@@ -120,6 +120,7 @@
             'application.extensions.admin.grid.CLSGridView',
             [
                 'id'           => 'gridPanel',
+                'caption'      => gT("Survey permissions"),
                 'dataProvider' => $dataProvider,
                 'columns'      => array_merge([
                     [
