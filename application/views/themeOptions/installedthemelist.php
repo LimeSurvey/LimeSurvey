@@ -53,20 +53,18 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             'name'        => 'description',
             'value'       => '$data->description',
             'htmlOptions' => ['class' => 'col-lg-3'],
-            'type'        => 'raw',
         ],
 
         [
             'header'      => gT('Type'),
             'name'        => 'core_theme',
-            'value'       => '($data->core_theme == 1) ? gT("Core theme") : gT("User theme")',
-            'type'        => 'raw',
+            'value'       => '($data->core_theme == 1) ? gT("Core theme, "unescaped") : gT("User theme, "unescaped")',
             'htmlOptions' => ['class' => 'col-lg-2'],
-            "filter"      => [1 => gT("Core theme"), 0 => gT('User theme')]
+            "filter"      => [1 => gT("Core theme", "unescaped"), 0 => gT("User theme", "unescaped")]
         ],
 
         [
-            'header'      => gT('Extends'),
+            "header'      => gT('Extends'),
             'name'        => 'extends',
             'value'       => '$data->extends',
             'htmlOptions' => ['class' => 'col-lg-2'],
@@ -76,7 +74,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             'headerHtmlOptions' => ['title' => gT('Visible inside the question selector')],
             'name'              => 'visible',
             'value'             => '$data->getVisibilityButton()',
-            'type'              => 'raw',
+            'type'              => 'raw', // From model HTML directly
             'htmlOptions'       => ['class' => 'col-lg-1'],
             "filter"            => ['N' => gT("Off"), 'Y' => gT('On')],
         ]
