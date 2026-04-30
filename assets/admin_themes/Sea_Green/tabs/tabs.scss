@@ -10,17 +10,11 @@
         padding          : 6px 20px;
         &:focus {
             border-bottom: 2px solid $grape90;
-            box-shadow    : inset 2px 0 0 $grape90, /* left */
-            inset -2px 0 0 $grape90, /* right */
-            inset 0 -2px 0 $grape90, /* bottom */
-            inset 0 2px 0 $grape90; /* top */
+            @include inset-border(2px, $grape90);
         }
 
         &.active:hover, &:hover, &:active {
-            box-shadow    : inset 1px 0 0 $grape75, /* left */
-            inset -1px 0 0 $grape75, /* right */
-            inset 0 -1px 0 $grape75, /* bottom */
-            inset 0 1px 0 $grape75; /* top */
+            @include inset-border(1px, $grape75);
             border-bottom : 2px solid $grape75;
             text-decoration: none;
         }

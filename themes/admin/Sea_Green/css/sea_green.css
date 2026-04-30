@@ -17328,12 +17328,11 @@ body {
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > button:hover {
   color: #333641;
-  background-color: #EEEFF7;
+  background-color: inherit;
 }
 .dropdown-menu > li > a:focus,
 .dropdown-menu > li > button:focus {
-  color: #fff;
-  background-color: var(--bs-primary);
+  background-color: inherit;
 }
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > button {
@@ -17832,6 +17831,17 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 .ls-breadcrumb {
   margin-bottom: 0.65em;
 }
+.ls-breadcrumb a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+.ls-breadcrumb a:focus {
+  color: inherit;
+  border: none;
+}
+.ls-breadcrumb a:active {
+  color: inherit;
+}
 .ls-breadcrumb h1, .ls-breadcrumb .h1 {
   margin: 0;
 }
@@ -17879,6 +17889,29 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 .navbar .nav-item {
   display: flex;
   align-items: center;
+  gap: 0;
+}
+.navbar .nav-item a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.navbar .nav-item a:hover {
+  color: inherit;
+  box-shadow: none;
+  border-radius: 2px;
+  border: 1px solid rgba(123, 97, 255, 0.9);
+}
+.navbar .nav-item a:focus {
+  color: inherit;
+  border-radius: 2px;
+  border: 1px solid rgba(123, 97, 255, 0.9);
+  box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.9), inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);
+  outline: none;
+}
+.navbar .nav-item a:active {
+  color: #9094A7;
+  box-shadow: none;
 }
 .navbar .navbar-brand {
   font-style: normal;
@@ -17895,6 +17928,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 .navbar .navbar-nav {
   padding-left: 46px;
+  gap: 20px;
 }
 .navbar .navbar-nav > li.nav-item {
   height: 60px;
@@ -17906,16 +17940,19 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   color: #fff;
   font-weight: 500;
   font-size: 14px;
-}
-.navbar .nav-link:hover, .navbar .nav-link:focus {
-  color: #cccccc;
+  border-radius: 4px;
+  border: 1px solid #333641;
 }
 .navbar .nav-link [class^=ri-], .navbar .nav-link [class*=" ri-"] {
   vertical-align: -0.1em;
 }
+.navbar .navbar-nav .nav-link {
+  padding: 0.25rem 0.5rem;
+}
 .navbar .badge, .navbar .rounded-circle {
   background-color: #fff;
   color: #333641;
+  margin-left: 4px;
 }
 .navbar .badge {
   width: auto;
@@ -17948,111 +17985,97 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   width: 36px;
   padding: 0px;
 }
-
-@media screen and (min-width: 768px) {
-  .navbar .navbar-nav .nav-link {
-    padding: 1rem;
-  }
-  .navbar #small-screens-menus {
-    display: none !important;
-  }
-}
-.active-surveys {
+.navbar .active-surveys {
   margin-left: -6px;
 }
-
-.mega-dropdown {
+.navbar .mega-dropdown {
   position: static;
 }
-
-.mega-dropdown-menu {
+.navbar .mega-dropdown-menu {
   margin-left: auto;
   margin-right: auto;
   padding: 20px 12px;
   width: 100%;
 }
-.mega-dropdown-menu .dropdown-header {
+.navbar .mega-dropdown-menu .dropdown-header {
   color: #9094A7;
   font-weight: 600;
   font-size: 18px;
   padding: 5px 60px 5px 5px;
   line-height: 30px;
 }
-.mega-dropdown-menu > li > ul {
+.navbar .mega-dropdown-menu > li > ul {
   padding: 0;
   margin: 0;
 }
-.mega-dropdown-menu > li > ul > li {
+.navbar .mega-dropdown-menu > li > ul > li {
   list-style: none;
 }
-.mega-dropdown-menu > li > ul > li > a {
+.navbar .mega-dropdown-menu > li > ul > li > a {
   display: block;
   padding: 3px 5px;
   font-weight: 500;
   color: #333641;
 }
-.mega-dropdown-menu > li ul > li > a:hover {
+.navbar .mega-dropdown-menu > li ul > li > a:hover {
   text-decoration: none;
 }
-.mega-dropdown-menu > li ul > li > a:focus {
+.navbar .mega-dropdown-menu > li ul > li > a:focus {
   text-decoration: none;
 }
-
-#mainmenu-dropdown {
+.navbar #mainmenu-dropdown {
   z-index: 20002;
 }
-
-.mega-dropdown__column > ul {
+.navbar .mega-dropdown__column > ul {
   padding: 0;
   margin: 0;
 }
-
-.mega-dropdown__column > ul > li {
+.navbar .mega-dropdown__column > ul > li {
   list-style: none;
 }
-
-.mega-dropdown__column .dropdown-item {
+.navbar .mega-dropdown__column .dropdown-item {
   padding: 0;
   white-space: unset;
 }
-
-.mega-dropdown__column > ul > li > a {
+.navbar .mega-dropdown__column > ul > li > a {
   display: block;
   padding: 3px 5px;
   font-size: 0.9975rem;
   font-weight: 500;
   color: #333641;
 }
-.mega-dropdown__column > ul > li > a:hover {
+.navbar .mega-dropdown__column > ul > li > a:hover {
   text-decoration: none;
   color: #333641;
   background-color: #EEEFF7;
+  border: none;
 }
-.mega-dropdown__column > ul > li > a:focus {
-  text-decoration: none;
-  color: #fff;
-  background-color: var(--bs-primary);
-}
-
-.create-menu-item {
+.navbar .create-menu-item {
   width: 222px;
   border: 1px solid #fff;
 }
-.create-menu-item:hover {
+.navbar .create-menu-item a:hover {
   border-color: #8146F6 !important;
   border: 1px solid;
   border-radius: 2px;
   background-color: #fff !important;
+  box-shadow: none;
 }
-
-.dropdown-toggle-no-caret::after {
+.navbar .dropdown-toggle-no-caret::after {
   display: none !important;
 }
-
-.extra-menu-dropdown {
+.navbar .extra-menu-dropdown {
   padding: 1rem;
 }
 
+@media screen and (min-width: 768px) {
+  .navbar .navbar-nav .nav-link {
+    padding: 0.25rem 0.5rem;
+  }
+  .navbar #small-screens-menus {
+    display: none !important;
+  }
+}
 .card .card-header {
   background-color: unset;
 }
@@ -18812,10 +18835,10 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 .nav-tabs .nav-link:focus {
   border-bottom: 2px solid rgba(123, 97, 255, 0.9);
-  box-shadow: inset 2px 0 0 rgba(123, 97, 255, 0.9), inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9); /* top */
+  box-shadow: inset 2px 0 0 rgba(123, 97, 255, 0.9), inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
 }
 .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link:hover, .nav-tabs .nav-link:active {
-  box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.4), inset -1px 0 0 rgba(123, 97, 255, 0.4), inset 0 -1px 0 rgba(123, 97, 255, 0.4), inset 0 1px 0 rgba(123, 97, 255, 0.4); /* top */
+  box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.4), inset -1px 0 0 rgba(123, 97, 255, 0.4), inset 0 -1px 0 rgba(123, 97, 255, 0.4), inset 0 1px 0 rgba(123, 97, 255, 0.4);
   border-bottom: 2px solid rgba(123, 97, 255, 0.4);
   text-decoration: none;
 }

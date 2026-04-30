@@ -87,6 +87,17 @@ ol.breadcrumb.title-bar-breadcrumb {
 // Breadcrumb wrapper
 .ls-breadcrumb {
     margin-bottom: 0.65em;
+    a:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+    a:focus {
+        color: inherit;
+        border: none;
+    }
+    a:active {
+        color: inherit;
+    }
 
     h1 {
         margin : 0;

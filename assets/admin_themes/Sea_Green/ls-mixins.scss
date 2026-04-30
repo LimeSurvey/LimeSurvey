@@ -5,3 +5,16 @@
   border-radius: $border-radius;
   font-weight: bold;
 }
+
+@mixin inset-border($width, $color) {
+    box-shadow: inset $width 0 0 $color,
+                inset (-$width) 0 0 $color,
+                inset 0 (-$width) 0 $color,
+                inset 0 $width 0 $color;
+}
+
+@mixin state-border($width, $color, $radius: 2px) {
+    border-radius: $radius;
+    border: $width solid $color;
+}
+
