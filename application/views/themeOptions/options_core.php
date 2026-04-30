@@ -3,8 +3,8 @@
 $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfiguration['gsid']));
 
 $dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inherit") . ' [' . gT(
-        "Inherited value:"
-    ) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
+    "Inherited value:"
+) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
 
 /** @var string The html for image file dropdown options */
 $imageOptions = '';
@@ -309,7 +309,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                             <i class="ri-" data-inheritvalue="<?= $sParentOption ?>">
                                                 &#x<?= $sParentOption ?>
                                             </i>
-                                        <?php else: ?>
+                                        <?php else : ?>
                                             <i class="fa" data-inheritvalue="<?= $sParentOption ?>"
                                                style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
                                                 &#x<?= $sParentOption ?>

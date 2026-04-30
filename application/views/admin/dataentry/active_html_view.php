@@ -1,9 +1,7 @@
 <?php
 $yii = Yii::app();
 
-if ($thissurvey['active'] == "Y")
-            { ?>
-
+if ($thissurvey['active'] == "Y") { ?>
                 <script type='text/javascript'>
                       <!--
                         function saveshow(value)
@@ -29,9 +27,7 @@ if ($thissurvey['active'] == "Y")
                     <input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'><?php eT("Finalize response submission"); ?></label></td></tr>
                     <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $yii->getConfig('timeadjust')); ?>' />
                 </div>
-                <?php if ($thissurvey['allowsave'] == "Y")
-                { ?>
-
+                <?php if ($thissurvey['allowsave'] == "Y") { ?>
                     <tr><td align='left'>
                         <div class="checkbox">
                             <input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' />
@@ -78,14 +74,12 @@ if ($thissurvey['active'] == "Y")
                             <div class="">
 
                                 <select name='save_language' id="save_language" class="form-select">
-                                <?php foreach ($slangs as $lang)
-                                {
-                                if ($lang == $baselang) { ?>
-                                  <option value='<?php echo $lang; ?>' selected='selected'><?php echo getLanguageNameFromCode($lang,false); ?></option>
-                                  <?php }
-                                else { ?>
-                                  <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang,false); ?></option>
-                                  <?php }
+                                <?php foreach ($slangs as $lang) {
+                                    if ($lang == $baselang) { ?>
+                                  <option value='<?php echo $lang; ?>' selected='selected'><?php echo getLanguageNameFromCode($lang, false); ?></option>
+                                    <?php } else { ?>
+                                  <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang, false); ?></option>
+                                    <?php }
                                 } ?>
                                 </select>
                             </div>
@@ -99,17 +93,13 @@ if ($thissurvey['active'] == "Y")
                 <input type='submit' id='submitdata' class="btn btn-outline-secondary d-none" value='<?php eT("Submit"); ?>' />
                 </td>
                 </tr>
-            <?php }
-            elseif ($thissurvey['active'] == "N")
-            { ?>
+<?php } elseif ($thissurvey['active'] == "N") { ?>
                 <tr>
                 <td colspan='3' align='center'>
                 <font color='red'><strong><?php eT("This survey is not yet active. Your response cannot be saved"); ?>
                 </strong></font></td>
                 </tr>
-            <?php }
-            else
-            { ?>
+<?php } else { ?>
                 </form>
                 <tr>
                 <td colspan='3' align='center'>";
@@ -120,7 +110,7 @@ if ($thissurvey['active'] == "Y")
                 </tr>
                 </table>
                 <?php exit(); ?>
-            <?php } ?>
+<?php } ?>
             <tr>
             <td>
             <input type='hidden' name='subaction' value='insert' />
@@ -131,7 +121,7 @@ if ($thissurvey['active'] == "Y")
             </table>
             </form>
 
-            <?php if (tableExists('tokens_'.$thissurvey['sid'])): ?>
+            <?php if (tableExists('tokens_' . $thissurvey['sid'])) : ?>
                 <script>
                     // Token is mandatory, so disable save buttons
                     activateSubmit(null);

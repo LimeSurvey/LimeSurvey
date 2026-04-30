@@ -35,7 +35,7 @@ class Authentication extends SurveyCommonAction
      */
     public function index()
     {
-        // if the session is not readeable clear browser cookies
+        // if the session is not readable clear browser cookies
         if (!session_id()) {
             App()->request->cookies->clear();
         }
@@ -142,11 +142,11 @@ class Authentication extends SurveyCommonAction
             // Call the plugin method newLoginForm
             // For Authdb:  @see: application/core/plugins/Authdb/Authdb.php: function newLoginForm()
             $newLoginForm = new PluginEvent('newLoginForm');
-            App()->getPluginManager()->dispatchEvent($newLoginForm); // inject the HTML of the form inside the private varibale "_content" of the plugin
+            App()->getPluginManager()->dispatchEvent($newLoginForm); // inject the HTML of the form inside the private variable "_content" of the plugin
             $aData['summary'] = self::getSummary('logout');
-            $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
+            $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retrieves the private variable "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
         } else {
-            // The form has been submitted, or the plugin has been stoped (so normally, the value of login/password are available)
+            // The form has been submitted, or the plugin has been stopped (so normally, the value of login/password are available)
 
                 // Handle getting the post and populating the identity there
             $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin); // If form has been submitted, $_POST['authMethod'] is set, else  $identity->plugin should be set, ELSE: TODO error

@@ -7,9 +7,11 @@
 ?>
 <?php
     // First we check if the server provided a specific HTML message
-    if(isset($serverAnswer->html))
-        if($serverAnswer->html != "")
-            echo $serverAnswer->html;
+if (isset($serverAnswer->html)) {
+    if ($serverAnswer->html != "") {
+        echo $serverAnswer->html;
+    }
+}
 
     $bError = true;
 switch ($serverAnswer->error) {
@@ -70,7 +72,7 @@ switch ($serverAnswer->error) {
         $sMessage = gT("Please have patience and retry in 30 minutes. Thank you for your understanding.");
         break;
 
-    default :
+    default:
         $sTile = gT('Error!');
         $sHeader = gT('Unknown error');
         $sMessage = gT('An unknown error occurred.') . ' ' . gT('Please contact the LimeSurvey team.');

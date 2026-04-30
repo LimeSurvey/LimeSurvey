@@ -130,7 +130,7 @@ echo $oQuestionSelector->getModal();
                             <div class="mb-3">
                                 <?php echo TbHtml::label(gT("Email address:"), 'lang', ['class' => " form-label"]); ?>
                                 <div class="">
-                                    <?php echo TbHtml::emailField('email', $sEmailAdress, ['readonly' => true, 'class' => 'form-control', 'maxlength' => 254]); ?>
+                                    <?php echo TbHtml::emailField('email', $sEmailAddress, ['readonly' => true, 'class' => 'form-control', 'maxlength' => 254]); ?>
                                 </div>
                             </div>
                         </div>
@@ -192,7 +192,7 @@ echo $oQuestionSelector->getModal();
                             <div class="mb-3">
                                 <?php echo TbHtml::label(gT("New email address:"), 'lang', ['class' => " form-label"]); ?>
                                 <div class="">
-                                    <?php echo TbHtml::emailField('newemail', $sEmailAdress, ['class' => 'form-control', 'maxlength' => 254]); ?>
+                                    <?php echo TbHtml::emailField('newemail', $sEmailAddress, ['class' => 'form-control', 'maxlength' => 254]); ?>
                                 </div>
                             </div>
                         </div>
@@ -342,7 +342,7 @@ echo $oQuestionSelector->getModal();
                                         'pattern' => "[A-Za-z]{0,3}"
                                     ]
                                 );
-                                ?>
+?>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6">

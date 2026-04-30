@@ -129,7 +129,7 @@ class SurveyCommonAction extends CAction
         // Foreach pseudo, take the key, if it exists,
         // Populate the values (taken as an array) as keys in params
         // with that key's value in the params
-        // Chek is 2 params are equal for security issue.
+        // Check whether two params differ (security check)
         foreach ($pseudos as $key => $pseudo) {
             // We care only for user parameters, not by code parameters (see issue #15221)
             if ($checkParam = Yii::app()->getRequest()->getParam($key)) {
@@ -390,7 +390,7 @@ class SurveyCommonAction extends CAction
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
-                $scriptToRegister = Yii::app()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR. 'comfort_update.js';
+                $scriptToRegister = Yii::app()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js';
                 App()->getClientScript()->registerScriptFile($scriptToRegister);
                 return $this->getController()->renderPartial("/admin/update/_update_notification", array(
                     'security_update_available' => $updateNotification->security_update,
@@ -519,7 +519,8 @@ class SurveyCommonAction extends CAction
      *
      * @return Menu
      */
-    public function getCreateMenu() {
+    public function getCreateMenu()
+    {
         $itemClass = 'create-menu-item';
         $menuItemHeader = [
             'isDivider' => false,

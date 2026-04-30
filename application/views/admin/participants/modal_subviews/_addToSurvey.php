@@ -1,7 +1,6 @@
 <?php $this->beginWidget('CActiveForm', array(
     'action' => App()->createUrl('/admin/participants/sa/attributeMap'),
-    ), 'post'
-); ?>
+    ), 'post'); ?>
     <div class="modal-header">
         <h5 class="modal-title" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -23,8 +22,8 @@
                 </label>
                 <div class='col-md-8'>
                     <select name='survey_id' class='form-select'>
-                        <?php foreach ($surveys as $survey): ?>
-                            <?php if ($hasGlobalPermission || Permission::model()->hasSurveyPermission($survey->sid, 'tokens', 'update')): ?>
+                        <?php foreach ($surveys as $survey) : ?>
+                            <?php if ($hasGlobalPermission || Permission::model()->hasSurveyPermission($survey->sid, 'tokens', 'update')) : ?>
                                 <option value='<?php echo $survey->sid; ?>'><?php echo $survey->languagesettings[$survey->language]->surveyls_title; ?> (<?php echo $survey->sid; ?>)</option>
                             <?php endif; ?>
                         <?php endforeach; ?>

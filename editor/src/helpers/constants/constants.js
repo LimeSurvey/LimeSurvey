@@ -126,15 +126,17 @@ export const RESPONSES_TITLES = {
   list: '',
 }
 
+const getBasePath = () => window.location.pathname.split('/editor')[0]
+
 export const URLS = {
-  ADMIN: '/admin',
-  SURVEY_OVERVIEW: '/surveyAdministration/view/',
+  ADMIN: `${getBasePath()}/admin`,
+  SURVEY_OVERVIEW: `${getBasePath()}/surveyAdministration/view/`,
 }
 
 export const placeholderStandardFields = {
-  EMAIL: 'Email address participant',
-  FIRSTNAME: 'First name participant',
-  LASTNAME: 'Last name participant',
+  EMAIL: 'Email address of the participant',
+  FIRSTNAME: 'First name of the participant',
+  LASTNAME: 'Last name of the participant',
   QID: 'Question ID',
   GID: 'Question ID group',
   SID: 'Survey ID',

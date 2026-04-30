@@ -125,7 +125,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         $oAddGroupList  = array();
 
         if ($model->hasPermission('permission', 'create')) {
-            /* Search user withouth rights on SurveyGroup */
+            /* Search user without rights on SurveyGroup */
             /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
             $oCriteria = new CDbCriteria();
             if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true && !Permission::model()->hasGlobalPermission('superadmin')) {

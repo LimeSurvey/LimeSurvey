@@ -45,10 +45,10 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                     <?= gT('Welcome to the new LimeSurvey') ?>
                                 </h1>
                                 <p class="card-text reg-14 mb-16"><?= gT(
-                                        'With the LimeSurvey Editor, you can create surveys in a 
+                                    'With the LimeSurvey Editor, you can create surveys in a 
                                         squeeze of a lime, combining intuitive design with powerful features for a 
                                         faster, smarter survey-building experience.'
-                                    ) ?>
+                                ) ?>
                                     <br><br>
                                     <?= gT('Discover what the new editor can do '); ?>
                                     <a class="link-info" href="https://www.limesurvey.org" target="_blank"><?= gt('here'); ?></a>.
@@ -73,18 +73,18 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                     </div>
                                         <br>
                                 </div>
-                                <?php if ($hasPathUrlFormat): ?>
+                                <?php if ($hasPathUrlFormat) : ?>
                                 <div class="hint-text-box p-3">
                                     <p class="hint-text med-14-c mb-1">
                                         <?= gT('Good to know') ?>
                                     </p>
                                     <p class="hint-text reg-12">
                                         <?= gT(
-                                                "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version, now out of beta and we’d love to hear your feedback!"
-                                            ) ?>
+                                            "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version, now out of beta and we’d love to hear your feedback!"
+                                        ) ?>
                                     </p>
                                 </div>
-                                <?php else:
+                                <?php else :
                                     App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                                     'header' => $warningHeader,
                                     'text' => $warningMessage,

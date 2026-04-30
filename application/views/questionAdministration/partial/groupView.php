@@ -26,7 +26,7 @@
                 ],
                 true
             );
-            ?>
+?>
 
             <div class="mt-4">
                 <?php App()->getController()->renderPartial(
@@ -65,12 +65,12 @@
                 <div class="col-12">
                     <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-primary')); ?>
                     <a href="<?php echo Yii::app()->createUrl(
-                                    'questionAdministration/listQuestions',
-                                    [
+                        'questionAdministration/listQuestions',
+                        [
                                         'surveyid' => $oSurvey->primaryKey,
                                         'activeTab' => 'groups'
                                     ]
-                                ); ?>" class="btn btn-warning" role="button" aria-label="<?php echo CHtml::encode(gT('Reset')); ?>">
+                    ); ?>" class="btn btn-warning" role="button" aria-label="<?php echo CHtml::encode(gT('Reset')); ?>">
                         <span class="ri-refresh-line" aria-hidden="true"></span>
                         <?php eT('Reset'); ?>
                     </a>

@@ -110,7 +110,7 @@ class UserGroupController extends LSBaseController
         if (empty($userGroup)) {
             throw new CHttpException(404, gT("User group not found."));
         }
-        /* Check Permssion to view */
+        /* Check Permission to view */
         if (
             !(
                 Permission::model()->hasGlobalPermission('superadmin', 'read') // superadmin

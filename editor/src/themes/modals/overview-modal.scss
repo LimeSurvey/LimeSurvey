@@ -12,6 +12,12 @@
   .overview-section {
     padding: 42px 20px;
 
+    .survey-overview-content-editor {
+      .content-editable {
+        padding: 0;
+      }
+    }
+
     &.overview-main-section {
       min-width: 250px;
     }

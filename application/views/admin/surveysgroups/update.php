@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-12 list-surveys">
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
-            <?php if ($model->hasPermission('group', 'read')): ?>
+            <?php if ($model->hasPermission('group', 'read')) : ?>
                 <li class="nav-item">
                     <a class="nav-link active" href="#settingsForThisGroup" data-bs-toggle="tab">
                         <?php eT('Settings for this survey group'); ?>
@@ -25,7 +25,7 @@
             </li>
         </ul>
         <div class="tab-content">
-            <?php if ($model->hasPermission('group', 'read')): ?>
+            <?php if ($model->hasPermission('group', 'read')) : ?>
                 <div id="settingsForThisGroup" class="tab-pane show active">
                     <?php $this->renderPartial('./surveysgroups/_form', $_data_); ?>
                 </div>
@@ -34,7 +34,8 @@
                 <div class="list-surveys">
                     <h2><?php eT('Surveys in this group:'); ?></h2>
                     <?php
-                    $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget',
+                    $this->widget(
+                        'ext.admin.survey.ListSurveysWidget.ListSurveysWidget',
                         array(
                             'model' => $oSurveySearch,
                             'bRenderSearchBox' => false,

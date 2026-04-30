@@ -102,7 +102,7 @@ function quoteSPSS($sText, $sQuoteChar, $aField)
  * Exports CSV response data for SPSS and R
  *
  * @param mixed $iSurveyID The survey ID
- * @param string $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
+ * @param string $iLength Maximum text length data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
  * @param string $na Value for N/A data
  * @param string $sEmptyAnswerValue Value for empty data ('')
  * @param string $q sep Quote separator. Use ' for SPSS, " for R
@@ -562,31 +562,31 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
             case 'datestamp':
                 $fieldtype = 'DATETIME23.2';
                 break;
-            case 'startlanguage';
+            case 'startlanguage':
                 $fieldtype = 'A';
                 $val_size = 20;
                 break;
-            case 'token';
+            case 'token':
                 $fieldtype = 'A';
                 $val_size = Token::MAX_LENGTH;
                 break;
-            case 'id';
+            case 'id':
                 $fieldtype = 'F';
                 $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
                 break;
-            case 'ipaddr';
+            case 'ipaddr':
                 $fieldtype = 'A';
                 $val_size = 45; // IPv6 + IPv4-mapped feature : 39+1+15
                 break;
-            case 'refurl';
+            case 'refurl':
                 $fieldtype = 'A';
                 $val_size = 255;
                 break;
-            case 'lastpage';
+            case 'lastpage':
                 $fieldtype = 'F';
                 $val_size = 7;
                 break;
-            case 'seed';
+            case 'seed':
                 $fieldtype = 'A';
                 $val_size = 31;
                 break;
@@ -1215,12 +1215,12 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
 
     foreach ($Rows as $Row) {
         $category = $dom->createElement("category");
-	$title = $Row['title'];
+        $title = $Row['title'];
         if ($EMreplace) {
-            $title = LimeExpressionManager::ProcessStepString($title,null,3,true);
+            $title = LimeExpressionManager::ProcessStepString($title, null, 3, true);
         }
 
-	$label = $dom->createElement("label", QueXMLCleanup($title,''));
+        $label = $dom->createElement("label", QueXMLCleanup($title, ''));
 
         $value = $dom->createElement("value", QueXMLCleanup($Row['code']));
 
@@ -1240,9 +1240,9 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
     if ($other) {
         $category = $dom->createElement("category");
 
-	$rtext = quexml_get_lengthth($qid, "other_replace_text", gT("Other"), $quexmllang);
+        $rtext = quexml_get_lengthth($qid, "other_replace_text", gT("Other"), $quexmllang);
         if ($EMreplace) {
-            $rtext = LimeExpressionManager::ProcessStepString($rtext,null,3,true);
+            $rtext = LimeExpressionManager::ProcessStepString($rtext, null, 3, true);
         }
 
         $label = $dom->createElement("label", QueXMLCleanup($rtext));
@@ -1323,9 +1323,9 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     }
     $QueryResult = Question::model()->with('questionl10ns')->findAllByAttributes($aCondition, ['order' => 'question_order']);
     foreach ($QueryResult as $Row) {
-	$qtext = $Row->questionl10ns[$quexmllang]->question;
+        $qtext = $Row->questionl10ns[$quexmllang]->question;
         if ($EMreplace) {
-           $qtext = LimeExpressionManager::ProcessStepString($qtext,null,3,true);
+            $qtext = LimeExpressionManager::ProcessStepString($qtext, null, 3, true);
         }
         $response = $dom->createElement("response");
         if ($free == false) {
@@ -1453,7 +1453,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
             $text = $dom->createElement("text", QueXMLCleanup($Row->answerl10ns[$quexmllang]->answer, ''));
         } else {
             if ($EMreplace) {
-                $text = $dom->createElement("text", QueXMLCleanup(LimeExpressionManager::ProcessStepString($Row->questionl10ns[$quexmllang]->question,null,3,true), ''));
+                $text = $dom->createElement("text", QueXMLCleanup(LimeExpressionManager::ProcessStepString($Row->questionl10ns[$quexmllang]->question, null, 3, true), ''));
             } else {
                 $text = $dom->createElement("text", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
             }
@@ -1468,7 +1468,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
             //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
         } elseif ($use_answers == true) {
-            // Ranking quesions
+            // Ranking questions
             quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row->code);
         } else {
             quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
@@ -1793,7 +1793,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
         foreach ($Rows as $RowQ) {
             // placeholder substitution
             if ($EMreplace) {
-                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'], $RowQReplacements, 3, true);
             }
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
@@ -1820,7 +1820,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
 
             // placeholder substitution
             if ($EMreplace) {
-                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'], $RowQReplacements, 3, true);
             }
             $other = false;
             if ($RowQ['other'] == 'Y') {
@@ -2575,7 +2575,7 @@ function numericSize(string $sColumn, $decimal = false)
     ->createCommand("SELECT MAX($sColumn) FROM {{responses_" . $iSurveyId . "}}")
     ->queryScalar();
     $integerMaxLen = strlen(intval($maxInteger));
-    /* Find the max len of integer part for negative value including minus when export (adding 1 to lenght) */
+    /* Find the max len of integer part for negative value including minus when export (adding 1 to length) */
     $minInteger = Yii::app()->db
     ->createCommand("SELECT MIN($sColumn) FROM {{responses_" . $iSurveyId . "}}")
     ->queryScalar();
@@ -3249,7 +3249,7 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
             foreach ($oConfig as $key => $attribute) {
                 if ($key == "@attributes") {
                     /* Survey theme option export XML of theme without filtering attributes (happen for cssframework) */
-                    /* see mantis issue #19404: Export survey propblem with PHP version 8.0 https://bugs.limesurvey.org/view.php?id=19404 */
+                    /* see mantis issue #19404: Export survey problem with PHP version 8.0 https://bugs.limesurvey.org/view.php?id=19404 */
                     continue;
                 }
                 if (is_array($attribute)) {

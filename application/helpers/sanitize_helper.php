@@ -228,7 +228,7 @@ function sanitize_system_string($string, $min = '', $max = '')
         // background processing, special commands (backspace, etc.), quotes
         // newlines, or some other special characters
         $string = preg_replace($pattern, '', (string) $string);
-        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpretted as ONE argument
+        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpreted as ONE argument
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
             return false;
@@ -266,7 +266,7 @@ function sanitize_ldap_string($string, $min = '', $max = '')
 }
 
 
-// sanitize a string for HTML (make sure nothing gets interpretted!)
+// sanitize a string for HTML (make sure nothing gets interpreted!)
 function sanitize_html_string($string)
 {
     $pattern[0] = '/\&/';

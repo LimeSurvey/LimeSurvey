@@ -207,7 +207,7 @@ class Quota extends LSActiveRecord
         if ($oQuotaLanguageSettings) {
             return $oQuotaLanguageSettings;
         }
-        /* If not exist or found, return the one from survey base languague */
+        /* If not exist or found, return the one from survey base language */
         return $this->getMainLanguagesetting();
     }
 
