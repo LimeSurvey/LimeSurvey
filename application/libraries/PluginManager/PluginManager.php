@@ -598,11 +598,11 @@ class PluginManager extends \CApplicationComponent
      * Get plugin description.
      * First look in config.xml, then in plugin class.
      * @param string $class
-     * @param ExtensionConfig $extensionConfig
+     * @param ?ExtensionConfig $extensionConfig
      * @return string
      * @todo Localization.
      */
-    protected function getPluginDescription(string $class, \ExtensionConfig $extensionConfig = null)
+    protected function getPluginDescription(string $class, ?ExtensionConfig $extensionConfig = null)
     {
         $desc = null;
 
@@ -625,11 +625,11 @@ class PluginManager extends \CApplicationComponent
      * Get plugin name.
      * First look in config.xml, then in plugin class.
      * @param string $class
-     * @param ExtensionConfig $extensionConfig
+     * @param ?ExtensionConfig $extensionConfig
      * @return string
      * @todo Localization.
      */
-    protected function getPluginName(string $class, \ExtensionConfig $extensionConfig = null)
+    protected function getPluginName(string $class, ?ExtensionConfig $extensionConfig = null)
     {
         $name = null;
 

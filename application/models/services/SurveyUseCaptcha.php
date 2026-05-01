@@ -42,7 +42,7 @@ class SurveyUseCaptcha
     /** @var \Survey */
     private $survey;
 
-    public function __construct($surveyId = null, Survey $survey = null)
+    public function __construct(?int $surveyId = null, ?Survey $survey = null)
     {
         if ($survey === null) {
             $this->survey = Survey::model()->findByPk($surveyId);
