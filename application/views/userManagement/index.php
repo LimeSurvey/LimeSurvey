@@ -28,6 +28,7 @@ echo viewHelper::getViewTestTag('usersIndex');
             'dataProvider' => $model->search(),
             'columns' => $model->getManagementColums(),
             'massiveActionTemplate' => $massiveAction,
+            'caption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
                 'bindListItemclick();',
                 'LS.UserManagement.bindButtons();',
