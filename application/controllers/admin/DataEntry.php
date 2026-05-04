@@ -426,14 +426,13 @@ class DataEntry extends SurveyCommonAction
             $sNewTimingsTable = "timings_{$surveyid}";
             $iRecordCountT = null;
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
-                [$left, $right] = getFieldWrappers();
                 // Import timings
                 $aFieldsOldTimingTable = array_values(Yii::app()->db->schema->getTable('{{' . $sOldTimingsTable . '}}')->columnNames);
                 $aFieldsNewTimingTable = array_values(Yii::app()->db->schema->getTable('{{' . $sNewTimingsTable . '}}')->columnNames);
 
                 $aValidTimingFields = array_intersect($aFieldsOldTimingTable, $aFieldsNewTimingTable);
 
-                $sQueryOldValues = "SELECT {$left}" . implode("{$right}, {$left}", $aValidTimingFields) . "{$right} FROM {{{$sOldTimingsTable}}} ";
+                $sQueryOldValues = "SELECT " . dbQuoteFields($aValidTimingFields) . " FROM {{{$sOldTimingsTable}}} ";
                 $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll(); //Checked
                 $iRecordCountT = 0;
                 foreach ($aQueryOldValues as $sRecord) {
