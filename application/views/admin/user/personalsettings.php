@@ -325,9 +325,14 @@ echo $oQuestionSelector->getModal();
                                     ($aUserSettings['answeroptionprefix'] ?? 'AO'),
                                     [
                                         'class'   => "form-control",
-                                        'pattern' => "[A-Za-z]{0,3}"
+                                        'pattern' => "[A-Za-z]{0,3}",
+                                        'title' => gT('Use up to 3 letters (A-Z). Numbers and special characters are not allowed.'),
+                                        'placeholder' => gT('e.g. ANS')
                                     ]
                                 ); ?>
+                                <div class="form-text">
+                                    <?php echo gT('Format: 0 to 3 letters (A-Z), for example \"ANS\".'); ?>
+                                </div>
                             </div>
                         </div>
                         <!-- Basic non numerical part of subquestions -->
