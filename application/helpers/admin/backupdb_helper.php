@@ -174,8 +174,8 @@ function _outputRecords($sTableName, $aFieldNames, $aRecords)
 
 function _countNumberOfEntries($sTableName)
 {
-    $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM ' . Yii::app()->db->quoteTableName($sTableName))->queryRow();
-    $iNumRows = $aNumRows['COUNT(*)'];
+    $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) AS cnt FROM ' . Yii::app()->db->quoteTableName($sTableName))->queryRow();
+    $iNumRows = $aNumRows['cnt'];
     return $iNumRows;
 }
 
