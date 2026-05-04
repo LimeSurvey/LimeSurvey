@@ -75,7 +75,7 @@ class SettingsUser extends LSActiveRecord
      * Changes or creates a user setting
      *
      * @param string $stg_name
-     * @param integer $stg_value
+     * @param integer|string $stg_value
      * @param integer $uid | Can be omitted to just take the currently logged in users id
      * @param string $entity | optional defaults to 'null'
      * @param integer $entity_id | optional defaults to 'null'

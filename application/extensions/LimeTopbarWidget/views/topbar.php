@@ -10,15 +10,15 @@
         <div class="row">
             <!-- Title or breadcrumb -->
             <div class="ls-breadcrumb col-12">
-                <div class="align-items-center d-flex">
+                <h1 role="presentation" class="align-items-center d-flex">
                     <?php
                         if ($titleBackLink !== null) {
-                            echo '<a class="topbar-back-link" aria-label="' . CHtml::encode(gT('Back')) . '" href="' . CHtml::encode($titleBackLink) . '">
+                            echo '<a class="topbar-back-link" aria-label="' . gT('Back') . '" href="' . $titleBackLink . '">
                             <i class="ri-arrow-left-s-line" aria-hidden="true"></i></a>';
                         }
                     ?>
-                    <h1 class="mb-0"><?= $leftSide ?></h1>
-                </div>
+                    <?= $leftSide ?>
+                </h1>
             </div>
 
             <!-- middle part with buttons -->

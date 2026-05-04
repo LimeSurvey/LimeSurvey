@@ -101,7 +101,7 @@ class Zend_Feed_Pubsubhubbub_HttpResponse
      * $name.
      *
      * @param  string $name
-     * @param  string $value
+     * @param  string|int $value
      * @param  boolean $replace
      * @return Zend_Feed_Pubsubhubbub_HttpResponse
      */

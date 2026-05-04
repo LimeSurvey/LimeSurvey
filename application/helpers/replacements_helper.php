@@ -165,7 +165,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     // If there are non-bracketed replacements to be made do so above this line.
     // Only continue in this routine if there are bracketed items to replace {}
-    if (strpos($line, "{") === false) {
+    if (empty($line) || strpos($line, "{") === false) {
         // process string anyway so that it can be pretty-printed
         return LimeExpressionManager::ProcessString($line, $questionNum, null, 1, 1, true);
     }
@@ -212,7 +212,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_therearexquestions = "<div class='question-count-text'>" . $_therearexquestions . "</div>";
     } else {
         $_therearexquestions = '';
-    };
+    }
 
     if (isset($token)) {
         $_token = $token;

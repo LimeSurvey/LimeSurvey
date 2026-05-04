@@ -18,7 +18,7 @@ class SurveyIndex extends CAction
 
     public function run()
     {
-        useFirebug();
+
         $this->action();
     }
 
@@ -61,7 +61,7 @@ class SurveyIndex extends CAction
             $event->set('surveyId', $surveyid);
             $event->set('reason', 'surveyDoesNotExist');
             App()->getPluginManager()->dispatchEvent($event);
-            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
+            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist.", 'unescaped'));
             /* Alt solution */
             //~ header("HTTP/1.0 404 Not Found",true,404);
             //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
@@ -411,7 +411,7 @@ class SurveyIndex extends CAction
         //CHECK FOR PREVIOUSLY COMPLETED COOKIE
         //If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
         $sCookieName = "LS_" . $surveyid . "_STATUS";
-        if (!$previewmode && isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1) {
+        if (!$previewmode && isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && !($tokenInstance ?? false)) {
             $aErrors  = array(gT('Error'));
             $aMessage = array(
                 gT("You have already completed this survey.")
@@ -452,7 +452,7 @@ class SurveyIndex extends CAction
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
             // && Yii::app()->request->isPostRequest ?
-            if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
+            if ($oSurvey->isCaptchaEnabled('saveandloadscreen') && is_null(Yii::app()->request->getQuery('scid'))) {
                 $sLoadSecurity  = Yii::app()->request->getPost('loadsecurity');
 
                 if (empty($sLoadSecurity)) {
@@ -506,7 +506,7 @@ class SurveyIndex extends CAction
             $SurveyRuntimeHelper = new SurveyRuntimeHelper();
             $SurveyRuntimeHelper->saveAllIfNeeded();
 
-            if (isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
+            if ($oSurvey->isCaptchaEnabled('saveandloadscreen')) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $surveyid));
             }

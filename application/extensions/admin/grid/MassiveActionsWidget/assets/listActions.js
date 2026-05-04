@@ -193,7 +193,7 @@ var onClickListAction =  function () {
         var aAttributesToUpdate = [];
         $modal.find('.attributes-to-update').each(function(i, el)
         {
-            aAttributesToUpdate.push($(this).attr('name'));
+            aAttributesToUpdate.push($(this).attr('name') || $(this).attr('id'));
         });
         $postDatas['aAttributesToUpdate'] = JSON.stringify(aAttributesToUpdate);
         $postDatas['grididvalue'] = $grididvalue;
@@ -332,8 +332,10 @@ function switchStatusOfListActions(e) {
         var actionButton = $('.massiveAction');
         if (isAnyCheckboxChecked()) {
             actionButton.removeClass('disabled');
+            actionButton.removeAttr('disabled');
         } else {
             actionButton.addClass('disabled');
+            actionButton.attr('disabled', 'disabled');
         }
     });
 }

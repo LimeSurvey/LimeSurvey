@@ -552,8 +552,21 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
          *
          * We can understand all four of these table versions.
          */
+        /**
+         * Version 4 is structurally identical to version 3, but there are some 
+         * changes in fields compared to version 3:
+         *
+         * ulUnicodeRange
+         * https://learn.microsoft.com/en-us/typography/opentype/spec/os2#ulunicoderange
+         * 
+         * fsSelection
+         * https://learn.microsoft.com/en-us/typography/opentype/spec/os2#fsselection
+         * 
+         * fsSelection is skipped by default, ulUnicodeRange's implementation
+         * is not corrent and should be marked as bug.
+         */
         $tableVersion = $this->readUInt(2);
-        if (($tableVersion < 0) || ($tableVersion > 3)) {
+        if (($tableVersion < 0) || ($tableVersion > 4)) {
             require_once 'Zend/Pdf/Exception.php';
             throw new Zend_Pdf_Exception("Unable to read version $tableVersion table",
                                          Zend_Pdf_Exception::DONT_UNDERSTAND_TABLE_VERSION);
