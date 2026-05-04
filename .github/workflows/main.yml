@@ -23,8 +23,6 @@ jobs:
       DBENGINE: INNODB
 
     name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
-    permissions:
-      contents: write
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
@@ -248,6 +246,8 @@ jobs:
 
   code-check:
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     env:
       DBENGINE: INNODB
       PHP_VERSION: '8.3'
@@ -269,7 +269,7 @@ jobs:
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ env.PHP_VERSION }}
       - name: Check MySQL service
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
@@ -312,7 +312,15 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Apply php-cs-fixer changes
-          file_pattern: 'application/**.php'
+          file_pattern: |
+            application/models/**.php
+            application/controllers/**.php
+            application/libraries/ExtensionInstaller/**.php
+            application/libraries/FormExtension/**.php
+            application/libraries/Api/**.php
+            application/helpers/update/updatedb_helper.php
+            application/helpers/update/updates/**.php
+            application/core/plugins/ExpressionAnswerOptions/**.php
 
       - name: Run Psalm on application/ folder with low strictness
         run: |
