@@ -17281,15 +17281,22 @@ body {
   color: #9094A7;
   stroke: #9094A7;
 }
+.btn-group .btn-outline-secondary:hover {
+  box-shadow: none;
+  background-color: #EEEFF7;
+}
+.btn-group .btn-check:focus + .btn-outline-secondary,
 .btn-group .btn-check:active + .btn-outline-secondary:focus,
 .btn-group .btn-check:checked + .btn-outline-secondary:focus,
 .btn-group .btn-outline-secondary.active:focus,
 .btn-group .btn-outline-secondary.dropdown-toggle.show:focus,
-.btn-group .btn-outline-secondary:active:focus,
-.btn-group .btn-outline-secondary:active,
-.btn-group .btn-check:focus + .btn-outline-secondary,
-.btn-group .btn-outline-secondary:hover {
+.btn-group .btn-outline-secondary:active:focus {
+  box-shadow: inset 1px 0 0 #8146F6, inset -1px 0 0 #8146F6, inset 0 -1px 0 #8146F6, inset 0 1px 0 #8146F6;
+  border-color: #8146F6;
+}
+.btn-group .btn-outline-secondary:active {
   box-shadow: none;
+  background-color: #DDDEE8;
 }
 
 .dropdown-menu {
