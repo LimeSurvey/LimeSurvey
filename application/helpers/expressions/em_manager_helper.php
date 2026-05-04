@@ -6682,10 +6682,18 @@ class LimeExpressionManager
             }
         }
 
-        // Process Default : 1st part : update in DB if actually relevant and not already set
+        // Process Default and prefilled values : 1st part : update in DB if actually relevant and not already set
         if ($qrel && $grel) {
             $allSQs = explode('|', (string) $LEM->qid2code[$qid]);
             foreach ($allSQs as $sgqa) {
+                /* prefilled by URL but deleted by relevance */
+                if (!isset($_SESSION[$LEM->sessid][$sgqa]) && isset($_SESSION[$LEM->sessid]['startingValues'][$sgqa])) {
+                    $startingValue = $_SESSION[$LEM->sessid]['startingValues'][$sgqa];
+                    /* Value was already checked by checkValidityAnswer when entered in SESSION in StartSurvey */
+                    $_SESSION[$LEM->sessid][$sgqa] = $_SESSION[$LEM->sessid]['startingValues'][$sgqa];
+                    $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = ['type' => $qInfo['type'], 'value' => $_SESSION[$LEM->sessid][$sgqa]];
+                }
+                /* Still null, check default value */
                 if (!isset($_SESSION[$LEM->sessid][$sgqa]) && !is_null($LEM->knownVars[$sgqa]['default'])) {
                     $_SESSION[$LEM->sessid][$sgqa] = ""; // Fill the $_SESSION to don't do it again a second time, but wait to fill with good value
                     $defaultValue = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], null, 1, 1, false, false, true);
@@ -6726,7 +6734,9 @@ class LimeExpressionManager
         $allSQs = explode('|', (string) $LEM->qid2code[$qid]);
         foreach ($allSQs as $sgqa) {
             if (!isset($_SESSION[$LEM->sessid][$sgqa])) {
-                if (!is_null($LEM->knownVars[$sgqa]['default'])) {
+                if (isset($_SESSION[$LEM->sessid]['startingValues'][$sgqa])) {
+                    $_SESSION[$LEM->sessid][$sgqa] = $_SESSION[$LEM->sessid]['startingValues'][$sgqa];
+                } elseif (!is_null($LEM->knownVars[$sgqa]['default'])) {
                     $_SESSION[$LEM->sessid][$sgqa] = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], null, 1, 1, false, false, true);
                 } else {
                     $_SESSION[$LEM->sessid][$sgqa] = null;
