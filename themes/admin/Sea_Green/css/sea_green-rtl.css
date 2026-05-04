@@ -18029,8 +18029,8 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   width: 222px;
 }
 .navbar .create-menu-item .dropdown-item {
-  border: 1px solid transparent;
   border-radius: 2px;
+  border: 1px solid transparent;
 }
 .navbar .create-menu-item .dropdown-item:hover {
   border-color: transparent;

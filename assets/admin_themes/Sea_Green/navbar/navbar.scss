@@ -193,8 +193,7 @@
 
         // Style for dropdown-item inside
         .dropdown-item {
-            border: 1px solid transparent;
-            border-radius: 2px;
+            @include state-border(1px, transparent);
             // Hover state - grey background, no border
             &:hover {
                 border-color: transparent;
