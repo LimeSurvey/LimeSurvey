@@ -147,11 +147,11 @@ class QuestionAdministrationController extends LSBaseController
      * Show question edit form.
      *
      * @param int    $questionId        Question ID
-     * @param string $tabOverviewEditor which tab should be used this can be 'overview' or 'editor'
+     * @param ?string $tabOverviewEditor which tab should be used this can be 'overview' or 'editor'
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit(int $questionId, string $tabOverviewEditor = null)
+    public function actionEdit(int $questionId, ?string $tabOverviewEditor = null)
     {
         $questionId = (int) $questionId;
         if (!in_array($tabOverviewEditor, ['overview', 'editor'], true)) {
@@ -1647,11 +1647,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
-     * @param string $questionTheme the question theme
+     * @param ?string $questionTheme the question theme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, string $questionTheme = null, $questionId = null)
+    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, ?string $questionTheme = null, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1852,11 +1852,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
-     * @param string $questionTheme
+     * @param ?string $questionTheme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, string $questionTheme = null, $questionId = null)
+    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, ?string $questionTheme = null, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');

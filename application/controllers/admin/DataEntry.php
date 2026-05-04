@@ -2029,10 +2029,10 @@ class DataEntry extends SurveyCommonAction
     /**
      * Returns the last answer for token or anonymous survey.
      * @param \Survey $survey Survey
-     * @param \Token  $token  Token
+     * @param Token  $token  Token
      * @return string
      */
-    private function getLastAnswerByTokenOrAnonymousSurvey(Survey $survey, Token $token = null): string
+    private function getLastAnswerByTokenOrAnonymousSurvey(Survey $survey, ?Token $token = null): string
     {
         $lastAnswer = '';
         $isTokenNull  = $token == null;

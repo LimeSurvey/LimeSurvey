@@ -85,10 +85,10 @@ abstract class AuthPluginBase extends PluginBase
      * Set authentication result to success for the given user object.
      *
      * @param User $user
-     * @param \LimeSurvey\PluginManager\PluginEvent, current event if not set
+     * @param ?PluginEvent, current event if not set
      * @return AuthPluginBase
      */
-    public function setAuthSuccess(User $user, PluginEvent $event = null)
+    public function setAuthSuccess(User $user, ?PluginEvent $event = null)
     {
         if (empty($event)) {
             $event = $this->getEvent();
@@ -104,12 +104,12 @@ abstract class AuthPluginBase extends PluginBase
     /**
      * Set authentication result to failure.
      *
-     * @param int $code Any of the constants defined in this class
-     * @param string $message An optional message to return about the failure
-     * @param \LimeSurvey\PluginManager\PluginEvent, current event if not set
+     * @param ?int $code Any of the constants defined in this class
+     * @param ?string $message An optional message to return about the failure
+     * @param ?PluginEvent, current event if not set
      * @return AuthPluginBase
      */
-    public function setAuthFailure($code = self::ERROR_UNKNOWN_IDENTITY, $message = '', PluginEvent $event = null)
+    public function setAuthFailure($code = self::ERROR_UNKNOWN_IDENTITY, $message = '', ?PluginEvent $event = null)
     {
         if (empty($event)) {
             $event = $this->getEvent();
