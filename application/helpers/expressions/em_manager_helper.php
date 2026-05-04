@@ -6689,9 +6689,10 @@ class LimeExpressionManager
                 /* prefilled by URL but deleted by relevance */
                 if (!isset($_SESSION[$LEM->sessid][$sgqa]) && isset($_SESSION[$LEM->sessid]['startingValues'][$sgqa])) {
                     $startingValue = $_SESSION[$LEM->sessid]['startingValues'][$sgqa];
-                    /* Value was already checked by checkValidityAnswer when entered in SESSION in StartSurvey */
-                    $_SESSION[$LEM->sessid][$sgqa] = $_SESSION[$LEM->sessid]['startingValues'][$sgqa];
-                    $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = ['type' => $qInfo['type'], 'value' => $_SESSION[$LEM->sessid][$sgqa]];
+                    if (self::checkValidityAnswer($knownVar['type'], $startingValue, $sgqa, $qInfo, false)) {
+                        $_SESSION[$LEM->sessid][$sgqa] = $startingValue;
+                        $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = ['type' => $qInfo['type'], 'value' => $_SESSION[$LEM->sessid][$sgqa]];
+                    }
                 }
                 /* Still null, check default value */
                 if (!isset($_SESSION[$LEM->sessid][$sgqa]) && !is_null($LEM->knownVars[$sgqa]['default'])) {
