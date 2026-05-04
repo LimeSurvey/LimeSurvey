@@ -18508,6 +18508,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 .topbar .ls-breadcrumb {
   align-self: center;
 }
+.topbar .topbar-back-link {
+  font-weight: 600;
+}
 
 .survey-actionbar {
   padding-top: 16px;
