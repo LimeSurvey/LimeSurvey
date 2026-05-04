@@ -6689,7 +6689,7 @@ class LimeExpressionManager
                 /* prefilled by URL but deleted by relevance */
                 if (!isset($_SESSION[$LEM->sessid][$sgqa]) && isset($_SESSION[$LEM->sessid]['startingValues'][$sgqa])) {
                     $startingValue = $_SESSION[$LEM->sessid]['startingValues'][$sgqa];
-                    if (self::checkValidityAnswer($knownVar['type'], $startingValue, $sgqa, $qInfo, false)) {
+                    if (self::checkValidityAnswer($qInfo['type'], $startingValue, $sgqa, $qInfo, false)) {
                         $_SESSION[$LEM->sessid][$sgqa] = $startingValue;
                         $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = ['type' => $qInfo['type'], 'value' => $_SESSION[$LEM->sessid][$sgqa]];
                     }
@@ -6699,7 +6699,7 @@ class LimeExpressionManager
                     $_SESSION[$LEM->sessid][$sgqa] = ""; // Fill the $_SESSION to don't do it again a second time, but wait to fill with good value
                     $defaultValue = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], null, 1, 1, false, false, true);
                     if (self::checkValidityAnswer($qInfo['type'], $defaultValue, $sgqa, $qInfo, Permission::model()->hasSurveyPermission($LEM->sid, 'surveycontent', 'update'))) {
-                        $_SESSION[$LEM->sessid][$sgqa] = $defaultValue;// Ok can fill with good value
+                        $_SESSION[$LEM->sessid][$sgqa] = $defaultValue; // Ok can fill with good value
                         $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = ['type' => $qInfo['type'], 'value' => $_SESSION[$LEM->sessid][$sgqa]];
                     }
                     /* cleanup  $LEM->validityString[$sgqa] */
