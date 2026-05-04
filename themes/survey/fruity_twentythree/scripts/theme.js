@@ -125,7 +125,9 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
    * in endpage and in $(window).resize
    */
   var fixBodyPadding = function fixBodyPadding() {
-    $('body').css('padding-top', Math.round($('#survey-nav').outerHeight()) + 'px');
+    var navHeight = Math.round($('#survey-nav').outerHeight() || 0);
+    var progressHeight = Math.round($('.top-container').outerHeight(true) || 0);
+    $('body').css('padding-top', navHeight + progressHeight + 'px');
   };
 
   /**
