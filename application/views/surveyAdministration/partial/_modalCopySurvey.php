@@ -30,9 +30,16 @@
                     </div>
 
                     <div class="mb-3">
-                        <p  class="reg12 fw-bold" data-bs-toggle="collapse" data-bs-target="#copySurveyAdvanced" aria-expanded="false" aria-controls="copySurveyAdvanced" aria-label="<?php echo eT('Toggle advanced options'); ?>">
-                            <?php eT("Advanced options"); ?><span class="ri-arrow-down-s-line"> </span>
-                        </p>
+                        <button
+                            type="button"
+                            class="btn btn-link p-0 reg12 fw-bold text-decoration-none"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#copySurveyAdvanced"
+                            aria-expanded="false"
+                            aria-controls="copySurveyAdvanced"
+                        >
+                            <?php eT("Advanced options"); ?><span class="ri-arrow-down-s-line" aria-hidden="true"></span>
+                        </button>
                     </div>
                     <div class="collapse" id="copySurveyAdvanced">
                         <div class="mb-3">
