@@ -1038,13 +1038,6 @@ class UserManagementController extends LSBaseController
                     enclosure: '"',
                     escape: ""
                 );
-                fputcsv(
-                    stream: $fp,
-                    fields: $header,
-                    separator: ';',
-                    enclosure: '"',
-                    escape: ""
-                );
                 //add csv row datas
                 foreach ($aUsers as $fields) {
                     fputcsv(
