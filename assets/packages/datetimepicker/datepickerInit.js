@@ -26,7 +26,7 @@ function bindDatePickerCleanup() {
     }
 
     datePickerCleanupBound = true;
-    $(document).on('pjax:beforeSend pjax:start', cleanupOpenDatePickers);
+    $(document).on('pjax:beforeSend', cleanupOpenDatePickers);
     window.addEventListener('beforeunload', cleanupOpenDatePickers);
 }
 
