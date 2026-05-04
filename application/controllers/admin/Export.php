@@ -717,15 +717,13 @@ class Export extends SurveyCommonAction
                 stream: $vvOutput,
                 fields: $firstline,
                 separator: "\t",
-                enclosure: '"',
-                escape: ""
+                escape: "\\"
             );
             fputcsv(
                 stream: $vvOutput,
                 fields: $secondline,
                 separator: "\t",
-                enclosure: '"',
-                escape: ""
+                escape: "\\"
             );
             $query = "SELECT * FROM " . Yii::app()->db->quoteTableName($surveytable);
 
@@ -789,8 +787,7 @@ class Export extends SurveyCommonAction
                     stream: $vvOutput,
                     fields: $responseLine,
                     separator: "\t",
-                    enclosure: '"',
-                    escape: ""
+                    escape: "\\"
                 );
                 unset($responseLine);
             }

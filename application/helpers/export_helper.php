@@ -2538,8 +2538,7 @@ function CPDBExport($data, $filename)
         fputcsv(
             stream: $handler,
             fields: $value,
-            enclosure: '"',
-            escape: ""
+            escape: "\\"
         );
     }
     fclose($handler);
@@ -2715,8 +2714,7 @@ function tsvSurveyExport($surveyid)
         stream: $out,
         fields: array_map('MaskFormula', array_keys($fields)),
         separator: chr(9),
-        enclosure: '"',
-        escape: ""
+        escape: "\\"
     );
 
     // DATA PREPARATION
@@ -2743,8 +2741,7 @@ function tsvSurveyExport($surveyid)
             stream: $out,
             fields: array_map('MaskFormula', $tsv_output),
             separator:  chr(9),
-            enclosure: '"',
-            escape: ""
+            escape: "\\"
         );
     }
 
@@ -2782,8 +2779,7 @@ function tsvSurveyExport($surveyid)
                 stream: $out,
                 fields: array_map('MaskFormula', $tsv_output),
                 separator: chr(9),
-                enclosure: '"',
-                escape: ""
+                escape: "\\"
             );
         }
     }
@@ -3034,8 +3030,7 @@ function tsvSurveyExport($surveyid)
                     stream: $out,
                     fields: array_map('MaskFormula', $tsv_output),
                     separator: chr(9),
-                    enclosure: '"',
-                    escape: ""
+                    escape: "\\"
                 );
 
                 // questions
@@ -3080,8 +3075,7 @@ function tsvSurveyExport($surveyid)
                             stream: $out,
                             fields: array_map('MaskFormula', $tsv_output),
                             separator: chr(9),
-                            enclosure: '"',
-                            escape: ""
+                            escape: "\\"
                         );
 
                         // quota members
@@ -3096,8 +3090,7 @@ function tsvSurveyExport($surveyid)
                                     stream: $out,
                                     fields: array_map('MaskFormula', $tsv_output),
                                     separator: chr(9),
-                                    enclosure: '"',
-                                    escape: ""
+                                    escape: "\\"
                                 );
                             }
                         }
@@ -3117,8 +3110,7 @@ function tsvSurveyExport($surveyid)
                                     stream: $out,
                                     fields: array_map('MaskFormula', $tsv_output),
                                     separator: chr(9),
-                                    enclosure: '"',
-                                    escape: ""
+                                    escape: "\\"
                                 );
                             }
                         }
@@ -3148,8 +3140,7 @@ function tsvSurveyExport($surveyid)
                                     stream: $out,
                                     fields: array_map('MaskFormula', $tsv_output),
                                     separator: chr(9),
-                                    enclosure: '"',
-                                    escape: ""
+                                    escape: "\\"
                                 );
                             }
                         }
@@ -3170,8 +3161,7 @@ function tsvSurveyExport($surveyid)
                                     stream: $out,
                                     fields: array_map('MaskFormula', $tsv_output),
                                     separator: chr(9),
-                                    enclosure: '"',
-                                    escape: ""
+                                    escape: "\\"
                                 );
                             }
                         }
@@ -3200,8 +3190,7 @@ function tsvSurveyExport($surveyid)
                 stream: $out,
                 fields: array_map('MaskFormula', $tsv_output),
                 separator: chr(9),
-                enclosure: '"',
-                escape: ""
+                escape: "\\"
             );
         }
     }
@@ -3222,8 +3211,7 @@ function tsvSurveyExport($surveyid)
                 stream: $out,
                 fields: array_map('MaskFormula', $tsv_output),
                 separator: chr(9),
-                enclosure: '"',
-                escape: ""
+                escape: "\\"
             );
 
             if (!empty($quota_ls[$quota['id']])) {
@@ -3242,8 +3230,7 @@ function tsvSurveyExport($surveyid)
                             stream: $out,
                             fields: array_map('MaskFormula', $tsv_output),
                             separator: chr(9),
-                            enclosure: '"',
-                            escape: ""
+                            escape: "\\"
                         );
                     }
                 }

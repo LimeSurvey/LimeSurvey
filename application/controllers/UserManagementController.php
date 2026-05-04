@@ -1035,8 +1035,7 @@ class UserManagementController extends LSBaseController
                     stream: $fp,
                     fields: $header,
                     separator: ';',
-                    enclosure: '"',
-                    escape: ""
+                    escape: "\\"
                 );
                 //add csv row datas
                 foreach ($aUsers as $fields) {
@@ -1044,8 +1043,7 @@ class UserManagementController extends LSBaseController
                         stream: $fp,
                         fields: $fields,
                         separator: ';',
-                        enclosure: '"',
-                        escape: ""
+                        escape: "\\"
                     );
                 }
                 fclose($fp);
