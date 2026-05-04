@@ -17637,69 +17637,6 @@ a.ls-link:active {
   border: 1px solid rgba(123, 97, 255, 0.4);
 }
 
-.grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {
-  white-space: nowrap;
-  text-align: initial;
-}
-.grid-view .table th > .sort-link .caret, .grid-view-ls .table th > .sort-link .caret {
-  left: -10px;
-}
-.grid-view .table .filters > td .filter-container, .grid-view-ls .table .filters > td .filter-container {
-  padding: 0;
-}
-.grid-view .has-link, .grid-view-ls .has-link {
-  cursor: pointer;
-}
-.grid-view .has-link a:hover, .grid-view-ls .has-link a:hover {
-  text-decoration: none;
-}
-.grid-view .has-link a, .grid-view-ls .has-link a {
-  color: #1E1E1E;
-  font-weight: 400;
-}
-
-.grid-view-ls .table td {
-  vertical-align: middle;
-}
-.grid-view-ls .table td input[type=checkbox]:after {
-  margin-top: -3px;
-  margin-left: -3px;
-}
-
-.grid-view-ls .table .button-column {
-  white-space: nowrap;
-  text-align: initial;
-  min-width: 50px;
-}
-
-.grid-view-ls .summary {
-  color: #999999;
-  font-size: 12px;
-  text-align: left;
-}
-
-.grid-view-ls.grid-view-loading {
-  background: url(../img/loader.gif) no-repeat 0% 10px;
-}
-
-.grid-view-ls.grid-view-loading .table {
-  opacity: 0.3;
-}
-
-.grid-view-ls.grid-view-loading .table th > .sort-link .caret {
-  display: none;
-}
-
-.grid-view-ls .table td .longtext-content {
-  min-width: 8em;
-  max-width: 16em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  height: 1.5em;
-  display: inline-block;
-}
-
 .tooltip {
   opacity: 0;
 }
@@ -19710,6 +19647,17 @@ table [class^=ri-], table [class*=" ri-"] {
   border-radius: 4px;
   border: #D3D5DA;
 }
+.grid-view .table td.button-column, .grid-view .table th.button-column, .grid-view-ls .table td.button-column, .grid-view-ls .table th.button-column {
+  white-space: nowrap;
+  text-align: initial;
+  min-width: 50px;
+}
+.grid-view .table th > .sort-link .caret, .grid-view-ls .table th > .sort-link .caret {
+  left: -10px;
+}
+.grid-view .table .filters > td .filter-container, .grid-view-ls .table .filters > td .filter-container {
+  padding: 0;
+}
 .grid-view .table .ls-sticky-column, .grid-view .table .checkbox-column, .grid-view-ls .table .ls-sticky-column, .grid-view-ls .table .checkbox-column {
   padding: 7px 20px;
   box-shadow: none;
@@ -19746,9 +19694,7 @@ table [class^=ri-], table [class*=" ri-"] {
   background-color: inherit;
   border: none;
 }
-.grid-view .table button:hover,
-.grid-view .table button:focus, .grid-view-ls .table button:hover,
-.grid-view-ls .table button:focus {
+.grid-view .table button:hover, .grid-view-ls .table button:hover {
   color: #000;
   box-shadow: none;
   border-color: #fff;
@@ -19758,6 +19704,53 @@ table [class^=ri-], table [class*=" ri-"] {
 }
 .grid-view .survey-state.disabled, .grid-view-ls .survey-state.disabled {
   opacity: 0.5;
+}
+.grid-view .has-link, .grid-view-ls .has-link {
+  cursor: pointer;
+}
+.grid-view .has-link a:hover, .grid-view-ls .has-link a:hover {
+  text-decoration: none;
+}
+.grid-view .has-link a, .grid-view-ls .has-link a {
+  color: #1E1E1E;
+  font-weight: 400;
+}
+.grid-view .table tbody tr[data-rowlink], .grid-view-ls .table tbody tr[data-rowlink] {
+  cursor: pointer;
+}
+.grid-view .table tbody tr:hover, .grid-view-ls .table tbody tr:hover {
+  background-color: #EEEFF7;
+}
+.grid-view .table tbody tr:active, .grid-view .table tbody tr:active:hover, .grid-view-ls .table tbody tr:active, .grid-view-ls .table tbody tr:active:hover {
+  background-color: #DDDEE8;
+}
+.grid-view .table tbody tr:active > .ls-sticky-column, .grid-view .table tbody tr:active:hover > .ls-sticky-column, .grid-view-ls .table tbody tr:active > .ls-sticky-column, .grid-view-ls .table tbody tr:active:hover > .ls-sticky-column {
+  background-color: #DDDEE8;
+}
+.grid-view .table tbody tr:active > td, .grid-view .table tbody tr:active:hover > td, .grid-view-ls .table tbody tr:active > td, .grid-view-ls .table tbody tr:active:hover > td {
+  background-color: #DDDEE8;
+}
+.grid-view .table tbody tr.selected > td, .grid-view .table tbody tr.selected > th, .grid-view .table tbody tr.selected > .ls-sticky-column, .grid-view .table tbody tr:has(input[type=checkbox]:checked) > td, .grid-view .table tbody tr:has(input[type=checkbox]:checked) > th, .grid-view .table tbody tr:has(input[type=checkbox]:checked) > .ls-sticky-column, .grid-view-ls .table tbody tr.selected > td, .grid-view-ls .table tbody tr.selected > th, .grid-view-ls .table tbody tr.selected > .ls-sticky-column, .grid-view-ls .table tbody tr:has(input[type=checkbox]:checked) > td, .grid-view-ls .table tbody tr:has(input[type=checkbox]:checked) > th, .grid-view-ls .table tbody tr:has(input[type=checkbox]:checked) > .ls-sticky-column {
+  background-color: #F9F9FB;
+}
+.grid-view .table td a:focus, .grid-view .table td button:focus, .grid-view .table th a:focus, .grid-view .table th button:focus,
+.grid-view .table td:focus, .grid-view .table th:focus,
+.grid-view .table [tabindex]:focus:not(tr), .grid-view-ls .table td a:focus, .grid-view-ls .table td button:focus, .grid-view-ls .table th a:focus, .grid-view-ls .table th button:focus,
+.grid-view-ls .table td:focus, .grid-view-ls .table th:focus,
+.grid-view-ls .table [tabindex]:focus:not(tr) {
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid rgba(123, 97, 255, 0.9);
+  box-shadow: inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);
+}
+.grid-view .table tr[tabindex]:focus, .grid-view-ls .table tr[tabindex]:focus {
+  outline: 2px solid rgba(123, 97, 255, 0.9);
+  outline-offset: -2px;
+}
+.grid-view .table button:focus, .grid-view-ls .table button:focus {
+  color: #000;
+  box-shadow: none;
+  border-color: #fff;
 }
 .grid-view .action-list, .grid-view-ls .action-list {
   display: flex;
@@ -19810,6 +19803,37 @@ table [class^=ri-], table [class*=" ri-"] {
 .grid-view .responses-column-filter-modal-checkbox-buttons, .grid-view-ls .responses-column-filter-modal-checkbox-buttons {
   text-align: right;
   padding-bottom: 15px;
+}
+
+.grid-view-ls .table td {
+  vertical-align: middle;
+}
+.grid-view-ls .table td input[type=checkbox]:after {
+  margin-top: -3px;
+  margin-left: -3px;
+}
+.grid-view-ls .table td .longtext-content {
+  min-width: 8em;
+  max-width: 16em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 1.5em;
+  display: inline-block;
+}
+.grid-view-ls .summary {
+  color: #999999;
+  font-size: 12px;
+  text-align: left;
+}
+.grid-view-ls.grid-view-loading {
+  background: url(../img/loader.gif) no-repeat 0% 10px;
+}
+.grid-view-ls.grid-view-loading .table {
+  opacity: 0.3;
+}
+.grid-view-ls.grid-view-loading .table th > .sort-link .caret {
+  display: none;
 }
 
 @media (max-width: 768px) {

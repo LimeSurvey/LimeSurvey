@@ -157,6 +157,19 @@ table {
         padding       : 20px;
         border-radius : 4px;
         border        : $table-border-color;
+
+        td.button-column, th.button-column {
+            white-space: nowrap;
+            text-align: initial;
+            min-width: 50px;
+        }
+        th > .sort-link .caret {
+            right: -10px;
+        }
+        .filters > td .filter-container {
+            padding: 0;
+        }
+
         .ls-sticky-column, .checkbox-column {
             //text-align : center;
             padding    : 7px 20px;
@@ -198,8 +211,7 @@ table {
             background-color: inherit;
             border: none;
         }
-        button:hover,
-        button:focus {
+        button:hover {
             color        : $black;
             box-shadow   : none;
             border-color : $white;
@@ -210,6 +222,73 @@ table {
     }
     .survey-state.disabled {
         opacity : 0.5;
+    }
+
+    // links in gridview:
+    .has-link {
+        cursor : pointer;
+    }
+
+    .has-link a:hover {
+        text-decoration : none;
+    }
+
+    .has-link a {
+        color       : $g-900;
+        font-weight : $font-weight-normal;
+    }
+
+    // Row states for clickable rows
+    .table tbody tr[data-rowlink] {
+        cursor: pointer;
+    }
+
+    // Row states for all rows
+    .table tbody tr {
+        &:hover {
+            background-color: $g-200;
+        }
+
+        &:active, &:active:hover {
+           background-color: $g-300;
+
+           > .ls-sticky-column {
+               background-color: $g-300;
+           }
+
+           > td {
+               background-color: $g-300;
+           }
+        }
+
+        // Selected row (checkbox checked)
+        &.selected, &:has(input[type="checkbox"]:checked) {
+            > td, > th, > .ls-sticky-column {
+                background-color: $g-100;
+            }
+        }
+    }
+
+    .table {
+        td a:focus, td button:focus, th a:focus, th button:focus,
+        td:focus, th:focus,
+        [tabindex]:focus:not(tr) {
+            outline : none;
+            @include state-border(1px, $grape90);
+            @include inset-border(1px, $grape90);
+        }
+
+        // Focused row: outline around the whole tr
+        tr[tabindex]:focus {
+            outline        : 2px solid $grape90;
+            outline-offset : -2px;
+        }
+
+        button:focus {
+            color        : $black;
+            box-shadow   : none;
+            border-color : $white;
+        }
     }
     .action-list {
         display : flex;
@@ -261,6 +340,44 @@ table {
     .responses-column-filter-modal-checkbox-buttons {
         text-align: left;
         padding-bottom: 15px;
+    }
+}
+
+.grid-view-ls {
+    .table td {
+        vertical-align: middle;
+        input[type="checkbox"]:after {
+            margin-top: -3px;
+            margin-right: -3px;
+        }
+    }
+
+    .table td .longtext-content {
+        min-width: 8em;
+        max-width: 16em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        height: 1.5em;
+        display: inline-block;
+    }
+
+    .summary {
+        color: #999999;
+        font-size: 12px;
+        text-align: right;
+    }
+
+    &.grid-view-loading {
+        background: url(../img/loader.gif) no-repeat 100% 10px;
+
+        .table {
+            opacity: 0.3;
+        }
+
+        .table th > .sort-link .caret {
+            display: none;
+        }
     }
 }
 @media (max-width: 768px) {
