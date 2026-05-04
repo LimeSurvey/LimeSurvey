@@ -12060,21 +12060,18 @@ Responsive navbar-brand image CSS
 - add 100% height and width auto ... similar to how bootstrap img-responsive class works
 ***********************************/
 .logo-container {
-  padding: 0px;
+  padding: 0;
   float: left;
+  flex-shrink: 0;
   font-size: 18px;
   line-height: 20px;
 }
 
 .logo-container > img {
-  max-height: 90px;
-  padding: 15px;
+  display: block;
+  max-height: 84px;
+  padding: 8px 0;
   width: auto;
-}
-@media (max-width: 768px) {
-  .logo-container > img {
-    max-height: 60px;
-  }
 }
 
 /* text overflows, ellipsis and hyphens */
@@ -14901,7 +14898,7 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .top-container {
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 .top-container .ls-progress-container {
   padding: 4px 0;
