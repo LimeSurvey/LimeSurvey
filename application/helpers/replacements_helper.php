@@ -440,7 +440,6 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['SURVEYLANGUAGE'] = $surveylanguage = App()->language;
     $coreReplacements['SURVEYNAME'] = ($thissurvey['name'] ?? Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl") . '/surveys/' . $thissurvey['sid'] . '/' : '');
-    $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = ($thissurvey['welcome'] ?? '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
