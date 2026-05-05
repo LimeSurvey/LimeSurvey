@@ -4675,6 +4675,7 @@ class LimeExpressionManager
                     case Question::QT_D_DATE: //DATE
                         if (trim((string) $value) == "") {
                             $value = null;
+                            unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                         } else {
                             // We don't really validate date here, anyone can send anything : forced too
                             $dateformatdatat = getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
@@ -4686,12 +4687,14 @@ class LimeExpressionManager
                     case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                         if (trim((string) $value) == "") {
                             $value = null;
+                            unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                         } else {
                             $value = sanitize_float($value);
                         }
                         break;
                     case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                         $value = null;  // can't upload a file via GET
+                        unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                         break;
                 }
                 /* Validate validity of startingValues : do not show error */
@@ -4701,6 +4704,8 @@ class LimeExpressionManager
                         'type'  => $knownVar['type'],
                         'value' => $value,
                     ];
+                } else {
+                    unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                 }
             }
             $LEM->_UpdateValuesInDatabase();
