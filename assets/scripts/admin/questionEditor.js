@@ -888,15 +888,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 $('#add-answer-option-input-javascript-datas').data('assessmentvisible') == 1;
               labelSet.labels.forEach((label) => {
                 // Label title is not concatenated directly because it may have non-encoded HTML
-                const titleCols = assessmentVisible ? 'col-lg-7' : 'col-lg-9';
-                const $labelTitleDiv = $(`<div class="${titleCols}"></div>`);
-                $labelTitleDiv.text(label.title);
+                const $labelTitleDiv = $('<div class="col-lg-9"></div>');
+                const assessmentValue = parseInt(label.assessment_value, 10) || 0;
+                $labelTitleDiv.text(assessmentVisible ? `[${assessmentValue}] ${label.title}` : label.title);
                 const $listItem = $listItemTemplate.clone();
                 $listItem.append(`<div class="col-lg-3 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
                 $listItem.append($labelTitleDiv);
-                if (assessmentVisible) {
-                  $listItem.append(`<div class="col-lg-2 text-end">${parseInt(label.assessment_value, 10) || 0}</div>`);
-                }
                 $listItem.attr('data-label', JSON.stringify(label));
                 $itemList.append($listItem);
 
