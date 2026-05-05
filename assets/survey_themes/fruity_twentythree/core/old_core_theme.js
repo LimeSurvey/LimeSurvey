@@ -23,9 +23,8 @@ export var ThemeScripts = function () {
      * in endpage and in $(window).resize
      */
     var fixBodyPadding = function fixBodyPadding() {
-        var navHeight = Math.round($('#survey-nav').outerHeight() || 0);
-        var progressHeight = Math.round($('.top-container').outerHeight(true) || 0);
-        $('body').css('padding-top', (navHeight + progressHeight) + 'px');
+        var navHeight = Math.round($('#survey-nav.fixed-top').outerHeight() || 0);
+        $('body').css('padding-top', navHeight + 'px');
     };
 
     /**
