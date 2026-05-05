@@ -45,7 +45,7 @@ class Statistics extends SurveyCommonAction
          *  5 - 5 point choice
          *  A - Array (5 point choice)
          *  B - Array (10 point choice)
-         *  C - Array (Yes/No/Uncertain)
+         *  C - Array (Yes/Uncertain/No)
          *  D - Date
          *  E - Array (Increase, Same, Decrease)
          *  F - Array

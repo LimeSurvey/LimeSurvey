@@ -191,7 +191,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_C_ARRAY_YES_UNCERTAIN_NO => [
                 'code' => self::QT_C_ARRAY_YES_UNCERTAIN_NO,
-                'description' => gT("Array (Yes/No/Uncertain)", "html", $language),
+                'description' => gT("Array (Yes/Uncertain/No)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'other' => false,
