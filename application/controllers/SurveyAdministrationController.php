@@ -1196,6 +1196,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $model = new Survey('search');
         $model->searched_value = $term;
+        $model->active = null;
 
         $dataProvider = $model->search([
             'pageSize' => 10,
