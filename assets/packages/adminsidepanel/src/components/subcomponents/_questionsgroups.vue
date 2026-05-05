@@ -102,6 +102,13 @@ export default {
         questionHasCondition(question) {
             return question.relevance !== '1';
         },
+        hasQuestionGroupName(questionGroup) {
+            return typeof questionGroup.group_name === "string" &&
+                questionGroup.group_name.trim().length > 0;
+        },
+        formatQuestionGroupNumber(groupOrder) {
+            return window.sprintf(this.translate('groupNumber'), groupOrder);
+        },
 
         itemActivated(question){
             return  this.$store.state.lastQuestionOpen === question.qid;
@@ -388,7 +395,12 @@ export default {
                                 :href="questiongroup.link"
                             >
                                 <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }" tabindex="0">
-                                    {{ questiongroup.group_name }}
+                                    <template v-if="hasQuestionGroupName(questiongroup)">
+                                        {{ questiongroup.group_name }}
+                                    </template>
+                                    <template v-else>
+                                        {{ formatQuestionGroupNumber(questiongroup.group_order) }}
+                                    </template>
                                 </span>
                             </a>
                         </div>

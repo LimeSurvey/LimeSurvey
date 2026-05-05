@@ -37,6 +37,7 @@ Yii::app()->getController()->renderPartial(
         <label class="form-check-label" for="overwrite">
             <?= eT("Overwrite existing users"); ?>
         </label>
+        <small id="overwrite-help" class="form-text"><?= eT("Duplicate found by users_name"); ?></small>
     </div>
 
     <div class="mb-3">

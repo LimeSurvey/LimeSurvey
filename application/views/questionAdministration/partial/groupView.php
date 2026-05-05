@@ -70,9 +70,9 @@
                                         'surveyid' => $oSurvey->primaryKey,
                                         'activeTab' => 'groups'
                                     ]
-                                ); ?>" class="btn btn-warning" role="button" aria-label="<?php echo CHtml::encode(gT('Reset')); ?>">
+                                ); ?>" class="btn btn-warning" role="button" aria-label="<?= gT('Reset') ?>">
                         <span class="ri-refresh-line" aria-hidden="true"></span>
-                        <?php eT('Reset'); ?>
+                        <?= gT('Reset') ?>
                     </a>
                 </div>
             </div>
@@ -86,10 +86,11 @@
         $this->widget(
             'ext.admin.grid.CLSGridView', //done
             [
-                'id'              => 'question-group-grid',
-                'dataProvider'    => $groupModel->search(),
-                'emptyText'       => gT('No question groups found.'),
-                'summaryText' => html_entity_decode(
+                'id'           => 'question-group-grid',
+                'caption'      => gT("Question groups"),
+                'dataProvider' => $groupModel->search(),
+                'emptyText'    => gT('No question groups found.'),
+                'summaryText'  => html_entity_decode(
                     gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
                     sprintf(
                         gT('%s rows per page'),
