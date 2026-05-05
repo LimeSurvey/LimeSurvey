@@ -32,11 +32,12 @@ $count = 0;
 PrepareEditorScript(false, $this);
 ?>
 <!-- Text Elements Tabs -->
-<ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
+<ul class="nav nav-tabs" id="edit-survey-text-element-language-selection" role="tablist">
     <?php foreach ($aTabTitles as $i => $title): ?>
         <li role="presentation" class="nav-item">
             <a class="nav-link <?= ($count === 0 || (strpos((string) $title, ' (' . gT("Base language") . ')'))) ? "active" : "" ?>"
                data-bs-toggle="tab"
+               role="tab"
                href="#edittxtele-<?php echo $count; $count++; ?>">
                 <?php echo $title; ?>
             </a>
