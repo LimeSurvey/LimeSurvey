@@ -17,6 +17,13 @@ class EmCacheHelper
     protected static $surveyinfo = null;
 
     /**
+     * Registry of cache keys per survey (keyed by sid).
+     *
+     * @var array<int|string, array<string, true>>
+     */
+    protected static $registeredKeys = [];
+
+    /**
      * Set survey info used by this request.
      *
      * @param array|null $surveyinfo
@@ -56,10 +63,9 @@ class EmCacheHelper
     }
 
     /**
-     * Flush cache for initialised survey.
-     * Should be done at all places where the cache is invalidated, e.g. at save survey/question/etc.
+     * Flush cache for initialised survey only.
+     * Deletes only keys registered for the current survey, leaving other surveys' caches intact.
      *
-     * @param int|null $sid Set to a value if you don't want to run init() first. Useful when flushing in models.
      * @return void
      * @throws EmCacheException if surveyinfo is not initialised.
      */
@@ -68,7 +74,13 @@ class EmCacheHelper
         if (empty(self::$surveyinfo)) {
             throw new EmCacheException('Cannot flush emcache unless initalised');
         }
-        \Yii::app()->emcache->flush();
+        $sid = self::$surveyinfo['sid'];
+        if (!empty(self::$registeredKeys[$sid])) {
+            foreach (array_keys(self::$registeredKeys[$sid]) as $key) {
+                \Yii::app()->emcache->delete($key);
+            }
+            unset(self::$registeredKeys[$sid]);
+        }
     }
 
     /**
@@ -102,6 +114,10 @@ class EmCacheHelper
         if (!self::useCache()) {
             return;
         }
+
+        // Track the key for this survey so flush() can delete only this survey's entries.
+        $sid = self::$surveyinfo['sid'];
+        self::$registeredKeys[$sid][$key] = true;
 
         /** @var boolean */
         $result = \Yii::app()->emcache->set($key, $value);

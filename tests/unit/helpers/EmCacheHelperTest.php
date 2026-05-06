@@ -142,8 +142,6 @@ class EmCacheHelperTest extends TestBaseClass
      */
     public function testMultipleSurveys()
     {
-        $this->markTestSkipped();
-
         \EmCacheHelper::init(['sid' => 4, 'active' => 'Y']);
         \EmCacheHelper::set('somekey', 'value');
 
@@ -156,12 +154,14 @@ class EmCacheHelperTest extends TestBaseClass
         \EmCacheHelper::flush();
 
         $value = \EmCacheHelper::get('somekey');
-        $this->assertEquals(false, $value);
+        if ($value !== false) {
+            $this->fail('Cache keyPrefix bug: expected false for sid 4 after flush, got: ' . var_export($value, true));
+        }
 
         \EmCacheHelper::init(['sid' => 5, 'active' => 'Y']);
 
         /** @var string */
         $value = \EmCacheHelper::get('somekey');
-        $this->assertEquals('another_value', $value);
+        $this->assertEquals('another_value', $value, 'Cache for sid 5 should remain after sid 4 flush');
     }
 }
