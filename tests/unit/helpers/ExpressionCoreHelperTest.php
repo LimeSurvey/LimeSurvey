@@ -112,36 +112,4 @@ class ExpressionManagerCoreTest extends TestBaseClass
          */
     }
 
-    /**
-     * @group me
-     */
-    public function testNumericalQuestion()
-    {
-        $this->markTestSkipped('This test is not finished');
-        // TODO: Lack import survey part here
-        $sgqa = '563168X136X5376';
-        foreach ($this->expressions as $expr) {
-            $questionType = 'N';
-            $test = new ExpressionCoreAux($expr[1], $sgqa, $questionType, $expr[0]);
-            $test->onlynum = 1;
-            $test->jsonEncodeEmResult = true;
-            $test->compareExpression();
-        }
-    }
-
-    /**
-     * @group me2
-     */
-    public function testShortTextQuestion()
-    {
-        $this->markTestSkipped('This test is not finished');
-        // TODO: Lack import survey part here
-        $sgqa = '563168X136X5376';
-        foreach ($this->expressions as $expr) {
-            $questionType = 'S';
-            $test = new ExpressionCoreAux($expr[1], $sgqa, $questionType, $expr[0]);
-            $test->jsonEncodeEmResult = true;
-            $test->compareExpression();
-        }
-    }
 }
