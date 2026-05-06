@@ -2843,9 +2843,6 @@ class Tokens extends SurveyCommonAction
                 if (array_key_exists('description', $aAttrData) && $aAttrData['description'] == '') {
                     $aAttrData['description'] = $sField;
                 }
-                if (!array_key_exists('type', $aAttrData)) {
-                    $aAttrData['type'] = 'TB';
-                }
                 $aAttrData = decodeAttributeSelectOptions($aAttrData);
                 $aData['attrfieldnames'][(string) $sField] = $aAttrData;
             }

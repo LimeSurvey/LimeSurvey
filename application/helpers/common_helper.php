@@ -5048,6 +5048,21 @@ function decodeTokenAttributes(string $tokenAttributeData)
     unset($aReturnData['firstname']);
     unset($aReturnData['lastname']);
     unset($aReturnData['email']);
+
+    // Ensure all additional attributes have 'type' (text input) and 'type_options' defaults.
+    // Needed for surveys created before participant attribute types (AT-1771) were introduced.
+    foreach ($aReturnData as $sKey => &$aAttrData) {
+        if (preg_match('/^attribute_\d+$/', $sKey) && is_array($aAttrData) && count($aAttrData) > 1) {
+            if (!array_key_exists('type', $aAttrData)) {
+                $aAttrData['type'] = 'TB'; // TB = text input (default)
+            }
+            if (!array_key_exists('type_options', $aAttrData)) {
+                $aAttrData['type_options'] = '[]';
+            }
+        }
+    }
+    unset($aAttrData);
+
     return $aReturnData;
 }
 
