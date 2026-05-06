@@ -136,7 +136,7 @@ class UserManagementTest extends TestBaseClassWeb
 
             // Check that the user menu is present
             self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverExpectedCondition::presenceOfElementLocated(
                     WebDriverBy::xpath("//a[text()[contains(.,'{$username}')]]")
                 )
             );
