@@ -6,6 +6,7 @@ namespace ls\tests;
  * Check the JSON saved in database.
  * @since 2017-11-01
  * @group json
+ * @group mysql
  */
 class CheckDatabaseJsonValuesTest extends TestBaseClass
 {
