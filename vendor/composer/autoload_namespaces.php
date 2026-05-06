@@ -8,8 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'Zend_' => array($vendorDir . '/shardj/zf1-future/library'),
     'Spreadsheet' => array($vendorDir . '/pear/spreadsheet_excel_writer'),
-    'PHPMD\\' => array($vendorDir . '/phpmd/phpmd/src/main/php'),
     'OLE' => array($vendorDir . '/pear/ole'),
-    'JsonMapper' => array($vendorDir . '/netresearch/jsonmapper/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
 );
