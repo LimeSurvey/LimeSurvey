@@ -10,7 +10,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
  *
  * @group responses
  */
-class SaveEditedResponseTest extends TestBaseClassWeb
+class SaveEditedReponseTest extends TestBaseClassWeb
 {
     /**
      * Setup

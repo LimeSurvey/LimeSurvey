@@ -2,7 +2,7 @@
 
 namespace ls\tests;
 
-class FixMovedQuestionConditions extends BaseTest
+class FixMovedQuestionConditionsTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {

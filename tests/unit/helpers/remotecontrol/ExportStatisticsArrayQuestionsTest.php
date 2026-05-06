@@ -5,7 +5,7 @@ namespace ls\tests;
 /**
  * Tests for the LimeSurvey remote API.
  */
-class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
+class ExportStatisticsArrayQuestionsTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {

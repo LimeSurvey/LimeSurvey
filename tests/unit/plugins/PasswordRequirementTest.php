@@ -2,7 +2,7 @@
 
 namespace ls\tests;
 
-class PassordRequirementTest extends TestBaseClass
+class PasswordRequirementTest extends TestBaseClass
 {
 
     private static $plugin;

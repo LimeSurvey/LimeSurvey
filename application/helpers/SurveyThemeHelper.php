@@ -192,7 +192,7 @@ class SurveyThemeHelper
     {
         // Check if the path is relative to the root dir or an absolute path
         $absolutePath = realpath(Yii::app()->getConfig('rootdir') . '/' . $path);
-        if ($absolutePath === false && strpos($path, '/') === 0) {
+        if ($absolutePath === false && (strpos($path, '/') === 0 || preg_match('/^[a-zA-Z]:[\\\\\/]/', $path))) {
             $absolutePath = realpath($path);
         }
         // If the path was absolute (or relative to the root dir), we check if it's within
@@ -207,6 +207,7 @@ class SurveyThemeHelper
                 $categoryPath = $categoryPath . DIRECTORY_SEPARATOR;
                 if (strpos($absolutePath, $categoryPath) === 0) {
                     $virtualPath = str_replace($categoryPath, $category->pathPrefix, $absolutePath);
+                    $virtualPath = str_replace('\\', '/', $virtualPath);
                     return new ThemeFileInfo($absolutePath, $virtualPath, $category);
                 }
             }
@@ -248,6 +249,7 @@ class SurveyThemeHelper
             // If the real path starts with category's path, we return the file info.
             if (strpos($realPath, $categoryPath) === 0) {
                 $virtualPath = str_replace($categoryPath, $category->pathPrefix, $realPath);
+                $virtualPath = str_replace('\\', '/', $virtualPath);
                 return new ThemeFileInfo($realPath, $virtualPath, $category);
             }
         }
@@ -337,6 +339,7 @@ class SurveyThemeHelper
             // return the file info
             if ($realPath !== false && strpos($realPath, $categoryPath) === 0) {
                 $virtualPath = str_replace($categoryPath, $category->pathPrefix, $realPath);
+                $virtualPath = str_replace('\\', '/', $virtualPath);
                 return new ThemeFileInfo($realPath, $virtualPath, $category);
             } else {
                 return null;
