@@ -141,12 +141,11 @@ class RemoteControlImportQuestionTest extends BaseTest
     public function testImportQuestionWithMismatchedGroupId()
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
-
-        // Create a separate survey to get a group that doesn't belong to our test survey
         $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for Group Mismatch', 'en');
-        $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
 
         try {
+            $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
+
             // Create a group in the mismatched survey
             $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group');
             $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
@@ -163,7 +162,9 @@ class RemoteControlImportQuestionTest extends BaseTest
             $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
             $this->assertEquals('ERR_INVALID_GROUP', $result['error_code'], 'Should return generic invalid group error, not leak cross-survey existence');
         } finally {
-            $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+            if (is_int($mismatchedSurveyId)) {
+                $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+            }
             $this->handler->release_session_key($sessionKey);
         }
     }
@@ -175,12 +176,11 @@ class RemoteControlImportQuestionTest extends BaseTest
     public function testListQuestionsWithMismatchedGroupId()
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
-
-        // Create a separate survey to get a group that doesn't belong to our test survey
         $mismatchedSurveyId = $this->handler->add_survey($sessionKey, 0, 'Test Survey for List Questions Mismatch', 'en');
-        $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
 
         try {
+            $this->assertIsInt($mismatchedSurveyId, 'Failed to create mismatched survey');
+
             // Create a group in the mismatched survey
             $mismatchedGroupId = $this->handler->add_group($sessionKey, $mismatchedSurveyId, 'Test Group for List');
             $this->assertIsInt($mismatchedGroupId, 'Failed to create group in mismatched survey');
@@ -195,7 +195,9 @@ class RemoteControlImportQuestionTest extends BaseTest
             $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
             $this->assertEquals('ERR_INVALID_GROUP', $result['error_code'], 'Should return generic invalid group error, not leak cross-survey existence');
         } finally {
-            $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+            if (is_int($mismatchedSurveyId)) {
+                $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+            }
             $this->handler->release_session_key($sessionKey);
         }
     }
