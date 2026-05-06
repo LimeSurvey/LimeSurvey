@@ -40,79 +40,92 @@ class FailedEmailTest extends TestBaseClassWeb
      */
     public function testGridButtons(): void
     {
-        // TODO: Disable in epic until fixed
-        $this->markTestSkipped();
 
         $urlManager = App()->urlManager;
         $web = self::$webDriver;
 
-        $failedEmailModel = new FailedEmail();
-        $failedEmailModel->recipient = 'test@example.com';
-        $failedEmailModel->responseid = 1;
-        $failedEmailModel->surveyid = self::$surveyId;
-        $failedEmailModel->email_type = 'admin_notification';
-        $failedEmailModel->language = 'en';
-        $failedEmailModel->error_message = 'test error message display';
-        $failedEmailModel->created = date('Y-m-d H:i:s');
-        $failedEmailModel->status = FailedEmail::STATE_FAILED;
-        $failedEmailModel->updated = date('Y-m-d H:i:s');
-        $failedEmailModel->resend_vars = "{\"message_type\":\"alt\",\"Subject\":\"Response submission for survey Surveytest 1 Question\",\"uniqueid\":\"2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"boundary\":{\"1\":\"b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"2\":\"b2_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"3\":\"b3_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\"},\"MIMEBody\":\"This is a multi-part message in MIME format.\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/plain; charset=us-ascii\\r\\n\\r\\nHello,A new response was submitted for your survey 'Surveytest 1 Question'.Click the following link to see the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34Click the following link to edit the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34View statistics by clicking here:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/html; charset=us-ascii\\r\\n\\r\\n<html>Hello,<br \\\/><br \\\/>A new response was submitted for your survey 'Surveytest 1 Question'.<br \\\/><br \\\/>Click the following link to see the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34<br \\\/><br \\\/>Click the following link to edit the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34<br \\\/><br \\\/>View statistics by clicking here:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531<\\\/html>\\r\\n\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg--\\r\\n\"}";
-        $failedEmailModel->save(false);
+        $resendVars = "{\"message_type\":\"alt\",\"Subject\":\"Response submission for survey Surveytest 1 Question\",\"uniqueid\":\"2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"boundary\":{\"1\":\"b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"2\":\"b2_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"3\":\"b3_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\"},\"MIMEBody\":\"This is a multi-part message in MIME format.\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/plain; charset=us-ascii\\r\\n\\r\\nHello,A new response was submitted for your survey 'Surveytest 1 Question'.Click the following link to see the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34Click the following link to edit the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34View statistics by clicking here:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/html; charset=us-ascii\\r\\n\\r\\n<html>Hello,<br \\\/><br \\\/>A new response was submitted for your survey 'Surveytest 1 Question'.<br \\\/><br \\\/>Click the following link to see the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34<br \\\/><br \\\/>Click the following link to edit the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34<br \\\/><br \\\/>View statistics by clicking here:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531<\\\/html>\\r\\n\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg--\\r\\n\"}";
 
         $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlManager->createUrl('failedEmail/index/', ['surveyid' => self::$surveyId]);
-        $web->get($url);
-        $web->wait(5)->until(WebDriverExpectedCondition::urlIs($url));
 
-        $web->dismissModal();
-        $web->dismissModal();
+        // Helper: create a fresh failed email record
+        $createRecord = function () use ($resendVars) {
+            // Clean up any leftover records
+            FailedEmail::model()->deleteAllByAttributes(['surveyid' => self::$surveyId]);
+            $m = new FailedEmail();
+            $m->recipient = 'test@example.com';
+            $m->responseid = 1;
+            $m->surveyid = self::$surveyId;
+            $m->email_type = 'admin_notification';
+            $m->language = 'en';
+            $m->error_message = 'test error message display';
+            $m->created = date('Y-m-d H:i:s');
+            $m->status = FailedEmail::STATE_FAILED;
+            $m->updated = date('Y-m-d H:i:s');
+            $m->resend_vars = $resendVars;
+            $m->save(false);
+        };
 
-        // Resend Email
-        $resendEmail = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child [data-contentfile="resend_form"]'));
-        $resendEmail->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal--form')));
-        $resendEmailModalSubmit = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #submitForm'));
-        $resendEmailModalSubmit->click();
-        // this can take up around 20 seconds per mail if the email server cant be reached
+        // Helper: navigate to page and wait for grid action dropdown
+        $loadPage = function () use ($web, $url) {
+            $web->get($url);
+            $web->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child .ls-dropdown-toggle')
+                )
+            );
+        };
+
+        // Helper: open an action from the dropdown by contentFile value
+        $openAction = function (string $contentFile) use ($web) {
+            $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child .ls-dropdown-toggle'))->click();
+            $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(
+                WebDriverBy::cssSelector('.dropdown-menu.show')
+            ));
+            // Ensure click handlers are bound, then click
+            $web->executeScript(
+                "LS.FailedEmail.bindButtons(); document.querySelector('.failedemail-action-modal-open[data-contentFile=\"" . $contentFile . "\"]').click();"
+            );
+            // Wait for modal to appear
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(
+                WebDriverBy::cssSelector('#failedemail-action-modal.show')
+            ));
+        };
+
+        // --- Resend Email ---
+        $createRecord();
+        $loadPage();
+        $openAction('resend_form');
+        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal--form')));
+        // Uncheck "delete after resend" so the record stays
+        $web->executeScript("document.getElementById('deleteAfterResend').checked = false;");
+        $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #submitForm'))->click();
         $web->wait(30)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--resendresult')));
-        $successModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--resendresult'));
-        $this->assertTrue($successModal->isDisplayed());
+        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--resendresult'))->isDisplayed());
 
-        // Email Content
-        $exitModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #exitForm'));
-        $exitModal->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::cssSelector('.modal-backdrop')));
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
-        $emailContent = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child [data-contentfile="email_content"]'));
-        $emailContent->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--emailcontent')));
-        $emailContentModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--emailcontent'));
-        $this->assertTrue($emailContentModal->isDisplayed());
+        // --- Email Content (fresh record + page load) ---
+        $createRecord();
+        $loadPage();
+        $openAction('email_content');
+        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--emailcontent')));
+        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--emailcontent'))->isDisplayed());
 
-        // Error message
-        $exitModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #exitForm'));
-        $exitModal->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::cssSelector('.modal-backdrop')));
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
-        $errorMessage = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child [data-contentfile="email_error"]'));
-        $errorMessage->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--emailerror')));
-        $errorMessageModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--emailerror'));
-        $this->assertTrue($errorMessageModal->isDisplayed());
+        // --- Error message (fresh record + page load) ---
+        $createRecord();
+        $loadPage();
+        $openAction('email_error');
+        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--emailerror')));
+        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--emailerror'))->isDisplayed());
 
-        // Delete Email
-        $exitModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #exitForm'));
-        $exitModal->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::cssSelector('.modal-backdrop')));
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
-        $deleteEmail = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid tbody tr:first-child [data-contentfile="delete_form"]'));
-        $deleteEmail->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal--form')));
-        $deleteEmailModalSubmit = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #submitForm'));
-        $deleteEmailModalSubmit->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--deleteresult')));
-        $successModal = $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--deleteresult'));
-        $this->assertTrue($successModal->isDisplayed());
+        // --- Delete Email (fresh record + page load) ---
+        $createRecord();
+        $loadPage();
+        $openAction('delete_form');
+        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal--form')));
+        $web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #submitForm'))->click();
+        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--deleteresult')));
+        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#failedemail-action-modal #failedemail-action-modal--deleteresult'))->isDisplayed());
     }
 
     /**
@@ -121,83 +134,64 @@ class FailedEmailTest extends TestBaseClassWeb
      */
     public function testMassiveActions(): void
     {
-        // TODO: Disable in epic until fixed
-        $this->markTestSkipped();
 
         $urlManager = App()->urlManager;
         $web = self::$webDriver;
 
-        // prepare Massive Action
-        $failedEmailModel = new FailedEmail();
-        $failedEmailModel->recipient = 'test@example.com';
-        $failedEmailModel->surveyid = self::$surveyId;
-        $failedEmailModel->responseid = 1;
-        $failedEmailModel->email_type = 'admin_notification';
-        $failedEmailModel->language = 'en';
-        $failedEmailModel->error_message = 'test error message display';
-        $failedEmailModel->created = date('Y-m-d H:i:s');
-        $failedEmailModel->status = FailedEmail::STATE_FAILED;
-        $failedEmailModel->updated = date('Y-m-d H:i:s');
-        $failedEmailModel->resend_vars = "{\"message_type\":\"alt\",\"Subject\":\"Response submission for survey Surveytest 1 Question\",\"uniqueid\":\"2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"boundary\":{\"1\":\"b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"2\":\"b2_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"3\":\"b3_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\"},\"MIMEBody\":\"This is a multi-part message in MIME format.\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/plain; charset=us-ascii\\r\\n\\r\\nHello,A new response was submitted for your survey 'Surveytest 1 Question'.Click the following link to see the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34Click the following link to edit the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34View statistics by clicking here:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/html; charset=us-ascii\\r\\n\\r\\n<html>Hello,<br \\\/><br \\\/>A new response was submitted for your survey 'Surveytest 1 Question'.<br \\\/><br \\\/>Click the following link to see the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34<br \\\/><br \\\/>Click the following link to edit the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34<br \\\/><br \\\/>View statistics by clicking here:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531<\\\/html>\\r\\n\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg--\\r\\n\"}";
-        $failedEmailModel->save(false);
+        $resendVars = "{\"message_type\":\"alt\",\"Subject\":\"Response submission for survey Surveytest 1 Question\",\"uniqueid\":\"2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"boundary\":{\"1\":\"b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"2\":\"b2_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"3\":\"b3_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\"},\"MIMEBody\":\"This is a multi-part message in MIME format.\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/plain; charset=us-ascii\\r\\n\\r\\nHello,A new response was submitted for your survey 'Surveytest 1 Question'.Click the following link to see the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34Click the following link to edit the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34View statistics by clicking here:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/html; charset=us-ascii\\r\\n\\r\\n<html>Hello,<br \\\/><br \\\/>A new response was submitted for your survey 'Surveytest 1 Question'.<br \\\/><br \\\/>Click the following link to see the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34<br \\\/><br \\\/>Click the following link to edit the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34<br \\\/><br \\\/>View statistics by clicking here:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531<\\\/html>\\r\\n\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg--\\r\\n\"}";
 
-        $failedEmailModel2 = new FailedEmail();
-        $failedEmailModel2->recipient = 'test@example.com';
-        $failedEmailModel2->surveyid = self::$surveyId;
-        $failedEmailModel2->responseid = 2;
-        $failedEmailModel2->email_type = 'admin_notification';
-        $failedEmailModel2->language = 'en';
-        $failedEmailModel2->error_message = 'test error message display';
-        $failedEmailModel2->created = date('Y-m-d H:i:s');
-        $failedEmailModel2->status = FailedEmail::STATE_FAILED;
-        $failedEmailModel2->updated = date('Y-m-d H:i:s');
-        $failedEmailModel2->resend_vars = "{\"message_type\":\"alt\",\"Subject\":\"Response submission for survey Surveytest 1 Question\",\"uniqueid\":\"2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"boundary\":{\"1\":\"b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"2\":\"b2_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\",\"3\":\"b3_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\"},\"MIMEBody\":\"This is a multi-part message in MIME format.\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/plain; charset=us-ascii\\r\\n\\r\\nHello,A new response was submitted for your survey 'Surveytest 1 Question'.Click the following link to see the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34Click the following link to edit the individual response:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34View statistics by clicking here:http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg\\r\\nContent-Type: text\\\/html; charset=us-ascii\\r\\n\\r\\n<html>Hello,<br \\\/><br \\\/>A new response was submitted for your survey 'Surveytest 1 Question'.<br \\\/><br \\\/>Click the following link to see the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=responses\\\/view&surveyId=565531&id=34<br \\\/><br \\\/>Click the following link to edit the individual response:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/dataentry\\\/sa\\\/editdata\\\/subaction\\\/edit\\\/surveyid\\\/565531\\\/id\\\/34<br \\\/><br \\\/>View statistics by clicking here:<br \\\/>http:\\\/\\\/127.0.0.1:8083\\\/index.php?r=admin\\\/statistics\\\/sa\\\/index\\\/surveyid\\\/565531<\\\/html>\\r\\n\\r\\n\\r\\n--b1_2xVoMczyB0mqe8SPHO9qAsO0AKGd5jvqY76gJT8bNg--\\r\\n\"}";
-        $failedEmailModel2->save(false);
+        // Helper: create two fresh failed email records
+        $createRecords = function () use ($resendVars) {
+            FailedEmail::model()->deleteAllByAttributes(['surveyid' => self::$surveyId]);
+            foreach ([1, 2] as $responseId) {
+                $m = new FailedEmail();
+                $m->recipient = 'test@example.com';
+                $m->surveyid = self::$surveyId;
+                $m->responseid = $responseId;
+                $m->email_type = 'admin_notification';
+                $m->language = 'en';
+                $m->error_message = 'test error message display';
+                $m->created = date('Y-m-d H:i:s');
+                $m->status = FailedEmail::STATE_FAILED;
+                $m->updated = date('Y-m-d H:i:s');
+                $m->resend_vars = $resendVars;
+                $m->save(false);
+            }
+        };
 
         $urlManager->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlManager->createUrl('failedEmail/index/', ['surveyid' => self::$surveyId]);
-        $web->get($url);
-        $web->wait(5)->until(WebDriverExpectedCondition::urlIs($url));
 
-        // Massive action Resend Email
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
-        $checkboxAll = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid .checkbox-column [name="id_all"]'));
-        $checkboxAll->click();
-        $massiveAction = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions .dropdown-toggle'));
-        $massiveAction->click();
-        $massiveActionResend = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="resend"]'));
-        $massiveActionResend->click();
-        try {
-            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .btn-ok')));
-        } catch (TimeoutException $ex) {
-            $body = $web->findElement(WebDriverBy::tagName('body'));
-            var_dump($body->getText());
-            throw $ex;
-        }
-        $massiveActionResendSubmit = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .btn-ok'));
-        $massiveActionResendSubmit->click();
+        // --- Massive action Resend Email ---
+        $createRecords();
+        $web->get($url);
+        $web->wait(15)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]')));
+        // Click select-all checkbox and trigger change event to enable massive action button
+        $web->findElement(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]'))->click();
+        $web->executeScript("$('.grid-view-ls input[type=\"checkbox\"]').trigger('change');");
+        $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#failedEmailActions [data-bs-toggle="dropdown"]:not([disabled])')));
+        $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-bs-toggle="dropdown"]'))->click();
+        $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedEmailActions [data-action="resend"]')));
+        $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="resend"]'))->click();
+        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .btn-ok')));
+        $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .btn-ok'))->click();
         // this can take up around 20 seconds per mail if the email server cant be reached
         $web->wait(50)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #failedemail-action-modal--resendresult')));
-        $massiveActionResendSuccess = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #failedemail-action-modal--resendresult'));
-        $this->assertTrue($massiveActionResendSuccess->isDisplayed());
+        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #failedemail-action-modal--resendresult'))->isDisplayed());
 
-        // Massive action Delete Email
-        $exitModal = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 .modal-header .close'));
-        $exitModal->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::invisibilityOfElementLocated(WebDriverBy::cssSelector('.modal-backdrop')));
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid:not(.grid-view-loading)')));
-        $checkboxAll = $web->findElement(WebDriverBy::cssSelector('#failedemail-grid .checkbox-column [name="id_all"]'));
-        $checkboxAll->click();
-        $massiveAction = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions .dropdown-toggle'));
-        $massiveAction->click();
+        // --- Massive action Delete Email (fresh records + page load) ---
+        $createRecords();
+        $web->get($url);
+        $web->wait(15)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]')));
+        $web->findElement(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]'))->click();
+        $web->executeScript("$('.grid-view-ls input[type=\"checkbox\"]').trigger('change');");
+        $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#failedEmailActions [data-bs-toggle="dropdown"]:not([disabled])')));
+        $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-bs-toggle="dropdown"]'))->click();
         $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#failedEmailActions [data-action="delete"]')));
-        $massiveActionDelete = $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="delete"]'));
-        $massiveActionDelete->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 .btn-ok')));
-        $massiveActionDeleteSubmit = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 .btn-ok'));
-        $massiveActionDeleteSubmit->click();
-        $web->wait(5)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 #failedemail-action-modal--deleteresult')));
-        $massiveActionDeleteSuccess = $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 #failedemail-action-modal--deleteresult'));
-        $this->assertTrue($massiveActionDeleteSuccess->isDisplayed());
+        $web->findElement(WebDriverBy::cssSelector('#failedEmailActions [data-action="delete"]'))->click();
+        $web->wait(15)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 .btn-ok')));
+        $web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 .btn-ok'))->click();
+        $web->wait(30)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 #failedemail-action-modal--deleteresult')));
+        $this->assertTrue($web->findElement(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-delete-0 #failedemail-action-modal--deleteresult'))->isDisplayed());
     }
 }
