@@ -136,7 +136,7 @@ class RemoteControlImportQuestionTest extends BaseTest
 
     /**
      * Importing a question with a group that doesn't belong to the survey.
-     * This tests the mismatch error_code contract.
+     * The group lookup is survey-scoped, so a group from another survey is treated as invalid.
      */
     public function testImportQuestionWithMismatchedGroupId()
     {
@@ -155,11 +155,11 @@ class RemoteControlImportQuestionTest extends BaseTest
         $question = base64_encode(file_get_contents($questionFile));
         $result = $this->handler->import_question($sessionKey, self::$surveyId, $mismatchedGroupId, $question, 'lsq');
 
-        // Verify the error response includes the error_code contract
+        // Verify the error response - group not found in this survey returns generic invalid group error
         $this->assertIsArray($result, 'Response should be an array for mismatch error');
         $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
-        $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
-        $this->assertEquals('ERR_MISMATCH_SURVEY_GROUP', $result['error_code'], 'error_code should be ERR_MISMATCH_SURVEY_GROUP for survey/group mismatch');
+        $this->assertStringContainsString('Invalid group ID', $result['status']);
+        $this->assertArrayNotHasKey('error_code', $result, 'Should not leak cross-survey group existence');
 
         // Cleanup mismatched survey
         $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
@@ -168,7 +168,7 @@ class RemoteControlImportQuestionTest extends BaseTest
 
     /**
      * Testing list_questions with a group that doesn't belong to the survey.
-     * This tests the mismatch error_code contract for list_questions method.
+     * The group lookup is survey-scoped, so a group from another survey is treated as not found.
      */
     public function testListQuestionsWithMismatchedGroupId()
     {
@@ -185,11 +185,11 @@ class RemoteControlImportQuestionTest extends BaseTest
         // Attempt to list questions from our test survey using the group from the mismatched survey
         $result = $this->handler->list_questions($sessionKey, self::$surveyId, $mismatchedGroupId);
 
-        // Verify the error response includes the error_code contract
+        // Verify the error response - group not found in this survey returns generic not-found error
         $this->assertIsArray($result, 'Response should be an array for mismatch error');
         $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
-        $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
-        $this->assertEquals('ERR_MISMATCH_SURVEY_GROUP', $result['error_code'], 'error_code should be ERR_MISMATCH_SURVEY_GROUP for survey/group mismatch');
+        $this->assertStringContainsString('group not found', $result['status']);
+        $this->assertArrayNotHasKey('error_code', $result, 'Should not leak cross-survey group existence');
 
         // Cleanup mismatched survey
         $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);

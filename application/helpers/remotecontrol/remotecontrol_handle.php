@@ -9,7 +9,6 @@ use LimeSurvey\PluginManager\PluginEvent;
 class remotecontrol_handle
 {
     const INVALID_SESSION_KEY = 'Invalid session key';
-    const ERR_MISMATCH_SURVEY_GROUP = 'ERR_MISMATCH_SURVEY_GROUP';
     const ERR_MULTIPLE_MATCHES = 'ERR_MULTIPLE_MATCHES';
 
     /**
@@ -1523,7 +1522,6 @@ class remotecontrol_handle
      * @return array|integer The id of the new question in case of success. Array with error status on failure.
      *         Error arrays include:
      *         - 'status': Human-readable error message
-     *         - 'error_code' (optional): Machine-readable error code present only for certain error conditions (e.g., 'ERR_MISMATCH_SURVEY_GROUP')
      */
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
@@ -1544,17 +1542,9 @@ class remotecontrol_handle
             return array('status' => 'Error:Survey is Active and not editable');
         }
 
-        $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+        $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'sid' => $iSurveyID));
         if (!isset($oGroup)) {
             return array('status' => 'Error: Invalid group ID');
-        }
-
-        $sGroupSurveyID = $oGroup['sid'];
-        if ($sGroupSurveyID != $iSurveyID) {
-            return array(
-                'status' => 'Error: Mismatch in surveyid and groupid',
-                'error_code' => self::ERR_MISMATCH_SURVEY_GROUP
-            );
         }
         /* Check unicity of title, and set autorename to true if it's set */
         $importOptions = ['autorename' => false];
@@ -2407,7 +2397,6 @@ class remotecontrol_handle
      * @return array The list of questions on success. Array with error status on failure.
      *         Error arrays include:
      *         - 'status': Human-readable error message
-     *         - 'error_code' (optional): Machine-readable error code present only for certain error conditions (e.g., 'ERR_MISMATCH_SURVEY_GROUP')
      */
     public function list_questions($sSessionKey, $iSurveyID, $iGroupID = null, $sLanguage = null)
     {
@@ -2431,20 +2420,13 @@ class remotecontrol_handle
 
                 if ($iGroupID != null) {
                     $iGroupID = (int) $iGroupID;
-                    $oGroup = QuestionGroup::model()->findByPk($iGroupID);
+                    $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'sid' => $iSurveyID));
 
                     if (empty($oGroup)) {
                         return ['status' => 'Error: group not found'];
                     }
 
-                    if ($oGroup->sid != $oSurvey->sid) {
-                        return [
-                            'status' => 'Error: Mismatch in surveyid and groupid',
-                            'error_code' => self::ERR_MISMATCH_SURVEY_GROUP
-                        ];
-                    } else {
-                        $aQuestionList = $oGroup->allQuestions;
-                    }
+                    $aQuestionList = $oGroup->allQuestions;
                 } else {
                     $aQuestionList = $oSurvey->allQuestions;
                 }
