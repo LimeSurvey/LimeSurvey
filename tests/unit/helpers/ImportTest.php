@@ -9,22 +9,38 @@ class ImportTest extends TestBaseClass
      */
     public function testCopyASurveyWithAnAlias(): void
     {
-
         $file = self::$surveysFolder . '/limesurvey_survey_358685_Copy_survey_with_short_url_test.lss';
-
-        //Import survey
-        $result = XMLImportSurvey($file);
-        $survey = \Survey::model()->findByPk($result['newsid']);
-
-        //Get alias
-        $alias = $survey->getAliasForLanguage();
-
-        $this->assertEmpty($result['importwarnings']);
-        $this->assertSame($alias, 'short-url-test');
-
-        //Delete survey
+        
+        // Clean up any existing surveys with this alias from previous runs
         \Yii::app()->session['loginID'] = 1;
-        $res = $survey->delete();
+        $existingSurveys = \SurveyLanguageSetting::model()->findAll(
+            'surveyls_alias = ?',
+            array('short-url-test')
+        );
+        foreach ($existingSurveys as $surveyLang) {
+            $survey = \Survey::model()->findByPk($surveyLang->surveyls_survey_id);
+            if ($survey) {
+                $survey->delete();
+            }
+        }
+
+        try {
+            //Import survey
+            $result = XMLImportSurvey($file);
+            $survey = \Survey::model()->findByPk($result['newsid']);
+
+            //Get alias
+            $alias = $survey->getAliasForLanguage();
+
+            $this->assertEmpty($result['importwarnings']);
+            $this->assertSame($alias, 'short-url-test');
+        } finally {
+            //Delete survey
+            if (isset($survey) && $survey) {
+                \Yii::app()->session['loginID'] = 1;
+                $survey->delete();
+            }
+        }
     }
 
     /**
