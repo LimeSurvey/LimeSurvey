@@ -160,9 +160,6 @@ vendor/**/gulpfile.js
 /vendor/nikic/
 /vendor/theseer/
 /vendor/doctrine/instantiator
-/vendor/doctrine/deprecations
-/vendor/doctrine/lexer
-/vendor/doctrine/annotations
 /vendor/myclabs/
 /vendor/pdepend/
 /vendor/composer/xdebug-handler
