@@ -159,7 +159,8 @@ class RemoteControlImportQuestionTest extends BaseTest
         $this->assertIsArray($result, 'Response should be an array for mismatch error');
         $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
         $this->assertStringContainsString('Invalid group ID', $result['status']);
-        $this->assertArrayNotHasKey('error_code', $result, 'Should not leak cross-survey group existence');
+        $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
+        $this->assertEquals('ERR_INVALID_GROUP', $result['error_code'], 'Should return generic invalid group error, not leak cross-survey existence');
 
         // Cleanup mismatched survey
         $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
@@ -189,7 +190,8 @@ class RemoteControlImportQuestionTest extends BaseTest
         $this->assertIsArray($result, 'Response should be an array for mismatch error');
         $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
         $this->assertStringContainsString('group not found', $result['status']);
-        $this->assertArrayNotHasKey('error_code', $result, 'Should not leak cross-survey group existence');
+        $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
+        $this->assertEquals('ERR_INVALID_GROUP', $result['error_code'], 'Should return generic invalid group error, not leak cross-survey existence');
 
         // Cleanup mismatched survey
         $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
