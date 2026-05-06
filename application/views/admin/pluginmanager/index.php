@@ -103,6 +103,7 @@ $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [
         'id'                       => 'plugins-grid',
+        'caption'                  => gT('Plugins'),
         'dataProvider'             => $dataProvider,
         'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
             . sprintf(
