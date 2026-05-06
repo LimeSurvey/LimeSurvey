@@ -36,6 +36,9 @@ class Update_650 extends DatabaseUpdateBase
                 if (!preg_match('/^attribute_\d+$/', $key)) {
                     continue;
                 }
+                if (!is_array($attributes)) {
+                    continue;
+                }
 
                 // Skip entries that only contain "encrypted" – those are default token fields, not custom attributes.
                 if (count($attributes) <= 1 && array_key_exists('encrypted', $attributes)) {
