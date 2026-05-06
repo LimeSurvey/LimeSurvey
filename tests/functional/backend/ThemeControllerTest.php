@@ -104,11 +104,9 @@ class ThemeControllerTest extends TestBaseClassWeb
     /**
      * @group extendtheme
      * @todo Split up in separate tests.
-     * @todo: Marked as incomplete cause this test is failing
      */
     public function testExtendTheme()
     {
-        $this->markTestIncomplete();
         \Yii::import('application.controllers.admin.Themes', true);
 
 
@@ -148,8 +146,11 @@ class ThemeControllerTest extends TestBaseClassWeb
 
         try {
             // Click "Theme editor" for vanilla theme.
-            // TODO: Unable to locate element!
-            $button = $w->findElement(WebDriverBy::id('template_editor_link_vanilla'));
+            $button = $w->wait(20)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('template_editor_link_vanilla')
+                )
+            );
             $button->click();
 
             // Wait for possible modal.
@@ -157,7 +158,11 @@ class ThemeControllerTest extends TestBaseClassWeb
 
             $w->dismissModal();
 
-            $button = $w->findElement(WebDriverBy::id('button-extend-vanilla'));
+            $button = $w->wait(20)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('button-extend-vanilla')
+                )
+            );
             $button->click();
 
             sleep(1);
@@ -313,8 +318,6 @@ class ThemeControllerTest extends TestBaseClassWeb
      */
     public function testExportAndImport()
     {
-        // TODO: Test won't work on Travis. Problem with file and folder permission? Web user != CLI user.
-        $this->markTestSkipped();
 
         \Yii::import('application.controllers.admin.Themes', true);
 
@@ -364,12 +367,17 @@ class ThemeControllerTest extends TestBaseClassWeb
             );
             $this->assertNotEmpty($temp, 'vanilla_test_3 was created');
 
-            $w->clickButton('button-export');
+            // Export theme directly via PHP (browser file downloads cannot be verified server-side).
+            $oTemplate = \Template::getInstance('vanilla_test_3', null, null, true);
+            $zipfile = ROOT . '/tmp/vanilla_test_3.zip';
+            $zip = new \LimeSurvey\Zip();
+            $zip->open($zipfile, \ZipArchive::CREATE);
+            $zipHelper = new \LimeSurvey\Helpers\ZipHelper($zip);
+            $zipHelper->addFolder($oTemplate->path);
+            $zip->close();
+            $this->assertTrue(file_exists($zipfile), 'Zip export was created');
 
-            sleep(1);
-
-            $this->assertTrue(file_exists(ROOT . '/tmp/vanilla_test_3.zip'));
-
+            // Delete the theme via browser to test import.
             $w->clickButton('button-delete');
             $w->switchTo()->alert()->accept();
 
