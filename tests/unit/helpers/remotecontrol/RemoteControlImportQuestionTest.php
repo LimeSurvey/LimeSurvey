@@ -159,8 +159,11 @@ class RemoteControlImportQuestionTest extends BaseTest
         $this->assertIsArray($result, 'Response should be an array for mismatch error');
         $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
         $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
-        $this->assertIsString($result['error_code'], 'error_code should be a string');
         $this->assertEquals('ERR_MISMATCH_SURVEY_GROUP', $result['error_code'], 'error_code should be ERR_MISMATCH_SURVEY_GROUP for survey/group mismatch');
+
+        // Cleanup mismatched survey
+        $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+        $this->handler->release_session_key($sessionKey);
     }
 
     /**
@@ -186,7 +189,10 @@ class RemoteControlImportQuestionTest extends BaseTest
         $this->assertIsArray($result, 'Response should be an array for mismatch error');
         $this->assertArrayHasKey('status', $result, 'Error response should have a status field');
         $this->assertArrayHasKey('error_code', $result, 'Error response should have an error_code field');
-        $this->assertIsString($result['error_code'], 'error_code should be a string');
         $this->assertEquals('ERR_MISMATCH_SURVEY_GROUP', $result['error_code'], 'error_code should be ERR_MISMATCH_SURVEY_GROUP for survey/group mismatch');
+
+        // Cleanup mismatched survey
+        $this->handler->delete_survey($sessionKey, $mismatchedSurveyId);
+        $this->handler->release_session_key($sessionKey);
     }
 }

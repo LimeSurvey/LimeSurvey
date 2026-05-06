@@ -9,6 +9,8 @@ use LimeSurvey\PluginManager\PluginEvent;
 class remotecontrol_handle
 {
     const INVALID_SESSION_KEY = 'Invalid session key';
+    const ERR_MISMATCH_SURVEY_GROUP = 'ERR_MISMATCH_SURVEY_GROUP';
+    const ERR_MULTIPLE_MATCHES = 'ERR_MULTIPLE_MATCHES';
 
     /**
      * @var AdminController
@@ -1521,7 +1523,7 @@ class remotecontrol_handle
      * @return array|integer The id of the new question in case of success. Array with error status on failure.
      *         Error arrays include:
      *         - 'status': Human-readable error message
-     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification
+     *         - 'error_code' (optional): Machine-readable error code present only for certain error conditions (e.g., 'ERR_MISMATCH_SURVEY_GROUP')
      */
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
@@ -1551,7 +1553,7 @@ class remotecontrol_handle
         if ($sGroupSurveyID != $iSurveyID) {
             return array(
                 'status' => 'Error: Mismatch in surveyid and groupid',
-                'error_code' => 'ERR_MISMATCH_SURVEY_GROUP'
+                'error_code' => self::ERR_MISMATCH_SURVEY_GROUP
             );
         }
         /* Check unicity of title, and set autorename to true if it's set */
@@ -2405,7 +2407,7 @@ class remotecontrol_handle
      * @return array The list of questions on success. Array with error status on failure.
      *         Error arrays include:
      *         - 'status': Human-readable error message
-     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MISMATCH_SURVEY_GROUP') for reliable error identification
+     *         - 'error_code' (optional): Machine-readable error code present only for certain error conditions (e.g., 'ERR_MISMATCH_SURVEY_GROUP')
      */
     public function list_questions($sSessionKey, $iSurveyID, $iGroupID = null, $sLanguage = null)
     {
@@ -2438,7 +2440,7 @@ class remotecontrol_handle
                     if ($oGroup->sid != $oSurvey->sid) {
                         return [
                             'status' => 'Error: Mismatch in surveyid and groupid',
-                            'error_code' => 'ERR_MISMATCH_SURVEY_GROUP'
+                            'error_code' => self::ERR_MISMATCH_SURVEY_GROUP
                         ];
                     } else {
                         $aQuestionList = $oGroup->allQuestions;
@@ -3367,7 +3369,7 @@ class remotecontrol_handle
      * @param array $aResponseData The actual response
      * @return array|boolean TRUE(bool) on success. Array with error status on failure. Error arrays include:
      *         - 'status': Human-readable error message
-     *         - 'error_code': Machine-readable error code (e.g., 'ERR_MULTIPLE_MATCHES') for reliable error identification
+     *         - 'error_code' (optional): Machine-readable error code present only for certain error conditions (e.g., 'ERR_MULTIPLE_MATCHES')
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
@@ -3414,7 +3416,7 @@ class remotecontrol_handle
             if (count($aResponses) > 1) {
                 return array(
                     'status' => 'More than one matching response, updating multiple responses at once is not supported',
-                    'error_code' => 'ERR_MULTIPLE_MATCHES'
+                    'error_code' => self::ERR_MULTIPLE_MATCHES
                 );
             }
 
