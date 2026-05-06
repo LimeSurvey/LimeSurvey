@@ -286,7 +286,7 @@ const SurveyActivationHandler = forwardRef(
               toastMessage={
                 isSurveyActiveAfterPublish &&
                 isSurveyActive &&
-                '🎉 ' + t('Congrats! Your survey has been activated.')
+                '🎉 ' + t('Congratulations! Your survey has been activated.')
               }
               activeLanguage={activeLanguage}
               createBufferOperation={createBufferOperation}

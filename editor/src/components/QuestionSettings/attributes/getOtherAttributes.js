@@ -6,7 +6,7 @@ export const getOtherAttributes = () => ({
     component: Input,
     attributePath: 'attributes.min_num_of_files',
     props: {
-      labelText: t('Min number of files'),
+      labelText: t('Minimum number of files'),
       dataTestId: 'min-number-of-files',
       type: 'number',
       defaultValue: '1',
@@ -25,7 +25,7 @@ export const getOtherAttributes = () => ({
     component: Input,
     attributePath: 'attributes.max_filesize',
     props: {
-      labelText: t('Max file size (kB)'),
+      labelText: t('Maximum file size (kB)'),
       dataTestId: 'maximum-file-size-allowed',
       type: 'number',
       min: 1,
@@ -37,7 +37,7 @@ export const getOtherAttributes = () => ({
     component: Input,
     attributePath: 'attributes.max_num_of_files',
     props: {
-      labelText: t('Max number of files'),
+      labelText: t('Maximum number of files'),
       dataTestId: 'max-number-of-files',
       type: 'number',
       min: 1,

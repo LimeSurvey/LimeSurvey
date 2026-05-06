@@ -122,25 +122,25 @@ class ThemeOptionsController extends LSBaseController
      * @return void
      * @throws CException
      */
-    /*
     public function actionResetMultiple()
     {
-        $aTemplates = json_decode(App()->request->getPost('sItems'));
+        $aTemplates = json_decode(App()->request->getPost('sItems', ''));
         $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
-        if (Permission::model()->hasGlobalPermission('template', 'update')) {
+        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             foreach ($aTemplates as $template) {
+                $templateID = (int) $template;
                 if ($gridid === 'questionthemes-grid') {
-                    /** @var QuestionTheme|null
-                    $questionTheme = QuestionTheme::model()->findByPk($template);
+                    /** @var QuestionTheme|null */
+                    $questionTheme = QuestionTheme::model()->findByPk($templateID);
                     $templatename = $questionTheme->name;
                     $templatefolder = $questionTheme->xml_path;
                     $aResults[$template]['title'] = $templatename;
                     $sQuestionThemeName = $questionTheme->importManifest($templatefolder);
                     $aResults[$template]['result'] = isset($sQuestionThemeName) ? true : false;
                 } elseif ($gridid === 'themeoptions-grid') {
-                    $model = TemplateConfiguration::model()->findByPk($template);
+                    $model = TemplateConfiguration::model()->findByPk($templateID);
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
                     $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
@@ -149,22 +149,20 @@ class ThemeOptionsController extends LSBaseController
             }
 
             //set Modal table labels
-            $tableLabels = array(gT('Theme ID'),gT('Theme name') ,gT('Status'));
+            $tableLabels = array(gT('Theme ID'), gT('Theme name'), gT('Status'));
 
             $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
-                array
-                (
+                array(
                     'aResults'     => $aResults,
                     'successLabel' => gT('Has been reset'),
-                    'tableLabels'  => $tableLabels
+                    'tableLabels'  => $tableLabels,
                 )
             );
         } else {
-            //todo: this message gets never visible for the user ...
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-    }*/
+    }
 
     /**
      * Uninstalls all selected themes from massive action.
@@ -201,7 +199,7 @@ class ThemeOptionsController extends LSBaseController
                             $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
                         } else {
                             $aResults[$template]['result'] = false;
-                            $aResults[$template]['error'] = gT('Error! You cannot uninstall the default template.');
+                            $aResults[$template]['error'] = gT('Error! You cannot uninstall a core or default theme.');
                         }
                     } else {
                         $aResults[$template]['result'] = false;
@@ -364,13 +362,13 @@ class ThemeOptionsController extends LSBaseController
      * used when setting the theme options through a survey groups theme options menu.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
+     * @param integer $gsid id of survey group
      * @param null|integer $id   ID of model.
-     * @param null|integer $gsid id of survey group
      * @param null    $l    ?
      *
      * @return void
      */
-    public function actionUpdateSurveyGroup(?int $id = null, ?int $gsid = null, ?int $l = null)
+    public function actionUpdateSurveyGroup(int $gsid, ?int $id = null, ?int $l = null)
     {
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (empty($gsid)) {
@@ -660,8 +658,16 @@ class ThemeOptionsController extends LSBaseController
         }
         TemplateConfiguration::uninstall($templatename);
         TemplateManifest::importManifest($templatename);
-        App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
-        $this->redirect(array("themeOptions/index"));
+        $this->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                'loggedIn'      => true,
+                'hasPermission' => true,
+                'success'       => sprintf(gT("The theme '%s' has been reset.", "unescaped"), $templatename),
+            ]],
+            false,
+            false
+        );
     }
 
     /**
@@ -707,13 +713,13 @@ class ThemeOptionsController extends LSBaseController
      * Updates Common.
      *
      * @param TemplateConfiguration $model Template Configuration
-     * @param int|null $sid Survey ID
-     * @param int|null $gsid Survey Group ID
+     * @param ?int $sid Survey ID
+     * @param ?int $gsid Survey Group ID
      *
      * @return void
      * @throws CException
      */
-    private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null)
+    private function updateCommon(TemplateConfiguration $model, ?int $sid = null, ?int $gsid = null)
     {
         $diContainer = DI::getContainer();
         if ($diContainer === null) {

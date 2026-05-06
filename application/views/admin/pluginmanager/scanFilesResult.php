@@ -28,7 +28,7 @@
                     $scannedPlugin['load_error'] == 0
                     && $scannedPlugin['extensionConfig'] != null
                     && !$scannedPlugin['isCompatible']
-                ) : ?>
+) : ?>
                     <i class='ri-forbid-2-line'></i>&nbsp;
                     <span class='text-danger'><?php eT('Plugin is not compatible with your LimeSurvey version.'); ?></span>
                 <?php else : ?>

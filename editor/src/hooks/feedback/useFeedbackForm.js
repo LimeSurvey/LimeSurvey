@@ -1,13 +1,14 @@
-import React, { useMemo, useCallback } from 'react'
+import { useMemo, useCallback } from 'react'
 
 import {
   dayJsHelper,
-  htmlPopup,
   getFeedbackConfigs,
   FEEDBACK_TYPES,
+  openFeedbackSurveyInNewTab,
 } from 'helpers'
 import { useAuth, useCookieFeedbackStore } from 'hooks'
-import { FeedbackSurveyModal } from 'components'
+import pluginManager from 'plugins/PluginManager'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 export const useFeedbackForm = () => {
   const { userId } = useAuth()
@@ -70,31 +71,23 @@ export const useFeedbackForm = () => {
   const showFeedbackForm = useCallback(
     (feedbackType = FEEDBACK_TYPES.GENERAL) => {
       const config = feedbackConfigs[feedbackType]
-      const modalCompatibleDomains = ['.limequery.', '.limesurvey.']
-
-      const isModalCompatible = modalCompatibleDomains.some((domain) =>
-        window.location.hostname.includes(domain)
+      const pluginHandlerExists = pluginManager.hasPlugin(
+        PLUGIN_SLOTS.FEEDBACK_FORM_OPEN
       )
 
-      if (isModalCompatible) {
-        showFeedbackModal(config.surveyId)
-      } else {
-        window.open(
-          `https://survey.limesurvey.org/${config.surveyId}?${urlParams.toString()}`,
-          '_blank'
+      // use plugin to display custom feedback form
+      if (pluginHandlerExists) {
+        const pluginHandler = pluginManager.getPlugin(
+          PLUGIN_SLOTS.FEEDBACK_FORM_OPEN
         )
+        pluginHandler({ config, urlParams })
+        return
       }
+
+      openFeedbackSurveyInNewTab(config.surveyId, urlParams)
     },
     [urlParams]
   )
-
-  const showFeedbackModal = (surveyId) => {
-    htmlPopup({
-      html: <FeedbackSurveyModal surveyId={surveyId} urlParams={urlParams} />,
-      showCloseButton: true,
-      closeButtonClass: 'feedback-close-button',
-    })
-  }
 
   return {
     trackInitialLoad,

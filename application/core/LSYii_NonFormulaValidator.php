@@ -22,7 +22,6 @@ if (!defined('BASEPATH')) {
  */
 class LSYii_NonFormulaValidator extends CValidator
 {
-
     protected const NON_FORMULA_REGEX = '/^[=\+\-\@\t\r]/';
 
     public function validateAttribute($object, $attribute)

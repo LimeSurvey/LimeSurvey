@@ -7,29 +7,26 @@
  */
 ?>
 
-<?php $urlNew = Yii::app()->createUrl("admin/update", array("update"=>'newKey', 'destinationBuild' => $serverAnswer->destinationBuild)); ?>
+<?php $urlNew = Yii::app()->createUrl("admin/update", array("update" => 'newKey', 'destinationBuild' => $serverAnswer->destinationBuild)); ?>
 <h3 class="maintitle"><?php eT('Welcome to the LimeSurvey ComfortUpdate!');?></h3>
 
 <?php
-    if( isset($serverAnswer->html) )
-    {
-        if ( $serverAnswer->html != 'update_unstable')
-        {
-            echo $serverAnswer->html;
-        }
-
+if (isset($serverAnswer->html)) {
+    if ($serverAnswer->html != 'update_unstable') {
+        echo $serverAnswer->html;
     }
+}
 ?>
 
 <!-- Welcome Message -->
 <div class="row">
     <div id="welcomeMessage" class="col-12 col-xl-6">
         <?php
-            echo gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br /><br />';
-            echo '<ul><li>'.gT('The following steps will be done by this update:').'</li>';
-            echo '<li>'.gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>';
-            echo '<li>'.gT('New files will be downloaded and installed.').'</li>';
-            echo '<li>'.gT('If necessary the database will be updated in a final step.').'</li></ul>';
+            echo gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.') . '<br /><br />';
+            echo '<ul><li>' . gT('The following steps will be done by this update:') . '</li>';
+            echo '<li>' . gT('Your LimeSurvey installation is checked if the update can be run successfully.') . '</li>';
+            echo '<li>' . gT('New files will be downloaded and installed.') . '</li>';
+            echo '<li>' . gT('If necessary the database will be updated in a final step.') . '</li></ul>';
         ?>
     </div>
 
@@ -41,9 +38,9 @@
             </div>
             <div class="card-body">
             <?php
-            if (isset($serverAnswer->html)): ?>
+            if (isset($serverAnswer->html)) : ?>
                 <?php
-                if ($serverAnswer->html == 'update_unstable' && $serverAnswer->key_infos->keyid != 'FREE'): ?>
+                if ($serverAnswer->html == 'update_unstable' && $serverAnswer->key_infos->keyid != 'FREE') : ?>
                     <p>
                         <?php
                         eT('This is an update to an unstable version'); ?>
@@ -51,18 +48,18 @@
                         <?php
                         eT('It will not affect your update key.') ?>
                     </p>
-                <?php
+                    <?php
                 endif; ?>
-            <?php
+                <?php
             endif; ?>
 
             <strong><?php
                 eT('Your update key:'); ?><?php
-                if (!(App()->getConfig('hide_update_key'))) {
-                    echo $serverAnswer->key_infos->keyid;
-                } else {
-                    echo '<em>XXXXXXX</em>';
-                } ?></strong><br/>
+if (!(App()->getConfig('hide_update_key'))) {
+    echo $serverAnswer->key_infos->keyid;
+} else {
+    echo '<em>XXXXXXX</em>';
+} ?></strong><br/>
             <strong><?php
                 eT('Valid until:'); ?><?php
                 echo $sValidityDate; ?></strong><br/>
@@ -71,19 +68,19 @@
                 <strong><?php
                     eT('Remaining updates:'); ?><?php
                     echo $serverAnswer->key_infos->remaining_updates; ?></strong><br/>
-            <?php
+                <?php
             } ?>
             </div>
             <div class="card-footer">
                 <?php
-                if ($serverAnswer->key_infos->remaining_updates != -999): ?>
+                if ($serverAnswer->key_infos->remaining_updates != -999) : ?>
                     <a class="btn btn-outline-secondary"
                        href="https://community.limesurvey.org/comfort-update-extension/" role="button"
                        aria-disabled="false" target="_blank">
                         <?php
                         eT("Buy a new key"); ?>
                     </a>
-                <?php
+                    <?php
                 endif; ?>
 
                 <a class="btn btn-outline-secondary" href="<?php
@@ -99,9 +96,9 @@
 <div class="row">
     <div id="btn-container" class="col-12 col-xl-6 mt-2">
         <!-- The form launching the first step : control local errors. -->
-        <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/update/sa/checkLocalErrors'), 'post', array('id'=>'launchCheckLocalErrorsForm')); ?>
-            <?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>
-            <?php  echo CHtml::hiddenField('access_token' , $serverAnswer->access_token); ?>
+        <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/update/sa/checkLocalErrors'), 'post', array('id' => 'launchCheckLocalErrorsForm')); ?>
+            <?php  echo CHtml::hiddenField('destinationBuild', $serverAnswer->destinationBuild); ?>
+            <?php  echo CHtml::hiddenField('access_token', $serverAnswer->access_token); ?>
 
             <a class="btn btn-cancel me-1" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button">
                 <?php eT("Cancel"); ?>

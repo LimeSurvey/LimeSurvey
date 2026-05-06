@@ -31,7 +31,7 @@ class QuestionStatistics implements StatisticsChartInterface
     {
         $this->factories = [
             Question::QT_M_MULTIPLE_CHOICE => fn() => new MultipleChoiceProcessor(),
-            Question::QT_N_NUMERICAL => fn() => new MultipleChoiceProcessor(),
+//            Question::QT_N_NUMERICAL => fn() => new MultipleChoiceProcessor(),
             Question::QT_COLON_ARRAY_NUMBERS => fn() => new ArrayNumbersProcessor(),
             Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => fn() => new MultipleChoiceProcessor(),
             Question::QT_T_LONG_FREE_TEXT => fn() => new TextProcessor(),

@@ -41,7 +41,7 @@ export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
 
         const statistics = result.overview.statistics
         const lurkerData = {
-          title: t('Responses rate'),
+          title: t('Response rate'),
           total: statistics.totalResponses,
           legend: [
             'totalResponses',
@@ -125,7 +125,7 @@ export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
                   <span className="reg14">{t('Response rate')}</span>
                 </>
               ) : (
-                <span className="reg14">{t('No responses yet.')}</span>
+                <span className="reg14">{t('No responses')}</span>
               )}
             </Card.Body>
           </Card>
@@ -145,7 +145,7 @@ export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
         <div className="col-xxl-6 col-12 mb-2">
           <ChartRenderer
             graphType={statisticsGraphs.BAR_CHART}
-            title={t('Responses last 30 day')}
+            title={t('Responses (last 30 days)')}
             statisticsData={survey.datestamp ? dailyActivityData : []}
             disableDoughnutChart={true}
             disableBarChart={true}
@@ -155,7 +155,7 @@ export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
             emptyMessage={
               !survey.datestamp
                 ? t(
-                    'Daily activity isn’t available when datestamps are turned off.'
+                    "Daily activity isn't available when datestamps are turned off."
                   )
                 : null
             }

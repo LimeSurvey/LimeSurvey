@@ -216,6 +216,7 @@ return array(
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
         'basePath' => 'node_modules.tablesorter.dist.js',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.tablesorter' . $minVersion . '.js'
         ),

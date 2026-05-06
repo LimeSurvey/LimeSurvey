@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Send email reminder
  */
+
 ?>
 
 <div class='side-body'>
@@ -10,8 +12,8 @@
         <div class="col-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
 
-            <?php if ($thissurvey['active'] != 'Y'): ?>
-                <?php if ($thissurvey[$baselang]['active'] != 'Y'): ?>
+            <?php if ($thissurvey['active'] != 'Y') : ?>
+                <?php if ($thissurvey[$baselang]['active'] != 'Y') : ?>
                     <div class="jumbotron message-box message-box-error">
                         <h2 class='text-danger'><?php eT('Warning!'); ?></h2>
                         <p class="lead text-danger">
@@ -20,11 +22,21 @@
                     </div>
                 <?php endif; ?>
             <?php endif; ?>
-
+            <?php if (count($warnings)) : ?>
+                <div class="alert alert-warning">
+                    <ul class='list-unstyled'>
+                    <?php foreach ($warnings as $warning) : ?>
+                        <li>
+                            <?= $warning ?>
+                        </li>
+                    <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
             <?php echo CHtml::form(array("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"), 'post', array('id' => 'sendreminder', 'class' => '')); ?>
             <div class="row">
                 <div class="col-md-6">
-                    <?php if (count($tokenids) > 0): ?>
+                    <?php if (count($tokenids) > 0) : ?>
                         <div class='mb-3'>
                             <label class='form-label '><?php eT("Send reminder to participant ID(s):"); ?></label>
                             <div class=''>
@@ -94,6 +106,23 @@
                             ]); ?>
                         </div>
                     </div>
+
+                    <!-- Ignore missing attachments -->
+                    <?php if ($countInvalidAttachments > 0) : ?>
+                        <div class='mb-3'>
+                            <label class='form-label' for='ignoremissingattachement'><?php eT("Ignore missing attachments:"); ?></label>
+                            <div class=''>
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                'name'          => "ignoremissingattachement",
+                                'checkedOption' => '0',
+                                'selectOptions' => [
+                                    '1' => gT('On'),
+                                    '0' => gT('Off'),
+                                ],
+                            ]); ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="col-md-6">
                     <!-- Max reminders -->
@@ -119,7 +148,7 @@
             <div>
                 <ul class="nav nav-tabs">
                     <?php $c = true ?>
-                    <?php foreach ($oSurvey->allLanguages as $language): ?>
+                    <?php foreach ($oSurvey->allLanguages as $language) : ?>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link <?= $c ? "active" : "" ?>" data-bs-toggle="tab" href="#<?= $language ?>">
                                 <?php if ($c) {
@@ -151,7 +180,7 @@
                         <div id="<?php echo $language; ?>" class="tab-pane fade <?php if ($c) {
                             $c = false;
                             echo 'show active';
-                        } ?>">
+                                 } ?>">
 
                             <div class='mb-3'>
                                 <label class='form-label '

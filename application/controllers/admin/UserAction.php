@@ -64,7 +64,7 @@ class UserAction extends SurveyCommonAction
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
 
-                if ($newPassword !== '' && $repeatPassword !== '') {
+                if ($newPassword !== '' || $repeatPassword !== '') {
                     $error = $oUserModel->validateNewPassword($newPassword, $oldPassword ?? '', $repeatPassword);
 
                     if ($error !== '') {

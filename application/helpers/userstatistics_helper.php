@@ -683,12 +683,9 @@ class userstatistics_helper
             $alist[] = array("NoAnswer", gT("No answer"), $mfield);
         } // Ranking OPTION
         elseif ($firstletter == "R") {
-            // $rt format: "R" + fieldmap key = "RQ{qid}_R{aid}"
-            // Strip leading "R" to get the actual responses table column "Q{qid}_R{aid}"
-            $fieldmapKey = substr($rt, 1);           // "Q{qid}_R{aid}"
+            $fieldmapKey = substr($rt, 1);
             $qqid        = (int) ltrim(explode('_', $fieldmapKey)[0], 'Q');  // numeric qid
-            // Rank position (e.g. "3" from "Q12345_R3")
-            $rankLabel   = substr($fieldmapKey, strpos($fieldmapKey, '_R') + 2);  // the aid part
+            $rankLabel   = substr($fieldmapKey, strpos($fieldmapKey, '_S') + 2);  // the qid part
 
             //get question data
             $nresult = Question::model()->with('questionl10ns')->find(array(
@@ -711,7 +708,6 @@ class userstatistics_helper
                 'order'     => 'sortorder'
             ]);
 
-            // $fieldmapKey is "Q{qid}_R{aid}" — the actual responses table column for this rank slot
             foreach ($result as $row) {
                 $alist[] = array($row->code, flattenText($row->answerl10ns[$language]->answer), $fieldmapKey);
             }
@@ -723,11 +719,7 @@ class userstatistics_helper
                 //get SGQ data
                 $qqid = substr(explode("_", $rt)[0], 1);
 
-                //select details for this question
-                /**
-                 * FIXME $iQuestionIDlength not defined!!
-                 */
-                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => substr($qqid, 0, $iQuestionIDlength)));
+                $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => intval($qqid)));
                 $qtitle = $nresult->title;
                 $qtype = $nresult->type;
                 $qquestion = flattenText($nresult->question);
@@ -967,8 +959,8 @@ class userstatistics_helper
                     foreach ($result as $row) {
                         //put translation of mean and calculated data into $showem array
                         $showem[] = array(gT("Sum"), $row['sum']);
-                        $showem[] = array(gT("Standard deviation"), round($row['stdev'], 2));
-                        $showem[] = array(gT("Average"), round($row['average'], 2));
+                        $showem[] = array(gT("Standard deviation"), round($row['stdev'] ?? 0, 2));
+                        $showem[] = array(gT("Average"), round($row['average'] ?? 0, 2));
                         $showem[] = array(gT("Minimum"), $row['minimum']);
 
                         //Display the maximum and minimum figures after the quartiles for neatness
@@ -1388,6 +1380,18 @@ class userstatistics_helper
     }
 
     /**
+     * Sometimes we get a raw name that starts with multiple letters due to statistics convention which the object will not recognize.
+     * So we extract the fieldname from the raw name to map between statistics conventions and actual fieldnames
+     * @param string $rawName
+     * @param int $digitIndex
+     * @return string
+     */
+    protected function getFieldNameFromRawName(string $rawName, int $digitIndex)
+    {
+        return ($digitIndex > 1) ? substr($rawName, $digitIndex - 1) : $rawName;
+    }
+
+    /**
      * displayResults builds html output to display the actual results from a survey
      *
      * @param mixed $outputs
@@ -1483,7 +1487,7 @@ class userstatistics_helper
         if (!empty($sql)) {
             $criteria->addCondition($sql);
         }
-        
+
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
         foreach ($oResponses as $key => $oResponse) {
@@ -1494,6 +1498,7 @@ class userstatistics_helper
             $row = 0;
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
+                $digitIndex = strcspn($al[2] ?? '', '0123456789');
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
@@ -1501,7 +1506,7 @@ class userstatistics_helper
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
+                            $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                             $column = substr((string) $sResponseColumn, 0, strlen((string) $sResponseColumn) - 5);
                             if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
                                 $row += 1;
@@ -1510,7 +1515,7 @@ class userstatistics_helper
                     } else {
                         //get data - select a count of responses where no answer is provided
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
+                            $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                             if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
@@ -1528,11 +1533,12 @@ class userstatistics_helper
                 */
                 elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
                     $sDatabaseType = Yii::app()->db->getDriverName();
+                    $digitIndex = strcspn($al[2] ?? '', '0123456789');
 
                     //free text answers
                     if ($al[0] == "Answer") {
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
+                            $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                             if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
@@ -1541,15 +1547,16 @@ class userstatistics_helper
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $al[2];
+                            $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                             if ($oResponse->$sResponseColumn == '') {
                                 $row += 1;
                             }
                         }
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
+                    $digitIndex = strcspn($al[2] ?? '', '0123456789');
                     foreach ($oResponses as $oResponse) {
-                        $sResponseColumn = $al[2];
+                        $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                         if ($oResponse->$sResponseColumn != '') {
                             $row += 1;
                         }
@@ -1557,8 +1564,7 @@ class userstatistics_helper
                 // all other question types
                 } else {
                     foreach ($oResponses as $oResponse) {
-                        $pos = strcspn($al[2], '123456789');
-                        $sResponseColumn = ($pos > 1) ? substr($al[2], $pos - 1) : $al[2];
+                        $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                         if (substr((string) $rt, 0, 1) == "R") {
                             if ($al[0] === "") {
                                 // Ranking No answer: column is NULL or empty

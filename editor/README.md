@@ -68,7 +68,7 @@ npm install
 npm start
 ```
 
-Starts rsbuild in watch mode with hot reload at `http://localhost:3000`. ESLint
+Starts rsbuild in watch mode with hot reload at `http://localhost:3001`. ESLint
 runs automatically in development. The `prestart` script also collects
 translation strings before the server boots.
 

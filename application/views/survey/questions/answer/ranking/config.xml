@@ -17,7 +17,7 @@
         <description>Ranking question type configuration</description>
         <questionType>R</questionType>
         <group>Mask questions</group>
-        <subquestions>0</subquestions>
+        <subquestions>1</subquestions>
         <answerscales>1</answerscales>
         <hasdefaultvalues>0</hasdefaultvalues>
         <assessable>1</assessable>
@@ -347,7 +347,7 @@
             <expression></expression>
         </attribute>
         <attribute>
-            <name>answer_order</name>
+            <name>subquestion_order</name>
             <category>Display</category>
             <sortorder>100</sortorder>
             <inputtype>singleselect</inputtype>
@@ -370,8 +370,8 @@
                 </option>
             </options>
             <default>normal</default>
-            <help>Present answer options in normal, random or alphabetical order</help>
-            <caption>Answer options order</caption>
+            <help>Present subquestions in normal, random or alphabetical order</help>
+            <caption>Subquestions order</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

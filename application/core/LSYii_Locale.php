@@ -26,6 +26,11 @@ class LSYii_Locale extends CLocale
      */
     public static function getInstance($id)
     {
+        // not a real locale — resolve it before CLocale rejects it.
+        if ($id === 'auto' || $id === '' || $id === null) {
+            Yii::app()->loadHelper('common');
+            $id = getBrowserLanguage();
+        }
         // Fix up the LimeSurvey language code for Yii
         $aLanguageData = getLanguageData();
         if (isset($aLanguageData[$id]['cldr'])) {

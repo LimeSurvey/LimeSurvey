@@ -519,12 +519,14 @@ class LimeExpressionManager
      * 'rootVarName' => 'afDS'  // the root variable name
      * 'preg' => '/[A-Z]+/' // regular expression validation equation, if any
      * 'subqs' => array() of subquestions, where each contains:
-     *     'rowdivid' => '26626X34X702sq1' // the javascript id identifying the question row (so array_filter can hide rows)
-     *     'varName' => 'afSrcFilter_sq1' // the full variable name for the subquestion
-     *     'jsVarName_on' => 'java26626X34X702sq1' // the JavaScript variable name if the variable is defined on the current page
-     *     'jsVarName' => 'java26626X34X702sq1' // the JavaScript variable name to use if the variable is defined on a different page
-     *     'csuffix' => 'sq1' // the SGQ suffix to use for a fieldname
-     *     'sqsuffix' => '_sq1' // the suffix to use for a qcode variable name
+     *     'rowdivid' => 'Q702_S810' // the DOM element id identifying the subquestion row (for array_filter show/hide)
+     *     'sgqa'     => 'Q702_S810_S823' // the full fieldname (sgqa) of this cell; used for knownVars / SQrelevance lookups
+     *     'varName' => 'afSrcFilter_sq1' // the full qcode variable name for the subquestion
+     *     'jsVarName_on' => 'javaQ702_S810' // the JavaScript variable name if the variable is defined on the current page
+     *     'jsVarName' => 'javaQ702_S810' // the JavaScript variable name to use if the variable is defined on a different page
+     *     'csuffix' => '_S810' // the fieldname suffix; appended to the qcode2sgq base ('Q702') to form the full sgqa: 'Q702_S810'
+     *     'sqsuffix' => '_sq1' // the qcode/aid suffix (with leading underscore); used to match the same subquestion across questions in array_filter
+     *     'code'     => 'sq1'  // the raw subquestion code/title (= aid); used for attribute comparisons like exclude_all_others
      *  );
      *
      * @var array
@@ -1056,10 +1058,12 @@ class LimeExpressionManager
                     }
                 }
             }
-            if (($row['cqid'] == 0
+            if (
+                ($row['cqid'] == 0
                     && preg_match('/^{TOKEN:([^}]*)}$/', $row['cfieldname'])
                     && preg_match('/^{TOKEN:([^}]*)}$/', isset($previousCondition) ? $previousCondition['cfieldname'] : '')
-                ) || substr($row['cfieldname'], 0, 1) == '+') {
+                ) || substr($row['cfieldname'], 0, 1) == '+'
+            ) {
                 $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields that follow a token field)
             }
             $previousCondition = $row;
@@ -1161,18 +1165,35 @@ class LimeExpressionManager
                     $subqs = $qinfo['subqs'];
                     if ($type == Question::QT_R_RANKING) {
                         $subqs = [];
-                        $rawAnswers = \Answer::model()->findAll("qid = :qid", [":qid" => $qinfo['qid']]);
-                        $answers = [];
-                        foreach ($rawAnswers as $rawAnswer) {
-                            $answers[$rawAnswer->code] = $rawAnswer;
+                        $rawQuestions = \Question::model()->findAll(
+                            "parent_qid = :qid",
+                            [":qid" => $qinfo['qid']]
+                        );
+                        $questions = [];
+                        foreach ($rawQuestions as $rawQuestion) {
+                            $questions[$rawQuestion->title] = $rawQuestion;
                         }
-                        foreach ($this->qans[$qinfo['qid']] as $k => $v) {
-                            $_code = explode('~', (string) $k);
-                            $subqs[] = [
-                                'rowdivid' => $qinfo['sgqa'] . "_R" . $answers[$_code[1]]->aid,
-                                'sqsuffix' => '_' . $_code[1],
-                                'code' => $_code[1]
-                            ];
+                        if (!empty($this->qans[$qinfo['qid']])) {
+                            // Legacy path: ranking answers stored in {{answers}} table.
+                            foreach ($this->qans[$qinfo['qid']] as $k => $v) {
+                                $_code = explode('~', (string) $k);
+                                $subqs[] = [
+                                    'rowdivid' => $qinfo['sgqa'] . "_S" . $questions[$_code[1]]->qid,
+                                    'sqsuffix' => '_' . $_code[1],
+                                    'code'     => $_code[1],
+                                ];
+                            }
+                        } else {
+                            // New path: ranking answers imported as subquestions.
+                            // $rawQuestions already holds all subquestion rows ordered
+                            // by question_order, so build $subqs directly from them.
+                            foreach ($rawQuestions as $rawQuestion) {
+                                $subqs[] = [
+                                    'rowdivid' => $qinfo['sgqa'] . "_S" . $rawQuestion->qid,
+                                    'sqsuffix' => '_' . $rawQuestion->title,
+                                    'code'     => $rawQuestion->title,
+                                ];
+                            }
                         }
                     }
                     $last_rowdivid = '--';
@@ -1240,11 +1261,7 @@ class LimeExpressionManager
                                 }
                                 foreach ($cascadedAFE as $_cafe) {
                                     $sgq = ((isset($this->qcode2sgq[$_cafe])) ? $this->qcode2sgq[$_cafe] : $_cafe);
-                                    $fkey = explode("_", $sq['varName'])[0] . "_" . trim($_cafe);
-                                    if (!isset($this->qcode2sgqa[$fkey])) {
-                                        continue;
-                                    }
-                                    $fqid = substr(explode("_", $this->qcode2sgqa[$fkey])[0], 1);
+                                    $fqid = substr(explode("_", $sgq)[0], 1);
                                     if (!isset($this->q2subqInfo[$fqid])) {
                                         continue;
                                     }
@@ -1348,8 +1365,11 @@ class LimeExpressionManager
                             break;
                         case Question::QT_COLON_ARRAY_NUMBERS: // Array Numbers
                         case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
-                            $aCsuffix = (explode('_', (string) $sq['csuffix']));
-                            $rowdivid = $rowdivid . '_' . $aCsuffix[1];
+                            // Use the stored full sgqa for the knownVars SQrelevance lookup;
+                            // $sq['rowdivid'] is the first-level subquestion DOM row identifier.
+                            if (isset($sq['sgqa'])) {
+                                $rowdivid = $sq['sgqa'];
+                            }
                             break;
                         case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                         case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
@@ -1786,10 +1806,14 @@ class LimeExpressionManager
                         if ($exclusive_option == '') {
                             continue;
                         }
+                        $exclusiveOptionSGQA = $this->qcode2sgqa[$qinfo['rootVarName'] . '_' . $exclusive_option] ?? '';
+                        if ($exclusiveOptionSGQA === ''){
+                            continue;
+                        }
                         $subqs = $qinfo['subqs'];
                         foreach ($subqs as $sq) {
                             $sq_name = null;
-                            if ($sq['csuffix'] == $exclusive_option) {
+                            if ($sq['suffix'] === $exclusive_option) {
                                 continue;   // so don't make the excluded option irrelevant
                             }
                             switch ($type) {
@@ -1803,24 +1827,18 @@ class LimeExpressionManager
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                 case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
-                                    if ($this->sgqaNaming) {
-                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
-                                    } else {
-                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
-                                    }
+                                    $sq_name = $exclusiveOptionSGQA . '.NAOK';
+                                    $subQrels[] = [
+                                        'qtype'    => $type,
+                                        'type'     => 'exclude_all_others',
+                                        'rowdivid' => $sq['rowdivid'],
+                                        'eqn'      => 'is_empty(' . $sq_name . ')',
+                                        'qid'      => $questionNum,
+                                        'sgqa'     => $qinfo['sgqa'],
+                                    ];
                                     break;
                                 default:
                                     break;
-                            }
-                            if (!is_null($sq_name)) {
-                                $subQrels[] = [
-                                    'qtype'    => $type,
-                                    'type'     => 'exclude_all_others',
-                                    'rowdivid' => $sq['rowdivid'],
-                                    'eqn'      => 'is_empty(' . $sq_name . ')',
-                                    'qid'      => $questionNum,
-                                    'sgqa'     => $qinfo['sgqa'],
-                                ];
                             }
                         }
                     }
@@ -1853,7 +1871,7 @@ class LimeExpressionManager
                                 break;
                         }
                         if (!is_null($sq_name)) {
-                            if ($sq['csuffix'] == $exclusive_option) {
+                            if ($sq['suffix'] == $exclusive_option) {
                                 $eoVarName = substr((string) $sq['jsVarName'], 4);
                             } else {
                                 $sq_names[] = $sq_name;
@@ -1933,153 +1951,87 @@ class LimeExpressionManager
                 $input_boxes = "";
             }
 
-            // min_answers
-            // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
-            if (isset($qattr['min_answers']) && trim((string) $qattr['min_answers']) != '' && trim((string) $qattr['min_answers']) != '0') {
-                $min_answers = $qattr['min_answers'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = [];
-                    foreach ($subqs as $sq) {
-                        $sq_name = null;
-                        switch ($type) {
-                            case Question::QT_1_ARRAY_DUAL:   // Array dual scale
-                                if (substr((string) $sq['varName'], -1, 1) == '0') {
-                                    if ($this->sgqaNaming) {
-                                        $base = $sq['rowdivid'] . "#";
-                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
-                                    } else {
-                                        $base = (string)substr((string) $sq['varName'], 0, -1);
-                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
-                                    }
-                                }
-                                break;
-                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
-                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
-                            case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
-                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
-                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
-                            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
-                            case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
-                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
-                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                            case Question::QT_R_RANKING: // Ranking STYLE
-                                if ($this->sgqaNaming) {
-                                    $sq_name = (string)substr((string) $sq['jsVarName'], 4) . '.NAOK';
-                                } else {
-                                    $sq_name = $sq['varName'] . '.NAOK';
-                                }
-                                break;
-                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                                if (!preg_match('/comment$/', (string) $sq['varName'])) {
-                                    if ($this->sgqaNaming) {
-                                        $sq_name = $sq['rowdivid'] . '.NAOK';
-                                    } else {
-                                        $sq_name = $sq['rowdivid'] . '.NAOK';
-                                    }
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                        }
+            // min_answers and max_answers
+            // Both use the same subquestion name list, so build it once.
+            $hasMinAnswers = isset($qattr['min_answers']) && trim((string) $qattr['min_answers']) != '' && trim((string) $qattr['min_answers']) != '0';
+            $hasMaxAnswers = isset($qattr['max_answers']) && trim((string) $qattr['max_answers']) != '';
+            $min_answers = $hasMinAnswers ? $qattr['min_answers'] : '';
+            $max_answers = $hasMaxAnswers ? $qattr['max_answers'] : '';
+
+            if (($hasMinAnswers || $hasMaxAnswers) && $hasSubqs) {
+                $subqs = $qinfo['subqs'];
+                $sq_names = [];
+                foreach ($subqs as $sq) {
+                    $sq_name = null;
+                    switch ($type) {
+                        case Question::QT_1_ARRAY_DUAL:   // Array dual scale
+                            if (substr((string) $sq['varName'], -1, 1) == '0') {
+                                $base = substr((string) $sq['varName'], 0, -1);
+                                $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+                            }
+                            break;
+                        case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
+                        case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
+                        case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                        case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
+                        case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
+                        case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
+                        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
+                        case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                        case Question::QT_R_RANKING: // Ranking STYLE
+                            if ($this->sgqaNaming) {
+                                $sq_name = substr((string) $sq['jsVarName'], 4) . '.NAOK';
+                            } else {
+                                $sq_name = $sq['varName'] . '.NAOK';
+                            }
+                            break;
+                        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                            if (!preg_match('/comment$/', (string) $sq['varName'])) {
+                                $sq_name = $sq['rowdivid'] . '.NAOK';
+                            }
+                            break;
+                        default:
+                            break;
                     }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum])) {
-                            $validationEqn[$questionNum] = [];
-                        }
+                    if (!is_null($sq_name)) {
+                        $sq_names[] = $sq_name;
+                    }
+                }
+                if (count($sq_names) > 0) {
+                    if (!isset($validationEqn[$questionNum])) {
+                        $validationEqn[$questionNum] = [];
+                    }
+                    $countExpr = 'count(' . implode(', ', $sq_names) . ')';
+                    if ($hasMinAnswers) {
+                        // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
                         $validationEqn[$questionNum][] = [
                             'qtype' => $type,
                             'type'  => 'min_answers',
                             'class' => 'num_answers',
-                            'eqn'   => 'if(is_empty(' . $min_answers . '),1,(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . ')))',
+                            'eqn'   => 'if(is_empty(' . $min_answers . '),1,(' . $countExpr . ' >= (' . $min_answers . ')))',
                             'qid'   => $questionNum,
                         ];
                     }
-                }
-            } else {
-                $min_answers = '';
-            }
-
-            // max_answers
-            // Validation:= count(sq1,...,sqN) <= value (which could be an expression).
-            if (isset($qattr['max_answers']) && trim((string) $qattr['max_answers']) != '') {
-                $max_answers = $qattr['max_answers'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = [];
-                    foreach ($subqs as $sq) {
-                        $sq_name = null;
-                        switch ($type) {
-                            case Question::QT_1_ARRAY_DUAL:   // Array dual scale
-                                if (substr((string) $sq['varName'], -1, 1) == '0') {
-                                    if ($this->sgqaNaming) {
-                                        $base = $sq['rowdivid'] . "#";
-                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
-                                    } else {
-                                        $base = substr((string) $sq['varName'], 0, -1);
-                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
-                                    }
-                                }
-                                break;
-                            case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
-                            case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
-                            case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
-                            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
-                            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
-                            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
-                            case Question::QT_F_ARRAY: // Array (Flexible) - Row Format
-                            case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
-                            case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
-                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                            case Question::QT_R_RANKING: // Ranking STYLE
-                                if ($this->sgqaNaming) {
-                                    $sq_name = substr((string) $sq['jsVarName'], 4) . '.NAOK';
-                                } else {
-                                    $sq_name = $sq['varName'] . '.NAOK';
-                                }
-                                break;
-                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                                if (!preg_match('/comment$/', (string) $sq['varName'])) {
-                                    if ($this->sgqaNaming) {
-                                        $sq_name = $sq['rowdivid'] . '.NAOK';
-                                    } else {
-                                        $sq_name = $sq['varName'] . '.NAOK';
-                                    }
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                        }
-                    }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum])) {
-                            $validationEqn[$questionNum] = [];
-                        }
+                    if ($hasMaxAnswers) {
+                        // Validation:= count(sq1,...,sqN) <= value (which could be an expression).
                         $validationEqn[$questionNum][] = [
                             'qtype' => $type,
                             'type'  => 'max_answers',
                             'class' => 'num_answers',
-                            'eqn'   => '(if(is_empty(' . $max_answers . '),1,count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . ')))',
+                            'eqn'   => '(if(is_empty(' . $max_answers . '),1,' . $countExpr . ' <= (' . $max_answers . ')))',
                             'qid'   => $questionNum,
                         ];
                     }
                 }
-            } else {
-                $max_answers = '';
             }
-            /* Specific for ranking : fix only the alert : test if needed (max_subquestions < count(answers) )*/
+            /* Specific for ranking : fix only the alert : test if needed (max_subquestions < count(subquestions) )*/
             if ($type == Question::QT_R_RANKING && (isset($qattr['max_subquestions']) && intval($qattr['max_subquestions']) > 0)) {
                 $max_subquestions = intval($qattr['max_subquestions']);
-                // We don't have another answer count in EM ?
-                $answerCount = Answer::model()->count("qid=:qid", [":qid" => $questionNum]);
-                $max_subquestions = min($max_subquestions, $answerCount); // Can not be upper than current answers #14899
+                // Ranking items are now stored as subquestions
+                $subQuestionCount = Question::model()->count("parent_qid=:parent_qid", [":parent_qid" => $questionNum]);
+                $max_subquestions = min($max_subquestions, $subQuestionCount); // Can not be upper than current subquestions
                 if ($max_answers != '') {
                     $max_answers = 'min(' . $max_answers . ',' . $max_subquestions . ')';
                 } else {
@@ -3299,14 +3251,18 @@ class LimeExpressionManager
     }
 
     /**
-     * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
-     * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
+     * Builds and caches variable and token mappings used by the ExpressionManager for a survey.
      *
-     * @param integer $surveyid
-     * @param boolean|null $forceRefresh
-     * @param boolean|null $anonymized
-     * @return boolean|null - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
-     * @todo Keep method as-is but factor out content to new class; add unit tests for class
+     * Populates internal maps (known variables, question/subquestion metadata, JS aliases, token fields, etc.)
+     * required for processing LimeSurvey expressions and client-side relevance/validation logic. This method
+     * is typically expensive and only performs the full mapping when the survey's field map changes or when
+     * a forced refresh is requested.
+     *
+     * @param int $surveyid Survey primary key (sid) for which to build mappings.
+     * @param bool|null $forceRefresh When true, forces rebuilding mappings even if cached mappings exist.
+     * @param bool|null $anonymized When true, token field values are populated as blank to preserve anonymity.
+     * @return bool|null True if mappings were (re)created and ExpressionManager variables need resetting; false if
+     *                   existing cached mappings were reused; null if an error occurred and mappings could not be built.
      */
     public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false)
     {
@@ -3316,6 +3272,9 @@ class LimeExpressionManager
         } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
             return false;   // means that those variables have been cached and no changes needed
         }
+        /* Import needed helpers */
+        Yii::import('application.helpers.replacements_helper', true); // templatereplace function
+
         $now = microtime(true);
         $this->em->SetSurveyMode($this->surveyMode);
         $survey = Survey::model()->findByPk($surveyid);
@@ -3570,11 +3529,11 @@ class LimeExpressionManager
             $varName = '';
             switch ($type) {
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
+                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                 case Question::QT_D_DATE: //DATE
                 case Question::QT_G_GENDER: //GENDER drop-down list
                 case Question::QT_I_LANGUAGE: //Language Question
-                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                 case Question::QT_S_SHORT_FREE_TEXT: //Short free text
@@ -3582,18 +3541,22 @@ class LimeExpressionManager
                 case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
                 case Question::QT_X_TEXT_DISPLAY: //BOILERPLATE QUESTION
                 case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
-                case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                 case Question::QT_ASTERISK_EQUATION: //Equation
-                    $csuffix = '';
-                    $sqsuffix = '';
-                    $varName = $fielddata['title'];
+                    $varName = !empty($aid)
+                        ? $fielddata['title'] . '_' . $aid
+                        : $fielddata['title'];
                     $question = $fielddata['question'];
                     break;
+                case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
+                    $varName = !empty($aid)
+                        ? $fielddata['title'] . '_' . $aid
+                        : $fielddata['title'];
+                    break;
                 case Question::QT_1_ARRAY_DUAL: // Array dual scale
-                    $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
-                    $sqsuffix = '_' . $fielddata['aid'];
+                    // csuffix = fieldname suffix: 'suffix' holds '_S{sqid}'; append '#scale_id' to reach the exact cell fieldname
+                    $csuffix = ($fielddata['suffix'] ?? '') . '#' . $fielddata['scale_id'];
+                    $sqsuffix = '_' . $fielddata['aid']; // qcode/aid suffix: '_SQ001'
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];
-                    ;
                     $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     $rowdivid = substr((string) $sgqa, 0, -2);
@@ -3607,8 +3570,8 @@ class LimeExpressionManager
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text                 // note does not have javatbd equivalent - so array filters don't work on it
-                case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
-                    $csuffix = $fielddata['csuffix'] ?? $fielddata['aid'];
+                    // csuffix = fieldname suffix ('_S{sqid}'); sqsuffix = qcode/aid suffix ('_SQ001')
+                    $csuffix = $fielddata['suffix'] ?? '';
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
@@ -3628,8 +3591,26 @@ class LimeExpressionManager
                     }
 
                     break;
+                case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
+                    // csuffix = fieldname suffix ('_S{sqid}'); sqsuffix = qcode/aid suffix ('_1', '_2', ...)
+                    $csuffix = $fielddata['suffix'] ?? '';
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
+                    $question = $fielddata['subquestion'];
+                    // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
+                    if ($other == "Y") {
+                        if (isset($qattr[$questionNum]['other_replace_text']) && trim((string) $qattr[$questionNum]['other_replace_text']) != '') {
+                            $question = trim((string) $qattr[$questionNum]['other_replace_text']);
+                        } else {
+                            $question = $this->gT('Other:');
+                        }
+                    }
+                    $sqsuffix = '_' . $fielddata['aid'];
+                    $rowdivid = $sgqa;
+
+                    break;
                 case Question::QT_H_ARRAY_COLUMN:
-                    $csuffix = $fielddata['aid'];
+                    // csuffix = fieldname suffix ('_S{sqid}'); sqsuffix = qcode/aid suffix ('_SQ001')
+                    $csuffix = $fielddata['suffix'] ?? '';
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
                     $sqsuffix = '_' . $fielddata['aid'];
@@ -3637,12 +3618,14 @@ class LimeExpressionManager
                     break;
                 case Question::QT_COLON_ARRAY_NUMBERS: // Array 1 to 10
                 case Question::QT_SEMICOLON_ARRAY_TEXT: // Array Text
-                    $csuffix = $fielddata['aid'];
+                    // csuffix = fieldname suffix ('_S{sqid1}_S{sqid2}'); sqsuffix = qcode/aid suffix (first part only: '_SQ001')
+                    $csuffix = $fielddata['suffix'] ?? '';
                     $sqsuffix = '_' . substr((string) $fielddata['aid'], 0, (int)strpos((string) $fielddata['aid'], '_'));
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                    $rowdivid = substr((string) $sgqa, 0, (int)strpos((string) $sgqa, '_'));
+                    // rowdivid = first-level subquestion row (for DOM show/hide); $sgqa is stored separately for SQrelevance lookup
+                    $rowdivid = !empty($sqid) ? ('Q' . $questionNum . '_S' . $sqid) : substr((string) $sgqa, 0, (int)strpos((string) $sgqa, '_'));
                     break;
                 default:
                     // TODO: Internal error if this happens
@@ -3698,22 +3681,9 @@ class LimeExpressionManager
                     $jsVarName = 'java' . $sgqa;
                     break;
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                    if (preg_match("/other$/", (string) $sgqa)) {
-                        $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = 'othertext' . substr((string) $sgqa, 0, -5);
-                    } else {
-                        $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = $jsVarName;
-                    }
-                    break;
-                case Question::QT_L_LIST: //LIST drop-down/radio-button list
-                    if (preg_match("/other$/", (string) $sgqa)) {
-                        $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = 'answer' . $sgqa . "text";
-                    } else {
-                        $jsVarName = 'java' . $sgqa;
-                        $jsVarName_on = $jsVarName;
-                    }
+                case Question::QT_L_LIST: //LIST radio-button list
+                    $jsVarName = 'java' . $sgqa;
+                    $jsVarName_on = $this->resolveOtherJsVarNameOn((string) $sgqa, $type);
                     break;
                 case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
                 case Question::QT_G_GENDER: //GENDER drop-down list
@@ -3844,11 +3814,13 @@ class LimeExpressionManager
                     default:
                         $q2subqInfo[$questionNum]['subqs'][] = [
                             'rowdivid'     => $rowdivid,
+                            'sgqa'         => $sgqa,
                             'varName'      => $varName,
                             'jsVarName_on' => $jsVarName_on,
                             'jsVarName'    => $jsVarName,
-                            'csuffix'      => $csuffix,
-                            'sqsuffix'     => $sqsuffix,
+                            'csuffix'      => $csuffix,  // fieldname suffix (e.g. '_S{sqid}')
+                            'sqsuffix'     => $sqsuffix, // qcode/aid suffix (e.g. '_SQ001')
+                            'suffix'         => $aid,      // the subquestion code/title (e.g. 'SQ001') for attribute comparisons
                         ];
                         break;
                 }
@@ -4074,6 +4046,38 @@ class LimeExpressionManager
         $this->numQuestions = count($this->questionSeq2relevance);
         $this->numGroups = count($this->groupSeqInfo);
         return true;
+    }
+
+    /**
+     * Resolve the on-page JS variable name for a field that may be an "other" text input.
+     *
+     * When $sgqa ends in "other" (i.e. the field name is Q{qid}_Cother), the HTML element ID
+     * differs between question types:
+     * - QT_L_LIST uses `answer{Q{qid}}othertext`
+     * - QT_EXCLAMATION_LIST_DROPDOWN uses `othertext{Q{qid}}`
+     *
+     * For non-other fields the on-page name is identical to the off-page name `java{sgqa}`.
+     *
+     * @param string $sgqa The sub-question field name (e.g. "Q623_Cother" or "Q623")
+     * @param string $type The question type constant (Question::QT_*)
+     * @return string The resolved on-page JS variable name
+     */
+    private function resolveOtherJsVarNameOn(string $sgqa, string $type): string
+    {
+        if (!preg_match('/other$/', $sgqa)) {
+            return 'java' . $sgqa;
+        }
+
+        // Strip the trailing "_Cother" suffix (7 characters) to get the base field name
+        $basesgqa = substr($sgqa, 0, -7);
+
+        if ($type === Question::QT_L_LIST) {
+            // HTML id: answer{Q{qid}}othertext  (see listradio/rows/answer_row_other.twig)
+            return 'answer' . $basesgqa . 'othertext';
+        }
+
+        // QT_EXCLAMATION_LIST_DROPDOWN: HTML id: othertext{Q{qid}}  (see list_dropdown/rows/othertext.twig)
+        return 'othertext' . $basesgqa;
     }
 
     /**
@@ -4996,7 +5000,7 @@ class LimeExpressionManager
                 $message = '';
                 $result = [];
                 $notRelevantSteps = $LEM->lastMoveResult['notRelevantSteps'] ?? 0;
-                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps']?? 0;
+                $hiddenSteps = $LEM->lastMoveResult['hiddenSteps'] ?? 0;
                 if (!$force && $LEM->currentQuestionSeq != -1) {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
@@ -5651,7 +5655,7 @@ class LimeExpressionManager
                         return $LEM->lastMoveResult;
                     }
                 }
-            break;
+                break;
         }
     }
 
@@ -5987,12 +5991,12 @@ class LimeExpressionManager
             }
             /* With ranking we don't check for relevance in each subquestion, just need the max numbers of answers */
             /* $sgqa and subQrelInfo are not the same information */
-            if ($qInfo['type'] == 'R') {
+            if ($qInfo['type'] == \Question::QT_R_RANKING) {
                 /** @var integer counter to have current rank number (subquestion) */
                 $iCountRank = 0;
 
                 /** @var integer Get total of answers (all potential answers) * */
-                $answersCount = \Answer::model()->count('qid = :qid', [':qid' => $qid]);
+                $answersCount = \Question::model()->count('parent_qid = :parent_qid', [':parent_qid' => $qid]);
 
                 /** @var integer Get number of answers currently filtered (unrelevant) * */
                 $answersFilteredCount = 0; // Default : no filter
@@ -6770,7 +6774,6 @@ class LimeExpressionManager
         //////////////////////////////////////////////////////////////////////////
         // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
         //////////////////////////////////////////////////////////////////////////
-
         $qStatus = [
             'info'            => $qInfo,   // collect all questions within the group - includes mandatory and always-hiddden status
             'relevant'        => $qrel,
@@ -7318,9 +7321,9 @@ class LimeExpressionManager
                             $relParts[] = "    }\n";
                             break;
                         case Question::QT_R_RANKING:
-                            $aid = substr((string) $sq['rowdivid'], 2 + strlen((string) $sq['sgqa']));
-                            $answer = \Answer::model()->find("aid = :aid", [":aid" => $aid]);
-                            $listItem = $answer->code;
+                            $qid = substr((string) $sq['rowdivid'], 2 + strlen((string) $sq['sgqa']));
+                            $question = \Question::model()->find("qid = :qid", [":qid" => $qid]);
+                            $listItem = $question->title;
                             $relParts[] = " $('#questionQ{$arg['qid']} .select-list select').each(function(){ \n";
                             $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
                             $relParts[] = "     $(this).val('').trigger('change'); \n";
@@ -7440,10 +7443,8 @@ class LimeExpressionManager
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                             switch ($arg['type']) {
                                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                                    $othervar = 'othertext' . substr((string) $arg['jsResultVar'], 4, -5);
-                                    break;
                                 case Question::QT_L_LIST:
-                                    $othervar = 'answer' . substr((string) $arg['jsResultVar'], 4) . 'text';
+                                    $othervar = $LEM->resolveOtherJsVarNameOn(substr((string) $arg['jsResultVar'], 4), $arg['type']);
                                     break;
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                                     $othervar = 'answer' . substr((string) $arg['jsResultVar'], 4);
@@ -8423,6 +8424,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         if (!$lang && isset($_SESSION['LEMlang'])) {
             $lang = $_SESSION['LEMlang'];
         }
+
+        // todo: commented out for 13 years
         // Actually seem uncesserry : only one call for each page, then commented
 #            static $aStaticQuestionAttributesForEM=array();
 #            if(isset($aStaticQuestionAttributesForEM[$surveyid][$qid][$lang]))
@@ -8902,6 +8905,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 $shown = $code;
                             } elseif (($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other$/', (string) $name)) {
                                 $shown = $code;
+                            } elseif ($type === Question::QT_R_RANKING) {
+                                if ($code) {
+                                    $LEM =& LimeExpressionManager::singleton();
+                                    $question = getTitleSubquestionMapping($LEM->getLEMsurveyId())[$var['qid']][$code] ?? null;
+                                    $shown = $question->questionl10ns[LimeExpressionManager::getEMlanguage()]->question ?? '';
+                                } else {
+                                    $shown = "";
+                                }
                             } else {
                                 $scale_id = $this->_GetVarAttribute($name, 'scale_id', '0', $gseq, $qseq);
                                 $which_ans = $scale_id . '~' . $code;
@@ -9106,13 +9117,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
 
     /**
-     * Create HTML view of the survey, showing everything that uses EM
-     * @param int $sid
-     * @param int|null $gid
-     * @param int|null
-     * @param int|null $LEMdebugLevel
-     * @param boolean|null $assessments
-     * @return array
+     * Render an HTML "logic file" that lists all expressions, relevances, validations, defaults, subquestions, and answer texts for a survey (or a specific group/question) and reports syntax errors and warnings.
+     *
+     * The function runs ExpressionManager in a preview "logic" mode, processes the survey (or the specified group/question), evaluates and pretty-prints expressions and replacement strings, and returns an HTML fragment plus a mapping of detected expression errors by question.
+     *
+     * @param int $sid Survey ID to inspect.
+     * @param int|null $gid If provided, restrict output to this group ID; otherwise null to include whole survey or when $qid is provided.
+     * @param int|null $qid If provided, restrict output to this question ID; otherwise null.
+     * @param int|null $LEMdebugLevel Bitfield controlling debug output (0 for none).
+     * @param bool|null $assessments When true, include assessment-related information; when null, use the survey's assessments setting.
+     * @return array An associative array with:
+     *               - 'errors' => array mapping "gid~qid" to an integer count of syntax errors for that question (or an integer 1 when a top-level failure occurs),
+     *               - 'html'   => string HTML fragment containing the generated logic-file view and any alert banners.
      */
     public static function ShowSurveyLogicFile($sid, $gid = null, $qid = null, $LEMdebugLevel = 0, $assessments = null)
     {
@@ -9140,6 +9156,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $aQuestionWarnings = [];
         $warnings = 0;
 
+        /* Import needed helpers */
+        Yii::import('application.helpers.replacements_helper', true);
         $surveyOptions = [
             'assessments'                 => $assessments === null ? ($aSurveyInfo['assessments'] == 'Y') : $assessments,
             'hyperlinkSyntaxHighlighting' => true,
@@ -10033,7 +10051,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 break;
             case 'R':  // Ranking
-                if (is_null(Answer::model()->getAnswerFromCode($qid, $value, $language))) {
+                if (is_null(Question::model()->getQuestionFromTitle($qid, $value, $language))) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
                 }

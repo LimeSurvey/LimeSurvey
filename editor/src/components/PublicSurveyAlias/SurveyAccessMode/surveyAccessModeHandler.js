@@ -29,7 +29,7 @@ export const getSurveyAccessModeOptions = () => ({
     key: 'closed',
     value: ACCESS_MODES.CLOSED,
     description: t(
-      'Only participants with the link and access code can access.'
+      'Only participants with a personalized link or a general link with access code can access.'
     ),
     icon: <LockIcon className="me-2" />,
   },

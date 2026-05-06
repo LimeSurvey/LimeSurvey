@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Render the selector for question massive actions.
  */
@@ -29,7 +30,7 @@
         'type' => 'dropdown-header',
         'text' => gT("General"),
     );
-    if(!$oSurvey->isActive) {
+    if (!$oSurvey->isActive) {
         // Delete
         $aActions[] = array(
             // li element
@@ -50,7 +51,7 @@
             'htmlModalBody' => gT('Deleting these questions will also delete their corresponding answer options and subquestions. Are you sure you want to continue??'),
         );
     }
-    if(!$oSurvey->isActive) {
+    if (!$oSurvey->isActive) {
         // Set question and group
         $aActions[] = array(
             // li element
@@ -123,7 +124,7 @@
         'modalType' => 'cancel-apply',
         'keepopen' => 'no',
         'sModalTitle' => gT('Set statistics options'),
-        'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_statistics_options',  ['model' => $model], true),
+        'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_statistics_options', ['model' => $model], true),
     );
 
     // Separator
@@ -139,7 +140,7 @@
         'text' => gT("Advanced (only apply to certain question types)"),
     );
 
-    if(!$oSurvey->isActive) {
+    if (!$oSurvey->isActive) {
         // Set other
         // DEPEND IF SURVEY IS ACTIVE !!!! (checked by questionEditor/changeMultipleQuestionOtherState )
         // TODO: don't show that action if survey is active
@@ -161,7 +162,7 @@
             'sModalTitle' => gT('Set "Other" state'),
             'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_questions_other', ['model' => $model], true),
         );
-    }    
+    }
 
     // Set subquestions/answers sort options
     $aActions[] = array(
@@ -181,9 +182,9 @@
         'keepopen' => 'false',
         'sModalTitle' => gT('Present subquestions/answer options in random order'),
         'htmlModalBody' => $this->renderPartial(
-                '/admin/survey/Question/massive_actions/_set_subquestansw_order',
-                ['model' => $model],
-                true
+            '/admin/survey/Question/massive_actions/_set_subquestansw_order',
+            ['model' => $model],
+            true
         ),
     );
 
@@ -196,7 +197,7 @@
             'dropUpText'  => gT('Selected question(s)...'),
             'aActions'    => $aActions,
     ));
-?>
+    ?>
 
 
 <!--

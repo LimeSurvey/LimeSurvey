@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbDataColumn class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
@@ -41,17 +42,17 @@ class TbDataColumn extends CDataColumn
                 }
             }
 
-            echo $sort->link($this->name, $label, array('class' => 'sort-link'));
-        } else {
-            if ($this->name !== null && $this->header === null) {
-                if ($this->grid->dataProvider instanceof CActiveDataProvider) {
-                    echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
-                } else {
-                    echo CHtml::encode($this->name);
-                }
+            echo $sort->link($this->name, $label, [
+                'class' => 'sort-link',
+            ]);
+        } elseif ($this->name !== null && $this->header === null) {
+            if ($this->grid->dataProvider instanceof CActiveDataProvider) {
+                echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
             } else {
-                parent::renderHeaderCellContent();
+                echo CHtml::encode($this->name);
             }
+        } else {
+            parent::renderHeaderCellContent();
         }
     }
 
@@ -75,7 +76,8 @@ class TbDataColumn extends CDataColumn
         if (is_string($this->filter)) {
             echo $this->filter;
         } else {
-            if ($this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
+            if (
+                $this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
                     (string) $this->name,
                     '.'
                 ) === false
