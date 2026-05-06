@@ -23,6 +23,7 @@ class ArrayNumbersProcessor extends AbstractQuestionProcessor
         for ($i = $min; $i <= $max; $i += $step) {
             $values[] = $i;
         }
+        $strValues = array_map('strval', $values);
 
         foreach ($this->question['subQuestions'] as $o) {
             $groups[$o['scale_id']][] = $o['qid'];
@@ -35,14 +36,19 @@ class ArrayNumbersProcessor extends AbstractQuestionProcessor
             )
         );
 
+        $fieldMeta = []; // fieldName => [subQuestion1, subQuestion2]
         foreach ($groupedSubQuestions as $questionIdConcat) {
             $questionId = explode('_', $questionIdConcat);
             $subQuestion1 = $this->question['subQuestions'][$questionId[0]];
             $subQuestion2 = $this->question['subQuestions'][$questionId[1]];
-
             $field = $this->rt . '_S' . $subQuestion1['qid'] . '_S' . $subQuestion2['qid'];
-            [$legend, $dataItems] = $this->buildItemsFromCodes($field, $values, $values);
+            $fieldMeta[$field] = [$subQuestion1, $subQuestion2];
+        }
 
+        $batch = $this->buildBatchItemsForSubquestions(array_keys($fieldMeta), $strValues, $strValues);
+
+        foreach ($fieldMeta as $field => [$subQuestion1, $subQuestion2]) {
+            [$legend, $dataItems] = $batch[$field];
             $charts[] = new StatisticsChartDTO(
                 $this->question['question'] . ' [' . $subQuestion1['question'] . '] [' . $subQuestion2['question'] . ']',
                 $legend,

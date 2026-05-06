@@ -14,16 +14,24 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
 
     public function process()
     {
-
         $legend = [];
         $dataItems = [];
-        $field = null;
+
+        $fieldNames = [];
+        foreach ($this->question['subQuestions'] ?? [] as $subQuestion) {
+            $fieldNames[] = $this->rt . '_S' . $subQuestion['qid'];
+        }
+        $hasOther = $this->question['other'] === Question::QT_Y_YES_NO_RADIO;
+        if ($hasOther) {
+            $fieldNames[] = $this->rt . '_Cother';
+        }
+
+        $counts = $this->batchGetResponseCounts($fieldNames);
 
         foreach ($this->question['subQuestions'] ?? [] as $subQuestion) {
             $field = $this->rt . "_S" . $subQuestion['qid'];
+            $count = $counts[$field] ?? 0;
             $legend[] = $subQuestion['question'];
-
-            $count = $this->getResponseCount($field);
             $dataItems[] = [
                 'key' => $subQuestion['title'],
                 'title' => $subQuestion['question'],
@@ -31,11 +39,10 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
             ];
         }
 
-        if ($this->question['other'] === Question::QT_Y_YES_NO_RADIO) {
+        if ($hasOther) {
             $field = $this->rt . '_Cother';
             $legend[] = 'other';
-            $count = $this->getResponseCount($field);
-            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $count];
+            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$field] ?? 0];
         }
 
         return new StatisticsChartDTO(
