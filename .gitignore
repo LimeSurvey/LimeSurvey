@@ -214,34 +214,18 @@ enabletests
 ## Ignore files and dependencies for testing
 vendor/bin/phpcbf
 vendor/bin/phpcs
-vendor/squizlabs/
-vendor/amphp/
 vendor/bin/
 vendor/composer/autoload_files.php
 vendor/composer/installed\.json
 vendor/composer/package-versions-deprecated/
 vendor/composer/semver/
-vendor/composer/xdebug-handler/
 #vendor/doctrine/
-vendor/dnoegel/
-vendor/felixfbecker/
-vendor/myclabs/
 vendor/netresearch/
-vendor/nikic/
 vendor/ocramius/
 vendor/openlss/
-vendor/pdepend/
-vendor/phar-io/
-vendor/php-webdriver/
 vendor/phpdocumentor/
-vendor/phpmd/
 vendor/phpspec/
-vendor/phpunit/
-vendor/sebastian/
-vendor/theseer/
-vendor/vimeo/
 vendor/webmozart/
-vendor/misantron/
 upload/templates/
 assets/packages/ckeditor/samples
 
