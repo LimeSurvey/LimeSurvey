@@ -11,7 +11,6 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
  */
 class PrefillStartingValues extends TestBaseClassWeb
 {
-
     /**
      * Import needed survey
      */
@@ -48,21 +47,21 @@ class PrefillStartingValues extends TestBaseClassWeb
             /* check if answer of PREFILL1 is A3 */
             $sgqa = self::$surveyId . 'X' . $questions['PREFILL1']->gid . 'X' . $questions['PREFILL1']->qid;
             $dropdpown = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
-            $this->assertEquals('A3', $ = ->getAttribute('value'));
+            $this->assertEquals('A3', $dropdpown->getAttribute('value'));
             /* Select Y to Q00 */
             $sgqa = self::$surveyId . 'X' . $questions['Q00']->gid . 'X' . $questions['Q00']->qid;
             $yesradio1 = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa . "Y"));
-            $yesradio1.click();
+            $yesradio1->click();
             /* get to 2nd question page */
             self::$webDriver->next();
             /* Select Y to Q00 */
             $sgqa = self::$surveyId . 'X' . $questions['Q00Copy']->gid . 'X' . $questions['Q00Copy']->qid;
             $yesradio2 = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa . "Y"));
-            $yesradio2.click();
+            $yesradio2->click();
             /* check if answer of PREFILL2 is prefilled */
             $sgqa = self::$surveyId . 'X' . $questions['PREFILL2']->gid . 'X' . $questions['PREFILL2']->qid;
             $text = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
-            $this->assertEquals('prefilled', $ = ->getAttribute('value'));
+            $this->assertEquals('prefilled', $text->getAttribute('value'));
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
