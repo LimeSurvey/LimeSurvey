@@ -19750,6 +19750,16 @@ table [class^=ri-], table [class*=" ri-"] {
   outline: 2px solid rgba(123, 97, 255, 0.9);
   outline-offset: -2px;
 }
+.grid-view .table tr[tabindex]:focus:not(:active) > .ls-sticky-column, .grid-view-ls .table tr[tabindex]:focus:not(:active) > .ls-sticky-column {
+  border-top: 2px solid rgba(123, 97, 255, 0.9);
+  border-bottom: 2px solid rgba(123, 97, 255, 0.9);
+}
+.grid-view .table tr[tabindex]:focus:not(:active) > .ls-sticky-column:first-child, .grid-view-ls .table tr[tabindex]:focus:not(:active) > .ls-sticky-column:first-child {
+  border-right: 2px solid rgba(123, 97, 255, 0.9);
+}
+.grid-view .table tr[tabindex]:focus:not(:active) > .ls-sticky-column:last-child, .grid-view-ls .table tr[tabindex]:focus:not(:active) > .ls-sticky-column:last-child {
+  border-left: 2px solid rgba(123, 97, 255, 0.9);
+}
 .grid-view .table button:focus, .grid-view-ls .table button:focus {
   color: #000;
   box-shadow: none;

@@ -282,6 +282,19 @@ table {
         tr[tabindex]:focus:not(:active) {
             outline        : 2px solid $grape90;
             outline-offset : -2px;
+
+            // Sticky columns paint over the tr outline due to z-index, so replicate the border on them.
+            > .ls-sticky-column {
+                border-top    : 2px solid $grape90;
+                border-bottom : 2px solid $grape90;
+
+                &:first-child {
+                    border-left : 2px solid $grape90;
+                }
+                &:last-child {
+                    border-right : 2px solid $grape90;
+                }
+            }
         }
 
         button:focus {
