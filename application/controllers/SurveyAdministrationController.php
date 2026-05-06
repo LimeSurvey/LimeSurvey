@@ -354,6 +354,7 @@ class SurveyAdministrationController extends LSBaseController
                 )
             );
 
+        $aCodeMap = [];
         foreach ($oQuestions as $oQuestion) {
             if ($sSubAction == 'bygroup' && $iGroupNumber != $oQuestion->gid) {
                 //If we're doing this by group, restart the numbering when the group number changes
@@ -361,11 +362,19 @@ class SurveyAdministrationController extends LSBaseController
                 $iGroupNumber = $oQuestion->gid;
                 $iGroupSequence++;
             }
+            $sOldTitle = $oQuestion->title;
             $sNewTitle = (($sSubAction == 'bygroup') ? ('G' . $iGroupSequence) : '') . "Q" .
                 str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT);
             Question::model()->updateAll(array('title' => $sNewTitle), 'qid=:qid', array(':qid' => $oQuestion->qid));
+            if ($sOldTitle !== $sNewTitle) {
+                $aCodeMap[$sOldTitle] = $sNewTitle;
+            }
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
+        }
+
+        if (!empty($aCodeMap)) {
+            replaceExpressionCodes($iSurveyID, $aCodeMap);
         }
         Yii::app()->setFlashMessage(gT("Question codes were successfully regenerated."));
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
