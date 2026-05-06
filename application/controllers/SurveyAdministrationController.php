@@ -347,7 +347,7 @@ class SurveyAdministrationController extends LSBaseController
             ->with(['group' => ['alias' => 'g'], 'questionl10ns'])
             ->findAll(
                 array(
-                    'select' => ['qid', ',t.gid','title']
+                    'select' => ['qid', 'gid','title']
                     'condition' => "t.sid=:sid and questionl10ns.language=:language and parent_qid=0",
                     'order' => 'g.group_order, question_order',
                     'params' => array(':sid' => $iSurveyID, ':language' => $oSurvey->language)
