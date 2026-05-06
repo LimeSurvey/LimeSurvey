@@ -1,6 +1,6 @@
 <!-- AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
 <div id="statisticsresponsefilters" class="statisticsfilters scrollheight_400">
-    <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo CHtml::encode($filterchoice_state); ?>' />
+    <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
     <?php
         $dshresults = $dshresults ?? '';
