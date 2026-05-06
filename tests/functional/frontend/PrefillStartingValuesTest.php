@@ -8,7 +8,7 @@ use Facebook\WebDriver\WebDriverBy;
 /**
  * @since 2026-05-05
  */
-class PrefillStartingValues extends TestBaseClassWeb
+class PrefillStartingValuesTest extends TestBaseClassWeb
 {
     /**
      * Import needed survey
