@@ -17,7 +17,9 @@
                 ['surveyAdministration/copy'],
             ) ?>
             <div class="modal-body" id="modal-body-copy-survey">
-
+                <div class="row mb-3">
+                    <label class="form-label"><?= gT("Select the options for copying your survey."); ?></label>
+                </div>
                     <div class="row mb-3">
                         <!-- Source survey -->
                         <label class="form-label" for='surveyIdToCopy'><?= gT("Source survey:"); ?> </label>
@@ -27,6 +29,9 @@
                         <!-- New survey title -->
                         <label  class="form-label" for='copysurveytitle'><?php eT("New survey title:"); ?> </label>
                         <input type='text' id='copysurveytitle' name='copysurveytitle' value='' class="form-control"/>
+                        <p class="form-control-static">
+                            <span class='reg12'><?php echo  gT('Optional - Leave this field empty to assign a new title with "... - Copy" automatically'); ?> </span>
+                        </p>
                     </div>
 
                     <div class="mb-3">
@@ -47,7 +52,7 @@
                             <label class=" form-label" for='copysurveyid'><?php eT("New survey ID:"); ?> </label>
                             <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" aria-describedby="copysurveyidHelp" />
                             <p class="form-control-static" id="copysurveyidHelp">
-                                <span class='reg12'><?=  gT("Optional - Leave this field empty to assign a new ID automatically"); ?> </span>
+                                <span class='reg12'><?=  gT("Optional - Leave this field empty to assign a new ID automatically."); ?> </span>
                             </p>
                         </div>
 

@@ -30,7 +30,7 @@ $(document).ready(function () {
             $select.on('select2:select', function (e) {
                 var data = e.params.data;
                 var rawTitle = data.title || '';
-                var format = $select.data('copy-format') || 'Copy of %s';
+                var format = $select.data('copy-format') || '%s - Copy';
                 $('#copysurveytitle').val(format.replace('%s', rawTitle));
             });
         }
