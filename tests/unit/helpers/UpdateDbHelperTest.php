@@ -6,6 +6,7 @@ namespace ls\tests;
  * @since 2017-06-16
  * @group dbhelper
  * @group db
+ * @group mysql
  */
 class UpdateDbHelperTest extends TestBaseClass
 {

@@ -293,7 +293,7 @@ jobs:
       - name: Run unit tests
         env:
           XDEBUG_MODE: coverage
-        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped tests/unit
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped ${{ matrix.db-type != 'mysql' && '--exclude-group mysql' || '' }} tests/unit
       - name: Upload cov.xml
         uses: actions/upload-artifact@v4
         with:
