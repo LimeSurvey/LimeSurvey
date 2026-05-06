@@ -2843,13 +2843,16 @@ class Tokens extends SurveyCommonAction
                 if (array_key_exists('description', $aAttrData) && $aAttrData['description'] == '') {
                     $aAttrData['description'] = $sField;
                 }
+                if (!array_key_exists('type', $aAttrData)) {
+                    $aAttrData['type'] = 'TB';
+                }
                 $aAttrData = decodeAttributeSelectOptions($aAttrData);
                 $aData['attrfieldnames'][(string) $sField] = $aAttrData;
             }
         }
         foreach ($aTokenFieldNames as $sTokenFieldName) {
             if (strpos($sTokenFieldName, 'attribute_') === 0 && (!isset($aData['attrfieldnames']) || !isset($aData['attrfieldnames'][$sTokenFieldName]))) {
-                $aData['attrfieldnames'][$sTokenFieldName] = array('description' => $sTokenFieldName, 'mandatory' => 'N');
+                $aData['attrfieldnames'][$sTokenFieldName] = array('description' => $sTokenFieldName, 'mandatory' => 'N', 'type' => 'TB');
             }
         }
 

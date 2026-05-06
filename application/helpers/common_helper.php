@@ -3146,7 +3146,8 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'description' => $sField,
             'mandatory' => 'N',
             'showregister' => 'N',
-            'cpdbmap' => ''
+            'cpdbmap' => '',
+            'type' => 'TB',
             );
         } elseif (empty($aSavedExtraTokenFields[$sField]['description'])) {
             $aSavedExtraTokenFields[$sField]['description'] = $sField;
