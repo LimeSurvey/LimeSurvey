@@ -49,10 +49,10 @@ class ExpressionManagerCoreTest extends TestBaseClass
     {
         // Check that node is installed.
         $output = [];
-        exec('which node ', $output);
-        if (empty($output[0])) {
-            echo ('Node is not installed');
-            exit(7);
+        $returnCode = 1;
+        exec('node --version 2>&1', $output, $returnCode);
+        if ($returnCode !== 0) {
+            self::markTestSkipped('Node is not installed');
         }
 
         require_once(__DIR__ . '/ExpressionCoreAux.php');

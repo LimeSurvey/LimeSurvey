@@ -95,16 +95,16 @@ class PassordRequirementTest extends TestBaseClass
 
         // Check upper chars
         if ($variation[1]) {
-            $this->assertRegExp('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password does not have upper chars.");
+            $this->assertMatchesRegularExpression('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password does not have upper chars.");
         } else {
-            $this->assertNotRegExp('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password has upper chars.");
+            $this->assertDoesNotMatchRegularExpression('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password has upper chars.");
         }
 
         // Check non-alpha
         if ($variation[2]) {
-            $this->assertRegExp('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password does not have non-alpha chars.");
+            $this->assertMatchesRegularExpression('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password does not have non-alpha chars.");
         } else {
-            $this->assertNotRegExp('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password has non-alpha chars.");
+            $this->assertDoesNotMatchRegularExpression('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password has non-alpha chars.");
         }
     }
 

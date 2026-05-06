@@ -20,7 +20,9 @@ class CopySurveyResourcesTest extends TestBaseClass
         $sourceSid = self::$testSurvey->sid;
 
         // Add resource
-        exec('sudo chmod -R 777 ' . \Yii::app()->getConfig('uploaddir')); // Add permisions to ./upload directory, neede for CI pipeline
+        if (DIRECTORY_SEPARATOR === '/') {
+            exec('sudo chmod -R 777 ' . \Yii::app()->getConfig('uploaddir')); // Add permisions to ./upload directory, neede for CI pipeline
+        }
         $basedestdir = \Yii::app()->getConfig('uploaddir') . "/surveys";
         $destdir = $basedestdir . "/$sourceSid/images/";
         if (!is_dir($destdir)) {

@@ -140,7 +140,9 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
 
         // Setup the test resources
         $testSid = self::$testSurvey->sid;
-        exec('sudo chmod -R 777 ' . \Yii::app()->getConfig('uploaddir')); // Add permisions to ./upload directory, neede for CI pipeline
+        if (DIRECTORY_SEPARATOR === '/') {
+            exec('sudo chmod -R 777 ' . \Yii::app()->getConfig('uploaddir')); // Add permisions to ./upload directory, neede for CI pipeline
+        }
         $surveyUploadsDir = \Yii::app()->getConfig('uploaddir') . "/surveys/$testSid/files/";
         if (!is_dir($surveyUploadsDir)) {
             $dirCreated = mkdir($surveyUploadsDir, 0777, true);
