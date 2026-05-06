@@ -17,13 +17,6 @@ class EmCacheHelper
     protected static $surveyinfo = null;
 
     /**
-     * Registry of cache keys per survey (keyed by sid).
-     *
-     * @var array<int|string, array<string, true>>
-     */
-    protected static $registeredKeys = [];
-
-    /**
      * Set survey info used by this request.
      *
      * @param array|null $surveyinfo
@@ -64,7 +57,7 @@ class EmCacheHelper
 
     /**
      * Flush cache for initialised survey only.
-     * Deletes only keys registered for the current survey, leaving other surveys' caches intact.
+     * Bumps the namespace token so all previously-stored keys become unreachable.
      *
      * @return void
      * @throws EmCacheException if surveyinfo is not initialised.
@@ -74,13 +67,51 @@ class EmCacheHelper
         if (empty(self::$surveyinfo)) {
             throw new EmCacheException('Cannot flush emcache unless initalised');
         }
-        $sid = self::$surveyinfo['sid'];
-        if (!empty(self::$registeredKeys[$sid])) {
-            foreach (array_keys(self::$registeredKeys[$sid]) as $key) {
-                \Yii::app()->emcache->delete($key);
-            }
-            unset(self::$registeredKeys[$sid]);
+        self::bumpNamespaceToken(self::$surveyinfo['sid']);
+    }
+
+    /**
+     * Get the current namespace token for a survey from the persistent cache.
+     * Creates token with value 1 if it does not exist yet.
+     *
+     * @param int|string $sid
+     * @return int
+     */
+    protected static function getNamespaceToken($sid)
+    {
+        $tokenKey = '__emcache_ns_' . $sid;
+        $token = \Yii::app()->emcache->get($tokenKey);
+        if ($token === false) {
+            $token = 1;
+            \Yii::app()->emcache->set($tokenKey, $token);
         }
+        return (int) $token;
+    }
+
+    /**
+     * Bump (increment) the namespace token for a survey, invalidating all cached keys.
+     *
+     * @param int|string $sid
+     * @return void
+     */
+    protected static function bumpNamespaceToken($sid)
+    {
+        $tokenKey = '__emcache_ns_' . $sid;
+        $token = self::getNamespaceToken($sid);
+        \Yii::app()->emcache->set($tokenKey, $token + 1);
+    }
+
+    /**
+     * Build a cache key that includes the namespace token for the current survey.
+     *
+     * @param string $key
+     * @return string
+     */
+    protected static function namespacedKey($key)
+    {
+        $sid = self::$surveyinfo['sid'];
+        $token = self::getNamespaceToken($sid);
+        return $token . '_' . $key;
     }
 
     /**
@@ -99,7 +130,7 @@ class EmCacheHelper
             throw new EmCacheException('emcache is not initialised');
         }
 
-        return \Yii::app()->emcache->get($key);
+        return \Yii::app()->emcache->get(self::namespacedKey($key));
     }
 
     /**
@@ -115,12 +146,8 @@ class EmCacheHelper
             return;
         }
 
-        // Track the key for this survey so flush() can delete only this survey's entries.
-        $sid = self::$surveyinfo['sid'];
-        self::$registeredKeys[$sid][$key] = true;
-
         /** @var boolean */
-        $result = \Yii::app()->emcache->set($key, $value);
+        $result = \Yii::app()->emcache->set(self::namespacedKey($key), $value);
 
         if (!$result && YII_DEBUG) {
             throw new EmCacheException('Failed caching key ' . $key);

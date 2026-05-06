@@ -192,7 +192,7 @@ class SurveyThemeHelper
     {
         // Check if the path is relative to the root dir or an absolute path
         $absolutePath = realpath(Yii::app()->getConfig('rootdir') . '/' . $path);
-        if ($absolutePath === false && (strpos($path, '/') === 0 || preg_match('/^[a-zA-Z]:[\\\\\/]/', $path))) {
+        if ($absolutePath === false && (strpos($path, '/') === 0 || strpos($path, '\\') === 0 || preg_match('/^[a-zA-Z]:[\\\\\/]/', $path))) {
             $absolutePath = realpath($path);
         }
         // If the path was absolute (or relative to the root dir), we check if it's within
