@@ -151,7 +151,7 @@ jobs:
       - name: Run functional tests
         env:
           DOMAIN: localhost
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped tests/functional
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v4
@@ -293,7 +293,7 @@ jobs:
       - name: Run unit tests
         env:
           XDEBUG_MODE: coverage
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped tests/unit
       - name: Upload cov.xml
         uses: actions/upload-artifact@v4
         with:
