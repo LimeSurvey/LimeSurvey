@@ -4,7 +4,6 @@ namespace ls\tests;
 
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2026-05-05
@@ -26,7 +25,7 @@ class PrefillStartingValues extends TestBaseClassWeb
      * Check if prefilling values by URL work
      * @since 2026-05-05
      **/
-    public function testPrefillStartingValues()
+    public function testStartingValuesPrefilled()
     {
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
@@ -36,7 +35,7 @@ class PrefillStartingValues extends TestBaseClassWeb
                 'sid' => self::$surveyId,
                 'newtest' => 'Y',
                 'PREFILL1' => 'A3',
-                'PREFILL2' => 'prefilled',
+                'PREFILL2' => 'bad prefilled',
             ]
         );
         $questions = $this->getAllSurveyQuestions();
