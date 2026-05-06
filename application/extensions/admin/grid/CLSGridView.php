@@ -108,6 +108,8 @@ class CLSGridView extends TbGridView
      */
     protected function lsAfterAjaxUpdate(): void
     {
+        $restoreFocusJs = 'if(window.LS&&LS.gridView&&LS.gridView.restoreSortLinkFocus){LS.gridView.restoreSortLinkFocus(id);}';
+
         // this will override afterAjaxUpdate if lsAfterAjaxUpdate is defined
         // please do not override afterAjaxUpdate by default to keep compatibility with base functionality of yii
         if (isset($this->lsAfterAjaxUpdate)) {
@@ -120,7 +122,11 @@ class CLSGridView extends TbGridView
             if (!empty($this->lsAdditionalColumns)) {
                 $this->afterAjaxUpdate .= 'initColumnFilter()';
             }
+            $this->afterAjaxUpdate .= $restoreFocusJs;
             $this->afterAjaxUpdate .= '}';
+        } elseif ($this->ajaxUpdate !== false && $this->ajaxUpdate !== null && $this->afterAjaxUpdate === null) {
+            // Grids without lsAfterAjaxUpdate: still restore sort-link focus after AJAX refresh
+            $this->afterAjaxUpdate = 'function(id, data){' . $restoreFocusJs . '}';
         }
     }
 
@@ -168,6 +174,56 @@ class CLSGridView extends TbGridView
         if (!App()->getClientScript()->isScriptRegistered('CLSGridView-ariaSelectAll-ajax')) {
             $scriptAriaAjax = 'jQuery(document).ajaxComplete(function(){ jQuery(".grid-view-ls input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
             App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll-ajax', $scriptAriaAjax, LSYii_ClientScript::POS_POSTSCRIPT);
+        }
+
+        if (!App()->getClientScript()->isScriptRegistered('CLSGridView-sortAccessibility')) {
+            $sortAccessibility = <<<'JS'
+(function ($) {
+    function storeSortFocus($link) {
+        var $grid = $link.closest('.grid-view-ls');
+        var gid = $grid.attr('id');
+        var attr = $link.attr('data-sort-attribute');
+        if (gid && attr) {
+            sessionStorage.setItem('LS_sortLinkFocus_' + gid, attr);
+        }
+    }
+    function restoreSortLinkFocus(gridId) {
+        var attr = sessionStorage.getItem('LS_sortLinkFocus_' + gridId);
+        if (!attr) {
+            return;
+        }
+        sessionStorage.removeItem('LS_sortLinkFocus_' + gridId);
+        var $link = $('#' + gridId + ' .sort-link[data-sort-attribute]').filter(function () {
+            return $(this).attr('data-sort-attribute') === attr;
+        });
+        if ($link.length) {
+            $link.first()[0].focus({ preventScroll: true });
+        }
+    }
+    $(document).on('keydown', '.grid-view-ls a.sort-link[role="button"]', function (e) {
+        if (e.key === ' ' || e.keyCode === 32) {
+            e.preventDefault();
+            $(this)[0].click();
+        }
+    });
+    $(document).on('click', '.grid-view-ls a.sort-link[data-sort-attribute]', function () {
+        storeSortFocus($(this));
+    });
+    $(document).on('keydown', '.grid-view-ls a.sort-link[data-sort-attribute]', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            storeSortFocus($(this));
+        }
+    });
+    window.LS = window.LS || {};
+    LS.gridView = LS.gridView || {};
+    LS.gridView.restoreSortLinkFocus = restoreSortLinkFocus;
+})(jQuery);
+JS;
+            App()->getClientScript()->registerScript(
+                'CLSGridView-sortAccessibility',
+                $sortAccessibility,
+                LSYii_ClientScript::POS_POSTSCRIPT
+            );
         }
     }
 
