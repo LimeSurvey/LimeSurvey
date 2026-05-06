@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * This class handles all methods of the RemoteControl 2 API
@@ -9,7 +9,41 @@ use LimeSurvey\PluginManager\PluginEvent;
 class remotecontrol_handle
 {
     const INVALID_SESSION_KEY = 'Invalid session key';
+
+    // Error codes
+    const ERR_INVALID_SESSION = 'ERR_INVALID_SESSION';
+    const ERR_INVALID_CREDENTIALS = 'ERR_INVALID_CREDENTIALS';
+    const ERR_NO_PERMISSION = 'ERR_NO_PERMISSION';
+    const ERR_INVALID_USER = 'ERR_INVALID_USER';
+    const ERR_INVALID_SURVEY = 'ERR_INVALID_SURVEY';
+    const ERR_INVALID_GROUP = 'ERR_INVALID_GROUP';
+    const ERR_INVALID_QUESTION = 'ERR_INVALID_QUESTION';
+    const ERR_INVALID_QUOTA = 'ERR_INVALID_QUOTA';
+    const ERR_INVALID_TOKEN = 'ERR_INVALID_TOKEN';
+    const ERR_INVALID_LANGUAGE = 'ERR_INVALID_LANGUAGE';
+    const ERR_INVALID_SETTING = 'ERR_INVALID_SETTING';
+    const ERR_INVALID_PARAMETERS = 'ERR_INVALID_PARAMETERS';
+    const ERR_INVALID_EXTENSION = 'ERR_INVALID_EXTENSION';
+    const ERR_INVALID_XML = 'ERR_INVALID_XML';
+    const ERR_INVALID_COLUMNS = 'ERR_INVALID_COLUMNS';
+    const ERR_SURVEY_ACTIVE = 'ERR_SURVEY_ACTIVE';
+    const ERR_SURVEY_NOT_ACTIVE = 'ERR_SURVEY_NOT_ACTIVE';
+    const ERR_NO_PARTICIPANT_TABLE = 'ERR_NO_PARTICIPANT_TABLE';
+    const ERR_NO_RESPONSE_TABLE = 'ERR_NO_RESPONSE_TABLE';
+    const ERR_CREATION_FAILED = 'ERR_CREATION_FAILED';
+    const ERR_DELETION_FAILED = 'ERR_DELETION_FAILED';
+    const ERR_COPY_FAILED = 'ERR_COPY_FAILED';
+    const ERR_UPDATE_FAILED = 'ERR_UPDATE_FAILED';
+    const ERR_NO_DATA = 'ERR_NO_DATA';
+    const ERR_ALREADY_EXISTS = 'ERR_ALREADY_EXISTS';
+    const ERR_DEPENDENCIES = 'ERR_DEPENDENCIES';
+    const ERR_CONSISTENCY_CHECK = 'ERR_CONSISTENCY_CHECK';
+    const ERR_EDIT_NOT_ALLOWED = 'ERR_EDIT_NOT_ALLOWED';
     const ERR_MULTIPLE_MATCHES = 'ERR_MULTIPLE_MATCHES';
+    const ERR_NOT_FOUND = 'ERR_NOT_FOUND';
+    const ERR_MISSING_IDENTIFIER = 'ERR_MISSING_IDENTIFIER';
+    const ERR_FILE_ERROR = 'ERR_FILE_ERROR';
+    const ERR_CANNOT_REMOVE_BASE_LANG = 'ERR_CANNOT_REMOVE_BASE_LANG';
 
     /**
      * @var AdminController
@@ -60,9 +94,9 @@ class remotecontrol_handle
             return $sSessionKey;
         }
         if (is_string($loginResult)) {
-            return array('status' => $loginResult);
+            return array('status' => $loginResult, 'error_code' => self::ERR_INVALID_CREDENTIALS);
         }
-        return array('status' => 'Invalid user name or password');
+        return array('status' => 'Invalid user name or password', 'error_code' => self::ERR_INVALID_CREDENTIALS);
     }
 
     /**
@@ -97,11 +131,11 @@ class remotecontrol_handle
     {
         $sSessionKey = (string) $sSessionKey;
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
 
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            return array('status' => 'User is not allowed to read the available site settings');
+            return array('status' => 'User is not allowed to read the available site settings', 'error_code' => self::ERR_NO_PERMISSION);
         }
 
         return Yii::app()->getAvailableConfigs();
@@ -125,13 +159,13 @@ class remotecontrol_handle
                 if (Yii::app()->getConfig($sSetttingName) !== false) {
                     return Yii::app()->getConfig($sSetttingName);
                 } else {
-                    return array('status' => 'Invalid setting');
+                    return array('status' => 'Invalid setting', 'error_code' => self::ERR_INVALID_SETTING);
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -161,7 +195,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey)) {
             if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
                 if ($sSurveyTitle == '' || $sSurveyLanguage == '' || !array_key_exists($sSurveyLanguage, getLanguageDataRestricted()) || !in_array($sformat, array('A', 'G', 'S'))) {
-                    return array('status' => 'Faulty parameters');
+                    return array('status' => 'Faulty parameters', 'error_code' => self::ERR_INVALID_PARAMETERS);
                 }
 
                 $aInsertData = array(
@@ -179,7 +213,7 @@ class remotecontrol_handle
                 try {
                     $newSurvey = Survey::model()->insertNewSurvey($aInsertData);
                     if (!$newSurvey->sid) {
-                        return array('status' => 'Creation Failed');  // status are a string, another way to send errors ?
+                        return array('status' => 'Creation Failed', 'error_code' => self::ERR_CREATION_FAILED);
                     }
                     $iNewSurveyid = $newSurvey->sid;
 
@@ -197,13 +231,13 @@ class remotecontrol_handle
 
                     return (int) $iNewSurveyid;
                 } catch (Exception $e) {
-                    return array('status' => $e->getmessage());
+                    return array('status' => $e->getmessage(), 'error_code' => self::ERR_CREATION_FAILED);
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -225,10 +259,10 @@ class remotecontrol_handle
                 Survey::model()->deleteSurvey($iSurveyID, true);
                 return array('status' => 'OK');
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -257,7 +291,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey)) {
             if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
                 if (!in_array($sImportDataType, array('lsa', 'csv', 'txt', 'lss'))) {
-                    return array('status' => 'Invalid extension');
+                    return array('status' => 'Invalid extension', 'error_code' => self::ERR_INVALID_EXTENSION);
                 }
                 Yii::app()->loadHelper('admin.import');
                 // First save the data to a temporary file
@@ -266,15 +300,15 @@ class remotecontrol_handle
                 $aImportResults = importSurveyFile($sFullFilePath, true, $sNewSurveyName, $DestSurveyID);
                 unlink($sFullFilePath);
                 if (isset($aImportResults['error']) && $aImportResults['error']) {
-                    return array('status' => 'Error: ' . $aImportResults['error']);
+                    return array('status' => 'Error: ' . $aImportResults['error'], 'error_code' => self::ERR_CREATION_FAILED);
                 } else {
                     return (int) $aImportResults['newsid'];
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -295,30 +329,34 @@ class remotecontrol_handle
             $DestSurveyID = (int) $DestSurveyID;
         }
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
             return array(
                 'status' => 'Copy failed',
-                'error' => "You don't have sufficient permissions."
+                'error' => "You don't have sufficient permissions.",
+                'error_code' => self::ERR_COPY_FAILED
             );
         }
         if (!$iSurveyID) {
             return array(
                 'status' => 'Copy failed',
-                'error' => 'No survey ID has been provided. Cannot copy survey'
+                'error' => 'No survey ID has been provided. Cannot copy survey',
+                'error_code' => self::ERR_COPY_FAILED
             );
         }
         if (!Survey::model()->findByPk($iSurveyID)) {
             return array(
                 'status' => 'Copy failed',
-                'error' => 'Invalid survey ID'
+                'error' => 'Invalid survey ID',
+                'error_code' => self::ERR_COPY_FAILED
             );
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
             return array(
                 'status' => 'Copy failed',
-                'error' => "You don't have sufficient permissions"
+                'error' => "You don't have sufficient permissions",
+                'error_code' => self::ERR_COPY_FAILED
             );
         }
         /* All check : try to copy */
@@ -331,7 +369,8 @@ class remotecontrol_handle
         if (empty($copysurveydata)) {
             return array(
                 'status' => 'Copy failed',
-                'error' => 'No data from survey'
+                'error' => 'No data from survey',
+                'error_code' => self::ERR_COPY_FAILED
             );
         }
         Yii::app()->loadHelper('admin.import');
@@ -339,7 +378,8 @@ class remotecontrol_handle
         if (empty($aImportResults['newsid'])) {
             return array(
                 'status' => 'Copy failed',
-                'error' => $aImportResults['error']
+                'error' => $aImportResults['error'],
+                'error_code' => self::ERR_COPY_FAILED
             );
         }
         if (isset($aExcludes['conditions'])) {
@@ -377,7 +417,7 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')) {
                 $aBasicDestinationFields = Survey::model()->tableSchema->columnNames;
@@ -387,7 +427,7 @@ class remotecontrol_handle
                     $aSurveySettings = $aBasicDestinationFields;
                 }
                 if (empty($aSurveySettings)) {
-                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                 }
                 $aResult = array();
                 foreach ($aSurveySettings as $sPropertyName) {
@@ -395,10 +435,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -435,7 +475,7 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 // Remove fields that may not be modified
@@ -461,7 +501,7 @@ class remotecontrol_handle
                 }
 
                 if (empty($aSurveyData)) {
-                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 foreach ($aSurveyData as $sFieldName => $sValue) {
@@ -480,10 +520,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -503,25 +543,25 @@ class remotecontrol_handle
     {
         // check provided session key and setup user session
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         // check valid survey ID and current user has permission
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         // check if survey is already activated
         if ($oSurvey->isActive) {
-            return array('status' => 'Error: Survey already active');
+            return array('status' => 'Error: Survey already active', 'error_code' => self::ERR_SURVEY_ACTIVE);
         }
         // Check consistency for groups and questions
         Yii::app()->loadHelper('admin.activate');
         $checkHasGroup = checkHasGroup($iSurveyID);
         $checkGroup = checkGroup($iSurveyID);
         if ($checkHasGroup !== false || $checkGroup !== false) {
-            return array('status' => 'Error: Survey does not pass consistency check');
+            return array('status' => 'Error: Survey does not pass consistency check', 'error_code' => self::ERR_CONSISTENCY_CHECK);
         }
         $surveyActivator = new SurveyActivator($oSurvey);
         // list of activation related survey settings and allowed values
@@ -547,7 +587,7 @@ class remotecontrol_handle
         // attempt to activate the survey
         $aActivateResults = $surveyActivator->activate();
         if (isset($aActivateResults['error'])) {
-            return array('status' => 'Error: ' . $aActivateResults['error']);
+            return array('status' => 'Error: ' . $aActivateResults['error'], 'error_code' => self::ERR_CREATION_FAILED);
         }
         return $aActivateResults;
     }
@@ -571,16 +611,16 @@ class remotecontrol_handle
         Yii::app()->loadHelper('admin.statistics');
 
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         };
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'statistics', 'read')) {
-            return array('status' => 'Error: No Permission');
+            return array('status' => 'Error: No Permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
 
         $aAdditionalLanguages = array_filter(explode(' ', (string) $oSurvey->additional_languages));
@@ -591,7 +631,7 @@ class remotecontrol_handle
 
         $oAllQuestions = Question::model()->getQuestionList($iSurveyID);
         if (!isset($oAllQuestions)) {
-            return array('status' => 'No available data');
+            return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
         }
 
         if ($groupIDs != null) {
@@ -610,7 +650,7 @@ class remotecontrol_handle
                 $groupIDs = array_intersect($groupIDs, $validGroups);
 
                 if (empty($groupIDs)) {
-                    return array('status' => 'Error: Invalid group ID');
+                    return array('status' => 'Error: Invalid group ID', 'error_code' => self::ERR_INVALID_GROUP);
                 }
 
                 foreach ($oAllQuestions as $key => $aQuestion) {
@@ -619,12 +659,12 @@ class remotecontrol_handle
                     }
                 }
             } else {
-                return array('status' => 'Error: Invalid group ID');
+                return array('status' => 'Error: Invalid group ID', 'error_code' => self::ERR_INVALID_GROUP);
             }
         }
 
         if (!isset($oAllQuestions)) {
-            return array('status' => 'No available data');
+            return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
         }
 
         usort($oAllQuestions, 'groupOrderThenQuestionOrder');
@@ -670,28 +710,28 @@ class remotecontrol_handle
         $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         if (is_null($survey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
         if (!in_array($sType, array('day', 'hour'))) {
-            return array('status' => 'Invalid Period');
+            return array('status' => 'Invalid Period', 'error_code' => self::ERR_INVALID_PARAMETERS);
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
         if (is_null($survey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
         if (!tableExists($survey->responsesTableName)) {
-            return array('status' => 'No available data');
+            return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
         }
 
         $oResponses = SurveyDynamic::model($iSurveyID)->timeline($sType, $dStart, $dEnd);
         if (empty($oResponses)) {
-            return array('status' => 'No valid Data');
+            return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
         }
 
         return $oResponses;
@@ -745,11 +785,11 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Invalid surveyid');
+                return array('status' => 'Invalid surveyid', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (!in_array($sStatName, $aPermittedStats)) {
-                return array('status' => 'Invalid summary key');
+                return array('status' => 'Invalid summary key', 'error_code' => self::ERR_INVALID_PARAMETERS);
             }
 
             // Check permissions to access this survey
@@ -768,7 +808,7 @@ class remotecontrol_handle
                             $aSummary['token_screenout'] = $aTokenSummary['screenout'];
                         }
                     } elseif ($sStatName != 'all') {
-                        return array('status' => 'No available data');
+                        return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
                     }
                 }
 
@@ -778,7 +818,7 @@ class remotecontrol_handle
                         $aSummary['incomplete_responses'] = SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
                         $aSummary['full_responses'] = SurveyDynamic::model($iSurveyID)->count();
                     } elseif ($sStatName != 'all') {
-                        return array('status' => 'No available data');
+                        return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
                     }
                 }
 
@@ -788,10 +828,10 @@ class remotecontrol_handle
                     return $aSummary[$sStatName];
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -812,14 +852,14 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 Yii::app()->loadHelper('surveytranslator');
                 $aLanguages = getLanguageData();
 
                 if (!isset($aLanguages[$sLanguage])) {
-                    return array('status' => 'Invalid language');
+                    return array('status' => 'Invalid language', 'error_code' => self::ERR_INVALID_LANGUAGE);
                 }
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if ($sLanguage == $oSurvey->language) {
@@ -847,10 +887,10 @@ class remotecontrol_handle
                     fixLanguageConsistency($iSurveyID, $sLanguage);
                     return array('status' => 'OK');
                 } catch (Exception $e) {
-                    return array('status' => 'Error');
+                    return array('status' => 'Error', 'error_code' => self::ERR_CREATION_FAILED);
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         }
         return null;
@@ -871,7 +911,7 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
@@ -879,11 +919,11 @@ class remotecontrol_handle
                 $aLanguages = getLanguageData();
 
                 if (!isset($aLanguages[$sLanguage])) {
-                    return array('status' => 'Invalid language');
+                    return array('status' => 'Invalid language', 'error_code' => self::ERR_INVALID_LANGUAGE);
                 }
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if ($sLanguage == $oSurvey->language) {
-                    return array('status' => 'Cannot remove base language');
+                    return array('status' => 'Cannot remove base language', 'error_code' => self::ERR_CANNOT_REMOVE_BASE_LANG);
                 }
                 $aLanguages = $oSurvey->getAdditionalLanguages();
                 $iLanguageKey = array_search($sLanguage, $aLanguages, true);
@@ -895,10 +935,10 @@ class remotecontrol_handle
                     cleanLanguagesFromSurvey($iSurveyID, $oSurvey->additional_languages);
                     return array('status' => 'OK');
                 } catch (Exception $e) {
-                    return array('status' => 'Error');
+                    return array('status' => 'Error', 'error_code' => self::ERR_CREATION_FAILED);
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         }
         return null;
@@ -923,7 +963,7 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read')) {
                 $aBasicDestinationFields = SurveyLanguageSetting::model()->tableSchema->columnNames;
@@ -941,7 +981,7 @@ class remotecontrol_handle
                 $aResult = array();
 
                 if (empty($aSurveyLocaleSettings)) {
-                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 foreach ($aSurveyLocaleSettings as $sPropertyName) {
@@ -950,10 +990,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -980,7 +1020,7 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (is_null($sLanguage)) {
@@ -988,7 +1028,7 @@ class remotecontrol_handle
             }
 
             if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                return array('status' => 'Error: Invalid language');
+                return array('status' => 'Error: Invalid language', 'error_code' => self::ERR_INVALID_LANGUAGE);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
@@ -1006,7 +1046,7 @@ class remotecontrol_handle
                 $aResult = array();
 
                 if (empty($aSurveyLocaleData)) {
-                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 foreach ($aSurveyLocaleData as $sFieldName => $sValue) {
@@ -1026,10 +1066,10 @@ class remotecontrol_handle
                 $aResult['status'] = 'OK';
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -1055,18 +1095,18 @@ class remotecontrol_handle
                 $iSurveyID = (int) $iSurveyID;
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if (!isset($oSurvey)) {
-                    return array('status' => 'Error: Invalid survey ID');
+                    return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
                 }
 
                 if ($oSurvey->isActive) {
-                    return array('status' => 'Error:Survey is active and not editable');
+                    return array('status' => 'Error:Survey is active and not editable', 'error_code' => self::ERR_SURVEY_ACTIVE);
                 }
 
                 $oGroup = new QuestionGroup();
                 $oGroup->sid = $iSurveyID;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
                 if (!$oGroup->save()) {
-                    return array('status' => 'Creation Failed');
+                    return array('status' => 'Creation Failed', 'error_code' => self::ERR_CREATION_FAILED);
                 }
 
                 $oQuestionGroupL10n = new QuestionGroupL10n();
@@ -1078,13 +1118,13 @@ class remotecontrol_handle
                 if ($oQuestionGroupL10n->save()) {
                     return (int) $oGroup->gid;
                 } else {
-                    return array('status' => 'Creation Failed');
+                    return array('status' => 'Creation Failed', 'error_code' => self::ERR_CREATION_FAILED);
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -1102,13 +1142,13 @@ class remotecontrol_handle
     public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $iGroupID = (int) $iGroupID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
 
         /*
@@ -1117,24 +1157,24 @@ class remotecontrol_handle
          */
         $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'sid' => $iSurveyID));
         if (!isset($oGroup)) {
-            return array('status' => 'Error: Invalid group ID');
+            return array('status' => 'Error: Invalid group ID', 'error_code' => self::ERR_INVALID_GROUP);
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete')) {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
         if ($oSurvey->isActive) {
-            return array('status' => 'Error:Survey is active and not editable');
+            return array('status' => 'Error:Survey is active and not editable', 'error_code' => self::ERR_SURVEY_ACTIVE);
         }
         $depented_on = getGroupDepsForConditions($oGroup->sid, 'all', $iGroupID, 'by-targgid');
         if (isset($depented_on)) {
-            return array('status' => 'Group with depencdencies - deletion not allowed');
+            return array('status' => 'Group with depencdencies - deletion not allowed', 'error_code' => self::ERR_DEPENDENCIES);
         }
         $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID);
         if ($iGroupsDeleted === 1) {
             QuestionGroup::model()->updateGroupOrder($iSurveyID);
             return (int) $iGroupID;
         } else {
-            return array('status' => 'Group deletion failed');
+            return array('status' => 'Group deletion failed', 'error_code' => self::ERR_DELETION_FAILED);
         }
     }
 
@@ -1157,16 +1197,16 @@ class remotecontrol_handle
             $sImportData = (string) $sImportData;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
                 if ($oSurvey->isActive) {
-                    return array('status' => 'Error:Survey is active and not editable');
+                    return array('status' => 'Error:Survey is active and not editable', 'error_code' => self::ERR_SURVEY_ACTIVE);
                 }
 
                 if (!in_array($sImportDataType, array('csv', 'lsg'))) {
-                    return array('status' => 'Invalid extension');
+                    return array('status' => 'Invalid extension', 'error_code' => self::ERR_INVALID_EXTENSION);
                 }
                 libxml_use_internal_errors(true);
                 Yii::app()->loadHelper('admin.import');
@@ -1185,11 +1225,11 @@ class remotecontrol_handle
                         if (\PHP_VERSION_ID < 80000) {
                             libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
                         }
-                        return array('status' => 'Error: Invalid LimeSurvey group structure XML ');
+                        return array('status' => 'Error: Invalid LimeSurvey group structure XML ', 'error_code' => self::ERR_INVALID_XML);
                     }
                     $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID, true);
                 } else {
-                    return array('status' => 'Invalid extension');
+                    return array('status' => 'Invalid extension', 'error_code' => self::ERR_INVALID_EXTENSION);
                 }
                 // just for symmetry!
 
@@ -1199,7 +1239,7 @@ class remotecontrol_handle
                     if (\PHP_VERSION_ID < 80000) {
                         libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
                     }
-                    return array('status' => 'Error: ' . $aImportResults['fatalerror']);
+                    return array('status' => 'Error: ' . $aImportResults['fatalerror'], 'error_code' => self::ERR_CREATION_FAILED);
                 } else {
                     $iNewgid = $aImportResults['newgid'];
 
@@ -1224,10 +1264,10 @@ class remotecontrol_handle
                     return (int) $aImportResults['newgid'];
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -1243,7 +1283,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
             $iSurveyID = (int) $iSurveyID;
             $responses = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
@@ -1253,7 +1293,7 @@ class remotecontrol_handle
             }
             return $result;
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -1276,7 +1316,7 @@ class remotecontrol_handle
             $iGroupID = (int) $iGroupID;
             $oGroup = QuestionGroup::model()->with('questiongroupl10ns')->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup)) {
-                return array('status' => 'Error: Invalid group ID');
+                return array('status' => 'Error: Invalid group ID', 'error_code' => self::ERR_INVALID_GROUP);
             }
 
             if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'read')) {
@@ -1286,7 +1326,7 @@ class remotecontrol_handle
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return array('status' => 'Error: Invalid language');
+                    return array('status' => 'Error: Invalid language', 'error_code' => self::ERR_INVALID_LANGUAGE);
                 }
 
                 $aBasicDestinationFields = QuestionGroup::model()->tableSchema->columnNames;
@@ -1299,7 +1339,7 @@ class remotecontrol_handle
                 }
 
                 if (empty($aGroupSettings)) {
-                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 foreach ($aGroupSettings as $sGroupSetting) {
@@ -1314,10 +1354,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -1342,7 +1382,7 @@ class remotecontrol_handle
             $iGroupID = (int) $iGroupID;
             $oGroup = QuestionGroup::model()->with('questiongroupl10ns')->findByAttributes(array('gid' => $iGroupID));
             if (is_null($oGroup)) {
-                return array('status' => 'Error: Invalid group ID');
+                return array('status' => 'Error: Invalid group ID', 'error_code' => self::ERR_INVALID_GROUP);
             }
             if (Permission::model()->hasSurveyPermission($oGroup->sid, 'surveycontent', 'update')) {
                 $aResult = array();
@@ -1411,7 +1451,7 @@ class remotecontrol_handle
                 $aGroupAttributes = $oGroup->getAttributes();
                 if (empty($aGroupData)) {
                     if (empty($aResult)) {
-                        return array('status' => 'No valid Data');
+                        return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                     } else {
                         return $aResult;
                     }
@@ -1446,10 +1486,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -1471,7 +1511,7 @@ class remotecontrol_handle
             $iQuestionID = (int) $iQuestionID;
             $oQuestion = Question::model()->findByPk($iQuestionID);
             if (!isset($oQuestion)) {
-                return array('status' => 'Error: Invalid question ID');
+                return array('status' => 'Error: Invalid question ID', 'error_code' => self::ERR_INVALID_QUESTION);
             }
 
             $iSurveyID = $oQuestion['sid'];
@@ -1480,12 +1520,12 @@ class remotecontrol_handle
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
 
                 if ($oSurvey->isActive) {
-                    return array('status' => 'Survey is active and not editable');
+                    return array('status' => 'Survey is active and not editable', 'error_code' => self::ERR_SURVEY_ACTIVE);
                 }
 
                 $oCondition = Condition::model()->findAllByAttributes(array('cqid' => $iQuestionID));
                 if (count($oCondition) > 0) {
-                    return array('status' => 'Cannot delete Question. Others rely on this question');
+                    return array('status' => 'Cannot delete Question. Others rely on this question', 'error_code' => self::ERR_DEPENDENCIES);
                 }
 
                 LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $iQuestionID);
@@ -1494,13 +1534,13 @@ class remotecontrol_handle
                     $oQuestion->delete();
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
-                    return array('status' => $e->getMessage());
+                    return array('status' => $e->getMessage(), 'error_code' => self::ERR_CREATION_FAILED);
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -1527,24 +1567,24 @@ class remotecontrol_handle
     {
         $bOldEntityLoaderState = null;
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $iGroupID = (int) $iGroupID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
         if ($oSurvey->isActive) {
-            return array('status' => 'Error:Survey is Active and not editable');
+            return array('status' => 'Error:Survey is Active and not editable', 'error_code' => self::ERR_SURVEY_ACTIVE);
         }
 
         $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'sid' => $iSurveyID));
         if (!isset($oGroup)) {
-            return array('status' => 'Error: Invalid group ID');
+            return array('status' => 'Error: Invalid group ID', 'error_code' => self::ERR_INVALID_GROUP);
         }
         /* Check unicity of title, and set autorename to true if it's set */
         $importOptions = ['autorename' => false];
@@ -1557,13 +1597,13 @@ class remotecontrol_handle
                 )
             ));
             if ($countQuestionTitle > 0) {
-                return array('status' => 'Error: Question title already exist in this survey.');
+                return array('status' => 'Error: Question title already exist in this survey.', 'error_code' => self::ERR_ALREADY_EXISTS);
             }
             /* This allow import with existing title */
             $importOptions = ['autorename' => true];
         }
         if (!strtolower($sImportDataType) == 'lsq') {
-            return array('status' => 'Invalid extension');
+            return array('status' => 'Invalid extension', 'error_code' => self::ERR_INVALID_EXTENSION);
         }
 
         libxml_use_internal_errors(true);
@@ -1584,14 +1624,14 @@ class remotecontrol_handle
                 if (\PHP_VERSION_ID < 80000) {
                     libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
                 }
-                return array('status' => 'Error: Invalid LimeSurvey question structure XML ');
+                return array('status' => 'Error: Invalid LimeSurvey question structure XML ', 'error_code' => self::ERR_INVALID_XML);
             }
             $aImportResults = XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID, $importOptions);
         } else {
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
             }
-            return array('status' => 'Really Invalid extension');  // just for symmetry!
+            return array('status' => 'Really Invalid extension', 'error_code' => self::ERR_INVALID_EXTENSION);
         }
         unlink($sFullFilePath);
         $iNewqid = 0;
@@ -1599,7 +1639,7 @@ class remotecontrol_handle
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
             }
-            return array('status' => 'Error: ' . $aImportResults['fatalerror']);
+            return array('status' => 'Error: ' . $aImportResults['fatalerror'], 'error_code' => self::ERR_CREATION_FAILED);
         } else {
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
@@ -1674,7 +1714,7 @@ class remotecontrol_handle
             Yii::app()->loadHelper('surveytranslator');
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion)) {
-                return array('status' => 'Error: Invalid questionid');
+                return array('status' => 'Error: Invalid questionid', 'error_code' => self::ERR_INVALID_QUESTION);
             }
             $iSurveyID = $oQuestion->sid;
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
@@ -1683,7 +1723,7 @@ class remotecontrol_handle
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return array('status' => 'Error: Invalid language');
+                    return array('status' => 'Error: Invalid language', 'error_code' => self::ERR_INVALID_LANGUAGE);
                 }
 
                 $oQuestion = Question::model()->with('questionl10ns')
@@ -1692,7 +1732,7 @@ class remotecontrol_handle
                                                   array(':qid' => $iQuestionID, ':language' => $sLanguage)
                                               );
                 if (!isset($oQuestion)) {
-                    return array('status' => 'Error: Invalid questionid');
+                    return array('status' => 'Error: Invalid questionid', 'error_code' => self::ERR_INVALID_QUESTION);
                 }
 
                 $aBasicDestinationFields = Question::model()->tableSchema->columnNames;
@@ -1722,7 +1762,7 @@ class remotecontrol_handle
                 }
 
                 if (empty($aQuestionSettings)) {
-                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 $aResult = array();
@@ -1838,10 +1878,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -1873,7 +1913,7 @@ class remotecontrol_handle
             $iQuestionID = (int) $iQuestionID;
             $oQuestion = Question::model()->with('questionl10ns')->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion)) {
-                return array('status' => 'Error: Invalid group ID');
+                return array('status' => 'Error: Invalid group ID', 'error_code' => self::ERR_INVALID_GROUP);
             }
 
             $iSurveyID = $oQuestion->sid;
@@ -1884,12 +1924,12 @@ class remotecontrol_handle
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return array('status' => 'Error: Invalid language');
+                    return array('status' => 'Error: Invalid language', 'error_code' => self::ERR_INVALID_LANGUAGE);
                 }
 
                 $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
                 if (!isset($oQuestion)) {
-                    return array('status' => 'Error: Invalid questionid');
+                    return array('status' => 'Error: Invalid questionid', 'error_code' => self::ERR_INVALID_QUESTION);
                 }
 
                 // Backwards compatibility for L10n data
@@ -1961,7 +2001,7 @@ class remotecontrol_handle
 
                 if (empty($aQuestionData)) {
                     if (empty($aResult)) {
-                        return array('status' => 'No valid Data');
+                        return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                     } else {
                         return $aResult;
                     }
@@ -1995,10 +2035,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2023,17 +2063,17 @@ class remotecontrol_handle
     public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken = true)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')) {
             if (!Yii::app()->db->schema->getTable($oSurvey->tokensTableName)) {
-                return array('status' => 'No survey participant list');
+                return array('status' => 'No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
             }
             $aDestinationFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
             foreach ($aParticipantData as &$aParticipant) {
@@ -2050,7 +2090,7 @@ class remotecontrol_handle
             }
             return $aParticipantData;
         } else {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
     }
 
@@ -2071,12 +2111,12 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                    return array('status' => 'Error: No survey participant list');
+                    return array('status' => 'Error: No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
                 }
 
                 $aResult = array();
@@ -2096,10 +2136,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2121,20 +2161,20 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $surveyidExists = Survey::model()->findByPk($iSurveyID);
             if (!isset($surveyidExists)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                    return array('status' => 'Error: No survey participant list');
+                    return array('status' => 'Error: No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
                 }
 
                 if (is_array($aTokenQueryProperties)) {
                     $tokenCount = Token::model($iSurveyID)->countByAttributes($aTokenQueryProperties);
                     if ($tokenCount == 0) {
-                        return array('status' => 'Error: No results were found based on your attributes.');
+                        return array('status' => 'Error: No results were found based on your attributes.', 'error_code' => self::ERR_NOT_FOUND);
                     } elseif ($tokenCount > 1) {
-                        return array('status' => 'Error: More than 1 result was found based on your attributes.');
+                        return array('status' => 'Error: More than 1 result was found based on your attributes.', 'error_code' => self::ERR_MULTIPLE_MATCHES);
                     }
                     $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
                 } else {
@@ -2143,7 +2183,7 @@ class remotecontrol_handle
                     $token = Token::model($iSurveyID)->findByPk($iTokenID);
                 }
                 if (!isset($token)) {
-                    return array('status' => 'Error: Invalid tokenid');
+                    return array('status' => 'Error: Invalid tokenid', 'error_code' => self::ERR_INVALID_TOKEN);
                 }
                 $token->decrypt();
                 if (!empty($aTokenProperties)) {
@@ -2152,15 +2192,15 @@ class remotecontrol_handle
                     $result = $token->attributes;
                 }
                 if (empty($result)) {
-                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                 } else {
                     return $result;
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2183,21 +2223,21 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                    return array('status' => 'Error: No survey participant list');
+                    return array('status' => 'Error: No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
                 }
 
                 if (is_array($aTokenQueryProperties)) {
                     $oTokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
                     $tokenCount = count($oTokens);
                     if ($tokenCount == 0) {
-                        return array('status' => 'Error: No results were found based on your attributes.');
+                        return array('status' => 'Error: No results were found based on your attributes.', 'error_code' => self::ERR_NOT_FOUND);
                     } elseif ($tokenCount > 1) {
-                        return array('status' => 'Error: More than 1 result was found based on your attributes.');
+                        return array('status' => 'Error: More than 1 result was found based on your attributes.', 'error_code' => self::ERR_MULTIPLE_MATCHES);
                     }
                     $oToken = $oTokens[0];
                 } else {
@@ -2206,7 +2246,7 @@ class remotecontrol_handle
                     $oToken = Token::model($iSurveyID)->findByPk($iTokenID);
                 }
                 if (!isset($oToken)) {
-                    return array('status' => 'Error: Invalid tokenid');
+                    return array('status' => 'Error: Invalid tokenid', 'error_code' => self::ERR_INVALID_TOKEN);
                 }
                 $oToken->decrypt();
 
@@ -2217,7 +2257,7 @@ class remotecontrol_handle
                 $aTokenData = array_intersect_key($aTokenData, $aBasicDestinationFields);
 
                 if (empty($aTokenData)) {
-                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 $oToken->setAttributes($aTokenData, false);
@@ -2227,10 +2267,10 @@ class remotecontrol_handle
                     return array('status' => $oToken->getErrors());
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2251,13 +2291,13 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                 $oGroupList = QuestionGroup::model()->with('questiongroupl10ns')->findAllByAttributes(array('sid' => $iSurveyID));
                 if (count($oGroupList) == 0) {
-                    return array('status' => 'No groups found');
+                    return array('status' => 'No groups found', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 if (is_null($sLanguage)) {
@@ -2274,10 +2314,10 @@ class remotecontrol_handle
                 }
                 return $aData;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2324,12 +2364,12 @@ class remotecontrol_handle
             $iLimit = (int) $iLimit;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                    return array('status' => 'Error: No survey participant list');
+                    return array('status' => 'Error: No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
                 }
 
                 /** @var CDbCriteria mixed> Criteria used in final query below. */
@@ -2339,7 +2379,7 @@ class remotecontrol_handle
                 $oCriteria->compare('tid', '>=' . $iStart);
                 $addConditionError = $this->addConditionsToCriteria(Token::model($iSurveyID), $oCriteria, $aConditions);
                 if (is_string($addConditionError)) {
-                    return array('status' => $addConditionError);
+                    return array('status' => $addConditionError, 'error_code' => self::ERR_INVALID_PARAMETERS);
                 }
                 if ($bUnused) {
                     $oTokens = Token::model($iSurveyID)->incomplete()->findAll($oCriteria);
@@ -2348,7 +2388,7 @@ class remotecontrol_handle
                 }
 
                 if (count($oTokens) == 0) {
-                    return array('status' => 'No survey participants found.');
+                    return array('status' => 'No survey participants found.', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 $extendedAttributes = array();
@@ -2377,10 +2417,10 @@ class remotecontrol_handle
                 }
                 return $aData;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2406,7 +2446,7 @@ class remotecontrol_handle
             $oSurvey = Survey::model()->findByPk($iSurveyID);
 
             if (empty($oSurvey)) {
-                return ['status' => 'Error: Invalid survey ID'];
+                return ['status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY];
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
@@ -2415,7 +2455,7 @@ class remotecontrol_handle
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted()) or !in_array($sLanguage, $oSurvey->allLanguages)) {
-                    return ['status' => 'Error: Invalid language'];
+                    return ['status' => 'Error: Invalid language', 'error_code' => self::ERR_INVALID_LANGUAGE];
                 }
 
                 if ($iGroupID != null) {
@@ -2423,7 +2463,7 @@ class remotecontrol_handle
                     $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'sid' => $iSurveyID));
 
                     if (empty($oGroup)) {
-                        return ['status' => 'Error: group not found'];
+                        return ['status' => 'Error: group not found', 'error_code' => self::ERR_INVALID_GROUP];
                     }
 
                     $aQuestionList = $oGroup->allQuestions;
@@ -2432,7 +2472,7 @@ class remotecontrol_handle
                 }
 
                 if (count($aQuestionList) == 0) {
-                    return ['status' => 'No questions found'];
+                    return ['status' => 'No questions found', 'error_code' => self::ERR_NO_DATA];
                 }
 
                 foreach ($aQuestionList as $oQuestion) {
@@ -2449,10 +2489,10 @@ class remotecontrol_handle
                 }
                 return $aData;
             } else {
-                return ['status' => 'No permission'];
+                return ['status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION];
             }
         } else {
-            return ['status' => self::INVALID_SESSION_KEY];
+            return ['status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION];
         }
     }
 
@@ -2493,11 +2533,11 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'create')) {
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if (!isset($oSurvey)) {
-                    return array('status' => 'Error: Invalid survey ID');
+                    return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
                 }
 
                 if ($iLimit < 0) {
-                    return array('status' => 'Error: Invalid limit');
+                    return array('status' => 'Error: Invalid limit', 'error_code' => self::ERR_INVALID_PARAMETERS);
                 }
 
                 switch ($sAction) {
@@ -2514,11 +2554,11 @@ class remotecontrol_handle
                         $iAction = Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS;
                         break;
                     default:
-                        return array('status' => 'Error: Invalid quota action');
+                        return array('status' => 'Error: Invalid quota action', 'error_code' => self::ERR_INVALID_PARAMETERS);
                 }
 
                 if ($sMessage == '' && ($sURL != '' || $sURLDescription != '')) {
-                    return array('status' => 'Language-specific URL/description is set but no message is given');
+                    return array('status' => 'Language-specific URL/description is set but no message is given', 'error_code' => self::ERR_INVALID_PARAMETERS);
                 }
 
                 $oDB = Yii::app()->db;
@@ -2533,7 +2573,7 @@ class remotecontrol_handle
                 $oQuota->autoload_url = (int) $bAutoloadURL;
 
                 if (!$oQuota->save()) {
-                    return array('status' => 'Creation Failed');
+                    return array('status' => 'Creation Failed', 'error_code' => self::ERR_CREATION_FAILED);
                 }
 
                 if (!$sMessage == '') {
@@ -2547,17 +2587,17 @@ class remotecontrol_handle
 
                     if (!$oQuotaLanguageSetting->save()) {
                         $oTransaction->rollback();
-                        return array('status' => 'Creation Failed');
+                        return array('status' => 'Creation Failed', 'error_code' => self::ERR_CREATION_FAILED);
                     }
                 }
 
                 $oTransaction->commit();
                 return (int) $oQuota->id;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => 'Invalid session key');
+            return array('status' => 'Invalid session key', 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2575,13 +2615,13 @@ class remotecontrol_handle
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'read')) {
                 $aQuotas = Quota::model()->findAllByAttributes(array('sid' => $iSurveyID));
                 if (count($aQuotas) == 0) {
-                    return array('status' => 'No quotas found');
+                    return array('status' => 'No quotas found', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 $aData = array();
@@ -2597,10 +2637,10 @@ class remotecontrol_handle
                 }
                 return $aData;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => 'Invalid session key');
+            return array('status' => 'Invalid session key', 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2618,17 +2658,17 @@ class remotecontrol_handle
             $iQuotaID = (int) $iQuotaID;
             $oQuota = Quota::model()->findByPk($iQuotaID);
             if (!isset($oQuota)) {
-                return array('status' => 'Error: Invalid quota ID');
+                return array('status' => 'Error: Invalid quota ID', 'error_code' => self::ERR_INVALID_QUOTA);
             }
 
             if (Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'delete')) {
                 $oQuota->deleteQuota(array('id' => $iQuotaID));
                 return array('status' => 'OK');
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => 'Invalid session key');
+            return array('status' => 'Invalid session key', 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2655,7 +2695,7 @@ class remotecontrol_handle
             $oQuota = Quota::model()->findByPk($iQuotaId);
 
             if (!isset($oQuota)) {
-                return array('status' => 'Error: Invalid quota ID');
+                return array('status' => 'Error: Invalid quota ID', 'error_code' => self::ERR_INVALID_QUOTA);
             }
 
             if (Permission::model()->hasSurveyPermission($oQuota->sid, 'quotas', 'read')) {
@@ -2681,7 +2721,7 @@ class remotecontrol_handle
                 }
 
                 if (empty($aQuotaSettings)) {
-                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 $aResult = array();
@@ -2697,10 +2737,10 @@ class remotecontrol_handle
                 }
                 return $aResult;
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2782,7 +2822,7 @@ class remotecontrol_handle
             if ($sUsername != null) {
                 $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
                 if (!isset($aUserData)) {
-                    return array('status' => 'Invalid user');
+                    return array('status' => 'Invalid user', 'error_code' => self::ERR_INVALID_USER);
                 } else {
                     $sUid = $aUserData->attributes['uid'];
                 }
@@ -2799,7 +2839,7 @@ class remotecontrol_handle
                 $aUserSurveys = $oSurvey->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
             }
             if (count($aUserSurveys) == 0) {
-                return array('status' => 'No surveys found');
+                return array('status' => 'No surveys found', 'error_code' => self::ERR_NO_DATA);
             }
 
             foreach ($aUserSurveys as $oSurvey) {
@@ -2820,7 +2860,7 @@ class remotecontrol_handle
             }
             return $aData;
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2846,7 +2886,7 @@ class remotecontrol_handle
             } elseif ($sUsername != null) {
                 $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
                 if (!isset($aUserData)) {
-                    return array('status' => 'Invalid user');
+                    return array('status' => 'Invalid user', 'error_code' => self::ERR_INVALID_USER);
                 } else {
                     $sOwner = $aUserData->attributes['uid'];
                 }
@@ -2858,7 +2898,7 @@ class remotecontrol_handle
                 $aUserSurveyGroups = $oSurveyGroup->findAllByAttributes(array('owner_id' => $sOwner));
             }
             if (count($aUserSurveyGroups) == 0) {
-                return array('status' => 'No survey groups found');
+                return array('status' => 'No survey groups found', 'error_code' => self::ERR_NO_DATA);
             }
 
             foreach ($aUserSurveyGroups as $oSurveyGroup) {
@@ -2866,7 +2906,7 @@ class remotecontrol_handle
             }
             return $aData;
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2891,13 +2931,13 @@ class remotecontrol_handle
                     $uid = (int) $uid;
                     $user = User::model()->findByPk($uid);
                     if (!$user) {
-                        return array('status' => 'Invalid user ID');
+                        return array('status' => 'Invalid user ID', 'error_code' => self::ERR_INVALID_USER);
                     }
                     $users = array($user);
                 } elseif ($username) {
                     $user = User::model()->findByUsername($username);
                     if (!$user) {
-                        return array('status' => 'Invalid username');
+                        return array('status' => 'Invalid username', 'error_code' => self::ERR_INVALID_USER);
                     }
                     $users = array($user);
                 } else {
@@ -2905,7 +2945,7 @@ class remotecontrol_handle
                 }
 
                 if (count($users) == 0) {
-                    return array('status' => 'No users found');
+                    return array('status' => 'No users found', 'error_code' => self::ERR_NO_DATA);
                 }
 
                 $basePermissions = Permission::model()->getGlobalBasePermissions();
@@ -2954,7 +2994,7 @@ class remotecontrol_handle
                 return array('status' => 'Permission denied.');
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -2972,19 +3012,19 @@ class remotecontrol_handle
     public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields = array())
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
         if (
             /* Same test Tokens->newParticipantTable */
             !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') &&
             !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')
         ) {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
         if (is_array($aAttributeFields) && count($aAttributeFields) > 0) {
             foreach ($aAttributeFields as &$sField) {
@@ -2997,7 +3037,7 @@ class remotecontrol_handle
         if (Token::createTable($iSurveyID, $aAttributeFields)) {
             return array('status' => 'OK');
         } else {
-            return array('status' => 'Survey participant list could not be created');
+            return array('status' => 'Survey participant list could not be created', 'error_code' => self::ERR_CREATION_FAILED);
         }
     }
 
@@ -3024,24 +3064,24 @@ class remotecontrol_handle
     {
         Yii::app()->loadHelper('admin.token');
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                return array('status' => 'Error: No survey participant list');
+                return array('status' => 'Error: No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
             }
 
             $command = new LSDbCriteria();
             if (count($overrideAllConditions)) {
                 $addConditionError = $this->addConditionsToCriteria(Token::model($iSurveyID), $command, $overrideAllConditions);
                 if (is_string($addConditionError)) {
-                    return array('status' => $addConditionError);
+                    return array('status' => $addConditionError, 'error_code' => self::ERR_INVALID_PARAMETERS);
                 }
             } else {
                 $sNow = date('Y-m-d H:i:s', strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date('Y-m-d H:i:s'))));
@@ -3064,7 +3104,7 @@ class remotecontrol_handle
             $aResultTokens = Token::model($iSurveyID)->findAll($command);
 
             if (empty($aResultTokens)) {
-                return array('status' => 'Error: No candidate tokens');
+                return array('status' => 'Error: No candidate tokens', 'error_code' => self::ERR_NO_DATA);
             }
 
             foreach ($aResultTokens as $key => $oToken) {
@@ -3088,7 +3128,7 @@ class remotecontrol_handle
             }
 
             if (empty($aResultTokens)) {
-                return array('status' => 'Error: No candidate tokens');
+                return array('status' => 'Error: No candidate tokens', 'error_code' => self::ERR_NO_DATA);
             }
 
             $aResult = emailTokens($iSurveyID, $aResultTokens, 'register');
@@ -3097,7 +3137,7 @@ class remotecontrol_handle
 
             return $aResult;
         } else {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
     }
 
@@ -3119,17 +3159,17 @@ class remotecontrol_handle
     {
         Yii::app()->loadHelper('admin.token');
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                return array('status' => 'Error: No survey participant list');
+                return array('status' => 'Error: No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
             }
 
             $iMaxEmails = (int) Yii::app()->getConfig('maxemails');
@@ -3141,7 +3181,7 @@ class remotecontrol_handle
             $iAllTokensCount = count($aAllTokens);
             unset($aAllTokens);
             if (empty($aResultTokens)) {
-                return array('status' => 'Error: No candidate tokens');
+                return array('status' => 'Error: No candidate tokens', 'error_code' => self::ERR_NO_DATA);
             }
 
             foreach ($aResultTokens as $key => $oToken) {
@@ -3161,7 +3201,7 @@ class remotecontrol_handle
             }
 
             if (empty($aResultTokens)) {
-                return array('status' => 'Error: No candidate tokens');
+                return array('status' => 'Error: No candidate tokens', 'error_code' => self::ERR_NO_DATA);
             }
             $aResult = emailTokens($iSurveyID, $aResultTokens, 'invite', $continueOnError);
             $iLeft = $iAllTokensCount - count($aResultTokens);
@@ -3169,7 +3209,7 @@ class remotecontrol_handle
 
             return $aResult;
         } else {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
     }
 
@@ -3191,19 +3231,19 @@ class remotecontrol_handle
     {
         Yii::app()->loadHelper('admin.token');
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
             $timeadjust = Yii::app()->getConfig('timeadjust');
 
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                return array('status' => 'Error: No survey participant list');
+                return array('status' => 'Error: No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
             }
 
             $SQLemailstatuscondition = "emailstatus = 'OK'";
@@ -3230,7 +3270,7 @@ class remotecontrol_handle
             $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
 
             if (empty($aResultTokens)) {
-                return array('status' => 'Error: No candidate tokens');
+                return array('status' => 'Error: No candidate tokens', 'error_code' => self::ERR_NO_DATA);
             }
 
             $aResult = emailTokens($iSurveyID, $aResultTokens, 'remind', $continueOnError);
@@ -3239,7 +3279,7 @@ class remotecontrol_handle
             $aResult['status'] = $iLeft . ' left to send';
             return $aResult;
         } else {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
     }
 
@@ -3261,18 +3301,18 @@ class remotecontrol_handle
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         if (is_null($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create')) {
             if (!Yii::app()->db->schema->getTable($oSurvey->responsesTableName)) {
-                return array('status' => 'No survey response table');
+                return array('status' => 'No survey response table', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
             }
 
             // set required values if not set
@@ -3323,7 +3363,8 @@ class remotecontrol_handle
                         if (!rename($sFileTempName, $sFileRealName)) {
                             return array(
                                 'status' => 'Unable to move files ' . $sFileTempName . ' ' . $sFileRealName,
-                                'result_id' => $result_id
+                                'result_id' => $result_id,
+                                'error_code' => self::ERR_FILE_ERROR
                             );
                         }
                     }
@@ -3331,10 +3372,10 @@ class remotecontrol_handle
 
                 return $result_id;
             } else {
-                return array('status' => 'Unable to add response');
+                return array('status' => 'Unable to add response', 'error_code' => self::ERR_CREATION_FAILED);
             }
         } else {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
     }
 
@@ -3356,31 +3397,31 @@ class remotecontrol_handle
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) {
-            return array('status' => 'Invalid survey ID');
+            return array('status' => 'Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
         if (!$oSurvey->isActive) {
-            return array('status' => 'Survey is not active');
+            return array('status' => 'Survey is not active', 'error_code' => self::ERR_SURVEY_NOT_ACTIVE);
         }
 
         if (!$oSurvey->isAllowEditAfterCompletion) {
-            return array('status' => 'Survey does not allow edit after completion');
+            return array('status' => 'Survey does not allow edit after completion', 'error_code' => self::ERR_EDIT_NOT_ALLOWED);
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'update')) {
             if (!Yii::app()->db->schema->getTable($oSurvey->responsesTableName)) {
-                return array('status' => 'No survey response table');
+                return array('status' => 'No survey response table', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
             }
 
             if (
                 !isset($aResponseData['id']) &&
                 !isset($aResponseData['token'])
             ) {
-                return array('status' => 'Missing response identifier (id|token)');
+                return array('status' => 'Missing response identifier (id|token)', 'error_code' => self::ERR_MISSING_IDENTIFIER);
             }
 
             SurveyDynamic::sid($iSurveyID);
@@ -3393,7 +3434,7 @@ class remotecontrol_handle
             }
 
             if (empty($aResponses)) {
-                return array('status' => 'No matching Response');
+                return array('status' => 'No matching Response', 'error_code' => self::ERR_NOT_FOUND);
             }
             if (count($aResponses) > 1) {
                 return array(
@@ -3405,7 +3446,7 @@ class remotecontrol_handle
             $aBasicDestinationFields = $oSurveyDynamic->tableSchema->columnNames;
             $aInvalidFields = array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
             if (count($aInvalidFields) > 0) {
-                return array('status' => 'Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields)));
+                return array('status' => 'Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields)), 'error_code' => self::ERR_INVALID_COLUMNS);
             }
 
             unset($aResponseData['token']);
@@ -3419,10 +3460,10 @@ class remotecontrol_handle
             if ($bResult) {
                 return $bResult;
             } else {
-                return array('status' => 'Unable to edit response');
+                return array('status' => 'Unable to edit response', 'error_code' => self::ERR_UPDATE_FAILED);
             }
         } else {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
     }
 
@@ -3444,7 +3485,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey)) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')) {
@@ -3455,15 +3496,15 @@ class remotecontrol_handle
                     if ($Response->delete()) {
                         return array($iResponseID => 'deleted');
                     }
-                    return array('status' => 'Response not deleted for unknown reason');
+                    return array('status' => 'Response not deleted for unknown reason', 'error_code' => self::ERR_DELETION_FAILED);
                 } else {
-                    return array('status' => 'Response Id not found');
+                    return array('status' => 'Response Id not found', 'error_code' => self::ERR_NOT_FOUND);
                 }
             } else {
-                return array('status' => 'No permission');
+                return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
     }
 
@@ -3483,34 +3524,34 @@ class remotecontrol_handle
     public function upload_file($sSessionKey, $iSurveyID, $sFieldName, $sFileName, $sFileContent)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         if (is_null($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create')) {
             if (!Yii::app()->db->schema->getTable('{{responses_' . $iSurveyID . '}}')) {
-                return array('status' => 'No survey response table');
+                return array('status' => 'No survey response table', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
             }
         } else {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
 
         $sUploadDir = Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID . '/files/';
 
         if (!file_exists($sUploadDir)) {
             if (!mkdir($sUploadDir)) {
-                return array('status' => 'Can not make upload directory');
+                return array('status' => 'Can not make upload directory', 'error_code' => self::ERR_FILE_ERROR);
             }
         }
 
         $aFieldMap = createFieldMap($oSurvey, 'short', false, false, Yii::app()->getConfig('defaultlang'));
         if (!isset($aFieldMap[$sFieldName])) {
-            return array('status' => 'Can not obtain field map');
+            return array('status' => 'Can not obtain field map', 'error_code' => self::ERR_NO_DATA);
         }
 
         $aAttributes = QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
@@ -3527,7 +3568,7 @@ class remotecontrol_handle
 
         // check to see that this file type is allowed
         if (!in_array($ext, $valid_extensions_array)) {
-            return array('status' => 'The extension ' . $ext . ' is not valid. Valid extensions are: ' . $allowed_filetypes);
+            return array('status' => 'The extension ' . $ext . ' is not valid. Valid extensions are: ' . $allowed_filetypes, 'error_code' => self::ERR_INVALID_EXTENSION);
         }
 
         // This also accounts for BASE64 overhead
@@ -3537,16 +3578,16 @@ class remotecontrol_handle
         $randfileloc = $sUploadDir . $randfilename;
 
         if ($size > $maxfilesize) {
-            return array('status' => sprintf('Sorry, this file is too large. Only files up to %s KB are allowed.', $maxfilesize));
+            return array('status' => sprintf('Sorry, this file is too large. Only files up to %s KB are allowed.', $maxfilesize), 'error_code' => self::ERR_FILE_ERROR);
         }
 
         if ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB)) {
-            return array('status' => 'Not enough free space available');
+            return array('status' => 'Not enough free space available', 'error_code' => self::ERR_FILE_ERROR);
         }
 
         $uploaded = file_put_contents($randfileloc, base64_decode($sFileContent));
         if ($uploaded === false) {
-            return array('status' => 'Unable to write file');
+            return array('status' => 'Unable to write file', 'error_code' => self::ERR_FILE_ERROR);
         }
 
         return array(
@@ -3582,20 +3623,20 @@ class remotecontrol_handle
         $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
         Yii::app()->loadHelper('admin.exportresults');
         if (!tableExists($survey->responsesTableName)) {
-            return array('status' => 'No Data, survey table does not exist.');
+            return array('status' => 'No Data, survey table does not exist.', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
         }
         if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId(null, true))) {
-            return array('status' => 'No Data, could not get max id.');
+            return array('status' => 'No Data, could not get max id.', 'error_code' => self::ERR_NO_DATA);
         }
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
-            return array('status' => 'Language code not found for this survey.');
+            return array('status' => 'Language code not found for this survey.', 'error_code' => self::ERR_INVALID_LANGUAGE);
         }
 
         if (empty($sLanguageCode)) {
@@ -3670,21 +3711,21 @@ class remotecontrol_handle
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
         Yii::app()->loadHelper('admin.exportresults');
         if (!tableExists($survey->responsesTableName)) {
-            return array('status' => 'No Data, survey table does not exist.');
+            return array('status' => 'No Data, survey table does not exist.', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
         }
         if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) {
-            return array('status' => 'No Data, could not get max id.');
+            return array('status' => 'No Data, could not get max id.', 'error_code' => self::ERR_NO_DATA);
         }
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
-            return array('status' => 'Language code not found for this survey.');
+            return array('status' => 'Language code not found for this survey.', 'error_code' => self::ERR_INVALID_LANGUAGE);
         }
         if (is_array($aTokens)) {
             if (count($aTokens) == 0) {
-                return array('status' => 'No Data, empty tokens array parameter');
+                return array('status' => 'No Data, empty tokens array parameter', 'error_code' => self::ERR_INVALID_PARAMETERS);
             } else {
                 $aTokensQuoted = Array();
                 foreach ($aTokens as $token) {
@@ -3694,12 +3735,12 @@ class remotecontrol_handle
             }
         } else {
             if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $aTokens))) {
-                return array('status' => 'No Response found for Token');
+                return array('status' => 'No Response found for Token', 'error_code' => self::ERR_NOT_FOUND);
             }
             $tokenFilter = '=' . App()->db->quoteValue("$aTokens");
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
         if (empty($sLanguageCode)) {
             $sLanguageCode = $survey->language;
@@ -3737,21 +3778,21 @@ class remotecontrol_handle
     public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken, $responseId = null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
 
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!$oSurvey->hasResponsesTable) {
-            return array('status' => 'No Data, survey table does not exist.');
+            return array('status' => 'No Data, survey table does not exist.', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
         }
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) {
-            return array('status' => 'No permission');
+            return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
         }
 
         if (empty($responseId) and empty($sToken)) {
-            return ['status' => 'Invalid arguments: both Token and Response ID are empty'];
+            return ['status' => 'Invalid arguments: both Token and Response ID are empty', 'error_code' => self::ERR_INVALID_PARAMETERS];
         }
         $criteria = new CDbCriteria();
         if (!empty($responseId)) {
@@ -3762,7 +3803,7 @@ class remotecontrol_handle
         }
         $oResponses = Response::model($iSurveyID)->findAll($criteria);
         if (empty($oResponses)) {
-            return ['status' => 'Could not find response for given token or response id'];
+            return ['status' => 'Could not find response for given token or response id', 'error_code' => self::ERR_NOT_FOUND];
         }
 
         $uploaded_files = array();
@@ -3771,7 +3812,7 @@ class remotecontrol_handle
                 $sFileRealName = Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID . '/files/' . $aFile['filename'];
 
                 if (!file_exists($sFileRealName)) {
-                    return array('status' => 'Could not find uploaded files');
+                    return array('status' => 'Could not find uploaded files', 'error_code' => self::ERR_NOT_FOUND);
                 }
 
                 $uploaded_files[$aFile['filename']] = array(
@@ -3798,15 +3839,15 @@ class remotecontrol_handle
     public function get_fieldmap($sessionKey, $surveyId, $language = null)
     {
         if (!$this->_checkSessionKey($sessionKey)) {
-            return ['status' => self::INVALID_SESSION_KEY];
+            return ['status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION];
         }
         $surveyId = (int) $surveyId;
         $survey = Survey::model()->findByPk($surveyId);
         if (!isset($survey)) {
-            return ['status' => 'Error: Invalid survey ID'];
+            return ['status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY];
         }
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'read')) {
-            return ['status' => 'No permission'];
+            return ['status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION];
         }
         if (empty($language) || !in_array($language, $survey->allLanguages)) {
             $language = $survey->language;
@@ -3814,7 +3855,7 @@ class remotecontrol_handle
         // Get the fieldmap
         $fieldmap = createFieldMap($survey, 'full', false, false, $language);
         if (empty($fieldmap)) {
-            return ['status' => 'Can not obtain field map'];
+            return ['status' => 'Can not obtain field map', 'error_code' => self::ERR_NO_DATA];
         }
         return $fieldmap;
     }
@@ -3918,7 +3959,7 @@ class remotecontrol_handle
     public function cpd_importParticipants($sSessionKey, $participants, $update = false)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return array('status' => self::INVALID_SESSION_KEY);
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
         }
 
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
