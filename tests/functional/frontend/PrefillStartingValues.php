@@ -35,7 +35,7 @@ class PrefillStartingValues extends TestBaseClassWeb
                 'sid' => self::$surveyId,
                 'newtest' => 'Y',
                 'PREFILL1' => 'A3',
-                'PREFILL2' => 'bad prefilled',
+                'PREFILL2' => 'prefilled',
             ]
         );
         $questions = $this->getAllSurveyQuestions();
