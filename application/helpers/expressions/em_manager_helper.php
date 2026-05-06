@@ -3286,14 +3286,18 @@ class LimeExpressionManager
     }
 
     /**
-     * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
-     * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
+     * Builds and caches variable and token mappings used by the ExpressionManager for a survey.
      *
-     * @param integer $surveyid
-     * @param boolean|null $forceRefresh
-     * @param boolean|null $anonymized
-     * @return boolean|null - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
-     * @todo Keep method as-is but factor out content to new class; add unit tests for class
+     * Populates internal maps (known variables, question/subquestion metadata, JS aliases, token fields, etc.)
+     * required for processing LimeSurvey expressions and client-side relevance/validation logic. This method
+     * is typically expensive and only performs the full mapping when the survey's field map changes or when
+     * a forced refresh is requested.
+     *
+     * @param int $surveyid Survey primary key (sid) for which to build mappings.
+     * @param bool|null $forceRefresh When true, forces rebuilding mappings even if cached mappings exist.
+     * @param bool|null $anonymized When true, token field values are populated as blank to preserve anonymity.
+     * @return bool|null True if mappings were (re)created and ExpressionManager variables need resetting; false if
+     *                   existing cached mappings were reused; null if an error occurred and mappings could not be built.
      */
     public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false)
     {
@@ -3303,6 +3307,9 @@ class LimeExpressionManager
         } elseif ($forceRefresh === false && !empty($this->knownVars) && ((!$this->sPreviewMode) || ($this->sPreviewMode === 'database') || ($this->sPreviewMode === 'logic'))) {
             return false;   // means that those variables have been cached and no changes needed
         }
+        /* Import needed helpers */
+        Yii::import('application.helpers.replacements_helper', true); // templatereplace function
+
         $now = microtime(true);
         $this->em->SetSurveyMode($this->surveyMode);
         $survey = Survey::model()->findByPk($surveyid);
@@ -8381,6 +8388,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         if (!$lang && isset($_SESSION['LEMlang'])) {
             $lang = $_SESSION['LEMlang'];
         }
+
+        // todo: commented out for 13 years
         // Actually seem uncesserry : only one call for each page, then commented
 #            static $aStaticQuestionAttributesForEM=array();
 #            if(isset($aStaticQuestionAttributesForEM[$surveyid][$qid][$lang]))
@@ -9060,13 +9069,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
 
     /**
-     * Create HTML view of the survey, showing everything that uses EM
-     * @param int $sid
-     * @param int|null $gid
-     * @param int|null
-     * @param int|null $LEMdebugLevel
-     * @param boolean|null $assessments
-     * @return array
+     * Render an HTML "logic file" that lists all expressions, relevances, validations, defaults, subquestions, and answer texts for a survey (or a specific group/question) and reports syntax errors and warnings.
+     *
+     * The function runs ExpressionManager in a preview "logic" mode, processes the survey (or the specified group/question), evaluates and pretty-prints expressions and replacement strings, and returns an HTML fragment plus a mapping of detected expression errors by question.
+     *
+     * @param int $sid Survey ID to inspect.
+     * @param int|null $gid If provided, restrict output to this group ID; otherwise null to include whole survey or when $qid is provided.
+     * @param int|null $qid If provided, restrict output to this question ID; otherwise null.
+     * @param int|null $LEMdebugLevel Bitfield controlling debug output (0 for none).
+     * @param bool|null $assessments When true, include assessment-related information; when null, use the survey's assessments setting.
+     * @return array An associative array with:
+     *               - 'errors' => array mapping "gid~qid" to an integer count of syntax errors for that question (or an integer 1 when a top-level failure occurs),
+     *               - 'html'   => string HTML fragment containing the generated logic-file view and any alert banners.
      */
     public static function ShowSurveyLogicFile($sid, $gid = null, $qid = null, $LEMdebugLevel = 0, $assessments = null)
     {
@@ -9094,6 +9108,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $aQuestionWarnings = [];
         $warnings = 0;
 
+        /* Import needed helpers */
+        Yii::import('application.helpers.replacements_helper', true);
         $surveyOptions = [
             'assessments'                 => $assessments === null ? ($aSurveyInfo['assessments'] == 'Y') : $assessments,
             'hyperlinkSyntaxHighlighting' => true,

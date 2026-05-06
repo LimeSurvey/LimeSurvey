@@ -34,7 +34,8 @@
                         'surveygrid--pageSize',
                         $this->pageSize,
                         Yii::app()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto',
+                         'aria-label' => gT('Change page size')]
                     )
                 ),
             'ajaxUpdate'            => 'survey-grid',
@@ -44,7 +45,7 @@
                 'switchStatusOfListActions();',
             ],
             'rowLink'               =>
-                'App()->getConfig("editorEnabled") && Yii::app()->getConfig("debug")'
+                '$data->hasNewEditor'
                 . ' ? App()->createUrl("editorLink/index", ["route" => "survey/" . $data->sid]) '
                 . ' : Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
             // 'template'  => $this->template,

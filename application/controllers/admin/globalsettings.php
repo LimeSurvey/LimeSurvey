@@ -321,6 +321,19 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
 
+        // Minimum stability for update notifications
+        $minimumUpdateStability = Yii::app()->getRequest()->getPost('minimum_update_stability')
+            ?: Yii::app()->getConfig('minimum_update_stability');
+        if (in_array($minimumUpdateStability, ['alpha', 'beta', 'rc', 'stable'])) {
+            SettingGlobal::setSetting('minimum_update_stability', $minimumUpdateStability);
+            // Clear cached update check so the new stability filter takes effect immediately
+            Yii::app()->session['next_update_check'] = null;
+            Yii::app()->session['update_result'] = null;
+            Yii::app()->session['security_update'] = null;
+            Yii::app()->session['unstable_update'] = null;
+            Yii::app()->session['update_stability_labels'] = null;
+        }
+
         SettingGlobal::setSetting('createsample', Yii::app()->getRequest()->getPost('createsample'));
 
         if (!Yii::app()->getConfig('demoMode')) {
@@ -425,9 +438,19 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('bPdfQuestionBold', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBold')));
         SettingGlobal::setSetting('bPdfQuestionBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBorder')));
         SettingGlobal::setSetting('bPdfResponseBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfResponseBorder')));
-        SettingGlobal::setSetting('googleMapsAPIKey', Yii::app()->getRequest()->getPost('googleMapsAPIKey'));
-        SettingGlobal::setSetting('googleanalyticsapikey', Yii::app()->getRequest()->getPost('googleanalyticsapikey'));
-        SettingGlobal::setSetting('googletranslateapikey', Yii::app()->getRequest()->getPost('googletranslateapikey'));
+        /* @see https://docs.cloud.google.com/docs/authentication/api-keys#components */
+        $googleapikeys = ['googleMapsAPIKey', 'googleanalyticsapikey', 'googletranslateapikey'];
+        foreach ($googleapikeys as $googleapikey) {
+            $value = trim(strval(App()->getRequest()->getPost($googleapikey)));
+            $fixedValue = sanitize_googleapikey($value);
+            if ($value !== $fixedValue) {
+                /* Add an alert to the user */
+                Yii::app()->setFlashMessage(sprintf(gT("Invalid value set for %s, reset to %s"), $googleapikey, $fixedValue), 'warning');
+                /* Add a warning for log for server admin */
+                Yii::log("Invalid value set for {$googleapikey} in global settings.", 'warning', 'application.controller.admin.globalsettings');
+            }
+            SettingGlobal::setSetting($googleapikey, $fixedValue);
+        }
         SettingGlobal::setSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
         SettingGlobal::setSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
         SettingGlobal::setSetting('rpc_publish_api', Yii::app()->getRequest()->getPost('rpc_publish_api'));

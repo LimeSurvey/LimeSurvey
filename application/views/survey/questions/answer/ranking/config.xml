@@ -378,6 +378,19 @@
             <expression></expression>
         </attribute>
         <attribute>
+            <name>keep_codes_order</name>
+            <category>Display</category>
+            <sortorder>101</sortorder>
+            <inputtype>text</inputtype>
+            <default></default>
+            <help>Semicolon-separated list of answer codes that keep their original database position when answers are randomized</help>
+            <caption>Keep codes at original positions</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>showpopups</name>
             <category>Display</category>
             <sortorder>110</sortorder>

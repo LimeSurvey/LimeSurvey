@@ -717,6 +717,7 @@ window.addEventListener('message', function(event) {
                     $aData["aSurveyInfo"]["options"][$key] = (string)$value;
                 }
             }
+            $aData["aSurveyInfo"] = $this->setDefaultPrivacyText($aData["aSurveyInfo"]);
         } else {
             // Add the global theme options
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
@@ -730,6 +731,37 @@ window.addEventListener('message', function(event) {
         return $aData;
     }
 
+    /**
+     * Set default privacy string if empty
+     * @return void
+     */
+    private function setDefaultPrivacyText($aSurveyInfo)
+    {
+        /* Do it one time only (and do not recall self when using renderPartial) */
+        static $DefaultPrivacyDone = false;
+        if ($DefaultPrivacyDone) {
+            return $aSurveyInfo;
+        }
+        $DefaultPrivacyDone = true;
+        if (empty($aSurveyInfo['datasecurity_notice_label'])) {
+            $aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
+        }
+        if (empty($aSurveyInfo['datasecurity_error'])) {
+            $aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
+        }
+        /* @var string[] for automatic translation */
+        $translation = [
+            "Show policy" => gT("Show policy")
+        ];
+        $aSurveyInfo['datasecurity_notice_label'] =  $this->renderPartial(
+            './subviews/privacy/privacy_datasecurity_notice_label.twig',
+            [
+                'dataSecurityNoticeLabel' => $aSurveyInfo['datasecurity_notice_label'],
+                'sid' => $aSurveyInfo['sid'],
+            ]
+        );
+        return $aSurveyInfo;
+    }
 
     /**
      * It can happen that user set incoherent values for options (like background is on, but no image file is selected)
