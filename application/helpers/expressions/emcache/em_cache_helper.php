@@ -56,9 +56,10 @@ class EmCacheHelper
     }
 
     /**
-     * Flush cache for initialised survey only.
-     * Bumps the namespace token so all previously-stored keys become unreachable.
+     * Flush cache for initialised survey.
+     * Should be done at all places where the cache is invalidated, e.g. at save survey/question/etc.
      *
+     * @param int|null $sid Set to a value if you don't want to run init() first. Useful when flushing in models.
      * @return void
      * @throws EmCacheException if surveyinfo is not initialised.
      */
@@ -67,51 +68,7 @@ class EmCacheHelper
         if (empty(self::$surveyinfo)) {
             throw new EmCacheException('Cannot flush emcache unless initalised');
         }
-        self::bumpNamespaceToken(self::$surveyinfo['sid']);
-    }
-
-    /**
-     * Get the current namespace token for a survey from the persistent cache.
-     * Creates token with value 1 if it does not exist yet.
-     *
-     * @param int|string $sid
-     * @return int
-     */
-    protected static function getNamespaceToken($sid)
-    {
-        $tokenKey = '__emcache_ns_' . $sid;
-        $token = \Yii::app()->emcache->get($tokenKey);
-        if ($token === false) {
-            $token = 1;
-            \Yii::app()->emcache->set($tokenKey, $token);
-        }
-        return (int) $token;
-    }
-
-    /**
-     * Bump (increment) the namespace token for a survey, invalidating all cached keys.
-     *
-     * @param int|string $sid
-     * @return void
-     */
-    protected static function bumpNamespaceToken($sid)
-    {
-        $tokenKey = '__emcache_ns_' . $sid;
-        $token = self::getNamespaceToken($sid);
-        \Yii::app()->emcache->set($tokenKey, $token + 1);
-    }
-
-    /**
-     * Build a cache key that includes the namespace token for the current survey.
-     *
-     * @param string $key
-     * @return string
-     */
-    protected static function namespacedKey($key)
-    {
-        $sid = self::$surveyinfo['sid'];
-        $token = self::getNamespaceToken($sid);
-        return $token . '_' . $key;
+        \Yii::app()->emcache->flush();
     }
 
     /**
@@ -130,7 +87,7 @@ class EmCacheHelper
             throw new EmCacheException('emcache is not initialised');
         }
 
-        return \Yii::app()->emcache->get(self::namespacedKey($key));
+        return \Yii::app()->emcache->get($key);
     }
 
     /**
@@ -147,7 +104,7 @@ class EmCacheHelper
         }
 
         /** @var boolean */
-        $result = \Yii::app()->emcache->set(self::namespacedKey($key), $value);
+        $result = \Yii::app()->emcache->set($key, $value);
 
         if (!$result && YII_DEBUG) {
             throw new EmCacheException('Failed caching key ' . $key);
