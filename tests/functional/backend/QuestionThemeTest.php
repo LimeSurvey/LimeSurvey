@@ -3,6 +3,7 @@
 namespace ls\tests\controllers;
 
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Interactions\WebDriverActions;
 use ls\tests\TestBaseClassWeb;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Remote\LocalFileDetector;
@@ -69,10 +70,15 @@ class QuestionThemeTest extends TestBaseClassWeb
         $this->assertTrue(file_exists($file));
         $fileInput->sendKeys($file)->submit();
 
-        sleep(1);
-
-        // Check result in database
-        $theme = QuestionTheme::model()->findByAttributes(['name' => 'Range-Slider']);
+        // Poll database until the theme appears (up to 20 seconds)
+        $theme = null;
+        for ($i = 0; $i < 20; $i++) {
+            sleep(1);
+            $theme = QuestionTheme::model()->findByAttributes(['name' => 'Range-Slider']);
+            if (!empty($theme)) {
+                break;
+            }
+        }
         $this->assertNotEmpty($theme, 'Found installed question theme in database');
 
         // Check result in filesystem
@@ -87,7 +93,6 @@ class QuestionThemeTest extends TestBaseClassWeb
     public function testSelectQuestionThemeInQuestionEditor()
     {
         try {
-
             // Import survey with one group and question
             $surveyFile = self::$surveysFolder . '/limesurvey_survey_193959_testSelectQuestionThemeInEditor.lss';
             self::importSurvey($surveyFile);
@@ -192,7 +197,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                 )
             );
             $button->click();
-            sleep(1);
+            sleep(10);
 
             // Check database
             $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
@@ -227,7 +232,6 @@ class QuestionThemeTest extends TestBaseClassWeb
         // Import lsa
         $surveyFile = self::$surveysFolder . '/survey_archive_222923_executeQuestionThemeSurvey.lsa';
         self::importSurvey($surveyFile);
-
         $urlMan = \Yii::app()->urlManager;
         $web = self::$webDriver;
 
@@ -240,18 +244,21 @@ class QuestionThemeTest extends TestBaseClassWeb
         // Run survey
         $button = self::$webDriver->findById('execute_survey_button') ;
         $button->click();
-        sleep(1);
+        sleep(5);
 
         // Switch to new tab.
         $windowHandles = self::$webDriver->getWindowHandles();
         self::$webDriver->switchTo()->window(
             end($windowHandles)
         );
-        sleep(1);
+        sleep(5);
 
-        // Click on slider to trigger answering.
-        $sliderHandler = $web->findByCss('.slider-handle');
-        $sliderHandler->click();
+        // Drag each slider handle 50px left and back to trigger value recording.
+        $handles = $web->findElements(WebDriverBy::cssSelector('.slider-handle'));
+        $action = new WebDriverActions($web);
+        foreach ($handles as $handle) {
+            $action->clickAndHold($handle)->moveByOffset(-50, 0)->moveByOffset(50, 0)->release()->perform();
+        }
 
         // Submit
         $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
@@ -262,14 +269,14 @@ class QuestionThemeTest extends TestBaseClassWeb
         $responses = \Response::model(self::$surveyId)->findAll();
         $this->assertCount(1, $responses);
 
-        $sid = self::$surveyId;
-        $gid = self::$testSurvey->groups[0]->gid;
         $qid = self::$testSurvey->questions[0]->qid;
+        $sqid1 = self::$testSurvey->questions[0]->subquestions[0]->qid;
+        $sqid2 = self::$testSurvey->questions[0]->subquestions[1]->qid;
 
-        $sgqa1 = sprintf('%dX%dX%dSQ001', $sid, $gid, $qid);
-        $sgqa2 = sprintf('%dX%dX%dSQ002', $sid, $gid, $qid);
+        $qCode1 = sprintf('Q%d_S%d', $qid, $sqid1);
+        $qCode2 = sprintf('Q%d_S%d', $qid, $sqid2);
 
-        $this->assertEquals(4, (int) $responses[0]->attributes[$sgqa1]);
-        $this->assertEquals(7, (int) $responses[0]->attributes[$sgqa2]);
+        $this->assertEquals(4, (int) $responses[0]->attributes[$qCode1]);
+        $this->assertEquals(7, (int) $responses[0]->attributes[$qCode2]);
     }
 }
