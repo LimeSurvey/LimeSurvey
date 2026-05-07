@@ -18,7 +18,7 @@
             ) ?>
             <div class="modal-body" id="modal-body-copy-survey">
                 <div class="row mb-3">
-                    <label class="form-label"><?= gT("Select the options for copying your survey."); ?></label>
+                    <p class="form-label"><?= gT("Select the options for copying your survey."); ?></p>
                 </div>
                     <div class="row mb-3">
                         <!-- Source survey -->
@@ -28,22 +28,23 @@
                     <div class="mb-3">
                         <!-- New survey title -->
                         <label  class="form-label" for='copysurveytitle'><?php eT("New survey title:"); ?> </label>
-                        <input type='text' id='copysurveytitle' name='copysurveytitle' value='' class="form-control"/>
-                        <p class="form-control-static">
+                        <input type='text' id='copysurveytitle' name='copysurveytitle' value='' class="form-control" aria-describedby="copysurveytitleHelp"/>
+                        <p class="form-control-static" id="copysurveytitleHelp">
                             <span class='reg12'><?php echo  gT('Optional - Leave this field empty to assign a new title with "... - Copy" automatically'); ?> </span>
                         </p>
                     </div>
 
                     <div class="mb-3">
-                        <p
-                            class="p-0 reg12 fw-bold text-decoration-none"
+                        <button
+                            type="button"
+                            class="btn btn-link p-0 reg12 fw-bold text-decoration-none"
                             data-bs-toggle="collapse"
                             data-bs-target="#copySurveyAdvanced"
                             aria-expanded="false"
                             aria-controls="copySurveyAdvanced"
                         >
                             <?php eT("Advanced options"); ?><span class="ri-arrow-down-s-line" aria-hidden="true"></span>
-                        </p>
+                        </button>
                     </div>
                     <div class="collapse" id="copySurveyAdvanced">
                         <div class="mb-3">
@@ -56,7 +57,7 @@
                         </div>
 
                         <fieldset>
-                            <label  class="form-label" ><?php eT("Select the elements to include:"); ?> </label>
+                            <legend  class="form-label" ><?php eT("Select the elements to include:"); ?> </legend>
                             <!-- Convert resource links -->
                             <div class="mb-2">
                                 <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-clear-select-all"
