@@ -225,8 +225,13 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
         if (!is_dir($path)) {
             return;
         }
-        chmod($path, $mode);
+        if (!chmod($path, $mode)) {
+            throw new \RuntimeException("chmod failed on directory: $path");
+        }
         $items = scandir($path);
+        if ($items === false) {
+            throw new \RuntimeException("scandir failed on directory: $path");
+        }
         foreach ($items as $item) {
             if ($item === '.' || $item === '..') {
                 continue;
@@ -235,7 +240,9 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
             if (is_dir($fullPath)) {
                 self::chmodRecursive($fullPath, $mode);
             } else {
-                chmod($fullPath, $mode);
+                if (!chmod($fullPath, $mode)) {
+                    throw new \RuntimeException("chmod failed on file: $fullPath");
+                }
             }
         }
     }

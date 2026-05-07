@@ -64,7 +64,10 @@ class FailedEmailTest extends TestBaseClassWeb
             $m->status = FailedEmail::STATE_FAILED;
             $m->updated = date('Y-m-d H:i:s');
             $m->resend_vars = $resendVars;
-            $m->save(false);
+            $saved = $m->save(false);
+            if (!$saved) {
+                throw new \RuntimeException('Failed to save FailedEmail fixture: ' . json_encode($m->getErrors()));
+            }
         };
 
         // Helper: navigate to page and wait for grid action dropdown
@@ -155,7 +158,10 @@ class FailedEmailTest extends TestBaseClassWeb
                 $m->status = FailedEmail::STATE_FAILED;
                 $m->updated = date('Y-m-d H:i:s');
                 $m->resend_vars = $resendVars;
-                $m->save(false);
+                $saved = $m->save(false);
+                if (!$saved) {
+                    throw new \RuntimeException('Failed to save FailedEmail fixture (responseId=' . $responseId . '): ' . json_encode($m->getErrors()));
+                }
             }
         };
 

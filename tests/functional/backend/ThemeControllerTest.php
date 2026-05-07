@@ -4,6 +4,7 @@ namespace ls\tests\controllers;
 
 use ls\tests\TestBaseClassWeb;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Remote\LocalFileDetector;
 
 /**
@@ -370,12 +371,17 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Export theme directly via PHP (browser file downloads cannot be verified server-side).
             $oTemplate = \Template::getInstance('vanilla_test_3', null, null, true);
             $zipfile = ROOT . '/tmp/vanilla_test_3.zip';
+            if (file_exists($zipfile)) {
+                unlink($zipfile);
+            }
+            $this->assertFalse(file_exists($zipfile), 'Zip file should not exist before export');
             $zip = new \LimeSurvey\Zip();
             $zip->open($zipfile, \ZipArchive::CREATE);
             $zipHelper = new \LimeSurvey\Helpers\ZipHelper($zip);
             $zipHelper->addFolder($oTemplate->path);
             $zip->close();
             $this->assertTrue(file_exists($zipfile), 'Zip export was created');
+            $this->assertGreaterThan(0, filesize($zipfile), 'Zip export should not be empty');
 
             // Delete the theme via browser to test import.
             $w->clickButton('button-delete');
