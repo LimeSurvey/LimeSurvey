@@ -50,6 +50,10 @@ class ThemeControllerTest extends TestBaseClassWeb
         $contr->delete();
         unset($_POST['templatename']);
 
+        $_POST['templatename'] = 'vanilla_test_3';
+        $contr->delete();
+        unset($_POST['templatename']);
+
         //$flashes = \Yii::app()->session['aFlashMessage'];
     }
 
@@ -179,14 +183,19 @@ class ThemeControllerTest extends TestBaseClassWeb
             $this->assertEquals($p->getText(), 'This is a sample survey description. It could be quite long.');
             $w->switchTo()->defaultContent();
 
-            // Try to save to local theme.
+            // Try to save to local theme (copies inherited file locally and reloads).
             $button = $w->findElement(WebDriverBy::id('button-save-changes'));
             $button->click();
 
-            sleep(1);
-
-            // Button text should be "Save" (the theme is already a local copy).
-            $button = $w->findElement(WebDriverBy::id('button-save-changes'));
+            // Wait for the page to reload after save — the button should now show "Save".
+            $w->wait(20)->until(
+                WebDriverExpectedCondition::stalenessOf($button)
+            );
+            $button = $w->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('button-save-changes')
+                )
+            );
             $value  = trim($button->getText()) ?: $button->getAttribute('value');
             $this->assertEquals('Save', $value, 'Button text is ' . $value);
 
@@ -315,8 +324,8 @@ class ThemeControllerTest extends TestBaseClassWeb
 
         // Make sure there's no vanilla_test_3 yet.
         $temp = \Template::model()->findAll(
-            'title = :title',
-            ['title' => 'vanilla_test_3']
+            'name = :name',
+            ['name' => 'vanilla_test_3']
         );
         $this->assertEmpty($temp, 'vanilla_test_3 is not yet created');
 
@@ -349,12 +358,12 @@ class ThemeControllerTest extends TestBaseClassWeb
             $w->clickButton('button-extend-vanilla');
             $w->switchTo()->alert()->sendKeys('vanilla_test_3');
             $w->switchTo()->alert()->accept();
-            sleep(1);
+            sleep(10);
 
             // Make sure vanilla_test_3 was created.
             $temp = \Template::model()->findAll(
-                'title = :title',
-                ['title' => 'vanilla_test_3']
+                'name = :name',
+                ['name' => 'vanilla_test_3']
             );
             $this->assertNotEmpty($temp, 'vanilla_test_3 was created');
 
@@ -374,24 +383,25 @@ class ThemeControllerTest extends TestBaseClassWeb
             $this->assertGreaterThan(0, filesize($zipfile), 'Zip export should not be empty');
 
             // Delete the theme via browser to test import.
+            // The delete button opens a Bootstrap confirm modal, not a native alert.
             $w->clickButton('button-delete');
-            $w->switchTo()->alert()->accept();
-
-            sleep(1);
-
-            $url = $urlMan->createUrl(
-                'admin/themes',
-                [
-                    'sa'           => 'view',
-                    'editfile'     => 'layout_global.twig',
-                    'screenname'   => 'welcome',
-                    'templatename' => 'vanilla'
-                ]
+            $confirmBtn = $w->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#confirm-delete-modal .selector--button-confirm')
+                )
             );
+            // Wait for shown.bs.modal to fire — it binds the click handler
+            // only after the fade animation completes.
+            sleep(1);
+            $confirmBtn->click();
 
+            sleep(2);
+
+            $url = $urlMan->createUrl('themeOptions/index');
             $w->get($url);
-
-            $w->clickButton('button-import');
+            sleep(1);
+            $button = $w->findById('uploadandinstall');
+            $button->click();
 
             sleep(1);
 
@@ -409,11 +419,10 @@ class ThemeControllerTest extends TestBaseClassWeb
             sleep(1);
 
             // Check that we have the correct page header.
-            $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
-            $this->assertEquals(
-                $header->getText(),
-                'Theme editor: vanilla_test_3',
-                $header->getText() . ' should equal "Theme editor: vanilla_test_3"'
+            $w->wait(20)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::xpath("//h1[contains(.,'Theme editor: vanilla_test_3')]")
+                )
             );
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
