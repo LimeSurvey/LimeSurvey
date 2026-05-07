@@ -107,7 +107,7 @@ class CopySurvey
         if ($newTitle !== null && $newTitle !== '') {
             $destinationSurvey->currentLanguageSettings->surveyls_title = $newTitle;
         } else {
-            $destinationSurvey->currentLanguageSettings->surveyls_title = sprintf(gT('Copy of %s', 'unescaped', $this->sourceSurvey->language), $this->sourceSurvey->currentLanguageSettings->surveyls_title);
+            $destinationSurvey->currentLanguageSettings->surveyls_title = sprintf(gT('%s - Copy', 'unescaped', $this->sourceSurvey->language), $this->sourceSurvey->currentLanguageSettings->surveyls_title);
         }
         $destinationSurvey->currentLanguageSettings->save();
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
