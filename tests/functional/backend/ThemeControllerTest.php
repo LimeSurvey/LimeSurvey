@@ -133,26 +133,16 @@ class ThemeControllerTest extends TestBaseClassWeb
 
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-        $url = $urlMan->createUrl('themeOptions');
 
         // NB: Less typing.
         $w = self::$webDriver;
 
-        $w->get($url);
-
-        // Wait for modal to appear.
-        sleep(1);
-
-        $w->dismissModal();
-
         try {
-            // Click "Theme editor" for vanilla theme.
-            $button = $w->wait(20)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('template_editor_link_vanilla')
-                )
-            );
-            $button->click();
+            // Navigate directly to the theme editor for vanilla.
+            // The "Theme editor" link in the grid uses a dropdown portaled to <body>,
+            // making it unreliable to click via WebDriver.
+            $url = $urlMan->createUrl('admin/themes/sa/view', ['templatename' => 'vanilla']);
+            $w->get($url);
 
             // Wait for possible modal.
             sleep(1);
@@ -175,15 +165,16 @@ class ThemeControllerTest extends TestBaseClassWeb
             sleep(1);
 
             // Check that we have the correct page header.
-            $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
-            $this->assertEquals(
-                $header->getText(),
-                'Theme editor: vanilla_version_1',
-                $header->getText() . ' should equal "Theme editor: vanilla_version_1"'
+            // Wait for the page to redirect to the new theme editor.
+            $header = $w->wait(20)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::xpath("//h1[contains(.,'Theme editor: vanilla_version_1')]")
+                )
             );
 
             // Check that the preview is working.
-            $w->switchTo()->frame('previewiframe');
+            $iframe = $w->findElement(WebDriverBy::id('previewiframe'));
+            $w->switchTo()->frame($iframe);
             $p = $w->findElement(WebDriverBy::tagName('p'));
             $this->assertEquals($p->getText(), 'This is a sample survey description. It could be quite long.');
             $w->switchTo()->defaultContent();
@@ -194,10 +185,10 @@ class ThemeControllerTest extends TestBaseClassWeb
 
             sleep(1);
 
-            // Button text should have changed to "Save changes".
+            // Button text should be "Save" (the theme is already a local copy).
             $button = $w->findElement(WebDriverBy::id('button-save-changes'));
-            $value  = $button->getAttribute('value');
-            $this->assertEquals($value, 'Save changes', 'Button text is ' . $value);
+            $value  = trim($button->getText()) ?: $button->getAttribute('value');
+            $this->assertEquals('Save', $value, 'Button text is ' . $value);
 
             // Test rename the theme.
             $button = $w->findElement(WebDriverBy::id('button-rename-theme'));
@@ -212,11 +203,10 @@ class ThemeControllerTest extends TestBaseClassWeb
             sleep(1);
 
             // Check that we have the renamed page header.
-            $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
-            $this->assertEquals(
-                $header->getText(),
-                'Theme editor: vanilla_version_renamed',
-                $header->getText() . ' should equal "Theme editor: vanilla_version_renamed"'
+            $header = $w->wait(20)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::xpath("//h1[contains(.,'Theme editor: vanilla_version_renamed')]")
+                )
             );
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);

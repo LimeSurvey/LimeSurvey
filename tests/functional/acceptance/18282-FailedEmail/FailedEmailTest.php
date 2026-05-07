@@ -171,7 +171,7 @@ class FailedEmailTest extends TestBaseClassWeb
         // --- Massive action Resend Email ---
         $createRecords();
         $web->get($url);
-        $web->wait(15)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]')));
+        $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]')));
         // Click select-all checkbox and trigger change event to enable massive action button
         $web->findElement(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]'))->click();
         $web->executeScript("$('.grid-view-ls input[type=\"checkbox\"]').trigger('change');");
@@ -188,7 +188,7 @@ class FailedEmailTest extends TestBaseClassWeb
         // --- Massive action Delete Email (fresh records + page load) ---
         $createRecords();
         $web->get($url);
-        $web->wait(15)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]')));
+        $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]')));
         $web->findElement(WebDriverBy::cssSelector('#failedemail-grid [name="id_all"]'))->click();
         $web->executeScript("$('.grid-view-ls input[type=\"checkbox\"]').trigger('change');");
         $web->wait(15)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#failedEmailActions [data-bs-toggle="dropdown"]:not([disabled])')));
