@@ -35,3 +35,42 @@
     pointer-events   : auto;
     cursor           : not-allowed;
 }
+
+// Admin sidebar and PreviewModalWidget (question type selection)
+a.list-group-item {
+    color: $g-700;
+    &.active {
+        &,
+        &:hover,
+        &:focus {
+            color: $white;
+            background-color: $active-green;
+            border: 1px solid $active-green;
+
+            .list-group-item-text {
+                color: $active-green-hover;
+            }
+        }
+        .list-group-item-text {
+            color: $active-green;
+        }
+        > .badge {
+            color: $active-green;
+            background-color: $white;
+        }
+    }
+    .list-group-item-heading {
+        color: $g-800;
+    }
+    &:hover {
+        background-color: $active-green-hover;
+    }
+    &:focus:not(:active) {
+        @include inset-border(2px, $grape90);
+        background-color: $white;
+    }
+    &:active {
+        color: $g-900;
+        background-color: $g-100;
+    }
+}

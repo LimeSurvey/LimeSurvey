@@ -15204,12 +15204,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   border: 1px solid #5c2e15;
 }
 
-a.list-group-item.active:focus, a.list-group-item.active:hover, a.list-group-item.active {
-  color: #fff;
-  background-color: #328637;
-  border: 1px solid #328637;
-}
-
 a.list-group-item-success.active:focus, a.list-group-item-success.active:hover, a.list-group-item-success.active {
   color: #fff;
   background-color: #328637;
@@ -15250,31 +15244,6 @@ a.badge:hover {
 }
 a.badge:focus {
   color: #fff;
-}
-a.list-group-item {
-  color: #545454;
-}
-a.list-group-item.active:hover .list-group-item-text {
-  color: #afdbb1;
-}
-a.list-group-item.active:focus .list-group-item-text {
-  color: #afdbb1;
-}
-a.list-group-item.active .list-group-item-text {
-  color: #afdbb1;
-}
-a.list-group-item.active > .badge {
-  color: #328637;
-  background-color: #fff;
-}
-a.list-group-item .list-group-item-heading {
-  color: #333333;
-}
-a.list-group-item:hover {
-  background-color: #9cba9e;
-}
-a.list-group-item:focus {
-  background-color: #9cba9e;
 }
 a.thumbnail:hover {
   border: 1px solid #328637;
@@ -19250,8 +19219,11 @@ input[type=number] {
   background: radial-gradient(circle at center, #5cc262 0px, #5cc262 8px, #fff 9px, #fff 100%);
 }
 #sidebar a:not(.btn, .nav-tabs .nav-link) {
-  color: #1E1E1E;
+  color: #6E748C;
   font-weight: 400;
+}
+#sidebar a:not(.btn, .nav-tabs .nav-link):active {
+  color: #1E1E1E;
 }
 #sidebar li.dragged {
   color: #fff;
@@ -19280,18 +19252,6 @@ input[type=number] {
 }
 #sidebar .subpanel {
   font-size: 14px;
-}
-#sidebar .subpanel .list-group-item .wrapper .title {
-  color: #6E748C;
-}
-#sidebar .subpanel .list-group-item .wrapper .title.disabled {
-  color: #D3D5DA;
-}
-#sidebar .subpanel .list-group-item .wrapper .icon {
-  color: #6E748C;
-}
-#sidebar .subpanel .list-group-item.disabled .wrapper .title {
-  color: #D3D5DA;
 }
 #sidebar .subpanel.level-0 .menu-selected {
   background: linear-gradient(to right, #40ab46 0px, #40ab46 6px, #fff 6px, #fff 100%);
@@ -20478,6 +20438,39 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #D3D5DA;
   pointer-events: auto;
   cursor: not-allowed;
+}
+
+a.list-group-item {
+  color: #6E748C;
+}
+a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+  color: #fff;
+  background-color: #14AE5C;
+  border: 1px solid #14AE5C;
+}
+a.list-group-item.active .list-group-item-text, a.list-group-item.active:hover .list-group-item-text, a.list-group-item.active:focus .list-group-item-text {
+  color: #9cba9e;
+}
+a.list-group-item.active .list-group-item-text {
+  color: #14AE5C;
+}
+a.list-group-item.active > .badge {
+  color: #14AE5C;
+  background-color: #fff;
+}
+a.list-group-item .list-group-item-heading {
+  color: #333641;
+}
+a.list-group-item:hover {
+  background-color: #9cba9e;
+}
+a.list-group-item:focus:not(:active) {
+  box-shadow: inset 2px 0 0 rgba(123, 97, 255, 0.9), inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
+  background-color: #fff;
+}
+a.list-group-item:active {
+  color: #1E1E1E;
+  background-color: #F9F9FB;
 }
 
 .ls-card-grid .ls-card-grid__description {
