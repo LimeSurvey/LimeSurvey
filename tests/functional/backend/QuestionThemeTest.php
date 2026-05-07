@@ -197,24 +197,43 @@ class QuestionThemeTest extends TestBaseClassWeb
                 )
             );
             $button->click();
-            sleep(10);
 
-            // Check database
-            $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
-                [
-                    'qid' => self::$testSurvey->questions[0]->qid,
-                    'attribute' => 'range_slider_min'
-                ]
+            // Wait for save to complete: the page reloads and the save button becomes clickable again.
+            self::$webDriver->wait(20)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#save-button-create-question')
+                )
             );
+
+            // Force DB reconnect to see changes committed by the web server (MySQL REPEATABLE READ).
+            \Yii::app()->db->setActive(false);
+            \Yii::app()->db->setActive(true);
+
+            // Poll database until the attribute is saved (up to 10 seconds).
+            $rangeSliderMin = null;
+            for ($i = 0; $i < 10; $i++) {
+                $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
+                    [
+                        'qid' => self::$testSurvey->questions[0]->qid,
+                        'attribute' => 'range_slider_min'
+                    ]
+                );
+                if ($rangeSliderMin !== null) {
+                    break;
+                }
+                sleep(1);
+                \Yii::app()->db->setActive(false);
+                \Yii::app()->db->setActive(true);
+            }
             $this->assertEquals('1', $rangeSliderMin->value);
 
-            $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
+            $rangeSliderMax = QuestionAttribute::model()->findByAttributes(
                 [
                     'qid' => self::$testSurvey->questions[0]->qid,
                     'attribute' => 'range_slider_max'
                 ]
             );
-            $this->assertEquals('10', $rangeSliderMin->value);
+            $this->assertEquals('10', $rangeSliderMax->value);
         } catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -235,23 +254,47 @@ class QuestionThemeTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $web = self::$webDriver;
 
-        // Go to survey overview.
+        // Go to survey overview. Dismiss any beforeunload alert from the previous test.
         $url = $urlMan->createUrl(
             'surveyAdministration/view/surveyid/' . self::$surveyId
         );
-        self::$webDriver->get($url);
+        // Dismiss alerts repeatedly — the beforeunload handler may trigger multiple times.
+        for ($attempt = 0; $attempt < 3; $attempt++) {
+            try {
+                self::$webDriver->get($url);
+                // Verify the page loaded by finding the execute button.
+                self::$webDriver->findById('execute_survey_button');
+                break;
+            } catch (\Facebook\WebDriver\Exception\UnexpectedAlertOpenException $e) {
+                try {
+                    self::$webDriver->switchTo()->alert()->accept();
+                } catch (\Exception $ignore) {
+                }
+            }
+        }
 
         // Run survey
-        $button = self::$webDriver->findById('execute_survey_button') ;
+        $button = self::$webDriver->findById('execute_survey_button');
+        $initialHandles = self::$webDriver->getWindowHandles();
         $button->click();
-        sleep(5);
+
+        // Wait for new tab to open.
+        self::$webDriver->wait(15)->until(function () use ($initialHandles) {
+            return count(self::$webDriver->getWindowHandles()) > count($initialHandles);
+        });
 
         // Switch to new tab.
         $windowHandles = self::$webDriver->getWindowHandles();
         self::$webDriver->switchTo()->window(
             end($windowHandles)
         );
-        sleep(5);
+
+        // Wait for the slider to be present on the survey page.
+        $web->wait(15)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::cssSelector('.slider-handle')
+            )
+        );
 
         // Drag each slider handle 50px left and back to trigger value recording.
         $handles = $web->findElements(WebDriverBy::cssSelector('.slider-handle'));
