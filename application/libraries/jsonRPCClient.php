@@ -134,12 +134,12 @@ class jsonRPCClient
         $context = stream_context_create($opts);
         if ($fp = fopen($this->url, 'r', false, $context)) {
             stream_set_timeout($fp, 120);
-            $response = '';
+            $rawResponse = '';
             while ($row = fgets($fp)) {
-                $response .= trim($row) . "\n";
+                $rawResponse .= trim($row) . "\n";
             }
-            $this->debug && $this->debug .= '***** Server response *****' . "\n" . $response . '***** End of server response *****' . "\n";
-            $response = json_decode($response, true);
+            $this->debug && $this->debug .= '***** Server response *****' . "\n" . $rawResponse . '***** End of server response *****' . "\n";
+            $response = json_decode($rawResponse, true);
         } else {
             throw new Exception('Unable to connect to ' . $this->url);
         }
@@ -152,9 +152,12 @@ class jsonRPCClient
 
         // final checks and return
         if (!$this->notification) {
+            if (!is_array($response) || !array_key_exists('id', $response)) {
+                throw new Exception('Invalid JSON-RPC response (request id: ' . $currentId . '). Raw body: ' . $rawResponse);
+            }
             // check
             if ($response['id'] != $currentId) {
-                throw new Exception('Incorrect response id (request id: ' . $currentId . ', response id: ' . $response['id'] . ')');
+                throw new Exception('Incorrect response id (request id: ' . $currentId . ', response id: ' . var_export($response['id'], true) . '). Raw body: ' . $rawResponse);
             }
             if (!is_null($response['error'])) {
                 throw new Exception('Request error: ' . $response['error']);
