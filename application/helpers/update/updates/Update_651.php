@@ -8,8 +8,7 @@ use Yii;
 class Update_651 extends DatabaseUpdateBase
 {
     /**
-     * Adds default 'type' and 'type_options' keys to participant attribute descriptions
-     * for surveys that were created before AT-1771 (participant attribute types).
+     * Adjusts already existent questions tables for SQL Server
      *
      * @throws CException If a database update operation fails.
      */
