@@ -442,7 +442,6 @@ class DataEntry extends SurveyCommonAction
                     } else {
                         continue;
                     }
-                    //"SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;"
                     if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
                         $insertClause = [];
                         $valueClause = [];
@@ -451,7 +450,7 @@ class DataEntry extends SurveyCommonAction
                             $valueClause[] = $value ?? 'null';
                         }
                         $insert = "INSERT INTO {{{$sNewTimingsTable}}}(" . implode(",", $insertClause) . ") values(" . implode(",", $valueClause) . ")";
-                        Yii::app()->db->createCommand("{$insert}")->execute();
+                        Yii::app()->db->createCommand("SET IDENTITY_INSERT {{{$sNewTimingsTable}}} ON;{$insert};SET IDENTITY_INSERT {{{$sNewTimingsTable}}} OFF;")->execute();
                     } else {
                         Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
                     }
