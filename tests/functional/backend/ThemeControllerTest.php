@@ -375,7 +375,8 @@ class ThemeControllerTest extends TestBaseClassWeb
             }
             $this->assertFalse(file_exists($zipfile), 'Zip file should not exist before export');
             $zip = new \LimeSurvey\Zip();
-            $zip->open($zipfile, \ZipArchive::CREATE);
+            $openResult = $zip->open($zipfile, \ZipArchive::CREATE);
+            $this->assertTrue($openResult === true, 'ZipArchive::open() failed with code ' . var_export($openResult, true));
             $zipHelper = new \LimeSurvey\Helpers\ZipHelper($zip);
             $zipHelper->addFolder($oTemplate->path);
             $zip->close();

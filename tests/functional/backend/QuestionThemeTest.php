@@ -118,7 +118,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                     WebDriverBy::id('trigger_questionTypeSelector_button')
                 )
             );
-// Scroll it into view and click
+            // Scroll it into view and click
             $web->executeScript("arguments[0].scrollIntoView({block: 'center'});", [$button]);
             sleep(1);
             $button->click();
@@ -225,6 +225,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                 \Yii::app()->db->setActive(false);
                 \Yii::app()->db->setActive(true);
             }
+            $this->assertNotNull($rangeSliderMin, 'range_slider_min attribute not found in DB after polling');
             $this->assertEquals('1', $rangeSliderMin->value);
 
             $rangeSliderMax = QuestionAttribute::model()->findByAttributes(
@@ -233,6 +234,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                     'attribute' => 'range_slider_max'
                 ]
             );
+            $this->assertNotNull($rangeSliderMax, 'range_slider_max attribute not found in DB');
             $this->assertEquals('10', $rangeSliderMax->value);
         } catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
