@@ -1403,7 +1403,9 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 break;
             case 'mssql':
             case 'sqlsrv':
-                $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+            case 'dblib':
+                $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause
+                . "; ALTER TABLE " . Yii::app()->db->quoteTableName($table) . " ADD CONSTRAINT " . Yii::app()->db->quoteTableName("pk_" . $table) . " PRIMARY KEY (qid);";
                 break;
         }
     } else {
