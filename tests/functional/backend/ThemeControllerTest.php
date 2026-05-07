@@ -166,7 +166,7 @@ class ThemeControllerTest extends TestBaseClassWeb
 
             // Check that we have the correct page header.
             // Wait for the page to redirect to the new theme editor.
-            $header = $w->wait(20)->until(
+            $w->wait(20)->until(
                 WebDriverExpectedCondition::presenceOfElementLocated(
                     WebDriverBy::xpath("//h1[contains(.,'Theme editor: vanilla_version_1')]")
                 )
@@ -203,7 +203,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             sleep(1);
 
             // Check that we have the renamed page header.
-            $header = $w->wait(20)->until(
+            $w->wait(20)->until(
                 WebDriverExpectedCondition::presenceOfElementLocated(
                     WebDriverBy::xpath("//h1[contains(.,'Theme editor: vanilla_version_renamed')]")
                 )

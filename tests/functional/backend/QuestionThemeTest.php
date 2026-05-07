@@ -314,6 +314,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         $this->assertCount(1, $responses);
 
         $qid = self::$testSurvey->questions[0]->qid;
+        $this->assertGreaterThanOrEqual(2, count(self::$testSurvey->questions[0]->subquestions), 'Expected at least 2 subquestions');
         $sqid1 = self::$testSurvey->questions[0]->subquestions[0]->qid;
         $sqid2 = self::$testSurvey->questions[0]->subquestions[1]->qid;
 
