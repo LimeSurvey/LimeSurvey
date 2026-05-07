@@ -141,7 +141,7 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
         // Setup the test resources
         $testSid = self::$testSurvey->sid;
         if (DIRECTORY_SEPARATOR === '/') {
-            exec('sudo chmod -R 777 ' . \Yii::app()->getConfig('uploaddir')); // Add permisions to ./upload directory, neede for CI pipeline
+            self::chmodRecursive(\Yii::app()->getConfig('uploaddir'), 0777);
         }
         $surveyUploadsDir = \Yii::app()->getConfig('uploaddir') . "/surveys/$testSid/files/";
         if (!is_dir($surveyUploadsDir)) {
@@ -188,7 +188,7 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
     }
 
     /**
-     * Test the get_uploaded_files API call using response id and wrong token 
+     * Test the get_uploaded_files API call using response id and wrong token
      */
     public function testGetUploadedFilesByResponseIdAndWrongToken()
     {
@@ -215,5 +215,28 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
+    }
+
+    /**
+     * Recursively chmod a directory tree without shell commands.
+     */
+    private static function chmodRecursive(string $path, int $mode): void
+    {
+        if (!is_dir($path)) {
+            return;
+        }
+        chmod($path, $mode);
+        $items = scandir($path);
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+            $fullPath = $path . DIRECTORY_SEPARATOR . $item;
+            if (is_dir($fullPath)) {
+                self::chmodRecursive($fullPath, $mode);
+            } else {
+                chmod($fullPath, $mode);
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@ class CopySurveyResourcesTest extends TestBaseClass
 
         // Add resource
         if (DIRECTORY_SEPARATOR === '/') {
-            exec('sudo chmod -R 777 ' . \Yii::app()->getConfig('uploaddir')); // Add permisions to ./upload directory, neede for CI pipeline
+            self::chmodRecursive(\Yii::app()->getConfig('uploaddir'), 0777);
         }
         $basedestdir = \Yii::app()->getConfig('uploaddir') . "/surveys";
         $destdir = $basedestdir . "/$sourceSid/images/";
@@ -29,7 +29,7 @@ class CopySurveyResourcesTest extends TestBaseClass
             $dirCreated = mkdir($destdir, 0777, true);
         }
         $this->assertTrue($dirCreated, "Couldn't create dir '$destdir'");
-        $file = self::$dataFolder .'/file_upload/dalahorse.jpg';
+        $file = self::$dataFolder . '/file_upload/dalahorse.jpg';
         $this->assertTrue(file_exists($file));
         copy($file, $destdir . "dalahorse.jpg");
         $this->assertTrue(file_exists($destdir . "dalahorse.jpg"));
@@ -50,5 +50,28 @@ class CopySurveyResourcesTest extends TestBaseClass
         $this->assertEmpty($errorFilesInfo);
         $this->assertNotEmpty($copiedFilesInfo);
         $this->assertEquals("dalahorse.jpg", $copiedFilesInfo[0]['filename']);
+    }
+
+    /**
+     * Recursively chmod a directory tree without shell commands.
+     */
+    private static function chmodRecursive(string $path, int $mode): void
+    {
+        if (!is_dir($path)) {
+            return;
+        }
+        chmod($path, $mode);
+        $items = scandir($path);
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+            $fullPath = $path . DIRECTORY_SEPARATOR . $item;
+            if (is_dir($fullPath)) {
+                self::chmodRecursive($fullPath, $mode);
+            } else {
+                chmod($fullPath, $mode);
+            }
+        }
     }
 }
