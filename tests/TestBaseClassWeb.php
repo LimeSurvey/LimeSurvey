@@ -79,7 +79,9 @@ class TestBaseClassWeb extends TestBaseClass
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
-        self::$webDriver->quit();
+        if (!getenv('KEEP_BROWSER_OPEN')) {
+            self::$webDriver->quit();
+        }
     }
 
     /**
