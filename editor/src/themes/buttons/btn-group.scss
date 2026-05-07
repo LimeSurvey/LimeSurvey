@@ -54,13 +54,13 @@
       .btn {
         color: $g-700;
         text-align: center;
-        font-family: 'IBM Plex Sans';
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 500;
-        outline: none;
         border: none;
         border-left: 2px solid transparent;
+
+        &:focus-visible {
+          outline: 2px solid $grape;
+          outline-offset: 2px;
+        }
       }
 
       .btn-check:active + .btn-outline-lime-toggle,
