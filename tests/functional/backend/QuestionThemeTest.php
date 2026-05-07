@@ -255,6 +255,7 @@ class QuestionThemeTest extends TestBaseClassWeb
 
         // Drag each slider handle 50px left and back to trigger value recording.
         $handles = $web->findElements(WebDriverBy::cssSelector('.slider-handle'));
+        $this->assertNotEmpty($handles, 'Expected slider handles to be present on the page');
         $action = new WebDriverActions($web);
         foreach ($handles as $handle) {
             $action->clickAndHold($handle)->moveByOffset(-50, 0)->moveByOffset(50, 0)->release()->perform();
