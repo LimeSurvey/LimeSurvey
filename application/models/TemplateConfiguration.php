@@ -1467,7 +1467,7 @@ class TemplateConfiguration extends TemplateConfig
 
         if (in_array($name, $aAttributesThatCanBeInherited) && $this->bUseMagicInherit) {
             // Full inheritance of the whole field
-            $sAttribute = parent::__get($name);
+            $sAttribute = $this->getAttribute($name);
             if ($sAttribute === 'inherit') {
                 // NOTE: this is object recursive (if parent configuration field is set to inherit,
                 // then it will lead to this method again.)
@@ -1478,11 +1478,19 @@ class TemplateConfiguration extends TemplateConfig
                  * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
                  */
                 if ($oParentConfiguration !== $this) {
-                    $sAttribute = $oParentConfiguration->$name;
+                    $parentValue = $oParentConfiguration->getAttribute($name);
+                    if ($parentValue === 'inherit') {
+                        // Recurse via the parent's own __get to follow the chain
+                        $sAttribute = $oParentConfiguration->getParentConfiguration()->getAttribute($name);
+                    } else {
+                        $sAttribute = $parentValue;
+                    }
                 } else {
                     $sAttribute = $oParentConfiguration->getAttribute($name);
                 }
             }
+        } elseif (in_array($name, $aAttributesThatCanBeInherited)) {
+            $sAttribute = $this->getAttribute($name);
         } else {
             $sAttribute = parent::__get($name);
         }
