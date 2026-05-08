@@ -198,9 +198,11 @@ function quickaddfunction() {
     retrieveRowHtml(datas)
         .then((result) => {
             $.each(parsedRows, (index, parsedRow) => {
+                // One randomid per label, shared across all language tabs so the save
+                // serializer can correlate title_en_XXXX with title_es_XXXX, etc.
+                const randomid = 'new' + Math.floor(Math.random()*1111111);
                 // We insert each row for each language
                 $.each(result.arrayofhtml, (lang, htmlRow) => {
-                    const randomid = 'new' + Math.floor(Math.random()*1111111);
                     const title = parsedRow.titles[lang] || '';
                     let finalRowHtml = htmlRow;
                     finalRowHtml = finalRowHtml.replaceAll("{{newid_placeholder}}", randomid);
