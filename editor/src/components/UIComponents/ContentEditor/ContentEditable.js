@@ -60,7 +60,7 @@ export const ContentEditable = ({
       inputRef.current?.focus()
     }
   }, [inputRef.current])
-  
+
   return (
     <>
       <ReactContentEditable
@@ -76,7 +76,11 @@ export const ContentEditable = ({
         onKeyDown={onKeyDown}
         data-testid={testId}
       />
-      <PluginSlot slotName={PLUGIN_SLOTS.CONTENT_EDITOR} value={value} onChange={onChange} />
+      <PluginSlot
+        slotName={PLUGIN_SLOTS.CONTENT_EDITOR}
+        value={value}
+        onChange={onChange}
+      />
     </>
   )
 }

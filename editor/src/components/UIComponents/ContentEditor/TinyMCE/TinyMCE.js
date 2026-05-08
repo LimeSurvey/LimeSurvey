@@ -194,7 +194,11 @@ export const TinyMCE = ({
           forced_root_block: FORCED_ROOT_BLOCK,
         }}
       />
-      <PluginSlot slotName={PLUGIN_SLOTS.CONTENT_EDITOR} value={editorValueRef.current} onChange={updateTitle} />
+      <PluginSlot
+        slotName={PLUGIN_SLOTS.CONTENT_EDITOR}
+        value={editorValueRef.current}
+        onChange={updateTitle}
+      />
     </>
   )
 }
