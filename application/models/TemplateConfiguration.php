@@ -1445,13 +1445,16 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Proxy for the AR method to manage the inheritance
-     * If one of the field that can be inherited is set to "inherit", then it will return the value of its parent
-     * NOTE: this is recursive, if the parent field itself is set to inherit, then it will
-     * the value of the parent of the parent, etc
+     * Retrieve an attribute value with support for template inheritance.
      *
-     * @param string $name the name of the attribute
-     * @return mixed
+     * When the attribute is one of the inheritable fields and magic inheritance is enabled,
+     * returns the nearest ancestor's value that is not the string "inherit" by walking the
+     * parent-configuration chain. For inheritable fields when magic inheritance is disabled,
+     * returns the stored attribute value. For non-inheritable attributes, delegates to the
+     * parent getter.
+     *
+     * @param string $name The attribute name to retrieve.
+     * @return mixed The resolved attribute value (may be a scalar, array, object, or null).
      */
     public function __get($name)
     {

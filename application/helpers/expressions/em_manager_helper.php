@@ -3251,19 +3251,17 @@ class LimeExpressionManager
     }
 
     /**
-     * Builds and caches variable and token mappings used by the ExpressionManager for a survey.
-     *
-     * Populates internal maps (known variables, question/subquestion metadata, JS aliases, token fields, etc.)
-     * required for processing LimeSurvey expressions and client-side relevance/validation logic. This method
-     * is typically expensive and only performs the full mapping when the survey's field map changes or when
-     * a forced refresh is requested.
-     *
-     * @param int $surveyid Survey primary key (sid) for which to build mappings.
-     * @param bool|null $forceRefresh When true, forces rebuilding mappings even if cached mappings exist.
-     * @param bool|null $anonymized When true, token field values are populated as blank to preserve anonymity.
-     * @return bool|null True if mappings were (re)created and ExpressionManager variables need resetting; false if
-     *                   existing cached mappings were reused; null if an error occurred and mappings could not be built.
-     */
+         * Build and cache variable and token mappings used by the ExpressionManager for a survey.
+         *
+         * Populates internal maps (known variables, question/subquestion metadata, JS aliases, token fields, etc.)
+         * required for processing LimeSurvey expressions and for client-side relevance/validation logic.
+         * This operation is expensive; when not forced it will reuse existing cached mappings when possible.
+         *
+         * @param int $surveyid Survey primary key (sid) for which to build mappings.
+         * @param bool|null $forceRefresh When true, force rebuilding mappings even if cached mappings exist.
+         * @param bool|null $anonymized When true, token field values are populated as blank to preserve anonymity.
+         * @return bool True if mappings were (re)created; false if existing cached mappings were reused or mappings could not be built.
+         */
     public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false)
     {
         if (isset($_SESSION['LEMforceRefresh'])) {
@@ -4876,9 +4874,25 @@ class LimeExpressionManager
     }
 
     /**
+     * Advance the survey flow one step (question/group/survey) according to the current survey mode and validation outcomes.
      *
-     * @param boolean $force - if true, continue to go forward even if there are violations to the mandatory and/or validity rules
-     * @return array|null - lastMoveResult
+     * Processes posted responses for the current step, runs server-side validation (survey/group/question as appropriate),
+     * updates stored answers when required, and moves the internal pointers to the next visible/relevant step. If validation
+     * prevents advancing and $force is false, the current step is redisplayed and appropriate error/validation info is returned.
+     *
+     * @param bool $force If true, continue advancing even when mandatory or validity violations are present.
+     * @return array|null An associative array describing the navigation result and status, or null on failure. Common keys:
+     *                    - 'finished' (bool): whether the survey has been completed.
+     *                    - 'message' (string): concatenated validation/update messages for display.
+     *                    - 'gseq','seq','qseq' (int): group/question/sequence indices for the new/current position (when applicable).
+     *                    - 'mandViolation' (bool): whether a mandatory violation occurred.
+     *                    - 'mandSoft' (bool): whether a soft mandatory violation occurred.
+     *                    - 'mandNonSoft' (bool): whether a non-soft mandatory violation occurred.
+     *                    - 'valid' (bool): whether the last-validated step passed validation.
+     *                    - 'unansweredSQs' (mixed): list or representation of unanswered subquestions (when present).
+     *                    - 'invalidSQs' (mixed): list or representation of invalid subquestions (when present).
+     *                    - 'notRelevantSteps' (int): number of skipped non-relevant steps (question mode).
+     *                    - 'hiddenSteps' (int): number of skipped hidden steps (question mode).
      */
     public static function NavigateForwards($force = false)
     {

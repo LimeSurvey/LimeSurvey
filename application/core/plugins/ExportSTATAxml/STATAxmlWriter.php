@@ -59,9 +59,11 @@ class STATAxmlWriter extends Writer
     protected $aQIDnonumericalAnswers = array();
 
     /**
-     * Initialize the STATA XML writer.
+     * Construct a STATA XML writer and initialize internal defaults.
      *
-     * @param array $pluginsettings Plugin settings array containing statafileversion
+     * Initializes internal buffers and defaults, stores the provided STATA file version, and sets the maximum allowed string length according to the target STATA XML version (2045 when version >= 117, otherwise 244).
+     *
+     * @param array $pluginsettings Plugin settings array; must contain ['statafileversion']['current'] with the target STATA XML version number.
      */
     function __construct($pluginsettings)
     {
@@ -78,11 +80,11 @@ class STATAxmlWriter extends Writer
     }
 
     /**
-     * Initialize the export with survey data and formatting options.
+     * Prepare the writer for export: open the output handle, record selected columns, enforce field-code headings, and build the STATA fieldmap.
      *
-     * @param SurveyObj $survey The survey object to export
-     * @param string $sLanguageCode The language code for the survey
-     * @param FormattingOptions $oOptions Formatting and output options
+     * @param SurveyObj $survey The survey to export.
+     * @param string $sLanguageCode Language code to use for labels and fieldmap generation.
+     * @param FormattingOptions $oOptions Formatting and output options; determines output target and selected columns.
      * @return void
      */
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
@@ -104,11 +106,10 @@ class STATAxmlWriter extends Writer
 
 
     /**
-     * Write content to the output file handle.
-     *
-     * @param string $content The content to write
-     * @return void
-     */
+         * Write content to the current output handle and append a newline.
+         *
+         * @param string $content The content to write.
+         */
     protected function out($content)
     {
         fwrite($this->handle, $content . "\n");
@@ -131,15 +132,14 @@ class STATAxmlWriter extends Writer
      */
 
     /**
-     * Create a fieldmap with STATA-compatible variable and answer information.
+     * Build a STATA-compatible fieldmap for the selected survey columns.
      *
-     * Builds the internal fieldmap structure with proper variable names, types, labels,
-     * and value labels for STATA export, handling data type conversion and string length limits.
+     * Produces an array of questions, answers, and survey info adapted for STATA export: generates STATA-safe variable names and labels, detects non-numeric answer codes, injects token fields, and creates fixed value labels for known question types while respecting string length limits.
      *
-     * @param SurveyObj $survey The survey object
-     * @param string $sLanguage The language code
-     * @param FormattingOptions $oOptions Formatting and output options
-     * @return array The STATA fieldmap structure
+     * @param SurveyObj $survey The survey object containing fieldMap, answers, tokenFields, and info.
+     * @param string $sLanguage Language code to set during fieldmap creation.
+     * @param FormattingOptions $oOptions Formatting and export options (controls selectedColumns, convertY/convertN and their values).
+     * @return array The cleaned STATA fieldmap containing 'questions', 'answers', 'tokenFields' and 'info'.
      */
     function createStataFieldmap($survey, $sLanguage, $oOptions)
     {
@@ -354,11 +354,11 @@ class STATAxmlWriter extends Writer
 
 
     /**
-     * Strip HTML tags and clean up array values recursively.
-     *
-     * @param array $tobestripped The array to clean
-     * @return array The cleaned array
-     */
+         * Recursively remove HTML tags, decode HTML entities, and trim whitespace from all string values in the array.
+         *
+         * @param array $tobestripped The array whose string values will be sanitized.
+         * @return array The sanitized array with cleaned string values.
+         */
     protected function stripArray($tobestripped)
     {
         Yii::app()->loadHelper('export');
@@ -399,13 +399,16 @@ class STATAxmlWriter extends Writer
     }
 
     /**
-     * Update fieldmap and recode responses for STATA compatibility.
-     *
-     * Processes all responses, determining correct STATA data types, string lengths,
-     * converting answer codes, and handling special cases (dates, gender, yes/no, etc.).
-     *
-     * @return void
-     */
+         * Recode collected responses and determine STATA variable types and formats.
+         *
+         * Processes all stored response rows, converting values to STATA-compatible
+         * representations (for example: date, gender, yes/no/uncertain, list codes,
+         * and non-numeric answer codes), measures required string lengths, and
+         * updates the fieldmap entries with the resulting `statatype` and
+         * `stataformat` for each variable.
+         *
+         * @return void
+         */
     protected function updateCustomresponsemap()
     {
         //go through each particpants' responses

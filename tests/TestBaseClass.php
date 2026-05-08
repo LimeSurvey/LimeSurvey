@@ -209,6 +209,18 @@ class TestBaseClass extends TestCase
         return $oEvent;
     }
 
+    /**
+     * Create a new User record, ensure a password is set (defaulting to a known test password if missing),
+     * apply the provided global permissions, and return the created user model.
+     *
+     * If `users_name` is present in `$userData`, any existing users with that name are removed before creation.
+     * If `password` is missing, empty, or a single space, a default password (`testpassword123`) is used; otherwise the provided password is hashed.
+     *
+     * @param array $userData Associative array of user attributes for the new user (e.g., `users_name`, `password`, etc.).
+     * @param array $permissions Map of permission keys to settings applied as global permissions for the new user.
+     * @return \User The newly created user model.
+     * @throws \Exception If the user model cannot be saved (includes validation errors).
+     */
     protected static function createUserWithPermissions(array $userData, array $permissions = [])
     {
         if (!empty($userData['users_name'])) {
