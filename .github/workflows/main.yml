@@ -303,7 +303,7 @@ jobs:
       - name: Run unit tests with debug mode (surfaces hidden warnings)
         env:
           LIMESURVEY_DEBUG: 2
-        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped --exclude-group debugoff ${{ matrix.db-type != 'mysql' && '--exclude-group mysql' || '' }} tests/unit
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped --exclude-group ${{ matrix.db-type != 'mysql' && 'debugoff,mysql' || 'debugoff' }} tests/unit
 
   test-coverage:
     runs-on: ubuntu-22.04
