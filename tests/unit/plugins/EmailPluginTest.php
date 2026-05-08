@@ -108,11 +108,14 @@ class EmailPluginTest extends TestBaseClass
 
     public function testSaveRefreshToken()
     {
+        // Clear any previous settings to ensure test starts with clean state
+        self::$plugin->saveTestPluginRefreshToken(null, null);
+        
         $setToken = self::$plugin->getPluginProperty('refreshToken');
-        $this->assertNull($token, 'No refresh token was set.');
+        $this->assertNull($setToken, 'No refresh token was set.');
 
         $setCredentials = self::$plugin->getPluginProperty('refreshTokenMetadata');
-        $this->assertNull($credentials, 'No credentials were set.');
+        $this->assertNull($setCredentials, 'No credentials were set.');
 
         $credentials = array(
             'clientId' => 'N3WCL13NT1D',
