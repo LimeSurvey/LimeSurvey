@@ -367,6 +367,7 @@ class UserManagementTest extends TestBaseClassWeb
             self::adminLogout();
             try {
                 self::adminLogin($username, $suggestedPassword);
+                $this->fail('Expired user was able to log in.');
             } catch (Exception $e) {
                 // Check that the login failed
                 self::$webDriver->wait(10)->until(
