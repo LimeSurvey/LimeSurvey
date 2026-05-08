@@ -138,10 +138,10 @@ class EmailPluginTest extends TestBaseClass
         self::$plugin->saveTestPluginSettings($settings);
 
         $setToken = self::$plugin->getPluginProperty('refreshToken');
-        $this->assertNull($token, 'The token was not cleared.');
+        $this->assertNull($setToken, 'The token was not cleared.');
 
         $setCredentials = self::$plugin->getPluginProperty('refreshTokenMetadata');
-        $this->assertEmpty($credentials, 'The credentials were not cleared.');
+        $this->assertEmpty($setCredentials, 'The credentials were not cleared.');
     }
 
     public function testListPluginEmailsEvent()

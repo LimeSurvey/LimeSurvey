@@ -34,7 +34,14 @@ class QuestionTest extends BaseModelTestCase
      */
     public function testGetQuestionThemeOnSavedQuestion()
     {
+        // Create a survey first so the question has a valid parent
+        $survey = new \Survey();
+        $survey->title = 'Test Survey';
+        $survey->language = 'en';
+        $survey->save();
+
         $question = new Question();
+        $question->sid = $survey->sid;
         $question->type = "M";
         $question->question_theme_name = 'bootstrap_buttons_multi';
         $question->save();
@@ -43,6 +50,9 @@ class QuestionTest extends BaseModelTestCase
 
         $this->assertNotEmpty($questionTheme);
         $this->assertEquals("bootstrap_buttons_multi", $questionTheme->name);
+
+        // Cleanup
+        $survey->delete();
     }
 
     /**
