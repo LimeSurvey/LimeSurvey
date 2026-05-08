@@ -2591,7 +2591,7 @@ class statistics_helper
 
 
             // For Graph labels
-            switch ($_POST['graph_labels']) {
+            switch ($_POST['graph_labels'] ?? 'default') {
                 case 'qtext':
                     $aGraphLabels[] = $sFlatLabel = $flatLabel;
                     break;
@@ -3262,7 +3262,7 @@ class statistics_helper
                     // This takes care of graph_lables for PDF output (previous fix only supported HTML).
                     $graphLbl = [];
                     foreach ($outputs['alist'] as $al) {
-                        switch ($_POST['graph_labels']) {
+                        switch ($_POST['graph_labels'] ?? 'default') {
                             case 'qtext':
                                 $graphLbl[] = $al[1];
                                 break;

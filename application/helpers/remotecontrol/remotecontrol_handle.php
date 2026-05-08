@@ -1824,12 +1824,12 @@ class remotecontrol_handle
                             $aResult['answeroptions'] = 'No available answer options';
                         }
                     } elseif ($sPropertyName == 'defaultvalue') {
-                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultvaluel10ns')
+                        $oDefaultValue = DefaultValue::model()->with('defaultvaluel10ns')
                                                                         ->find(
                                                                             'qid = :qid AND defaultvaluel10ns.language = :language',
                                                                             array(':qid' => $iQuestionID, ':language' => $sLanguage)
-                                                                        )
-                                                                        ->defaultvalue;
+                                                                        );
+                        $aResult['defaultvalue'] = $oDefaultValue !== null ? $oDefaultValue->defaultvalue : null;
                     } elseif ($sPropertyName == 'question' || $sPropertyName == 'help' || $sPropertyName == 'script') {
                         $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->$sPropertyName;
                     } elseif ($sPropertyName == 'questionl10ns') {
