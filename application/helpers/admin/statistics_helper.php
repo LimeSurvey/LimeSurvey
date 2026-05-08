@@ -2181,6 +2181,8 @@ class statistics_helper
         $TotalIncomplete    = 0;
         /* @var int|false total for multiple choice, if int : is set (used in foreach) */
         $totalMultiAnswers = false;
+        $showheadline = true;
+        $extraline = false;
 
         $sColumnName = null;
         $noncompleted = App()->getRequest()->getPost('noncompleted');
