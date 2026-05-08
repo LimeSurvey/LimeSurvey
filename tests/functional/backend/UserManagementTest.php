@@ -66,9 +66,12 @@ class UserManagementTest extends TestBaseClassWeb
                     WebDriverBy::xpath("//*[text()[contains(.,'Add user')]][self::button or self::a]")
                 )
             );
-            // Even though the "wait until elementToBeClickable" considers the button
-            // is clickable, it seems sometimes the modal backdrop is still there. So we wait a second.
-            sleep(3);
+            // Wait until any lingering modal backdrop is gone before clicking.
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::cssSelector('.modal-backdrop')
+                )
+            );
             $addUserButton->click();
 
             // Wait for "Add user" modal
@@ -179,9 +182,12 @@ class UserManagementTest extends TestBaseClassWeb
                     WebDriverBy::xpath("//*[text()[contains(.,'Add user')]][self::button or self::a]")
                 )
             );
-            // Even though the "wait until elementToBeClickable" considers the button
-            // is clickable, it seems sometimes the modal backdrop is still there. So we wait a second.
-            sleep(1);
+            // Wait until any lingering modal backdrop is gone before clicking.
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::cssSelector('.modal-backdrop')
+                )
+            );
             $addUserButton->click();
 
             // Wait for "Add user" modal
@@ -246,8 +252,8 @@ class UserManagementTest extends TestBaseClassWeb
             $this->assertEquals($email, $user->email);
             $this->assertEquals($expirationDbValue, $user->expires);
 
-            sleep(5);
             // Test login
+            sleep(5);
             self::adminLogout();
             self::adminLogin($username, $suggestedPassword);
 
@@ -295,9 +301,12 @@ class UserManagementTest extends TestBaseClassWeb
                     WebDriverBy::xpath("//*[text()[contains(.,'Add user')]][self::button or self::a]")
                 )
             );
-            // Even though the "wait until elementToBeClickable" considers the button
-            // is clickable, it seems sometimes the modal backdrop is still there. So we wait a second.
-            sleep(1);
+            // Wait until any lingering modal backdrop is gone before clicking.
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::cssSelector('.modal-backdrop')
+                )
+            );
             $addUserButton->click();
 
             // Wait for "Add user" modal
@@ -362,8 +371,8 @@ class UserManagementTest extends TestBaseClassWeb
             $this->assertEquals($email, $user->email);
             $this->assertEquals($expirationDbValue, $user->expires);
 
-            sleep(5);
             // Test login
+            sleep(5);
             self::adminLogout();
             try {
                 self::adminLogin($username, $suggestedPassword);
