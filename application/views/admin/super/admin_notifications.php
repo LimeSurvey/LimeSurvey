@@ -11,32 +11,34 @@
         <a aria-expanded='false' class="nav-link"
             href='#'>
             <span class='ri-notification-2-line text-muted'></span>
-	    <span class='visually-hidden'>Notifications</span>
+	    <span class='visually-hidden'><?php eT('Notifications'); ?></span>
         </a>
     </li>
 <?php elseif($showLoader): ?>
 <li id='notification-li' class='dropdown nav-item' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
-        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+        <a id='admin-notifications-menu-button' class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' aria-haspopup='true' aria-controls='notification-outer-ul' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <!-- <span id='notification-bell' class='ri-notification-2-fill <?php echo $bellColor; ?>'></span> -->
             <i id='notification-bell' class="ri-notification-2-line  <?php echo $bellColor; ?>"></i>
+            <span class='visually-hidden'><?php eT('Notifications'); ?></span>
             <?php if ($nrOfNewNotifications): ?>
                 <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
             <?php endif; ?>
 
             <span class='caret'></span>
         </a>
-        <ul class='dropdown-menu dropdown-menu-end' role='menu'>
+        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' aria-labelledby='admin-notifications-menu-button'>
             <li>
-                <a class="dropdown-item"><span class='ri-loader-2-fill remix-spin'></span><span class='visually-hidden'>Loading notifications</span></a>
+                <a class="dropdown-item"><span class='ri-loader-2-fill remix-spin'></span><span class='visually-hidden'><?php eT('Loading notifications'); ?></span></a>
             </li>
         </ul>
     </li>
 <?php else: ?>
     <li id='notification-li' class='dropdown nav-item' onclick='LS.styleNotificationMenu();'>
-        <a class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' href='#'>
+        <a id='admin-notifications-menu-button' class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' aria-haspopup='true' aria-controls='notification-outer-ul' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
             <span id='notification-bell' class='ri-notification-2-line <?php echo $bellColor; ?>'></span>
+            <span class='visually-hidden'><?php eT('Notifications'); ?></span>
 
             <?php if ($nrOfNewNotifications): ?>
                 <span class='badge '><?php echo $nrOfNewNotifications; ?></span>
@@ -45,7 +47,7 @@
             <span class='caret'></span>
         </a>
 
-        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' role='menu'>
+        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' aria-labelledby='admin-notifications-menu-button'>
             <li id='notification-inner-li'>
                 <ul id='notification-inner-ul' class='notification-list'>
                     <?php foreach ($notifications as $not): ?>
