@@ -234,7 +234,10 @@ class ExportStatisticsTest extends BaseTest
 
         // Get the table.
         $doc = new \DOMDocument();
+        $previous = libxml_use_internal_errors(true);
         $doc->loadHtml($htmlStatistics);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
 
         $table = $doc->getElementById($tableHtmlId);
 
