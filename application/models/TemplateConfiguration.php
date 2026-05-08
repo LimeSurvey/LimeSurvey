@@ -40,30 +40,6 @@
  */
 class TemplateConfiguration extends TemplateConfig
 {
-    /** @var string $files_css CSS files in JSON format */
-    public $files_css;
-
-    /** @var string $files_js JavaScript files in JSON format */
-    public $files_js;
-
-    /** @var string $files_print_css Print CSS files in JSON format */
-    public $files_print_css;
-
-    /** @var string $options Template options in JSON format */
-    public $options;
-
-    /** @var string $cssframework_name Name of the CSS framework */
-    public $cssframework_name;
-
-    /** @var string $cssframework_css CSS files for the framework in JSON format */
-    public $cssframework_css;
-
-    /** @var string $cssframework_js JavaScript files for the framework in JSON format */
-    public $cssframework_js;
-
-    /** @var string $packages_to_load Packages to load in JSON format */
-    public $packages_to_load;
-
     /**
      * @var TemplateConfiguration $oParentTemplate The parent template name
      * A template configuration, in the database, can inherit from another one.
