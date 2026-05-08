@@ -7,7 +7,7 @@ use QuestionCreate;
 /**
  * @group questionattribute
  */
-class QuestionAttributeTest extends TestBaseClassWeb
+class QuestionAttributeFunctionalTest extends TestBaseClassWeb
 {
 
     /**
