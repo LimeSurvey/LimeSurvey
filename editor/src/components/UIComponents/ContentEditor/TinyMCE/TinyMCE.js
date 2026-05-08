@@ -6,6 +6,8 @@ import beautify from 'js-beautify'
 import { CodeEditor } from '../CodeMirror/CodeMirror'
 import { mceToolbar } from './mceToolbar'
 import { toolbarActions } from './toolbarActions'
+import { PluginSlot } from 'plugins/PluginSlot'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 const FORCED_ROOT_BLOCK = 'p'
 
@@ -81,6 +83,12 @@ export const TinyMCE = ({
     editorValueRef.current = newValue
   }
 
+  const updateTitle = (newValue) => {
+    setEditorValue(newValue)
+    handleOnChange(newValue)
+    editorValueRef.current = newValue
+  }
+
   const normalizeContent = () => {
     if (isFocused) {
       return
@@ -139,51 +147,54 @@ export const TinyMCE = ({
   }, [editorRef.current])
 
   return (
-    <Editor
-      onInit={(evt, editor) => {
-        editorRef.current = editor
-        setFirstLoad(false)
-        const contentArea = editor.getBody()
-        contentArea.setAttribute('data-testid', testId)
-      }}
-      tinymceScriptSrc={`${process.env.PUBLIC_URL}/tinymce/js/tinymce/tinymce.min.js`}
-      onEditorChange={onEditorChange}
-      id={id}
-      disabled={isDisabled}
-      initialValue={editorValue}
-      onFocus={handleOnFocus}
-      onBlur={handleOnBlur}
-      onMouseEnter={normalizeContent}
-      onMouseLeave={transformTokensToBadges}
-      init={{
-        setup: (editor) => {
-          mceToolbar(editor)
-          toolbarActions(
-            editor,
-            openHtmlEditorRef,
-            codeToQuestionRef,
-            attributeDescriptionsRef,
-            questionNumber,
-            language,
-            surveyHeader
-          )
-        },
-        placeholder,
-        menubar: false,
-        branding: false,
-        inline: true,
-        license_key: 'gpl',
-        valid_elements: '*[*]',
-        valid_styles: '*[*]',
-        plugins: ['link'],
-        verify_html: false,
-        disabled,
-        toolbar: showToolbar
-          ? 'alignmentMenu customBold customItalic link toolbarActions'
-          : false,
-        selector: id,
-        forced_root_block: FORCED_ROOT_BLOCK,
-      }}
-    />
+    <>
+      <Editor
+        onInit={(evt, editor) => {
+          editorRef.current = editor
+          setFirstLoad(false)
+          const contentArea = editor.getBody()
+          contentArea.setAttribute('data-testid', testId)
+        }}
+        tinymceScriptSrc={`${process.env.PUBLIC_URL}/tinymce/js/tinymce/tinymce.min.js`}
+        onEditorChange={onEditorChange}
+        id={id}
+        disabled={isDisabled}
+        initialValue={editorValue}
+        onFocus={handleOnFocus}
+        onBlur={handleOnBlur}
+        onMouseEnter={normalizeContent}
+        onMouseLeave={transformTokensToBadges}
+        init={{
+          setup: (editor) => {
+            mceToolbar(editor)
+            toolbarActions(
+              editor,
+              openHtmlEditorRef,
+              codeToQuestionRef,
+              attributeDescriptionsRef,
+              questionNumber,
+              language,
+              surveyHeader
+            )
+          },
+          placeholder,
+          menubar: false,
+          branding: false,
+          inline: true,
+          license_key: 'gpl',
+          valid_elements: '*[*]',
+          valid_styles: '*[*]',
+          plugins: ['link'],
+          verify_html: false,
+          disabled,
+          toolbar: showToolbar
+            ? 'alignmentMenu customBold customItalic link toolbarActions'
+            : false,
+          selector: id,
+          forced_root_block: FORCED_ROOT_BLOCK,
+        }}
+      />
+      <PluginSlot slotName={PLUGIN_SLOTS.CONTENT_EDITOR} value={editorValueRef.current} onChange={updateTitle} />
+    </>
   )
 }
