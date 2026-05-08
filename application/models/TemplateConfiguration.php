@@ -1429,11 +1429,14 @@ class TemplateConfiguration extends TemplateConfig
 
 
     /**
-     * Change the template name inside the configuration entries (called from template editor)
-     * NOTE: all tests (like template exist, etc) are done from template controller.
+     * Update stored configuration records to replace one template name with another.
      *
-     * @param string $sOldName The old name of the template
-     * @param string $sNewName The newname of the template
+     * This performs a direct bulk update of the `template_name` column for all rows
+     * matching the old name. Validations (existence, permissions, etc.) are handled
+     * by the caller (template controller).
+     *
+     * @param string $sOldName The current template name to replace.
+     * @param string $sNewName The new template name to set.
      */
     public static function rename($sOldName, $sNewName)
     {
@@ -1445,12 +1448,12 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Retrieve an attribute value with support for template inheritance.
+     * Retrieve an attribute value, resolving template inheritance for inheritable fields.
      *
-     * When the attribute is one of the inheritable fields and magic inheritance is enabled,
-     * returns the nearest ancestor's value that is not the string "inherit" by walking the
-     * parent-configuration chain. For inheritable fields when magic inheritance is disabled,
-     * returns the stored attribute value. For non-inheritable attributes, delegates to the
+     * When magic inheritance is enabled, inheritable attributes return the nearest ancestor's
+     * non-"inherit" value by walking the parent-configuration chain. If a cycle is detected,
+     * the parent's raw stored value is used. When magic inheritance is disabled, inheritable
+     * attributes return the stored value. Non-inheritable attributes are delegated to the
      * parent getter.
      *
      * @param string $name The attribute name to retrieve.

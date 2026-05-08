@@ -2844,10 +2844,15 @@ function exprmgr_substr($string, $start, $end = null)
     return mb_substr(($string ?? ''), $start, $end, 'UTF-8');
 }
 /**
- * Sum of values of answered questions which meet the criteria (arg op value)
- * @param array $args
- * @return int
- */
+ * Sum values from a list that satisfy a comparison against a reference value.
+ *
+ * $args must contain: the comparison operator (e.g. '==','!=','>','<','>=','<=','eq','ne','gt','lt','ge','le','RX'),
+ * then the comparison value (or regex when operator is 'RX'), followed by one or more values to test and include in the sum.
+ *
+ * For operator 'RX', values are tested with preg_match against the provided pattern; invalid regex patterns are ignored.
+ *
+ * @param array $args [operator, comparisonValue, value1, value2, ...]
+ * @return int The sum of values that match the comparison criteria.
 function exprmgr_sumifop($args)
 {
     $result = 0;
@@ -2906,13 +2911,13 @@ function exprmgr_sumifop($args)
 }
 
 /**
- * Validate whether the provided month, day, and year form a valid Gregorian date.
+ * Determine whether the given month, day, and year form a valid Gregorian calendar date.
  *
- * Accepts integer values or numeric strings for each component; returns `false` when any parameter is not numeric.
+ * Accepts integers or numeric strings for each component; non-numeric inputs cause the function to return `false`.
  *
- * @param mixed $month Integer or numeric string representing the month (1-12).
- * @param mixed $day Integer or numeric string representing the day.
- * @param mixed $year Integer or numeric string representing the year.
+ * @param mixed $month Month value (1-12) as an integer or numeric string.
+ * @param mixed $day Day value as an integer or numeric string.
+ * @param mixed $year Year value as an integer or numeric string.
  * @return bool `true` if the three values form a valid Gregorian date, `false` otherwise.
  */
 function exprmgr_checkdate($month, $day, $year)

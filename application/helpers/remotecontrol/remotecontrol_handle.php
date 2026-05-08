@@ -1657,17 +1657,18 @@ class remotecontrol_handle
     }
 
     /**
-     * Get properties of a question in a survey.
+     * Retrieve requested properties for a specific survey question.
      *
-     * @see \Question for available properties.
-     * Some more properties are available_answers, subquestions, attributes, attributes_lang, answeroptions, answeroptions_multiscale, defaultvalue
+     * Returns an associative array mapping requested property names to their values.
+     * Supported special properties include `available_answers`, `subquestions`, `attributes`,
+     * `attributes_lang`, `answeroptions`, `answeroptions_multiscale`, and `defaultvalue`.
+     * On error or permission/session failure the method returns an array with a `status` message.
      *
-     * @access public
-     * @param string $sSessionKey Auth credentials
-     * @param int $iQuestionID ID of the question to get properties
-     * @param array $aQuestionSettings (optional) properties to get, default to all
-     * @param string $sLanguage (optional) parameter language for multilingual questions, default are \Survey->language
-     * @return array The requested values
+     * @param string $sSessionKey Session key for authentication.
+     * @param int $iQuestionID Question ID to query.
+     * @param array|null $aQuestionSettings Optional list of property names to return; when omitted all supported properties are returned.
+     * @param string|null $sLanguage Optional language code for localized properties; defaults to the survey's base language.
+     * @return array Associative array of property => value, or an array containing a `status` key with an error message.
      */
     public function get_question_properties($sSessionKey, $iQuestionID, $aQuestionSettings = null, $sLanguage = null)
     {

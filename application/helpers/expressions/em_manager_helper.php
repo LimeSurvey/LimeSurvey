@@ -3214,14 +3214,15 @@ class LimeExpressionManager
     }
 
     /**
-     * Recursively find all questions that logically preceded the current array_filter or array_filter_exclude request
-     * Note, must support:
-     * (a) semicolon-separated list of $qroot codes for either array_filter or array_filter_exclude
-     * (b) mixed history of array_filter and array_filter_exclude values
-     * @param string $qroot - the question root variable name
-     * @param array $aflist - the list of array_filter $qroot codes
-     * @param array $afelist - the list of array_filter_exclude $qroot codes
-     * @return array
+     * Collects all antecedent `array_filter` and `array_filter_exclude` roots that precede a given qroot.
+     *
+     * Recursively traverses dependency links for the provided `$qroot`, adding unique `array_filter` codes to `$aflist`
+     * and unique `array_filter_exclude` codes to `$afelist`.
+     *
+     * @param string $qroot The question root variable name to start from.
+     * @param array $aflist Accumulator of discovered `array_filter` qroot codes; may include existing entries.
+     * @param array $afelist Accumulator of discovered `array_filter_exclude` qroot codes; may include existing entries.
+     * @return array [$aflist, $afelist] First element is the accumulated `array_filter` codes, second is the accumulated `array_filter_exclude` codes.
      */
     private function _recursivelyFindAntecdentArrayFilters($qroot, $aflist, $afelist)
     {
@@ -4733,8 +4734,24 @@ class LimeExpressionManager
     }
 
     /**
-     * @return mixed
-     */
+         * Move the current survey position one step backward (according to survey/group/question mode) and prepare navigation state.
+         *
+         * @return array An associative array with the navigation result. Common keys:
+         *               - `at_start` (bool): true when the start of the survey was reached.
+         *               - `finished` (bool): true when the survey is finished.
+         *               - `message` (string): concatenated messages produced during validation/update.
+         *               - `unansweredSQs` (mixed): list or count of unanswered subquestions, if available.
+         *               - `invalidSQs` (mixed): list or count of invalid subquestions, if available.
+         *               Mode-specific keys (present when applicable):
+         *               - `gseq`, `seq` (int): group sequence to display next.
+         *               - `qseq`, `qseq`/`seq` (int): question sequence to display next.
+         *               - `mandViolation` (bool): whether a mandatory violation was detected on the target step.
+         *               - `mandSoft` (bool): whether a soft-mandatory condition applies.
+         *               - `mandNonSoft` (bool): whether a non-soft mandatory condition applies.
+         *               - `valid` (bool): whether the target step is valid.
+         *               - `notRelevantSteps` (int): number of skipped not-relevant steps.
+         *               - `hiddenSteps` (int): number of skipped hidden steps.
+         */
     public static function NavigateBackwards()
     {
         $now = microtime(true);

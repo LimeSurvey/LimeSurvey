@@ -732,9 +732,15 @@ window.addEventListener('message', function(event) {
     }
 
     /**
-     * Set default privacy string if empty
-     * @return void
-     */
+         * Ensure privacy text strings exist and render the privacy notice label.
+         *
+         * If specific privacy strings are empty, sets sensible defaults and renders
+         * the `datasecurity_notice_label` using the privacy twig partial. This
+         * operation runs only once per request; subsequent calls return the input unchanged.
+         *
+         * @param array $aSurveyInfo Survey rendering data; must contain at least `sid` when available.
+         * @return array The updated `$aSurveyInfo` array with `datasecurity_notice_label` and `datasecurity_error` ensured and the notice label rendered as HTML.
+         */
     private function setDefaultPrivacyText($aSurveyInfo)
     {
         /* Do it one time only (and do not recall self when using renderPartial) */

@@ -192,11 +192,14 @@ class TestBaseClass extends TestCase
     }
 
     /**
-     * Helper dispatch evento to specific plugin
-     * @param string $pluginName
-     * @param \PluginEvent $eventName
-     * @param array $eventValues
-     * @return void
+     * Dispatches an event to a specific plugin.
+     *
+     * The provided key/value pairs are set on the created PluginEvent before dispatch.
+     *
+     * @param string $pluginName The name of the target plugin.
+     * @param string $eventName The event name to dispatch.
+     * @param array $eventValues Key/value pairs to set on the event (each key becomes an event property).
+     * @return \PluginEvent The dispatched event instance with the provided values set.
      */
     public static function dispatchPluginEvent($pluginName, $eventName, $eventValues)
     {

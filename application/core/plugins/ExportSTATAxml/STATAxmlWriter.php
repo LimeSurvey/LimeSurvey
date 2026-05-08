@@ -106,10 +106,10 @@ class STATAxmlWriter extends Writer
 
 
     /**
-         * Write content to the current output handle and append a newline.
-         *
-         * @param string $content The content to write.
-         */
+     * Write content to the current output handle, appending a newline.
+     *
+     * @param string $content Content to write.
+     */
     protected function out($content)
     {
         fwrite($this->handle, $content . "\n");
@@ -318,13 +318,14 @@ class STATAxmlWriter extends Writer
 
 
     /**
-     * Convert a variable name to STATA-compatible format.
+     * Normalize an identifier into a STATA-compatible variable name.
      *
-     * Strips special characters and ensures the name doesn't start with a number
-     * (adds 'v' prefix if needed).
+     * If the name does not start with a letter, prefixes it with 'v'. Replaces
+     * these characters: '-' -> '_', ':' -> '_dd_', ';' -> '_dc_', '!' -> '_excl_',
+     * '[' -> '_', ']' -> '', and space -> '_'.
      *
-     * @param string $sVarname The original variable name
-     * @return string The STATA-compatible variable name
+     * @param string $sVarname The input variable name.
+     * @return string The converted STATA-compatible variable name.
      */
     protected function STATAvarname($sVarname)
     {
@@ -374,16 +375,15 @@ class STATAxmlWriter extends Writer
 
 
     /**
-     * Process and store a single response record.
+     * Store a single response row and initialize STATA-safe header names on first call.
      *
-     * Called for each response, creates arrays with variable names and data.
-     * Only writes the header once on the first call.
+     * On the first invocation, converts and saves the provided column headers to STATA-safe variable names.
+     * Appends the given response values to the internal response buffer for later processing.
      *
-     * @param array $headers Column headers
-     * @param array $values Response data values
-     * @param FormattingOptions $oOptions Formatting options
-     * @param array $fieldNames Optional field names (default: [])
-     * @return void
+     * @param array $headers Column headers as provided by the exporter (converted to STATA-safe names on first call).
+     * @param array $values Response data values for a single observation.
+     * @param FormattingOptions $oOptions Formatting options (not used by this method but provided for interface compatibility).
+     * @param array $fieldNames Optional field names (unused).
      */
     protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {

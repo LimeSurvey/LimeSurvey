@@ -1479,11 +1479,21 @@ class statistics_helper
     }
 
     /**
-     * @param string $outputType
-     * @param integer $usegraph
-     * @param boolean $browse
-     * @return array
-     * @psalm-suppress UndefinedVariable
+     * Render simplified statistics for a single question: compute per-answer counts and percentages, build display rows, and prepare optional graph metadata.
+     *
+     * @param array $outputs Answer/list metadata and question descriptors (alist, qtype, parentqid, etc.).
+     * @param int $results Total number of responses considered for percentage calculations.
+     * @param string $rt Question token (SGQA-style) identifying the question/column.
+     * @param string $outputType Output mode, e.g. 'html', 'pdf', or 'xls'.
+     * @param int|string $surveyid Survey identifier.
+     * @param string|null $sql Additional SQL filter fragment to apply to per-answer COUNT queries.
+     * @param int|bool $usegraph Flag indicating whether graph data should be prepared (truthy to enable).
+     * @param bool $browse When true, include "browse" controls/markup for text/other columns.
+     * @param string|null $sLanguage Language code used for localized labels.
+     * @return array Array with keys:
+     *               - 'statisticsoutput' (string): rendered HTML/PDF content for the question section,
+     *               - 'pdf' (mixed): PDF object or null (as maintained by the class) for further processing,
+     *               - 'astatdata' (array): metadata used to build/describe graphs/maps for this question.
      */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
