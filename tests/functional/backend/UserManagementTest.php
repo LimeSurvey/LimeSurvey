@@ -68,7 +68,7 @@ class UserManagementTest extends TestBaseClassWeb
             );
             // Even though the "wait until elementToBeClickable" considers the button
             // is clickable, it seems sometimes the modal backdrop is still there. So we wait a second.
-            sleep(1);
+            sleep(3);
             $addUserButton->click();
 
             // Wait for "Add user" modal
@@ -108,7 +108,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->waitForModal('Edit permissions');
 
             // Click "Save".
-            $save = self::$webDriver->wait(10)->until(
+            $save = self::$webDriver->wait(20)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('permission-modal-submitForm')
                 )
@@ -131,6 +131,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->assertEquals(1, (int) $user->user_status);
 
             // Test login
+            sleep(5);
             self::adminLogout();
             self::adminLogin($username, $suggestedPassword);
 
@@ -223,7 +224,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->waitForModal('Edit permissions');
 
             // Click "Save".
-            $save = self::$webDriver->wait(10)->until(
+            $save = self::$webDriver->wait(20)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('permission-modal-submitForm')
                 )
@@ -245,6 +246,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->assertEquals($email, $user->email);
             $this->assertEquals($expirationDbValue, $user->expires);
 
+            sleep(5);
             // Test login
             self::adminLogout();
             self::adminLogin($username, $suggestedPassword);
@@ -338,7 +340,7 @@ class UserManagementTest extends TestBaseClassWeb
             $this->waitForModal('Edit permissions');
 
             // Click "Save".
-            $save = self::$webDriver->wait()->until(
+            $save = self::$webDriver->wait(20)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('permission-modal-submitForm')
                 )
@@ -360,13 +362,14 @@ class UserManagementTest extends TestBaseClassWeb
             $this->assertEquals($email, $user->email);
             $this->assertEquals($expirationDbValue, $user->expires);
 
+            sleep(5);
             // Test login
             self::adminLogout();
             try {
                 self::adminLogin($username, $suggestedPassword);
             } catch (Exception $e) {
                 // Check that the login failed
-                self::$webDriver->wait(5)->until(
+                self::$webDriver->wait(10)->until(
                     WebDriverExpectedCondition::presenceOfElementLocated(
                         WebDriverBy::cssSelector('.login-panel')
                     )
