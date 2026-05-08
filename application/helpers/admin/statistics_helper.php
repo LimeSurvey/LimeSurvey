@@ -2744,7 +2744,7 @@ class statistics_helper
             }
         }
         // Columns
-        $statsColumns = $_POST['stats_columns'];
+        $statsColumns = $_POST['stats_columns'] ?? '2';
 
         switch ($statsColumns) {
             case "1":
