@@ -58,7 +58,7 @@ class EmailPluginTest extends TestBaseClass
         );
 
         $valid = self::$plugin->validateTestPluginCredentials($credentials);
-        $this->assertTrue($valid, $credentials . ' is a valid credentials array.');
+        $this->assertTrue($valid, json_encode($credentials) . ' is a valid credentials array.');
     }
 
     public function testGetCredentials()
