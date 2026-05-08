@@ -2626,7 +2626,6 @@ class statistics_helper
         }    //end foreach -> loop through answer data
         //no filtering of incomplete answers and NO multiple option questions
         //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
-        //error_log("TIBO ".print_r($showaggregated_indice_table,true));
         if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
             //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
@@ -2636,22 +2635,15 @@ class statistics_helper
                 //counter
                 $i = 0;
                 while (isset($gdata[$i])) {
-                    if (isset($showaggregated_indice_table[$i]) && $showaggregated_indice_table[$i] == "aggregated") {
-                        // do nothing, we don't rewrite aggregated results
-                        // or at least I don't know how !!! (lemeur)
-                    } else {
-                        //we want to have some "real" data here
-                        if ($gdata[$i] != "N/A") {
-                            //calculate percentage
-                            $gdata[$i] = $TotalCompleted !== 0 ? ($grawdata[$i] / $TotalCompleted) * 100 : 0;
-                        }
+                    //we want to have some "real" data here
+                    if ($gdata[$i] != "N/A") {
+                        //calculate percentage
+                        $gdata[$i] = $TotalCompleted !== 0 ? ($grawdata[$i] / $TotalCompleted) * 100 : 0;
                     }
                     //increase counter
                     $i++;
                 }    //end while (data available)
-            }    //end if -> noncompleted checked
-            //noncompleted is NOT checked
-            else {
+            } else {
                 //calculate total number of incompleted records
                 $TotalIncomplete = max(($results - $TotalCompleted), 0); // don't show negative number
 
@@ -2801,6 +2793,7 @@ class statistics_helper
             ///// We'll render at the end of this loop statisticsoutput_answer
 
             //repeat header (answer, count, ...) for each new question
+            /** @psalm-suppress UndefinedVariable */
             unset($showheadline);
 
 
@@ -3049,6 +3042,7 @@ class statistics_helper
             $aData['grawdata_percent']     = $grawdata_percents;
             $aData['gdata']                = $gdata;
 
+            /** @psalm-suppress UndefinedVariable */
             $aData['extraline']            = $extraline ?? false;
             $aData['aggregated']           = $aggregated ?? false;
             $aData['aggregatedPercentage'] = (isset($aggregatedPercentage)) ? ($i < 6 ? $aggregatedPercentage : false) : false;
@@ -3306,13 +3300,6 @@ class statistics_helper
 
                 if ($cachefilename || $outputType == 'html') {
                     // Add the image only if constructed
-                    //introduce new counter
-                    if (!isset($ci)) {
-                        $ci = 0;
-                    }
-
-                    //increase counter, start value -> 1
-                    $ci++;
                     switch ($outputType) {
                         case 'xls':
                             /**
