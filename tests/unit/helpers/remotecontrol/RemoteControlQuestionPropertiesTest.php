@@ -386,7 +386,7 @@ class RemoteControlQuestionPropertiesTest extends BaseTest
 
         $englishSubquestionsResult = array_values($result['subquestions']);
 
-        $this->assertEquals($subquestions, $subquestionsResult, 'The returned subquestions are not correct.');
+        $this->assertEquals($subquestions, $englishSubquestionsResult, 'The returned subquestions are not correct.');
 
         $spanishSubquestions = array(
             array(
