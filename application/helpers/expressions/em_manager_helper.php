@@ -4925,8 +4925,10 @@ class LimeExpressionManager
                 $message = '';
                 if (!$force && $LEM->currentGroupSeq != -1) {
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
-                    $message .= $result['message'];
-                    $updatedValues = array_merge($updatedValues, $result['updatedValues']);
+                    if (!is_null($result)) {
+                        $message .= $result['message'];
+                        $updatedValues = array_merge($updatedValues, $result['updatedValues']);
+                    }
                     if (!is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
                         // redisplay the current group
                         $message .= $LEM->_UpdateValuesInDatabase();
