@@ -42,12 +42,10 @@
             {% endblock %}
         {% endif %}
         {% block datasecurity %}
-            {% if aSurveyInfo.format != 'A' %}
-                {% if (aSurveyInfo.showsurveypolicynotice == 1) %}
-                    {{include('./subviews/privacy/privacy_text.twig')}}
-                {% elseif (aSurveyInfo.showsurveypolicynotice == 2) %}
-                    {{include( './subviews/privacy/privacy_modal.twig')}}
-                {% endif %}
+            {% if (aSurveyInfo.showsurveypolicynotice == 1) %}
+                {{include('./subviews/privacy/privacy_text.twig')}}
+            {% elseif (aSurveyInfo.showsurveypolicynotice == 2) %}
+                {{include( './subviews/privacy/privacy_modal.twig')}}
             {% endif %}
         {% endblock %}
     </div>

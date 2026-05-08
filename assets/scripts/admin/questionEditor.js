@@ -770,44 +770,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
   //}
 
   /**
-   * @param {any} mixedVar
-   * @return {boolean}
-   */
-  function isNumeric(mixedVar /*: mixed */) {
-    return (typeof (mixedVar) === 'number' || typeof (mixedVar) === 'string') && mixedVar !== '' &&
-      (typeof mixedVar === 'number' && !isNaN(mixedVar));
-  }
-
-  /**
-   * @param {string} sSourceCode
-   * @return {string}
-   * @todo Used in label sets? But not in question editor?
-   * @todo Remove
-   */
-  function getNextCode(sSourceCode) {  // jshint ignore: line
-    const sourcecode = sSourceCode;
-    let i = 1;
-    let found = true;
-    let foundnumber = -1;
-    const sclength = sourcecode.length;
-    while (i <= sclength && found === true) {
-      found = isNumeric(sourcecode.substr(sclength - i, i));
-      if (found) {
-        foundnumber = parseInt(sourcecode.substr(sclength - i, i));
-        i++;
-      }
-    }
-    if (foundnumber === -1) {
-      return sourcecode;
-    }
-
-    foundnumber++;
-    const foundnumberString = foundnumber.toString();
-    const result = sourcecode.substr(0, sclength - foundnumberString.length) + foundnumberString;
-    return (result);
-  }
-
-  /**
    * @return {void}
    */
   //function popupeditor() {
@@ -884,10 +846,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             if (labelSet.labels) {
               isEmpty = false;
+              const assessmentVisible = source === 'answeroptions' &&
+                $('#add-answer-option-input-javascript-datas').data('assessmentvisible') == 1;
               labelSet.labels.forEach((label) => {
                 // Label title is not concatenated directly because it may have non-encoded HTML
                 const $labelTitleDiv = $('<div class="col-lg-9"></div>');
-                $labelTitleDiv.text(label.title);
+                const assessmentValue = parseInt(label.assessment_value, 10) || 0;
+                $labelTitleDiv.text(assessmentVisible ? `[${assessmentValue}] ${label.title}` : label.title);
                 const $listItem = $listItemTemplate.clone();
                 $listItem.append(`<div class="col-lg-3 text-end" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
                 $listItem.append($labelTitleDiv);
@@ -1146,6 +1111,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
             }
 
             $tr.find('td.subquestion-text, td.answeroption-text').find('input[type=text]').val(label.title);
+            if (source === 'answeroptions') {
+              $tr.find('td.assessment-value').find('input').val(label.assessment_value ?? 0);
+            }
             $table.find('tbody').append($tr);
 
             if (source === 'subquestions') {

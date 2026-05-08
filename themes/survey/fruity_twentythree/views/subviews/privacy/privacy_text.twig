@@ -15,6 +15,10 @@ Show the privacy message and the data security message will be available in a mo
 #}
 
 {% set describeprivacy = "" %}
+{% set privacychecked = "" %}
+{% if getPost('datasecurity_accepted') %}
+    {% set privacychecked = "checked" %}
+{%endif %}
 {% if aSurveyInfo.datasecurity_notice %}
     <div class="ls-privacy-block">
         <div id="datasecurity_notice_label" class="fw-bold text-uppercase">
@@ -41,7 +45,7 @@ Show the privacy message and the data security message will be available in a mo
 <div class="ls-privacy-block">
     <div class="row row-cols-lg-auto align-items-center datasecurity-checkbox-container">
         <div class="col-12 checkbox-item">
-            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} text-primary form-check-input" type="checkbox" name="datasecurity_accepted"
+            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} text-primary form-check-input" type="checkbox" {{ privacychecked }} name="datasecurity_accepted"
                    id="datasecurity_accepted"{% if describeprivacy %} aria-describedby="{{ describeprivacy }}" {% endif %}/>
             <label for="datasecurity_accepted"
                    class="text-primary control-label checkbox-label form-check-label datasecurity-checkbox-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">

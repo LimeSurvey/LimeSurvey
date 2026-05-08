@@ -738,7 +738,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                     'mandatory' => 'N',
                     'encrypted' => 'N',
                     'show_register' => 'N',
-                    'cpdbmap' => ''
+                    'cpdbmap' => '',
+                    'type' => 'TB', // TB = text input (default)
+                    'type_options' => [],
                 ), $aValues);
             }
         }
