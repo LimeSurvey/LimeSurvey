@@ -2906,14 +2906,14 @@ function exprmgr_sumifop($args)
 }
 
 /**
- * Validate a Gregorian date
- * @see https://www.php.net/checkdate
- * Check if all params are valid before send it to PHP checkdate to avoid PHP Warning
+ * Validate whether the provided month, day, and year form a valid Gregorian date.
  *
- * @param mixed $month
- * @param mixed $day
- * @param mixed $year
- * @return boolean
+ * Accepts integer values or numeric strings for each component; returns `false` when any parameter is not numeric.
+ *
+ * @param mixed $month Integer or numeric string representing the month (1-12).
+ * @param mixed $day Integer or numeric string representing the day.
+ * @param mixed $year Integer or numeric string representing the year.
+ * @return bool `true` if the three values form a valid Gregorian date, `false` otherwise.
  */
 function exprmgr_checkdate($month, $day, $year)
 {

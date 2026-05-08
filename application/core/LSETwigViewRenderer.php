@@ -764,14 +764,14 @@ window.addEventListener('message', function(event) {
     }
 
     /**
-     * It can happen that user set incoherent values for options (like background is on, but no image file is selected)
-     * With some server configuration, it can lead to critical errors : empty values in image src or url()
-     * can block submission
-     * This function will check those cases. It can be used in the future for further checks
-     * @param array $aData
-     * @return array
-     *
-     */
+         * Ensure option flags that depend on files are coherent.
+         *
+         * If a file-related option (e.g., `brandlogofile`, `backgroundimagefile`) is empty,
+         * the corresponding boolean-like option (`brandlogo`, `backgroundimage`) is set to `"false"`.
+         *
+         * @param array $aData Rendering data (expects `aSurveyInfo['options']` when present).
+         * @return array The input `$aData` with corrected option flags where applicable.
+         */
     private function fixDataCoherence($aData)
     {
         // Clean option with files

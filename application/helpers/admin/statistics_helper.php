@@ -2146,16 +2146,27 @@ class statistics_helper
     }
 
     /**
-     * displayResults builds html output to display the actual results from a survey
+     * Build and return the formatted statistics output for a single question selector.
      *
-     * @param mixed $outputs
-     * @param INT $results The number of results being displayed overall
-     * @param mixed $rt
-     * @param string $outputType
-     * @param mixed $surveyid
-     * @param mixed $sql
-     * @param integer $usegraph
-     * @psalm-suppress UndefinedVariable
+     * Processes the provided answer list and result counts to produce HTML/PDF/XLS output,
+     * optional graphs and graph-related session data, and auxiliary metadata about available
+     * graph/map features for the question.
+     *
+     * @param array $outputs Question/output metadata and answer list (expects keys like 'alist', 'qtype', 'qtitle', 'qquestion', 'parentqid').
+     * @param int $results Total number of records considered for this question.
+     * @param string $rt SGQA selector or question token used to identify the question/column.
+     * @param string $outputType Output target: 'html', 'pdf', or 'xls'.
+     * @param int|string $surveyid Survey identifier used to query response tables.
+     * @param string $sql Optional additional SQL WHERE fragment to apply to per-answer counts.
+     * @param int $usegraph Non-zero to enable server-side graph generation and graph metadata.
+     * @param bool $browse Whether browse controls (show text / browse buttons) should be included.
+     * @param string|null $sLanguage Language code used for graph/chart localization.
+     *
+     * @return array{
+     *   statisticsoutput: string,   // Rendered output (HTML fragment or aggregated output for XLS/PDF)
+     *   pdf: mixed,                 // PDF object when generating PDF output (or null/previous state otherwise)
+     *   astatdata: array            // Per-question metadata describing graph/map availability and settings
+     * }
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
