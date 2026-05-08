@@ -107,10 +107,6 @@ jobs:
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
-      # for debugging
-     # - name: Setup upterm session
-     #   uses: lhotari/action-upterm@v1
-     #   if: ${{ contains(matrix.php-versions, '7.4') }}
       - name: Test the server
         run: |
           # Test server.
@@ -295,7 +291,9 @@ jobs:
       - name: Run unit tests
         env:
           XDEBUG_MODE: coverage
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
+        run: |
+          phpunit --version
+          php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
 
       - name: Upload cov.xml
         uses: actions/upload-artifact@v4
@@ -341,7 +339,14 @@ jobs:
           name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
-        run: php tests/bin/check_coverage.php cov.xml 37
+        run: |
+          phpunit --version
+          php tests/bin/check_coverage.php cov.xml 37
+
+      # for debugging
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+        if: ${{ contains(matrix.php-version, '7.4') && contains(matrix.db-type, 'mysql') }}
 
   code-check:
     runs-on: ubuntu-22.04
