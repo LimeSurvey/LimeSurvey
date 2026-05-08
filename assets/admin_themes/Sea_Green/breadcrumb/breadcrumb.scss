@@ -38,7 +38,7 @@ ol.breadcrumb.title-bar-breadcrumb {
             border : $hover-border;
         }
 
-        &:focus {
+        &:focus-visible {
             outline    : none;
             box-shadow : $focus-boxshadow;
         }

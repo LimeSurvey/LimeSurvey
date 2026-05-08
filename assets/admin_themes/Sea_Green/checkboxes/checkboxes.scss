@@ -61,7 +61,7 @@ $checkbox-selectors: 'input[type="checkbox"]', '.checkbox input[type="checkbox"]
             border-color: transparent;
         }
 
-        &:focus {
+        &:focus-visible {
             outline: none;
 
             &:after {

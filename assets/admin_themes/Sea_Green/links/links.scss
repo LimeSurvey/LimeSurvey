@@ -7,7 +7,7 @@ a {
         text-decoration : underline;
     }
 
-    &.ls-link:focus, &.ls-link:active {
+    &.ls-link:focus-visible {
         padding       : 1px 4px;
         @include state-border(2px, $grape90);
     }

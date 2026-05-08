@@ -270,16 +270,16 @@ table {
     }
 
     .table {
-        td a:focus:not(:active), td button:focus:not(:active), th a:focus:not(:active), th button:focus:not(:active),
-        td:focus:not(:active), th:focus:not(:active),
-        [tabindex]:focus:not(tr):not(:active) {
+        td a:focus-visible:not(:active), td button:focus-visible:not(:active), th a:focus-visible:not(:active), th button:focus-visible:not(:active),
+        td:focus-visible:not(:active), th:focus-visible:not(:active),
+        [tabindex]:focus-visible:not(tr):not(:active) {
             outline : none;
             @include state-border(1px, $grape90);
             @include inset-border(1px, $grape90);
         }
 
         // Focused row: outline around the whole tr
-        tr[tabindex]:focus:not(:active) {
+        tr[tabindex]:focus-visible:not(:active) {
             outline        : 2px solid $grape90;
             outline-offset : -2px;
 

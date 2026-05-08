@@ -65,7 +65,7 @@ a.list-group-item {
     &:hover {
         background-color: $active-green-hover;
     }
-    &:focus:not(:active) {
+    &:focus-visible:not(:active) {
         @include inset-border(2px, $grape90);
         background-color: $white;
     }

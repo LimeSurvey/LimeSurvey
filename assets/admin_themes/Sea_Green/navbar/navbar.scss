@@ -21,7 +21,7 @@
                 @include state-border(1px, $grape90);
             }
 
-            &:focus {
+            &:focus-visible {
                 color: inherit;
                 @include state-border(1px, $grape90);
                 @include inset-border(1px, $grape90);
@@ -201,7 +201,7 @@
             }
             // Focus/active/clicked state - purple border
             &:focus-within,
-            &:focus,
+            &:focus-visible,
             &:active
             {
                 color: $g-800;

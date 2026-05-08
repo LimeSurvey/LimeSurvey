@@ -17535,7 +17535,7 @@ a.ls-link:hover {
   color: #14AE5C;
   text-decoration: underline;
 }
-a.ls-link:focus, a.ls-link:active {
+a.ls-link:focus-visible {
   padding: 1px 4px;
   border-radius: 2px;
   border: 2px solid rgba(123, 97, 255, 0.9);
@@ -17613,7 +17613,7 @@ ol.breadcrumb.title-bar-breadcrumb a {
 ol.breadcrumb.title-bar-breadcrumb a:hover {
   border: 1px solid rgba(123, 97, 255, 0.4);
 }
-ol.breadcrumb.title-bar-breadcrumb a:focus {
+ol.breadcrumb.title-bar-breadcrumb a:focus-visible {
   outline: none;
   box-shadow: inset 0 0 0 2px rgba(123, 97, 255, 0.9);
 }
@@ -17724,7 +17724,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
 }
-.navbar .nav-item a:focus {
+.navbar .nav-item a:focus-visible {
   color: inherit;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
@@ -17883,7 +17883,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   border-color: transparent;
   background-color: #EEEFF7;
 }
-.navbar .create-menu-item .dropdown-item:focus-within, .navbar .create-menu-item .dropdown-item:focus, .navbar .create-menu-item .dropdown-item:active {
+.navbar .create-menu-item .dropdown-item:focus-within, .navbar .create-menu-item .dropdown-item:focus-visible, .navbar .create-menu-item .dropdown-item:active {
   color: #333641;
   outline: none;
   border-color: #8146F6;
@@ -19635,28 +19635,28 @@ table [class^=ri-], table [class*=" ri-"] {
 .grid-view .table tbody tr.selected > td, .grid-view .table tbody tr.selected > th, .grid-view .table tbody tr.selected > .ls-sticky-column, .grid-view .table tbody tr:has(input[type=checkbox]:checked) > td, .grid-view .table tbody tr:has(input[type=checkbox]:checked) > th, .grid-view .table tbody tr:has(input[type=checkbox]:checked) > .ls-sticky-column, .grid-view-ls .table tbody tr.selected > td, .grid-view-ls .table tbody tr.selected > th, .grid-view-ls .table tbody tr.selected > .ls-sticky-column, .grid-view-ls .table tbody tr:has(input[type=checkbox]:checked) > td, .grid-view-ls .table tbody tr:has(input[type=checkbox]:checked) > th, .grid-view-ls .table tbody tr:has(input[type=checkbox]:checked) > .ls-sticky-column {
   background-color: #F9F9FB;
 }
-.grid-view .table td a:focus:not(:active), .grid-view .table td button:focus:not(:active), .grid-view .table th a:focus:not(:active), .grid-view .table th button:focus:not(:active),
-.grid-view .table td:focus:not(:active), .grid-view .table th:focus:not(:active),
-.grid-view .table [tabindex]:focus:not(tr):not(:active), .grid-view-ls .table td a:focus:not(:active), .grid-view-ls .table td button:focus:not(:active), .grid-view-ls .table th a:focus:not(:active), .grid-view-ls .table th button:focus:not(:active),
-.grid-view-ls .table td:focus:not(:active), .grid-view-ls .table th:focus:not(:active),
-.grid-view-ls .table [tabindex]:focus:not(tr):not(:active) {
+.grid-view .table td a:focus-visible:not(:active), .grid-view .table td button:focus-visible:not(:active), .grid-view .table th a:focus-visible:not(:active), .grid-view .table th button:focus-visible:not(:active),
+.grid-view .table td:focus-visible:not(:active), .grid-view .table th:focus-visible:not(:active),
+.grid-view .table [tabindex]:focus-visible:not(tr):not(:active), .grid-view-ls .table td a:focus-visible:not(:active), .grid-view-ls .table td button:focus-visible:not(:active), .grid-view-ls .table th a:focus-visible:not(:active), .grid-view-ls .table th button:focus-visible:not(:active),
+.grid-view-ls .table td:focus-visible:not(:active), .grid-view-ls .table th:focus-visible:not(:active),
+.grid-view-ls .table [tabindex]:focus-visible:not(tr):not(:active) {
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
   box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.9), inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);
 }
-.grid-view .table tr[tabindex]:focus:not(:active), .grid-view-ls .table tr[tabindex]:focus:not(:active) {
+.grid-view .table tr[tabindex]:focus-visible:not(:active), .grid-view-ls .table tr[tabindex]:focus-visible:not(:active) {
   outline: 2px solid rgba(123, 97, 255, 0.9);
   outline-offset: -2px;
 }
-.grid-view .table tr[tabindex]:focus:not(:active) > .ls-sticky-column, .grid-view-ls .table tr[tabindex]:focus:not(:active) > .ls-sticky-column {
+.grid-view .table tr[tabindex]:focus-visible:not(:active) > .ls-sticky-column, .grid-view-ls .table tr[tabindex]:focus-visible:not(:active) > .ls-sticky-column {
   border-top: 2px solid rgba(123, 97, 255, 0.9);
   border-bottom: 2px solid rgba(123, 97, 255, 0.9);
 }
-.grid-view .table tr[tabindex]:focus:not(:active) > .ls-sticky-column:first-child, .grid-view-ls .table tr[tabindex]:focus:not(:active) > .ls-sticky-column:first-child {
+.grid-view .table tr[tabindex]:focus-visible:not(:active) > .ls-sticky-column:first-child, .grid-view-ls .table tr[tabindex]:focus-visible:not(:active) > .ls-sticky-column:first-child {
   border-left: 2px solid rgba(123, 97, 255, 0.9);
 }
-.grid-view .table tr[tabindex]:focus:not(:active) > .ls-sticky-column:last-child, .grid-view-ls .table tr[tabindex]:focus:not(:active) > .ls-sticky-column:last-child {
+.grid-view .table tr[tabindex]:focus-visible:not(:active) > .ls-sticky-column:last-child, .grid-view-ls .table tr[tabindex]:focus-visible:not(:active) > .ls-sticky-column:last-child {
   border-right: 2px solid rgba(123, 97, 255, 0.9);
 }
 .grid-view .table button:focus, .grid-view-ls .table button:focus {
@@ -20464,7 +20464,7 @@ a.list-group-item .list-group-item-heading {
 a.list-group-item:hover {
   background-color: #9cba9e;
 }
-a.list-group-item:focus:not(:active) {
+a.list-group-item:focus-visible:not(:active) {
   box-shadow: inset 2px 0 0 rgba(123, 97, 255, 0.9), inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
   background-color: #fff;
 }
@@ -20531,10 +20531,10 @@ input[type=checkbox]:disabled:checked:after {
   background-color: #bbbbbb;
   border-color: transparent;
 }
-input[type=checkbox]:focus {
+input[type=checkbox]:focus-visible {
   outline: none;
 }
-input[type=checkbox]:focus:after {
+input[type=checkbox]:focus-visible:after {
   border-color: #8146F6;
 }
 input[type=checkbox]:checked:after {
@@ -20596,10 +20596,10 @@ input[type=checkbox]:checked:after {
   background-color: #bbbbbb;
   border-color: transparent;
 }
-.checkbox input[type=checkbox]:focus {
+.checkbox input[type=checkbox]:focus-visible {
   outline: none;
 }
-.checkbox input[type=checkbox]:focus:after {
+.checkbox input[type=checkbox]:focus-visible:after {
   border-color: #8146F6;
 }
 .checkbox input[type=checkbox]:checked:after {
@@ -20661,10 +20661,10 @@ input[type=checkbox]:checked:after {
   background-color: #bbbbbb;
   border-color: transparent;
 }
-.checkbox-inline input[type=checkbox]:focus {
+.checkbox-inline input[type=checkbox]:focus-visible {
   outline: none;
 }
-.checkbox-inline input[type=checkbox]:focus:after {
+.checkbox-inline input[type=checkbox]:focus-visible:after {
   border-color: #8146F6;
 }
 .checkbox-inline input[type=checkbox]:checked:after {
