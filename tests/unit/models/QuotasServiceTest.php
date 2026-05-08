@@ -76,6 +76,14 @@ class QuotasServiceTest extends \ls\tests\TestBaseClass
 
         $quotaData['name'] = 'UpdateQuotaName';
 
+        // Setup $_POST data for language settings
+        $_POST['QuotaLanguageSetting'] = [];
+        foreach ($quota->languagesettings as $language => $languageSetting) {
+            $_POST['QuotaLanguageSetting'][$language] = [
+                'quotals_message' => 'Test message',
+            ];
+        }
+
         $updatedQuota = $quotaService->editQuota($quota, $quotaData);
 
         $this->assertEquals(count($updatedQuota->getErrors()), 0);
