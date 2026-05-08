@@ -1746,15 +1746,10 @@ class statistics_helper
                 $i = 0;
 
                 while (isset($gdata[$i])) {
-                    if (isset($showaggregated_indice_table[$i]) && $showaggregated_indice_table[$i] == "aggregated") {
-                        // do nothing, we don't rewrite aggregated results
-                        // or at least I don't know how !!! (lemeur)
-                    } else {
-                        //we want to have some "real" data here
-                        if ($gdata[$i] != "N/A") {
-                            //calculate percentage
-                            $gdata[$i] = ($grawdata[$i] / $TotalCompleted) * 100;
-                        }
+                    //we want to have some "real" data here
+                    if ($gdata[$i] != "N/A") {
+                        //calculate percentage
+                        $gdata[$i] = ($grawdata[$i] / $TotalCompleted) * 100;
                     }
 
                     //increase counter
@@ -1826,6 +1821,7 @@ class statistics_helper
             ///// We'll render at the end of this loop statisticsoutput_answer
 
             //repeat header (answer, count, ...) for each new question
+            /** @psalm-suppress UndefinedVariable */
             unset($showheadline);
 
 
@@ -1934,6 +1930,7 @@ class statistics_helper
             $aData['label'] = $label;
             $aData['grawdata'] = $grawdata;
             $aData['gdata'] = $gdata;
+            /** @psalm-suppress UndefinedVariable */
             $aData['extraline'] = $extraline ?? false;
             $aData['aggregated'] = $aggregated ?? false;
             $aData['aggregatedPercentage'] = $aggregatedPercentage ?? false;
