@@ -1472,24 +1472,19 @@ class TemplateConfiguration extends TemplateConfig
             // Full inheritance of the whole field
             $sAttribute = $this->getAttribute($name);
             if ($sAttribute === 'inherit') {
-                // NOTE: this is object recursive (if parent configuration field is set to inherit,
-                // then it will lead to this method again.)
-                $oParentConfiguration = $this->getParentConfiguration();
-                /**
-                 * We check if $oParentConfiguration is the same as $this because if it is, $oParentConfiguration->$name will
-                 * try to directly access the property instead of calling the magic method, and it will fail for dynamic properties.
-                 * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
-                 */
-                if ($oParentConfiguration !== $this) {
-                    $parentValue = $oParentConfiguration->getAttribute($name);
-                    if ($parentValue === 'inherit') {
-                        // Recurse via the parent's own __get to follow the chain
-                        $sAttribute = $oParentConfiguration->getParentConfiguration()->getAttribute($name);
-                    } else {
-                        $sAttribute = $parentValue;
+                // Walk the parent chain until we find a non-'inherit' value or run out of parents.
+                $oCurrentConfig = $this;
+                $visited = [spl_object_id($this) => true];
+                while ($sAttribute === 'inherit') {
+                    $oParentConfiguration = $oCurrentConfig->getParentConfiguration();
+                    if ($oParentConfiguration === $oCurrentConfig || isset($visited[spl_object_id($oParentConfiguration)])) {
+                        // Cycle detected — use raw value from this node
+                        $sAttribute = $oParentConfiguration->getAttribute($name);
+                        break;
                     }
-                } else {
+                    $visited[spl_object_id($oParentConfiguration)] = true;
                     $sAttribute = $oParentConfiguration->getAttribute($name);
+                    $oCurrentConfig = $oParentConfiguration;
                 }
             }
         } elseif (in_array($name, $aAttributesThatCanBeInherited)) {

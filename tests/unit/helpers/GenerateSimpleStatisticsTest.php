@@ -13,9 +13,10 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
 
     protected function loadHtmlWithoutWarnings(\DOMDocument $doc, string $html): void
     {
-        libxml_use_internal_errors(true);
+        $previous = libxml_use_internal_errors(true);
         $doc->loadHtml($html);
         libxml_clear_errors();
+        libxml_use_internal_errors($previous);
     }
 
     public static function setUpBeforeClass(): void
