@@ -1211,9 +1211,8 @@ class TemplateConfiguration extends TemplateConfig
         // Not mandatory (use package dependencies)
         $this->setCssFramework();
         $this->packages = $this->getDependsPackages($this);
-        $packagesToLoad = $this->getAttribute('packages_to_load');
-        if (!empty($packagesToLoad)) {
-            $templateToLoadPackages = json_decode($packagesToLoad);
+        if (!empty($this->packages_to_load)) {
+            $templateToLoadPackages = json_decode($this->packages_to_load);
             if (!empty($templateToLoadPackages->add)) {
                 $this->packages = array_merge($templateToLoadPackages->add, $this->packages);
             }
@@ -1232,12 +1231,11 @@ class TemplateConfiguration extends TemplateConfig
      */
     private function setCssFramework()
     {
-        $cssframeworkName = $this->getAttribute('cssframework_name');
-        if (!empty($cssframeworkName)) {
+        if (!empty($this->cssframework_name)) {
             $this->cssFramework = new \stdClass();
-            $this->cssFramework->name = $cssframeworkName;
-            $this->cssFramework->css  = json_decode($this->getAttribute('cssframework_css'));
-            $this->cssFramework->js   = json_decode($this->getAttribute('cssframework_js'));
+            $this->cssFramework->name = $this->cssframework_name;
+            $this->cssFramework->css  = json_decode($this->cssframework_css);
+            $this->cssFramework->js   = json_decode($this->cssframework_js);
         } else {
             $this->cssFramework = new \stdClass();
             $this->cssFramework->name = '';
@@ -1254,9 +1252,8 @@ class TemplateConfiguration extends TemplateConfig
     public function setOptions()
     {
         $this->oOptions = new stdClass();
-        $optionsValue = $this->getAttribute('options');
-        if (!empty($optionsValue)) {
-            $this->oOptions = json_decode($optionsValue);
+        if (!empty($this->options)) {
+            $this->oOptions = json_decode($this->options);
         }
         // unset "comment" property which is auto generated from HTML comments in xml file
         unset($this->oOptions->comment);
@@ -1333,7 +1330,7 @@ class TemplateConfiguration extends TemplateConfig
         $this->aFrameworkAssetsToReplace[$sType] = array();
 
         $sFieldName  = 'cssframework_' . $sType;
-        $aFieldValue = json_decode((string) $this->getAttribute($sFieldName), true);
+        $aFieldValue = json_decode((string) $this->$sFieldName, true);
 
         if (!empty($aFieldValue) && !empty($aFieldValue['replace'])) {
             $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'];
@@ -1392,9 +1389,6 @@ class TemplateConfiguration extends TemplateConfig
             //check for surveygroup id if a survey is given
             if ($this->sid != null) {
                 $oSurvey = Survey::model()->findByPk($this->sid);
-                if ($oSurvey === null) {
-                    return $this;
-                }
                 // set template name from real inherited value
                 $sTemplateName = !empty($oSurvey->oOptions->template) ?
                     $oSurvey->oOptions->template :
@@ -1450,9 +1444,6 @@ class TemplateConfiguration extends TemplateConfig
         );
     }
 
-    /** @var array Track inheritance resolution to prevent infinite recursion */
-    private $aInheritanceResolution = [];
-
     /**
      * Proxy for the AR method to manage the inheritance
      * If one of the field that can be inherited is set to "inherit", then it will return the value of its parent
@@ -1474,23 +1465,22 @@ class TemplateConfiguration extends TemplateConfig
             'packages_to_load'
         );
 
-        if (in_array($name, $aAttributesThatCanBeInherited)) {
-            $sAttribute = $this->getAttribute($name);
-            if ($sAttribute === 'inherit' && $this->bUseMagicInherit) {
-                // Prevent infinite recursion
-                if (isset($this->aInheritanceResolution[$name])) {
-                    return null;
-                }
-                $this->aInheritanceResolution[$name] = true;
-                try {
-                    $oParentConfiguration = $this->getParentConfiguration();
-                    if ($oParentConfiguration !== $this) {
-                        $sAttribute = $oParentConfiguration->__get($name);
-                    } else {
-                        $sAttribute = $oParentConfiguration->getAttribute($name);
-                    }
-                } finally {
-                    unset($this->aInheritanceResolution[$name]);
+        if (in_array($name, $aAttributesThatCanBeInherited) && $this->bUseMagicInherit) {
+            // Full inheritance of the whole field
+            $sAttribute = parent::__get($name);
+            if ($sAttribute === 'inherit') {
+                // NOTE: this is object recursive (if parent configuration field is set to inherit,
+                // then it will lead to this method again.)
+                $oParentConfiguration = $this->getParentConfiguration();
+                /**
+                 * We check if $oParentConfiguration is the same as $this because if it is, $oParentConfiguration->$name will
+                 * try to directly access the property instead of calling the magic method, and it will fail for dynamic properties.
+                 * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
+                 */
+                if ($oParentConfiguration !== $this) {
+                    $sAttribute = $oParentConfiguration->$name;
+                } else {
+                    $sAttribute = $oParentConfiguration->getAttribute($name);
                 }
             }
         } else {
