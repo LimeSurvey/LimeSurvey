@@ -84,7 +84,9 @@ export const TinyMCE = ({
   }
 
   const updateTitle = (newValue) => {
-    if (firstLoad || disabled) return
+    if (firstLoad || disabled) {
+      return
+    }
     setEditorValue(newValue)
     handleOnChange(newValue)
     editorValueRef.current = newValue
