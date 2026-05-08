@@ -216,7 +216,11 @@ class TestBaseClass extends TestCase
                 'users_name' => $userData['users_name']
             ]);
         }
-        if ($userData['password'] != ' ') {
+        
+        // Ensure password is set (use default if not provided)
+        if (empty($userData['password']) || $userData['password'] == ' ') {
+            $userData['password'] = password_hash('testpassword123', PASSWORD_DEFAULT);
+        } else {
             $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
         }
 

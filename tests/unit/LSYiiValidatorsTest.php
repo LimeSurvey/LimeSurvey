@@ -142,7 +142,8 @@ class LSYiiValidatorsTest extends TestBaseClass
         $userData = array(
             'full_name'  => $userName,
             'users_name' => $userName,
-            'email'      => $userName . '@example.org'
+            'email'      => $userName . '@example.org',
+            'password'   => 'testpassword123'
         );
 
         $permissions = array(

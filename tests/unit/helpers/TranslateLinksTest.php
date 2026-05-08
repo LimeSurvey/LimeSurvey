@@ -171,7 +171,7 @@ class TranslateLinksTest extends TestBaseClass
     {
         $linkString = 'http://limesurvey.org/upload/labels/111111/files/file.ext<br>/upload/labels/111111/files/file.ext';
 
-        \Yii::app()->getRequest()->setBaseUrl('www.example.com');
+        \Yii::app()->getRequest()->setBaseUrl('http://www.example.com');
 
         // Default public url
         \Yii::app()->setConfig('publicUrl', \Yii::app()->baseUrl . '/');

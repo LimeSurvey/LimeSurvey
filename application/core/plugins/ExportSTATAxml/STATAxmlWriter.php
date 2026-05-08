@@ -13,24 +13,56 @@
 
 class STATAxmlWriter extends Writer
 {
+    /** @var string Output buffer for STATA XML content */
     private $output;
-    private $separator;
-    private $hasOutputHeader;
-    private $maxByte = 100; // max value of STATA byte var
-    private $minByte = -127; // min value of STATA byte var
-    private $maxInt = 32740; // max value of STATA int var
-    private $minInt = -32767; // min value of STATA int var
 
-    /**
-     * The open filehandle
-     */
+    /** @var string Field separator for output */
+    private $separator;
+
+    /** @var bool Whether the output header has been written */
+    private $hasOutputHeader;
+
+    /** @var int Maximum value of STATA byte variable */
+    private $maxByte = 100;
+
+    /** @var int Minimum value of STATA byte variable */
+    private $minByte = -127;
+
+    /** @var int Maximum value of STATA int variable */
+    private $maxInt = 32740;
+
+    /** @var int Minimum value of STATA int variable */
+    private $minInt = -32767;
+
+    /** @var int STATA file format version */
+    private $statafileversion;
+
+    /** @var int Maximum string length for STATA variables */
+    private $maxStringLength;
+
+    /** @var resource|null The open filehandle for writing STATA XML */
     protected $handle = null;
+
+    /** @var array Custom fieldmap with survey metadata and question/answer information */
     protected $customFieldmap = array();
+
+    /** @var array Array of response data to be exported */
     protected $customResponsemap = array();
+
+    /** @var array List of column headers/variable names */
     protected $headers = array();
+
+    /** @var array List of SGQA identifiers for selected columns */
     protected $headersSGQA = array();
+
+    /** @var array QIDs that have non-numerical answer codes */
     protected $aQIDnonumericalAnswers = array();
 
+    /**
+     * Initialize the STATA XML writer.
+     *
+     * @param array $pluginsettings Plugin settings array containing statafileversion
+     */
     function __construct($pluginsettings)
     {
         $this->output          = '';
@@ -38,13 +70,21 @@ class STATAxmlWriter extends Writer
         $this->hasOutputHeader = false;
         $this->statafileversion = $pluginsettings['statafileversion']['current'];
         if ($this->statafileversion >= 117) {
-// 117 is the version number of the .dta/xml format for stata version 13
+        // 117 is the version number of the .dta/xml format for stata version 13
             $this->maxStringLength = 2045; // for Stata version 13 and above
         } else {
             $this->maxStringLength = 244; // for older Stata versions
         }
     }
 
+    /**
+     * Initialize the export with survey data and formatting options.
+     *
+     * @param SurveyObj $survey The survey object to export
+     * @param string $sLanguageCode The language code for the survey
+     * @param FormattingOptions $oOptions Formatting and output options
+     * @return void
+     */
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
@@ -64,7 +104,10 @@ class STATAxmlWriter extends Writer
 
 
     /**
-     * @param string $content
+     * Write content to the output file handle.
+     *
+     * @param string $content The content to write
+     * @return void
      */
     protected function out($content)
     {
@@ -88,10 +131,15 @@ class STATAxmlWriter extends Writer
      */
 
     /**
-     * @param SurveyObj $survey
-     * @param string $sLanguage
-     * @param FormattingOptions $oOptions
-     * @return mixed
+     * Create a fieldmap with STATA-compatible variable and answer information.
+     *
+     * Builds the internal fieldmap structure with proper variable names, types, labels,
+     * and value labels for STATA export, handling data type conversion and string length limits.
+     *
+     * @param SurveyObj $survey The survey object
+     * @param string $sLanguage The language code
+     * @param FormattingOptions $oOptions Formatting and output options
+     * @return array The STATA fieldmap structure
      */
     function createStataFieldmap($survey, $sLanguage, $oOptions)
     {
@@ -269,8 +317,14 @@ class STATAxmlWriter extends Writer
     }
 
 
-    /*  return a STATA-compatible variable name
-     *    strips some special characters and fixes variable names starting with a number
+    /**
+     * Convert a variable name to STATA-compatible format.
+     *
+     * Strips special characters and ensures the name doesn't start with a number
+     * (adds 'v' prefix if needed).
+     *
+     * @param string $sVarname The original variable name
+     * @return string The STATA-compatible variable name
      */
     protected function STATAvarname($sVarname)
     {
@@ -299,7 +353,11 @@ class STATAxmlWriter extends Writer
     }
 
 
-    /*  strip html tags, blanks and other stuff from array, flattens text
+    /**
+     * Strip HTML tags and clean up array values recursively.
+     *
+     * @param array $tobestripped The array to clean
+     * @return array The cleaned array
      */
     protected function stripArray($tobestripped)
     {
@@ -315,8 +373,17 @@ class STATAxmlWriter extends Writer
     }
 
 
-    /* Function is called for every response
-     * Here we just use it to create arrays with variable names and data
+    /**
+     * Process and store a single response record.
+     *
+     * Called for each response, creates arrays with variable names and data.
+     * Only writes the header once on the first call.
+     *
+     * @param array $headers Column headers
+     * @param array $values Response data values
+     * @param FormattingOptions $oOptions Formatting options
+     * @param array $fieldNames Optional field names (default: [])
+     * @return void
      */
     protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = [])
     {
@@ -331,10 +398,14 @@ class STATAxmlWriter extends Writer
         $this->customResponsemap[] = $values;
     }
 
-    /*
-    This function updates the fieldmap and recodes responses
-    so output to XML in close() is a piece of cake...
-    */
+    /**
+     * Update fieldmap and recode responses for STATA compatibility.
+     *
+     * Processes all responses, determining correct STATA data types, string lengths,
+     * converting answer codes, and handling special cases (dates, gender, yes/no, etc.).
+     *
+     * @return void
+     */
     protected function updateCustomresponsemap()
     {
         //go through each particpants' responses
@@ -426,28 +497,28 @@ class STATAxmlWriter extends Writer
                     }
 
                     if (is_numeric($numberresponse)) {
-// deal with numeric responses/variables
+                        // deal with numeric responses/variables
                         if (ctype_digit($numberresponse)) {
-// if it contains only digits (no dot) --> non-float number
+                        // if it contains only digits (no dot) --> non-float number
                             if ($numberresponse >= $this->minByte && $numberresponse <= $this->maxByte) {
                                 $iDatatype = 2; //this response is of STATA type 'byte'
                             } elseif ($numberresponse >= $this->minInt && $numberresponse <= $this->maxInt) {
                                 $iDatatype = 3; // and this is is 'int'
                             } else {
                                 if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == Question::QT_D_DATE) {
-// if datefield then a 'double' data type is needed
+                                // if datefield then a 'double' data type is needed
                                     $iDatatype = 6; // double
                                 } else {
                                     $iDatatype = 4; //long
                                 }
                             }
                         } else {
-//non-integer numeric response
+                            //non-integer numeric response
                             $iDatatype = 5; // float
                             $response = $numberresponse; //replace in customResponsemap: value with '.' as decimal
                         }
                     } else {
-// non-numeric response
+                        // non-numeric response
                         $iDatatype = 7; //string
                         $iStringlength = strlen((string) $response); //for strings we need the length for the format and the data type
                     }
@@ -515,12 +586,16 @@ class STATAxmlWriter extends Writer
         }
     }
 
-    /* Utilizes customFieldmap[], customResponsemap[], headers[] and xmlwriter()
-     * to output STATA-xml code in the following order
-     * - headers
-     * - descriptors: data types, list of variables, sorting variable, variable formatting, list of value labels, variable label
-     * - data
-     * - value labels
+    /**
+     * Finalize and write the STATA XML export file.
+     *
+     * Updates response mappings and generates complete STATA XML structure including:
+     * - Document headers
+     * - Data type descriptors, variable lists, formats, and labels
+     * - Observation data
+     * - Value labels
+     *
+     * @return void
      */
     public function close()
     {
@@ -623,7 +698,7 @@ class STATAxmlWriter extends Writer
         foreach ($this->customFieldmap['answers'] as $iQid => $aScales) {
             foreach ($aScales as $iScaleID => $aAnswercodes) {
                 if (!array_key_exists($iQid, $this->aQIDnonumericalAnswers)) {
-//if QID is not one of those with nonnumeric answers write value label
+                    //if QID is not one of those with nonnumeric answers write value label
                     $xml->startElement('vallab');
                     $xml->writeAttribute('name', 'vall' . $iQid . $iScaleID);
                     foreach ($aAnswercodes as $iAnscode => $aAnswer) {

@@ -7,6 +7,7 @@ namespace ls\tests;
  *
  * @since 2019-05-23
  * @group emcache
+ * @group debugoff
  */
 class EmCacheHelperTest extends TestBaseClass
 {

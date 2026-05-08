@@ -778,7 +778,7 @@ window.addEventListener('message', function(event) {
         $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
 
         foreach ($aFilesOptions as $sOption => $sFileOption) {
-            if (is_array($aData["aSurveyInfo"]["options"])) {
+            if (isset($aData["aSurveyInfo"]["options"]) && is_array($aData["aSurveyInfo"]["options"])) {
                 if (array_key_exists($sFileOption, $aData["aSurveyInfo"]["options"])) {
                     if (empty($aData["aSurveyInfo"]["options"][$sFileOption])) {
                         $aData["aSurveyInfo"]["options"][$sOption] = "false";
