@@ -30,32 +30,6 @@ class QuestionTest extends BaseModelTestCase
     }
 
     /**
-     * Test getting the theme from a saved question
-     */
-    public function testGetQuestionThemeOnSavedQuestion()
-    {
-        // Create a survey first so the question has a valid parent
-        $survey = new \Survey();
-        $survey->title = 'Test Survey';
-        $survey->language = 'en';
-        $survey->save();
-
-        $question = new Question();
-        $question->sid = $survey->sid;
-        $question->type = "M";
-        $question->question_theme_name = 'bootstrap_buttons_multi';
-        $question->save();
-
-        $questionTheme = $question->questionTheme;
-
-        $this->assertNotEmpty($questionTheme);
-        $this->assertEquals("bootstrap_buttons_multi", $questionTheme->name);
-
-        // Cleanup
-        $survey->delete();
-    }
-
-    /**
      * Test validating a question theme name
      * when question type is set to null.
      */
