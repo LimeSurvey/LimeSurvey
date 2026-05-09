@@ -105,11 +105,12 @@ class User extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('users_name, password, email', 'required'),
+            array('users_name, password', 'required'),
+            array('email', 'required', 'on' => 'insert'),
             array('users_name', 'unique'),
             array('users_name', 'length','max' => 64),
             array('full_name', 'length','max' => 50),
-            array('email', 'email'),
+            array('email', 'email', 'allowEmpty' => true),
             array('email', 'unique', 'allowEmpty' => true, 'message' => gT("E-mail address '{value}' is already used by another user.", 'unescaped')),
             array('full_name', 'LSYii_Validators'), // XSS if non super-admin
             array('parent_id', 'default', 'value' => 0),
@@ -315,16 +316,9 @@ class User extends LSActiveRecord
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->expires = $expires;
         $oUser->user_status = $status;
-        try {
-            if ($oUser->save()) {
-                return $oUser->uid;
-            } else {
-                return $oUser;
-            }
-        } catch (\CDbException $e) {
-            // Catch unique constraint violation (e.g. race condition on email)
-            // and translate it to a validation error on the model.
-            $oUser->addError('email', gT("E-mail address is already used by another user."));
+        if ($oUser->save()) {
+            return $oUser->uid;
+        } else {
             return $oUser;
         }
     }
