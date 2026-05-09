@@ -3048,14 +3048,15 @@ class remotecontrol_handle
                     return array('status' => $addConditionError);
                 }
             } else {
-                $sNow = date('Y-m-d H:i:s', strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date('Y-m-d H:i:s'))));
+                // Get current time in UTC (all DB times are stored in UTC)
+                $sNow = gmdate('Y-m-d H:i:s');
                 $command->addCondition('usesleft > 0');
                 $command->addCondition("sent = 'N'");
                 $command->addCondition("remindersent = 'N'");
                 $command->addCondition("(completed ='N') or (completed='')");
                 $command->addCondition("validfrom is null OR validfrom < '{$sNow}'");
                 $command->addCondition("validuntil is null OR validuntil > '{$sNow}'");
-                $command->addCondition("emailstatus = 'OK'");
+                $command->addCondition("emailstatus = 'OK'");}
             }
             $command->order = 'tid';
 

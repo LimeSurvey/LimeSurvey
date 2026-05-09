@@ -1858,8 +1858,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             if ($this->active == 'N' || $this->active == "Y") {
                 $criteria->compare("t.active", $this->active, false);
             } else {
-                // Time adjust
-                $sNow = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+                // Get current time in UTC (all DB times are stored in UTC)
+                $sNow = gmdate("Y-m-d H:i:s");
 
                 if ($this->active == "E") {
                     $criteria->compare("t.active", 'Y');

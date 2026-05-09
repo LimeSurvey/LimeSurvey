@@ -1122,9 +1122,9 @@ class User extends LSActiveRecord
     {
         $expired = false;
         if (!empty($this->expires)) {
-            // Time adjust
-            $now = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $expirationTime = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime((string) $this->expires)));
+            // Compare expiration time (stored in UTC) with current UTC time
+            $now = gmdate("Y-m-d H:i:s");
+            $expirationTime = (string) $this->expires;
 
             // Time comparison
             $expired = new DateTime($expirationTime) < new DateTime($now);
