@@ -23,7 +23,7 @@ class UserManagementController extends LSBaseController
                 'allow',
                 'actions' => array(
                     'index', 'addEditUser', 'applyEdit',
-                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
+                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions', 'batchExpires',
                     'batchSendAndResetLoginData', 'deleteConfirm',  'deleteMultiple', 'exportUser', 'importUser',
                     'renderSelectedItems', 'renderUserImport', 'saveRole', 'saveThemePermissions',
                     'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'
@@ -42,7 +42,7 @@ class UserManagementController extends LSBaseController
         return [
             'postOnly + applyEdit, deleteUser, userActivateDeactivate,'
             . ' batchStatus, saveUserPermissions, saveThemePermissions, saveRole, importUsers, deleteMultiple,'
-            . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles,'
+            . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles, batchExpires, '
             . ' TakeOwnership'
         ];
     }
@@ -229,10 +229,14 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Deletes a user after  confirmation
+     * Handle user deletion request: validates permissions, optionally transfers surveys, deletes the user, and returns a JSON response.
      *
-     * @return void|string
-     * @throws CException
+     * Performs permission and safety checks, may render a survey-transfer selection when the target owns surveys, transfers surveys when a destination is provided, invokes UserManager->deleteUser for the resolved user model, and returns a JSON partial describing the outcome.
+     *
+     * @return string JSON partial containing either:
+     *                - `success` (false) and `errors` (array|string|object) when permission or validation checks fail, or
+     *                - `success` (bool) and `message` (string) after an attempted deletion, or
+     *                - `success` (true) and `html` (string) with a survey-transfer selection when the target owns surveys and no transfer destination was provided.
      */
     public function actionDeleteUser()
     {
@@ -355,7 +359,7 @@ class UserManagementController extends LSBaseController
         }
 
         $userManager = new UserManager();
-        $result = $userManager->deleteUser($userId);
+        $result = $userManager->deleteUser($oUser);
         $messages = array_merge($messages, $result->getRawMessages());
 
         return App()->getController()->renderPartial('/admin/super/_renderJson', [
@@ -1297,6 +1301,65 @@ class UserManagementController extends LSBaseController
     }
 
     /**
+     * Mass action to set expires
+     *
+     * @return string
+     * @throws CException
+     */
+    public function actionBatchExpires()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', '')) ?? [];
+        $expires = App()->request->getPost('batchExpires');
+        $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        if (trim((string) $expires) === "") {
+            $expires = null;
+        } else {
+            $datetimeobj = DateTime::createFromFormat('!' . $formatdata['phpdate'] . ' H:i', $expires);
+            if (!is_object($datetimeobj)) {
+                throw new CHttpException(400, sprintf(gT('Invalid date, please use "%s" format.', 'unescaped'), $formatdata['phpdate'] . " H:i"));
+            }
+            $expires = $datetimeobj->format('Y-m-d H:i:s');
+        }
+        $aResults = [];
+        foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+            if (!$model->canEdit()) {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT("You are not allowed to update this user expiration date.");
+                continue;
+            }
+            if ($model->uid == Yii::app()->user->id) {
+                 $aResults[$sItem]['result'] = false;
+                 $aResults[$sItem]['error'] = gT("You are not allowed to update your own expiration date.");
+                 continue;
+            }
+            $model->expires = $expires;
+            if ($model->save(true, ['expires'])) {
+                $aResults[$sItem]['result'] = true;
+            } else {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT('An error happened when setting the expiration date.');
+            }
+        }
+
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Expires'));
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => $expires ? gT('Expiration date updated') : gT('Expiration date deleted'),
+                'tableLabels' =>  $tableLabels
+            )
+        );
+    }
+
+    /**
      * Mass edition apply roles
      *
      * @return string
@@ -1377,11 +1440,15 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Deletes a user
-     * @todo : move to a private function
+     * Attempt to delete the specified user while enforcing permission and safety checks.
      *
-     * @param int $uid
-     * @return boolean
+     * Performs permission checks (requires global `users:delete`), prevents deleting the current user,
+     * blocks deletion of forced superadmin accounts, enforces ownership constraints for non-superadmins,
+     * and prevents deletion if the user owns any surveys. If all checks pass, delegates deletion to
+     * UserManager and returns the deletion result.
+     *
+     * @param int $uid The ID of the user to delete.
+     * @return bool `true` if the user was deleted successfully, `false` otherwise.
      * @throws CException
      */
     public function deleteUser(int $uid): bool
@@ -1437,7 +1504,7 @@ class UserManagementController extends LSBaseController
         }
 
         $userManager = new UserManager();
-        $result = $userManager->deleteUser($userId);
+        $result = $userManager->deleteUser($oUser);
         return $result->isSuccess();
     }
 
@@ -1448,7 +1515,7 @@ class UserManagementController extends LSBaseController
      *
      * @param int $id the ID of the model to be loaded
      *
-     * @return User|null  object
+     * @return User object
      * @throws CHttpException
      */
     public function loadModel(int $id): User

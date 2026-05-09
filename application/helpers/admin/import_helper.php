@@ -1237,13 +1237,19 @@ function getTableArchivesAndTimestamps(int $sid, string $baseTable = 'old_survey
 }
 
 /**
- * @param string       $sFullFilePath
- * @param boolean      $bTranslateLinksFields
- * @param string|null  $sNewSurveyName
- * @param integer|null $DestSurveyID
- * @param string|null  $baselang
+ * Imports a survey file into the application by dispatching to the appropriate importer according to file extension.
+ *
+ * Handles .lss (survey XML), .txt/.tsv (TSV template) and .lsa (LimeSurvey archive) files, performing post-import integrity fixes and optional base-language finalization. For .lsa archives, imports contained survey, responses, tokens and timings files when present.
+ *
+ * @param string      $sFullFilePath       Path to the input file.
+ * @param bool        $bTranslateLinksFields If true, translate link/insertans fields during import.
+ * @param string|null $sNewSurveyName      Optional survey title to assign to the imported survey.
+ * @param int|null    $DestSurveyID        Optional desired destination survey ID.
+ * @param string|null $baselang            Optional base language to set or ensure on the imported survey.
+ * @param string|null $targetSurveyGroup   Optional target survey group strategy (e.g., 'from_survey' to attempt using the source survey's group); when null defaults to standard group assignment.
+ * @return array|null Result array containing counters, warnings and mappings (including 'newsid' on success), or null for unsupported file extensions.
  */
-function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null, $baselang = null)
+function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyName = null, $DestSurveyID = null, $baselang = null, $targetSurveyGroup = null)
 {
     $aPathInfo = pathinfo($sFullFilePath);
     if (isset($aPathInfo['extension'])) {
@@ -1253,7 +1259,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
     }
     switch ($sExtension) {
         case 'lss':
-            $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
+            $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields, true, $targetSurveyGroup);
             if (!empty($aImportResults['newsid'])) {
                 $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                 $SurveyIntegrity->fixSurveyIntegrity();
@@ -1289,7 +1295,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             foreach ($files as $filename) {
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
-                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, null, true, false);
+                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, null, true, false, $targetSurveyGroup);
                     if ($aImportResults && $aImportResults['newsid']) {
                         $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                         $SurveyIntegrity->fixSurveyIntegrity();
@@ -1356,6 +1362,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 }
 
 /**
+
  * Creates a table based on another
  *
  * @param string $table
@@ -2077,26 +2084,30 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
 
 
 /**
- * Imports a survey from an XML file or XML data string.
+ * Import a LimeSurvey survey from an XML file or XML string into the database.
  *
- * This function processes the XML data to import a survey, including its questions, groups, and language settings.
- * It handles various aspects such as translating links, converting question codes, and managing attachments.
+ * Processes the provided LimeSurvey Survey XML and inserts survey metadata, languages,
+ * groups, questions (main and subquestions), answers, attributes, quotas, conditions,
+ * themes, plugin settings, and other related records while remapping IDs and translating
+ * legacy field values as needed.
  *
- * @param string $sFullFilePath The full file path to the XML file (optional if $sXMLdata is provided)
- * @param string|null $sXMLdata The XML data as a string (optional if $sFullFilePath is provided)
- * @param string|null $sNewSurveyName The new name for the survey if it's being copied
- * @param int|null $iDesiredSurveyId The desired ID for the new survey (optional)
- * @param bool $bTranslateInsertansTags Whether to translate insertans tags (default true)
- * @param bool $bConvertInvalidQuestionCodes Whether to convert invalid question codes (default true)
- * @return array An array containing the results of the import process, including:
- *               - 'error': Any error message if the import failed
- *               - 'newsid': The ID of the newly created survey
- *               - 'oldsid': The ID of the original survey in the XML
- *               - Various counters for imported elements (questions, groups, etc.)
- *               - 'importwarnings': An array of warning messages
- * @todo Use transactions to prevent orphaned data and clean rollback on errors
+ * @param string $sFullFilePath Path to the XML file; optional when $sXMLdata is provided.
+ * @param string|null $sXMLdata XML data string to import; optional when $sFullFilePath is provided.
+ * @param string|null $sNewSurveyName If provided, the survey is treated as a copy and this name is applied.
+ * @param int|null $iDesiredSurveyId Desired numeric survey ID to assign to the new survey (may be ignored if in use).
+ * @param bool $bTranslateInsertansTags When true, embedded insertans/link fields in text are translated to the new survey.
+ * @param bool $bConvertInvalidQuestionCodes When true, invalid or colliding question codes are adjusted to valid unique codes.
+ * @param string|null $targetSurveyGroup Controls assignment of the imported survey to a survey group when not copying;
+ *                 supported value 'from_survey' attempts to reuse the original survey group when accessible.
+ * @return array An associative result array containing import counters and metadata, including:
+ *               - 'error' (string) on failure,
+ *               - 'newsid' (int) the new survey id,
+ *               - 'oldsid' (int) the original survey id from the XML,
+ *               - counters for imported entities (questions, groups, answers, etc.),
+ *               - 'importwarnings' (array) warnings produced during import,
+ *               - additional maps such as 'FieldReMap' when applicable.
  */
-function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
+function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true, $targetSurveyGroup = null)
 {
     $isCopying = ($sNewSurveyName != null);
     Yii::app()->loadHelper('database');
@@ -2156,10 +2167,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $insertdata = array();
 
         foreach ($row as $key => $value) {
-            // Set survey group id to default if not a copy
-            if ($key == 'gsid' & !$isCopying) {
-                $value = 1;
-            }
             if ($key == 'template') {
                 $sTemplateName = (string)$value;
             }
@@ -2213,6 +2220,30 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['tokenlength']) && $insertdata['tokenlength'] > Token::MAX_LENGTH) {
             $insertdata['tokenlength'] = Token::MAX_LENGTH;
         }
+
+        // Fix survey group when not copying
+        if (!$isCopying) {
+            // Set to 1 by default
+            $insertdata['gsid'] = 1;
+            // If $targetSurveyGroup is set to 'from_survey' and the xml includes survey group details, try to find the group by name.
+            if ($targetSurveyGroup == 'from_survey' && !empty($xml->surveys_groups->rows->row[0]->name)) {
+                $surveyGroupName = (string) $xml->surveys_groups->rows->row[0]->name;
+                $surveyGroup = SurveysGroups::model()->findByAttributes(["name" => $surveyGroupName]);
+                if (!empty($surveyGroup)) {
+                    $accessibleGroups = SurveysGroups::getSurveyGroupsList();
+                    if (array_key_exists($surveyGroup->gsid, $accessibleGroups)) {
+                        // If a survey group is found with the specified name, and the user has access to it, assign it to the survey.
+                        $insertdata['gsid'] = $surveyGroup->gsid;
+                        $results['importwarnings'][] = sprintf(gT("The survey was assigned to the '%s' group."), $surveyGroup->title);
+                    } else {
+                        $results['importwarnings'][] = gT("You don't have permission to import surveys into the original survey group. The survey was assigned to the default group.");
+                    }
+                } else {
+                    $results['importwarnings'][] = gT("The original survey group couldn't be found. The survey was assigned to the default group.");
+                }
+            }
+        }
+
         /* Remove unknow column */
         $aSurveyModelsColumns = Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
