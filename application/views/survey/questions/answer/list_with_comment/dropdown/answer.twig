@@ -9,7 +9,6 @@
  * @var $checkconditionFunction
  * @var $show_noanswer
  * @var $label_text
- * @var $kpclass
  * @var $tarows
  * @var $maxoptionsize
  * @var $has_comment_saved
@@ -46,7 +45,7 @@
             {{ processString(label_text) }}:
         </label>
         <textarea
-            class="form-control textarea {{ kpclass }}"
+            class="form-control textarea"
             name="{{ name }}comment"
             id="answer{{ name  }}comment"
             rows="{{ tarows }}"

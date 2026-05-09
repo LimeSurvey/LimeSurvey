@@ -13,7 +13,6 @@ class EncryptAttributesTest extends TestBaseClass
      */
     public static function setupBeforeClass(): void
     {
-        \Yii::import('application.helpers.globalsettings_helper', true);
         parent::setUpBeforeClass();
 
         // Import survey.

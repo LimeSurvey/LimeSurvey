@@ -49,9 +49,7 @@ class EmailTemplates extends SurveyCommonAction
             $ishtml = false;
         }
 
-        $grplangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($iSurveyId)->language;
-        array_unshift($grplangs, $baselang);
+        $grplangs = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
 
         $sEditScript = PrepareEditorScript(false, $this->getController());
         $aData['attrib'] = array();
@@ -64,23 +62,19 @@ class EmailTemplates extends SurveyCommonAction
         }
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         foreach ($grplangs as $key => $grouplang) {
+            $SurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $grouplang]);
             $aData['bplangs'][$key] = $grouplang;
-            $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
-            $attachments = $aData['attrib'][$key]['attachments'];
-            if (is_string($attachments)) {
-                $attachments = unserialize($attachments);
-            }
-            if (is_array($attachments)) {
-                foreach ($attachments as &$template) {
-                    foreach ($template as &$attachment) {
-                        // If the file is missing we add an error message
-                        if (!$this->attachmentExists($iSurveyId, $attachment)) {
-                            $attachment['error'] = gT("File not found.");
-                        }
-                        // For security reasons we don't include the full upload path in the frontend
-                        if (substr((string) $attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
-                            $attachment['url'] = str_replace('\\', '/', substr((string) $attachment['url'], strlen($uploadDir)));
-                        }
+            $aData['attrib'][$key] = $SurveyLanguageSetting;
+            $attachments = $SurveyLanguageSetting->getValidAttachments(false);
+            foreach ($attachments as &$template) {
+                foreach ($template as &$attachment) {
+                    // If the file is missing we add an error message
+                    if (!$SurveyLanguageSetting->getAttachmentFileExist($attachment['url'])) {
+                        $attachment['error'] = gT("File not found.");
+                    }
+                    // For security reasons we don't include the full upload path in the frontend
+                    if (substr((string) $attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
+                        $attachment['url'] = str_replace('\\', '/', substr((string) $attachment['url'], strlen($uploadDir)));
                     }
                 }
             }
@@ -130,47 +124,39 @@ class EmailTemplates extends SurveyCommonAction
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         $sSaveMethod = Yii::app()->request->getPost('save', '');
+        $attachementsPost = App()->getRequest()->getPost('attachments', []);
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update') && $sSaveMethod != '') {
-            $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-            $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;
-            array_filter($languagelist);
+            $languagelist = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
             foreach ($languagelist as $langname) {
-                if (isset($_POST['attachments'][$langname])) {
-                    foreach ($_POST['attachments'][$langname] as $template => &$attachments) {
-                        foreach ($attachments as $index => &$attachment) {
-                            // We again take the real path.
+                $attachementsLang = [];
+                if (isset($attachementsPost[$langname])) {
+                    foreach ($attachementsPost[$langname] as $template => $attachments) {
+                        foreach ($attachments as $attachment) {
                             $localName = realpath(urldecode($uploadDir . str_replace($uploadUrl, '', (string) $attachment['url'])));
                             if ($localName !== false) {
                                 if (strpos($localName, $uploadDir) === 0) {
                                     $attachment['url'] = $localName;
                                     $attachment['size'] = filesize($localName);
-                                } else {
-                                    unset($attachments[$index]);
+                                    $attachementsLang[$template][] = $attachment;
                                 }
-                            } else {
-                                unset($attachments[$index]);
                             }
                         }
-                        unset($attachments);
                     }
-                } else {
-                    $_POST['attachments'][$langname] = array();
                 }
-
                 $attributes = array(
-                    'surveyls_email_invite_subj' => $_POST['email_invitation_subj_' . $langname],
-                    'surveyls_email_invite' => $_POST['email_invitation_' . $langname],
-                    'surveyls_email_remind_subj' => $_POST['email_reminder_subj_' . $langname],
-                    'surveyls_email_remind' => $_POST['email_reminder_' . $langname],
-                    'surveyls_email_register_subj' => $_POST['email_registration_subj_' . $langname],
-                    'surveyls_email_register' => $_POST['email_registration_' . $langname],
-                    'surveyls_email_confirm_subj' => $_POST['email_confirmation_subj_' . $langname],
-                    'surveyls_email_confirm' => $_POST['email_confirmation_' . $langname],
-                    'email_admin_notification_subj' => $_POST['email_admin_notification_subj_' . $langname],
-                    'email_admin_notification' => $_POST['email_admin_notification_' . $langname],
-                    'email_admin_responses_subj' => $_POST['email_admin_detailed_notification_subj_' . $langname],
-                    'email_admin_responses' => $_POST['email_admin_detailed_notification_' . $langname],
-                    'attachments' => serialize($_POST['attachments'][$langname])
+                    'surveyls_email_invite_subj' => App()->getRequest()->getPost('email_invitation_subj_' . $langname),
+                    'surveyls_email_invite' => App()->getRequest()->getPost('email_invitation_' . $langname),
+                    'surveyls_email_remind_subj' => App()->getRequest()->getPost('email_reminder_subj_' . $langname),
+                    'surveyls_email_remind' => App()->getRequest()->getPost('email_reminder_' . $langname),
+                    'surveyls_email_register_subj' => App()->getRequest()->getPost('email_registration_subj_' . $langname),
+                    'surveyls_email_register' => App()->getRequest()->getPost('email_registration_' . $langname),
+                    'surveyls_email_confirm_subj' => App()->getRequest()->getPost('email_confirmation_subj_' . $langname),
+                    'surveyls_email_confirm' => App()->getRequest()->getPost('email_confirmation_' . $langname),
+                    'email_admin_notification_subj' => App()->getRequest()->getPost('email_admin_notification_subj_' . $langname),
+                    'email_admin_notification' => App()->getRequest()->getPost('email_admin_notification_' . $langname),
+                    'email_admin_responses_subj' => App()->getRequest()->getPost('email_admin_detailed_notification_subj_' . $langname),
+                    'email_admin_responses' => App()->getRequest()->getPost('email_admin_detailed_notification_' . $langname),
+                    'attachments' => json_encode($attachementsLang)
                 );
 
                 $aLanguageSetting = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
@@ -329,31 +315,5 @@ class EmailTemplates extends SurveyCommonAction
         App()->getClientScript()->registerPackage('emailtemplates');
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
-    }
-
-    /**
-     * Checks that the specified attachment exists on one of the allowed paths.
-     * @param array<string,mixed> The attachment data
-     * @return bool True if the file exists within the survey or global upload dirs.
-     */
-    private function attachmentExists($surveyId, $attachment)
-    {
-        $isInSurvey = Yii::app()->is_file(
-            $attachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId,
-            false
-        );
-
-        $isInGlobal = Yii::app()->is_file(
-            $attachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
-            false
-        );
-
-        if ($isInSurvey || $isInGlobal) {
-            return true;
-        }
-
-        return false;
     }
 }

@@ -130,7 +130,6 @@ class QuexmlPDFTest extends TestBaseClass
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->loadXML($quexml);
 
-        \Yii::app()->loadHelper('globalsettings');
         \Yii::import("application.libraries.admin.quexmlpdf", true);
         $quexmlpdf = new \quexmlpdf();
         $quexmlpdf->setLanguage('es-AR');

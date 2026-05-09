@@ -643,7 +643,7 @@ class CheckIntegrity extends SurveyCommonAction
                     foreach ($aColumns as $oColumn) {
                         // Question columns start with the SID
                         if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
-                            // Fileds are separated by X
+                            // Fields are separated by '_' — extract the question id from the first segment
                             $qid = substr(explode("_", (string) $oColumn->Name)[0], 1);
 
                             if (isset($questions[$qid])) {
@@ -1062,7 +1062,7 @@ class CheckIntegrity extends SurveyCommonAction
 
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                     Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new Date_Time_Converter(dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+                    $datetimeobj = new Date_Time_Converter(dateShift($sDate, 'Y-m-d H:i:s', Yii::app()->getConfig('timeadjust')), 'Y-m-d H:i:s');
                     $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
 
                     $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
@@ -1165,8 +1165,8 @@ class CheckIntegrity extends SurveyCommonAction
         $aDelete['questionOrderDuplicates'] = $this->checkQuestionOrderDuplicates();
 
         /**********************************************************************/
-        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participant listS       */
-        /**********************************************************************/
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDANT Survey participant lists       */
+        /*********************************************************************/
         //1: Get distinct list of survey_link survey IDs, check if tokens
         //   table still exists for each one, and remove if not
 
@@ -1174,7 +1174,7 @@ class CheckIntegrity extends SurveyCommonAction
         /* TODO */
 
         /**********************************************************************/
-        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT TOKEN ENTRIES      */
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDANT TOKEN ENTRIES      */
         /**********************************************************************/
         //1: For each survey_link, see if the matching entry still exists in
         //   the survey participant list and remove if it doesn't.

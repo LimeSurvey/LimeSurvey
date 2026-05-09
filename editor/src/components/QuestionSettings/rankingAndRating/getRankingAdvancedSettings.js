@@ -41,7 +41,7 @@ const displaySettings = () => {
     displayAttributes.IMAGE_SETTINGS,
     displayAttributes.HIDE_TIP,
     displayAttributes.ALWAYS_HIDE_THIS_QUESTION,
-    displayAttributes.ANSWER_OPTIONS_ORDER,
+    displayAttributes.SUBQUESTION_OPTIONS_ORDER,
     displayAttributes.KEEP_CODE_ORDER,
     displayAttributes.SAME_HEIGHT_FOR_ALL_ANSWER_OPTIONS,
     displayAttributes.SAME_HEIGHT_FOR_LIST,

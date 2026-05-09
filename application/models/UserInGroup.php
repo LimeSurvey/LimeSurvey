@@ -64,17 +64,6 @@ class UserInGroup extends LSActiveRecord
         );
     }
 
-    /**
-     * @param array $data
-     * @return bool
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $changedRows = Yii::app()->db->createCommand()->insert($this->tableName(), $data);
-        return (bool) $changedRows;
-    }
-
     public function join($fields, $from, $condition = false, $join = false, $order = false)
     {
         $user = Yii::app()->db->createCommand();

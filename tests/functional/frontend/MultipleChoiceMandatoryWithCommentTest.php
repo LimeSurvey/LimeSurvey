@@ -9,7 +9,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
  * @since 2018-02-08
  * @group multmand
  */
-class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
+class MultipleChoiceMandatoryWithCommentTest extends TestBaseClassWeb
 {
 
     protected $questions;

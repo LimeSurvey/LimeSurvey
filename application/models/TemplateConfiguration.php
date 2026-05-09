@@ -49,7 +49,7 @@ class TemplateConfiguration extends TemplateConfig
     public $oParentTemplate;
 
     /**@var boolean
-     * Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to
+     * Should the magic getters automatically retrieves the parent value when field is set to inherit. Only turn to
      * on for template rendering. There is no option inheritance on Manifest mode: values from XML are always used.
      */
     public $bUseMagicInherit = false;
@@ -516,7 +516,7 @@ class TemplateConfiguration extends TemplateConfig
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->template->description);
             $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
-          // It should never happen, but let's avoid to anoy final user in production mode :)
+          // It should never happen, but let's avoid to annoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .
@@ -789,7 +789,10 @@ class TemplateConfiguration extends TemplateConfig
                 'data-button-yes'  => gT('Reset'),
                 'data-text'        => gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?'),
                 'data-post'        => json_encode([ "templatename" => $templateName ]),
-                'data-button-type' => "btn-warning"
+                'data-button-type' => "btn-warning",
+                'data-use-ajax'    => 'true',
+                'data-grid-reload' => 'true',
+                'data-grid-id'     => 'themeoptions-grid',
             ]
         ];
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
@@ -1083,7 +1086,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Get the json files (to load/replace/remove) from  a theme, and checks if its correctly formated
+     * Get the json files (to load/replace/remove) from  a theme, and checks if its correctly formatted
      *
      * @param $oTemplate the theme to check
      * @param $sField name of the DB field to get (file_css, file_js, file_print_css)
@@ -1104,12 +1107,13 @@ class TemplateConfiguration extends TemplateConfig
 
         $files = $oTemplate->$sField;
         $oFiles = [];
-        if (!empty($files)) {
+        if (!empty($files) && $files !== 'inherit') {
             $oFiles = json_decode((string) $files, true);
             if ($oFiles === null) {
                 App()->setFlashMessage(
                     sprintf(
-                        gT('Error: Malformed JSON - field %s must be either a JSON array or the string "inherit". Found "null".'),
+                        gT('Error: Malformed JSON in template "%s" - field %s must be either a JSON array or the string "inherit". Found "null".'),
+                        $oTemplate->template->name,
                         $sField
                     ),
                     'error'
@@ -1204,7 +1208,7 @@ class TemplateConfiguration extends TemplateConfig
         // Options are optional
         $this->setOptions();
 
-        // Not mandatory (use package dependances)
+        // Not mandatory (use package dependencies)
         $this->setCssFramework();
         $this->packages = $this->getDependsPackages($this);
         if (!empty($this->packages_to_load)) {
@@ -1242,7 +1246,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Decodes json string from the database field "options" and stores it inside $this->oOptions
-     * Also triggers inheritence checks
+     * Also triggers inheritance checks
      * @return void
      */
     public function setOptions()
@@ -1273,7 +1277,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Search through the inheritence chain and find the inherited value for theme option
+     * Search through the inheritance chain and find the inherited value for theme option
      * @param string $key
      * @return mixed
      */
@@ -1584,7 +1588,7 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Returns the related Template.
      * The template can only be accessed as a relation when this model is stored in the DB. Before
-     * saving, $this->template is null. In that case, this method will load the approriate Template.
+     * saving, $this->template is null. In that case, this method will load the appropriate Template.
      * @return Template|null
      */
     private function getRelatedTemplate()

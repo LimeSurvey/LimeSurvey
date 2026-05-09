@@ -24,11 +24,11 @@ export const getSettingValueFromSurvey = (survey, string, language) => {
     language = survey.language
   }
 
-  const keyPathArray = string?.keyPath.split('.')
+  let keyPathArray = string?.keyPath.split('.')
   const isLanguageSetting = keyPathArray[0] === 'languageSettings'
 
   if (isLanguageSetting) {
-    keyPathArray[0] = language
+    keyPathArray = ['languageSettings', language, ...keyPathArray.slice(1)]
   }
 
   return keyPathArray.length > 1

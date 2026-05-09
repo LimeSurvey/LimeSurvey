@@ -16,6 +16,7 @@ namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
 use ExtensionConfig;
+use Yii;
 
 /**
  * @since 2018-09-26
@@ -199,7 +200,7 @@ abstract class ExtensionUpdater
             return [];
         }
 
-        $allowUnstable = getGlobalSetting('allow_unstable_extension_update');
+        $allowUnstable = Yii::app()->getConfig('allow_unstable_extension_update');
 
         $versions = [];
         foreach ($versionFetchers as $fetcher) {

@@ -14,15 +14,15 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
+    var sAdminEmailAddressNeeded = '" . gT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js') . "'
     var sURLParameters = '';
     var sAddParam = '';
     var expirationLowerThanStartError = '" . gT("Expiration date can't be lower than the start date") . "';
 ", LSYii_ClientScript::POS_BEGIN);
-?>
+    ?>
 <!-- Publication panel -->
 <div id='publication-panel'>
-    <?php if ($bShowAllOptions === true){ ?>
+    <?php if ($bShowAllOptions === true) { ?>
     <div class="row">
             <h2 class="h1"><?php eT("Publication date"); ?></h2>
             <!-- Start date/time -->
@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate']." H:i",strtotime((string) $oSurvey->startdate)) : ''),
+                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate'] . " H:i", strtotime((string) $oSurvey->startdate)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' => true,
@@ -52,10 +52,10 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "expires",
                             'id' => 'expires',
-                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate']." H:i",strtotime((string) $oSurvey->expires)) : ''),
+                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate'] . " H:i", strtotime((string) $oSurvey->expires)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                'allowInputToggle' =>true,
+                                'allowInputToggle' => true,
                                 'showClear' => true,
                                 'theme' => 'light',
                                 'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
@@ -98,14 +98,14 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             </div>
 
             <!-- Use CAPTCHA for survey access -->
-            <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand 
+            <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand
             $aCaptchaSurveyAccessYes        = array('A', 'B', 'C', 'X', 'F', 'H', 'K', 'O', 'T');
             $aCaptchaSurveyAccessInherit    = array('E', 'G', 'I', 'J', 'L', 'M', '1', '2', '4');
             $aCaptchaRegistrationYes        = array('A', 'B', 'D', 'R', 'F', 'G', 'I', 'M', 'U');
             $aCaptchaRegistrationInherit    = array('E', 'H', 'J', 'K', 'O', 'P', '1', '3', '6');
             $aCaptchaLoadSaveYes            = array('A', 'C', 'D', 'S', 'G', 'H', 'J', 'L', 'P');
             $aCaptchaLoadSaveInherit        = array('E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5');
-            
+
             ?>
             <div class="mb-3 mt-4">
                 <h2 class="h1"><?php eT("CAPTCHA"); ?></h2>
@@ -136,9 +136,9 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                             : ((in_array($usecap, $aCaptchaRegistrationInherit))
                                 ? ('I')
                                 : ('N')),
-                        'selectOptions' => ($bShowInherited)
-                            ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
-                            : $optionsOnOff,
+                                                                         'selectOptions' => ($bShowInherited)
+                                                                         ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
+                                                                         : $optionsOnOff,
                     ]); ?>
                 </div>
             </div>

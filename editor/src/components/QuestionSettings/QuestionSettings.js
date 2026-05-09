@@ -38,6 +38,7 @@ export const QuestionSettings = ({ surveyId }) => {
     isExpressionScriptPanelOpen: false,
   })
   const [scenarioToPatch, setScenarioToPatch] = useState(null)
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
 
   // holds the scenario ID currently has a new conditions (waiting for temp condition IDs to be replaced)
   const [pendingScenarioName, setPendingScenarioName] = useState(null)
@@ -213,7 +214,7 @@ export const QuestionSettings = ({ surveyId }) => {
                 handleUpdate={updateAttribute}
                 title={setting.title}
                 attributes={setting.attributes}
-                language={language}
+                language={activeLanguage}
               />
             )
           })}
@@ -223,7 +224,7 @@ export const QuestionSettings = ({ surveyId }) => {
         <>
           <p style={{ paddingLeft: '18px' }}>
             {t(
-              'This question type isn’t supported in the new editor yet, but your responses will still be collected. If you want to make edits you can switch to a similar question type or edit it in the classic editor.'
+              "This question type isn't supported in the new editor yet, but your responses will still be collected. If you want to make edits you can switch to a similar question type or edit it in the classic editor."
             )}
           </p>
         </>

@@ -96,16 +96,16 @@ class SurveyThemeConfiguration
     }
 
     /**
-     * Returns all attributes and options needed to display the themeoptions inlcuding inheritance.
+     * Returns all attributes and options needed to display the themeoptions including inheritance.
      *
      * @param TemplateConfiguration $themeConfiguration Template Configuration
-     * @param int|null $sid Survey ID
-     * @param int|null $gsid Survey Group ID
+     * @param ?int $sid Survey ID
+     * @param ?int $gsid Survey Group ID
      *
      * @return array
      * @throws NotFoundException
      */
-    public function updateCommon(TemplateConfiguration $themeConfiguration, int $sid = null, int $gsid = null)
+    public function updateCommon(TemplateConfiguration $themeConfiguration, ?int $sid = null, ?int $gsid = null)
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
         // Template::getInstance will call prepareTemplateRendering which will populate array needed for inheritance display
@@ -195,7 +195,7 @@ class SurveyThemeConfiguration
             $attributesCompleteData[$key] = $attributesCore[$key];
             $attributesCompleteData[$key]['category'] = $optionAttribute['category'];
             $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key ?? 'inherit';
-            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
+            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key] ?? '';
             if (
                 $attributesCompleteData[$key]['type'] === 'dropdown'
                 // "checkicon" is of type "icon" but has dropdown options

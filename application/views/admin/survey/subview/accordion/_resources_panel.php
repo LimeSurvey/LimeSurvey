@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Resources panel tab
  **/

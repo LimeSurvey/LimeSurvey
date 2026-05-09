@@ -45,7 +45,7 @@ export const getGeneralSettingsBlocks = () => ({
                 errorMessage: baseLanguageExist
                   ? ''
                   : t(
-                      'You cannot delete the base language. Please select a different language as base language, first.'
+                      'You cannot delete the base language. Please select a different language as base language first.'
                     ),
               }
             },

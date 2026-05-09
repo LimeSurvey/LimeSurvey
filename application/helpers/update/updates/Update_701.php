@@ -18,5 +18,20 @@ class Update_701 extends DatabaseUpdateBase
                 'priority' => 0,
             ]
         );
+
+        // Check if LimeSurveyProfessional plugin exists in database instead of checking class
+        $command = $this->db->createCommand()
+            ->select('id')
+            ->from('{{plugins}}')
+            ->where('name = :name', [':name' => 'LimeSurveyProfessional']);
+
+        if ($command->queryRow()) {
+            $this->db->createCommand()->update(
+                '{{plugins}}',
+                ['priority' => 1],
+                'name = :name',
+                [':name' => 'LimeSurveyProfessional']
+            );
+        }
     }
 }

@@ -62,12 +62,14 @@ class TopbarConfiguration
         }
         if (isset($config['rightSideView'])) {
             $this->rightSideView = $config['rightSideView'];
-        } elseif (!empty($config['showSaveButton'])   ||
+        } elseif (
+            !empty($config['showSaveButton'])   ||
                   !empty($config['showCloseButton'])  ||
                   !empty($config['showImportButton']) ||
                   !empty($config['showExportButton']) ||
                   !empty($config['showBackButton'])   ||
-                  !empty($config['showWhiteCloseButton'])) {
+                  !empty($config['showWhiteCloseButton'])
+        ) {
             // If no right side view has been specified, and one of the default buttons must be shown, use the default right side view.
             $this->rightSideView = "surveyTopbarRight_view";
         }
@@ -204,19 +206,6 @@ class TopbarConfiguration
             || $hasSurveyContentPermission
             || !is_null($extraToolsMenuItems);
 
-        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
-        
-        $enableEditorButton = true;
-        if ($oSurvey->getTemplateEffectiveName() !== 'fruity_twentythree') {
-            $enableEditorButton = false;
-        }
-
-        $editorUrl = Yii::app()->request->getUrlReferrer(
-            Yii::app()->createUrl(
-                'editorLink/index',
-                ['route' => 'survey/' . $sid]
-            )
-        );
         App()->getClientScript()->registerScriptFile(
             App()->getConfig('adminscripts') . 'newQuestionEditor.js',
             CClientScript::POS_END
@@ -252,9 +241,7 @@ class TopbarConfiguration
             'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
             'showToolsMenu' => $showToolsMenu,
             'surveyLanguages' => self::getSurveyLanguagesArray($oSurvey),
-            'editorEnabled' => $editorEnabled,
-            'editorUrl' => $editorUrl,
-            'enableEditorButton' => $enableEditorButton,
+            'editorEnabled' => App()->getConfig('editorEnabled') ?? false,
         );
     }
 

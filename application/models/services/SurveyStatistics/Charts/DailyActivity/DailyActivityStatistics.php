@@ -75,11 +75,11 @@ class DailyActivityStatistics implements StatisticsChartInterface
      */
     private function fetchCounts(int $surveyId, DateTime $startDate): array
     {
+        $dateExpr = $this->getDateCastExpression();
         $command = Yii::app()->db->createCommand()
-            ->select(['DATE(submitdate) as response_date', 'COUNT(id) as responses', 'GROUP_CONCAT(id) as response_ids'])
+            ->select(["$dateExpr as response_date", 'COUNT(id) as responses'])
             ->from("{{responses_$surveyId}}")
             ->where('submitdate IS NOT NULL AND submitdate >= :startDate', [':startDate' => $startDate->format('Y-m-d 00:00:00')]);
-
 
         // Apply filters if any
         if ($this->filters && $this->filters->count() > 0) {
@@ -97,7 +97,7 @@ class DailyActivityStatistics implements StatisticsChartInterface
 //            }
         }
 
-        $command = $command->group('DATE(submitdate)')->order('DATE(submitdate) ASC');
+        $command = $command->group($dateExpr)->order("$dateExpr ASC");
 
         $rows = $command->queryAll();
 
@@ -107,6 +107,21 @@ class DailyActivityStatistics implements StatisticsChartInterface
         }
 
         return $countsByDate;
+    }
+
+    private function getDateCastExpression(): string
+    {
+        switch (Yii::app()->db->getDriverName()) {
+            case 'mssql':
+            case 'sqlsrv':
+            case 'dblib':
+                return 'CAST(submitdate AS DATE)';
+            case 'pgsql':
+            case 'mysqli':
+            case 'mysql':
+            default:
+                return 'DATE(submitdate)';
+        }
     }
 
     /**

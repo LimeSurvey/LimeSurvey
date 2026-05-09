@@ -1,8 +1,8 @@
 import { Entities } from 'helpers'
-import { RankingQuestionAnswers } from './RankingQuestionAnswers'
+import { RankingQuestionSubquestions } from './RankingQuestionSubquestions'
 
 export const RankingQuestion = ({
-  question: { answers = [] } = {},
+  question: { subquestions = [] } = {},
   question = {},
   handleUpdate = () => {},
   isFocused,
@@ -10,29 +10,31 @@ export const RankingQuestion = ({
   handleChildAdd,
   handleChildDelete,
   handleOnChildDragEnd,
+  handleChildCodeUpdate,
 }) => {
-  const handleAnswerUpdate = (value, index) => {
-    handleChildLUpdate(value, index, answers, Entities.answer)
+  const handleSubquestionUpdate = (value, index) => {
+    handleChildLUpdate(value, index, subquestions, Entities.subquestion)
   }
 
   const handleOnDragEnd = (dropResult) => {
-    handleOnChildDragEnd(dropResult, answers, Entities.answer)
+    handleOnChildDragEnd(dropResult, subquestions, Entities.subquestion)
   }
 
-  const handleRemovingAnswers = (answerId) => {
-    handleChildDelete(answerId, answers, Entities.answer)
+  const handleRemovingSubquestions = (subquestionId) => {
+    handleChildDelete(subquestionId, subquestions, Entities.subquestion)
   }
 
   return (
     <div data-testid="ranking-question">
-      <RankingQuestionAnswers
+      <RankingQuestionSubquestions
         isFocused={isFocused}
         handleChildAdd={handleChildAdd}
-        handleAnswerUpdate={handleAnswerUpdate}
+        handleSubquestionUpdate={handleSubquestionUpdate}
         handleUpdate={handleUpdate}
         question={question}
-        handleRemovingAnswers={handleRemovingAnswers}
+        handleRemovingSubquestions={handleRemovingSubquestions}
         handleOnDragEnd={handleOnDragEnd}
+        handleChildCodeUpdate={handleChildCodeUpdate}
       />
     </div>
   )

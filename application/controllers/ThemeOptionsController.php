@@ -79,7 +79,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Create a new model.
-     * If creation is sucessful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * todo: function not in use (  new TemplateOptions(); there is no model class like this ..)
      *
@@ -122,25 +122,25 @@ class ThemeOptionsController extends LSBaseController
      * @return void
      * @throws CException
      */
-    /*
     public function actionResetMultiple()
     {
-        $aTemplates = json_decode(App()->request->getPost('sItems'));
+        $aTemplates = json_decode(App()->request->getPost('sItems', ''));
         $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
-        if (Permission::model()->hasGlobalPermission('template', 'update')) {
+        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             foreach ($aTemplates as $template) {
+                $templateID = (int) $template;
                 if ($gridid === 'questionthemes-grid') {
-                    /** @var QuestionTheme|null
-                    $questionTheme = QuestionTheme::model()->findByPk($template);
+                    /** @var QuestionTheme|null */
+                    $questionTheme = QuestionTheme::model()->findByPk($templateID);
                     $templatename = $questionTheme->name;
                     $templatefolder = $questionTheme->xml_path;
                     $aResults[$template]['title'] = $templatename;
                     $sQuestionThemeName = $questionTheme->importManifest($templatefolder);
                     $aResults[$template]['result'] = isset($sQuestionThemeName) ? true : false;
                 } elseif ($gridid === 'themeoptions-grid') {
-                    $model = TemplateConfiguration::model()->findByPk($template);
+                    $model = TemplateConfiguration::model()->findByPk($templateID);
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
                     $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
@@ -149,22 +149,20 @@ class ThemeOptionsController extends LSBaseController
             }
 
             //set Modal table labels
-            $tableLabels = array(gT('Theme ID'),gT('Theme name') ,gT('Status'));
+            $tableLabels = array(gT('Theme ID'), gT('Theme name'), gT('Status'));
 
             $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
-                array
-                (
+                array(
                     'aResults'     => $aResults,
                     'successLabel' => gT('Has been reset'),
-                    'tableLabels'  => $tableLabels
+                    'tableLabels'  => $tableLabels,
                 )
             );
         } else {
-            //todo: this message gets never visible for the user ...
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-    }*/
+    }
 
     /**
      * Uninstalls all selected themes from massive action.
@@ -201,7 +199,7 @@ class ThemeOptionsController extends LSBaseController
                             $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
                         } else {
                             $aResults[$template]['result'] = false;
-                            $aResults[$template]['error'] = gT('Error! You cannot uninstall the default template.');
+                            $aResults[$template]['error'] = gT('Error! You cannot uninstall a core or default theme.');
                         }
                     } else {
                         $aResults[$template]['result'] = false;
@@ -304,7 +302,12 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return TemplateConfiguration
      */
-    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
+    /**
+     * Turns off ajax mode if it's on as a default behavior.
+     * @param TemplateConfiguration $templateConfiguration
+     * @return TemplateConfiguration
+     */
+    protected function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
     {
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);
@@ -364,13 +367,13 @@ class ThemeOptionsController extends LSBaseController
      * used when setting the theme options through a survey groups theme options menu.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
-     * @param integer $id   ID of model.
      * @param integer $gsid id of survey group
+     * @param null|integer $id   ID of model.
      * @param null    $l    ?
      *
      * @return void
      */
-    public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null)
+    public function actionUpdateSurveyGroup(int $gsid, ?int $id = null, ?int $l = null)
     {
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (empty($gsid)) {
@@ -577,12 +580,12 @@ class ThemeOptionsController extends LSBaseController
                 $themeType = App()->request->getPost('theme_type');
                 $fullTemplateFolder = QuestionTheme::getAbsolutePathForType($templateFolder, $themeType);
                 $questionTheme = new QuestionTheme();
-                //skip convertion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
+                //skip conversion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
                 $themeName = $questionTheme->importManifest($fullTemplateFolder, true);
                 if (isset($themeName)) {
-                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been successfully installed'), "$themeName"), 'success');
+                    App()->setFlashMessage(sprintf(gT('The question theme "%s" has been successfully installed'), "$themeName"), 'success');
                 } else {
-                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');
+                    App()->setFlashMessage(sprintf(gT('The question theme "%s" could not be installed'), $themeName), 'error');
                 }
                 $this->redirect(array("themeOptions/index#questionthemes"));
             } else {
@@ -660,8 +663,16 @@ class ThemeOptionsController extends LSBaseController
         }
         TemplateConfiguration::uninstall($templatename);
         TemplateManifest::importManifest($templatename);
-        App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
-        $this->redirect(array("themeOptions/index"));
+        $this->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                'loggedIn'      => true,
+                'hasPermission' => true,
+                'success'       => sprintf(gT("The theme '%s' has been reset.", "unescaped"), $templatename),
+            ]],
+            false,
+            false
+        );
     }
 
     /**
@@ -707,13 +718,13 @@ class ThemeOptionsController extends LSBaseController
      * Updates Common.
      *
      * @param TemplateConfiguration $model Template Configuration
-     * @param int|null $sid Survey ID
-     * @param int|null $gsid Survey Group ID
+     * @param ?int $sid Survey ID
+     * @param ?int $gsid Survey Group ID
      *
      * @return void
      * @throws CException
      */
-    private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null)
+    private function updateCommon(TemplateConfiguration $model, ?int $sid = null, ?int $gsid = null)
     {
         $diContainer = DI::getContainer();
         if ($diContainer === null) {
@@ -747,15 +758,13 @@ class ThemeOptionsController extends LSBaseController
         } else {
             // Title concatenation
             $templateName = $model->template_name;
-            $basePageTitle = sprintf('Survey options for theme %s', $templateName);
+            $pageTitle = sprintf(gT('Survey options for theme %s (global level)'), $templateName);
+            // @todo Condition is not reachable
             if (!is_null($sid)) {
-                $addictionalSubtitle = gT(" for survey ID: $sid");
+                $pageTitle = sprintf(gT("Survey options for theme %s and survey ID %s"), $templateName, $sid);
             } elseif (!is_null($gsid)) {
-                $addictionalSubtitle = gT(" for survey group id: $gsid");
-            } else {
-                $addictionalSubtitle = gT(" global level");
+                $pageTitle = sprintf(gT("Survey options for theme %s and survey group ID %s"), $templateName, $gsid);
             }
-            $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
             $data['topbar']['title'] = $pageTitle;
             $isCloseBtn = true;
         }

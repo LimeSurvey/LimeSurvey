@@ -10,7 +10,6 @@ import { i18nInstance } from 'i18nInit'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'themes/index.scss'
-import 'remixicon/fonts/remixicon.css'
 import { VersionInfoService } from 'services'
 import { getApiUrl, URLS } from 'helpers'
 

@@ -225,7 +225,7 @@ class DataEntry extends SurveyCommonAction
         asort($aEncodings);
 
         // Get default character set from global settings
-        $thischaracterset = getGlobalSetting('characterset');
+        $thischaracterset = Yii::app()->getConfig('characterset');
 
         // If no encoding was set yet, use the old "utf8" default
         if ($thischaracterset == "") {
@@ -420,16 +420,20 @@ class DataEntry extends SurveyCommonAction
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
             $sOldTimingsTable = str_replace("responses", "timings", str_replace("timings_", "", $sourceTable->tableName()));
-            $sNewTimingsTable = Yii::app()->db->tablePrefix . "timings_{$surveyid}";
+            if (strpos($sOldTimingsTable, Yii::app()->db->tablePrefix) === 0) {
+                $sOldTimingsTable = substr($sOldTimingsTable, strlen(Yii::app()->db->tablePrefix));
+            }
+            $sNewTimingsTable = "timings_{$surveyid}";
             $iRecordCountT = null;
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
+                [$left, $right] = getFieldWrappers();
                 // Import timings
                 $aFieldsOldTimingTable = array_values(Yii::app()->db->schema->getTable('{{' . $sOldTimingsTable . '}}')->columnNames);
                 $aFieldsNewTimingTable = array_values(Yii::app()->db->schema->getTable('{{' . $sNewTimingsTable . '}}')->columnNames);
 
                 $aValidTimingFields = array_intersect($aFieldsOldTimingTable, $aFieldsNewTimingTable);
 
-                $sQueryOldValues = "SELECT " . implode(", ", $aValidTimingFields) . " FROM {{{$sOldTimingsTable}}} ";
+                $sQueryOldValues = "SELECT {$left}" . implode("{$right}, {$left}", $aValidTimingFields) . "{$right} FROM {{{$sOldTimingsTable}}} ";
                 $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll(); //Checked
                 $iRecordCountT = 0;
                 foreach ($aQueryOldValues as $sRecord) {
@@ -553,7 +557,7 @@ class DataEntry extends SurveyCommonAction
         }
         $idresult = Response::model($surveyid)->findByPk($id);
         if (empty($idresult)) {
-            throw new CHttpException(404, gT("Invalid response id."));
+            throw new CHttpException(404, gT("Invalid response ID"));
         }
         $sDataEntryLanguage = $oSurvey->language;
         $aData = [];
@@ -893,7 +897,6 @@ class DataEntry extends SurveyCommonAction
                     case Question::QT_R_RANKING: // Ranking TYPE QUESTION
                         $thisqid = $fname['qid'];
                         $currentvalues = array();
-                        $rawvalues = [];
                         $myfname = 'Q' . $fname['qid'];
                         $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                         $unseen = true;
@@ -906,18 +909,17 @@ class DataEntry extends SurveyCommonAction
                             if (isset($idrow[$fname['fieldname']])) {
                                 $unseen = false;
                             }
-                            $rawvalues[] = $idrow[$fname['fieldname']];
                             $fname = next($fnames);
                         }
-                        $ansresult = Answer::model()->with('answerl10ns')->findAll(array('condition' => 'qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage)));
-                        $anscount = count($ansresult);
-                        $answers = array();
-                        foreach ($ansresult as $ansrow) {
-                            $answers[] = $ansrow;
+                        $qresult = Question::model()->with('questionl10ns')->findAll(array('condition' => 'parent_qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage), 'order' => 'question_order'));
+                        $qcount = count($qresult);
+                        $questions = array();
+                        foreach ($qresult as $qrow) {
+                            $questions[] = $qrow;
                         }
-                        for ($i = 1; $i <= $anscount; $i++) {
+                        for ($i = 1; $i <= $qcount; $i++) {
                             $questionInput .= "\n<li class=\"select-item\">";
-                            $questionInput .= "<label for=\"answer{$myfname}_R{$answers[$i - 1]->aid}\">";
+                            $questionInput .= "<label for=\"answer{$myfname}_S{$questions[$i - 1]->qid}\">";
                             if ($i == 1) {
                                 $questionInput .= gT('First choice');
                             } else {
@@ -925,28 +927,28 @@ class DataEntry extends SurveyCommonAction
                             }
 
                             $questionInput .= "</label>";
-                            $questionInput .= "<select name=\"{$myfname}_R{$answers[$i - 1]->aid}\" id=\"answer{$myfname}_R{{$answers[$i - 1]->aid}\" class='form-select'>\n";
+                            $questionInput .= "<select name=\"{$myfname}_S{$questions[$i - 1]->qid}\" id=\"answer{$myfname}_S{$questions[$i - 1]->qid}\" class='form-select'>\n";
                             (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
                             $questionInput .= "\t<option value=\"\" $selected>" . gT('None') . "</option>\n";
-                            foreach ($ansresult as $ansrow) {
-                                (isset($currentvalues[$i - 1]) && $currentvalues[$i - 1] == $ansrow['code']) ? $selected = " selected=\"selected\"" : $selected = "";
-                                $questionInput .= "\t<option value=\"" . $ansrow['code'] . "\" $selected>" . flattenText($ansrow->answerl10ns[$sDataEntryLanguage]->answer) . "</option>\n";
+                            foreach ($qresult as $qrow) {
+                                (isset($currentvalues[$i - 1]) && $currentvalues[$i - 1] == $qrow['title']) ? $selected = " selected=\"selected\"" : $selected = "";
+                                $questionInput .= "\t<option value=\"" . $qrow['title'] . "\" $selected>" . flattenText($qrow->questionl10ns[$sDataEntryLanguage]->question) . "</option>\n";
                             }
                             $questionInput .= "</select\n";
                             $questionInput .= "</li>";
                         }
                         $questionInput .= '</ul>';
-                        $questionInput .= "<div style='display:none' id='ranking-{$thisqid}-maxans'>{$anscount}</div>"
+                        $questionInput .= "<div style='display:none' id='ranking-{$thisqid}-maxans'>{$qcount}</div>"
                             . "<div style='display:none' id='ranking-{$thisqid}-minans'>0</div>"
                             . "<div style='display:none' id='ranking-{$thisqid}-name'>javatbd{$myfname}</div>";
                         $questionInput .= "<div style=\"display:none\">";
-                        foreach ($ansresult as $ansrow) {
-                            $questionInput .= "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerl10ns[$sDataEntryLanguage]->answer}</div>";
+                        foreach ($qresult as $qrow) {
+                            $questionInput .= "<div id=\"htmlblock-{$thisqid}-{$qrow['title']}\">{$qrow->questionl10ns[$sDataEntryLanguage]->question}</div>";
                         }
                         $questionInput .= "</div>";
                         $questionInput .= '</div>';
                         App()->getClientScript()->registerPackage('jquery-actual');
-                        App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
 
@@ -965,7 +967,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInputs[$myfname] = $questionInput;
                         $unseenStatus = [$myfname => $unseen];
 
-                        unset($answers);
+                        unset($questions);
                         $fname = prev($fnames);
                         break;
 
@@ -1974,7 +1976,7 @@ class DataEntry extends SurveyCommonAction
                         }
                         if ($saver['email']) {
                             //Send email
-                            if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
+                            if (LimeMailer::validateAddress($saver['email']) && !returnGlobal('redo')) {
                                 $mailer = new \LimeMailer();
                                 $mailer->addAddress($saver['email']);
                                 $mailer->setSurvey($surveyid);
@@ -2027,10 +2029,10 @@ class DataEntry extends SurveyCommonAction
     /**
      * Returns the last answer for token or anonymous survey.
      * @param \Survey $survey Survey
-     * @param \Token  $token  Token
+     * @param Token  $token  Token
      * @return string
      */
-    private function getLastAnswerByTokenOrAnonymousSurvey(Survey $survey, Token $token = null): string
+    private function getLastAnswerByTokenOrAnonymousSurvey(Survey $survey, ?Token $token = null): string
     {
         $lastAnswer = '';
         $isTokenNull  = $token == null;
@@ -2093,7 +2095,7 @@ class DataEntry extends SurveyCommonAction
      */
     private function returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected(string $lastAnswer, int $id, string $errorMessage): string
     {
-        $errorMessage .= "<br /><br />" . gT("Follow the following link to update it") . ":\n";
+        $errorMessage .= "<br /><br />" . gT("Use the following link to update it:") . "\n";
         $errorMessage .= CHtml::link(
             "[id:$lastAnswer]",
             $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/' . $lastAnswer . '/surveyid/' . $id),
@@ -2127,7 +2129,7 @@ class DataEntry extends SurveyCommonAction
         $survey = Survey::model()->findByPk($surveyid);
         $lang = $_GET['lang'] ?? null;
         if (isset($lang)) {
-            $lang = sanitize_languagecode($lang);
+            $lang = \LSYii_Validators::languageCodeFilter($lang);
         }
         $aViewUrls = array();
 
@@ -2197,9 +2199,9 @@ class DataEntry extends SurveyCommonAction
                     $cdata['qidattributes'] = $qidattributes;
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($arQuestion['qid']);
-                    $relevance = trim((string) $qinfo['info']['relevance']);
-                    $explanation = trim((string) $qinfo['relEqn']);
-                    $validation = trim((string) $qinfo['prettyValidTip']);
+                    $relevance = trim((string)($qinfo['info']['relevance'] ?? ''));
+                    $explanation = trim((string)($qinfo['relEqn'] ?? ''));
+                    $validation = trim((string)($qinfo['prettyValidTip'] ?? ''));
                     $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (true || ($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
@@ -2301,7 +2303,7 @@ class DataEntry extends SurveyCommonAction
                                 $optgroups = array();
 
                                 foreach ($arAnswers as $aAnswer) {
-                                    list ($categorytext, $answertext) = explode($optCategorySeparator, (string) $aAnswer->answerl10ns[$sDataEntryLanguage]->answer);
+                                    [$categorytext, $answertext] = explode($optCategorySeparator, (string) $aAnswer->answerl10ns[$sDataEntryLanguage]->answer);
                                     if ($categorytext == '') {
                                         $defaultopts[] = array('code' => $aAnswer['code'], 'answer' => $answertext, 'default_value' => $aAnswer['assessment_value']);
                                     } else {
@@ -2340,14 +2342,18 @@ class DataEntry extends SurveyCommonAction
                             break;
                         case Question::QT_R_RANKING: // Ranking TYPE QUESTION
                             $thisqid = $arQuestion['qid'];
-                            $arAnswers = $arQuestion->answers;
-                            $anscount = count($arAnswers);
+                            $arQuestions = $arQuestion->subquestions;
+                            $meacount = count($arQuestions);
 
                             $cdata['thisqid'] = $thisqid;
-                            $cdata['anscount'] = $anscount;
-                            $cdata['answers'] = $arAnswers;
+                            $cdata['qcount'] = $meacount;
+                            $cdata['questions'] = Question::model()->with('questionl10ns')->findAll([
+                                'condition' => ":qid = parent_qid",
+                                'params' => [":qid" => $thisqid],
+                                'order' => 'question_order'
+                            ]);
                             App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'ranking.js');
+                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
                             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)

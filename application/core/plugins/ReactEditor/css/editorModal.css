@@ -1,3 +1,7 @@
+#activate_editor.modal {
+    z-index: 20001;
+}
+
 #activate_editor .card {
     padding-left: 0;
     padding-right: 0;

@@ -42,7 +42,6 @@ class UpdateCheck extends PluginBase
         $this->subscribe('beforePluginManagerMenuRender');
     }
 
-
     /**
      * Checks if an extension update check is due after a super admin successfully logs in.
      *
@@ -52,6 +51,7 @@ class UpdateCheck extends PluginBase
      * passed or is today, a flag is set in the session to trigger an extension update check.
      *
      * @return void
+     * @throws Exception
      */
     public function afterSuccessfulLogin()
     {
@@ -180,7 +180,7 @@ JS
     protected function composeNotification(array $messages, array $errors, bool $foundSecurityVersion)
     {
         $superadmins = User::model()->getSuperAdmins();
-        $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
+        $title        = $foundSecurityVersion ? gT('Security update available') : gT('Update available');
         $displayClass = $foundSecurityVersion ? 'danger' : '';
         $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
         $message = implode($messages);

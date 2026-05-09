@@ -107,7 +107,7 @@ class AdminController extends LSYii_Controller
             }
             $sURL = $sURL['url'];
         } else {
-            $sTitle = gT('Main Admin Screen');
+            $sTitle = gT('Main admin screen');
             $sURL = $this->createUrl('/admin');
         }
         $sOutput .= '<input type="submit" value="' . $sTitle . '" onclick=\'window.open("' . $sURL . '", "_top")\' /><br /><br />' . "\n";
@@ -135,7 +135,7 @@ class AdminController extends LSYii_Controller
             if (Yii::app()->request->getPost('lang') == 'auto') {
                 $sLanguage = getBrowserLanguage();
             } else {
-                $sLanguage = sanitize_languagecode(Yii::app()->request->getPost('lang'));
+                $sLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
@@ -158,7 +158,7 @@ class AdminController extends LSYii_Controller
     {
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
-            $sDBVersion = getGlobalSetting('DBVersion');
+            $sDBVersion = Yii::app()->getConfig('DBVersion');
         }
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
@@ -188,7 +188,7 @@ class AdminController extends LSYii_Controller
 
                 $this->redirect(array('/admin/authentication/sa/login'));
             } elseif (!empty($this->user_id) && $action != "remotecontrol") {
-                if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
+                if (Yii::app()->session['session_hash'] != hash('sha256', Yii::app()->getConfig('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
                     $this->redirect(array('/admin/authentication/sa/login'));
@@ -228,7 +228,7 @@ class AdminController extends LSYii_Controller
 
     /**
      * If a module override the views of a controller, renderPartial needs to check module view directories.
-     * This work recusively with infinite depth of subdirectories.
+     * This work recursively with infinite depth of subdirectories.
      *
      * @param string $view name of the view to be rendered. See {@link getViewFile} for details
      * about how the view script is resolved.
@@ -244,7 +244,7 @@ class AdminController extends LSYii_Controller
     public function renderPartial($view, $data = null, $return = false, $processOutput = false)
     {
         if (!empty($this->currentModuleAction)) {
-          // Standard: the views are stored in a folder that has the same name as the controler file.
+          // Standard: the views are stored in a folder that has the same name as the controller file.
           // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easily extend any LS Core controller/action/view.
             $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
             $sAction = (empty($sParsedView[1])) ? '' : $sParsedView[1];
@@ -297,7 +297,7 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-     * This function is very similiar to AdminController::actions()
+     * This function is very similar to AdminController::actions()
      * Routes all the modules actions to their respective places
      *
      * todo REFACTORING we don't have to refactore this method ...

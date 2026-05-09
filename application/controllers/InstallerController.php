@@ -100,7 +100,7 @@ class InstallerController extends CController
     /**
      * Installer::checkInstallation()
      *
-     * Based on existance of 'sample_installer_file.txt' file, check if
+     * Based on existence of 'sample_installer_file.txt' file, check if
      * installation should proceed further or not.
      * @return void
      */
@@ -682,7 +682,7 @@ class InstallerController extends CController
      * @param string $base key for data manipulation
      * @param string $keyError key for error data
      * @param string $aData
-     * @return bool result of check (that it is writeable which implies existance)
+     * @return bool result of check (that it is writeable which implies existence)
      */
     public function checkPathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive = false)
     {
@@ -720,7 +720,7 @@ class InstallerController extends CController
      * @param string $data to manipulate
      * @param string $base key for data manipulation
      * @param string $keyError key for error data
-     * @return bool result of check (that it is writeable which implies existance)
+     * @return bool result of check (that it is writeable which implies existence)
      */
     public function checkFileWriteable($file, &$data, $base, $keyError)
     {
@@ -734,7 +734,7 @@ class InstallerController extends CController
      * @param string $data to manipulate
      * @param string $base key for data manipulation
      * @param string $keyError key for error data
-     * @return bool result of check (that it is writeable which implies existance)
+     * @return bool result of check (that it is writeable which implies existence)
      */
     public function checkDirectoryWriteable($directory, &$data, $base, $keyError, $bRecursive = false)
     {
@@ -902,12 +902,10 @@ class InstallerController extends CController
             //{
             $sShowScriptName = 'true';
             //}
-            if (stripos((string) $_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
-                $sURLFormat = 'path';
-            } else {
-                // Apache
-                $sURLFormat = 'get'; // Fall back to get if an Apache server cannot be determined reliably
-            }
+
+            //we set it only to 'path' from now on for new installations for the new react editor
+            $sURLFormat = 'path';
+
             $sCharset = 'utf8';
             if ($model->isMysql) {
                 $sCharset = 'utf8mb4';
@@ -989,8 +987,9 @@ class InstallerController extends CController
             ."\t\t"   . "),"                                        . "\n"
             ."\t\t"   . ""                                          . "\n"
             */
-
             . "\t\t" . "'urlManager' => array(" . "\n"
+            . "\t\t\t\t" . "// This is required for proper REST API and React Editor functionality." . "\n"
+            . "\t\t\t\t" . "// If you change it back to 'get', the new editor won't work " . "\n"
             . "\t\t\t" . "'urlFormat' => '{$sURLFormat}'," . "\n"
             . "\t\t\t" . "'rules' => array(" . "\n"
             . "\t\t\t\t" . "// You can add your own rules here" . "\n"
@@ -1056,7 +1055,7 @@ class InstallerController extends CController
     {
         $sResult = '';
         for ($i = 0; $i < $iTotalChar; $i++) {
-            // Range 65-90 means A-Z, uppercase. Lowercase is betweeen 97-122.
+            // Range 65-90 means A-Z, uppercase. Lowercase is between 97-122.
             // @see http://www.asciitable.com/
             $sResult .= chr(rand(65, 90));
         }

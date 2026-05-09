@@ -28,6 +28,7 @@ export const ArrayRows = ({
   handleUpdateL10ns = () => {},
   setVerticalEntitiesInfo,
   showNoAnswer = false,
+  handleChildCodeUpdate = () => {},
 }) => {
   const subQuestionsContainerRef = useRef(null)
   const isArrayByColumn =
@@ -46,6 +47,7 @@ export const ArrayRows = ({
     let rowName = 'subquestion'
     let placeholder = 'Subquestion'
     let entity = Entities.subquestion
+    let codeKey = 'title'
 
     if (isArrayByText || isArrayByNumbers) {
       items = Array.isArray(subquestions)
@@ -59,6 +61,7 @@ export const ArrayRows = ({
       titleKey = 'answer'
       rowName = 'answer option'
       placeholder = 'Answer option'
+      codeKey = 'code'
       entity = Entities.answer
     } else {
       items = subquestions ?? []
@@ -74,6 +77,7 @@ export const ArrayRows = ({
       placeholder,
       scaleId,
       entity,
+      codeKey,
     }
 
     setTimeout(() => {
@@ -195,7 +199,20 @@ export const ArrayRows = ({
                   itemsKey={entitiesInfo.itemsKey}
                   entity={entity}
                   scaleId={scaleId}
+                  code={entity[entitiesInfo.codeKey]}
                   showQuestionCode={showQuestionCode}
+                  handleCodeUpdate={(value, index) =>
+                    handleChildCodeUpdate({
+                      newCode: value,
+                      childIndex: index,
+                      childArray:
+                        isArrayByText || isArrayByNumbers
+                          ? subquestions
+                          : entitiesInfo.items,
+                      entityType: entitiesInfo.entity,
+                      entityTitleKey: entitiesInfo.titleKey,
+                    })
+                  }
                 />
               </div>
             )}
@@ -221,6 +238,18 @@ export const ArrayRows = ({
             removeItem={() => {}}
             itemsKey={entitiesInfo.itemsKey}
             isNoAnswer={true}
+            handleCodeUpdate={(value, index) =>
+              handleChildCodeUpdate({
+                newCode: value,
+                childIndex: index,
+                childArray:
+                  isArrayByText || isArrayByNumbers
+                    ? subquestions
+                    : entitiesInfo.items,
+                entityType: entitiesInfo.entity,
+                entityTitleKey: entitiesInfo.titleKey,
+              })
+            }
           />
         </div>
       )}

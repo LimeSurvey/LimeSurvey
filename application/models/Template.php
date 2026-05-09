@@ -307,7 +307,7 @@ class Template extends LSActiveRecord
             return false;
         }
 
-        // check compatability with current limesurvey version
+        // check compatibility with current limesurvey version
         if (!TemplateConfig::validateTheme($template->name, $currentThemePath)) {
             return false;
         }
@@ -365,7 +365,7 @@ class Template extends LSActiveRecord
      * If it's a user template, it will check if it's an old 2.0x template to provide default configuration values corresponding to the old template system
      * If it's not an old template, it will check if it has a configuration file to load its datas.
      * If it's not the case (template probably doesn't exist), it will load the default template configuration
-     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if the files refered in css exist, etc.
+     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also if this file is correct, if the files referred in css exist, etc.
      *
      * @param string $sTemplateName the name of the template to load. The string come from the template selector in survey settings
      * @param integer $iSurveyId the id of the survey.
@@ -378,7 +378,7 @@ class Template extends LSActiveRecord
 
         // First we try to get a configuration row from DB
         if (!$bForceXML) {
-            // The name need to be filtred only for DB version. From TemplateEditor, the template is not installed.
+            // The name need to be filtered only for DB version. From TemplateEditor, the template is not installed.
             $sTemplateName = (empty($sTemplateName)) ? null : self::templateNameFilter($sTemplateName);
             $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId, $abstractInstance);
         }
@@ -508,58 +508,19 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Return the array of existing and installed template with the preview images
-     * @deprecated 2024-04-25 use directly Template::getTemplateList
-     * @return array[]
-     */
-    public static function getTemplateListWithPreviews()
-    {
-        $criteria = new CDBCriteria();
-        $criteria->select = 'template_name';
-        $criteria->condition = 'sid IS NULL AND gsid IS NULL';
-        $criteria->addInCondition('template_name', array_keys(self::getTemplateList()));
-
-        $oTemplateList = TemplateConfiguration::model()->with(array(
-            'template' => ['select' => 'id, name'],
-        ))->findAll($criteria);
-        $aTemplateList = array();
-        foreach ($oTemplateList as $oTemplate) {
-            $aTemplateList[$oTemplate->template_name]['preview'] = $oTemplate->preview;
-        }
-        return $aTemplateList;
-    }
-
-    /**
-     * isStandardTemplate returns true if a template is a standard template
-     * This function does not check if a template actually exists
-     *
-     * @param mixed $sTemplateName template name to look for
-     * @return bool True if standard template, otherwise false
-     * @deprecated Use SurveyThemeHelper::getStandardTemplateList() instead.
-     */
-    public static function isStandardTemplate($sTemplateName)
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::isStandardTemplate($sTemplateName);
-    }
-
-    /**
      * Get instance of template object.
      * Will instantiate the template object first time it is called.
      *
      * NOTE 1: This function will call prepareTemplateRendering that create/update all the packages needed to render the template, which imply to do the same for all mother templates
      * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to use this one. Call it only before rendering anything related to the template.
      * NOTE 3: If you need to get the related configuration to this template, rather use: getTemplateConfiguration()
-     * NOTE 4: If you want the lastest generated theme, just call Template::getLastInstance()
+     * NOTE 4: If you want the latest generated theme, just call Template::getLastInstance()
      *
      * @param string $sTemplateName
      * @param int|string $iSurveyId
      * @param int|string $iSurveyGroupId
      * @param boolean $bForceXML
-     * @param boolean $last if you want to get the last instace without providing template name or sid
+     * @param boolean $last if you want to get the last instance without providing template name or sid
      * @return self
      */
     public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null, $abstractInstance = false, $last = false)
@@ -640,7 +601,7 @@ class Template extends LSActiveRecord
 
     /**
     * Alias function for resetAssetVersion()
-    * Don't delete this one to maintain updgrade compatibility
+    * Don't delete this one to maintain upgrade compatibility
     * @return void
     */
     public function forceAssets()
@@ -668,22 +629,6 @@ class Template extends LSActiveRecord
         return AssetVersion::deleteAssetVersion(self::getTemplatePath($this->name));
     }
 
-    /**
-     * Return the standard template list
-     * @return string[]
-     * @throws Exception
-     * @deprecated Use SurveyThemeHelper::getStandardTemplateList() instead.
-     */
-    public static function getStandardTemplateList()
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::getStandardTemplateList();
-    }
-
-
     public static function hasInheritance($sTemplateName)
     {
         return self::model()->countByAttributes(array('extends' => $sTemplateName));
@@ -698,42 +643,6 @@ class Template extends LSActiveRecord
             self::$aAllTemplatesDir = array_merge($aTemplatesInUpload, $aTemplatesInCore);
         }
         return self::$aAllTemplatesDir;
-    }
-
-    /**
-     * @deprecated Use SurveyThemeHelper::getTemplateInUpload() instead.
-     */
-    public static function getTemplateInUpload()
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::getTemplateInUpload();
-    }
-
-    /**
-     * @deprecated Use SurveyThemeHelper::getTemplateInStandard() instead.
-     */
-    public static function getTemplateInStandard()
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::getTemplateInStandard();
-    }
-
-    /**
-     * @deprecated Use SurveyThemeHelper::getTemplateInFolder() instead.
-     */
-    public static function getTemplateInFolder($sFolder)
-    {
-        // Refactored into SurveyThemeHelper. Replaced the code here
-        // by a call to the helper to avoid code duplication while keeping
-        // backwards compatibility.
-        Yii::import('application.helpers.SurveyThemeHelper');
-        return SurveyThemeHelper::getTemplateInFolder($sFolder);
     }
 
     /**

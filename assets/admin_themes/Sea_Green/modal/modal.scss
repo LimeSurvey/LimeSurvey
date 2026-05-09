@@ -47,7 +47,44 @@
     border : 1px solid $g-900;
 }
 
-.modal-header .btn-close:focus {
-    outline        : 2px solid currentColor;
-    outline-offset : 2px;
+#deleteSurvey_modal {
+    top        : calc(50% - 140px);
+    transition : opacity 0.3s linear;
+    &.fade {
+        opacity : 0;
+    }
+    &.fade.show {
+        opacity : 1;
+    }
+    &.fade .modal-dialog {
+        transform  : none;
+        transition : none;
+    }
+    .modal-dialog {
+        width     : 800px;
+        max-width : 800px;
+        margin    : auto;
+    }
+    .modal-content {
+        height : 280px;
+        .modal-header {
+            padding-bottom : 0;
+            .modal-title {
+                color          : $g-900;
+                font-size      : $font-size-xl;
+                font-weight    : $font-weight-normal;
+                line-height    : $line-height-32;
+                padding-bottom : 0;
+                margin-bottom  : 16px;
+            }
+        }
+        .modal-body {
+            padding-top : 0;
+            p {
+                color       : $g-900;
+                font-size   : $font-size-sm;
+                line-height : $line-height-20;
+            }
+        }
+    }
 }

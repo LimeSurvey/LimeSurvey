@@ -66,7 +66,7 @@ class Database extends SurveyCommonAction
         if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveycontent', 'update')) {
             $this->actionUpdateDefaultValues($this->iSurveyID);
         }
-        if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
+        if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveysettings', 'update'))) {
             $this->actionUpdateSurveyLocaleSettings($this->iSurveyID);
         }
         if (
@@ -78,6 +78,28 @@ class Database extends SurveyCommonAction
         }
 
         Yii::app()->setFlashMessage(gT("Unknown action or no permission."), 'error');
+
+        if (Yii::app()->request->getPost('responsejson', 0) == 1) {
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'updated' => null,
+                        'DEBUG' => [
+                            'POST' => $_POST,
+                            'reloaded' => [],
+                            'aURLParams' => '',
+                            'initial' => '',
+                            'afterApply' => ''
+                        ]
+                    ],
+                ),
+                false,
+                false
+            );
+        }
+
         $this->getController()->redirect(Yii::app()->request->urlReferrer);
     }
 
@@ -191,7 +213,7 @@ class Database extends SurveyCommonAction
         if ($questionThemeMetaData['settings']->answerscales == 0 && $questionThemeMetaData['settings']->subquestions == 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
                 // Qick and dirty insert for yes/no defaul value
-                // write the the selectbox option, or if "EM" is slected, this value to table
+                // write the selectbox option, or if "EM" is selected, this value to table
                 if ($sQuestionType == 'Y') {
                     /// value for all langs
                     if (Yii::app()->request->getPost('samedefault') == 1) {
@@ -256,7 +278,7 @@ class Database extends SurveyCommonAction
         // form inputs are named differently from db fields
         // - they have a prefix and a language suffix
         // - we need to convert this to a array of database
-        // - fields for each language indexed by lanuage code
+        // - fields for each language indexed by language code
         $langFields = [
             'surveyls_url' => 'url_',
             'surveyls_urldescription' => 'urldescrip_',

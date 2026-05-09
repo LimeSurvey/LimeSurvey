@@ -100,7 +100,7 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
             
-            // Check with #bootstrap-alert-box-modal .modal-body : todo : find a way without checking boostrap-modal work too …
+            // Check with #bootstrap-alert-box-modal .modal-body : todo : find a way without checking bootstrap-modal work too …
             // Commented : work locally, not with travis
             //~ $modalBody = self::$webDriver->findElement(
                 //~ WebDriverBy::cssSelector("#bootstrap-alert-box-modal .modal-body")

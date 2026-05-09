@@ -4,7 +4,6 @@ import classNames from 'classnames'
 import Button from 'react-bootstrap/Button'
 
 import { useSurvey } from 'hooks'
-import { ContentEditor } from 'components/UIComponents'
 import { ArrowDownIcon } from 'components/icons'
 import { TooltipContainer } from 'components'
 
@@ -133,6 +132,7 @@ export const SideBarRow = ({
                 'rotate-270': !isOpen,
                 'd-none': !isQuestionGroup,
               })}
+              data-isOpen={isOpen}
             >
               <ArrowDownIcon />
             </Button>
@@ -147,16 +147,16 @@ export const SideBarRow = ({
             ) : (
               icon
             )}
-            <ContentEditor
-              disabled={true}
-              placeholder={titlePlaceholder}
-              value={title}
+            <span
               className={classNames('sidebar-row-title', {
                 'question-group': !code,
                 'question-code': showQNumCode?.showCode,
               })}
               onClick={onTitleClick}
-            />
+              data-placeholder={titlePlaceholder}
+            >
+              {title}
+            </span>
           </div>
           <div
             className={classNames(

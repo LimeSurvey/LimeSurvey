@@ -85,7 +85,7 @@ export const Responses = () => {
       showConfirmButton: true,
       confirmButtonText: t('Export'),
       cancelButtonText: t('Cancel'),
-      closeButtonClass: 'feedback-close-button',
+      closeButtonClass: 'modal-close-button',
       popupClass: 'export-popup-container',
       confirmButtonClass: 'export-button',
       preConfirm: handleExport,

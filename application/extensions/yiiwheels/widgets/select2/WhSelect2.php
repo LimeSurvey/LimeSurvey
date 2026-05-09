@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhSelect2 widget class
  *
@@ -8,11 +9,11 @@
  * @package YiiWheels.widgets.select2
  * @uses YiiStrap.helpers.TbArray
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhSelect2 extends CInputWidget
 {
-
     /**
      * @var array @param data for generating the list options (value=>display)
      */
@@ -70,7 +71,6 @@ class WhSelect2 extends CInputWidget
             echo $this->asDropDownList ?
                 TbHtml::activeDropDownList($this->model, $this->attribute, $this->data, $this->htmlOptions) :
                 TbHtml::activeHiddenField($this->model, $this->attribute);
-
         } else {
             echo $this->asDropDownList ?
                 TbHtml::dropDownList($this->name, $this->value, $this->data, $this->htmlOptions) :
@@ -103,7 +103,7 @@ class WhSelect2 extends CInputWidget
 
         /* initialize plugin */
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
-        $this->pluginOptions['theme']='bootstrap-5';
+        $this->pluginOptions['theme'] = 'bootstrap-5';
         $this->getApi()->registerPlugin('select2', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
         $this->getApi()->registerEvents($selector, $this->events, LSYii_ClientScript::POS_POSTSCRIPT);
     }

@@ -77,7 +77,7 @@ class Export extends SurveyCommonAction
         $qid = sanitize_int(Yii::app()->request->getParam('qid'));
         $question = Question::model()->findByPk($qid);
         if (empty($question)) {
-            throw new CHttpException(404, gT("Invalid question id"));
+            throw new CHttpException(404, gT("Invalid question ID"));
         }
         if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'export')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -108,7 +108,7 @@ class Export extends SurveyCommonAction
 
         Yii::app()->loadHelper("admin.exportresults");
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . '/exportresults.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
         $sHeadingFormat = Yii::app()->request->getPost('headstyle');
@@ -559,7 +559,7 @@ class Export extends SurveyCommonAction
 
             // Add instructions to change variable type and recode 'Other' option.
             // This is needed when all answer option codes are numeric but the question has 'Other' enabled,
-            // because the variable is initialy set as alphanumeric in order to hold the '-oth-' value. See issue #16939
+            // because the variable is initially set as alphanumeric in order to hold the '-oth-' value. See issue #16939
             foreach ($fields as $field) {
                 if (isset($field['needsAlterType'])) {
                     echo "RECODE {$field['id']} (\"-oth-\" = \"666666\").\n";
@@ -713,8 +713,18 @@ class Export extends SurveyCommonAction
                 }
                 $secondline[] = $fieldcode;
             }
-            fputcsv($vvOutput, $firstline, "\t");
-            fputcsv($vvOutput, $secondline, "\t");
+            fputcsv(
+                stream: $vvOutput,
+                fields: $firstline,
+                separator: "\t",
+                escape: "\\"
+            );
+            fputcsv(
+                stream: $vvOutput,
+                fields: $secondline,
+                separator: "\t",
+                escape: "\\"
+            );
             $query = "SELECT * FROM " . Yii::app()->db->quoteTableName($surveytable);
 
             if (incompleteAnsFilterState() == "incomplete") {
@@ -773,7 +783,12 @@ class Export extends SurveyCommonAction
                 /* it is important here to stream output data, line by line
                  * in order to avoid huge memory consumption when exporting large
                  * quantities of answers */
-                fputcsv($vvOutput, $responseLine, "\t");
+                fputcsv(
+                    stream: $vvOutput,
+                    fields: $responseLine,
+                    separator: "\t",
+                    escape: "\\"
+                );
                 unset($responseLine);
             }
             fclose($vvOutput);
@@ -881,7 +896,7 @@ class Export extends SurveyCommonAction
         $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('document');
         $xml->writeElement('LimeSurveyDocType', 'Label set');
-        $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+        $xml->writeElement('DBVersion', Yii::app()->getConfig("DBVersion"));
 
         // Label sets table
         $lsquery = "SELECT * FROM {{labelsets}} WHERE lid=" . implode(' or lid=', $lids);
@@ -1220,7 +1235,7 @@ class Export extends SurveyCommonAction
         $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
 
         foreach ($queXMLSettings as $s) {
-            $aData[$s] = getGlobalSetting($s);
+            $aData[$s] = Yii::app()->getConfig($s);
 
             if ($aData[$s] === null || trim((string) $aData[$s]) === '') {
                 $method = str_replace("queXML", "get", $s);
@@ -1240,7 +1255,7 @@ class Export extends SurveyCommonAction
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
 
-            $lang = sanitize_languagecode(
+            $lang = \LSYii_Validators::languageCodeFilter(
                 Yii::app()->request->getPost('save_language')
             );
 

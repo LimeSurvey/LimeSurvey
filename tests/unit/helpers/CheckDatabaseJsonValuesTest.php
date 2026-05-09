@@ -6,6 +6,7 @@ namespace ls\tests;
  * Check the JSON saved in database.
  * @since 2017-11-01
  * @group json
+ * @group mysql
  */
 class CheckDatabaseJsonValuesTest extends TestBaseClass
 {
@@ -55,9 +56,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $inst->db = \Yii::app()->db;
         $inst->dbtype = $inst->db->driverName;
         $result = $inst->setupTables();
-        if ($result) {
-            print_r($result);
-        }
+        $this->assertEquals(1, $result, 'setupTables() should return 1');
 
         // Run upgrade.
         $result = \db_upgrade_all($version['dbversionnumber']);

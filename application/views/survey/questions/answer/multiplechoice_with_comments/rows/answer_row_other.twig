@@ -3,7 +3,6 @@
  * Multiple choice with comments question, item Html
  * @var $liclasses
  * @var $liid
- * @var $kpclass
  * @var $title
  * @var $sDisplayStyle
  * @var $name                       $myfname
@@ -31,7 +30,7 @@
             <div class="answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too -->
                 <label for="{{ id }}" class="label-text control-label ls-input-group-extra" id="label-{{ id }}" >{{ processString(labeltext) }}</label>
                 <input
-                   class="other-text form-control input multipleco-other-topic {{ classes }} {{ kpclass }}"
+                   class="other-text form-control input multipleco-other-topic {{ classes }}"
                    type="text"
                    name="{{ name }}"
                    id="{{ id }}"
@@ -45,7 +44,7 @@
         <div class="col-md-{{ sInputContainerWidth }} col-12 mb-2">
             <div class="answer-item text-item comment-item">
                 <input
-                    class='form-control {{ kpclass }}'
+                    class='form-control'
                     type='text'
                     id='{{ inputCommentId }}'
                     name='{{ inputCommentName }}'
