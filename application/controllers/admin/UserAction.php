@@ -126,7 +126,13 @@ class UserAction extends SurveyCommonAction
                 SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
                 SettingsUser::setUserSetting('createsample', Yii::app()->request->getPost('createsample'));
                 SettingsUser::setUserSetting('breadcrumbMode', Yii::app()->request->getPost('breadcrumbMode'));
-                SettingsUser::setUserSetting('displayTimezone', Yii::app()->request->getPost('displayTimezone'));
+                
+                // Validate and save displayTimezone: accept empty string or valid timezone identifier
+                $displayTimezone = Yii::app()->request->getPost('displayTimezone', '');
+                if (empty($displayTimezone) || in_array($displayTimezone, timezone_identifiers_list())) {
+                    SettingsUser::setUserSetting('displayTimezone', $displayTimezone);
+                }
+                // If invalid timezone, silently skip saving (preserves existing setting)
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {

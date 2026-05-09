@@ -59,7 +59,7 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $twoDaysAgo = date_create()->sub(self::$intervals['twoDays'])->format('Y-m-d H:i:s');
+        $twoDaysAgo = (new \DateTime('now', new \DateTimeZone('UTC')))->sub(self::$intervals['twoDays'])->format('Y-m-d H:i:s');
         $survey->expires = $twoDaysAgo;
 
         $state = $survey->getState();
@@ -82,7 +82,7 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $inFourDays = date_create()->add(self::$intervals['fourDays'])->format('Y-m-d H:i:s');
+        $inFourDays = (new \DateTime('now', new \DateTimeZone('UTC')))->add(self::$intervals['fourDays'])->format('Y-m-d H:i:s');
         $survey->startdate = $inFourDays;
 
         $state = $survey->getState();
@@ -98,7 +98,7 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $inFiveDays = date_create()->add(self::$intervals['fiveDays'])->format('Y-m-d H:i:s');
+        $inFiveDays = (new \DateTime('now', new \DateTimeZone('UTC')))->add(self::$intervals['fiveDays'])->format('Y-m-d H:i:s');
         $survey->expires = $inFiveDays;
 
         $state = $survey->getState();
@@ -106,8 +106,8 @@ class SurveyTest extends TestBaseClass
         $this->assertSame('willExpire', $state, 'Survey expires property is ' . $survey->expires);
 
         // Testing for both start and expire date.
-        $inSevenDays = date_create()->add(self::$intervals['sevenDays'])->format('Y-m-d H:i:s');
-        $oneDayAgo = date_create()->sub(self::$intervals['oneDay'])->format('Y-m-d H:i:s');
+        $inSevenDays = (new \DateTime('now', new \DateTimeZone('UTC')))->add(self::$intervals['sevenDays'])->format('Y-m-d H:i:s');
+        $oneDayAgo = (new \DateTime('now', new \DateTimeZone('UTC')))->sub(self::$intervals['oneDay'])->format('Y-m-d H:i:s');
 
         $survey->startdate = $oneDayAgo;
         $survey->expires = $inSevenDays;
@@ -166,7 +166,7 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $threeDaysAgo = date_create()->sub(self::$intervals['threeDays'])->format('Y-m-d H:i:s');
+        $threeDaysAgo = (new \DateTime('now', new \DateTimeZone('UTC')))->sub(self::$intervals['threeDays'])->format('Y-m-d H:i:s');
 
         $survey->startdate = $threeDaysAgo;
 
@@ -192,7 +192,7 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $inFourDays = date_create()->add(self::$intervals['fourDays'])->format('Y-m-d H:i:s');
+        $inFourDays = (new \DateTime('now', new \DateTimeZone('UTC')))->add(self::$intervals['fourDays'])->format('Y-m-d H:i:s');
 
         $survey->expires = $inFourDays;
 
@@ -223,8 +223,8 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $oneDayAgo = date_create()->sub(self::$intervals['oneDay'])->format('Y-m-d H:i:s');
-        $inFiveDays = date_create()->add(self::$intervals['fiveDays'])->format('Y-m-d H:i:s');
+        $oneDayAgo = (new \DateTime('now', new \DateTimeZone('UTC')))->sub(self::$intervals['oneDay'])->format('Y-m-d H:i:s');
+        $inFiveDays = (new \DateTime('now', new \DateTimeZone('UTC')))->add(self::$intervals['fiveDays'])->format('Y-m-d H:i:s');
 
         $survey->startdate = $oneDayAgo;
         $survey->expires = $inFiveDays;
@@ -256,7 +256,7 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $inSixDays = date_create()->add(self::$intervals['sixDays'])->format('Y-m-d H:i:s');
+        $inSixDays = (new \DateTime('now', new \DateTimeZone('UTC')))->add(self::$intervals['sixDays'])->format('Y-m-d H:i:s');
 
         $survey->startdate = $inSixDays;
 
@@ -286,8 +286,8 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $inFourDays = date_create()->add(self::$intervals['fourDays'])->format('Y-m-d H:i:s');
-        $inSevenDays = date_create()->add(self::$intervals['sevenDays'])->format('Y-m-d H:i:s');
+        $inFourDays = (new \DateTime('now', new \DateTimeZone('UTC')))->add(self::$intervals['fourDays'])->format('Y-m-d H:i:s');
+        $inSevenDays = (new \DateTime('now', new \DateTimeZone('UTC')))->add(self::$intervals['sevenDays'])->format('Y-m-d H:i:s');
 
         $survey->startdate = $inFourDays;
         $survey->expires = $inSevenDays;
@@ -318,7 +318,7 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $threeDaysAgo = date_create()->sub(self::$intervals['threeDays'])->format('Y-m-d H:i:s');
+        $threeDaysAgo = (new \DateTime('now', new \DateTimeZone('UTC')))->sub(self::$intervals['threeDays'])->format('Y-m-d H:i:s');
 
         $survey->expires = $threeDaysAgo;
 
@@ -346,8 +346,8 @@ class SurveyTest extends TestBaseClass
         $survey = new \Survey();
         $survey->active = 'Y';
 
-        $fiveDaysAgo = date_create()->sub(self::$intervals['fiveDays'])->format('Y-m-d H:i:s');
-        $sevenDaysAgo = date_create()->sub(self::$intervals['sevenDays'])->format('Y-m-d H:i:s');
+        $fiveDaysAgo = (new \DateTime('now', new \DateTimeZone('UTC')))->sub(self::$intervals['fiveDays'])->format('Y-m-d H:i:s');
+        $sevenDaysAgo = (new \DateTime('now', new \DateTimeZone('UTC')))->sub(self::$intervals['sevenDays'])->format('Y-m-d H:i:s');
 
         $survey->startdate = $sevenDaysAgo;
         $survey->expires = $fiveDaysAgo;
