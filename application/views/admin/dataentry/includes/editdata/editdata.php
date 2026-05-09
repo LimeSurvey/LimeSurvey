@@ -21,7 +21,8 @@
             <label for='closerecord'>".gT("Finalize response submission")."</label>
         </td>
     </tr>
-    <input type='hidden' name='closedate' value='<?php echo dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d H:i"); ?>' />
+    <!-- Store in UTC for database. All DB timestamps are stored as UTC. -->
+    <input type='hidden' name='closedate' value='<?php echo gmdate("Y-m-d H:i"); ?>' />
     <tr>
         <td align='left'>
             <input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' />
