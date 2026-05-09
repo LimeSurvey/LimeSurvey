@@ -18,11 +18,28 @@ class Update_704 extends DatabaseUpdateBase
 {
     public function up()
     {
-        // Step 1: Convert empty email strings to NULL.
+        $this->convertEmptyEmailsToNull();
+        $this->deduplicateEmails();
+        $this->dropOldEmailIndex();
+        $this->createUniqueEmailIndex();
+    }
+
+    /**
+     * Convert empty email strings to NULL.
+     */
+    private function convertEmptyEmailsToNull()
+    {
         $this->db->createCommand()
             ->setText("UPDATE {{users}} SET email = NULL WHERE email = ''")
             ->execute();
-        // Step 2: Deduplicate any existing non-empty duplicate emails  by appending '+uid' to all but the lowest uid for each duplicate.
+    }
+
+    /**
+     * Deduplicate existing non-empty duplicate emails by appending '+uid'
+     * to all but the lowest uid for each duplicate.
+     */
+    private function deduplicateEmails()
+    {
         $duplicates = $this->db->createCommand()
             ->setText("SELECT email FROM {{users}} WHERE email IS NOT NULL GROUP BY email HAVING COUNT(*) > 1")
             ->queryColumn();
@@ -43,13 +60,25 @@ class Update_704 extends DatabaseUpdateBase
                     ->execute();
             }
         }
-        // Step 3: Drop the existing non-unique index on email.
+    }
+
+    /**
+     * Drop the existing non-unique index on email.
+     */
+    private function dropOldEmailIndex()
+    {
         try {
             $this->db->createCommand()->dropIndex('{{idx2_users}}', '{{users}}');
         } catch (\Exception $e) {
             // Index may not exist in all installations.
         }
-        // Step 4: Create the unique index (database-specific for MSSQL).
+    }
+
+    /**
+     * Create the unique index on email (database-specific for MSSQL).
+     */
+    private function createUniqueEmailIndex()
+    {
         switch ($this->db->driverName) {
             case 'sqlsrv':
             case 'dblib':
