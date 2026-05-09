@@ -26,11 +26,11 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
 
     /**
      * @return void
-     * @todo
+     * @todo Drag-and-drop interaction not yet implemented for geckodriver. Need to use WebDriver Actions API or JS to set form field values directly.
      */
     public function testRanking()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete('Ranking drag-and-drop interaction not implemented for geckodriver');
 
         /** @var string */
         $url = $this->getSurveyUrl();

@@ -302,7 +302,12 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return TemplateConfiguration
      */
-    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
+    /**
+     * Turns off ajax mode if it's on as a default behavior.
+     * @param TemplateConfiguration $templateConfiguration
+     * @return TemplateConfiguration
+     */
+    protected function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
     {
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);

@@ -5,6 +5,7 @@ namespace ls\tests\controllers;
 use ThemeOptionsController;
 use TemplateConfiguration;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 
 class ThemeOptionsControllerTest extends TestCase
 {
@@ -34,7 +35,6 @@ class ThemeOptionsControllerTest extends TestCase
      */
     public function testTurnAjaxModeOffAsDefault()
     {
-        $this->markTestSkipped();
         $expected = 'off';
         $json = json_encode(['ajaxmode' => 'on']);
 
@@ -42,7 +42,10 @@ class ThemeOptionsControllerTest extends TestCase
         $this->templateConfiguration->setAttribute('options', (string) $json);
         $this->templateConfiguration->setAttribute('surveyid', 1);
 
-        $actual = $this->controller->turnAjaxmodeOffAsDefault($this->templateConfiguration);
+        // Use reflection to call the protected method
+        $reflectionMethod = new ReflectionMethod($this->controller, 'turnAjaxmodeOffAsDefault');
+        $reflectionMethod->setAccessible(true);
+        $actual = $reflectionMethod->invoke($this->controller, $this->templateConfiguration);
         $actualOptions = json_decode($actual->getAttribute('options'), true);
 
         $this->assertEquals($expected, $actualOptions['ajaxmode']);

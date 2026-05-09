@@ -51,7 +51,13 @@ class UserManagementTest extends TestBaseClass
         \Yii::import('application.controllers.UserManagementController', true);
         \Yii::import('application.models.User', true);
         \Yii::app()->session['loginID'] = 1;
-        
+
+        // Clean up leftover user from a previous failed run.
+        $existingUser = \User::model()->findByAttributes(['users_name' => $aDataSet['new_user_data']['users_name']]);
+        if ($existingUser) {
+            $existingUser->delete();
+        }
+
         $oUser = new \User();
         $oUser->setAttributes($aDataSet['new_user_data']);
         if(!$oUser->save()) {
