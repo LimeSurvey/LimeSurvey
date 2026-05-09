@@ -22,9 +22,7 @@ class Update_704 extends DatabaseUpdateBase
         $this->db->createCommand()
             ->setText("UPDATE {{users}} SET email = NULL WHERE email = ''")
             ->execute();
-
-        // Step 2: Deduplicate any existing non-empty duplicate emails
-        // by appending '+uid' to all but the lowest uid for each duplicate.
+        // Step 2: Deduplicate any existing non-empty duplicate emails  by appending '+uid' to all but the lowest uid for each duplicate.
         $duplicates = $this->db->createCommand()
             ->setText("SELECT email FROM {{users}} WHERE email IS NOT NULL GROUP BY email HAVING COUNT(*) > 1")
             ->queryColumn();
@@ -34,7 +32,6 @@ class Update_704 extends DatabaseUpdateBase
                 ->setText("SELECT uid FROM {{users}} WHERE email = :email ORDER BY uid ASC")
                 ->bindValue(':email', $dupEmail)
                 ->queryColumn();
-
             // Keep the first one, rename the rest.
             array_shift($rows);
             foreach ($rows as $uid) {
@@ -46,21 +43,18 @@ class Update_704 extends DatabaseUpdateBase
                     ->execute();
             }
         }
-
         // Step 3: Drop the existing non-unique index on email.
         try {
             $this->db->createCommand()->dropIndex('{{idx2_users}}', '{{users}}');
         } catch (\Exception $e) {
             // Index may not exist in all installations.
         }
-
         // Step 4: Create the unique index (database-specific for MSSQL).
         switch ($this->db->driverName) {
             case 'sqlsrv':
             case 'dblib':
             case 'mssql':
-                // MSSQL does not allow multiple NULLs in a unique index,
-                // so use a filtered index that only covers non-NULL emails.
+                // MSSQL does not allow multiple NULLs in a unique index, so use a filtered index that only covers non-NULL emails.
                 $tableName = $this->db->tablePrefix
                     ? str_replace('{{', $this->db->tablePrefix, str_replace('}}', '', '{{users}}'))
                     : 'users';
