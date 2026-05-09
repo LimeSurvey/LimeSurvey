@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2026 The LimeSurvey Project Team
@@ -18,21 +19,20 @@
 class AdminFooter extends CWidget
 {
     public function run()
-        {
+    {
             //If user is not logged in, don't print the version number information in the footer.
-            if (empty(Yii::app()->session['loginID']))
-            {
-                $versionnumber="";
-                $versiontitle="";
-                $buildtext="";
-            } else {
-                $versionnumber = Yii::app()->getConfig("versionnumber");
-                $versiontitle = gT('Version');
-                $buildtext = "";
-                if(Yii::app()->getConfig("buildnumber")!="") {
-                   $buildtext = "+".Yii::app()->getConfig("buildnumber");
-                }
+        if (empty(Yii::app()->session['loginID'])) {
+            $versionnumber = "";
+            $versiontitle = "";
+            $buildtext = "";
+        } else {
+            $versionnumber = Yii::app()->getConfig("versionnumber");
+            $versiontitle = gT('Version');
+            $buildtext = "";
+            if (Yii::app()->getConfig("buildnumber") != "") {
+                $buildtext = "+" . Yii::app()->getConfig("buildnumber");
             }
+        }
 
             $aData = array(
                 'versionnumber' => $versionnumber,
@@ -41,5 +41,5 @@ class AdminFooter extends CWidget
             );
 
             $this->render('footer', $aData);
-        }
+    }
 }

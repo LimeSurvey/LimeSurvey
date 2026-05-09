@@ -39,7 +39,7 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
     {
       title: t('Canvas'),
       content: t(
-        'This is where you create your questions and answer options. A sample question group and question is always created to get you started. Just click on any element to edit it.'
+        'This is where you create your questions and answer options. A sample question group and question are always created to get you started. Just click on any element to edit it.'
       ),
       placement: 'left-start',
       target: '#survey-col',
@@ -114,7 +114,7 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
     {
       title: t('Delete question'),
       content: t(
-        'Use the trash-icon to delete questions  or the X-icons to delete answer options.'
+        'Use the trash icon to delete questions or the X icon to delete answer options.'
       ),
       spotlightPadding: 10,
       placement: 'top',
@@ -308,7 +308,7 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
           <div className="green-mark"></div>
           <span className="reg14">
             <SmallCheckMarkIcon />
-            {t('🎉 Congrats! You have completed the tour.')}
+            {t('🎉 Congratulations! You have completed the tour.')}
           </span>
         </div>
       ),

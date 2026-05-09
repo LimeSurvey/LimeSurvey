@@ -41,7 +41,7 @@ class SurveyIndex extends CAction
         $thisstep    = (int) $param['thisstep'];
         $move        = getMove();
 
-        /* Newtest must be done bedore all other action */
+        /* Newtest must be done before all other action */
         if (isset($param['newtest']) && $param['newtest'] == "Y") {
             killSurveySession($surveyid);
             resetQuestionTimers($surveyid);
@@ -409,7 +409,7 @@ class SurveyIndex extends CAction
         //CHECK FOR PREVIOUSLY COMPLETED COOKIE
         //If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
         $sCookieName = "LS_" . $surveyid . "_STATUS";
-        if (!$previewmode && isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1) {
+        if (!$previewmode && isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && !($tokenInstance ?? false)) {
             $aErrors  = array(gT('Error'));
             $aMessage = array(
                 gT("You have already completed this survey.")
@@ -450,7 +450,7 @@ class SurveyIndex extends CAction
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
             // && Yii::app()->request->isPostRequest ?
-            if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
+            if ($oSurvey->isCaptchaEnabled('saveandloadscreen') && is_null(Yii::app()->request->getQuery('scid'))) {
                 $sLoadSecurity  = Yii::app()->request->getPost('loadsecurity');
 
                 if (empty($sLoadSecurity)) {
@@ -504,7 +504,7 @@ class SurveyIndex extends CAction
             $SurveyRuntimeHelper = new SurveyRuntimeHelper();
             $SurveyRuntimeHelper->saveAllIfNeeded();
 
-            if (isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
+            if ($oSurvey->isCaptchaEnabled('saveandloadscreen')) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $surveyid));
             }
@@ -527,7 +527,7 @@ class SurveyIndex extends CAction
         //by checking that the token has not been used at each page displayed.
         // bypass only this check at first page (Step=0) because
         // this check is done in buildsurveysession and error message
-        // could be more interresting there (takes into accound captcha if used)
+        // could be more interesting there (takes into account captcha if used)
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_" . $surveyid . "}}") && !$previewmode) {
             if (empty($tokenInstance) && $oToken) {
                 $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
@@ -565,7 +565,7 @@ class SurveyIndex extends CAction
             }
         }
 
-        //Check to see if a refering URL has been captured.
+        //Check to see if a referring URL has been captured.
         if (!isset($_SESSION['responses_' . $surveyid]['refurl'])) {
             $_SESSION['responses_' . $surveyid]['refurl'] = getReferringUrl(); // do not overwrite refurl
         }

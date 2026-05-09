@@ -162,7 +162,7 @@ export const PermissionsProvider = ({ children }) => {
 
   return (
     <h1 className="d-flex vh-100 justify-content-center align-items-center">
-      {t(`You don't have permissions to enter this page.`)}
+      {t(`You don't have permission to access this page.`)}
     </h1>
   )
 }

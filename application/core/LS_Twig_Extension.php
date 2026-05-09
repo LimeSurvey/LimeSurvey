@@ -3,7 +3,7 @@
 /**
  * This extension is needed to add complex functions to twig, needing specific process (like accessing config datas).
  * Most of the calls to internal functions don't need to be set here, but can be directly added to the internal config file.
- * For example, the calls to encode, gT and eT don't need any extra parameters or process, so they are added as filters in the congif/internal.php:
+ * For example, the calls to encode, gT and eT don't need any extra parameters or process, so they are added as filters in the config/internal.php:
  *
  * 'filters' => array(
  *     'jencode' => 'CJSON::encode',
@@ -18,7 +18,7 @@
  *      eg:
  *          static public function foo($bar)
  *          {
- *              return procces($bar);
+ *              return process($bar);
  *          }
  *
  * 2. Add it in config/internal.php as a function, and as an allowed function in the sandbox
@@ -338,7 +338,7 @@ class LS_Twig_Extension extends AbstractExtension
             }
             return false;
         }
-        // Reccurence on templates to find the file
+        // Recurrence on templates to find the file
         $oTemplate = self::getTemplateForRessource($resourcePath);
         if (empty($oTemplate)) {
             /* Didn't allow file out of template (diff with image) */
@@ -351,7 +351,7 @@ class LS_Twig_Extension extends AbstractExtension
 
 
     /**
-     * Get the parsed output of the expression manger for a specific string
+     * Get the parsed output of the expression manager for a specific string
      *
      * @param String $sInString
      * @return String

@@ -5,6 +5,7 @@ namespace ls\tests\controllers;
 use ThemeOptionsController;
 use TemplateConfiguration;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 
 class ThemeOptionsControllerTest extends TestCase
 {

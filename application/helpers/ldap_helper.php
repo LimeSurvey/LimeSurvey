@@ -19,14 +19,14 @@
 /*********************************************/
 
 /**
- * Create the ldap connexion for token management
+ * Create the ldap connection for token management
  * @param int|null $server_id
  * @return LDAP\Connection|false
  */
 function ldap_getCnx($server_id = null)
 {
     $ldap_server = Yii::app()->getConfig('ldap_server');
-     if (is_null($server_id) || empty($ldap_server[$server_id])) {
+    if (is_null($server_id) || empty($ldap_server[$server_id])) {
         return false;
     }
     if ($ldap_server[$server_id]['encrypt'] == 'ldaps') {

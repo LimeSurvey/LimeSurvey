@@ -12,9 +12,11 @@ class SurveyDao
      * on language codes.
      *
      * @param int $id
+     * @param $lang
+     * @param FormattingOptions $oOptions
      * @return SurveyObj
      */
-    public function loadSurveyById($id, $lang = null, FormattingOptions $oOptions = null)
+    public function loadSurveyById($id, $lang = null, ?FormattingOptions $oOptions = null)
     {
         $survey = new SurveyObj();
 
@@ -77,7 +79,7 @@ class SurveyDao
      * @param SurveyObj $survey
      * @param int $iMinimum
      * @param int $iMaximum
-     * @param string $sFilter An optional filter for the results, i  string or arry of string
+     * @param string $sFilter An optional filter for the results, is a string or an array of strings
      * @param string $completionState all, complete or incomplete
      * @param array $aFields If empty all, otherwise only select the selected fields from the survey response table
      * @param string $sResponsesId

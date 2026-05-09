@@ -102,7 +102,7 @@ function quoteSPSS($sText, $sQuoteChar, $aField)
  * Exports CSV response data for SPSS and R
  *
  * @param mixed $iSurveyID The survey ID
- * @param string $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
+ * @param string $iLength Maximum text length data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
  * @param string $na Value for N/A data
  * @param string $sEmptyAnswerValue Value for empty data ('')
  * @param string $q sep Quote separator. Use ' for SPSS, " for R
@@ -562,31 +562,31 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
             case 'datestamp':
                 $fieldtype = 'DATETIME23.2';
                 break;
-            case 'startlanguage';
+            case 'startlanguage':
                 $fieldtype = 'A';
                 $val_size = 20;
                 break;
-            case 'token';
+            case 'token':
                 $fieldtype = 'A';
                 $val_size = Token::MAX_LENGTH;
                 break;
-            case 'id';
+            case 'id':
                 $fieldtype = 'F';
                 $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
                 break;
-            case 'ipaddr';
+            case 'ipaddr':
                 $fieldtype = 'A';
                 $val_size = 45; // IPv6 + IPv4-mapped feature : 39+1+15
                 break;
-            case 'refurl';
+            case 'refurl':
                 $fieldtype = 'A';
                 $val_size = 255;
                 break;
-            case 'lastpage';
+            case 'lastpage':
                 $fieldtype = 'F';
                 $val_size = 7;
                 break;
-            case 'seed';
+            case 'seed':
                 $fieldtype = 'A';
                 $val_size = 31;
                 break;
@@ -850,8 +850,18 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
 }
 
 /**
-* from export_structure_xml.php
-*/
+ * Write a survey's structural data (tables and related localized records) into the provided XML writer.
+ *
+ * This function exports the survey definition and related entities (answers, questions, groups,
+ * default values, quotas, assessments, survey settings, language settings, plugin settings,
+ * survey URL parameters, and the surveys_groups mapping) using buildXMLFromQuery / buildXMLFromArray.
+ * Sections can be omitted by passing keys in the $exclude array. Survey language setting attachments
+ * are included but are converted to a JSON string for safe export.
+ *
+ * @param int $iSurveyID ID of the survey to export.
+ * @param XMLWriter|mixed $xmlwriter XML writer instance (or compatible writer) to receive the output.
+ * @param array $exclude Optional associative array of sections to skip; common keys: 'answers', 'conditions', 'quotas', 'dates'.
+ */
 function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 {
     if (!isset($exclude['answers'])) {
@@ -1016,6 +1026,14 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
                 . " FROM {{plugin_settings}} as settings JOIN {{plugins}} as plugins ON plugins.id = settings.plugin_id"
                 . " WHERE model='Survey' and model_id=$iSurveyID";
     buildXMLFromQuery($xmlwriter, $slsquery);
+
+    // Survey Group
+    $sgquery = "SELECT sg.*
+    FROM {{surveys_groups}} as sg
+    JOIN {{surveys}} as s ON sg.gsid = s.gsid
+    WHERE s.sid={$iSurveyID}";
+    $excludeFromSurveyGroup = ['sortorder', 'owner_id', 'created', 'modified', 'created_by'];
+    buildXMLFromQuery($xmlwriter, $sgquery, '', $excludeFromSurveyGroup);
 }
 
 /**
@@ -1215,12 +1233,12 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
 
     foreach ($Rows as $Row) {
         $category = $dom->createElement("category");
-	$title = $Row['title'];
+        $title = $Row['title'];
         if ($EMreplace) {
-            $title = LimeExpressionManager::ProcessStepString($title,null,3,true);
+            $title = LimeExpressionManager::ProcessStepString($title, null, 3, true);
         }
 
-	$label = $dom->createElement("label", QueXMLCleanup($title,''));
+        $label = $dom->createElement("label", QueXMLCleanup($title, ''));
 
         $value = $dom->createElement("value", QueXMLCleanup($Row['code']));
 
@@ -1240,9 +1258,9 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
     if ($other) {
         $category = $dom->createElement("category");
 
-	$rtext = quexml_get_lengthth($qid, "other_replace_text", gT("Other"), $quexmllang);
+        $rtext = quexml_get_lengthth($qid, "other_replace_text", gT("Other"), $quexmllang);
         if ($EMreplace) {
-            $rtext = LimeExpressionManager::ProcessStepString($rtext,null,3,true);
+            $rtext = LimeExpressionManager::ProcessStepString($rtext, null, 3, true);
         }
 
         $label = $dom->createElement("label", QueXMLCleanup($rtext));
@@ -1323,9 +1341,9 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     }
     $QueryResult = Question::model()->with('questionl10ns')->findAllByAttributes($aCondition, ['order' => 'question_order']);
     foreach ($QueryResult as $Row) {
-	$qtext = $Row->questionl10ns[$quexmllang]->question;
+        $qtext = $Row->questionl10ns[$quexmllang]->question;
         if ($EMreplace) {
-           $qtext = LimeExpressionManager::ProcessStepString($qtext,null,3,true);
+            $qtext = LimeExpressionManager::ProcessStepString($qtext, null, 3, true);
         }
         $response = $dom->createElement("response");
         if ($free == false) {
@@ -1453,7 +1471,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
             $text = $dom->createElement("text", QueXMLCleanup($Row->answerl10ns[$quexmllang]->answer, ''));
         } else {
             if ($EMreplace) {
-                $text = $dom->createElement("text", QueXMLCleanup(LimeExpressionManager::ProcessStepString($Row->questionl10ns[$quexmllang]->question,null,3,true), ''));
+                $text = $dom->createElement("text", QueXMLCleanup(LimeExpressionManager::ProcessStepString($Row->questionl10ns[$quexmllang]->question, null, 3, true), ''));
             } else {
                 $text = $dom->createElement("text", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
             }
@@ -1468,7 +1486,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
             //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
         } elseif ($use_answers == true) {
-            // Ranking quesions
+            // Ranking questions
             quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row->code);
         } else {
             quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
@@ -1793,7 +1811,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
         foreach ($Rows as $RowQ) {
             // placeholder substitution
             if ($EMreplace) {
-                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'], $RowQReplacements, 3, true);
             }
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
@@ -1820,7 +1838,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
 
             // placeholder substitution
             if ($EMreplace) {
-                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'],$RowQReplacements,3,true);
+                $RowQ['question'] = LimeExpressionManager::ProcessStepString($RowQ['question'], $RowQReplacements, 3, true);
             }
             $other = false;
             if ($RowQ['other'] == 'Y') {
@@ -2517,7 +2535,11 @@ function CPDBExport($data, $filename)
 
     $handler = fopen('php://output', 'w');
     foreach ($data as $key => $value) {
-        fputcsv($handler, $value);
+        fputcsv(
+            stream: $handler,
+            fields: $value,
+            escape: "\\"
+        );
     }
     fclose($handler);
     exit;
@@ -2575,7 +2597,7 @@ function numericSize(string $sColumn, $decimal = false)
     ->createCommand("SELECT MAX($sColumn) FROM {{responses_" . $iSurveyId . "}}")
     ->queryScalar();
     $integerMaxLen = strlen(intval($maxInteger));
-    /* Find the max len of integer part for negative value including minus when export (adding 1 to lenght) */
+    /* Find the max len of integer part for negative value including minus when export (adding 1 to length) */
     $minInteger = Yii::app()->db
     ->createCommand("SELECT MIN($sColumn) FROM {{responses_" . $iSurveyId . "}}")
     ->queryScalar();
@@ -2597,7 +2619,7 @@ function numericSize(string $sColumn, $decimal = false)
         /* Didn't work with text, when datatype are updated to text, but in such case : there are no good solution, except return string …*/
         $castedColumnString = $sColumn;
         if (Yii::app()->db->driverName == 'pgsql') {
-            $castedColumnString = "CAST($sColumn as FLOAT)";
+            $castedColumnString = "CAST($sColumn as VARCHAR)";
         }
     /* pgsql */
         if (Yii::app()->db->driverName == 'pgsql') {
@@ -2688,7 +2710,12 @@ function tsvSurveyExport($surveyid)
         return '';
     }, array_flip($fields));
     $out = fopen('php://output', 'w');
-    fputcsv($out, array_map('MaskFormula', array_keys($fields)), chr(9));
+    fputcsv(
+        stream: $out,
+        fields: array_map('MaskFormula', array_keys($fields)),
+        separator: chr(9),
+        escape: "\\"
+    );
 
     // DATA PREPARATION
     // survey settings
@@ -2710,7 +2737,12 @@ function tsvSurveyExport($surveyid)
         $tsv_output['class'] = 'S';
         $tsv_output['name'] = $key;
         $tsv_output['text'] = str_replace(array("\n", "\r"), '', (string) $value);
-        fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+        fputcsv(
+            stream: $out,
+            fields: array_map('MaskFormula', $tsv_output),
+            separator:  chr(9),
+            escape: "\\"
+        );
     }
 
     // language settings
@@ -2743,7 +2775,12 @@ function tsvSurveyExport($surveyid)
             $tsv_output['name'] = $key;
             $tsv_output['text'] = str_replace(array("\n", "\r"), '', (string) $value);
             $tsv_output['language'] = $current_language;
-            fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+            fputcsv(
+                stream: $out,
+                fields: array_map('MaskFormula', $tsv_output),
+                separator: chr(9),
+                escape: "\\"
+            );
         }
     }
 
@@ -2989,7 +3026,12 @@ function tsvSurveyExport($surveyid)
                 $tsv_output['relevance'] = isset($group['grelevance']) && !is_array($group['grelevance']) ? $group['grelevance'] : '';
                 $tsv_output['random_group'] = !empty($group['randomization_group']) ? $group['randomization_group'] : '';
                 $tsv_output['language'] = $language;
-                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                fputcsv(
+                    stream: $out,
+                    fields: array_map('MaskFormula', $tsv_output),
+                    separator: chr(9),
+                    escape: "\\"
+                );
 
                 // questions
                 if (array_key_exists($gid, $questions[$language])) {
@@ -3029,8 +3071,12 @@ function tsvSurveyExport($surveyid)
                                 }
                             }
                         }
-                        fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
-
+                        fputcsv(
+                            stream: $out,
+                            fields: array_map('MaskFormula', $tsv_output),
+                            separator: chr(9),
+                            escape: "\\"
+                        );
 
                         // quota members
                         if ($index_languages == 0 && !empty($quota_members[$qid])) {
@@ -3040,7 +3086,12 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['related_id'] = $member['quota_id'];
                                 $tsv_output['class'] = 'QTAM';
                                 $tsv_output['name'] = $member['code'];
-                                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                                fputcsv(
+                                    stream: $out,
+                                    fields: array_map('MaskFormula', $tsv_output),
+                                    separator: chr(9),
+                                    escape: "\\"
+                                );
                             }
                         }
 
@@ -3055,7 +3106,12 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['name'] = $condition['cfieldname'];
                                 $tsv_output['relevance'] = $condition['method'];
                                 $tsv_output['text'] = !empty($condition['value']) ? $condition['value'] : '';
-                                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                                fputcsv(
+                                    stream: $out,
+                                    fields: array_map('MaskFormula', $tsv_output),
+                                    separator: chr(9),
+                                    escape: "\\"
+                                );
                             }
                         }
 
@@ -3080,7 +3136,12 @@ function tsvSurveyExport($surveyid)
                                 if (array_key_exists($language, $defaultvalues) && array_key_exists($subquestion['qid'], $defaultvalues[$language])) {
                                     $tsv_output['default'] = $defaultvalues[$language][$subquestion['qid']];
                                 }
-                                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                                fputcsv(
+                                    stream: $out,
+                                    fields: array_map('MaskFormula', $tsv_output),
+                                    separator: chr(9),
+                                    escape: "\\"
+                                );
                             }
                         }
 
@@ -3096,7 +3157,12 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['text'] = $answer['answer'];
                                 $tsv_output['assessment_value'] = $answer['assessment_value'];
                                 $tsv_output['language'] = $answer['language'];
-                                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                                fputcsv(
+                                    stream: $out,
+                                    fields: array_map('MaskFormula', $tsv_output),
+                                    separator: chr(9),
+                                    escape: "\\"
+                                );
                             }
                         }
                     }
@@ -3120,7 +3186,12 @@ function tsvSurveyExport($surveyid)
             $tsv_output['min_num_value'] = $assessment['minimum'];
             $tsv_output['max_num_value'] = $assessment['maximum'];
             $tsv_output['language'] = $assessment['language'];
-            fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+            fputcsv(
+                stream: $out,
+                fields: array_map('MaskFormula', $tsv_output),
+                separator: chr(9),
+                escape: "\\"
+            );
         }
     }
 
@@ -3136,7 +3207,12 @@ function tsvSurveyExport($surveyid)
             $tsv_output['other'] = $quota['action'];
             $tsv_output['default'] = $quota['active'];
             $tsv_output['same_default'] = $quota['autoload_url'];
-            fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+            fputcsv(
+                stream: $out,
+                fields: array_map('MaskFormula', $tsv_output),
+                separator: chr(9),
+                escape: "\\"
+            );
 
             if (!empty($quota_ls[$quota['id']])) {
                 foreach ($quota_ls[$quota['id']] as $key => $language) {
@@ -3150,7 +3226,12 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['text'] = !empty($ls['quotals_url']) ? $ls['quotals_url'] : '';
                         $tsv_output['help'] = !empty($ls['quotals_urldescrip']) ? $ls['quotals_urldescrip'] : '';
                         $tsv_output['language'] = $ls['quotals_language'];
-                        fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                        fputcsv(
+                            stream: $out,
+                            fields: array_map('MaskFormula', $tsv_output),
+                            separator: chr(9),
+                            escape: "\\"
+                        );
                     }
                 }
             }
@@ -3249,7 +3330,7 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
             foreach ($oConfig as $key => $attribute) {
                 if ($key == "@attributes") {
                     /* Survey theme option export XML of theme without filtering attributes (happen for cssframework) */
-                    /* see mantis issue #19404: Export survey propblem with PHP version 8.0 https://bugs.limesurvey.org/view.php?id=19404 */
+                    /* see mantis issue #19404: Export survey problem with PHP version 8.0 https://bugs.limesurvey.org/view.php?id=19404 */
                     continue;
                 }
                 if (is_array($attribute)) {

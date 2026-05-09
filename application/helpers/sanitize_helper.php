@@ -228,7 +228,7 @@ function sanitize_system_string($string, $min = '', $max = '')
         // background processing, special commands (backspace, etc.), quotes
         // newlines, or some other special characters
         $string = preg_replace($pattern, '', (string) $string);
-        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpretted as ONE argument
+        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpreted as ONE argument
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
             return false;
@@ -266,7 +266,7 @@ function sanitize_ldap_string($string, $min = '', $max = '')
 }
 
 
-// sanitize a string for HTML (make sure nothing gets interpretted!)
+// sanitize a string for HTML (make sure nothing gets interpreted!)
 function sanitize_html_string($string)
 {
     $pattern[0] = '/\&/';
@@ -572,4 +572,28 @@ function check_absolute_url($string)
 function sanitize_alphanumeric($value)
 {
     return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
+}
+
+/**
+ * Validate that a value is safe to use as a single filesystem path component.
+ *
+ * This rejects empty values, leading-dot names, path separators and ASCII
+ * control characters so callers can safely append the value to a trusted
+ * base path without worrying about directory traversal or hidden directories.
+ *
+ * @param string $string
+ * @return bool
+ */
+function validate_path_component($string)
+{
+    if (!is_string($string)) {
+        return false;
+    }
+
+    return !(
+        $string === ''
+        || strpos($string, '.') === 0
+        || preg_match('/[\\\\\/]/', $string) === 1
+        || preg_match('/[\x00-\x1F\x7F]/', $string) === 1
+    );
 }

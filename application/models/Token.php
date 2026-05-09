@@ -326,7 +326,7 @@ abstract class Token extends Dynamic
      */
     public static function sanitizeAttribute($attribute)
     {
-        return htmlspecialchars(strip_tags($attribute), ENT_NOQUOTES, 'UTF-8');
+        return htmlspecialchars(strip_tags((string) $attribute), ENT_NOQUOTES, 'UTF-8');
     }
 
     /**

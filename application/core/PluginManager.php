@@ -6,5 +6,4 @@
  */
 class PluginManager extends CApplicationComponent
 {
-
 }

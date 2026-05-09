@@ -57,6 +57,7 @@ const displaySettings = () => {
     displayAttributes.ALWAYS_HIDE_THIS_QUESTION,
     displayAttributes.CSS_CLASSES,
     displayAttributes.CONDITION_HELP_FOR_PRINTABLE_SURVEY,
+    displayAttributes.PLACEHOLDER_ANSWER,
   ]
 }
 

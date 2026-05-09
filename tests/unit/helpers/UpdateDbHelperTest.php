@@ -6,6 +6,7 @@ namespace ls\tests;
  * @since 2017-06-16
  * @group dbhelper
  * @group db
+ * @group mysql
  */
 class UpdateDbHelperTest extends TestBaseClass
 {
@@ -39,9 +40,7 @@ class UpdateDbHelperTest extends TestBaseClass
         $inst->db = \Yii::app()->db;
         $inst->dbtype = $inst->db->driverName;
         $result = $inst->setupTables();
-        if ($result) {
-            print_r($result);
-        }
+        $this->assertEquals(1, $result, 'setupTables() should return 1');
 
         // Dump database to file.
         /*
@@ -201,9 +200,7 @@ class UpdateDbHelperTest extends TestBaseClass
                 $ex->getMessage()
             );
         }
-        if ($result) {
-            print_r($result);
-        }
+        $this->assertEquals(1, $result, 'setupTables() should return 1');
         $inst->db->schema->refresh();
         $freshInstallTables = $inst->db->schema->getTables();
 

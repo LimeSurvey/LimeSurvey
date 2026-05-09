@@ -145,6 +145,17 @@ class CopySurvey
         if ($this->options->isResetResponseStartId()) {
             $destinationSurvey->autonumber_start = 0;
             $destinationSurvey->save();
+        } elseif ($this->sourceSurvey->isActive) {
+            $lastResponse = Yii::app()->db->createCommand()
+                ->select("MAX(id) as maxrecordid")
+                ->from("{{responses_" . $this->sourceSurvey->sid . "}}")
+                ->queryAll()
+            ;
+            $result = $lastResponse[0]['maxrecordid'] ?? null;
+            if ($result) {
+                $destinationSurvey->autonumber_start = $lastResponse[0]['maxrecordid'] + 1;
+                $destinationSurvey->save();
+            }
         }
 
         if ($this->options->isPermissions()) {

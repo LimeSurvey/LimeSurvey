@@ -362,7 +362,7 @@ class PluginManagerController extends SurveyCommonAction
                 ),
             );
         }
-        // Send to view plugin porperties: name and description
+        // Send to view plugin properties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
         $topbar['title'] = gT('Plugins') . ' ' . $plugin['name'];
@@ -566,6 +566,12 @@ class PluginManagerController extends SurveyCommonAction
             if (!$config->isCompatible()) {
                 $installer->abort();
                 $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
+            }
+
+            $pluginManager = App()->getPluginManager();
+            if (!$pluginManager->validatePluginName($config->getName())) {
+                $installer->abort();
+                $this->errorAndRedirect(gT('Invalid plugin name in config.xml.'));
             }
 
             // Show confirmation page.

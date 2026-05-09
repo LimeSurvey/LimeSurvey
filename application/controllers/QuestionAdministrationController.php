@@ -147,11 +147,11 @@ class QuestionAdministrationController extends LSBaseController
      * Show question edit form.
      *
      * @param int    $questionId        Question ID
-     * @param string $tabOverviewEditor which tab should be used this can be 'overview' or 'editor'
+     * @param ?string $tabOverviewEditor which tab should be used this can be 'overview' or 'editor'
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit(int $questionId, string $tabOverviewEditor = null)
+    public function actionEdit(int $questionId, ?string $tabOverviewEditor = null)
     {
         $questionId = (int) $questionId;
         if (!in_array($tabOverviewEditor, ['overview', 'editor'], true)) {
@@ -968,7 +968,7 @@ class QuestionAdministrationController extends LSBaseController
                     $numericSuffix = $currentCharacter . $numericSuffix; // store it in a string
                     $n = $n + 1;
                 } else {
-                    $numeric = false; // At first non numeric character found, the loop is stoped
+                    $numeric = false; // At first non numeric character found, the loop is stopped
                 }
             }
             $numCodesWithZero[$key] = (string) $numericSuffix; // In string type, we can have   : "0001"
@@ -995,7 +995,7 @@ class QuestionAdministrationController extends LSBaseController
         // (like in SQ01 => SQ99 ; should become SQ100, not SQ9100)
         $listOfZero = $listOfZero == "9" ? '' : $listOfZero;
 
-        // We finaly build the new code
+        // We finally build the new code
         return [$stringPartOfNewCode . $listOfZero . $numericalPartOfNewCode, $numericalPartOfNewCode];
     }
 
@@ -1647,11 +1647,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
-     * @param string $questionTheme the question theme
+     * @param ?string $questionTheme the question theme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, string $questionTheme = null, $questionId = null)
+    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, ?string $questionTheme = null, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1852,11 +1852,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
-     * @param string $questionTheme
+     * @param ?string $questionTheme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, string $questionTheme = null, $questionId = null)
+    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, ?string $questionTheme = null, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -2024,7 +2024,7 @@ class QuestionAdministrationController extends LSBaseController
         $labelSetLangauges = explode(' ', (string) $labelSet->languages);
         $errorMessages = [];
         if ($checkAssessments && $label) {
-            $errorMessages[] = gT('The existing label set has assessment values assigned.') . '<strong>' . gT('If you replace the label set the existing asssessment values will be lost.') . '</strong>';
+            $errorMessages[] = gT('The existing label set has assessment values assigned.') . '<strong>' . gT('If you replace the label set the existing assessment values will be lost.') . '</strong>';
         }
         if (count(array_diff($labelSetLangauges, $languages))) {
             $errorMessages[] = gT('The existing label set has different/more languages.') . '<strong>' . gT('If you replace the label set these translations will be lost.') . '</strong>';
@@ -2137,8 +2137,8 @@ class QuestionAdministrationController extends LSBaseController
                     ]
                 );
 
-                // Then we move all the questions with the request QID (same question in different langagues)
-                // to the new group, with the righ postion
+                // Then we move all the questions with the request QID (same question in different languages)
+                // to the new group, with the right position
                 Question::model()->updateAll(
                     ['question_order' => $iQuestionOrder, 'gid' => $oQuestionGroup->gid],
                     'qid=:qid',

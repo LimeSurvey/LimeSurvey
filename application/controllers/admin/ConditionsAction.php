@@ -900,12 +900,12 @@ class ConditionsAction extends SurveyCommonAction
     /**
      * Maps keywords with paths so we can ensure that the service is agnostic to where the paths are which gives us flexibility
      * @param string $what the keyname of the view to be rendered
-     * @param array $data data array to be passed to the renderPartial method
+     * @param ?array $data data array to be passed to the renderPartial method
      * @param bool $return return to be passed to the renderPartial method
      * @param bool $processOutput processOutput to be passed to the renderPartial method
      * @return string
      */
-    public function renderPartialView(string $what, array $data = null, bool $return = false, bool $processOutput = false)
+    public function renderPartialView(string $what, ?array $data = null, bool $return = false, bool $processOutput = false)
     {
         switch ($what) {
             case 'navigator':

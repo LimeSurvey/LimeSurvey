@@ -592,7 +592,7 @@ class SurveyAdministrationController extends LSBaseController
                 Permission::model()
             );
             if ($newSurvey) {
-                //create examlpe group and example question
+                //create example group and example question
                 $iNewGroupID = $this->createSampleGroup($newSurvey->sid);
                 $iNewQuestionID = $this->createSampleQuestion($newSurvey->sid, $iNewGroupID);
 
@@ -737,7 +737,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @param integer $sid Given Survey ID
      *
-     * is still used in sidemenu Text elemnts (see vue.js ajaxcall)
+     * is still used in sidemenu Text elements (see vue.js ajaxcall)
      *
      * @return JSON
      * @throws CException
@@ -2011,7 +2011,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
 
-        // For Text Elemnts Tab.
+        // For Text elements Tab.
         if ($menuaction === 'surveytexts') {
             $temp = [];
             $languages = $survey->allLanguages;
@@ -2389,6 +2389,15 @@ class SurveyAdministrationController extends LSBaseController
         $this->redirect($redirectUrl);
     }
 
+    /**
+     * Import an uploaded survey file, create the survey if valid, and render the import summary view.
+     *
+     * Validates upload permissions and file type/size, moves the uploaded file to a temporary location,
+     * calls importSurveyFile(...) (passing the "translinksfields" flag and optional "surveysgroup" request parameter),
+     * translates import results into view data (including links to the new survey and theme-apply action),
+     * resets the expression manager for the newly created survey (if any), cleans up the temporary file,
+     * and renders the importSurvey_view with import results or error information.
+     */
     public function actionImport()
     {
         //everybody who has permission to create surveys
@@ -2426,7 +2435,11 @@ class SurveyAdministrationController extends LSBaseController
         App()->loadHelper('admin.import');
 
         if (!$aData['bFailed']) {
-            $aImportResults = importSurveyFile($sFullFilepath, (App()->request->getPost('translinksfields') == '1'));
+            $targetSurveysGroup = App()->request->getPost('surveysgroup');
+            if (!in_array($targetSurveysGroup, ['default', 'from_survey'], true)) {
+                $targetSurveysGroup = 'default';
+            }
+            $aImportResults = importSurveyFile($sFullFilepath, (App()->request->getPost('translinksfields') == '1'), null, null, null, $targetSurveysGroup);
             if (is_null($aImportResults)) {
                 $aImportResults = array(
                     'error' => gT("Unknown error while reading the file, no survey created.")

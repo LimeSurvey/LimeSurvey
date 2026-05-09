@@ -77,7 +77,7 @@ class AdminTheme extends CFormModel
         }
 
         // If the theme directory doesn't exist, it can be that:
-        // - user updated from 2.06 and still have old theme configurated in database
+        // - user updated from 2.06 and still have old theme configured in database
         // - user deleted a custom theme
         // In any case, we just set Sea Green as the template to use
         if (!is_dir($sTemplateDir . DIRECTORY_SEPARATOR . $sAdminThemeName)) {
@@ -236,7 +236,7 @@ class AdminTheme extends CFormModel
 
         // We check if the asset manager should be use.
         // When defining the package with a base path (a directory on the file system), the asset manager is used
-        // When defining the package with a base url, the file is directly registerd without the asset manager
+        // When defining the package with a base url, the file is directly registered without the asset manager
         // See : http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
         if (!YII_DEBUG || self::$use_asset_manager || App()->getConfig('use_asset_manager')) {
             Yii::setPathOfAlias('admin.theme.path', $this->path);

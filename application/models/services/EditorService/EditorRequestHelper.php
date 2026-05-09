@@ -17,10 +17,10 @@ class EditorRequestHelper
      * The long term solution for this is to ensure the application
      * alwatys uses the same format for specifying survey id.
      *
-     * @param CHttpRequest ?$request
+     * @param ?CHttpRequest ?$request
      * @return string|null
      */
-    public static function findSurveyId(CHttpRequest $request = null)
+    public static function findSurveyId(?CHttpRequest $request = null)
     {
         $request = $request ? $request : Yii::app()->request;
 
@@ -50,10 +50,10 @@ class EditorRequestHelper
      * Searches for the question id across different parameter names
      * due to inconsistency in how question id is specified in requests.
      *
-     * @param CHttpRequest|null $request The HTTP request object. If null, uses the application's current request.
+     * @param ?CHttpRequest $request The HTTP request object. If null, uses the application's current request.
      * @return string|null The question ID if found in the request, null otherwise.
      */
-    public static function findQuestionId(CHttpRequest $request = null)
+    public static function findQuestionId(?CHttpRequest $request = null)
     {
         $request = $request ? $request : Yii::app()->request;
 
@@ -79,10 +79,10 @@ class EditorRequestHelper
      * Searches for the question group id across different parameter names
      * due to inconsistency in how question group id is specified in requests.
      *
-     * @param CHttpRequest|null $request The HTTP request object. If null, uses the application's current request.
+     * @param ?CHttpRequest $request The HTTP request object. If null, uses the application's current request.
      * @return string|null The question group ID if found in the request, null otherwise.
      */
-    public static function findQuestionGroupId(CHttpRequest $request = null)
+    public static function findQuestionGroupId(?CHttpRequest $request = null)
     {
         $request = $request ? $request : Yii::app()->request;
 

@@ -881,13 +881,13 @@ class SurveyCondition
                 } //foreach
             } elseif ($rows['type'] == \Question::QT_R_RANKING) {
                 //Answer Ranking
-                $aresult = \Answer::model()->with(array(
-                            'answerl10ns' => array(
-                                'condition' => 'answerl10ns.language = :lang',
+                $aresult = \Question::model()->with(array(
+                            'questionl10ns' => array(
+                                'condition' => 'questionl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(
                                 array(
-                                    "qid" => $rows['qid'],
+                                    "parent_qid" => $rows['qid'],
                                     "scale_id" => 0,
                                 )
                             );
@@ -896,8 +896,8 @@ class SurveyCondition
 
                 $quicky = [];
                 foreach ($aresult as $arow) {
-                    $theanswer = $arow->answerl10ns[$this->language]->answer;
-                    $quicky[] = array($arow['code'], $theanswer);
+                    $thesubquestion = $arow->questionl10ns[$this->language]->question;
+                    $quicky[] = array($arow['title'], $thesubquestion);
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
@@ -1094,7 +1094,7 @@ class SurveyCondition
     }
 
     /**
-     * Resturns the question count of an array received as parameter
+     * Returns the question count of an array received as parameter
      * @param array $cquestions
      * @return int
      */
@@ -1670,7 +1670,7 @@ class SurveyCondition
     }
 
     /**
-     * Retreives scenarios and conditions of question
+     * Retrieves scenarios and conditions of question
      * @param int $qid the question id
      * @return array generates an array of the format of
      * [
