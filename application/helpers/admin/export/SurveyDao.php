@@ -12,9 +12,11 @@ class SurveyDao
      * on language codes.
      *
      * @param int $id
+     * @param $lang
+     * @param FormattingOptions $oOptions
      * @return SurveyObj
      */
-    public function loadSurveyById($id, $lang = null, FormattingOptions $oOptions = null)
+    public function loadSurveyById($id, $lang = null, ?FormattingOptions $oOptions = null)
     {
         $survey = new SurveyObj();
 

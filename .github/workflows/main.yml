@@ -2,6 +2,8 @@ name: LimeSurvey - CI pipeline
 # Triggers the workflow on push or pull request events on all branches
 on:
   pull_request:
+    paths-ignore:
+      - 'editor/**'
   push:
     branches:
       - '*'
@@ -10,6 +12,8 @@ on:
       - 'bug/**'
       - 'feature/**'
       - 'zoho/**'
+    paths-ignore:
+      - 'editor/**'
 
 permissions:
   contents: read
@@ -147,7 +151,7 @@ jobs:
       - name: Run functional tests
         env:
           DOMAIN: localhost
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped tests/functional
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v4
@@ -289,7 +293,7 @@ jobs:
       - name: Run unit tests
         env:
           XDEBUG_MODE: coverage
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped ${{ matrix.db-type != 'mysql' && '--exclude-group mysql' || '' }} tests/unit
       - name: Upload cov.xml
         uses: actions/upload-artifact@v4
         with:

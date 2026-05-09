@@ -1,37 +1,35 @@
-<phpunit bootstrap="tests/bootstrap.php" 
-         stderr="true"
-         colors="true" >
-    <testsuites>
-        <testsuite name="unit">
-            <directory>tests/unit</directory>
-        </testsuite>
-        <testsuite name="functional">
-            <directory>tests/functional</directory>
-        </testsuite>
-        <testsuite name="acceptance">
-            <directory>tests/functional/acceptance</directory>
-        </testsuite>
-        <testsuite name="remotecontrolunit">
-            <file>tests/unit/CsrfHttpRequestTest.php</file>
-            <file>tests/unit/helpers/RemoteControlGetAvailableSiteSettingsTest.php</file>
-            <file>tests/unit/helpers/RemoteControlGetUploadedFilesTest.php</file>
-            <file>tests/unit/helpers/RemoteControlQuotaTest.php</file>
-            <directory>tests/unit/helpers/remotecontrol</directory>
-        </testsuite>
-        <testsuite name="remotecontrolfunctional">
-            <file>tests/functional/backend/RemoteControlJsonrpcTest.php</file>
-            <file>tests/functional/backend/RemoteControlXmlrpcTest.php</file>
-        </testsuite>
-    </testsuites>
-
-    <!-- This filter is for the code coverage -->
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">application/models/services</directory>
-        </whitelist>
-    </filter>
-
-    <logging>
-        <log type="coverage-clover" target="cov.xml"/>
-    </logging>
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/bootstrap.php" stderr="true" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">application/models/services</directory>
+    </include>
+    <report>
+      <clover outputFile="cov.xml"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="unit">
+      <directory>tests/unit</directory>
+    </testsuite>
+    <testsuite name="functional">
+      <directory>tests/functional</directory>
+    </testsuite>
+    <testsuite name="acceptance">
+      <directory>tests/functional/acceptance</directory>
+    </testsuite>
+    <testsuite name="remotecontrolunit">
+      <file>tests/unit/CsrfHttpRequestTest.php</file>
+      <file>tests/unit/helpers/RemoteControlGetAvailableSiteSettingsTest.php</file>
+      <file>tests/unit/helpers/RemoteControlGetUploadedFilesTest.php</file>
+      <file>tests/unit/helpers/RemoteControlQuotaTest.php</file>
+      <directory>tests/unit/helpers/remotecontrol</directory>
+    </testsuite>
+    <testsuite name="remotecontrolfunctional">
+      <file>tests/functional/backend/RemoteControlJsonrpcTest.php</file>
+      <file>tests/functional/backend/RemoteControlXmlrpcTest.php</file>
+    </testsuite>
+  </testsuites>
+  <!-- This filter is for the code coverage -->
+  <logging/>
 </phpunit>

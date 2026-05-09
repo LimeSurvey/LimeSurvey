@@ -24,6 +24,10 @@ export class PluginManager {
   getPlugin(slotName) {
     return this.plugins.get(slotName)
   }
+
+  hasPlugin(slotName) {
+    return this.plugins.has(slotName)
+  }
 }
 
 const pluginManagerInstance = PluginManager.getInstance()

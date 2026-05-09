@@ -426,13 +426,14 @@ class DataEntry extends SurveyCommonAction
             $sNewTimingsTable = "timings_{$surveyid}";
             $iRecordCountT = null;
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
+                [$left, $right] = getFieldWrappers();
                 // Import timings
                 $aFieldsOldTimingTable = array_values(Yii::app()->db->schema->getTable('{{' . $sOldTimingsTable . '}}')->columnNames);
                 $aFieldsNewTimingTable = array_values(Yii::app()->db->schema->getTable('{{' . $sNewTimingsTable . '}}')->columnNames);
 
                 $aValidTimingFields = array_intersect($aFieldsOldTimingTable, $aFieldsNewTimingTable);
 
-                $sQueryOldValues = "SELECT " . implode(", ", $aValidTimingFields) . " FROM {{{$sOldTimingsTable}}} ";
+                $sQueryOldValues = "SELECT {$left}" . implode("{$right}, {$left}", $aValidTimingFields) . "{$right} FROM {{{$sOldTimingsTable}}} ";
                 $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll(); //Checked
                 $iRecordCountT = 0;
                 foreach ($aQueryOldValues as $sRecord) {
@@ -2028,10 +2029,10 @@ class DataEntry extends SurveyCommonAction
     /**
      * Returns the last answer for token or anonymous survey.
      * @param \Survey $survey Survey
-     * @param \Token  $token  Token
+     * @param Token  $token  Token
      * @return string
      */
-    private function getLastAnswerByTokenOrAnonymousSurvey(Survey $survey, Token $token = null): string
+    private function getLastAnswerByTokenOrAnonymousSurvey(Survey $survey, ?Token $token = null): string
     {
         $lastAnswer = '';
         $isTokenNull  = $token == null;

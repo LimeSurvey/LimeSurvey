@@ -1239,7 +1239,7 @@ class Update_700 extends DatabaseUpdateBase
         $leftSeparator = $rightSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
-        } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
+        } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
             $leftSeparator = "[";
             $rightSeparator = "]";
         }
@@ -1320,7 +1320,7 @@ class Update_700 extends DatabaseUpdateBase
         $preinsert = "";
         $postinsert = "";
         foreach ($fieldMap as $TABLE_NAME => $fields) {
-            if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
+            if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
                 $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
                 $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
             }

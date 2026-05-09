@@ -1031,11 +1031,20 @@ class UserManagementController extends LSBaseController
                 fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
                 $header = array_keys($exportUser);
                 //Add csv header
-                fputcsv($fp, $header, ';', '"');
-
+                fputcsv(
+                    stream: $fp,
+                    fields: $header,
+                    separator: ';',
+                    escape: "\\"
+                );
                 //add csv row datas
                 foreach ($aUsers as $fields) {
-                    fputcsv($fp, $fields, ';', '"');
+                    fputcsv(
+                        stream: $fp,
+                        fields: $fields,
+                        separator: ';',
+                        escape: "\\"
+                    );
                 }
                 fclose($fp);
                 header('Content-Encoding: UTF-8');

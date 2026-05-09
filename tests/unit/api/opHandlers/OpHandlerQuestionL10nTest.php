@@ -18,7 +18,7 @@ use ls\tests\TestBaseClass;
 /**
  * @testdox OpHandlerQuestionL10nUpdate
  */
-class OpHandlerQuestionL10nUpdateTest extends TestBaseClass
+class OpHandlerQuestionL10nTest extends TestBaseClass
 {
     /**
      * @testdox can handle a questionL10n update
