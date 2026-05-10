@@ -101,6 +101,11 @@ class TestHelper extends TestCase
         $radix = \getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['separator'];
         $LEMdebugLevel = 0;
+
+        // Initialize displayTimezone from survey or config
+        $survey = \Survey::model()->findByPk($surveyId);
+        $displayTimezone = ($survey && $survey->displayTimezone) ? $survey->displayTimezone : Yii::app()->getConfig('displayTimezone', 'UTC');
+
         $surveyOptions = array(
             'active' => ($thissurvey['active'] == 'Y'),
             'allowsave' => ($thissurvey['allowsave'] == 'Y'),
