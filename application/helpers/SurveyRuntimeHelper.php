@@ -781,7 +781,6 @@ class SurveyRuntimeHelper
             // for backward compatibilty convert timezone string to +/- hours
             'timeadjust'                  => convertTimezoneDiffToHours(),
             'token'                       => $clienttoken,
-            'displayTimezone'             => Yii::app()->getConfig('displayTimezone'),
         );
     }
 
