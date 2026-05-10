@@ -194,8 +194,7 @@ class UserAction extends SurveyCommonAction
         $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : App()->getConfig('preselectquestiontype');
         $currentPreselectedQuestionTheme = array_key_exists('preselectquestiontheme', $aUserSettings) ? $aUserSettings['preselectquestiontheme'] : App()->getConfig('preselectquestiontheme');
 
-        $oGlobalDisplayTimezone = SettingGlobal::model()->findByPk('displayTimezone');
-        $globalDisplayTimezone = ($oGlobalDisplayTimezone && !empty($oGlobalDisplayTimezone->stg_value)) ? $oGlobalDisplayTimezone->stg_value : 'UTC';
+        $globalDisplayTimezone = Yii::app()->getConfig('displayTimezone', 'UTC');
         $aData['globalDisplayTimezone'] = $globalDisplayTimezone;
 
         $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
