@@ -1126,8 +1126,8 @@ class User extends LSActiveRecord
             $now = gmdate("Y-m-d H:i:s");
             $expirationTime = (string) $this->expires;
 
-            // Time comparison
-            $expired = new DateTime($expirationTime) < new DateTime($now);
+            // Time comparison (treat equality as expired, aligning with notexpired scope: expires > now)
+            $expired = new DateTime($expirationTime) <= new DateTime($now);
         }
         return $expired;
     }

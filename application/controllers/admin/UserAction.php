@@ -128,8 +128,8 @@ class UserAction extends SurveyCommonAction
                 SettingsUser::setUserSetting('breadcrumbMode', Yii::app()->request->getPost('breadcrumbMode'));
                 
                 // Validate and save displayTimezone: accept empty string or valid timezone identifier
-                $displayTimezone = Yii::app()->request->getPost('displayTimezone', '');
-                if (empty($displayTimezone) || in_array($displayTimezone, timezone_identifiers_list())) {
+                $displayTimezone = trim(Yii::app()->request->getPost('displayTimezone', ''));
+                if ($displayTimezone === '' || in_array($displayTimezone, timezone_identifiers_list(), true)) {
                     SettingsUser::setUserSetting('displayTimezone', $displayTimezone);
                 }
                 // If invalid timezone, silently skip saving (preserves existing setting)
