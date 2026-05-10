@@ -34,8 +34,8 @@ class SurveyTest extends TestBaseClass
 
     public function setUp(): void
     {
-        \SettingGlobal::setSetting('timeadjust', '+0 minutes');
-        \Yii::app()->setConfig('displayTimezone', '');
+        \SettingGlobal::setSetting('displayTimezone', 'UTC');
+        \Yii::app()->setConfig('displayTimezone', 'UTC');
     }
 
     /**
@@ -66,12 +66,12 @@ class SurveyTest extends TestBaseClass
 
         $this->assertSame('expired', $state, 'Survey expires property is ' . $survey->expires);
 
-        //Test with time adjust.
-        \SettingGlobal::setSetting('timeadjust', '+420 minutes');
+        //Test with display timezone.
+        \Yii::app()->setConfig('displayTimezone', 'Pacific/Auckland');
 
         $state = $survey->getState();
 
-        $this->assertSame('expired', $state, 'Survey expires property is ' . $survey->expires . ' (time adjust test)');
+        $this->assertSame('expired', $state, 'Survey expires property is ' . $survey->expires . ' (display timezone test)');
     }
 
     /**
@@ -175,8 +175,8 @@ class SurveyTest extends TestBaseClass
         $this->assertStringContainsString(gT('End: Never'), $icon, 'The icon link does not have the right text.');
         $this->assertStringContainsString('ri-play-fill text-primary', $icon, 'The icon link does not have the right css classes.');
 
-        //Test with time adjust.
-        \SettingGlobal::setSetting('timeadjust', '+420 minutes');
+        //Test with display timezone.
+        \Yii::app()->setConfig('displayTimezone', 'Pacific/Auckland');
 
         $newIcon = $survey->getRunning();
 
