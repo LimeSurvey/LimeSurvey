@@ -17632,16 +17632,6 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 .ls-breadcrumb {
   margin-bottom: 0.65em;
 }
-.ls-breadcrumb a:hover {
-  color: inherit;
-}
-.ls-breadcrumb a:focus {
-  color: inherit;
-  border: none;
-}
-.ls-breadcrumb a:active {
-  color: inherit;
-}
 .ls-breadcrumb h1, .ls-breadcrumb .h1 {
   margin: 0;
 }
@@ -19286,6 +19276,20 @@ input[type=number] {
   display: flex;
   justify-content: flex-end;
   gap: 5px;
+}
+
+#survey-settings-panel .survey-settings a:hover .survey-settings-panel-item {
+  background-color: #EEEFF7;
+}
+#survey-settings-panel .survey-settings a:focus-visible, #survey-settings-panel .survey-settings a:active {
+  outline: none;
+}
+#survey-settings-panel .survey-settings a:focus-visible .survey-settings-panel-item,
+#survey-settings-panel .survey-settings a:active .survey-settings-panel-item {
+  color: #333641;
+  outline: none;
+  box-shadow: inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
+  background-color: #fff;
 }
 
 .badge {

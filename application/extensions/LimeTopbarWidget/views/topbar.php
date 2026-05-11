@@ -12,7 +12,7 @@
             <div class="ls-breadcrumb col-12">
                 <h1 role="presentation" class="align-items-center d-flex">
                     <?php if ($titleBackLink !== null): ?>
-                        <a class="topbar-back-link" aria-label="<?= gT('Back') ?>" href="<?= $titleBackLink ?>">
+                        <a class="topbar-back-link ls-link" aria-label="<?= gT('Back') ?>" href="<?= $titleBackLink ?>">
                             <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
                         </a>
                     <?php endif; ?>
