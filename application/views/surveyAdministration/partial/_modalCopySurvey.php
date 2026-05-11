@@ -30,7 +30,7 @@
                         <label  class="form-label" for='copysurveytitle'><?php eT("New survey title:"); ?> </label>
                         <input type='text' id='copysurveytitle' name='copysurveytitle' value='' class="form-control" aria-describedby="copysurveytitleHelp"/>
                         <p class="form-control-static" id="copysurveytitleHelp">
-                            <span class='reg12'><?php echo  gT('Optional - Leave this field empty to assign a new title with "... - Copy" automatically'); ?> </span>
+                            <span class='reg12'><?php echo  gT('Optional - Leave this field empty to assign a new title with "... - Copy" automatically.'); ?> </span>
                         </p>
                     </div>
 
