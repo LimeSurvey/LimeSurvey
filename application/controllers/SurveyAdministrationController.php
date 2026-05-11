@@ -374,7 +374,10 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         if (!empty($aCodeMap)) {
-            replaceExpressionCodes($iSurveyID, $aCodeMap);
+            // NOTE: replaceExpressionCodes() is currently unreliable and intentionally disabled.
+            // Rebuild relevance/conditions state only.
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+            LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
         }
         Yii::app()->setFlashMessage(gT("Question codes were successfully regenerated."));
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
