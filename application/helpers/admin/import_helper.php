@@ -569,8 +569,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         }
     }
 
-    // Update question code references in custom conditions and relevance expressions
-    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+    // NOTE: replaceExpressionCodes() is currently unreliable and intentionally disabled.
+    // Keep EM regeneration below to avoid persisting stale derived relevance state.
 
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
@@ -3309,8 +3309,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['FieldReMap'] = $aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
     translateInsertansTags($iNewSID, $iOldSID, $aOldNewFieldmap);
-    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
-    replaceExpressionCodes($iNewSID, $aQuestionsMapping); // replace question codes in format "38612X105X3011"
+    // NOTE: replaceExpressionCodes() is currently unreliable and intentionally disabled.
+    // replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+    // replaceExpressionCodes($iNewSID, $aQuestionsMapping); // replace question codes in format "38612X105X3011"
     if (count($aQuestionCodeReplacements)) {
         array_unshift($results['importwarnings'], "<span class='warningtitle'>" . gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.') . '</span>');
     }
