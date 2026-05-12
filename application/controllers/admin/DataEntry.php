@@ -623,7 +623,7 @@ class DataEntry extends SurveyCommonAction
             }
 
             $results1['id'] = "";
-            $results1['datestamp'] = dateShift((string) gmdate("Y-m-d H:i:s"), "Y-m-d H:i");
+            $results1['datestamp'] = gmdate("Y-m-d H:i:s");
             $results1['ipaddr'] = $saver['ip'];
             $results[] = $results1;
         }
@@ -1848,11 +1848,21 @@ class DataEntry extends SurveyCommonAction
                     }
                 }
                 if (isset($_POST['closerecord'])) {
-                    if ($survey->isDateStamp) {
-                        $_POST['submitdate'] = gmdate("Y-m-d H:i");
+                    if (isset($_POST['closedate'])) {
+                        // closedate is stored as UTC in the hidden form field
+                        $submitdate = $_POST['closedate'];
+                        try {
+                            $dtObj = new DateTime($submitdate, new DateTimeZone('UTC'));
+                            $submitdate = $dtObj->format('Y-m-d H:i:s');
+                        } catch (\Exception $e) {
+                            $submitdate = gmdate("Y-m-d H:i:s");
+                        }
+                    } elseif ($survey->isDateStamp) {
+                        $submitdate = gmdate("Y-m-d H:i:s");
                     } else {
-                        $_POST['submitdate'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                        $submitdate = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                     }
+                    $_POST['submitdate'] = $submitdate;
                 }
                 $phparray = [];
                 foreach ($fieldmap as $irow) {
@@ -1924,20 +1934,7 @@ class DataEntry extends SurveyCommonAction
                 $new_response->encryptSave();
                 $last_db_id = $new_response->getPrimaryKey();
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') {
-                    // submittoken
-                    // get submit date
-                    if (isset($_POST['closedate'])) {
-                        // closedate is stored as UTC in the hidden form field
-                        $submitdate = $_POST['closedate'];
-                        try {
-                            $dtObj = new DateTime($submitdate, new DateTimeZone('UTC'));
-                            $submitdate = $dtObj->format('Y-m-d H:i:s');
-                        } catch (\Exception $e) {
-                            $submitdate = gmdate("Y-m-d H:i:s");
-                        }
-                    } else {
-                        $submitdate = gmdate("Y-m-d H:i:s");
-                    }
+                    // submittoken — $submitdate already normalized above
                     // query for updating tokens uses left
                     if ($lastanswfortoken == '' || $lastanswfortoken == 'AnonymousNotCompleted') {
                         $aToken = Token::model($surveyid)->findByAttributes(['token' => $_POST['token']]);
