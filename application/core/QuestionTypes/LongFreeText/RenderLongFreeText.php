@@ -28,6 +28,12 @@ class RenderLongFreeText extends QuestionBaseRenderer
         return;
     }
 
+    /**
+     * Render the Long free text question textarea.
+     *
+     * @param string $sCoreClasses Additional CSS classes
+     * @return array{0: string, 1: string[]} Rendered HTML and input name(s)
+     */
     public function render($sCoreClasses = '')
     {
         $answer = '';
@@ -45,7 +51,7 @@ class RenderLongFreeText extends QuestionBaseRenderer
 
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         if (intval(trim((string) $this->getQuestionAttribute('maximum_chars'))) > 0) {
-            $maxlength = intval(trim((string) $this->getQuestionAttribute('maximum_chars')));
+            $maxlength = $this->getEffectiveMaxChars(102400);
             $extraclass .= " ls-input-maxchars";
         }
 
