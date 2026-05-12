@@ -80,6 +80,7 @@ export const ContentEditable = ({
         slotName={PLUGIN_SLOTS.CONTENT_EDITOR}
         value={value}
         onChange={onChange}
+        focused={isFocused}
       />
     </>
   )

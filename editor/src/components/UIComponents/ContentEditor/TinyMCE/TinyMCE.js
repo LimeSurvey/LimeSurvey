@@ -201,6 +201,7 @@ export const TinyMCE = ({
         slotName={PLUGIN_SLOTS.CONTENT_EDITOR}
         value={editorValueRef.current}
         onChange={updateTitle}
+        focused={isFocused}
       />
     </>
   )
