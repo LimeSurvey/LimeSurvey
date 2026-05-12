@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * This class handles all methods of the RemoteControl 2 API
