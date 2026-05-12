@@ -175,12 +175,26 @@
 
 .create-menu-item {
   width: 222px;
-  border: 1px solid $white;
-  &:hover {
-    border-color: $grape !important;
-    border: 1px solid;
+
+  // Style for dropdown-item inside
+  .dropdown-item {
+    border: 1px solid transparent;
     border-radius: 2px;
-    background-color: $white !important;
+    // Hover state - grey background, no border
+    &:hover {
+      border-color: transparent;
+      background-color: $g-200;
+    }
+    // Focus/active/clicked state - purple border
+    &:focus-within,
+    &:focus,
+    &:active
+    {
+      color: $g-800;
+      outline: none;
+      border-color: $grape;
+      background-color: $white;
+    }
   }
 }
 

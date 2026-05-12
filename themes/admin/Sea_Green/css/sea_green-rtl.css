@@ -18031,13 +18031,20 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .create-menu-item {
   width: 222px;
-  border: 1px solid #fff;
 }
-.create-menu-item:hover {
-  border-color: #8146F6 !important;
-  border: 1px solid;
+.create-menu-item .dropdown-item {
+  border: 1px solid transparent;
   border-radius: 2px;
-  background-color: #fff !important;
+}
+.create-menu-item .dropdown-item:hover {
+  border-color: transparent;
+  background-color: #EEEFF7;
+}
+.create-menu-item .dropdown-item:focus-within, .create-menu-item .dropdown-item:focus, .create-menu-item .dropdown-item:active {
+  color: #333641;
+  outline: none;
+  border-color: #8146F6;
+  background-color: #fff;
 }
 
 .dropdown-toggle-no-caret::after {
