@@ -35,12 +35,6 @@
       <file>tests/functional/backend/CreateSurveyTest.php</file>
       <file>tests/functional/backend/InstallationControllerTest.php</file>
     </testsuite>
-    <!--
-      The original `question` suite (17 files, ~163s wall-time) was the slowest
-      single suite in the CI matrix. It is split into two time-balanced bins
-      (~82s each) via greedy bin-pack on per-class JUnit times. Keep this split
-      in sync with .github/workflows/functional.yml and tests/run-functional-tests-local.sh.
-    -->
     <testsuite name="question-a">
       <file>tests/functional/backend/SaveQuestionAttributesTest.php</file>
       <file>tests/functional/backend/QuestionThemeTest.php</file>
