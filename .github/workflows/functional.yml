@@ -1,13 +1,20 @@
 name: LimeSurvey - Functional Tests
-# Triggers the workflow on push or pull request events on all branches
+# Run on PRs against the long-lived branches and on direct pushes to them.
+# Feature-branch pushes are covered by the `pull_request` trigger once a PR
+# exists — listing them under `push` too would double-run CI for the same commit.
 on:
   pull_request:
+    branches:
+      - master
+      - develop-major
+      - develop-minor
     paths-ignore:
       - 'editor/**'
   push:
     branches:
-      - '*'
-      - '**'
+      - master
+      - develop-major
+      - develop-minor
     paths-ignore:
       - 'editor/**'
 

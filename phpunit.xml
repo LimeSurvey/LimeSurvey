@@ -72,6 +72,7 @@
       <file>tests/functional/frontend/MandatorySoftTest.php</file>
     </testsuite>
     <testsuite name="navigation">
+      <file>tests/functional/acceptance/14782-override-translation/LSMessageSourceTest.php</file>
       <file>tests/functional/frontend/EndUrlRedirectTest.php</file>
       <file>tests/functional/frontend/GroupRandomizationTest.php</file>
       <file>tests/functional/frontend/LanguageChangerTest.php</file>
@@ -81,7 +82,6 @@
       <file>tests/functional/frontend/SurveyNavigationTest.php</file>
       <file>tests/functional/frontend/TimerMessagesEscapingTest.php</file>
       <file>tests/functional/frontend/TokenAttributeInDescriptionTest.php</file>
-      <file>tests/functional/acceptance/14782-override-translation/LSMessageSourceTest.php</file>
     </testsuite>
     <testsuite name="import-export">
       <file>tests/functional/backend/ImportExportIrrelevantTest.php</file>
