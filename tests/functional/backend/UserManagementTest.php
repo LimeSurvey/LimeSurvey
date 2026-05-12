@@ -134,9 +134,9 @@ class UserManagementTest extends TestBaseClassWeb
             self::adminLogout();
             self::adminLogin($username, $suggestedPassword);
 
-            // Check that the user menu is present
+            // Check that the user menu is present (only present, see mantis issue #20508
             self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverExpectedCondition::presenceOfElementLocated(
                     WebDriverBy::xpath("//a[text()[contains(.,'{$username}')]]")
                 )
             );

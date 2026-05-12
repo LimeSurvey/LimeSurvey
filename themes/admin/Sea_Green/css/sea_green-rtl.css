@@ -17390,6 +17390,26 @@ body {
   border: 1px solid #1E1E1E;
 }
 
+#copySurvey_modal [data-bs-target="#copySurveyAdvanced"]:hover, #copySurvey_modal [data-bs-target="#copySurveyAdvanced"]:focus, #copySurvey_modal [data-bs-target="#copySurveyAdvanced"]:active {
+  background-color: transparent;
+  color: inherit;
+  box-shadow: none;
+  text-decoration: none;
+  border-color: transparent;
+}
+
+#copySurvey_modal legend.form-label {
+  float: none;
+  font-size: 0.9975rem;
+  font-weight: 500;
+  color: #152536;
+  line-height: 20px;
+  width: auto;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  border-bottom: none;
+}
+
 body {
   color: #1E1E1E;
   font-family: "IBMPlexSans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
