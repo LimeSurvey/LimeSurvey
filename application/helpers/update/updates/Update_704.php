@@ -35,8 +35,9 @@ class Update_704 extends DatabaseUpdateBase
     }
 
     /**
-     * Deduplicate existing non-empty duplicate emails by appending '+uid'
-     * to all but the lowest uid for each duplicate.
+     * Deduplicate existing non-empty duplicate emails by inserting a unique
+     * sub-address tag into the local part so the result is still a valid
+     * RFC 5322 address (e.g. user+migration5@example.com).
      */
     private function deduplicateEmails()
     {
@@ -52,14 +53,59 @@ class Update_704 extends DatabaseUpdateBase
             // Keep the first one, rename the rest.
             array_shift($rows);
             foreach ($rows as $uid) {
-                $newEmail = $dupEmail . '+' . $uid;
+                $candidate = $this->buildUniqueEmail($dupEmail, $uid);
                 $this->db->createCommand()
                     ->setText("UPDATE {{users}} SET email = :newEmail WHERE uid = :uid")
-                    ->bindValue(':newEmail', $newEmail)
+                    ->bindValue(':newEmail', $candidate)
                     ->bindValue(':uid', $uid)
                     ->execute();
             }
         }
+    }
+
+    /**
+     * Build a valid, unique email by inserting a tag into the local part.
+     *
+     * @param string $email  Original duplicate email address.
+     * @param int    $uid    User id used as the primary differentiator.
+     * @return string A unique email address.
+     */
+    private function buildUniqueEmail(string $email, int $uid): string
+    {
+        $atPos = strrpos($email, '@');
+        if ($atPos !== false) {
+            $local  = substr($email, 0, $atPos);
+            $domain = substr($email, $atPos); // includes '@'
+        } else {
+            // Malformed address – treat the whole value as local part.
+            $local  = $email;
+            $domain = '';
+        }
+
+        $candidate = $local . '+migration' . $uid . $domain;
+        $suffix = 0;
+
+        while ($this->emailExists($candidate)) {
+            $suffix++;
+            $candidate = $local . '+migration' . $uid . '_' . $suffix . $domain;
+        }
+
+        return $candidate;
+    }
+
+    /**
+     * Check whether an email already exists in the users table.
+     *
+     * @param string $email
+     * @return bool
+     */
+    private function emailExists(string $email): bool
+    {
+        $count = (int) $this->db->createCommand()
+            ->setText("SELECT COUNT(*) FROM {{users}} WHERE email = :email")
+            ->bindValue(':email', $email)
+            ->queryScalar();
+        return $count > 0;
     }
 
     /**
