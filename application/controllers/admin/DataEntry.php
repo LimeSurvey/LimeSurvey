@@ -1923,17 +1923,13 @@ class DataEntry extends SurveyCommonAction
                     // submittoken
                     // get submit date
                     if (isset($_POST['closedate'])) {
-                        // User-provided close date is in display timezone; convert to UTC
+                        // closedate is stored as UTC in the hidden form field
                         $submitdate = $_POST['closedate'];
-                        $displayTz = Yii::app()->getConfig('displayTimezone');
-                        if (!empty($displayTz)) {
-                            try {
-                                $dtObj = new DateTime($submitdate, new DateTimeZone($displayTz));
-                                $dtObj->setTimezone(new DateTimeZone('UTC'));
-                                $submitdate = $dtObj->format('Y-m-d H:i:s');
-                            } catch (\Exception $e) {
-                                $submitdate = gmdate("Y-m-d H:i:s");
-                            }
+                        try {
+                            $dtObj = new DateTime($submitdate, new DateTimeZone('UTC'));
+                            $submitdate = $dtObj->format('Y-m-d H:i:s');
+                        } catch (\Exception $e) {
+                            $submitdate = gmdate("Y-m-d H:i:s");
                         }
                     } else {
                         $submitdate = gmdate("Y-m-d H:i:s");

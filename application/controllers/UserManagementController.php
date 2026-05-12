@@ -172,8 +172,14 @@ class UserManagementController extends LSBaseController
         $expires = Yii::app()->request->getPost('expires', null);
         if (!empty($expires)) {
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-            $datetimeobj = new Date_Time_Converter($expires, $dateformatdetails['phpdate'] . ' H:i');
-            $aUser['expires'] = $datetimeobj->convert("Y-m-d H:i:s");
+            $displayTz = Yii::app()->getConfig('displayTimezone') ?: 'UTC';
+            $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . ' H:i', $expires, new DateTimeZone($displayTz));
+            if ($datetimeobj) {
+                $datetimeobj->setTimezone(new DateTimeZone('UTC'));
+                $aUser['expires'] = $datetimeobj->format('Y-m-d H:i:s');
+            } else {
+                $aUser['expires'] = null;
+            }
         } else {
             $aUser['expires'] = null;
         }
@@ -1327,10 +1333,12 @@ class UserManagementController extends LSBaseController
         if (trim((string) $expires) === "") {
             $expires = null;
         } else {
-            $datetimeobj = DateTime::createFromFormat('!' . $formatdata['phpdate'] . ' H:i', $expires);
+            $displayTz = Yii::app()->getConfig('displayTimezone') ?: 'UTC';
+            $datetimeobj = DateTime::createFromFormat('!' . $formatdata['phpdate'] . ' H:i', $expires, new DateTimeZone($displayTz));
             if (!is_object($datetimeobj)) {
                 throw new CHttpException(400, sprintf(gT('Invalid date, please use "%s" format.', 'unescaped'), $formatdata['phpdate'] . " H:i"));
             }
+            $datetimeobj->setTimezone(new DateTimeZone('UTC'));
             $expires = $datetimeobj->format('Y-m-d H:i:s');
         }
         $aResults = [];
