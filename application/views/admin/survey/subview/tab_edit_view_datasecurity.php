@@ -81,20 +81,16 @@ PrepareEditorScript(false, $this);
 
 <nav>
     <div class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection" role="tablist">
-        <?php foreach ($aTabTitles as $i => $eachtitle) : ?>
-            <button class="nav-link <?php if ($count == 0) {
-                echo "active";
-                } ?>"  role="tab" data-bs-toggle="tab" data-bs-target="#editdatasecele-<?php echo $count;
-                $count++; ?>" type="button">
-                <?php echo $eachtitle; ?>
+        <?php foreach ($aTabTitles as $i => $eachtitle): ?>
+            <button class="nav-link <?= $count == 0 ? "active" : '' ?>" role="tab" data-bs-toggle="tab" data-bs-target="#editdatasecele-<?= $count ?>" type="button">
+                <?= $eachtitle; ?>
             </button>
+            <?php $count++ ?>
         <?php endforeach; ?>
     </div>
     <div class="tab-content">
-        <?php foreach ($aTabContents as $i => $sTabContent) : ?>
-            <?php
-            echo $sTabContent;
-            ?>
+        <?php foreach ($aTabContents as $i => $sTabContent): ?>
+            <?= $sTabContent ?>
         <?php endforeach; ?>
     </div>
 </nav>
