@@ -1368,11 +1368,15 @@ class DataEntry extends SurveyCommonAction
                         $thisdate = "";
                         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                         if ($idrow[$fname['fieldname']] != '') {
-                            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
+                            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']], new DateTimeZone('UTC'));
                             if ($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
-                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
+                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']], new DateTimeZone('UTC'));
                             }
                             if ($datetimeobj) {
+                                $displayTz = Yii::app()->getConfig('displayTimezone');
+                                if (!empty($displayTz)) {
+                                    $datetimeobj->setTimezone(new DateTimeZone($displayTz));
+                                }
                                 $thisdate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
                             }
                         }

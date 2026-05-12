@@ -174,12 +174,17 @@ class UserManagementController extends LSBaseController
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
             $displayTz = Yii::app()->getConfig('displayTimezone') ?: 'UTC';
             $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . ' H:i', $expires, new DateTimeZone($displayTz));
-            if ($datetimeobj) {
-                $datetimeobj->setTimezone(new DateTimeZone('UTC'));
-                $aUser['expires'] = $datetimeobj->format('Y-m-d H:i:s');
-            } else {
-                $aUser['expires'] = null;
+            $errors = DateTime::getLastErrors();
+            if (!$datetimeobj || ($errors && ($errors['error_count'] > 0 || $errors['warning_count'] > 0))) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    "data" => [
+                        'success' => false,
+                        'errors'  => sprintf(gT('Invalid expiry date, please use "%s" format.'), $dateformatdetails['phpdate'] . ' H:i'),
+                    ]
+                ]);
             }
+            $datetimeobj->setTimezone(new DateTimeZone('UTC'));
+            $aUser['expires'] = $datetimeobj->format('Y-m-d H:i:s');
         } else {
             $aUser['expires'] = null;
         }
@@ -1335,7 +1340,8 @@ class UserManagementController extends LSBaseController
         } else {
             $displayTz = Yii::app()->getConfig('displayTimezone') ?: 'UTC';
             $datetimeobj = DateTime::createFromFormat('!' . $formatdata['phpdate'] . ' H:i', $expires, new DateTimeZone($displayTz));
-            if (!is_object($datetimeobj)) {
+            $errors = DateTime::getLastErrors();
+            if (!is_object($datetimeobj) || ($errors && ($errors['error_count'] > 0 || $errors['warning_count'] > 0))) {
                 throw new CHttpException(400, sprintf(gT('Invalid date, please use "%s" format.', 'unescaped'), $formatdata['phpdate'] . " H:i"));
             }
             $datetimeobj->setTimezone(new DateTimeZone('UTC'));
