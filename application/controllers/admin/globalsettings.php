@@ -455,7 +455,7 @@ class GlobalSettings extends SurveyCommonAction
 
         // Check if time zone exists, then save it
         $timezone = App()->getRequest()->getPost('displayTimezone');
-        if (in_array($timezone, DateTimeZone::listIdentifiers())) {
+        if ($timezone === '' || in_array($timezone, DateTimeZone::listIdentifiers())) {
             SettingGlobal::setSetting('displayTimezone', $timezone);
         } else {
             Yii::app()->setFlashMessage(gT("The selected timezone is not valid and was not saved."), 'error');

@@ -157,7 +157,7 @@ class Save
         $this->launchSaveFormEvent($surveyid, 'validate');
         if (empty($this->aSaveErrors)) {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
-            if (!isset($_SESSION['survey_' . $surveyid]['srid'])) {
+            if (!isset($_SESSION['responses_' . $surveyid]['srid'])) {
                 $today = gmdate("Y-m-d H:i:s");
                 $sdata = array(
                     "datestamp"     => $today,

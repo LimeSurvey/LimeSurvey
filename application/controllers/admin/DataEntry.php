@@ -1833,9 +1833,15 @@ class DataEntry extends SurveyCommonAction
                         if ($dtObj) {
                             $dtObj->setTimezone(new DateTimeZone('UTC'));
                             $_POST['datestamp'] = $dtObj->format('Y-m-d H:i');
+                        } else {
+                            Yii::log(sprintf('Invalid datestamp value: %s', htmlentities((string) $_POST['datestamp'])), 'warning', 'application.controllers.admin.DataEntry');
+                            unset($_POST['datestamp']);
+                            unset($_POST['startdate']);
                         }
                     }
-                    $_POST['startdate'] = $_POST['datestamp'];
+                    if (isset($_POST['datestamp'])) {
+                        $_POST['startdate'] = $_POST['datestamp'];
+                    }
                 }
                 if (isset($_POST['closerecord'])) {
                     if ($survey->isDateStamp) {
@@ -1921,9 +1927,13 @@ class DataEntry extends SurveyCommonAction
                         $submitdate = $_POST['closedate'];
                         $displayTz = Yii::app()->getConfig('displayTimezone');
                         if (!empty($displayTz)) {
-                            $dtObj = new DateTime($submitdate, new DateTimeZone($displayTz));
-                            $dtObj->setTimezone(new DateTimeZone('UTC'));
-                            $submitdate = $dtObj->format('Y-m-d H:i:s');
+                            try {
+                                $dtObj = new DateTime($submitdate, new DateTimeZone($displayTz));
+                                $dtObj->setTimezone(new DateTimeZone('UTC'));
+                                $submitdate = $dtObj->format('Y-m-d H:i:s');
+                            } catch (\Exception $e) {
+                                $submitdate = gmdate("Y-m-d H:i:s");
+                            }
                         }
                     } else {
                         $submitdate = gmdate("Y-m-d H:i:s");

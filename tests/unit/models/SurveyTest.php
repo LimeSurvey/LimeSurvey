@@ -8,6 +8,7 @@ class SurveyTest extends TestBaseClass
 {
     protected $modelClassName = \Survey::class;
     private static $intervals;
+    private $oldDisplayTimezone;
 
     public static function setUpBeforeClass(): void
     {
@@ -34,8 +35,15 @@ class SurveyTest extends TestBaseClass
 
     public function setUp(): void
     {
+        $this->oldDisplayTimezone = \Yii::app()->getConfig('displayTimezone');
         \SettingGlobal::setSetting('displayTimezone', 'UTC');
         \Yii::app()->setConfig('displayTimezone', 'UTC');
+    }
+
+    public function tearDown(): void
+    {
+        \SettingGlobal::setSetting('displayTimezone', $this->oldDisplayTimezone ?? '');
+        \Yii::app()->setConfig('displayTimezone', $this->oldDisplayTimezone ?? '');
     }
 
     /**
