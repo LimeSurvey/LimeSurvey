@@ -1055,6 +1055,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
 
+    LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+
     $results['newqid'] = $newqid;
     $results['questions'] = 1;
     $results['labelsets'] = 0;
