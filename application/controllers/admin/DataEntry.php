@@ -1669,9 +1669,9 @@ class DataEntry extends SurveyCommonAction
                     }
                     if (empty($thisvalue)) {
                         if (Survey::model()->findByPk($surveyid)->isDateStamp) {
-                            $oResponse->$fieldname = gmdate("Y-m-d\TH:i");
+                            $oResponse->$fieldname = gmdate("Y-m-d H:i");
                         } else {
-                            $oResponse->$fieldname = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                            $oResponse->$fieldname = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                         }
                         break;
                     }
@@ -1680,7 +1680,7 @@ class DataEntry extends SurveyCommonAction
                 case 'startdate':
                 case 'datestamp':
                     if (empty($thisvalue)) {
-                        $oResponse->$fieldname = gmdate("Y-m-d\TH:i");
+                        $oResponse->$fieldname = gmdate("Y-m-d H:i");
                         break;
                     }
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -1693,7 +1693,7 @@ class DataEntry extends SurveyCommonAction
                     } else {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities((string) $thisvalue), $fieldname), 'warning');
                         /* We get here : we need a valid value : NOT NULL in db or completed != "N" */
-                        $oResponse->$fieldname = gmdate("Y-m-d\TH:i");
+                        $oResponse->$fieldname = gmdate("Y-m-d H:i");
                     }
                     break;
                 default:
