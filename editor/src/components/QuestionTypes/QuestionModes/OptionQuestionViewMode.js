@@ -134,6 +134,7 @@ export const OptionQuestionViewMode = ({
           l10ns: { [language]: { answer: t('No answer') } },
           aid: -999,
           code: '',
+          isNoAnswer: true,
         })
       }
       return childrenArray
@@ -283,6 +284,7 @@ export const OptionQuestionViewMode = ({
               groupName={`${gid}X${qid}`}
               active={selectedIndex === index}
               disabled={UiComponentToRender.name === contentEditorName}
+              isNoAnswer={child.isNoAnswer}
             />
             {shouldShowInput && (
               <Input

@@ -5,7 +5,7 @@ namespace ls\tests;
 /**
  * Tests for the LimeSurvey remote API.
  */
-class QuestionGroupPropertiesTest extends BaseTest
+class QuestionPropertiesTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {

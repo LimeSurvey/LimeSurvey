@@ -31,7 +31,7 @@ export const Select = ({
   defaultValue = options[0],
   menuStyle = {},
   placeholder = t('Please choose...'),
-  menuPlacement = 'bottom',
+  menuPlacement = 'auto',
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [canUseAppState, setCanUseAppState] = useState(false)
@@ -121,6 +121,7 @@ export const Select = ({
           placeholder={placeholder}
           isMulti={isMultiselect}
           menuPlacement={menuPlacement}
+          menuPortalTarget={document.body}
           components={{
             IndicatorSeparator: () => null,
           }}
@@ -134,7 +135,7 @@ export const Select = ({
           styles={{
             menuPortal: (base) => ({
               ...base,
-              zIndex: 4,
+              zIndex: 9999,
             }),
             dropdownIndicator: (base) => ({
               ...base,
@@ -162,8 +163,7 @@ export const Select = ({
             menu: (baseStyles) => ({
               ...baseStyles,
               ...menuStyle,
-              width: '100%',
-              minWidth: 'min-content',
+              zIndex: 9999,
               whiteSpace: 'normal',
               wordWrap: 'break-word',
             }),

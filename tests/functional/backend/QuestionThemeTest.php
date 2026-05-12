@@ -3,6 +3,7 @@
 namespace ls\tests\controllers;
 
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Interactions\WebDriverActions;
 use ls\tests\TestBaseClassWeb;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Remote\LocalFileDetector;
@@ -69,10 +70,15 @@ class QuestionThemeTest extends TestBaseClassWeb
         $this->assertTrue(file_exists($file));
         $fileInput->sendKeys($file)->submit();
 
-        sleep(1);
-
-        // Check result in database
-        $theme = QuestionTheme::model()->findByAttributes(['name' => 'Range-Slider']);
+        // Poll database until the theme appears (up to 20 seconds)
+        $theme = null;
+        for ($i = 0; $i < 20; $i++) {
+            sleep(1);
+            $theme = QuestionTheme::model()->findByAttributes(['name' => 'Range-Slider']);
+            if (!empty($theme)) {
+                break;
+            }
+        }
         $this->assertNotEmpty($theme, 'Found installed question theme in database');
 
         // Check result in filesystem
@@ -87,7 +93,6 @@ class QuestionThemeTest extends TestBaseClassWeb
     public function testSelectQuestionThemeInQuestionEditor()
     {
         try {
-
             // Import survey with one group and question
             $surveyFile = self::$surveysFolder . '/limesurvey_survey_193959_testSelectQuestionThemeInEditor.lss';
             self::importSurvey($surveyFile);
@@ -113,7 +118,7 @@ class QuestionThemeTest extends TestBaseClassWeb
                     WebDriverBy::id('trigger_questionTypeSelector_button')
                 )
             );
-// Scroll it into view and click
+            // Scroll it into view and click
             $web->executeScript("arguments[0].scrollIntoView({block: 'center'});", [$button]);
             sleep(1);
             $button->click();
@@ -192,24 +197,45 @@ class QuestionThemeTest extends TestBaseClassWeb
                 )
             );
             $button->click();
-            sleep(1);
 
-            // Check database
-            $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
-                [
-                    'qid' => self::$testSurvey->questions[0]->qid,
-                    'attribute' => 'range_slider_min'
-                ]
+            // Wait for save to complete: the page reloads and the save button becomes clickable again.
+            self::$webDriver->wait(20)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#save-button-create-question')
+                )
             );
+
+            // Force DB reconnect to see changes committed by the web server (MySQL REPEATABLE READ).
+            \Yii::app()->db->setActive(false);
+            \Yii::app()->db->setActive(true);
+
+            // Poll database until the attribute is saved (up to 10 seconds).
+            $rangeSliderMin = null;
+            for ($i = 0; $i < 10; $i++) {
+                $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
+                    [
+                        'qid' => self::$testSurvey->questions[0]->qid,
+                        'attribute' => 'range_slider_min'
+                    ]
+                );
+                if ($rangeSliderMin !== null) {
+                    break;
+                }
+                sleep(1);
+                \Yii::app()->db->setActive(false);
+                \Yii::app()->db->setActive(true);
+            }
+            $this->assertNotNull($rangeSliderMin, 'range_slider_min attribute not found in DB after polling');
             $this->assertEquals('1', $rangeSliderMin->value);
 
-            $rangeSliderMin = QuestionAttribute::model()->findByAttributes(
+            $rangeSliderMax = QuestionAttribute::model()->findByAttributes(
                 [
                     'qid' => self::$testSurvey->questions[0]->qid,
                     'attribute' => 'range_slider_max'
                 ]
             );
-            $this->assertEquals('10', $rangeSliderMin->value);
+            $this->assertNotNull($rangeSliderMax, 'range_slider_max attribute not found in DB');
+            $this->assertEquals('10', $rangeSliderMax->value);
         } catch (\Exception $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -224,35 +250,61 @@ class QuestionThemeTest extends TestBaseClassWeb
      */
     public function testExecuteQuestionThemeSurvey()
     {
-        $this->markTestSkipped('external theme needs to be updated');
         // Import lsa
         $surveyFile = self::$surveysFolder . '/survey_archive_222923_executeQuestionThemeSurvey.lsa';
         self::importSurvey($surveyFile);
-
         $urlMan = \Yii::app()->urlManager;
         $web = self::$webDriver;
 
-        // Go to survey overview.
+        // Go to survey overview. Dismiss any beforeunload alert from the previous test.
         $url = $urlMan->createUrl(
             'surveyAdministration/view/surveyid/' . self::$surveyId
         );
-        self::$webDriver->get($url);
+        // Dismiss alerts repeatedly — the beforeunload handler may trigger multiple times.
+        for ($attempt = 0; $attempt < 3; $attempt++) {
+            try {
+                self::$webDriver->get($url);
+                // Verify the page loaded by finding the execute button.
+                self::$webDriver->findById('execute_survey_button');
+                break;
+            } catch (\Facebook\WebDriver\Exception\UnexpectedAlertOpenException $e) {
+                try {
+                    self::$webDriver->switchTo()->alert()->accept();
+                } catch (\Exception $ignore) {
+                }
+            }
+        }
 
         // Run survey
-        $button = self::$webDriver->findById('execute_survey_button') ;
+        $button = self::$webDriver->findById('execute_survey_button');
+        $initialHandles = self::$webDriver->getWindowHandles();
         $button->click();
-        sleep(1);
+
+        // Wait for new tab to open.
+        self::$webDriver->wait(15)->until(function () use ($initialHandles) {
+            return count(self::$webDriver->getWindowHandles()) > count($initialHandles);
+        });
 
         // Switch to new tab.
         $windowHandles = self::$webDriver->getWindowHandles();
         self::$webDriver->switchTo()->window(
             end($windowHandles)
         );
-        sleep(1);
 
-        // Click on slider to trigger answering.
-        $sliderHandler = $web->findByCss('.slider-handle');
-        $sliderHandler->click();
+        // Wait for the slider to be present on the survey page.
+        $web->wait(15)->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverBy::cssSelector('.slider-handle')
+            )
+        );
+
+        // Drag each slider handle 50px left and back to trigger value recording.
+        $handles = $web->findElements(WebDriverBy::cssSelector('.slider-handle'));
+        $this->assertNotEmpty($handles, 'Expected slider handles to be present on the page');
+        $action = new WebDriverActions($web);
+        foreach ($handles as $handle) {
+            $action->clickAndHold($handle)->moveByOffset(-50, 0)->moveByOffset(50, 0)->release()->perform();
+        }
 
         // Submit
         $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
@@ -263,14 +315,15 @@ class QuestionThemeTest extends TestBaseClassWeb
         $responses = \Response::model(self::$surveyId)->findAll();
         $this->assertCount(1, $responses);
 
-        $sid = self::$surveyId;
-        $gid = self::$testSurvey->groups[0]->gid;
         $qid = self::$testSurvey->questions[0]->qid;
+        $this->assertGreaterThanOrEqual(2, count(self::$testSurvey->questions[0]->subquestions), 'Expected at least 2 subquestions');
+        $sqid1 = self::$testSurvey->questions[0]->subquestions[0]->qid;
+        $sqid2 = self::$testSurvey->questions[0]->subquestions[1]->qid;
 
-        $sgqa1 = sprintf('%dX%dX%dSQ001', $sid, $gid, $qid);
-        $sgqa2 = sprintf('%dX%dX%dSQ002', $sid, $gid, $qid);
+        $qCode1 = sprintf('Q%d_S%d', $qid, $sqid1);
+        $qCode2 = sprintf('Q%d_S%d', $qid, $sqid2);
 
-        $this->assertEquals(4, (int) $responses[0]->attributes[$sgqa1]);
-        $this->assertEquals(7, (int) $responses[0]->attributes[$sgqa2]);
+        $this->assertEquals(4, (int) $responses[0]->attributes[$qCode1]);
+        $this->assertEquals(7, (int) $responses[0]->attributes[$qCode2]);
     }
 }

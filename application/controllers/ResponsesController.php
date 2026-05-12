@@ -800,12 +800,12 @@ class ResponsesController extends LSBaseController
      * Delete all uploaded files for one response.
      *
      * @param int $surveyId
-     * @param int|null $responseId
+     * @param ?int $responseId
      * @return void
      * @throws CException
      * @throws CHttpException
      */
-    public function actionDeleteAttachments(int $surveyId, int $responseId = null): void
+    public function actionDeleteAttachments(int $surveyId, ?int $responseId = null): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));

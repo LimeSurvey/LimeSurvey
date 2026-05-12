@@ -5,6 +5,8 @@ name: LimeSurvey - Frontend - CI pipeline
 # Triggers the workflow on push or pull request events on all branches
 on:
   pull_request:
+    paths-ignore:
+      - 'editor/**'
   push:
     branches:
       - '*'
@@ -13,6 +15,8 @@ on:
       - 'bug/**'
       - 'feature/**'
       - 'zoho/**'
+    paths-ignore:
+      - 'editor/**'
 
 permissions:
   contents: read

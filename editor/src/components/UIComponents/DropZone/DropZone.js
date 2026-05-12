@@ -162,7 +162,7 @@ export const DropZone = ({
         src={isValidImg ? previewUrl : NoImageFound}
         alt="Image Select List"
         style={{
-          height: previewMaxHeight,
+          maxheight: previewMaxHeight,
           width: previewMaxWidth,
           objectFit: previewCover ? 'cover' : 'container',
         }}

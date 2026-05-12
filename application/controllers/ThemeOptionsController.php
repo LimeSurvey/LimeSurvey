@@ -679,13 +679,13 @@ class ThemeOptionsController extends LSBaseController
      * Updates Common.
      *
      * @param TemplateConfiguration $model Template Configuration
-     * @param int|null $sid Survey ID
-     * @param int|null $gsid Survey Group ID
+     * @param ?int $sid Survey ID
+     * @param ?int $gsid Survey Group ID
      *
      * @return void
      * @throws CException
      */
-    private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null)
+    private function updateCommon(TemplateConfiguration $model, ?int $sid = null, ?int $gsid = null)
     {
         $diContainer = DI::getContainer();
         if ($diContainer === null) {

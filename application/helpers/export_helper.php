@@ -850,8 +850,18 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
 }
 
 /**
-* from export_structure_xml.php
-*/
+ * Write a survey's structural data (tables and related localized records) into the provided XML writer.
+ *
+ * This function exports the survey definition and related entities (answers, questions, groups,
+ * default values, quotas, assessments, survey settings, language settings, plugin settings,
+ * survey URL parameters, and the surveys_groups mapping) using buildXMLFromQuery / buildXMLFromArray.
+ * Sections can be omitted by passing keys in the $exclude array. Survey language setting attachments
+ * are included but are converted to a JSON string for safe export.
+ *
+ * @param int $iSurveyID ID of the survey to export.
+ * @param XMLWriter|mixed $xmlwriter XML writer instance (or compatible writer) to receive the output.
+ * @param array $exclude Optional associative array of sections to skip; common keys: 'answers', 'conditions', 'quotas', 'dates'.
+ */
 function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 {
     if (!isset($exclude['answers'])) {
@@ -1016,6 +1026,14 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
                 . " FROM {{plugin_settings}} as settings JOIN {{plugins}} as plugins ON plugins.id = settings.plugin_id"
                 . " WHERE model='Survey' and model_id=$iSurveyID";
     buildXMLFromQuery($xmlwriter, $slsquery);
+
+    // Survey Group
+    $sgquery = "SELECT sg.*
+    FROM {{surveys_groups}} as sg
+    JOIN {{surveys}} as s ON sg.gsid = s.gsid
+    WHERE s.sid={$iSurveyID}";
+    $excludeFromSurveyGroup = ['sortorder', 'owner_id', 'created', 'modified', 'created_by'];
+    buildXMLFromQuery($xmlwriter, $sgquery, '', $excludeFromSurveyGroup);
 }
 
 /**
@@ -2517,7 +2535,11 @@ function CPDBExport($data, $filename)
 
     $handler = fopen('php://output', 'w');
     foreach ($data as $key => $value) {
-        fputcsv($handler, $value);
+        fputcsv(
+            stream: $handler,
+            fields: $value,
+            escape: "\\"
+        );
     }
     fclose($handler);
     exit;
@@ -2597,7 +2619,7 @@ function numericSize(string $sColumn, $decimal = false)
         /* Didn't work with text, when datatype are updated to text, but in such case : there are no good solution, except return string …*/
         $castedColumnString = $sColumn;
         if (Yii::app()->db->driverName == 'pgsql') {
-            $castedColumnString = "CAST($sColumn as FLOAT)";
+            $castedColumnString = "CAST($sColumn as VARCHAR)";
         }
     /* pgsql */
         if (Yii::app()->db->driverName == 'pgsql') {
@@ -2688,7 +2710,12 @@ function tsvSurveyExport($surveyid)
         return '';
     }, array_flip($fields));
     $out = fopen('php://output', 'w');
-    fputcsv($out, array_map('MaskFormula', array_keys($fields)), chr(9));
+    fputcsv(
+        stream: $out,
+        fields: array_map('MaskFormula', array_keys($fields)),
+        separator: chr(9),
+        escape: "\\"
+    );
 
     // DATA PREPARATION
     // survey settings
@@ -2710,7 +2737,12 @@ function tsvSurveyExport($surveyid)
         $tsv_output['class'] = 'S';
         $tsv_output['name'] = $key;
         $tsv_output['text'] = str_replace(array("\n", "\r"), '', (string) $value);
-        fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+        fputcsv(
+            stream: $out,
+            fields: array_map('MaskFormula', $tsv_output),
+            separator:  chr(9),
+            escape: "\\"
+        );
     }
 
     // language settings
@@ -2743,7 +2775,12 @@ function tsvSurveyExport($surveyid)
             $tsv_output['name'] = $key;
             $tsv_output['text'] = str_replace(array("\n", "\r"), '', (string) $value);
             $tsv_output['language'] = $current_language;
-            fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+            fputcsv(
+                stream: $out,
+                fields: array_map('MaskFormula', $tsv_output),
+                separator: chr(9),
+                escape: "\\"
+            );
         }
     }
 
@@ -2989,7 +3026,12 @@ function tsvSurveyExport($surveyid)
                 $tsv_output['relevance'] = isset($group['grelevance']) && !is_array($group['grelevance']) ? $group['grelevance'] : '';
                 $tsv_output['random_group'] = !empty($group['randomization_group']) ? $group['randomization_group'] : '';
                 $tsv_output['language'] = $language;
-                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                fputcsv(
+                    stream: $out,
+                    fields: array_map('MaskFormula', $tsv_output),
+                    separator: chr(9),
+                    escape: "\\"
+                );
 
                 // questions
                 if (array_key_exists($gid, $questions[$language])) {
@@ -3029,8 +3071,12 @@ function tsvSurveyExport($surveyid)
                                 }
                             }
                         }
-                        fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
-
+                        fputcsv(
+                            stream: $out,
+                            fields: array_map('MaskFormula', $tsv_output),
+                            separator: chr(9),
+                            escape: "\\"
+                        );
 
                         // quota members
                         if ($index_languages == 0 && !empty($quota_members[$qid])) {
@@ -3040,7 +3086,12 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['related_id'] = $member['quota_id'];
                                 $tsv_output['class'] = 'QTAM';
                                 $tsv_output['name'] = $member['code'];
-                                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                                fputcsv(
+                                    stream: $out,
+                                    fields: array_map('MaskFormula', $tsv_output),
+                                    separator: chr(9),
+                                    escape: "\\"
+                                );
                             }
                         }
 
@@ -3055,7 +3106,12 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['name'] = $condition['cfieldname'];
                                 $tsv_output['relevance'] = $condition['method'];
                                 $tsv_output['text'] = !empty($condition['value']) ? $condition['value'] : '';
-                                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                                fputcsv(
+                                    stream: $out,
+                                    fields: array_map('MaskFormula', $tsv_output),
+                                    separator: chr(9),
+                                    escape: "\\"
+                                );
                             }
                         }
 
@@ -3080,7 +3136,12 @@ function tsvSurveyExport($surveyid)
                                 if (array_key_exists($language, $defaultvalues) && array_key_exists($subquestion['qid'], $defaultvalues[$language])) {
                                     $tsv_output['default'] = $defaultvalues[$language][$subquestion['qid']];
                                 }
-                                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                                fputcsv(
+                                    stream: $out,
+                                    fields: array_map('MaskFormula', $tsv_output),
+                                    separator: chr(9),
+                                    escape: "\\"
+                                );
                             }
                         }
 
@@ -3096,7 +3157,12 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['text'] = $answer['answer'];
                                 $tsv_output['assessment_value'] = $answer['assessment_value'];
                                 $tsv_output['language'] = $answer['language'];
-                                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                                fputcsv(
+                                    stream: $out,
+                                    fields: array_map('MaskFormula', $tsv_output),
+                                    separator: chr(9),
+                                    escape: "\\"
+                                );
                             }
                         }
                     }
@@ -3120,7 +3186,12 @@ function tsvSurveyExport($surveyid)
             $tsv_output['min_num_value'] = $assessment['minimum'];
             $tsv_output['max_num_value'] = $assessment['maximum'];
             $tsv_output['language'] = $assessment['language'];
-            fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+            fputcsv(
+                stream: $out,
+                fields: array_map('MaskFormula', $tsv_output),
+                separator: chr(9),
+                escape: "\\"
+            );
         }
     }
 
@@ -3136,7 +3207,12 @@ function tsvSurveyExport($surveyid)
             $tsv_output['other'] = $quota['action'];
             $tsv_output['default'] = $quota['active'];
             $tsv_output['same_default'] = $quota['autoload_url'];
-            fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+            fputcsv(
+                stream: $out,
+                fields: array_map('MaskFormula', $tsv_output),
+                separator: chr(9),
+                escape: "\\"
+            );
 
             if (!empty($quota_ls[$quota['id']])) {
                 foreach ($quota_ls[$quota['id']] as $key => $language) {
@@ -3150,7 +3226,12 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['text'] = !empty($ls['quotals_url']) ? $ls['quotals_url'] : '';
                         $tsv_output['help'] = !empty($ls['quotals_urldescrip']) ? $ls['quotals_urldescrip'] : '';
                         $tsv_output['language'] = $ls['quotals_language'];
-                        fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+                        fputcsv(
+                            stream: $out,
+                            fields: array_map('MaskFormula', $tsv_output),
+                            separator: chr(9),
+                            escape: "\\"
+                        );
                     }
                 }
             }

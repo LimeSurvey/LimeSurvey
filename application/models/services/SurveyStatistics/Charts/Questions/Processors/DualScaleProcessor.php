@@ -86,7 +86,7 @@ class DualScaleProcessor extends AbstractQuestionProcessor
         $leftSeparator = $rightSeparator = "`";
         if (Yii::app()->db->getDriverName() === 'pgsql') {
             $leftSeparator = $rightSeparator = '"';
-        } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv'])) {
+        } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
             $leftSeparator = "[";
             $rightSeparator = "]";
         }

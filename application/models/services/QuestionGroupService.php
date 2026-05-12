@@ -451,7 +451,7 @@ class QuestionGroupService
      * @throws NotFoundException
      * @throws PersistErrorException
      */
-    public function newQuestionGroup(int $surveyId, array $aQuestionGroupData = null)
+    public function newQuestionGroup(int $surveyId, ?array $aQuestionGroupData = null)
     {
         $survey = $this->getSurvey($surveyId);
         $this->refreshModels();
