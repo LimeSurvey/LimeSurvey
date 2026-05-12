@@ -76,7 +76,8 @@ class remotecontrol_handle
      * @param string $username
      * @param string $password
      * @param string $plugin to be used
-     * @return string|array
+     * @return string|array On success: session key string. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_CREDENTIALS.
      */
     public function get_session_key($username, $password, $plugin = 'Authdb')
     {
@@ -125,7 +126,8 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey the session key
-     * @return array
+     * @return array On success: list of available setting names. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION.
      */
     public function get_available_site_settings($sSessionKey)
     {
@@ -149,7 +151,8 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth Credentials
      * @param string $sSetttingName Name of the setting to get
-     * @return string|array The requested value or an array with the error in case of error
+     * @return string|array On success: the requested setting value. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION, ERR_INVALID_SETTING.
      */
     public function get_site_settings($sSessionKey, $sSetttingName)
     {
@@ -184,7 +187,8 @@ class remotecontrol_handle
      * @param string $sSurveyTitle Title of the new Survey
      * @param string $sSurveyLanguage Default language of the Survey
      * @param string $sformat (optional) Question appearance format (A, G or S) for "All on one page", "Group by Group", "Single questions", default to group by group (G)
-     * @return int|array The survey ID in case of success
+     * @return int|array On success: new survey ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION, ERR_INVALID_PARAMETERS, ERR_CREATION_FAILED.
      */
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
     {
@@ -249,7 +253,8 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID The ID of the Survey to be deleted
-     * @return array Returns status : status are OK in case of success
+     * @return array On success: array with 'status' => 'OK'. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION.
      */
     public function delete_survey($sSessionKey, $iSurveyID)
     {
@@ -279,7 +284,8 @@ class remotecontrol_handle
      * @param string $sImportDataType lss, csv, txt or lsa
      * @param string $sNewSurveyName (optional) The optional new name of the survey
      * @param integer $DestSurveyID  (optional) This is the new ID of the survey - if already used a random one will be taken instead
-     * @return int|array The ID of the new survey in case of success
+     * @return int|array On success: new survey ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION, ERR_INVALID_EXTENSION, ERR_CREATION_FAILED.
      */
     public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName = null, $DestSurveyID = null)
     {
@@ -320,7 +326,8 @@ class remotecontrol_handle
      * @param int $iSurveyID_org Id of the source survey
      * @param string $sNewname name of the new survey
      * @param integer $DestSurveyID  (optional) This is the new ID of the survey - if already used a random one will be taken instead
-     * @return array On success: new $iSurveyID in array['newsid']. On failure array with error information
+     * @return array On success: array with 'newsid' key. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_COPY_FAILED.
      */
     public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname, $DestSurveyID = null)
     {
@@ -408,7 +415,8 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID The id of the Survey to be checked
      * @param array|null $aSurveySettings (optional) The properties to get
-     * @return array
+     * @return array On success: the requested survey properties. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function get_survey_properties($sSessionKey, $iSurveyID, $aSurveySettings = null)
     {
@@ -467,7 +475,8 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID - ID of the Survey
      * @param struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
-     * @return array Of succeeded and failed nodifications according to internal validation
+     * @return array On success: map of field names to save result (bool). On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function set_survey_properties($sSessionKey, $iSurveyID, $aSurveyData)
     {
@@ -537,7 +546,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey to be activated
      * @param array $activationSettings (optional) survey activation settings to change prior to activation, format is array of settingName => settingValue pairs (default: [])
-     * @return array in case of success result of the activation
+     * @return array On success: activation result. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION, ERR_SURVEY_ACTIVE,
+     *              ERR_CONSISTENCY_CHECK, ERR_CREATION_FAILED.
      */
     public function activate_survey($sSessionKey, $iSurveyID, $userActivationSettings = [])
     {
@@ -604,7 +615,9 @@ class remotecontrol_handle
      * @param string $sLanguage (optional) language of the survey to use (default from Survey)
      * @param string $graph (optional) Create graph option (default : no)
      * @param int|array $groupIDs (optional) array or integer containing the groups we choose to generate statistics from
-     * @return string|array in case of success : Base64 encoded string with the statistics file
+     * @return string|array On success: base64-encoded statistics file. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_NO_DATA, ERR_INVALID_GROUP.
      */
     public function export_statistics($sSessionKey, $iSurveyID, $docType = 'pdf', $sLanguage = null, $graph = '0', $groupIDs = null)
     {
@@ -702,7 +715,9 @@ class remotecontrol_handle
      * @param string $sType (day|hour)
      * @param string $dStart
      * @param string $dEnd
-     * @return array On success: The timeline. On failure array with error information
+     * @return array On success: the timeline data. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_INVALID_PARAMETERS,
+     *              ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function export_timeline($sSessionKey, $iSurveyID, $sType, $dStart, $dEnd)
     {
@@ -762,7 +777,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey to get summary
      * @param string $sStatName (optional) Name of the summary option, or all to send all in an array (all by default)
-     * @return string|array in case of success the requested value or an array of all values
+     * @return string|array On success: the requested value or array of all values. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_INVALID_PARAMETERS,
+     *              ERR_NO_DATA, ERR_NO_PERMISSION.
      */
     public function get_summary($sSessionKey, $iSurveyID, $sStatName = 'all')
     {
@@ -844,7 +861,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID ID of the Survey for which a survey participant list will be created
      * @param string $sLanguage  A valid language shortcut to add to the current Survey. If the language already exists no error will be given.
-     * @return array Status=>OK when successful, otherwise the error description
+     * @return array On success: array with 'status' => 'OK'. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_INVALID_LANGUAGE, ERR_CREATION_FAILED.
      */
     public function add_language($sSessionKey, $iSurveyID, $sLanguage)
     {
@@ -903,7 +922,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID ID of the Survey for which a survey participant list will be created
      * @param string $sLanguage A valid language shortcut to delete from the current Survey. If the language does not exist in that Survey no error will be given.
-     * @return array Status=>OK when successful, otherwise the error description
+     * @return array On success: array with 'status' => 'OK'. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_INVALID_LANGUAGE, ERR_CANNOT_REMOVE_BASE_LANG, ERR_CREATION_FAILED.
      */
     public function delete_language($sSessionKey, $iSurveyID, $sLanguage)
     {
@@ -954,7 +975,8 @@ class remotecontrol_handle
      * @param int $iSurveyID ID of the Survey
      * @param array|null $aSurveyLocaleSettings (optional) Properties to get, default to all attributes
      * @param string|null $sLang (optional) Language to use, default to Survey->language
-     * @return array in case of success The requested values
+     * @return array On success: the requested language properties. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function get_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleSettings = null, $sLang = null)
     {
@@ -1011,7 +1033,10 @@ class remotecontrol_handle
      * @param integer $iSurveyID  - ID of the Survey
      * @param struct $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
      * @param string $sLanguage - Optional - Language to update  - if not given the base language of the particular survey is used
-     * @return array in case of success 'status'=>'OK', when save successful otherwise error text.
+     * @return array On success: map of field names to save result (bool) plus 'status' => 'OK'.
+     *              On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_INVALID_LANGUAGE,
+     *              ERR_NO_DATA, ERR_NO_PERMISSION.
      */
     public function set_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage = null)
     {
@@ -1086,7 +1111,9 @@ class remotecontrol_handle
      * @param int $iSurveyID ID of the Survey to add the group
      * @param string $sGroupTitle Name of the group
      * @param string $sGroupDescription     Optional description of the group
-     * @return array|int The id of the new group - Or status
+     * @return array|int On success: new group ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_SURVEY_ACTIVE, ERR_CREATION_FAILED.
      */
     public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription = '')
     {
@@ -1137,7 +1164,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey that the group belongs
      * @param int $iGroupID ID of the group to delete
-     * @return array|int The ID of the deleted group or status
+     * @return array|int On success: deleted group ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_INVALID_GROUP,
+     *              ERR_NO_PERMISSION, ERR_SURVEY_ACTIVE, ERR_DEPENDENCIES, ERR_DELETION_FAILED.
      */
     public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
     {
@@ -1188,7 +1217,9 @@ class remotecontrol_handle
      * @param string $sImportDataType  lsg,csv
      * @param string $sNewGroupName  Optional new name for the group in the survey's base language
      * @param string $sNewGroupDescription  Optional new description for the group in the survey's base language
-     * @return array|integer iGroupID  - ID of the new group or status
+     * @return array|int On success: new group ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_SURVEY_ACTIVE, ERR_INVALID_EXTENSION, ERR_INVALID_XML, ERR_CREATION_FAILED.
      */
     public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName = null, $sNewGroupDescription = null)
     {
@@ -1277,7 +1308,8 @@ class remotecontrol_handle
      * @param string $sSessionKey
      * @param int $iSurveyID
      * @param string $sToken
-     * @return array
+     * @return array On success: list of response IDs. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION.
      */
     public function get_response_ids($sSessionKey, $iSurveyID, $sToken)
     {
@@ -1308,7 +1340,9 @@ class remotecontrol_handle
      * @param int $iGroupID Id of the group to get properties of
      * @param array  $aGroupSettings The properties to get
      * @param string $sLanguage Optional parameter language for multilingual groups
-     * @return array in case of success the requested values in array
+     * @return array On success: the requested group properties. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_GROUP, ERR_INVALID_LANGUAGE,
+     *              ERR_NO_DATA, ERR_NO_PERMISSION.
      */
     public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings = null, $sLanguage = null)
     {
@@ -1374,7 +1408,8 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param integer $iGroupID  - ID of the Group
      * @param array $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
-     * @return array Of succeeded and failed modifications according to internal validation.
+     * @return array On success: map of field names to save result (bool). On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_GROUP, ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function set_group_properties($sSessionKey, $iGroupID, $aGroupData)
     {
@@ -1503,7 +1538,9 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iQuestionID ID of the Question to delete
-     * @return array|int ID of the deleted Question or status
+     * @return array|int On success: deleted question ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_QUESTION, ERR_NO_PERMISSION,
+     *              ERR_SURVEY_ACTIVE, ERR_DEPENDENCIES, ERR_CREATION_FAILED.
      */
     public function delete_question($sSessionKey, $iQuestionID)
     {
@@ -1559,9 +1596,10 @@ class remotecontrol_handle
      * @param string $sNewQuestionTitle  (optional) new title for the question
      * @param string $sNewqQuestion (optional) new question text
      * @param string $sNewQuestionHelp (optional) new question help text
-     * @return array|integer The id of the new question in case of success. Array with error status on failure.
-     *         Error arrays include:
-     *         - 'status': Human-readable error message
+     * @return array|int On success: new question ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_SURVEY_ACTIVE, ERR_INVALID_GROUP, ERR_ALREADY_EXISTS, ERR_INVALID_EXTENSION, ERR_INVALID_XML,
+     *              ERR_CREATION_FAILED.
      */
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
@@ -1705,7 +1743,9 @@ class remotecontrol_handle
      * @param int $iQuestionID ID of the question to get properties
      * @param array $aQuestionSettings (optional) properties to get, default to all
      * @param string $sLanguage (optional) parameter language for multilingual questions, default are \Survey->language
-     * @return array The requested values
+     * @return array On success: the requested question properties. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_QUESTION, ERR_INVALID_LANGUAGE,
+     *              ERR_NO_DATA, ERR_NO_PERMISSION.
      */
     public function get_question_properties($sSessionKey, $iQuestionID, $aQuestionSettings = null, $sLanguage = null)
     {
@@ -1904,7 +1944,9 @@ class remotecontrol_handle
      * @param integer $iQuestionID  - ID of the question
      * @param array $aQuestionData - An array with the particular fieldnames as keys and their values to set on that particular question
      * @param string $sLanguage Optional parameter language for multilingual questions
-     * @return array Of succeeded and failed modifications according to internal validation.
+     * @return array On success: map of field names to save result (bool). On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_GROUP, ERR_INVALID_LANGUAGE,
+     *              ERR_INVALID_QUESTION, ERR_NO_DATA, ERR_NO_PERMISSION.
      */
     public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData, $sLanguage = null)
     {
@@ -2058,7 +2100,9 @@ class remotecontrol_handle
      * @param int $iSurveyID ID of the Survey
      * @param array $aParticipantData Data of the participants to be added
      * @param bool $bCreateToken Optional - Defaults to true and determines if the access token automatically created
-     * @return array The values added
+     * @return array On success: inserted participant data including token ID and token string.
+     *              On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE, ERR_NO_PERMISSION.
      */
     public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken = true)
     {
@@ -2103,7 +2147,8 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey that the participants belong to
      * @param array $aTokenIDs ID of the tokens/participants to delete
-     * @return array Result of deletion
+     * @return array On success: map of token ID to deletion status. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE, ERR_NO_PERMISSION.
      */
     public function delete_participants($sSessionKey, $iSurveyID, $aTokenIDs)
     {
@@ -2153,7 +2198,9 @@ class remotecontrol_handle
      * @param int $iSurveyID ID of the Survey to get token properties
      * @param array|int $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
      * @param array $aTokenProperties The properties to get
-     * @return array The requested values
+     * @return array On success: the requested participant properties. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
+     *              ERR_NO_PERMISSION, ERR_NOT_FOUND, ERR_MULTIPLE_MATCHES, ERR_INVALID_TOKEN, ERR_NO_DATA.
      */
     public function get_participant_properties($sSessionKey, $iSurveyID, $aTokenQueryProperties, $aTokenProperties = null)
     {
@@ -2215,7 +2262,9 @@ class remotecontrol_handle
      * @param int $iSurveyID Id of the Survey that participants belong
      * @param struct|int $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
      * @param struct $aTokenData An array with the particular fieldnames as keys and their values to set on that particular Participant
-     * @return array Result of the change action
+     * @return array On success: updated participant attributes. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
+     *              ERR_NO_PERMISSION, ERR_NOT_FOUND, ERR_MULTIPLE_MATCHES, ERR_INVALID_TOKEN, ERR_NO_DATA.
      */
     public function set_participant_properties($sSessionKey, $iSurveyID, $aTokenQueryProperties, $aTokenData)
     {
@@ -2283,7 +2332,8 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey containing the groups
      * @param string $sLanguage Optional parameter language for multilingual groups
-     * @return array in case of success the list of groups
+     * @return array On success: list of groups. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function list_groups($sSessionKey, $iSurveyID, $sLanguage = null)
     {
@@ -2354,7 +2404,9 @@ class remotecontrol_handle
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
      *                  Only the IN operator allows for several values.
      *              All conditions are connected by AND.
-     * @return array The list of tokens
+     * @return array On success: list of participants. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
+     *              ERR_NO_PERMISSION, ERR_INVALID_PARAMETERS, ERR_NO_DATA.
      */
     public function list_participants($sSessionKey, $iSurveyID, $iStart = 0, $iLimit = 10, $bUnused = false, $aAttributes = false, $aConditions = array())
     {
@@ -2434,9 +2486,9 @@ class remotecontrol_handle
      * @param int $iSurveyID ID of the Survey to list questions
      * @param int $iGroupID Optional id of the group to list questions
      * @param string $sLanguage Optional parameter language for multilingual questions
-     * @return array The list of questions on success. Array with error status on failure.
-     *         Error arrays include:
-     *         - 'status': Human-readable error message
+     * @return array On success: list of questions. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_INVALID_LANGUAGE, ERR_INVALID_GROUP, ERR_NO_DATA.
      */
     public function list_questions($sSessionKey, $iSurveyID, $iGroupID = null, $sLanguage = null)
     {
@@ -2516,7 +2568,9 @@ class remotecontrol_handle
      * @param string $sMessage Message to be presented to the user
      * @param string $sURL URL to be redirected to after finishing the quota
      * @param string $sURLDescription Description of the URL
-     * @return array|int The id of the new quota - Or status
+     * @return array|int On success: new quota ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_INVALID_PARAMETERS, ERR_CREATION_FAILED.
      */
     public function add_quota($sSessionKey, $iSurveyID, $sQuotaName, $iLimit, $bActive = true, $sAction = 'terminate', $bAutoloadURL = false, $sMessage = '', $sURL = '', $sURLDescription = '')
     {
@@ -2607,7 +2661,8 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey containing the quotas
-     * @return array The list of quotas
+     * @return array On success: list of quotas. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function list_quotas($sSessionKey, $iSurveyID)
     {
@@ -2650,7 +2705,8 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iQuotaID The ID of the quota to be deleted
-     * @return array|int The ID of the deleted quota or status
+     * @return array|int On success: array with 'status' => 'OK'. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_QUOTA, ERR_NO_PERMISSION.
      */
     public function delete_quota($sSessionKey, $iQuotaID)
     {
@@ -2686,7 +2742,8 @@ class remotecontrol_handle
      * @param integer $iQuotaId Quota ID
      * @param array|null $aQuotaSettings (optional) The properties to get
      * @param string $sLanguage Optional parameter language for multilingual quotas
-     * @return array
+     * @return array On success: the requested quota properties. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_QUOTA, ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function get_quota_properties($sSessionKey, $iQuotaId, $aQuotaSettings = null, $sLanguage = null)
     {
@@ -2752,7 +2809,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param integer $iQuotaId Quota ID
      * @param array $aQuotaData Quota attributes as array eg ['active'=>1,'limit'=>100]
-     * @return array ['success'=>bool, 'message'=>string]
+     * @return array On success: array with 'success' => true and quota attributes in 'message'.
+     *              On failure: array with 'success' => false and error in 'message'.
+     *              Possible error codes via session check: ERR_INVALID_SESSION.
      */
     public function set_quota_properties($sSessionKey, $iQuotaId, $aQuotaData)
     {
@@ -2812,7 +2871,8 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param string|null $sUsername (optional) username to get list of surveys
      * @param integer|null $gsid  (optional) the surveys group id to get list of surveys
-     * @return array In case of success the list of surveys
+     * @return array On success: list of surveys. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_USER, ERR_NO_DATA.
      */
     public function list_surveys($sSessionKey, $sUsername = null, $gsid = null)
     {
@@ -2875,7 +2935,8 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param string|null $sUsername (optional) username to get list of survey groups
-     * @return array In case of success the list of survey groups
+     * @return array On success: list of survey groups. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_USER, ERR_NO_DATA.
      */
     public function list_survey_groups($sSessionKey, $sUsername = null)
     {
@@ -2920,7 +2981,8 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $uid Optional; ID of the user
      * @param string $username Optional; name of the user
-     * @return array The list of users in case of success
+     * @return array On success: list of users. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_USER, ERR_NO_DATA.
      */
     public function list_users($sSessionKey = null, $uid = null, $username = null)
     {
@@ -3007,7 +3069,8 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param integer $iSurveyID ID of the Survey where a survey participant list will be created for
      * @param array $aAttributeFields  An array of integer describing any additional attribute fields
-     * @return array Status=>OK when successful, otherwise the error description
+     * @return array On success: array with 'status' => 'OK'. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION, ERR_CREATION_FAILED.
      */
     public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields = array())
     {
@@ -3058,7 +3121,9 @@ class remotecontrol_handle
      *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
      *                  Only the IN operator allows for several values.
      *              All conditions are connected by AND.
-     * @return array Result of the action
+     * @return array On success: results of each email send action. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
+     *              ERR_INVALID_PARAMETERS, ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function mail_registered_participants($sSessionKey, $iSurveyID, $overrideAllConditions = array())
     {
@@ -3153,7 +3218,9 @@ class remotecontrol_handle
      * @param array $aTokenIds Ids of the participant to invite
      * @param bool $bEmail Send only pending invites (TRUE) or resend invites only (FALSE)
      * @param bool $continueOnError Don't stop on first invalid participant
-     * @return array Result of the action
+     * @return array On success: results of each email send action. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
+     *              ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true, $continueOnError = false)
     {
@@ -3225,7 +3292,10 @@ class remotecontrol_handle
      * @param int $iMaxReminders (optional) parameter Maximum reminders count
      * @param array $aTokenIds Ids of the participant to remind (optional filter)
      * @param bool $continueOnError Don't stop on first invalid participant
-     * @return array in case of success array of result of each email send action and count of invitations left to send in status key
+     * @return array On success: results of each email send action with remaining count in 'status' key.
+     *              On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
+     *              ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween = null, $iMaxReminders = null, $aTokenIds = false, $continueOnError = false)
     {
@@ -3294,7 +3364,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey to insert responses
      * @param array $aResponseData The actual response
-     * @return int|array The response ID or an array with status message (can include result_id)
+     * @return int|array On success: the inserted response ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_RESPONSE_TABLE,
+     *              ERR_NO_PERMISSION, ERR_FILE_ERROR, ERR_CREATION_FAILED.
      * @todo Need to clean up return array, especially the case when response was added but file not uploaded.
      * @todo See discussion: https://bugs.limesurvey.org/view.php?id=13794
      */
@@ -3390,9 +3462,10 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
      * @param array $aResponseData The actual response
-     * @return array|boolean TRUE(bool) on success. Array with error status on failure. Error arrays include:
-     *         - 'status': Human-readable error message
-     *         - 'error_code' (optional): Machine-readable error code present only for certain error conditions (e.g., 'ERR_MULTIPLE_MATCHES')
+     * @return array|bool TRUE on success. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_SURVEY_NOT_ACTIVE,
+     *              ERR_EDIT_NOT_ALLOWED, ERR_NO_RESPONSE_TABLE, ERR_NO_PERMISSION, ERR_MISSING_IDENTIFIER,
+     *              ERR_NOT_FOUND, ERR_MULTIPLE_MATCHES, ERR_INVALID_COLUMNS, ERR_UPDATE_FAILED.
      */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
@@ -3477,7 +3550,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the survey that participants belong
      * @param int $iResponseID Id of the response to delete
-     * @return array Result of the change action
+     * @return array On success: array with deleted response ID. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_NOT_FOUND, ERR_DELETION_FAILED.
      */
     public function delete_response($sSessionKey, $iSurveyID, $iResponseID)
     {
@@ -3519,7 +3594,9 @@ class remotecontrol_handle
      * @param string $sFieldName the Field to upload file
      * @param string $sFileName the uploaded file name
      * @param string $sFileContent the uploaded file content encoded as BASE64
-     * @return array The file metadata with final upload path or error description
+     * @return array On success: file metadata with final upload path. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_RESPONSE_TABLE,
+     *              ERR_NO_PERMISSION, ERR_NO_DATA, ERR_INVALID_EXTENSION, ERR_FILE_ERROR.
      */
     public function upload_file($sSessionKey, $iSurveyID, $sFieldName, $sFileName, $sFileContent)
     {
@@ -3615,7 +3692,9 @@ class remotecontrol_handle
      * @param integer $iToResponseID (optional) To response id
      * @param array $aFields (optional) Name the fields to export
      * @param array $aAdditionalOptions (optional) Addition options for export, @see \FormattingOptions, example : 'convertY', 'convertN', 'nValue', 'yValue', 'headerSpacesToUnderscores', 'useEMCode'
-     * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
+     * @return array|string On success: requested file as base64-encoded string. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION, ERR_NO_RESPONSE_TABLE,
+     *              ERR_NO_DATA, ERR_INVALID_LANGUAGE.
      */
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $aAdditionalOptions = null)
     {
@@ -3704,7 +3783,9 @@ class remotecontrol_handle
      * @param string $sHeadingType 'code','full' or 'abbreviated' Optional defaults to 'code'
      * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
      * @param array $aFields Optional Selected fields
-     * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
+     * @return array|string On success: requested file as base64-encoded string. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_RESPONSE_TABLE, ERR_NO_DATA,
+     *              ERR_INVALID_LANGUAGE, ERR_INVALID_PARAMETERS, ERR_NOT_FOUND, ERR_NO_PERMISSION.
      */
     public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $aTokens, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $aFields = null)
     {
@@ -3772,8 +3853,10 @@ class remotecontrol_handle
      * @param string  $sToken       Response token
      * @param int     $responseId   Response ID
      *
-     * @return array On success: array containing all uploads of the specified response
-     *               On failure: array with error information
+     * @return array On success: array containing all uploads of the specified response.
+     *              On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_RESPONSE_TABLE, ERR_NO_PERMISSION,
+     *              ERR_INVALID_PARAMETERS, ERR_NOT_FOUND.
      */
     public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken, $responseId = null)
     {
@@ -3834,7 +3917,8 @@ class remotecontrol_handle
      * @param string $sessionKey Auth credentials
      * @param int $surveyId ID of the Survey
      * @param string $language (optional) language of the survey to use (default from Survey)
-     * @return array
+     * @return array On success: the fieldmap. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION, ERR_NO_DATA.
      */
     public function get_fieldmap($sessionKey, $surveyId, $language = null)
     {
@@ -3954,7 +4038,8 @@ class remotecontrol_handle
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
      * @param bool $update
-     * @return array with status
+     * @return array On success: array with status 'OK'. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION.
      */
     public function cpd_importParticipants($sSessionKey, $participants, $update = false)
     {
