@@ -104,7 +104,7 @@ class TestHelper extends TestCase
 
         // Initialize displayTimezone from survey or config
         $survey = \Survey::model()->findByPk($surveyId);
-        $displayTimezone = ($survey && $survey->displayTimezone) ? $survey->displayTimezone : Yii::app()->getConfig('displayTimezone', 'UTC');
+        $displayTimezone = ($survey && ($survey->displayTimezone ?? false)) ? $survey->displayTimezone : Yii::app()->getConfig('displayTimezone', 'UTC');
 
         $surveyOptions = array(
             'active' => ($thissurvey['active'] == 'Y'),
