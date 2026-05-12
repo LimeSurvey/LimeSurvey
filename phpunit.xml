@@ -35,24 +35,32 @@
       <file>tests/functional/backend/CreateSurveyTest.php</file>
       <file>tests/functional/backend/InstallationControllerTest.php</file>
     </testsuite>
-    <testsuite name="question">
-      <file>tests/functional/backend/CreateQuestionTest.php</file>
-      <file>tests/functional/backend/LabelSetsCreateUpdate.php</file>
-      <file>tests/functional/backend/OldCodesReplacementTest.php</file>
-      <file>tests/functional/backend/QuestionAttributeFunctionalTest.php</file>
-      <file>tests/functional/backend/QuestionGroupEditorTest.php</file>
-      <file>tests/functional/backend/QuestionThemeTest.php</file>
-      <file>tests/functional/backend/SaveDualScaleAnswerOptionsTest.php</file>
+    <!--
+      The original `question` suite (17 files, ~163s wall-time) was the slowest
+      single suite in the CI matrix. It is split into two time-balanced bins
+      (~82s each) via greedy bin-pack on per-class JUnit times. Keep this split
+      in sync with .github/workflows/functional.yml and tests/run-functional-tests-local.sh.
+    -->
+    <testsuite name="question-a">
       <file>tests/functional/backend/SaveQuestionAttributesTest.php</file>
-      <file>tests/functional/backend/SaveSubquestionRelevanceTest.php</file>
-      <file>tests/functional/frontend/AnswersAlphabeticalOrderTest.php</file>
+      <file>tests/functional/backend/QuestionThemeTest.php</file>
+      <file>tests/functional/backend/LabelSetsCreateUpdate.php</file>
       <file>tests/functional/frontend/ArrayNumberCheckboxTest.php</file>
-      <file>tests/functional/frontend/ListRadioOtherPositionTest.php</file>
       <file>tests/functional/frontend/MultipleChoiceMandatoryWithCommentTest.php</file>
-      <file>tests/functional/frontend/MultipleChoiceNextPreviousTest.php</file>
+      <file>tests/functional/frontend/ListRadioOtherPositionTest.php</file>
       <file>tests/functional/frontend/MultipleChoiceWithExpressionTest.php</file>
       <file>tests/functional/frontend/RankingArrayFilterMaxColumnTest.php</file>
+    </testsuite>
+    <testsuite name="question-b">
+      <file>tests/functional/backend/CreateQuestionTest.php</file>
+      <file>tests/functional/backend/SaveDualScaleAnswerOptionsTest.php</file>
+      <file>tests/functional/backend/QuestionGroupEditorTest.php</file>
+      <file>tests/functional/backend/SaveSubquestionRelevanceTest.php</file>
+      <file>tests/functional/backend/OldCodesReplacementTest.php</file>
+      <file>tests/functional/backend/QuestionAttributeFunctionalTest.php</file>
+      <file>tests/functional/frontend/MultipleChoiceNextPreviousTest.php</file>
       <file>tests/functional/frontend/RankingFilterHideShowTest.php</file>
+      <file>tests/functional/frontend/AnswersAlphabeticalOrderTest.php</file>
     </testsuite>
     <testsuite name="expression">
       <file>tests/functional/frontend/AllInOneConditionGroupTest.php</file>

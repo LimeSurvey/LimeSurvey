@@ -33,7 +33,8 @@ jobs:
         php-versions: [ '8.1', '8.3' ]
         testsuite:
           - survey
-          - question
+          - question-a
+          - question-b
           - expression
           - validation
           - navigation
@@ -48,7 +49,7 @@ jobs:
     env:
       DBENGINE: INNODB
 
-    name: Functional Tests / PHP ${{ matrix.php-versions }} / ${{ matrix.testsuite }}
+    name: PHP ${{ matrix.php-versions }} / ${{ matrix.testsuite }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
