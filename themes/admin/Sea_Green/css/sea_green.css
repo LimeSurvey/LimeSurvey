@@ -17557,6 +17557,7 @@ a.ls-link:hover {
 }
 a.ls-link:focus-visible {
   padding: 1px 4px;
+  outline: none;
   border-radius: 2px;
   border: 2px solid rgba(123, 97, 255, 0.9);
 }

@@ -8,7 +8,8 @@ a {
     }
 
     &.ls-link:focus-visible {
-        padding       : 1px 4px;
+        padding : 1px 4px;
+        outline : none;
         @include state-border(2px, $grape90);
     }
 
