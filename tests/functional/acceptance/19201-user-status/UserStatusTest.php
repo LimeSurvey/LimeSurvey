@@ -8,6 +8,9 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverSelect;
 
+/**
+ * @group user
+ */
 class UserStatusTest extends TestBaseClassWeb
 {
     // TODO: 

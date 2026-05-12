@@ -9,6 +9,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
  * Tests issue #14998, a problem with emcache and 'self.NAOK' expressions.
  *
  * @since 2019-07-01
+ * @group expression
  */
 class SelfExpressionTest extends TestBaseClassWeb
 {
