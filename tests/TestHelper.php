@@ -100,9 +100,8 @@ class TestHelper extends TestCase
         $radix = $radix['separator'];
         $LEMdebugLevel = 0;
 
-        // Initialize displayTimezone from survey or config
-        $survey = \Survey::model()->findByPk($surveyId);
-        $displayTimezone = ($survey && $survey->displayTimezone) ? $survey->displayTimezone : Yii::app()->getConfig('displayTimezone', 'UTC');
+        // Initialize displayTimezone from config (fallback to UTC if empty)
+        $displayTimezone = Yii::app()->getConfig('displayTimezone') ?: 'UTC';
 
         $surveyOptions = array(
             'active' => ($thissurvey['active'] == 'Y'),

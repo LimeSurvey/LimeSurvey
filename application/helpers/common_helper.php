@@ -2884,7 +2884,7 @@ function dateShiftRelative($date, $toDateFormat, $modifier, $timeZone = 'UTC')
 
 
 function convertTimezoneDiffToHours(){
-    $desiredTimezone = new DateTimeZone(Yii::app()->getConfig('displayTimezone'));
+    $desiredTimezone = new DateTimeZone(Yii::app()->getConfig('displayTimezone') ?: 'UTC');
     // Get the current time in the desired timezone
     $currentDateTime = new DateTime('now', new DateTimeZone(date_default_timezone_get()));
     // Get the offset in hours from UTC
