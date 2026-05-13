@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.2 (build 260507) to 6.17.3 (build 260512) May 12, 2026
++New feature #AT-1979: Improved survey copy  (#4834) (Carsten Schmitz)
+-Fixed issue: Ability to set email method plugin, but not able to select any plugin (Carsten Schmitz)
+-Fixed issue #20502: [security] POST-based self-XSS in Statistics View (#4945) (Gabriel Jenik)
+#Updated translation: Thai by adzpire, anucha, tomzt, twilllig
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.17.1 (build 260427) to 6.17.2 (build 260507) May 7, 2026
 -Fixed issue: various improvements to the dashboard page regarding accessibility, navigation, and aria labels, as well as all improvements to all tables (a11y) (#4413) (Anblik Audit Team) (Patrick Teichmann)
 -Fixed issue: small aria adjustments to header backlinks (a11y) (#4508) (Anblik Audit Team) (Patrick Teichmann)
