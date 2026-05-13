@@ -108,7 +108,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                 <?php echo $dearow->questionl10ns[$sDataEntryLanguage]->question; ?>
                             </td>
                             <td>
-                                <input type='text' name='<?php echo $fieldname . $dearow['title']; ?>' />
+                                <input type='text' name='<?php echo $fieldname . '_S' . $dearow['qid']; ?>' />
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -139,7 +139,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             <td><?php echo $dearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                             <td>
                                 <div class="col-md-10">
-                                    <select name='<?php echo $fieldname . $dearow['title']; ?>#0'  class='form-select'>
+                                    <select name='<?php echo $fieldname . '_S' . $dearow['qid']; ?>#0'  class='form-select'>
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow) : ?>
                                             <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerl10ns[$sDataEntryLanguage]->answer; ?></option>
@@ -150,7 +150,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             <?php $delresult = Answer::model()->findAll("qid={$deqrow['qid']} and scale_id=1"); ?>
                             <td>
                                 <div class="col-md-10">
-                                    <select name='<?php echo $fieldname . $dearow['title']; ?>#1'  class='form-select'>
+                                    <select name='<?php echo $fieldname . '_S' . $dearow['qid']; ?>#1'  class='form-select'>
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow) { ?>
                                             <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerl10ns[$sDataEntryLanguage]->answer; ?></option>
@@ -306,8 +306,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                     echo $divider;
                                     $upto = 0;
                                 } ?>
-                            <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname . $mearow['title']; ?>' id='answer<?php echo $fieldname . $mearow['title']; ?>' value='Y' />
-                            <label for='answer<?php echo $fieldname . $mearow['title']; ?>'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></label><br />
+                            <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>' id='answer<?php echo $fieldname . '_S' . $mearow['qid']; ?>' value='Y' />
+                            <label for='answer<?php echo $fieldname . '_S' . $mearow['qid']; ?>'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></label><br />
                                 <?php $upto++;
                                 ;
                             }
@@ -318,8 +318,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
                 <?php } else {
                     foreach ($mearesult as $mearow) { ?>
-                <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname . $mearow['title']; ?>' id='answer<?php echo $fieldname . $mearow['title']; ?>' value='Y'
-                    /><label for='<?php $fieldname . $mearow['title']; ?>'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></label><br />
+                <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>' id='answer<?php echo $fieldname . '_S' . $mearow['qid']; ?>' value='Y'
+                    /><label for='<?php $fieldname . '_S' . $mearow['qid']; ?>'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></label><br />
                     <?php }
                     if ($deqrow['other'] == "Y") { ?>
                         <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
@@ -353,12 +353,12 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <?php foreach ($mearesult as $mearow) { ?>
                         <tr>
                             <td>
-                                <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname . $mearow['title']; ?>' value='Y'
+                                <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>' value='Y'
                                 /><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?>
                             </td>
 
                             <td>
-                                <input type='text' name='<?php echo $fieldname . $mearow['title']; ?>comment' size='50' />
+                                <input type='text' name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>comment' size='50' />
                             </td>
                         </tr>
                     <?php }
@@ -635,7 +635,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                         <tr>
                             <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                             <td>
-                                <select name='<?php echo $fieldname . $mearow['title']; ?>' class='form-select'>
+                                <select name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>' class='form-select'>
                                     <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
                                     <?php for ($i = 1; $i <= 5; $i++) { ?>
                                         <option value='<?php echo $i; ?>'><?php echo $i; ?></option>
@@ -659,7 +659,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <tr>
                     <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname . $mearow['title']; ?>'  class='form-select'>
+                        <select name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>'  class='form-select'>
                             <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
                             <?php for ($i = 1; $i <= 10; $i++) { ?>
                                 <option value='<?php echo $i; ?>'><?php echo $i; ?></option>
@@ -683,7 +683,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <tr>
                     <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname . $mearow['title']; ?>'  class='form-select'>
+                        <select name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>'  class='form-select'>
                             <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
                             <option value='Y'><?php eT("Yes", 'html', $sDataEntryLanguage); ?></option>
                             <option value='U'><?php eT("Uncertain", 'html', $sDataEntryLanguage); ?></option>
@@ -707,7 +707,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <tr>
                     <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname . $mearow['title']; ?>'  class='form-select'>
+                        <select name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>'  class='form-select'>
                             <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
                             <option value='I'><?php eT("Increase", 'html', $sDataEntryLanguage); ?></option>
                             <option value='S'><?php eT("Same", 'html', $sDataEntryLanguage); ?></option>
@@ -750,9 +750,9 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <?php foreach ($labelcodes as $ld) { ?>
                         <td>
                             <?php if ($qidattributes['input_boxes'] != 0) { ?>
-                                <input type='text' name='<?php echo $fieldname . $mearow['title'] . "_" . $ld;?>' size=4 />
+                                <input type='text' name='<?php echo $fieldname . '_S' . $mearow['qid'] . "_" . $ld;?>' size=4 />
                             <?php } else { ?>
-                                <select name='<?php echo $fieldname . $mearow['title'] . "_$ld"; ?>'  class='form-select'>
+                                <select name='<?php echo $fieldname . '_S' . $mearow['qid'] . "_$ld"; ?>'  class='form-select'>
                                     <option value=''>...</option>
                                     <?php for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) { ?>
                                         <option value='<?php echo $ii; ?>'><?php echo $ii; ?></option>
@@ -799,7 +799,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <td align='right'><?php echo $answerleft; ?></td>
                     <?php foreach ($labelcodes as $ld) { ?>
                         <td>
-                            <input type='text' name='<?php echo $fieldname . $mearow['title'] . "_$ld"; ?>' />
+                            <input type='text' name='<?php echo $fieldname . '_S' . $mearow['qid'] . "_$ld"; ?>' />
                         </td>
                     <?php } ?>
                 </tr>
@@ -831,7 +831,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <tr>
                     <td align='right'><?php echo $answerleft; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname . $mearow['title']; ?>'  class='form-select'>
+                        <select name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>'  class='form-select'>
                             <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
 
                             <?php foreach ($fresult as $frow) { ?>
