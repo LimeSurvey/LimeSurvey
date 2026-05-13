@@ -14,7 +14,7 @@ namespace LimeSurvey\Helpers\Update;
  * - Existing duplicate non-empty emails are deduplicated by appending
  *   the user's uid before the index is created.
  */
-class Update_704 extends DatabaseUpdateBase
+class Update_705 extends DatabaseUpdateBase
 {
     public function up()
     {
