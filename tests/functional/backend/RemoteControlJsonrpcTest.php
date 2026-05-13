@@ -18,8 +18,7 @@ class RemoteControlJsonrpcTest extends TestBaseClassWeb
         $urlMan = Yii::app()->urlManager;
         self::$tmpBaseUrl = $urlMan->getBaseUrl();
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-        //$serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
-        $serverUrl = $urlMan->createUrl('/admin/remotecontrol');
+        $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
 
         self::$tmpRPCType = Yii::app()->getConfig('RPCInterface');
 
