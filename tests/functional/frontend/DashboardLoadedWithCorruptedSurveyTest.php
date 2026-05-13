@@ -39,9 +39,14 @@ class DashboardLoadedWithCorruptedSurveyTest extends TestBaseClassWeb
         self::importSurvey($surveyFile);
 
         // Corrupt the survey by setting the language to empty string
-        \Yii::app()->db->createCommand(
+        $affectedRows = \Yii::app()->db->createCommand(
             "UPDATE {{surveys_languagesettings}} SET surveyls_language = '' WHERE surveyls_survey_id = :sid AND surveyls_language = 'de'"
         )->execute([':sid' => self::$surveyId]);
+        self::assertGreaterThan(
+            0,
+            $affectedRows,
+            'Corruption setup failed: no language row was updated for the imported survey.'
+       );
     }
 
     /**
@@ -52,14 +57,15 @@ class DashboardLoadedWithCorruptedSurveyTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $web = self::$webDriver;
-
+        $url = $urlMan->createUrl('dashboard/view?Survey%5Bsearched_value%5D=&active=&gsid=&viewtype=box-widget');
+            
         try {
-            $url = $urlMan->createUrl('dashboard/view?Survey%5Bsearched_value%5D=&active=&gsid=&viewtype=box-widget');
             $web->get($url);
 
             // Verify no PHP error is shown
             $pageSource = $web->getPageSource();
             $this->assertStringNotContainsString('500: Internal Server Error', $pageSource);
+            $this->assertStringContainsString('/dashboard', $web->getCurrentUrl());
         } catch (\Exception $ex) {
             $screenshot = $web->takeScreenshot();
             $filename = self::$screenshotsFolder . '/' . __CLASS__ . '_' . __FUNCTION__ . '.png';
@@ -79,14 +85,15 @@ class DashboardLoadedWithCorruptedSurveyTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $web = self::$webDriver;
+        $url = $urlMan->createUrl('dashboard/view?active=&viewtype=list-widget');
 
         try {
-            $url = $urlMan->createUrl('dashboard/view?active=&viewtype=list-widget');
             $web->get($url);
 
             // Verify no PHP error is shown
             $pageSource = $web->getPageSource();
             $this->assertStringNotContainsString('500: Internal Server Error', $pageSource);
+            $this->assertStringContainsString('/dashboard', $web->getCurrentUrl());
         } catch (\Exception $ex) {
             $screenshot = $web->takeScreenshot();
             $filename = self::$screenshotsFolder . '/' . __CLASS__ . '_' . __FUNCTION__ . '.png';
