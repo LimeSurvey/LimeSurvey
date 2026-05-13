@@ -1519,7 +1519,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getButtons(): string
     {
-
+        try {
+            $surveyTitle = $this->currentLanguageSettings->surveyls_title;
+        } catch (\Exception $e) {
+            $surveyTitle = '';
+        }
         $dropdownItems = [];
         $dropdownItems[] = [
             'title' => gT('General settings'),
@@ -1548,7 +1552,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'linkAttributes'   => [
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => "#copySurvey_modal",
-                'onclick' => "copySurveyOptions(" . (int)$this->sid . ", " . json_encode(sprintf(gT('%s - Copy', 'unescaped'), $this->currentLanguageSettings->surveyls_title)) . ", " . json_encode($this->sid . ' - ' . $this->currentLanguageSettings->surveyls_title) . ")",
+                'onclick' => "copySurveyOptions(" . (int)$this->sid . ", " . json_encode(sprintf(gT('%s - Copy', 'unescaped'), $surveyTitle)) . ", " . json_encode($this->sid . ' - ' . $surveyTitle) . ")",
             ],
         ];
         $dropdownItems[] = [
