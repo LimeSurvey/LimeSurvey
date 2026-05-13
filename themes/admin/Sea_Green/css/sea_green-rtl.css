@@ -19371,18 +19371,18 @@ input[type=number] {
   gap: 5px;
 }
 
-#survey-settings-panel .survey-settings a:hover .survey-settings-panel-item {
+#survey-settings-panel .survey-settings a:hover {
   background-color: #EEEFF7;
 }
-#survey-settings-panel .survey-settings a:focus-visible, #survey-settings-panel .survey-settings a:active {
-  outline: none;
-}
-#survey-settings-panel .survey-settings a:focus-visible .survey-settings-panel-item,
-#survey-settings-panel .survey-settings a:active .survey-settings-panel-item {
-  color: #333641;
+#survey-settings-panel .survey-settings a:focus-visible {
   outline: none;
   box-shadow: inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
   background-color: #fff;
+  color: #333641;
+}
+#survey-settings-panel .survey-settings a:active {
+  background-color: #F9F9FB;
+  color: #333641;
 }
 
 .badge {
