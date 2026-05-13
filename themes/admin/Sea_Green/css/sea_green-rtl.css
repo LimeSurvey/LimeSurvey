@@ -17199,11 +17199,11 @@ body {
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > button:hover {
   color: #333641;
-  background-color: inherit;
+  background-color: #EEEFF7;
 }
 .dropdown-menu > li > a:focus,
 .dropdown-menu > li > button:focus {
-  background-color: inherit;
+  background-color: #EEEFF7;
 }
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > button {
@@ -17536,7 +17536,6 @@ a.ls-link:hover {
 a.ls-link:focus-visible {
   padding: 1px 4px;
   outline: none;
-  outline: none;
   border-radius: 2px;
   border: 2px solid rgba(123, 97, 255, 0.9);
 }
@@ -17727,7 +17726,6 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   border: 1px solid rgba(123, 97, 255, 0.9);
   outline: none;
   box-shadow: inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);
-  outline: none;
 }
 .navbar .nav-item a:active {
   color: #9094A7;
@@ -19374,7 +19372,6 @@ input[type=number] {
 #survey-settings-panel .survey-settings a:active .survey-settings-panel-item {
   color: #333641;
   outline: none;
-  outline: none;
   box-shadow: inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
   background-color: #fff;
 }
@@ -19709,7 +19706,6 @@ table [class^=ri-], table [class*=" ri-"] {
 .grid-view .table [tabindex]:focus-visible:not(tr):not(:active), .grid-view-ls .table td a:focus-visible:not(:active), .grid-view-ls .table td button:focus-visible:not(:active), .grid-view-ls .table th a:focus-visible:not(:active), .grid-view-ls .table th button:focus-visible:not(:active),
 .grid-view-ls .table td:focus-visible:not(:active), .grid-view-ls .table th:focus-visible:not(:active),
 .grid-view-ls .table [tabindex]:focus-visible:not(tr):not(:active) {
-  outline: none;
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);

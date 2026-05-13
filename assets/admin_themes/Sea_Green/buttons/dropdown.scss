@@ -34,10 +34,10 @@
             color : $g-800;
             &:hover {
                 color            : $g-800;
-                background-color : inherit;
+                background-color : $g-200;
             }
             &:focus {
-                background-color : inherit;
+                background-color : $g-200;
             }
         }
         .active > a,
