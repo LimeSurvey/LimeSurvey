@@ -3310,6 +3310,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     LimeExpressionManager::SetSurveyId($iNewSID);
     translateInsertansTags($iNewSID, $iOldSID, $aOldNewFieldmap);
     // NOTE: replaceExpressionCodes() is currently unreliable and intentionally disabled.
+    // The numeric question-reference replacement path ($aQuestionsMapping, e.g. "38612X105X3011")
+    // is a separate issue and should be tracked independently.
     // replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
     // replaceExpressionCodes($iNewSID, $aQuestionsMapping); // replace question codes in format "38612X105X3011"
     if (count($aQuestionCodeReplacements)) {
