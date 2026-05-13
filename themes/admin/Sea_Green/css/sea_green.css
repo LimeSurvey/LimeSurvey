@@ -17176,6 +17176,7 @@ body {
 .btn-group .btn-outline-secondary.active:focus,
 .btn-group .btn-outline-secondary.dropdown-toggle.show:focus,
 .btn-group .btn-outline-secondary:active:focus {
+  outline: none;
   box-shadow: inset 1px 0 0 #8146F6, inset -1px 0 0 #8146F6, inset 0 -1px 0 #8146F6, inset 0 1px 0 #8146F6;
   border-color: #8146F6;
 }
@@ -17626,6 +17627,7 @@ ol.breadcrumb.title-bar-breadcrumb a {
   font-weight: 400;
   padding: 2px 6px;
   display: inline-block;
+  outline: none;
   border-radius: 2px;
   border: 1px solid transparent;
   overflow: hidden;
@@ -17633,13 +17635,17 @@ ol.breadcrumb.title-bar-breadcrumb a {
   white-space: nowrap;
 }
 ol.breadcrumb.title-bar-breadcrumb a:hover {
+  outline: none;
+  border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.4);
 }
 ol.breadcrumb.title-bar-breadcrumb a:focus-visible {
   outline: none;
-  box-shadow: inset 0 0 0 2px rgba(123, 97, 255, 0.9);
+  box-shadow: inset 2px 0 0 rgba(123, 97, 255, 0.9), inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
 }
 ol.breadcrumb.title-bar-breadcrumb a:active {
+  outline: none;
+  border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.4);
   background-color: #F9F9FB;
   color: #1E1E1E;
@@ -17742,6 +17748,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
+  outline: none;
   box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.9), inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);
   outline: none;
 }
@@ -18071,6 +18078,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   outline: none;
   border-radius: 4px;
   border: 1px solid rgba(123, 97, 255, 0.9);
+  outline: none;
   box-shadow: inset 1px 0 0 transparent, inset -1px 0 0 transparent, inset 0 -1px 0 transparent, inset 0 1px 0 transparent;
 }
 .box-widget .box-widget-card .box-widget-card-body {
@@ -18481,6 +18489,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
+  outline: none;
   box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.9), inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);
 }
 .survey-actionbar .search-bar {
@@ -18727,9 +18736,11 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 .nav-tabs .nav-link:focus {
   border-bottom: 2px solid rgba(123, 97, 255, 0.9);
+  outline: none;
   box-shadow: inset 2px 0 0 rgba(123, 97, 255, 0.9), inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
 }
 .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link:hover, .nav-tabs .nav-link:active {
+  outline: none;
   box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.4), inset -1px 0 0 rgba(123, 97, 255, 0.4), inset 0 -1px 0 rgba(123, 97, 255, 0.4), inset 0 1px 0 rgba(123, 97, 255, 0.4);
   border-bottom: 2px solid rgba(123, 97, 255, 0.4);
 }
@@ -19386,6 +19397,7 @@ input[type=number] {
 #survey-settings-panel .survey-settings a:active .survey-settings-panel-item {
   color: #333641;
   outline: none;
+  outline: none;
   box-shadow: inset 2px 0 0 rgba(123, 97, 255, 0.9), inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
   background-color: #fff;
 }
@@ -19724,6 +19736,7 @@ table [class^=ri-], table [class*=" ri-"] {
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
+  outline: none;
   box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.9), inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);
 }
 .grid-view .table tr[tabindex]:focus-visible:not(:active), .grid-view-ls .table tr[tabindex]:focus-visible:not(:active) {
@@ -20556,6 +20569,7 @@ a.list-group-item:hover {
   background-color: #9cba9e;
 }
 a.list-group-item:focus-visible:not(:active) {
+  outline: none;
   box-shadow: inset 2px 0 0 rgba(123, 97, 255, 0.9), inset -2px 0 0 rgba(123, 97, 255, 0.9), inset 0 -2px 0 rgba(123, 97, 255, 0.9), inset 0 2px 0 rgba(123, 97, 255, 0.9);
   background-color: #fff;
 }

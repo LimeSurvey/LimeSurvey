@@ -7,6 +7,7 @@
 }
 
 @mixin inset-border($width, $color) {
+    outline    : none;
     box-shadow: inset $width 0 0 $color,
                 inset (-$width) 0 0 $color,
                 inset 0 (-$width) 0 $color,
