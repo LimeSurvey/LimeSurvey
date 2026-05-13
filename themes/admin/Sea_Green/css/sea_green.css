@@ -17605,7 +17605,7 @@ ol.breadcrumb.title-bar-breadcrumb {
   display: flex;
   align-items: center;
   line-height: 20px;
-  height: 24px;
+  min-height: 24px;
   min-width: 0;
 }
 ol.breadcrumb.title-bar-breadcrumb li {

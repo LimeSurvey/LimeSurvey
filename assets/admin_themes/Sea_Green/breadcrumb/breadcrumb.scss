@@ -5,7 +5,7 @@ ol.breadcrumb.title-bar-breadcrumb {
     display    : flex;
     align-items: center;
     line-height: 20px;
-    height     : 24px; // Fixed height to prevent growth on focus
+    min-height : 24px; // Allow growth at zoom/enlarged text
     min-width  : 0; // Allow container to shrink
 
     li {
