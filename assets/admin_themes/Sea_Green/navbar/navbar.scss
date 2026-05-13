@@ -179,11 +179,19 @@
         font-size: $dropdown-font-size;
         font-weight : $font-weight-500;
         color: $g-800;
+        @include state-border(1px, transparent);
         &:hover {
             text-decoration: none;
             color: $g-800;
             background-color: $g-200;
-            border: none;
+            border-color: transparent;
+        }
+        &:focus-visible,
+        &:active {
+            color: $g-800;
+            outline: none;
+            border-color: $grape;
+            background-color: $white;
         }
     }
 
