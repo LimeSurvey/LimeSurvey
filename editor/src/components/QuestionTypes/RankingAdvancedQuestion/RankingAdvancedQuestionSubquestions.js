@@ -126,7 +126,6 @@ export const RankingAdvancedQuestionSubquestions = ({
                           }
                         )}
                         testId="ranking-advanced-subquestion-content-editor"
-                        useRichTextEditor={true}
                         showToolbar={true}
                       />
                     </div>

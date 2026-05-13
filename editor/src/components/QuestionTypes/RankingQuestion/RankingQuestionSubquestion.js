@@ -63,7 +63,6 @@ export const RankingQuestionSubquestion = ({
               update={handleSubquestionUpdate}
               value={subquestion}
               placeholder={t('Add text here...')}
-              useRichTextEditor={true}
               showToolbar={true}
             />
           </div>

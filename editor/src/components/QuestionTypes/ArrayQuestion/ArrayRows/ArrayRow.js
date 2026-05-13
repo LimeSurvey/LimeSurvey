@@ -124,7 +124,6 @@ export const ArrayRow = ({
               width: 'fit-content',
             }}
             disabled={isNoAnswer}
-            useRichTextEditor={true}
             showToolbar={true}
           />
         </div>

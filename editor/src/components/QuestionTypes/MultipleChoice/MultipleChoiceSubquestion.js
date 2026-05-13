@@ -145,7 +145,6 @@ export const MultipleChoiceSubquestion = ({
               testId="choice-content-editor"
               value={value}
               update={(value) => handleUpdateSubquestion(value, index)}
-              useRichTextEditor={true}
               showToolbar={true}
             />
           )}

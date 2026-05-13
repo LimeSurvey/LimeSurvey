@@ -84,7 +84,6 @@ export const ArrayColumnTitle = ({
             value={title}
             update={(value) => handleUpdateL10ns(value, index)}
             disabled={isNoAnswer}
-            useRichTextEditor={true}
             showToolbar={true}
           />
         </div>

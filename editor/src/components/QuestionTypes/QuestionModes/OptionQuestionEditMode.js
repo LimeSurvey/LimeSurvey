@@ -157,7 +157,6 @@ export const OptionQuestionEditMode = ({
                         !questionHasTempId &&
                         !isTitleFocused
                       }
-                      useRichTextEditor={true}
                       showToolbar={true}
                     />
                   </div>
