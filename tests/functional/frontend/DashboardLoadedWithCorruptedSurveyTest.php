@@ -47,6 +47,9 @@ class DashboardLoadedWithCorruptedSurveyTest extends TestBaseClassWeb
         )->execute([':sid' => self::$surveyId]);
     }
 
+    /**
+     * Test if dashboard card view can be loaded with a corrupted survey (missing language)
+     */
     public function testDashboardCardViewLoadedWithCorruptedSurvey()
     {
         $urlMan = \Yii::app()->urlManager;
@@ -72,6 +75,9 @@ class DashboardLoadedWithCorruptedSurveyTest extends TestBaseClassWeb
         }
     }
 
+    /**
+     * Test if dashboard list view can be loaded with a corrupted survey (missing language)
+     */
     public function testDashboardListViewLoadedWithCorruptedSurvey()
     {
         $urlMan = \Yii::app()->urlManager;
