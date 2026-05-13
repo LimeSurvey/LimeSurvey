@@ -11,9 +11,6 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 class DashboardLoadedWithCorruptedSurveyTest extends TestBaseClassWeb
 {
 
-    /** keep surveyurl */
-    protected static $surveyUrl;
-
     /**
      * Import survey before test
      */
@@ -35,7 +32,7 @@ class DashboardLoadedWithCorruptedSurveyTest extends TestBaseClassWeb
         \Yii::app()->session['loginID'] = 1;
 
         // Browser login.
-        self::adminLogin($username, $password, $wait = false);
+        self::adminLogin($username, $password, false);
 
         // Import survey
         $surveyFile =  self::$surveysFolder . '/limesurvey_survey_CorruptedSurvey.lss';
@@ -67,8 +64,7 @@ class DashboardLoadedWithCorruptedSurveyTest extends TestBaseClassWeb
             $screenshot = $web->takeScreenshot();
             $filename = self::$screenshotsFolder . '/' . __CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
-            $this->assertFalse(
-                true,
+            $this->fail(
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
@@ -95,8 +91,7 @@ class DashboardLoadedWithCorruptedSurveyTest extends TestBaseClassWeb
             $screenshot = $web->takeScreenshot();
             $filename = self::$screenshotsFolder . '/' . __CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
-            $this->assertFalse(
-                true,
+            $this->fail(
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
