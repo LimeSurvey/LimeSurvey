@@ -22,6 +22,7 @@
         }
         &:active {
             @include state-border(1px, $grape90, 4px);
+            @include inset-border(1px, transparent);
         }
 
         .box-widget-card-body {

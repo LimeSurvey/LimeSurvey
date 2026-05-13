@@ -18071,6 +18071,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   outline: none;
   border-radius: 4px;
   border: 1px solid rgba(123, 97, 255, 0.9);
+  box-shadow: inset 1px 0 0 transparent, inset -1px 0 0 transparent, inset 0 -1px 0 transparent, inset 0 1px 0 transparent;
 }
 .box-widget .box-widget-card .box-widget-card-body {
   display: flex;
@@ -18454,6 +18455,9 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   margin-left: 16px;
 }
 .survey-actionbar .survey-actionbar-switch i {
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid transparent;
   cursor: pointer;
   display: inline-block;
   vertical-align: middle;
@@ -18467,6 +18471,17 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 .survey-actionbar .survey-actionbar-switch i:not(:first-child) {
   margin-left: 16px;
+}
+.survey-actionbar .survey-actionbar-switch i:hover {
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid rgba(123, 97, 255, 0.4);
+}
+.survey-actionbar .survey-actionbar-switch i:focus-visible, .survey-actionbar .survey-actionbar-switch i:active {
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid rgba(123, 97, 255, 0.9);
+  box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.9), inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);
 }
 .survey-actionbar .search-bar {
   position: relative;
