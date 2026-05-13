@@ -8,7 +8,7 @@ const codeEditorTheme = EditorView.theme({
     backgroundColor: '#ffffff',
     border: '2px solid #6e748c',
     borderRadius: '2px',
-    padding: '12px 8px'
+    padding: '12px 8px',
   },
   '&.cm-focused': {
     outline: 'none',
