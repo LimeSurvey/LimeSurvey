@@ -40,7 +40,6 @@
         a:focus-visible .survey-settings-panel-item,
         a:active .survey-settings-panel-item{
             color: $g-800;
-            outline: none;
             @include inset-border(2px, $grape90);
             background-color: $white;
         }

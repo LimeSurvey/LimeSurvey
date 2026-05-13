@@ -25,7 +25,6 @@
                 color: inherit;
                 @include state-border(1px, $grape90);
                 @include inset-border(1px, $grape90);
-                outline: none;
             }
 
             &:active {
