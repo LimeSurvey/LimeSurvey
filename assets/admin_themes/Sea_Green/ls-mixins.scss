@@ -14,6 +14,7 @@
 }
 
 @mixin state-border($width, $color, $radius: 2px) {
+    outline: none;
     border-radius: $radius;
     border: $width solid $color;
 }

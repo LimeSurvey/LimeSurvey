@@ -207,14 +207,11 @@ table {
             }
         }
         button {
-            border-color : $white;
+            @include state-border(1px, transparent);
             background-color: inherit;
-            border: none;
         }
         button:hover {
-            color        : $black;
-            box-shadow   : none;
-            border-color : $white;
+            @include state-border(1px, $grape75);
         }
         button.btn .ri-more-fill:before {
             font-size : 1.1em;
@@ -318,6 +315,13 @@ table {
         }
         i::before {
             font-size : $font-size-base * 1.5;
+        }
+
+        a {
+            @include state-border(1px, transparent);
+        }
+        a:hover {
+            @include state-border(1px, $grape75);
         }
     }
     .grid-view-ls-footer {

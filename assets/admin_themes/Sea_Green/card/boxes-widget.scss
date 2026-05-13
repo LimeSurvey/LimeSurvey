@@ -12,6 +12,18 @@
         border-radius    : 4px;
         height           : 180px;
         width            : 240px;
+        @include state-border(2px, transparent, 4px);
+
+        &:hover {
+           @include state-border(2px, $grape75, 4px);
+        }
+        &:focus-visible {
+            @include state-border(2px, $grape90, 4px);
+        }
+        &:active {
+            @include state-border(1px, $grape90, 4px);
+        }
+
         .box-widget-card-body {
             display        : flex;
             flex-direction : column;
@@ -77,42 +89,49 @@
               }
             }
             .icons {
-                display    : inline-flex;
-                font-size  : 2em;
-                font-weight: $font-weight-normal;
+                display     : inline-flex;
+                align-items : center;
+                gap         : 8px;
+                font-weight : $font-weight-normal;
+                a, button {
+                    display         : inline-flex;
+                    align-items     : center;
+                    justify-content : center;
+                    width           : 30px; // icon (24px) + 2 * padding (3px)
+                    height          : 30px;
+                    padding         : 3px;
+                    font-size       : $font-size-xl; // 24px
+                    line-height     : 1;
+                    @include state-border(2px, transparent);
+                }
+                a:focus-visible {
+                    @include state-border(2px, $grape90);
+                }
+                a:hover {
+                    background-color : $g-200;
+                }
                 a.active {
                     color   : $purple;
                     outline : none;
-                    i:before {
-                      display   : inline-block;
-                      width     : 24px;
-                      height    : 24px;
-                      font-size : 0.9em;
-                    }
                 }
                 .dropdown.ls-action_dropdown {
                     margin  : 0;
                     padding : 0;
-                    margin-left: 8px;
-                    width   : 32px;
+                    width   : 30px;
+                    height  : 30px;
                 }
-                .dropdown.ls-action_dropdown button,
-                .dropdown.ls-action_dropdown button:hover {
-                    box-shadow : none;
-                    border     : none;
+                .dropdown.ls-action_dropdown button {
+                    box-shadow       : none;
+                    background-color : $white;
+                    color            : $g-700;
+                    &:focus-visible {
+                        box-shadow : none;
+                        @include state-border(2px, $grape90);
+                    }
+                    &:hover {
+                        background-color : $g-200;
+                    }
                 }
-                .dropdown.ls-action_dropdown button i:before {
-                    display   : inline-block;
-                    width     : 24px;
-                    height    : 24px;
-                    font-size : 0.9em;
-                    color     : $g-700;
-                }
-              .ls-dropdown-toggle {
-                width     : 24px;
-                height    : 24px;
-                background-color: $white;
-              }
             }
         }
     }
