@@ -19024,6 +19024,10 @@ input[type=number] {
 .form-select:focus {
   box-shadow: 4px 4px 0px rgba(66, 0, 255, 0.2);
 }
+.form-select:hover {
+  box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
+  text-decoration: none;
+}
 .form-select:disabled {
   border: 1px solid #9094A7;
   background-color: #D3D5DA;
