@@ -198,7 +198,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         );
 
         $expected = [
-            'status' => 'No survey participants found.'
+            'status' => 'No survey participants found.',
+            'error_code' => 'ERR_NO_DATA'
         ];
 
         $this->assertEquals($expected, $list);
@@ -238,7 +239,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         );
 
         $expected = [
-            'status' => 'Illegal operator: ! for column validuntil'
+            'status' => 'Illegal operator: ! for column validuntil',
+            'error_code' => 'ERR_INVALID_PARAMETERS'
         ];
 
         $this->assertEquals($expected, $list);
@@ -278,7 +280,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         );
 
         $expected = [
-            'status' => 'Invalid column name: extractvalue(1,concat(0x3a,(DATABASE())))'
+            'status' => 'Invalid column name: extractvalue(1,concat(0x3a,(DATABASE())))',
+            'error_code' => 'ERR_INVALID_PARAMETERS'
         ];
 
         $this->assertEquals($expected, $list);
@@ -363,7 +366,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
 
         /** @var array */
         $expected = [
-            'status' => 'Invalid expression for condition'
+            'status' => 'Invalid expression for condition',
+            'error_code' => 'ERR_INVALID_PARAMETERS'
         ];
         $this->assertEquals($expected, $list);
     }
@@ -407,7 +411,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
 
         /** @var array */
         $expected = [
-            'status' => 'No survey participants found.'
+            'status' => 'No survey participants found.',
+            'error_code' => 'ERR_NO_DATA'
         ];
 
         $this->assertEquals($expected, $list);
@@ -463,7 +468,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
 
         /** @var array */
         $expected = [
-            'status' => 'No survey participants found.'
+            'status' => 'No survey participants found.',
+            'error_code' => 'ERR_NO_DATA'
         ];
 
         $this->assertEquals($expected, $list);

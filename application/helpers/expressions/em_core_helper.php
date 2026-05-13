@@ -2918,9 +2918,9 @@ function exprmgr_sumifop($args)
 function exprmgr_checkdate($month, $day, $year)
 {
     if (
-        (!ctype_digit($month) && !is_int($month))
-        || (!ctype_digit($day) && !is_int($day))
-        || (!ctype_digit($year) && !is_int($year))
+        (!ctype_digit((string) $month) && !is_int($month))
+        || (!ctype_digit((string) $day) && !is_int($day))
+        || (!ctype_digit((string) $year) && !is_int($year))
     ) {
         return false;
     }
