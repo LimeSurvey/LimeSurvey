@@ -168,7 +168,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
                     <?php if ($fother == "Y") : ?>
                         <?php eT("Other"); ?>:
-                        <input type='text' name='<?php echo $fieldname; ?>other' value='' />
+                        <input type='text' name='<?php echo $fieldname; ?>_Cother' value='' />
                     <?php endif; ?>
                     </tr>
                 </table>
@@ -197,7 +197,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <?php if ($fother == "Y") { ?>
             <div class="col-md-10">
                     <?php eT("Other", 'html', $sDataEntryLanguage); ?>:
-            <input type='text' name='<?php echo $fieldname; ?>other' value='' />
+            <input type='text' name='<?php echo $fieldname; ?>_Cother' value='' />
             </div>
                 <?php }
                 break;
@@ -217,7 +217,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         </div>
         <div class="col-md-10">
                 <?php eT("Comment"); ?>:<br />
-            <textarea cols='40' rows='5' name='<?php echo $fieldname; ?>comment'></textarea>
+            <textarea cols='40' rows='5' name='<?php echo $fieldname; ?>_Ccomment'></textarea>
         </div>
                 <?php
                 break;?>
@@ -312,17 +312,17 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                 ;
                             }
                             if ($deqrow['other'] == "Y") { ?>
-                                <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
+                                <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>_Cother' />
                             <?php } ?>
                     </td></tr></table>
 
                 <?php } else {
                     foreach ($mearesult as $mearow) { ?>
                 <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>' id='answer<?php echo $fieldname . '_S' . $mearow['qid']; ?>' value='Y'
-                    /><label for='<?php $fieldname . '_S' . $mearow['qid']; ?>'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></label><br />
+                    /><label for='answer<?php echo $fieldname . '_S' . $mearow['qid']; ?>'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></label><br />
                     <?php }
                     if ($deqrow['other'] == "Y") { ?>
-                        <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
+                        <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>_Cother' />
                     <?php }
                 }?>
         </div><?php
@@ -358,17 +358,17 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             </td>
 
                             <td>
-                                <input type='text' name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>comment' size='50' />
+                                <input type='text' name='<?php echo $fieldname . '_S' . $mearow['qid']; ?>_Ccomment' size='50' />
                             </td>
                         </tr>
                     <?php }
                     if ($deqrow['other'] == "Y") { ?>
                             <tr>
                                 <td  align='left'><label><?php eT("Other", 'html', $sDataEntryLanguage); ?>:</label>
-                                    <input type='text' name='$fieldname"."other' size='10'/>
+                                    <input type='text' name='<?php echo $fieldname; ?>_Cother' size='10'/>
                                 </td>
                                 <td align='left'>
-                                    <input type='text' name='<?php echo $fieldname; ?>othercomment' size='50'/>
+                                    <input type='text' name='<?php echo $fieldname; ?>_Cothercomment' size='50'/>
                                 </td>
                             </tr>
                     <?php } ?>
@@ -731,7 +731,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <tr><td></td>
                 <?php foreach ($lresult as $data) { ?>
                     <th><?php echo $data->questionl10ns[$sDataEntryLanguage]->question; ?></th>
-                    <?php $labelcodes[] = $data['title'];
+                    <?php $labelcodes[] = $data['qid'];
                 }
                 ?>
             </tr>
@@ -752,7 +752,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             <?php if ($qidattributes['input_boxes'] != 0) { ?>
                                 <input type='text' name='<?php echo $fieldname . '_S' . $mearow['qid'] . "_" . $ld;?>' size=4 />
                             <?php } else { ?>
-                                <select name='<?php echo $fieldname . '_S' . $mearow['qid'] . "_$ld"; ?>'  class='form-select'>
+                                <select name='<?php echo $fieldname . '_S' . $mearow['qid'] . "_S$ld"; ?>'  class='form-select'>
                                     <option value=''>...</option>
                                     <?php for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue) { ?>
                                         <option value='<?php echo $ii; ?>'><?php echo $ii; ?></option>
@@ -780,7 +780,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <?php $labelcodes = array();
                     foreach ($lresult as $data) { ?>
                     <th><?php echo $data->questionl10ns[$sDataEntryLanguage]->question; ?></th>
-                        <?php $labelcodes[] = $data['title'];
+                        <?php $labelcodes[] = $data['qid'];
                     } ?>
 
             </tr>
@@ -799,7 +799,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <td align='right'><?php echo $answerleft; ?></td>
                     <?php foreach ($labelcodes as $ld) { ?>
                         <td>
-                            <input type='text' name='<?php echo $fieldname . '_S' . $mearow['qid'] . "_$ld"; ?>' />
+                            <input type='text' name='<?php echo $fieldname . '_S' . $mearow['qid'] . "_S$ld"; ?>' />
                         </td>
                     <?php } ?>
                 </tr>
