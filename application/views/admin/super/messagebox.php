@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-12 content-center">
             <!-- Message box from super admin -->
-            <div id="admin-status-message" class="jumbotron message-box ss <?php echo $class ?? ""; ?>" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">
+            <div id="admin-status-message" class="jumbotron message-box <?php echo $class ?? ""; ?>" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">
                 <h1 class="h2" ><?php echo $title;?></h1>
                 <?php echo $message;?>
             </div>
