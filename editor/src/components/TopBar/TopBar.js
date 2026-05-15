@@ -16,6 +16,7 @@ import LogoIcon from '../../assets/images/logo-icon-black.png'
 //import { ButtonBackToClassicEditor } from './Button/ButtonBackToClassicEditor'
 import { SurveyTitleSelector } from './SurveyTitleSelector'
 import { TopBarActions } from './TopBarActions'
+import { SurveyNavigation } from './SurveyNavigation'
 
 export const TopBar = ({
   surveyId,
@@ -112,7 +113,7 @@ export const TopBar = ({
           <AddQuestion id={'topbar-add-question'} className={'ms-auto'} />
         )}
       </div>
-      <div className="top-bar-middle d-flex flex-grow-1 justify-content-center align-items-center">
+      <div className="top-bar-middle d-flex flex-grow-1 justify-content-center align-items-center gap-5">
         <SurveyTitleSelector
           surveyId={surveyId}
           survey={survey}
@@ -122,6 +123,7 @@ export const TopBar = ({
           handleSurveySwitch={handleSurveySwitch}
           getError={getError}
         />
+        <SurveyNavigation surveyId={surveyId} />
       </div>
       <TopBarActions
         surveyId={surveyId}

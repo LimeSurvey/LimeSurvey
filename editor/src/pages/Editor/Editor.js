@@ -29,6 +29,7 @@ export const Editor = () => {
   const [hasSurveyUpdatePermission] = useAppState(
     STATES.HAS_SURVEY_UPDATE_PERMISSION
   )
+  const [, setSaveState] = useAppState(STATES.SAVE_STATE)
   const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
 
   // Automatic Toast Triggers

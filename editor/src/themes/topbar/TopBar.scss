@@ -19,6 +19,17 @@
 
   height: $top-bar-height;
 
+  .top-bar-middle {
+    .survey-navigation {
+      .btn {
+        height: 32px;
+        display: flex;
+        align-items: center;
+      }
+    }
+    // z-index is set to make sure it is above left and right part
+  }
+
   .top-bar-select {
     border: 0;
     background-color: transparent;
@@ -91,7 +102,7 @@
 
 .auto-saved {
   font-size: $font-size-sm;
-  min-width: max-content;
+  min-width: 92px;
 }
 
 .preview-button {
