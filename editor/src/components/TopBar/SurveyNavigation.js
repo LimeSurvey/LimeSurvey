@@ -61,7 +61,7 @@ export const SurveyNavigation = ({ surveyId }) => {
   }
 
   return (
-    <div className="survey-navigation ">
+    <div className="survey-navigation">
       <ToggleButtons
         id="survey-navigation"
         name="survey-navigation"

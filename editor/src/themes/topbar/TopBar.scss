@@ -100,6 +100,42 @@
   }
 }
 
+.survey-navigation {
+  min-width: 280px;
+
+  .lime-toggle-btn-group.light {
+    .btn-group {
+      background: $g-200;
+      padding: 4px;
+
+      .btn {
+        color: $g-700;
+        border-radius: $border-radius;
+        min-width: 90px;
+      }
+
+      // disabled-state.scss uses :has(.disabled) to grey the whole group.
+      // Override it so only the Results button itself looks muted.
+      &:has(.btn-outline-lime-toggle.disabled) {
+        background: $g-200;
+
+        .btn:not(.disabled) {
+          color: $g-700;
+        }
+      }
+
+      .btn-check:active + .btn-outline-lime-toggle,
+      .btn-check:checked + .btn-outline-lime-toggle,
+      .btn-outline-lime-toggle.active,
+      .btn-outline-lime-toggle.dropdown-toggle.show,
+      .btn-outline-lime-toggle:active {
+        background-color: $white;
+        color: $g-750;
+      }
+    }
+  }
+}
+
 .auto-saved {
   font-size: $font-size-sm;
   min-width: 92px;
