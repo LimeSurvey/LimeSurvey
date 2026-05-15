@@ -51,23 +51,7 @@
         </div>
     </div>
 </div>
-<?php
-// Ensure Select2's search input announces "Attributes to export:" when focused
-App()->getClientScript()->registerScript(
-    'exportCSVSelect2AriaLabel',
-    "
-    (function() {
-        var setAttributesSearchLabel = function() {
-            var \$container = jQuery('#attributes').next('.select2-container');
-            \$container.find('.select2-search__field').attr('aria-labelledby', 'export-csv-attributes-label');
-        };
-        jQuery(document).on('select2:open', '#attributes', setAttributesSearchLabel);
-        jQuery('#exportcsv').on('shown.bs.modal', setAttributesSearchLabel);
-    })();
-    ",
-    CClientScript::POS_READY
-);
-?>
+
 <div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>
     <p><?php eT('Please wait, loading data...');?></p>
     <div class="preloader loading">
