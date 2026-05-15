@@ -1394,7 +1394,7 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 $columns[$index] = Yii::app()->db->quoteColumnName($column);
             }
         }
-        $command = "";
+        $command = $command2 = "";
         switch (Yii::app()->db->getDriverName()) {
             case 'mysqli':
             case 'mysql':
@@ -1403,7 +1403,9 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 break;
             case 'mssql':
             case 'sqlsrv':
+            case 'dblib':
                 $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+                $command2 = "ALTER TABLE " . Yii::app()->db->quoteTableName($table) . " ADD CONSTRAINT " . Yii::app()->db->quoteTableName("pk_" . $table) . " PRIMARY KEY (qid)";
                 break;
         }
     } else {
@@ -1422,7 +1424,11 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 break;
         }
     }
-    return Yii::app()->db->createCommand($command)->execute();
+    $result = Yii::app()->db->createCommand($command)->execute();
+    if ($command2) {
+        Yii::app()->db->createCommand($command2)->execute();
+    }
+    return $result;
 }
 
 function polyfillSUBSTRING_INDEX($driver)

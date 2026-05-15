@@ -363,6 +363,14 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
 
         $emailMethod = strip_tags(Yii::app()->getRequest()->getPost('emailmethod', ''));
+        $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));
+
+        // Prevent saving email method 'plugin' without a plugin selected
+        if ($emailMethod == LimeMailer::MethodPlugin && empty($emailPlugin)) {
+            $emailMethod = Yii::app()->getConfig('emailmethod');
+            $warning .= gT("Email method 'Plugin' requires a plugin to be selected. The email method was not changed.") . '<br/>';
+        }
+
         SettingGlobal::setSetting('emailmethod', $emailMethod);
         SettingGlobal::setSetting('emailsmtphost', strip_tags((string) returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
@@ -384,7 +392,6 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss', '')));
 
         $oldEmailPlugin = Yii::app()->getConfig('emailplugin');
-        $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));
         SettingGlobal::setSetting('emailplugin', $emailPlugin);
         // If the email plugin has changed, dispatch an event to allow the new plugin to do any necessary setup.
         if ($emailMethod == LimeMailer::MethodPlugin && $oldEmailPlugin != $emailPlugin) {
