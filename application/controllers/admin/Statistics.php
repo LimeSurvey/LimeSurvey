@@ -249,6 +249,10 @@ class Statistics extends SurveyCommonAction
         //second row below options -> filter settings headline
 
         $filterchoice_state = returnGlobal('filterchoice_state');
+        // filterchoice_state is expected to be '1' or '' (it's used effectively as a boolean).
+        // @todo: Check if this is actually used, as the listeners in statistics.js seem stale. For now,
+        //        just coherce it to a valid value, to make it safe in case it is used later.
+        $filterchoice_state = !empty($filterchoice_state) ? '1' : '';
         $aData['filterchoice_state'] = $filterchoice_state;
 
 
@@ -540,9 +544,9 @@ class Statistics extends SurveyCommonAction
         Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
-        require_once(Yii::app()->basePath . '/../vendor/pchart/pChart.class.php');
-        require_once(Yii::app()->basePath . '/../vendor/pchart/pData.class.php');
-        require_once(Yii::app()->basePath . '/../vendor/pchart/pCache.class.php');
+        require_once(Yii::app()->basePath . '/../assets/packages/pchart/pChart.class.php');
+        require_once(Yii::app()->basePath . '/../assets/packages/pchart/pData.class.php');
+        require_once(Yii::app()->basePath . '/../assets/packages/pchart/pCache.class.php');
 
         $tempdir = Yii::app()->getConfig("tempdir");
         $MyCache = new pCache($tempdir . '/');

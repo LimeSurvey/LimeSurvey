@@ -262,6 +262,8 @@ class GeneralSettings
             'shownoanswer' => ['type' => static::FIELD_TYPE_YN],
             'showwelcome' => ['type' => static::FIELD_TYPE_YN],
             'showsurveypolicynotice' => ['default' => 0],
+            'showtokenpolicy' => ['type' => static::FIELD_TYPE_YN],
+            'showregisterpolicy' => ['type' => static::FIELD_TYPE_YN],
             'allowprev' => ['type' => static::FIELD_TYPE_YN],
             'questionindex' => [],
             'nokeyboard' => ['type' => static::FIELD_TYPE_YN],
