@@ -7,7 +7,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
 <div class='<?= (!isset($ajax) || $ajax = false) ? 'col-12 side-body' : ''?>'>
     <?php if (!isset($ajax) || $ajax = false) { ?>
-        <h3>
+        <h1 class="h3">
             <?php
 
             if ($token_subaction == "edit") {
@@ -16,7 +16,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 eT("Add survey participant");
             }
             ?>
-        </h3>
+        </h1>
     <?php } ?>
     <?php
     foreach ($tokendata as $Key => $Value) {
@@ -109,6 +109,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                     'name'          => "completed-switch",
                                                     'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
+                                                    'ariaLabel'    => gT('Completed?'),
                                                     'checkedOption' => $bCompletedValue,
                                                     'selectOptions' => [
                                                         '1' => gT('Yes'),
@@ -142,7 +143,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                                value="<?php echo isset($completed) ? $completed : '' ?>"
                                                                name="completed-date"
                                                                data-locale="<?php echo $locale ?>"
-                                                               data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                               data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                               data-allowinputtoggle="1"
+                                                               data-theme="light">
                                                         <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                                     </div>
                                                 </div>
@@ -195,19 +198,19 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     [
                                         'class' => 'form-control',
                                         'size' => '20',
+                                        'aria-describedby' => 'generate-token-info-desc',
                                         'maxlength' => $iTokenLength
                                     ]
                                 ); ?>
                                 <?php if ($token_subaction == "addnew") : ?>
-                                    <?php
-                                    $this->widget('ext.AlertWidget.AlertWidget', [
+                                    <?php $this->widget('ext.AlertWidget.AlertWidget', [
                                         'text'        => gT(
                                             "You can leave this blank, and automatically generate access codes using 'Generate access codes'"
                                         ),
                                         'type'        => 'info',
-                                        'htmlOptions' => ['class' => 'mt-1'],
-                                    ]);
-                                    ?>
+                                        'htmlOptions' => ['class' => 'mt-1'
+                                    ,'id' => 'generate-token-info-desc'],
+                                    ]); ?>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -295,6 +298,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                 'name'          => "sent-switch",
                                                 'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bSwitchValue,
+                                                'ariaLabel'    => gT('Invitation sent?'),
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
                                                     '0' => gT('No'),
@@ -329,7 +333,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        value="<?php echo isset($sent) && $sent != 'N' ? $sent : '' ?>"
                                                        name="sent-date"
                                                        data-locale="<?php echo $locale ?>"
-                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                       data-allowinputtoggle="1"
+                                                       data-theme="light">
                                                 <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
@@ -352,6 +358,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                         <?php if ($oSurvey->anonymized !== 'Y'): ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "remind-switch",
+                                                'ariaLabel'    => gT('Reminder sent?'),
                                                 'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bRemindSwitchValue,
                                                 'selectOptions' => [
@@ -381,7 +388,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        value="<?php echo isset($remindersent) && $remindersent != 'N' ? $remindersent : '' ?>"
                                                        name="remind-date"
                                                        data-locale="<?php echo $locale ?>"
-                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                       data-allowinputtoggle="1"
+                                                       data-theme="light">
                                                 <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
@@ -436,7 +445,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <div id="validfrom_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : '' ?>" name="validfrom"
                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>"
+                                           data-allowinputtoggle="1"
+                                           data-theme="light">
                                     <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
@@ -452,7 +463,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <div id="validuntil_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : '' ?>" name="validuntil"
                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>"
+                                           data-allowinputtoggle="1"
+                                           data-theme="light">
                                     <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
@@ -461,27 +474,23 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     </div>
                 </div>
 
-                <!-- Custom attibutes -->
+                <!-- Custom attributes  -->
                 <div id="custom" class="tab-pane fade">
                     <!-- Attributes -->
-                    <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
-                        <div class="ex-form-group mb-3 col-6">
-                            <label class="form-label" for='<?php echo $attr_name; ?>'>
-                                <?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:
-                            </label>
-                            <div class="">
-                                <input
-                                    class='form-control<?= $attr_description['mandatory'] == 'Y' ? ' mandatory-attribute' : '' ?>'
-                                    type='text'
-                                    size='55'
-                                    id='<?php echo $attr_name; ?>'
-                                    name='<?php echo $attr_name; ?>'
-                                    value='<?php if (isset($$attr_name)) {
-                                        echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'utf-8');
-                                    } ?>'
-                                />
-                            </div>
-                        </div>
+                    <?php foreach ($attrfieldnames as $attrName => $attrDescription): ?>
+                        <?php $inputValue = isset($$attrName) ? $$attrName : null ?>
+                        <?php
+                        $this->renderPartial(
+                                '/admin/token/attribute_subviews/tokenformAttributesWrapper',
+                                [
+                                        'attrDescription' => $attrDescription,
+                                        'attrName' => $attrName,
+                                        'inputValue' => $inputValue,
+                                        'jsDate' => $dateformatdetails['jsdate'],
+                                        'addClass' => 'col-6',
+                                ]
+                        );
+                        ?>
                     <?php endforeach; ?>
                 </div>
             </div>

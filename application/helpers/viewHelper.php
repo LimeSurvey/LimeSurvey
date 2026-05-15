@@ -258,13 +258,20 @@ class viewHelper
     }
 
     /**
-     * Show purified html
-     * @param string : Html to purify
-     * @return string
+     * Purifies HTML and returns the cleaned markup.
+     *
+     * Configures the purifier to allow target="_blank" and the `rel` values "external", "noreferrer", and "noopener".
+     *
+     * @param string $sHtml HTML to purify.
+     * @return string The purified HTML string.
      */
     public static function purified($sHtml)
     {
         $oPurifier = new CHtmlPurifier();
+        $oPurifier->options = array(
+            'HTML.TargetBlank' => true,
+            'Attr.AllowedRel' => ['external', 'noreferrer', 'noopener'],
+        );
         return $oPurifier->purify($sHtml);
     }
 

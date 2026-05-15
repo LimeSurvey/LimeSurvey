@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
     <div class="row mb-3">
         <div class="col-lg-6">
             <!-- Survey title -->
-            <label class=" question-group-title form-label" for="short_title_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>">
+            <label class=" question-group-title form-label" for="short_title_<?= $aSurveyLanguageSettings['surveyls_language'] ?>">
                 <?php eT("Survey title:"); ?>
             </label>
             <?php echo CHtml::textField(
@@ -48,7 +48,9 @@ echo viewHelper::getViewTestTag('surveyTexts');
     <div class="row mb-3">
         <div class="col-lg-4">
             <!-- Date format -->
-            <label class="form-label " for="dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"><?php eT("Date format:"); ?></label>
+            <label class="form-label " for="dateformat_<?= $aSurveyLanguageSettings['surveyls_language'] ?>">
+                <?php eT("Date format:"); ?>
+            </label>
             <select size='1' id='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' 
                     name='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' class="form-select">
                 <?php foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata) : ?>
@@ -69,6 +71,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 'name'          => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'],
                 'checkedOption' => $aSurveyLanguageSettings['surveyls_numberformat'],
                 'selectOptions' => $aRadixPoint,
+                'ariaLabel'     => gT("Decimal mark:"),
                 'htmlOptions'   => [
                     "style" => "z-index:0"
                 ]
@@ -158,27 +161,21 @@ echo viewHelper::getViewTestTag('surveyTexts');
         </div>
         <div class="col-12 col-lg-6">
             <div>
-                <label
-                        class="form-label"
-                        for="url_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"
-                >
-                    <?php eT("End URL:"); ?>
+                <label class="form-label" for="url_<?= $aSurveyLanguageSettings['surveyls_language'] ?>">
+                    <?= gT("End URL:"); ?>
                 </label>
 
-                <?php echo CHtml::textField(
+                <?= CHtml::textField(
                     "url_{$aSurveyLanguageSettings['surveyls_language']}",
-                    htmlspecialchars_decode(
-                        (string)$aSurveyLanguageSettings['surveyls_url']
-                    ),
-                    array(
-                        'class' => 'form-control',
-                        'size' => "80",
+                    htmlspecialchars_decode((string)$aSurveyLanguageSettings['surveyls_url']),
+                    [
+                        'class'       => 'form-control',
+                        'size'        => "80",
                         'placeholder' => 'https://',
-                        'id' => "url_{$aSurveyLanguageSettings['surveyls_language']}"
-                    )
-                ); ?>
+                        'id'          => "url_{$aSurveyLanguageSettings['surveyls_language']}",
+                    ]
+                ) ?>
             </div>
-
             <div class="mt-2">
                 <label class="form-label " for="urldescrip_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"><?php eT("URL description:"); ?></label>
                 <?php echo CHtml::textField(
