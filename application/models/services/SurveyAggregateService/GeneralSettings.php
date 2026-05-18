@@ -180,7 +180,6 @@ class GeneralSettings
                 $survey
             );
 
-            $userSetting = \SettingsUser::getUserSetting('displayTimezone');
             if ($survey->expires) {
                 $survey->expires = getUTCOfDate(($survey->expires));
             }
