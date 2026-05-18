@@ -9,16 +9,24 @@ import 'themes/index.scss'
 import { VersionInfoService } from 'services'
 import { getApiUrl, URLS } from 'helpers'
 
+import { RouterProvider } from 'react-router-dom'
+
+import { I18Provider } from './providers/I18nextProvider'
+import { i18nInstance } from 'i18nInit'
+import routes from 'routes'
+
 import {
   AppErrorBoundary,
   withAppProfiler,
   initInstrumentation,
+  createRouter,
 } from 'appInstrumentation'
-import { RouterContainer } from 'RouterContainer'
 
 initInstrumentation()
 
 function App() {
+  const router = createRouter(routes)
+
   useEffect(() => {
     const fetchVersionInfoInterval = setInterval(() => {
       const versionInfoService = new VersionInfoService(getApiUrl())
@@ -49,7 +57,9 @@ function App() {
           client={queryClient}
           persistOptions={persistOptions}
         >
-          <RouterContainer />
+          <I18Provider i18n={i18nInstance}>
+            <RouterProvider router={router} />
+          </I18Provider>
           <div className="d-none">
             {process.env.REACT_APP_RELEASE}@{process.env.REACT_APP_COMMIT_HASH}
           </div>

@@ -39,6 +39,7 @@ export const TopBar = ({
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
   const [currentActiveLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const [showOverViewModal, setShowOverViewModal] = useState(false)
+  const [topbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
 
   const activeLanguage = useMemo(
     () =>
@@ -97,10 +98,15 @@ export const TopBar = ({
 
   useEffect(() => {
     setFocusedQuestionGroup(null)
-    if (setShowOverviewModalRef?.current !== undefined) {
+    if (setShowOverviewModalRef?.current === null) {
       setShowOverviewModalRef.current = setShowOverViewModal
     }
-  }, [survey.sid])
+  }, [
+    survey.sid,
+    setShowOverviewModalRef,
+    topbarConfig.pageName,
+    setShowOverViewModal,
+  ])
 
   return (
     <div id="topbar" className={`top-bar d-flex w-100 justify-content-between`}>
