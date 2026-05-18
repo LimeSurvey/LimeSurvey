@@ -85,7 +85,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Delete this survey menu?"); ?></h5>
+                <h2 class="modal-title h5"><?php eT("Delete this survey menu?"); ?></h2>
             </div>
             <div class="modal-body">
                 <?php eT("All menu entries of this menu will also be deleted."); ?>
