@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Display error messages
@@ -16,10 +17,3 @@
         </div>
     </div>
 </div>
-<?php
-App()->getClientScript()->registerScript(
-    'adminStatusMessageFocus',
-    "jQuery(function(){ var el = document.getElementById('admin-status-message'); if (el) { el.focus(); } });",
-    CClientScript::POS_READY
-);
-?>
