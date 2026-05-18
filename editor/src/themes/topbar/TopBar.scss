@@ -64,6 +64,12 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+
+    i {
+      &::before {
+        font-size: 16px;
+      }
+    }
   }
 
   .top-bar-brand {
