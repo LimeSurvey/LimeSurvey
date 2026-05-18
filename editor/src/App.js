@@ -1,12 +1,8 @@
 import React, { useEffect } from 'react'
-import { RouterProvider } from 'react-router-dom'
 import ThemeProvider from 'react-bootstrap/ThemeProvider'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import routes from 'routes'
 import { queryClient, persistOptions } from 'queryClient'
-import { I18Provider } from './providers/I18nextProvider'
-import { i18nInstance } from 'i18nInit'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'themes/index.scss'
@@ -14,14 +10,13 @@ import { VersionInfoService } from 'services'
 import { getApiUrl, URLS } from 'helpers'
 
 import {
-  createRouter,
   AppErrorBoundary,
   withAppProfiler,
   initInstrumentation,
 } from 'appInstrumentation'
+import { RouterContainer } from 'RouterContainer'
 
 initInstrumentation()
-const router = createRouter(routes)
 
 function App() {
   useEffect(() => {
@@ -54,9 +49,7 @@ function App() {
           client={queryClient}
           persistOptions={persistOptions}
         >
-          <I18Provider i18n={i18nInstance}>
-            <RouterProvider router={router} />
-          </I18Provider>
+          <RouterContainer />
           <div className="d-none">
             {process.env.REACT_APP_RELEASE}@{process.env.REACT_APP_COMMIT_HASH}
           </div>
