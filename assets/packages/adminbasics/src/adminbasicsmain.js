@@ -46,6 +46,7 @@ import createUrl from './parts/createUrl';
 import saveBindings from './parts/save';
 import parameterGlobals from './parts/parameterGlobals';
 import focusStatusMessage from './accessibility/statusMessageFocus';
+import restoreFocusAfterSortInGrid from './accessibility/restoreFocusAfterSortInGrid';
 
 // import components
 import activateSubSubMenues from './components/bootstrap-sub-submenues';
