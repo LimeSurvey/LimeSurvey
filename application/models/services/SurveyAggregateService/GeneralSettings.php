@@ -181,7 +181,6 @@ class GeneralSettings
             );
 
             $userSetting = \SettingsUser::getUserSetting('displayTimezone');
-            $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
             if ($survey->expires) {
                 $survey->expires = getUTCOfDate(($survey->expires));
             }
