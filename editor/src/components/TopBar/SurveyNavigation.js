@@ -7,12 +7,9 @@ import { ToggleButtons } from 'components/UIComponents/Buttons/ToggleButtons'
 
 const isActiveMenuItem = (url, location) => {
   if (!url) return false
-  const currentPath = (window.location.hash || location.pathname || '').replace(
-    '#',
-    ''
-  )
+  const currentPath = location.pathname
   const cleanURL = url.replace('#', '')
-  return currentPath.startsWith(cleanURL)
+  return currentPath === cleanURL || currentPath.startsWith(`${cleanURL}/`)
 }
 
 const EditorIcon = () => <i className="ri-pencil-line" />
