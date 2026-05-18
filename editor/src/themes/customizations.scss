@@ -8,6 +8,10 @@ html {
   font-size: $font-size-root;
   background-color: $g-100;
   scrollbar-gutter: stable;
+
+  &:has(body.modal-open) {
+    scrollbar-gutter: auto;
+  }
 }
 
 #content {
