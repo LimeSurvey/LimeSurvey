@@ -19,16 +19,7 @@
 
   height: $top-bar-height;
 
-  .top-bar-middle {
-    .survey-navigation {
-      .btn {
-        height: 32px;
-        display: flex;
-        align-items: center;
-      }
-    }
-    // z-index is set to make sure it is above left and right part
-  }
+  // z-index is set to make sure it is above left and right part
 
   .top-bar-select {
     border: 0;
@@ -64,6 +55,12 @@
   }
 
   box-shadow: 0 1px 2px -2px gray;
+
+  .top-bar-middle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 
   .top-bar-brand {
     font-style: $font-style-base;
