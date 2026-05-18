@@ -10,7 +10,7 @@ import { GenderQuestion } from './GenderQuestion/GenderQuestion'
 import { YesNoQuestion } from './YesNoQuestion/YesNoQuestion'
 import { OptionQuestionViewMode } from './QuestionModes/OptionQuestionViewMode'
 import { TextDisplay } from './TextQuestion/TextDisplay'
-import { DateTimePickerComponent } from 'components/UIComponents'
+import { DateTimePickerComponent } from 'components/UIComponents/DateTimePicker/DateTimePicker'
 import { ArrayParticipantMode } from 'components/QuestionsParticipantMode'
 
 /**
