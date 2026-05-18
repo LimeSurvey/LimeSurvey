@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from 'react'
 import classNames from 'classnames'
 
-import {
-  singleChoiceThemes,
-} from '../../../QuestionTypes'
+import { singleChoiceThemes } from '../../../QuestionTypes'
 import { questionPreviewComponents } from '../../../QuestionTypes/questionPreviewComponents'
 import { Button } from 'components/UIComponents'
 import { Toast } from 'helpers'
