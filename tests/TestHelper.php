@@ -169,7 +169,7 @@ class TestHelper extends TestCase
      */
     public function deactivateSurvey($surveyId)
     {
-        $date     = date('YmdHis');
+        $date     = gmdate('YmdHis');
         $oldSurveyTableName = Yii::app()->db->tablePrefix . "responses_{$surveyId}";
         $newSurveyTableName = Yii::app()->db->tablePrefix . "old_responses_{$surveyId}_{$date}";
         Yii::app()->db->createCommand()->renameTable($oldSurveyTableName, $newSurveyTableName);
