@@ -137,6 +137,7 @@ class GeneralSettings
      *
      * @param Survey $survey
      * @param array $input
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
