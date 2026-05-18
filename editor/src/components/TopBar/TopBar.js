@@ -104,7 +104,7 @@ export const TopBar = ({
   }, [
     survey.sid,
     setShowOverviewModalRef,
-    topbarConfig.pageName,
+    topbarConfig?.pageName,
     setShowOverViewModal,
   ])
 
