@@ -14,6 +14,7 @@ use Facebook\WebDriver\WebDriverSelect;
  * https://docs.phpunit.de/en/10.5/annotations.html#backupglobals
  *
  * @backupGlobals enabled
+ * @group user
  */
 class UserStatusControllerTest extends TestBaseClass
 {
