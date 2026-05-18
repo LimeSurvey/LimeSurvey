@@ -5,7 +5,6 @@ import { Toaster } from 'react-hot-toast'
 import { Container } from 'react-bootstrap'
 import { useAppState, useResponses, useSurvey } from 'hooks'
 import { createBufferOperation, htmlPopup, PAGES, STATES } from 'helpers'
-import { TopBar } from 'components'
 
 import { LeftSideBar } from './Sidebars/LeftSideBar'
 import {
