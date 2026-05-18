@@ -32,6 +32,10 @@
       z-index: 100;
       color: $black;
       background-color: $white;
+      .content-editable {
+        padding: 4px 0;
+        min-width: fit-content;
+      }
 
       &:focus,
       &:active {
