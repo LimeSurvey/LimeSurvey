@@ -45,6 +45,7 @@ import * as AjaxHelper from './parts/ajaxHelper';
 import createUrl from './parts/createUrl';
 import saveBindings from './parts/save';
 import parameterGlobals from './parts/parameterGlobals';
+import focusStatusMessage from './accessibility/statusMessageFocus';
 
 // import components
 import activateSubSubMenues from './components/bootstrap-sub-submenues';
@@ -91,12 +92,14 @@ const AdminCore = function(){
             appendToLoad(activateSubSubMenues);
             appendToLoad(globalWindowMethods.fixAccordionPosition);
             appendToLoad(globalWindowMethods.doSelect2);
+            appendToLoad(focusStatusMessage, 'pjax:scriptcomplete ready ajaxStop');
         },
         appendToLoad = (fn, event, root, delay) => {
             event = event || 'pjax:scriptcomplete ready';
             root = root || 'document';
             delay = delay || 0;
             eventsBound[root] = eventsBound[root] || [];
+
 
             if(_.find(eventsBound[root], {fn, event, root, delay}) === undefined) {
                 eventsBound[root].push({fn, event, root, delay});

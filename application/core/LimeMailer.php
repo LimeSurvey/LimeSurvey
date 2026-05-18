@@ -3,7 +3,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
- * WIP
  * A SubClass of phpMailer adapted for LimeSurvey
  */
 class LimeMailer extends PHPMailer
@@ -93,6 +92,11 @@ class LimeMailer extends PHPMailer
      * @var boolean $aAttachements Current attachements (as string or array)
      **/
     private $_bAttachementTypeDone = false;
+
+    /**
+     * @var boolean $ignoremissingattachement allow to send if attachement have issue.
+     **/
+    public $ignoremissingattachement = false;
 
     /**
      * The Raw Subject of the message. before any Expression Replacements and other update
@@ -612,7 +616,10 @@ class LimeMailer extends PHPMailer
             $this->Subject = mb_convert_encoding($this->Subject, $this->CharSet, $this->BodySubjectCharset);
             $this->Body = mb_convert_encoding($this->Body, $this->CharSet, $this->BodySubjectCharset);
         }
-        $this->addAttachementsByType();
+        if (!$this->addAttachementsByType() && !$this->ignoremissingattachement ) {
+            $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
+            return false;
+        }
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if (!is_null($eventResult)) {
@@ -921,66 +928,45 @@ class LimeMailer extends PHPMailer
 
     /**
      * Set the attachments according to current survey,language and emailtype
-     * @ return void
+     * @return boolean attachments added with success
      */
     public function addAttachementsByType()
     {
         if ($this->_bAttachementTypeDone) {
-            return;
+            return true;
         }
         $this->_bAttachementTypeDone = true;
+        // No survey : no attachments
         if (empty($this->surveyId)) {
-            return;
+            return true;
         }
+        // No attachement template : no attachments
         if (!array_key_exists($this->emailType, $this->_aAttachementByType)) {
-            return;
+            return true;
         }
-
-        $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
+        $attachementType = $this->_aAttachementByType[$this->emailType];
         if (!empty($oSurveyLanguageSetting->attachments)) {
-            $aAttachments = unserialize($oSurveyLanguageSetting->attachments);
+            $aAttachments = $oSurveyLanguageSetting->getValidAttachments(true);
             if (!empty($aAttachments[$attachementType])) {
                 if ($this->oToken) {
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
-                    if ($this->attachementExists($aAttachment) && LimeExpressionManager::ProcessRelevance($aAttachment['relevance'])) {
+                    if (LimeExpressionManager::ProcessRelevance($aAttachment['relevance'])) {
                         $this->addAttachment($aAttachment['url']);
                     }
                 }
             }
         }
+        // If some attachments for this template did not exist : return false
+        if (!$oSurveyLanguageSetting->hasAllAttachments($attachementType)) {
+            return false;
+        }
+        return true;
     }
 
-    private function attachementExists($aAttachment)
-    {
-        $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId, 'surveylocale', 'update'));
-
-        $isInSurvey = Yii::app()->is_file(
-            $aAttachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyId,
-            false
-        );
-
-        $isInGlobal = Yii::app()->is_file(
-            $aAttachment['url'],
-            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
-            false
-        );
-
-        if ($isInSurvey || $isInGlobal) {
-            return true;
-        }
-
-        if ($throwError && !($isInSurvey || $isInGlobal)) {
-            throw new \CException(sprintf(gT("File not found: %s"), $aAttachment['url']));
-        }
-
-        return false;
-    }
-
-    /**
+   /**
      * @inheritdoc
      * Reset the attachementType done to false
      */
@@ -1024,19 +1010,23 @@ class LimeMailer extends PHPMailer
     public static function validateAddresses($aEmailAddressList, $patternselect = null)
     {
         $aOutList = [];
-        if (!is_array($aEmailAddressList)) {
+        if (is_string($aEmailAddressList)) {
             $aEmailAddressList = preg_split("/(,|;)/", (string) $aEmailAddressList);
         }
-
-        foreach ($aEmailAddressList as $sEmailAddress) {
-            $sEmailAddress = trim($sEmailAddress);
-            if (self::validateAddress($sEmailAddress, $patternselect)) {
-                $aOutList[] = $sEmailAddress;
+        if (is_array($aEmailAddressList)) {
+            foreach ($aEmailAddressList as $sEmailAddress) {
+                if (!is_string($sEmailAddress)) {
+                     continue;
+                }
+                $sEmailAddress = trim($sEmailAddress);
+                if (self::validateAddress($sEmailAddress, $patternselect)) {
+                    $aOutList[] = $sEmailAddress;
+                }
             }
+            return $aOutList;
         }
-        return $aOutList;
+        return [];
     }
-
 
     /**
      * @inheritdoc

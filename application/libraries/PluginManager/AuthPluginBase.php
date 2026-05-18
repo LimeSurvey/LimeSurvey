@@ -127,7 +127,7 @@ abstract class AuthPluginBase extends PluginBase
      * @param \LimeSurvey\PluginManager\PluginEvent, current event if not set
      * @return AuthPluginBase
      */
-    public function setAuthPlugin(PluginEvent $event = null)
+    public function setAuthPlugin(?PluginEvent $event = null)
     {
         if (empty($event)) {
             $event = $this->getEvent();

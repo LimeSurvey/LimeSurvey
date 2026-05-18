@@ -51,6 +51,23 @@
                         </div>
                     </div>
                     <div class='mb-3'>
+                        <label class='form-label' for='surveysgroup'><?php eT("Survey group:"); ?></label>
+                        <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', [
+                            'asDropDownList' => true,
+                            'htmlOptions' => [],
+                            'data' => [
+                                'default'     => gT("Import on default survey group"),
+                                'from_survey' => gT("Keep the survey group from the imported file"),
+                            ],
+                            'value' => 'default',
+                            'name' => 'surveysgroup',
+                            'pluginOptions' => ['minimumResultsForSearch' => -1]
+                        ]); ?>
+                        <div class="alert alert-warning mt-2 d-none" id="survey_group_import_warning">
+                            <?php eT("Survey group will be matched by name. Please note that survey group permissions will be inherited by the imported survey."); ?>
+                        </div>
+                    </div>
+                    <div class='mb-3'>
                         <input id="yttranslinksfields" name="translinksfields" type="hidden" value="0">
                         <input id="translinksfields" name="translinksfields" type="checkbox" value="1" checked>
                         <label
