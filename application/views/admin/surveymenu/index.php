@@ -42,6 +42,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                                 'dataProvider' => $model->search(),
                                 'id' => 'surveymenu-grid',
                                 'columns' => $model->getColumns(),
+                                'caption' => gT('Survey menus'),
                                 'filter' => $model,
                                 'emptyText' => gT('No customizable entries found.'),
                                 'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
