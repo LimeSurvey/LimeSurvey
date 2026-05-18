@@ -1,0 +1,77 @@
+/**
+ * Keep focus on the clicked sort column header link after a CGridView AJAX
+ * update (e.g. sorting by "Code") instead of letting focus jump to the first
+ * focusable element (checkbox).
+ *
+ * This is grid-agnostic: it tracks sort-link clicks on any registered grid
+ * and restores focus to the correct column header after the grid re-renders.
+ *
+ * Usage (from PHP view, in lsAfterAjaxUpdate):
+ *   'lsAfterAjaxUpdate' => ['restoreFocusAfterSort("my-grid-id");']
+ *
+ * The grid is automatically observed once restoreFocusAfterSort() is called
+ * for a given gridId, so no separate initialization step is needed.
+ */
+
+(function () {
+    'use strict';
+
+    /**
+     * Per-grid state: stores the last clicked column index for each grid id.
+     * @type {Object.<string, number|null>}
+     */
+    var gridState = {};
+
+    var sortFocusCaptureHandler = function (e) {
+        var link = e.target.closest && e.target.closest('a.sort-link');
+        if (link) {
+            var th = link.closest('th');
+            var grid = e.currentTarget;
+            if (th && grid && grid.id) {
+                gridState[grid.id] = Array.prototype.indexOf.call(th.parentNode.children, th);
+            }
+        }
+    };
+
+    /**
+     * Attach the click-capture listener to a specific grid element.
+     * Safe to call multiple times — duplicates are prevented via a data attribute.
+     *
+     * @param {string} gridId - The DOM id of the grid container.
+     */
+    var attachSortFocusCapture = function (gridId) {
+        var grid = document.getElementById(gridId);
+        if (!grid) return;
+        if (grid.dataset.sortFocusBound) return;
+        grid.dataset.sortFocusBound = 'true';
+        grid.addEventListener('click', sortFocusCaptureHandler, true);
+    };
+
+    /**
+     * Restore focus to the previously clicked sort column in the given grid,
+     * then re-attach the capture listener (since the grid DOM is replaced on
+     * AJAX update).
+     *
+     * @param {string} gridId - The DOM id of the grid container.
+     */
+    var restoreFocusAfterSort = function (gridId) {
+        if (gridState[gridId] != null) {
+            var $th = jQuery('#' + gridId + ' table thead th').eq(gridState[gridId]);
+            var $link = $th.find('a.sort-link');
+            if ($link.length) {
+                $link[0].focus();
+            }
+            gridState[gridId] = null;
+        }
+        // Grid DOM was replaced by AJAX — re-enable listener
+        var grid = document.getElementById(gridId);
+        if (grid) {
+            delete grid.dataset.sortFocusBound;
+            attachSortFocusCapture(gridId);
+        }
+    };
+
+    // Expose globally so CGridView's lsAfterAjaxUpdate callback can invoke it
+    window.restoreFocusAfterSort = restoreFocusAfterSort;
+})();
+
