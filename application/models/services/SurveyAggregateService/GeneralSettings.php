@@ -180,6 +180,16 @@ class GeneralSettings
                 $survey
             );
 
+            $userSetting = \SettingsUser::getUserSetting('displayTimezone');
+            $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+            if ($survey->expires) {
+                $survey->expires = getUTCOfDate(($survey->expires));
+            }
+
+            if ($survey->startdate) {
+                $survey->startdate = getUTCOfDate(($survey->startdate));
+            }
+
             $saved = $survey->save();
             if (array_key_exists('allowregister', $input)) {
                 $this->ensureTokensTableExistence($survey);

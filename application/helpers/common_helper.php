@@ -2866,6 +2866,36 @@ function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UT
 }
 
 /**
+ * Gets the UTC of the date to be stored
+ * @param string|null $date
+ * @return string|null
+ */
+function getUTCOfDate(?string $date = null)
+{
+    if (!$date) {
+        return $date;
+    }
+    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
+    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    return dateShift($date, "Y-m-d H:i:s", 'UTC', $tz);
+}
+
+/**
+ * Gets the date of the UTC to be displayed
+ * @param string|null $date
+ * @return string|null
+ */
+function getDateOfUTC(?string $date = null)
+{
+    if (!$date) {
+        return $date;
+    }
+    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
+    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    return dateShift($date, "Y-m-d H:i:s", $tz, 'UTC');
+}
+
+/**
  * Applies a relative time modifier (e.g. '-1 minute', '+2 hours') to a date
  * and returns the result in the given format.
  *
