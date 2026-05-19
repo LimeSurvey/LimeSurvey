@@ -180,6 +180,7 @@ export const Setting = ({
                 name={attribute.attributePath}
                 update={(value) => handleUpdateAttribute(value, attribute)}
                 isSimpleSettings={simpleSettings}
+                theme="light"
               />
             </TooltipContainer>
           </div>

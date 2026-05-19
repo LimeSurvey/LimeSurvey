@@ -6,6 +6,8 @@ use Facebook\WebDriver\WebDriverBy;
 
 /**
  * Test for issue #15348: Ranking question does not save answers when array filter and max columns are used.
+ *
+ * @group question
  */
 class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
 {

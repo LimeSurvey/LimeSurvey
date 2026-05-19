@@ -34,6 +34,7 @@ export const ToggleButtons = ({
   onChange = () => {},
   update = () => {},
   activeDisabled = false,
+  theme = 'light',
   noPermissionDisabled = false,
   noAccessDisabled = false,
   optionTextClassName = '',
@@ -100,7 +101,7 @@ export const ToggleButtons = ({
   return (
     <TooltipContainer tip={toolTip} showTip={isDisabled}>
       <div
-        className={classNames('lime-toggle-btn-group', {
+        className={classNames('lime-toggle-btn-group', theme, {
           isSecondary,
         })}
       >

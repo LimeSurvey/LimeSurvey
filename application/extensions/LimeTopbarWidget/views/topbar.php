@@ -9,18 +9,17 @@
 
 <div class="topbar sticky-top <?php if ($editorEnabled) {
     echo 'editor';
-                              } ?>" id="pjax-content">
+} ?>" id="pjax-content">
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->
             <div class="ls-breadcrumb col-12">
                 <h1 role="presentation" class="align-items-center d-flex">
-                    <?php
-                    if ($titleBackLink !== null) {
-                        echo '<a class="h1" href="' . $titleBackLink . '">
-                            <i class="ri-arrow-left-s-line"></i></a>' ;
-                    }
-                    ?>
+                    <?php if ($titleBackLink !== null): ?>
+                        <a class="topbar-back-link" aria-label="<?= gT('Back') ?>" href="<?= $titleBackLink ?>">
+                            <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
+                        </a>
+                    <?php endif; ?>
                     <?= $leftSide ?>
                 </h1>
             </div>

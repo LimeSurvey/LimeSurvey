@@ -4,6 +4,9 @@ namespace ls\tests;
 
 use Yii;
 
+/**
+ * @group api
+ */
 class RemoteControlXmlrpcTest extends TestBaseClassWeb
 {
     private static $tmpBaseUrl;
