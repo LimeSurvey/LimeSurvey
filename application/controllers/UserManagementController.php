@@ -896,14 +896,21 @@ class UserManagementController extends LSBaseController
         $created = [];
         $updated = [];
         $hasDuplicateEmails = false;
+        $canOverwriteDuplicateEmail = false;
         $existingAttributes = User::model()->attributeNames();
         $dateAttributes = ['last_login', 'validation_key_expiration','last_forgot_email_password','expires'];
         foreach ($aNewUsers as $aNewUser) {
             // Unset not imported or invalid attribute
             $aNewUser = array_intersect_key($aNewUser, array_flip($existingAttributes));
             $aNewUser = array_diff_key($aNewUser, array_flip(['uid','parent_id', 'created', 'modified']));
-            /* Find if exist */
-            $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
+            $oUser = User::model()->find(
+                'users_name = :name OR email = :email',
+                [
+                    ':name' => $aNewUser['users_name'],
+                    ':email' => $aNewUser['email'],
+                ]
+            );
+
             if ($oUser  !== null) {
                 if ($overwriteUsers) {
                     /* Check permission to edit this user */
@@ -931,13 +938,12 @@ class UserManagementController extends LSBaseController
                     if ($save) {
                         $updated[] = $aNewUser;
                     }
+                } else {
+                    if (!empty($aNewUser['email']) && $oUser->email === $aNewUser['email']) {
+                        $hasDuplicateEmails = true;
+                    }
                 }
             } else {
-                if (!empty($aNewUser['email']) && User::model()->findByAttributes(['email' => $aNewUser['email']]) !== null) {
-                    $hasDuplicateEmails = true;
-                    continue;
-                }
-
                 if (empty($aNewUser['password']) || $aNewUser['password'] == ' ') {
                     $aNewUser['password'] = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 }
@@ -971,7 +977,7 @@ class UserManagementController extends LSBaseController
             Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
         }
 
-        if (!empty($hasDuplicateEmails)) {
+        if ($hasDuplicateEmails) {
             Yii::app()->setFlashMessage(gT("One or more users could not be imported because their email address already exists. Please use a unique email address for each user."), 'warning');
         }
 
