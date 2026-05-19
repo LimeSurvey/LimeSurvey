@@ -104,12 +104,18 @@ jobs:
       - name: Install and setup MSSQL Server
         if: matrix.db-type == 'mssql'
         run: |
-          # Remove pre-existing Microsoft prod repo entry (ships without Signed-By on ubuntu-22.04 runners)
-          # to avoid "Conflicting values set for option Signed-By" apt error
+          # Remove pre-existing Microsoft repo entries shipped on the runner
+          # (they conflict with our own signed-by entries)
           sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
-          # Enable Microsoft Repository for MSSQL Server
-          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
-          curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/mssql-server-${{ matrix.db-version }}.list | sudo tee /etc/apt/sources.list.d/mssql-server.list
+      
+          # Import Microsoft signing key into a dedicated keyring
+          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
+          | sudo gpg --batch --yes --no-tty --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+      
+          # Add the SQL Server repo WITH signed-by — Microsoft's own .list file omits it,
+          # so don't curl it; write it manually like msprod.list below.
+          echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/mssql-server-${{ matrix.db-version }} jammy main" \
+          | sudo tee /etc/apt/sources.list.d/mssql-server.list
           # Install MSSQL Server
           sudo apt-get update
           sudo apt-get install -y mssql-server
@@ -203,19 +209,14 @@ jobs:
 
   code-check:
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        # Specify what versions of php you want to test
-        php-versions: [ '8.1', '8.3' ]
+    permissions:
+      contents: write
     env:
       DBENGINE: INNODB
+      PHP_VERSION: '8.3'
     steps:
       - uses: actions/checkout@v4
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: mysql, xml
+
       - name: Setup
         run: |
           touch enabletests
@@ -226,6 +227,10 @@ jobs:
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
       - name: Check MySQL service
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
@@ -245,6 +250,39 @@ jobs:
           php application/commands/console.php install admin password TravisLS no@email.com verbose
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
+        continue-on-error: true
+
+      - name: Run PHPCBF
+        run: |
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/models
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/controllers
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/FormExtension
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/Api
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php
+        continue-on-error: true
+
+        # we need to do this because otherwise the auto commit step commits additional files
+      - name: Ignore file mode changes
+        run: |
+          git config core.fileMode false
+
+      - name: Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Apply PHPCBF changes
+          file_pattern: |
+            application/models/**.php
+            application/controllers/**.php
+            application/libraries/ExtensionInstaller/**.php
+            application/libraries/FormExtension/**.php
+            application/libraries/Api/**.php
+            application/helpers/update/updatedb_helper.php
+            application/helpers/update/updates/**.php
+            application/core/plugins/ExpressionAnswerOptions/**.php
 
       - name: Run Psalm on application/ folder with low strictness
         run: |

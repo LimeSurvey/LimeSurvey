@@ -1,5 +1,4 @@
 <?php
-
 /*
  * LimeSurvey
  * Copyright (C) 2007-2026 The LimeSurvey Project Team

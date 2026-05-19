@@ -2851,7 +2851,12 @@ class Tokens extends SurveyCommonAction
         }
         foreach ($aTokenFieldNames as $sTokenFieldName) {
             if (strpos($sTokenFieldName, 'attribute_') === 0 && (!isset($aData['attrfieldnames']) || !isset($aData['attrfieldnames'][$sTokenFieldName]))) {
-                $aData['attrfieldnames'][$sTokenFieldName] = array('description' => $sTokenFieldName, 'mandatory' => 'N');
+                $aData['attrfieldnames'][$sTokenFieldName] = array(
+                    'description' => $sTokenFieldName,
+                    'mandatory' => 'N',
+                    'type' => 'TB', // TB = text input (default)
+                    'type_options' => '[]'
+                );
             }
         }
 
