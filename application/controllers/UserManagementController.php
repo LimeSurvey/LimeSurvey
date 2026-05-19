@@ -895,6 +895,7 @@ class UserManagementController extends LSBaseController
         }
         $created = [];
         $updated = [];
+        $hasDuplicateEmails = false;
         $existingAttributes = User::model()->attributeNames();
         $dateAttributes = ['last_login', 'validation_key_expiration','last_forgot_email_password','expires'];
         foreach ($aNewUsers as $aNewUser) {
@@ -932,6 +933,11 @@ class UserManagementController extends LSBaseController
                     }
                 }
             } else {
+                if (!empty($aNewUser['email']) && User::model()->findByAttributes(['email' => $aNewUser['email']]) !== null) {
+                    $hasDuplicateEmails = true;
+                    continue;
+                }
+
                 if (empty($aNewUser['password']) || $aNewUser['password'] == ' ') {
                     $aNewUser['password'] = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 }
@@ -964,6 +970,11 @@ class UserManagementController extends LSBaseController
         if (count($created) || count($updated)) {
             Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
         }
+
+        if (!empty($hasDuplicateEmails)) {
+            Yii::app()->setFlashMessage(gT("One or more users could not be imported because their email address already exists. Please use a unique email address for each user."), 'warning');
+        }
+
         $this->redirect(['userManagement/index']);
     }
 
