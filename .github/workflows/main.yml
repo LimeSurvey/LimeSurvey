@@ -243,12 +243,13 @@ jobs:
       - name: Install and setup MSSQL Server
         if: matrix.db-type == 'mssql'
         run: |
-          # Remove pre-existing Microsoft prod repo entry (ships without Signed-By on ubuntu-22.04 runners)
-          # to avoid "Conflicting values set for option Signed-By" apt error
+          # Remove pre-existing Microsoft repo entries shipped on the runner
+          # (they conflict with our own signed-by entries)
           sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
-          # Enable Microsoft Repository for MSSQL Server
-          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
-          curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/mssql-server-${{ matrix.db-version }}.list | sudo tee /etc/apt/sources.list.d/mssql-server.list
+          # Import Microsoft signing key into a dedicated keyring
+
+          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
+          | sudo gpg --batch --yes --no-tty --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
           # Install MSSQL Server
           sudo apt-get update
           sudo apt-get install -y mssql-server
