@@ -350,6 +350,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * The Survey languagesettings in currently active language. Falls back to the surveys' default language if the current language is not available.
+     * If no language settings are found, a flash error message is shown and a default empty SurveyLanguageSetting instance is returned
+     * to keep the interface responsive instead of throwing an exception.
      * @return SurveyLanguageSetting
      */
     public function getCurrentLanguageSettings()
@@ -359,12 +361,21 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
-            $searchedLanguages = App()->language;
-            if ($this->language != App()->language) {
-                $searchedLanguages .= ',' . $this->language;
+            // This code is only necessary since there have been issues in the past with missing language settings.
+            $checkIntegrityLink = App()->urlManager->createUrl('/admin/checkintegrity');
+            $errorString = gT('The survey language for one or more surveys could not be found.') . '<br>'
+                . sprintf(
+                    gT('Please use the %s data integrity %s tool from the top navigation to fix the issue automatically.'),
+                    "<a href='" . $checkIntegrityLink . "'>",
+                    '</a>'
+                );
+            // Use a static flag to avoid duplicating the same flash message within a single request, e.g. on survey list pages.
+            static $flashedLanguageErrors = false;
+            if ($flashedLanguageErrors === false) {
+                $flashedLanguageErrors = true;
+                App()->setFlashMessage($errorString, 'error');
             }
-            $errorString = sprintf(gT('Survey language settings (%s) not found. Please run the integrity check from the main menu.'), $searchedLanguages);
-            throw new Exception($errorString);
+            return new SurveyLanguageSetting();
         }
     }
 
