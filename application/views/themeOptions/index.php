@@ -88,7 +88,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                             </div>
                                                             <div class="modal-body">
                                                                 <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?><br>
-                                                                    <a href="https://www.limesurvey.org/manual/Extension_compatibility" target="_blank">
+                                                                    <a class="ls-link" href="https://www.limesurvey.org/manual/Extension_compatibility" target="_blank">
                                                                         <?= gT('For more information consult our manual.') ?>
                                                                     </a>
                                                                 </p>

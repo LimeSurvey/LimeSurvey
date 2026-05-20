@@ -2572,7 +2572,7 @@ class ExpressionManager
 
         // 508 fix, don't output empty anchor tags
             if ($func[4]) {
-                $output .= "<a href='" . $func[4] . "'>" . $func[4] . "</a>";
+                $output .= "<a class='ls-link' href='" . $func[4] . "'>" . $func[4] . "</a>";
             }
 
             $output .= "&nbsp;</td></tr>\n";
