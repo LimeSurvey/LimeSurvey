@@ -86,17 +86,45 @@ function dbGetTablesLike($table)
 }
 
 /**
- * Getting a two-item array for RDBMS-sensitive separators
- * @return string[]
+ * Wraps field names with RDBMS-specific quote characters and returns them as a comma-separated string.
+ * @param array|string $fields A field name, comma-separated field names, or an array of field names.
+ * @return string
  */
-function getFieldWrappers()
+function dbQuoteFields(array|string $fields)
 {
-        $leftSeparator = $rightSeparator = "`";
-        if (Yii::app()->db->getDriverName() === 'pgsql') {
-            $leftSeparator = $rightSeparator = '"';
-        } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
-            $leftSeparator = "[";
-            $rightSeparator = "]";
+    if (is_string($fields)) {
+        if (strpos($fields, ',') !== false) {
+            $fields = explode(',', $fields);
+        } else {
+            $fields = [$fields];
         }
-        return [$leftSeparator, $rightSeparator];
+    }
+
+    if (is_array($fields) && count($fields) > 0) {
+        $driver = App()->db->getDriverName();
+        switch ($driver) {
+            case 'mysql':
+            case 'mysqli':
+                $fields = array_map(function ($f) {
+                    return '`' . trim($f) . '`';
+                }, $fields);
+                break;
+            case 'dblib':
+            case 'mssql':
+            case 'sqlsrv':
+                $fields = array_map(function ($f) {
+                    return '[' . trim($f) . ']';
+                }, $fields);
+                break;
+            case 'pgsql':
+                $fields = array_map(function ($f) {
+                    return '"' . trim($f) . '"';
+                }, $fields);
+                break;
+            default:
+                $fields = array_map('trim', $fields);
+                break;
+        }
+    }
+    return implode(', ', $fields);
 }
