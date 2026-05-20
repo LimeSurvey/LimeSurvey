@@ -354,6 +354,11 @@ class ResponsesController extends LSBaseController
                 } else {
                     $answervalue = "";
                 }
+            } elseif (in_array($fnames[$i][0], ['startdate', 'datestamp', 'submitdate'])) {
+                $date = $aResult[$fnames[$i][0]];
+                $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+                $date = new Date_Time_Converter(getDateOfUTC($date), "Y-m-d H:i:s");
+                $answervalue = $date->convert($dateformatdetails['phpdate'] . " H:i:s");
             } else {
                 $answervalue = htmlspecialchars(
                     viewHelper::flatten(
