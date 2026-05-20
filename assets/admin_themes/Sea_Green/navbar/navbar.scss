@@ -11,7 +11,7 @@
         align-items : center;
         gap         : 0;
 
-        a {
+        a:not(.dropdown-item) {
             display     : flex;
             align-items : center;
 
@@ -23,8 +23,8 @@
 
             &:focus-visible {
                 color: inherit;
-                @include state-border(1px, $grape90);
-                @include inset-border(1px, $grape90);
+                @include state-border(1px, $grape-light, 0px);
+                @include inset-border(1px, $grape-light);
             }
 
             &:active {

@@ -18,7 +18,7 @@
            @include state-border(2px, $grape75, 4px);
         }
         &:focus-visible {
-            @include state-border(2px, $grape90, 4px);
+            @include state-border(2px, $grape90, 0px);
         }
         &:active {
             @include state-border(1px, $grape90, 4px);
@@ -106,7 +106,7 @@
                     @include state-border(2px, transparent);
                 }
                 a:focus-visible {
-                    @include state-border(2px, $grape90);
+                    @include state-border(2px, $grape90, 0px);
                 }
                 a:hover {
                     background-color : $g-200;

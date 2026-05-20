@@ -17170,15 +17170,23 @@ body {
   box-shadow: none;
   background-color: #EEEFF7;
 }
+.btn-group .btn-check:focus-visible + .btn-outline-secondary,
+.btn-group .btn-check:active + .btn-outline-secondary:focus-visible,
+.btn-group .btn-check:checked + .btn-outline-secondary:focus-visible,
+.btn-group .btn-outline-secondary.active:focus-visible,
+.btn-group .btn-outline-secondary.dropdown-toggle.show:focus-visible,
+.btn-group .btn-outline-secondary:active:focus-visible {
+  outline: none;
+  box-shadow: inset 1px 0 0 #9b87ff, inset -1px 0 0 #9b87ff, inset 0 -1px 0 #9b87ff, inset 0 1px 0 #9b87ff;
+  border-color: #9b87ff;
+}
 .btn-group .btn-check:focus + .btn-outline-secondary,
 .btn-group .btn-check:active + .btn-outline-secondary:focus,
 .btn-group .btn-check:checked + .btn-outline-secondary:focus,
 .btn-group .btn-outline-secondary.active:focus,
 .btn-group .btn-outline-secondary.dropdown-toggle.show:focus,
 .btn-group .btn-outline-secondary:active:focus {
-  outline: none;
-  box-shadow: inset 1px 0 0 #8146F6, inset -1px 0 0 #8146F6, inset 0 -1px 0 #8146F6, inset 0 1px 0 #8146F6;
-  border-color: #8146F6;
+  box-shadow: none;
 }
 .btn-group .btn-outline-secondary:active {
   box-shadow: none;
@@ -17559,7 +17567,7 @@ a.ls-link:hover {
 a.ls-link:focus-visible {
   padding: 1px 4px;
   outline: none;
-  border-radius: 2px;
+  border-radius: 0px;
   border: 2px solid rgba(123, 97, 255, 0.9);
 }
 a.ls-link:active {
@@ -17731,26 +17739,26 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   align-items: center;
   gap: 0;
 }
-.navbar .nav-item a {
+.navbar .nav-item a:not(.dropdown-item) {
   display: flex;
   align-items: center;
 }
-.navbar .nav-item a:hover {
+.navbar .nav-item a:not(.dropdown-item):hover {
   color: inherit;
   box-shadow: none;
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
 }
-.navbar .nav-item a:focus-visible {
+.navbar .nav-item a:not(.dropdown-item):focus-visible {
   color: inherit;
   outline: none;
-  border-radius: 2px;
-  border: 1px solid rgba(123, 97, 255, 0.9);
+  border-radius: 0px;
+  border: 1px solid #9b87ff;
   outline: none;
-  box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.9), inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);
+  box-shadow: inset 1px 0 0 #9b87ff, inset -1px 0 0 #9b87ff, inset 0 -1px 0 #9b87ff, inset 0 1px 0 #9b87ff;
 }
-.navbar .nav-item a:active {
+.navbar .nav-item a:not(.dropdown-item):active {
   color: #9094A7;
   box-shadow: none;
 }
@@ -17964,7 +17972,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   border-left: 4px solid #4DD753;
 }
 .card.card-primary.card-clickable:hover {
-  box-shadow: 8px 8px #D3C5FA;
+  box-shadow: 8px 8px #9b87ff;
   cursor: hand;
 }
 .card.card-primary.disabled {
@@ -18078,7 +18086,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 .box-widget .box-widget-card:focus-visible {
   outline: none;
-  border-radius: 4px;
+  border-radius: 0px;
   border: 2px solid rgba(123, 97, 255, 0.9);
 }
 .box-widget .box-widget-card:active {
@@ -18173,7 +18181,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 .box-widget .box-widget-card .box-widget-card-footer .icons a:focus-visible {
   outline: none;
-  border-radius: 2px;
+  border-radius: 0px;
   border: 2px solid rgba(123, 97, 255, 0.9);
 }
 .box-widget .box-widget-card .box-widget-card-footer .icons a:hover {
@@ -18604,7 +18612,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   padding: 0;
 }
 .ls-panelboxes .card.card-primary.card-clickable:hover {
-  box-shadow: 8px 8px #D3C5FA;
+  box-shadow: 8px 8px #9b87ff;
   cursor: pointer;
   cursor: hand;
 }
@@ -19739,7 +19747,7 @@ table [class^=ri-], table [class*=" ri-"] {
 .grid-view-ls .table td:focus-visible:not(:active), .grid-view-ls .table th:focus-visible:not(:active),
 .grid-view-ls .table [tabindex]:focus-visible:not(tr):not(:active) {
   outline: none;
-  border-radius: 2px;
+  border-radius: 0px;
   border: 1px solid rgba(123, 97, 255, 0.9);
   outline: none;
   box-shadow: inset 1px 0 0 rgba(123, 97, 255, 0.9), inset -1px 0 0 rgba(123, 97, 255, 0.9), inset 0 -1px 0 rgba(123, 97, 255, 0.9), inset 0 1px 0 rgba(123, 97, 255, 0.9);

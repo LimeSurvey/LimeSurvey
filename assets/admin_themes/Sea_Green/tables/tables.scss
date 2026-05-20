@@ -270,7 +270,7 @@ table {
         td a:focus-visible:not(:active), td button:focus-visible:not(:active), th a:focus-visible:not(:active), th button:focus-visible:not(:active),
         td:focus-visible:not(:active), th:focus-visible:not(:active),
         [tabindex]:focus-visible:not(tr):not(:active) {
-            @include state-border(1px, $grape90);
+            @include state-border(1px, $grape90, 0px);
             @include inset-border(1px, $grape90);
         }
 
