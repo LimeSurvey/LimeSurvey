@@ -6,11 +6,12 @@
  * This is grid-agnostic: it tracks sort-link clicks on any registered grid
  * and restores focus to the correct column header after the grid re-renders.
  *
- * Usage (from PHP view, in lsAfterAjaxUpdate):
- *   'lsAfterAjaxUpdate' => ['LS.restoreFocusAfterSort("my-grid-id");']
+ * Usage (from PHP):
+ *   Register in lsAfterAjaxUpdate:
+ *     'lsAfterAjaxUpdate' => ['LS.restoreFocusAfterSort("my-grid-id");']
  *
- * The grid is automatically observed once LS.restoreFocusAfterSort() is called
- * for a given gridId, so no separate initialization step is needed.
+ *   The capture listener is automatically attached to all .grid-view-ls grids
+ *   on page load, so the very first sort click is already tracked.
  */
 
 // Namespace
@@ -47,7 +48,27 @@ var attachSortFocusCapture = function (gridId) {
     grid.addEventListener('click', sortFocusCaptureHandler, true);
 };
 
-// Return public functions for this module
+/**
+ * Initialize sort-focus capture on all .grid-view-ls grids.
+ * Called automatically on DOMContentLoaded so the first sort click is tracked.
+ */
+LS.initSortFocusCapture = function () {
+    'use strict';
+    var grids = document.querySelectorAll('.grid-view-ls');
+    for (var i = 0; i < grids.length; i++) {
+        if (grids[i].id) {
+            attachSortFocusCapture(grids[i].id);
+        }
+    }
+};
+
+/**
+ * Restore focus to the previously clicked sort column in the given grid,
+ * then re-attach the capture listener (since the grid DOM is replaced on
+ * AJAX update).
+ *
+ * @param {string} gridId - The DOM id of the grid container.
+ */
 LS.restoreFocusAfterSort = function (gridId) {
     'use strict';
     if (gridFocusState[gridId] != null) {
@@ -65,5 +86,10 @@ LS.restoreFocusAfterSort = function (gridId) {
         attachSortFocusCapture(gridId);
     }
 };
+
+// Auto-init on page load so the very first sort click is captured
+jQuery(document).ready(function () {
+    LS.initSortFocusCapture();
+});
 
 
