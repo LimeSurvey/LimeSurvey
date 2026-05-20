@@ -16,7 +16,7 @@ class OpHandlerResponseNullConditionTest extends TestCase
         $criteria = $handler->execute('deleted_at', 'true');
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertSame('(deleted_at IS NOT NULL)', $criteria->condition);
+        $this->assertSame('(`deleted_at` IS NOT NULL)', $criteria->condition);
         $this->assertSame([], $criteria->params);
     }
 
@@ -27,7 +27,7 @@ class OpHandlerResponseNullConditionTest extends TestCase
         $criteria = $handler->execute('deleted_at', 'false');
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertSame('(deleted_at IS NULL)', $criteria->condition);
+        $this->assertSame('(`deleted_at` IS NULL)', $criteria->condition);
         $this->assertSame([], $criteria->params);
     }
 
@@ -38,7 +38,7 @@ class OpHandlerResponseNullConditionTest extends TestCase
         $criteria = $handler->execute('archived_at', ['true', 'false']);
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertSame('(archived_at IS NOT NULL OR archived_at IS NULL)', $criteria->condition);
+        $this->assertSame('(`archived_at` IS NOT NULL OR `archived_at` IS NULL)', $criteria->condition);
         $this->assertSame([], $criteria->params);
     }
 
@@ -63,7 +63,7 @@ class OpHandlerResponseNullConditionTest extends TestCase
 
         // After (string) cast: '1', '' (for false), 'true', 'no', '1', '0', 'false'
         // Only 'true' and 'false' should be used.
-        $this->assertSame('(x IS NOT NULL OR x IS NULL)', $criteria->condition);
+        $this->assertSame('(`x` IS NOT NULL OR `x` IS NULL)', $criteria->condition);
         $this->assertSame([], $criteria->params);
     }
 
@@ -74,6 +74,6 @@ class OpHandlerResponseNullConditionTest extends TestCase
         // Non-array should be wrapped into an array internally
         $criteria = $handler->execute('flag', 'false');
 
-        $this->assertSame('(flag IS NULL)', $criteria->condition);
+        $this->assertSame('(`flag` IS NULL)', $criteria->condition);
     }
 }
