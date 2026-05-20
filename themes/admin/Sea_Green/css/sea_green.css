@@ -17132,7 +17132,7 @@ body {
 .btn-link {
   color: #14AE5C;
 }
-.btn-link:hover, .btn-link:focus {
+.btn-link:hover, .btn-link:focus, .btn-link:active, .btn-link:active:focus {
   color: #14AE5C;
 }
 
@@ -17617,9 +17617,24 @@ body {
   border: 1px solid #1E1E1E;
 }
 
-.modal-header .btn-close:focus {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
+#copySurvey_modal [data-bs-target="#copySurveyAdvanced"]:hover, #copySurvey_modal [data-bs-target="#copySurveyAdvanced"]:focus, #copySurvey_modal [data-bs-target="#copySurveyAdvanced"]:active {
+  background-color: transparent;
+  color: inherit;
+  box-shadow: none;
+  text-decoration: none;
+  border-color: transparent;
+}
+
+#copySurvey_modal legend.form-label {
+  float: none;
+  font-size: 0.9975rem;
+  font-weight: 500;
+  color: #152536;
+  line-height: 20px;
+  width: auto;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  border-bottom: none;
 }
 
 body {
@@ -18043,13 +18058,20 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 
 .create-menu-item {
   width: 222px;
-  border: 1px solid #fff;
 }
-.create-menu-item:hover {
-  border-color: #8146F6 !important;
-  border: 1px solid;
+.create-menu-item .dropdown-item {
+  border: 1px solid transparent;
   border-radius: 2px;
-  background-color: #fff !important;
+}
+.create-menu-item .dropdown-item:hover {
+  border-color: transparent;
+  background-color: #EEEFF7;
+}
+.create-menu-item .dropdown-item:focus-within, .create-menu-item .dropdown-item:focus, .create-menu-item .dropdown-item:active {
+  color: #333641;
+  outline: none;
+  border-color: #8146F6;
+  background-color: #fff;
 }
 
 .dropdown-toggle-no-caret::after {
@@ -18516,6 +18538,9 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
 }
 .topbar .ls-breadcrumb {
   align-self: center;
+}
+.topbar .topbar-back-link {
+  font-weight: 600;
 }
 
 .survey-actionbar {
