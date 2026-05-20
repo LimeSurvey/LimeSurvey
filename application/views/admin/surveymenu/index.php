@@ -19,12 +19,12 @@ echo viewHelper::getViewTestTag('surveyMenus');
         <!-- Tabs -->
         <ul class="nav nav-tabs" id="menueslist" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" role="tab" data-bs-toggle="tab" href="#surveymenues" aria-controls="surveymenues">
+                <a id="menueslist-tab-surveymenues" class="nav-link active" role="tab" data-bs-toggle="tab" href="#surveymenues" aria-controls="surveymenues" aria-selected="true" tabindex="0" aria-posinset="1" aria-setsize="2">
                     <?php eT('Survey menus'); ?>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" role="tab" data-bs-toggle="tab" href="#surveymenuentries" aria-controls="surveymenuentries">
+                <a id="menueslist-tab-surveymenuentries" class="nav-link" role="tab" data-bs-toggle="tab" href="#surveymenuentries" aria-controls="surveymenuentries" aria-selected="false" tabindex="-1" aria-posinset="2" aria-setsize="2">
                     <?php eT('Survey menu entries'); ?>
                 </a>
             </li>
@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
         <!-- Tab Content -->
         <div class="tab-content">
             <!-- Survey Menu -->
-            <div id="surveymenues" class="tab-pane show active">
+            <div id="surveymenues" class="tab-pane show active" role="tabpanel" aria-labelledby="menueslist-tab-surveymenues" aria-hidden="false">
                 <div class="col-12 ls-space margin top-15">
                     <div class="col-12 ls-flex-item">
                         <?php
@@ -65,7 +65,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
             </div>
 
             <!-- Survey Menue Entries -->
-            <div id="surveymenuentries" class="tab-pane">
+            <div id="surveymenuentries" class="tab-pane" role="tabpanel" aria-labelledby="menueslist-tab-surveymenuentries" aria-hidden="true">
                 <?php App()->getController()->renderPartial('surveymenu_entries/index', ['model' => $entries_model]); ?>
             </div>
         </div>
@@ -133,10 +133,93 @@ echo viewHelper::getViewTestTag('surveyMenus');
 </div>
 
 <script>
+    var focusTab = function ($tab) {
+        var $tabs = $('#menueslist a[role="tab"]');
+        $tabs.attr({
+            tabindex: '-1'
+        });
+        $tab.attr({
+            tabindex: '0'
+        }).focus();
+    };
+
+    var activateTab = function ($tab) {
+        var $tabs = $('#menueslist a[role="tab"]');
+        $tabs.attr({
+            'aria-selected': 'false',
+            tabindex: '-1'
+        });
+        $tab.attr({
+            'aria-selected': 'true',
+            tabindex: '0'
+        }).focus();
+
+        if (typeof bootstrap !== 'undefined' && bootstrap.Tab) {
+            new bootstrap.Tab($tab[0]).show();
+        } else {
+            $tab.trigger('click');
+        }
+    };
+
+    $('#menueslist a[role="tab"]').on('keydown', function (event) {
+        var $tabs = $('#menueslist a[role="tab"]');
+        var index = $tabs.index(this);
+        var nextIndex;
+
+        switch (event.which) {
+            case 37: // ArrowLeft
+            case 38: // ArrowUp
+                nextIndex = (index - 1 + $tabs.length) % $tabs.length;
+                focusTab($tabs.eq(nextIndex));
+                event.preventDefault();
+                break;
+            case 39: // ArrowRight
+            case 40: // ArrowDown
+                nextIndex = (index + 1) % $tabs.length;
+                focusTab($tabs.eq(nextIndex));
+                event.preventDefault();
+                break;
+            case 13: // Enter
+            case 32: // Space
+                activateTab($(this));
+                event.preventDefault();
+                break;
+            case 36: // Home
+                focusTab($tabs.first());
+                event.preventDefault();
+                break;
+            case 35: // End
+                focusTab($tabs.last());
+                event.preventDefault();
+                break;
+        }
+    });
+
+    $('#menueslist a[role="tab"]').on('focus', function () {
+        $('#menueslist a[role="tab"]').attr({
+            tabindex: '-1'
+        });
+        $(this).attr({
+            tabindex: '0'
+        });
+    });
+
     $('#menueslist a').on('shown.bs.tab', function () {
         var tabId = $(this).attr('href');
         $('.tab-dependent-button:not([data-tab="' + tabId + '"])').hide();
         $('.tab-dependent-button[data-tab="' + tabId + '"]').show();
+
+        $('#menueslist a[role="tab"]').attr({
+            'aria-selected': 'false',
+            tabindex: '-1'
+        });
+        $(this).attr({
+            'aria-selected': 'true',
+            tabindex: '0'
+        });
+
+        $('.tab-pane').attr('aria-hidden', 'true');
+        $(tabId).attr('aria-hidden', 'false');
     });
     $(document).on('ready pjax:scriptcomplete', function () {
         if (window.location.hash) {
