@@ -108,19 +108,28 @@ class CLSGridView extends TbGridView
      */
     protected function lsAfterAjaxUpdate(): void
     {
-        // this will override afterAjaxUpdate if lsAfterAjaxUpdate is defined
-        // please do not override afterAjaxUpdate by default to keep compatibility with base functionality of yii
+        $gridId = CJavaScript::encode($this->id);
+
+        // Always restore persisted checkbox selection after an AJAX page update.
+        // LS.gridSelection is registered for every CLSGridView via registerGridviewScripts().
+        $alwaysJs  = 'LS.gridSelection.restoreCheckboxes(' . $gridId . ');';
+        $alwaysJs .= 'LS.actionDropdown.create();';
+        $alwaysJs .= 'LS.rowlink.create();';
+
         if (isset($this->lsAfterAjaxUpdate)) {
             $this->afterAjaxUpdate = 'function(id, data){';
             foreach ($this->lsAfterAjaxUpdate as $jsCode) {
                 $this->afterAjaxUpdate .= $jsCode;
             }
-            $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
-            $this->afterAjaxUpdate .= 'LS.rowlink.create();';
+            $this->afterAjaxUpdate .= $alwaysJs;
             if (!empty($this->lsAdditionalColumns)) {
                 $this->afterAjaxUpdate .= 'initColumnFilter()';
             }
             $this->afterAjaxUpdate .= '}';
+        } else {
+            // No custom lsAfterAjaxUpdate defined – still wire up the restore
+            // so that selection persists for grids that don't use lsAfterAjaxUpdate.
+            $this->afterAjaxUpdate = 'function(id, data){' . $alwaysJs . '}';
         }
     }
 
@@ -142,6 +151,12 @@ class CLSGridView extends TbGridView
 
     private function registerGridviewScripts()
     {
+        // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
+        App()->clientScript->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridSelection.js',
+            CClientScript::POS_BEGIN
+        );
+
         // Scrollbar
         App()->clientScript->registerScriptFile(
             App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',

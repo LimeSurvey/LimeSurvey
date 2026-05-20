@@ -56,3 +56,22 @@
     height:1.5em;
     display:inline-block
 }
+
+// Selection info bar – shown below the grid table when rows are selected
+.grid-selection-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    margin-top: 0.25rem;
+    border-radius: 4px;
+    background-color: var(--bs-gray-200, #e9ecef);
+    font-size: 0.875rem;
+    color: var(--bs-body-color, #212529);
+
+    .grid-selection-count {
+        font-weight: 600;
+    }
+}
+
+

@@ -933,6 +933,26 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * This action is just for performance testing and should not be used in a production environment.
+     * It simply creates an amount of surveys.
+     *
+     * @return void
+     */
+    public function actionCreateTestSurveys() {
+        $service = new \LimeSurvey\Models\Services\BulkCreateSurveys(
+            Yii::app()->user->id,
+            'en',
+            1
+        );
+        $results = $service->run();
+
+        //redirect to survey list
+        Yii::app()->setFlashMessage(gT("Created test surveys"), 'info');
+        $this->redirect(Yii::app()->createUrl('surveyAdministration/listsurveys'));
+    }
+
+
+    /**
      * AjaxRequest get questionGroup with containing questions
      *
      * @todo this could go to the questiongroupAdministrationController ?
