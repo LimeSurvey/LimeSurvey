@@ -71,6 +71,9 @@
                     "lockOrganizerTitle" => gT("Lock question organizer"),
                     "unlockOrganizerTitle" => gT("Unlock question organizer"),
                     "collapseAll" => gT("Collapse all question groups"),
+                    "collapseGroup" => gT("Collapse group"),
+                    "expandGroup" => gT("Expand group"),
+                    "surveyLogicFile" => gT("Survey logic file"),
                 ]
             )
         .'};', 

@@ -388,7 +388,7 @@ export default {
                          role="button"
                          tabindex="0"
                          :aria-expanded="isOpen(questiongroup.gid)"
-                         :aria-label="isOpen(questiongroup.gid) ? 'Collapse group' : 'Expand group'"
+                         :aria-label="isOpen(questiongroup.gid) ? translate('collapseGroup') : translate('expandGroup')"
                          :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'"
                          @click="toggleQuestionGroup(questiongroup)"
                          @keydown.enter.prevent="toggleQuestionGroup(questiongroup)"
@@ -556,7 +556,7 @@ export default {
                                         </li>
                                         <div v-else-if="key === 'language' && Array.isArray(value)">
                                             <li role="separator" class="dropdown-divider"  ></li>
-                                            <li class="dropdown-header">Survey logic file</li>
+                                            <li class="dropdown-header">{{ translate('surveyLogicFile') }}</li>
                                             <li v-for="language in value" >
                                                 <a class="dropdown-item" :id="language.id" :href="language.url">
                                                   <span :class="language.icon"></span>
