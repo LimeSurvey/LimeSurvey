@@ -5733,7 +5733,7 @@ class LimeExpressionManager
         $gid = $qInfo['gid'];
         $LEM->StartProcessingGroup($gseq, $LEM->surveyOptions['anonymized'], $LEM->sid); // analyze the data we have about this group
 
-        $grel = false;  // assume irrelevant until find a relevant question
+        $grel = false;  // assume irrelevant until find a relevant question and relevant subquestion
         $ghidden = true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
         $gmandViolation = false;  // assume that the group contains no manditory questions that have not been fully answered
         $gmandSoft = false;  // assume that the group contains no SOFT manditory questions that have not been fully answered
@@ -5756,7 +5756,7 @@ class LimeExpressionManager
             $qStatus = $LEM->_ValidateQuestion($i, $force);
             $updatedValues = array_merge($updatedValues, $qStatus['updatedValues']);
 
-            if ($gRelInfo['result'] == true && $qStatus['relevant'] == true) {
+            if ($gRelInfo['result'] == true && $qStatus['relevant'] == true && strval($qStatus['relevantSQs']) !== "") {
                 $grel = $gRelInfo['result'];    // true;   // at least one question relevant
             }
             if ($qStatus['hidden'] == false && $qStatus['relevant'] == true) {
@@ -6753,7 +6753,6 @@ class LimeExpressionManager
         //////////////////////////////////////////////////////////////////////////
         // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
         //////////////////////////////////////////////////////////////////////////
-
         $qStatus = [
             'info'            => $qInfo,   // collect all questions within the group - includes mandatory and always-hiddden status
             'relevant'        => $qrel,
