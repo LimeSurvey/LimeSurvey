@@ -181,14 +181,6 @@ class GeneralSettings
                 $survey
             );
 
-            if ($survey->expires) {
-                $survey->expires = getUTCOfDate(($survey->expires));
-            }
-
-            if ($survey->startdate) {
-                $survey->startdate = getUTCOfDate(($survey->startdate));
-            }
-
             $saved = $survey->save();
             if (array_key_exists('allowregister', $input)) {
                 $this->ensureTokensTableExistence($survey);
