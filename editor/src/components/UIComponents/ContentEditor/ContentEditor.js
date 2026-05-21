@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useAppState } from 'hooks'
 import { RemoveHTMLTagsInString, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
-import { TooltipContainer } from 'components'
+import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 
 import { TinyMCE } from './TinyMCE/TinyMCE'
 import { ContentEditable } from './ContentEditable'
