@@ -19204,6 +19204,9 @@ input[type=number] {
   background: linear-gradient(90deg, #14AE5C 0%, #14AE5C 5px, #EEEFF7 5px, #EEEFF7 100%);
   padding: 0;
 }
+#sidebar .questiongroup-list-group > li.activated > div a:first-of-type {
+  font-weight: 500;
+}
 #sidebar .questiongroup-list-group > li > div:hover {
   box-shadow: inset 0 0 0 1px rgba(123, 97, 255, 0.4);
   background: linear-gradient(to right, rgba(123, 97, 255, 0.4) 0px, rgba(123, 97, 255, 0.4) 4px, #fff 4px, #fff 100%) !important;
@@ -19227,6 +19230,9 @@ input[type=number] {
 }
 #sidebar .question-question-list .selected.activated {
   background: linear-gradient(to right, #14AE5C 0px, #14AE5C 8px, #fff 8px, #fff 100%);
+}
+#sidebar .question-question-list .selected.activated a:first-of-type {
+  font-weight: 500;
 }
 #sidebar .question-question-list .selected.disabled {
   background: linear-gradient(to right, #D3D5DA 0px, #D3D5DA 8px, #fff 8px, #fff 100%) !important;
@@ -19315,6 +19321,12 @@ input[type=number] {
 }
 #sidebar a:not(.btn, .nav-tabs .nav-link):active {
   color: #1E1E1E;
+}
+#sidebar #questionexplorer a:not(.btn, .nav-tabs .nav-link) {
+  color: #1E1E1E;
+}
+#sidebar #questionexplorer a:not(.btn, .nav-tabs .nav-link):active {
+  font-weight: 500;
 }
 #sidebar li.dragged {
   color: #fff;
