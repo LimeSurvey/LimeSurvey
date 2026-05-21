@@ -161,7 +161,7 @@
                                                     gT('%sWarning:%s Before turning on HTTPS,%s check this link.%s'),
                                                     '<b>',
                                                     '</b>',
-                                                    '<a href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
+                                                    '<a class="ls-link" href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
                                                     '</a>'
                                                 )
                                                     . '<br/> '
