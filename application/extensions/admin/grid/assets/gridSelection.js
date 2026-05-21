@@ -81,8 +81,11 @@ LS.gridSelection = (function () {
         // Clear internal store
         _store.set(gridId, new Set());
 
-        // Uncheck all visible checkboxes in this grid (both header and body)
-        $('#' + gridId + ' input[type="checkbox"]').prop('checked', false);
+        // Uncheck only row-selection checkboxes (tbody) and the header checkbox.
+        // Intentionally avoids the broad input[type="checkbox"] selector to prevent
+        // clearing unrelated controls that may exist inside the grid container.
+        $('#' + gridId + ' tbody input[type="checkbox"]').prop('checked', false);
+        $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', false);
 
         _syncSelectionBar(gridId);
         _syncMassiveActionButton(gridId);

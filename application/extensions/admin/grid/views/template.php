@@ -11,7 +11,7 @@
 </div>
 <div class="grid-selection-bar"
      data-grid-id="<?= CHtml::encode($this->id) ?>"
-     data-label="<?= gT('rows selected') ?>"
+     data-label="<?= CHtml::encode(gT('rows selected')) ?>"
      style="display:none;">
     <span class="grid-selection-count"></span>
     <button type="button" class="btn btn-outline-g-700 btn-sm grid-deselect-all">
