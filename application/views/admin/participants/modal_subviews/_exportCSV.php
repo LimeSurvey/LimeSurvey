@@ -2,25 +2,29 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Export participants"); ?> </h5>
+                <h2 class="modal-title h5"><?php eT("Export participants"); ?> </h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form">
                     <div class='mb-3 row'>
                         <div class="col-4">
-                            <label class='form-label' for='attributes'><?php eT('Attributes to export:');?></label>
+                            <label class='form-label' id="export-csv-attributes-label" for='attributes'><?php eT('Attributes to export:');?></label>
                             <input type="checkbox" value="" id="select-all">
                             <label class="form-check-label" for="select-all">
                                 <?= gT('Select all'); ?>
                             </label>
                         </div>
-                        <div class='col-8'>
+                        <div class='col-8' role="group" aria-labelledby="export-csv-attributes-label">
                             <?php $this->widget(
                                 'yiiwheels.widgets.select2.WhSelect2',
                                 array(
                                     'asDropDownList' => true,
-                                    'htmlOptions' => ['multiple' => 'multiple', 'id' => 'attributes'],
+                                    'htmlOptions' => [
+                                        'multiple' => 'multiple',
+                                        'id' => 'attributes',
+                                        'aria-labelledby' => 'export-csv-attributes-label'
+                                    ],
                                     'data' => array_combine(array_column($aAttributes, 'attribute_id'), array_column($aAttributes, 'defaultname')),
                                     'value' => null,
                                     'name' => 'attributes',
@@ -65,7 +69,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Export participants"); ?></h5>
+                <h2 class="modal-title h5"><?php eT("Export participants"); ?></h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

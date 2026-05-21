@@ -7,6 +7,8 @@ import {
   ReplaceQuestionCodesWithAnswers,
   STATES,
 } from 'helpers'
+import { PluginSlot } from 'plugins/PluginSlot'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 export const ContentEditable = ({
   onFocus,
@@ -60,18 +62,26 @@ export const ContentEditable = ({
   }, [inputRef.current])
 
   return (
-    <ReactContentEditable
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      innerRef={inputRef}
-      className={`content-editable`}
-      disabled={disabled}
-      html={questionTitle?.toString()}
-      onChange={({ target: { value } }) => onChange(value)}
-      data-placeholder={placeholder}
-      autoFocus={focus}
-      onKeyDown={onKeyDown}
-      data-testid={testId}
-    />
+    <>
+      <ReactContentEditable
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        innerRef={inputRef}
+        className={`content-editable`}
+        disabled={disabled}
+        html={questionTitle?.toString()}
+        onChange={({ target: { value } }) => onChange(value)}
+        data-placeholder={placeholder}
+        autoFocus={focus}
+        onKeyDown={onKeyDown}
+        data-testid={testId}
+      />
+      <PluginSlot
+        slotName={PLUGIN_SLOTS.CONTENT_EDITOR}
+        value={value}
+        onChange={onChange}
+        focused={isFocused}
+      />
+    </>
   )
 }

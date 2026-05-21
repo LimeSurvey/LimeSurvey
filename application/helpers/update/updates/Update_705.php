@@ -25,7 +25,7 @@ class Update_705 extends DatabaseUpdateBase
             $this->db->createCommand()->update(
                 '{{plugins}}',
                 ['priority' => new CDbExpression('priority + 1')],
-                '`name` NOT IN (:re, :lsp)',
+                'name NOT IN (:re, :lsp)',
                 [
                     ':re' => 'ReactEditor',
                     ':lsp' => 'LimeSurveyProfessional',
