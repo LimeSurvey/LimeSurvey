@@ -212,6 +212,12 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
                 }
 
+                $xPos = strpos($column->name, 'X');
+                if ($xPos !== false) {
+                    if (strpos($column->name, 'Q') !== 0) {
+                        continue; //Old field we failed to map
+                    }
+                }
                 $colName = viewHelper::getFieldCode($fieldmap[$column->name], ['LEMcompat' => true]); // This must be unique ......
                 $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
                 /* flat and ellipsize all part of question (sub question etc …, separate by br . mantis #14301 */
