@@ -794,6 +794,8 @@ class User extends LSActiveRecord
         $lastLogin = $this->last_login;
         if ($lastLogin == null) {
             return '---';
+        } else {
+            $lastLogin = getDateOfUTC($lastLogin);
         }
 
         $date = new DateTime($lastLogin);
