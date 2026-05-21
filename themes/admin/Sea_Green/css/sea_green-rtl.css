@@ -19695,6 +19695,7 @@ table [class^=ri-], table [class*=" ri-"] {
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.4);
+  color: currentColor;
 }
 .grid-view .table button.btn .ri-more-fill:before, .grid-view-ls .table button.btn .ri-more-fill:before {
   font-size: 1.1em;

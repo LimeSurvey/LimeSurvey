@@ -212,6 +212,7 @@ table {
         }
         button:hover {
             @include state-border(1px, $grape75);
+            color: currentColor;
         }
         button.btn .ri-more-fill:before {
             font-size : 1.1em;
