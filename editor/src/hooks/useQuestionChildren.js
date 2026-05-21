@@ -321,7 +321,7 @@ export const useQuestionChildren = ({
     let newErrorMessage = ''
 
     if (newCode) {
-      newErrorMessage = TestValidation(newCode.toUpperCase()).error
+      newErrorMessage = TestValidation(newCode).error
         ? t('Only letters and numbers are allowed.')
         : ''
     }

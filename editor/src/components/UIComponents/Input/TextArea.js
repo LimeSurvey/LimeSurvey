@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-import { TooltipContainer } from 'components'
+import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 
 export const TextArea = ({
   labelText,

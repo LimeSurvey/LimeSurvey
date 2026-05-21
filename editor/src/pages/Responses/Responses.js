@@ -5,7 +5,6 @@ import { Toaster } from 'react-hot-toast'
 import { Container } from 'react-bootstrap'
 import { useAppState, useResponses, useSurvey } from 'hooks'
 import { createBufferOperation, htmlPopup, PAGES, STATES } from 'helpers'
-import { TopBar } from 'components'
 
 import { LeftSideBar } from './Sidebars/LeftSideBar'
 import {
@@ -35,6 +34,7 @@ export const Responses = () => {
   const [hasResponsesUpdatePermission] = useAppState(
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
+  const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
   const { survey = {}, fetchSurvey } = useSurvey(surveyId)
   const { responses, isFetching, mutateOperations } = useResponses(
     surveyId,
@@ -42,10 +42,6 @@ export const Responses = () => {
     filters,
     sorting
   )
-
-  useEffect(() => {
-    fetchSurvey(surveyId)
-  }, [])
 
   useEffect(() => {
     if (menu === panelItemsKeys.statistics) {
@@ -162,6 +158,21 @@ export const Responses = () => {
     mutateOperations(operations)
   }
 
+  useEffect(() => {
+    fetchSurvey(surveyId)
+    setTopbarConfig({
+      surveyId,
+      showAddQuestionButton: false,
+      showPublishSettings: false,
+      showShareButton: false,
+      showPreviewButton: false,
+      showExportResponsesButton: tabKey !== TAB_KEYS.STATISTICS,
+      showExportStatisticsButton: tabKey === TAB_KEYS.STATISTICS,
+      onExportResponsesClick,
+      pageName: PAGES.RESPONSES,
+    })
+  }, [tabKey, surveyId])
+
   const renderCurrentMenu = () => {
     switch (menu) {
       case panelItemsKeys.overview:
@@ -250,16 +261,6 @@ export const Responses = () => {
         </div>
       )}
       <Toaster />
-      <TopBar
-        surveyId={surveyId}
-        showAddQuestionButton={false}
-        showPublishSettings={false}
-        showShareButton={false}
-        showPreviewButton={false}
-        showExportResponsesButton={tabKey !== TAB_KEYS.STATISTICS}
-        showExportStatisticsButton={tabKey === TAB_KEYS.STATISTICS}
-        onExportResponsesClick={onExportResponsesClick}
-      />
       <div className="responses-body">
         <LeftSideBar
           showSidebarCloseButton={false}
