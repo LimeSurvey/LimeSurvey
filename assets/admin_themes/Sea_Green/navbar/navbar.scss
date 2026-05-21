@@ -195,13 +195,15 @@
         }
     }
 
-    // When li itself is a .dropdown-item, remove border from inner a to avoid double borders
-    .mega-dropdown__column > ul > li.dropdown-item > a {
+    // Prevent double borders: li.dropdown-item in mega-dropdown should not have its own state-border,
+    // since focus/active states are handled by the a element inside
+    .mega-dropdown__column > ul > li.dropdown-item {
         border: none;
         box-shadow: none;
         &:hover, &:focus-visible, &:active {
             border: none;
             box-shadow: none;
+            background-color: transparent;
         }
     }
 
