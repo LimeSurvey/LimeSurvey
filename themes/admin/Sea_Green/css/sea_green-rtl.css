@@ -17213,17 +17213,20 @@ body {
 .dropdown-menu .dropdown-item.disabled i {
   color: #9094A7 !important;
 }
-.dropdown-menu > li > a,
-.dropdown-menu > li > button {
+.dropdown-menu > li:not(.dropdown-item):focus-visible {
+  outline: none;
+}
+.dropdown-menu > li:not(.dropdown-item) > a,
+.dropdown-menu > li:not(.dropdown-item) > button {
   color: #333641;
 }
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > button:hover {
+.dropdown-menu > li:not(.dropdown-item) > a:hover,
+.dropdown-menu > li:not(.dropdown-item) > button:hover {
   color: #333641;
   background-color: #EEEFF7;
 }
-.dropdown-menu > li > a:focus,
-.dropdown-menu > li > button:focus {
+.dropdown-menu > li:not(.dropdown-item) > a:focus,
+.dropdown-menu > li:not(.dropdown-item) > button:focus {
   background-color: #fff;
 }
 .dropdown-menu > .active > a,
@@ -17897,6 +17900,14 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   outline: none;
   border-color: #8146F6;
   background-color: #fff;
+}
+.navbar .mega-dropdown__column > ul > li.dropdown-item > a {
+  border: none;
+  box-shadow: none;
+}
+.navbar .mega-dropdown__column > ul > li.dropdown-item > a:hover, .navbar .mega-dropdown__column > ul > li.dropdown-item > a:focus-visible, .navbar .mega-dropdown__column > ul > li.dropdown-item > a:active {
+  border: none;
+  box-shadow: none;
 }
 .navbar .create-menu-item {
   width: 222px;

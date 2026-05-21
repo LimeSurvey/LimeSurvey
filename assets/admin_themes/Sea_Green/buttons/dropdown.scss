@@ -40,9 +40,12 @@
             }
         }
     }
+    > li:not(.dropdown-item):focus-visible {
+        outline: none;
+    }
     > {
-        li > a,
-        li > button {
+        li:not(.dropdown-item) > a,
+        li:not(.dropdown-item) > button {
             color : $g-800;
             &:hover {
                 color            : $g-800;

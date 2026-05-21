@@ -195,6 +195,17 @@
         }
     }
 
+    // When li itself is a .dropdown-item, remove border from inner a to avoid double borders
+    .mega-dropdown__column > ul > li.dropdown-item > a {
+        border: none;
+        box-shadow: none;
+        &:hover, &:focus-visible, &:active {
+            border: none;
+            box-shadow: none;
+        }
+    }
+
+
     .create-menu-item {
         width: 222px;
     }
