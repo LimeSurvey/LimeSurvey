@@ -75,7 +75,7 @@
 
                 <li class="nav-item d-flex"><a
                         href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
-                        class="nav-link ps-0"><?php eT("Surveys"); ?></a>
+                        class="nav-link ps-2"><?php eT("Surveys"); ?></a>
                     <?php if ($activesurveyscount > 0): ?>
                         <a class="nav-link ps-0 active-surveys"
                             href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
