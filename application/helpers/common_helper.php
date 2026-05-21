@@ -2853,6 +2853,9 @@ function isTokenCompletedDatestamped($thesurvey)
 */
 function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UTC')
 {
+    if ($fromTimezone === "") {
+        $fromTimezone = "UTC";
+    }
     if (!$toTimezone) {
         $toTimezone = Yii::app()->getConfig('displayTimezone');
         if (empty($toTimezone)) {
