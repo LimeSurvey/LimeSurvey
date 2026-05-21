@@ -19676,7 +19676,17 @@ table [class^=ri-], table [class*=" ri-"] {
   font-weight: 500;
   color: #14AE5C;
 }
-.grid-view .table thead tr th:hover .sort-link :before, .grid-view-ls .table thead tr th:hover .sort-link :before {
+.grid-view .table thead tr th:hover .sort-link,
+.grid-view .table thead tr th button:hover, .grid-view-ls .table thead tr th:hover .sort-link,
+.grid-view-ls .table thead tr th button:hover {
+  background-color: #EEEFF7;
+  border-color: transparent;
+  border-radius: 2px;
+  box-shadow: none;
+}
+.grid-view .table thead tr th:hover .sort-link:before,
+.grid-view .table thead tr th button:hover:before, .grid-view-ls .table thead tr th:hover .sort-link:before,
+.grid-view-ls .table thead tr th button:hover:before {
   visibility: visible;
 }
 .grid-view .table tbody td input[type=checkbox]:after, .grid-view-ls .table tbody td input[type=checkbox]:after {

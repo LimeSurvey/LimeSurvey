@@ -178,23 +178,35 @@ table {
         }
         thead {
             tr {
-                border : 0 none $white;
+                border           : 0 none $white;
+
                 th {
                     padding-bottom : 9px;
                     font-weight    : 600;
                     vertical-align : middle;
                     border-bottom  : solid 1px $g-600;
+
                     .sort-link {
                         color       : $black;
                         font-weight : 600;
+
                         ::before {
                             font-weight : 500;
                             color       : $active-green;
                         }
                     }
                 }
-                th:hover .sort-link :before {
-                    visibility : visible;
+
+                th:hover .sort-link,
+                th button:hover {
+                    background-color : $g-200;
+                    border-color: transparent;
+                    border-radius: 2px;
+                    box-shadow: none;
+
+                    &:before {
+                        visibility : visible;
+                    }
                 }
             }
         }
