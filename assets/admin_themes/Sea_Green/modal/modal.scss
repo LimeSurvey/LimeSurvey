@@ -11,9 +11,6 @@
 
 .modal-header {
     border-bottom : none;
-}
-
-.modal {
     .btn-close {
         align-self : flex-start;
         margin     : 0 -0.75rem -0.75rem auto;
@@ -47,44 +44,25 @@
     border : 1px solid $g-900;
 }
 
-#deleteSurvey_modal {
-    top        : calc(50% - 140px);
-    transition : opacity 0.3s linear;
-    &.fade {
-        opacity : 0;
+#copySurvey_modal [data-bs-target="#copySurveyAdvanced"] {
+    &:hover,
+    &:focus,
+    &:active {
+        background-color : transparent;
+        color            : inherit;
+        box-shadow       : none;
+        text-decoration  : none;
+        border-color     : transparent;
     }
-    &.fade.show {
-        opacity : 1;
-    }
-    &.fade .modal-dialog {
-        transform  : none;
-        transition : none;
-    }
-    .modal-dialog {
-        width     : 800px;
-        max-width : 800px;
-        margin    : auto;
-    }
-    .modal-content {
-        height : 280px;
-        .modal-header {
-            padding-bottom : 0;
-            .modal-title {
-                color          : $g-900;
-                font-size      : $font-size-xl;
-                font-weight    : $font-weight-normal;
-                line-height    : $line-height-32;
-                padding-bottom : 0;
-                margin-bottom  : 16px;
-            }
-        }
-        .modal-body {
-            padding-top : 0;
-            p {
-                color       : $g-900;
-                font-size   : $font-size-sm;
-                line-height : $line-height-20;
-            }
-        }
-    }
+}
+#copySurvey_modal legend.form-label {
+    float         : none;
+    font-size     : $font-size-sm;
+    font-weight   : $font-weight-500;
+    color         : $heading-title-color;
+    line-height   : $line-height-20;
+    width         : auto;
+    padding       : 0;
+    margin-bottom : $spacer * 0.5;
+    border-bottom : none;
 }

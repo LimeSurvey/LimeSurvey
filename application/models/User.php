@@ -105,11 +105,13 @@ class User extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('users_name, password, email', 'required'),
+            array('users_name, password', 'required'),
+            array('email', 'required', 'on' => 'insert'),
             array('users_name', 'unique'),
             array('users_name', 'length','max' => 64),
             array('full_name', 'length','max' => 50),
-            array('email', 'email'),
+            array('email', 'email', 'allowEmpty' => true),
+            array('email', 'unique', 'allowEmpty' => true, 'message' => gT("E-mail address '{value}' is already used by another user.", 'unescaped')),
             array('full_name', 'LSYii_Validators'), // XSS if non super-admin
             array('parent_id', 'default', 'value' => 0),
             array('parent_id', 'numerical', 'integerOnly' => true),
@@ -131,6 +133,17 @@ class User extends LSActiveRecord
             //todo: write a rule for date (can also be null)
             //array('lastForgotPwEmail', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
+    }
+
+    /** @inheritdoc */
+    protected function beforeSave()
+    {
+        // Normalize empty email to NULL so the database unique index
+        // allows multiple users without an email address.
+        if ($this->email === '') {
+            $this->email = null;
+        }
+        return parent::beforeSave();
     }
 
     /** @inheritdoc */
@@ -288,7 +301,7 @@ class User extends LSActiveRecord
      * @param string $new_email
      * @param string|null $expires
      * @param boolean $status
-     * @return integer|boolean User ID if success
+     * @return integer|User User ID on success, User model with errors on validation failure
      */
     public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $status = true)
     {
@@ -306,7 +319,7 @@ class User extends LSActiveRecord
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
-            return false;
+            return $oUser;
         }
     }
 

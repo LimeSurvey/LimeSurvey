@@ -18,7 +18,7 @@
         <?php if ($security_update_available) :?>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => '<strong>' . gT("Security update!") . '</strong> ' . gT("A security update is available.") . ' <a href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate.') . '</a>',
+                'text' => '<strong>' . gT("Security update!") . '</strong> ' . gT("A security update is available.") . ' <a class="ls-link" href="' . $urlUpdate . '"> ' . gT('Click here to use ComfortUpdate.') . '</a>',
                 'type' => 'warning',
                 'showCloseButton' => true,
                 'htmlOptions' => ['id' => 'update-alert', 'data-url-notification-state' => $urlUpdateNotificationState]

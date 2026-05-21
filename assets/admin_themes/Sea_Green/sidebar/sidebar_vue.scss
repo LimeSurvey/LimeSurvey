@@ -127,8 +127,11 @@
     }
    
     a:not(.btn, .nav-tabs .nav-link) {
-        color       : $g-900;
+        color       : $g-700;
         font-weight : $font-weight-normal;
+        &:active {
+            color : $g-900;
+        }
     }
     li.dragged {
         color                      : $white;
@@ -158,22 +161,6 @@
     }
     .subpanel {
         font-size : 14px;
-        .list-group-item .wrapper {
-            .title {
-                color : $g-700;
-            }
-            .title.disabled {
-                color : $g-400;
-            }
-            .icon {
-                color : $g-700;
-            }
-        }
-        .list-group-item.disabled .wrapper {
-            .title {
-                color : $g-400;
-            }
-        }
         &.level-0 {
             .menu-selected {
                 background : /*!rtl:linear-gradient(to left, $primary-bg_selected_subpanel 0px, $primary-bg_selected_subpanel 6px, $white 6px, $white 100%)*/

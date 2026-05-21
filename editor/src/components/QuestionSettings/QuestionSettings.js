@@ -199,6 +199,7 @@ export const QuestionSettings = ({ surveyId }) => {
                 setQuestionSettingsOptions({ isAdvanced: value })
               }
               isSecondary
+              theme=""
             />
           </div>
 
