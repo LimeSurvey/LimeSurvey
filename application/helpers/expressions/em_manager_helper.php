@@ -5756,7 +5756,11 @@ class LimeExpressionManager
             $qStatus = $LEM->_ValidateQuestion($i, $force);
             $updatedValues = array_merge($updatedValues, $qStatus['updatedValues']);
 
-            if ($gRelInfo['result'] == true && $qStatus['relevant'] == true && strval($qStatus['relevantSQs']) !== "") {
+            if (
+                $gRelInfo['result'] == true
+                && $qStatus['relevant'] == true // Question are relevant
+                && !((strval($qStatus['relevantSQs']) === "" && strval($qStatus['irrelevantSQs']) !== "")) // All existing subquestions are irrelevant
+            ) {
                 $grel = $gRelInfo['result'];    // true;   // at least one question relevant
             }
             if ($qStatus['hidden'] == false && $qStatus['relevant'] == true) {
