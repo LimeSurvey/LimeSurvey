@@ -17716,18 +17716,18 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   align-items: center;
   gap: 0;
 }
-.navbar .nav-item a:not(.dropdown-item) {
+.navbar .nav-item > a:not(.dropdown-item) {
   display: flex;
   align-items: center;
 }
-.navbar .nav-item a:not(.dropdown-item):hover {
+.navbar .nav-item > a:not(.dropdown-item):hover {
   color: inherit;
   box-shadow: none;
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
 }
-.navbar .nav-item a:not(.dropdown-item):focus-visible {
+.navbar .nav-item > a:not(.dropdown-item):focus-visible {
   color: inherit;
   outline: none;
   border-radius: 0px;
@@ -17735,7 +17735,7 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   outline: none;
   box-shadow: inset -1px 0 0 #9b87ff, inset 1px 0 0 #9b87ff, inset 0 -1px 0 #9b87ff, inset 0 1px 0 #9b87ff;
 }
-.navbar .nav-item a:not(.dropdown-item):active {
+.navbar .nav-item > a:not(.dropdown-item):active {
   color: #9094A7;
   box-shadow: none;
 }
