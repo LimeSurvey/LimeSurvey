@@ -21,6 +21,18 @@
     }
     .dropdown-item {
         padding : 8px 16px;
+        @include state-border(1px, transparent);
+        &:hover {
+            border-color: transparent;
+            background-color: $g-200;
+        }
+        &:focus-visible,
+        &:active {
+            color: $g-800;
+            outline: none;
+            border-color: $grape;
+            background-color: $white;
+        }
         &.disabled {
             color: $g-600;
             i {
@@ -37,7 +49,7 @@
                 background-color : $g-200;
             }
             &:focus {
-                background-color : $g-200;
+                background-color : $white;
             }
         }
         .active > a,

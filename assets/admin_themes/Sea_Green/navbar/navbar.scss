@@ -197,26 +197,6 @@
 
     .create-menu-item {
         width: 222px;
-
-        // Style for dropdown-item inside
-        .dropdown-item {
-            @include state-border(1px, transparent);
-            // Hover state - grey background, no border
-            &:hover {
-                border-color: transparent;
-                background-color: $g-200;
-            }
-            // Focus/active/clicked state - purple border
-            &:focus-within,
-            &:focus-visible,
-            &:active
-            {
-                color: $g-800;
-                outline: none;
-                border-color: $grape;
-                background-color: $white;
-            }
-        }
     }
 
     .dropdown-toggle-no-caret::after {
