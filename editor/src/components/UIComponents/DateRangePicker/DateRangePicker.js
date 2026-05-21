@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { DateRangePicker as ReactDateRangePicker } from 'react-date-range'
 import { format } from 'date-fns'
 
-import { useElementClick } from 'hooks'
+import { useElementClick } from 'hooks/useElementClick'
 import { Button } from '../Buttons'
 
 export const DateRangePicker = ({

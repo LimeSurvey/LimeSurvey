@@ -5,6 +5,9 @@ namespace ls\tests;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
+/**
+ * @group security
+ */
 class IpAddressAnonymizeTest extends TestBaseClassWeb
 {
     /**

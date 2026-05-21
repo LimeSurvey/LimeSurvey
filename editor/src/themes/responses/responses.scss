@@ -21,20 +21,6 @@
     }
   }
 
-  .btn-group {
-    background-color: $g-900;
-
-    i {
-      &::before {
-        font-size: $font-size-lg;
-      }
-    }
-
-    .btn-check:checked + .btn {
-      color: $g-900;
-    }
-  }
-
   .recharts-square {
     width: 14px;
     height: 14px;
@@ -45,6 +31,20 @@
     display: flex;
     flex-direction: row;
     gap: 20px;
+
+    .btn-group {
+      background-color: $g-900;
+
+      i {
+        &::before {
+          font-size: $font-size-lg;
+        }
+      }
+
+      .btn-check:checked + .btn {
+        color: $g-900;
+      }
+    }
   }
 
   .select-component-open {

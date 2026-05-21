@@ -45,7 +45,11 @@ class LabelSetsCreateUpdate extends TestBaseClassWeb
         /* Create an random user and login */
         $username = "test_" . \Yii::app()->securityManager->generateRandomString(8);
         $password = createPassword();
-        self::$userId = \User::insertUser($username, $password, 'Test user for label sets', 1, 'user@example.org');
+        $result = \User::insertUser($username, $password, 'Test user for label sets', 1, 'user@example.org');
+        if ($result instanceof \User) {
+            self::fail('Failed to create user: ' . json_encode($result->getErrors()));
+        }
+        self::$userId = (int) $result;
         $oLabelSet = new \LabelSet();
         $oLabelSet->owner_id = self::$userId;
         $oLabelSet->label_name = \Yii::app()->securityManager->generateRandomString(50);

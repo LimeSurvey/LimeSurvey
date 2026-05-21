@@ -158,12 +158,12 @@
 
             <div class="mb-3">
                 <span style='font-size:1em;'><?php echo sprintf(
-                    gT('%sWarning:%s Before turning on HTTPS,%s check this link.%s'),
-                    '<b>',
-                    '</b>',
-                    '<a href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
-                    '</a>'
-                )
+                                                    gT('%sWarning:%s Before turning on HTTPS,%s check this link.%s'),
+                                                    '<b>',
+                                                    '</b>',
+                                                    '<a class="ls-link" href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
+                                                    '</a>'
+                                                )
                                                     . '<br/> '
                                                     . gT("If the link does not work and you turn on HTTPS, you will not be able to access and use your LimeSurvey application!"); ?></span>
             </div>

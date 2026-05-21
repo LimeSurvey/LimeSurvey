@@ -9,7 +9,7 @@ import {
   getTooltipMessages,
   ONOFF_BOOLEAN,
 } from 'helpers/options'
-import { TooltipContainer } from 'components'
+import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 import { useQueryClient } from '@tanstack/react-query'
 
 const getTwoConditions = () => getOnOffOptions(ONOFF_BOOLEAN)
@@ -34,6 +34,7 @@ export const ToggleButtons = ({
   onChange = () => {},
   update = () => {},
   activeDisabled = false,
+  theme = 'light',
   noPermissionDisabled = false,
   noAccessDisabled = false,
   optionTextClassName = '',
@@ -100,7 +101,7 @@ export const ToggleButtons = ({
   return (
     <TooltipContainer tip={toolTip} showTip={isDisabled}>
       <div
-        className={classNames('lime-toggle-btn-group', {
+        className={classNames('lime-toggle-btn-group', theme, {
           isSecondary,
         })}
       >

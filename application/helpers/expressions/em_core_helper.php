@@ -2572,7 +2572,7 @@ class ExpressionManager
 
         // 508 fix, don't output empty anchor tags
             if ($func[4]) {
-                $output .= "<a href='" . $func[4] . "'>" . $func[4] . "</a>";
+                $output .= "<a class='ls-link' href='" . $func[4] . "'>" . $func[4] . "</a>";
             }
 
             $output .= "&nbsp;</td></tr>\n";
@@ -2923,9 +2923,9 @@ function exprmgr_sumifop($args)
 function exprmgr_checkdate($month, $day, $year)
 {
     if (
-        (!ctype_digit((string)$month) && !is_int($month))
-        || (!ctype_digit((string)$day) && !is_int($day))
-        || (!ctype_digit((string)$year) && !is_int($year))
+        (!ctype_digit((string) $month) && !is_int($month))
+        || (!ctype_digit((string) $day) && !is_int($day))
+        || (!ctype_digit((string) $year) && !is_int($year))
     ) {
         return false;
     }
