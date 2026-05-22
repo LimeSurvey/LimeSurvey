@@ -928,13 +928,41 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Checks whether the survey's effective template is the given template
+     * or extends from it (walks up the full inheritance chain).
+     *
+     * @param string $parentTemplateName The template name to check against.
+     * @return bool
+     * @throws CException
+     */
+    public function isTemplateBasedOn(string $parentTemplateName): bool
+    {
+        $templateName = $this->getTemplateEffectiveName();
+        $visited = [];
+
+        while ($templateName && !isset($visited[$templateName])) {
+            if ($templateName === $parentTemplateName) {
+                return true;
+            }
+            $visited[$templateName] = true;
+            $template = Template::model()->findByPk($templateName);
+            if (!$template || empty($template->extends)) {
+                break;
+            }
+            $templateName = $template->extends;
+        }
+
+        return false;
+    }
+
+    /**
      * Returns whether the new React editor should be used for this survey.
      * Checks global editorEnabled config and that the survey uses a compatible theme.
      */
     public function getHasNewEditor(): bool
     {
         return App()->getConfig('editorEnabled')
-            && $this->getTemplateEffectiveName() === 'fruity_twentythree';
+            && $this->isTemplateBasedOn('fruity_twentythree');
     }
 
     /**
