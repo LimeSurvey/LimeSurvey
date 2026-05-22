@@ -61,7 +61,7 @@ export const SurveyTitleSelector = ({
     >
       <div className="d-flex justify-content-center">
         <ContentEditor
-          id='survey-title'
+          id="survey-title"
           value={surveyTitle}
           placeholder={t('Survey title')}
           update={onSurveyTitleChange}

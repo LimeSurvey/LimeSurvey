@@ -151,7 +151,11 @@ export const OptionQuestionEditMode = ({
                       index={index}
                       isFocused={true}
                       idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
-                      id={isImageTheme ? child[childrenInfo.idKey]: `${childrenInfo.childNature}-${child[childrenInfo.idKey]}${index}` }
+                      id={
+                        isImageTheme
+                          ? child[childrenInfo.idKey]
+                          : `${childrenInfo.childNature}-${child[childrenInfo.idKey]}${index}`
+                      }
                       // Focus the child if it's a new child and also if the question is not a new question.
                       focus={
                         hasTempId(child[childrenInfo.idKey]) &&
