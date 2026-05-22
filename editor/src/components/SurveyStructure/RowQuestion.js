@@ -47,7 +47,7 @@ export const RowQuestion = ({
         title={questionTitleWithoutHtmlTags}
         meatballButton={
           <MeatballMenu
-            deleteText={t('Delete question TEST')}
+            deleteText={t('Delete question')}
             duplicateText={t('Duplicate question')}
             handleDelete={deleteQuestion}
             handleDuplicate={handleDuplicate}
