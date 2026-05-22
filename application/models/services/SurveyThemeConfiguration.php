@@ -40,7 +40,7 @@ class SurveyThemeConfiguration
 
         $themeConf = TemplateConfiguration::getInstanceFromTemplateName($templateName);
 
-        $aTemplateList = $this->getAvailableTemplates(null, $surveyTemplate);
+        $aTemplateList = $this->getAvailableTemplates(null, $templateName);
 
         return [
             'themeConf'          => $themeConf,
