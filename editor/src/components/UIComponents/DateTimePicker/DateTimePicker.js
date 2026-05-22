@@ -35,7 +35,8 @@ export const DateTimePickerComponent = ({
     (noPermissionDisabled && !hasSurveyUpdatePermission) || noAccessDisabled
   const [siteSettings] = useAppState(STATES.SITE_SETTINGS)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
-  const timezone = userDetails.timezone ? userDetails.timezone : (siteSettings?.timezone ? siteSettings.timezone : null)
+  const appTimezone = siteSettings?.timezone ? siteSettings.timezone : null
+  const timezone = userDetails.timezone ? userDetails.timezone : appTimezone
 
   const handleOnAccept = (value) => {
     onParticipantValueChange(
