@@ -281,7 +281,7 @@ class ReactEditor extends \PluginBase
      * Shows a warning flash message if the survey's effective theme is not
      * compatible with the React editor.
      *
-     * If Survey::isTemplateBasedOn() throws (e.g. when the survey
+     * If Survey::getTemplateEffectiveName() throws (e.g. when the survey
      * inherits a missing group template), the exception is caught
      * and the theme is treated as incompatible so the warning is still shown.
      *
@@ -295,7 +295,10 @@ class ReactEditor extends \PluginBase
         }
 
         try {
-            $isCompatible = $survey->isTemplateBasedOn('fruity_twentythree');
+            $isCompatible = Template::isBasedOn(
+                $survey->getTemplateEffectiveName(),
+                'fruity_twentythree'
+            );
         } catch (\Throwable $e) {
             $isCompatible = false;
         }
