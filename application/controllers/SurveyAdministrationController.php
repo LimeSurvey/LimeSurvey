@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\DI;
 use LimeSurvey\Models\Services\CopySurveyOptions;
 use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FileUploadService;
@@ -7,6 +8,7 @@ use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 use LimeSurvey\Models\Services\SurveyDetailService;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 
 /**
  * Class SurveyAdministrationController
@@ -3320,6 +3322,11 @@ class SurveyAdministrationController extends LSBaseController
     protected function generalTabEditSurvey($survey)
     {
         $aData['survey'] = $survey;
+
+        // Prepare theme configuration data for the view
+        $themeService = DI::getContainer()->get(SurveyThemeConfiguration::class);
+        $aData = array_merge($aData, $themeService->getThemeViewData($survey->template, $survey->oOptions ?? null));
+
         return $aData;
     }
 
