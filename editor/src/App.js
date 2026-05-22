@@ -1,29 +1,32 @@
 import React, { useEffect } from 'react'
-import { RouterProvider } from 'react-router-dom'
 import ThemeProvider from 'react-bootstrap/ThemeProvider'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import routes from 'routes'
 import { queryClient, persistOptions } from 'queryClient'
-import { I18Provider } from './providers/I18nextProvider'
-import { i18nInstance } from 'i18nInit'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'themes/index.scss'
 import { VersionInfoService } from 'services'
 import { getApiUrl, URLS } from 'helpers'
 
+import { RouterProvider } from 'react-router-dom'
+
+import { I18Provider } from './providers/I18nextProvider'
+import { i18nInstance } from 'i18nInit'
+import routes from 'routes'
+
 import {
-  createRouter,
   AppErrorBoundary,
   withAppProfiler,
   initInstrumentation,
+  createRouter,
 } from 'appInstrumentation'
 
 initInstrumentation()
-const router = createRouter(routes)
 
 function App() {
+  const router = createRouter(routes)
+
   useEffect(() => {
     const fetchVersionInfoInterval = setInterval(() => {
       const versionInfoService = new VersionInfoService(getApiUrl())

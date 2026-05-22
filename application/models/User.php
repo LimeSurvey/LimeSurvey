@@ -193,7 +193,7 @@ class User extends LSActiveRecord
             'lang' => gT('Language'),
             'email' => gT('Email'),
             'htmleditormode' => gT('Editor mode'),
-            'templateeditormode' => gT('Template editor mode'),
+            'templateeditormode' => gT('Theme editor mode'),
             'questionselectormode' => gT('Question selector mode'),
             'one_time_pw' => gT('One-time password'),
             'dateformat' => gT('Date format'),

@@ -22,16 +22,20 @@ export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
   }, [focused?.qid])
 
   const validateCode = (value) => {
-    const { question } =
-      codeToQuestion && codeToQuestion[value]
-        ? codeToQuestion[value]
-        : { question: null }
+    const matchingKey = codeToQuestion
+      ? Object.keys(codeToQuestion).find(
+          (key) => key.toUpperCase() === value?.toUpperCase()
+        )
+      : null
+    const { question } = matchingKey
+      ? codeToQuestion[matchingKey]
+      : { question: null }
     const questionIsNotFocused = question?.title !== focused?.title
     const codeExist = question && questionIsNotFocused
 
     let newErrorMessage = ''
     if (value) {
-      newErrorMessage = TestValidation(value.toUpperCase()).error
+      newErrorMessage = TestValidation(value).error
         ? t('Only letters and numbers are allowed.')
         : ''
     }
@@ -53,7 +57,7 @@ export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
 
   const handleOnChange = ({ target: { value } }) => {
     const oldValue = inputValue
-    setInputValue(value.toUpperCase())
+    setInputValue(value)
     const currentErrorMessage = validateCode(value)
     if (currentErrorMessage === '') {
       update(value)
