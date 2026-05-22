@@ -189,6 +189,14 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['ownersList'] = array_map(function ($user) {
             return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
         }, getUserList());
+        $survey['availableThemes'] = array_map(function ($template) {
+            $themeConf = TemplateConfiguration::getInstanceFromTemplateName($template['name']);
+            return [
+                'value' => $template['name'],
+                'label' => $template['name'],
+                'preview' => $themeConf ? $themeConf->getPreview(true) : '',
+            ];
+        }, $this->surveyThemeConfiguration->getAvailableTemplates('fruity_twentythree', $data->template));
 
         //todo: later this should be done with an separate endpoint or service
         $survey['groupsList'] = SurveysGroups::getSurveyGroupsList();
