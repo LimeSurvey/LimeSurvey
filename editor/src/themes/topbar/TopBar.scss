@@ -30,6 +30,10 @@
       z-index: 100;
       color: $black;
       background-color: $white;
+      .content-editable {
+        padding: 4px 0;
+        min-width: fit-content;
+      }
 
       &:focus,
       &:active {
@@ -53,6 +57,18 @@
   }
 
   box-shadow: 0 1px 2px -2px gray;
+
+  .top-bar-middle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    i {
+      &::before {
+        font-size: 16px;
+      }
+    }
+  }
 
   .top-bar-brand {
     font-style: $font-style-base;
@@ -89,9 +105,45 @@
   }
 }
 
+.survey-navigation {
+  min-width: 280px;
+
+  .lime-toggle-btn-group.light {
+    .btn-group {
+      background: $g-200;
+      padding: 4px;
+
+      .btn {
+        color: $g-700;
+        border-radius: $border-radius;
+        min-width: 90px;
+      }
+
+      // disabled-state.scss uses :has(.disabled) to grey the whole group.
+      // Override it so only the Results button itself looks muted.
+      &:has(.btn-outline-lime-toggle.disabled) {
+        background: $g-200;
+
+        .btn:not(.disabled) {
+          color: $g-700;
+        }
+      }
+
+      .btn-check:active + .btn-outline-lime-toggle,
+      .btn-check:checked + .btn-outline-lime-toggle,
+      .btn-outline-lime-toggle.active,
+      .btn-outline-lime-toggle.dropdown-toggle.show,
+      .btn-outline-lime-toggle:active {
+        background-color: $white;
+        color: $g-750;
+      }
+    }
+  }
+}
+
 .auto-saved {
   font-size: $font-size-sm;
-  min-width: max-content;
+  min-width: 92px;
 }
 
 .preview-button {

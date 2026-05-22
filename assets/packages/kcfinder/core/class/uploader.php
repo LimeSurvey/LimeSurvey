@@ -438,7 +438,7 @@ class uploader {
         return true;
     }
 
-    protected function checkUploadedFile(array $aFile=null) {
+    protected function checkUploadedFile(?array $aFile=null) {
         $config = &$this->config;
         $file = ($aFile === null) ? $this->file : $aFile;
 
@@ -732,7 +732,7 @@ class uploader {
         $this->labels = $lang;
     }
 
-    protected function label($string, array $data=null) {
+    protected function label($string, ?array $data=null) {
         $return = isset($this->labels[$string]) ? $this->labels[$string] : $string;
         if (is_array($data))
             foreach ($data as $key => $val)
@@ -740,7 +740,7 @@ class uploader {
         return $return;
     }
 
-    protected function backMsg($message, array $data=null) {
+    protected function backMsg($message, ?array $data=null) {
         $message = $this->label($message, $data);
         $tmp_name = isset($this->file['tmp_name']) ? $this->file['tmp_name'] : false;
 
