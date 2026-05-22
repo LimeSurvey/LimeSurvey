@@ -37,8 +37,7 @@
                 background-color : $g-200;
             }
             &:focus {
-                color            : $white;
-                background-color : var(--bs-primary);
+                background-color : $g-200;
             }
         }
         .active > a,

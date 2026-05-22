@@ -906,7 +906,7 @@ class UserManagementController extends LSBaseController
         }
         $created = [];
         $updated = [];
-        $hasDuplicateEmails = false;
+        $hasDuplicateIdentity = false;
         $canOverwriteDuplicateEmail = false;
         $existingAttributes = User::model()->attributeNames();
         $dateAttributes = ['last_login', 'validation_key_expiration','last_forgot_email_password','expires'];
@@ -950,8 +950,11 @@ class UserManagementController extends LSBaseController
                         $updated[] = $aNewUser;
                     }
                 } else {
-                    if (!empty($aNewUser['email']) && $oUser->email === $aNewUser['email']) {
-                        $hasDuplicateEmails = true;
+                    if (
+                        (!empty($aNewUser['email']) && $oUser->email === $aNewUser['email']) ||
+                        (!empty($aNewUser['users_name']) && $oUser->users_name === $aNewUser['users_name'])
+                    ) {
+                        $hasDuplicateIdentity = true;
                     }
                 }
             } else {
@@ -988,8 +991,8 @@ class UserManagementController extends LSBaseController
             Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
         }
 
-        if ($hasDuplicateEmails) {
-            Yii::app()->setFlashMessage(gT("One or more users could not be imported because their email address already exists. Please use a unique email address for each user."), 'warning');
+        if ($hasDuplicateIdentity) {
+            Yii::app()->setFlashMessage(gT("One or more usernames or email addresses already exist. Please use unique values for each user."), 'warning');
         }
 
         $this->redirect(['userManagement/index']);

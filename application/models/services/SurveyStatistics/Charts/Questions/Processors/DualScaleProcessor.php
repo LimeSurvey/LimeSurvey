@@ -83,13 +83,6 @@ class DualScaleProcessor extends AbstractQuestionProcessor
         $db = Yii::app()->db;
         $selects = ['COUNT(*) AS __total'];
         $aliasMap = [];
-        $leftSeparator = $rightSeparator = "`";
-        if (Yii::app()->db->getDriverName() === 'pgsql') {
-            $leftSeparator = $rightSeparator = '"';
-        } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
-            $leftSeparator = "[";
-            $rightSeparator = "]";
-        }
 
         foreach ($subQuestions as $sq) {
             $subCode = $sq['title'];
@@ -104,13 +97,13 @@ class DualScaleProcessor extends AbstractQuestionProcessor
                     $value = $db->quoteValue($code);
                     $alias = $this->aliasFor($subCode, $scaleId, $code);
 
-                    $selects[] = "SUM(CASE WHEN {$col} = {$value} THEN 1 ELSE 0 END) AS {$leftSeparator}{$alias}{$rightSeparator}";
+                    $selects[] = "SUM(CASE WHEN {$col} = {$value} THEN 1 ELSE 0 END) AS " . dbQuoteFields($alias);
                     $aliasMap[$subCode][$scaleId]['answers'][$code] = $alias;
                 }
 
                 // blank per field
                 $blankAlias = $this->aliasForBlank($subCode, $scaleId);
-                $selects[]  = "SUM(CASE WHEN {$col} IS NULL OR {$col} = '' THEN 1 ELSE 0 END) AS {$leftSeparator}{$blankAlias}{$rightSeparator}";
+                $selects[]  = "SUM(CASE WHEN {$col} IS NULL OR {$col} = '' THEN 1 ELSE 0 END) AS " . dbQuoteFields($blankAlias);
                 $aliasMap[$subCode][$scaleId]['blank'] = $blankAlias;
             }
         }
