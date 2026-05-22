@@ -136,7 +136,7 @@ gT('Themes');
         <?php if ($showLastSurvey) : ?>
                 <div id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:"); ?>
-                    <a href="<?php echo $surveyUrl; ?>">
+                    <a class="ls-link" href="<?php echo $surveyUrl; ?>">
                         <?= viewHelper::flatEllipsizeText($surveyTitle, true, 60) ?>
                     </a>
                 </div>
@@ -145,7 +145,7 @@ gT('Themes');
         <?php if ($showLastQuestion) : ?>
                 <div id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
                     <?php eT("Last visited question:"); ?>
-                    <a href="<?php echo $last_question_link; ?>">
+                    <a class="ls-link" href="<?php echo $last_question_link; ?>">
                         <?= viewHelper::flatEllipsizeText($last_question_name, true, 60) ?>
                     </a>
                 </div>

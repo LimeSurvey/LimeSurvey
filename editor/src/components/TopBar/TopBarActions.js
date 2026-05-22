@@ -196,7 +196,7 @@ export const TopBarActions = ({
     title: '',
   }
   return (
-    <div className="d-flex align-items-center">
+    <div className="topbar-right-area d-flex align-items-center">
       <span className="small text-muted me-1">
         {process.env.REACT_APP_DEV_MODE && '(Dev Mode) '}
         {process.env.REACT_APP_DEMO_MODE && '(Demo Mode) '}

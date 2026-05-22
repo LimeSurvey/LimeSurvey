@@ -9,7 +9,7 @@ import {
   getTooltipMessages,
   ONOFF_BOOLEAN,
 } from 'helpers/options'
-import { TooltipContainer } from 'components'
+import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 import { useQueryClient } from '@tanstack/react-query'
 
 const getTwoConditions = () => getOnOffOptions(ONOFF_BOOLEAN)

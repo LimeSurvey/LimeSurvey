@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Direction, Range, getTrackBackground } from 'react-range'
 import { Form } from 'react-bootstrap'
 
-import { Input } from 'components'
+import { Input } from '../Input/Input'
 import classNames from 'classnames'
 import { getThumbStyle, THUMB_TYPES } from 'helpers'
 
