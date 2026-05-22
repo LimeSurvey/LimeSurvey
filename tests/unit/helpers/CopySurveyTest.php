@@ -1,6 +1,6 @@
 <?php
 
-namespace helpers;
+namespace ls\tests\unit\helpers\remotecontrol;
 
 use LimeSurvey\Models\Services\CopySurveyOptions;
 use ls\tests\TestBaseClass;

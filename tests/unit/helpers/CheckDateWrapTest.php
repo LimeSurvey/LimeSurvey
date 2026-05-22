@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\TestBaseClass;
 
 class CheckDateWrapTest extends TestBaseClass
 {
