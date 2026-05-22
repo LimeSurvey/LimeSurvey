@@ -24,6 +24,7 @@ export const MeatballMenu = ({
   handleDelete,
   testId = '',
   items = [],
+  additionalItems = [],
   shouldDisableIfSurveyActive = true,
   meatballClassName = 'meatball-menu ',
   actionsTitle = '',
@@ -60,6 +61,19 @@ export const MeatballMenu = ({
           className="meatball-menu ps-3 bg-white"
           data-testid="meatball-menu-overlay"
         >
+          {additionalItems.map((item, index) => (
+            <Button
+              key={index}
+              data-testid={item.testId || `${item.label}-button`}
+              variant="layout"
+              onClick={() => {
+                setShowMeatballMenu(false)
+                item.onClick()
+              }}
+            >
+              {item.label}
+            </Button>
+          ))}
           <TooltipContainer
             tip={toolTip}
             showTip={
