@@ -96,6 +96,8 @@ class UserStatusTest extends TestBaseClassWeb
             $parent_user = 1,
             $new_email = 'new@user.com'
         );
+        $this->assertFalse($uid instanceof User, 'Failed to create user: ' . ($uid instanceof User ? json_encode($uid->getErrors()) : ''));
+        $uid = (int) $uid;
         $user = User::model()->findByPk($uid);
         $this->assertEquals(1, (int) $user->user_status, 'User status is 1');
 
@@ -158,6 +160,8 @@ class UserStatusTest extends TestBaseClassWeb
             $parent_user = 1,
             $new_email = 'new@user.com'
         );
+        $this->assertFalse($uid instanceof User, 'Failed to create user: ' . ($uid instanceof User ? json_encode($uid->getErrors()) : ''));
+        $uid = (int) $uid;
         $user = User::model()->findByPk($uid);
         $this->assertEquals(1, (int) $user->user_status, 'User status is 1');
 

@@ -895,14 +895,22 @@ class UserManagementController extends LSBaseController
         }
         $created = [];
         $updated = [];
+        $hasDuplicateIdentity = false;
+        $canOverwriteDuplicateEmail = false;
         $existingAttributes = User::model()->attributeNames();
         $dateAttributes = ['last_login', 'validation_key_expiration','last_forgot_email_password','expires'];
         foreach ($aNewUsers as $aNewUser) {
             // Unset not imported or invalid attribute
             $aNewUser = array_intersect_key($aNewUser, array_flip($existingAttributes));
             $aNewUser = array_diff_key($aNewUser, array_flip(['uid','parent_id', 'created', 'modified']));
-            /* Find if exist */
-            $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
+            $oUser = User::model()->find(
+                'users_name = :name OR email = :email',
+                [
+                    ':name' => $aNewUser['users_name'],
+                    ':email' => $aNewUser['email'],
+                ]
+            );
+
             if ($oUser  !== null) {
                 if ($overwriteUsers) {
                     /* Check permission to edit this user */
@@ -929,6 +937,13 @@ class UserManagementController extends LSBaseController
                     $save = $oUser->save(true, array_keys($aNewUser));
                     if ($save) {
                         $updated[] = $aNewUser;
+                    }
+                } else {
+                    if (
+                        (!empty($aNewUser['email']) && $oUser->email === $aNewUser['email']) ||
+                        (!empty($aNewUser['users_name']) && $oUser->users_name === $aNewUser['users_name'])
+                    ) {
+                        $hasDuplicateIdentity = true;
                     }
                 }
             } else {
@@ -964,6 +979,11 @@ class UserManagementController extends LSBaseController
         if (count($created) || count($updated)) {
             Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
         }
+
+        if ($hasDuplicateIdentity) {
+            Yii::app()->setFlashMessage(gT("One or more usernames or email addresses already exist. Please use unique values for each user."), 'warning');
+        }
+
         $this->redirect(['userManagement/index']);
     }
 

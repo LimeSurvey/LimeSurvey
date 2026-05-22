@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { DateIcon, CloseIcon } from 'components/icons'
 
-import { TooltipContainer } from 'components'
+import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 import { useAppState } from 'hooks'
 import { dayJsHelper, STATES, getTooltipMessages } from 'helpers'
 

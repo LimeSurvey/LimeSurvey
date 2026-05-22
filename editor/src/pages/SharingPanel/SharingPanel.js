@@ -2,17 +2,19 @@ import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 
-import { PAGES, SURVEY_MENU_TITLES } from 'helpers'
-import { TopBar } from 'components'
+import { PAGES, STATES, SURVEY_MENU_TITLES } from 'helpers'
 import { SharingOverview } from 'components/SharingPanel'
 import { PluginSlot } from 'plugins/PluginSlot'
 import { PLUGIN_SLOTS } from 'plugins/slots'
 
 import { LeftSideBar } from '../../pages/Editor'
+import { useAppState } from 'hooks'
+import { useEffect } from 'react'
 
 export const SharingPanel = () => {
   const { menu, surveyId } = useParams()
   const shouldHaveRightMargin = menu !== SURVEY_MENU_TITLES.sharingOverview
+  const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
 
   const renderCurrentMenu = () => {
     switch (menu) {
@@ -23,14 +25,18 @@ export const SharingPanel = () => {
     }
   }
 
+  useEffect(() => {
+    setTopbarConfig({
+      surveyId,
+      showShareButton: false,
+      showShareActionButton: true,
+      showAddQuestionButton: false,
+      pageName: PAGES.SHARE,
+    })
+  }, [surveyId])
+
   return (
     <>
-      <TopBar
-        surveyId={surveyId}
-        showShareButton={false}
-        showShareActionButton={true}
-        showAddQuestionButton={false}
-      />
       <Container className="p-0" fluid>
         <div
           id="content"

@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.3 (build 260512) to 6.17.4 (build 260520) May 20, 2026
+-Fixed issue: prevent error when language for survey is missing and instead provide guidance on how to resolve it (Patrick Teichmann)
+-Fixed issue: add focus for some flash messages as well as add aria tags to them and aria focus state for multiselect in participant CSV export (a11y) (#4784) (Anblik Audit Team)
+-Fixed issue: Demo console command not properly loading helpers (Carsten Schmitz)
+-Fixed issue: Dashboard crashing if survey language entry is corrupted (Carsten Schmitz)
+-Fixed issue: A11y remaining adjustments for improved label and error message associations in survey groups form (#4764) (Anblik Audit Team)
+-Fixed issue: A11y focus on sort columns in token table, screen reader improvements for privacy policy settings and breadcrumbs (Anblik Audit Team)
+-Fixed issue: A11y adjustments for improved label and error message associations in survey groups form (#4757) (Anblik Audit Team)
+-Fixed issue #LB-147: Fixed executability of change scripts for SQL Server (#4962) (lajosarpad)
+-Fixed issue #AT-1999: Changed default|hover|click background colors and borders (#4927) (Patricia Stell)
+-Fixed issue #20495: [security] Unrestricted getConfig() access in Twig sandbox (Thank you to supperhellokitty20 for reporting the issue) (#4917)
+-Fixed issue #20468: Condition not properly behaving when respondents enter 'false' as a response (#4797) (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: French (France) by DenisChenu, fgervais, GuillaumeZ6, pasglop
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 6.17.2 (build 260507) to 6.17.3 (build 260512) May 12, 2026
 +New feature #AT-1979: Improved survey copy  (#4834) (Carsten Schmitz)
 -Fixed issue: Ability to set email method plugin, but not able to select any plugin (Carsten Schmitz)

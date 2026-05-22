@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Dropdown as BootstrapDropdown } from 'react-bootstrap'
-import { TooltipContainer } from 'components'
+import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 
 // {
 //   type: 'item' || 'header || 'divider' || 'submenu',
