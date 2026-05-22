@@ -60,6 +60,7 @@ export const RankingQuestionSubquestion = ({
               />
             )}
             <ContentEditor
+              id={`subquestion-${qid}${index}`}
               update={handleSubquestionUpdate}
               value={subquestion}
               placeholder={t('Add text here...')}

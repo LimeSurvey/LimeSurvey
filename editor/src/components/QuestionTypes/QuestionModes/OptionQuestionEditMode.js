@@ -40,6 +40,7 @@ export const OptionQuestionEditMode = ({
     idKey: isSingleChoiceTheme ? 'aid' : 'qid',
     titleKey: isSingleChoiceTheme ? 'answer' : 'question',
     entity: isSingleChoiceTheme ? Entities.answer : Entities.subquestion,
+    childNature: isSingleChoiceTheme ? 'answer option' : 'subquestion',
   }
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
 
@@ -150,7 +151,7 @@ export const OptionQuestionEditMode = ({
                       index={index}
                       isFocused={true}
                       idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
-                      id={child[childrenInfo.idKey]}
+                      id={isImageTheme ? child[childrenInfo.idKey]: `${childrenInfo.childNature}-${child[childrenInfo.idKey]}${index}` }
                       // Focus the child if it's a new child and also if the question is not a new question.
                       focus={
                         hasTempId(child[childrenInfo.idKey]) &&

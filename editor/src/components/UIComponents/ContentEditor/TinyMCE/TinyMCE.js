@@ -26,6 +26,7 @@ export const TinyMCE = ({
   attributeDescriptions = {},
   surveyHeader = false,
   language,
+  id: parentId,
 }) => {
   const editorRef = useRef(null)
   const [firstLoad, setFirstLoad] = useState(true)
@@ -199,6 +200,7 @@ export const TinyMCE = ({
       />
       <PluginSlot
         slotName={PLUGIN_SLOTS.CONTENT_EDITOR}
+        id={parentId}
         value={editorValueRef.current}
         onChange={updateTitle}
         focused={isFocused}

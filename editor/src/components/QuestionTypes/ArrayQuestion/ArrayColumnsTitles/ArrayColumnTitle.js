@@ -7,6 +7,7 @@ import { useAppState, useSurvey } from 'hooks'
 import { SubquestionCodeInput } from '../../subquestionCodeComponents'
 
 export const ArrayColumnTitle = ({
+  id,
   isFocused,
   removeItem,
   dragIconSize,
@@ -77,6 +78,7 @@ export const ArrayColumnTitle = ({
             />
           )}
           <ContentEditor
+            id={id}
             className={classNames(
               'text-start choice array-answer-content-editor'
             )}

@@ -140,6 +140,7 @@ export const MultipleChoiceSubquestion = ({
         <div className="d-flex gap-2 multiple-choice-subquestion-content-editor align-items-center position-relative remove-option-button-parent">
           {showContentEditable && (
             <ContentEditor
+              id={`subquestion-${subQuestion.parentQid}${index}`}
               placeholder={t('Subquestion')}
               className="text-secondary my-1 choice"
               testId="choice-content-editor"

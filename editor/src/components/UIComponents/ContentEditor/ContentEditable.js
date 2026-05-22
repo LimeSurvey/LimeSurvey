@@ -21,6 +21,7 @@ export const ContentEditable = ({
   focus = false,
   onKeyDown,
   testId = '',
+  id,
 }) => {
   const [codeToQuestion] = useAppState(STATES.CODE_TO_QUESTION, {})
   const [questionTitle, setQuestionTitle] = useState(value)
@@ -78,6 +79,7 @@ export const ContentEditable = ({
       />
       <PluginSlot
         slotName={PLUGIN_SLOTS.CONTENT_EDITOR}
+        id={id}
         value={value}
         onChange={onChange}
         focused={isFocused}

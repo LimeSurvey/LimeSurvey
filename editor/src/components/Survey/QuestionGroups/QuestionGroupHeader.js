@@ -78,6 +78,7 @@ export const QuestionGroupHeader = ({
             <DownArrow style={{ transform: 'rotate(-180deg)' }} />
           </Button>
           <ContentEditor
+            id={`question-group-name-${questionGroup.gid}`}
             value={L10ns({
               prop: 'groupName',
               language,

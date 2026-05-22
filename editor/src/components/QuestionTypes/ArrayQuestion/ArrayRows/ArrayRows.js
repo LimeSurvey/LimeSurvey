@@ -174,6 +174,7 @@ export const ArrayRows = ({
                 })}
               >
                 <ArrayRow
+                  id={`${entitiesInfo.rowName}-${entity[entitiesInfo.idKey]}${index}`}
                   questionThemeName={questionThemeName}
                   isFocused={isFocused}
                   highestWidth={highestWidth}

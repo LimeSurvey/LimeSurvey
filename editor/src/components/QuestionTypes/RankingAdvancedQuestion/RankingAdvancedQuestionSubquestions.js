@@ -109,6 +109,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                         />
                       )}
                       <ContentEditor
+                        id={`subquestion-${subquestion.parentQid}${index}`}
                         key={`Ranking-Advanced-Subquestion-${qid}`}
                         value={L10ns({
                           l10ns: subquestion.l10ns,
