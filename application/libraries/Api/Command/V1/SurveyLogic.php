@@ -51,6 +51,7 @@ class SurveyLogic implements CommandInterface
     /**
      * Run survey logic command
      *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @param Request $request
      * @return Response
      */
