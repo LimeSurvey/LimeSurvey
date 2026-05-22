@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-05-20 12:58:55+00:00\n"
+"POT-Creation-Date: 2026-05-22 10:39:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -409,7 +409,7 @@ msgid "Assessments"
 msgstr ""
 
 #: application/controllers/AssessmentController.php:422
-#: application/controllers/UploaderController.php:413
+#: application/controllers/UploaderController.php:418
 #: application/models/Assessment.php:106 application/models/Box.php:148
 #: application/views/questionAdministration/partial/topbarBtns/questionTopbarRight_view.php:26
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupTopbarRight_view.php:20
@@ -1683,7 +1683,7 @@ msgid "File %s"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:253
-#: application/controllers/UploaderController.php:400
+#: application/controllers/UploaderController.php:405
 #: application/controllers/admin/DataEntry.php:1046
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/models/Notification.php:166 application/models/Survey.php:1652
@@ -1702,7 +1702,7 @@ msgid "Title"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:264
-#: application/controllers/UploaderController.php:401
+#: application/controllers/UploaderController.php:406
 #: application/controllers/admin/DataEntry.php:1049
 #: application/helpers/common_helper.php:1615
 #: application/helpers/common_helper.php:1880
@@ -1716,7 +1716,7 @@ msgid "Comment"
 msgstr ""
 
 #: application/controllers/ResponsesController.php:274
-#: application/controllers/UploaderController.php:402
+#: application/controllers/UploaderController.php:407
 #: application/controllers/admin/DataEntry.php:1052
 #: application/views/admin/emailtemplates/email_language_template_tab.php:131
 #: application/views/survey/questions/answer/file_upload/answer.twig:43
@@ -2275,7 +2275,7 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:1015
 #: application/controllers/SurveyAdministrationController.php:1141
-#: application/controllers/UploaderController.php:412
+#: application/controllers/UploaderController.php:417
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:68
 #: application/extensions/UserPermissionsWidget/views/table.php:16
 #: application/extensions/admin/survey/LanguagesWidget/LanguagesWidget.php:21
@@ -3588,7 +3588,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:232
 #: application/controllers/UploaderController.php:240
-#: application/controllers/UploaderController.php:369
+#: application/controllers/UploaderController.php:374
 #: application/views/admin/super/admin_notifications.php:93
 msgid "An unknown error occurred"
 msgstr ""
@@ -3601,62 +3601,62 @@ msgstr ""
 msgid "Sorry, unable to check extension of this file type %s."
 msgstr ""
 
-#: application/controllers/UploaderController.php:299
+#: application/controllers/UploaderController.php:306
 msgid "Sorry, file type %s (extension : %s) is not allowed!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:313
-#: application/controllers/UploaderController.php:331
-#: application/controllers/UploaderController.php:359
+#: application/controllers/UploaderController.php:320
+#: application/controllers/UploaderController.php:337
+#: application/controllers/UploaderController.php:364
 #: application/helpers/remotecontrol/remotecontrol_handle.php:3557
 msgid "The file has been successfully uploaded."
 msgstr ""
 
-#: application/controllers/UploaderController.php:346
+#: application/controllers/UploaderController.php:351
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
 msgstr ""
 
-#: application/controllers/UploaderController.php:373
+#: application/controllers/UploaderController.php:378
 msgid "An unknown error happened when moving file %s to %s."
 msgstr ""
 
-#: application/controllers/UploaderController.php:403
+#: application/controllers/UploaderController.php:408
 msgid "Sorry, no more files can be uploaded!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:404
+#: application/controllers/UploaderController.php:409
 msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:405
+#: application/controllers/UploaderController.php:410
 msgid "Uploading"
 msgstr ""
 
-#: application/controllers/UploaderController.php:406
+#: application/controllers/UploaderController.php:411
 #: application/views/survey/questions/answer/file_upload/modal-container.php:16
 msgid "Select file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:407
+#: application/controllers/UploaderController.php:412
 msgid "Please upload %s more file(s)."
 msgstr ""
 
-#: application/controllers/UploaderController.php:408
+#: application/controllers/UploaderController.php:413
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
 msgstr ""
 
-#: application/controllers/UploaderController.php:409
-#: application/controllers/UploaderController.php:410
+#: application/controllers/UploaderController.php:414
+#: application/controllers/UploaderController.php:415
 msgid "The maximum number of files has been uploaded. You may return back to survey."
 msgstr ""
 
-#: application/controllers/UploaderController.php:411
+#: application/controllers/UploaderController.php:416
 msgid ""
 "You need to upload %s more files for this question.\n"
 "Are you sure you want to exit?"
 msgstr ""
 
-#: application/controllers/UploaderController.php:496
+#: application/controllers/UploaderController.php:501
 msgid "Invalid upload question %s in survey %s"
 msgstr ""
 
@@ -6176,7 +6176,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:527
 #: application/core/LsDefaultDataSets.php:528
 #: application/core/LsDefaultDataSets.php:529
-#: application/extensions/admin/BoxesWidget/views/box.php:103
+#: application/extensions/admin/BoxesWidget/views/box.php:104
 #: application/helpers/questionHelper.php:408
 #: application/helpers/questionHelper.php:419
 #: application/helpers/questionHelper.php:430
@@ -10051,15 +10051,15 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:67
+#: application/extensions/admin/BoxesWidget/views/box.php:68
 msgid "No responses"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:70
+#: application/extensions/admin/BoxesWidget/views/box.php:71
 msgid "%d responses"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:87
+#: application/extensions/admin/BoxesWidget/views/box.php:88
 #: application/models/Plugin.php:397 application/models/Plugin.php:406
 #: application/models/Survey.php:1602 application/models/User.php:647
 #: application/views/quotas/viewquotas_massive_selector.php:20
@@ -10067,12 +10067,12 @@ msgstr ""
 msgid "Activate"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:95
+#: application/extensions/admin/BoxesWidget/views/box.php:96
 #: application/models/Survey.php:1596
 msgid "Edit survey"
 msgstr ""
 
-#: application/extensions/admin/BoxesWidget/views/box.php:131
+#: application/extensions/admin/BoxesWidget/views/box.php:132
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:30
 #: application/views/responses/browsetimerow_view.php:22
 msgid "No surveys found."
@@ -18909,7 +18909,7 @@ msgid "Editor mode"
 msgstr ""
 
 #: application/models/User.php:183
-msgid "Template editor mode"
+msgid "Theme editor mode"
 msgstr ""
 
 #: application/models/User.php:184
