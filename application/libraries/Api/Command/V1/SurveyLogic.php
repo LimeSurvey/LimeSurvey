@@ -82,7 +82,8 @@ class SurveyLogic implements CommandInterface
         if ($language !== null && $language !== '') {
             $language = LSYii_Validators::languageCodeFilter($language);
         } else {
-            $language = null;
+            // SetSurveyLanguage() treats an empty string the same as "no language given".
+            $language = '';
         }
 
         $assessmentsParam = $request->getData('assessments');
@@ -98,6 +99,7 @@ class SurveyLogic implements CommandInterface
 
         SetSurveyLanguage($surveyId, $language);
         killSurveySession($surveyId);
+        /** @psalm-suppress UndefinedMagicPropertyFetch */
         Yii::app()->setLanguage(Yii::app()->session['adminlang']);
 
         $result = LimeExpressionManager::ShowSurveyLogicFile(
