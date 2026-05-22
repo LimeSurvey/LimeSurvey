@@ -50,7 +50,7 @@ class UserDetail implements CommandInterface
                 ->makeErrorForbidden();
         }
 
-        $userModel = $this->modelUser->findByAttributes(['uid' => (int)$userId]);
+        $userModel = $this->modelUser->findByAttributes(['uid' => $userId]);
 
         if (!$userModel) {
             return $this->responseFactory->makeErrorNotFound(
