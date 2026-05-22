@@ -2,9 +2,9 @@
 
 namespace ls\tests\unit\helpers;
 
-use ls\tests\unit\helpers\remotecontrol\BaseTest;
+use ls\tests\TestBaseClass;
 
-class FixMovedQuestionConditionsTest extends BaseTest
+class FixMovedQuestionConditionsTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {
