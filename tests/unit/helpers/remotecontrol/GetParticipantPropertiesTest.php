@@ -2,8 +2,6 @@
 
 namespace ls\tests\unit\helpers\remotecontrol;
 
-use ls\tests\TestBaseClass;
-
 class GetParticipantPropertiesTest extends BaseTest
 {
     public static function setUpBeforeClass(): void

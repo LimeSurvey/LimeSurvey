@@ -2,8 +2,6 @@
 
 namespace ls\tests\unit\helpers;
 
-use ls\tests\TestBaseClass;
-
 use PHPUnit\Framework\TestCase;
 
 /**

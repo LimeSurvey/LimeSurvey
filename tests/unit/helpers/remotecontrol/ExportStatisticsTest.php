@@ -3,7 +3,6 @@
 namespace ls\tests\unit\helpers\remotecontrol;
 
 use ls\tests\DummyController;
-use ls\tests\TestBaseClass;
 
 /**
  * Tests for the LimeSurvey remote API.

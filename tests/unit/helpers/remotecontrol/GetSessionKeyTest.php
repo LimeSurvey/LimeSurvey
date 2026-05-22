@@ -2,8 +2,6 @@
 
 namespace ls\tests\unit\helpers\remotecontrol;
 
-use ls\tests\TestBaseClass;
-
 class GetSessionKeyTest extends BaseTest
 {
     public function testSessionKeyIsValid()

@@ -2,8 +2,6 @@
 
 namespace ls\tests\unit\helpers\remotecontrol;
 
-use ls\tests\TestBaseClass;
-
 class CPDImportParticpantsTest extends BaseTest
 {
     public function setUp(): void

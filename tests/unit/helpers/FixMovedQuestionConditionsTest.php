@@ -2,7 +2,7 @@
 
 namespace ls\tests\unit\helpers;
 
-use ls\tests\TestBaseClass;
+use ls\tests\unit\helpers\remotecontrol\BaseTest;
 
 class FixMovedQuestionConditionsTest extends BaseTest
 {
