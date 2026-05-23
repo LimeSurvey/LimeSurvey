@@ -5759,9 +5759,9 @@ class LimeExpressionManager
             if (
                 $gRelInfo['result'] == true
                 && $qStatus['relevant'] == true // Question are relevant
-                && !((strval($qStatus['relevantSQs']) === "" && strval($qStatus['irrelevantSQs']) !== "")) // All existing subquestions are irrelevant
+                && (strval($qStatus['relevantSQs']) !== "" || strval($qStatus['irrelevantSQs']) === "") // There are relevant subquestion OR no subquestion exist (both are empty)
             ) {
-                $grel = $gRelInfo['result'];    // true;   // at least one question relevant
+                $grel = $gRelInfo['result'];    // true;
             }
             if ($qStatus['hidden'] == false && $qStatus['relevant'] == true) {
                 $ghidden = false; // at least one question is visible
