@@ -3,6 +3,7 @@
  * Display error messages
  * @var $title string
  * @var $message html
+ * @deprecated please use application/views/layouts/messagebox.php instead or the Yii::app()->user->setFlash()
  */
 ?>
 <div class='side-body'>
@@ -16,11 +17,3 @@
         </div>
     </div>
 </div>
-<?php
-// Focus the status message on load so screen readers announce it when it appears
-App()->getClientScript()->registerScript(
-    'adminStatusMessageFocus',
-    "jQuery(function(){ var el = document.getElementById('admin-status-message'); if (el) { el.focus(); } });",
-    CClientScript::POS_READY
-);
-?>

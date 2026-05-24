@@ -52,15 +52,32 @@
     }
   }
 
-  .btn-check:active+.btn-outline-secondary:focus,
-  .btn-check:checked+.btn-outline-secondary:focus,
-  .btn-outline-secondary.active:focus,
-  .btn-outline-secondary.dropdown-toggle.show:focus,
-  .btn-outline-secondary:active:focus,
-  .btn-outline-secondary:active,
-  .btn-check:focus+.btn-outline-secondary,
-  .btn-outline-secondary:hover
-  {
-    box-shadow: none;
-  }
+    .btn-outline-secondary:hover {
+        box-shadow       : none;
+        background-color : $g-200;
+    }
+
+    .btn-check:focus-visible + .btn-outline-secondary,
+    .btn-check:active + .btn-outline-secondary:focus-visible,
+    .btn-check:checked + .btn-outline-secondary:focus-visible,
+    .btn-outline-secondary.active:focus-visible,
+    .btn-outline-secondary.dropdown-toggle.show:focus-visible,
+    .btn-outline-secondary:active:focus-visible {
+        @include inset-border(1px, $grape-light);
+        border-color : $grape-light;
+    }
+
+    .btn-check:focus + .btn-outline-secondary,
+    .btn-check:active + .btn-outline-secondary:focus,
+    .btn-check:checked + .btn-outline-secondary:focus,
+    .btn-outline-secondary.active:focus,
+    .btn-outline-secondary.dropdown-toggle.show:focus,
+    .btn-outline-secondary:active:focus {
+        box-shadow: none;
+    }
+
+    .btn-outline-secondary:active {
+        box-shadow       : none;
+        background-color : $g-300;
+    }
 }
