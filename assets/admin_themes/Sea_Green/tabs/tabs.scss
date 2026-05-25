@@ -13,11 +13,11 @@
             @include inset-border(2px, $grape90);
         }
 
-        &.active:hover, &:hover, &:active {
+        &:hover:not(.active), &:active:not(.active) {
             @include inset-border(1px, $grape75);
             border-bottom : 2px solid $grape75;
         }
-        &:active {
+        &:active:not(.active) {
             background-color: $g-300;
         }
         &.disabled,
