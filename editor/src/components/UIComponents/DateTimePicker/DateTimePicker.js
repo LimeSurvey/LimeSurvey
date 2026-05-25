@@ -36,7 +36,7 @@ export const DateTimePickerComponent = ({
   const [siteSettings] = useAppState(STATES.SITE_SETTINGS)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
   const appTimezone = siteSettings?.timezone ? siteSettings.timezone : null
-  const timezone = userDetails.timezone ? userDetails.timezone : appTimezone
+  const timezone = userDetails?.timezone ? userDetails.timezone : appTimezone
 
   const handleOnAccept = (value) => {
     onParticipantValueChange(
