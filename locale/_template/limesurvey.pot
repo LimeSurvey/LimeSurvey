@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-05-26 19:42:18+00:00\n"
+"POT-Creation-Date: 2026-05-26 20:13:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9516,7 +9516,7 @@ msgid "Action needed"
 msgstr ""
 
 #: application/core/plugins/ReactEditor/EditorMessages.php:28
-msgid "LimeSurvey 7 Question Editor"
+msgid "LimeSurvey 7 question editor"
 msgstr ""
 
 #: application/core/plugins/ReactEditor/EditorMessages.php:31
@@ -11674,7 +11674,7 @@ msgid "Count the number of answered questions in the list equal the first argume
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:209
-msgid "Count the number of answered questions in the list which pass the criteria (arg op value)"
+msgid "Count the number of answered questions in the list which pass the criteria (argument - operator - value)"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:210
@@ -11926,7 +11926,7 @@ msgid "Calculate the sum of values in an array"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:272
-msgid "Sum the values of answered questions in the list which pass the criteria (arg op value)"
+msgid "Sum the values of answered questions in the list which pass the criteria (argument - operator - value)"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:273
@@ -12941,7 +12941,7 @@ msgid "Display dropdown boxes"
 msgstr ""
 
 #: application/helpers/questionHelper.php:217
-msgid "Minimum date, valid date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page."
+msgid "Minimum allowed date. Enter a date in YYYY-MM-DD format or a textual description (e.g. \"now\", \"tomorrow\", \"+1 month\"). Expressions are supported but must use YYYY-MM-DD format. For dropdown display: only the year is restricted when the date variable is on a different page."
 msgstr ""
 
 #: application/helpers/questionHelper.php:218
@@ -12950,7 +12950,7 @@ msgid "Minimum date"
 msgstr ""
 
 #: application/helpers/questionHelper.php:227
-msgid "Maximum date, valid date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page."
+msgid "Maximum allowed date. Enter a date in YYYY-MM-DD format or a textual description (e.g. \"now\", \"tomorrow\", \"+1 month\"). Expressions are supported but must use YYYY-MM-DD format. For dropdown display: only the year is restricted when the date variable is on a different page."
 msgstr ""
 
 #: application/helpers/questionHelper.php:228
@@ -19944,11 +19944,11 @@ msgid "Note: XSS filtering is always disabled for the superadministrator."
 msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:52
-msgid "Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is enabled for all users."
+msgid "XSS filtering is enforced via the configuration file and cannot be changed here. It applies to all users, including super administrators."
 msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:54
-msgid "Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is only disabled for forced super admin(s)."
+msgid "XSS filtering is enforced via the configuration file and cannot be changed here. Forced super administrators are exempt."
 msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:66
@@ -24046,7 +24046,7 @@ msgid "Download"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:20
-msgid "PHP Curl library not loaded"
+msgid "PHP curl library not loaded"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:21
@@ -24402,7 +24402,7 @@ msgid "Not enough space"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:59
-msgid "Note: With some shared hosting configuration, it can happen that the available free space is not correctly evaluated. If you checked manually that you have enough free space to update, just ignore this error."
+msgid "Some shared hosting configurations may report available disk space incorrectly. If you have verified manually that sufficient disk space is available, you can safely ignore this error."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:69
@@ -25287,7 +25287,7 @@ msgid "Change"
 msgstr ""
 
 #: application/views/layouts/partial_modals/modal_header.php:11
-msgid "Close modal"
+msgid "Close modal window"
 msgstr ""
 
 #: application/views/layouts/sidemenu.php:59
@@ -26882,7 +26882,7 @@ msgid "Visibility"
 msgstr ""
 
 #: application/views/themeOptions/installedthemelist.php:74
-msgid "Visible inside the question selector"
+msgid "Visible inside the question type selector"
 msgstr ""
 
 #: application/views/themeOptions/options_core.php:5
