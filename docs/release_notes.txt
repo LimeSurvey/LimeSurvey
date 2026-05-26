@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.4 (build 260520) to 6.17.5 (build 260527) May 26, 2026
+-Fixed issue #AT-2056: Increase pagination to 250 and 500 (#5001) (Patricia Stell)
+-Fixed issue #AT-1897: design fixes for CSS states (#4992) (Tim Willig)
+-Fixed issue #20527: Bad order of default response list for multiple text question (Carsten Schmitz)
+-Fixed issue #20524: [security] Unsanitized null condition key (thank you for reporting Nagarajan Selvaraj Paulmony)(#4988) (Stefan K)
+-Fixed issue #20507: Unclosed twig comments in vanilla/fruity_twentythree themes (Mathieu Bruyen)
+-Fixed issue #19824: Page size of central participant list was limited to 100 (Carsten Schmitz)
+-Fixed issue #19571: Text fixes for templates -> themes (Carsten Schmitz)
+-Fixed issue #15946: File upload question: cannot select csv file (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu
+
+
 Changes from 6.17.3 (build 260512) to 6.17.4 (build 260520) May 20, 2026
 -Fixed issue: prevent error when language for survey is missing and instead provide guidance on how to resolve it (Patrick Teichmann)
 -Fixed issue: add focus for some flash messages as well as add aria tags to them and aria focus state for multiselect in participant CSV export (a11y) (#4784) (Anblik Audit Team)
