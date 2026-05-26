@@ -7,4 +7,5 @@ export const PLUGIN_SLOTS = {
   SHARING_OVERVIEW_BOTTOM_RIGHT: 'sharingoverview:bottom:right',
   TRANSLATIONS_PANEL: 'translations:panel:content',
   FEEDBACK_FORM_OPEN: 'feedback:form:open',
+  CONTENT_EDITOR: 'content:editor:extra', // extra logic for editable content ( contentEditable & tinymce)
 }

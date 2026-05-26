@@ -16,6 +16,10 @@
 #}
 <div class="privacy-block">
     {% set describeprivacy = "" %}
+    {% set privacychecked = "" %}
+    {% if getPost('datasecurity_accepted') %}
+        {% set privacychecked = "checked" %}
+    {%endif %}
     {% if aSurveyInfo.datasecurity_notice %}
         <div class="limit-text-window {{ aSurveyInfo.class.privacydatasectextbody }}" id="datasecurity_notice">
             {{ aSurveyInfo.datasecurity_notice }}
@@ -33,7 +37,7 @@
     {% endif %}
     <div class="row row-cols-lg-auto g-1 align-items-center">
         <div class="col-12">
-            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted"{% if describeprivacy %} aria-describedby="{{describeprivacy}}" {% endif %}/>
+            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" {{ privacychecked }} id="datasecurity_accepted"{% if describeprivacy %} aria-describedby="{{describeprivacy}}" {% endif %}/>
             <label for="datasecurity_accepted" class="form-check-label fw-bold {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">
                 {{ aSurveyInfo.datasecurity_notice_label }}
             </label>

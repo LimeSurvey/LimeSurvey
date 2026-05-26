@@ -13,6 +13,8 @@ use ExtensionConfig;
 
 /**
  * Uses test data from tpartner: https://github.com/tpartner/LimeSurvey-Range-Slider-4x
+ *
+ * @group question
  */
 class QuestionThemeTest extends TestBaseClassWeb
 {

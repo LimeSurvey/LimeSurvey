@@ -36,6 +36,14 @@
         align-items: center;
         cursor: pointer;
       }
+      &.has-checkmark {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        i.ri-check-line {
+          padding-right: 0;
+        }
+      }
     }
     .dropdown-item i {
       padding-right: 8px;

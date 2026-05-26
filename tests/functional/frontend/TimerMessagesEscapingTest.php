@@ -10,6 +10,7 @@ use Question;
 
 /**
  * @since 2021-08-17
+ * @group navigation
  */
 class TimerMessagesEscapingTest extends TestBaseClassWeb
 {

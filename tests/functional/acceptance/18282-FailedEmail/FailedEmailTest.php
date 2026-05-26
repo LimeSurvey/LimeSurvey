@@ -8,6 +8,9 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeoutException;
 use FailedEmail;
 
+/**
+ * @group admin
+ */
 class FailedEmailTest extends TestBaseClassWeb
 {
     /**

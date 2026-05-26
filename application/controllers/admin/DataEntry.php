@@ -426,14 +426,13 @@ class DataEntry extends SurveyCommonAction
             $sNewTimingsTable = "timings_{$surveyid}";
             $iRecordCountT = null;
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
-                [$left, $right] = getFieldWrappers();
                 // Import timings
                 $aFieldsOldTimingTable = array_values(Yii::app()->db->schema->getTable('{{' . $sOldTimingsTable . '}}')->columnNames);
                 $aFieldsNewTimingTable = array_values(Yii::app()->db->schema->getTable('{{' . $sNewTimingsTable . '}}')->columnNames);
 
                 $aValidTimingFields = array_intersect($aFieldsOldTimingTable, $aFieldsNewTimingTable);
 
-                $sQueryOldValues = "SELECT {$left}" . implode("{$right}, {$left}", $aValidTimingFields) . "{$right} FROM {{{$sOldTimingsTable}}} ";
+                $sQueryOldValues = "SELECT " . dbQuoteFields($aValidTimingFields) . " FROM {{{$sOldTimingsTable}}} ";
                 $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll(); //Checked
                 $iRecordCountT = 0;
                 foreach ($aQueryOldValues as $sRecord) {
@@ -623,7 +622,7 @@ class DataEntry extends SurveyCommonAction
             }
 
             $results1['id'] = "";
-            $results1['datestamp'] = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+            $results1['datestamp'] = gmdate("Y-m-d H:i:s");
             $results1['ipaddr'] = $saver['ip'];
             $results[] = $results1;
         }
@@ -1368,11 +1367,15 @@ class DataEntry extends SurveyCommonAction
                         $thisdate = "";
                         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                         if ($idrow[$fname['fieldname']] != '') {
-                            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
+                            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']], new DateTimeZone('UTC'));
                             if ($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
-                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
+                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']], new DateTimeZone('UTC'));
                             }
                             if ($datetimeobj) {
+                                $displayTz = Yii::app()->getConfig('displayTimezone');
+                                if (!empty($displayTz)) {
+                                    $datetimeobj->setTimezone(new DateTimeZone($displayTz));
+                                }
                                 $thisdate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
                             }
                         }
@@ -1669,9 +1672,9 @@ class DataEntry extends SurveyCommonAction
                     }
                     if (empty($thisvalue)) {
                         if (Survey::model()->findByPk($surveyid)->isDateStamp) {
-                            $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                            $oResponse->$fieldname = gmdate("Y-m-d H:i");
                         } else {
-                            $oResponse->$fieldname = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                            $oResponse->$fieldname = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                         }
                         break;
                     }
@@ -1680,17 +1683,20 @@ class DataEntry extends SurveyCommonAction
                 case 'startdate':
                 case 'datestamp':
                     if (empty($thisvalue)) {
-                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                        $oResponse->$fieldname = gmdate("Y-m-d H:i");
                         break;
                     }
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                    $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . " H:i", $thisvalue);
+                    $displayTz = Yii::app()->getConfig('displayTimezone');
+                    $parseTz = !empty($displayTz) ? new DateTimeZone($displayTz) : new DateTimeZone('UTC');
+                    $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . " H:i", $thisvalue, $parseTz);
                     if ($datetimeobj) {
+                        $datetimeobj->setTimezone(new DateTimeZone('UTC'));
                         $oResponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"), htmlentities((string) $thisvalue), $fieldname), 'warning');
                         /* We get here : we need a valid value : NOT NULL in db or completed != "N" */
-                        $oResponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                        $oResponse->$fieldname = gmdate("Y-m-d H:i");
                     }
                     break;
                 default:
@@ -1823,14 +1829,39 @@ class DataEntry extends SurveyCommonAction
 
                 $_POST['startlanguage'] = $survey->language;
                 if ($survey->isDateStamp) {
-                    $_POST['startdate'] = $_POST['datestamp'];
+                    // Convert datestamp from display timezone to UTC for storage
+                    $displayTz = Yii::app()->getConfig('displayTimezone');
+                    if (!empty($displayTz) && !empty($_POST['datestamp'])) {
+                        $dtObj = DateTime::createFromFormat('Y-m-d H:i', $_POST['datestamp'], new DateTimeZone($displayTz));
+                        if ($dtObj) {
+                            $dtObj->setTimezone(new DateTimeZone('UTC'));
+                            $_POST['datestamp'] = $dtObj->format('Y-m-d H:i');
+                        } else {
+                            Yii::log(sprintf('Invalid datestamp value: %s', htmlentities((string) $_POST['datestamp'])), 'warning', 'application.controllers.admin.DataEntry');
+                            unset($_POST['datestamp']);
+                            unset($_POST['startdate']);
+                        }
+                    }
+                    if (isset($_POST['datestamp'])) {
+                        $_POST['startdate'] = $_POST['datestamp'];
+                    }
                 }
                 if (isset($_POST['closerecord'])) {
-                    if ($survey->isDateStamp) {
-                        $_POST['submitdate'] = dateShift((string) date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+                    if (isset($_POST['closedate'])) {
+                        // closedate is stored as UTC in the hidden form field
+                        $submitdate = $_POST['closedate'];
+                        try {
+                            $dtObj = new DateTime($submitdate, new DateTimeZone('UTC'));
+                            $submitdate = $dtObj->format('Y-m-d H:i:s');
+                        } catch (\Exception $e) {
+                            $submitdate = gmdate("Y-m-d H:i:s");
+                        }
+                    } elseif ($survey->isDateStamp) {
+                        $submitdate = gmdate("Y-m-d H:i:s");
                     } else {
-                        $_POST['submitdate'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                        $submitdate = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                     }
+                    $_POST['submitdate'] = $submitdate;
                 }
                 $phparray = [];
                 foreach ($fieldmap as $irow) {
@@ -1902,13 +1933,7 @@ class DataEntry extends SurveyCommonAction
                 $new_response->encryptSave();
                 $last_db_id = $new_response->getPrimaryKey();
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') {
-                    // submittoken
-                    // get submit date
-                    if (isset($_POST['closedate'])) {
-                        $submitdate = $_POST['closedate'];
-                    } else {
-                        $submitdate = date("Y-m-d H:i:s");
-                    }
+                    // submittoken — $submitdate already normalized above
                     // query for updating tokens uses left
                     if ($lastanswfortoken == '' || $lastanswfortoken == 'AnonymousNotCompleted') {
                         $aToken = Token::model($surveyid)->findByAttributes(['token' => $_POST['token']]);
@@ -1954,7 +1979,7 @@ class DataEntry extends SurveyCommonAction
                     $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
                     $arSaveControl->saved_thisstep = '0';
                     $arSaveControl->status = 'S';
-                    $arSaveControl->saved_date = dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'" . Yii::app()->getConfig('timeadjust'));
+                    $arSaveControl->saved_date = gmdate("Y-m-d H:i");
                     $arSaveControl->save();
                     if ($arSaveControl->save()) {
                         $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation email. Please make sure to save your password, since we will not be able to retrieve it for you."));
@@ -1966,7 +1991,7 @@ class DataEntry extends SurveyCommonAction
                             "email" => $saver['email'],
                             "token" => $password,
                             "language" => $saver['language'],
-                            "sent" => date("Y-m-d H:i:s"),
+                            "sent" => gmdate("Y-m-d H:i"),
                             "completed" => "N");
 
                             $aToken = new TokenDynamic($surveyid);

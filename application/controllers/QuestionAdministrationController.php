@@ -2238,7 +2238,7 @@ class QuestionAdministrationController extends LSBaseController
                     $sqresult = Question::model()
                         ->with('questionl10ns')
                         ->findAll(
-                            'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionl10ns.language =:language',
+                            'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionl10ns.language =:language ORDER BY question_order ASC',
                             [
                                 ':sid'        => $iSurveyID,
                                 ':gid'        => $gid,

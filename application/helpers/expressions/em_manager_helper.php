@@ -204,7 +204,9 @@ class LimeExpressionManager
      * 'surveyls_dateformat' => // the index of the language specific date format -- e.g. 1
      * 'tablename' => // the name of the table storing the survey data, if active -- e.g. lime_responses_38612
      * 'target' => // the path for uploading files -- e.g. '/temp/files/'
-     * 'timeadjust' => // the time offset -- e.g. 0
+     * 'timeadjust' => // The time zone offset in hours -- e.g. 0
+     * 'displayTimezone' => // The timezone -- e.g. 'Europe/Berlin'
+     *
      * 'tempdir' => // the temporary directory for uploading files -- e.g. '/temp/'
      * );
      *
@@ -4648,6 +4650,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['tablename_timings'] = ($survey->isSaveTimings ? $survey->timingsTableName : '');
         $LEM->surveyOptions['target'] = (isset($aSurveyOptions['target']) ? $aSurveyOptions['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
+        $LEM->surveyOptions['displayTimezone'] = Yii::app()->getConfig('displayTimezone') ?: date_default_timezone_get();
         $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
         $LEM->debugLevel = $debugLevel;
@@ -4696,6 +4699,7 @@ class LimeExpressionManager
                     case Question::QT_D_DATE: //DATE
                         if (trim((string) $value) == "") {
                             $value = null;
+                            unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                         } else {
                             // We don't really validate date here, anyone can send anything : forced too
                             $dateformatdatat = getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
@@ -4707,12 +4711,14 @@ class LimeExpressionManager
                     case Question::QT_K_MULTIPLE_NUMERICAL: //MULTIPLE NUMERICAL QUESTION
                         if (trim((string) $value) == "") {
                             $value = null;
+                            unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                         } else {
                             $value = sanitize_float($value);
                         }
                         break;
                     case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                         $value = null;  // can't upload a file via GET
+                        unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                         break;
                 }
                 /* Validate validity of startingValues : do not show error */
@@ -4722,6 +4728,8 @@ class LimeExpressionManager
                         'type'  => $knownVar['type'],
                         'value' => $value,
                     ];
+                } else {
+                    unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                 }
             }
             $LEM->_UpdateValuesInDatabase();
@@ -5119,7 +5127,7 @@ class LimeExpressionManager
         }
 
         if (!isset($_SESSION[$this->sessid]['srid'])) {// Create the response line, and fill Session with primaryKey
-            $_SESSION[$this->sessid]['datestamp'] = dateShift((string)date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+            $_SESSION[$this->sessid]['datestamp'] = gmdate("Y-m-d H:i:s");
             // Create initial insert row for this record
             $sdata = [
                 "startlanguage" => $this->surveyOptions['startlanguage']
@@ -5205,7 +5213,7 @@ class LimeExpressionManager
             $aResponseAttributes['lastpage'] = $thisstep;
 
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
-                $_SESSION[$this->sessid]['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                $_SESSION[$this->sessid]['datestamp'] = gmdate("Y-m-d H:i:s");
                 $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
             }
             if ($this->surveyOptions['ipaddr']) {
@@ -5333,7 +5341,7 @@ class LimeExpressionManager
                     if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
                         /* Less update : just do what you need to to */
                         if ($this->surveyOptions['datestamp']) {
-                            $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                            $submitdate = gmdate("Y-m-d H:i:s");
                         } else {
                             $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
                         }
@@ -6719,15 +6727,24 @@ class LimeExpressionManager
             }
         }
 
-        // Process Default : 1st part : update in DB if actually relevant and not already set
+        // Process Default and prefilled values : 1st part : update in DB if actually relevant and not already set
         if ($qrel && $grel) {
             $allSQs = explode('|', (string) $LEM->qid2code[$qid]);
             foreach ($allSQs as $sgqa) {
+                /* prefilled by URL but deleted by relevance */
+                if (!isset($_SESSION[$LEM->sessid][$sgqa]) && isset($_SESSION[$LEM->sessid]['startingValues'][$sgqa])) {
+                    $startingValue = $_SESSION[$LEM->sessid]['startingValues'][$sgqa];
+                    if (self::checkValidityAnswer($qInfo['type'], $startingValue, $sgqa, $qInfo, false)) {
+                        $_SESSION[$LEM->sessid][$sgqa] = $startingValue;
+                        $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = ['type' => $qInfo['type'], 'value' => $_SESSION[$LEM->sessid][$sgqa]];
+                    }
+                }
+                /* Still null, check default value */
                 if (!isset($_SESSION[$LEM->sessid][$sgqa]) && !is_null($LEM->knownVars[$sgqa]['default'])) {
                     $_SESSION[$LEM->sessid][$sgqa] = ""; // Fill the $_SESSION to don't do it again a second time, but wait to fill with good value
                     $defaultValue = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], null, 1, 1, false, false, true);
                     if (self::checkValidityAnswer($qInfo['type'], $defaultValue, $sgqa, $qInfo, Permission::model()->hasSurveyPermission($LEM->sid, 'surveycontent', 'update'))) {
-                        $_SESSION[$LEM->sessid][$sgqa] = $defaultValue;// Ok can fill with good value
+                        $_SESSION[$LEM->sessid][$sgqa] = $defaultValue; // Ok can fill with good value
                         $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = ['type' => $qInfo['type'], 'value' => $_SESSION[$LEM->sessid][$sgqa]];
                     }
                     /* cleanup  $LEM->validityString[$sgqa] */
@@ -6763,7 +6780,9 @@ class LimeExpressionManager
         $allSQs = explode('|', (string) $LEM->qid2code[$qid]);
         foreach ($allSQs as $sgqa) {
             if (!isset($_SESSION[$LEM->sessid][$sgqa])) {
-                if (!is_null($LEM->knownVars[$sgqa]['default'])) {
+                if (isset($_SESSION[$LEM->sessid]['startingValues'][$sgqa])) {
+                    $_SESSION[$LEM->sessid][$sgqa] = $_SESSION[$LEM->sessid]['startingValues'][$sgqa];
+                } elseif (!is_null($LEM->knownVars[$sgqa]['default'])) {
                     $_SESSION[$LEM->sessid][$sgqa] = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], null, 1, 1, false, false, true);
                 } else {
                     $_SESSION[$LEM->sessid][$sgqa] = null;

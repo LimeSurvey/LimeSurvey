@@ -7,6 +7,8 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * Test import and export of survey data with irrelevant questions.
+ *
+ * @group import-export
  */
 class ImportExportIrrelevantTest extends TestBaseClassWeb
 {
