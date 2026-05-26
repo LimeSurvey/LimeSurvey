@@ -74,11 +74,11 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                 <?php if ($hasPathUrlFormat) : ?>
                                 <div class="hint-text-box p-3">
                                     <p class="hint-text med-14-c mb-1">
-                                        <?= gT('Good to know') ?>
+                                        <?= gT('Good to know...') ?>
                                     </p>
                                     <p class="hint-text reg-12">
                                         <?= gT(
-                                            "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version, now out of beta and we’d love to hear your feedback!"
+                                            "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version -  it’s now out of beta, and we’d love to hear your feedback!"
                                         ) ?>
                                     </p>
                                 </div>
