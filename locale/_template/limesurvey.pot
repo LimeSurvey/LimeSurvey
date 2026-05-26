@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-05-26 19:03:49+00:00\n"
+"POT-Creation-Date: 2026-05-26 19:42:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1511,7 +1511,7 @@ msgid "Quota with ID %s was deleted"
 msgstr ""
 
 #: application/controllers/QuotasController.php:387
-msgid "Quota member not found."
+msgid "Quota rule not found."
 msgstr ""
 
 #: application/controllers/QuotasController.php:413
@@ -2641,7 +2641,7 @@ msgid "Responses will be date stamped."
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3060
-msgid "IP addresses will be logged"
+msgid "IP addresses will be saved."
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3063
@@ -4356,7 +4356,7 @@ msgid "Deleting assessments: %u assessment entries deleted"
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:457
-msgid "Deleting orphaned quota members: %u quota members deleted"
+msgid "Deleting orphaned quota rules: %u quota rules deleted"
 msgstr ""
 
 #: application/controllers/admin/CheckIntegrity.php:479
@@ -6172,7 +6172,7 @@ msgstr ""
 #: application/controllers/admin/PrintableSurvey.php:666
 #: application/controllers/admin/PrintableSurvey.php:842
 #: application/controllers/admin/Themes.php:1204
-msgid "Please choose only one of the following:"
+msgid "Please choose only one of the following options:"
 msgstr ""
 
 #: application/controllers/admin/PrintableSurvey.php:583
@@ -12173,7 +12173,7 @@ msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:2985
 #: application/helpers/expressions/em_manager_helper.php:3018
-msgid "Each answer must be %s."
+msgid "Each answer must be equal to %s."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:2986
@@ -12341,7 +12341,7 @@ msgid "Invalid question - probably missing subquestions or language-specific set
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9220
-msgid "Logic check for Survey # "
+msgid "Logic check for survey ID %s: %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9233
@@ -15038,7 +15038,7 @@ msgid "Your database is already up to date. Please go back to the %smain menu%s.
 msgstr ""
 
 #: application/helpers/update/updatedb_helper.php:134
-msgid "A non-recoverable error occurred during the update. Error details:"
+msgid "A non-recoverable error occurred during the database update. Error details:"
 msgstr ""
 
 #: application/helpers/update/updatedb_helper.php:138
@@ -17142,7 +17142,7 @@ msgid "You got {TOTAL} points out of 3 possible points."
 msgstr ""
 
 #: application/models/TemplateManifest.php:438
-msgid "Template sample"
+msgid "Theme sample"
 msgstr ""
 
 #: application/models/TemplateManifest.php:440
@@ -17316,7 +17316,7 @@ msgid "Settings"
 msgstr ""
 
 #: application/models/User.php:114
-msgid "E-mail address '{value}' is already used by another user."
+msgid "Email address '{value}' is already used by another user."
 msgstr ""
 
 #: application/models/User.php:192
@@ -18050,11 +18050,11 @@ msgid "All quota language settings meet consistency standards."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:61
-msgid "There are %s orphaned quota members which can be deleted."
+msgid "There are %s orphaned quota rules which can be deleted."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:63
-msgid "All quota quota members meet consistency standards."
+msgid "All quota rules meet consistency standards."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:68
@@ -18102,7 +18102,7 @@ msgid "The following survey language settings should be deleted:"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:132
-msgid "Survey Language Setting ID: %s"
+msgid "Survey language setting ID: %s"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:138
@@ -18176,7 +18176,7 @@ msgid "User ID: %s"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:225
-msgid "UGID: %s"
+msgid "User group ID: %s"
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:231
@@ -19655,7 +19655,7 @@ msgid "You can add your custom themes in upload/admintheme"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:99
-msgid "Default display time zone:"
+msgid "Default time zone:"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:107
@@ -20432,7 +20432,7 @@ msgid "Error files list:"
 msgstr ""
 
 #: application/views/admin/labels/importlabelresources_view.php:31
-msgid "Imported resources for LID %s"
+msgid "Imported resources for label ID %s"
 msgstr ""
 
 #: application/views/admin/labels/importlabelresources_view.php:33
@@ -21319,6 +21319,7 @@ msgid "Show survey logic overview"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:141
+#: application/views/admin/survey/Question/massive_actions/_selector.php:140
 #: editor/src/components/QuestionSettings/QuestionSettings.js:195
 msgid "Advanced"
 msgstr ""
@@ -21643,10 +21644,6 @@ msgstr ""
 msgid "Set statistics options"
 msgstr ""
 
-#: application/views/admin/survey/Question/massive_actions/_selector.php:140
-msgid "Advanced (only apply to certain question types)"
-msgstr ""
-
 #: application/views/admin/survey/Question/massive_actions/_selector.php:153
 #: application/views/admin/survey/Question/massive_actions/_selector.php:162
 msgid "Set \"Other\" state"
@@ -21808,7 +21805,7 @@ msgid "Assessments:"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:52
-msgid "Quotas: %d (%d quota members and %d quota language settings)"
+msgid "Quotas: %d (%d quota rules and %d quota language settings)"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:67
@@ -24711,7 +24708,7 @@ msgid "Simple template editor"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:322
-msgid "Display time zone:"
+msgid "Personal time zone:"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:325
@@ -25031,23 +25028,23 @@ msgid "You can leave these settings blank and change them later"
 msgstr ""
 
 #: application/views/installer/optconfig_view.php:29
-msgid "Admin username"
+msgid "Administrator username"
 msgstr ""
 
 #: application/views/installer/optconfig_view.php:30
-msgid "This will be the userid by which admin of board will login."
+msgid "This will be the username of the administrator user and used for logging in."
 msgstr ""
 
 #: application/views/installer/optconfig_view.php:34
-msgid "Admin password"
+msgid "Administrator password"
 msgstr ""
 
 #: application/views/installer/optconfig_view.php:35
-msgid "This will be the password of admin user."
+msgid "This will be the password of the administrator user."
 msgstr ""
 
 #: application/views/installer/optconfig_view.php:39
-msgid "Confirm your admin password"
+msgid "Confirm your administrator password"
 msgstr ""
 
 #: application/views/installer/optconfig_view.php:43
@@ -25749,7 +25746,7 @@ msgstr ""
 
 #: application/views/quotas/index.php:65
 #: application/views/surveyAdministration/importSurvey_view.php:126
-msgid "Quota members"
+msgid "Quota rules"
 msgstr ""
 
 #: application/views/quotas/newanswer_view.php:10
@@ -27093,7 +27090,7 @@ msgid "Overwrite existing users"
 msgstr ""
 
 #: application/views/userManagement/partial/importuser.php:41
-msgid "Duplicates found by users_name and/or email"
+msgid "Duplicates are identified by username and/or email"
 msgstr ""
 
 #: application/views/userManagement/partial/importuser.php:45
