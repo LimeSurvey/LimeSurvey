@@ -12,41 +12,43 @@ const isActiveMenuItem = (url, location) => {
   }
 
   const currentPath = location.pathname
-  const cleanURL = url.replace('#', '')
 
-  return currentPath === cleanURL || currentPath.startsWith(`${cleanURL}/`)
+  return currentPath === url || currentPath.startsWith(`${url}/`)
 }
 
 const EditorIcon = () => <i className="ri-pencil-line" />
 const ShareIcon = () => <i className="ri-share-forward-line" />
 const ResultsIcon = () => <i className="ri-bar-chart-2-line" />
 
-const PAGE_TO_VALUE = {
-  [PAGES.EDITOR]: 'editor',
-  [PAGES.SHARE]: 'share',
-  [PAGES.RESPONSES]: 'results',
-}
+const NAV_CONFIG = [
+  {
+    page: PAGES.EDITOR,
+    value: 'editor',
+    getUrl: (surveyId) => `/${PAGES.EDITOR}/${surveyId}/structure`,
+  },
+  {
+    page: PAGES.SHARE,
+    value: 'share',
+    getUrl: (surveyId) =>
+      `/${PAGES.SHARE}/${surveyId}/${getSharingPanels().sharing.panel}/${SURVEY_MENU_TITLES.sharingOverview}`,
+  },
+  {
+    page: PAGES.RESPONSES,
+    value: 'results',
+    getUrl: (surveyId) => `/${PAGES.RESPONSES}/${surveyId}`,
+  },
+]
 
 export const SurveyNavigation = ({ surveyId }) => {
   const location = useLocation()
   const navigate = useNavigate()
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
 
-  const editorUrl = `/${PAGES.EDITOR}/${surveyId}/structure`
-  const shareUrl = `/${PAGES.SHARE}/${surveyId}/${getSharingPanels().sharing.panel}/${SURVEY_MENU_TITLES.sharingOverview}`
-  const resultsUrl = `/${PAGES.RESPONSES}/${surveyId}`
-
-  const urlMap = {
-    editor: editorUrl,
-    share: shareUrl,
-    results: resultsUrl,
-  }
-
   const currentValue = useMemo(
     () =>
-      Object.entries(PAGE_TO_VALUE).find(([page]) =>
+      NAV_CONFIG.find(({ page }) =>
         isActiveMenuItem(`/${page}/${surveyId}`, location)
-      )?.[1] ?? '',
+      )?.value ?? '',
     [location.pathname, surveyId]
   )
 
@@ -62,8 +64,10 @@ export const SurveyNavigation = ({ surveyId }) => {
   ]
 
   const handleNavigate = (value) => {
-    if (urlMap[value]) {
-      navigate(urlMap[value])
+    const config = NAV_CONFIG.find((_config) => _config.value === value)
+
+    if (config) {
+      navigate(config.getUrl(surveyId))
     }
   }
 
