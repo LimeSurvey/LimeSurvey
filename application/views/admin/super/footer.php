@@ -227,7 +227,7 @@ App()->getController()->renderPartial('/surveyAdministration/partial/_modalCopyS
         <div class="modal-content"> <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger
         ?>
             <div class="modal-header card-header">
-                <h5 class="modal-title"><?php eT("Notifications"); ?></h5>
+                <h2 class="modal-title h5"><?php eT("Notifications"); ?></h2>
                 <span class='notification-date'></span>
             </div>
             <div class="modal-body">
