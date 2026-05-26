@@ -1,4 +1,34 @@
 var pickers = {};
+var datePickerCleanupBound = false;
+
+function cleanupOpenDatePickers() {
+    Object.keys(pickers).forEach(function (pickerName) {
+        var picker = pickers[pickerName];
+        if (!picker) {
+            return;
+        }
+
+        if (picker.display && picker.display.isVisible) {
+            picker.hide();
+        }
+
+        var element = picker.optionsStore ? picker.optionsStore.element : null;
+        if (!element || !document.body.contains(element)) {
+            picker.dispose();
+            delete pickers[pickerName];
+        }
+    });
+}
+
+function bindDatePickerCleanup() {
+    if (datePickerCleanupBound) {
+        return;
+    }
+
+    datePickerCleanupBound = true;
+    $(document).on('pjax:beforeSend', cleanupOpenDatePickers);
+    window.addEventListener('beforeunload', cleanupOpenDatePickers);
+}
 
 /**
  * returns a basic config object
