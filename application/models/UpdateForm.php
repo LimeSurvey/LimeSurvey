@@ -795,8 +795,8 @@ class UpdateForm extends CFormModel
             // Check not only if directory is writable, but also if it's owned by current process
             // This ensures the user running the update owns the files
             // Fixes: Bug #20138 - ComfortUpdate fails when files owned by different user
-            if ($is_writable && file_exists(dirname($searchpath))) {
-                $is_owned = $this->isFileOwnedByCurrentProcess(dirname($searchpath));
+            if ($is_writable && file_exists($searchpath)) {
+                $is_owned = $this->isFileOwnedByCurrentProcess($searchpath);
                 if (!$is_owned) {
                     $is_writable = false;
                 }
