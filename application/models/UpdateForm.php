@@ -832,12 +832,12 @@ class UpdateForm extends CFormModel
     /**
      * Check if the current process can modify a file or directory
      * This is essential before updating files, as file operations require proper permissions
-     * 
+     *
      * On Linux/Unix systems, uses POSIX functions to check:
      * 1. If current process is root (UID 0) - can always modify, OR
      * 2. If current process owns the file (UID match) - can modify, OR
      * 3. If the file/directory has write permissions set - can modify via permissions
-     * 
+     *
      * This prevents failures when permission bits alone don't allow expected modifications (Bug #20138).
      *
      * @param string $path Path to file or directory to test
@@ -853,7 +853,7 @@ class UpdateForm extends CFormModel
         if (function_exists('posix_geteuid') && function_exists('fileowner')) {
             $currentUid = @posix_geteuid();
             $fileUid = @fileowner($path);
-            
+
             // If we successfully got both UIDs, check if we can modify:
             // 1. We own the file (UID match), OR
             // 2. We're root (UID 0) - root can modify any file, OR
