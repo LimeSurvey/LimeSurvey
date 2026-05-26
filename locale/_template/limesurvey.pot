@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-05-26 13:59:46+00:00\n"
+"POT-Creation-Date: 2026-05-26 14:07:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -299,6 +299,7 @@ msgstr ""
 #: application/models/services/SurveyDeactivate.php:101
 #: application/views/surveyAdministration/partial/_modalDeleteSurvey.php:19
 #: application/views/surveyAdministration/surveySummary_view.php:35
+#: editor/src/pages/Responses/utils/generateColumns.js:24
 #: modules/admin/HelloWorld/controller/HelloWorld.php:78
 #: modules/admin/HelloWorld/controller/HelloWorld.php:114
 msgid "ID"
@@ -358,12 +359,14 @@ msgstr ""
 
 #: application/controllers/AssessmentController.php:306
 #: application/models/Assessment.php:82
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:55
 msgid "Scope"
 msgstr ""
 
 #: application/controllers/AssessmentController.php:306
 #: application/extensions/GeneralOptionWidget/settings/GroupSelectorGeneralOption.php:16
 #: application/views/admin/export/statistics_subviews/_response_filter_choice.php:14
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:101
 msgid "Question group"
 msgstr ""
 
@@ -402,6 +405,7 @@ msgstr ""
 #: application/views/assessment/assessments_view.php:15
 #: application/views/surveyAdministration/copySurveyResult_view.php:62
 #: application/views/surveyAdministration/importSurvey_view.php:118
+#: editor/src/components/SurveySettings/panelOptions.js:89
 #: themes/survey/bootswatch/config.xml:205
 #: themes/survey/fruity_twentythree/config.xml:323
 #: themes/survey/vanilla/config.xml:200
@@ -424,6 +428,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:387
 #: application/core/LsDefaultDataSets.php:388
 #: application/views/failedEmail/failedEmail_index.php:10
+#: editor/src/components/SurveySettings/panelOptions.js:77
 msgid "Failed email notifications"
 msgstr ""
 
@@ -584,6 +589,7 @@ msgstr ""
 #: application/models/TemplateManifest.php:166
 #: application/views/admin/update/updater/_progress.php:13
 #: application/views/installer/sidebar_view.php:15
+#: editor/src/components/SurveyStructure/SurveyStructure.js:360
 #: themes/survey/bootswatch/config.xml:170
 #: themes/survey/fruity_twentythree/config.xml:272
 #: themes/survey/vanilla/config.xml:163
@@ -747,6 +753,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:418
 #: application/controllers/LimereplacementfieldsController.php:448
 #: application/controllers/LimereplacementfieldsController.php:463
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:147
 msgid "Survey expiration date"
 msgstr ""
 
@@ -834,6 +841,9 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:13
 #: application/views/admin/token/massive_actions/_delete_results.php:11
 #: application/views/admin/token/massive_actions/_export_archive_results.php:13
+#: editor/src/components/SurveyOverview/SurveyOverview.js:196
+#: editor/src/components/TopBar/SurveyTitleSelector.js:65
+#: editor/src/pages/Editor/EditorTutorial.js:48
 msgid "Survey title"
 msgstr ""
 
@@ -851,6 +861,7 @@ msgstr ""
 #: application/views/admin/expressions/test/surveyLogicForm.php:17
 #: application/views/admin/token/massive_actions/_delete_results.php:10
 #: application/views/admin/token/massive_actions/_export_archive_results.php:12
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:142
 msgid "Survey ID"
 msgstr ""
 
@@ -960,6 +971,7 @@ msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:440
 #: application/controllers/LimereplacementfieldsController.php:455
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:88
 msgid "Question group ID"
 msgstr ""
 
@@ -969,6 +981,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:3440
 #: application/models/Question.php:840
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:83
 msgid "Question ID"
 msgstr ""
 
@@ -993,6 +1006,9 @@ msgstr ""
 #: application/views/userManagement/massiveAction/_updatepermissions.php:29
 #: application/views/userManagement/partial/editpermissions.php:18
 #: application/views/userRole/massiveAction/_updatepermissions.php:31
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:9
+#: editor/src/components/SurveySettings/panelOptions.js:25
+#: editor/src/helpers/getQuestionAttributesTitles.js:4
 #: modules/admin/globalsettings/views/globalSettings_view.php:16
 msgid "General"
 msgstr ""
@@ -1113,6 +1129,7 @@ msgid "Invalid question id"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:87
+#: editor/src/pages/Errors/Unauthorized.js:7
 msgid "Access denied"
 msgstr ""
 
@@ -1412,6 +1429,10 @@ msgstr ""
 #: application/views/assessment/assessments_edit.php:87
 #: application/views/questionGroupsAdministration/addGroup_view.php:30
 #: application/views/quotas/_form_langsettings.php:18
+#: editor/src/components/SharingPanel/menus/overview/SharingOverview.js:46
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:153
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:115
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:101
 msgid "Base language"
 msgstr ""
 
@@ -1458,6 +1479,9 @@ msgstr ""
 #: application/views/admin/token/exportdialog.php:17
 #: application/views/admin/token/surveyParticipantView.php:75
 #: application/views/quotas/index.php:84
+#: editor/src/helpers/getSurveyParticipantAttributes.js:16
+#: editor/src/pages/Responses/components/ResponseDetailView.js:57
+#: editor/src/pages/Responses/utils/generateColumns.js:40
 #: themes/survey/bootswatch/config.xml:192
 #: themes/survey/fruity_twentythree/config.xml:303
 #: themes/survey/vanilla/config.xml:187
@@ -1510,6 +1534,7 @@ msgstr ""
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:93
 #: application/views/homepageSettings/partial/topbarBtns/rightSideButtons.php:15
 #: application/views/questionAdministration/modals.twig:139
+#: editor/src/components/feedback/FeedbackPopup.js:132
 msgid "OK"
 msgstr ""
 
@@ -1620,6 +1645,7 @@ msgstr ""
 #: application/models/SurveyLink.php:233 application/models/Token.php:96
 #: application/models/TokenDynamic.php:731
 #: application/views/admin/dataentry/caption_view.php:31
+#: editor/src/helpers/getSurveyParticipantAttributes.js:7
 #: themes/survey/fruity_twentythree/views/subviews/logincomponents/token.twig:24
 msgid "Access code"
 msgstr ""
@@ -1634,6 +1660,8 @@ msgstr ""
 #: application/views/admin/token/dummytokenform.php:44
 #: application/views/responses/partial/responseListTable.php:155
 #: application/views/responses/partial/responseListTable.php:165
+#: editor/src/helpers/getSurveyParticipantAttributes.js:3
+#: editor/src/pages/Responses/utils/generateColumns.js:64
 #: themes/survey/fruity_twentythree/views/subviews/registration/register_form.twig:31
 #: themes/survey/fruity_twentythree/views/subviews/registration/register_success.twig:7
 #: themes/survey/vanilla/views/subviews/registration/register_success.twig:7
@@ -1650,6 +1678,8 @@ msgstr ""
 #: application/views/admin/token/dummytokenform.php:52
 #: application/views/responses/partial/responseListTable.php:169
 #: application/views/responses/partial/responseListTable.php:179
+#: editor/src/helpers/getSurveyParticipantAttributes.js:4
+#: editor/src/pages/Responses/utils/generateColumns.js:73
 #: themes/survey/fruity_twentythree/views/subviews/registration/register_form.twig:39
 #: themes/survey/fruity_twentythree/views/subviews/registration/register_success.twig:17
 #: themes/survey/vanilla/views/subviews/registration/register_success.twig:17
@@ -1666,6 +1696,7 @@ msgstr ""
 #: application/views/responses/partial/responseListTable.php:183
 #: application/views/responses/partial/responseListTable.php:192
 #: application/views/userGroup/viewUserGroup_view.php:80
+#: editor/src/pages/Responses/utils/generateColumns.js:82
 msgid "Email"
 msgstr ""
 
@@ -1699,6 +1730,9 @@ msgstr ""
 #: application/views/questionGroupsAdministration/group_view.php:14
 #: application/views/survey/questions/answer/file_upload/answer.twig:38
 #: application/views/survey/questions/answer/file_upload/answer.twig:84
+#: editor/src/components/QuestionTypes/FileUpload/FileUploadItem.js:69
+#: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:38
+#: editor/src/pages/Responses/components/ResponsesTable/FileInfoCell.js:47
 msgid "Title"
 msgstr ""
 
@@ -1715,6 +1749,8 @@ msgstr ""
 #: application/views/admin/dataentry/content_view.php:219
 #: application/views/survey/questions/answer/file_upload/answer.twig:41
 #: application/views/survey/questions/answer/file_upload/answer.twig:85
+#: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:46
+#: editor/src/pages/Responses/components/ResponsesTable/FileInfoCell.js:38
 msgid "Comment"
 msgstr ""
 
@@ -1724,6 +1760,7 @@ msgstr ""
 #: application/views/admin/emailtemplates/email_language_template_tab.php:131
 #: application/views/survey/questions/answer/file_upload/answer.twig:43
 #: application/views/survey/questions/answer/file_upload/answer.twig:86
+#: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:30
 msgid "File name"
 msgstr ""
 
@@ -1833,6 +1870,7 @@ msgstr ""
 #: application/controllers/ResponsesController.php:1077
 #: application/controllers/admin/DataEntry.php:553
 #: application/models/Surveymenu.php:183
+#: editor/src/helpers/options/getTooltipMessages.js:8
 msgid "This survey has not been activated. There are no results to browse."
 msgstr ""
 
@@ -1966,6 +2004,10 @@ msgstr ""
 #: application/views/themeOptions/installedthemelist.php:79
 #: application/views/themeOptions/theme_buttons.php:8
 #: application/views/userManagement/partial/edittemplatepermissions.php:39
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:35
+#: editor/src/helpers/options/getOnOffOptions.js:10
+#: editor/src/helpers/options/getOnOffOptions.js:16
+#: editor/src/helpers/options/getOnOffOptions.js:22
 msgid "On"
 msgstr ""
 
@@ -2063,6 +2105,14 @@ msgstr ""
 #: application/views/themeOptions/installedthemelist.php:79
 #: application/views/themeOptions/theme_buttons.php:9
 #: application/views/userManagement/partial/edittemplatepermissions.php:40
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:37
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:15
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:81
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:305
+#: editor/src/helpers/options/getOnOffOptions.js:11
+#: editor/src/helpers/options/getOnOffOptions.js:17
+#: editor/src/helpers/options/getOnOffOptions.js:23
+#: editor/src/helpers/options/getSliderLayoutOptions.js:4
 msgid "Off"
 msgstr ""
 
@@ -2082,6 +2132,13 @@ msgstr ""
 #: application/views/admin/user/personalsettings.php:292
 #: application/views/admin/user/personalsettings.php:375
 #: application/views/admin/user/personalsettings.php:451
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:105
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:125
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:12
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:26
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:306
+#: editor/src/helpers/options/getColumnWidthOptions.js:4
+#: editor/src/helpers/options/getLabelWrapperWidthOptions.js:4
 #: themes/survey/fruity_twentythree/views/subviews/header/start_form.twig:71
 #: themes/survey/vanilla/views/subviews/header/start_form.twig:62
 msgid "Default"
@@ -2093,6 +2150,7 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:414
 #: application/helpers/questionHelper.php:1044
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:151
 msgid "Custom"
 msgstr ""
 
@@ -2237,6 +2295,9 @@ msgstr ""
 #: application/views/userManagement/partial/topbarBtns/leftSideButtons.php:47
 #: application/views/userRole/massiveAction/_updatepermissions.php:37
 #: application/views/userRole/partials/_permissions.php:40
+#: editor/src/components/TopBar/TopBarActions.js:145
+#: editor/src/pages/Responses/Responses.js:82
+#: editor/src/pages/Responses/components/BulkActions.js:41
 msgid "Export"
 msgstr ""
 
@@ -2250,6 +2311,7 @@ msgstr ""
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:52
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:61
 #: application/views/userGroup/partial/topbarBtns_manageGroup/leftSideButtons.php:54
+#: editor/src/components/SurveyStructure/RowQuestionGroup.js:59
 msgid "Delete group"
 msgstr ""
 
@@ -2322,6 +2384,14 @@ msgstr ""
 #: application/views/userRole/massiveAction/_selector.php:17
 #: application/views/userRole/massiveAction/_updatepermissions.php:35
 #: application/views/userRole/partials/_permissions.php:36
+#: editor/src/components/ConditionDesigner/Overlays/DeleteScenarioOverlay.js:35
+#: editor/src/components/ConditionDesigner/Overlays/ResetAllConditionsOverlay.js:31
+#: editor/src/components/Survey/QuestionGroups/QuestionGroups.js:150
+#: editor/src/components/Survey/Questions/QuestionFooter.js:42
+#: editor/src/components/SurveyStructure/RowQuestionsList.js:96
+#: editor/src/components/SurveyStructure/SurveyStructure.js:333
+#: editor/src/pages/Responses/components/BulkActions.js:53
+#: editor/src/pages/Responses/components/ResponseModals.js:48
 msgid "Delete"
 msgstr ""
 
@@ -2343,6 +2413,8 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:1076
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:6
+#: editor/src/components/ConditionDesigner/AddScenario.js:12
+#: editor/src/components/ConditionDesigner/ConditionDesigner.js:178
 msgid "Condition designer"
 msgstr ""
 
@@ -2356,6 +2428,7 @@ msgstr ""
 #: application/helpers/LayoutHelper.php:189 application/models/Survey.php:1550
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:36
 #: application/views/surveyAdministration/tab_survey_view.php:32
+#: editor/src/components/PublicSurveyAlias/CopyButton.js:26
 msgid "Copy"
 msgstr ""
 
@@ -2364,6 +2437,10 @@ msgstr ""
 #: application/models/Question.php:697
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:80
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:87
+#: editor/src/components/Survey/Questions/QuestionFooter.js:38
+#: editor/src/components/SurveyStructure/RowQuestion.js:44
+#: editor/src/components/SurveyStructure/RowQuestionsList.js:92
+#: editor/src/pages/Editor/EditorTutorial.js:115
 msgid "Delete question"
 msgstr ""
 
@@ -2739,6 +2816,17 @@ msgstr ""
 #: application/views/survey/questions/answer/yesno/buttons/item.twig:23
 #: application/views/survey/questions/answer/yesno/radio/item.twig:39
 #: application/views/userManagement/partial/addedituser.php:92
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/yesNoTypeHandler.js:11
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/yesNoUncertainTypeHandler.js:15
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:223
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:21
+#: editor/src/helpers/options/getYesNoOptions.js:14
+#: editor/src/helpers/options/getYesNoOptions.js:20
+#: editor/src/helpers/options/getYesNoOptions.js:26
+#: editor/src/helpers/options/getYesNoOptions.js:32
+#: editor/src/helpers/options/getYesNoOptions.js:38
+#: editor/src/helpers/options/getYesNoOptions.js:44
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:75
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:10
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_yes-no.twig:11
 #: themes/survey/vanilla/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:10
@@ -2903,6 +2991,16 @@ msgstr ""
 #: application/views/survey/questions/answer/yesno/buttons/item.twig:18
 #: application/views/survey/questions/answer/yesno/radio/item.twig:25
 #: application/views/userManagement/partial/addedituser.php:87
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/yesNoTypeHandler.js:10
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/yesNoUncertainTypeHandler.js:14
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:220
+#: editor/src/helpers/options/getYesNoOptions.js:13
+#: editor/src/helpers/options/getYesNoOptions.js:19
+#: editor/src/helpers/options/getYesNoOptions.js:25
+#: editor/src/helpers/options/getYesNoOptions.js:31
+#: editor/src/helpers/options/getYesNoOptions.js:37
+#: editor/src/helpers/options/getYesNoOptions.js:43
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:74
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:8
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_yes-no.twig:9
 #: themes/survey/vanilla/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:8
@@ -2931,15 +3029,19 @@ msgstr ""
 #: application/views/themeOptions/options_core.php:260
 #: application/views/themeOptions/options_core.php:289
 #: application/views/themeOptions/options_core.php:301
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:242
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:282
 msgid "Inherit"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3252
 #: application/models/User.php:199
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:153
 msgid "Date format"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3253
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:216
 msgid "Decimal mark"
 msgstr ""
 
@@ -2970,6 +3072,7 @@ msgstr ""
 #: application/views/themeOptions/index.php:235
 #: application/views/themeOptions/installedthemelist.php:52
 #: application/views/themeOptions/surveythemelist.php:70
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:50
 msgid "Description"
 msgstr ""
 
@@ -3131,6 +3234,19 @@ msgstr ""
 #: application/views/userRole/partials/_form.php:55
 #: application/views/userRole/partials/_import.php:27
 #: application/views/userRole/partials/_permissions.php:124
+#: editor/src/components/ConditionDesigner/Overlays/ConditionScriptOverwriteConfirmation.js:54
+#: editor/src/components/ConditionDesigner/Overlays/ConditionsOverwriteConfirmationOverlay.js:29
+#: editor/src/components/ConditionDesigner/Overlays/DeleteScenarioOverlay.js:25
+#: editor/src/components/ConditionDesigner/Overlays/ExpressionScriptEditorOverlay.js:77
+#: editor/src/components/ConditionDesigner/Overlays/ResetAllConditionsOverlay.js:21
+#: editor/src/components/Modals/ComponentModal.js:49
+#: editor/src/components/Modals/ConfirmModal.js:38
+#: editor/src/components/PublicSurveyAlias/PublicSurveyAlias.js:168
+#: editor/src/components/Survey/Questions/QuestionPreview/QuestionPreviewBody.js:113
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyStatusSwitchPopupFooter.js:30
+#: editor/src/components/UIComponents/DateRangePicker/DateRangePicker.js:114
+#: editor/src/pages/Responses/Responses.js:83
+#: editor/src/pages/Responses/components/ColumnsManagement.js:186
 #: themes/survey/fruity_twentythree/views/subviews/messages/bootstrap_alert_modal.twig:68
 msgid "Cancel"
 msgstr ""
@@ -3197,6 +3313,7 @@ msgstr ""
 #: application/views/userManagement/partial/edittemplatepermissions.php:53
 #: application/views/userRole/partials/_form.php:12
 #: application/views/userRole/partials/_permissions.php:127
+#: editor/src/components/PublicSurveyAlias/PublicSurveyAlias.js:176
 #: themes/survey/bootswatch/config.xml:251
 #: themes/survey/fruity_twentythree/config.xml:390
 #: themes/survey/vanilla/config.xml:246
@@ -3661,6 +3778,7 @@ msgstr ""
 #: application/views/survey/questions/answer/list_with_comment/dropdown/answer.twig:33
 #: application/views/surveyPermissions/index.php:32
 #: application/views/surveyPermissions/index.php:65
+#: editor/src/components/UIComponents/Select/Select.js:33
 msgid "Please choose..."
 msgstr ""
 
@@ -4333,11 +4451,13 @@ msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:68
 #: application/controllers/admin/ConditionsAction.php:82
+#: editor/src/components/ConditionDesigner/ConditionFormFields/OperatorSelect.js:14
 msgid "Less than"
 msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:69
 #: application/controllers/admin/ConditionsAction.php:83
+#: editor/src/components/ConditionDesigner/ConditionFormFields/OperatorSelect.js:15
 msgid "Less than or equal to"
 msgstr ""
 
@@ -4348,16 +4468,19 @@ msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:71
 #: application/controllers/admin/ConditionsAction.php:85
+#: editor/src/components/ConditionDesigner/ConditionFormFields/OperatorSelect.js:17
 msgid "Not equal to"
 msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:72
 #: application/controllers/admin/ConditionsAction.php:86
+#: editor/src/components/ConditionDesigner/ConditionFormFields/OperatorSelect.js:18
 msgid "Greater than or equal to"
 msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:73
 #: application/controllers/admin/ConditionsAction.php:87
+#: editor/src/components/ConditionDesigner/ConditionFormFields/OperatorSelect.js:19
 msgid "Greater than"
 msgstr ""
 
@@ -4365,6 +4488,7 @@ msgstr ""
 #: application/controllers/admin/ConditionsAction.php:88
 #: application/views/admin/conditions/includes/form_editconditions_header.php:220
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:179
+#: editor/src/components/ConditionDesigner/ConditionFormFields/OperatorSelect.js:20
 msgid "Regular expression"
 msgstr ""
 
@@ -4452,6 +4576,7 @@ msgid "Update condition"
 msgstr ""
 
 #: application/controllers/admin/ConditionsAction.php:686
+#: editor/src/components/ConditionDesigner/ConditionDesigner.js:221
 msgid "Add condition"
 msgstr ""
 
@@ -4612,6 +4737,12 @@ msgstr ""
 #: application/views/survey/questions/answer/listradio/rows/answer_row_noanswer.twig:22
 #: application/views/survey/questions/answer/yesno/buttons/item.twig:29
 #: application/views/survey/questions/answer/yesno/radio/item.twig:54
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/helpers/addNoAnswerIfAllowed.js:14
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:134
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:355
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:34
+#: editor/src/helpers/getNoAnswerLabel.js:5
+#: editor/src/pages/Responses/utils/generateData.js:126
 #: themes/question/bootstrap_buttons/survey/questions/answer/listradio/rows/answer_row_noanswer.twig:26
 #: themes/question/image_select-listradio/survey/questions/answer/listradio/rows/answer_row_noanswer.twig:22
 msgid "No answer"
@@ -4730,6 +4861,9 @@ msgstr ""
 #: application/views/admin/dataentry/content_view.php:315
 #: application/views/admin/dataentry/content_view.php:325
 #: application/views/admin/dataentry/content_view.php:367
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/singleChoiceTypeHandler.js:22
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:98
+#: editor/src/helpers/getQuestionAttributesTitles.js:7
 #: themes/question/image_select-listradio/survey/questions/answer/listradio/rows/answer_row_other.twig:42
 msgid "Other"
 msgstr ""
@@ -4757,6 +4891,8 @@ msgstr ""
 #: application/views/admin/token/bounce.php:32
 #: application/views/surveyPermissions/index.php:39
 #: application/views/surveyPermissions/index.php:70
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:345
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:226
 msgid "None"
 msgstr ""
 
@@ -4788,6 +4924,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:563
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/answer_row.twig:59
 #: application/views/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead.twig:10
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/yesNoUncertainTypeHandler.js:16
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:226
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:12
 #: themes/survey/vanilla/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:12
 msgid "Uncertain"
@@ -4810,6 +4948,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:610
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row.twig:46
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead.twig:9
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/increaseDecreaseTypeHandler.js:14
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:221
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_array-increase-same-decrease.twig:8
 #: themes/survey/vanilla/views/subviews/printanswers/question_types/template_array-increase-same-decrease.twig:8
 msgid "Increase"
@@ -4832,6 +4972,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:617
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row.twig:61
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead.twig:10
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/increaseDecreaseTypeHandler.js:15
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:224
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_array-increase-same-decrease.twig:10
 #: themes/survey/vanilla/views/subviews/printanswers/question_types/template_array-increase-same-decrease.twig:10
 msgid "Same"
@@ -4854,6 +4996,8 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_question.php:624
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row.twig:76
 #: application/views/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead.twig:11
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/increaseDecreaseTypeHandler.js:16
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:227
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_array-increase-same-decrease.twig:12
 #: themes/survey/vanilla/views/subviews/printanswers/question_types/template_array-increase-same-decrease.twig:12
 msgid "Decrease"
@@ -5136,11 +5280,13 @@ msgstr ""
 #: application/controllers/admin/Export.php:391
 #: application/views/admin/export/exportresults_view.php:23
 #: application/views/admin/export/vv_view.php:110
+#: editor/src/components/TopBar/Button/ActionButton.js:48
 msgid "Export results"
 msgstr ""
 
 #: application/controllers/admin/Export.php:203
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:99
+#: editor/src/components/QuestionSettings/attributes/QuestionCodeAttribute.js:76
 msgid "Question code"
 msgstr ""
 
@@ -5776,6 +5922,7 @@ msgstr ""
 #: application/views/userRole/partials/_view.php:41
 #: application/views/userRole/partials/error.php:39
 #: application/views/userRole/partials/success.php:32
+#: editor/src/components/UIComponents/ImageEditor/ImageEditor.js:145
 #: themes/survey/fruity_twentythree/views/subviews/messages/bootstrap_alert_modal.twig:49
 #: themes/survey/fruity_twentythree/views/subviews/messages/justsaved.twig:10
 #: themes/survey/fruity_twentythree/views/subviews/privacy/privacy_modal.twig:59
@@ -6142,6 +6289,8 @@ msgstr ""
 #: application/models/Survey.php:1606 application/models/Survey.php:2405
 #: application/views/admin/export/statistics_user_view.php:20
 #: application/views/admin/export/statistics_view.php:23
+#: editor/src/components/SurveySettings/panelOptions.js:114
+#: editor/src/helpers/getQuestionAttributesTitles.js:9
 msgid "Statistics"
 msgstr ""
 
@@ -6214,6 +6363,7 @@ msgstr ""
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:98
 #: application/models/Survey.php:2455 application/models/SurveysGroups.php:322
 #: application/models/SurveysGroups.php:477
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:227
 msgid "Survey settings"
 msgstr ""
 
@@ -6909,6 +7059,7 @@ msgstr ""
 #: application/views/admin/update/updater/welcome/_welcome.php:108
 #: application/views/quotas/newanswererror_view.php:11
 #: application/views/quotas/newanswertwo_view.php:18
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyStatusSwitchPopupFooter.js:37
 #: themes/survey/fruity_twentythree/views/subviews/logincomponents/captcha.twig:72
 #: themes/survey/fruity_twentythree/views/subviews/logincomponents/token.twig:110
 #: themes/survey/vanilla/views/subviews/logincomponents/captcha.twig:71
@@ -7058,6 +7209,7 @@ msgstr ""
 #: application/controllers/admin/globalsettings.php:124
 #: application/core/LsDefaultDataSets.php:865
 #: application/views/dashboard/welcome.php:24
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:228
 msgid "Global settings"
 msgstr ""
 
@@ -7349,6 +7501,7 @@ msgstr ""
 #: application/views/admin/globalsettings/_storage_ajax.php:10
 #: application/views/admin/globalsettings/globalSettings_view.php:15
 #: application/views/admin/pluginmanager/configure.php:15
+#: editor/src/components/SurveySettings/panelOptions.js:57
 #: modules/admin/globalsettings/views/globalSettings_view.php:15
 msgid "Overview"
 msgstr ""
@@ -7383,6 +7536,8 @@ msgid "Privacy policy settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:108
+#: editor/src/components/Survey/SurveyHeader.js:248
+#: editor/src/components/SurveySettings/panelOptions.js:30
 #: themes/survey/fruity_twentythree/views/subviews/privacy/privacy_modal.twig:48
 #: themes/survey/fruity_twentythree/views/subviews/privacy/privacy_text.twig:25
 #: themes/survey/vanilla/views/subviews/privacy/privacy_modal.twig:38
@@ -7396,6 +7551,10 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:135
 #: application/core/LsDefaultDataSets.php:136
 #: application/models/TemplateConfiguration.php:728
+#: editor/src/components/SurveySettings/panelOptions.js:12
+#: editor/src/pages/Editor/EditorTutorial.js:149
+#: editor/src/pages/Editor/EditorTutorial.js:173
+#: editor/src/pages/Editor/EditorTutorial.js:187
 msgid "Theme options"
 msgstr ""
 
@@ -7409,6 +7568,8 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:164
 #: application/views/admin/globalsettings/globalSettings_view.php:21
+#: editor/src/components/SurveySettings/panelOptions.js:17
+#: editor/src/shared/getSurveyPanelConfig.js:25
 #: modules/admin/globalsettings/views/globalSettings_view.php:21
 msgid "Presentation"
 msgstr ""
@@ -7422,6 +7583,8 @@ msgid "Survey participant settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:192
+#: editor/src/components/SurveySettings/Settings/getParticipantsSettingsBlocks.js:8
+#: editor/src/components/SurveySettings/panelOptions.js:35
 msgid "Participant settings"
 msgstr ""
 
@@ -7434,6 +7597,8 @@ msgid "Notification and data management settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:220
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:12
+#: editor/src/components/SurveySettings/panelOptions.js:49
 msgid "Notifications & data"
 msgstr ""
 
@@ -7447,6 +7612,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:248
 #: application/views/admin/survey/subview/surveydashboard/003-publicationpanel.twig:3
+#: editor/src/components/SurveySettings/panelOptions.js:42
 msgid "Publication & access"
 msgstr ""
 
@@ -7473,6 +7639,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:332
 #: application/models/Survey.php:2460
+#: editor/src/components/SurveySettings/panelOptions.js:65
 msgid "Participants"
 msgstr ""
 
@@ -7482,6 +7649,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:359
 #: application/core/LsDefaultDataSets.php:360
+#: editor/src/components/SurveySettings/panelOptions.js:71
 msgid "Email templates"
 msgstr ""
 
@@ -7501,6 +7669,7 @@ msgstr ""
 #: application/models/Survey.php:2390
 #: application/views/surveyAdministration/copySurveyResult_view.php:66
 #: application/views/surveyAdministration/importSurvey_view.php:122
+#: editor/src/components/SurveySettings/panelOptions.js:83
 msgid "Quotas"
 msgstr ""
 
@@ -7522,6 +7691,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:472
 #: application/views/surveyAdministration/tab_survey_view.php:62
+#: editor/src/components/SurveySettings/panelOptions.js:95
 msgid "Panel integration"
 msgstr ""
 
@@ -7537,6 +7707,7 @@ msgstr ""
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
 #: application/views/surveyAdministration/importSurvey_view.php:151
+#: editor/src/components/SurveySettings/panelOptions.js:105
 msgid "Responses"
 msgstr ""
 
@@ -7547,6 +7718,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:556
 #: application/views/surveyAdministration/tab_survey_view.php:69
+#: editor/src/components/SurveySettings/panelOptions.js:122
 msgid "Resources"
 msgstr ""
 
@@ -7555,6 +7727,7 @@ msgid "Simple plugin settings"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:584
+#: editor/src/components/SurveySettings/panelOptions.js:132
 msgid "Simple plugins"
 msgstr ""
 
@@ -7569,6 +7742,7 @@ msgstr ""
 #: application/views/surveyAdministration/partial/topbar/_modalSurveyActivation.php:17
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarLeft_view.php:60
 #: application/views/surveyAdministration/surveyActivation/_activation_feedback.php:20
+#: editor/src/pages/Editor/EditorTutorial.js:239
 msgid "Activate survey"
 msgstr ""
 
@@ -7833,6 +8007,7 @@ msgstr ""
 #: application/views/installer/populatedb_view.php:22
 #: application/views/installer/precheck_view.php:165
 #: application/views/survey/system/actionButton/movePrevious.php:11
+#: editor/src/pages/Responses/components/ResponseDetailView.js:92
 #: themes/survey/fruity_twentythree/views/subviews/content/quotas.twig:80
 #: themes/survey/fruity_twentythree/views/subviews/navigation/navigator.twig:35
 #: themes/survey/vanilla/views/subviews/content/quotas.twig:80
@@ -7847,6 +8022,7 @@ msgstr ""
 #: application/views/quotas/newanswer_view.php:34
 #: application/views/quotas/newanswertwo_view.php:52
 #: application/views/survey/system/actionButton/moveNext.php:11
+#: editor/src/pages/Responses/components/ResponseDetailView.js:100
 #: themes/survey/fruity_twentythree/views/subviews/navigation/navigator.twig:59
 #: themes/survey/vanilla/views/subviews/navigation/navigator.twig:53
 msgid "Next"
@@ -8235,6 +8411,8 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:1653
 #: application/core/TopbarConfiguration.php:174
 #: application/views/surveyAdministration/partial/topbar/previewOrRunButton_view.php:39
+#: editor/src/components/SurveyOverview/SurveyOverview.js:239
+#: editor/src/pages/Editor/EditorTutorial.js:230
 msgid "Preview survey"
 msgstr ""
 
@@ -8379,6 +8557,7 @@ msgid "Image select list (Radio)"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2784
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:84
 msgid "Image select multiple choice"
 msgstr ""
 
@@ -8387,10 +8566,13 @@ msgid "Browser detection"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2786
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:36
+#: editor/src/components/QuestionTypes/getNotSupportedQuestionTypeInfo.js:11
 msgid "Input on demand"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2787
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:95
 msgid "Ranking advanced"
 msgstr ""
 
@@ -8493,6 +8675,7 @@ msgid "Background image file"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2814
+#: editor/src/components/TopBar/TopBar.js:115
 msgid "Logo"
 msgstr ""
 
@@ -8639,95 +8822,119 @@ msgid "Date entered is invalid!"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:60
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:11
 msgid "Jan"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:60
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:12
 msgid "Feb"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:60
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:13
 msgid "Mar"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:60
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:14
 msgid "Apr"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:60
 #: application/core/QuestionTypes/Date/RenderDate.php:66
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:15
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:30
 msgid "May"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:60
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:16
 msgid "Jun"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:61
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:17
 msgid "Jul"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:61
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:18
 msgid "Aug"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:61
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:19
 msgid "Sep"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:61
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:20
 msgid "Oct"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:61
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:21
 msgid "Nov"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:61
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:22
 msgid "Dec"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:66
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:26
 msgid "January"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:66
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:27
 msgid "February"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:66
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:28
 msgid "March"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:66
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:29
 msgid "April"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:66
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:31
 msgid "June"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:67
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:32
 msgid "July"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:67
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:33
 msgid "August"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:67
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:34
 msgid "September"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:67
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:35
 msgid "October"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:67
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:36
 msgid "November"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:67
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:37
 msgid "December"
 msgstr ""
 
@@ -8735,6 +8942,7 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:368
 #: application/views/survey/questions/answer/date/dropdown/rows/day.twig:12
 #: application/views/survey/questions/answer/date/dropdown/rows/day.twig:15
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:51
 msgid "Day"
 msgstr ""
 
@@ -8742,6 +8950,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:369
 #: application/views/survey/questions/answer/date/dropdown/rows/month.twig:13
 #: application/views/survey/questions/answer/date/dropdown/rows/month.twig:17
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:10
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:25
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:40
 msgid "Month"
 msgstr ""
 
@@ -8749,6 +8960,7 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:370
 #: application/views/survey/questions/answer/date/dropdown/rows/year.twig:16
 #: application/views/survey/questions/answer/date/dropdown/rows/year.twig:20
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:90
 msgid "Year"
 msgstr ""
 
@@ -8756,6 +8968,7 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:371
 #: application/views/survey/questions/answer/date/dropdown/rows/hour.twig:12
 #: application/views/survey/questions/answer/date/dropdown/rows/hour.twig:15
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:62
 msgid "Hour"
 msgstr ""
 
@@ -8864,6 +9077,7 @@ msgstr ""
 #: application/views/userRole/massiveAction/_updatepermissions.php:36
 #: application/views/userRole/partials/_import.php:30
 #: application/views/userRole/partials/_permissions.php:38
+#: editor/src/components/TopBar/TopBarActions.js:197
 msgid "Import"
 msgstr ""
 
@@ -8936,6 +9150,7 @@ msgstr ""
 
 #: application/core/plugins/Authdb/Authdb.php:230
 #: application/views/userManagement/partial/topbarBtns/dropDownItemsExport.php:7
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:44
 msgid "CSV"
 msgstr ""
 
@@ -8954,6 +9169,7 @@ msgstr ""
 #: application/core/plugins/Authdb/Authdb.php:245
 #: application/models/TemplateManifest.php:177
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:30
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:43
 #: themes/survey/bootswatch/config.xml:297
 #: themes/survey/fruity_twentythree/config.xml:446
 #: themes/survey/vanilla/config.xml:293
@@ -9011,6 +9227,7 @@ msgstr ""
 #: application/core/plugins/GoogleOAuthSMTP/views/Help.twig:6
 #: application/views/admin/super/_help_menu.php:5
 #: application/views/questionAdministration/textElements.php:10
+#: editor/src/components/TopBar/TopBarActions.js:208
 msgid "Help"
 msgstr ""
 
@@ -9647,6 +9864,7 @@ msgid "Activate 2FA now"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/views/userindex.php:30
+#: editor/src/components/feedback/FeedbackPopup.js:125
 msgid "Not now"
 msgstr ""
 
@@ -9820,6 +10038,7 @@ msgstr ""
 #: application/extensions/admin/grid/ColumnFilterWidget/views/columns_filter.php:35
 #: application/views/admin/participants/participantsPanel_view.php:40
 #: application/views/responses/modal_subviews/filterColumns.php:35
+#: editor/src/pages/Responses/components/ColumnsManagement.js:157
 msgid "Clear selection"
 msgstr ""
 
@@ -9887,6 +10106,7 @@ msgid "Select date"
 msgstr ""
 
 #: application/extensions/GeneralOptionWidget/settings/ClearDefaultGeneralOption.php:12
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:89
 msgid "Clear default values"
 msgstr ""
 
@@ -9913,6 +10133,7 @@ msgstr ""
 #: application/extensions/GeneralOptionWidget/settings/MandatoryGeneralOption.php:15
 #: application/models/Question.php:876
 #: application/views/survey/system/required.php:8
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:32
 #: themes/survey/fruity_twentythree/views/subviews/content/load.twig:89
 #: themes/survey/fruity_twentythree/views/subviews/content/load.twig:100
 #: themes/survey/fruity_twentythree/views/subviews/content/save.twig:102
@@ -9942,6 +10163,7 @@ msgstr ""
 #: application/models/Question.php:727
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:22
 #: application/views/questionAdministration/summary.php:169
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:36
 msgid "Soft"
 msgstr ""
 
@@ -9971,6 +10193,7 @@ msgid "Condition"
 msgstr ""
 
 #: application/extensions/GeneralOptionWidget/settings/SaveAsDefaultGeneralOption.php:15
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:79
 msgid "Save as default values"
 msgstr ""
 
@@ -9979,6 +10202,7 @@ msgid "All attribute values for this question type will be saved as default"
 msgstr ""
 
 #: application/extensions/GeneralOptionWidget/settings/ValidationGeneralOption.php:15
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:109
 msgid "Input validation"
 msgstr ""
 
@@ -10031,6 +10255,8 @@ msgid "Update"
 msgstr ""
 
 #: application/extensions/admin/BoxesWidget/views/box.php:68
+#: editor/src/components/SurveyOverview/SurveyOverview.js:133
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:128
 msgid "No responses"
 msgstr ""
 
@@ -10043,11 +10269,14 @@ msgstr ""
 #: application/models/Survey.php:1596 application/models/User.php:647
 #: application/views/quotas/viewquotas_massive_selector.php:20
 #: application/views/userManagement/massiveAction/_updatestatus.php:6
+#: editor/src/components/PublishSettings/PublishSettings.js:70
+#: editor/src/components/SurveyOverview/SurveyOverview.js:230
 msgid "Activate"
 msgstr ""
 
 #: application/extensions/admin/BoxesWidget/views/box.php:96
 #: application/models/Survey.php:1590
+#: editor/src/components/SurveyOverview/SurveyOverview.js:208
 msgid "Edit survey"
 msgstr ""
 
@@ -10097,6 +10326,7 @@ msgstr ""
 #: application/models/QuestionType.php:107 application/models/Survey.php:1685
 #: application/models/SurveysGroups.php:466
 #: application/views/assessment/assessments_edit.php:29
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:215
 msgid "Group"
 msgstr ""
 
@@ -10125,6 +10355,8 @@ msgstr ""
 #: application/views/themeOptions/_selector.php:25
 #: application/views/themeOptions/_selector.php:34
 #: application/views/userGroup/partial/topbarBtns_mail/rightSideButtons.php:8
+#: editor/src/components/UIComponents/Buttons/ResetButton.js:26
+#: editor/src/components/UIComponents/CheckboxRadio/CheckboxRadio.js:90
 msgid "Reset"
 msgstr ""
 
@@ -10150,6 +10382,7 @@ msgstr ""
 #: application/views/responses/modal_subviews/filterColumns.php:30
 #: application/views/surveyAdministration/partial/_modalCopySurvey.php:65
 #: application/views/userManagement/partial/edittemplatepermissions.php:19
+#: editor/src/pages/Responses/components/ColumnsManagement.js:146
 msgid "Select all"
 msgstr ""
 
@@ -10329,10 +10562,12 @@ msgstr ""
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:78
 #: application/views/admin/survey/surveybar_tools.php:55
 #: application/views/surveyAdministration/partial/topbar/surveyToolsDropdownItems.php:38
+#: editor/src/shared/getSurveyPanelConfig.js:53
 msgid "Currently there are no additional languages configured for this survey."
 msgstr ""
 
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:210
+#: editor/src/shared/getSurveyPanelConfig.js:38
 msgid "Permissions"
 msgstr ""
 
@@ -10345,10 +10580,12 @@ msgid "Position:"
 msgstr ""
 
 #: application/extensions/admin/survey/question/PositionWidget/views/form_group.php:15
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:383
 msgid "At end"
 msgstr ""
 
 #: application/extensions/admin/survey/question/PositionWidget/views/form_group.php:16
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:378
 msgid "At beginning"
 msgstr ""
 
@@ -10469,6 +10706,8 @@ msgstr ""
 
 #: application/helpers/SurveyThemeHelper.php:278
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:254
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:263
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:270
 msgid "Theme"
 msgstr ""
 
@@ -10885,6 +11124,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:697
 #: application/helpers/userstatistics_helper.php:700
 #: application/models/QuestionType.php:332
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:91
 msgid "Ranking"
 msgstr ""
 
@@ -11018,6 +11258,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1795
 #: application/helpers/userstatistics_helper.php:1802
 #: application/views/admin/export/generatestats/_statisticsoutput_header.php:41
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:9
 msgid "Count"
 msgstr ""
 
@@ -11112,6 +11353,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1790
 #: application/helpers/userstatistics_helper.php:1795
 #: application/helpers/userstatistics_helper.php:1804
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:12
 msgid "Percentage"
 msgstr ""
 
@@ -11212,6 +11454,10 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2756
 #: application/helpers/userstatistics_helper.php:2762
 #: application/views/admin/export/generatestats/_header.php:21
+#: editor/src/components/TopBar/Button/ActionButton.js:31
+#: editor/src/components/TopBar/SurveyNavigation.js:47
+#: editor/src/components/TopBar/TopBarActions.js:113
+#: editor/src/pages/Responses/Sidebars/getResponsesPanels.js:7
 msgid "Results"
 msgstr ""
 
@@ -11223,6 +11469,7 @@ msgstr ""
 #: application/views/admin/themes/templateeditor_printoutput_view.php:3
 #: application/views/questionAdministration/textElements.php:5
 #: application/views/quotas/viewquotas_quota_members.php:44
+#: editor/src/components/ConditionDesigner/ConditionFormFields/QuestionTypeToggle.js:55
 #: themes/survey/bootswatch/config.xml:135
 #: themes/survey/fruity_twentythree/config.xml:219
 #: themes/survey/vanilla/config.xml:127
@@ -11232,6 +11479,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1546
 #: application/helpers/update/updates/Update_700.php:64
 #: application/models/FailedEmail.php:151
+#: editor/src/pages/Responses/components/ResponseDetailView.js:60
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:70
 msgid "Response ID"
 msgstr ""
 
@@ -11247,16 +11496,20 @@ msgstr ""
 
 #: application/helpers/common_helper.php:1567
 #: application/helpers/update/updates/Update_700.php:85
+#: editor/src/pages/Responses/components/ResponseDetailView.js:63
 msgid "Start language"
 msgstr ""
 
 #: application/helpers/common_helper.php:1574
 #: application/helpers/update/updates/Update_700.php:92
+#: editor/src/pages/Responses/components/ResponseDetailView.js:66
+#: editor/src/pages/Responses/utils/generateColumns.js:104
 msgid "Seed"
 msgstr ""
 
 #: application/helpers/common_helper.php:1598
 #: application/helpers/update/updates/Update_700.php:116
+#: editor/src/pages/Responses/components/ResponseDetailView.js:69
 msgid "Date started"
 msgstr ""
 
@@ -11269,11 +11522,13 @@ msgstr ""
 #: application/helpers/update/updates/Update_700.php:141
 #: application/models/SavedControl.php:152
 #: application/views/admin/dataentry/caption_view.php:80
+#: editor/src/pages/Responses/components/ResponseDetailView.js:75
 msgid "IP address"
 msgstr ""
 
 #: application/helpers/common_helper.php:1632
 #: application/helpers/update/updates/Update_700.php:150
+#: editor/src/pages/Responses/components/ResponseDetailView.js:79
 msgid "Referrer URL"
 msgstr ""
 
@@ -11281,6 +11536,7 @@ msgstr ""
 #: application/helpers/update/updatedb_helper.php:829
 #: application/helpers/update/updates/Update_700.php:419
 #: application/models/services/SurveyCondition.php:825
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/arrayDualScaleTypeHandler.js:18
 msgid "Scale 1"
 msgstr ""
 
@@ -11288,6 +11544,7 @@ msgstr ""
 #: application/helpers/update/updatedb_helper.php:853
 #: application/helpers/update/updates/Update_700.php:443
 #: application/models/services/SurveyCondition.php:826
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/arrayDualScaleTypeHandler.js:21
 msgid "Scale 2"
 msgstr ""
 
@@ -11313,6 +11570,7 @@ msgstr ""
 #: application/views/admin/authentication/forgotpassword.php:40
 #: application/views/admin/export/exportresult_panels/_token-control.php:30
 #: application/views/admin/themes/templateeditor_register_view.php:11
+#: editor/src/helpers/getSurveyParticipantAttributes.js:5
 #: themes/survey/fruity_twentythree/views/subviews/registration/register_success.twig:29
 #: themes/survey/vanilla/views/subviews/registration/register_success.twig:29
 msgid "Email address"
@@ -11320,10 +11578,12 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3334 application/models/Token.php:95
 #: application/models/TokenDynamic.php:723
+#: editor/src/helpers/getSurveyParticipantAttributes.js:6
 msgid "Email status"
 msgstr ""
 
 #: application/helpers/common_helper.php:3344 application/models/Token.php:97
+#: editor/src/helpers/getSurveyParticipantAttributes.js:8
 msgid "Language code"
 msgstr ""
 
@@ -11341,6 +11601,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:3364 application/models/Token.php:103
 #: application/models/TokenDynamic.php:776
+#: editor/src/helpers/getSurveyParticipantAttributes.js:15
 msgid "Uses left"
 msgstr ""
 
@@ -12162,6 +12423,7 @@ msgid "Question attribute"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:9430
+#: editor/src/components/ConditionDesigner/ConditionFormFields/ConstantInput.js:27
 msgid "Value"
 msgstr ""
 
@@ -12496,6 +12758,8 @@ msgstr ""
 #: application/helpers/questionHelper.php:1253
 #: application/helpers/questionHelper.php:1498
 #: application/helpers/questionHelper.php:1618
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:18
+#: editor/src/helpers/getQuestionAttributesTitles.js:5
 msgid "Display"
 msgstr ""
 
@@ -12512,6 +12776,7 @@ msgid "Set the percentage width of the (sub-)question column (1-100)"
 msgstr ""
 
 #: application/helpers/questionHelper.php:77
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:429
 msgid "(Sub-)question width"
 msgstr ""
 
@@ -12528,6 +12793,7 @@ msgid "Repeat headers every n-th subquestions (Set to 0 to deactivate)."
 msgstr ""
 
 #: application/helpers/questionHelper.php:99
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:440
 msgid "Repeat headers"
 msgstr ""
 
@@ -12550,6 +12816,8 @@ msgstr ""
 #: application/helpers/questionHelper.php:749
 #: application/helpers/questionHelper.php:760
 #: application/helpers/questionHelper.php:1578
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:117
+#: editor/src/helpers/getQuestionAttributesTitles.js:6
 msgid "Logic"
 msgstr ""
 
@@ -12558,6 +12826,7 @@ msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons
 msgstr ""
 
 #: application/helpers/questionHelper.php:108
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:67
 msgid "Array filter"
 msgstr ""
 
@@ -12566,11 +12835,14 @@ msgid "Enter the code(s) of Multiple choice question(s) (separated by semicolons
 msgstr ""
 
 #: application/helpers/questionHelper.php:117
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:59
 msgid "Array filter exclusion"
 msgstr ""
 
 #: application/helpers/questionHelper.php:125
 #: application/helpers/questionHelper.php:1187
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:78
+#: editor/src/helpers/options/getLabelWrapperWidthOptions.js:8
 msgid "Hidden"
 msgstr ""
 
@@ -12583,6 +12855,8 @@ msgstr ""
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:32
 #: application/views/admin/survey/subview/surveydashboard/001-sharingpanel.twig:171
 #: application/views/admin/survey/subview/surveydashboard/001-sharingpanel.twig:186
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:79
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:88
 msgid "Disabled"
 msgstr ""
 
@@ -12591,6 +12865,7 @@ msgid "Specify how array-filtered subquestions should be displayed"
 msgstr ""
 
 #: application/helpers/questionHelper.php:129
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:75
 msgid "Array filter style"
 msgstr ""
 
@@ -12602,23 +12877,28 @@ msgstr ""
 #: application/views/admin/labels/_labelviewtabcontent_view.php:19
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:46
 #: application/views/questionAdministration/answerOptions.twig:41
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:108
 msgid "Assessment value"
 msgstr ""
 
 #: application/helpers/questionHelper.php:147
 #: application/helpers/questionHelper.php:148
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:335
 msgid "Category separator"
 msgstr ""
 
 #: application/helpers/questionHelper.php:157
+#: editor/src/helpers/options/getCommentedCheckboxOptions.js:11
 msgid "No control on checkbox"
 msgstr ""
 
 #: application/helpers/questionHelper.php:158
+#: editor/src/helpers/options/getCommentedCheckboxOptions.js:5
 msgid "Checkbox is checked"
 msgstr ""
 
 #: application/helpers/questionHelper.php:159
+#: editor/src/helpers/options/getCommentedCheckboxOptions.js:17
 msgid "Checkbox is unchecked"
 msgstr ""
 
@@ -12627,6 +12907,7 @@ msgid "Choose when user can add a comment"
 msgstr ""
 
 #: application/helpers/questionHelper.php:163
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:25
 msgid "Comment only when"
 msgstr ""
 
@@ -12635,6 +12916,7 @@ msgid "Use JavaScript functions to remove text and uncheck checkbox (or use only
 msgstr ""
 
 #: application/helpers/questionHelper.php:177
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:97
 msgid "Remove text or uncheck checkbox automatically"
 msgstr ""
 
@@ -12643,6 +12925,7 @@ msgid "The answer options will be distributed across the number of columns set h
 msgstr ""
 
 #: application/helpers/questionHelper.php:187
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:574
 msgid "Display columns"
 msgstr ""
 
@@ -12651,6 +12934,7 @@ msgid "How many rows to display"
 msgstr ""
 
 #: application/helpers/questionHelper.php:196
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:539
 msgid "Display rows"
 msgstr ""
 
@@ -12659,6 +12943,7 @@ msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr ""
 
 #: application/helpers/questionHelper.php:208
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:102
 msgid "Display dropdown boxes"
 msgstr ""
 
@@ -12667,6 +12952,7 @@ msgid "Minimum date, valid date in YYYY-MM-DD format or any English textual date
 msgstr ""
 
 #: application/helpers/questionHelper.php:218
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:78
 msgid "Minimum date"
 msgstr ""
 
@@ -12675,6 +12961,7 @@ msgid "Maximum date, valid date in any English textual datetime description (YYY
 msgstr ""
 
 #: application/helpers/questionHelper.php:228
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:67
 msgid "Maximum date"
 msgstr ""
 
@@ -12683,6 +12970,7 @@ msgid "Prefix|Suffix for dropdown lists"
 msgstr ""
 
 #: application/helpers/questionHelper.php:238
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:626
 msgid "Dropdown prefix/suffix"
 msgstr ""
 
@@ -12691,6 +12979,7 @@ msgid "Text shown on each subquestion row between both scales in dropdown mode"
 msgstr ""
 
 #: application/helpers/questionHelper.php:247
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:634
 msgid "Dropdown separator"
 msgstr ""
 
@@ -12716,6 +13005,8 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:279
 #: application/models/QuestionType.php:442
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:48
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:44
 msgid "Equation"
 msgstr ""
 
@@ -12729,6 +13020,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:1479
 #: application/helpers/questionHelper.php:1488
 #: application/helpers/questionHelper.php:1591
+#: editor/src/helpers/getQuestionAttributesTitles.js:8
 msgid "Input"
 msgstr ""
 
@@ -12737,6 +13029,7 @@ msgid "Multiple numeric inputs sum must equal this value"
 msgstr ""
 
 #: application/helpers/questionHelper.php:290
+#: editor/src/components/QuestionSettings/attributes/getInputAttributes.js:86
 msgid "Equals sum value"
 msgstr ""
 
@@ -12745,6 +13038,7 @@ msgid "Enter a boolean equation to validate the whole question."
 msgstr ""
 
 #: application/helpers/questionHelper.php:300
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:132
 msgid "Question validation equation"
 msgstr ""
 
@@ -12753,6 +13047,7 @@ msgid "This is a hint text that will be shown to the participant describing the 
 msgstr ""
 
 #: application/helpers/questionHelper.php:310
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:165
 msgid "Question validation tip"
 msgstr ""
 
@@ -12761,6 +13056,7 @@ msgid "Enter a boolean equation to validate each subquestion."
 msgstr ""
 
 #: application/helpers/questionHelper.php:320
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:149
 msgid "Subquestion validation equation"
 msgstr ""
 
@@ -12769,6 +13065,7 @@ msgid "This is a tip shown to the participant describing the subquestion validat
 msgstr ""
 
 #: application/helpers/questionHelper.php:331
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:157
 msgid "Subquestion validation tip"
 msgstr ""
 
@@ -12777,6 +13074,7 @@ msgid "Excludes all other options if a certain answer is selected - just enter t
 msgstr ""
 
 #: application/helpers/questionHelper.php:340
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:116
 msgid "Exclusive option"
 msgstr ""
 
@@ -12798,6 +13096,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:481
 #: application/helpers/questionHelper.php:492
 #: application/helpers/questionHelper.php:502
+#: editor/src/helpers/getQuestionAttributesTitles.js:11
 msgid "Location"
 msgstr ""
 
@@ -12806,6 +13105,7 @@ msgid "Store the city?"
 msgstr ""
 
 #: application/helpers/questionHelper.php:365
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:65
 msgid "Save city"
 msgstr ""
 
@@ -12814,6 +13114,7 @@ msgid "Store the state?"
 msgstr ""
 
 #: application/helpers/questionHelper.php:377
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:54
 msgid "Save state"
 msgstr ""
 
@@ -12822,6 +13123,7 @@ msgid "Store the postal code?"
 msgstr ""
 
 #: application/helpers/questionHelper.php:389
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:76
 msgid "Save postal code"
 msgstr ""
 
@@ -12830,6 +13132,7 @@ msgid "Store the country?"
 msgstr ""
 
 #: application/helpers/questionHelper.php:401
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:44
 msgid "Save country"
 msgstr ""
 
@@ -12852,6 +13155,8 @@ msgstr ""
 #: application/helpers/questionHelper.php:432
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:70
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:56
+#: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:18
+#: editor/src/pages/Responses/components/ChartRenderer.js:112
 msgid "Bar chart"
 msgstr ""
 
@@ -12859,30 +13164,38 @@ msgstr ""
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:77
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:58
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:52
+#: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:22
+#: editor/src/pages/Responses/components/ChartRenderer.js:121
 msgid "Pie chart"
 msgstr ""
 
 #: application/helpers/questionHelper.php:434
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:83
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:60
+#: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:26
+#: editor/src/pages/Responses/components/ChartRenderer.js:130
 msgid "Radar chart"
 msgstr ""
 
 #: application/helpers/questionHelper.php:435
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:90
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:62
+#: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:30
+#: editor/src/pages/Responses/components/ChartRenderer.js:140
 msgid "Line chart"
 msgstr ""
 
 #: application/helpers/questionHelper.php:436
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:96
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:64
+#: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:34
 msgid "Polar chart"
 msgstr ""
 
 #: application/helpers/questionHelper.php:437
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:102
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:66
+#: editor/src/pages/Responses/components/ChartRenderer.js:149
 msgid "Doughnut chart"
 msgstr ""
 
@@ -12895,10 +13208,12 @@ msgid "Chart type"
 msgstr ""
 
 #: application/helpers/questionHelper.php:451
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:14
 msgid "OpenStreetMap via MapQuest"
 msgstr ""
 
 #: application/helpers/questionHelper.php:452
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:13
 msgid "Google Maps"
 msgstr ""
 
@@ -12907,6 +13222,7 @@ msgid "Activate this to show a map above the input field where the user can sele
 msgstr ""
 
 #: application/helpers/questionHelper.php:456
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:10
 msgid "Use mapping service"
 msgstr ""
 
@@ -12931,6 +13247,7 @@ msgid "Get the default location using the user's IP address?"
 msgstr ""
 
 #: application/helpers/questionHelper.php:487
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:35
 msgid "IP as default location"
 msgstr ""
 
@@ -12939,6 +13256,7 @@ msgid "Default coordinates of the map when the page first loads. Format: latitud
 msgstr ""
 
 #: application/helpers/questionHelper.php:497
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:96
 msgid "Default position"
 msgstr ""
 
@@ -12947,6 +13265,7 @@ msgid "Map zoom level"
 msgstr ""
 
 #: application/helpers/questionHelper.php:507
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:88
 msgid "Zoom level"
 msgstr ""
 
@@ -12955,6 +13274,7 @@ msgid "Hide the tip that is normally shown with a question"
 msgstr ""
 
 #: application/helpers/questionHelper.php:520
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:456
 msgid "Hide tip"
 msgstr ""
 
@@ -12963,6 +13283,7 @@ msgid "Hide this question at any time. This is useful for including data using a
 msgstr ""
 
 #: application/helpers/questionHelper.php:531
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:484
 msgid "Always hide this question"
 msgstr ""
 
@@ -12971,6 +13292,7 @@ msgid "Add additional CSS class(es) for this question. Use a space between multi
 msgstr ""
 
 #: application/helpers/questionHelper.php:541
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:494
 msgid "CSS class(es)"
 msgstr ""
 
@@ -12979,6 +13301,7 @@ msgid "Limit the number of possible answers"
 msgstr ""
 
 #: application/helpers/questionHelper.php:551
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:17
 msgid "Maximum answers"
 msgstr ""
 
@@ -12987,6 +13310,7 @@ msgid "Maximum sum value of multiple numeric input"
 msgstr ""
 
 #: application/helpers/questionHelper.php:561
+#: editor/src/components/QuestionSettings/attributes/getInputAttributes.js:103
 msgid "Maximum sum value"
 msgstr ""
 
@@ -12996,6 +13320,8 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:571
 #: application/helpers/questionHelper.php:633
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:130
+#: editor/src/components/QuestionSettings/attributes/getInputAttributes.js:117
 msgid "Maximum value"
 msgstr ""
 
@@ -13004,6 +13330,7 @@ msgid "Limit the number of possible answers fixed by number of columns in databa
 msgstr ""
 
 #: application/helpers/questionHelper.php:583
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:172
 msgid "Maximum columns for answers"
 msgstr ""
 
@@ -13012,6 +13339,7 @@ msgid "Maximum characters allowed"
 msgstr ""
 
 #: application/helpers/questionHelper.php:593
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:57
 msgid "Maximum characters"
 msgstr ""
 
@@ -13020,6 +13348,7 @@ msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr ""
 
 #: application/helpers/questionHelper.php:603
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:9
 msgid "Minimum answers"
 msgstr ""
 
@@ -13028,6 +13357,7 @@ msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr ""
 
 #: application/helpers/questionHelper.php:613
+#: editor/src/components/QuestionSettings/attributes/getInputAttributes.js:110
 msgid "Minimum sum value"
 msgstr ""
 
@@ -13037,6 +13367,8 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:623
 #: application/helpers/questionHelper.php:643
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:122
+#: editor/src/components/QuestionSettings/attributes/getInputAttributes.js:78
 msgid "Minimum value"
 msgstr ""
 
@@ -13050,6 +13382,8 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:652
 #: application/helpers/questionHelper.php:653
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:596
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:52
 msgid "Step value"
 msgstr ""
 
@@ -13058,6 +13392,7 @@ msgid "Use checkbox layout"
 msgstr ""
 
 #: application/helpers/questionHelper.php:664
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:614
 msgid "Checkbox layout"
 msgstr ""
 
@@ -13066,6 +13401,7 @@ msgid "Present answer options in reverse order"
 msgstr ""
 
 #: application/helpers/questionHelper.php:675
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:225
 msgid "Reverse answer order"
 msgstr ""
 
@@ -13074,6 +13410,7 @@ msgid "Restrict input to integer values"
 msgstr ""
 
 #: application/helpers/questionHelper.php:686
+#: editor/src/components/QuestionSettings/attributes/getInputAttributes.js:93
 msgid "Integer only"
 msgstr ""
 
@@ -13082,19 +13419,23 @@ msgid "Allow only numerical input"
 msgstr ""
 
 #: application/helpers/questionHelper.php:697
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:47
 msgid "Numbers only"
 msgstr ""
 
 #: application/helpers/questionHelper.php:707
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:82
 msgid "Rows"
 msgstr ""
 
 #: application/helpers/questionHelper.php:708
 #: application/views/admin/export/exportresult_panels/_columns-control.php:5
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:83
 msgid "Columns"
 msgstr ""
 
 #: application/helpers/questionHelper.php:709
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:84
 msgid "Rows & columns"
 msgstr ""
 
@@ -13103,6 +13444,7 @@ msgid "Show totals for either rows, columns or both rows and columns"
 msgstr ""
 
 #: application/helpers/questionHelper.php:713
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:78
 msgid "Show totals for"
 msgstr ""
 
@@ -13111,6 +13453,7 @@ msgid "Show grand total for either columns or rows"
 msgstr ""
 
 #: application/helpers/questionHelper.php:724
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:67
 msgid "Show grand total"
 msgstr ""
 
@@ -13119,6 +13462,7 @@ msgid "Set the size of the input or textarea. The input will be displayed approx
 msgstr ""
 
 #: application/helpers/questionHelper.php:733
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:530
 msgid "Text input box size"
 msgstr ""
 
@@ -13127,6 +13471,7 @@ msgid "Present as text input boxes instead of dropdown lists"
 msgstr ""
 
 #: application/helpers/questionHelper.php:744
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:584
 msgid "Text inputs"
 msgstr ""
 
@@ -13135,6 +13480,7 @@ msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is act
 msgstr ""
 
 #: application/helpers/questionHelper.php:755
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:139
 msgid "'Other:' comment mandatory"
 msgstr ""
 
@@ -13143,6 +13489,7 @@ msgid "Allow only numerical input for 'Other' text"
 msgstr ""
 
 #: application/helpers/questionHelper.php:766
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:87
 msgid "Numbers only for 'Other'"
 msgstr ""
 
@@ -13151,6 +13498,7 @@ msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr ""
 
 #: application/helpers/questionHelper.php:777
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:366
 msgid "Label for 'Other:' option"
 msgstr ""
 
@@ -13159,6 +13507,7 @@ msgid "Insert a page break before this question in printable view."
 msgstr ""
 
 #: application/helpers/questionHelper.php:788
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:93
 msgid "Insert page break in printable view"
 msgstr ""
 
@@ -13167,6 +13516,7 @@ msgid "A placeholder answer to a question. This will appear in the answer field 
 msgstr ""
 
 #: application/helpers/questionHelper.php:799
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:606
 msgid "Placeholder answer"
 msgstr ""
 
@@ -13175,6 +13525,7 @@ msgid "Add a prefix to the answer field"
 msgstr ""
 
 #: application/helpers/questionHelper.php:810
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:199
 msgid "Answer prefix"
 msgstr ""
 
@@ -13183,6 +13534,7 @@ msgid "In the printable version the condition is being replaced with this explan
 msgstr ""
 
 #: application/helpers/questionHelper.php:822
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:503
 msgid "Condition help for printable survey"
 msgstr ""
 
@@ -13191,6 +13543,7 @@ msgid "Show statistics of this question in the public statistics page"
 msgstr ""
 
 #: application/helpers/questionHelper.php:833
+#: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:45
 msgid "Show in public statistics"
 msgstr ""
 
@@ -13206,21 +13559,28 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:854
 #: application/helpers/questionHelper.php:897
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:409
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:412
+#: editor/src/helpers/options/getOrderOptions.js:4
 msgid "Normal"
 msgstr ""
 
 #: application/helpers/questionHelper.php:855
 #: application/helpers/questionHelper.php:898
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:410
+#: editor/src/helpers/options/getOrderOptions.js:8
 msgid "Random"
 msgstr ""
 
 #: application/helpers/questionHelper.php:856
 #: application/helpers/questionHelper.php:899
+#: editor/src/helpers/options/getOrderOptions.js:12
 msgid "Alphabetical"
 msgstr ""
 
 #: application/helpers/questionHelper.php:857
 #: application/helpers/questionHelper.php:900
+#: editor/src/helpers/options/getOrderOptions.js:16
 msgid "Random A-Z/Z-A"
 msgstr ""
 
@@ -13229,14 +13589,17 @@ msgid "Present answer options in normal, random or alphabetical order"
 msgstr ""
 
 #: application/helpers/questionHelper.php:863
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:139
 msgid "Answer options order"
 msgstr ""
 
 #: application/helpers/questionHelper.php:887
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:159
 msgid "Semicolon-separated list of codes that keep their original database position when items are randomized."
 msgstr ""
 
 #: application/helpers/questionHelper.php:888
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:157
 msgid "Keep codes at original positions"
 msgstr ""
 
@@ -13245,10 +13608,12 @@ msgid "Present subquestions in normal, random or alphabetical order"
 msgstr ""
 
 #: application/helpers/questionHelper.php:904
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:148
 msgid "Subquestions order"
 msgstr ""
 
 #: application/helpers/questionHelper.php:914
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:235
 msgid "Show javascript alert"
 msgstr ""
 
@@ -13257,6 +13622,7 @@ msgid "Show an alert if answers exceeds the number of max answers"
 msgstr ""
 
 #: application/helpers/questionHelper.php:925
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:178
 msgid "Same height for all answer options"
 msgstr ""
 
@@ -13270,6 +13636,7 @@ msgid "If you have a lot of items and use a filter you can disable this to impro
 msgstr ""
 
 #: application/helpers/questionHelper.php:936
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:188
 msgid "Same height for lists"
 msgstr ""
 
@@ -13278,6 +13645,7 @@ msgid "Force the choice list and the rank list to have the same height."
 msgstr ""
 
 #: application/helpers/questionHelper.php:945
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:448
 msgid "Get order from previous question"
 msgstr ""
 
@@ -13299,6 +13667,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:1089
 #: application/helpers/questionHelper.php:1100
 #: application/helpers/questionHelper.php:1111
+#: editor/src/helpers/getQuestionAttributesTitles.js:12
 msgid "Slider"
 msgstr ""
 
@@ -13306,6 +13675,8 @@ msgstr ""
 #: application/helpers/questionHelper.php:957
 #: application/helpers/questionHelper.php:1072
 #: application/helpers/questionHelper.php:1073
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:48
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:11
 msgid "Use slider layout"
 msgstr ""
 
@@ -13314,6 +13685,7 @@ msgid "You can use ExpressionScript, but this must be a number before showing th
 msgstr ""
 
 #: application/helpers/questionHelper.php:967
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:34
 msgid "Slider minimum value"
 msgstr ""
 
@@ -13322,6 +13694,7 @@ msgid "You can use ExpressionScript, but this must be a number before showing th
 msgstr ""
 
 #: application/helpers/questionHelper.php:977
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:43
 msgid "Slider maximum value"
 msgstr ""
 
@@ -13338,6 +13711,7 @@ msgid "Slider start as this value. You can use ExpressionScript, but this must b
 msgstr ""
 
 #: application/helpers/questionHelper.php:997
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:93
 msgid "Slider initial value"
 msgstr ""
 
@@ -13358,10 +13732,12 @@ msgid "Slider starts at the middle position"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1027
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:23
 msgid "Horizontal"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1028
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:24
 msgid "Vertical"
 msgstr ""
 
@@ -13370,18 +13746,22 @@ msgid "Set the orientation."
 msgstr ""
 
 #: application/helpers/questionHelper.php:1032
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:21
 msgid "Orientation"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1041
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:139
 msgid "Circle"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1042
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:143
 msgid "Square"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1043
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:147
 msgid "Triangle"
 msgstr ""
 
@@ -13390,6 +13770,7 @@ msgid "Set the handle shape. 'Custom' is defined in CSS using the Font Awesome f
 msgstr ""
 
 #: application/helpers/questionHelper.php:1048
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:136
 msgid "Handle shape"
 msgstr ""
 
@@ -13398,14 +13779,18 @@ msgid "Accepts Font Awesome Unicode characters."
 msgstr ""
 
 #: application/helpers/questionHelper.php:1058
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:162
 msgid "Custom handle Unicode code"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1068
+#: editor/src/components/UIComponents/RatingItems.js:8
+#: editor/src/helpers/options/getSliderLayoutOptions.js:8
 msgid "Stars"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1069
+#: editor/src/helpers/options/getSliderLayoutOptions.js:12
 msgid "Slider with emoticon"
 msgstr ""
 
@@ -13422,6 +13807,7 @@ msgid "Add a button to reset the slider. If you choose an start value, it reset 
 msgstr ""
 
 #: application/helpers/questionHelper.php:1095
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:112
 msgid "Allow slider reset"
 msgstr ""
 
@@ -13438,6 +13824,7 @@ msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1116
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:72
 msgid "Slider left/right text separator"
 msgstr ""
 
@@ -13446,6 +13833,7 @@ msgid "Add a suffix to the answer field"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1127
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:208
 msgid "Answer suffix"
 msgstr ""
 
@@ -13456,6 +13844,8 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:1152
 #: application/helpers/questionHelper.php:1177
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:511
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:520
 msgid "Text input box width"
 msgstr ""
 
@@ -13472,6 +13862,7 @@ msgid "Relative width of checkbox wrapper element"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1227
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:216
 msgid "Choice column width"
 msgstr ""
 
@@ -13480,6 +13871,7 @@ msgid "Present dropdown control(s) instead of list of radio buttons"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1237
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:563
 msgid "Use dropdown presentation"
 msgstr ""
 
@@ -13488,6 +13880,7 @@ msgid "For list dropdown boxes, show up to this many rows"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1248
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:356
 msgid "Height of dropdown"
 msgstr ""
 
@@ -13500,18 +13893,22 @@ msgid "Accelerator keys for list items"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1263
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:343
 msgid "Prefix for list items"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1272
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:109
 msgid "Nominal"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1273
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:113
 msgid "Ordinal"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1274
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:117
 msgid "Scale"
 msgstr ""
 
@@ -13520,6 +13917,7 @@ msgid "Set a specific SPSS export scale type for this question"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1277
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:102
 msgid "SPSS export scale type"
 msgstr ""
 
@@ -13528,6 +13926,7 @@ msgid "Replace choice header (default: \"%s\")"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1289
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:51
 msgid "Choice header"
 msgstr ""
 
@@ -13536,6 +13935,7 @@ msgid "Replace rank header (default: \"%s\")"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1301
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:59
 msgid "Rank header"
 msgstr ""
 
@@ -13556,6 +13956,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:1450
 #: application/helpers/questionHelper.php:1459
 #: application/helpers/questionHelper.php:1470
+#: editor/src/helpers/getQuestionAttributesTitles.js:10
 msgid "Timer"
 msgstr ""
 
@@ -13564,18 +13965,22 @@ msgid "Limit time to answer question (in seconds)"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1311
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:189
 msgid "Time limit"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1320
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:202
 msgid "Warn and move on"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1321
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:206
 msgid "Move on without warning"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1322
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:210
 msgid "Disable only"
 msgstr ""
 
@@ -13584,6 +13989,7 @@ msgid "Action to perform when time limit is up"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1326
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:199
 msgid "Time limit action"
 msgstr ""
 
@@ -13592,6 +13998,7 @@ msgid "Disable the next button until time limit expires"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1337
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:220
 msgid "Time limit disable next"
 msgstr ""
 
@@ -13600,6 +14007,7 @@ msgid "Disable the prev button until the time limit expires"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1348
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:230
 msgid "Time limit disable prev"
 msgstr ""
 
@@ -13608,6 +14016,7 @@ msgid "The text message that displays in the countdown timer during the countdow
 msgstr ""
 
 #: application/helpers/questionHelper.php:1359
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:241
 msgid "Time limit countdown message"
 msgstr ""
 
@@ -13616,6 +14025,7 @@ msgid "CSS Style for the message that displays in the countdown timer during the
 msgstr ""
 
 #: application/helpers/questionHelper.php:1369
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:9
 msgid "Time limit timer CSS style"
 msgstr ""
 
@@ -13640,6 +14050,7 @@ msgid "CSS style for the 'time limit expiry message'"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1398
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:39
 msgid "Time limit message CSS style"
 msgstr ""
 
@@ -13720,6 +14131,7 @@ msgid "Minute step interval when using select boxes"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1493
+#: editor/src/components/QuestionSettings/attributes/getInputAttributes.js:67
 msgid "Minute step interval"
 msgstr ""
 
@@ -13732,6 +14144,8 @@ msgid "Full names"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1504
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:93
+#: editor/src/components/UIComponents/RatingItems.js:7
 msgid "Numbers"
 msgstr ""
 
@@ -13740,11 +14154,13 @@ msgid "Change the display style of the month when using select boxes"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1508
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:88
 msgid "Month display style"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1513
 #: application/helpers/questionHelper.php:1524
+#: editor/src/helpers/getQuestionAttributesTitles.js:14
 msgid "File metadata"
 msgstr ""
 
@@ -13753,6 +14169,7 @@ msgid "Is the participant required to give a title to the uploaded file?"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1519
+#: editor/src/components/QuestionSettings/attributes/getFileMetaDataAttributes.js:9
 msgid "Show title"
 msgstr ""
 
@@ -13761,6 +14178,7 @@ msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1530
+#: editor/src/components/QuestionSettings/attributes/getFileMetaDataAttributes.js:19
 msgid "Show comment"
 msgstr ""
 
@@ -13777,6 +14195,7 @@ msgid "Maximum number of files that the participant can upload for this question
 msgstr ""
 
 #: application/helpers/questionHelper.php:1552
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:40
 msgid "Maximum number of files"
 msgstr ""
 
@@ -13785,6 +14204,7 @@ msgid "Minimum number of files that the participant must upload for this questio
 msgstr ""
 
 #: application/helpers/questionHelper.php:1563
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:9
 msgid "Minimum number of files"
 msgstr ""
 
@@ -13793,6 +14213,7 @@ msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1573
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:19
 msgid "Allowed file types"
 msgstr ""
 
@@ -13801,6 +14222,7 @@ msgid "Place questions into a specified randomization group, all questions inclu
 msgstr ""
 
 #: application/helpers/questionHelper.php:1582
+#: editor/src/components/QuestionSettings/attributes/getLogicAttributes.js:124
 msgid "Randomization group name"
 msgstr ""
 
@@ -13809,6 +14231,7 @@ msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum
 msgstr ""
 
 #: application/helpers/questionHelper.php:1597
+#: editor/src/components/QuestionSettings/attributes/getInputAttributes.js:125
 msgid "Value range allows missing"
 msgstr ""
 
@@ -13825,6 +14248,7 @@ msgid "Use button group or radio list"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1627
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:56
 msgid "Display type"
 msgstr ""
 
@@ -14428,10 +14852,12 @@ msgid "Zulu"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:1123
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:219
 msgid "Dot (.)"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:1124
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:220
 msgid "Comma (,)"
 msgstr ""
 
@@ -14497,6 +14923,9 @@ msgstr ""
 
 #: application/helpers/twig_translation_helper.php:40
 #: application/views/questionAdministration/subquestions.twig:51
+#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:101
+#: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceSubquestion.js:143
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:196
 msgid "Subquestion"
 msgstr ""
 
@@ -14565,6 +14994,7 @@ msgid "Indicates where the 'Other' option should be placed"
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:56
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:420
 msgid "Answer code for 'After specific answer option'"
 msgstr ""
 
@@ -14573,10 +15003,12 @@ msgid "The code of the answer option after which the 'Other:' option will be pla
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:58
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:374
 msgid "Position for 'Other:' option"
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:59
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:399
 msgid "Subquestion title for 'After specific subquestion'"
 msgstr ""
 
@@ -14585,6 +15017,7 @@ msgid "The title of the subquestion after which the 'Other:' option will be plac
 msgstr ""
 
 #: application/helpers/twig_translation_helper.php:62
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:387
 msgid "After specific answer option"
 msgstr ""
 
@@ -14949,6 +15382,10 @@ msgstr ""
 #: application/views/admin/authentication/login.php:95
 #: application/views/admin/globalsettings/globalSettings_view.php:22
 #: application/views/admin/token/dummytokenform.php:69
+#: editor/src/components/SurveySettings/GeneralSettings/LanguageSwitch.js:7
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:139
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:125
+#: editor/src/pages/Responses/utils/generateColumns.js:116
 #: modules/admin/globalsettings/views/globalSettings_view.php:22
 msgid "Language"
 msgstr ""
@@ -15541,6 +15978,8 @@ msgstr ""
 #: application/models/User.php:636
 #: application/views/quotas/viewquotas_massive_selector.php:36
 #: application/views/userManagement/massiveAction/_updatestatus.php:7
+#: editor/src/components/PublishSettings/PublishSettings.js:67
+#: editor/src/components/SurveyOverview/SurveyOverview.js:230
 msgid "Deactivate"
 msgstr ""
 
@@ -15568,6 +16007,7 @@ msgid "Question id (qid) : '%s' is already in use."
 msgstr ""
 
 #: application/models/Question.php:215
+#: editor/src/hooks/useQuestionChildren.js:333
 msgid "Subquestion codes must be unique."
 msgstr ""
 
@@ -15580,6 +16020,7 @@ msgid "'comment' suffix can not be used with multiple choice with comments."
 msgstr ""
 
 #: application/models/Question.php:267
+#: editor/src/components/QuestionSettings/attributes/QuestionCodeAttribute.js:43
 msgid "Question codes must be unique."
 msgstr ""
 
@@ -15627,6 +16068,7 @@ msgstr ""
 #: application/views/questionAdministration/answerOptions.twig:32
 #: application/views/questionAdministration/questionCode.php:9
 #: application/views/questionAdministration/subquestions.twig:43
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:65
 msgid "Code"
 msgstr ""
 
@@ -15657,6 +16099,8 @@ msgid "Group can not be deleted, because of depending conditions"
 msgstr ""
 
 #: application/models/QuestionGroup.php:321
+#: editor/src/components/Survey/QuestionGroups/QuestionGroups.js:146
+#: editor/src/components/SurveyStructure/SurveyStructure.js:329
 msgid "Delete question group"
 msgstr ""
 
@@ -15670,6 +16114,7 @@ msgstr ""
 
 #: application/models/QuestionGroupL10n.php:82
 #: application/views/questionAdministration/partial/groupView.php:132
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:49
 msgid "Group name"
 msgstr ""
 
@@ -15729,6 +16174,7 @@ msgid "No question theme directory found for theme type '%s'"
 msgstr ""
 
 #: application/models/QuestionType.php:134
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:26
 msgid "Array dual scale"
 msgstr ""
 
@@ -15745,6 +16191,8 @@ msgid "Arrays"
 msgstr ""
 
 #: application/models/QuestionType.php:145
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:42
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:132
 msgid "5 point choice"
 msgstr ""
 
@@ -15756,14 +16204,17 @@ msgid "Single choice questions"
 msgstr ""
 
 #: application/models/QuestionType.php:156
+#: editor/src/components/QuestionTypes/getNotSupportedQuestionTypeInfo.js:26
 msgid "Array (5 point choice)"
 msgstr ""
 
 #: application/models/QuestionType.php:167
+#: editor/src/components/QuestionTypes/getNotSupportedQuestionTypeInfo.js:31
 msgid "Array (10 point choice)"
 msgstr ""
 
 #: application/models/QuestionType.php:178
+#: editor/src/components/QuestionTypes/getNotSupportedQuestionTypeInfo.js:41
 msgid "Array (Yes/No/Uncertain)"
 msgstr ""
 
@@ -15785,34 +16236,43 @@ msgid "Mask questions"
 msgstr ""
 
 #: application/models/QuestionType.php:200
+#: editor/src/components/QuestionTypes/getNotSupportedQuestionTypeInfo.js:36
 msgid "Array (Increase/Same/Decrease)"
 msgstr ""
 
 #: application/models/QuestionType.php:211
+#: editor/src/components/QuestionTypeSelector/constants.js:185
 msgid "Array"
 msgstr ""
 
 #: application/models/QuestionType.php:222
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:45
 msgid "Gender"
 msgstr ""
 
 #: application/models/QuestionType.php:233
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:21
 msgid "Array by column"
 msgstr ""
 
 #: application/models/QuestionType.php:244
+#: editor/src/components/QuestionTypes/getNotSupportedQuestionTypeInfo.js:16
 msgid "Language switch"
 msgstr ""
 
 #: application/models/QuestionType.php:255
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:74
 msgid "Multiple numerical input"
 msgstr ""
 
 #: application/models/QuestionType.php:266
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:107
 msgid "List (Radio)"
 msgstr ""
 
 #: application/models/QuestionType.php:277
+#: editor/src/components/QuestionTypeSelector/constants.js:58
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:59
 msgid "Multiple choice"
 msgstr ""
 
@@ -15822,6 +16282,7 @@ msgid "Multiple choice questions"
 msgstr ""
 
 #: application/models/QuestionType.php:288
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:89
 msgid "Numerical input"
 msgstr ""
 
@@ -15830,10 +16291,12 @@ msgid "List with comment"
 msgstr ""
 
 #: application/models/QuestionType.php:310
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:64
 msgid "Multiple choice with comments"
 msgstr ""
 
 #: application/models/QuestionType.php:321
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:69
 msgid "Multiple short text"
 msgstr ""
 
@@ -15849,30 +16312,37 @@ msgid "Long free text"
 msgstr ""
 
 #: application/models/QuestionType.php:365
+#: editor/src/components/QuestionTypes/getNotSupportedQuestionTypeInfo.js:6
 msgid "Huge free text"
 msgstr ""
 
 #: application/models/QuestionType.php:376
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:144
 msgid "Text display"
 msgstr ""
 
 #: application/models/QuestionType.php:387
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:145
 msgid "Yes/No"
 msgstr ""
 
 #: application/models/QuestionType.php:398
+#: editor/src/components/QuestionTypes/getNotSupportedQuestionTypeInfo.js:21
 msgid "List (Dropdown)"
 msgstr ""
 
 #: application/models/QuestionType.php:409
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:16
 msgid "Array (Numbers)"
 msgstr ""
 
 #: application/models/QuestionType.php:420
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:11
 msgid "Array (Texts)"
 msgstr ""
 
 #: application/models/QuestionType.php:431
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:38
 msgid "File upload"
 msgstr ""
 
@@ -15996,6 +16466,8 @@ msgstr ""
 #: application/models/Survey.php:1545
 #: application/views/admin/participants/massive_actions/_selector.php:76
 #: application/views/admin/participants/modal_subviews/_shareParticipant.php:70
+#: editor/src/components/TopBar/SurveyNavigation.js:45
+#: editor/src/components/TopBar/TopBarActions.js:103
 msgid "Share"
 msgstr ""
 
@@ -16020,6 +16492,7 @@ msgstr ""
 
 #: application/models/Survey.php:1699
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:42
+#: editor/src/components/SurveySettings/Settings/getParticipantsSettingsBlocks.js:14
 msgid "Anonymized responses"
 msgstr ""
 
@@ -16034,6 +16507,7 @@ msgstr ""
 #: application/views/admin/globalsettings/_general.php:308
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:34
 #: application/views/admin/themes/templateeditor_preview.php:9
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:92
 msgid "Full"
 msgstr ""
 
@@ -16112,15 +16586,18 @@ msgstr ""
 
 #: application/models/SurveyDynamic.php:311
 #: application/models/SurveyTimingDynamic.php:207
+#: editor/src/pages/Responses/utils/getDefaultColumns.js:58
 msgid "Edit this response"
 msgstr ""
 
 #: application/models/SurveyDynamic.php:325
+#: editor/src/pages/Responses/utils/getDefaultColumns.js:63
 msgid "Download all response files"
 msgstr ""
 
 #: application/models/SurveyDynamic.php:334
 #: application/models/SurveyDynamic.php:341
+#: editor/src/pages/Responses/utils/getDefaultColumns.js:68
 msgid "Delete all response files"
 msgstr ""
 
@@ -16131,6 +16608,7 @@ msgstr ""
 #: application/models/SurveyDynamic.php:350
 #: application/models/SurveyDynamic.php:357
 #: application/models/SurveyTimingDynamic.php:221
+#: editor/src/pages/Responses/utils/getDefaultColumns.js:73
 msgid "Delete this response"
 msgstr ""
 
@@ -16256,6 +16734,7 @@ msgstr ""
 
 #: application/models/SurveymenuEntries.php:185
 #: application/models/SurveymenuEntries.php:451
+#: editor/src/shared/getSurveyPanelConfig.js:31
 msgid "Menu"
 msgstr ""
 
@@ -16414,22 +16893,26 @@ msgstr ""
 
 #: application/models/SurveysGroupsettings.php:441
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:31
+#: editor/src/helpers/options/getFormatOptions.js:8
 msgid "Question by question"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:441
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:32
+#: editor/src/helpers/options/getFormatOptions.js:12
 msgid "Group by group"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:441
 #: application/views/admin/survey/subview/accordion/_generaloptions_panel.php:33
 #: application/views/limereplacementfields/limeReplacementFields_view.php:76
+#: editor/src/helpers/options/getFormatOptions.js:4
 msgid "All in one"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:443
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:33
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:89
 msgid "Incremental"
 msgstr ""
 
@@ -16614,6 +17097,7 @@ msgstr ""
 
 #: application/models/TemplateManifest.php:178
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:209
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:323
 #: themes/survey/bootswatch/config.xml:302
 #: themes/survey/fruity_twentythree/config.xml:459
 #: themes/survey/vanilla/config.xml:305
@@ -16832,6 +17316,7 @@ msgstr ""
 #: application/views/admin/super/sidemenu.php:70
 #: application/views/homepageSettings/index.php:27
 #: application/views/layouts/sidemenu.php:72
+#: editor/src/shared/getSurveyPanelConfig.js:19
 msgid "Settings"
 msgstr ""
 
@@ -17048,6 +17533,7 @@ msgstr ""
 #: application/models/UserGroup.php:371
 #: application/views/questionAdministration/answerOptions.twig:60
 #: application/views/userGroup/viewUserGroup_view.php:86
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:111
 msgid "Actions"
 msgstr ""
 
@@ -17344,6 +17830,7 @@ msgid "Single checkbox"
 msgstr ""
 
 #: application/models/services/SurveyCondition.php:936
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/multipleChoiceTypeHandler.js:31
 msgid "Not checked"
 msgstr ""
 
@@ -17778,6 +18265,7 @@ msgid "Delete all conditions"
 msgstr ""
 
 #: application/views/admin/conditions/conditionshead_view.php:16
+#: editor/src/components/ConditionDesigner/Overlays/ResetAllConditionsOverlay.js:12
 msgid "Are you sure you want to delete all conditions for this question?"
 msgstr ""
 
@@ -17815,6 +18303,7 @@ msgid "We recommend that before you proceed, you export the entire survey from t
 msgstr ""
 
 #: application/views/admin/conditions/includes/conditions_edit.php:6
+#: editor/src/components/ConditionDesigner/Overlays/ResetAllConditionsOverlay.js:8
 msgid "Delete condition"
 msgstr ""
 
@@ -17824,11 +18313,14 @@ msgid "Are you sure you want to delete this condition?"
 msgstr ""
 
 #: application/views/admin/conditions/includes/conditions_scenario.php:22
+#: editor/src/components/ConditionDesigner/ConditionItem.js:49
+#: editor/src/components/QuestionTypes/RankingQuestion/RankingQuestionSubquestion.js:70
 msgid "OR"
 msgstr ""
 
 #: application/views/admin/conditions/includes/conditions_scenario.php:24
 #: application/views/admin/conditions/includes/form_editconditions_header.php:34
+#: editor/src/components/ConditionDesigner/ConditionDesigner.js:185
 msgid "Default scenario"
 msgstr ""
 
@@ -17872,6 +18364,9 @@ msgstr ""
 
 #: application/views/admin/conditions/includes/form_editconditions_header.php:26
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:13
+#: editor/src/components/ConditionDesigner/ConditionDesigner.js:185
+#: editor/src/components/ConditionDesigner/ConditionDesigner.js:191
+#: editor/src/components/ConditionDesigner/ScenarioList.js:112
 msgid "Scenario"
 msgstr ""
 
@@ -17881,11 +18376,13 @@ msgstr ""
 
 #: application/views/admin/conditions/includes/form_editconditions_header.php:50
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:68
+#: editor/src/components/ConditionDesigner/ConditionFormFields/OperatorSelect.js:94
 msgid "Comparison operator"
 msgstr ""
 
 #: application/views/admin/conditions/includes/form_editconditions_header.php:74
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:25
+#: editor/src/components/ConditionDesigner/ConditionFormFields/QuestionsSelect.js:64
 msgid "Previous questions"
 msgstr ""
 
@@ -17900,6 +18397,7 @@ msgstr ""
 
 #: application/views/admin/conditions/includes/form_editconditions_header.php:128
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:88
+#: editor/src/components/ConditionDesigner/ConditionFormFields/AnswerOptionsSelect.js:59
 msgid "Predefined"
 msgstr ""
 
@@ -17915,6 +18413,7 @@ msgstr ""
 
 #: application/views/admin/conditions/includes/form_editconditions_header.php:140
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:100
+#: editor/src/components/ConditionDesigner/ConditionFormFields/AnswerTypeSelect.js:57
 msgid "RegExp"
 msgstr ""
 
@@ -17922,6 +18421,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_general_filters.php:15
 #: application/views/admin/export/statistics_subviews/_response_filters.php:33
 #: application/views/surveyAdministration/partial/topbar_statistics/rightSideButtons.php:59
+#: editor/src/components/UIComponents/DateRangePicker/DateRangePicker.js:111
 #: themes/survey/fruity_twentythree/views/subviews/messages/bootstrap_alert_modal.twig:69
 msgid "Clear"
 msgstr ""
@@ -18131,6 +18631,7 @@ msgstr ""
 
 #: application/views/admin/dataentry/import.php:10
 #: application/views/responses/partial/topbarBtns/responsesImportDropdownItems.php:8
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyStatusSwitchPopupResponsesSelect.js:43
 msgid "Import responses from an archived response table"
 msgstr ""
 
@@ -18377,6 +18878,7 @@ msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_format.php:4
 #: application/views/admin/export/vv_view.php:53
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:234
 msgid "Format"
 msgstr ""
 
@@ -18403,6 +18905,8 @@ msgstr ""
 #: application/views/admin/export/statistics_user_view.php:32
 #: application/views/admin/export/vv_view.php:39
 #: application/views/responses/browseindex_view.php:32
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:60
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:60
 msgid "All responses"
 msgstr ""
 
@@ -18567,12 +19071,14 @@ msgstr ""
 #: application/views/admin/export/spss_view.php:22
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:15
 #: application/views/admin/export/statistics_user_view.php:33
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:61
 msgid "Complete only"
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:23
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:16
 #: application/views/admin/export/statistics_user_view.php:34
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:62
 msgid "Incomplete only"
 msgstr ""
 
@@ -18831,6 +19337,7 @@ msgstr ""
 
 #: application/views/admin/export/statistics_subviews/_question.php:962
 #: application/views/admin/export/statistics_subviews/_question.php:1029
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:6
 msgid "Label"
 msgstr ""
 
@@ -19224,6 +19731,7 @@ msgid "Default HTML editor mode"
 msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:248
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:22
 msgid "Inline"
 msgstr ""
 
@@ -19259,6 +19767,8 @@ msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:290
 #: application/views/admin/globalsettings/_general.php:309
+#: editor/src/components/QuestionSettings/QuestionSettings.js:194
+#: editor/src/helpers/getQuestionAttributesTitles.js:3
 msgid "Simple"
 msgstr ""
 
@@ -19274,6 +19784,7 @@ msgstr ""
 
 #: application/views/admin/globalsettings/_general.php:327
 #: application/views/admin/user/personalsettings.php:377
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:91
 msgid "Short"
 msgstr ""
 
@@ -19701,12 +20212,21 @@ msgid "All changes of global survey settings will immediately affect all related
 msgstr ""
 
 #: application/views/admin/htmleditor/modal_editor_partial.php:7
+#: editor/src/components/TopBar/SurveyNavigation.js:44
+#: editor/src/components/TopBar/TopBarActions.js:93
+#: editor/src/components/UIComponents/Dropdown/Dropdown.js:7
 msgid "Editor"
 msgstr ""
 
 #: application/views/admin/htmleditor/modal_editor_partial.php:16
 #: application/views/admin/super/footer.php:143
 #: application/views/admin/super/footer.php:164
+#: editor/src/components/ConditionDesigner/Overlays/DeleteScenarioOverlay.js:9
+#: editor/src/components/Modals/ComponentModal.js:57
+#: editor/src/components/Modals/ConfirmModal.js:12
+#: editor/src/components/Survey/Questions/QuestionPreview/QuestionPreviewBody.js:121
+#: editor/src/components/UIComponents/DateRangePicker/DateRangePicker.js:117
+#: editor/src/pages/Responses/components/ColumnsManagement.js:194
 msgid "Confirm"
 msgstr ""
 
@@ -19717,6 +20237,7 @@ msgstr ""
 
 #: application/views/admin/htmleditor/pop_editor_view.php:33
 #: application/views/admin/survey/prepareEditorScript_view.php:36
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:120
 msgid "Placeholder fields"
 msgstr ""
 
@@ -20177,6 +20698,7 @@ msgid "Remove filters"
 msgstr ""
 
 #: application/views/admin/participants/displayParticipants_view.php:32
+#: editor/src/components/ConditionDesigner/ConditionFormFields/OperatorSelect.js:16
 msgid "equals"
 msgstr ""
 
@@ -20802,6 +21324,7 @@ msgid "Show survey logic overview"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:141
+#: editor/src/components/QuestionSettings/QuestionSettings.js:195
 msgid "Advanced"
 msgstr ""
 
@@ -20916,7 +21439,7 @@ msgstr ""
 msgid "We are sorry but this information is only available to superadministrators."
 msgstr ""
 
-#: application/views/admin/super/footer.php:147
+#: application/views/admin/super/footer.php:147 editor/src/helpers/Alert.js:11
 msgid "Are you sure?"
 msgstr ""
 
@@ -20996,6 +21519,8 @@ msgstr ""
 
 #: application/views/admin/super/sidemenu.php:71
 #: application/views/layouts/sidemenu.php:73
+#: editor/src/components/SurveyStructure/SurveyStructure.js:338
+#: editor/src/shared/getSurveyPanelConfig.js:14
 msgid "Structure"
 msgstr ""
 
@@ -21101,6 +21626,9 @@ msgstr ""
 
 #: application/views/admin/survey/Question/massive_actions/_selector.php:69
 #: application/views/layouts/partial_modals/modal_footer_cancelapply.php:10
+#: editor/src/components/ConditionDesigner/ConditionDesigner.js:233
+#: editor/src/components/ConditionDesigner/ExpressionScript/ExpressionScript.js:135
+#: editor/src/components/ConditionDesigner/Overlays/ExpressionScriptEditorOverlay.js:85
 msgid "Apply"
 msgstr ""
 
@@ -21743,6 +22271,7 @@ msgid "Allow backward navigation:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:268
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:339
 msgid "Allow backward navigation"
 msgstr ""
 
@@ -21751,11 +22280,14 @@ msgid "Participants may print answers:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:284
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:412
 msgid "Participants may print answers"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:296
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:307
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:421
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:427
 #: themes/survey/bootswatch/config.xml:287
 #: themes/survey/fruity_twentythree/config.xml:436
 #: themes/survey/vanilla/config.xml:283
@@ -21772,6 +22304,7 @@ msgid "Show graphs in public statistics:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:27
+#: editor/src/shared/getPublicationAccessSettingsBlocks.js:7
 msgid "Publication date"
 msgstr ""
 
@@ -21873,6 +22406,7 @@ msgid "Allow to update the responses using the access code"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:182
+#: editor/src/components/SurveySettings/Settings/getParticipantsSettingsBlocks.js:35
 msgid "Allow multiple responses with the same access code"
 msgstr ""
 
@@ -21918,6 +22452,7 @@ msgstr ""
 
 #: application/views/admin/survey/subview/surveydashboard/001-sharingpanel.twig:4
 #: application/views/admin/survey/subview/surveydashboard/001-sharingpanel.twig:105
+#: editor/src/shared/getSharingPanels.js:7
 msgid "Share survey"
 msgstr ""
 
@@ -21943,11 +22478,30 @@ msgstr ""
 
 #: application/views/admin/survey/subview/surveydashboard/001-sharingpanel.twig:85
 #: application/views/admin/survey/subview/surveydashboard/001-sharingpanel.twig:91
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:71
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:114
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:126
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:156
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:176
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:212
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:359
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:386
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessModeHandler.js:21
 msgid "Anyone with link"
 msgstr ""
 
 #: application/views/admin/survey/subview/surveydashboard/001-sharingpanel.twig:85
 #: application/views/admin/survey/subview/surveydashboard/001-sharingpanel.twig:92
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:95
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:118
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:130
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:152
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:176
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:212
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:278
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:297
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:323
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessModeHandler.js:28
 msgid "Link with access code"
 msgstr ""
 
@@ -22048,6 +22602,7 @@ msgid "Show privacy policy text with mandatory checkbox:"
 msgstr ""
 
 #: application/views/admin/survey/subview/tab_edit_view_datasecurity.php:36
+#: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:14
 msgid "Don't show"
 msgstr ""
 
@@ -22110,6 +22665,7 @@ msgid "Import a question"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:20
+#: editor/src/components/TopBar/TopBarActions.js:149
 msgid "Survey structure (.lss)"
 msgstr ""
 
@@ -22219,6 +22775,7 @@ msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:115
 #: application/views/admin/survey/surveybar_displayexport.php:140
+#: editor/src/components/TopBar/TopBarActions.js:188
 msgid "Printable survey"
 msgstr ""
 
@@ -22263,6 +22820,7 @@ msgstr ""
 #: application/views/questionAdministration/partial/topbarBtns/questionTopbarLeft_view.php:13
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupTopbarLeft_view.php:13
 #: application/views/surveyAdministration/partial/topbar/surveyTopbarLeft_view.php:27
+#: editor/src/components/TopBar/TopBarActions.js:141
 #: themes/survey/vanilla/views/subviews/header/nav_bar.twig:36
 msgid "Tools"
 msgstr ""
@@ -22907,6 +23465,7 @@ msgstr ""
 #: application/views/admin/token/csvimportresult.php:127
 #: application/views/admin/token/ldappost.php:25
 #: application/views/admin/token/ldappost.php:48
+#: editor/src/helpers/options/getVisualizationOptions.js:4
 msgid "List"
 msgstr ""
 
@@ -23018,6 +23577,7 @@ msgid "Number of participants:"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:35
+#: editor/src/components/SurveySettings/Settings/getParticipantsSettingsBlocks.js:146
 msgid "Access code length"
 msgstr ""
 
@@ -23361,6 +23921,7 @@ msgid "Restore"
 msgstr ""
 
 #: application/views/admin/token/surveyParticipantView.php:174
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyReactivationPopup.js:114
 msgid "Start from scratch"
 msgstr ""
 
@@ -23783,10 +24344,12 @@ msgid "Backup"
 msgstr ""
 
 #: application/views/admin/update/updater/_progress.php:30
+#: editor/src/components/SurveyStructure/SurveyStructure.js:437
 msgid "End"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_backup.php:9
+#: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:64
 msgid "Download file"
 msgstr ""
 
@@ -24413,6 +24976,8 @@ msgid "Fields with %s*%s are required."
 msgstr ""
 
 #: application/views/homepageSettings/index.php:22
+#: editor/src/helpers/options/getDisplayButtonTypeOptions.js:3
+#: editor/src/helpers/options/getVisualizationOptions.js:12
 msgid "Buttons"
 msgstr ""
 
@@ -24503,6 +25068,7 @@ msgstr ""
 
 #: application/views/installer/optconfig_view.php:48
 #: application/views/surveyAdministration/tabCreate_view.php:120
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:193
 msgid "Administrator email address"
 msgstr ""
 
@@ -25086,6 +25652,7 @@ msgid "Error: You have to enter a group title for each language."
 msgstr ""
 
 #: application/views/questionGroupsAdministration/addGroup_view.php:19
+#: editor/src/components/QuestionTypeSelector/QuestionTypeSelector.js:229
 msgid "Add question group"
 msgstr ""
 
@@ -25128,6 +25695,7 @@ msgid "Translate to"
 msgstr ""
 
 #: application/views/quickTranslation/translateformheader_view.php:10
+#: editor/src/pages/Editor/LoadingIndicator.js:13
 msgid "Loading translations..."
 msgstr ""
 
@@ -25200,6 +25768,7 @@ msgstr ""
 #: application/views/quotas/newanswererror_view.php:8
 #: application/views/quotas/newanswertwo_view.php:11
 #: application/views/quotas/viewquotas_quota_members.php:52
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionEditMode.js:184
 msgid "Add answer"
 msgstr ""
 
@@ -25326,6 +25895,7 @@ msgid "Median:"
 msgstr ""
 
 #: application/views/responses/massive_actions/_selector.php:30
+#: editor/src/pages/Responses/components/ResponseModals.js:36
 msgid "Delete responses"
 msgstr ""
 
@@ -25335,6 +25905,8 @@ msgstr ""
 
 #: application/views/responses/massive_actions/_selector.php:45
 #: application/views/responses/massive_actions/_selector.php:52
+#: editor/src/pages/Responses/components/BulkActions.js:49
+#: editor/src/pages/Responses/components/ResponseModals.js:66
 msgid "Delete attachments"
 msgstr ""
 
@@ -25344,6 +25916,7 @@ msgstr ""
 
 #: application/views/responses/massive_actions/_selector.php:67
 #: application/views/responses/partial/topbarBtns/responseViewTopbarRight_view.php:46
+#: editor/src/pages/Responses/components/BulkActions.js:45
 msgid "Download files"
 msgstr ""
 
@@ -25377,14 +25950,20 @@ msgid "completed"
 msgstr ""
 
 #: application/views/responses/partial/responseSummary.php:14
+#: editor/src/components/SurveyOverview/SurveyOverview.js:115
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:113
 msgid "Full responses"
 msgstr ""
 
 #: application/views/responses/partial/responseSummary.php:24
+#: editor/src/components/SurveyOverview/SurveyOverview.js:147
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:139
 msgid "Incomplete responses"
 msgstr ""
 
 #: application/views/responses/partial/responseSummary.php:34
+#: editor/src/components/SurveyOverview/SurveyOverview.js:101
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:103
 msgid "Total responses"
 msgstr ""
 
@@ -25414,6 +25993,7 @@ msgid "Show next..."
 msgstr ""
 
 #: application/views/responses/partial/topbarBtns/responsesExportDropdownItems.php:7
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:36
 msgid "Export responses"
 msgstr ""
 
@@ -25484,6 +26064,9 @@ msgid "Open date/time selector"
 msgstr ""
 
 #: application/views/survey/questions/answer/file_upload/answer.twig:68
+#: editor/src/components/ConditionDesigner/Overlays/ConditionScriptOverwriteConfirmation.js:64
+#: editor/src/components/ConditionDesigner/Overlays/ConditionsOverwriteConfirmationOverlay.js:39
+#: editor/src/components/UIComponents/ImageEditor/ImageEditor.js:158
 msgid "Save changes"
 msgstr ""
 
@@ -25977,10 +26560,12 @@ msgid "Important: Export your responses before deactivating your survey."
 msgstr ""
 
 #: application/views/surveyAdministration/stopSurvey_view.php:106
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyStatusSwitchPopupHeader.js:24
 msgid "See details"
 msgstr ""
 
 #: application/views/surveyAdministration/stopSurvey_view.php:117
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:170
 msgid "Deactivate survey"
 msgstr ""
 
@@ -26025,6 +26610,7 @@ msgid "If enabled, responses will be anonymized - there will be no way to connec
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:63
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:18
 msgid "Date stamp"
 msgstr ""
 
@@ -26033,6 +26619,7 @@ msgid "If enabled, the submission time of a response will be recorded."
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:84
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:29
 msgid "Save IP address"
 msgstr ""
 
@@ -26041,6 +26628,7 @@ msgid "If enabled, the IP address of the survey respondent will be stored togeth
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:102
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:40
 msgid "Anonymize IP address"
 msgstr ""
 
@@ -26049,6 +26637,7 @@ msgid "If enabled, the IP address of the respondent is not recorded."
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:123
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:62
 msgid "Save timings"
 msgstr ""
 
@@ -26057,6 +26646,7 @@ msgid "If enabled, the time spent on each page of the survey by each survey part
 msgstr ""
 
 #: application/views/surveyAdministration/surveyActivation/_activateSurveyOptions.php:141
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:51
 msgid "Save referrer URL"
 msgstr ""
 
@@ -26133,6 +26723,7 @@ msgid "Finish & save"
 msgstr ""
 
 #: application/views/surveyAdministration/tabCreate_view.php:105
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:182
 msgid "Administrator"
 msgstr ""
 
@@ -26199,6 +26790,7 @@ msgstr ""
 #: application/views/themeOptions/index.php:236
 #: application/views/themeOptions/installedthemelist.php:59
 #: application/views/themeOptions/surveythemelist.php:78
+#: editor/src/components/QuestionSettings/attributes/QuestionTypeAttribute.js:48
 msgid "Type"
 msgstr ""
 
@@ -26623,6 +27215,1671 @@ msgstr ""
 msgid "Import permission role from XML"
 msgstr ""
 
+#: editor/src/App.js:39
+msgid "An update is available. You will be redirected to the admin panel to perform the update."
+msgstr ""
+
+#: editor/src/components/BrandedQRCode/BrandedQRCode.js:39
+msgid "Failed to download QR code"
+msgstr ""
+
+#: editor/src/components/BrandedQRCode/BrandedQRCode.js:69
+msgid "Download QR code"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/AddScenario.js:21
+msgid "New logic"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ConditionDesigner.js:73
+msgid "Switching to the visual condition builder will overwrite the condition written in expression script mode."
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ConditionFormFields/AnswerTypeSelect.js:36
+msgid "Select answer option(s)"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ConditionFormFields/AnswerTypeSelect.js:41
+msgid "Free value (constant)"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ConditionFormFields/AnswerTypeSelect.js:46
+msgid "Compare to answer of other question"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ConditionFormFields/AnswerTypeSelect.js:51
+#: editor/src/components/ConditionDesigner/ConditionFormFields/ParticipantDataSelect.js:58
+#: editor/src/components/ConditionDesigner/ConditionFormFields/QuestionTypeToggle.js:60
+msgid "Participant data"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ConditionFormFields/RegexInput.js:13
+msgid "Enter regular expression"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ConditionItem.js:50
+msgid "AND"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ConditionItem.js:57
+msgid "Display only if"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ConditionItem.js:112
+msgid "Reference value"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ExpressionScript/ExpressionScript.js:93
+msgid "You are about to go back without saving your changes. Do you want to proceed?"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ExpressionScript/ExpressionScript.js:101
+#: editor/src/components/ConditionDesigner/ExpressionScript/ExpressionScript.js:115
+msgid "Expression script"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ExpressionScript/ExpressionScript.js:108
+msgid "All scenarios"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/ExpressionScript/ExpressionScriptInputBox.js:59
+msgid "Enter expression..."
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/ConditionScriptOverwriteConfirmation.js:19
+msgid "Overwriting condition from ExpressionScript"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/ConditionScriptOverwriteConfirmation.js:23
+msgid "The condition created inside the builder will replace your existing condition written in ExpressionScript mode. This action cannot be undone. Do you want to apply your changes?"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/ConditionScriptOverwriteConfirmation.js:27
+msgid "This script will be overwritten:"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/ConditionsOverwriteConfirmationOverlay.js:11
+msgid "Overwriting condition from condition builder"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/ConditionsOverwriteConfirmationOverlay.js:16
+msgid "Your condition will no longer be editable in the visual builder. Are you sure you want to apply these changes?"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/DeleteScenarioOverlay.js:14
+msgid "Are you sure you want to delete scenario %s for this question?"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/ExpressionScriptEditorOverlay.js:50
+msgid "Condition code"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/ExpressionScriptEditorOverlay.js:53
+msgid "Edit or copy large conditions"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/UnsavedChangesOverlay.js:6
+msgid "You are about to go back without saving your changes on this scenario. Do you want to proceed?"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/UnsavedChangesOverlay.js:11
+msgid "Unsaved changes"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/UnsavedChangesOverlay.js:27
+msgid "Go back without saving"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/Overlays/UnsavedChangesOverlay.js:34
+msgid "Continue editing"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/genderTypeHandler.js:10
+msgid "Female (F)"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/genderTypeHandler.js:11
+msgid "Male (M)"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/multipleChoiceTypeHandler.js:30
+msgid "Checked (Y)"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/rankingTypeHandler.js:36
+msgid "RANK"
+msgstr ""
+
+#: editor/src/components/ConditionDesigner/utils/conditionAlertHelpers.js:15
+#: editor/src/hooks/useConditionDesigner.js:242
+msgid "Condition applied successfully"
+msgstr ""
+
+#: editor/src/components/EndScreenSettings/EndScreenSettings.js:55
+msgid "End screen settings"
+msgstr ""
+
+#: editor/src/components/GroupSettings/GroupAttribute.js:14
+msgid "Basic"
+msgstr ""
+
+#: editor/src/components/GroupSettings/GroupSettings.js:45
+msgid "Group settings"
+msgstr ""
+
+#: editor/src/components/Modals/ConfirmModal.js:10
+msgid "Confirm action"
+msgstr ""
+
+#: editor/src/components/Modals/ConfirmModal.js:11
+msgid "Are you sure you want to perform this action?"
+msgstr ""
+
+#: editor/src/components/PublicSurveyAlias/CopyButton.js:26
+msgid "Copied!"
+msgstr ""
+
+#: editor/src/components/PublicSurveyAlias/PublicSurveyAlias.js:133
+msgid "Enter survey alias"
+msgstr ""
+
+#: editor/src/components/PublicSurveyAlias/PublicSurveyAlias.js:157
+msgid "Customize link"
+msgstr ""
+
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/SurveyAccessModeSelector.js:59
+msgid "Select how you want to share your survey"
+msgstr ""
+
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:78
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessModeHandler.js:24
+msgid "Anyone with the link to this survey can access."
+msgstr ""
+
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessMode.test.js:102
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessModeHandler.js:32
+msgid "Only participants with a personalized link or a general link with access code can access."
+msgstr ""
+
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessModeHandler.js:65
+msgid "You do not have participants yet. Create or restore archived participants under %sparticipants%s"
+msgstr ""
+
+#: editor/src/components/PublicSurveyAlias/SurveyAccessMode/surveyAccessModeHandler.js:85
+msgid "You still have a participants list for your survey. You can remove it under %sparticipants%s"
+msgstr ""
+
+#: editor/src/components/PublishSettings/PublishSettings.js:35
+msgid "When deactivated, responses will be archived. You will then be able to add or delete questions, question groups, and settings again."
+msgstr ""
+
+#: editor/src/components/PublishSettings/PublishSettings.js:40
+msgid "You must have at least one question."
+msgstr ""
+
+#: editor/src/components/PublishSettings/PublishSettings.js:44
+msgid "Waiting for changes to be saved..."
+msgstr ""
+
+#: editor/src/components/PublishSettings/PublishSettings.js:53
+msgid "When reactivated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit text."
+msgstr ""
+
+#: editor/src/components/PublishSettings/PublishSettings.js:56
+msgid "When activated, you will not be able to add or delete questions, question groups, or sub-questions. However, you can still edit text."
+msgstr ""
+
+#: editor/src/components/PublishSettings/PublishSettings.js:69
+msgid "Reactivate"
+msgstr ""
+
+#: editor/src/components/PublishSettings/SurveyActivationHandler.js:289
+msgid "Congratulations! Your survey has been activated."
+msgstr ""
+
+#: editor/src/components/QuestionSettings/QuestionSettings.js:183
+#: editor/src/pages/Editor/EditorTutorial.js:128
+msgid "Question settings"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/QuestionSettings.js:228
+msgid "This question type isn't supported in the new editor yet, but your responses will still be collected. If you want to make edits you can switch to a similar question type or edit it in the classic editor."
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/ImageAttributes.js:139
+msgid "Add image"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/ImageAttributes.js:173
+msgid "Alignment"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/ImageAttributes.js:181
+msgid "Brightness"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/ImageAttributes.js:193
+#: editor/src/components/UIComponents/ImageEditor/ImageEditor.js:132
+msgid "Radius"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/ImageAttributes.js:202
+#: editor/src/components/QuestionSettings/attributes/getImageAttributes.js:103
+msgid "Alt text"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/ImageAttributes.js:208
+#: editor/src/components/QuestionSettings/attributes/getImageAttributes.js:106
+msgid "Image description"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/QuestionCodeAttribute.js:39
+#: editor/src/hooks/useQuestionChildren.js:325
+msgid "Only letters and numbers are allowed."
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:27
+msgid "Page break in printable view"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:112
+msgid "Show platform information"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:167
+msgid "Visualization"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:246
+msgid "Show handle"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:257
+msgid "Show number"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:268
+msgid "Without reorder"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:281
+msgid "Fix width"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:291
+msgid "Fix height"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:300
+msgid "Crop or resize"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:302
+msgid "Crop"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:303
+msgid "Resize"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:314
+msgid "Keep aspect ratio"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:325
+msgid "Horizontal scroll"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:346
+msgid "Order - like 3)"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:407
+msgid "Answer order"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:467
+msgid "Header A"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:476
+msgid "Header B"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:546
+msgid "Label wrapper width"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getDisplayAttributes.js:555
+msgid "Answer column width"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:68
+msgid "Store answers encrypted"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:126
+#: editor/src/components/UIComponents/RatingItems.js:67
+msgid "Rating items"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getInputAttributes.js:9
+msgid "Date/time format"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getLocationAttributes.js:25
+msgid "Map position"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getOtherAttributes.js:28
+msgid "Maximum file size (kB)"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:62
+msgid "Display min and max value"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:80
+msgid "Start value"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:82
+msgid "Center position"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:83
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:85
+msgid "Initial value"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:102
+msgid "Use initial value as answer"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:123
+msgid "Slider direction"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getSliderAttributes.js:126
+msgid "Reverse"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:10
+msgid "Show in statistics"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:9
+msgid "Button size"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:13
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:107
+msgid "Large"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:14
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:97
+msgid "Small"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:15
+msgid "Extra small"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:24
+msgid "Maximum number of buttons in a row"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:40
+msgid "Allow searching of dropdown"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:50
+msgid "Display tick on selected item"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:60
+msgid "Width of dropdown"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:63
+msgid "Current selected entry"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getThemeAttributes.js:64
+msgid "Longest entry"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:17
+msgid "Expiry message display time"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:28
+msgid "Expiry message"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:46
+msgid "1st time limit warning"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:63
+msgid "1st time limit warning timer"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:78
+msgid "1st time limit display timer"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:95
+msgid "1st time limit message"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:108
+msgid "1st time limit message CSS style"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:115
+msgid "2nd time limit warning"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:132
+msgid "2nd time limit warning timer"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:148
+msgid "2nd time limit display timer"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:165
+msgid "2nd time limit message"
+msgstr ""
+
+#: editor/src/components/QuestionSettings/attributes/getTimerAttributes.js:182
+msgid "2nd time limit message CSS style"
+msgstr ""
+
+#: editor/src/components/QuestionTypeSelector/QuestionTypeSelector.js:195
+msgid "Search for a question type"
+msgstr ""
+
+#: editor/src/components/QuestionTypeSelector/QuestionTypeSelector.js:237
+msgid "Recently used"
+msgstr ""
+
+#: editor/src/components/QuestionTypeSelector/constants.js:20
+msgid "Single choice"
+msgstr ""
+
+#: editor/src/components/QuestionTypeSelector/constants.js:84
+msgid "Ranking & rating"
+msgstr ""
+
+#: editor/src/components/QuestionTypeSelector/constants.js:117
+msgid "Dates & data"
+msgstr ""
+
+#: editor/src/components/QuestionTypeSelector/constants.js:138
+msgid "Text"
+msgstr ""
+
+#: editor/src/components/QuestionTypeSelector/constants.js:159
+msgid "Number"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:119
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:213
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:236
+#: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:249
+msgid "Answer option"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/DateTime/DateTime.js:124
+#: editor/src/pages/Responses/components/ColumnFilter.js:188
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:76
+msgid "Min"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/FileUpload/FileRejectionItems.js:9
+msgid "%s bytes"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/FileUpload/FileUpload.js:140
+msgid "Choose file or drop image here"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:19
+msgid "No files uploaded"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:65
+#: editor/src/pages/Responses/components/ResponsesTable/FileInfoCell.js:30
+msgid "MB"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/ImageChoice.js:65
+msgid "This image is not valid. Click here for more info."
+msgstr ""
+
+#: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoice.js:122
+#: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionEditMode.js:184
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:178
+#: editor/src/components/QuestionTypes/RankingQuestion/RankingQuestionSubquestions.js:90
+msgid "Add subquestion"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:65
+msgid "Subquestion already exists"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestionSubquestions.js:121
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestionSubquestionsPlaceholder.js:48
+msgid "Subquestion option"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/RankingQuestion/RankingQuestionSubquestion.js:65
+msgid "Add text here..."
+msgstr ""
+
+#: editor/src/components/QuestionTypes/RankingQuestion/RankingQuestionSubquestions.js:31
+msgid "You can add texts or upload images"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/TextQuestion/BrowserDetectionTextAnswer.js:36
+msgid "You are here!"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:6
+msgid "Array (Point choice)"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:31
+msgid "Map/browser detection"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:36
+msgid "Date/time"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:49
+msgid "Increase Decrease"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:54
+msgid "Long text"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:79
+msgid "Multiple choice buttons"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:97
+msgid "Rating"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:112
+msgid "List with comment (Radio)"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:117
+msgid "List image select (Radio)"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:122
+msgid "Single choice buttons"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:127
+msgid "Dropdown"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:137
+msgid "Short text"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:142
+msgid "10 point choice"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:149
+msgid "Yes/No/Uncertain"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:154
+#: editor/src/components/Survey/SurveyHeader.js:159
+msgid "Welcome screen"
+msgstr ""
+
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:160
+#: editor/src/components/Survey/SurveyFooter.js:121
+msgid "End screen"
+msgstr ""
+
+#: editor/src/components/SharingPanel/menus/overview/LanguageSelector.js:14
+msgid "Survey language version"
+msgstr ""
+
+#: editor/src/components/SharingPanel/menus/overview/LanguageSelector.js:17
+msgid "Select the language version of the survey you want to share."
+msgstr ""
+
+#: editor/src/components/SharingPanel/menus/overview/ParticipantsListCard.js:26
+msgid "You currently have \"View only\" access."
+msgstr ""
+
+#: editor/src/components/SharingPanel/menus/overview/ParticipantsListCard.js:30
+#: editor/src/shared/sharingPanelOptions.js:11
+msgid "Participant lists"
+msgstr ""
+
+#: editor/src/components/SharingPanel/menus/overview/ParticipantsListCard.js:32
+msgid "Setup participant lists and invite participants via email."
+msgstr ""
+
+#: editor/src/components/SharingPanel/menus/overview/ParticipantsListCard.js:39
+msgid "Create participant list"
+msgstr ""
+
+#: editor/src/components/SharingPanel/menus/overview/SharingOverview.js:90
+msgid "Share your survey and collect responses"
+msgstr ""
+
+#: editor/src/components/SideBar/QuestionContextMenu.js:25
+msgid "Show/hide question codes"
+msgstr ""
+
+#: editor/src/components/SideBar/QuestionContextMenu.js:45
+msgid "Copy question code"
+msgstr ""
+
+#: editor/src/components/SocialMediaShare/SocialMediaShare.js:16
+msgid "Share on social media"
+msgstr ""
+
+#: editor/src/components/Survey/QuestionGroups/QuestionGroupHeader.js:87
+msgid "Group title"
+msgstr ""
+
+#: editor/src/components/Survey/QuestionGroups/QuestionGroups.js:148
+#: editor/src/components/SurveyStructure/SurveyStructure.js:331
+msgid "Are you sure you want to delete this question group? This action cannot be reverted."
+msgstr ""
+
+#: editor/src/components/Survey/Questions/QuestionFooter.js:40
+#: editor/src/components/SurveyStructure/RowQuestionsList.js:94
+msgid "Are you sure you want to delete this question? This action cannot be reverted."
+msgstr ""
+
+#: editor/src/components/Survey/Questions/QuestionHeader.js:109
+#: editor/src/components/Survey/Questions/QuestionPreview/QuestionPreviewHeader.js:39
+msgid "Your question here"
+msgstr ""
+
+#: editor/src/components/Survey/Questions/QuestionHeader.js:168
+#: editor/src/components/Survey/Questions/QuestionPreview/QuestionPreviewHeader.js:62
+msgid "Optional help description"
+msgstr ""
+
+#: editor/src/components/Survey/Questions/QuestionPreview/QuestionPreview.js:52
+msgid "You don't have permission to view this response."
+msgstr ""
+
+#: editor/src/components/Survey/Questions/QuestionPreview/QuestionPreviewBody.js:59
+msgid "You don't have permission to update this response."
+msgstr ""
+
+#: editor/src/components/Survey/Questions/QuestionPreview/QuestionPreviewBody.js:80
+msgid "Responses updated!"
+msgstr ""
+
+#: editor/src/components/Survey/SurveyFooter.js:146
+msgid "Enter your end message here."
+msgstr ""
+
+#: editor/src/components/Survey/SurveyHeader.js:185
+msgid "This is a preview dropdown for selectable languages"
+msgstr ""
+
+#: editor/src/components/Survey/SurveyHeader.js:199
+msgid "Welcome title"
+msgstr ""
+
+#: editor/src/components/Survey/SurveyHeader.js:221
+msgid "Welcome description"
+msgstr ""
+
+#: editor/src/components/Survey/SurveyHeader.js:264
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:210
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:212
+msgid "Privacy policy message"
+msgstr ""
+
+#: editor/src/components/SurveyOverview/SurveyOverview.js:81
+msgid "Loading overview..."
+msgstr ""
+
+#: editor/src/components/SurveyOverview/SurveyOverview.js:130
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:44
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:125
+msgid "Response rate"
+msgstr ""
+
+#: editor/src/components/SurveyOverview/SurveyOverview.js:156
+msgid "View results overview"
+msgstr ""
+
+#: editor/src/components/SurveyOverview/SurveyOverview.js:187
+msgid "View sharing overview"
+msgstr ""
+
+#: editor/src/components/SurveySettings/AdvancedOptions/index.js:19
+msgid "Explore additional configuration options, more detailed features and settings."
+msgstr ""
+
+#: editor/src/components/SurveySettings/AdvancedOptions/index.js:29
+msgid "Go to advanced options"
+msgstr ""
+
+#: editor/src/components/SurveySettings/GeneralSettings/Theme.js:20
+msgid "Theme preview"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:48
+msgid "You cannot delete the base language. Please select a different language as base language first."
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:65
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:92
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:145
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:106
+#: editor/src/pages/Responses/components/ChartRenderer.js:52
+msgid "No data available"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:119
+msgid "Survey languages"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:164
+msgid "Survey owner"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:204
+msgid "Bounce email address"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:73
+msgid "Enable assessment mode"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:83
+msgid "Participant may save and resume later"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:94
+msgid "Send basic admin notifications"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:115
+msgid "Basic admin notifications email address"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:158
+msgid "Send detailed admin notifications"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:179
+msgid "Detailed admin notifications email address"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:223
+msgid "Google Analytics settings"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:255
+msgid "Google Analytics Tracking ID"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:302
+msgid "Google Analytics style"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getNotificationsDataSettingsBlocks.js:307
+msgid "Survey-SID/Group"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getParticipantsSettingsBlocks.js:25
+msgid "Enable participant-based response persistence"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getParticipantsSettingsBlocks.js:45
+msgid "Allow public registration"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getParticipantsSettingsBlocks.js:55
+msgid "Use HTML format for participant emails"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getParticipantsSettingsBlocks.js:65
+msgid "Send confirmation emails"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getParticipantsSettingsBlocks.js:76
+msgid "Set access code length"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:24
+msgid "Progress bar"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:45
+msgid "Group name and description"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:60
+msgid "Question number and code"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:64
+msgid "Question number"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:74
+msgid "On-screen keyboard"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:84
+#: themes/survey/fruity_twentythree/views/subviews/navigation/question_index_groups_buttons.twig:8
+#: themes/survey/fruity_twentythree/views/subviews/navigation/question_index_menu.twig:34
+#: themes/survey/fruity_twentythree/views/subviews/navigation/question_index_menu.twig:67
+#: themes/survey/fruity_twentythree/views/subviews/navigation/question_index_questions_buttons.twig:8
+#: themes/survey/vanilla/views/subviews/navigation/question_index_groups_buttons.twig:8
+#: themes/survey/vanilla/views/subviews/navigation/question_index_menu.twig:34
+#: themes/survey/vanilla/views/subviews/navigation/question_index_menu.twig:67
+#: themes/survey/vanilla/views/subviews/navigation/question_index_questions_buttons.twig:8
+msgid "Question index"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:87
+msgid "Enabled"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:97
+msgid "Language specific display"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:273
+msgid "Survey alias"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:329
+msgid "Automatically load end URL when the survey is complete"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:350
+msgid "Navigation delay"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:369
+msgid "Navigation delay duration (in seconds)"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:437
+msgid "Show graphs in public statistics"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:18
+msgid "Show privacy policy text with mandatory checkbox"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:23
+msgid "Collapsible"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:33
+msgid "Show link to legal notice in survey"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:59
+msgid "Show link to data policy in survey"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:83
+msgid "Languages and texts"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:141
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:142
+msgid "Legal notice message"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:281
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:283
+msgid "Privacy policy error message"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:348
+#: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:350
+msgid "Privacy policy checkbox label"
+msgstr ""
+
+#: editor/src/components/SurveySettings/Settings/themeOptionTypes/handleDropdownType.js:46
+msgid "Change or upload your own background image (max. file size %s)"
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:30
+msgid "Do you want to stop your survey?"
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:77
+msgid "Stop / pause survey"
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:79
+msgid "Stop your survey and still access your data for statistics"
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:90
+msgid "After the survey was stopped, modifications to questions and settings are very limited."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:100
+msgid "Current responses and participant information will be kept and is still available for analysis."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:110
+msgid "Cannot be accessed by participants anymore. Stops data collection and sets expiry date."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:117
+msgid "This survey is already stopped."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:130
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyStatusSwitchConfig.js:39
+msgid "Reopen the survey by changing or removing the expiration date in the %sPublication & access panel%s"
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:172
+msgid "Adjust questions or modify the survey structure"
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:182
+msgid "Add, delete or edit questions and modify survey structure."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:191
+msgid "Current responses and participant information are not available for analysis anymore."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:201
+msgid "Cannot be accessed by participants anymore. Stops data collection."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyDeactivationPopup.js:211
+msgid "When reactivating you can import your archived responses and continue collecting responses."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyReactivationPopup.js:25
+msgid "What do you want to do with the %sexisting%s Responses?"
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyReactivationPopup.js:73
+msgid "Keep existing responses"
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyReactivationPopup.js:76
+msgid "Import archived responses in your new response table."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyReactivationPopup.js:87
+msgid "Import an existing responses table again and start from where you left off."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyReactivationPopup.js:97
+msgid "Questions and edits that were done in the meantime will be merged with your archived table as far as possible."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyReactivationPopup.js:117
+msgid "Keep them archived and create a new response table."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyReactivationPopup.js:128
+msgid "Start with a brand new responses table without importing an existing one."
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyStatusSwitchConfig.js:17
+msgid "Your survey has been deactivated"
+msgstr ""
+
+#: editor/src/components/SurveyStatusSwitchPopup/SurveyStatusSwitchPopupResponsesSelect.js:50
+msgid "Latest response table (%s responses)"
+msgstr ""
+
+#: editor/src/components/SurveyStructure/RowQuestion.js:39
+msgid "What's your question?"
+msgstr ""
+
+#: editor/src/components/SurveyStructure/RowQuestion.js:45
+msgid "Duplicate question"
+msgstr ""
+
+#: editor/src/components/SurveyStructure/RowQuestionGroup.js:53
+msgid "What is your question group about?"
+msgstr ""
+
+#: editor/src/components/SurveyStructure/RowQuestionGroup.js:60
+msgid "Duplicate group"
+msgstr ""
+
+#: editor/src/components/SurveyStructure/RowQuestionsList.js:149
+msgid "Question group is empty."
+msgstr ""
+
+#: editor/src/components/ThemeOptions/ThemeOptionsImageUpload.js:8
+msgid "Drop image here or click here to select a file"
+msgstr ""
+
+#: editor/src/components/TopBar/Button/ActionButton.js:62
+msgid "Export statistics"
+msgstr ""
+
+#: editor/src/components/TopBar/Button/ButtonBackToClassicEditor.js:14
+msgid "Go back to classic editor"
+msgstr ""
+
+#: editor/src/components/TopBar/Button/ButtonBackToClassicEditor.js:22
+msgid "Back to classic editor"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:79
+msgid "Navigate"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:83
+msgid "Workspace"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:88
+#: editor/src/components/TopBar/TopBarActions.js:98
+#: editor/src/components/TopBar/TopBarActions.js:108
+#: editor/src/components/TopBar/TopBarActions.js:120
+msgid "Current page"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:128
+msgid "View"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:132
+msgid "Question codes"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:156
+msgid "Survey archive"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:162
+msgid "Only available for active surveys"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:167
+msgid "queXML format (.xml)"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:174
+msgid "Tab-separated-values format (.txt)"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:181
+msgid "Printable survey (.html)"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:200
+#: editor/src/components/UIComponents/Input/TextArea.js:18
+msgid "Coming soon"
+msgstr ""
+
+#: editor/src/components/TopBar/TopBarActions.js:212
+msgid "Interactive help"
+msgstr ""
+
+#: editor/src/components/Tutorial/Tutorial.js:150
+msgid "Close interactive help"
+msgstr ""
+
+#: editor/src/components/UIComponents/ColorPicker/PopoverPicker.js:85
+msgid "HEX"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/TinyMCE.js:53
+msgid "Edit HTML"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/mceToolbar.js:43
+msgid "Align text left"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/mceToolbar.js:58
+msgid "Align text center"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/mceToolbar.js:73
+msgid "Align text right"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:74
+msgid "My custom button"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:94
+msgid "Font size"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:102
+msgid "Medium"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:113
+msgid "Edit as HTML"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:125
+msgid "Participant email address"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:130
+msgid "Participant first name"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:135
+msgid "Participant last name"
+msgstr ""
+
+#: editor/src/components/UIComponents/ContentEditor/TinyMCE/toolbarActions.js:150
+msgid "Fields based on previous answers"
+msgstr ""
+
+#: editor/src/components/UIComponents/DropZone/DropZone.js:26
+msgid "Drop image here"
+msgstr ""
+
+#: editor/src/components/UIComponents/ImageEditor/ImageEditor.js:73
+msgid "Unable to save image settings. Please try again."
+msgstr ""
+
+#: editor/src/components/UIComponents/ImageEditor/ImageEditor.js:84
+msgid "LimeSurvey Image Editor"
+msgstr ""
+
+#: editor/src/components/UIComponents/ImageEditor/ImageEditor.js:110
+msgid "Zoom"
+msgstr ""
+
+#: editor/src/components/UIComponents/ImageEditor/ImageEditor.js:121
+msgid "Rotate"
+msgstr ""
+
+#: editor/src/components/UIComponents/ImageEditor/ImageEditor.js:155
+msgid "Saving..."
+msgstr ""
+
+#: editor/src/components/UIComponents/Input/Input.js:21
+msgid "Enter here"
+msgstr ""
+
+#: editor/src/components/UIComponents/PaginationButtons/PaginationButtons.js:84
+msgid "Rows per page"
+msgstr ""
+
+#: editor/src/components/WelcomeSettings/WelcomeSettings.js:48
+msgid "Welcome screen settings"
+msgstr ""
+
+#: editor/src/components/WelcomeSettings/WelcomeSettings.js:57
+msgid "Show welcome screen"
+msgstr ""
+
+#: editor/src/components/WelcomeSettings/WelcomeSettings.js:74
+msgid "Show \"There are X questions in this survey.\""
+msgstr ""
+
+#: editor/src/components/feedback/FeedbackPopup.js:114
+msgid "Don't ask again"
+msgstr ""
+
+#: editor/src/components/wrappers/SurveyLogicProvider.js:175
+msgid "Saved at %s"
+msgstr ""
+
+#: editor/src/helpers/Alert.js:12
+msgid "You won't be able to revert this!"
+msgstr ""
+
+#: editor/src/helpers/Alert.js:14
+msgid "Yes, delete"
+msgstr ""
+
+#: editor/src/helpers/feedback/feedbackConfig.js:13
+msgid "What do you think so far?"
+msgstr ""
+
+#: editor/src/helpers/feedback/feedbackConfig.js:15
+msgid "We would very much appreciate it if you could answer two quick questions about your experience with the new editor?"
+msgstr ""
+
+#: editor/src/helpers/feedback/feedbackConfig.js:24
+msgid "Do you have a minute?"
+msgstr ""
+
+#: editor/src/helpers/feedback/feedbackConfig.js:26
+msgid "We would love to hear your thoughts on our sharing options!"
+msgstr ""
+
+#: editor/src/helpers/feedback/feedbackConfig.js:29
+msgid "Tell us"
+msgstr ""
+
+#: editor/src/helpers/getQuestionAttributesTitles.js:13
+msgid "Display theme options"
+msgstr ""
+
+#: editor/src/helpers/getSurveyParticipantAttributes.js:9
+msgid "Invitation sent"
+msgstr ""
+
+#: editor/src/helpers/getSurveyParticipantAttributes.js:10
+msgid "Last reminder sent"
+msgstr ""
+
+#: editor/src/helpers/getSurveyParticipantAttributes.js:13
+msgid "Total number of reminders sent"
+msgstr ""
+
+#: editor/src/helpers/options/getDisplayButtonTypeOptions.js:4
+msgid "Radio"
+msgstr ""
+
+#: editor/src/helpers/options/getTooltipMessages.js:3
+msgid "Deactivate survey to edit"
+msgstr ""
+
+#: editor/src/helpers/options/getTooltipMessages.js:4
+msgid "Please deactivate the survey before using this feature."
+msgstr ""
+
+#: editor/src/helpers/options/getTooltipMessages.js:5
+msgid "No permission."
+msgstr ""
+
+#: editor/src/helpers/options/getTooltipMessages.js:6
+msgid "Survey is not active"
+msgstr ""
+
+#: editor/src/helpers/options/getVisualizationOptions.js:8
+msgid "Block"
+msgstr ""
+
+#: editor/src/hooks/useConditionDesigner.js:225
+msgid "Condition already exists"
+msgstr ""
+
+#: editor/src/hooks/useConditionDesigner.js:241
+msgid "Condition deleted successfully"
+msgstr ""
+
+#: editor/src/hooks/useQueryRetry.js:44
+msgid "Sorry, we encountered an issue while fetching the data."
+msgstr ""
+
+#: editor/src/hooks/useQueryRetry.js:45
+msgid "Please try again later!"
+msgstr ""
+
+#: editor/src/hooks/useQuestionChildren.js:331
+msgid "Answer codes must be unique."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:32
+msgid "Welcome to LimeSurvey"
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:34
+msgid "You're now using the LimeSurvey editor. This quick tutorial will guide you through what's most important in just a few steps."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:40
+msgid "Canvas"
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:42
+msgid "This is where you create your questions and answer options. A sample question group and question are always created to get you started. Just click on any element to edit it."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:50
+msgid "Click on the survey title to edit it, your changes will be saved automatically."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:56
+msgid "Add content"
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:58
+msgid "Select the plus symbol to add questions, groups or logic to the survey. For now, let's add a simple multiple-choice question."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:73
+msgid "Select a question type"
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:75
+msgid "Select the question type for your new question from this menu. Try it and add a simple multiple-choice question for now."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:105
+msgid "Edit text"
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:107
+msgid "Click and type to fill in your question text. You can also use the toolbar for formatting and more options."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:117
+msgid "Use the trash icon to delete questions or the X icon to delete answer options."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:130
+msgid "Use this panel to change question types, logic, and display settings. You can also switch between simple and advanced question settings."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:140
+msgid "Reorder questions"
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:142
+msgid "You can reorder your questions and groups by drag and drop inside the survey structure."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:151
+msgid "Open the settings to access theme options and change your survey's design. Try it and change the style of your survey."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:175
+msgid "The theme options allow you to change the appearance of your survey. Try it and change a style of your survey."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:188
+msgid "You will see a preview of your changes on the right side."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:195
+msgid "Return to the editor"
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:197
+msgid "Use the left-side menu bar to navigate back to your survey at any time."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:216
+msgid "Autosave"
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:218
+msgid "See how LimeSurvey autosaves your work? You don't have to worry about saving your progress at any time."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:232
+msgid "Use the survey preview to see how your survey will look like for your participants."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:241
+msgid "When your survey is ready, use this button to activate it. Once activated, you can access the options for sharing your survey."
+msgstr ""
+
+#: editor/src/pages/Editor/EditorTutorial.js:311
+msgid "🎉 Congratulations! You have completed the tour."
+msgstr ""
+
+#: editor/src/pages/Editor/LeftSideBar/FeedbackButton.js:14
+msgid "Help us with your feedback"
+msgstr ""
+
+#: editor/src/pages/Editor/LoadingIndicator.js:12
+msgid "Loading survey..."
+msgstr ""
+
+#: editor/src/pages/Errors/NotFound.js:7
+msgid "Page doesn't exist"
+msgstr ""
+
+#: editor/src/pages/Responses/Responses.js:250
+msgid "Loading responses..."
+msgstr ""
+
+#: editor/src/pages/Responses/ResponsesHeader.js:62
+msgid "Clear filters"
+msgstr ""
+
+#: editor/src/pages/Responses/Sidebars/getResponsesPanels.js:25
+#: editor/src/pages/Responses/Sidebars/getResponsesPanels.js:26
+msgid "Results overview"
+msgstr ""
+
+#: editor/src/pages/Responses/Sidebars/getResponsesPanels.js:30
+#: editor/src/pages/Responses/Sidebars/getResponsesPanels.js:31
+msgid "Responses list"
+msgstr ""
+
+#: editor/src/pages/Responses/components/BulkActions.js:34
+msgid "selected"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ColumnActions.js:16
+#: editor/src/pages/Responses/components/ColumnFilter.js:146
+#: editor/src/pages/Responses/components/ColumnFilter.js:220
+msgid "Filter column"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ColumnActions.js:21
+msgid "Unpin column"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ColumnActions.js:21
+msgid "Pin column"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ColumnFilter.js:201
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:90
+msgid "Max"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ColumnsManagement.js:131
+msgid "Organize columns"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ColumnsManagement.js:134
+msgid "Select which columns you want to display inside this table. You can order the columns by drag and drop."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:39
+msgid "Export format"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:45
+msgid "XLS"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:59
+msgid "Filtered responses"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ExportPopupHTML.js:70
+msgid "Only completed"
+msgstr ""
+
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:54
+msgid "Complete responses"
+msgstr ""
+
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:59
+msgid "Complete without answers"
+msgstr ""
+
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:64
+msgid "Incomplete without answers"
+msgstr ""
+
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:88
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesStatistics.js:57
+msgid "Loading statistics..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:148
+msgid "Responses (last 30 days)"
+msgstr ""
+
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:158
+msgid "Daily activity isn't available when datestamps are turned off."
+msgstr ""
+
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:168
+msgid "Completed / Incomplete / Lurkers"
+msgstr ""
+
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:197
+msgid "View all responses"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponseDetailView.js:72
+msgid "Last action"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponseDetailView.js:76
+#: editor/src/pages/Responses/components/ResponseDetailView.js:80
+msgid "Not enabled"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponseDetailView.js:110
+msgid "Export response"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponseModals.js:37
+#: editor/src/pages/Responses/components/ResponseModals.js:49
+msgid "Delete response"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponseModals.js:42
+msgid "The selected {{count}} responses will be deleted. Do you want to proceed?"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponseModals.js:45
+msgid "Are you sure you want to delete this response? This action cannot be reverted."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponseModals.js:68
+msgid "Are you sure you want to delete the attachments for the selected responses?"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesStatistics.js:59
+msgid "No responses or compatible data available to display statistics."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:21
+msgid "Max ID must be greater than Min ID"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:28
+msgid "Min ID must be less than Max ID"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:31
+msgid "Max ID must be a positive integer"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:34
+msgid "Min ID must be a positive integer"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:45
+msgid "Filter responses"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:56
+msgid "Include"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesTable/FileInfoCell.js:12
+msgid "File has been deleted"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesTable/ResponsesTable.js:208
+msgid "No files to download!"
+msgstr ""
+
+#: editor/src/pages/Responses/utils/generateColumns.js:54
+msgid "Token"
+msgstr ""
+
+#: editor/src/pages/Responses/utils/generateColumns.js:92
+msgid "Date of last action"
+msgstr ""
+
+#: editor/src/pages/Responses/utils/generateColumns.js:129
+msgid "Submit date"
+msgstr ""
+
+#: editor/src/pages/Responses/utils/getDefaultColumns.js:53
+msgid "View/edit response details"
+msgstr ""
+
+#: editor/src/providers/PermissionsProvider.js:39
+msgid "Failed to load permissions. Please try again or contact support."
+msgstr ""
+
+#: editor/src/providers/PermissionsProvider.js:131
+msgid "Checking permissions..."
+msgstr ""
+
+#: editor/src/shared/getPublicationAccessSettingsBlocks.js:13
+msgid "Start date/time"
+msgstr ""
+
+#: editor/src/shared/getPublicationAccessSettingsBlocks.js:23
+msgid "End date/time"
+msgstr ""
+
+#: editor/src/shared/getPublicationAccessSettingsBlocks.js:37
+msgid "Link survey on %spublic index page%s"
+msgstr ""
+
+#: editor/src/shared/getPublicationAccessSettingsBlocks.js:48
+msgid "Set cookie to prevent repeated participation"
+msgstr ""
+
+#: editor/src/shared/getPublicationAccessSettingsBlocks.js:58
+msgid "Use CAPTCHA for survey access"
+msgstr ""
+
+#: editor/src/shared/getPublicationAccessSettingsBlocks.js:68
+msgid "Use CAPTCHA for registration"
+msgstr ""
+
+#: editor/src/shared/getPublicationAccessSettingsBlocks.js:78
+msgid "Use CAPTCHA for save and load"
+msgstr ""
+
+#: editor/src/shared/getSurveyPanelConfig.js:45
+#: editor/src/shared/getSurveyPanelConfig.js:50
+msgid "Translations"
+msgstr ""
+
+#: editor/src/shared/sharingPanelOptions.js:7
+msgid "Sharing overview"
+msgstr ""
+
+#: editor/src/shared/translationPanelOptions.js:5
+msgid "Quick translations"
+msgstr ""
+
 #: modules/admin/HelloWorld/views/HelloWorldSurvey.php:23
 #: modules/admin/HelloWorld/views/index.php:8
 #: modules/admin/HelloWorld/views/sayHelloUser.php:9
@@ -27011,17 +29268,6 @@ msgstr ""
 
 #: themes/survey/fruity_twentythree/views/subviews/navigation/navigator.twig:58
 msgid "Next page"
-msgstr ""
-
-#: themes/survey/fruity_twentythree/views/subviews/navigation/question_index_groups_buttons.twig:8
-#: themes/survey/fruity_twentythree/views/subviews/navigation/question_index_menu.twig:34
-#: themes/survey/fruity_twentythree/views/subviews/navigation/question_index_menu.twig:67
-#: themes/survey/fruity_twentythree/views/subviews/navigation/question_index_questions_buttons.twig:8
-#: themes/survey/vanilla/views/subviews/navigation/question_index_groups_buttons.twig:8
-#: themes/survey/vanilla/views/subviews/navigation/question_index_menu.twig:34
-#: themes/survey/vanilla/views/subviews/navigation/question_index_menu.twig:67
-#: themes/survey/vanilla/views/subviews/navigation/question_index_questions_buttons.twig:8
-msgid "Question index"
 msgstr ""
 
 #: themes/survey/fruity_twentythree/views/subviews/navigation/question_index_menu.twig:101
