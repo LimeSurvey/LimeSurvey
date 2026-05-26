@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-05-26 10:56:30+00:00\n"
+"POT-Creation-Date: 2026-05-26 13:54:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
-"X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2;t\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: ..\\..\\..\\\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -7263,6 +7263,15 @@ msgstr ""
 msgid "Show policy"
 msgstr ""
 
+#: application/core/LSHttpRequest.php:210
+#: application/core/LSYii_CompareInsensitiveValidator.php:74
+#: application/core/db/LSMssqlDbCommandBuilder.php:22
+#: application/core/db/LSMysqlDbCommandBuilder.php:22
+#: application/core/db/LSPgsqlDbCommandBuilder.php:22
+#: application/extensions/bootstrap5/widgets/TbActiveForm.php:167
+msgid "yii"
+msgstr ""
+
 #: application/core/LSHttpRequest.php:312
 msgid "The requested hostname is invalid."
 msgstr ""
@@ -10363,6 +10372,59 @@ msgstr ""
 
 #: application/extensions/admin/survey/question/PositionWidget/views/unknown_view.php:4
 msgid "Unknown view!"
+msgstr ""
+
+#: application/extensions/bootstrap5/widgets/TbGridView.php:91
+#: application/extensions/yiiwheels/YiiWheels.php:48
+#: application/extensions/yiiwheels/widgets/ace/WhAceEditor.php:45
+#: application/extensions/yiiwheels/widgets/ace/WhAceEditor.php:53
+#: application/extensions/yiiwheels/widgets/fileupload/WhBasicFileUpload.php:35
+#: application/extensions/yiiwheels/widgets/grid/WhGridView.php:443
+#: application/extensions/yiiwheels/widgets/grid/WhGridView.php:450
+#: application/extensions/yiiwheels/widgets/grid/WhToggleColumn.php:145
+#: application/extensions/yiiwheels/widgets/grid/WhToggleColumn.php:162
+#: application/extensions/yiiwheels/widgets/grid/WhToggleColumn.php:165
+#: application/extensions/yiiwheels/widgets/grid/WhToggleColumn.php:168
+#: application/extensions/yiiwheels/widgets/grid/actions/WhToggleAction.php:79
+#: application/extensions/yiiwheels/widgets/grid/behaviors/WhChart.php:28
+#: application/extensions/yiiwheels/widgets/grid/behaviors/WhChart.php:33
+#: application/extensions/yiiwheels/widgets/grid/behaviors/WhChart.php:82
+#: application/extensions/yiiwheels/widgets/grid/behaviors/WhChart.php:90
+#: application/extensions/yiiwheels/widgets/grid/operations/WhCountOfTypeOperation.php:53
+#: application/extensions/yiiwheels/widgets/grid/operations/WhCountOfTypeOperation.php:61
+#: application/extensions/yiiwheels/widgets/grid/operations/WhOperation.php:43
+#: application/extensions/yiiwheels/widgets/grid/operations/WhSumOperation.php:40
+#: application/extensions/yiiwheels/widgets/multiselect/WhMultiSelect.php:39
+#: application/extensions/yiiwheels/widgets/rangeslider/WhRangeSlider.php:390
+#: application/extensions/yiiwheels/widgets/sparklines/WhSparklines.php:51
+#: application/extensions/yiiwheels/widgets/switch/WhSwitch.php:79
+#: application/extensions/yiiwheels/widgets/switch/WhSwitch.php:82
+msgid "zii"
+msgstr ""
+
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:109
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:206
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:280
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:281
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:282
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:283
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:284
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:285
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:286
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:287
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:288
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:289
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:323
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:330
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:344
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:347
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:359
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:362
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:374
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:377
+#: application/extensions/captchaExtended/CaptchaExtendedAction.php:380
+#: application/extensions/captchaExtended/CaptchaExtendedValidator.php:25
+msgid "main"
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:366
