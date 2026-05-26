@@ -622,6 +622,27 @@ only screen and (max-width: 767px) {
     margin-right: 5px;
 }
 
+.othertext-right-label {
+    padding-top: 6px;
+}
+
+.no-left-othertext .othertext-label-checkox-container {
+    padding-right: 0;
+}
+
+.no-left-othertext .control-label {
+    padding: 0;
+    min-height: 1.5em;
+}
+
+.no-left-othertext .other-text-item {
+    padding-left: 0;
+}
+
+.ls-input-sized .other-text-item.col {
+    flex-grow: 0;
+}
+
 .geoname_search {
     margin-bottom: 10px;
 }

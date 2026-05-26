@@ -142,12 +142,37 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             $sValueHidden = htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
+        $otherTextLeft = $this->otherText;
+        $otherTextRight = "";
+        if (!empty($this->otherText) && strpos($this->otherText, '|') !== false) {
+            [$otherTextLeft, $otherTextRight] = explode('|', $this->otherText, 2);
+        }
+
+        $otherItemExtraClass = "";
+        if (empty($otherTextLeft)) {
+            $otherItemExtraClass = "no-left-othertext";
+        }
+
+        // Get other_input_size and other_maximum_chars attributes
+        $otherInputSize = null;
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
+            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
+            $otherItemExtraClass .= " ls-input-sized";
+        }
+
+        $otherMaxLength = null;
+        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
+            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
+        }
+
         ////
         // Insert row
         // Display the answer row
         return array(
             'myfname'                    => $myfname,
-            'othertext'                  => $this->otherText,
+            'othertext'                  => $otherTextLeft,
+            'othertextRight'             => $otherTextRight,
+            'otherItemExtraClass'        => $otherItemExtraClass,
             'sValue'                     => $sValue,
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => "checkconditions",
@@ -156,7 +181,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'relevanceClass'             => $this->getCurrentRelevecanceClass($myfname),
             'other'                      => true,
             'anscount'                   => $this->getQuestionCount(),
-            'iNbCols'                    => $this->iNbCols
+            'iNbCols'                    => $this->iNbCols,
+            'otherInputSize'             => $otherInputSize,
+            'otherMaxLength'             => $otherMaxLength,
         );
     }
 
