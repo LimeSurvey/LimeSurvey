@@ -3,7 +3,7 @@
 /**
  * This extension is needed to add complex functions to twig, needing specific process (like accessing config datas).
  * Most of the calls to internal functions don't need to be set here, but can be directly added to the internal config file.
- * For example, the calls to encode, gT and eT don't need any extra parameters or process, so they are added as filters in the congif/internal.php:
+ * For example, the calls to encode, gT and eT don't need any extra parameters or process, so they are added as filters in the config/internal.php:
  *
  * 'filters' => array(
  *     'jencode' => 'CJSON::encode',
@@ -18,7 +18,7 @@
  *      eg:
  *          static public function foo($bar)
  *          {
- *              return procces($bar);
+ *              return process($bar);
  *          }
  *
  * 2. Add it in config/internal.php as a function, and as an allowed function in the sandbox
@@ -198,8 +198,8 @@ class LS_Twig_Extension extends AbstractExtension
 
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         $sType           = $lemQuestionInfo['info']['type'];
-        $aSGQA           = explode('X', (string) $lemQuestionInfo['sgqa']);
-        $iSurveyId       = $aSGQA[0];
+        $question        = Question::model()->findByPk($iQid);
+        $iSurveyId       = $question->sid;
 
         $aQuestionClass  = Question::getQuestionClass($sType);
 
@@ -230,7 +230,7 @@ class LS_Twig_Extension extends AbstractExtension
             $aQuestionClass .= ' mandatory';
         }
 
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_' . $iSurveyId]['maxstep'] != $_SESSION['survey_' . $iSurveyId]['step']) {
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['responses_' . $iSurveyId]['maxstep'] != $_SESSION['responses_' . $iSurveyId]['step']) {
             $aQuestionClass .= ' missing';
         }
 
@@ -338,7 +338,7 @@ class LS_Twig_Extension extends AbstractExtension
             }
             return false;
         }
-        // Reccurence on templates to find the file
+        // Recurrence on templates to find the file
         $oTemplate = self::getTemplateForRessource($resourcePath);
         if (empty($oTemplate)) {
             /* Didn't allow file out of template (diff with image) */
@@ -351,7 +351,7 @@ class LS_Twig_Extension extends AbstractExtension
 
 
     /**
-     * Get the parsed output of the expression manger for a specific string
+     * Get the parsed output of the expression manager for a specific string
      *
      * @param String $sInString
      * @return String
@@ -751,7 +751,7 @@ class LS_Twig_Extension extends AbstractExtension
         $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
             array(
                                 'condition' => 'token = :token',
-                                'params'    => array( ':token' => $_SESSION['survey_' . $iSurveyID]['token']),
+                                'params'    => array( ':token' => $_SESSION['responses_' . $iSurveyID]['token']),
                             )
         );
 

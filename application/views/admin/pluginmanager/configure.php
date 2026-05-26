@@ -33,7 +33,7 @@ echo viewHelper::getViewTestTag('configurePlugin');
                 </div>
 
                 <div id="settings" class="tab-pane">
-                    <?php if ($settings):
+                    <?php if ($settings) :
                         $this->widget(
                             'ext.SettingsWidget.SettingsWidget',
                             [
@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('configurePlugin');
                             ]
                         );
                         ?>
-                    <?php else: ?>
+                    <?php else : ?>
                         <i><?php eT('This plugin has no settings.'); ?></i>
                     <?php endif; ?>
                 </div>

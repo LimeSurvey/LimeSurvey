@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Header of the application
  * Called from renderWrappedTemplate
  */
+
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo str_replace(['-informal','-easy'], ['',''], htmlspecialchars((string) $adminlang)); ?>"<?php echo $languageRTL;?> >
@@ -37,9 +39,9 @@
         notice: the css/js files from third party extension use the package system. It means that the asset manager will publish them on the base of the directory logic.
         So, if you update any css/js file from a third party extension, make sure that the modification date of the root directory is updated.
     -->
-    <?php if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')): ?>
+    <?php if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')) : ?>
         <!-- Debug mode is off, so the asset manager will be used-->
-    <?php else: ?>
+    <?php else : ?>
         <!-- Debug mode is on, so the asset manager will not be used -->
     <?php endif; ?>
 
@@ -62,9 +64,12 @@
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
 
-<?php App()->getClientScript()->registerScript("HeaderVariables",
-'var frameSrc = "/login";
-'.(isset($formatdata) ? 
-    ' var userdateformat="'.$formatdata['jsdate'].'";'
-   .'var userlanguage="'.$adminlang.'";'
-   : '' ), LSYii_ClientScript::POS_HEAD); ?>
+<?php App()->getClientScript()->registerScript(
+    "HeaderVariables",
+    'var frameSrc = "/login";
+' . (isset($formatdata) ?
+    ' var userdateformat="' . $formatdata['jsdate'] . '";'
+    . 'var userlanguage="' . $adminlang . '";'
+    : '' ),
+    LSYii_ClientScript::POS_HEAD
+); ?>

@@ -1,7 +1,9 @@
 <?php
+
 /**
  * This view generates the Updates tab inside global settings.
  */
+
 ?>
 <?php $minimumUpdateStability = Yii::app()->getConfig('minimum_update_stability'); ?>
 <div class="container">

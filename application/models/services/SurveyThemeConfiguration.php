@@ -35,7 +35,7 @@ class SurveyThemeConfiguration
             throw new PermissionDeniedException(gT("You do not have permission to access this page."), 403);
         }
 
-        $model = $this->turnAjaxmodeOffAsDefault($surveyId, $props['templateName']);
+        $model = TemplateConfiguration::getInstance($props['templateName'] ?? null, null, $surveyId);
         $model->save();
         $model->bUseMagicInherit = true;
 
@@ -67,45 +67,19 @@ class SurveyThemeConfiguration
         $model->save();
     }
 
-    /**
-     * This method turns ajaxmode off as default.
-     * @param int $surveyId survey ID of the survey
-     * @param string $sTemplateName
-     *
-     * @return TemplateConfiguration
-     */
-    protected function turnAjaxmodeOffAsDefault(int $surveyId, $sTemplateName = null): TemplateConfiguration
-    {
-        $templateConfiguration = TemplateConfiguration::getInstance($sTemplateName, null, $surveyId);
-        $attributes = $templateConfiguration->getAttributes();
-        $hasOptions = isset($attributes['options']);
-        if ($hasOptions) {
-            $options = $attributes['options'] ?? '';
-            $optionsJSON = json_decode($options, true);
 
-            if ($options !== 'inherit' && $optionsJSON !== null) {
-                $ajaxModeOn = (!empty($optionsJSON['ajaxmode']) && $optionsJSON['ajaxmode'] == 'on');
-                if ($ajaxModeOn) {
-                    $optionsJSON['ajaxmode'] = 'off';
-                    $options = json_encode($optionsJSON);
-                    $templateConfiguration->setAttribute('options', $options);
-                }
-            }
-        }
-        return $templateConfiguration;
-    }
 
     /**
-     * Returns all attributes and options needed to display the themeoptions inlcuding inheritance.
+     * Returns all attributes and options needed to display the themeoptions including inheritance.
      *
      * @param TemplateConfiguration $themeConfiguration Template Configuration
-     * @param int|null $sid Survey ID
-     * @param int|null $gsid Survey Group ID
+     * @param ?int $sid Survey ID
+     * @param ?int $gsid Survey Group ID
      *
      * @return array
      * @throws NotFoundException
      */
-    public function updateCommon(TemplateConfiguration $themeConfiguration, int $sid = null, int $gsid = null)
+    public function updateCommon(TemplateConfiguration $themeConfiguration, ?int $sid = null, ?int $gsid = null)
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
         // Template::getInstance will call prepareTemplateRendering which will populate array needed for inheritance display
@@ -195,7 +169,7 @@ class SurveyThemeConfiguration
             $attributesCompleteData[$key] = $attributesCore[$key];
             $attributesCompleteData[$key]['category'] = $optionAttribute['category'];
             $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key ?? 'inherit';
-            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key];
+            $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key] ?? '';
             if (
                 $attributesCompleteData[$key]['type'] === 'dropdown'
                 // "checkicon" is of type "icon" but has dropdown options

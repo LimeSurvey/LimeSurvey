@@ -7,15 +7,17 @@
 ?>
 <?php
     // First we check if the server provided a specific HTML message
-    if(isset($serverAnswer->html))
-        if($serverAnswer->html != "")
-            echo $serverAnswer->html;
+if (isset($serverAnswer->html)) {
+    if ($serverAnswer->html != "") {
+        echo $serverAnswer->html;
+    }
+}
 
     $bError = true;
 switch ($serverAnswer->error) {
     case 'php_curl_not_loaded':
         $sTile = gT('Error!');
-        $sHeader = gT('PHP_CURL library not loaded');
+        $sHeader = gT('PHP Curl library not loaded');
         $sMessage = gT(
             "It seems that your server doesn't support PHP CURL Library. Please install it before proceeding to ComfortUpdate."
         );
@@ -70,9 +72,9 @@ switch ($serverAnswer->error) {
         $sMessage = gT("Please have patience and retry in 30 minutes. Thank you for your understanding.");
         break;
 
-    default :
+    default:
         $sTile = gT('Error!');
-        $sHeader = gT('Unknown error!');
+        $sHeader = gT('Unknown error');
         $sMessage = gT('An unknown error occurred.') . ' ' . gT('Please contact the LimeSurvey team.');
         $sErrorCode = gT('Error code:') . ' ' . $serverAnswer->error;
         break;
@@ -88,5 +90,5 @@ $this->widget('ext.AlertWidget.AlertWidget', [
 ]);
 ?>
 <p class="text-center">
-    <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
+    <a class="btn btn-outline-secondary" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("OK"); ?></a>
 </p>

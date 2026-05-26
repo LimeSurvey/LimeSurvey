@@ -209,7 +209,7 @@
             <sortorder>110</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
-            <help>Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.</help>
+            <help>Minimum date, valid date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.</help>
             <caption>Minimum date</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -221,7 +221,7 @@
             <sortorder>111</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
-            <help>Maximum date, valide date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.</help>
+            <help>Maximum date, valid date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.</help>
             <caption>Maximum date</caption>
             <i18n></i18n>
             <readonly></readonly>

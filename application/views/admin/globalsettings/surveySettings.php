@@ -39,7 +39,8 @@ $optionsOnOff = array(
             </div>
             <?php if ($partial === '_generaloptions_panel') { ?>
                 <div id="surveySettingsGeneral" class="row ls-settings-wrapper">
-                    <?php $this->renderPartial('survey/subview/accordion/_generaloptions_panel',
+                    <?php $this->renderPartial(
+                        'survey/subview/accordion/_generaloptions_panel',
                         array(
                             'oSurvey' => $oSurvey,
                             'oSurveyOptions' => $oSurvey->oOptionLabels,
@@ -52,7 +53,8 @@ $optionsOnOff = array(
                 </div>
             <?php } elseif ($partial === '_presentation_panel') { ?>
                 <div class="ls-settings-wrapper" id="surveySettingsPresentation">
-                    <?php $this->renderPartial('survey/subview/accordion/_presentation_panel',
+                    <?php $this->renderPartial(
+                        'survey/subview/accordion/_presentation_panel',
                         array(
                             'oSurvey' => $oSurvey,
                             'oSurveyOptions' => $oSurvey->oOptionLabels,
@@ -63,7 +65,8 @@ $optionsOnOff = array(
                 </div>
             <?php } elseif ($partial === '_tokens_panel') { ?>
                 <div class="ls-settings-wrapper" id="surveySettingsParticipants">
-                    <?php $this->renderPartial('survey/subview/accordion/_tokens_panel',
+                    <?php $this->renderPartial(
+                        'survey/subview/accordion/_tokens_panel',
                         array(
                             'oSurvey' => $oSurvey,
                             'oSurveyOptions' => $oSurvey->oOptionLabels,
@@ -74,7 +77,8 @@ $optionsOnOff = array(
                 </div>
             <?php } elseif ($partial === '_notification_panel') { ?>
                 <div  class="ls-settings-wrapper" id="surveySettingsNotification">
-                    <?php $this->renderPartial('survey/subview/accordion/_notification_panel',
+                    <?php $this->renderPartial(
+                        'survey/subview/accordion/_notification_panel',
                         array(
                             'oSurvey' => $oSurvey,
                             'oSurveyOptions' => $oSurvey->oOptionLabels,
@@ -86,7 +90,8 @@ $optionsOnOff = array(
                 </div>
             <?php } elseif ($partial === '_publication_panel') { ?>
                 <div class="ls-settings-wrapper" id="surveySettingsPublication">
-                    <?php $this->renderPartial('survey/subview/accordion/_publication_panel',
+                    <?php $this->renderPartial(
+                        'survey/subview/accordion/_publication_panel',
                         array(
                             'oSurvey' => $oSurvey,
                             'oSurveyOptions' => $oSurvey->oOptionLabels,

@@ -25,7 +25,9 @@ PrepareEditorScript(false, $this);
 <!-- security notice -->
 <div class="row mb-3">
     <div class="col-lg-6">
-        <label class="form-label" id="showsurveypolicynotice-label"><?php eT("Show privacy policy text with mandatory checkbox:"); ?></label>
+        <label class="form-label" id="showsurveypolicynotice-label">
+            <?php eT("Show privacy policy text with mandatory checkbox:"); ?>
+        </label>
         <div>
             <div class="btn-group" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="showsurveypolicynotice-label">
                 <input class="btn-check" type="radio" id="showsurveypolicynotice_0" name="showsurveypolicynotice"

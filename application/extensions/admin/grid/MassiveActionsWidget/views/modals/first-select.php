@@ -11,7 +11,7 @@
             </div>
             <div class="modal-footer modal-footer-buttons">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                    <?php eT("Ok"); ?>
+                    <?php eT("OK"); ?>
                 </button>
             </div>
         </div>

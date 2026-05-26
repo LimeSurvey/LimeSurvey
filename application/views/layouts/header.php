@@ -1,11 +1,13 @@
 <?php
+
 /**
  * Header of the application
  * Called from renderWrappedTemplate
  */
+
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo str_replace('-informal','', htmlspecialchars((string) $adminlang)); ?>"<?php echo $languageRTL;?> >
+<html lang="<?php echo str_replace('-informal', '', htmlspecialchars((string) $adminlang)); ?>"<?php echo $languageRTL;?> >
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -41,9 +43,9 @@
 //    $oAdminTheme = AdminTheme::getInstance();
 //    $oAdminTheme->registerStylesAndScripts();
     ?>
-    <?php if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')): ?>
+    <?php if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')) : ?>
         <!-- Debug mode is off, so the asset manager will be used-->
-    <?php else: ?>
+    <?php else : ?>
         <!-- Debug mode is on, so the asset manager will not be used -->
     <?php endif; ?>
 
@@ -66,9 +68,12 @@
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
 
-<?php App()->getClientScript()->registerScript("HeaderVariables",
-'var frameSrc = "/login";
-'.(isset($formatdata) ?
-    ' var userdateformat="'.$formatdata['jsdate'].'";'
-   .'var userlanguage="'.$adminlang.'";'
-   : '' ), LSYii_ClientScript::POS_HEAD); ?>
+<?php App()->getClientScript()->registerScript(
+    "HeaderVariables",
+    'var frameSrc = "/login";
+' . (isset($formatdata) ?
+    ' var userdateformat="' . $formatdata['jsdate'] . '";'
+    . 'var userlanguage="' . $adminlang . '";'
+    : '' ),
+    LSYii_ClientScript::POS_HEAD
+); ?>

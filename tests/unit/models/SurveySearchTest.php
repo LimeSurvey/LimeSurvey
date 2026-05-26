@@ -115,8 +115,8 @@ class SurveySearchTest extends TestBaseClass
         $this->assertNotEmpty($data, 'The survey search results were unexpectedly empty');
         $this->assertCount(2, $data, 'Two surveys should have been found.');
 
-        $this->assertThat($sids, $this->contains($data[0]->sid), 'One of the expected surveys was not found.');
-        $this->assertThat($sids, $this->contains($data[1]->sid), 'One of the expected surveys was not found.');
+        $this->assertContains((int)$data[0]->sid, $sids, 'One of the expected surveys was not found.');
+        $this->assertContains((int)$data[1]->sid, $sids, 'One of the expected surveys was not found.');
 
         // Preserve test data
         $testData['sidTwo'] = $survey->sid;
@@ -150,9 +150,9 @@ class SurveySearchTest extends TestBaseClass
         $this->assertNotEmpty($data, 'The survey search results were unexpectedly empty');
         $this->assertCount(3, $data, 'Three surveys should have been found.');
 
-        $this->assertThat($sids, $this->contains($data[0]->sid), 'One of the expected surveys was not found.');
-        $this->assertThat($sids, $this->contains($data[1]->sid), 'One of the expected surveys was not found.');
-        $this->assertThat($sids, $this->contains($data[2]->sid), 'One of the expected surveys was not found.');
+        $this->assertContains((int)$data[0]->sid, $sids, 'One of the expected surveys was not found.');
+        $this->assertContains((int)$data[1]->sid, $sids, 'One of the expected surveys was not found.');
+        $this->assertContains((int)$data[2]->sid, $sids, 'One of the expected surveys was not found.');
 
         // Preserve test data
         $testData['sidThree'] = $survey->sid;
@@ -182,9 +182,9 @@ class SurveySearchTest extends TestBaseClass
         $this->assertCount($surveyCount, $data, 'The number of surveys in the resultset found does not match the number of surveys in the database.');
         $this->assertEquals($surveyCount, $totalItemCount, 'The number of surveys found does not match the number of surveys in the database.');
 
-        $this->assertThat($sids, $this->contains($data[0]->sid), 'One of the expected surveys was not found.');
-        $this->assertThat($sids, $this->contains($data[1]->sid), 'One of the expected surveys was not found.');
-        $this->assertThat($sids, $this->contains($data[2]->sid), 'One of the expected surveys was not found.');
+        $this->assertContains((int)$data[0]->sid, $sids, 'One of the expected surveys was not found.');
+        $this->assertContains((int)$data[1]->sid, $sids, 'One of the expected surveys was not found.');
+        $this->assertContains((int)$data[2]->sid, $sids, 'One of the expected surveys was not found.');
     }
 
     private function createGroups()

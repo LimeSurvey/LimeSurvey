@@ -9,9 +9,9 @@ Yii::app()->getController()->renderPartial(
     <table class="table table-striped">
         <tr>
             <td><?=gT('User groups:')?></td>
-            <td><?=CHTml::encode(join(', ',$usergroups))?></td>
+            <td><?=CHTml::encode(join(', ', $usergroups))?></td>
         </tr>
-        <?php if ($oUser->parentUser): ?>
+        <?php if ($oUser->parentUser) : ?>
             <tr>
                 <td><?=gT('Created by:')?></td>
                 <td><?=CHTml::encode($oUser->parentUser['full_name'])?></td>

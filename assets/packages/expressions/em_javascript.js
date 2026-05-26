@@ -1,6 +1,6 @@
 /*
  * This file is part of LimeSurvey
- * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -51,8 +51,8 @@ function checkconditions(value, name, type, evt_type)
 
     var questionCode;
     if(typeof name !== 'undefined') {
-        var parts = name.split('X');
-        questionCode = parts[2];
+        var parts = name.split('_');
+        questionCode = parts[0].substring(1);
         var LEMvarNameAttr = LEMvarNameAttr || {};
         if (LEMvarNameAttr['java' + name] != undefined) {
             questionCode = '' + LEMvarNameAttr['java' + name].qid;
@@ -1059,6 +1059,13 @@ function LEMval(alias)
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
                         answer = htmlentities(value);
+                    } else if (attr.type == 'R') {
+                        if (value) {
+                            let context = document.getElementById(whichJsName);
+                            answer = context.querySelector(`option[value='${CSS.escape(context.value)}']`).innerText.trim().substring(5);
+                        } else {
+                            answer = '';
+                        }
                     }
                     else {
                         which_ans = '0~' + value;
