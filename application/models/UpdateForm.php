@@ -830,14 +830,18 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * Check if a file or directory is owned by the current process user
-     * This is essential before updating files, as file operations require proper file ownership
+     * Check if the current process can modify a file or directory
+     * This is essential before updating files, as file operations require proper permissions
      * 
-     * On Linux/Unix systems, uses POSIX functions to verify the current process UID matches file owner UID.
-     * This prevents failures when files are writable but owned by a different user (Bug #20138).
+     * On Linux/Unix systems, uses POSIX functions to check:
+     * 1. If current process is root (UID 0) - can always modify, OR
+     * 2. If current process owns the file (UID match) - can modify, OR
+     * 3. If the file/directory has write permissions set - can modify via permissions
+     * 
+     * This prevents failures when permission bits alone don't allow expected modifications (Bug #20138).
      *
      * @param string $path Path to file or directory to test
-     * @return bool True if file is owned by current process user, false otherwise
+     * @return bool True if current process can modify the file, false otherwise
      */
     private function isFileOwnedByCurrentProcess($path)
     {
@@ -850,16 +854,19 @@ class UpdateForm extends CFormModel
             $currentUid = @posix_geteuid();
             $fileUid = @fileowner($path);
             
-            // If we successfully got both UIDs, check if they match
+            // If we successfully got both UIDs, check if we can modify:
+            // 1. We own the file (UID match), OR
+            // 2. We're root (UID 0) - root can modify any file, OR
+            // 3. File is writable (permissions allow modification)
             if ($currentUid !== false && $fileUid !== false) {
-                return ($currentUid === $fileUid);
+                return ($currentUid === $fileUid) || ($currentUid === 0) || is_writable($path);
             }
         }
 
         // POSIX not available or unable to determine ownership
         // On Windows or systems without POSIX, we can't directly check ownership
-        // but is_writable() in the caller should already handle basic permission checks
-        // Return true to allow the update to proceed (permission already verified)
+        // but is_writable() should handle basic permission checks
+        // Return true to allow the update to proceed (permission already verified by caller)
         return true;
     }
 
