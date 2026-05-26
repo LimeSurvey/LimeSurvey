@@ -194,7 +194,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             return [
                 'value' => $template['name'],
                 'label' => $template['name'],
-                'preview' => $themeConf ? $themeConf->getPreview(true) : '',
+                'preview' => $themeConf->getPreview(true),
             ];
         }, $this->surveyThemeConfiguration->getAvailableTemplates('fruity_twentythree', $data->template));
 
