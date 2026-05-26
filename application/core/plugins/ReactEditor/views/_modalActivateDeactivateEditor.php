@@ -45,9 +45,7 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                     <?= gT('Welcome to the new LimeSurvey') ?>
                                 </h1>
                                 <p class="card-text reg-14 mb-16"><?= gT(
-                                    'With the LimeSurvey Editor, you can create surveys in a 
-                                        squeeze of a lime, combining intuitive design with powerful features for a 
-                                        faster, smarter survey-building experience.'
+                                    'With the LimeSurvey Editor, you can create surveys in a squeeze of a lime, combining intuitive design with powerful features for a faster, smarter survey-building experience.'
                                 ) ?>
                                     <br><br>
                                     <?= gT('Discover what the new editor can do '); ?>

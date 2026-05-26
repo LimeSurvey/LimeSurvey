@@ -941,7 +941,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
             $cols['isSuperAdmin'] = array(
                 "name" => 'isSuperAdmin',
-                "header" => gT("Super admin"),
+                "header" => gT("Superadmin"),
                 "value"  => function ($data) {
                     return $this->getFormattedBoolean($data, "isSuperAdmin");
                 },
