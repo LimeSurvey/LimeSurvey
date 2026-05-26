@@ -191,11 +191,16 @@ class UpdateForm extends CFormModel
         $toCheck = $content->list;
         $readOnly = array();
 
-        // We check the write permission of files
+        // We check the write permission of files and ability to modify timestamps
         $lsRootPath = dirname((string) Yii::app()->request->scriptFile) . '/';
         foreach ($toCheck as $check) {
             if (file_exists($lsRootPath . $check)) {
                 if (!is_writable($lsRootPath . $check)) {
+                    $readOnly[] = $lsRootPath . $check;
+                } elseif (!$this->isFileOwnedByCurrentProcess($lsRootPath . $check)) {
+                    // File is writable but not owned by current process
+                    // This prevents updates from failing mid-process due to ownership issues
+                    // Fixes: Bug #20138
                     $readOnly[] = $lsRootPath . $check;
                 }
             }
@@ -787,6 +792,16 @@ class UpdateForm extends CFormModel
                 }
             }
 
+            // Check not only if directory is writable, but also if it's owned by current process
+            // This ensures the user running the update owns the files
+            // Fixes: Bug #20138 - ComfortUpdate fails when files owned by different user
+            if ($is_writable && file_exists(dirname($searchpath))) {
+                $is_owned = $this->isFileOwnedByCurrentProcess(dirname($searchpath));
+                if (!$is_owned) {
+                    $is_writable = false;
+                }
+            }
+
             if (!$is_writable) {
                 $checkedfile->type = 'readonlyfile';
                 $checkedfile->file = $searchpath;
@@ -797,9 +812,55 @@ class UpdateForm extends CFormModel
         ) {
             $checkedfile->type = 'readonlyfile';
             $checkedfile->file = $this->rootdir . $file['file'];
+        } elseif (
+            file_exists($this->rootdir . $file['file'])
+            && is_writable($this->rootdir . $file['file'])
+        ) {
+            // Check if file is owned by current process
+            // This is necessary even if file is writable, as file ownership may prevent updates
+            // Fixes: Bug #20138 - ComfortUpdate fails when files owned by different user
+            $is_owned = $this->isFileOwnedByCurrentProcess($this->rootdir . $file['file']);
+            if (!$is_owned) {
+                $checkedfile->type = 'readonlyfile';
+                $checkedfile->file = $this->rootdir . $file['file'];
+            }
         }
 
         return $checkedfile;
+    }
+
+    /**
+     * Check if a file or directory is owned by the current process user
+     * This is essential before updating files, as file operations require proper file ownership
+     * 
+     * On Linux/Unix systems, uses POSIX functions to verify the current process UID matches file owner UID.
+     * This prevents failures when files are writable but owned by a different user (Bug #20138).
+     *
+     * @param string $path Path to file or directory to test
+     * @return bool True if file is owned by current process user, false otherwise
+     */
+    private function isFileOwnedByCurrentProcess($path)
+    {
+        if (!file_exists($path)) {
+            return false;
+        }
+
+        // Check if POSIX functions are available (available on Linux/Unix, not on Windows)
+        if (function_exists('posix_geteuid') && function_exists('fileowner')) {
+            $currentUid = @posix_geteuid();
+            $fileUid = @fileowner($path);
+            
+            // If we successfully got both UIDs, check if they match
+            if ($currentUid !== false && $fileUid !== false) {
+                return ($currentUid === $fileUid);
+            }
+        }
+
+        // POSIX not available or unable to determine ownership
+        // On Windows or systems without POSIX, we can't directly check ownership
+        // but is_writable() in the caller should already handle basic permission checks
+        // Return true to allow the update to proceed (permission already verified)
+        return true;
     }
 
 
