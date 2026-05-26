@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-05-26 14:10:58+00:00\n"
+"POT-Creation-Date: 2026-05-26 19:03:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4701,12 +4701,12 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:3278
 #: application/helpers/common_helper.php:1075
 #: application/helpers/common_helper.php:1087
-#: application/helpers/qanda_helper.php:1255
-#: application/helpers/qanda_helper.php:1314
-#: application/helpers/qanda_helper.php:1435
-#: application/helpers/qanda_helper.php:1485
-#: application/helpers/qanda_helper.php:2512
-#: application/helpers/qanda_helper.php:2513
+#: application/helpers/qanda_helper.php:1248
+#: application/helpers/qanda_helper.php:1307
+#: application/helpers/qanda_helper.php:1428
+#: application/helpers/qanda_helper.php:1478
+#: application/helpers/qanda_helper.php:2505
+#: application/helpers/qanda_helper.php:2506
 #: application/helpers/userstatistics_helper.php:644
 #: application/helpers/userstatistics_helper.php:683
 #: application/helpers/userstatistics_helper.php:715
@@ -9544,40 +9544,37 @@ msgid "Welcome to the new LimeSurvey"
 msgstr ""
 
 #: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:47
-msgid ""
-"With the LimeSurvey Editor, you can create surveys in a \n"
-"                                        squeeze of a lime, combining intuitive design with powerful features for a \n"
-"                                        faster, smarter survey-building experience."
+msgid "With the LimeSurvey Editor, you can create surveys in a squeeze of a lime, combining intuitive design with powerful features for a faster, smarter survey-building experience."
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:53
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:51
 msgid "Discover what the new editor can do "
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:54
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:52
 msgid "here"
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:57
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:55
 #: application/views/admin/editor/_activateEditorItem.php:6
 msgid "Editor version"
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:67
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:65
 msgid "Classic"
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:68
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:66
 #: application/views/admin/tutorialentries/index.php:15
 msgid "New"
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:79
-msgid "Good to know"
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:77
+msgid "Good to know..."
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:82
-msgid "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version, now out of beta and we’d love to hear your feedback!"
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:80
+msgid "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version -  it’s now out of beta, and we’d love to hear your feedback!"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:203
@@ -12647,55 +12644,40 @@ msgstr ""
 msgid "One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:396
-#: application/models/QuestionBaseRenderer.php:102
-msgid "hours"
-msgstr ""
-
-#: application/helpers/qanda_helper.php:397
-#: application/models/QuestionBaseRenderer.php:103
-msgid "minutes"
-msgstr ""
-
-#: application/helpers/qanda_helper.php:398
-#: application/models/QuestionBaseRenderer.php:104
-msgid "seconds"
-msgstr ""
-
-#: application/helpers/qanda_helper.php:417
-#: application/models/QuestionBaseRenderer.php:134
+#: application/helpers/qanda_helper.php:410
+#: application/models/QuestionBaseRenderer.php:127
 msgid "Your time to answer this question has expired"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:420
-#: application/models/QuestionBaseRenderer.php:137
+#: application/helpers/qanda_helper.php:413
+#: application/models/QuestionBaseRenderer.php:130
 msgid "Time remaining"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:421
-#: application/helpers/qanda_helper.php:427
-#: application/models/QuestionBaseRenderer.php:138
-#: application/models/QuestionBaseRenderer.php:140
+#: application/helpers/qanda_helper.php:414
+#: application/helpers/qanda_helper.php:420
+#: application/models/QuestionBaseRenderer.php:131
+#: application/models/QuestionBaseRenderer.php:133
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:661
+#: application/helpers/qanda_helper.php:654
 #: application/views/survey/questions/answer/file_upload/answer.twig:60
 msgid "Upload file|Upload files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:914
+#: application/helpers/qanda_helper.php:907
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:978
+#: application/helpers/qanda_helper.php:971
 msgid "Click to set the location or drag and drop the pin. You may may also enter coordinates"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1808
-#: application/helpers/qanda_helper.php:1840
-#: application/helpers/qanda_helper.php:1877
-#: application/helpers/qanda_helper.php:1882
+#: application/helpers/qanda_helper.php:1801
+#: application/helpers/qanda_helper.php:1833
+#: application/helpers/qanda_helper.php:1870
+#: application/helpers/qanda_helper.php:1875
 #: application/models/Assessment.php:149 application/models/Survey.php:1718
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:54
 #: application/views/admin/export/generatestats/_statisticsoutput_gross_total.php:27
@@ -12705,17 +12687,17 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1815
-#: application/helpers/qanda_helper.php:1852
+#: application/helpers/qanda_helper.php:1808
+#: application/helpers/qanda_helper.php:1845
 #: application/views/survey/questions/answer/arrays/texts/rows/cells/td_grand_total.twig:16
 msgid "Grand total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2626
+#: application/helpers/qanda_helper.php:2619
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2630
+#: application/helpers/qanda_helper.php:2623
 #: application/views/survey/questions/answer/arrays/array/dropdown/empty.twig:3
 #: application/views/survey/questions/answer/arrays/multiflexi/empty_error.twig:2
 #: application/views/survey/questions/answer/arrays/texts/empty_error.twig:2
@@ -16249,6 +16231,7 @@ msgstr ""
 
 #: application/models/QuestionType.php:200
 #: editor/src/components/QuestionTypes/getNotSupportedQuestionTypeInfo.js:36
+#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:49
 msgid "Array (Increase/Same/Decrease)"
 msgstr ""
 
@@ -16900,7 +16883,7 @@ msgid "Show privacy policy on register form"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:193
-msgid "Show privacy policy on token form"
+msgid "Show privacy policy on access code form"
 msgstr ""
 
 #: application/models/SurveysGroupsettings.php:441
@@ -17483,7 +17466,7 @@ msgid "Applied role"
 msgstr ""
 
 #: application/models/User.php:944
-msgid "Super admin"
+msgid "Superadmin"
 msgstr ""
 
 #: application/models/User.php:960
@@ -21497,9 +21480,6 @@ msgid "Loading..."
 msgstr ""
 
 #: application/views/admin/super/help_button_dropup.php:2
-msgid "Useful Resources"
-msgstr ""
-
 #: application/views/admin/super/help_button_dropup.php:7
 msgid "Useful resources"
 msgstr ""
@@ -22390,7 +22370,7 @@ msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:145
 #: application/views/admin/survey/subview/tab_edit_view_datasecurity.php:54
-msgid "Show privacy policy on token form:"
+msgid "Show privacy policy on access code form:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:158
@@ -27013,7 +26993,7 @@ msgstr ""
 
 #: application/views/userManagement/massiveAction/_selector.php:88
 #: application/views/userManagement/massiveAction/_selector.php:97
-msgid "Set expire date"
+msgid "Set expiration date"
 msgstr ""
 
 #: application/views/userManagement/massiveAction/_selector.php:111
@@ -27830,10 +27810,6 @@ msgstr ""
 
 #: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:36
 msgid "Date/time"
-msgstr ""
-
-#: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:49
-msgid "Increase Decrease"
 msgstr ""
 
 #: editor/src/components/QuestionTypes/getQuestionTypeInfo.js:54
@@ -28850,7 +28826,7 @@ msgid "Filter responses"
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:56
-msgid "Include"
+msgid "Completion state"
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesTable/FileInfoCell.js:12
