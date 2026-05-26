@@ -1408,6 +1408,10 @@ class SurveyRuntimeHelper
         if ((strpos((string) $sProcessedString, "{") !== false)) {
             // process string anyway so that it can be pretty-printed
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+            // Keep the expression variable `URL` usable in end-URL equations.
+            // Otherwise the standard replacement field `URL` (template link placeholder)
+            // overrides question/equation code named URL and prevents expected redirects.
+            unset($aStandardsReplacementFields['URL']);
             $sProcessedString = LimeExpressionManager::ProcessStepString($sString, $aStandardsReplacementFields, $iRecursionLevel, $static);
         }
         return $sProcessedString;
