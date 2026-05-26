@@ -3,6 +3,11 @@ import { html } from '@codemirror/lang-html'
 import { EditorView } from '@codemirror/view'
 import { useEffect } from 'react'
 
+// basicSetup (included by @uiw/react-codemirror by default) already provides
+// autocompletion, closeBrackets, bracketMatching, and indentOnInput.
+// We only need to add the HTML language extension on top.
+export const htmlExtensions = [html({ autoCloseTags: true })]
+
 const codeEditorTheme = EditorView.theme({
   '&': {
     backgroundColor: '#ffffff',
@@ -15,23 +20,20 @@ const codeEditorTheme = EditorView.theme({
   },
   '.cm-gutters': {
     backgroundColor: '#f8f9fa',
-    color: '#1e1e1e',
+    color: '#1E1E1E',
+    border: 'none',
+    maxWidth: '24px',
   },
   '.cm-lineNumbers': {
     fontSize: '10px',
-    color: '#1e1e1e',
+    color: '#1E1E1E',
     textAlign: 'center',
-    minWidth: '20px',
   },
   '.cm-gutterElement': {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minWidth: '40px !important',
     padding: '0 2px !important',
-  },
-  '.cm-line': {
-    backgroundColor: '#ffffff',
   },
   '.cm-lineWrapping': {
     padding: '0',
@@ -42,8 +44,16 @@ const codeEditorTheme = EditorView.theme({
   },
   '.cm-content': {
     fontSize: '14px',
-    backgroundColor: '#ffffff',
-    color: '#1e1e1e',
+    color: '#1E1E1E',
+  },
+  '.cm-selectionBackground': {
+    backgroundColor: '#b3d4ff',
+  },
+  '&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground': {
+    backgroundColor: '#b3d4ff',
+  },
+  '.cm-activeLine': {
+    backgroundColor: '#f0f0f090',
   },
   '.cm-foldGutter': {
     display: 'none',
@@ -57,7 +67,7 @@ export const CodeEditor = ({
   height = '75vh',
   width = '75vw',
   className = 'text-start',
-  extensions = [html()],
+  extensions = htmlExtensions,
   onChange = (newValue) => {
     document.getElementById(id)?.setAttribute('data-value', newValue)
   },

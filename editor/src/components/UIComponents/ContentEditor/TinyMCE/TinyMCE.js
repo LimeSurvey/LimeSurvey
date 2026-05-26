@@ -3,7 +3,7 @@ import { Editor } from '@tinymce/tinymce-react'
 import { htmlPopup, RandomNumber } from 'helpers'
 import beautify from 'js-beautify'
 
-import { CodeEditor } from '../CodeMirror/CodeMirror'
+import { CodeEditor } from '../CodeEditor/CodeEditor'
 import { mceToolbar } from './mceToolbar'
 import { toolbarActions } from './toolbarActions'
 
