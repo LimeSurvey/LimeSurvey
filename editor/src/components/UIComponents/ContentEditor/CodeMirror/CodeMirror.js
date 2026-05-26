@@ -8,7 +8,7 @@ const codeEditorTheme = EditorView.theme({
     backgroundColor: '#ffffff',
     border: '2px solid #6e748c',
     borderRadius: '2px',
-    padding: '12px 8px',
+    padding: '12px 4px',
   },
   '&.cm-focused': {
     outline: 'none',
@@ -18,17 +18,17 @@ const codeEditorTheme = EditorView.theme({
     color: '#1e1e1e',
   },
   '.cm-lineNumbers': {
-    fontSize: '12px',
+    fontSize: '10px',
     color: '#1e1e1e',
     textAlign: 'center',
-    minWidth: '30px',
+    minWidth: '20px',
   },
   '.cm-gutterElement': {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     minWidth: '40px !important',
-    padding: '0 8px !important',
+    padding: '0 2px !important',
   },
   '.cm-line': {
     backgroundColor: '#ffffff',
@@ -38,7 +38,7 @@ const codeEditorTheme = EditorView.theme({
   },
   '.cm-activeLineGutter': {
     backgroundColor: '#dddee8',
-    padding: '0 8px !important',
+    padding: '0 2px !important',
   },
   '.cm-content': {
     fontSize: '14px',
