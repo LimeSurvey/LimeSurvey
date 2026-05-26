@@ -17,7 +17,7 @@ if (isset($serverAnswer->html)) {
 switch ($serverAnswer->error) {
     case 'php_curl_not_loaded':
         $sTile = gT('Error!');
-        $sHeader = gT('PHP curl library not loaded');
+        $sHeader = gT('PHP curl library not installed');
         $sMessage = gT(
             "It seems that your server doesn't support PHP CURL Library. Please install it before proceeding to ComfortUpdate."
         );

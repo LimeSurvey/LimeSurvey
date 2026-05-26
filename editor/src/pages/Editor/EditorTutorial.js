@@ -213,9 +213,9 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
       },
     },
     {
-      title: t('Autosave'),
+      title: t('Auto-save'),
       content: t(
-        "See how LimeSurvey autosaves your work? You don't have to worry about saving your progress at any time."
+        "LimeSurvey automatically saves your changes — no need to save manually."
       ),
       spotlightPadding: 5,
       placement: 'bottom',
