@@ -454,7 +454,7 @@ class CheckIntegrity extends SurveyCommonAction
             $deleted = QuotaMember::model()->deleteAllByAttributes($aRecord);
             $count += $deleted;
         }
-        $aData['messages'][] = sprintf(gT('Deleting orphaned quota members: %u quota members deleted'), $count);
+        $aData['messages'][] = sprintf(gT('Deleting orphaned quota rules: %u quota rules deleted'), $count);
         return $aData;
     }
 

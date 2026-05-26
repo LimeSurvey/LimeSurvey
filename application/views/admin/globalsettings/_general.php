@@ -96,7 +96,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
         <!-- Time zone selector -->
         <div class="mb-3">
             <label class="col-12 form-label" for='displayTimezone'>
-                <?php eT("Default display time zone:"); ?>
+                <?php eT("Default time zone:"); ?>
             </label>
             <div class="col-md-4">
                 <span>

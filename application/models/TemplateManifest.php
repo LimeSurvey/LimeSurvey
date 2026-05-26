@@ -435,7 +435,7 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aLoadForm']['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => 1));
 
         // Those values can be overwritten by XML
-        $thissurvey['name'] = gT("Template sample");
+        $thissurvey['name'] = gT("Theme sample");
         $thissurvey['description'] =
         "<p>" . gT('This is a sample survey description. It could be quite long.') . "</p>" .
         "<p>" . gT("But this one isn't.") . "<p>";

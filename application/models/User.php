@@ -111,7 +111,7 @@ class User extends LSActiveRecord
             array('users_name', 'length','max' => 64),
             array('full_name', 'length','max' => 50),
             array('email', 'email', 'allowEmpty' => true),
-            array('email', 'unique', 'allowEmpty' => true, 'message' => gT("E-mail address '{value}' is already used by another user.", 'unescaped')),
+            array('email', 'unique', 'allowEmpty' => true, 'message' => gT("Email address '{value}' is already used by another user.", 'unescaped')),
             array('full_name', 'LSYii_Validators'), // XSS if non super-admin
             array('parent_id', 'default', 'value' => 0),
             array('parent_id', 'numerical', 'integerOnly' => true),
