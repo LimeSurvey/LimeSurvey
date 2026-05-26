@@ -197,7 +197,7 @@ class UpdateForm extends CFormModel
             if (file_exists($lsRootPath . $check)) {
                 if (!is_writable($lsRootPath . $check)) {
                     $readOnly[] = $lsRootPath . $check;
-                } elseif (!$this->isFileOwnedByCurrentProcess($lsRootPath . $check)) {
+                } elseif (!$this->isFileModifiable($lsRootPath . $check)) {
                     // File is writable but not owned by current process
                     // This prevents updates from failing mid-process due to ownership issues
                     // Fixes: Bug #20138
@@ -792,12 +792,12 @@ class UpdateForm extends CFormModel
                 }
             }
 
-            // Check not only if directory is writable, but also if it's owned by current process
-            // This ensures the user running the update owns the files
+            // Check not only if directory is writable, but also if it can be modified
+            // This ensures the current process can modify files (by ownership, root, or permissions)
             // Fixes: Bug #20138 - ComfortUpdate fails when files owned by different user
             if ($is_writable && file_exists($searchpath)) {
-                $is_owned = $this->isFileOwnedByCurrentProcess($searchpath);
-                if (!$is_owned) {
+                $is_modifiable = $this->isFileModifiable($searchpath);
+                if (!$is_modifiable) {
                     $is_writable = false;
                 }
             }
@@ -816,11 +816,11 @@ class UpdateForm extends CFormModel
             file_exists($this->rootdir . $file['file'])
             && is_writable($this->rootdir . $file['file'])
         ) {
-            // Check if file is owned by current process
+            // Check if file can be modified (ownership, root, or permissions)
             // This is necessary even if file is writable, as file ownership may prevent updates
             // Fixes: Bug #20138 - ComfortUpdate fails when files owned by different user
-            $is_owned = $this->isFileOwnedByCurrentProcess($this->rootdir . $file['file']);
-            if (!$is_owned) {
+            $is_modifiable = $this->isFileModifiable($this->rootdir . $file['file']);
+            if (!$is_modifiable) {
                 $checkedfile->type = 'readonlyfile';
                 $checkedfile->file = $this->rootdir . $file['file'];
             }
@@ -843,7 +843,7 @@ class UpdateForm extends CFormModel
      * @param string $path Path to file or directory to test
      * @return bool True if current process can modify the file, false otherwise
      */
-    private function isFileOwnedByCurrentProcess($path)
+    private function isFileModifiable($path)
     {
         if (!file_exists($path)) {
             return false;
