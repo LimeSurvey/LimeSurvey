@@ -49,9 +49,9 @@
                             'type' => 'success',
                         ]);
                     } else {
-                        $text = gT("Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is enabled for all users.");
+                        $text = gT("XSS filtering is enforced via the configuration file and cannot be changed here. It applies to all users, including super administrators.");
                         if (App()->getConfig('filterxsshtml_allowforcedsuperadmin')) {
-                            $text = gT("Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is only disabled for forced super admin(s).");
+                            $text = gT("XSS filtering is enforced via the configuration file and cannot be changed here. Forced super administrators are exempt.");
                         }
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                             'text' => $text,
