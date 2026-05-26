@@ -24,8 +24,8 @@ class UserManager
      * @param User|null $targetUser
      */
     public function __construct(
-        LSWebUser $managingUser = null,
-        User $targetUser = null
+        ?LSWebUser $managingUser = null,
+        ?User $targetUser = null
     ) {
         $this->managingUser = $managingUser;
         $this->targetUser = $targetUser;

@@ -7,8 +7,10 @@
         <!-- Modal content-->
         <div class="modal-content">
             <?php
-            echo CHtml::form(array('surveyAdministration/import'),
-                'post', array(
+            echo CHtml::form(
+                array('surveyAdministration/import'),
+                'post',
+                array(
                     'id' => 'importsurvey',
                     'name' => 'importsurvey',
                     'class' => '',
@@ -27,8 +29,10 @@
                 <div class="row">
                     <div class="mb-3">
                         <label class='form-label ' >
-                            <?php printf(gT(
-                                "Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),
+                            <?php printf(
+                                gT(
+                                    "Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"
+                                ),
                                 getMaximumFileUploadSize() / 1024 / 1024
                             ); ?>
                         </label>

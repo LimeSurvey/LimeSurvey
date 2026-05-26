@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -107,7 +107,6 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $timeadjust = getGlobalSetting('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
@@ -153,7 +152,7 @@ function getSurveyList($bReturnArray = false)
                 $inactivesurveys .= " class='mysurvey emphasis inactivesurvey'";
             }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-        } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
+        } elseif ($sv['expires'] != '' && $sv['expires'] < gmdate("Y-m-d H:i:s")) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
                 $expiredsurveys .= " class='mysurvey emphasis expiredsurvey'";
@@ -286,7 +285,7 @@ function convertGETtoPOST($url)
         }
     }
     // params: script-name (string) / empty string / parameters as json
-    return 'window.LS.sendPost('. json_encode($calledscript) . ',"",' . json_encode($postArray) . ');';
+    return 'window.LS.sendPost(' . json_encode($calledscript) . ',"",' . json_encode($postArray) . ');';
 }
 
 
@@ -391,8 +390,8 @@ function getMaxQuestionOrder($gid)
 * It returns an array with the following items:
 *    $wrapper['whole-start']   = Opening wrapper for the whole list
 *    $wrapper['whole-end']     = closing wrapper for the whole list
-*    $wrapper['col-devide']    = normal column devider
-*    $wrapper['col-devide-last'] = the last column devider (to allow
+*    $wrapper['col-devide']    = normal column divider
+*    $wrapper['col-devide-last'] = the last column divider (to allow
 *                                for different styling of the last
 *                                column
 *    $wrapper['item-start']    = opening wrapper tag for individual
@@ -417,8 +416,8 @@ function getMaxQuestionOrder($gid)
 * -  Using inline or float to create columns, causes the answers
 *    flows horizontally, not vertically which is not ideal visually.
 * -  Using CSS3 columns is also a problem because of browser support
-*    and also because if you have answeres split across two or more
-*    lines, and those answeres happen to fall at the bottom of a
+*    and also because if you have answers split across two or more
+*    lines, and those answers happen to fall at the bottom of a
 *    column, the answer might be split across columns as well as
 *    lines.
 * -  Using nested unordered list with the first level of <LI>s
@@ -534,7 +533,7 @@ function setupColumns($columns, $answer_count, $wrapperclass = "", $itemclass = 
 function alternation($alternate = '', $type = 'col')
 {
     /**
-     * alternation() Returns a class identifyer for alternating between
+     * alternation() Returns a class identifier for alternating between
      * two options. Used to style alternate elements differently. creates
      * or alternates between the odd string and the even string used in
      * as column and row classes for array type questions.
@@ -670,7 +669,7 @@ function getUserList($outputformat = 'fullinfoarray')
     if (!empty(Yii::app()->session['loginID'])) {
         $myuid = sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy');
+    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
     if (
         !Permission::model()->hasGlobalPermission('superadmin', 'read') && isset($usercontrolSameGroupPolicy) &&
         $usercontrolSameGroupPolicy == true
@@ -749,7 +748,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
     }
 
     $surveyid = sanitize_int($surveyid);
-    $languagecode = sanitize_languagecode($languagecode);
+    $languagecode = \LSYii_Validators::languageCodeFilter($languagecode);
     $thissurvey = false;
     $oSurvey = Survey::model()->findByPk($surveyid);
     // Do job only if this survey exist
@@ -775,8 +774,8 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             $result = $resultBaseLanguage;
         }
         if ($result) {
-            $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
-            $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
+            $aSurveyAttributes = array_replace($result->survey->attributes, $aSurveyOptions);
+            $thissurvey = array_merge($aSurveyAttributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
             if (($languagecode != $oSurvey->language) && empty($thissurvey['name']) || $thissurvey['name'] == '') {
                 $thissurvey['name'] = $resultBaseLanguage->surveyls_title;
@@ -936,9 +935,9 @@ function returnGlobal($stringname, $bRestrictToString = false)
         }
     } elseif ($stringname == "lang" || $stringname == "adminlang") {
         if ($bUrlParamIsArray) {
-            return array_map("sanitize_languagecode", $urlParam);
+            return array_map(['\\LSYii_Validators', 'languageCodeFilter'], $urlParam);
         } else {
-            return sanitize_languagecode($urlParam);
+            return \LSYii_Validators::languageCodeFilter($urlParam);
         }
     } elseif (
         $stringname == "htmleditormode" ||
@@ -965,7 +964,7 @@ function returnGlobal($stringname, $bRestrictToString = false)
 function sendSurveyHttpHeaders()
 {
     if (!headers_sent()) {
-        // Default headers für surveys
+        // Default headers for surveys
         $headers = [
                      'Cache-Control: no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0',
                      'Pragma: no-cache',
@@ -1002,9 +1001,14 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
         return '';
     }
     $survey = Survey::model()->findByPk($iSurveyID);
+    $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $iSurveyID]);
+    $found = false;
+    foreach ($rawQuestions as $rawQuestion) {
+        $found = $found || (strpos($sFieldCode, "Q{$rawQuestion->qid}") === 0);
+    }
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
-    if (strpos($sFieldCode, "{$iSurveyID}X") === 0) {
+    if ($found) {
         //Only check if it looks like a real fieldcode
         $fieldmap = createFieldMap($survey, 'short', false, false, $sLanguage);
         if (isset($fieldmap[$sFieldCode])) {
@@ -1014,7 +1018,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
         }
 
         // If it is a comment field there is nothing to convert here
-        if ($fields['aid'] == 'comment') {
+        if (str_ends_with((string)($fields['aid'] ?? ''), 'comment')) {
             return $sValue;
         }
 
@@ -1046,7 +1050,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             case Question::QT_O_LIST_WITH_COMMENT:
             case Question::QT_I_LANGUAGE:
             case Question::QT_R_RANKING:
-                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
+                $this_answer = Question::model()->getQuestionFromTitle($fields['qid'], $sValue, $sLanguage);
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
@@ -1172,31 +1176,6 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
 }
 
 /**
-* Validate an email address - also supports IDN email addresses
-* @deprecated : use LimeMailer::validateAddress($sEmailAddress);
-* @returns True/false for valid/invalid
-*
-* @param mixed $sEmailAddress  Email address to check
-*/
-function validateEmailAddress($sEmailAddress)
-{
-    return LimeMailer::validateAddress($sEmailAddress);
-}
-
-/**
-* Validate an list of email addresses - either as array or as semicolon-limited text
-* @deprecated : use LimeMailer::validateAddresses($aEmailAddressList);
-* @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
-*
-* @param string $aEmailAddressList  Email address to check
-* @returns array
-*/
-function validateEmailAddresses($aEmailAddressList)
-{
-    return LimeMailer::validateAddresses($aEmailAddressList);
-}
-
-/**
  * This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
  * It can be used for the generation of statistics. Derived from StatisticsUserController
  * @param int $iSurveyID Id of the Survey in question
@@ -1209,7 +1188,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
     $allfields = [];
     foreach ($aFilters as $flt) {
         Yii::app()->loadHelper("surveytranslator");
-        $myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
+        $myfield = "Q{$flt['qid']}";
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aAdditionalLanguages = array_filter(explode(" ", (string) $oSurvey->additional_languages));
         if (is_null($sLanguage) || !in_array($sLanguage, $aAdditionalLanguages)) {
@@ -1238,7 +1217,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 //go through all the (multiple) answers
                 foreach ($result as $row) {
-                    $myfield2 = $myfield . $row['title'];
+                    $myfield2 = $myfield . "_S" . $row['qid'];
                     $allfields[] = $myfield2;
                 }
                 break;
@@ -1263,7 +1242,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                 break;
             case Question::QT_R_RANKING: // Ranking
                 //get some answers
-                $result = Answer::model()->getQuestionsForStatistics('code, answer', "qid=$flt[qid] AND language = '{$sLanguage}'", 'sortorder, answer');
+                $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
                 //get number of answers
                 //loop through all answers. if there are 3 items to rate there will be 3 statistics
                 $i = 0;
@@ -1307,7 +1286,225 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
     return $allfields;
 }
 
-
+/**
+ * Returns the field name of a table's question or subquestion
+ *
+ * @param string $tableName
+ * @param string $fieldName
+ * @param array $rawQuestions a collection of questions containing a question and its subquestions
+ * @param int $sid
+ * @param int $gid
+ * @param bool $cd is it the condition designer
+ *
+ * @return string the field's name
+ */
+function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false)
+{
+    $newFieldName = "";
+    if (strpos($tableName, "timings") !== false) {
+        $X = explode("X", $fieldName);
+        $newFieldName = ((count($X) > 2) ? "Q" : "G") . $X[count($X) - 1];
+    } else {
+        $rootQuestions = [];
+        $questionIndex = 0;
+        while ($questionIndex < count($rawQuestions)) {
+            if (($rawQuestions[$questionIndex]->gid == $gid) && (!$rawQuestions[$questionIndex]->parent_qid)) {
+                $rootQuestions[] = $rawQuestions[$questionIndex];
+            }
+            $questionIndex++;
+        }
+        usort($rootQuestions, function ($a, $b) {
+            return $b->qid - $a->qid;
+        });
+        foreach ($rootQuestions as $rootQuestion) {
+            $questions = [$rootQuestion];
+            foreach ($rawQuestions as $rawQuestion) {
+                if ($rawQuestion->parent_qid == $rootQuestion->qid) {
+                    $questions[] = $rawQuestion;
+                }
+            }
+            $qid = $rootQuestion->qid;
+            switch ($rootQuestion->type) {
+                case \Question::QT_1_ARRAY_DUAL:
+                case \Question::QT_5_POINT_CHOICE:
+                case \Question::QT_L_LIST:
+                case \Question::QT_M_MULTIPLE_CHOICE:
+                case \Question::QT_N_NUMERICAL:
+                case \Question::QT_O_LIST_WITH_COMMENT:
+                case \Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                    $currentQuestion = null;
+                    $length = strlen("{$sid}X{$gid}X{$qid}");
+                    $hashPos = strpos($fieldName, '#');
+                    foreach ($questions as $question) {
+                        if ($hashPos && ($question->title === substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : null))) {
+                            $currentQuestion = $question;
+                        } elseif ($question->title === substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"))) {
+                            $currentQuestion = $question;
+                        }
+                    }
+                    $hashTags = explode("#", $fieldName);
+                    if ((!$currentQuestion) && ($rootQuestion->type === \Question::QT_M_MULTIPLE_CHOICE) && ($length < strlen($hashTags[0]))) {
+                        $currentQuestion = \Question::model()->find("parent_qid = {$qid} and title = :title", [
+                            ":title" => substr($hashTags[0], $length)
+                        ]);
+                    }
+                    if (!$currentQuestion) {
+                        $newFieldName = "Q{$qid}";
+                        if (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}")) {
+                            $newFieldName .= "_C" . substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                        }
+                    } else {
+                        $newFieldName = "Q{$qid}_S{$currentQuestion->qid}";
+                        if (count($hashTags)) {
+                            for ($index = 1; $index < count($hashTags); $index++) {
+                                $newFieldName .= "#{$hashTags[$index]}";
+                            }
+                        }
+                    }
+                    break;
+                case \Question::QT_A_ARRAY_5_POINT:
+                case \Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
+                case \Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
+                case \Question::QT_E_ARRAY_INC_SAME_DEC:
+                case \Question::QT_F_ARRAY:
+                case \Question::QT_H_ARRAY_COLUMN:
+                case \Question::QT_K_MULTIPLE_NUMERICAL:
+                case \Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                case \Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                    $code = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                    if ($code === '') {
+                        return "Q{$qid}";
+                    }
+                    $commentText = false;
+                    $currentQuestion = null;
+                    $excludeSubquestion = false;
+                    foreach ($questions as $question) {
+                        if ($question->title === $code) {
+                            $currentQuestion = $question;
+                        } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
+                            $currentQuestion = $question;
+                            $commentText = $code;
+                            if (strpos($code, $question->title) === 0) {
+                                $commentText = substr($code, strlen($question->title));
+                            } else {
+                                $excludeSubquestion = true;
+                            }
+                        }
+                    }
+                    if ($currentQuestion) {
+                        $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
+                        if ($commentText) {
+                            $newFieldName = $newFieldName . "_C" . $commentText;
+                        }
+                    }
+                    break;
+                case \Question::QT_SEMICOLON_ARRAY_TEXT:
+                case \Question::QT_COLON_ARRAY_NUMBERS:
+                    $scales = [0 => [], 1 => []];
+                    foreach ($questions as $question) {
+                        if ($question->parent_qid != 0) {
+                            $scales[$question->scale_id][$question->title] = $question->qid;
+                        }
+                    }
+                    $partialFieldName = substr($fieldName, 0, strlen("{$sid}X{$gid}X{$qid}"));
+                    foreach ($scales[0] as $title1 => $qid1) {
+                        if (count($scales[1])) {
+                            foreach ($scales[1] as $title2 => $qid2) {
+                                if ($fieldName === "{$partialFieldName}{$title1}_{$title2}") {
+                                    return "Q{$qid}_S{$qid1}_S{$qid2}";
+                                }
+                            }
+                        } elseif ($fieldName === "{$partialFieldName}{$title1}") {
+                            return "Q{$qid}_S{$qid1}";
+                        }
+                    }
+                    break;
+                case \Question::QT_D_DATE:
+                case \Question::QT_G_GENDER:
+                case \Question::QT_I_LANGUAGE:
+                case \Question::QT_S_SHORT_FREE_TEXT:
+                case \Question::QT_T_LONG_FREE_TEXT:
+                case \Question::QT_U_HUGE_FREE_TEXT:
+                case \Question::QT_X_TEXT_DISPLAY:
+                case \Question::QT_Y_YES_NO_RADIO:
+                case \Question::QT_VERTICAL_FILE_UPLOAD:
+                case \Question::QT_ASTERISK_EQUATION:
+                    $isRoot = (($rootQuestion->parent_qid ?? 0) == "0");
+                    $newFieldName = ($isRoot ? "Q{$qid}" : "Q{$rootQuestion->parent_qid}");
+                    $suffix = "";
+                    $isComment = false;
+                    if (!$isRoot) {
+                        $length = strlen("{$sid}X{$gid}X{$qid}");
+                        $hashPos = strpos($fieldName, '#');
+                        $code = substr($fieldName, $length, ($hashPos !== false) ? ($hashPos - $length) : 2000);
+                        $suffix = "_C{$code}";
+                        foreach ($questions as $question) {
+                            if ($question->title === $code) {
+                                $suffix = "_S{$question->qid}";
+                            } elseif ($question->title . "comment" === $code) {
+                                $suffix = "_S{$question->qid}";
+                                $isComment = true;
+                            }
+                        }
+                    }
+                    $clearIfLong = true;
+                    $newFieldName .= $suffix;
+                    if (strpos($fieldName, "time") !== false) {
+                        $newFieldName .= "_Ctime";
+                        $clearIfLong = false;
+                    } elseif (strpos($fieldName, "filecount") !== false) {
+                        $newFieldName .= "_Cfilecount";
+                        $clearIfLong = false;
+                    }
+                    if ($isComment) {
+                        $newFieldName .= "_Ccomment";
+                    } elseif ($isRoot && $clearIfLong && (strlen($fieldName) > strlen("{$sid}X{$gid}X{$qid}"))) {
+                        $newFieldName = "";
+                    }
+                    break;
+                case \Question::QT_R_RANKING:
+                    $prefix = ((strpos($tableName, "timing") !== false) ? "C" : "S");
+                    $index = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                    try {
+                        $rankingSuffix = substr($fieldName, strlen("{$sid}X{$gid}X{$qid}"));
+                        $iRankingSuffix = intval($rankingSuffix);
+                        $subQuestions = \Question::model()->findAll([
+                            'condition' => "parent_qid = :qid",
+                            'params' => [":qid" => $qid],
+                            'order' => 'question_order'
+                        ]);
+                        if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
+                            $qid = $cd ? $index : $subQuestions[($iRankingSuffix - 1)]->qid;
+                            $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
+                        } else if (count($subQuestions)) {
+                            $minSortOrder = $subQuestions[0]->question_order;
+                            $diff = 0;
+                            if ($minSortOrder === 0) {
+                                $diff = -1;
+                            } elseif ($minSortOrder > 1) {
+                                $diff = $minSortOrder;
+                            }
+                            foreach ($subQuestions as $question) {
+                                if (($rankingSuffix == $question->title) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question->question_order))) {
+                                    return "Q{$rootQuestion->qid}_{$prefix}{$question->qid}";
+                                }
+                            }
+                        }
+                    } catch (\Exception $ex) {
+                        // Ignore inconsistencies in archive rankings
+                        if (strpos($tableName, 'old') === false) {
+                            throw $ex;
+                        }
+                    }
+                    break;
+            }
+            if ($newFieldName) {
+                return $newFieldName;
+            }
+        }
+    }
+    return $newFieldName ? $newFieldName : $fieldName;
+}
 
 
 
@@ -1320,13 +1517,20 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 * @param bool|int $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sLanguage The language to use
 * @param array $aDuplicateQIDs
+* @param array $surveyReplacements needed to replace qids with the correct values, for example during import
+* @param bool $includeAllAnswerOptions Include all answer options in the fieldmap (e.g. ignore min-max answers values) - default is false
 * @return array
 */
-function createFieldMap($survey, $style = 'short', $force_refresh = false, $questionid = false, $sLanguage = '', &$aDuplicateQIDs = array())
+function createFieldMap($survey, $style = 'short', $force_refresh = false, $questionid = false, $sLanguage = '', &$aDuplicateQIDs = array(), $surveyReplacements = [], $includeAllAnswerOptions = false)
 {
 
-    $sLanguage = sanitize_languagecode($sLanguage);
+    static $aQIDReplacementMappings = [];
+    $sLanguage = \LSYii_Validators::languageCodeFilter($sLanguage);
     $surveyid = $survey->sid;
+    if (!isset($aQIDReplacementMappings[$surveyid])) {
+        $aQIDReplacementMappings[$surveyid] = $surveyReplacements;
+    }
+    $aQIDReplacements = $aQIDReplacementMappings[$surveyid];
     //checks to see if fieldmap has already been built for this page.
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid === false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
@@ -1523,13 +1727,13 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         }
 
         // Field identifier
-        // GXQXSXA
+        // Q{qid}(_(S{qid}|Ccomment))?
         // G=Group  Q=Question S=Subquestion A=Answer Option
         // If S or A don't exist then set it to 0
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
-        $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+        $fieldname = "Q{$arow['qid']}";
 
         if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
             if (isset($fieldmap[$fieldname])) {
@@ -1559,7 +1763,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 case Question::QT_L_LIST:  //RADIO LIST
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:  //DROPDOWN LIST
                     if ($arow['other'] == "Y") {
-                        $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
+                        $fieldname = "Q{$arow['qid']}_Cother";
                         if (isset($fieldmap[$fieldname])) {
                             $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                         }
@@ -1593,7 +1797,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     }
                     break;
                 case Question::QT_O_LIST_WITH_COMMENT: //DROPDOWN LIST WITH COMMENT
-                    $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment";
+                    $fieldname = "Q{$arow['qid']}_Ccomment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
@@ -1635,6 +1839,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $answerList[] = array(
                     'code' => $abrow['title'],
                     'answer' => $abrow['question'],
+                    'qid' => $abrow['qid']
                     );
                     unset($abrows[$key]);
                 }
@@ -1642,7 +1847,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             reset($abrows);
             foreach ($abrows as $abrow) {
                 foreach ($answerset as $answer) {
-                    $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$answer['title']}";
+                    $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}_S{$answer['qid']}";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
@@ -1652,6 +1857,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
                     "aid" => $abrow['title'] . "_" . $answer['title'],
+                    "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']) . "_S" . $answer['qid'],
                     "sqid" => $abrow['qid']);
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
@@ -1679,7 +1885,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         } elseif ($arow['type'] == Question::QT_1_ARRAY_DUAL) {
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow) {
-                $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
+                $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}#0";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
@@ -1692,6 +1898,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     "qid" => $arow['qid'],
                     "sqid" => $abrow['qid'],
                     "aid" => $abrow['title'],
+                    "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
                     "scale_id" => 0,
                 );
                 if (isset($answerColumnDefinition)) {
@@ -1711,9 +1918,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                     $fieldmap[$fieldname]['SQrelevance'] = $abrow['relevance'];
+                    $fieldmap[$fieldname]['sqid'] = $abrow['qid'];
                 }
 
-                $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
+                $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}#1";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
@@ -1725,6 +1933,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     "qid" => $arow['qid'],
                     "sqid" => $abrow['qid'],
                     "aid" => $abrow['title'],
+                    "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
                     "scale_id" => 1,
                 );
                 if (isset($answerColumnDefinition)) {
@@ -1743,21 +1952,30 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+                    $fieldmap[$fieldname]['sqid'] = $abrow['qid'];
                     // TODO SQrelevance for different scales? $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
             }
         } elseif ($arow['type'] == Question::QT_R_RANKING) {
-            // Sub question by answer number OR attribute
-            $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'])));
-            $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
-            $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
-            $columnsCount = min($columnsCount, $answersCount); // Can not be upper than current answers #14899
-            for ($i = 1; $i <= $columnsCount; $i++) {
-                $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
+            // Ranking questions now use subquestions instead of answer options
+            $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
+            $i = 0;
+            foreach ($abrows as $abrow) {
+                $i++;
+                $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $i);
+                $fieldmap[$fieldname] = array(
+                    "fieldname" => $fieldname,
+                    'type' => $arow['type'],
+                    'sid' => $surveyid,
+                    "gid" => $arow['gid'],
+                    "qid" => $arow['qid'],
+                    "sqid" => $abrow['qid'],
+                    "aid" => $i,
+                    "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
+                );
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1773,18 +1991,21 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+                    $fieldmap[$fieldname]['sqid'] = $abrow['qid'];
+                    $fieldmap[$fieldname]['SQrelevance'] = $abrow['relevance'];
                 }
             }
         } elseif ($arow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qs[$arow['qid']] ?? $arow['qid']);
-            $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+            $fieldname = "Q{$arow['qid']}";
             $fieldmap[$fieldname] = array(
                 "fieldname" => $fieldname,
                 'type' => $arow['type'],
                 'sid' => $surveyid,
                 "gid" => $arow['gid'],
                 "qid" => $arow['qid'],
-                "aid" => ''
+                "aid" => '',
+                "suffix" => ''
             );
             if (isset($answerColumnDefinition)) {
                 $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
@@ -1802,14 +2023,15 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                 $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
             }
-            $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}" . "_filecount";
+            $fieldname = "Q{$arow['qid']}" . "_Cfilecount";
             $fieldmap[$fieldname] = array(
                 "fieldname" => $fieldname,
                 'type' => $arow['type'],
                 'sid' => $surveyid,
                 "gid" => $arow['gid'],
                 "qid" => $arow['qid'],
-                "aid" => "filecount"
+                "aid" => "filecount",
+                "suffix" => "_Cfilecount"
             );
             if (isset($answerColumnDefinition)) {
                 $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
@@ -1831,7 +2053,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             //MULTI ENTRY
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             foreach ($abrows as $abrow) {
-                $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
+                $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}";
 
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
@@ -1842,6 +2064,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 'gid' => $arow['gid'],
                 'qid' => $arow['qid'],
                 'aid' => $abrow['title'],
+                'suffix' => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
                 'sqid' => $abrow['qid']);
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
@@ -1866,11 +2089,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     }
                 }
                 if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                    $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
+                    $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}_Ccomment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
-                    $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'] . "comment");
+                    $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => $abrow['title'] . "comment", "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']) . "_Ccomment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }
@@ -1890,11 +2113,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 }
             }
             if ($arow['other'] == "Y" && ($arow['type'] == Question::QT_M_MULTIPLE_CHOICE || $arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
-                $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
+                $fieldname = "Q{$arow['qid']}_Cother";
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                 }
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "other");
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "other", "suffix" => "_Cother");
                 if (isset($answerColumnDefinition)) {
                     $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                 }
@@ -1913,11 +2136,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['other'] = $arow['other'];
                 }
                 if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                    $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment";
+                    $fieldname = "Q{$arow['qid']}_Cothercomment";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
                     }
-                    $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "othercomment");
+                    $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "othercomment", "suffix" => "_Cothercomment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }
@@ -1961,9 +2184,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     if ($questionid === false) {
         // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-        if (isset(Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
-            $masterFieldmap = Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
-            $mfieldmap = Yii::app()->session['survey_' . $surveyid][$masterFieldmap];
+        if (isset(Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
+            $masterFieldmap = Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
+            $mfieldmap = Yii::app()->session['responses_' . $surveyid][$masterFieldmap];
 
             foreach ($mfieldmap as $fieldname => $mf) {
                 if (isset($fieldmap[$fieldname])) {
@@ -2009,7 +2232,7 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
 {
     static $timingsFieldMap;
 
-    $sLanguage = sanitize_languagecode($sQuestionLanguage);
+    $sLanguage = \LSYii_Validators::languageCodeFilter($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
     $survey = Survey::model()->findByPk($surveyid);
 
@@ -2022,21 +2245,21 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     }
 
     //do something
-    $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sQuestionLanguage);
+    $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sLanguage);
     $fieldmap = [];
-    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
+    $fieldmap['interviewtime'] = array('fieldname' => 'interviewtime', 'type' => 'interview_time', 'sid' => $surveyid, 'gid' => '', 'qid' => '', 'aid' => '', 'suffix' => '', 'question' => gT('Total time'), 'title' => 'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
-            $fieldname = "{$field['sid']}X{$field['gid']}time";
+            $fieldname = "G{$field['gid']}time";
             if (!isset($fieldmap[$fieldname])) {
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "page_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => '', 'aid' => '', 'title' => 'groupTime' . $field['gid'], 'question' => gT('Group time') . ": " . $field['group_name']);
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "page_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => '', 'aid' => '', 'suffix' => '', 'title' => 'groupTime' . $field['gid'], 'question' => gT('Group time') . ": " . $field['group_name']);
             }
 
             // field for time spent on answering a question
-            $fieldname = "{$field['sid']}X{$field['gid']}X{$field['qid']}time";
+            $fieldname = "Q{$field['qid']}time";
             if (!isset($fieldmap[$fieldname])) {
-                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "answer_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => $field['qid'], 'aid' => '', "title" => $field['title'] . 'Time', "question" => gT('Question time') . ": " . $field['title']);
+                $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => "answer_time", 'sid' => $surveyid, "gid" => $field['gid'], "group_name" => $field['group_name'], "qid" => $field['qid'], 'aid' => '', 'suffix' => '', "title" => $field['title'] . 'Time', "question" => gT('Question time') . ": " . $field['title']);
             }
         }
     }
@@ -2044,6 +2267,29 @@ function createTimingsFieldMap($surveyid, $style = 'full', $force_refresh = fals
     $timingsFieldMap[$surveyid][$style][$sLanguage] = $fieldmap;
     App()->setLanguage($sOldLanguage);
     return $timingsFieldMap[$surveyid][$style][$sLanguage];
+}
+
+/**
+ * Gets subquestions mapped to their titles
+ * @param mixed $sid the survey id
+ * @return array<array> Two levels, the first level is the parent qid and the second is the title
+ */
+function getTitleSubquestionMapping($sid)
+{
+    static $questionMap;
+    if (!isset($questionMap[$sid])) {
+        $questionMap[$sid] = [];
+        $rawQuestions = Question::model()->with('questionl10ns')->findAll('sid = :sid', [":sid" => $sid]);
+        foreach ($rawQuestions as $rawQuestion) {
+            if ($rawQuestion->parent_qid) {
+                if (!isset($questionMap[$sid][$rawQuestion->parent_qid])) {
+                    $questionMap[$sid][$rawQuestion->parent_qid] = [];
+                }
+                $questionMap[$sid][$rawQuestion->parent_qid][$rawQuestion->title] = $rawQuestion;
+            }
+        }
+    }
+    return $questionMap[$sid];
 }
 
 /**
@@ -2100,7 +2346,7 @@ function buildLabelSetCheckSumArray()
 * @author: lemeur
 * @param $questionAttributeArray
 * @param string $attributeName
-* @param $language string Optional: The language if the particualr attributes is localizable
+* @param $language string Optional: The language if the particular attributes is localizable
 * @return string
 */
 function getQuestionAttributeValue($questionAttributeArray, $attributeName, $language = '')
@@ -2177,78 +2423,6 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
     }
     return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
 }
-
-/**
-* This function mails a text $body to the recipient $to.
-* You can use more than one recipient when using a semicolon separated string with recipients.
-* @deprecated : leave it in 4.0 for plugins ? Must remove in 5.0 at minima.
-*
-* @param string $body Body text of the email in plain text or HTML
-* @param mixed $subject Email subject
-* @param mixed $to Array with several email addresses or single string with one email address
-* @param string $from
-* @param mixed $sitename
-* @param boolean $ishtml
-* @param mixed $bouncemail
-* @param mixed $attachments
-* @return bool If successful returns true
-*/
-function SendEmailMessage($body, $subject, $to, string $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
-{
-    global $maildebug;
-
-    if (!is_array($to)) {
-        $to = array($to);
-    }
-
-    if (!is_array($customheaders) && $customheaders == '') {
-        $customheaders = array();
-    }
-
-    $mail =  new LimeMailer();
-    $mail->emailType = 'deprecated';
-
-    $fromname = '';
-    $fromemail = $from;
-    if (strpos($from, '<')) {
-        $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
-        $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
-    }
-    if (is_null($bouncemail)) {
-        $senderemail = $fromemail;
-    } else {
-        $senderemail = $bouncemail;
-    }
-
-    $mail->SetFrom($fromemail, $fromname);
-    $mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    foreach ($to as $singletoemail) {
-        $mail->addAddress($singletoemail);
-    }
-    if (is_array($customheaders)) {
-        foreach ($customheaders as $key => $val) {
-            $mail->AddCustomHeader($val);
-        }
-    }
-    $mail->Subject = $subject;
-    $mail->Body = $body;
-    $mail->IsHTML($ishtml);
-    // Add attachments if they are there.
-    if (is_array($attachments)) {
-        foreach ($attachments as $attachment) {
-            // Attachment is either an array with filename and attachment name.
-            if (is_array($attachment)) {
-                $mail->AddAttachment($attachment[0], $attachment[1]);
-            } else {
-                // Or a string with the filename.
-                $mail->AddAttachment($attachment);
-            }
-        }
-    }
-    $mail->Subject = $subject;
-    return $mail->Send();
-}
-
 
 /**
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
@@ -2668,24 +2842,88 @@ function isTokenCompletedDatestamped($thesurvey)
 }
 
 /**
-* example usage
-* $date = "2006-12-31 21:00";
-* $shift "+6 hours"; // could be days, weeks... see function strtotime() for usage
+* Converts a date/time from one timezone to another.
 *
-* echo sql_date_shift($date, "Y-m-d H:i:s", $shift);
-*
-* will output: 2007-01-01 03:00:00
-*
-* @param string $date
-* @param string $dformat
-* @param string $shift
-* @return string
+* @param string $date The input date in a format accepted by DateTime
+* @param string $toDateFormat Output format (PHP date() format string)
+* @param string|null $toTimezone Target timezone identifier (e.g. 'Europe/Berlin').
+*        If null, uses the global 'displayTimezone' setting.
+* @param string $fromTimezone Input timezone identifier, defaults to 'UTC'
+* @return string The date converted to the target timezone and formatted
 */
-function dateShift($date, $dformat, string $shift)
+function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UTC')
 {
-    return date($dformat, strtotime($shift, strtotime($date)));
+    if ($fromTimezone === "") {
+        $fromTimezone = "UTC";
+    }
+    if (!$toTimezone) {
+        $toTimezone = Yii::app()->getConfig('displayTimezone');
+        if (empty($toTimezone)) {
+            // get default timezone
+            return $date;
+        }
+    }
+    $datetime = new DateTime($date, new DateTimeZone($fromTimezone));
+    $datetime->setTimezone(new DateTimeZone($toTimezone));
+    return $datetime->format($toDateFormat);
 }
 
+/**
+ * Gets the UTC of the date to be stored
+ * @param string|null $date
+ * @return string|null
+ */
+function getUTCOfDate(?string $date = null)
+{
+    if (!$date) {
+        return $date;
+    }
+    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
+    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    return dateShift($date, "Y-m-d H:i:s", 'UTC', $tz);
+}
+
+/**
+ * Gets the date of the UTC to be displayed
+ * @param string|null $date
+ * @return string|null
+ */
+function getDateOfUTC(?string $date = null)
+{
+    if (!$date) {
+        return $date;
+    }
+    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
+    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    return dateShift($date, "Y-m-d H:i:s", $tz, 'UTC');
+}
+
+/**
+ * Applies a relative time modifier (e.g. '-1 minute', '+2 hours') to a date
+ * and returns the result in the given format.
+ *
+ * @param string $date         The input date in a format accepted by DateTime
+ * @param string $toDateFormat The desired output date format.
+ * @param string $modifier     A relative date/time modifier accepted by DateTime::modify().
+ * @param string $timeZone     The timezone of the input date (default: 'UTC').
+ * @return string The modified date formatted according to $toDateFormat.
+ */
+function dateShiftRelative($date, $toDateFormat, $modifier, $timeZone = 'UTC')
+{
+    $datetime = new DateTime($date, new DateTimeZone($timeZone));
+    $datetime->modify($modifier);
+    return $datetime->format($toDateFormat);
+}
+
+
+function convertTimezoneDiffToHours(){
+    $desiredTimezone = new DateTimeZone(Yii::app()->getConfig('displayTimezone') ?: 'UTC');
+    // Get the current time in the desired timezone
+    $currentDateTime = new DateTime('now', new DateTimeZone(date_default_timezone_get()));
+    // Get the offset in hours from UTC
+    $hoursOffset = $desiredTimezone->getOffset($currentDateTime) / 3600;
+    return $hoursOffset;
+}
 
 // getBounceEmail: returns email used to receive error notifications
 function getBounceEmail($surveyid)
@@ -2743,10 +2981,10 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
     if ($sType == 'survey') {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.\-\_:])*(?=(\/upload))\/upload\/surveys\/' . $iOldSurveyID . '\/)';
         if ($isLocalPath) {
-            $sReplace = rtrim(App()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
+            $sReplace = rtrim(Yii::app()->getConfig("uploaddir"), "/") . "/surveys/{$iNewSurveyID}/";
             return preg_replace('/' . $sPattern . '/u', $sReplace, $sString);
         } else {
-            // Make the replacement conditionaly.
+            // Make the replacement conditionally.
             // If the URL is absolute, make sure we keep it absolute.
             // If it is relative, use the publicurl config (if the publicurl is absolute we assume it
             // makes sense to make the urls absolute)
@@ -2755,9 +2993,9 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
                 $parsedUrl = parse_url($url);
                 $replacementUrl = "/upload/surveys/{$iNewSurveyID}/";
                 if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
-                    return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
+                    return rtrim(Yii::app()->getPublicBaseUrl(true), "/") . $replacementUrl;
                 } else {
-                    return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                    return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
                 }
             }, $sString);
         }
@@ -2770,7 +3008,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString, $isLocal
             if (isset($parsedUrl['scheme']) && isset($parsedUrl['host'])) {
                 return rtrim(App()->getPublicBaseUrl(true), "/") . $replacementUrl;
             } else {
-                return rtrim(App()->getConfig("publicurl"), '/') . $replacementUrl;
+                return rtrim(Yii::app()->getConfig("publicurl"), '/') . $replacementUrl;
             }
         }, $sString);
     } else // unknown type
@@ -2857,19 +3095,20 @@ function reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQID
     } else {
         $forceRefresh = false;
     }
-    $aFieldMap = createFieldMap($oNewSurvey, 'short', $forceRefresh, false, $oNewSurvey->language);
+    $dupes = [];
+    $aFieldMap = createFieldMap($oNewSurvey, 'short', $forceRefresh, false, $oNewSurvey->language, $dupes, $aQIDReplacements);
 
     $aFieldMappings = array();
     foreach ($aFieldMap as $sFieldname => $aFieldinfo) {
         if ($aFieldinfo['qid'] != null) {
-            $aFieldMappings[$sFieldname] = $iOldSID . 'X' . $aGIDReplacements[$aFieldinfo['gid']] . 'X' . $aQIDReplacements[$aFieldinfo['qid']] . $aFieldinfo['aid'];
+            $aFieldMappings[$sFieldname] = 'Q' . $aQIDReplacements[$aFieldinfo['qid']] . ($aFieldinfo['suffix'] ?? '');
             if ($aFieldinfo['type'] == '1') {
                 $aFieldMappings[$sFieldname] = $aFieldMappings[$sFieldname] . '#' . $aFieldinfo['scale_id'];
             }
             // now also add a shortened field mapping which is needed for certain kind of condition mappings
-            $aFieldMappings[$iNewSID . 'X' . $aFieldinfo['gid'] . 'X' . $aFieldinfo['qid']] = $iOldSID . 'X' . $aGIDReplacements[$aFieldinfo['gid']] . 'X' . $aQIDReplacements[$aFieldinfo['qid']];
+            $aFieldMappings['Q' . $aFieldinfo['qid']] = 'Q' . $aQIDReplacements[$aFieldinfo['qid']];
             // Shortened field mapping for timings table
-            $aFieldMappings[$iNewSID . 'X' . $aFieldinfo['gid']] = $iOldSID . 'X' . $aGIDReplacements[$aFieldinfo['gid']];
+            $aFieldMappings['G' . $aFieldinfo['gid']] = 'G' . $aGIDReplacements[$aFieldinfo['gid']];
         }
     }
     return array_flip($aFieldMappings);
@@ -3070,7 +3309,7 @@ function decodeAttributeSelectOptions(array $attrData)
 * Retrieves the attribute names from the related survey participant list
 *
 * @param mixed $surveyid  The survey ID
-* @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
+* @param boolean $bOnlyAttributes Set this to true if you only want the fieldnames of the additional attribute fields - defaults to false
 * @return array The fieldnames as key and names as value in an Array
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
@@ -3301,7 +3540,7 @@ function cleanTwigCacheDirectory()
 }
 
 /**
-* This is a convenience function for the coversion of datetime values
+* This is a convenience function for the conversion of datetime values
 *
 * @param mixed $value
 * @param string $fromdateformat
@@ -3321,7 +3560,7 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 
 /**
 * This is a convenience function to convert any date, in any date format, to the global setting date format
-* Check if the time shoul be rendered also
+* Check if the time should be rendered also
 *
 * @param string $sDate
 * @param boolean $withTime
@@ -3466,7 +3705,7 @@ function enforceSSLMode()
     (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO'] == "https") ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == "https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true) {
-        $bForceSSL = strtolower((string) getGlobalSetting('force_ssl'));
+        $bForceSSL = strtolower((string) Yii::app()->getConfig('force_ssl'));
     }
     if ($bForceSSL == 'on' && !$bSSLActive) {
         SSLRedirect('s');
@@ -3540,7 +3779,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             if ($oldqid !== $fname['qid']) {
                 $oldqid = $fname['qid'];
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2'])) {
-                    $aResultTable['qid_' . $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid']] = array($fname['question'], '', '');
+                    $aResultTable['qid_' . 'Q' . $fname['qid']] = array($fname['question'], '', '');
                 } else {
                     $answer = getExtendedAnswer($iSurveyID, $fname['fieldname'], $idrow[$fname['fieldname']], $sLanguageCode, $questions[$fname['qid']] ?? null);
                     $aResultTable[$fname['fieldname']] = array($question, '', $answer);
@@ -3626,21 +3865,6 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
         return $sResult;
     }
 }
-
-/**
-* Include Keypad headers
-*/
-function includeKeypad()
-{
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir') . '/vendor/jquery-keypad/jquery.keypad-' . App()->language . '.js';
-    if (App()->language != 'en' && file_exists($localefile)) {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js');
-    }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
-}
-
 
 /**
 * This function replaces the old insertans tags with new ones across a survey
@@ -3929,13 +4153,13 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 {
     Yii::app()->loadHelper('database');
     $iSurveyID = (int) $iSurveyID;
-    $baselang = sanitize_languagecode($baselang);
+    $baselang = \LSYii_Validators::languageCodeFilter($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
     }
     $aLanguages = [];
     if (!empty($availlangs) && $availlangs != " ") {
-        $availlangs = sanitize_languagecodeS($availlangs);
+        $availlangs = \LSYii_Validators::multiLanguageCodeFilter($availlangs);
         $aLanguages = explode(" ", (string) $availlangs);
         if ($aLanguages[count($aLanguages) - 1] == "") {
             array_pop($aLanguages);
@@ -3989,12 +4213,12 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
 function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
-    $baselang = sanitize_languagecode($baselang);
+    $baselang = \LSYii_Validators::languageCodeFilter($baselang);
     if (empty($baselang)) {
         $baselang = Survey::model()->findByPk($sid)->language;
     }
     if (trim($availlangs) != '') {
-        $availlangs = sanitize_languagecodeS($availlangs);
+        $availlangs = \LSYii_Validators::multiLanguageCodeFilter($availlangs);
         $languagesToCheck = explode(" ", (string) $availlangs);
         if ($languagesToCheck[count($languagesToCheck) - 1] == "") {
             array_pop($languagesToCheck);
@@ -4127,7 +4351,7 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 }
 
 /**
- * Retrieves the last Insert ID realiable for cross-DB applications
+ * Retrieves the last Insert ID reliable for cross-DB applications
  *
  * @param string $sTableName Needed for Postgres and MSSQL
  * @return string
@@ -4150,9 +4374,9 @@ function getLastInsertID($sTableName)
 * @param string $targgid - (optional) get only the dependencies for groups dependents on group targgid
 * @param string $indexby - (optional) "by-depgid" for result indexed with $res[$depgid][$targgid]
 *                   "by-targgid" for result indexed with $res[$targgid][$depgid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
+* @return array - returns an array describing the conditions or NULL if no dependency is found
 *
-* Example outupt assumin $index-by="by-depgid":
+* Example output assuming $index-by="by-depgid":
 *Array
 *(
 *    [125] => Array             // Group Id 125 is dependent on
@@ -4270,14 +4494,14 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
 /**
 * getQuestDepsForConditions() get Dependencies between groups caused by conditions
 * @param string $sid - the currently selected survey
-* @param string $gid - (optional) only search dependecies inside the Group Id $gid
+* @param string $gid - (optional) only search dependencies inside the Group Id $gid
 * @param string $depqid - (optional) get only the dependencies applying to the question with qid depqid
 * @param string $targqid - (optional) get only the dependencies for questions dependents on question Id targqid
 * @param string $indexby - (optional) "by-depqid" for result indexed with $res[$depqid][$targqid]
 *                   "by-targqid" for result indexed with $res[$targqid][$depqid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
+* @return array - returns an array describing the conditions or NULL if no dependency is found
 *
-* Example outupt assumin $index-by="by-depqid":
+* Example output assuming $index-by="by-depqid":
 *Array
 *(
 *    [184] => Array     // Question Id 184
@@ -4476,7 +4700,7 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 */
 function shouldFilterUserGroupList()
 {
-    $bUserControlSameGroupPolicy = App()->getConfig('usercontrolSameGroupPolicy', true);
+    $bUserControlSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy', true);
     $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
     return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
 }
@@ -4603,7 +4827,7 @@ function getLabelSets($languages = null)
 {
     $aLanguages = array();
     if (!empty($languages)) {
-        $languages = sanitize_languagecodeS($languages);
+        $languages = \LSYii_Validators::multiLanguageCodeFilter($languages);
         $aLanguages = explode(' ', trim((string) $languages));
     }
 
@@ -4641,9 +4865,9 @@ function getHeader($meta = false)
     $oSurvey = Survey::model()->findByPk($surveyid);
     Yii::app()->loadHelper('surveytranslator');
 
-    // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
-    if (Yii::app()->session['survey_' . $surveyid]['s_lang']) {
-        $languagecode = Yii::app()->session['survey_' . $surveyid]['s_lang'];
+    // Set Language // TODO remove one of the Yii::app()->session see bug #5901
+    if (Yii::app()->session['responses_' . $surveyid]['s_lang']) {
+        $languagecode = Yii::app()->session['responses_' . $surveyid]['s_lang'];
     } elseif (isset($surveyid) && $surveyid && $oSurvey) {
         $languagecode = $oSurvey->language;
     } else {
@@ -5010,6 +5234,12 @@ function convertPHPSizeToBytes($sSize)
     return (int) $iValue;
 }
 
+
+/**
+ * Get the maximum allowed file upload size in bytes
+ *
+ * @return int The maximum allowed file upload size in bytes
+ **/
 function getMaximumFileUploadSize()
 {
     return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
@@ -5027,7 +5257,7 @@ function decodeTokenAttributes(string $tokenAttributeData)
         return array();
     }
     if (substr($tokenAttributeData, 0, 1) != '{' && substr($tokenAttributeData, 0, 1) != '[') {
-        if (!App()->getConfig('allow_unserialize_attributedescriptions')) {
+        if (!Yii::app()->getConfig('allow_unserialize_attributedescriptions')) {
             return array();
         }
         // minimal broken securisation, mantis issue #20144
@@ -5171,7 +5401,7 @@ function createRandomTempDir($dir = null, $prefix = '', $mode = 0700)
 
 /**
  * Generate a random string, using openssl if available, else using md5
- * @param  int    $length wanted lenght of the random string (only for openssl mode)
+ * @param  int    $length wanted length of the random string (only for openssl mode)
  * @return string
  */
 function getRandomString($length = 32)
@@ -5415,4 +5645,114 @@ function csvEscape($string)
     $string = '"' . str_replace('"', '""', $string) . '"';
 
     return $string;
+}
+
+/**
+ * Convert legacy INSERTANS tags to modern question code references.
+ *
+ * The result is wrapped in curly braces only when the source tag also used curly braces.
+ *
+ * When the QID+suffix boundary is ambiguous (e.g. purely numeric suffixes in array
+ * questions like {INSERTANS:136212X36X10921}), the function progressively tries
+ * shorter QID values until a known QID is found, treating the remainder as suffix.
+ *
+ * Examples:
+ * - {INSERTANS:554233X11X1}        → {G01Q02.shown}          (with braces, QID exists)
+ * - INSERTANS:554233X11X1          → G01Q02.shown             (without braces, QID exists)
+ * - {INSERTANS:554233X11X99}       → {INSERTANS:554233X11X99} (unchanged, QID not found)
+ * - {INSERTANS:554233X11X1other}   → {G01Q02_other.shown}    (other field)
+ * - {INSERTANS:554233X11X1comment} → {G01Q02_comment.shown}  (comment field)
+ * - {INSERTANS:554233X11X1SQ001}   → {G01Q02_SQ001.shown}    (subquestion suffix)
+ * - {INSERTANS:136212X36X10921}    → {qArray5Point_1.shown}   (numeric suffix, QID=1092)
+ * - {INSERTANS:136212X36X1098money#0} → {qArrayDualScale_money_0.shown} (dual scale, # → _)
+ *
+ * @param string $text The text containing INSERTANS tags
+ * @param array $questions The list of all question objects (parent and subquestions)
+ * @param array $newOldSurveyQuestionMap Mapping from new question IDs to old question IDs
+ * @return string The text with INSERTANS tags converted to qcode.shown format
+ */
+function convertLegacyInsertans($text, array $questions = [], $newOldSurveyQuestionMap = [])
+{
+    if (empty($text) || !str_contains($text, 'INSERTANS:') || empty($questions)) {
+        return $text;
+    }
+
+    // Map old QID → question title, built via the new→old mapping.
+    // Only parent questions (parent_qid = 0) are included, because INSERTANS
+    // references parent QIDs with the subquestion code as suffix.
+    $questionCodesByOldQid = [];
+    foreach ($questions as $question) {
+        if (!empty($newOldSurveyQuestionMap[$question->qid]) && empty($question->parent_qid)) {
+            $questionCodesByOldQid[$newOldSurveyQuestionMap[$question->qid]] = $question->title;
+        }
+    }
+
+    return preg_replace_callback(
+        '/(\{?)INSERTANS:([^}\s]+)\}?/',
+        static function ($matches) use ($questionCodesByOldQid) {
+            $hasBraces = $matches[1] === '{';
+            $rawField  = $matches[2];
+
+            // Only old SGQA format is supported: SIDXGIDXQID[suffix]
+            if (!preg_match('/^(\d+)X(\d+)X(\d+)(.*)$/', $rawField, $m)) {
+                return $matches[0]; // Not a recognised format – leave unchanged
+            }
+
+            $qidPart = $m[3];
+            $suffix  = $m[4];
+
+            // Resolve QID: the regex greedily captures all digits into $qidPart,
+            // but for array-type questions the suffix can be purely numeric
+            // (e.g. "10921" = QID 1092 + suffix "1"). Try the full number first,
+            // then progressively shorten $qidPart, moving trailing digits to $suffix.
+            $parentTitle = null;
+            $resolvedSuffix = $suffix;
+            for ($i = strlen($qidPart); $i >= 1; $i--) {
+                $tryQid    = (int) substr($qidPart, 0, $i);
+                $trySuffix = substr($qidPart, $i) . $suffix;
+                if (isset($questionCodesByOldQid[$tryQid])) {
+                    $parentTitle    = $questionCodesByOldQid[$tryQid];
+                    $resolvedSuffix = $trySuffix;
+                    break;
+                }
+            }
+
+            if ($parentTitle === null) {
+                return $matches[0]; // QID not found – leave unchanged
+            }
+
+            // Dual-scale arrays use '#' as separator (e.g. "money#0"), convert to '_'
+            $resolvedSuffix = str_replace('#', '_', $resolvedSuffix);
+
+            if ($resolvedSuffix === '') {
+                $qcode = $parentTitle . '.shown';
+            } else {
+                // Suffix is a subquestion code (e.g. SQ001, other, comment, F1, 1, ls1)
+                // If the suffix already starts with '_' (e.g. "_filecount"), don't add another one
+                $separator = str_starts_with($resolvedSuffix, '_') ? '' : '_';
+                $qcode = $parentTitle . $separator . $resolvedSuffix . '.shown';
+            }
+
+            return $hasBraces ? '{' . $qcode . '}' : $qcode;
+        },
+        $text
+    );
+}
+
+/**
+ * Sort an array by keys descendingly
+ * @param mixed $input
+ * @return array
+ */
+function sortByKeyLengthDescending($input)
+{
+    $keys = array_keys($input);
+    usort($keys, function ($a, $b) {
+        return strlen($b) - strlen($a);
+    });
+    $output = [];
+    foreach ($keys as $key) {
+        $output[$key] = $input[$key];
+    }
+    return $output;
 }

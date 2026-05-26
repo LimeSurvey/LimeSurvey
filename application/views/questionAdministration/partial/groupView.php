@@ -65,12 +65,12 @@
                 <div class="col-12">
                     <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class' => 'btn btn-primary')); ?>
                     <a href="<?php echo Yii::app()->createUrl(
-                                    'questionAdministration/listQuestions',
-                                    [
-                                        'surveyid' => $oSurvey->primaryKey,
-                                        'activeTab' => 'groups'
-                                    ]
-                                ); ?>" class="btn btn-warning" role="button" aria-label="<?= gT('Reset') ?>">
+                        'questionAdministration/listQuestions',
+                        [
+                            'surveyid' => $oSurvey->primaryKey,
+                            'activeTab' => 'groups'
+                        ]
+                    ); ?>" class="btn btn-warning" role="button" aria-label="<?= gT('Reset') ?>">
                         <span class="ri-refresh-line" aria-hidden="true"></span>
                         <?= gT('Reset') ?>
                     </a>

@@ -220,6 +220,11 @@ App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_mod
 App()->getController()->renderPartial('/surveyAdministration/partial/_modalCopySurvey');
 ?>
 
+<?php
+//modal for deleting a survey
+App()->getController()->renderPartial('/surveyAdministration/partial/_modalDeleteSurvey');
+?>
+
 <!-- Modal for admin notifications -->
 <div id="admin-notification-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
