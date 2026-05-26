@@ -26,9 +26,26 @@ class RenderFivePointChoice extends QuestionBaseRenderer
         return '/survey/questions/answer/5pointchoice/answer';
     }
 
+    /**
+     * Build the list of option rows for the 5-point choice question (and an optional "No answer" row).
+     *
+     * Each row is an associative array representing a single radio option for values 1 through 5.
+     * If the question is not mandatory and SHOW_NO_ANSWER is enabled, an additional "No answer" row is appended.
+     *
+     * @return array<int, array{name: string, value: mixed, id: string, labelText: mixed, itemExtraClass: string, checkedState: string, checkconditionFunction: mixed}>
+     *         An array of option rows. Each row contains:
+     *         - `name`: form field name (SGQA).
+     *         - `value`: option value (1–5 or empty string for "No answer").
+     *         - `id`: element id (SGQA with numeric suffix for 1–5; SGQA for "No answer").
+     *         - `labelText`: label shown for the option (numeric label for 1–5 or localized "No answer").
+     *         - `itemExtraClass`: additional CSS class for the item (empty or 'noanswer-item').
+     *         - `checkedState`: `' CHECKED '` if the option should be selected, otherwise an empty string.
+     *         - `checkconditionFunction`: condition function used by frontend logic.
+     */
     public function getRows()
     {
         $aRows = [];
+        $sessionValue = $this->mSessionValue;
         for ($fp = 1; $fp <= 5; $fp++) {
             $aRows[] = array(
                 'name'                   => $this->sSGQA,
@@ -49,7 +66,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
                 'id'                     => $this->sSGQA,
                 'labelText'              => gT('No answer'),
                 'itemExtraClass'         => 'noanswer-item',
-                'checkedState'           => (!$this->mSessionValue ? ' CHECKED ' : ''),
+                'checkedState'           => $this->isNoAnswerChecked() ? ' CHECKED ' : '',
                 'checkconditionFunction' => $this->checkconditionFunction,
             );
         }

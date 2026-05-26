@@ -444,10 +444,12 @@ abstract class QuestionBaseRenderer extends StaticModel
     }
 
     /**
-     * Returns the question script to render depending on the language.
-     * If "Use for all languages" is set, the base language's script is used.
-     * @return string|null
-     */
+         * Selects and returns the question script for the appropriate language.
+         *
+         * When the question is configured to "use for all languages", the survey's base language script is chosen; otherwise the renderer language is used.
+         *
+         * @return string|null The localized question script, or null if no script is set for the resolved language.
+         */
     protected function getQuestionScript()
     {
         $language = $this->oQuestion->same_script ? $this->oQuestion->survey->language : $this->sLanguage;
@@ -458,7 +460,41 @@ abstract class QuestionBaseRenderer extends StaticModel
         return $script;
     }
 
-    abstract public function getMainView();
-    abstract public function getRows();
-    abstract public function render();
+    /**
+     * Checks if the "No Answer" option is checked for a given survey question.
+     *
+     * Determines whether an empty string response exists in the survey session
+     * for the given SGQA identifier, indicating that "No Answer" was selected.
+     *
+     * @param string|null $sSGQA Optional SGQA identifier. If null, uses the instance's $sSGQA property.
+     * @return bool True if "No Answer" is selected (empty string in session), false otherwise.
+     */
+    protected function isNoAnswerChecked($sSGQA = null)
+    {
+        $sSGQA = $sSGQA ?: $this->sSGQA;
+
+        return getIsNoAnswerChecked($sSGQA);
+    }
+
+    /**
+ * Provides the view identifier used to render the question's main template.
+ *
+ * @return string The view file name or path used to render the question's primary block.
+ */
+abstract public function getMainView();
+    /**
+ * Provide the rows used to render the question for the current view.
+ *
+ * Implementations must return an ordered array of row data structures representing
+ * the subquestions, answer rows, or structural blocks required by the renderer.
+ *
+ * @return array Ordered list of row definitions for rendering the question.
+ */
+abstract public function getRows();
+    /**
+ * Render the question and produce its HTML representation.
+ *
+ * @return string The rendered HTML for this question.
+ */
+abstract public function render();
 }
