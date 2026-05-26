@@ -346,13 +346,14 @@ class SurveyAdministrationController extends LSBaseController
             ->with(['group' => ['alias' => 'g'], 'questionl10ns'])
             ->findAll(
                 array(
-                    'select' => 't.qid,t.gid',
+                    'select' => ['qid', 'gid','title'],
                     'condition' => "t.sid=:sid and questionl10ns.language=:language and parent_qid=0",
                     'order' => 'g.group_order, question_order',
                     'params' => array(':sid' => $iSurveyID, ':language' => $oSurvey->language)
                 )
             );
 
+        $aCodeMap = [];
         foreach ($oQuestions as $oQuestion) {
             if ($sSubAction == 'bygroup' && $iGroupNumber != $oQuestion->gid) {
                 //If we're doing this by group, restart the numbering when the group number changes
@@ -360,11 +361,22 @@ class SurveyAdministrationController extends LSBaseController
                 $iGroupNumber = $oQuestion->gid;
                 $iGroupSequence++;
             }
+            $sOldTitle = $oQuestion->title;
             $sNewTitle = (($sSubAction == 'bygroup') ? ('G' . $iGroupSequence) : '') . "Q" .
                 str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT);
             Question::model()->updateAll(array('title' => $sNewTitle), 'qid=:qid', array(':qid' => $oQuestion->qid));
+            if ($sOldTitle !== $sNewTitle) {
+                $aCodeMap[$sOldTitle] = $sNewTitle;
+            }
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
+        }
+
+        if (!empty($aCodeMap)) {
+            // NOTE: replaceExpressionCodes() is currently unreliable and intentionally disabled.
+            // Rebuild relevance/conditions state only.
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+            LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
         }
         Yii::app()->setFlashMessage(gT("Question codes were successfully regenerated."));
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
