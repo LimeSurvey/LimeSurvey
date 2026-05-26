@@ -678,7 +678,7 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Opens a modal to edit user template permissions
+     * Opens a modal to edit user theme permissions
      *
      * @return string|null
      * @throws CException
