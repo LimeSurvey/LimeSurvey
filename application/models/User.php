@@ -159,7 +159,7 @@ class User extends LSActiveRecord
         $notExpiredScope = array(
             'condition' => "expires > :now OR expires IS NULL",
             'params' => array(
-                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                'now' => gmdate("Y-m-d H:i:s"),
             )
         );
         if (App()->getConfig("DBVersion") < 619) {
@@ -312,8 +312,8 @@ class User extends LSActiveRecord
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
         $oUser->email = $new_email;
-        $oUser->created = date('Y-m-d H:i:s');
-        $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->created = gmdate('Y-m-d H:i:s');
+        $oUser->modified = gmdate('Y-m-d H:i:s');
         $oUser->expires = $expires;
         $oUser->user_status = $status;
         if ($oUser->save()) {
@@ -794,6 +794,8 @@ class User extends LSActiveRecord
         $lastLogin = $this->last_login;
         if ($lastLogin == null) {
             return '---';
+        } else {
+            $lastLogin = getDateOfUTC($lastLogin);
         }
 
         $date = new DateTime($lastLogin);
@@ -1103,7 +1105,7 @@ class User extends LSActiveRecord
      */
     public function setValidationExpiration()
     {
-        $datePlusMaxExpiration = new DateTime();
+        $datePlusMaxExpiration = new DateTime('now', new DateTimeZone('UTC'));
         $datePlusString = 'P' . self::MAX_EXPIRATION_TIME_IN_DAYS . 'D';
         $dateInterval = new DateInterval($datePlusString);
         $datePlusMaxExpiration->add($dateInterval);
@@ -1122,12 +1124,12 @@ class User extends LSActiveRecord
     {
         $expired = false;
         if (!empty($this->expires)) {
-            // Time adjust
-            $now = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $expirationTime = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime((string) $this->expires)));
+            // Compare expiration time (stored in UTC) with current UTC time
+            $now = gmdate("Y-m-d H:i:s");
+            $expirationTime = (string) $this->expires;
 
-            // Time comparison
-            $expired = new DateTime($expirationTime) < new DateTime($now);
+            // Time comparison (treat equality as expired, aligning with notexpired scope: expires > now)
+            $expired = new DateTime($expirationTime) <= new DateTime($now);
         }
         return $expired;
     }
