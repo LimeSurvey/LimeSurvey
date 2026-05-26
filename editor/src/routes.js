@@ -26,14 +26,19 @@ const routes = [
   {
     element: <RootLayout />,
     children: [
-      process.env.REACT_APP_DEMO_MODE === 'true' && {
-        path: '/survey',
-        element: (
-          <AuthGate>
-            <Editor />
-          </AuthGate>
-        ),
-      },
+      // Demo mode exposes a bare /survey route without a surveyId — only included when REACT_APP_DEMO_MODE=true
+      ...(process.env.REACT_APP_DEMO_MODE === 'true'
+        ? [
+            {
+              path: '/survey',
+              element: (
+                <AuthGate>
+                  <Editor />
+                </AuthGate>
+              ),
+            },
+          ]
+        : []),
       {
         path: '/responses/:surveyId/:panel?/:menu?',
         element: (
