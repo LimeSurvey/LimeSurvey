@@ -3,7 +3,7 @@ import { EditorView } from '@codemirror/view'
 import { foldGutter, foldService } from '@codemirror/language'
 import { autocompletion } from '@codemirror/autocomplete'
 
-import { CodeEditor } from 'components/UIComponents/ContentEditor/CodeMirror/CodeMirror'
+import { CodeEditor } from 'components/UIComponents/ContentEditor/CodeEditor/CodeEditor'
 import { QUESTION_RELEVANCE_DEFAULT_VALUE, SwalAlert } from 'helpers'
 import { Button } from 'components'
 
