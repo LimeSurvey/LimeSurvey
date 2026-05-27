@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-05-27 12:42:36+00:00\n"
+"POT-Creation-Date: 2026-05-27 13:02:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11459,7 +11459,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2762
 #: application/views/admin/export/generatestats/_header.php:21
 #: editor/src/components/TopBar/Button/ActionButton.js:31
-#: editor/src/components/TopBar/SurveyNavigation.js:47
+#: editor/src/components/TopBar/SurveyNavigation.js:59
 #: editor/src/components/TopBar/TopBarActions.js:113
 #: editor/src/pages/Responses/Sidebars/getResponsesPanels.js:7
 msgid "Results"
@@ -16453,7 +16453,7 @@ msgstr ""
 #: application/models/Survey.php:1545
 #: application/views/admin/participants/massive_actions/_selector.php:76
 #: application/views/admin/participants/modal_subviews/_shareParticipant.php:70
-#: editor/src/components/TopBar/SurveyNavigation.js:45
+#: editor/src/components/TopBar/SurveyNavigation.js:57
 #: editor/src/components/TopBar/TopBarActions.js:103
 msgid "Share"
 msgstr ""
@@ -20199,7 +20199,7 @@ msgid "All changes of global survey settings will immediately affect all related
 msgstr ""
 
 #: application/views/admin/htmleditor/modal_editor_partial.php:7
-#: editor/src/components/TopBar/SurveyNavigation.js:44
+#: editor/src/components/TopBar/SurveyNavigation.js:56
 #: editor/src/components/TopBar/TopBarActions.js:93
 #: editor/src/components/UIComponents/Dropdown/Dropdown.js:7
 msgid "Editor"
