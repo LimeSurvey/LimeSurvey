@@ -2982,7 +2982,7 @@ class LimeExpressionManager
                     $qtips['value_range'] =
                         "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s.") . "',fixnum($_minV)), '')}" .
                         "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s.") . "',fixnum($_maxV)), '')}" .
-                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s.") . "', fixnum($_minV)), '')}" .
+                        "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be equal to %s.") . "', fixnum($_minV)), '')}" .
                         "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Each answer must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
                 } else {
                     $qtips['value_range'] =
@@ -3015,7 +3015,7 @@ class LimeExpressionManager
                 $qtips['value_range'] =
                     "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at least %s.") . "',fixnum($_minV)), '')}" .
                     "{if(is_empty($_minV) && !is_empty($_maxV), sprintf('" . $this->gT("Each answer must be at most %s.") . "',fixnum($_maxV)), '')}" .
-                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be %s.") . "', fixnum($_minV)), '')}" .
+                    "{if(!is_empty($_minV) && ($_minV) == ($_maxV),sprintf('" . $this->gT("Each answer must be equal to %s.") . "', fixnum($_minV)), '')}" .
                     "{if(!is_empty($_minV) && !is_empty($_maxV) && ($_minV) != ($_maxV), sprintf('" . $this->gT("Each answer must be between %s and %s") . "', fixnum($_minV), fixnum($_maxV)), '')}";
             }
 
@@ -9217,7 +9217,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}', ['SURVEYNAME' => $aSurveyInfo['surveyls_title']]));
 
-        $out = '<div id="showlogicfilediv" class="table-responsive"><div class="pagetitle h3">' . $LEM->gT('Logic check for Survey # ') . '[' . $LEM->sid . "]: $surveyname</div>\n";
+        $out = '<div id="showlogicfilediv" class="table-responsive"><div class="pagetitle h3">' . sprintf($LEM->gT('Logic check for survey ID %s: %s'), $LEM->sid, $surveyname) . "</div>\n";
         $out .= "<table id='logicfiletable' class='table table-bordered'>";
 
         if (is_null($gid) && is_null($qid)) {

@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v7.0.0-RC1!
+Welcome to LimeSurvey v7.0.0!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.4 (build 260520) to 7.0.0 (build 260526) May 26, 2026
+New feature: Great easy-to-use survey editor - check it out!
+New feature: Ability to set global and personal timezone - also all date/timestamps are saved as UTC
+New feature: Response table name & schema changes
+New feature: Machine-readable error codes in RemoteControl will now be given back. Please check the documentation.
+New feature #20387: Keep certain subquestions/answer options at original positions on randomization (#4613) (Tõnis Ormisson)
+
 Changes from 6.17.3 (build 260512) to 6.17.4 (build 260520) May 20, 2026
 -Fixed issue: prevent error when language for survey is missing and instead provide guidance on how to resolve it (Patrick Teichmann)
 -Fixed issue: add focus for some flash messages as well as add aria tags to them and aria focus state for multiselect in participant CSV export (a11y) (#4784) (Anblik Audit Team)

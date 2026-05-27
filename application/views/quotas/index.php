@@ -62,7 +62,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'htmlOptions'    => ['style' => 'vertical-align:top'],
                             ],
                             [
-                                'name'        => gT('Quota members'),
+                                'name'        => gT('Quota rules'),
                                 'type'        => 'raw',
                                 'htmlOptions' => ['style' => 'vertical-align:top'],
                                 'value'       => function ($oQuota) use ($oSurvey, $aQuotaItems) {

@@ -51,7 +51,7 @@ PrepareEditorScript(false, $this);
 </div>
 <div class="row mb-3">
     <div class="col-sm-6">
-        <label class="form-label" id="showtokenpolicy-label"><?php eT("Show privacy policy on token form:"); ?></label>
+        <label class="form-label" id="showtokenpolicy-label"><?php eT("Show privacy policy on access code form:"); ?></label>
         <div>
             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                 'name'          => 'showtokenpolicy',
