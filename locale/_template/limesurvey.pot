@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-05-27 12:20:56+00:00\n"
+"POT-Creation-Date: 2026-05-27 12:42:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9544,36 +9544,32 @@ msgid "Welcome to the new LimeSurvey"
 msgstr ""
 
 #: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:47
-msgid "With the LimeSurvey Editor, you can create surveys in a squeeze of a lime, combining intuitive design with powerful features for a faster, smarter survey-building experience."
+msgid "With the LimeSurvey Editor, you can create surveys in a squeeze of lime, combining intuitive design with powerful features for a faster, smarter survey-building experience."
 msgstr ""
 
 #: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:51
-msgid "Discover what the new editor can do "
+msgid "%sDiscover now%s what the new editor can do!"
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:52
-msgid "here"
-msgstr ""
-
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:55
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:54
 #: application/views/admin/editor/_activateEditorItem.php:6
 msgid "Editor version"
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:65
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:64
 msgid "Classic"
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:66
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:65
 #: application/views/admin/tutorialentries/index.php:15
 msgid "New"
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:77
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:76
 msgid "Good to know..."
 msgstr ""
 
-#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:80
+#: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:79
 msgid "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version -  it’s now out of beta, and we’d love to hear your feedback!"
 msgstr ""
 
@@ -10264,7 +10260,7 @@ msgstr ""
 
 #: application/extensions/admin/BoxesWidget/views/box.php:68
 #: editor/src/components/SurveyOverview/SurveyOverview.js:133
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:128
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:118
 msgid "No responses"
 msgstr ""
 
@@ -25937,19 +25933,20 @@ msgstr ""
 
 #: application/views/responses/partial/responseSummary.php:14
 #: editor/src/components/SurveyOverview/SurveyOverview.js:115
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:113
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:103
 msgid "Full responses"
 msgstr ""
 
 #: application/views/responses/partial/responseSummary.php:24
 #: editor/src/components/SurveyOverview/SurveyOverview.js:147
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:139
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:54
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:129
 msgid "Incomplete responses"
 msgstr ""
 
 #: application/views/responses/partial/responseSummary.php:34
 #: editor/src/components/SurveyOverview/SurveyOverview.js:101
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:103
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:93
 msgid "Total responses"
 msgstr ""
 
@@ -26380,7 +26377,6 @@ msgid "Drop file here"
 msgstr ""
 
 #: application/views/surveyAdministration/partial/_modalImportSurvey.php:63
-#: application/views/surveyAdministration/tabImport_view.php:35
 msgid "Import on default survey group"
 msgstr ""
 
@@ -26712,6 +26708,10 @@ msgstr ""
 #: application/views/surveyAdministration/tabCreate_view.php:105
 #: editor/src/components/SurveySettings/Settings/getGeneralSettingsBlocks.js:182
 msgid "Administrator"
+msgstr ""
+
+#: application/views/surveyAdministration/tabImport_view.php:35
+msgid "Import to default survey group"
 msgstr ""
 
 #: application/views/surveyPermissions/partial/editpermission.php:72
@@ -27219,7 +27219,7 @@ msgid "New logic"
 msgstr ""
 
 #: editor/src/components/ConditionDesigner/ConditionDesigner.js:73
-msgid "Switching to the visual condition builder will overwrite the condition written in expression script mode."
+msgid "Switching to the visual condition builder will overwrite the condition written in ExpressionScript mode."
 msgstr ""
 
 #: editor/src/components/ConditionDesigner/ConditionFormFields/AnswerTypeSelect.js:36
@@ -27974,7 +27974,7 @@ msgstr ""
 
 #: editor/src/components/SurveyOverview/SurveyOverview.js:130
 #: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:44
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:125
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:115
 msgid "Response rate"
 msgstr ""
 
@@ -28731,36 +28731,28 @@ msgstr ""
 msgid "Only completed"
 msgstr ""
 
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:54
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:49
 msgid "Complete responses"
 msgstr ""
 
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:59
-msgid "Complete without answers"
-msgstr ""
-
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:64
-msgid "Incomplete without answers"
-msgstr ""
-
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:88
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:78
 #: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesStatistics.js:57
 msgid "Loading statistics..."
 msgstr ""
 
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:148
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:138
 msgid "Responses (last 30 days)"
 msgstr ""
 
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:158
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:148
 msgid "Daily activity isn't available when datestamps are turned off."
 msgstr ""
 
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:168
-msgid "Completed / Incomplete / Lurkers"
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:158
+msgid "Completed / Incomplete"
 msgstr ""
 
-#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:197
+#: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:187
 msgid "View all responses"
 msgstr ""
 
