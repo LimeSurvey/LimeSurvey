@@ -117,7 +117,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </div>                
             <div class="col-12 form-label ">
                 <span class="hint">
-                <?php echo sprintf(gT("Server time zone: %s"), date_default_timezone_get());?>  
+                <?php eT("Determines what time zone is used for displaying dates and times in surveys."); ?>  
                 </span>
             </div>
         </div>

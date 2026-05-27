@@ -7,7 +7,7 @@
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 20px;
-
+  @include reg24;
   p {
     font-size: $font-size-xl;
     font-weight: $font-weight-normal;
@@ -16,14 +16,9 @@
 }
 
 .condition-designer-overlay-message {
+  @include reg14;
   text-align: left;
-  font-size: $font-size-sm;
-  color: $g-900;
-  font-family: 'IBM Plex Sans';
-  font-style: $font-style-base;
-  font-weight: $font-weight-normal;
-  line-height: 20px; /* 142.857% */
-  letter-spacing: -0.238px;
+  color: $g-700;
 }
 
 .condition-designer-overlay-actions {

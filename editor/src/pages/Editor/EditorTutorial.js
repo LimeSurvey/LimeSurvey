@@ -215,7 +215,7 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
     {
       title: t('Auto-save'),
       content: t(
-        "LimeSurvey automatically saves your changes — no need to save manually."
+        'LimeSurvey automatically saves your changes — no need to save manually.'
       ),
       spotlightPadding: 5,
       placement: 'bottom',
