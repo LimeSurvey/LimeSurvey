@@ -45,11 +45,10 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                     <?= gT('Welcome to the new LimeSurvey') ?>
                                 </h1>
                                 <p class="card-text reg-14 mb-16"><?= gT(
-                                    'With the LimeSurvey Editor, you can create surveys in a squeeze of a lime, combining intuitive design with powerful features for a faster, smarter survey-building experience.'
+                                    'With the LimeSurvey Editor, you can create surveys in a squeeze of lime, combining intuitive design with powerful features for a faster, smarter survey-building experience.'
                                 ) ?>
                                     <br><br>
-                                    <?= gT('Discover what the new editor can do '); ?>
-                                    <a class="link-info" href="https://www.limesurvey.org" target="_blank"><?= gt('here'); ?></a>.
+                                    <?= printf(gT('%sDiscover now%s what the new editor can do!'), '<a class="link-info" href="https://www.limesurvey.org" target="_blank">', '</a>'); ?>
                                 </p>
                                 <div class="row mb-16">
                                     <label class="label-s mb-1" for='editor-switch-btn'><?php eT("Editor version"); ?></label>
