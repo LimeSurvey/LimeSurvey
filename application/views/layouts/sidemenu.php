@@ -78,7 +78,7 @@ if ($activated || !$createPermission) {
                     "collapseAll" => gT("Collapse all question groups"),
                     "collapseGroup" => gT("Collapse group"),
                     "expandGroup" => gT("Expand group"),
-                    "surveyLogicFile" => gT("Survey logic file"),
+                    "surveyLogicFile" => gT("Survey logic overview"),
                     "groupNumber" => gT("Group #%d"),
                     "deactivateSurvey" => gT("Deactivate your survey to enable this setting"),
                 ]
