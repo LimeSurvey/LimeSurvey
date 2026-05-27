@@ -957,7 +957,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $cols['haveDbAuthentication'] = array(
                 "name" => 'haveDbAuthentication',
-                "header" => gT("Auth DB"), // need short header
+                "header" => gT("DB auth"), // need short header, use short word for "Database authentication"
                 "value"  => function ($data) {
                     return $this->getFormattedBoolean($data, "haveDbAuthentication");
                 },
