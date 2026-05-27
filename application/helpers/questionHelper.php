@@ -993,7 +993,7 @@ class questionHelper
             'sortorder' => 210,
             'inputtype' => 'text',
             'expression' => 2, // must be controlled : unsure
-            "help" => gT('Slider start as this value. You can use ExpressionScript, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
+            "help" => gT('The slider will initially use this value. You may use ExpressionScript, but the result must be a number before the page is displayed. This setting overrides the default behavior of starting the slider at the middle position.'),
             "caption" => gT('Slider initial value')
         );
         self::$attributes["slider_default_set"] = array(

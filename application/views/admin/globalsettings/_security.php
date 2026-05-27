@@ -80,11 +80,11 @@
                 </div>
                 <div class="help-block mt-1">
                     <?php if (App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui') {
-                        $text = gT("Script edition is forced by your config file. No user can add or update question script.");
+                        $text = gT("Script editing is forcibly disabled by your configuration file. No user can add or update question script.");
                         if (App()->getConfig('filterxsshtml_enablescript') == 'superadmin') {
-                            $text = gT("Script edition is forced by your config file. Only the super admin(s) can add or update question script.");
+                            $text = gT("Script editing is forcibly disabled by your configuration file. Only the super admin(s) can add or update question script.");
                         } elseif (App()->getConfig('filterxsshtml_allowforcedsuperadmin') || App()->getConfig('filterxsshtml_enablescript') == 'forcedsuperadmin') {
-                            $text = gT("Script edition is forced by your config file. Only forced super admin(s) can add or update question script.");
+                            $text = gT("Script editing is forcibly disabled by your configuration file. Only forced super admin(s) can add or update question script.");
                         }
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                             'text' => $text,
@@ -92,7 +92,7 @@
                         ]);
                     } else {
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                        'text' => gT("If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."),
+                        'text' => gT("If you disable this option, users with XSS restrictions will still be able to add scripts. This may allow cross-site scripting (XSS) attacks."),
                         'type' => 'warning',
                         ]);
                     }

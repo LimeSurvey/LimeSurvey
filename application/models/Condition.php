@@ -383,7 +383,7 @@ class Condition extends LSActiveRecord
             return true;
         } else {
             if ($isArray) {
-                throw new \Exception(gT("cids must be an array"));
+                throw new \Exception("cids must be an array");
             }
         }
         return false;
