@@ -3,6 +3,7 @@
 /**
  * Import survey
  */
+
 ?>
 <!--<div class="ls-flex-row wrap align-content-center align-items-center">-->
 <div class="ls-flex-row">
@@ -58,7 +59,9 @@
                     </div>
                 </div>
 
-                <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
+                <?php if (isset($surveyid)) {
+                    echo '<input type="hidden" name="sid" value="' . $surveyid . '" />';
+                } ?>
                 <input type='hidden' name='action' value='importsurvey' />
             </div>
             </form>

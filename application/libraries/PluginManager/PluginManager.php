@@ -81,29 +81,6 @@ class PluginManager extends \CApplicationComponent
         }
         $this->loadPlugins();
     }
-    /**
-     * Return a list of installed plugins, but only if the files are still there
-     * @deprecated unused in 5.3.8
-     * This prevents errors when a plugin was installed but the files were removed
-     * from the server.
-     *
-     * @return array
-     */
-    public function getInstalledPlugins()
-    {
-        $pluginModel = Plugin::model();
-        $records = $pluginModel->findAll(['order' => 'priority DESC']);
-
-        $plugins = array();
-
-        foreach ($records as $record) {
-            // Only add plugins we can find
-            if ($this->loadPlugin($record->name, $record->id, $record->active) !== false) {
-                $plugins[$record->id] = $record;
-            }
-        }
-        return $plugins;
-    }
 
     /**
      * @param string $destdir
@@ -194,7 +171,7 @@ class PluginManager extends \CApplicationComponent
             !$withoutNamespace && $withNamespace
         ) {
             $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
-        } else if (!($withoutNamespace || $withNamespace)) {
+        } elseif (!($withoutNamespace || $withNamespace)) {
             $relativePath = App()->getConfig('rootdir') . "/application/libraries/PluginManager/Storage/{$storageClass}.php";
             if (file_exists($relativePath)) {
                 require_once $relativePath;
@@ -621,11 +598,11 @@ class PluginManager extends \CApplicationComponent
      * Get plugin description.
      * First look in config.xml, then in plugin class.
      * @param string $class
-     * @param ExtensionConfig $extensionConfig
+     * @param ?ExtensionConfig $extensionConfig
      * @return string
      * @todo Localization.
      */
-    protected function getPluginDescription(string $class, \ExtensionConfig $extensionConfig = null)
+    protected function getPluginDescription(string $class, ?ExtensionConfig $extensionConfig = null)
     {
         $desc = null;
 
@@ -648,11 +625,11 @@ class PluginManager extends \CApplicationComponent
      * Get plugin name.
      * First look in config.xml, then in plugin class.
      * @param string $class
-     * @param ExtensionConfig $extensionConfig
+     * @param ?ExtensionConfig $extensionConfig
      * @return string
      * @todo Localization.
      */
-    protected function getPluginName(string $class, \ExtensionConfig $extensionConfig = null)
+    protected function getPluginName(string $class, ?ExtensionConfig $extensionConfig = null)
     {
         $name = null;
 
@@ -717,6 +694,7 @@ class PluginManager extends \CApplicationComponent
             'UpdateCheck',
             'AzureOAuthSMTP',
             'GoogleOAuthSMTP',
+            'ReactEditor',
         ];
     }
 

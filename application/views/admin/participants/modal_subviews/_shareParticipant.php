@@ -19,7 +19,7 @@ $form = $this->beginWidget(
         <?php foreach ($participantIds as $id): ?>
             <input type="hidden" name="participant_id[]" value="<?php echo $id; ?>" />
         <?php endforeach;?>
-    <?php else: ?>
+    <?php else : ?>
         <input type="hidden" name="participant_id" value="<?php echo $model->participant_id; ?>" />
     <?php endif; ?>
     <div class="row">
@@ -32,7 +32,7 @@ $form = $this->beginWidget(
                 <div class='col-12'>
                     <select class='form-select' id='shareuser' name='shareuser' aria-labelledby="shareuser_label">
                         <option value=''><?php eT('Share with all users'); ?></option>
-                        <?php foreach ($users as $user): ?>
+                        <?php foreach ($users as $user) : ?>
                             <option value='<?php echo $user->uid; ?>'>
                                 <?php echo $user->full_name; ?>
                             </option>

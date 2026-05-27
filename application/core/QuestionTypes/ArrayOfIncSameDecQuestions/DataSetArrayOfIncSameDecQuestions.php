@@ -2,5 +2,4 @@
 
 class DataSetArrayOfIncSameDecQuestions extends QuestionBaseDataSet
 {
-
 }

@@ -1,5 +1,5 @@
 <div id="help-button-dropup" class="dropup">
-    <button type="button" class="btn btn-black60 btn-circle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="<?php eT("Useful Resources"); ?>">
+    <button type="button" class="btn btn-black60 btn-circle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="<?php eT("Useful resources"); ?>">
         <i class="ri-questionnaire-line remix-xl"></i>
     </button>
     <ul class="dropdown-menu">
@@ -19,7 +19,7 @@
             <a class="dropdown-item" href="https://community.limesurvey.org/releases/" target="_blank"><?php eT("Release notes") ?></a>
         </li>
         <li>
-            <a class="dropdown-item" href="https://www.limesurvey.org/legal-notice" target="_blank"><?php eT("Legal information") ?></a>
+            <a class="dropdown-item" href="https://www.limesurvey.org/legal-notice" target="_blank"><?php eT("Legal notice") ?></a>
         </li>
         <li>
             <a class="dropdown-item" href="mailto:info@limesurvey.org"><?php eT("Contact") ?></a>

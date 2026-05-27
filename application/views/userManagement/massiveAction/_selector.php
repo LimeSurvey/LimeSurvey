@@ -85,7 +85,7 @@ $aActionsArray = array(
             'action'            => 'batchExpires',
             'url'               => App()->createUrl('userManagement/batchExpires'),
             'iconClasses'       => 'ri-user-follow-fill',
-            'text'              => gT('Set expire date'),
+            'text'              => gT('Set expiration date'),
             'grid-reload'       => 'yes',
             //modal
             'actionType'        => 'modal',
@@ -94,7 +94,7 @@ $aActionsArray = array(
             'keepopen'          => 'yes',
             'showSelected'      => 'yes',
             'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
-            'sModalTitle'       => gT('Set expire date'),
+            'sModalTitle'       => gT('Set expiration date'),
             //'htmlFooterButtons' => [],
             'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updateexpires', [], true)
         ),

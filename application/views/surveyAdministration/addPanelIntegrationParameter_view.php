@@ -37,7 +37,6 @@
                                         ),
                                         43,
                                         .70
-
                                     );
                                     if ($question['sqquestion'] != '') {
                                         echo ' - ' . ellipsize(

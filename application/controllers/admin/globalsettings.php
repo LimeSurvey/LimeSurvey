@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -103,16 +103,15 @@ class GlobalSettings extends SurveyCommonAction
         }
         Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = new Date_Time_Converter(dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+        $datetimeobj = new Date_Time_Converter(dateShift(Yii::app()->getConfig("updatelastcheck"), 'Y-m-d H:i:s'), 'Y-m-d H:i:s');
         $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
 
-        // @todo getGlobalSetting is deprecated!
-        $data['updateavailable'] = (getGlobalSetting("updateavailable") && Yii::app()->getConfig("updatable"));
+        $data['updateavailable'] = (Yii::app()->getConfig("updateavailable") && Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
-        $data['updateinfo'] = getGlobalSetting("updateinfo");
-        $data['updatebuild'] = getGlobalSetting("updatebuild");
-        $data['updateversion'] = getGlobalSetting("updateversion");
-        $data['aUpdateVersions'] = json_decode((string) getGlobalSetting("updateversions"), true);
+        $data['updateinfo'] = Yii::app()->getConfig("updateinfo");
+        $data['updatebuild'] = Yii::app()->getConfig("updatebuild");
+        $data['updateversion'] = Yii::app()->getConfig("updateversion");
+        $data['aUpdateVersions'] = json_decode((string) Yii::app()->getConfig("updateversions"), true);
         $data['allLanguages'] = getLanguageData(false, Yii::app()->session['adminlang']);
         if (trim((string) Yii::app()->getConfig('restrictToLanguages')) == '') {
             $data['restrictToLanguages'] = array_keys($data['allLanguages']);
@@ -140,9 +139,9 @@ class GlobalSettings extends SurveyCommonAction
         $data['aEncodings'] = aEncodingsArray();
 
         // Get user administration settings
-        $data['sGlobalSendAdminCreationEmail'] = getGlobalSetting('sendadmincreationemail');
-        $data['sGlobalAdminCreationEmailTemplate'] = getGlobalSetting('admincreationemailtemplate');
-        $data['sGlobalAdminCreationEmailSubject'] = getGlobalSetting('admincreationemailsubject');
+        $data['sGlobalSendAdminCreationEmail'] = Yii::app()->getConfig('sendadmincreationemail');
+        $data['sGlobalAdminCreationEmailTemplate'] = Yii::app()->getConfig('admincreationemailtemplate');
+        $data['sGlobalAdminCreationEmailSubject'] = Yii::app()->getConfig('admincreationemailsubject');
 
         //Prepare editor script for global settings tabs / Textarea fields
         App()->loadHelper("admin.htmleditor");
@@ -154,8 +153,8 @@ class GlobalSettings extends SurveyCommonAction
         $data['globalGeneralSettings'] = $beforeGlobalGeneralSettings->get('globalGeneralSettings') ?? [];
 
         // Get current setting from DB
-        $data['thischaracterset'] = getGlobalSetting('characterset');
-        $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+        $data['thischaracterset'] = Yii::app()->getConfig('characterset');
+        $data['sideMenuBehaviour'] = Yii::app()->getConfig('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
         // List of available email plugins
@@ -285,8 +284,8 @@ class GlobalSettings extends SurveyCommonAction
             $sendingrate = 60;
         }
 
-        $defaultlang = sanitize_languagecode(Yii::app()->getRequest()->getPost('defaultlang'));
-        $aRestrictToLanguages = explode(' ', (string) sanitize_languagecodeS(Yii::app()->getRequest()->getPost('restrictToLanguages')));
+        $defaultlang = \LSYii_Validators::languageCodeFilter(Yii::app()->getRequest()->getPost('defaultlang'));
+        $aRestrictToLanguages = explode(' ', (string) \LSYii_Validators::multiLanguageCodeFilter(Yii::app()->getRequest()->getPost('restrictToLanguages')));
         if (!in_array($defaultlang, $aRestrictToLanguages)) {
             // Force default language in restrictToLanguages
             $aRestrictToLanguages[] = $defaultlang;
@@ -406,7 +405,7 @@ class GlobalSettings extends SurveyCommonAction
         // make sure emails are valid before saving them
         if (
             Yii::app()->request->getPost('siteadminbounce', '') == ''
-            || validateEmailAddress(Yii::app()->request->getPost('siteadminbounce'))
+            || LimeMailer::validateAddress(Yii::app()->request->getPost('siteadminbounce'))
         ) {
             SettingGlobal::setSetting('siteadminbounce', strip_tags(Yii::app()->request->getPost('siteadminbounce', '')));
         } else {
@@ -414,7 +413,7 @@ class GlobalSettings extends SurveyCommonAction
         }
         if (
             Yii::app()->request->getPost('siteadminemail', '') == ''
-            || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))
+            || LimeMailer::validateAddress(Yii::app()->request->getPost('siteadminemail'))
         ) {
             SettingGlobal::setSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail', '')));
         } else {
@@ -471,11 +470,14 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('admincreationemailsubject', App()->getRequest()->getPost('admincreationemailsubject'));
         SettingGlobal::setSetting('admincreationemailtemplate', App()->getRequest()->getPost('admincreationemailtemplate'));
 
-        $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60) . ' minutes'; //makes sure it is a number, at least 0
-        if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
-            $savetime = '+' . $savetime;
+        // Check if time zone exists, then save it
+        $timezone = App()->getRequest()->getPost('displayTimezone');
+        if ($timezone === '' || in_array($timezone, DateTimeZone::listIdentifiers())) {
+            SettingGlobal::setSetting('displayTimezone', $timezone);
+        } else {
+            Yii::app()->setFlashMessage(gT("The selected timezone is not valid and was not saved."), 'error');
         }
-        SettingGlobal::setSetting('timeadjust', $savetime);
+
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy', '')));
 
         // event to attach general settings defined by the event beforeGlobalGeneralSettings
@@ -523,7 +525,7 @@ class GlobalSettings extends SurveyCommonAction
                 $oldtokenlist[] = $table;
             } elseif (strpos((string) $table, Yii::app()->db->tablePrefix . "tokens_") !== false) {
                 $tokenlist[] = $table;
-            } elseif (strpos((string) $table, Yii::app()->db->tablePrefix . "old_survey_") !== false) {
+            } elseif (strpos((string) $table, Yii::app()->db->tablePrefix . "old_responses_") !== false) {
                 $oldresultslist[] = $table;
             }
         }
@@ -627,7 +629,7 @@ class GlobalSettings extends SurveyCommonAction
     }
 
     /**
-     * Survey Setting Menues
+     * Survey Setting Menus
      */
     public function surveysettingmenues()
     {
@@ -729,7 +731,7 @@ class GlobalSettings extends SurveyCommonAction
      */
     protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'globalsettings.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'globalsettings.js');
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
