@@ -68,6 +68,7 @@ export const ResponsesHeader = ({
           value={tabKey}
           update={(value) => setTabKey(value)}
           toggleOptions={options}
+          theme="lime"
         />
       </div>
     </div>

@@ -49,9 +49,9 @@
                             'type' => 'success',
                         ]);
                     } else {
-                        $text = gT("Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is enabled for all users.");
+                        $text = gT("XSS filtering is enforced via the configuration file and cannot be changed here. It applies to all users, including super administrators.");
                         if (App()->getConfig('filterxsshtml_allowforcedsuperadmin')) {
-                            $text = gT("Note: XSS filtering is forced by settings in your config file. You cannot disable it. XSS filtering is only disabled for forced super admin(s).");
+                            $text = gT("XSS filtering is enforced via the configuration file and cannot be changed here. Forced super administrators are exempt.");
                         }
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                             'text' => $text,
@@ -80,11 +80,11 @@
                 </div>
                 <div class="help-block mt-1">
                     <?php if (App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui') {
-                        $text = gT("Script edition is forced by your config file. No user can add or update question script.");
+                        $text = gT("Script editing is forcibly disabled by your configuration file. No user can add or update question script.");
                         if (App()->getConfig('filterxsshtml_enablescript') == 'superadmin') {
-                            $text = gT("Script edition is forced by your config file. Only the super admin(s) can add or update question script.");
+                            $text = gT("Script editing is forcibly disabled by your configuration file. Only the super admin(s) can add or update question script.");
                         } elseif (App()->getConfig('filterxsshtml_allowforcedsuperadmin') || App()->getConfig('filterxsshtml_enablescript') == 'forcedsuperadmin') {
-                            $text = gT("Script edition is forced by your config file. Only forced super admin(s) can add or update question script.");
+                            $text = gT("Script editing is forcibly disabled by your configuration file. Only forced super admin(s) can add or update question script.");
                         }
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                             'text' => $text,
@@ -92,7 +92,7 @@
                         ]);
                     } else {
                         App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                        'text' => gT("If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."),
+                        'text' => gT("If you disable this option, users with XSS restrictions will still be able to add scripts. This may allow cross-site scripting (XSS) attacks."),
                         'type' => 'warning',
                         ]);
                     }
@@ -158,12 +158,12 @@
 
             <div class="mb-3">
                 <span style='font-size:1em;'><?php echo sprintf(
-                    gT('%sWarning:%s Before turning on HTTPS,%s check this link.%s'),
-                    '<b>',
-                    '</b>',
-                    '<a href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
-                    '</a>'
-                )
+                                                    gT('%sWarning:%s Before turning on HTTPS,%s check this link.%s'),
+                                                    '<b>',
+                                                    '</b>',
+                                                    '<a class="ls-link" href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
+                                                    '</a>'
+                                                )
                                                     . '<br/> '
                                                     . gT("If the link does not work and you turn on HTTPS, you will not be able to access and use your LimeSurvey application!"); ?></span>
             </div>

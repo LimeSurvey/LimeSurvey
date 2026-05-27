@@ -8,6 +8,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2023-04-02
+ * @group validation
  */
 class MandatorySoftTest extends TestBaseClassWeb
 {

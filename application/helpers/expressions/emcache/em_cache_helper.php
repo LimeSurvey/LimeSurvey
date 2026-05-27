@@ -149,7 +149,6 @@ class EmCacheHelper
      * True if all conditions are met to use the emcache.
      *
      * @return boolean
-     * @todo check ajaxmode
      */
     public static function useCache()
     {

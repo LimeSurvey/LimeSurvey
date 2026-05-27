@@ -1,11 +1,13 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\DummyController;
 
 /**
  * Tests for the LimeSurvey remote API.
  */
-class RemoteControlExportStatisticsTest extends BaseTest
+class ExportStatisticsTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {

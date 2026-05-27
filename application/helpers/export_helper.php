@@ -2619,7 +2619,7 @@ function numericSize(string $sColumn, $decimal = false)
         /* Didn't work with text, when datatype are updated to text, but in such case : there are no good solution, except return string …*/
         $castedColumnString = $sColumn;
         if (Yii::app()->db->driverName == 'pgsql') {
-            $castedColumnString = "CAST($sColumn as FLOAT)";
+            $castedColumnString = "CAST($sColumn as VARCHAR)";
         }
     /* pgsql */
         if (Yii::app()->db->driverName == 'pgsql') {

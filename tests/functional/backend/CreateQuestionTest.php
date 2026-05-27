@@ -13,6 +13,8 @@ use Facebook\WebDriver\Exception\ElementNotVisibleException;
 /**
  * Login and create a survey, add a group
  * and a question.
+ *
+ * @group question
  */
 class CreateQuestionTest extends TestBaseClassWeb
 {

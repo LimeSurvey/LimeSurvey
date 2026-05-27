@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate'] . " H:i", strtotime((string) $oSurvey->startdate)) : ''),
+                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate'] . " H:i", strtotime((string) getDateOfUTC($oSurvey->startdate))) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' => true,
@@ -52,7 +52,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', array(
                             'name' => "expires",
                             'id' => 'expires',
-                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate'] . " H:i", strtotime((string) $oSurvey->expires)) : ''),
+                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate'] . " H:i", strtotime((string) getDateOfUTC($oSurvey->expires))) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' => true,
@@ -70,7 +70,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             <!-- List survey publicly -->
             <div class="mb-3 mt-4">
                 <h2 class="h1"><?php eT("Access control"); ?></h2>
-                <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
+                <label class=" form-label" for='listpublic'><?php printf(gT("Link survey on %spublic index page%s:"), "<a class='ls-link' href='" . Yii::app()->getConfig("publicurl") . "' target='_blank' >", "</a>");?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'listpublic',

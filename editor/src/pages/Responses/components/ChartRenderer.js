@@ -30,9 +30,9 @@ export const ChartRenderer = ({
 
   const data = useMemo(() => {
     const shouldFilterZeroValues =
-      filterZeroValues ||
-      chartType === statisticsGraphs.PIE_CHART ||
-      chartType === statisticsGraphs.DOUGHNUT_CHART
+      filterZeroValues &&
+      (chartType === statisticsGraphs.PIE_CHART ||
+        chartType === statisticsGraphs.DOUGHNUT_CHART)
 
     if (shouldFilterZeroValues) {
       return statisticsData.filter((item) => item.value > 0)

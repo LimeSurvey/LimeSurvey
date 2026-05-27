@@ -16,6 +16,7 @@ import LogoIcon from '../../assets/images/logo-icon-black.png'
 //import { ButtonBackToClassicEditor } from './Button/ButtonBackToClassicEditor'
 import { SurveyTitleSelector } from './SurveyTitleSelector'
 import { TopBarActions } from './TopBarActions'
+import { SurveyNavigation } from './SurveyNavigation'
 
 export const TopBar = ({
   surveyId,
@@ -38,6 +39,7 @@ export const TopBar = ({
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
   const [currentActiveLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const [showOverViewModal, setShowOverViewModal] = useState(false)
+  const [topbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
 
   const activeLanguage = useMemo(
     () =>
@@ -96,10 +98,15 @@ export const TopBar = ({
 
   useEffect(() => {
     setFocusedQuestionGroup(null)
-    if (setShowOverviewModalRef?.current !== undefined) {
+    if (setShowOverviewModalRef?.current === null) {
       setShowOverviewModalRef.current = setShowOverViewModal
     }
-  }, [survey.sid])
+  }, [
+    survey.sid,
+    setShowOverviewModalRef,
+    topbarConfig?.pageName,
+    setShowOverViewModal,
+  ])
 
   return (
     <div id="topbar" className={`top-bar d-flex w-100 justify-content-between`}>
@@ -112,7 +119,7 @@ export const TopBar = ({
           <AddQuestion id={'topbar-add-question'} className={'ms-auto'} />
         )}
       </div>
-      <div className="top-bar-middle d-flex flex-grow-1 justify-content-center align-items-center">
+      <div className="top-bar-middle d-flex flex-grow-1 justify-content-center align-items-center gap-5">
         <SurveyTitleSelector
           surveyId={surveyId}
           survey={survey}
@@ -122,6 +129,7 @@ export const TopBar = ({
           handleSurveySwitch={handleSurveySwitch}
           getError={getError}
         />
+        <SurveyNavigation surveyId={surveyId} />
       </div>
       <TopBarActions
         surveyId={surveyId}

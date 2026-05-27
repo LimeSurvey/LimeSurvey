@@ -6,6 +6,8 @@ use Facebook\WebDriver\WebDriverBy;
 
 /**
  * Test for issue #15348: Ranking question does not save answers when array filter and max columns are used.
+ *
+ * @group question
  */
 class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
 {
@@ -26,11 +28,11 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
 
     /**
      * @return void
-     * @todo
+     * @todo Drag-and-drop interaction not yet implemented for geckodriver. Need to use WebDriver Actions API or JS to set form field values directly.
      */
     public function testRanking()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete('Ranking drag-and-drop interaction not implemented for geckodriver');
 
         /** @var string */
         $url = $this->getSurveyUrl();

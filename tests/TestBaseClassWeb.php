@@ -79,7 +79,9 @@ class TestBaseClassWeb extends TestBaseClass
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
-        self::$webDriver->quit();
+        if (!getenv('KEEP_BROWSER_OPEN')) {
+            self::$webDriver->quit();
+        }
     }
 
     /**
@@ -177,7 +179,7 @@ class TestBaseClassWeb extends TestBaseClass
             try {
                 self::$webDriver->wait(10)->until(
                     WebDriverExpectedCondition::presenceOfElementLocated(
-                        WebDriverBy::className('welcome')
+                        WebDriverBy::cssSelector('nav.navbar')
                     )
                 );
                 self::ignoreEditorModal();
@@ -192,7 +194,7 @@ class TestBaseClassWeb extends TestBaseClass
                 self::assertTrue(
                     false,
                     ' Screenshot in ' . $filename . PHP_EOL .
-                    'Could not find element with class "welcome" after login. The login might have failed or the page did not load.'
+                    'Could not find admin navbar after login. The login might have failed or the page did not load.'
                 );
             }
         }

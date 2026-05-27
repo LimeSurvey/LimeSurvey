@@ -27,7 +27,7 @@ export const SubquestionCodeInput = ({
         style={{ marginLeft: isColumnTitle ? '0px' : '20px' }}
         className="question-code-tag"
         type="text"
-        defaultValue={code}
+        value={code}
         onChange={onChange}
       />
     )}

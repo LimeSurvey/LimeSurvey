@@ -6,6 +6,9 @@ use LimeSurvey\Models\Services\SurveyActivate;
 use LimeSurvey\Models\Services\SurveyDeactivate;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 
+/**
+ * @group import-export
+ */
 class ImportResponsesTest extends TestBaseClass
 {
     

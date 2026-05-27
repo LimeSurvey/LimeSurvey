@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v7.0.0-RC1!
+Welcome to LimeSurvey v7.0.0!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -34,13 +34,76 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-Changes from 6.17.1 (build 260427) to 7.0.0-RC1 (build 260430) April 30, 2026
-IMPORTANT
--Do not use this version for production
- 
-New feature: New easy-to-use survey editor - check it out!
+Changes from 6.17.4 (build 260520) to 7.0.0 (build 260526) May 26, 2026
+New feature: Great easy-to-use survey editor - check it out!
+New feature: Ability to set global and personal timezone - also all date/timestamps are saved as UTC
 New feature: Response table name & schema changes
+New feature: Machine-readable error codes in RemoteControl will now be given back. Please check the documentation.
 New feature #20387: Keep certain subquestions/answer options at original positions on randomization (#4613) (Tõnis Ormisson)
+
+Changes from 6.17.3 (build 260512) to 6.17.4 (build 260520) May 20, 2026
+-Fixed issue: prevent error when language for survey is missing and instead provide guidance on how to resolve it (Patrick Teichmann)
+-Fixed issue: add focus for some flash messages as well as add aria tags to them and aria focus state for multiselect in participant CSV export (a11y) (#4784) (Anblik Audit Team)
+-Fixed issue: Demo console command not properly loading helpers (Carsten Schmitz)
+-Fixed issue: Dashboard crashing if survey language entry is corrupted (Carsten Schmitz)
+-Fixed issue: A11y remaining adjustments for improved label and error message associations in survey groups form (#4764) (Anblik Audit Team)
+-Fixed issue: A11y focus on sort columns in token table, screen reader improvements for privacy policy settings and breadcrumbs (Anblik Audit Team)
+-Fixed issue: A11y adjustments for improved label and error message associations in survey groups form (#4757) (Anblik Audit Team)
+-Fixed issue #LB-147: Fixed executability of change scripts for SQL Server (#4962) (lajosarpad)
+-Fixed issue #AT-1999: Changed default|hover|click background colors and borders (#4927) (Patricia Stell)
+-Fixed issue #20495: [security] Unrestricted getConfig() access in Twig sandbox (Thank you to supperhellokitty20 for reporting the issue) (#4917)
+-Fixed issue #20468: Condition not properly behaving when respondents enter 'false' as a response (#4797) (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: French (France) by DenisChenu, fgervais, GuillaumeZ6, pasglop
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.17.2 (build 260507) to 6.17.3 (build 260512) May 12, 2026
++New feature #AT-1979: Improved survey copy  (#4834) (Carsten Schmitz)
+-Fixed issue: Ability to set email method plugin, but not able to select any plugin (Carsten Schmitz)
+-Fixed issue #20502: [security] POST-based self-XSS in Statistics View (#4945) (Gabriel Jenik)
+#Updated translation: Thai by adzpire, anucha, tomzt, twilllig
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.17.1 (build 260427) to 6.17.2 (build 260507) May 7, 2026
+-Fixed issue: various improvements to the dashboard page regarding accessibility, navigation, and aria labels, as well as all improvements to all tables (a11y) (#4413) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: small aria adjustments to header backlinks (a11y) (#4508) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: multiple small aria adjustments for survey settings, themes (a11y) (#4444) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: modal save button focusable (a11y) (#4669) (Anblik Audit Team)
+-Fixed issue: additional aria attributes for email templates (a11y) (#4769) (Anblik Audit Team)
+-Fixed issue: added table captions as well as additional aria tags in group & question view and participants view (#4448) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue #CR-1454: Added automatic fixing of code sniffer findings (#4023) (tiborpacalat)
+-Fixed issue #8030: Prefilled values for not relevant questions lost (#4941) (Denis Chenu)
+-Fixed issue #20507: Missing comment closing (#4958) (lajosarpad)
+-Fixed issue #20506: Add default 'type' key to participant attribute arrays, preventing undefined index errors (#4955) (Tim Willig)
+-Fixed issue #20505: [security] Stored XSS in LimeSurvey via Global Settings (reported by masquerad3r) (#4919) (Denis Chenu)
+-Fixed issue #20499: Updating question code didn't update condition (#4940) (Raymond Oyondi)
+-Fixed issue #20495: [security] Unrestricted getConfig() access in Twig sandbox (#4917) (Denis Chenu)
+-Fixed issue #20463: Quick add labels in label sets don't generate label codes correctly (#4799) (Carsten Schmitz)
+-Fixed issue #20382: Logo is not shown on smaller screens + spacing issues (#4943) (Raymond Oyondi)
+-Fixed issue #19852: Privacy policy not shown for "All in one" surveys (#4932) (Denis Chenu)
+-Fixed issue #19510: Labels - Assessment value - Evaluation values are not reported when creating a question (#4952) (Gabriel Jenik)
+#Updated translation: Thai by tomzt
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by ricardo.santos, xastrefernando
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
 
 Changes from 6.17.0 (build 260421) to 6.17.1 (build 260427) April 27, 2026
 -Fixed issue #LB-137: Fixed cookie creation when there is a tokens table (#4903) (lajosarpad)

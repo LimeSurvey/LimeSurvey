@@ -53,7 +53,7 @@ function _outputDBDescription($sDbName, $bAllowExportAllDb)
     if (!$bAllowExportAllDb) {
         $sOutput = '-- Only prefixed tables with: ' . Yii::app()->db->tablePrefix . "\n";
     }
-    $sOutput .= '-- Date of Dump: ' . dateShift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust')) . "\n";
+    $sOutput .= '-- Date of Dump: ' . dateShift(gmdate('d-M-Y'), 'd-M-Y') . "\n";
     $sOutput .= '--' . "\n";
     return $sOutput;
 }
@@ -174,8 +174,8 @@ function _outputRecords($sTableName, $aFieldNames, $aRecords)
 
 function _countNumberOfEntries($sTableName)
 {
-    $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM ' . Yii::app()->db->quoteTableName($sTableName))->queryRow();
-    $iNumRows = $aNumRows['COUNT(*)'];
+    $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) AS cnt FROM ' . Yii::app()->db->quoteTableName($sTableName))->queryRow();
+    $iNumRows = $aNumRows['cnt'];
     return $iNumRows;
 }
 

@@ -1,8 +1,10 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
 
-class FixMovedQuestionConditions extends BaseTest
+use ls\tests\TestBaseClass;
+
+class FixMovedQuestionConditionsTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {

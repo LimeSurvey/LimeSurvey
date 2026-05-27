@@ -921,7 +921,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/base.css","css/theme.css","css/noTablesOnMobile.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off", "animatebody":"off", "fixnumauto":"enable","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
+            'options'           => '{"animatebody":"off", "fixnumauto":"enable","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -937,7 +937,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
             'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","fixnumauto":"enable","brandlogo":"on","brandlogofile":"themes/survey/fruity/files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":null,"animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"500","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"500","animatealert":"off","alertanimation":"shake","alertanimationduration":"500","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"500","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"500","zebrastriping":"off","stickymatrixheaders":"off","greyoutselected":"off","hideprivacyinfo":"off","crosshover":"off","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top","notables":"1"}',
+            'options'           => '{"fixnumauto":"enable","brandlogo":"on","brandlogofile":"themes/survey/fruity/files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":null,"animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"500","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"500","animatealert":"off","alertanimation":"shake","alertanimationduration":"500","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"500","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"500","zebrastriping":"off","stickymatrixheaders":"off","greyoutselected":"off","hideprivacyinfo":"off","crosshover":"off","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top","notables":"1"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -953,7 +953,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","fixnumauto":"enable","brandlogo":"on","container":"on","brandlogofile":"themes/survey/bootswatch/files/logo.png", "showpopups":"1", "showclearall":"off", "hideprivacyinfo": "off", "questionhelptextposition":"top"}',
+            'options'           => '{"fixnumauto":"enable","brandlogo":"on","container":"on","brandlogofile":"themes/survey/bootswatch/files/logo.png", "showpopups":"1", "showclearall":"off", "hideprivacyinfo": "off", "questionhelptextposition":"top"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
             'cssframework_js'   => '',
@@ -1799,7 +1799,7 @@ class LsDefaultDataSets
          * @param int $active
          * @return array
          */
-        $addRow = function ($name, $active = 0, $version = '1.0.0', $priority = 0) {
+        $addRow = function ($name, $active = 0, $version = '1.0.0', $priority = 1) {
             return [
                 'id' => null,
                 'name'               => $name,
@@ -1817,7 +1817,7 @@ class LsDefaultDataSets
             $addRow('PasswordRequirement', 1),
             $addRow('ComfortUpdateChecker', 1),
             $addRow('Authdb', 1),
-            $addRow('ReactEditor', 1),
+            $addRow('ReactEditor', 1, '1.0.0', 0),
             // Inactive plugins below.
             $addRow('AuthLDAP'),
             $addRow('AuditLog'),
@@ -1826,7 +1826,7 @@ class LsDefaultDataSets
             $addRow('ExportSTATAxml', 1),
             $addRow('ExportSPSSsav', 1),
             $addRow('oldUrlCompat'),
-            $addRow('expressionQuestionHelp'),
+            $addRow('expressionQuestionHelp', 0, '1.0.1', 0),
             $addRow('expressionQuestionForAll'),
             $addRow('expressionFixedDbVar'),
             $addRow('customToken', 0, '1.0.1'),

@@ -326,7 +326,7 @@ abstract class Token extends Dynamic
      */
     public static function sanitizeAttribute($attribute)
     {
-        return htmlspecialchars(strip_tags($attribute), ENT_NOQUOTES, 'UTF-8');
+        return htmlspecialchars(strip_tags((string) $attribute), ENT_NOQUOTES, 'UTF-8');
     }
 
     /**
@@ -457,7 +457,7 @@ abstract class Token extends Dynamic
     /** @inheritdoc */
     public function scopes()
     {
-        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
+        $now = gmdate("Y-m-d H:i:s");
         return array(
             'incomplete' => array(
                 'condition' => "completed = 'N'"
