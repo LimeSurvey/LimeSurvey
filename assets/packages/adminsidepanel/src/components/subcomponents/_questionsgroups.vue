@@ -102,6 +102,13 @@ export default {
         questionHasCondition(question) {
             return question.relevance !== '1';
         },
+        hasQuestionGroupName(questionGroup) {
+            return typeof questionGroup.group_name === "string" &&
+                questionGroup.group_name.trim().length > 0;
+        },
+        formatQuestionGroupNumber(groupOrder) {
+            return window.sprintf(this.translate('groupNumber'), groupOrder);
+        },
 
         itemActivated(question){
             return  this.$store.state.lastQuestionOpen === question.qid;
@@ -394,7 +401,12 @@ export default {
                                 :href="questiongroup.link"
                             >
                                 <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }" tabindex="0">
-                                    {{ questiongroup.group_name }}
+                                    <template v-if="hasQuestionGroupName(questiongroup)">
+                                        {{ questiongroup.group_name }}
+                                    </template>
+                                    <template v-else>
+                                        {{ formatQuestionGroupNumber(questiongroup.group_order) }}
+                                    </template>
                                 </span>
                             </a>
                         </div>
@@ -557,7 +569,7 @@ export default {
                                         </li>
                                         <div v-else-if="key === 'language' && Array.isArray(value)">
                                             <li role="separator" class="dropdown-divider"  ></li>
-                                            <li class="dropdown-header">Survey logic file</li>
+                                            <li class="dropdown-header">Survey logic overview</li>
                                             <li v-for="language in value" >
                                                 <a class="dropdown-item" :id="language.id" :href="language.url">
                                                   <span :class="language.icon"></span>

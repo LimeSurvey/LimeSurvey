@@ -286,21 +286,45 @@ function activateActionLink(){
     if(!$('form#limesurvey').length){
         $('[data-limesurvey-submit]').remove();
     }
-    /* Submit limesurvey form on click */
+    /* Try to submit limesurvey form on click */
     else{
         $('[data-limesurvey-submit]').on('click',function(event) {
             event.preventDefault();
             var submit=$(this).data('limesurvey-submit');
             var confirmedby=$(this).data('confirmedby');
+            /* Trigger click on a button, needed for policy for example */
+            var submitbtn=false;
             if(!confirmedby){
                 $.each(submit, function(name, value) {
-                    $("<input/>",{
-                        'type':"hidden",
-                        'name':name,
-                        'value':value,
-                    }).appendTo('form#limesurvey');
+                    if ($("form#limesurvey [name='"+name+"']").length == 0) {
+                        $("<input/>",{
+                            'type':"hidden",
+                            'name':name,
+                            'value':value,
+                        }).appendTo('form#limesurvey');
+                    } else {
+                        $("form#limesurvey [name='"+name+"']").last().attr('value',value);
+                        /* If it was a submit button : choose it for jquery action done on load */
+                        if ($("form#limesurvey [name='"+name+"']").last().attr('type') == "submit") {
+                            submitbtn = $("form#limesurvey [name='"+name+"']").last();
+                        }
+                    }
                 });
-                $('form#limesurvey').submit();
+                /* If no submit button : create one */
+                if (!submitbtn) {
+                    if ($("#js-limesurvey-submit").length == 0) {
+                        $("<input/>",{
+                            'type':"submit",
+                            'id':"js-limesurvey-submit",
+                            'name':"js-limesurvey-submit",
+                            'class':"d-none ls-hidden",
+                            'style':"display:none",
+                            'value':"js-limesurvey-submit",
+                        }).appendTo('form#limesurvey');
+                    }
+                    submitbtn=$("#js-limesurvey-submit");
+                }
+                $(submitbtn).trigger('click');
             }else{
                 var submits=$.extend(submit,confirmedby);
                 confirmSurveyDialog($(this).data('confirmlabel'),$(this).text(),submits)
@@ -386,7 +410,7 @@ function triggerEmClassChange(){
 /**
  * has-error management for ls-error-mandatory
  * Only add ls-error-mandatory in PHP currently, not in js : different behaviour after try next and don't try next
- * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no boostrap, for before submit : use only css in template
+ * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no bootstrap, for before submit : use only css in template
  */
 function updateMandatoryErrorClass(){
     $(".ls-error-mandatory .has-error,.ls-error-mandatory.has-error").on("blur",":text,textarea",function(event){

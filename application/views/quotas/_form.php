@@ -29,14 +29,17 @@
         <div class="mb-3">
             <?php echo $form->labelEx($oQuota, 'action', ['class' => 'form-label ']); ?>
             <div class=''>
-                <?php echo $form->dropDownList($oQuota, 'action',
+                <?php echo $form->dropDownList(
+                    $oQuota,
+                    'action',
                     [
                         Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS            => gT("Terminate after related visible question was submitted", 'unescaped'),
                         Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS => gT("Terminate after related visible and hidden questions were submitted", 'unescaped'),
                         Quota::TERMINATE_ALL_PAGES                          => gT("Terminate after all page submissions", 'unescaped'),
                         Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS       => gT("Soft terminate after related visible question was submitted, answer will be editable", 'unescaped'),
                     ],
-                    ['class' => 'form-select']); ?>
+                    ['class' => 'form-select']
+                ); ?>
                 <?php echo $form->error($oQuota, 'action'); ?>
             </div>
         </div>
@@ -75,12 +78,14 @@
 
     </div>
     <div class="col-xl-8">
-        <?php $this->renderPartial('_form_langsettings',
+        <?php $this->renderPartial(
+            '_form_langsettings',
             [
                 'form'                   => $form,
                 'oQuota'                 => $oQuota,
                 'aQuotaLanguageSettings' => $aQuotaLanguageSettings,
-            ]); ?>
+            ]
+        ); ?>
         <input type="submit" name="submit" class="d-none"/>
     </div>
 </div>

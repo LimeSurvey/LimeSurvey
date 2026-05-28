@@ -5,7 +5,7 @@
         <?php eT('Help');?>
     </a>
     <ul class="dropdown-menu larger-dropdown" aria-labelledby="helpDropdown">
-        <?php $this->renderPartial( "/admin/super/_tutorial_menu", []); ?>
+        <?php $this->renderPartial("/admin/super/_tutorial_menu", []); ?>
         <li class="dropdown-divider"></li>
         <li>
             <a href="http://manual.limesurvey.org/" target="_blank" class="dropdown-item">

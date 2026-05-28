@@ -1,7 +1,7 @@
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -125,7 +125,8 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
    * in endpage and in $(window).resize
    */
   var fixBodyPadding = function fixBodyPadding() {
-    $('body').css('padding-top', Math.round($('#survey-nav').outerHeight()) + 'px');
+    var navHeight = Math.round($('#survey-nav.fixed-top').outerHeight() || 0);
+    $('body').css('padding-top', navHeight + 'px');
   };
 
   /**
@@ -910,7 +911,7 @@ function activateConfirmButton() {
 /**
  * has-error management for ls-error-mandatory
  * Only add ls-error-mandatory in PHP currently, not in js : different behaviour after try next and don't try next
- * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no boostrap, for before submit : use only css in template
+ * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no bootstrap, for before submit : use only css in template
  */
 function updateMandatoryErrorClass() {
   $(".ls-error-mandatory .has-error,.ls-error-mandatory.has-error").on("blur", ":text,textarea", function (event) {
@@ -1075,7 +1076,7 @@ window.ArrayScripts = ArrayScripts;
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
