@@ -70,7 +70,7 @@ export const ConditionDesigner = ({
     if (shouldConfirmOverwrite && !hasShownWarningRef.current) {
       showWarningMessage(
         t(
-          'Switching to the visual condition builder will overwrite the condition written in expression script mode.'
+          'Switching to the visual condition builder will overwrite the condition written in ExpressionScript mode.'
         ),
         'bottom-center'
       )

@@ -30,10 +30,6 @@ jobs:
     concurrency: 
       group: ${{ github.ref_name }}-frontend # Groups by branch and job name 
       cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered     
-    strategy:
-      matrix:
-        # Specify what version of nodejs you want to test
-        nodeJS-versions: ['20.19.0']
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
@@ -42,7 +38,7 @@ jobs:
       - name: Setup nodeJS
         uses: actions/setup-node@v4
         with:
-            node-version: 20
+            node-version: 24 # use 'latest' to always track the newest stable release
 
       - name: Run composer
         run: |
@@ -76,10 +72,6 @@ jobs:
   job_run_tests:
     needs: [job_build_packages]
     runs-on: ubuntu-22.04 # ubuntu runner hosted by Github
-    strategy:
-      matrix:
-        # Specify what version of nodejs you want to test
-        nodeJS-versions: ['20.19.0']
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
@@ -88,7 +80,7 @@ jobs:
       - name: Setup nodeJS
         uses: actions/setup-node@v4
         with:
-            node-version: 20
+            node-version: 24 #  use 'latest' to always track the newest stable release
 
       - name: Install adminbasics
         run: |

@@ -43,27 +43,17 @@ export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
         const lurkerData = {
           title: t('Response rate'),
           total: statistics.totalResponses,
-          legend: [
-            'totalResponses',
-            'incompleteResponses',
-            'completedWithoutAnswers',
-            'incompletedWithoutAnswers',
-          ],
+          legend: ['complete', 'incomplete'],
           data: [
             {
               title: t('Complete responses'),
-              key: 'incompleteResponses',
+              key: 'complete',
               value: statistics.totalResponses - statistics.incompleteResponses,
             },
             {
-              title: t('Complete without answers'),
-              key: 'completedWithoutAnswers',
-              value: statistics.completedWithoutAnswers,
-            },
-            {
-              title: t('Incomplete without answers'),
-              key: 'incompletedWithoutAnswers',
-              value: statistics.incompletedWithoutAnswers,
+              title: t('Incomplete responses'),
+              key: 'incomplete',
+              value: statistics.incompleteResponses || 0,
             },
           ],
         }
@@ -165,8 +155,8 @@ export const ResponsesOverview = ({ surveyId, survey, surveyQuestions }) => {
           <ChartRenderer
             graphType={statisticsGraphs.PIE_CHART}
             statisticsData={lurkerData}
-            title={t('Completed / Incomplete / Lurkers')}
-            filterZeroValues={true}
+            title={t('Completed / Incomplete')}
+            filterZeroValues={false}
             disableDoughnutChart={true}
             disableBarChart={true}
             disableLineChart={true}

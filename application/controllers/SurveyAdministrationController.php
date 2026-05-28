@@ -3059,7 +3059,7 @@ class SurveyAdministrationController extends LSBaseController
             $surveysummary2[] = gT("Responses will be date stamped.");
         }
         if ($oSurvey->isIpAddr) {
-            $surveysummary2[] = gT("IP addresses will be logged");
+            $surveysummary2[] = gT("IP addresses will be saved.");
         }
         if ($oSurvey->isRefUrl) {
             $surveysummary2[] = gT("Referrer URL will be saved.");
@@ -3083,7 +3083,8 @@ class SurveyAdministrationController extends LSBaseController
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim((string)$oSurvey->startdate) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($oSurvey->startdate, 'Y-m-d H:i:s');
+            $startdate = getDateOfUTC(($oSurvey->startdate));
+            $datetimeobj = new Date_Time_Converter($startdate, 'Y-m-d H:i:s');
             $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['startdate'] = "-";
@@ -3091,7 +3092,8 @@ class SurveyAdministrationController extends LSBaseController
 
         if (trim((string)$oSurvey->expires) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
+            $expires = getDateOfUTC(($oSurvey->expires));
+            $datetimeobj = new Date_Time_Converter($expires, 'Y-m-d H:i:s');
             $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['expdate'] = "-";

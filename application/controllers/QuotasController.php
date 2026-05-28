@@ -384,7 +384,7 @@ class QuotasController extends LSBaseController
         $id = App()->request->getPost('quota_member_id');
         $quotaMember = QuotaMember::model()->findByPk($id);
         if (empty($quotaMember)) {
-            throw new CHttpException(404, gT("Quota member not found."));
+            throw new CHttpException(404, gT("Quota rule not found."));
         }
         $oQuota = $this->getQuotaWithPermission($quotaMember->quota_id, 'delete');
         $surveyid = $oQuota->sid;
