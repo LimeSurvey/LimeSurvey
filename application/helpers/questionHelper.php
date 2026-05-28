@@ -214,7 +214,7 @@ class questionHelper
             'sortorder' => 110,
             'inputtype' => 'text',
             'expression' => 2, /* What for "tomorrow" etc ....*/
-            "help" => gT('Minimum date, valid date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.'),
+            "help" => gT('Minimum allowed date. Enter a date in YYYY-MM-DD format or a textual description (e.g. "now", "tomorrow", "+1 month"). Expressions are supported but must use YYYY-MM-DD format. For dropdown display: only the year is restricted when the date variable is on a different page.'),
             "caption" => gT('Minimum date')
         );
 
@@ -224,7 +224,7 @@ class questionHelper
             'sortorder' => 111,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('Maximum date, valid date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.'),
+            "help" => gT('Maximum allowed date. Enter a date in YYYY-MM-DD format or a textual description (e.g. "now", "tomorrow", "+1 month"). Expressions are supported but must use YYYY-MM-DD format. For dropdown display: only the year is restricted when the date variable is on a different page.'),
             "caption" => gT('Maximum date')
         );
 
@@ -993,7 +993,7 @@ class questionHelper
             'sortorder' => 210,
             'inputtype' => 'text',
             'expression' => 2, // must be controlled : unsure
-            "help" => gT('Slider start as this value. You can use ExpressionScript, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
+            "help" => gT('The slider will initially use this value. You may use ExpressionScript, but the result must be a number before the page is displayed. This setting overrides the default behavior of starting the slider at the middle position.'),
             "caption" => gT('Slider initial value')
         );
         self::$attributes["slider_default_set"] = array(

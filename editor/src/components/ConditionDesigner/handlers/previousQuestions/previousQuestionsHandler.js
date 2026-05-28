@@ -41,7 +41,7 @@ export const previousQuestionsHandler = (
     [questionTypeInfo.FIVE_POINT_CHOICE.type]: fivePointChoiceTypeHandler,
     [questionTypeInfo.TEN_POINT_CHOICE.type]: tenPointChoiceTypeHandler,
     [questionTypeInfo.YES_NO_UNCERTAIN.type]: yesNoUncertainTypeHandler,
-    [questionTypeInfo.INCREASE_DECREASE.type]: increaseDecreaseTypeHandler,
+    [questionTypeInfo.INCREASE_SAME_DECREASE.type]: increaseDecreaseTypeHandler,
     [questionTypeInfo.ARRAY.type]: arrayTypeHandler,
     [questionTypeInfo.ARRAY_COLUMN.type]: arrayTypeHandler,
     [questionTypeInfo.ARRAY_NUMBERS.type]: arrayNumbersTextsTypeHandler,

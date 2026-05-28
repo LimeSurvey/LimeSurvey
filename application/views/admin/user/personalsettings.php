@@ -317,9 +317,9 @@ echo $oQuestionSelector->getModal();
                             </div>
                         </div>
                         <div class="col-12 col-lg-6">
-                            <!-- Display time zone -->
+                            <!-- Personal time zone -->
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Display time zone:"), 'displayTimezone', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Personal time zone:"), 'displayTimezone', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <select name='displayTimezone' id='displayTimezone' class="form-select">
                                         <option value=""><?php echo sprintf(gT("Use global setting (%s)"), htmlspecialchars($globalDisplayTimezone)); ?></option>

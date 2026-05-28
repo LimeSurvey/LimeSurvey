@@ -14,7 +14,6 @@ const simpleSettings = () => {
     generalAttributes.QUESTION_CODE,
     generalAttributes.QUESTION_TYPE,
     generalAttributes.MANDATORY,
-    generalAttributes.LOGIC,
     getStatisticsAttributes().SHOW_IN_STATISTICS,
     getLogicAttributes().EQUATION,
     getDisplayAttributes().IMAGE_SETTINGS,
@@ -44,7 +43,7 @@ const displaySettings = () => {
 
 const logicSettings = () => {
   const logicAttributes = getLogicAttributes()
-  return [logicAttributes.EQUATION, logicAttributes.RANDOMIZATION_GROUP_NAME]
+  return [logicAttributes.EQUATION]
 }
 
 const otherSettings = () => {
