@@ -3553,7 +3553,7 @@ class LimeExpressionManager
                     $varName = !empty($aid)
                         ? $fielddata['title'] . '_' . $aid
                         : $fielddata['title'];
-                        $question = $fielddata['question'];
+                    $question = $fielddata['question'];
                     break;
                 case Question::QT_1_ARRAY_DUAL: // Array dual scale
                     // csuffix = fieldname suffix: 'suffix' holds '_S{sqid}'; append '#scale_id' to reach the exact cell fieldname
