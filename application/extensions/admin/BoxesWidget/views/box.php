@@ -80,8 +80,8 @@
                                     ($item['survey']->active === "N")
                                     && ($item['survey']->groupsCount > 0)
                                     && ($item['survey']->getQuestionsCount() > 0)
-    ) :
-                                    ?>
+) :
+    ?>
                                     <a href="<?= App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $item['survey']->sid) ?? '#' ?>"
                                        class="active"
                                        data-bs-toggle="tooltip"

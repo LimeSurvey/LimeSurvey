@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
     /*
     * LimeSurvey
-    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2007-2026 The LimeSurvey Project Team
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant
@@ -27,8 +27,8 @@ if (!defined('BASEPATH')) {
 
 
     /**
-     * Returns all available dateformats in a structured aray
-     * If $iDateFormat is given only the particual dateformat will be returned
+     * Returns all available dateformats in a structured array
+     * If $iDateFormat is given only the particular dateformat will be returned
      *
      * @param $iDateFormat integer
      * @param $sLanguageCode string
@@ -426,7 +426,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ha']['rtl'] = false;
     $supportedLanguages['ha']['dateformat'] = 1;
     $supportedLanguages['ha']['radixpoint'] = 1;
-    
+
     // Hebrew
     $supportedLanguages['he']['description'] = gT('Hebrew');
     $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';
@@ -1110,7 +1110,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 
 
     /**
-     *  Returns avaliable formats for Radix Points (Decimal Separators) or returns
+     *  Returns available formats for Radix Points (Decimal Separators) or returns
      *  radix point info about a specific format.
      *
      *  @param int $format Format ID/Number [optional]
