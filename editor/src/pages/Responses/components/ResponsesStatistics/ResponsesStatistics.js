@@ -4,6 +4,8 @@ import { useStatistics } from 'hooks'
 
 import { getDataWithPercentages, statisticsGraphs } from './ChartsUtils'
 import { ChartRenderer } from '../ChartRenderer'
+import { ChartRendererV2 } from '../ChartRenderV2.js'
+import { StatisticsContainer } from '../Statistics/Components/StatisticsContainer.js'
 
 export const ResponsesStatistics = ({
   surveyId,
@@ -63,32 +65,5 @@ export const ResponsesStatistics = ({
     )
   }
 
-  return (
-    <div className="responses-statistics-body">
-      <div className="responses-charts row">
-        {statistics.map((_, index) => {
-          if (
-            selectedCharts[index] === statisticsGraphs.DONT_SHOW ||
-            selectedCharts[index] === undefined ||
-            selectedCharts[index] === null
-          ) {
-            return null
-          }
-
-          return (
-            <div
-              className={`${!isRightBarOpen ? 'col-xxl-6' : ''} col-12 mb-2`}
-              key={`responses-charts-${index}`}
-            >
-              <ChartRenderer
-                statisticsData={formattedStatistics[index]}
-                graphType={selectedCharts[index]}
-                title={statistics[index]?.title}
-              />
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
+  return <StatisticsContainer statistics={statistics} surveyId={surveyId} />
 }

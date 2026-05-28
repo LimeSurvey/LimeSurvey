@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions;
 use CDbCommand;
 use Exception;
 use InvalidArgumentException;
+use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
@@ -15,6 +16,7 @@ use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{Arr
     SingleOptionProcessor,
     DualScaleProcessor};
 use Question;
+use QuestionType;
 use Yii;
 
 class QuestionStatistics implements StatisticsChartInterface
@@ -26,6 +28,9 @@ class QuestionStatistics implements StatisticsChartInterface
     private array $output = [];
 
     private $filters = null;
+
+    /** @var array<string, string>|null Cached type code -> human-readable description map */
+    private ?array $typeDescriptions = null;
 
     public function __construct()
     {
@@ -125,7 +130,36 @@ class QuestionStatistics implements StatisticsChartInterface
             throw new InvalidArgumentException('There was an error processing question: ' . $question['type'] . ' ' . $question['qid']);
         }
 
+        $this->trimMeta($output);
+
         return $output;
+    }
+
+    /**
+     * @param StatisticsChartDTO|StatisticsChartDTO[] $output
+     */
+    private function trimMeta($output): void
+    {
+        $dtos = is_array($output) ? $output : [$output];
+        foreach ($dtos as $dto) {
+            if (!$dto instanceof StatisticsChartDTO) {
+                continue;
+            }
+            $meta = $dto->getMeta();
+            $question = $meta['question'] ?? null;
+            if (!is_array($question)) {
+                continue;
+            }
+            $meta['question'] = [
+                'qid' => $question['qid'] ?? null,
+                'gid' => $question['gid'] ?? null,
+                'code' => $question['title'] ?? null,
+                'type' => QuestionType::modelsAttributes($this->language)[$question['type']]['description'] ?? $question['type'] ?? null,
+                'help' => $question['help'] ?? null,
+                'attributes' => $question['attributes'] ?? [],
+            ];
+            $dto->setMeta($meta);
+        }
     }
 
     private function buildBaseQuery(): CDbCommand
@@ -133,7 +167,7 @@ class QuestionStatistics implements StatisticsChartInterface
         $select = [
             'q.qid', 'q.sid', 'q.gid', 'q.type', 'q.title',
             'q.parent_qid', 'q.scale_id', 'q.question_order', 'q.other',
-            'ql.question as question_text',
+            'ql.question as question_text', 'ql.help as help_text',
             'a.aid', 'a.qid as answer_qid', 'a.code', 'a.sortorder',
             'a.scale_id as answer_scale_id',
             'al.answer',
@@ -173,7 +207,8 @@ class QuestionStatistics implements StatisticsChartInterface
                     $questions[$qid] = [
                         'qid' => $qid, 'sid' => $row['sid'], 'gid' => $row['gid'],
                         'type' => $row['type'], 'title' => $row['title'],
-                        'question' => flattenText($row['question_text']), 'other' => $row['other'],
+                        'question' => flattenText($row['question_text']),
+                        'help' => flattenText($row['help_text']), 'other' => $row['other'],
                         'subQuestions' => [], 'attributes' => [],
                     ];
                 }

@@ -1,3 +1,36 @@
+export const MAX_LABEL_LENGTH = 18
+
+export const getLabelInterval = (count) => {
+  if (count > 20) return 2
+  if (count > 10) return 1
+  return 0
+}
+
+export const truncateLabel = (value) => {
+  const text = String(value ?? '')
+  return text.length > MAX_LABEL_LENGTH
+    ? `${text.slice(0, MAX_LABEL_LENGTH)}…`
+    : text
+}
+
+export const TruncatedTick = ({ x, y, payload, textAnchor = 'middle', dy = 12 }) => {
+  const value = payload?.value ?? ''
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        className="chart-labels"
+        x={0}
+        y={0}
+        dy={dy}
+        textAnchor={textAnchor}
+      >
+        {truncateLabel(value)}
+        <title>{value}</title>
+      </text>
+    </g>
+  )
+}
+
 export const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (

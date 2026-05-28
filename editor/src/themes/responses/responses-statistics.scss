@@ -1,5 +1,91 @@
 .responses-statistics-body {
+  .responses-statistics-group {
+    margin-bottom: 24px;
+  }
+
+  .chart-header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .chart-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+
+      &-main {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      &-actions {
+        flex-shrink: 0;
+      }
+
+      &-index {
+        color: $grape;
+      }
+
+      &-key {
+        color: $g-700;
+      }
+
+      &-text {
+        font-size: $font-size-md;
+      }
+
+      &-help {
+        flex-basis: 100%;
+        padding: 0 26px;
+        color: $g-700;
+        font-size: $font-size-xs;
+      }
+    }
+  }
+
+  .chart-labels {
+    font-size: $font-size-xs;
+    fill: $g-900;
+    color: $g-900;
+    font-weight: $font-weight-500;
+  }
+
+  .statistics-table {
+    font-size: $font-size-sm;
+
+    th {
+      color: $g-700;
+      font-weight: $font-weight-500;
+    }
+
+    tbody td {
+      color: $g-900;
+      vertical-align: middle;
+    }
+
+    tfoot td {
+      color: $g-900;
+      font-weight: $font-weight-600;
+      border-top: 2px solid $g-300;
+    }
+
+    &-swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+  }
+
   .responses-charts {
+    gap: 12px;
+
     .recharts-pie-label-line {
       display: none;
     }
@@ -30,7 +116,11 @@
       box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
       padding: 20px;
       height: 100%;
-      min-height: 400px;
+      gap: 24px;
+
+      &--hidden {
+        gap: 0;
+      }
     }
 
     .question-card {

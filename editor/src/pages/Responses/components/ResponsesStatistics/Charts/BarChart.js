@@ -10,15 +10,24 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-import { CustomTooltip } from '../ChartsUtils'
-import { COLORS } from '../ChartsUtils'
+import {
+  COLORS,
+  CustomTooltip,
+  TruncatedTick,
+  getLabelInterval,
+} from '../ChartsUtils'
 
 export const BarChart = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" minHeight={500} height="100%">
       <RechartsBarChart dataKey="value" nameKey="title" data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="title" angle={-45} textAnchor="end" height={80} />
+        <XAxis
+          dataKey="title"
+          height={80}
+          interval={getLabelInterval(data.length)}
+          tick={<TruncatedTick />}
+        />
         <YAxis />
         <Tooltip cursor={{ fill: '#eeeff7' }} content={<CustomTooltip />} />
         <Bar maxBarSize={60} dataKey="value" nameKey="title" data={data}>
