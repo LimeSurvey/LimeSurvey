@@ -957,6 +957,8 @@ class TemplateConfiguration extends TemplateConfig
     public function getOptionPageAttributes()
     {
         $aData = $this->attributes;
+        $aData['path'] = $this->path;
+        $aData['extends_template_name'] = $this->template->extends ?? '';
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
         Yii::import('application.helpers.SurveyThemeHelper');

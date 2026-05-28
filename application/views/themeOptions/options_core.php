@@ -180,7 +180,28 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                                    class="btn-check selector_option_radio_field simple_edit_options_<?= $attributeKey ?>"/>
                                             <label for="<?= $id ?>" class="btn btn-outline-secondary">
                                                 <?php if (!empty($optionSettings['image'])) : ?>
-                                                    <?php $imageFilePath = App()->getConfig('standardthemerootdir') . DIRECTORY_SEPARATOR . $aTemplateConfiguration['template_name'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $optionSettings['image'] ?>
+                                                    <?php
+                                                    $imageFilePath = $aTemplateConfiguration['path'] . 'files' . DIRECTORY_SEPARATOR . $optionSettings['image'];
+                                                    // Walk up the inheritance chain to find the image file
+                                                    if (!file_exists($imageFilePath) && !empty($aTemplateConfiguration['extends_template_name'])) {
+                                                        $parentName = $aTemplateConfiguration['extends_template_name'];
+                                                        while (!empty($parentName)) {
+                                                            $parentPath = App()->getConfig('standardthemerootdir') . DIRECTORY_SEPARATOR . $parentName . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $optionSettings['image'];
+                                                            if (file_exists($parentPath)) {
+                                                                $imageFilePath = $parentPath;
+                                                                break;
+                                                            }
+                                                            $parentPath = App()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $parentName . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $optionSettings['image'];
+                                                            if (file_exists($parentPath)) {
+                                                                $imageFilePath = $parentPath;
+                                                                break;
+                                                            }
+                                                            // Move to the next ancestor
+                                                            $parentTemplate = Template::model()->findByAttributes(['name' => $parentName]);
+                                                            $parentName = $parentTemplate->extends ?? '';
+                                                        }
+                                                    }
+                                                    ?>
                                                     <?php if (file_exists($imageFilePath)) : ?>
                                                         <?= file_get_contents($imageFilePath) ?>
                                                         <?= $optionKey === 'inherit' ? ' ᴵ' : '' ?>
