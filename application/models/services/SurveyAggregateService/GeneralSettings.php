@@ -67,7 +67,7 @@ class GeneralSettings
     /**
      * Set REST Mode
      *
-     * In rest mode we have different expecations about data formats.
+     * In rest mode we have different expectations about data formats.
      * For example datetime objects inputs/output
      * as UTC JSON format Y-m-d\TH:i:s.000\Z.
      *
@@ -137,6 +137,7 @@ class GeneralSettings
      *
      * @param Survey $survey
      * @param array $input
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
@@ -182,7 +183,7 @@ class GeneralSettings
 
             $saved = $survey->save();
             if (array_key_exists('allowregister', $input)) {
-                $this->ensureTokensTableExistance($survey);
+                $this->ensureTokensTableExistence($survey);
             }
 
             if (!$saved) {
@@ -266,7 +267,6 @@ class GeneralSettings
             'showregisterpolicy' => ['type' => static::FIELD_TYPE_YN],
             'allowprev' => ['type' => static::FIELD_TYPE_YN],
             'questionindex' => [],
-            'nokeyboard' => ['type' => static::FIELD_TYPE_YN],
             'showprogress' => ['type' => static::FIELD_TYPE_YN],
             'listpublic' => ['type' => static::FIELD_TYPE_YN],
             'htmlemail' => ['type' => static::FIELD_TYPE_YN],
@@ -652,7 +652,7 @@ class GeneralSettings
      *
      * @return void
      */
-    private function ensureTokensTableExistance(Survey $survey): void
+    private function ensureTokensTableExistence(Survey $survey): void
     {
         $survey->setOptions($survey->gsid);
         $isSurveyActive = $survey->getIsActive();

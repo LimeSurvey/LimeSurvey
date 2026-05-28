@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -100,16 +100,6 @@ class SavedControl extends LSActiveRecord
         }
 
         return $record->deleteAll($criteria);
-    }
-
-    /**
-     * @param $data
-     * @return mixed
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        return $this->db->insert('saved_control', $data);
     }
 
     public function getButtons()

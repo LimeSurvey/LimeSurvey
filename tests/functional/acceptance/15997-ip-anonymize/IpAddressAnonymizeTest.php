@@ -5,6 +5,9 @@ namespace ls\tests;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
+/**
+ * @group security
+ */
 class IpAddressAnonymizeTest extends TestBaseClassWeb
 {
     /**
@@ -61,7 +64,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             //activate survey in open-access mode
             //modal has been opend, activate survey in open-access mode
             $overview = self::$webDriver->wait(20)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('saveactivateBtn')
                 )
             );
@@ -114,7 +117,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
             sleep(2);
 
             //now check if ip was anonymized (ipv4, last digit should be 0)
-            //get ipadr from table survey_573837 ...
+            //get ipadr from table responses_573837 ...
             $models = \Response::model(self::$surveyId)->findAll();
 
             $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr === '127.0.0.0'));

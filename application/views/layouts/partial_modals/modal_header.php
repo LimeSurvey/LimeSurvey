@@ -8,5 +8,5 @@ $modalTitleId = isset($modalTitleId) ? $modalTitleId : null;
     <h2 class="modal-title h1"<?= !empty($modalTitleId) ? ' id="' . $modalTitleId . '"' : '' ?>>
         <?= $modalTitle ?>
     </h2>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close modal') ?>"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close modal window') ?>"></button>
 </div>

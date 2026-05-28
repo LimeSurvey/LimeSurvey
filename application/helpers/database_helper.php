@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -15,36 +15,6 @@ if (!defined('BASEPATH')) {
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-
- /**
- *
- * @param string $sql
- * @param array|bool $inputarr
- * @param boolean $silent
- * @return bool|CDbDataReader
- * @throws Exception
- * @deprecated Do not use anymore. If you see this replace it with a proper ActiveRecord Model query
- */
-function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
-{
-    $error = '';
-    try {
-        if ($inputarr) {
-            $dataset = Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query(); //Checked
-        } else {
-            $dataset = Yii::app()->db->createCommand($sql)->query();
-        }
-    } catch (CDbException $e) {
-        $error = $e->getMessage();
-        $dataset = false;
-    }
-
-    if (!$dataset && (Yii::app()->getConfig('debug') > 0 || !$silent)) {
-        // Exception is better than safeDie, because you can see the backtrace.
-        throw new \Exception('Error executing query in dbExecuteAssoc:' . $error);
-    }
-    return $dataset;
-}
 
 /**
  * Return the database-specific random function to use in ORDER BY sql statements
@@ -113,4 +83,48 @@ function dbSelectTablesLike($table)
 function dbGetTablesLike($table)
 {
     return (array) Yii::app()->db->createCommand(dbSelectTablesLike("{{{$table}}}"))->queryColumn();
+}
+
+/**
+ * Wraps field names with RDBMS-specific quote characters and returns them as a comma-separated string.
+ * @param array|string $fields A field name, comma-separated field names, or an array of field names.
+ * @return string
+ */
+function dbQuoteFields(array|string $fields)
+{
+    if (is_string($fields)) {
+        if (strpos($fields, ',') !== false) {
+            $fields = explode(',', $fields);
+        } else {
+            $fields = [$fields];
+        }
+    }
+
+    if (is_array($fields) && count($fields) > 0) {
+        $driver = App()->db->getDriverName();
+        switch ($driver) {
+            case 'mysql':
+            case 'mysqli':
+                $fields = array_map(function ($f) {
+                    return '`' . trim($f) . '`';
+                }, $fields);
+                break;
+            case 'dblib':
+            case 'mssql':
+            case 'sqlsrv':
+                $fields = array_map(function ($f) {
+                    return '[' . trim($f) . ']';
+                }, $fields);
+                break;
+            case 'pgsql':
+                $fields = array_map(function ($f) {
+                    return '"' . trim($f) . '"';
+                }, $fields);
+                break;
+            default:
+                $fields = array_map('trim', $fields);
+                break;
+        }
+    }
+    return implode(', ', $fields);
 }
