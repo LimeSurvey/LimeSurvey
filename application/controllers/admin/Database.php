@@ -307,6 +307,13 @@ class Database extends SurveyCommonAction
             }
         }
 
+        if ($input['expires'] ?? false) {
+            $input['expires'] = getUTCOfDate(($input['expires']));
+        }
+
+        if ($input['startdate'] ?? false) {
+            $input['startdate'] = getUTCOfDate(($input['startdate']));
+        }
 
         $metaData = [];
         try {

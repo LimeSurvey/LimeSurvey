@@ -412,8 +412,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function expire($surveyId = null)
     {
-        $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
-        $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 minute');
+        $dateTime = gmdate("Y-m-d H:i:s");
+        $dateTime = dateShiftRelative($dateTime, "Y-m-d H:i:s", '-1 minute');
 
         $model = $this;
 
@@ -490,13 +490,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return array(
             'active' => array('condition' => "active = 'Y'"),
             'open' => array('condition' => '(startdate <= :now1 OR startdate IS NULL) AND (expires >= :now2 OR expires IS NULL)', 'params' => array(
-                ':now1' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-                ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
+                ':now1' => gmdate("Y-m-d H:i:s"),
+                ':now2' => gmdate("Y-m-d H:i:s")
             )
             ),
             'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now3 AND (expires < :now4 OR expires IS NULL)", 'params' => array(
-                ':now3' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-                ':now4' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
+                ':now3' => gmdate("Y-m-d H:i:s"),
+                ':now4' => gmdate("Y-m-d H:i:s")
             ))
         );
     }
@@ -1207,8 +1207,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $bExpired = (!is_null($oStop) && $oStop < $oNow);
             $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
-            $sStop = !is_null($oStop) ? convertToGlobalSettingFormat($oStop->format('Y-m-d H:i:s')) : "";
-            $sStart = !is_null($oStart) ? convertToGlobalSettingFormat($oStart->format('Y-m-d H:i:s')) : "";
+            // For display, apply timezone shift to UTC timestamps
+            $sStop = !is_null($oStop) ? convertToGlobalSettingFormat(dateShift($this->expires, "Y-m-d H:i:s")) : "";
+            $sStart = !is_null($oStart) ? convertToGlobalSettingFormat(dateShift($this->startdate, "Y-m-d H:i:s")) : "";
 
             // Icon generation (for CGridView)
             $sIconRunNoEx = '<a href="' . App()->createUrl('/surveyAdministration/view/surveyid/' . $this->sid) . '"' . $onclick . ' class="survey-state" data-bs-toggle="tooltip" title="' . gT('End: Never') . '"><i class="ri-play-fill text-primary"></i>' . gT('End: Never') . '</a>';
@@ -1852,8 +1853,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             if ($this->active == 'N' || $this->active == "Y") {
                 $criteria->compare("t.active", $this->active, false);
             } else {
-                // Time adjust
-                $sNow = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+                // Get current time in UTC (all DB times are stored in UTC)
+                $sNow = gmdate("Y-m-d H:i:s");
 
                 if ($this->active == "E") {
                     $criteria->compare("t.active", 'Y');
@@ -2606,8 +2607,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
     private static function shiftedDateTime($datetime)
     {
         if (is_string($datetime) && strtotime($datetime)) {
-            $datetime = dateShift($datetime, "Y-m-d H:i:s", strval(Yii::app()->getConfig('timeadjust')));
-            return new DateTime($datetime);
+            $datetimeObj = new DateTime($datetime, new DateTimeZone('UTC'));
+            return $datetimeObj;
         }
         return null;
     }

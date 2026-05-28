@@ -2579,8 +2579,7 @@ class userstatistics_helper
                 }
                 // Array (Texts) and Array (Numbers): generate one entry per row×column cell
                 if ($field['type'] == Question::QT_SEMICOLON_ARRAY_TEXT || $field['type'] == Question::QT_COLON_ARRAY_NUMBERS) {
-                    $db = Yii::app()->db;
-                    $baseField = $field['gid'] ? $surveyid . "X" . $field['gid'] . "X" . $field['qid'] : null;
+                    $baseField = $field['gid'] ? "Q" . $field['qid'] : null;
                     if ($baseField) {
                         $rowQuestions = Question::model()->findAll(array(
                             'condition' => 'parent_qid=:qid AND scale_id=0',
@@ -2594,7 +2593,7 @@ class userstatistics_helper
                         ));
                         foreach ($rowQuestions as $rq) {
                             foreach ($colQuestions as $cq) {
-                                $summary[] = $baseField . $rq->title . "_" . $cq->title;
+                                $summary[] = $baseField . "_S" . $rq->qid . "_S" . $cq->qid;
                             }
                         }
                     }
