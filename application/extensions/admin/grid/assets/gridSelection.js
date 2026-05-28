@@ -72,6 +72,25 @@ LS.gridSelection = (function () {
     }
 
     // ------------------------------------------------------------------
+    // Clear selection when a filter changes.
+    // A filter change means a new result set – previously selected PKs that
+    // are no longer part of the filtered results must not stay selected.
+    // This handler fires before the grid's own AJAX-update is triggered,
+    // so the store is already empty when restoreCheckboxes() runs afterwards.
+    // ------------------------------------------------------------------
+    $(document).on(
+        'change',
+        '.grid-view-ls .filters input, .grid-view-ls .filters select',
+        function () {
+            var gridId = $(this).closest('.grid-view-ls').attr('id');
+            if (!gridId) { return; }
+            _store.set(gridId, new Set());
+            _syncSelectionBar(gridId);
+            _syncMassiveActionButton(gridId);
+        }
+    );
+
+    // ------------------------------------------------------------------
     // "Deselect all" button – delegated so it survives AJAX replacements
     // ------------------------------------------------------------------
     $(document).on('click', '.grid-selection-bar .grid-deselect-all', function () {
