@@ -1,5 +1,5 @@
 import { Input, Select } from 'components/UIComponents'
-import { STATES, themeOptions } from 'helpers'
+import { STATES } from 'helpers'
 import { getFormatOptions } from 'helpers/options'
 
 import { Theme } from '../GeneralSettings/Theme'
@@ -275,6 +275,7 @@ export const getGeneralSettingsBlocks = () => ({
         },
         selectOptions: (globalStates) => {
           const { survey } = globalStates[STATES.SURVEY]
+          const availableThemes = survey?.availableThemes || []
 
           return process.env.REACT_APP_DEV_MODE
             ? [
@@ -282,9 +283,9 @@ export const getGeneralSettingsBlocks = () => ({
                   label: t('Inherit') + ` [ ${survey.templateInherited} ]`,
                   value: 'inherit',
                 },
-                ...themeOptions,
+                ...availableThemes,
               ]
-            : themeOptions
+            : availableThemes
         },
       },
     },
