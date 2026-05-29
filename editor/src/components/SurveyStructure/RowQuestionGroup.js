@@ -1,9 +1,14 @@
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+
 import { SideBarRow } from 'components/SideBar/SideBarRow'
 import { RowQuestionsList } from './RowQuestionsList'
 import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
 import { ClipBoardIcon } from 'components/icons'
 import { LANGUAGE_CODES } from 'helpers'
 import { useFocused } from 'hooks'
+
+import { SurveyLogicModal } from './SurveyLogicModal'
 
 export const RowQuestionGroup = ({
   questionGroup: { l10ns = {}, questions = [], gid },
@@ -17,6 +22,8 @@ export const RowQuestionGroup = ({
   onTitleClick = () => {},
 }) => {
   const { setFocused, focused } = useFocused()
+  const { surveyId } = useParams()
+  const [showLogicModal, setShowLogicModal] = useState(false)
   const handleQuestionsUpdate = (questions) => {
     update({ ...questionGroup, questions })
   }
@@ -43,34 +50,50 @@ export const RowQuestionGroup = ({
     focused?.gid === gid && focused?.qid === undefined
 
   return (
-    <SideBarRow
-      onTitleClick={() => {
-        setFocused(questionGroup, groupIndex, undefined, false)
-        onTitleClick()
-      }}
-      testId={`survey-structure-question-group`}
-      title={title}
-      titlePlaceholder={t('What is your question group about?')}
-      provided={provided}
-      icon={<ClipBoardIcon />}
-      isQuestionGroup={true}
-      meatballButton={
-        <MeatballMenu
-          deleteText={t('Delete group')}
-          duplicateText={t('Duplicate group')}
-          handleDelete={handleDelete}
-          handleDuplicate={handleDuplicate}
+    <>
+      <SideBarRow
+        onTitleClick={() => {
+          setFocused(questionGroup, groupIndex, undefined, false)
+          onTitleClick()
+        }}
+        testId={`survey-structure-question-group`}
+        title={title}
+        titlePlaceholder={t('What is your question group about?')}
+        provided={provided}
+        icon={<ClipBoardIcon />}
+        isQuestionGroup={true}
+        meatballButton={
+          <MeatballMenu
+            deleteText={t('Delete group')}
+            duplicateText={t('Duplicate group')}
+            handleDelete={handleDelete}
+            handleDuplicate={handleDuplicate}
+            additionalItems={[
+              {
+                label: t('Check Logic'),
+                testId: 'show-logic-button',
+                onClick: () => setShowLogicModal(true),
+              },
+            ]}
+          />
+        }
+        isOpen={isQuestionGroupFocused}
+        isFocused={shouldHighlightQuestionGroup}
+      >
+        <RowQuestionsList
+          questions={questions}
+          language={language}
+          handleUpdate={handleQuestionsUpdate}
+          groupIndex={groupIndex}
         />
-      }
-      isOpen={isQuestionGroupFocused}
-      isFocused={shouldHighlightQuestionGroup}
-    >
-      <RowQuestionsList
-        questions={questions}
+      </SideBarRow>
+      <SurveyLogicModal
+        show={showLogicModal}
+        onHide={() => setShowLogicModal(false)}
+        sid={surveyId}
+        gid={gid}
         language={language}
-        handleUpdate={handleQuestionsUpdate}
-        groupIndex={groupIndex}
       />
-    </SideBarRow>
+    </>
   )
 }
