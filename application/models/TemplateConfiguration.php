@@ -957,8 +957,6 @@ class TemplateConfiguration extends TemplateConfig
     public function getOptionPageAttributes()
     {
         $aData = $this->attributes;
-        $aData['path'] = $this->path;
-        $aData['extends_template_name'] = $this->template->extends ?? '';
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
         Yii::import('application.helpers.SurveyThemeHelper');
@@ -1012,7 +1010,7 @@ class TemplateConfiguration extends TemplateConfig
             return $imageFilePath;
         }
 
-        // Walk up the inheritance chain
+        // Walk up the theme extension chain (template->extends)
         $parentName = $this->template->extends ?? '';
         $visited = [];
         while (!empty($parentName)) {
@@ -1020,17 +1018,14 @@ class TemplateConfiguration extends TemplateConfig
                 break;
             }
             $visited[$parentName] = true;
-            $parentPath = App()->getConfig('standardthemerootdir') . DIRECTORY_SEPARATOR . $parentName . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
+
+            $parentConfig = self::getInstanceFromTemplateName($parentName);
+            $parentConfig->setBasics();
+            $parentPath = $parentConfig->path . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
             if (file_exists($parentPath)) {
                 return $parentPath;
             }
-            $parentPath = App()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $parentName . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
-            if (file_exists($parentPath)) {
-                return $parentPath;
-            }
-            // Move to the next ancestor
-            $parentTemplate = Template::model()->findByAttributes(['name' => $parentName]);
-            $parentName = $parentTemplate->extends ?? '';
+            $parentName = $parentConfig->template->extends ?? '';
         }
 
         return '';
