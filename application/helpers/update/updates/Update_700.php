@@ -19,6 +19,8 @@ use QuestionGroupL10n;
 use Assessment;
 use DefaultValue;
 use AnswerL10n;
+use SurveysGroupsettings;
+use Template;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -1001,6 +1003,26 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Updates group templates if they are not fruity_twentythree or an extended version of it or inherit
+     * @return void
+     */
+    public function updateGroupTemplates()
+    {
+        $fruities = [];
+        $fruityTemplates = Template::model()->findAll(":fruity in (extends, name)", [':fruity' => 'fruity_twentythree']);
+        foreach ($fruityTemplates as $fruityTemplate) {
+            $fruities []= $fruityTemplate->name;
+        }
+        $groupTemplates = SurveysGroupsettings::model()->findAll();
+        foreach ($groupTemplates as $groupTemplate) {
+            if (!in_array($groupTemplate->template, array_merge(['inherit', $fruities]))) {
+                $groupTemplate->template = 'fruity_twentythree';
+                $groupTemplate->save();
+            }
+        }
+    }
+
+    /**
      * Fixes textual data, replacing old fieldname representation with new fieldname representation. We don't save the record even if changed here, because
      * outside of the method we may want to do additional things
      * @param LSActiveRecord $record the record whose fields are to be fixed
@@ -1234,6 +1256,7 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
+        $this->updateGroupTemplates();
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
         $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
         $this->doPreparations();
