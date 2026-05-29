@@ -2801,7 +2801,8 @@ class LimeExpressionManager
 
             // em_validation_sq - an EM validation equation that must be satisfied for each subquestion.  Uses 'this' in the equation
             if (isset($qattr['em_validation_sq']) && !is_null($qattr['em_validation_sq']) && trim((string) $qattr['em_validation_sq']) != '') {
-                $em_validation_sq = $qattr['em_validation_sq'];
+                $em_validation_sq = trim((string) $qattr['em_validation_sq']);
+                $em_validation_sq = "!this.relevanceStatus OR " . $em_validation_sq; // Always check relevance status mantis issue #20320
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     $sq_names = [];
@@ -3553,6 +3554,7 @@ class LimeExpressionManager
                     $varName = !empty($aid)
                         ? $fielddata['title'] . '_' . $aid
                         : $fielddata['title'];
+                    $question = $fielddata['question'];
                     break;
                 case Question::QT_1_ARRAY_DUAL: // Array dual scale
                     // csuffix = fieldname suffix: 'suffix' holds '_S{sqid}'; append '#scale_id' to reach the exact cell fieldname
