@@ -8,7 +8,8 @@ import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 //   icon: 'ri-bar-chart-horizontal-line',
 //   url: '/survey/'+ surveyId + '/structure',
 //   onClick: () => {},
-//   submenu: [] // for type 'submenu'
+//   submenu: [], // for type 'submenu'
+//   checked: true || false, // for type 'item', shows a checkmark on the right
 // },
 
 /**
@@ -88,7 +89,16 @@ export const Dropdown = ({
       <BootstrapDropdown.Menu>
         {menuItems.map(
           (
-            { type, label, icon, url, onClick, disabled = {}, submenu },
+            {
+              type,
+              label,
+              icon,
+              url,
+              onClick,
+              disabled = {},
+              submenu,
+              checked,
+            },
             index
           ) => (
             <React.Fragment key={`${label}-dropdown-${type}-${index}`}>
@@ -115,9 +125,24 @@ export const Dropdown = ({
                     disabled={disabled.state}
                     href={url ? url : '#'}
                     onClick={onClick}
+                    className={
+                      checked !== undefined ? 'has-checkmark' : undefined
+                    }
                   >
-                    <i className={icon}></i>
-                    {label}
+                    {checked === undefined ? (
+                      <>
+                        <i className={icon}></i>
+                        {label}
+                      </>
+                    ) : (
+                      <>
+                        <span>
+                          <i className={icon}></i>
+                          {label}
+                        </span>
+                        {checked && <i className="ri-check-line"></i>}
+                      </>
+                    )}
                   </BootstrapDropdown.Item>
                 </TooltipContainer>
               )}

@@ -384,9 +384,16 @@ export default {
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
                       </svg>
                     </div>
-                    <div class="cursor-pointer me-1" @click="toggleQuestionGroup(questiongroup)" 
-                         :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'">
-                         <i class="ri-arrow-right-s-fill"></i>
+                    <div class="cursor-pointer me-1"
+                         role="button"
+                         tabindex="0"
+                         :aria-expanded="isOpen(questiongroup.gid)"
+                         :aria-label="isOpen(questiongroup.gid) ? translate('collapseGroup') : translate('expandGroup')"
+                         :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'"
+                         @click="toggleQuestionGroup(questiongroup)"
+                         @keydown.enter.prevent="toggleQuestionGroup(questiongroup)"
+                         @keydown.space.prevent="toggleQuestionGroup(questiongroup)">
+                         <i class="ri-arrow-right-s-fill" aria-hidden="true"></i>
                     </div>
                     <div class="w-100 position-relative">
                         <div class="cursor-pointer">
@@ -549,7 +556,7 @@ export default {
                                         </li>
                                         <div v-else-if="key === 'language' && Array.isArray(value)">
                                             <li role="separator" class="dropdown-divider"  ></li>
-                                            <li class="dropdown-header">Survey logic overview</li>
+                                            <li class="dropdown-header">{{ translate('surveyLogicFile') }}</li>
                                             <li v-for="language in value" >
                                                 <a class="dropdown-item" :id="language.id" :href="language.url">
                                                   <span :class="language.icon"></span>

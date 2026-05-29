@@ -172,7 +172,7 @@ class UploaderController extends SurveyController
             if ($_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2) {
                 $return = array(
                     "success" => false,
-                    "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                    "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed."), $maxfilesize)
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
@@ -247,7 +247,7 @@ class UploaderController extends SurveyController
             if (!$disableCheck && $size > $maxfilesize) {
                 $return = array(
                     "success" => false,
-                    "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                    "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed."), $maxfilesize)
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
@@ -288,19 +288,26 @@ class UploaderController extends SurveyController
                     "success" => false,
                     "msg" => sprintf(gT("Sorry, unable to check extension of this file type %s."), $realMimeType),
                 );
-                //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
             if (!$disableCheck && !in_array($extByMimeType, $valid_extensions_array)) {
                 $realMimeType = LSFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null, false);
-                $return = array(
-                    "success" => false,
-                    "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType, $extByMimeType)
-                );
-                //header('Content-Type: application/json');
-                echo ls_json_encode($return);
-                Yii::app()->end();
+                /* text/plain is a generic MIME type covering many plain-text formats (csv, tsv, etc.).
+                 * PHP's finfo frequently returns text/plain for CSV files instead of text/csv.
+                 * If the file extension was already validated as allowed, permit it through.
+                 * Execution is not a risk: files are stored as futmp_<random>_<ext> (no dot before
+                 * extension) so the web server will never treat them as executable scripts.
+                 * @see https://bugs.limesurvey.org/view.php?id=15946 */
+                $isPlainTextMime = ($extByMimeType === 'txt' && in_array($ext, $valid_extensions_array));
+                if (!$isPlainTextMime) {
+                    $return = array(
+                        "success" => false,
+                        "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType, $extByMimeType)
+                    );
+                    echo ls_json_encode($return);
+                    Yii::app()->end();
+                }
             }
             /* Plugin already move file : return status */
             if (!$moveFile) {
@@ -312,7 +319,6 @@ class UploaderController extends SurveyController
                     "filename" => $randfilename,
                     "msg"      =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
                 );
-                //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
@@ -333,7 +339,6 @@ class UploaderController extends SurveyController
                     // TODO : unlink this file since this is just a preview. But we can do it only if it's not needed, and still needed to have the file content
                     // Maybe use a javascript 'onunload' on preview question/group
                     // unlink($randfileloc)
-                    //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
                 }

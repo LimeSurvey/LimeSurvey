@@ -137,7 +137,7 @@ $tooltip-arrow-color:               $tooltip-bg;
 
 // links
 $link-color-action:                       $action !default;
-$link-color:                              $active-green !default;
+$link-color:                              #2D7A53 !default; // a11y needs more contrast on g-200 background
 $link-decoration:                         none !default;
 $link-shade-percentage:                   20% !default;
 $link-hover-color-action:                 shift-color($link-color-action, $link-shade-percentage) !default;

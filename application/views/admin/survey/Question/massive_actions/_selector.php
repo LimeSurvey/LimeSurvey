@@ -137,7 +137,7 @@
     $aActions[] = array(
         // li element
         'type' => 'dropdown-header',
-        'text' => gT("Advanced (only apply to certain question types)"),
+        'text' => gT("Advanced"),
     );
 
     if (!$oSurvey->isActive) {

@@ -907,7 +907,7 @@ class browser extends uploader {
         return "";
     }
 
-    protected function errorMsg($message, array $data=null) {
+    protected function errorMsg($message, ?array $data=null) {
         if (in_array($this->action, array("thumb", "upload", "download", "downloadDir")))
             die($this->label($message, $data));
         if (($this->action === null) || ($this->action == "browser"))

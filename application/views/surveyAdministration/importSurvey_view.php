@@ -123,7 +123,7 @@
                         <td><?php echo $aImportResults['quota']; ?></td>
                     </tr>
                     <tr>
-                        <td><?php eT("Quota members"); ?></td>
+                        <td><?php eT("Quota rules"); ?></td>
                         <td><?php echo $aImportResults['quotamembers']; ?></td>
                     </tr>
                     <tr>

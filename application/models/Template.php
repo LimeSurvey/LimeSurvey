@@ -508,6 +508,35 @@ class Template extends LSActiveRecord
     }
 
     /**
+     * Checks whether a template is the given base template or extends from it
+     * (walks up the full inheritance chain via the 'extends' column).
+     *
+     * Protects against circular inheritance by tracking visited templates.
+     *
+     * @param string $templateName     The template to check.
+     * @param string $baseTemplateName The base/parent template name to look for.
+     * @return bool
+     */
+    public static function isBasedOn(string $templateName, string $baseTemplateName): bool
+    {
+        $visited = [];
+
+        while ($templateName && !isset($visited[$templateName])) {
+            if ($templateName === $baseTemplateName) {
+                return true;
+            }
+            $visited[$templateName] = true;
+            $template = self::model()->findByPk($templateName);
+            if (!$template || empty($template->extends)) {
+                break;
+            }
+            $templateName = $template->extends;
+        }
+
+        return false;
+    }
+
+    /**
      * Get instance of template object.
      * Will instantiate the template object first time it is called.
      *

@@ -314,7 +314,7 @@ function LEMcountif()
 
 function LEMcountifop()
 {
-    // takes variable number of arguments - returns count of answered questions which meet the criteria (arg op value)
+    // takes variable number of arguments - returns count of answered questions which meet the criteria (argument - operator - value)
     var result=0;
     var op=arguments[0];
     var value=arguments[1];
@@ -348,7 +348,7 @@ function LEMcountifop()
 
 function LEMsumifop()
 {
-    // takes variable number of arguments - returns sum of answered questions which meet the criteria (arg op value)
+    // takes variable number of arguments - returns sum of answered questions which meet the criteria (argument - operator - value)
     var result=0;
     var op=arguments[0];
     var value=arguments[1];
