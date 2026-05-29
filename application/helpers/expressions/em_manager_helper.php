@@ -2801,7 +2801,8 @@ class LimeExpressionManager
 
             // em_validation_sq - an EM validation equation that must be satisfied for each subquestion.  Uses 'this' in the equation
             if (isset($qattr['em_validation_sq']) && !is_null($qattr['em_validation_sq']) && trim((string) $qattr['em_validation_sq']) != '') {
-                $em_validation_sq = $qattr['em_validation_sq'];
+                $em_validation_sq = trim((string) $qattr['em_validation_sq']);
+                $em_validation_sq = "!this.relevanceStatus OR " . $em_validation_sq; // Always check relevance status mantis issue #20320
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     $sq_names = [];
@@ -3553,6 +3554,7 @@ class LimeExpressionManager
                     $varName = !empty($aid)
                         ? $fielddata['title'] . '_' . $aid
                         : $fielddata['title'];
+                    $question = $fielddata['question'];
                     break;
                 case Question::QT_1_ARRAY_DUAL: // Array dual scale
                     // csuffix = fieldname suffix: 'suffix' holds '_S{sqid}'; append '#scale_id' to reach the exact cell fieldname
@@ -5773,7 +5775,7 @@ class LimeExpressionManager
         $gid = $qInfo['gid'];
         $LEM->StartProcessingGroup($gseq, $LEM->surveyOptions['anonymized'], $LEM->sid); // analyze the data we have about this group
 
-        $grel = false;  // assume irrelevant until find a relevant question
+        $grel = false;  // assume irrelevant until find a relevant question and relevant subquestion
         $ghidden = true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
         $gmandViolation = false;  // assume that the group contains no mandatory questions that have not been fully answered
         $gmandSoft = false;  // assume that the group contains no SOFT mandatory questions that have not been fully answered
@@ -5796,8 +5798,12 @@ class LimeExpressionManager
             $qStatus = $LEM->_ValidateQuestion($i, $force);
             $updatedValues = array_merge($updatedValues, $qStatus['updatedValues']);
 
-            if ($gRelInfo['result'] == true && $qStatus['relevant'] == true) {
-                $grel = $gRelInfo['result'];    // true;   // at least one question relevant
+            if (
+                $gRelInfo['result'] == true
+                && $qStatus['relevant'] == true // Question are relevant
+                && (strval($qStatus['relevantSQs']) !== "" || strval($qStatus['irrelevantSQs']) === "") // There are relevant subquestion OR no subquestion exist (both are empty)
+            ) {
+                $grel = $gRelInfo['result'];    // true;
             }
             if ($qStatus['hidden'] == false && $qStatus['relevant'] == true) {
                 $ghidden = false; // at least one question is visible

@@ -934,7 +934,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getHasNewEditor(): bool
     {
         return App()->getConfig('editorEnabled')
-            && $this->getTemplateEffectiveName() === 'fruity_twentythree';
+            && Template::isBasedOn($this->getTemplateEffectiveName(), 'fruity_twentythree');
     }
 
     /**
