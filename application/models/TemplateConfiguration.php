@@ -1014,7 +1014,12 @@ class TemplateConfiguration extends TemplateConfig
 
         // Walk up the inheritance chain
         $parentName = $this->template->extends ?? '';
+        $visited = [];
         while (!empty($parentName)) {
+            if (isset($visited[$parentName])) {
+                break;
+            }
+            $visited[$parentName] = true;
             $parentPath = App()->getConfig('standardthemerootdir') . DIRECTORY_SEPARATOR . $parentName . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
             if (file_exists($parentPath)) {
                 return $parentPath;
