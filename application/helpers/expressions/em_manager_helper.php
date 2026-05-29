@@ -10028,7 +10028,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case ";": // Array text
                 /* No validity control ? size ? */
                 break;
-            case 'C': // Array Yes No Uncertain
+            case 'C': // Array (Yes/Uncertain/No)
                 if (!in_array($value, ["Y", "N", "U"])) {
                     $LEM->addValidityString($sgq, $value, gT("%s is an invalid value for this question"), $set);
                     return false;
