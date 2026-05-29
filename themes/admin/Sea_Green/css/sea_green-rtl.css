@@ -19552,6 +19552,12 @@ input[type=number] {
   font-size: 24px;
   color: #6E748C;
 }
+#sidebar .ls-questiongroup-tools.btn:hover, #sidebar .ls-questiongroup-tools.btn:active, #sidebar .ls-questiongroup-tools.btn.show, #sidebar .ls-questiongroup-tools.btn:focus-visible, #sidebar .ls-questiongroup-tools.btn:focus, #sidebar .ls-question-tools.btn:hover, #sidebar .ls-question-tools.btn:active, #sidebar .ls-question-tools.btn.show, #sidebar .ls-question-tools.btn:focus-visible, #sidebar .ls-question-tools.btn:focus {
+  box-shadow: none !important;
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid rgba(123, 97, 255, 0.4);
+}
 
 .sidebar {
   display: flex;

@@ -404,7 +404,7 @@ export default {
                     <div class="w-100 position-relative">
                         <div class="cursor-pointer">
                             <a
-                                class="d-flex pjax"
+                                class="d-flex pjax p-1"
                                 :href="questiongroup.link"
                             >
                                 <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }" tabindex="0">
@@ -427,7 +427,7 @@ export default {
                             <div>
                             <button
                                 type="button"
-                                class="ls-questiongroup-tools cursor-pointer btn btn-link p-0 border-0 align-middle text-body"
+                                class="ls-questiongroup-tools cursor-pointer btn btn-link p-0 align-middle text-body"
                                 :id="'qg-dropdown-' + questiongroup.gid"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
@@ -523,7 +523,7 @@ export default {
                                 <div  class="dropdown position-absolute" style="right:10px" >
                                     <button
                                         type="button"
-                                        class="ls-question-tools ms-auto position-relative cursor-pointer btn btn-link p-0 border-0 align-middle text-body"
+                                        class="ls-question-tools ms-auto position-relative cursor-pointer btn btn-link p-0 align-middle text-body"
                                         :id="'q-dropdown-' + question.qid"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false"
