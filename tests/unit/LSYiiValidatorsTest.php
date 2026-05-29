@@ -193,6 +193,8 @@ class LSYiiValidatorsTest extends TestBaseClass
         $newPassword = createPassword();
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@example.org');
+        $this->assertFalse($userId instanceof \User, 'Failed to create user: ' . ($userId instanceof \User ? json_encode($userId->getErrors()) : ''));
+        $userId = (int) $userId;
 
         //Mocking regular user login.
         \Yii::app()->session['loginID'] = $userId;

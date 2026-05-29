@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -136,7 +136,7 @@ class TemplateConfig extends CActiveRecord
      * @param string $sPackageName   name of the package
      * @param array  $aPackage       the package to check (as provided by Yii::app()->clientScript)
      * @param string $sType          the type of file (css or js)
-     * @param array $aFilesToRemove  an array containing the files to chech and remove
+     * @param array $aFilesToRemove  an array containing the files to check and remove
      */
     protected function removeFilesFromPackage($sPackageName, $aPackage, $sType, $aFilesToRemove)
     {
@@ -463,7 +463,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowlabel'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva'] = '';
 
-        //Ã‚Â Save
+        //Ã‚Â Save
         $aClassAndAttributes['class']['savecontainer']                 = ' save-message ';
         $aClassAndAttributes['class']['savecontainertitle']            = '  ';
         $aClassAndAttributes['class']['savecontainertext']             = '  ';
@@ -910,19 +910,21 @@ class TemplateConfig extends CActiveRecord
      */
     public static function validateTheme($themeName, $themePath, bool $redirect = true): bool
     {
-        // check compatability with current limesurvey version
+        // check compatibility with current limesurvey version
         $isCompatible = TemplateConfig::isCompatible($themePath);
         if ($isCompatible === false) {
             self::uninstallThemesRecursive($themeName);
             if ($redirect) {
-                App()->setFlashMessage(
-                    sprintf(
-                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
-                        $themeName
-                    ),
-                    'error'
-                );
-                App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                if (method_exists(App(), 'setFlashMessage')) {
+                    App()->setFlashMessage(
+                        sprintf(
+                            gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                            $themeName
+                        ),
+                        'error'
+                    );
+                    App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                }
                 App()->end();
             }
         } elseif ((!$isCompatible) && $redirect) {
@@ -1068,6 +1070,11 @@ class TemplateConfig extends CActiveRecord
     {
         $optionsArray = [];
         foreach ($options as $option => $optionValue) {
+            // Skip deprecated ajaxmode option from old theme configs.
+            // Old themes may still have this in their config.xml, but it's no longer used.
+            if ($option === 'ajaxmode') {
+                continue;
+            }
             // Trim values, as they may be in a new line in the XML. For example:
             // <sample_option>
             //      default value
