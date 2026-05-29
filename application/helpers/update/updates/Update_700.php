@@ -1015,7 +1015,7 @@ class Update_700 extends DatabaseUpdateBase
         }
         $groupTemplates = SurveysGroupsettings::model()->findAll();
         foreach ($groupTemplates as $groupTemplate) {
-            if (!in_array($groupTemplate->template, array_merge(['inherit', $fruities]))) {
+            if (!in_array($groupTemplate->template, array_merge(['inherit'], $fruities))) {
                 $groupTemplate->template = 'fruity_twentythree';
                 $groupTemplate->save();
             }
