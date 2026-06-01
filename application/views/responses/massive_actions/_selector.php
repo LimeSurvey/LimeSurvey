@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Render the selector for surveys massive actions.
  *
  */
+
 ?>
 
 
@@ -30,7 +32,7 @@ if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) 
             . '<br/>'
             . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.'),
         'aCustomDatas'  => [
-            ['name' =>'sid', 'value' => $surveyId],
+            ['name' => 'sid', 'value' => $surveyId],
         ],
     ];
 
@@ -50,7 +52,7 @@ if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) 
         'sModalTitle'   => gT('Delete attachments'),
         'htmlModalBody' => gT('Are you sure you want to delete all uploaded files from the selected responses?'),
         'aCustomDatas'  => [
-            ['name' =>'sid', 'value' => $surveyId],
+            ['name' => 'sid', 'value' => $surveyId],
         ],
     ];
 }
