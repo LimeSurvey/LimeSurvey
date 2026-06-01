@@ -25,7 +25,14 @@
                         <?php $sTabTitle = getLanguageNameFromCode($sLanguage, false) . " " . (($sLanguage == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
                         <?php $tabId = 'tokenattr-tab-' . CHtml::encode($sLanguage); ?>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link <?= $c ? "active" : "" ?>" id="<?= $tabId ?>" role="tab" aria-selected="<?= $c ? 'true' : 'false' ?>" data-bs-toggle="tab" href="#language_<?php echo $sLanguage ?>" aria-controls="language_<?php echo CHtml::encode($sLanguage); ?>">
+                            <a class="nav-link <?= $c ? "active" : "" ?>"
+                               id="<?= $tabId ?>" role="tab"
+                               aria-selected="<?= $c ? 'true' : 'false' ?>"
+                               data-bs-toggle="tab"
+                               href="#language_<?php echo $sLanguage ?>"
+                               aria-controls="language_<?php echo CHtml::encode(
+                                   $sLanguage
+                               ); ?>">
                                 <?php $c = false; ?>
                                 <?php echo $sTabTitle; ?>
                             </a>

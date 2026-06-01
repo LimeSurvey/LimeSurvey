@@ -102,11 +102,21 @@
                         <?php foreach ($oSurvey->allLanguages as $language): ?>
                             <?php $tabId = 'invite-tab-' . CHtml::encode($language); ?>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link <?= $c ? "active" : "" ?>" id="<?= $tabId ?>" role="tab" aria-selected="<?= $c ? 'true' : 'false' ?>" data-bs-toggle="tab" href="#<?= $language ?>" aria-controls="<?= CHtml::encode($language) ?>">
+                                <a class="nav-link <?= $c ? "active" : "" ?>"
+                                   id="<?= $tabId ?>" role="tab"
+                                   aria-selected="<?= $c ? 'true' : 'false' ?>"
+                                   data-bs-toggle="tab" href="#<?= $language ?>"
+                                   aria-controls="<?= CHtml::encode($language) ?>">
                                     <?php if ($c) {
                                         $c = false;
                                     } ?>
-                                    <?= getLanguageNameFromCode($language, false) . " " . (($language == $oSurvey->language) ? "(" . gT("Base language") . ")" : "")  ?>
+                                    <?= getLanguageNameFromCode(
+                                        $language,
+                                        false
+                                    ) . " " . (($language
+                                        == $oSurvey->language) ? "(" . gT(
+                                            "Base language"
+                                        ) . ")" : "") ?>
                                 </a>
                             </li>
                         <?php endforeach; ?>
