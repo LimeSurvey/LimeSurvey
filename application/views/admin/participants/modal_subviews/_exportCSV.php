@@ -16,7 +16,8 @@
                             </label>
                         </div>
                         <div class='col-8' role="group" aria-labelledby="export-csv-attributes-label">
-                            <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
+                            <?php $this->widget(
+                                'yiiwheels.widgets.select2.WhSelect2',
                                 array(
                                     'asDropDownList' => true,
                                     'htmlOptions' => [
@@ -32,7 +33,7 @@
                             ); ?>
                         </div>
                     </div>
-                <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
+                <?php if (Yii::app()->getConfig('hideblacklisted') != 'N') : ?>
                     <?php
                     $this->widget('ext.AlertWidget.AlertWidget', [
                         'text' => gT('If you want to export blocklisted participants, set "Hide blocklisted participants" to "No" in CPDB settings.'),
@@ -51,23 +52,7 @@
         </div>
     </div>
 </div>
-<?php
-// Ensure Select2's search input announces "Attributes to export:" when focused
-App()->getClientScript()->registerScript(
-    'exportCSVSelect2AriaLabel',
-    "
-    (function() {
-        var setAttributesSearchLabel = function() {
-            var \$container = jQuery('#attributes').next('.select2-container');
-            \$container.find('.select2-search__field').attr('aria-labelledby', 'export-csv-attributes-label');
-        };
-        jQuery(document).on('select2:open', '#attributes', setAttributesSearchLabel);
-        jQuery('#exportcsv').on('shown.bs.modal', setAttributesSearchLabel);
-    })();
-    ",
-    CClientScript::POS_READY
-);
-?>
+
 <div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>
     <p><?php eT('Please wait, loading data...');?></p>
     <div class="preloader loading">

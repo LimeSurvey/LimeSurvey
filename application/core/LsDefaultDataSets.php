@@ -692,9 +692,9 @@ class LsDefaultDataSets
                 null,
                 4,
                 'surveyLogicFile',
-                gT('Survey logic file', 'unescaped'),
-                gT('Survey logic file', 'unescaped'),
-                gT('Survey logic file', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
+                gT('Survey logic overview', 'unescaped'),
                 'ri-git-branch-fill',
                 'remix',
                 '',
@@ -921,7 +921,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/base.css","css/theme.css","css/noTablesOnMobile.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off", "animatebody":"off", "fixnumauto":"enable","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
+            'options'           => '{"animatebody":"off", "fixnumauto":"enable","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -937,7 +937,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
             'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","fixnumauto":"enable","brandlogo":"on","brandlogofile":"themes/survey/fruity/files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":null,"animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"500","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"500","animatealert":"off","alertanimation":"shake","alertanimationduration":"500","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"500","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"500","zebrastriping":"off","stickymatrixheaders":"off","greyoutselected":"off","hideprivacyinfo":"off","crosshover":"off","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top","notables":"1"}',
+            'options'           => '{"fixnumauto":"enable","brandlogo":"on","brandlogofile":"themes/survey/fruity/files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":null,"animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"500","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"500","animatealert":"off","alertanimation":"shake","alertanimationduration":"500","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"500","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"500","zebrastriping":"off","stickymatrixheaders":"off","greyoutselected":"off","hideprivacyinfo":"off","crosshover":"off","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top","notables":"1"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -953,7 +953,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","fixnumauto":"enable","brandlogo":"on","container":"on","brandlogofile":"themes/survey/bootswatch/files/logo.png", "showpopups":"1", "showclearall":"off", "hideprivacyinfo": "off", "questionhelptextposition":"top"}',
+            'options'           => '{"fixnumauto":"enable","brandlogo":"on","container":"on","brandlogofile":"themes/survey/bootswatch/files/logo.png", "showpopups":"1", "showclearall":"off", "hideprivacyinfo": "off", "questionhelptextposition":"top"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
             'cssframework_js'   => '',
@@ -1039,7 +1039,7 @@ class LsDefaultDataSets
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
             'author_url'    => 'https://www.limesurvey.org/',
-            'copyright'     => 'Copyright (C) 2007-2019 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+            'copyright'     => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\\r\\nAll rights reserved.',
             'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
             'version'       => '3.0',
             'api_version'   => '3.0',
@@ -1058,7 +1058,7 @@ class LsDefaultDataSets
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
             'author_url'    => 'https://www.limesurvey.org/',
-            'copyright'     => 'Copyright (C) 2007-2019 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+            'copyright'     => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\\r\\nAll rights reserved.',
             'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
             'version'       => '3.0',
             'api_version'   => '3.0',
@@ -1077,7 +1077,7 @@ class LsDefaultDataSets
             'author'        => 'LimeSurvey GmbH',
             'author_email'  => 'info@limesurvey.org',
             'author_url'    => 'https://www.limesurvey.org/',
-            'copyright'     => 'Copyright (C) 2007-2019 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+            'copyright'     => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\\r\\nAll rights reserved.',
             'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
             'version'       => '3.0',
             'api_version'   => '3.0',
@@ -1483,7 +1483,7 @@ class LsDefaultDataSets
                 'ordering' => 22,
                 'title' => gT('Now save the created question'),
                 'content' => gT('Next, we will create subquestions and answer options.') . '<br/>'
-                    . gT('Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter.'),
+                    . gT('Please remember that a valid code must start with a letter and may contain only letters and numbers.'),
                 'settings' => json_encode(array(
                     'element' => '#save-button',
                     'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
@@ -1799,7 +1799,7 @@ class LsDefaultDataSets
          * @param int $active
          * @return array
          */
-        $addRow = function ($name, $active = 0, $version = '1.0.0') {
+        $addRow = function ($name, $active = 0, $version = '1.0.0', $priority = 1) {
             return [
                 'id' => null,
                 'name'               => $name,
@@ -1807,7 +1807,8 @@ class LsDefaultDataSets
                 'active'             => $active,
                 'version'            => $version,
                 'load_error'         => 0,
-                'load_error_message' => null
+                'load_error_message' => null,
+                'priority'           => $priority,
             ];
         };
 
@@ -1816,6 +1817,7 @@ class LsDefaultDataSets
             $addRow('PasswordRequirement', 1),
             $addRow('ComfortUpdateChecker', 1),
             $addRow('Authdb', 1),
+            $addRow('ReactEditor', 1, '1.0.0', 0),
             // Inactive plugins below.
             $addRow('AuthLDAP'),
             $addRow('AuditLog'),
@@ -1824,7 +1826,7 @@ class LsDefaultDataSets
             $addRow('ExportSTATAxml', 1),
             $addRow('ExportSPSSsav', 1),
             $addRow('oldUrlCompat'),
-            $addRow('expressionQuestionHelp'),
+            $addRow('expressionQuestionHelp', 0, '1.0.1', 0),
             $addRow('expressionQuestionForAll'),
             $addRow('expressionFixedDbVar'),
             $addRow('customToken', 0, '1.0.1'),
@@ -2096,7 +2098,7 @@ class LsDefaultDataSets
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/yesnouncertain",
                 "image_path" => "/assets/images/screenshots/C.png",
-                "title" => "Array (Yes/No/Uncertain)",
+                "title" => "Array (Yes/Uncertain/No)",
                 "creation_date" => "2018-09-08 00:00:00",
                 "author" => "LimeSurvey GmbH",
                 "author_email" => "info@limesurvey.org",
@@ -2105,7 +2107,7 @@ class LsDefaultDataSets
                 "license" => "GNU General Public License version 2 or later",
                 "version" => "1.0",
                 "api_version" => "1",
-                "description" => "Array (Yes/No/Uncertain) question type configuration",
+                "description" => "Array (Yes/Uncertain/No) question type configuration",
                 "last_update" => "2019-09-23 15:05:59",
                 "owner_id" => 1,
                 "theme_type" => "question_theme",
@@ -2857,9 +2859,7 @@ class LsDefaultDataSets
         //don't send password anymore, just send a link for the new admin to generate their own password
         //$template .= "<p><strong>" . gT("Password") . "</strong>: {PASSWORD}</p>";
         $template .= '<p><a href="{LOGINURL}">' . gT("Click here to set your password") . '</a></p>';
-        $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";
-        $template .= "<p>" . gT("Thank you") . "!</p>";
-
+        $template .= "<p>" . sprintf(gT("If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"), "{SITEADMINEMAIL}") . "</p><p> </p>";
         $default['sendadmincreationemail'] = 1;
         $default['admincreationemailsubject']  = sprintf(gT("User registration at '%s'", "unescaped"), "{SITENAME}");
         $default['admincreationemailtemplate'] = $template;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Core plugin for LimeSurvey : password requirement settings
  * @version 1.1.0
@@ -115,7 +116,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         }
     }
 
-    /** @see event 
+    /** @see event
      * get the current save action password and add errors if needed
      * @return void
      * */
@@ -151,12 +152,12 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-     * Chek the validity of a pasword according to option
+     * Check the validity of a password according to option
      * @param string $password
      * @param boolean $needsNumber
      * @param boolean $needsUppercase
      * @param boolean $needsNonAlphanumeric
-     * @return null|array, null mean no issue.
+     * @return null|array, null means no issue.
      */
     private function checkValidityOfPassword($password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize = 8)
     {
@@ -191,7 +192,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $nonAlpha = $this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC);
 
         $randomPassword = $this->getRandomString($targetSize, $uppercase, $numeric, $nonAlpha);
-        
+
         $oEvent->set('password', $randomPassword);
     }
 
@@ -275,7 +276,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         /**
          * Wrap up
          */
-        
+
         // Shuffle, as to not have always to start with the loweracse, then uppercase, ...
         $str = str_shuffle($str);
 
@@ -283,7 +284,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-     * Returns a random number using random_int if available or mt_rand f not.
+     * Returns a random number using random_int if available or mt_rand if not.
      * @param int $max The highest value to be returned
      * @param int $min The lowest value to be returned
      * @return int
@@ -298,7 +299,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     /**
      * Returns a random character from a string
-     * @param string $chars Pool fo character from where to pick
+     * @param string $chars Pool of characters from which to pick
      * @return string Picked character
      */
     private static function pickRandomChar($chars)

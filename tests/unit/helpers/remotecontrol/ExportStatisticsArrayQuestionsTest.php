@@ -1,11 +1,13 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\DummyController;
 
 /**
  * Tests for the LimeSurvey remote API.
  */
-class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
+class ExportStatisticsArrayQuestionsTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {
@@ -45,7 +47,7 @@ class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
         $this->assertSame($questionData[2][2], '30.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($questionData[3][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($questionData[3][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($questionData[3][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($questionData[3][2], '0.00%', 'The Percentage is incorrect for this option.');
 
@@ -76,7 +78,7 @@ class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
         $this->assertSame($questionData[8][2], '30.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($questionData[9][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($questionData[9][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($questionData[9][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($questionData[9][2], '0.00%', 'The Percentage is incorrect for this option.');
 

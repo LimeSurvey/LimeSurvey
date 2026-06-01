@@ -7,19 +7,20 @@
     * This view displays the sidemenu on the left side, containing the question explorer
     *
     */
+
 ?>
 <?php
     // todo $showSideMenu is not used by vue sidebar.vue? normally set by $aData['sidemenu']['state']
     $sidemenu['state'] = $sidemenu['state'] ?? true;
-    if (
+if (
         $sideMenuBehaviour == 'alwaysClosed'
         || ($sideMenuBehaviour == 'adaptive'
         && !$sidemenu['state'])
-    ) {
-        $showSideMenu = false;
-    } else {
-        $showSideMenu = true;
-    }
+) {
+    $showSideMenu = false;
+} else {
+    $showSideMenu = true;
+}
     $getQuestionsUrl = $this->createUrl("/surveyAdministration/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
     $getMenuUrl = $this->createUrl("/surveyAdministration/getAjaxMenuArray/", ["surveyid" => $surveyid]);
     $createQuestionGroupLink = $this->createUrl("/questionGroupsAdministration/add/", ["surveyid" =>  $surveyid]);
@@ -47,13 +48,15 @@
     }
 
 
-    Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
+    Yii::app()->getClientScript()->registerScript(
+        'SideBarGlobalObject',
+        '
         window.SideMenuData = {
-            getQuestionsUrl: "'.$getQuestionsUrl.'",
-            getMenuUrl: "'.$getMenuUrl.'",
-            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
-            createQuestionLink: "'.$createQuestionLink.'",
-            gid: '.($gid ?? 'null').',
+            getQuestionsUrl: "' . $getQuestionsUrl . '",
+            getMenuUrl: "' . $getMenuUrl . '",
+            createQuestionGroupLink: "' . $createQuestionGroupLink . '",
+            createQuestionLink: "' . $createQuestionLink . '",
+            gid: ' . ($gid ?? 'null') . ',
             options: [],
             surveyid: '.$surveyid.',
             isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
@@ -62,7 +65,7 @@
             unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
             allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '0' : '1').',
             translate: '
-            .json_encode(
+            . json_encode(
                 [
                     "settings" => gT("Settings"),
                     "structure" => gT("Structure"),
@@ -71,19 +74,22 @@
                     "lockOrganizerTitle" => gT("Lock question organizer"),
                     "unlockOrganizerTitle" => gT("Unlock question organizer"),
                     "collapseAll" => gT("Collapse all question groups"),
+                    "collapseGroup" => gT("Collapse group"),
+                    "expandGroup" => gT("Expand group"),
+                    "surveyLogicFile" => gT("Survey logic overview"),
                 ]
             )
-        .'};', 
+        . '};',
         LSYii_ClientScript::POS_HEAD
     );
-?>
+    ?>
 
 <div class="simpleWrapper ls-flex" id="vue-sidebar-container"
     v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}"
     v-bind:data-collapsed="$store.state.isCollapsed">
-    <?php if($landOnSideMenuTab !== ''): ?>
+    <?php if ($landOnSideMenuTab !== '') : ?>
         <sidebar land-on-tab='<?php echo $landOnSideMenuTab ?>' />
-    <?php else: ?>
+    <?php else : ?>
         <sidebar />
     <?php endif; ?>
 </div>
