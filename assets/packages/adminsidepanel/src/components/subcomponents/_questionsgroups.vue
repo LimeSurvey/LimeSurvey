@@ -197,6 +197,12 @@ export default {
             this.updatePjaxLinks();
             $(document).trigger("pjax:load", { url: question.link });
         },
+        groupDropdownAriaLabel(questiongroup) {
+            return `${this.translate("pageActionsMenu")}: ${questiongroup.group_name}`;
+        },
+        questionDropdownAriaLabel(question) {
+            return `${this.translate("questionActionsMenu")}: [${question.title}] ${question.question_flat}`;
+        },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
             this.draggedQuestionGroup = questiongroupObject;
@@ -398,7 +404,7 @@ export default {
                     <div class="w-100 position-relative">
                         <div class="cursor-pointer">
                             <a
-                                class="d-flex pjax"
+                                class="d-flex pjax p-1"
                                 :href="questiongroup.link"
                             >
                                 <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }" tabindex="0">
@@ -419,12 +425,19 @@ export default {
                             </div>
 
                             <div>
-                            <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false" role="button" tabindex="0">
-                                <i class="ri-more-fill"></i>
-                            </div>
+                            <button
+                                type="button"
+                                class="ls-questiongroup-tools cursor-pointer btn btn-link p-0 align-middle text-body"
+                                :id="'qg-dropdown-' + questiongroup.gid"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                :aria-label="groupDropdownAriaLabel(questiongroup)"
+                                @click.stop
+                            >
+                                <i class="ri-more-fill" aria-hidden="true"></i>
+                            </button>
 
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <ul class="dropdown-menu" :aria-labelledby="'qg-dropdown-' + questiongroup.gid">
                                 <li v-if="key !== 'delete'" v-for="(value, key) in questiongroup.groupDropdown"
                                     :key="key">
                                     <a class="dropdown-item" :id="value.id" :href="value.url">
@@ -508,11 +521,18 @@ export default {
                                     </span>
                                 </a>
                                 <div  class="dropdown position-absolute" style="right:10px" >
-                                    <div class="ls-question-tools ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                     aria-expanded="false" role="button" tabindex="0">
-                                        <i class="ri-more-fill"></i>
-                                    </div>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <button
+                                        type="button"
+                                        class="ls-question-tools ms-auto position-relative cursor-pointer btn btn-link p-0 align-middle text-body"
+                                        :id="'q-dropdown-' + question.qid"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        :aria-label="questionDropdownAriaLabel(question)"
+                                        @click.stop
+                                    >
+                                        <i class="ri-more-fill" aria-hidden="true"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" :aria-labelledby="'q-dropdown-' + question.qid">
                                         <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropdown" :key="key">
                                           <a   class="dropdown-item" :id="value.id" :href="key == 'editDefault' && value.active == 0 ? '#' : value.url" :class=" key == 'editDefault' &&  value.active == 0 ? 'disabled' : '' ">
                                             <span :class="value.icon"></span>
