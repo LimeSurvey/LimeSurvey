@@ -20966,8 +20966,10 @@
 	 * - Roving tabindex: only the active tab is reachable via the Tab key;
 	 *   all others have tabindex="-1" and are navigated with arrow keys.
 	 * - Arrow keys (Left/Right/Up/Down), Home and End move focus and activate tabs.
-	 * - Safe to call multiple times via appendToLoad — the keydown listener is
-	 *   re-bound with .off() before .on() to prevent duplicate handlers.
+	 * - Safe to call multiple times — all listeners are re-bound with .off()/.on()
+	 *   to prevent duplicate handlers.
+	 * - Re-initialization after AJAX is handled externally via appendToLoad with
+	 *   the 'ajaxStop' event (see adminbasicsmain.js).
 	 */
 	const tabsControl = () => {
 	  const tabSelectors = '[role="tab"], [data-bs-toggle="tab"], [data-bs-toggle="pill"]';
@@ -29232,7 +29234,7 @@
 	      appendToLoad(globalWindowMethods.fixAccordionPosition);
 	      appendToLoad(globalWindowMethods.doSelect2);
 	      appendToLoad(focusStatusMessage, 'pjax:scriptcomplete ready ajaxStop');
-	      appendToLoad(tabsControl);
+	      appendToLoad(tabsControl, 'pjax:scriptcomplete ready ajaxStop');
 	      dismissTooltipsOnEscapePress();
 	    },
 	    appendToLoad = (fn, event, root, delay) => {

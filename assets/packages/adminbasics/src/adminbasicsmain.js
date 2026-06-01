@@ -95,7 +95,7 @@ const AdminCore = function(){
             appendToLoad(globalWindowMethods.fixAccordionPosition);
             appendToLoad(globalWindowMethods.doSelect2);
             appendToLoad(focusStatusMessage, 'pjax:scriptcomplete ready ajaxStop');
-            appendToLoad(tabsControl);
+            appendToLoad(tabsControl, 'pjax:scriptcomplete ready ajaxStop');
             dismissTooltipsOnEscapePress();
         },
         appendToLoad = (fn, event, root, delay) => {
