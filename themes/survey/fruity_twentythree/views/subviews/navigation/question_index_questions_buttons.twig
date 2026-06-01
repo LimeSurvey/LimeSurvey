@@ -21,7 +21,7 @@
             {% set templateClass = templateClass ~ ' list-group-item-danger'  %}
         {% endif %}
         {% if indexQuestion.stepStatus['index-item-current'] is defined and indexQuestion.stepStatus['index-item-current'] == true %}
-            {% set templateClass = statusClass ~  ' disabled'  %}
+            {% set templateClass = templateClass ~  ' disabled'  %}
         {% endif %}
             <button type="submit" name="move" value="{{ indexQuestion.step }}" class="list-group-item {{ indexQuestion.coreClass }} {{ templateClass }}" data-qid="{{ indexQuestion.qid }}">
                 {{ ellipsizeString(indexQuestion.text, 80, 0.6, "…" ) }}
