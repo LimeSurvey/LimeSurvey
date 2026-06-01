@@ -48,7 +48,7 @@ jobs:
 
     name: PHP ${{ matrix.php-version }} - ${{ matrix.db-type }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -185,7 +185,7 @@ jobs:
           - php-version: '8.3'
             db-type: 'mssql'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -215,7 +215,7 @@ jobs:
       DBENGINE: INNODB
       PHP_VERSION: '8.3'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup
         run: |
