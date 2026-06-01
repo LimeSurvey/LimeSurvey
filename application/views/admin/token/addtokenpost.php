@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Result of a token post action
  */
+
 ?>
 
 <div class='side-body'>
@@ -9,7 +11,7 @@
         <div class="col-12 content-right">
 
             <!-- Success -->
-            <?php if ($success): ?>
+            <?php if ($success) : ?>
                 <div class="jumbotron message-box">
                     <h2><?php eT("Adding survey participant entry..."); ?></h2>
                     <p class="lead text-success"><?php eT("Success"); ?></p>
@@ -25,11 +27,11 @@
                 </div>
 
             <!-- Fail -->
-            <?php else:?>
+            <?php else :?>
                 <div class="jumbotron message-box message-box-error">
                     <h2 class="text-danger"><?php eT("Add participant entry"); ?></h2>
                     <p class="lead text-danger"><?php eT("Failed"); ?></p>
-                    <?php foreach ($errors as $error): ?>
+                    <?php foreach ($errors as $error) : ?>
                         <p class='lead'><?php echo $error[0]; ?></p>
                     <?php endforeach; ?>
                     <div class="container">

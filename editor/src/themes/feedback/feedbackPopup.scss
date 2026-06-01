@@ -1,0 +1,17 @@
+.feedback-popup-close-button {
+  cursor: pointer;
+}
+
+.feedback-popup-checkbox-container {
+  display: flex;
+  justify-content: start;
+  padding-left: 0.8em;
+}
+
+.feedback-popup-buttons {
+  min-width: 100px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

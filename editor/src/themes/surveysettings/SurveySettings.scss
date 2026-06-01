@@ -1,0 +1,31 @@
+$sidebar-padding: 0 0.25rem 0 0.25rem;
+$sidebar-row-padding: 0 0.5rem 0 1.5rem;
+
+.survey-settings {
+  font-size: $font-size-xs;
+
+  .sidebar-section {
+    button {
+      border-radius: 0;
+      min-width: 110px;
+    }
+    select {
+      border-radius: 0;
+    }
+  }
+}
+
+.survey-border-top {
+  border-top: 1px solid $g-100;
+}
+
+.survey-setting {
+  .survey-settings-border {
+    border-top: 1px solid $g-100;
+  }
+}
+
+.theme-preview {
+  border: 1px solid $g-300;
+  width: 33%;
+}
