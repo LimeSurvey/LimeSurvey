@@ -81,6 +81,8 @@ if ($activated || !$createPermission) {
                     "surveyLogicFile" => gT("Survey logic overview"),
                     "groupNumber" => gT("Group #%d"),
                     "deactivateSurvey" => gT("Deactivate your survey to enable this setting"),
+                    "pageActionsMenu" => gT("Page actions menu"),
+                    "questionActionsMenu" => gT("Question actions menu"),
                 ]
             )
         . '};',
