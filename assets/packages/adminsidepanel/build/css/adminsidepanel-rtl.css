@@ -295,6 +295,10 @@ div[class*=" col-"].nofloat {
   display: block;
 }
 
+.question-question-list-item.resize-covered:hover .question-dropdown {
+  left: 34px !important;
+}
+
 .sidebar_loader {
   height: 100%;
   position: absolute;
@@ -314,6 +318,7 @@ div[class*=" col-"].nofloat {
   align-items: center;
   justify-content: center;
   cursor: ew-resize;
+  pointer-events: none;
 }
 .resize-handle .resize-btn {
   background: transparent;
@@ -322,6 +327,7 @@ div[class*=" col-"].nofloat {
   padding: 4px;
   color: #888;
   transition: color 0.2s;
+  pointer-events: auto;
 }
 .resize-handle .resize-btn:hover {
   color: #333;

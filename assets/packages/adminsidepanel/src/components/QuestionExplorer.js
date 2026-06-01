@@ -274,7 +274,7 @@ class QuestionExplorer {
      */
     renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
         var classes = 'list-group-item question-question-list-item ls-flex-row align-items-flex-start ' + this.questionItemClasses(question);
-        var itemActivated = StateManager.get('lastQuestionOpen') === question.qid;
+        var itemActivated = Number(StateManager.get('lastQuestionOpen')) === Number(question.qid);
         // Always show dropdown HTML, use CSS/JS hover to control visibility
         var showDropdown = true;
         var questionHasCondition = question.relevance !== '1';
@@ -472,6 +472,15 @@ class QuestionExplorer {
         // Show dropdown on question hover - use mouseover to match Vue behavior
         $container.on('mouseover.qe', '.question-question-list-item', function(e) {
             $(this).find('.question-dropdown:not(.active)').show();
+            // Only shift the 3-dot menu clear of the resize button for the item
+            // whose row the resize button actually overlaps vertically. Measured
+            // against the item (not the dropdown) so shifting it can't feed back.
+            var resizeBtn = document.querySelector('#sidebar .resize-btn');
+            if (resizeBtn) {
+                var b = resizeBtn.getBoundingClientRect();
+                var r = this.getBoundingClientRect();
+                this.classList.toggle('resize-covered', b.top < r.bottom && b.bottom > r.top);
+            }
         });
 
         $container.on('mouseleave.qe', '.question-question-list-item', function(e) {

@@ -82,6 +82,10 @@ class Sidebar {
         } else {
             this.loading = true;
         }
+
+        // Detect and highlight the active link on initial load
+        this.controlActiveLink();
+
         this.renderContent();
 
         // Trigger sidebar mounted event
@@ -312,24 +316,25 @@ class Sidebar {
             }
         });
 
-        // Check for corresponding question
         let lastQuestionObject = false;
-        const questionIdInput = document.querySelector('#edit-question-form [name="question[qid]"]');
-        if (questionIdInput !== null) {
-            const questionId = questionIdInput.value;
-            LS.ld.each(questiongroups, function(itm) {
-                LS.ld.each(itm.questions, function(itmm) {
-                    if (questionId === itmm.qid) {
-                        lastQuestionObject = itmm;
-                        lastQuestionGroupObject = itm;
-                        return false;
-                    }
-                });
-                if (lastQuestionObject !== false) {
+        LS.ld.each(questiongroups, function(itm) {
+            LS.ld.each(itm.questions, function(itmm) {
+                const regTest = new RegExp(
+                    'questionAdministration/edit\\?questionId=' + itmm.qid + '(?![0-9])' +
+                    '|questionAdministration/view\\?surveyid=\\d*&gid=\\d*&qid=' + itmm.qid + '(?![0-9])' +
+                    '|questionAdministration/edit/questionId/' + itmm.qid + '(?![0-9])' +
+                    '|questionAdministration/view/surveyid/\\d*/gid/\\d*/qid/' + itmm.qid + '(?![0-9])'
+                );
+                if (regTest.test(currentUrl) || LS.ld.endsWith(currentUrl, itmm.link)) {
+                    lastQuestionObject = itmm;
+                    lastQuestionGroupObject = itm;
                     return false;
                 }
             });
-        }
+            if (lastQuestionObject !== false) {
+                return false;
+            }
+        });
 
         // Unload every selection
         StateManager.commit('closeAllMenus');
