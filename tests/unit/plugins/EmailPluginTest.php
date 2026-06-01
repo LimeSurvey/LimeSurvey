@@ -63,6 +63,12 @@ class EmailPluginTest extends TestBaseClass
 
     public function testGetCredentials()
     {
+        // Clear any previous settings to ensure test starts with clean state
+        self::$plugin->saveTestPluginSettings([
+            'clientId' => null,
+            'clientSecret' => null,
+        ]);
+
         $credentials = self::$plugin->getTestPluginCredentials();
         $nullSettings = array(
             'clientId' => null,

@@ -2,17 +2,27 @@
 
 name: LimeSurvey - Frontend - CI pipeline
 
-# Triggers the workflow on push or pull request events on all branches
+# Run on PRs against the long-lived branches and on direct pushes to them.
+# Feature-branch pushes are covered by the `pull_request` trigger once a PR
+# exists — listing them under `push` too would double-run CI for the same commit.
 on:
   pull_request:
+    branches:
+      - master
+      - develop-major
+      - develop-minor
+    paths-ignore:
+      - 'editor/**'
   push:
     branches:
-      - '*'
-      - '**'
-      - 'dev/**'
-      - 'bug/**'
-      - 'feature/**'
-      - 'zoho/**'
+      - master
+      - develop-major
+      - develop-minor
+    paths-ignore:
+      - 'editor/**'
+
+permissions:
+  contents: read
 
 jobs:
   job_build_packages:
@@ -20,10 +30,6 @@ jobs:
     concurrency: 
       group: ${{ github.ref_name }}-frontend # Groups by branch and job name 
       cancel-in-progress: true # Cancel in-progress jobs if a new job is triggered     
-    strategy:
-      matrix:
-        # Specify what version of nodejs you want to test
-        nodeJS-versions: ['20.19.0']
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
@@ -32,7 +38,7 @@ jobs:
       - name: Setup nodeJS
         uses: actions/setup-node@v4
         with:
-            node-version: 20
+            node-version: 24 # use 'latest' to always track the newest stable release
 
       - name: Run composer
         run: |
@@ -66,10 +72,6 @@ jobs:
   job_run_tests:
     needs: [job_build_packages]
     runs-on: ubuntu-22.04 # ubuntu runner hosted by Github
-    strategy:
-      matrix:
-        # Specify what version of nodejs you want to test
-        nodeJS-versions: ['20.19.0']
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
@@ -78,7 +80,7 @@ jobs:
       - name: Setup nodeJS
         uses: actions/setup-node@v4
         with:
-            node-version: 20
+            node-version: 24 #  use 'latest' to always track the newest stable release
 
       - name: Install adminbasics
         run: |

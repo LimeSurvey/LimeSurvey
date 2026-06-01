@@ -1,0 +1,18 @@
+.color-select {
+  .color-select-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .color-select-preview {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .color-select-label {
+    display: inline-block;
+  }
+}

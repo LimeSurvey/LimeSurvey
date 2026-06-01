@@ -56,7 +56,7 @@ class TutorialEntry extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'teid' => gT('Tutorial Entry Id'),
+            'teid' => gT('Tutorial entry ID'),
             'title' => gT('Title'),
             'content' => gT('Content'),
             'settings' => gT('Settings'),

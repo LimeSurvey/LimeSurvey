@@ -10,9 +10,9 @@ use LimeSurvey\Models\Services\QuestionAggregateService\DeleteService;
 class DeleteFactory
 {
     /**
-     * @param ?DeleteMockSet $init
+     * @param ?DeleteMockSet $mockSet
      */
-    public function make(DeleteMockSet $mockSet = null): DeleteService
+    public function make(?DeleteMockSet $mockSet = null): DeleteService
     {
         $mockSet = (new DeleteMockSetFactory())->make($mockSet);
 
