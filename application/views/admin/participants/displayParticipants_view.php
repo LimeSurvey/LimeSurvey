@@ -84,7 +84,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                                 'pageSizeParticipantView',
                                 Yii::app()->params['defaultPageSize']
                             ),
-                            App()->params['pageSizeOptions'],
+                            App()->params['pageSizeOptionsTokens'],
                             [
                                 'class' => 'changePageSize form-select',
                                 'style' => 'display: inline; width: auto',

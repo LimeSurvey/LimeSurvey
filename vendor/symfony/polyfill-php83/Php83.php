@@ -32,15 +32,16 @@ final class Php83
         }
 
         if ($depth > self::JSON_MAX_DEPTH) {
-            throw new \ValueError(sprintf('json_validate(): Argument #2 ($depth) must be less than %d', self::JSON_MAX_DEPTH));
+            throw new \ValueError(\sprintf('json_validate(): Argument #2 ($depth) must be less than %d', self::JSON_MAX_DEPTH));
         }
 
-        json_decode($json, null, $depth, $flags);
+        json_decode($json, true, $depth, $flags);
 
         return \JSON_ERROR_NONE === json_last_error();
     }
 
-    public static function mb_str_pad(string $string, int $length, string $pad_string = ' ', int $pad_type = \STR_PAD_RIGHT, ?string $encoding = null): string
+    /** @return string|false */
+    public static function mb_str_pad(string $string, int $length, string $pad_string = ' ', int $pad_type = \STR_PAD_RIGHT, ?string $encoding = null)
     {
         if (!\in_array($pad_type, [\STR_PAD_RIGHT, \STR_PAD_LEFT, \STR_PAD_BOTH], true)) {
             throw new \ValueError('mb_str_pad(): Argument #4 ($pad_type) must be STR_PAD_LEFT, STR_PAD_RIGHT, or STR_PAD_BOTH');
@@ -50,19 +51,27 @@ final class Php83
             $encoding = mb_internal_encoding();
         }
 
+        $errorToTrigger = null;
         try {
-            $validEncoding = @mb_check_encoding('', $encoding);
+            if (!@mb_check_encoding('', $encoding)) {
+                $errorToTrigger = \sprintf('mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "%s" given', $encoding);
+            }
         } catch (\ValueError $e) {
-            throw new \ValueError(sprintf('mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "%s" given', $encoding));
-        }
-
-        // BC for PHP 7.3 and lower
-        if (!$validEncoding) {
-            throw new \ValueError(sprintf('mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "%s" given', $encoding));
+            $errorToTrigger = \sprintf('mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "%s" given', $encoding);
         }
 
         if (mb_strlen($pad_string, $encoding) <= 0) {
-            throw new \ValueError('mb_str_pad(): Argument #3 ($pad_string) must be a non-empty string');
+            $errorToTrigger = 'mb_str_pad(): Argument #3 ($pad_string) must be a non-empty string';
+        }
+
+        if (null !== $errorToTrigger) {
+            if (80000 > \PHP_VERSION_ID) {
+                trigger_error($errorToTrigger, \E_USER_WARNING);
+
+                return false;
+            }
+
+            throw new \ValueError($errorToTrigger);
         }
 
         $paddingRequired = $length - mb_strlen($string, $encoding);
@@ -135,7 +144,7 @@ final class Php83
         }
 
         if (preg_match('/\A(?:0[aA0]?|[aA])\z/', $string)) {
-            throw new \ValueError(sprintf('str_decrement(): Argument #1 ($string) "%s" is out of decrement range', $string));
+            throw new \ValueError(\sprintf('str_decrement(): Argument #1 ($string) "%s" is out of decrement range', $string));
         }
 
         if (!\in_array(substr($string, -1), ['A', 'a', '0'], true)) {

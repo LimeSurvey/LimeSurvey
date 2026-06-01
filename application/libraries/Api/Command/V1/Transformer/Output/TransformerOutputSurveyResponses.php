@@ -143,12 +143,14 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     {
         foreach (['submitDate', 'dateLastAction', 'startDate'] as $dateField) {
             if (
-                in_array($responseArray[$dateField], [
+                in_array($responseArray[$dateField] ?? '', [
                 '1980-01-01T00:00:00.000Z',
                 '1980-01-01 00:00:00',
                 ])
             ) {
                 $responseArray[$dateField] = null;
+            } else {
+                $responseArray[$dateField] = getDateOfUTC($responseArray[$dateField]);
             }
         }
     }
