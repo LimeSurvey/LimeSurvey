@@ -47,6 +47,7 @@ import saveBindings from './parts/save';
 import parameterGlobals from './parts/parameterGlobals';
 import focusStatusMessage from './accessibility/statusMessageFocus';
 import dismissTooltipsOnEscapePress from './accessibility/dismissTooltipsOnEscapePress';
+import tabsControl from './accessibility/tabsControl';
 
 // import components
 import activateSubSubMenues from './components/bootstrap-sub-submenues';
@@ -94,6 +95,7 @@ const AdminCore = function(){
             appendToLoad(globalWindowMethods.fixAccordionPosition);
             appendToLoad(globalWindowMethods.doSelect2);
             appendToLoad(focusStatusMessage, 'pjax:scriptcomplete ready ajaxStop');
+            appendToLoad(tabsControl, 'pjax:scriptcomplete ready ajaxStop');
             dismissTooltipsOnEscapePress();
         },
         appendToLoad = (fn, event, root, delay) => {
