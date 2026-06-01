@@ -1265,7 +1265,9 @@
 
       forEachEls(elements, function (newEl) {
         var resemblingOld = ArrayFrom(oldElements).reduce(function (acc, oldEl) {
-          acc = oldEl.href === newEl.href ? oldEl : acc;
+          var oldHref = oldEl.getAttribute("href") || oldEl.href;
+          var nHref = newEl.getAttribute("href") || newEl.href;
+          acc = (oldHref === nHref || oldEl.href === newEl.href) ? oldEl : acc;
           return acc;
         }, null);
 
@@ -1280,7 +1282,7 @@
 
           var head = document.getElementsByTagName('head')[0];
           var link = document.createElement('link');
-          link.setAttribute('href', newEl.href);
+          link.setAttribute('href', newEl.getAttribute('href') || newEl.href);
           link.setAttribute('rel', 'stylesheet');
           link.setAttribute('type', 'text/css');
           head.appendChild(link);
