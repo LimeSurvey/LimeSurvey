@@ -285,13 +285,8 @@ div[class*=" col-"].nofloat {
   opacity: 0.5;
 }
 
-.questiongroup-dropdown:not(.active),
-.question-dropdown:not(.active) {
-  display: none;
-}
-
-.questiongroup-dropdown.active,
-.question-dropdown.active {
+.questiongroup-dropdown,
+.question-dropdown {
   display: block;
 }
 

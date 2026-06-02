@@ -201,10 +201,9 @@ class QuestionExplorer {
         html += '<span class="badge reverse-color ls-space margin right-5">' + (questiongroup.questions ? questiongroup.questions.length : 0) + '</span>';
         html += '</div>';
 
-        // Dropdown menu - always render, visibility controlled by hover class
+        // Dropdown menu - always render, 3-dot icon always visible
         if (questiongroup.groupDropdown) {
-            var dropdownStyle = groupActivated ? '' : ' style="display:none"';
-            html += '<div class="dropdown questiongroup-dropdown' + (groupActivated ? ' active' : '') + '"' + dropdownStyle + '>';
+            html += '<div class="dropdown questiongroup-dropdown' + (groupActivated ? ' active' : '') + '">';
             html += '<div class="ls-questiongroup-tools cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">';
             html += '<i class="ri-more-fill"></i>';
             html += '</div>';
@@ -298,9 +297,9 @@ class QuestionExplorer {
         html += '</span>';
         html += '</a>';
 
-        // Question dropdown - always render, visibility controlled by hover class
+        // Question dropdown - always render, 3-dot icon always visible
         if (question.questionDropdown) {
-            var dropdownStyle = itemActivated ? 'right:10px' : 'right:10px;display:none';
+            var dropdownStyle = 'right:10px';
             html += '<div class="dropdown question-dropdown position-absolute' + (itemActivated ? ' active' : '') + '" style="' + dropdownStyle + '">';
             html += '<div class="ls-question-tools ms-auto position-relative cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">';
             html += '<i class="ri-more-fill"></i>';
@@ -459,32 +458,17 @@ class QuestionExplorer {
             }
         });
 
-        // Hover events for dropdown visibility - matching Vue mouseover/mouseleave behavior
-        // Show dropdown on question group hover
-        $container.on('mouseover.qe', '.q-group[data-gid]', function(e) {
-            $(this).find('.questiongroup-dropdown:not(.active)').show();
-        });
-
-        $container.on('mouseleave.qe', '.q-group[data-gid]', function(e) {
-            $(this).find('.questiongroup-dropdown:not(.active)').hide();
-        });
-
-        // Show dropdown on question hover - use mouseover to match Vue behavior
+        // The question 3-dot menu is always visible; on hover only shift it clear
+        // of the resize button for the item whose row the resize button actually
+        // overlaps vertically. Measured against the item (not the dropdown) so
+        // shifting it can't feed back.
         $container.on('mouseover.qe', '.question-question-list-item', function(e) {
-            $(this).find('.question-dropdown:not(.active)').show();
-            // Only shift the 3-dot menu clear of the resize button for the item
-            // whose row the resize button actually overlaps vertically. Measured
-            // against the item (not the dropdown) so shifting it can't feed back.
             var resizeBtn = document.querySelector('#sidebar .resize-btn');
             if (resizeBtn) {
                 var b = resizeBtn.getBoundingClientRect();
                 var r = this.getBoundingClientRect();
                 this.classList.toggle('resize-covered', b.top < r.bottom && b.bottom > r.top);
             }
-        });
-
-        $container.on('mouseleave.qe', '.question-question-list-item', function(e) {
-            $(this).find('.question-dropdown:not(.active)').hide();
         });
 
         // Drag events

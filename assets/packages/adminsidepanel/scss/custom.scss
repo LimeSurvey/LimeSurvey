@@ -292,14 +292,9 @@ div[class*=" col-"] {
     }
 }
 
-// Dropdown visibility - hide by default, show when active or on hover
-.questiongroup-dropdown:not(.active),
-.question-dropdown:not(.active) {
-    display: none;
-}
-
-.questiongroup-dropdown.active,
-.question-dropdown.active {
+// Dropdown 3-dot icons - always visible
+.questiongroup-dropdown,
+.question-dropdown {
     display: block;
 }
 
