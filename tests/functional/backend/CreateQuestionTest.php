@@ -112,16 +112,11 @@ class CreateQuestionTest extends TestBaseClassWeb
             $questionCodeInput->sendKeys($questionBadCode);
             /* blur out trigger */
             $questionCodeInput->sendKeys(WebDriverKeys::TAB);
-            $checkValidateText = self::$webDriver->wait(10)->until(
+            self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementTextIs(
                     WebDriverBy::id('question-title-warning'),
                     'Question codes must start with a letter and may only contain alphanumeric characters.'
                 )
-            );
-            $this->assertEquals(
-                "Question codes must start with a letter and may only contain alphanumeric characters.",
-                 $checkValidateText,
-                 "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
             );
             /* Wait for pjax overlay to disappear after first validation */
             self::$webDriver->wait(10)->until(
@@ -134,16 +129,11 @@ class CreateQuestionTest extends TestBaseClassWeb
             /* blur out trigger */
             $questionCodeInput->sendKeys(WebDriverKeys::TAB);
             /* Wait for AJAX validation to complete - warning must become empty */
-            $checkValidateText = self::$webDriver->wait(10)->until(
+            self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementTextIs(
                     WebDriverBy::id('question-title-warning'),
                     ''
                 )
-            );
-            $this->assertEquals(
-                "",
-                 $checkValidateText,
-                 "Title validation in question-title-warning are not empty on success, get “".$checkValidateText."”"
             );
 
             $questionTypeSelector = $web->findById('trigger_questionTypeSelector_button');
