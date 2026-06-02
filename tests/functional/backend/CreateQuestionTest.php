@@ -123,12 +123,22 @@ class CreateQuestionTest extends TestBaseClassWeb
                  $checkValidateText,
                  "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
             );
+            /* Wait for pjax overlay to disappear after first validation */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('pjaxClickInhibitor')
+                )
+            );
             $questionCodeInput->click();
             $questionCodeInput->clear()->sendKeys($questionCode);
             /* blur out trigger */
             $questionCodeInput->sendKeys(WebDriverKeys::TAB);
-            // need to wait for js to run, no state change
-            sleep(1);
+            /* Wait for pjax overlay to disappear after second validation */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('pjaxClickInhibitor')
+                )
+            );
             $checkValidateText = trim($web->findById('question-title-warning')->getText());
             $this->assertEquals(
                 "",
