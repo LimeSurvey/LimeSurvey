@@ -66,7 +66,8 @@ class LSYii_Application extends CWebApplication
 
     /* @var integer|false the current survey ID */
     private static $surveyId = false;
-
+    /* @var integer|false the current survey ID */
+    private static $questionId = false;
     /**
      *
      * Initiates the application
@@ -638,5 +639,49 @@ class LSYii_Application extends CWebApplication
             return false;
         }
         return self::$surveyId;
+    }
+
+    /**
+     * Get survey survey id by param
+     * @param boolean $throwError Whether to throw an error
+     * @return false|integer
+     */
+    public static function getQuestionId($throwError = true)
+    {
+        if (is_int(self::$questionId)) {
+            /* questionId is set and is valid */
+            return self::$questionId;
+        }
+        $questionId = Yii::app()->request->getParam('qid');
+        if (!$questionId) {
+            return false;
+        }
+        $intQuestionId = intval($questionId);
+        if (strval($intQuestionId) !== strval($questionId)) {
+            if ($throwError) {
+                throw new CHttpException(400, gT('Your request is invalid.'));
+            }
+            return false;
+        }
+        $questionId = $intQuestionId;
+        /* questionId is set and is an integer */
+        $question = Question::model()->findByPk($questionId);
+        if (!$question) {
+            if ($throwError) {
+                throw new CHttpException(404, gT('Question not found.'));
+            }
+            return false;
+        }
+        $surveyId = self::getSurveyId($throwError);
+        if ($surveyId && $surveyId != $question->sid) {
+            if ($throwError) {
+                throw new CHttpException(400, gT('Your request is invalid.'));
+            }
+            return false;
+        }
+        /* We can set self::$surveyId according to question */
+        self::$surveyId = $question->sid;
+        self::$questionId = $questionId;
+        return self::$questionId;
     }
 }

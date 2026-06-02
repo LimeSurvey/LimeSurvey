@@ -130,18 +130,14 @@ class ConditionsAction extends SurveyCommonAction
         }
 
         //BEGIN Sanitizing POSTed data
-        if (!isset($iSurveyID)) {
-            $iSurveyID = returnGlobal('sid');
-        }
-        if (!isset($qid)) {
-            $qid = returnGlobal('qid');
-        }
+        $iSurveyID = LSYii_Application::getSurveyId();
+        $qid = LSYii_Application::getQuestionId();
+
         if (!isset($gid)) {
             $gid = returnGlobal('gid');
         }
         $gid = (int) $gid;
-        $qid = (int) $qid;
-        $this->checkPermission($qid, 'read', $iSurveyID, $gid);
+        $this->checkPermission($qid, 'read');
         $p_scenario = returnGlobal('scenario');
         $p_cqid = returnGlobal('cqid');
         if ($p_cqid == '') {
@@ -553,53 +549,54 @@ class ConditionsAction extends SurveyCommonAction
         /** @var string $p_newscenarionum */
         /** @var string $p_scenario */
         extract($args);
+        $qid = LSYii_Application::getQuestionId();
         switch ($p_subaction) {
             // Insert new condition
             case "insertcondition":
-                $this->checkPermission($qid, 'update', $sid, $gid);
+                $this->checkPermission($qid, 'update');
                 $this->insertCondition($args);
                 break;
             // Update entry if this is an edit
             case "updatecondition":
-                $this->checkPermission($qid, 'update', $sid, $gid);
+                $this->checkPermission($qid, 'update');
                 $this->updateCondition($args);
                 break;
             // Delete entry if this is delete
             case "delete":
-                $this->checkPermission($qid, 'update', $sid, $gid);
+                $this->checkPermission($qid, 'update');
                 $this->surveyCondition->deleteCondition($qid, $p_cid);
                 $this->redirectToConditionStart($qid, $gid);
                 break;
             // Delete all conditions in this scenario
             case "deletescenario":
-                $this->checkPermission($qid, 'update', $sid, $gid);
+                $this->checkPermission($qid, 'update');
                 $this->surveyCondition->deleteScenario($qid, $p_scenario);
                 $this->redirectToConditionStart($qid, $gid);
                 break;
             // Update scenario
             case "updatescenario":
-                $this->checkPermission($qid, 'update', $sid, $gid);
+                $this->checkPermission($qid, 'update');
                 $this->surveyCondition->updateScenario($p_newscenarionum, $qid, $p_scenario, Yii::app());
                 break;
             // Delete all conditions for this question
             case "deleteallconditions":
-                $this->checkPermission($qid, 'update', $sid, $gid);
+                $this->checkPermission($qid, 'update');
                 $this->surveyCondition->deleteAllConditions($qid, Yii::app());
                 $this->redirectToConditionStart($qid, $gid);
                 break;
             // Renumber scenarios
             case "renumberscenarios":
-                $this->checkPermission($qid, 'update', $sid, $gid);
+                $this->checkPermission($qid, 'update');
                 $this->renumberScenarios($qid);
                 $this->redirectToConditionStart($qid, $gid);
                 break;
             // Copy conditions if this is copy
             case "copyconditions":
-                $this->checkPermission($qid, 'update', $sid, $gid);
+                $this->checkPermission($qid, 'update');
                 $this->copyConditions($args);
                 break;
             case "getconditiontext":
-                $this->checkPermission($qid, 'read', $sid, $gid);
+                $this->checkPermission($qid, 'read');
                 $this->getConditionText($qid);
         }
     }
@@ -639,7 +636,8 @@ class ConditionsAction extends SurveyCommonAction
     public function getCopyForm(int $qid, int $gid, array $conditionsList, array $pquestions): string
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkgroup.js', LSYii_ClientScript::POS_BEGIN);
-        $this->checkPermission($qid, 'read', null, $gid);
+        $qid = LSYii_Application::getQuestionId();
+        $this->checkPermission($qid, 'read');
         $url = $this->getcontroller()->createUrl(
             '/admin/conditions/sa/index/subaction/copyconditions/',
             array(
@@ -685,6 +683,7 @@ class ConditionsAction extends SurveyCommonAction
         /** @var string $method */
         /** @var string $scenariocount */
         extract($args);
+        $qid = LSYii_Application::getQuestionId();
         $result = '';
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
@@ -726,7 +725,7 @@ class ConditionsAction extends SurveyCommonAction
             'addConditionToScenarioNr' => Yii::app()->request->getQuery('scenarioNr'),
             'surveyIsAnonymized' => $this->getSurveyIsAnonymized(),
         );
-        $this->checkPermission($qid, 'read', $iSurveyID, $gid);
+        $this->checkPermission($qid, 'read');
         $result .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 
         $scriptResult = ""
@@ -922,12 +921,8 @@ class ConditionsAction extends SurveyCommonAction
      */
     public function renderPartialView(string $what, ?array $data = null, bool $return = false, bool $processOutput = false)
     {
-        if (!empty($data['qid'])) {
-            $qid = $data['qid'];
-            $gid = $data['gid'] ?? null;
-            $iSurveyID = $data['iSurveyID'] ?? null;
-            $this->checkPermission($qid, 'read', $iSurveyID, $gid);
-        }
+        $qid = LSYii_Application::getQuestionId();
+        $this->checkPermission($qid, 'read');
         switch ($what) {
             case 'navigator':
                 $view = '/admin/conditions/includes/navigator';
@@ -969,7 +964,8 @@ class ConditionsAction extends SurveyCommonAction
      */
     public function createNavigatorUrl(int $gid, int $qid): string
     {
-        $this->checkPermission($qid, 'read', $this->iSurveyID, $gid);
+        $qid = LSYii_Application::getQuestionId();
+        $this->checkPermission($qid, 'read');
         return $this->getController()->createUrl(
             '/admin/conditions/sa/index/subaction/editconditionsform/',
             array(
@@ -988,12 +984,9 @@ class ConditionsAction extends SurveyCommonAction
      */
     public function myCreateUrl(string $pathKey, array $params = [])
     {
-        if (!empty($params['qid'])) {
-            $qid = $params['qid'];
-            $gid = $params['gid'] ?? null;
-            $iSurveyID = $params['iSurveyID'] ?? null;
-            $this->checkPermission($qid, 'read', $iSurveyID, $gid);
-        }
+        $qid = LSYii_Application::getQuestionId();
+        $this->checkPermission($qid, 'read');
+
         switch ($pathKey) {
             case 'quickAddCondition':
                 $path = '/admin/conditions/sa/quickAddCondition';
@@ -1108,20 +1101,14 @@ class ConditionsAction extends SurveyCommonAction
      * @throws CHttpException
      * @return void
      */
-    private function checkPermission(int $qid, string $permission = 'read', ?int $surveyId = null, ?int $gid = null)
+    private function checkPermission(int $qid, string $permission = 'read')
     {
-        $question = Question::model()->findByPk($qid);
-        if ($question === null) {
-            throw new CHttpException(404, gT("Invalid question ID.", 'unescaped'));
+        if (!$qid) {
+            throw new CHttpException(400, gT("Your request is invalid.", 'unescaped'));
         }
+        $question = Question::model()->findByPk($qid);
         if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', $permission)) {
             throw new CHttpException(403, gT("Access denied!", 'unescaped'));
-        }
-        if ($surveyId && $surveyId != $question->sid) {
-            throw new CHttpException(400, gT("Invalid parameters.", 'unescaped'));
-        }
-        if ($gid && $gid != $question->gid) {
-            throw new CHttpException(400, gT("Invalid parameters.", 'unescaped'));
         }
     }
 }
