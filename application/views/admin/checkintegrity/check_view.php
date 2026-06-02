@@ -58,9 +58,9 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                 if ($quotamembers) { ?>
-                    <li><?php printf(gT("There are %s orphaned quota members which can be deleted."), $quotamembers); ?> </li>
+                    <li><?php printf(gT("There are %s orphaned quota rules which can be deleted."), $quotamembers); ?> </li>
                 <?php } else { ?>
-                    <li><?php eT("All quota quota members meet consistency standards."); ?> </li> <?php
+                    <li><?php eT("All quota rules meet consistency standards."); ?> </li> <?php
                 } ?>
 
                 <?php
@@ -129,7 +129,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($surveylanguagesettings as $surveylanguagesetting) { ?>
-                                <li><?php printf(gT("Survey Language Setting ID: %s"), $surveylanguagesetting['slid']); ?> <?php printf(gT("Reason: %s"), $surveylanguagesetting['reason']); ?></li><?php
+                                <li><?php printf(gT("Survey language setting ID: %s"), $surveylanguagesetting['slid']); ?> <?php printf(gT("Reason: %s"), $surveylanguagesetting['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -222,7 +222,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($user_in_groups as $user_in_group) { ?>
-                                <li><?php printf(gT("User ID: %s"), $user_in_group['uid']); ?> <?php printf(gT("UGID: %s"), $user_in_group['ugid']); ?> <?php printf(gT("Reason: %s"), $user_in_group['reason']); ?></li><?php
+                                <li><?php printf(gT("User ID: %s"), $user_in_group['uid']); ?> <?php printf(gT("User group ID: %s"), $user_in_group['ugid']); ?> <?php printf(gT("Reason: %s"), $user_in_group['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>

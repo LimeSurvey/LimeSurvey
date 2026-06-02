@@ -142,7 +142,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                 </div>
             </div>
             <div class="mb-3">
-                <label class="form-label" id='showtokenpolicy-label'><?php  eT("Show privacy policy on token form:") ; ?></label>
+                <label class="form-label" id='showtokenpolicy-label'><?php  eT("Show privacy policy on access code form:") ; ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'showtokenpolicy',

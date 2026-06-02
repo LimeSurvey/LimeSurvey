@@ -71,7 +71,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
         ],
         [
             'header'            => gT('Visibility'),
-            'headerHtmlOptions' => ['title' => gT('Visible inside the question selector')],
+            'headerHtmlOptions' => ['title' => gT('Visible inside the question type selector')],
             'name'              => 'visible',
             'value'             => '$data->getVisibilityButton()',
             'type'              => 'raw', // From model HTML directly

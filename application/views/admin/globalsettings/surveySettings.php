@@ -1,5 +1,8 @@
 <?php
 /* @var $this SurveysGroupsController */
+/* @var TemplateConfiguration $themeConf */
+/* @var string $inheritedThemeName */
+/* @var array $aTemplateList */
 
 Yii::app()->getClientScript()->registerScript(
     'GlobalSurveySettings',
@@ -48,6 +51,9 @@ $optionsOnOff = array(
                             'optionsOnOff' => $optionsOnOff,
                             'bShowAllOptions' => false,
                             'users' => $users,
+                        'themeConf' => $themeConf,
+                        'inheritedThemeName' => $inheritedThemeName,
+                        'aTemplateList' => $aTemplateList,
                         )
                     ); ?>
                 </div>

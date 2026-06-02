@@ -32,7 +32,7 @@
                         'asDropDownList' => true,
                         'htmlOptions' => [],
                         'data' => [
-                            'default' => gT("Import on default survey group"),
+                            'default' => gT("Import to default survey group"),
                             'from_survey' => gT("Keep the survey group from the imported file"),
                         ],
                         'value' => 'default',

@@ -80,7 +80,7 @@ export const Editor = () => {
       surveyId,
       surveyActivationHandlerRef,
       setShowOverviewModalRef,
-      pageName: PAGES.Editor,
+      pageName: PAGES.EDITOR,
     })
   }, [surveyId, surveyActivationHandlerRef, setShowOverviewModalRef])
 

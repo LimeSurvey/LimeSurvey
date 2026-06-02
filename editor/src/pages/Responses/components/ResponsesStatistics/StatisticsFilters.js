@@ -53,7 +53,7 @@ export const StatisticsFilters = ({ filters, setFilters, setShowFilters }) => {
       </SideBarHeader>
       <div className="px-3 mt-1">
         <div>
-          <p className="label-s mb-1">{t('Include')}</p>
+          <p className="label-s mb-1">{t('Completion state')}</p>
           <div>
             <Select
               options={[

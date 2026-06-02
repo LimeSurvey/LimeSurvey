@@ -212,6 +212,12 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
                 }
 
+                $xPos = strpos($column->name, 'X');
+                if ($xPos !== false) {
+                    if (strpos($column->name, 'Q') !== 0) {
+                        continue; //Old field we failed to map
+                    }
+                }
                 $colName = viewHelper::getFieldCode($fieldmap[$column->name], ['LEMcompat' => true]); // This must be unique ......
                 $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
                 /* flat and ellipsize all part of question (sub question etc …, separate by br . mantis #14301 */
@@ -226,7 +232,15 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 );
 
                 if (!isset($filteredColumns) || in_array($column->name, $filteredColumns)) {
+                    Yii::import('application.libraries.Date_Time_Converter');
                     $encodedTitle = CHtml::encode($colTitle) == '' ? ' ' : CHtml::encode($colTitle);
+                    $columnValueExpression = '$data->getExtendedData("' . $column->name . '", "' . $language . '", "' . $base64jsonFieldMap . '")';
+                    if ($column->name === 'startdate') {
+                        $columnValueExpression = '(new Date_Time_Converter(getDateOfUTC($data->startdate), "Y-m-d H:i:s"))->convert("' . $dateformatdetails['phpdate'] . ' H:i:s")';
+                    }
+                    if ($column->name === 'datestamp') {
+                        $columnValueExpression = '(new Date_Time_Converter(getDateOfUTC($data->datestamp), "Y-m-d H:i:s"))->convert("' . $dateformatdetails['phpdate'] . ' H:i:s")';
+                    }
                     $aColumns[] = [
                         'header'            => '<div data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" title="' . $colName . '" data-bs-content="' . $encodedTitle . '" data-bs-html="true" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
                         'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
@@ -236,7 +250,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'SurveyDynamic[' . $column->name . ']',
                             $model->{$column->name}
                         ),
-                        'value'             => '$data->getExtendedData("' . $column->name . '", "' . $language . '", "' . $base64jsonFieldMap . '")',
+                        'value'             => $columnValueExpression,
                     ];
                 }
                 $filterableColumns[$column->name] = $colName . ': ' . viewHelper::getFieldText($fieldmap[$column->name]);

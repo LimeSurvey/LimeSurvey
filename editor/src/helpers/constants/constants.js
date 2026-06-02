@@ -4,25 +4,6 @@ export const FOCUS_ANIMATION_DURATION_IN_MS = 1000
 export const SCALE_1 = 0
 export const SCALE_2 = 1
 
-export const themeOptions = [
-  // {
-  //   label: 'BootsWatch',
-  //   value: 'bootswatch',
-  // },
-  // {
-  //   label: 'Fruity',
-  //   value: 'fruity',
-  // },
-  {
-    label: 'Fruity_twentythree',
-    value: 'fruity_twentythree',
-  },
-  // {
-  //   label: 'Vanilla',
-  //   value: 'vanilla',
-  // },
-]
-
 export const NEW_OBJECT_ID_PREFIX = 'temp__'
 
 export const SOFT_MANDATORY = 'S'
@@ -76,6 +57,7 @@ export const STATES = {
   HAS_RESPONSES_READ_PERMISSION: 'has_responses_read_permission',
   HAS_RESPONSES_UPDATE_PERMISSION: 'has_responses_update_permission',
   SURVEY_REQUEST_UTC_TIMESTAMP: 'survey_request_utc_timestamp',
+  SURVEY_LOGIC: 'survey_logic',
   TOPBAR_CONFIG: 'topbar_config',
 }
 
