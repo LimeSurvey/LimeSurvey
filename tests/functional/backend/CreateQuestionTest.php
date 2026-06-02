@@ -68,7 +68,7 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             // Ignore welcome modal.
             try {
-                $button = self::$webDriver->wait(1)->until(
+                $button = self::$webDriver->wait(10)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
                         WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
                     )
@@ -83,22 +83,37 @@ class CreateQuestionTest extends TestBaseClassWeb
             $web->dismissModal();
 
             // Go to structure sidebar
-            $selectStructureSidebar = $web->findById('adminsidepanel__sidebar--selectorStructureButton');
+            $selectStructureSidebar = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('adminsidepanel__sidebar--selectorStructureButton')
+                )
+            );
             $selectStructureSidebar->click();
-            sleep(1);
 
             // Create question.
-            $sidemenuCreateQuestionButton = $web->findById('adminsidepanel__sidebar--selectorCreateQuestion');
+            $sidemenuCreateQuestionButton = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('adminsidepanel__sidebar--selectorCreateQuestion')
+                )
+            );
             $sidemenuCreateQuestionButton->click();
-            sleep(1);
 
             $questionBadCode = rand(1, 10000) . 'question';
             $questionCode = 'question' . rand(1, 10000);
-            $input = $web->findById('questionCode');
+
+            $input = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('questionCode')
+                )
+            );
             $input->clear()->sendKeys($questionBadCode);
             /* blur out action : ajax call */
             $web->findById('relevance')->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('question-title-warning')
+                )
+            );
             $checkValidateText = $web->findById('question-title-warning')->getText();
             $this->assertEquals(
                 "Question codes must start with a letter and may only contain alphanumeric characters.",
@@ -108,7 +123,11 @@ class CreateQuestionTest extends TestBaseClassWeb
             $input->clear()->sendKeys($questionCode);
             $input->click();
             $web->findById('relevance')->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('question-title-warning')
+                )
+            );
             $checkValidateText = trim($web->findById('question-title-warning')->getText());
             $this->assertEquals(
                 "",
@@ -118,23 +137,43 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             $questionTypeSelector = $web->findById('trigger_questionTypeSelector_button');
             $questionTypeSelector->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('heading_single_choice_questions')
+                )
+            );
 
             $questionTypeSelector = $web->findById('heading_single_choice_questions');
             $questionTypeSelector->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#collapsible_single_choice_questions a:first-child')
+                )
+            );
 
             $link = $web->findByCss('#collapsible_single_choice_questions a:first-child');
             $link->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('selector__select-this-questionTypeSelector')
+                )
+            );
 
             $link = $web->findById('selector__select-this-questionTypeSelector');
             $link->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('save-button-create-question')
+                )
+            );
 
             $link = $web->findById('save-button-create-question');
             $link->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#notif-container .alert-success')
+                )
+            );
 
             $question = \Question::model()->findByAttributes(['title' => $questionCode]);
             $this->assertNotEmpty($question);
