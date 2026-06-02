@@ -422,6 +422,8 @@ class ConditionsAction extends SurveyCommonAction
         Yii::import('application.helpers.admin.ajax_helper', true);
         $request = Yii::app()->request;
         $data = $this->getQuickAddData($request);
+        $qid = LSYii_Application::getQuestionId();
+        $this->checkPermission($qid, 'update');
 
         list($message, $status) = $this->insertConditionAjax($data);
 
