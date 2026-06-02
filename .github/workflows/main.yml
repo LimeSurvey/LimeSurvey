@@ -189,7 +189,11 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: dom, xml, libxml, ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' || matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' || 'mysql' }}
+          extensions: >-
+            dom, xml, libxml,
+            ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' ||
+                matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' ||
+                'mysqli, pdo_mysql' }}
 
       - name: Setup
         run: |
@@ -201,11 +205,6 @@ jobs:
           chmod -R 777 ./themes
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
-
-      - name: Install MySQL extensions
-        if: matrix.db-type == 'mysql'
-        run: |
-          sudo apt --fix-broken install php php-mysql php8.3-mysql php8.1-mysql -y
 
       - name: Check MySQL service
         if: matrix.db-type == 'mysql'
