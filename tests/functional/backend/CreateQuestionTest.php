@@ -108,6 +108,7 @@ class CreateQuestionTest extends TestBaseClassWeb
                 )
             );
             $questionCodeInput = $web->findElement(WebDriverBy::id('questionCode'));
+            $questionCodeInput->click();
             $questionCodeInput->clear()->sendKeys($questionBadCode);
             /* blur out trigger */
             $questionCodeInput->sendKeys(WebDriverKeys::TAB);
@@ -122,6 +123,7 @@ class CreateQuestionTest extends TestBaseClassWeb
                  $checkValidateText,
                  "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
             );
+            $questionCodeInput->click();
             $questionCodeInput->clear()->sendKeys($questionCode);
             /* blur out trigger */
             $questionCodeInput->sendKeys(WebDriverKeys::TAB);

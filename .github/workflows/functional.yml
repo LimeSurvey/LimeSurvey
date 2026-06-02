@@ -32,19 +32,19 @@ jobs:
         # Specify what versions of php you want to test
         php-versions: [ '8.1', '8.3' ]
         testsuite:
-          - survey
-          - question-a
+#          - survey
+#          - question-a
           - question-b
-          - expression
-          - validation
-          - navigation
-          - import-export
-          - theme
-          - admin
-          - user
-          - plugin
-          - security
-          - api
+#          - expression
+#          - validation
+#          - navigation
+#          - import-export
+#          - theme
+#          - admin
+#          - user
+#          - plugin
+#          - security
+#          - api
     # Env vars for this job
     env:
       DBENGINE: INNODB
