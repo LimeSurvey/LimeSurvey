@@ -189,7 +189,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' || matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' || 'mysql' }}
+          extensions: dom, ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' || matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' || 'mysql' }}
 
       - name: Setup
         run: |
