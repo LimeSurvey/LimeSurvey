@@ -102,14 +102,14 @@ class CreateQuestionTest extends TestBaseClassWeb
             $questionBadCode = rand(1, 10000) . 'question';
             $questionCode = 'question' . rand(1, 10000);
 
-            $questionBadCode = self::$webDriver->wait(10)->until(
+            $questionBadCodeInput = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('questionCode')
                 )
             );
-            $questionBadCode->clear()->sendKeys($questionBadCode);
+            $questionBadCodeInput->clear()->sendKeys($questionBadCode);
             /* blur out trigger */
-            $questionBadCode->sendKeys(WebDriverKeys::TAB);
+            $questionBadCodeInput->sendKeys(WebDriverKeys::TAB);
             $checkValidateText = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementTextIs(
                     WebDriverBy::id('question-title-warning'),
@@ -121,15 +121,15 @@ class CreateQuestionTest extends TestBaseClassWeb
                  $checkValidateText,
                  "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
             );
-            $questionCode = self::$webDriver->wait(10)->until(
+            $questionCodeInput = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('questionCode')
                 )
             );
-            $questionCode->clear()->sendKeys($questionCode);
-            $questionCode->click();
+            $questionCodeInput->clear()->sendKeys($questionCode);
+            $questionCodeInput->click();
             /* blur out trigger */
-            $questionCode->sendKeys(WebDriverKeys::TAB);
+            $questionCodeInput->sendKeys(WebDriverKeys::TAB);
             // need to wait for js to run, no state change
             sleep(1);
             $checkValidateText = trim($web->findById('question-title-warning')->getText());
