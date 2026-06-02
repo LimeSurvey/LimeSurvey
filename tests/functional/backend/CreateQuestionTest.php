@@ -102,14 +102,15 @@ class CreateQuestionTest extends TestBaseClassWeb
             $questionBadCode = rand(1, 10000) . 'question';
             $questionCode = 'question' . rand(1, 10000);
 
-            $questionBadCodeInput = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('questionCode')
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('pjaxClickInhibitor')
                 )
             );
-            $questionBadCodeInput->clear()->sendKeys($questionBadCode);
+            $questionCodeInput = $web->findElement(WebDriverBy::id('questionCode'));
+            $questionCodeInput->clear()->sendKeys($questionBadCode);
             /* blur out trigger */
-            $questionBadCodeInput->sendKeys(WebDriverKeys::TAB);
+            $questionCodeInput->sendKeys(WebDriverKeys::TAB);
             $checkValidateText = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementTextIs(
                     WebDriverBy::id('question-title-warning'),
@@ -121,13 +122,7 @@ class CreateQuestionTest extends TestBaseClassWeb
                  $checkValidateText,
                  "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
             );
-            $questionCodeInput = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('questionCode')
-                )
-            );
             $questionCodeInput->clear()->sendKeys($questionCode);
-            $questionCodeInput->click();
             /* blur out trigger */
             $questionCodeInput->sendKeys(WebDriverKeys::TAB);
             // need to wait for js to run, no state change
@@ -174,7 +169,7 @@ class CreateQuestionTest extends TestBaseClassWeb
             $link = $web->findById('save-button-create-question');
             $link->click();
             self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
                     WebDriverBy::cssSelector('#notif-container .alert-success')
                 )
             );
