@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-06-02 08:21:06+00:00\n"
+"POT-Creation-Date: 2026-06-02 09:27:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2259,6 +2259,7 @@ msgstr ""
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:45
 #: application/views/questionAdministration/partial/topbarBtns/questionToolsDropdownItems.php:59
 #: application/views/questionGroupsAdministration/partial/topbarBtns/groupToolsDropdownItems.php:6
+#: editor/src/components/SurveyStructure/RowQuestionGroup.js:73
 msgid "Check logic"
 msgstr ""
 
@@ -28306,7 +28307,6 @@ msgid "Duplicate question"
 msgstr ""
 
 #: editor/src/components/SurveyStructure/RowQuestion.js:56
-#: editor/src/components/SurveyStructure/RowQuestionGroup.js:73
 msgid "Check Logic"
 msgstr ""
 
