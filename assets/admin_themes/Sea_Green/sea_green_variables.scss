@@ -149,6 +149,7 @@ $breadcrumb-spacing:                6px;
 $breadcrumb-divider-color:          $g-600;
 $breadcrumb-active-color:           $g-900;
 $breadcrumb-link-color:             $link-color;
+$breadcrumb-item-max-width:         80ch; // Per-crumb cap; longer text truncates with an ellipsis
 
 // forms
 // input variables
