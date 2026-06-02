@@ -9,6 +9,7 @@ use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
 use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Exception\ElementNotVisibleException;
+use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Login and create a survey, add a group
@@ -107,27 +108,24 @@ class CreateQuestionTest extends TestBaseClassWeb
                 )
             );
             $input->clear()->sendKeys($questionBadCode);
-            /* blur out action : ajax call */
-            $web->findById('relevance')->click();
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('question-title-warning')
+            /* blur out trigger */
+            $input->sendKeys(WebDriverKeys::TAB);
+            $checkValidateText = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementTextIs(
+                    WebDriverBy::id('question-title-warning'),
+                    'Question codes must start with a letter and may only contain alphanumeric characters.'
                 )
             );
-            $checkValidateText = $web->findById('question-title-warning')->getText();
             $this->assertEquals(
                 "Question codes must start with a letter and may only contain alphanumeric characters.",
                  $checkValidateText,
                  "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
             );
             $input->clear()->sendKeys($questionCode);
-            $input->click();
-            $web->findById('relevance')->click();
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('question-title-warning')
-                )
-            );
+            /* blur out trigger */
+            $input->sendKeys(WebDriverKeys::TAB);
+            // need to wait for js to run, no state change
+            sleep(1);
             $checkValidateText = trim($web->findById('question-title-warning')->getText());
             $this->assertEquals(
                 "",
