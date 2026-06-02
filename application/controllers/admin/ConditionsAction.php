@@ -1105,12 +1105,15 @@ class ConditionsAction extends SurveyCommonAction
      * @param string $permission
      * @param integer|null $surveyId
      * @param integer|null $gid
-     * @throw error
+     * @throws CHttpException
      * @return void
      */
     private function checkPermission(int $qid, string $permission = 'read', ?int $surveyId = null, ?int $gid = null)
     {
         $question = Question::model()->findByPk($qid);
+        if ($question === null) {
+            throw new CHttpException(404, gT("Invalid question ID.", 'unescaped'));
+        }
         if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', $permission)) {
             throw new CHttpException(403, gT("Access denied!", 'unescaped'));
         }
