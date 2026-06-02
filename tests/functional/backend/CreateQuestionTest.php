@@ -162,6 +162,12 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             $link = $web->findById('selector__select-this-questionTypeSelector');
             $link->click();
+            /* Wait for modal backdrop to disappear */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::cssSelector('.modal-backdrop')
+                )
+            );
             self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('save-button-create-question')
