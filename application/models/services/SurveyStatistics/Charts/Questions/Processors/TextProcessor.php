@@ -8,18 +8,21 @@ class TextProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
     {
-        $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     public function process()
     {
         $this->rt();
 
+        $totalResponses = $this->getTotalCount();
+        $answered = $this->countFieldResponses($this->rt);
+        $notAnswered = $totalResponses - $answered;
+
         $legend = ['Answer', 'NoAnswer'];
-        $count = $this->getResponseCount($this->rt);
         $dataItems = [
-            ['key' => 'Answer', 'title' => 'Answer', 'value' => $count],
-            ['key' => 'NoAnswer', 'title' => 'No answer', 'value' => $this->getResponseNotAnsweredCount($this->rt)],
+            ['key' => 'Answer', 'title' => 'Answer', 'value' => $answered],
+            ['key' => 'NoAnswer', 'title' => 'No answer', 'value' => $notAnswered],
         ];
 
         return new StatisticsChartDTO(

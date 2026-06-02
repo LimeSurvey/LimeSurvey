@@ -5,3 +5,4 @@ vendor
 
 # build logs
 build
+.?*

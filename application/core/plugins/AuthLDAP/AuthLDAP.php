@@ -281,7 +281,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             return null;
         }
 
-        if (!validateEmailAddress($new_email)) {
+        if (!LimeMailer::validateAddress($new_email)) {
             $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
             $oEvent->set('errorMessageTitle', gT("Failed to add user"));
             $oEvent->set('errorMessageBody', gT("The email address is not valid."));
@@ -302,6 +302,12 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             }
         }
         $iNewUID = User::insertUser($username, $new_pass, $new_full_name, $parentID, $new_email, null, $status);
+        if ($iNewUID instanceof User) {
+            $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorMessageTitle', gT("Failed to add user"));
+            $oEvent->set('errorMessageBody', CHtml::errorSummary($iNewUID));
+            return null;
+        }
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER); // Unsure ?
             $oEvent->set('errorMessageTitle', '');

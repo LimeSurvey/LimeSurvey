@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhModal class file.
  *
@@ -14,7 +15,6 @@
 
 class WhModal extends TbModal
 {
-
     /**
      * Widget's initialization
      */
@@ -51,5 +51,4 @@ class WhModal extends TbModal
         $cs->registerScriptFile($assetsUrl . '/js/bootstrap-modal.js', CClientScript::POS_END);
         $cs->registerScriptFile($assetsUrl . '/js/bootstrap-modalmanager.js', CClientScript::POS_END);
     }
-
 }

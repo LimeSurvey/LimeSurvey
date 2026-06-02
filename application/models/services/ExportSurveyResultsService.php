@@ -247,7 +247,7 @@ class ExportSurveyResultsService
 
         // Add timing columns if enabled
         $hasTimings = $this->loadedSurvey->savetimings == "Y"
-            && tableExists("survey_{$surveyId}_timings");
+            && (tableExists("survey_{$surveyId}_timings") || tableExists("timings_{$surveyId}"));
         $timingFieldKeys = [];
         if ($hasTimings) {
             $timingFieldMap = $this->getTimingFieldMap($metadata['language'] ?? null);
@@ -491,7 +491,7 @@ class ExportSurveyResultsService
             return [];
         }
 
-        $tableName = "{{survey_{$surveyId}_timings}}";
+        $tableName = tableExists("{{timings_{$surveyId}}}") ? "{{timings_{$surveyId}}}" : "{{survey_{$surveyId}_timings}}";
         $rows = \Yii::app()->db->createCommand()
             ->select('*')
             ->from($tableName)

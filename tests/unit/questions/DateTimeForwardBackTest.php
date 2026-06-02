@@ -61,13 +61,13 @@ class DateTimeForwardBackTest extends TestBaseClass
         $gseq = 0;
         $_POST['relevance' . $qid] = 1;
         $_POST['relevanceG' . $gseq] = 1;
-        $_POST['lastgroup'] = self::$surveyId . 'X' . $group->gid;
+        $_POST['lastgroup'] = 'Q' . $group->gid;
         $_POST['movenext'] = 'movenext';
         $_POST['thisstep'] = 1;
         $_POST['sid'] = self::$surveyId;
         $_POST[$sgqa] = '10:00';
-        $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
-        $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+        $_SESSION['responses_' . self::$surveyId]['maxstep'] = 2;
+        $_SESSION['responses_' . self::$surveyId]['step'] = 1;
 
         $moveResult = \LimeExpressionManager::NavigateForwards();
         $result = \LimeExpressionManager::ProcessCurrentResponses();
@@ -78,14 +78,14 @@ class DateTimeForwardBackTest extends TestBaseClass
         \LimeExpressionManager::ProcessCurrentResponses();
 
         // Check answer in database.
-        $query = 'SELECT * FROM {{survey_' . self::$surveyId . '}}';
+        $query = 'SELECT * FROM {{responses_' . self::$surveyId . '}}';
         $result = \Yii::app()->db->createCommand($query)->queryAll();
         $this->assertNotEmpty($result, 'Something got saved');
         $this->assertStringContainsString('10:00:00', $result[0][$sgqa], 'Answer in database contains 10:00');
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
+            $_SESSION['responses_' . self::$surveyId]['fieldarray'][0]
         );
         $this->assertEquals(false, strpos($qanda[0][1], "value=\"11:00\""), 'No 11:00 value from qanda');
         $this->assertNotEquals(false, strpos($qanda[0][1], "value=\"10:00\""), 'One 10:00 value from qanda');
