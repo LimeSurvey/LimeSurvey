@@ -28,7 +28,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
         run: |
@@ -183,7 +183,7 @@ jobs:
     
     name: PHP ${{ matrix.php-version }} - ${{ matrix.db-type }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -326,7 +326,7 @@ jobs:
           - php-version: '8.3'
             db-type: 'mssql'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -356,7 +356,7 @@ jobs:
       DBENGINE: INNODB
       PHP_VERSION: '8.3'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup
         run: |
