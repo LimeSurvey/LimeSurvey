@@ -2,7 +2,7 @@
 /*
     LimeSurvey
 
-    Copyright (C) 2007-2024 The LimeSurvey Project Team / Patrick Teichmann
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
 
     License: GNU/GPL License v2 or later, see LICENSE.php
@@ -643,7 +643,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -2071,7 +2071,8 @@ progress {
 .form-control::file-selector-button {
   padding: 0.375rem 0.75rem;
   margin: -0.375rem -0.75rem;
-  margin-inline-end: 0.75rem;
+  -webkit-margin-end: 0.75rem;
+          margin-inline-end: 0.75rem;
   color: #212529;
   background-color: #e9ecef;
   pointer-events: none;
@@ -2093,7 +2094,8 @@ progress {
 .form-control::-webkit-file-upload-button {
   padding: 0.375rem 0.75rem;
   margin: -0.375rem -0.75rem;
-  margin-inline-end: 0.75rem;
+  -webkit-margin-end: 0.75rem;
+          margin-inline-end: 0.75rem;
   color: #212529;
   background-color: #e9ecef;
   pointer-events: none;
@@ -2140,12 +2142,14 @@ progress {
 .form-control-sm::file-selector-button {
   padding: 0.25rem 0.5rem;
   margin: -0.25rem -0.5rem;
-  margin-inline-end: 0.5rem;
+  -webkit-margin-end: 0.5rem;
+          margin-inline-end: 0.5rem;
 }
 .form-control-sm::-webkit-file-upload-button {
   padding: 0.25rem 0.5rem;
   margin: -0.25rem -0.5rem;
-  margin-inline-end: 0.5rem;
+  -webkit-margin-end: 0.5rem;
+          margin-inline-end: 0.5rem;
 }
 
 .form-control-lg {
@@ -2164,12 +2168,14 @@ progress {
 .form-control-lg::file-selector-button {
   padding: 0.5rem 1rem;
   margin: -0.5rem -1rem;
-  margin-inline-end: 1rem;
+  -webkit-margin-end: 1rem;
+          margin-inline-end: 1rem;
 }
 .form-control-lg::-webkit-file-upload-button {
   padding: 0.5rem 1rem;
   margin: -0.5rem -1rem;
-  margin-inline-end: 1rem;
+  -webkit-margin-end: 1rem;
+          margin-inline-end: 1rem;
 }
 
 textarea.form-control {
@@ -10587,7 +10593,7 @@ textarea.form-control-lg {
   cursor: pointer;
 }
 
-.radio-item [type=radio], .checkbox-item [type=checkbox] { /* Why we must positionning at same place */
+.radio-item [type=radio], .checkbox-item [type=checkbox] { /* Why we must position them at the same place */
   cursor: pointer;
 }
 
@@ -11635,7 +11641,7 @@ body {
   background-color: rgb(240.0004187192, 215.4245173004, 194.4995812808);
 }
 
-/* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
+/* Define the color for Awesome Bootstrap Checkboxes ; based on bg-primary background-color*/
 body .answer-item label::after {
   background-color: #ED5046;
 }
@@ -11702,7 +11708,7 @@ body .answer-item label::after {
 *
 */
 /**
- * Used in answers : bootsrap fix (specific single choice list)
+ * Used in answers : bootstrap fix (specific single choice list)
  */
 /**
  * Expression manager relevance system
@@ -11731,7 +11737,7 @@ body .answer-item label::after {
   display: none !important;
 }
 
-/* boostrap navbar-toggle is broken without js */
+/* bootstrap navbar-toggle is broken without js */
 .no-js .navbar-toggle {
   display: none;
 }
@@ -11774,7 +11780,7 @@ body .answer-item label::after {
   }
 }
 /**
- * .ls-input-group (prefix/sufix): near same behaviour than BS input-group / input-group-addon */
+ * .ls-input-group (prefix/suffix): near same behaviour than BS input-group / input-group-addon */
 /* BUT : only with big screen : see @link https://bugs.limesurvey.org/view.php?id=11882
  * Add .suffix-prefix-force in question to force with little screen too
  **/
@@ -12054,21 +12060,18 @@ Responsive navbar-brand image CSS
 - add 100% height and width auto ... similar to how bootstrap img-responsive class works
 ***********************************/
 .logo-container {
-  padding: 0px;
+  padding: 0;
   float: left;
+  flex-shrink: 0;
   font-size: 18px;
   line-height: 20px;
 }
 
 .logo-container > img {
-  max-height: 90px;
-  padding: 15px;
+  display: block;
+  max-height: 84px;
+  padding: 8px 0;
   width: auto;
-}
-@media (max-width: 768px) {
-  .logo-container > img {
-    max-height: 60px;
-  }
 }
 
 /* text overflows, ellipsis and hyphens */
@@ -13058,6 +13061,10 @@ textarea {
   line-height: 16px;
   border-width: 2px;
   padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+}
+
+.form-select.ls-important-field {
+  height: 44px;
 }
 
 .question-item.mb-3 {
@@ -14807,6 +14814,9 @@ a [class^=ri-], a [class*=" ri-"] {
 .public-stats .statsNumRecords {
   color: #1E1E1E;
 }
+.public-stats .card {
+  min-width: max-content;
+}
 
 .group-container .group-title {
   font-weight: 600;
@@ -14891,7 +14901,7 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .top-container {
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 .top-container .ls-progress-container {
   padding: 4px 0;
@@ -15418,8 +15428,10 @@ body .imageselect-listitem label::after {
 }
 .numeric-multi .ls-group-total-separator hr {
   border-top: solid 2px;
-  margin-block-start: 0;
-  margin-block-end: 0;
+  -webkit-margin-before: 0;
+          margin-block-start: 0;
+  -webkit-margin-after: 0;
+          margin-block-end: 0;
 }
 .numeric-multi .dynamic-total {
   font-weight: 600;

@@ -58,16 +58,14 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             'name'        => 'description',
             'value'       => '$data->description',
             'htmlOptions' => ['class' => 'col-lg-3'],
-            'type'        => 'raw',
         ],
 
         [
             'header'      => gT('Type'),
             'name'        => 'core_theme',
-            'value'       => '($data->core_theme == 1) ? gT("Core Theme") : gT("User Theme")',
-            'type'        => 'raw',
+            'value'       => '($data->core_theme == 1) ? gT("Core theme, "unescaped") : gT("User theme, "unescaped")',
             'htmlOptions' => ['class' => 'col-lg-2'],
-            "filter"      => [1 => gT("Core Theme"), 0 => gT('User Theme')]
+            "filter"      => [1 => gT("Core theme", "unescaped"), 0 => gT("User theme", "unescaped")]
         ],
 
         [
@@ -78,10 +76,10 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
         ],
         [
             'header'            => gT('Visibility'),
-            'headerHtmlOptions' => ['title' => gT('Visible inside the Question Selector')],
+            'headerHtmlOptions' => ['title' => gT('Visible inside the question type selector')],
             'name'              => 'visible',
             'value'             => '$data->getVisibilityButton()',
-            'type'              => 'raw',
+            'type'              => 'raw', // From model HTML directly
             'htmlOptions'       => ['class' => 'col-lg-1'],
             "filter"            => ['N' => gT("Off"), 'Y' => gT('On')],
         ]
@@ -131,5 +129,5 @@ $script = '
                 }
                 ';
 App()->getClientScript()->registerScript('questionthemes-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
-?>
+
 

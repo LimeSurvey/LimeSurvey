@@ -12,7 +12,7 @@ class Update_423 extends DatabaseUpdateBase
                 array(
                     'api_version' => "3.0",
                     'version' => "3.0",
-                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                    'copyright' => "Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved."
                 ),
                 "name='fruity'"
             );
@@ -21,7 +21,7 @@ class Update_423 extends DatabaseUpdateBase
                 array(
                     'api_version' => "3.0",
                     'version' => "3.0",
-                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                    'copyright' => "Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved."
                 ),
                 "name='vanilla'"
             );
@@ -30,7 +30,7 @@ class Update_423 extends DatabaseUpdateBase
                 array(
                     'api_version' => "3.0",
                     'version' => "3.0",
-                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                    'copyright' => "Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved."
                 ),
                 "name='bootwatch'"
             );

@@ -15,11 +15,13 @@ $massiveAction = App()->getController()->renderPartial(
     true,
     false
 );
-$this->widget('application.extensions.admin.grid.CLSGridView',
+$this->widget(
+    'application.extensions.admin.grid.CLSGridView',
     [
         'dataProvider' => $oSurveyTheme->searchGrid(),
         'filter' => $oSurveyTheme,
         'id' => 'themeoptions-grid',
+        'caption' => gT('Survey themes'),
         'pager' => [
             'class' => 'application.extensions.admin.grid.CLSYiiPager',
         ],

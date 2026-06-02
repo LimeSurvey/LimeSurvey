@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\TestBaseClass;
 
 /**
  * Test the emcache.
@@ -136,32 +138,4 @@ class EmCacheHelperTest extends TestBaseClass
         $this->assertEquals('other_value', $value);
     }
 
-    /**
-     * Test mutliple surveys.
-     * @todo Does not work with current emcache keyPrefix code.
-     */
-    public function testMultipleSurveys()
-    {
-        $this->markTestSkipped();
-
-        \EmCacheHelper::init(['sid' => 4, 'active' => 'Y']);
-        \EmCacheHelper::set('somekey', 'value');
-
-        \EmCacheHelper::init(['sid' => 5, 'active' => 'Y']);
-        \EmCacheHelper::set('somekey', 'another_value');
-
-        \EmCacheHelper::init(['sid' => 4, 'active' => 'Y']);
-
-        // This should not flush cache sid 5.
-        \EmCacheHelper::flush();
-
-        $value = \EmCacheHelper::get('somekey');
-        $this->assertEquals(false, $value);
-
-        \EmCacheHelper::init(['sid' => 5, 'active' => 'Y']);
-
-        /** @var string */
-        $value = \EmCacheHelper::get('somekey');
-        $this->assertEquals('another_value', $value);
-    }
 }

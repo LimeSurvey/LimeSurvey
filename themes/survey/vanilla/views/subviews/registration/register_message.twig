@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -16,7 +16,7 @@
 #}
 
 {% if registerSuccess %}
-    <h4 {{ aSurveyInfo.attr.registermessageb }} >{{ gT("Thank you for registering. You will receive an email shortly.") }}</h4>
+    <h4 {{ aSurveyInfo.attr.registermessageb }} >{{ gT("Thank you for registering. You will receive an email shortly. But if you already registered, you will not receive another email.") }}</h4>
 {% else %}
     {% if sStartDate %}
     <h4 {{ aSurveyInfo.attr.registermessagea }} > {{ gT("You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey.") }}</h4>
