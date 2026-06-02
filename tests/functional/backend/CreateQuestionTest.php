@@ -122,6 +122,7 @@ class CreateQuestionTest extends TestBaseClassWeb
                  "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
             );
             $input->clear()->sendKeys($questionCode);
+            $input->click();
             /* blur out trigger */
             $input->sendKeys(WebDriverKeys::TAB);
             // need to wait for js to run, no state change
