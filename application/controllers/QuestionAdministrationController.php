@@ -201,25 +201,19 @@ class QuestionAdministrationController extends LSBaseController
     private function renderFormAux(Question $question)
     {
         Yii::app()->loadHelper("admin.htmleditor");
-        // Only register static packages and script files on non-PJAX (non-AJAX)
-        // requests. On PJAX navigations these resources are already loaded in
-        // the browser from the initial page render, re-registering them causes
-        // duplicate CSS/JS to accumulate on every sidebar click.
-        if (!Yii::app()->request->isAjaxRequest) {
-            Yii::app()->getClientScript()->registerPackage('ace');
-            Yii::app()->getClientScript()->registerPackage('jquery-ace');
-            Yii::app()->getClientScript()->registerScript(
-                'editorfiletype',
-                "editorfiletype ='javascript';",
-                CClientScript::POS_HEAD
-            );
-            App()->getClientScript()->registerScriptFile(
-                App()->getConfig('adminscripts') . 'questionEditor.js',
-                CClientScript::POS_END
-            );
-            // TODO: No difference between true and false?
-            PrepareEditorScript(false, $this);
-        }
+        Yii::app()->getClientScript()->registerPackage('ace');
+        Yii::app()->getClientScript()->registerPackage('jquery-ace');
+        Yii::app()->getClientScript()->registerScript(
+            'editorfiletype',
+            "editorfiletype ='javascript';",
+            CClientScript::POS_HEAD
+        );
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts') . 'questionEditor.js',
+            CClientScript::POS_END
+        );
+        // TODO: No difference between true and false?
+        PrepareEditorScript(false, $this);
         App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 

@@ -110,11 +110,8 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         // Used in question editor (pjax).
-        // Skip on PJAX requests to avoid re-loading already present resources.
-        if (!Yii::app()->request->isAjaxRequest) {
-            App()->getClientScript()->registerPackage('ace');
-            App()->getClientScript()->registerPackage('jquery-ace');
-        }
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('jquery-ace');
 
         return parent::beforeRender($view);
     }
