@@ -108,7 +108,8 @@ class CreateQuestionTest extends TestBaseClassWeb
                 )
             );
             $questionCodeInput = $web->findElement(WebDriverBy::id('questionCode'));
-            $questionCodeInput->clear()->sendKeys($questionBadCode);
+            $questionCodeInput->sendKeys([WebDriverKeys::CONTROL, 'a']);
+            $questionCodeInput->sendKeys($questionBadCode);
             /* blur out trigger */
             $questionCodeInput->sendKeys(WebDriverKeys::TAB);
             $checkValidateText = self::$webDriver->wait(10)->until(
@@ -128,7 +129,8 @@ class CreateQuestionTest extends TestBaseClassWeb
                     WebDriverBy::id('pjaxClickInhibitor')
                 )
             );
-            $questionCodeInput->clear()->sendKeys($questionCode);
+            $questionCodeInput->sendKeys([WebDriverKeys::CONTROL, 'a']);
+            $questionCodeInput->sendKeys($questionCode);
             /* blur out trigger */
             $questionCodeInput->sendKeys(WebDriverKeys::TAB);
             /* Wait for AJAX validation to complete - warning must become empty */
