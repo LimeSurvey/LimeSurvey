@@ -17,7 +17,7 @@ $(document).ready(function () {
 
             const updateContent = () => {
                 $title.html(slide.title);
-                $image.attr("src", slide.image).attr("alt", slide.title);
+                $image.attr("src", slide.image).attr("alt", "slider image " + (index + 1));
                 $desc.html(slide.description);
 
                 $dots
