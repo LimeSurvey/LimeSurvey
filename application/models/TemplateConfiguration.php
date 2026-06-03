@@ -997,6 +997,42 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Resolves the file path for an option image by walking up the theme inheritance chain.
+     *
+     * @param string $imageFileName The image file name (e.g. 'cornerradius_0.svg')
+     * @return string The resolved absolute file path, or empty string if not found.
+     */
+    public function resolveOptionImagePath(string $imageFileName): string
+    {
+        // First check in the current theme's files directory
+        $imageFilePath = $this->path . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
+        if (file_exists($imageFilePath)) {
+            return $imageFilePath;
+        }
+
+        // Walk up the theme extension chain (template->extends)
+        $motherName = $this->template->extends ?? '';
+        $visited = [];
+        $motherConfig = $this;
+        while (!empty($motherName)) {
+            if (isset($visited[$motherName])) {
+                break;
+            }
+            $visited[$motherName] = true;
+
+            $motherConfig = $motherConfig->oMotherTemplate;
+            $motherConfig->setBasics();
+            $motherPath = $motherConfig->path . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
+            if (file_exists($motherPath)) {
+                return $motherPath;
+            }
+            $motherName = $motherConfig->template->extends ?? '';
+        }
+
+        return '';
+    }
+
+    /**
      * Prepares the rendering of the custom options.js and options.twig that can be used in every theme
      *
      * @return mixed
