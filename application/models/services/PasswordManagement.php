@@ -59,9 +59,9 @@ class PasswordManagement
             $hostOnly = parse_url($scheme . '://' . $httpHost, PHP_URL_HOST);
 
             if ($hostOnly && in_array($hostOnly, $allowedHosts)) {
+                // Only scheme + host (+ port). Do NOT append getBaseUrl() here
+                // because createUrl() already includes the base path.
                 $baseUrl = $scheme . '://' . $httpHost;
-                $appBaseUrl = \Yii::app()->getBaseUrl();
-                $baseUrl = $baseUrl . $appBaseUrl;
             }
         }
 
@@ -71,7 +71,13 @@ class PasswordManagement
             $parsedPublicUrl = parse_url((string) $publicUrl);
 
             if (isset($parsedPublicUrl['scheme']) && isset($parsedPublicUrl['host'])) {
-                $baseUrl = rtrim($publicUrl, '/');
+                // Extract only scheme + host + port from publicurl, discard path
+                // because createUrl() already includes the base path.
+                $hostPart = $parsedPublicUrl['scheme'] . '://' . $parsedPublicUrl['host'];
+                if (isset($parsedPublicUrl['port'])) {
+                    $hostPart .= ':' . $parsedPublicUrl['port'];
+                }
+                $baseUrl = $hostPart;
             }
         }
 
