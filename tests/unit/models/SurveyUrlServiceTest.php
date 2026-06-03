@@ -26,6 +26,7 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
      * Handles formats like:
      *   ?sid=931272&lang=en  (GET format)
      *   /survey/index/sid/931272/lang/en  (path format)
+     *   /931272?lang=en  (short route via URL rules)
      */
     private function extractUrlParams(string $url): array
     {
@@ -34,13 +35,17 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
         if (!empty($parsed['query'])) {
             parse_str($parsed['query'], $params);
         }
-        // Also extract path-info style params (/key/value pairs)
+        // Also extract path-info style params (/key/value pairs) and bare numeric sid
         if (!empty($parsed['path'])) {
             $segments = explode('/', trim($parsed['path'], '/'));
-            for ($i = 0; $i < count($segments) - 1; $i += 1) {
-                // Look for known param keys in path segments
-                if (in_array($segments[$i], ['sid', 'lang', 'token', 'r'], true)) {
+            for ($i = 0; $i < count($segments); $i++) {
+                // Detect known param keys followed by their value
+                if ($i < count($segments) - 1 && in_array($segments[$i], ['sid', 'lang', 'token', 'r'], true)) {
                     $params[$segments[$i]] = $segments[$i + 1];
+                    $i++; // skip the value segment
+                } elseif (!isset($params['sid']) && preg_match('/^\d+$/', $segments[$i])) {
+                    // Bare numeric segment treated as survey id (URL rule: <sid:\d+>)
+                    $params['sid'] = $segments[$i];
                 }
             }
         }
