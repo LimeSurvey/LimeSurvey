@@ -2011,13 +2011,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Removes questions and subquestions from this survey that are not present in the survey's primary language.
+     * Removes orphan questions and subquestions from this survey.
      *
-     * Deletes base questions (parent_qid = 0) whose `qid` is not found in the primary-language question set, and deletes subquestions (parent_qid != 0) whose `title` is not found in the primary-language subquestion set. Changes are persisted to the database for this survey's `sid`.
+     * Deletes base questions (parent_qid = 0) whose `qid` is not found in the full question set for this survey,
+     * and deletes subquestions (parent_qid != 0) whose `title` is not found in the full subquestion set.
+     * Note: queries compare against all rows in the questions table for this survey, not scoped to a specific language.
      */
     public function fixInvalidQuestions()
     {
-        /* Delete invalid questions (don't exist in primary language) using qid like column name*/
+        /* Delete invalid questions using qid as identifier */
         $validQuestion = Question::model()->findAll(array(
             'select' => 'qid',
             'condition' => 'sid=:sid AND parent_qid = 0',
@@ -2029,7 +2031,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $criteria->addNotInCondition('qid', CHtml::listData($validQuestion, 'qid', 'qid'));
         Question::model()->deleteAll($criteria); // Must log count of deleted ?
 
-        /* Delete invalid Sub questions (don't exist in primary language) using title like column name*/
+        /* Delete invalid subquestions using title as identifier */
         $validSubQuestion = Question::model()->findAll(array(
             'select' => 'title',
             'condition' => 'sid=:sid AND parent_qid != 0',
