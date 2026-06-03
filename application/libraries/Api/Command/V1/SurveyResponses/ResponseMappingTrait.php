@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
+use LSActiveRecord;
+
 /**
  * Trait for shared response mapping functionality
  * Used by both SurveyResponses API command and ExportSurveyResultsService
@@ -35,6 +37,7 @@ trait ResponseMappingTrait
                             'subquestion2' => $item['subquestion2'] ?? null,
                             'scale' => $item['scale'] ?? null,
                             'type' => $item['type'] ?? null,
+                            'encrypted' => $item['encrypted'] ?? null,
                         ];
                     }
                     return null;
@@ -53,6 +56,8 @@ trait ResponseMappingTrait
      */
     protected function mapResponsesToQuestions(array $responses, array $surveyQuestions): array
     {
+        $sodium = \Yii::app()->sodium;
+
         foreach ($responses as &$response) {
             foreach ($response['answers'] as &$answer) {
                 $qid = $answer['key'];
@@ -61,6 +66,11 @@ trait ResponseMappingTrait
                         $answer,
                         $surveyQuestions[$qid]
                     );
+
+                    if (!empty($answer['encrypted']) && $answer['encrypted'] === 'Y' && !empty($answer['value'])) {
+                        $answer['value'] = LSActiveRecord::decryptSingle($answer['value']);
+                    }
+
                     $answer['actual_aid'] = $this->getActualAid(
                         $answer['qid'],
                         $answer['scale_id'] ?? $answer['scaleid'] ?? 0,
@@ -69,6 +79,7 @@ trait ResponseMappingTrait
                 }
             }
         }
+
         return $responses;
     }
 
