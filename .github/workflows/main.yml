@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.3']
+        php-versions: ['8.1', '8.3']
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -28,7 +28,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
         run: |
@@ -36,9 +36,8 @@ jobs:
           sudo apt update
           sudo apt -y install php${{ matrix.php-versions }}
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php7.4-ldap php7.4-gd php7.4-intl php7.4-zip php7.4-mysql php7.4-xml php7.4-curl php7.4-mbstring php7.4-sqlite3 libapache2-mod-php7.4 -y
-          sudo apt --fix-broken install php php8.3-ldap php8.3-gd php8.3-intl php8.3-zip php8.3-mysql php8.3-xml php8.3-curl php8.3-mbstring php8.3-sqlite3 libapache2-mod-php8.3 -y
-          sudo update-alternatives --set php /usr/bin/php8.3
+          sudo apt --fix-broken install php php${{ matrix.php-versions }}-ldap php${{ matrix.php-versions }}-gd php${{ matrix.php-versions }}-intl php${{ matrix.php-versions }}-dom php${{ matrix.php-versions }}-zip php${{ matrix.php-versions }}-mysql php${{ matrix.php-versions }}-xml php${{ matrix.php-versions }}-curl php${{ matrix.php-versions }}-mbstring php${{ matrix.php-versions }}-sqlite3 libapache2-mod-php${{ matrix.php-versions }} -y
+          sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
@@ -110,14 +109,14 @@ jobs:
       # for debugging
      # - name: Setup upterm session
      #   uses: lhotari/action-upterm@v1
-     #   if: ${{ contains(matrix.php-versions, '7.4') }}
+     #   if: ${{ contains(matrix.php-versions, '8.1') }}
       - name: Test the server
         run: |
           # Test server.
           wget -O - localhost
           #sudo tail -n 500 /var/log/apache2/error.log || true
           #sudo tail -n 500 /var/log/nginx/error.log || true
-          #sudo tail -n 500 /var/log/php7.4-fpm.log || true
+          #sudo tail -n 500 /var/log/php8.1-fpm.log || true
           #sudo tail -n 500 /var/log/php8.3-fpm.log || true
           # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
           #which php
@@ -163,8 +162,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # MySQL tests with PHP 7.4 and 8.3
-          - php-version: '7.4'
+          # MySQL tests with PHP 8.1 and 8.3
+          - php-version: '8.1'
             db-type: 'mysql'
             db-version: '8.0'
           - php-version: '8.3'
@@ -183,13 +182,17 @@ jobs:
     
     name: PHP ${{ matrix.php-version }} - ${{ matrix.db-type }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' || matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' || 'mysql' }}
+          extensions: >-
+            dom, xml, libxml,
+            ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' ||
+                matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' ||
+                'mysqli, pdo_mysql' }}
 
       - name: Setup
         run: |
@@ -201,11 +204,6 @@ jobs:
           chmod -R 777 ./themes
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
-
-      - name: Install MySQL extensions
-        if: matrix.db-type == 'mysql'
-        run: |
-          sudo apt --fix-broken install php php-mysql php8.3-mysql php7.4-mysql -y
 
       - name: Check MySQL service
         if: matrix.db-type == 'mysql'
@@ -315,8 +313,8 @@ jobs:
     strategy:
       matrix:
         include:
-          # MySQL tests with PHP 7.4 and 8.3
-          - php-version: '7.4'
+          # MySQL tests with PHP 8.1 and 8.3
+          - php-version: '8.1'
             db-type: 'mysql'
           - php-version: '8.3'
             db-type: 'mysql'
@@ -327,7 +325,7 @@ jobs:
           - php-version: '8.3'
             db-type: 'mssql'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -357,7 +355,7 @@ jobs:
       DBENGINE: INNODB
       PHP_VERSION: '8.3'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup
         run: |
