@@ -2516,44 +2516,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if (empty($language)) {
             $language = $this->language;
         }
-        if ($preferShortUrl) {
-            $alias = $this->getAliasForLanguage($language);
-
-            if (!empty($alias)) {
-                // Check if there is other language with the same alias. If it does, we need to include the 'lang' parameter in the URL.
-                foreach ($this->languagesettings as $otherLang => $settings) {
-                    if ($otherLang == $language || empty($settings->surveyls_alias)) {
-                        continue;
-                    }
-                    if ($settings->surveyls_alias == $alias) {
-                        $params['lang'] = $language;
-                        break;
-                    }
-                }
-
-                // Create the URL according to the configured format
-                $baseUrl = App()->getPublicBaseUrl(true);
-                $urlManager = Yii::app()->getUrlManager();
-                $urlFormat = $urlManager->getUrlFormat();
-                if ($urlFormat == CUrlManager::GET_FORMAT) {
-                    $url = $baseUrl;
-                    $params = [$urlManager->routeVar => $alias] + $params;
-                } else {
-                    $url = $baseUrl . '/' . $alias;
-                }
-                $query = $urlManager->createPathInfo($params, '=', '&');
-                if (!empty($query)) {
-                    $url .= "?" . $query;
-                }
-                return $url;
-            }
-        }
-
-        // If short url is not preferred or no alias is found, return a traditional URL
-        $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
-        $url = App()->createPublicUrl('survey/index', $urlParams);
-
-        return $url;
+        $surveyUrlService = new \LimeSurvey\Models\Services\SurveyUrl($language, $params, $preferShortUrl);
+        return $surveyUrlService->getUrl(
+            $this->sid,
+            $this->languagesettings,
+            $this->getAliasForLanguage($language)
+        );
     }
 
     /**

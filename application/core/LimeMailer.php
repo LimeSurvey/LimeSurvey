@@ -888,14 +888,14 @@ class LimeMailer extends PHPMailer
         $aTokenReplacements["SURVEYURL"] = $surveyUrlCreator->getUrl(
             $survey->sid,
             $survey->languagesettings,
-            $survey->getAliasForLanguage()
+            $survey->getAliasForLanguage($language)
         );
         $this->addUrlsPlaceholders("SURVEY");
         $surveyUrlCreator = new \LimeSurvey\Models\Services\SurveyUrl($language, ["token" => $token], false);
         $aTokenReplacements["SURVEYIDURL"] = $surveyUrlCreator->getUrl(
             $survey->sid,
             $survey->languagesettings,
-            $survey->getAliasForLanguage()
+            $survey->getAliasForLanguage($language)
         );
         $this->addUrlsPlaceholders("SURVEYID");
         return $aTokenReplacements;

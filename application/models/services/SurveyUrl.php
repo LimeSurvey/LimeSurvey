@@ -67,12 +67,14 @@ class SurveyUrl
      * @return string The assembled absolute URL for the survey. */
     private function createURLWithAlias(string $alias, $surveyLanguageSettings)
     {
+        $params = $this->urlParams;
+
         foreach ($surveyLanguageSettings as $otherLang => $settings) {
             if ($otherLang == $this->language || empty($settings->surveyls_alias)) {
                 continue;
             }
             if ($settings->surveyls_alias == $alias) {
-                $this->urlParams['lang'] = $this->language;
+                $params['lang'] = $this->language;
                 break;
             }
         }
@@ -82,11 +84,11 @@ class SurveyUrl
         $urlFormat = $urlManager->getUrlFormat();
         if ($urlFormat == \CUrlManager::GET_FORMAT) {
             $url = \Yii::app()->getBaseUrl(true);
-            $this->urlParams = [$urlManager->routeVar => $alias] + $this->urlParams;
+            $params = [$urlManager->routeVar => $alias] + $params;
         } else {
             $url = \Yii::app()->getBaseUrl(true) . '/' . $alias;
         }
-        $query = $urlManager->createPathInfo($this->urlParams, '=', '&');
+        $query = $urlManager->createPathInfo($params, '=', '&');
         if (!empty($query)) {
             $url .= "?" . $query;
         }
