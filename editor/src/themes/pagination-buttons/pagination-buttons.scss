@@ -1,0 +1,40 @@
+.pagination-buttons {
+  display: flex;
+  gap: 8px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: $white;
+  border-radius: $border-radius;
+  color: $g-700;
+  @include reg12;
+  box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+
+  .disabled {
+    color: $g-400 !important;
+  }
+
+  .pagination-button {
+    outline: 1px solid $g-700 !important;
+    border: none;
+    border-radius: 2px;
+    height: 28px;
+    min-width: 28px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: $g-700;
+    @include reg12;
+
+    &:hover {
+      border-color: $g-700;
+      background-color: $g-100;
+    }
+  }
+
+  .active {
+    color: $white;
+    background-color: $g-800 !important;
+  }
+}

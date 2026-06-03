@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -381,6 +381,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     {
         return $this->validateAttachments($this->attachments, $exist);
     }
+
     /**
      * Get valid attachements in array
      * @param string $attachement the attahcment string to be filtered
@@ -416,6 +417,28 @@ class SurveyLanguageSetting extends LSActiveRecord
             }
         }
         return $validAttachements;
+    }
+
+    /**
+     * get if template have all attachement valid
+     * @param string $template the template
+     * @return boolean
+     **/
+    public function hasAllAttachments($template)
+    {
+        $attachments = $this->getValidAttachments(false);
+        if (empty($attachments) || empty($attachments[$template])) {
+            return true;
+        }
+        foreach ($attachments[$template] as $attachment) {
+            if (!isset($attachment['url'])) {
+                continue;
+            }
+            if (!$this->getAttachmentFileExist($attachment['url'])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

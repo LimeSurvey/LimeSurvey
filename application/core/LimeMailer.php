@@ -62,13 +62,13 @@ class LimeMailer extends PHPMailer
      * for survey (admin or not) : admin_notification, admin_responses, savesurveydetails, errorsavingresults
      * other : addadminuser, passwordreminderadminuser, mailsendusergroup …
      **/
-    public $emailType = 'unknow';
+    public $emailType = 'unknown';
 
     /**
-     * Attachements by type : using different key for all this part …
+     * Attachments by type : using different key for all this part …
      * @var string[]
      */
-    private $_aAttachementByType = array(
+    private $_aAttachmentByType = array(
         'invite' => 'invitation',
         'remind' => 'reminder',
         'register' => 'registration',
@@ -83,15 +83,20 @@ class LimeMailer extends PHPMailer
     public $replaceTokenAttributes = false;
 
     /**
-     * @var array $aAttachements Current attachements (as string or array)
+     * @var array $aAttachments Current Attachments (as string or array)
      * @see parent::addAttachment
      **/
-    public $aAttachements = array();
+    public $aAttachments = array();
 
     /**
-     * @var boolean $aAttachements Current attachements (as string or array)
+     * @var boolean $aAttachments Current Attachments (as string or array)
      **/
     private $_bAttachementTypeDone = false;
+
+    /**
+     * @var boolean $ignoremissingattachement allow to send if attachement have issue.
+     **/
+    public $ignoremissingattachement = false;
 
     /**
      * The Raw Subject of the message. before any Expression Replacements and other update
@@ -505,7 +510,7 @@ class LimeMailer extends PHPMailer
      * Launch the needed event : beforeTokenEmail, beforeSurveyEmail, beforeEmail
      * and update this according to action
      * @var array $eventParams specific event parameters to add
-     * return boolean|null : sended of not, if null : no action are done by event, can use default action.
+     * return boolean|null : sent of not, if null : no action are done by event, can use default action.
      */
     private function manageEvent($eventParams = array())
     {
@@ -540,7 +545,7 @@ class LimeMailer extends PHPMailer
         $event = new PluginEvent($this->eventName);
         /**
          * plugin can get this mailer with $oEvent->get('mailer')
-         * This allow udpate of anythings : $this->getEvent()->get('mailer')->addCC or $this->getEvent()->get('mailer')->addCustomHeader etc …
+         * This allow update of anythings : $this->getEvent()->get('mailer')->addCC or $this->getEvent()->get('mailer')->addCustomHeader etc …
          * Usage of this solution can disable all other event get param …
          **/
         $event->set('mailer', $this);
@@ -549,7 +554,7 @@ class LimeMailer extends PHPMailer
             $event->set($param, $value);
         }
         /* A plugin can update any part : here true, but i really think it's best if it false */
-        /* Maybe part by part ? $event->get('updated') as arry : update only what is updated */
+        /* Maybe part by part ? $event->get('updated') as array : update only what is updated */
         $event->set('updateDisable', array());
         App()->getPluginManager()->dispatchEvent($event);
         /* Manage what can be updated */
@@ -611,7 +616,10 @@ class LimeMailer extends PHPMailer
             $this->Subject = mb_convert_encoding($this->Subject, $this->CharSet, $this->BodySubjectCharset);
             $this->Body = mb_convert_encoding($this->Body, $this->CharSet, $this->BodySubjectCharset);
         }
-        $this->addAttachementsByType();
+        if (!$this->addAttachmentsByType() && !$this->ignoremissingattachement) {
+            $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
+            return false;
+        }
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if (!is_null($eventResult)) {
@@ -895,7 +903,7 @@ class LimeMailer extends PHPMailer
 
     /**
      * Do the replacements : if current replacement jey is set and LimeSurvey core have it too : it reset to the needed one.
-     * @param string $string wher need to replace
+     * @param string $string where need to replace
      * @return string
      */
     public function doReplacements($string)
@@ -910,7 +918,7 @@ class LimeMailer extends PHPMailer
             if (!in_array($this->mailLanguage, $oSurvey->getAllLanguages())) {
                 $this->mailLanguage = $oSurvey->language;
             }
-            /* Get it separatly since (not Survey::model()->with('languagesetting')) since need to be sure to get current language ? */
+            /* Get it separately since (not Survey::model()->with('languagesetting')) since need to be sure to get current language ? */
             $oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
             $aReplacements["SURVEYNAME"] = $oSurveyLanguageSettings->surveyls_title;
             $aReplacements["SURVEYDESCRIPTION"] = $oSurveyLanguageSettings->surveyls_description;
@@ -935,23 +943,24 @@ class LimeMailer extends PHPMailer
 
     /**
      * Set the attachments according to current survey,language and emailtype
-     * @ return void
+     * @return boolean attachments added with success
      */
-    public function addAttachementsByType()
+    public function addAttachmentsByType()
     {
         if ($this->_bAttachementTypeDone) {
-            return;
+            return true;
         }
         $this->_bAttachementTypeDone = true;
+        // No survey : no attachments
         if (empty($this->surveyId)) {
-            return;
+            return true;
         }
-        if (!array_key_exists($this->emailType, $this->_aAttachementByType)) {
-            return;
+        // No attachement template : no attachments
+        if (!array_key_exists($this->emailType, $this->_aAttachmentByType)) {
+            return true;
         }
-
-        $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
+        $attachementType = $this->_aAttachmentByType[$this->emailType];
         if (!empty($oSurveyLanguageSetting->attachments)) {
             $aAttachments = $oSurveyLanguageSetting->getValidAttachments(true);
             if (!empty($aAttachments[$attachementType])) {
@@ -965,29 +974,14 @@ class LimeMailer extends PHPMailer
                 }
             }
         }
+        // If some attachments for this template did not exist : return false
+        if (!$oSurveyLanguageSetting->hasAllAttachments($attachementType)) {
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * Check if an specific attatchemnt exist
-     * Not needed anymore, SurveyLanuageSetttings return existing file only, keep it for plugin ?
-     * @deprecated 6.16.17
-     * @param string[] attachment info
-     * @return boolean
-     **/
-    private function attachementExists($aAttachment)
-    {
-        $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId, 'surveylocale', 'update'));
-        $SurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage]);
-        if ($SurveyLanguageSetting->getAttachmentFileExist($aAttachment['url'])) {
-            return true;
-        }
-        if ($throwError) {
-            throw new \CException(sprintf(gT("File not found: %s"), $aAttachment['url']));
-        }
-        return false;
-    }
-
-    /**
+   /**
      * @inheritdoc
      * Reset the attachementType done to false
      */
@@ -1031,19 +1025,23 @@ class LimeMailer extends PHPMailer
     public static function validateAddresses($aEmailAddressList, $patternselect = null)
     {
         $aOutList = [];
-        if (!is_array($aEmailAddressList)) {
+        if (is_string($aEmailAddressList)) {
             $aEmailAddressList = preg_split("/(,|;)/", (string) $aEmailAddressList);
         }
-
-        foreach ($aEmailAddressList as $sEmailAddress) {
-            $sEmailAddress = trim($sEmailAddress);
-            if (self::validateAddress($sEmailAddress, $patternselect)) {
-                $aOutList[] = $sEmailAddress;
+        if (is_array($aEmailAddressList)) {
+            foreach ($aEmailAddressList as $sEmailAddress) {
+                if (!is_string($sEmailAddress)) {
+                     continue;
+                }
+                $sEmailAddress = trim($sEmailAddress);
+                if (self::validateAddress($sEmailAddress, $patternselect)) {
+                    $aOutList[] = $sEmailAddress;
+                }
             }
+            return $aOutList;
         }
-        return $aOutList;
+        return [];
     }
-
 
     /**
      * @inheritdoc

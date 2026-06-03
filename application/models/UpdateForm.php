@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -72,7 +72,7 @@ class UpdateForm extends CFormModel
         if (Yii::app()->getConfig("updatable")) {
             if ($this->build != '') {
                 $crosscheck = (int) $crosscheck;
-                $getters = '/index.php?r=updates/updateinfo&currentbuild=' . $this->build . '&id=' . md5((string) getGlobalSetting('SessionName')) . '&crosscheck=' . $crosscheck;
+                $getters = '/index.php?r=updates/updateinfo&currentbuild=' . $this->build . '&id=' . md5((string) Yii::app()->getConfig('SessionName')) . '&crosscheck=' . $crosscheck;
                 $content = $this->performRequest($getters);
             } else {
                 $content = new stdClass();
@@ -88,7 +88,7 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * The server will do some checks and will ask for the correct view to be diplayed.
+     * The server will do some checks and will ask for the correct view to be displayed.
      *
      * @param string $updateKey the update key -
      * @param string $destinationBuild
@@ -210,7 +210,7 @@ class UpdateForm extends CFormModel
 
 
     /**
-     * This function requests the change log between the curent build and the destination build
+     * This function requests the change log between the current build and the destination build
      *
      * @param int $destinationBuild
      * @return mixed|stdClass
@@ -393,7 +393,7 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * This function provide status information about files presents on the system that will be afected by the update : do they exist ? are they writable ? modified ?
+     * This function provides status information about files present on the system that will be affected by the update: do they exist? are they writable? modified?
      *
      * @param array $updateinfo Array of updated files
      * @return array
@@ -459,7 +459,7 @@ class UpdateForm extends CFormModel
             }
         }
 
-        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
+        $basefilename = dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d") . '_' . md5(uniqid(rand(), true));
         $archive = new LimeSurvey\Zip();
         $archive->open($this->tempdir . DIRECTORY_SEPARATOR . 'LimeSurvey_files_backup_' . $basefilename . '.zip', ZipArchive::CREATE);
         $success = false;
@@ -543,7 +543,7 @@ class UpdateForm extends CFormModel
     private function checkAssets()
     {
         $iAssetVersionNumber  = Yii::app()->getConfig('assetsversionnumber'); // From version.php
-        $iCurrentAssetVersion = GetGlobalSetting('AssetsVersion'); // From setting_global table
+        $iCurrentAssetVersion = Yii::app()->getConfig('AssetsVersion'); // From setting_global table
 
         if ($iAssetVersionNumber != $iCurrentAssetVersion) {
             self::republishAssets();
@@ -730,8 +730,8 @@ class UpdateForm extends CFormModel
     {
         Yii::app()->loadHelper("admin.backupdb");
         $backupDb = new stdClass();
-        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
-        $baseSqlFileName = "backup_db_" . randomChars(20) . "_" . dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . ".sql";
+        $basefilename = dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d") . '_' . md5(uniqid(rand(), true));
+        $baseSqlFileName = "backup_db_" . randomChars(20) . "_" . dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d") . ".sql";
         $sfilename = $this->tempdir . DIRECTORY_SEPARATOR . $baseSqlFileName;
         $dfilename = $this->tempdir . DIRECTORY_SEPARATOR . "LimeSurvey_database_backup_" . $basefilename . ".zip";
         outputDatabase('', false, $sfilename);
@@ -807,7 +807,7 @@ class UpdateForm extends CFormModel
     /**
      * Check if a file (added/deleted/) on the update yet exists on the server, or has been modified
      *
-     * @param array $file  array of files to update (must contain file, type and chekcsum indexes)
+     * @param array $file  array of files to update (must contain file, type and checksum indexes)
      * @return stdClass containing a list of read only files
      */
     private function getCheckedFile($file)
@@ -846,7 +846,7 @@ class UpdateForm extends CFormModel
         $content = $this->performRequest($getters);
         $fileSystemCheck = $content->list;
 
-        // Strategy Pattern : different way to buil the path of the file
+        // Strategy Pattern : different way to build the path of the file
         // Right now, calling fileSystemCheckAppath() or fileSystemCheckConfig()
         // Could also use params in the futur : YAGNI !!!!!
         $files = array();
@@ -1069,7 +1069,7 @@ class UpdateForm extends CFormModel
             }
             return $content_decoded;
         } else {
-            // Should happen only on first step (get buttons), diplayed in check_updates/update_buttons/_updatesavailable_error.php
+            // Should happen only on first step (get buttons), displayed in check_updates/update_buttons/_updatesavailable_error.php
             // Could rather define a call to httprequest2 functions.
             return (object) array('result' => false, 'error' => "php_curl_not_loaded");
         }

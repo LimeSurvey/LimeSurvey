@@ -9,22 +9,29 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
     {
-        $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     public function process()
     {
-        $this->rt();
-
         $legend = [];
         $dataItems = [];
-        $field = null;
+
+        $fieldNames = [];
+        foreach ($this->question['subQuestions'] ?? [] as $subQuestion) {
+            $fieldNames[] = $this->rt . '_S' . $subQuestion['qid'];
+        }
+        $hasOther = $this->question['other'] === Question::QT_Y_YES_NO_RADIO;
+        if ($hasOther) {
+            $fieldNames[] = $this->rt . '_Cother';
+        }
+
+        $counts = $this->batchGetResponseCounts($fieldNames);
 
         foreach ($this->question['subQuestions'] ?? [] as $subQuestion) {
-            $field = $this->rt . $subQuestion['title'];
+            $field = $this->rt . "_S" . $subQuestion['qid'];
+            $count = $counts[$field] ?? 0;
             $legend[] = $subQuestion['question'];
-
-            $count = $this->getResponseCount($field);
             $dataItems[] = [
                 'key' => $subQuestion['title'],
                 'title' => $subQuestion['question'],
@@ -32,11 +39,10 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
             ];
         }
 
-        if ($this->question['other'] === Question::QT_Y_YES_NO_RADIO) {
-            $field = $this->rt . 'other';
+        if ($hasOther) {
+            $field = $this->rt . '_Cother';
             $legend[] = 'other';
-            $count = $this->getResponseCount($field);
-            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $count];
+            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$field] ?? 0];
         }
 
         return new StatisticsChartDTO(

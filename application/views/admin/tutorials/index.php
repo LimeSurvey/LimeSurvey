@@ -3,15 +3,15 @@
 /* @var $dataProvider CActiveDataProvider */
 
 // $this->breadcrumbs=array(
-// 	'Surveymenus',
+//  'Surveymenus',
 // );
 
 // $this->menu=array(
-// 	array('label'=>'Create Surveymenu', 'url'=>array('create')),
-// 	array('label'=>'Manage Surveymenu', 'url'=>array('admin')),
+//  array('label'=>'Create Surveymenu', 'url'=>array('create')),
+//  array('label'=>'Manage Surveymenu', 'url'=>array('admin')),
 // );
 //
-$pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+$pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('tutorials');
@@ -33,14 +33,15 @@ echo viewHelper::getViewTestTag('tutorials');
                 'columns'                  => $model->getColumns(),
                 'filter'                   => $model,
                 'emptyText'                => gT('No customizable entries found.'),
-                'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                        )
-                    ),
+                'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                    gT('%s rows per page'),
+                    CHtml::dropDownList(
+                        'pageSize',
+                        $pageSize,
+                        Yii::app()->params['pageSizeOptions'],
+                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                    )
+                ),
                 'rowHtmlOptionsExpression' => '["data-tutorial-id" => $data->tid]',
                 'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                 'ajaxType'                 => 'POST',
