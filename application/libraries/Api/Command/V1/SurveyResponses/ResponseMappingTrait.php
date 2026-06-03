@@ -56,8 +56,6 @@ trait ResponseMappingTrait
      */
     protected function mapResponsesToQuestions(array $responses, array $surveyQuestions): array
     {
-        $sodium = \Yii::app()->sodium;
-
         foreach ($responses as &$response) {
             foreach ($response['answers'] as &$answer) {
                 $qid = $answer['key'];
