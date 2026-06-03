@@ -99,6 +99,7 @@ export const QuestionHeader = ({
             data-error={getError(question.qid, Entities.questionL10n)}
           >
             <ContentEditor
+              id={`question-title-${question.qid}`}
               testId="question-content-editor"
               className={classNames(
                 question.attributes?.cssclass?.value,
@@ -163,6 +164,7 @@ export const QuestionHeader = ({
           )}
         >
           <ContentEditor
+            id={`question-help-description-${question.qid}`}
             className="question-description-content-editor"
             testId={'question-help-description-content-editor'}
             placeholder={t('Optional help description')}

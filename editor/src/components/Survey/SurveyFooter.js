@@ -137,6 +137,7 @@ export const SurveyFooter = ({
                 <div ref={titleRef} id="survey-footer-title" className="title">
                   <h6>
                     <ContentEditor
+                      id="survey-footer-end-text"
                       value={L10ns({
                         prop: 'endText',
                         language,

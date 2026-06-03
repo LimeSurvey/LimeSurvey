@@ -126,6 +126,7 @@ export const ContentEditor = ({
             value={value}
             focus={focus}
             showToolbar={showToolbar}
+            id={id}
             {...data}
           />
         ) : (
@@ -142,6 +143,7 @@ export const ContentEditor = ({
             onKeyDown={onKeyDown}
             showToolbar={showToolbar}
             valueIsEmpty={valueIsEmpty}
+            id={id}
           />
         )}
       </TooltipContainer>

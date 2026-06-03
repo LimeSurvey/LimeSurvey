@@ -230,6 +230,7 @@ export const ArrayColumnsTitles = ({
               className="d-flex justify-content-center"
             >
               <ContentEditor
+                id={`subquestion-header-${qid}${scaleId}`}
                 placeholder={`Header ${scaleId + 1}`}
                 value={headerValue}
                 update={(value) => handleHeaderChange(value, scaleId)}
@@ -262,6 +263,7 @@ export const ArrayColumnsTitles = ({
                       })}
                     >
                       <ArrayColumnTitle
+                        id={`${entitiesInfo.rowName}-${entity[entitiesInfo.idKey]}${index}`}
                         dragIconSize={dragIconSize}
                         removeItem={() => removeItem(entitiesInfo, entity)}
                         highestHeight={highestHeight}

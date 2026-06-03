@@ -16,6 +16,7 @@ import { ArraySubQuestionTextAnswers } from './ArraySubQuestionTextAnswers'
 import { ArraySubQuestionNumberAnswers } from './ArraySubQuestionNumberAnswers'
 
 export const ArrayRow = ({
+  id,
   questionThemeName,
   isFocused,
   highestWidth,
@@ -116,6 +117,7 @@ export const ArrayRow = ({
           className="ps-3 flex-row justify-content-start"
         >
           <ContentEditor
+            id={id}
             placeholder={placeholder}
             value={titleValue}
             update={(value) =>

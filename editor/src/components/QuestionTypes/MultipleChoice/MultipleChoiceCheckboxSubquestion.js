@@ -39,6 +39,7 @@ export const MultipleChoiceCheckboxSubquestion = ({
           }}
         />
         <ContentEditor
+          id={`subquestion-${subQuestion.qid}`}
           className={classNames('multi-choice-checkbox-label choice', {
             'active-green-color': isChecked,
           })}
