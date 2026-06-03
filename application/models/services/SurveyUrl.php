@@ -54,7 +54,7 @@ class SurveyUrl
 
         // If short url is not preferred or no alias is found, return a traditional URL
         $urlParams = array_merge($this->urlParams, ['sid' => $surveyId, 'lang' => $this->language]);
-        return \Yii::app()->createAbsoluteUrl('survey/index', $urlParams);
+        return \App()->createPublicUrl('survey/index', $urlParams);
     }
 
     /**
@@ -83,10 +83,10 @@ class SurveyUrl
         $urlManager = \Yii::app()->getUrlManager();
         $urlFormat = $urlManager->getUrlFormat();
         if ($urlFormat == \CUrlManager::GET_FORMAT) {
-            $url = \Yii::app()->getBaseUrl(true);
+            $url = \App()->getPublicBaseUrl(true);
             $params = [$urlManager->routeVar => $alias] + $params;
         } else {
-            $url = \Yii::app()->getBaseUrl(true) . '/' . $alias;
+            $url = \App()->getPublicBaseUrl(true) . '/' . $alias;
         }
         $query = $urlManager->createPathInfo($params, '=', '&');
         if (!empty($query)) {
