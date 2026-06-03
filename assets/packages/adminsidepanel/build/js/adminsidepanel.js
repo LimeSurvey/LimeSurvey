@@ -874,6 +874,30 @@ class QuestionExplorer {
     this.container.innerHTML = html;
     this.bindEvents();
     _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].redoTooltips();
+    this.initQuestionTooltips();
+  }
+
+  /**
+   * Re-initialize the question-item tooltips with a fixed positioning strategy.
+   */
+  initQuestionTooltips() {
+    if (typeof bootstrap === 'undefined' || !bootstrap.Tooltip || !this.container) {
+      return;
+    }
+    this.container.querySelectorAll('.question-link[data-bs-toggle="tooltip"]').forEach(function (el) {
+      var existing = bootstrap.Tooltip.getInstance(el);
+      if (existing) {
+        try {
+          existing.dispose();
+        } catch (e) {}
+      }
+      new bootstrap.Tooltip(el, {
+        container: 'body',
+        popperConfig: {
+          strategy: 'fixed'
+        }
+      });
+    });
   }
   createFullQuestionLink(baseLink) {
     if (!baseLink) return '#';
@@ -990,7 +1014,7 @@ class QuestionExplorer {
     // Always show dropdown HTML, use CSS/JS hover to control visibility
     var showDropdown = true;
     var questionHasCondition = question.relevance !== '1';
-    var html = '<li class="' + classes + '" data-qid="' + question.qid + '" data-gid="' + questiongroup.gid + '" data-is-hidden="' + question.hidden + '" data-questiontype="' + question.type + '" data-has-condition="' + questionHasCondition + '" title="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(question.question_flat) + '" data-bs-toggle="tooltip">';
+    var html = '<li class="' + classes + '" data-qid="' + question.qid + '" data-gid="' + questiongroup.gid + '" data-is-hidden="' + question.hidden + '" data-questiontype="' + question.type + '" data-has-condition="' + questionHasCondition + '">';
 
     // Drag handle (only if survey not active)
     if (!surveyIsActive) {
@@ -1003,7 +1027,7 @@ class QuestionExplorer {
     }
 
     // Question link
-    html += '<a href="' + question.link + '" class="col-9 pjax question-question-list-item-link display-as-container question-link" data-qid="' + question.qid + '" data-gid="' + question.gid + '">';
+    html += '<a href="' + question.link + '" class="col-9 pjax question-question-list-item-link display-as-container question-link" data-qid="' + question.qid + '" data-gid="' + question.gid + '" title="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(question.question_flat) + '" data-bs-toggle="tooltip" data-bs-placement="top">';
     html += '<span class="question_text_ellipsize ' + (question.hidden ? 'question-hidden' : '') + '" style="width: ' + itemWidth + '">';
     html += '[' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(question.title) + '] &rsaquo; ' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(question.question_flat);
     html += '</span>';
