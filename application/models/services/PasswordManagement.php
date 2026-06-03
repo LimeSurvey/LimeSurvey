@@ -36,18 +36,19 @@ class PasswordManagement
      * the Host header to generate password reset links pointing to a malicious domain.
      *
      * Priority:
-     * 1. If 'allowedHosts' is configured and the request host is whitelisted → use it
+     * 1. If 'allowedHosts' is configured and the request host is whitelisted - use it
      *    (supports domain aliasing where multiple domains serve the same instance)
-     * 2. If 'publicurl' is an absolute URL → use it as trusted base
-     * 3. Otherwise → return null (insecure configuration, refuse to generate URL)
+     * 2. If 'publicurl' is an absolute URL - use it as trusted base
+     * 3. Otherwise - return null (insecure configuration, refuse to generate URL)
      *
      * @param string $route the URL route
      * @param array $params additional GET parameters
      * @return string|null the constructed absolute URL, or null if no trusted base URL can be determined
      */
-    private static function createSecureAbsoluteUrl(string $route, array $params = []): ?string
+    private static function createValidatedAbsoluteUrl(string $route, array $params = []): ?string
     {
         $baseUrl = null;
+        $externalBasePath = null;
 
         // Option 1: Validate request host against allowedHosts whitelist
         // This preserves domain aliasing (multiple domains pointing to same instance)
@@ -59,9 +60,9 @@ class PasswordManagement
             $hostOnly = parse_url($scheme . '://' . $httpHost, PHP_URL_HOST);
 
             if ($hostOnly && in_array($hostOnly, $allowedHosts)) {
-                // Only scheme + host (+ port). Do NOT append getBaseUrl() here
-                // because createUrl() already includes the base path.
-                $baseUrl = $scheme . '://' . $httpHost;
+                // Use only the validated hostname, not the raw HTTP_HOST
+                // (which could contain an attacker-controlled port).
+                $baseUrl = $scheme . '://' . $hostOnly;
             }
         }
 
@@ -71,13 +72,15 @@ class PasswordManagement
             $parsedPublicUrl = parse_url((string) $publicUrl);
 
             if (isset($parsedPublicUrl['scheme']) && isset($parsedPublicUrl['host'])) {
-                // Extract only scheme + host + port from publicurl, discard path
-                // because createUrl() already includes the base path.
                 $hostPart = $parsedPublicUrl['scheme'] . '://' . $parsedPublicUrl['host'];
                 if (isset($parsedPublicUrl['port'])) {
                     $hostPart .= ':' . $parsedPublicUrl['port'];
                 }
                 $baseUrl = $hostPart;
+                // Preserve the path from publicurl for proxied/subdirectory installs
+                if (isset($parsedPublicUrl['path']) && $parsedPublicUrl['path'] !== '/') {
+                    $externalBasePath = rtrim($parsedPublicUrl['path'], '/');
+                }
             }
         }
 
@@ -92,6 +95,18 @@ class PasswordManagement
         }
 
         $relativeUrl = \Yii::app()->createUrl($route, $params);
+
+        // If publicurl has an external path prefix different from the internal base,
+        // replace the internal base path with the external one.
+        if ($externalBasePath !== null) {
+            $internalBase = \Yii::app()->getBaseUrl();
+            if ($internalBase !== '' && strpos($relativeUrl, $internalBase) === 0) {
+                $relativeUrl = $externalBasePath . substr($relativeUrl, strlen($internalBase));
+            } elseif ($internalBase === '' || $internalBase === '/') {
+                $relativeUrl = $externalBasePath . $relativeUrl;
+            }
+        }
+
         return $baseUrl . $relativeUrl;
     }
 
@@ -105,7 +120,7 @@ class PasswordManagement
     {
         $adminEmail = [];
         $siteName = \Yii::app()->getConfig("sitename");
-        $loginUrl = self::createSecureAbsoluteUrl(
+        $loginUrl = self::createValidatedAbsoluteUrl(
             'admin/authentication/sa/newPassword',
             ['param' => $this->user->validation_key]
         );
@@ -231,7 +246,7 @@ class PasswordManagement
             $now = new DateTime();
             $this->user->last_forgot_email_password = $now->format('Y-m-d H:i:s');
             $this->user->save();
-            $linkToResetPage = self::createSecureAbsoluteUrl(
+            $linkToResetPage = self::createValidatedAbsoluteUrl(
                 'admin/authentication/sa/newPassword/',
                 ['param' => $this->user->validation_key]
             );
@@ -336,8 +351,8 @@ class PasswordManagement
      */
     public function getRenderArray()
     {
-        $absoluteUrl = self::createSecureAbsoluteUrl('/admin');
-        $passwordResetUrl = self::createSecureAbsoluteUrl(
+        $absoluteUrl = self::createValidatedAbsoluteUrl('/admin');
+        $passwordResetUrl = self::createValidatedAbsoluteUrl(
             'admin/authentication/sa/newPassword',
             ['param' => $this->user->validation_key]
         );

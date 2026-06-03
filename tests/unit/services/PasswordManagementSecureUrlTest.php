@@ -5,7 +5,7 @@ namespace ls\tests;
 use LimeSurvey\Models\Services\PasswordManagement;
 
 /**
- * Tests for PasswordManagement::createSecureAbsoluteUrl()
+ * Tests for PasswordManagement::createValidatedAbsoluteUrl()
  *
  * Verifies the Host Header Injection fix (bug #20548):
  * - URLs use allowedHosts-validated request host when configured
@@ -28,7 +28,7 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::$method = new \ReflectionMethod(PasswordManagement::class, 'createSecureAbsoluteUrl');
+        self::$method = new \ReflectionMethod(PasswordManagement::class, 'createValidatedAbsoluteUrl');
         self::$method->setAccessible(true);
     }
 
@@ -53,7 +53,7 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
     /**
      * Helper to invoke the private static method.
      */
-    private function invokeCreateSecureAbsoluteUrl(string $route, array $params = []): ?string
+    private function invokecreateValidatedAbsoluteUrl(string $route, array $params = []): ?string
     {
         return self::$method->invoke(null, $route, $params);
     }
@@ -69,7 +69,7 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
         \Yii::app()->setConfig('allowedHosts', ['trusted.example.com']);
         \Yii::app()->setConfig('publicurl', '/');
 
-        $url = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'abc123']);
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'abc123']);
 
         $this->assertNotNull($url);
         $this->assertStringStartsWith('https://trusted.example.com', $url);
@@ -87,9 +87,9 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
         \Yii::app()->setConfig('allowedHosts', ['legitimate.example.com']);
         \Yii::app()->setConfig('publicurl', '/');
 
-        $url = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'abc123']);
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'abc123']);
 
-        // Since the Host doesn't match allowedHosts AND publicurl is relative → null
+        // Since the Host doesn't match allowedHosts AND publicurl is relative â†’ null
         $this->assertNull($url);
     }
 
@@ -104,7 +104,7 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
         \Yii::app()->setConfig('allowedHosts', ['legitimate.example.com']);
         \Yii::app()->setConfig('publicurl', 'https://mysite.com/limesurvey/');
 
-        $url = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'token123']);
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'token123']);
 
         $this->assertNotNull($url);
         $this->assertStringStartsWith('https://mysite.com', $url);
@@ -123,7 +123,7 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
         \Yii::app()->setConfig('allowedHosts', null);
         \Yii::app()->setConfig('publicurl', 'https://configured-host.example.com/survey/');
 
-        $url = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'xyz']);
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'xyz']);
 
         $this->assertNotNull($url);
         $this->assertStringStartsWith('https://configured-host.example.com', $url);
@@ -141,7 +141,7 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
         \Yii::app()->setConfig('allowedHosts', null);
         \Yii::app()->setConfig('publicurl', '/limesurvey/');
 
-        $url = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'test']);
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'test']);
 
         $this->assertNull($url);
     }
@@ -157,7 +157,7 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
         \Yii::app()->setConfig('allowedHosts', ['myhost.com']);
         \Yii::app()->setConfig('publicurl', '/');
 
-        $url = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'val']);
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'val']);
         $this->assertNotNull($url);
 
         $basePath = \Yii::app()->getBaseUrl();
@@ -169,19 +169,22 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
     }
 
     /**
-     * Test that port is preserved in the URL when using allowedHosts path.
+     * Test that attacker-controlled port in Host header is NOT propagated.
+     * Only the validated hostname from allowedHosts should be used.
      */
-    public function testPortPreservedWithAllowedHosts(): void
+    public function testPortFromHostHeaderNotPropagated(): void
     {
         $_SERVER['HTTP_HOST'] = 'myhost.com:8443';
         $_SERVER['HTTPS'] = 'on';
         \Yii::app()->setConfig('allowedHosts', ['myhost.com']);
         \Yii::app()->setConfig('publicurl', '/');
 
-        $url = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'x']);
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'x']);
 
         $this->assertNotNull($url);
-        $this->assertStringStartsWith('https://myhost.com:8443', $url);
+        // Should use only the validated hostname, NOT the raw port from HTTP_HOST
+        $this->assertStringStartsWith('https://myhost.com', $url);
+        $this->assertStringNotContainsString(':8443', $url);
     }
 
     /**
@@ -193,10 +196,27 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
         \Yii::app()->setConfig('allowedHosts', null);
         \Yii::app()->setConfig('publicurl', 'http://mysite.local:9090/limesurvey/');
 
-        $url = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'y']);
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'y']);
 
         $this->assertNotNull($url);
         $this->assertStringStartsWith('http://mysite.local:9090', $url);
+    }
+
+    /**
+     * Test that publicurl path prefix is preserved for subdirectory/proxied installs.
+     */
+    public function testPublicUrlPathPreserved(): void
+    {
+        $_SERVER['HTTP_HOST'] = 'untrusted.com';
+        \Yii::app()->setConfig('allowedHosts', null);
+        \Yii::app()->setConfig('publicurl', 'https://proxy.example.com/surveys/');
+
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'abc']);
+
+        $this->assertNotNull($url);
+        $this->assertStringStartsWith('https://proxy.example.com', $url);
+        $this->assertStringContainsString('/surveys/', $url);
+        $this->assertStringContainsString('abc', $url);
     }
 
     /**
@@ -209,7 +229,7 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
         \Yii::app()->setConfig('allowedHosts', ['plain.example.com']);
         \Yii::app()->setConfig('publicurl', '/');
 
-        $url = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'z']);
+        $url = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'z']);
 
         $this->assertNotNull($url);
         $this->assertStringStartsWith('http://plain.example.com', $url);
@@ -227,12 +247,12 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
 
         // Request via domain-a
         $_SERVER['HTTP_HOST'] = 'domain-a.com';
-        $urlA = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => '1']);
+        $urlA = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => '1']);
         $this->assertStringStartsWith('https://domain-a.com', $urlA);
 
         // Request via domain-b
         $_SERVER['HTTP_HOST'] = 'domain-b.com';
-        $urlB = $this->invokeCreateSecureAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => '2']);
+        $urlB = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => '2']);
         $this->assertStringStartsWith('https://domain-b.com', $urlB);
     }
 }
