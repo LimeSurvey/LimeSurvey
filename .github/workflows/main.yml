@@ -48,7 +48,7 @@ jobs:
 
     name: PHP ${{ matrix.php-version }} - ${{ matrix.db-type }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -167,6 +167,11 @@ jobs:
           name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
           path: cov.xml
 
+      - name: Run unit tests with debug mode (surfaces hidden warnings)
+        env:
+          LIMESURVEY_DEBUG: 2
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped --exclude-group ${{ matrix.db-type != 'mysql' && 'debugoff,mysql' || 'debugoff' }} tests/unit
+
   test-coverage:
     runs-on: ubuntu-22.04
     needs: unit-tests
@@ -185,7 +190,7 @@ jobs:
           - php-version: '8.3'
             db-type: 'mssql'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
@@ -215,7 +220,7 @@ jobs:
       DBENGINE: INNODB
       PHP_VERSION: '8.3'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup
         run: |

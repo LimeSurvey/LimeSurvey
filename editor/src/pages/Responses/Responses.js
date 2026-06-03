@@ -27,7 +27,6 @@ export const Responses = () => {
   const [sorting, setSorting] = useState([])
   const [showTableFilters, setShowTableFilters] = useState(false)
   const [showStatisticsFilters, setShowStatisticsFilters] = useState(false)
-  const [rowSelection, setRowSelection] = useState({})
   const [columnsFilters, setColumnsFilters] = useState([])
   const [tabKey, setTabKey] = useState(TAB_KEYS.RESPONSES)
   const [statisticsFilters, setStatisticsFilters] = useState({})
@@ -200,9 +199,7 @@ export const Responses = () => {
             <ResponsesTable
               responsesData={responses}
               globalFilter={globalFilter}
-              rowSelection={rowSelection}
               setGlobalFilter={setGlobalFilter}
-              setRowSelection={setRowSelection}
               setShowFilters={setShowTableFilters}
               showFilters={showTableFilters}
               setSorting={setSorting}

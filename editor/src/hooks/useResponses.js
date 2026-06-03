@@ -39,7 +39,7 @@ export function useResponses(surveyId, pagination, filters, sorting) {
 
   const invalidate = () => {
     queryClient.invalidateQueries({
-      queryKey: ['surveyResponses', surveyId, pagination, filters, sorting],
+      queryKey: [STATES.SURVEY_RESPONSES, surveyId],
     })
   }
 

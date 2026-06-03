@@ -52,7 +52,7 @@ jobs:
     name: PHP ${{ matrix.php-versions }} / ${{ matrix.testsuite }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
         run: |

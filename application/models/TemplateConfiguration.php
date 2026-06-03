@@ -1464,11 +1464,14 @@ class TemplateConfiguration extends TemplateConfig
 
 
     /**
-     * Change the template name inside the configuration entries (called from template editor)
-     * NOTE: all tests (like template exist, etc) are done from template controller.
+     * Update stored configuration records to replace one template name with another.
      *
-     * @param string $sOldName The old name of the template
-     * @param string $sNewName The newname of the template
+     * This performs a direct bulk update of the `template_name` column for all rows
+     * matching the old name. Validations (existence, permissions, etc.) are handled
+     * by the caller (template controller).
+     *
+     * @param string $sOldName The current template name to replace.
+     * @param string $sNewName The new template name to set.
      */
     public static function rename($sOldName, $sNewName)
     {
@@ -1480,13 +1483,16 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Proxy for the AR method to manage the inheritance
-     * If one of the field that can be inherited is set to "inherit", then it will return the value of its parent
-     * NOTE: this is recursive, if the parent field itself is set to inherit, then it will
-     * the value of the parent of the parent, etc
+     * Retrieve an attribute value, resolving template inheritance for inheritable fields.
      *
-     * @param string $name the name of the attribute
-     * @return mixed
+     * When magic inheritance is enabled, inheritable attributes return the nearest ancestor's
+     * non-"inherit" value by walking the parent-configuration chain. If a cycle is detected,
+     * the parent's raw stored value is used. When magic inheritance is disabled, inheritable
+     * attributes return the stored value. Non-inheritable attributes are delegated to the
+     * parent getter.
+     *
+     * @param string $name The attribute name to retrieve.
+     * @return mixed The resolved attribute value (may be a scalar, array, object, or null).
      */
     public function __get($name)
     {
@@ -1502,22 +1508,25 @@ class TemplateConfiguration extends TemplateConfig
 
         if (in_array($name, $aAttributesThatCanBeInherited) && $this->bUseMagicInherit) {
             // Full inheritance of the whole field
-            $sAttribute = parent::__get($name);
+            $sAttribute = $this->getAttribute($name);
             if ($sAttribute === 'inherit') {
-                // NOTE: this is object recursive (if parent configuration field is set to inherit,
-                // then it will lead to this method again.)
-                $oParentConfiguration = $this->getParentConfiguration();
-                /**
-                 * We check if $oParentConfiguration is the same as $this because if it is, $oParentConfiguration->$name will
-                 * try to directly access the property instead of calling the magic method, and it will fail for dynamic properties.
-                 * @todo: Review the behavior of getParentConfiguration(). Returning the same object seems to be a bug.
-                 */
-                if ($oParentConfiguration !== $this) {
-                    $sAttribute = $oParentConfiguration->$name;
-                } else {
+                // Walk the parent chain until we find a non-'inherit' value or run out of parents.
+                $oCurrentConfig = $this;
+                $visited = [spl_object_id($this) => true];
+                while ($sAttribute === 'inherit') {
+                    $oParentConfiguration = $oCurrentConfig->getParentConfiguration();
+                    if ($oParentConfiguration === $oCurrentConfig || isset($visited[spl_object_id($oParentConfiguration)])) {
+                        // Cycle detected — use raw value from this node
+                        $sAttribute = $oParentConfiguration->getAttribute($name);
+                        break;
+                    }
+                    $visited[spl_object_id($oParentConfiguration)] = true;
                     $sAttribute = $oParentConfiguration->getAttribute($name);
+                    $oCurrentConfig = $oParentConfiguration;
                 }
             }
+        } elseif (in_array($name, $aAttributesThatCanBeInherited)) {
+            $sAttribute = $this->getAttribute($name);
         } else {
             $sAttribute = parent::__get($name);
         }

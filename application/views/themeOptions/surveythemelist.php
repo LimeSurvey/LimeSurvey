@@ -21,6 +21,7 @@ $this->widget(
         'dataProvider' => $oSurveyTheme->searchGrid(),
         'filter' => $oSurveyTheme,
         'id' => 'themeoptions-grid',
+        'caption' => gT('Survey themes'),
         'pager' => [
             'class' => 'application.extensions.admin.grid.CLSYiiPager',
         ],

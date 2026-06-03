@@ -279,7 +279,7 @@ class SurveySearchTest extends TestBaseClass
 
         // Get surveys
         $s = new \Survey('search');
-        $s->gsid = $parents->gsid;
+        $s->gsid = $parents[0]->gsid;
 
         $surveysDataProvider = $s->search();
         $surveys = $surveysDataProvider->getData();
