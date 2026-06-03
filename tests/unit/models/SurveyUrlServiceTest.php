@@ -22,6 +22,32 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
     }
 
     /**
+     * Extract URL parameters from both query string and path-info style URLs.
+     * Handles formats like:
+     *   ?sid=931272&lang=en  (GET format)
+     *   /survey/index/sid/931272/lang/en  (path format)
+     */
+    private function extractUrlParams(string $url): array
+    {
+        $parsed = parse_url($url);
+        $params = [];
+        if (!empty($parsed['query'])) {
+            parse_str($parsed['query'], $params);
+        }
+        // Also extract path-info style params (/key/value pairs)
+        if (!empty($parsed['path'])) {
+            $segments = explode('/', trim($parsed['path'], '/'));
+            for ($i = 0; $i < count($segments) - 1; $i += 1) {
+                // Look for known param keys in path segments
+                if (in_array($segments[$i], ['sid', 'lang', 'token', 'r'], true)) {
+                    $params[$segments[$i]] = $segments[$i + 1];
+                }
+            }
+        }
+        return $params;
+    }
+
+    /**
      * Compares the parameters at the end.
      *
      * Inside the application it should be like:
@@ -39,8 +65,7 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
             931272,
             self::$testSurvey->languagesettings
         );
-        $parsed = parse_url($url);
-        parse_str($parsed['query'] ?? '', $queryParams);
+        $queryParams = $this->extractUrlParams($url);
         self::assertEquals('931272', $queryParams['sid'] ?? null);
         self::assertEquals('en', $queryParams['lang'] ?? null);
     }
@@ -76,8 +101,7 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
             931272,
             self::$testSurvey->languagesettings
         );
-        $parsed = parse_url($url);
-        parse_str($parsed['query'] ?? '', $queryParams);
+        $queryParams = $this->extractUrlParams($url);
         self::assertEquals('931272', $queryParams['sid'] ?? null);
         self::assertEquals('fr', $queryParams['lang'] ?? null);
     }
@@ -93,8 +117,7 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
             self::$testSurvey->getAliasForLanguage()
         );
         self::assertStringContainsString('Hogwarts', $url);
-        $parsed = parse_url($url);
-        parse_str($parsed['query'] ?? '', $queryParams);
+        $queryParams = $this->extractUrlParams($url);
         self::assertEquals('fr', $queryParams['lang'] ?? null);
     }
 
@@ -126,8 +149,7 @@ class SurveyUrlServiceTest extends \ls\tests\TestBaseClass
             null
         );
         self::assertStringNotContainsString('Hogwarts', $url2);
-        $parsed = parse_url($url2);
-        parse_str($parsed['query'] ?? '', $queryParams);
+        $queryParams = $this->extractUrlParams($url2);
         self::assertEquals('931272', $queryParams['sid'] ?? null);
         self::assertEquals('en', $queryParams['lang'] ?? null);
 
