@@ -312,11 +312,22 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     ]);
                     ?>
                 <?php } else { ?>
-                    <?php echo CHtml::form(["admin/checkintegrity", 'sa' => 'fixredundancy'], 'post'); ?>
+                    <?php echo CHtml::form(["admin/checkintegrity", 'sa' => 'fixredundancy'], 'post', ['id' => 'redundancy-check-form']); ?>
             <ul id="data-redundancy-list" class='data-redundancy-list list-unstyled'>
                     <?php
                     if (isset($redundantsurveytables)) { ?>
-                    <li><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?>
+                    <li class="pb-2"><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?>
+                        <div class='mb-2'>
+                            <input
+                                type='checkbox'
+                                class='redundancy-group-toggle'
+                                id='check-all-response-tables'
+                                data-target-list='response-tables-list'
+                            />
+                            <label for='check-all-response-tables'>
+                                <?php eT("Check all items in this group"); ?> (<?php echo count($redundantsurveytables); ?>)
+                            </label>
+                        </div>
                         <ul class='response-tables-list list-unstyled'>
                                 <?php
                                 foreach ($redundantsurveytables as $surveytable) { ?>
@@ -334,6 +345,17 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <?php
                     if (isset($redundanttokentables) && count($redundanttokentables) > 0) { ?>
                     <li><?php eT("The following old participant lists exist and may be deleted if no longer required:"); ?>
+                        <div class='mb-2'>
+                            <input
+                                type='checkbox'
+                                class='redundancy-group-toggle'
+                                id='check-all-token-tables'
+                                data-target-list='token-tables-list'
+                            />
+                            <label for='check-all-token-tables'>
+                                <?php eT("Check all items in this group"); ?> (<?php echo count($redundanttokentables); ?>)
+                            </label>
+                        </div>
                         <ul class='token-tables-list list-unstyled'>
                                 <?php
                                 foreach ($redundanttokentables as $tokentable) { ?>
