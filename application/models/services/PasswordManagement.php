@@ -31,37 +31,58 @@ class PasswordManagement
     }
 
     /**
-     * Creates an absolute URL for use in emails without relying on the HTTP Host header.
+     * Creates an absolute URL for use in emails without relying on an unvalidated HTTP Host header.
      * This prevents Host Header Injection attacks where an attacker could manipulate
      * the Host header to generate password reset links pointing to a malicious domain.
      *
-     * Uses the configured 'publicurl' if it contains a scheme and host,
-     * otherwise falls back to SERVER_NAME.
+     * Priority:
+     * 1. If 'allowedHosts' is configured and the request host is whitelisted → use it
+     *    (supports domain aliasing where multiple domains serve the same instance)
+     * 2. If 'publicurl' is an absolute URL → use it as trusted base
+     * 3. Otherwise → return null (insecure configuration, refuse to generate URL)
      *
      * @param string $route the URL route
      * @param array $params additional GET parameters
-     * @return string the constructed absolute URL
+     * @return string|null the constructed absolute URL, or null if no trusted base URL can be determined
      */
-    private static function createSecureAbsoluteUrl(string $route, array $params = []): string
+    private static function createSecureAbsoluteUrl(string $route, array $params = []): ?string
     {
-        $publicUrl = \Yii::app()->getConfig('publicurl');
-        $parsedPublicUrl = parse_url((string) $publicUrl);
+        $baseUrl = null;
 
-        if (isset($parsedPublicUrl['scheme']) && isset($parsedPublicUrl['host'])) {
-            // publicurl is absolute - use it as trusted base
-            $baseUrl = rtrim($publicUrl, '/');
-        } else {
-            // Construct base URL from SERVER_NAME (controlled by server config, not client)
+        // Option 1: Validate request host against allowedHosts whitelist
+        // This preserves domain aliasing (multiple domains pointing to same instance)
+        $allowedHosts = \Yii::app()->getConfig('allowedHosts');
+        if (!empty($allowedHosts) && is_array($allowedHosts)) {
             $isSecure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
             $scheme = $isSecure ? 'https' : 'http';
-            $serverName = $_SERVER['SERVER_NAME'] ?? 'localhost';
-            $port = $_SERVER['SERVER_PORT'] ?? '';
-            $baseUrl = $scheme . '://' . $serverName;
-            if ($port && !(($scheme === 'http' && $port == '80') || ($scheme === 'https' && $port == '443'))) {
-                $baseUrl .= ':' . $port;
+            $httpHost = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? '');
+            $hostOnly = parse_url($scheme . '://' . $httpHost, PHP_URL_HOST);
+
+            if ($hostOnly && in_array($hostOnly, $allowedHosts)) {
+                $baseUrl = $scheme . '://' . $httpHost;
+                $appBaseUrl = \Yii::app()->getBaseUrl();
+                $baseUrl = $baseUrl . $appBaseUrl;
             }
-            $appBaseUrl = \Yii::app()->getBaseUrl();
-            $baseUrl = $baseUrl . $appBaseUrl;
+        }
+
+        // Option 2: Fall back to absolute publicurl
+        if ($baseUrl === null) {
+            $publicUrl = \Yii::app()->getConfig('publicurl');
+            $parsedPublicUrl = parse_url((string) $publicUrl);
+
+            if (isset($parsedPublicUrl['scheme']) && isset($parsedPublicUrl['host'])) {
+                $baseUrl = rtrim($publicUrl, '/');
+            }
+        }
+
+        // Option 3: No safe base URL available
+        if ($baseUrl === null) {
+            \Yii::log(
+                'Password reset email not sent: configure "allowedHosts" (recommended for domain aliasing) or "publicurl" (as absolute URL) to prevent Host Header Injection.',
+                \CLogger::LEVEL_ERROR,
+                'application.security'
+            );
+            return null;
         }
 
         $relativeUrl = \Yii::app()->createUrl($route, $params);
@@ -82,6 +103,9 @@ class PasswordManagement
             'admin/authentication/sa/newPassword',
             ['param' => $this->user->validation_key]
         );
+        if ($loginUrl === null) {
+            return null;
+        }
         $siteAdminEmail = \Yii::app()->getConfig("siteadminemail");
         $emailSubject = \Yii::app()->getConfig("admincreationemailsubject");
         $emailTemplate = \Yii::app()->getConfig("admincreationemailtemplate");
@@ -205,6 +229,10 @@ class PasswordManagement
                 'admin/authentication/sa/newPassword/',
                 ['param' => $this->user->validation_key]
             );
+            if ($linkToResetPage === null) {
+                $sMessage = gT('Email failed');
+                return $sMessage;
+            }
             $body = array();
             $body[] = gT('You have requested to reset the password for your account.');
             $body[] = sprintf(gT('To complete this process, please click on the following link: %s') . "\n", $linkToResetPage);
@@ -256,6 +284,11 @@ class PasswordManagement
         switch ($type) {
             case self::EMAIL_TYPE_RESET_PW:
                 $renderArray = $this->getRenderArray();
+                if ($renderArray === null) {
+                    $mailer = new \LimeMailer();
+                    $mailer->ErrorInfo = gT('Email failed: server URL configuration is insecure.');
+                    return $mailer;
+                }
                 $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT(
                     "Your login credentials have been reset"
                 );
@@ -269,6 +302,11 @@ class PasswordManagement
             default:
                 //Get email template from globalSettings
                 $aAdminEmail = $this->generateAdminCreationEmail();
+                if ($aAdminEmail === null) {
+                    $mailer = new \LimeMailer();
+                    $mailer->ErrorInfo = gT('Email failed: server URL configuration is insecure.');
+                    return $mailer;
+                }
                 $subject = $aAdminEmail["subject"];
                 $body = $aAdminEmail["body"];
                 break;
@@ -288,7 +326,7 @@ class PasswordManagement
     }
 
     /**
-     * @return array
+     * @return array|null null if secure URL could not be generated
      */
     public function getRenderArray()
     {
@@ -297,6 +335,9 @@ class PasswordManagement
             'admin/authentication/sa/newPassword',
             ['param' => $this->user->validation_key]
         );
+        if ($absoluteUrl === null || $passwordResetUrl === null) {
+            return null;
+        }
         return [
             'surveyapplicationname' => \Yii::app()->getConfig("sitename"),
             'emailMessage' => sprintf(gT("Hello %s,"), $this->user->full_name) . "<br />"
