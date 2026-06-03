@@ -75,9 +75,9 @@
             </td>
 
             <!-- stable / unstable -->
-            <?php if (!in_array($aUpdateVersion['branch'], ['master','5.x','3.x-LTS'])):?>
+            <?php if (preg_match('/RC|dev|beta|alpha/i', $aUpdateVersion['branch'])): ?>
                 <td class="text-danger">
-                    <?php  eT('unstable'); ?>
+                    <?php eT('unstable'); ?>
                 </td>
             <?php else: ?>
                 <td>
