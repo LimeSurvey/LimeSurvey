@@ -248,11 +248,13 @@ class PasswordManagementSecureUrlTest extends TestBaseClass
         // Request via domain-a
         $_SERVER['HTTP_HOST'] = 'domain-a.com';
         $urlA = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => '1']);
+        $this->assertNotNull($urlA);
         $this->assertStringStartsWith('https://domain-a.com', $urlA);
 
         // Request via domain-b
         $_SERVER['HTTP_HOST'] = 'domain-b.com';
         $urlB = $this->invokecreateValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => '2']);
+        $this->assertNotNull($urlB);
         $this->assertStringStartsWith('https://domain-b.com', $urlB);
     }
 }
