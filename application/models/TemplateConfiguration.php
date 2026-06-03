@@ -1011,21 +1011,22 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         // Walk up the theme extension chain (template->extends)
-        $parentName = $this->template->extends ?? '';
+        $motherName = $this->template->extends ?? '';
         $visited = [];
-        while (!empty($parentName)) {
-            if (isset($visited[$parentName])) {
+        $motherConfig = $this;
+        while (!empty($motherName)) {
+            if (isset($visited[$motherName])) {
                 break;
             }
-            $visited[$parentName] = true;
+            $visited[$motherName] = true;
 
-            $parentConfig = self::getInstanceFromTemplateName($parentName);
-            $parentConfig->setBasics();
-            $parentPath = $parentConfig->path . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
-            if (file_exists($parentPath)) {
-                return $parentPath;
+            $motherConfig = $motherConfig->oMotherTemplate;
+            $motherConfig->setBasics();
+            $motherPath = $motherConfig->path . 'files' . DIRECTORY_SEPARATOR . $imageFileName;
+            if (file_exists($motherPath)) {
+                return $motherPath;
             }
-            $parentName = $parentConfig->template->extends ?? '';
+            $motherName = $motherConfig->template->extends ?? '';
         }
 
         return '';
