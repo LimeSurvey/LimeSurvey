@@ -279,7 +279,7 @@ class UpdateForm extends CFormModel
             $archive = new LimeSurvey\Zip();
             $archive->open($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip);
 
-            if ($archive->extractTo($this->rootdir . DIRECTORY_SEPARATOR) == 0) {
+            if (@$archive->extractTo($this->rootdir . DIRECTORY_SEPARATOR) == 0) {
                 $return = array('result' => false, 'error' => 'unzip_error', 'message' => $archive->getStatusString());
                 $archive->close();
                 return (object) $return;
@@ -859,15 +859,13 @@ class UpdateForm extends CFormModel
             // 2. We're root (UID 0) - root can modify any file, OR
             // 3. File is writable (permissions allow modification)
             if ($currentUid !== false && $fileUid !== false) {
-                return ($currentUid === $fileUid) || ($currentUid === 0) || is_writable($path);
+                return ($currentUid === $fileUid) || ($currentUid === 0);
             }
         }
 
         // POSIX not available or unable to determine ownership
-        // On Windows or systems without POSIX, we can't directly check ownership
         // but is_writable() should handle basic permission checks
-        // Return true to allow the update to proceed (permission already verified by caller)
-        return true;
+        return is_writable($path);
     }
 
 
