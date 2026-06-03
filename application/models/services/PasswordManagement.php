@@ -31,6 +31,44 @@ class PasswordManagement
     }
 
     /**
+     * Creates an absolute URL for use in emails without relying on the HTTP Host header.
+     * This prevents Host Header Injection attacks where an attacker could manipulate
+     * the Host header to generate password reset links pointing to a malicious domain.
+     *
+     * Uses the configured 'publicurl' if it contains a scheme and host,
+     * otherwise falls back to SERVER_NAME.
+     *
+     * @param string $route the URL route
+     * @param array $params additional GET parameters
+     * @return string the constructed absolute URL
+     */
+    private static function createSecureAbsoluteUrl(string $route, array $params = []): string
+    {
+        $publicUrl = \Yii::app()->getConfig('publicurl');
+        $parsedPublicUrl = parse_url((string) $publicUrl);
+
+        if (isset($parsedPublicUrl['scheme']) && isset($parsedPublicUrl['host'])) {
+            // publicurl is absolute - use it as trusted base
+            $baseUrl = rtrim($publicUrl, '/');
+        } else {
+            // Construct base URL from SERVER_NAME (controlled by server config, not client)
+            $isSecure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+            $scheme = $isSecure ? 'https' : 'http';
+            $serverName = $_SERVER['SERVER_NAME'] ?? 'localhost';
+            $port = $_SERVER['SERVER_PORT'] ?? '';
+            $baseUrl = $scheme . '://' . $serverName;
+            if ($port && !(($scheme === 'http' && $port == '80') || ($scheme === 'https' && $port == '443'))) {
+                $baseUrl .= ':' . $port;
+            }
+            $appBaseUrl = \Yii::app()->getBaseUrl();
+            $baseUrl = $baseUrl . $appBaseUrl;
+        }
+
+        $relativeUrl = \Yii::app()->createUrl($route, $params);
+        return $baseUrl . $relativeUrl;
+    }
+
+    /**
      * This function prepare the email template to send to the new created user
      *
      *
@@ -40,8 +78,7 @@ class PasswordManagement
     {
         $adminEmail = [];
         $siteName = \Yii::app()->getConfig("sitename");
-        /* Usage of Yii::app()->createAbsoluteUrl, disable publicurl, See mantis #19619 */
-        $loginUrl = \Yii::app()->createAbsoluteUrl(
+        $loginUrl = self::createSecureAbsoluteUrl(
             'admin/authentication/sa/newPassword',
             ['param' => $this->user->validation_key]
         );
@@ -164,8 +201,7 @@ class PasswordManagement
             $now = new DateTime();
             $this->user->last_forgot_email_password = $now->format('Y-m-d H:i:s');
             $this->user->save();
-            /* Usage of Yii::app()->createAbsoluteUrl, disable publicurl, See mantis #19619 */
-            $linkToResetPage = \Yii::app()->createAbsoluteUrl(
+            $linkToResetPage = self::createSecureAbsoluteUrl(
                 'admin/authentication/sa/newPassword/',
                 ['param' => $this->user->validation_key]
             );
@@ -256,9 +292,8 @@ class PasswordManagement
      */
     public function getRenderArray()
     {
-        /* Usage of Yii::app()->createAbsoluteUrl, disable publicurl, See mantis #19619 */
-        $absoluteUrl = \Yii::app()->createAbsoluteUrl("/admin");
-        $passwordResetUrl = \Yii::app()->createAbsoluteUrl(
+        $absoluteUrl = self::createSecureAbsoluteUrl('/admin');
+        $passwordResetUrl = self::createSecureAbsoluteUrl(
             'admin/authentication/sa/newPassword',
             ['param' => $this->user->validation_key]
         );
