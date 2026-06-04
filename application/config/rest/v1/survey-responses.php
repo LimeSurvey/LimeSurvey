@@ -9,7 +9,6 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyResponses,
     SchemaFactorySurveyResponsesPatch
 };
-
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 $errorSchema = (new SchemaFactoryError())->make();
