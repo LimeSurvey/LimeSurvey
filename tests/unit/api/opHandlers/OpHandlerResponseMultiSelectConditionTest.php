@@ -3,9 +3,9 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\MultiSelectConditionHandler;
-use PHPUnit\Framework\TestCase;
+use ls\tests\TestCondition;
 
-class OpHandlerResponseMultiSelectConditionTest extends TestCase
+class OpHandlerResponseMultiSelectConditionTest extends TestCondition
 {
     public function testCanHandleRecognizesOperationCaseInsensitive(): void
     {
@@ -32,7 +32,7 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCase
         $criteria = $handler->execute('status', 'active');
 
         // Condition
-        $this->assertSame('`status` IN (:value0)', $criteria->condition);
+        $this->assertFieldConditions($criteria->condition, '[0] IN (:value0)', ['status']);
         // Params
         $this->assertSame([':value0' => 'active'], $criteria->params);
     }
@@ -42,10 +42,10 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCase
         $handler = new MultiSelectConditionHandler();
 
         $criteria = $handler->execute('category', ['A', 'B', 'C']);
-
-        $this->assertSame(
-            '`category` IN (:value0, :value1, :value2)',
-            $criteria->condition
+        $this->assertFieldConditions(
+            $criteria->condition,
+            '[0] IN (:value0, :value1, :value2)',
+            ['category']
         );
         $this->assertSame(
             [':value0' => 'A', ':value1' => 'B', ':value2' => 'C'],
@@ -59,7 +59,11 @@ class OpHandlerResponseMultiSelectConditionTest extends TestCase
 
         $criteria = $handler->execute('sta`tus; DROP TABLE users--', 'ok');
 
-        $this->assertSame('`statusDROPTABLEusers--` IN (:value0)', $criteria->condition);
+        $this->assertFieldConditions(
+            $criteria->condition,
+            '[0] IN (:value0)',
+            ['statusDROPTABLEusers--']
+        );
         $this->assertSame([':value0' => 'ok'], $criteria->params);
     }
 

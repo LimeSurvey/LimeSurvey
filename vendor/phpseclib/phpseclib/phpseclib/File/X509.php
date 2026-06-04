@@ -315,6 +315,7 @@ class X509
                 'id-at-uniqueIdentifier' => '2.5.4.45',
                 'id-at-role' => '2.5.4.72',
                 'id-at-postalAddress' => '2.5.4.16',
+                'id-at-organizationIdentifier' => '2.5.4.97',
                 'jurisdictionOfIncorporationCountryName' => '1.3.6.1.4.1.311.60.2.1.3',
                 'jurisdictionOfIncorporationStateOrProvinceName' => '1.3.6.1.4.1.311.60.2.1.2',
                 'jurisdictionLocalityName' => '1.3.6.1.4.1.311.60.2.1.1',
@@ -626,7 +627,9 @@ class X509
         $extensions = &$this->subArray($root, $path, !empty($this->extensionValues));
 
         foreach ($this->extensionValues as $id => $data) {
-            extract($data);
+            $critical = $data['critical'];
+            $replace = $data['replace'];
+            $value = $data['value'];
             $newext = [
                 'extnId' => $id,
                 'extnValue' => $value,
@@ -1610,6 +1613,9 @@ class X509
             case 'organizationalunitname':
             case 'ou':
                 return 'id-at-organizationalUnitName';
+            case 'id-at-organizationidentifier':
+            case 'organizationIdentifier':
+                return 'id-at-organizationIdentifier';
             case 'id-at-pseudonym':
             case 'pseudonym':
                 return 'id-at-pseudonym';
@@ -1858,7 +1864,7 @@ class X509
                 $dn = $this->getDN(self::DN_CANON, $dn);
                 $hash = new Hash('sha1');
                 $hash = $hash->hash($dn);
-                extract(unpack('Vhash', $hash));
+                $hash = unpack('Vhash', $hash)['hash'];
                 return strtolower(Strings::bin2hex(pack('N', $hash)));
         }
 

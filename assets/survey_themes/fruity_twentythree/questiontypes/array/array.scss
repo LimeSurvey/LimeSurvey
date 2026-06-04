@@ -33,8 +33,12 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   table.ls-answers tbody .control-label {
     text-align: left
   }
-  table.ls-answers .answertextright {
+  table.ls-answers:not(.semantic-differential-list) tbody .answertextright {
     text-align: right
+  }
+  table.ls-answers.semantic-differential-list tbody .answertextright,
+  table.ls-answers.semantic-differential-list tbody .answertext {
+    text-align: left;
   }
 
   /* Show the label */

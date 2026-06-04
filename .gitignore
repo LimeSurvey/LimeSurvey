@@ -21,6 +21,8 @@
 !.eslintrc
 !.env-cmdrc
 !.eslintignore
+!.npmrc
+!/.github
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*.*
@@ -44,8 +46,8 @@
 /upload/themes/survey/generalfiles/*.*
 !/upload/themes/survey/generalfiles/index.html
 !/upload/themes/survey/index.html
-/upload/themes/question/*.*
-/upload/themes/question/**/*.*
+/upload/themes/question/*
+/upload/themes/question/**/*
 !/upload/themes/question/readme.txt
 /upload/plugins/*
 !/upload/plugins/index.html
@@ -55,23 +57,26 @@
 !/upload/global/readme.txt
 
 # tmp directory : whole except the index.html for directory create
+# Add .htaccess where needed and index.html to disable directory listing (without mod_rewrite)
 /tmp/*
-/tmp/assets/*
-/tmp/runtime/*
-/tmp/upload/*
 !/tmp/index.html
+!/tmp/assets/
+/tmp/assets/*
 !/tmp/assets/index.html
+!/tmp/runtime/
+/tmp/runtime/*
 !/tmp/runtime/index.html
+!/tmp/runtime/.htaccess
+!/tmp/upload/
+/tmp/upload/*
 !/tmp/upload/index.html
+!/tmp/upload/.htaccess
 
 # ignore plugins directory by default except LS plugin
 # if you want to add a new distributed plugin : use /application/core/plugins
 /plugins/*
 !/plugins/index.html
 !/plugins/Demo/
-
-# ignore editor contents - reserved for future use
-/editor/*
 
 #ignore old styles
 /styles/
@@ -139,6 +144,45 @@ vendor/**/less/
 vendor/**/*.sh
 vendor/**/*.md
 vendor/**/gulpfile.js
+
+# Dev-only composer packages (require-dev)
+/vendor/php-webdriver/
+/vendor/squizlabs/
+/vendor/phpmd/
+/vendor/phpunit/
+/vendor/vimeo/
+/vendor/misantron/
+/vendor/tebazil/
+/vendor/mockery/
+/vendor/hamcrest/
+/vendor/phpstan/
+/vendor/sebastian/
+/vendor/phar-io/
+/vendor/nikic/
+/vendor/theseer/
+/vendor/doctrine/instantiator
+/vendor/myclabs/
+/vendor/pdepend/
+/vendor/composer/xdebug-handler
+/vendor/fidry/
+/vendor/felixfbecker/
+/vendor/amphp/
+/vendor/dnoegel/
+/vendor/fzaninotto/
+/vendor/symfony/yaml
+/vendor/symfony/var-exporter/
+/vendor/symfony/string/
+/vendor/symfony/service-contracts
+/vendor/symfony/config/
+/vendor/symfony/console/
+/vendor/symfony/dependency-injection/
+/vendor/symfony/filesystem/
+/vendor/symfony/polyfill-intl-grapheme/
+/vendor/symfony/polyfill-intl-normalizer/
+/vendor/symfony/process/
+/vendor/composer/pcre/
+/vendor/psr/log/
+/vendor/spatie/
 yarn-error.log
 
 # Test stuff
@@ -169,39 +213,23 @@ enabletests
 /tests/data/tmp/**
 
 ## Ignore files and dependencies for testing
-composer.lock
 vendor/bin/phpcbf
 vendor/bin/phpcs
-vendor/squizlabs/
-vendor/amphp/
 vendor/bin/
 vendor/composer/autoload_files.php
 vendor/composer/installed\.json
 vendor/composer/package-versions-deprecated/
 vendor/composer/semver/
-vendor/composer/xdebug-handler/
 #vendor/doctrine/
-vendor/dnoegel/
-vendor/felixfbecker/
-vendor/myclabs/
 vendor/netresearch/
-vendor/nikic/
 vendor/ocramius/
 vendor/openlss/
-vendor/pdepend/
-vendor/phar-io/
-vendor/php-webdriver/
 vendor/phpdocumentor/
-vendor/phpmd/
 vendor/phpspec/
-vendor/phpunit/
-vendor/sebastian/
-vendor/theseer/
-vendor/vimeo/
 vendor/webmozart/
-vendor/misantron/
 upload/templates/
 assets/packages/ckeditor/samples
+vendor/symfony/polyfill-php80
 
 ## ignore Vagrantfile and Adminer
 adminer.php
@@ -237,5 +265,7 @@ package-lock.json
 docker-compose.yml
 docker/
 /geckodriver-v0.23.0-linux64.tar.gz
-/yarn.lock
 /geckodriver.exe
+/vendor/khaled.alshamaa/ar-php/composer.lock
+/vendor/mk-j/php_xlsxwriter/composer.lock
+/vendor/mockery/mockery/composer.lock

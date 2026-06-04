@@ -128,7 +128,6 @@ class Zend_Date_Cities
         'Glasgow'     => ['latitude' =>   55.8333333, 'longitude' =>   -4.25],
         'Guatemala la Nueva' => ['latitude' => 14.6211111, 'longitude' => -90.5269444],
         'Hagatna'     => ['latitude' =>   13.47417,   'longitude' =>  144.74778],
-        'The Hague'   => ['latitude' =>   52.0833333, 'longitude' =>    4.3],
         'Hamilton'    => ['latitude' =>   32.2941667, 'longitude' =>  -64.7838889],
         'Hanoi'       => ['latitude' =>   21.0333333, 'longitude' =>  105.85],
         'Harare'      => ['latitude' =>  -17.8177778, 'longitude' =>   31.0447222],

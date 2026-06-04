@@ -105,4 +105,3 @@ class ButtonWidget extends CInputWidget
         }
     }
 }
-

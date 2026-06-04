@@ -223,7 +223,7 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
      */
     public function setCasting($casting = true)
     {
-        $this->_casting = (boolean) $casting;
+        $this->_casting = (bool) $casting;
         return $this;
     }
 

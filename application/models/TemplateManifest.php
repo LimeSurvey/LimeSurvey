@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -237,7 +237,7 @@ class TemplateManifest extends TemplateConfiguration
          * It implies they respect the convention :
          * $aSurveyData[custom screen name][custom variable] = custom variable value
          * Where custom variable value can't be an array.
-         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convetion.
+         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convention.
          * Eg: don't use arrays like $thissurvey['aAssessments']["datas"]["total"][0] or $thissurvey['aGroups'][1]["aQuestions"][1]
         */
         $thissurvey = $this->getCustomScreenData($thissurvey);
@@ -435,14 +435,14 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aLoadForm']['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => 1));
 
         // Those values can be overwritten by XML
-        $thissurvey['name'] = gT("Template Sample");
+        $thissurvey['name'] = gT("Theme sample");
         $thissurvey['description'] =
         "<p>" . gT('This is a sample survey description. It could be quite long.') . "</p>" .
         "<p>" . gT("But this one isn't.") . "<p>";
         $thissurvey['welcome'] =
         "<p>" . gT('Welcome to this sample survey') . "<p>" .
-        "<p>" . gT('You should have a great time doing this') . "<p>";
-        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
+        "<p>" . gT('You should have a great time doing this.') . "<p>";
+        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey.');
         $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
 
@@ -502,7 +502,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Retreives the absolute path for a file to edit (current template, mother template, etc)
+     * Retrieves the absolute path for a file to edit (current template, mother template, etc)
      * Also perform few checks (permission to edit? etc)
      *
      * @param string $sFile relative path to the file to edit
@@ -731,7 +731,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
         $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
         $aDatas['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
-        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormated($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
+        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormatted($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
         $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
         $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
 
@@ -853,7 +853,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function changeDateInDOM($oNewManifest, $sDate = '')
     {
-        $sDate = (empty($sDate)) ? dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")) : $sDate;
+        $sDate = (empty($sDate)) ? gmdate("Y-m-d H:i") : $sDate;
         $oConfig = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         if ($ometadata->getElementsByTagName('creationDate')) {
@@ -979,7 +979,7 @@ class TemplateManifest extends TemplateConfiguration
      * 1. Delete files and engine nodes
      * 2. Update the name of the template
      * 3. Change the creation/modification date to the current date
-     * 4. Change the autor name to the current logged in user
+     * 4. Change the author name to the current logged in user
      * 5. Change the author email to the admin email
      *
      * Used in template editor
@@ -1229,7 +1229,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Proxy for Yii::app()->clientScript->removeFileFromPackage()
-     * It's not realy needed here, but it is needed for TemplateConfiguration model.
+     * It's not really needed here, but it is needed for TemplateConfiguration model.
      * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
      * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
      *
@@ -1298,7 +1298,7 @@ class TemplateManifest extends TemplateConfiguration
             $this->oOptions = new stdClass();
         }
 
-        // Not mandatory (use package dependances)
+        // Not mandatory (use package dependencies)
         $this->cssFramework             = (!empty($this->config->xpath("//cssframework"))) ? $this->config->engine->cssframework : '';
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
@@ -1356,7 +1356,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param boolean $bInlcudeRemove   also get the files to remove
      * @return stdClass
      */
-    public static function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    public static function getAssetsToReplaceFormatted($oEngine, $sType, $bInlcudeRemove = false)
     {
         $oAssetsToReplaceFormated = new stdClass();
         if (!empty($oEngine->cssframework->$sType) && !empty($oEngine->cssframework->$sType->attributes()->replace)) {
@@ -1367,6 +1367,19 @@ class TemplateManifest extends TemplateConfiguration
             $oAssetsToReplaceFormated->replace = array(array($sAssetsToReplace, $sAssetsReplacement));
         }
         return $oAssetsToReplaceFormated;
+    }
+
+    /**
+     * Deprecated alias for getAssetsToReplaceFormatted()
+     * @deprecated Use getAssetsToReplaceFormatted() instead
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return stdClass
+     */
+    public static function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    {
+        trigger_error('getAssetsToReplaceFormated() is deprecated, use getAssetsToReplaceFormatted() instead', E_USER_DEPRECATED);
+        return self::getAssetsToReplaceFormatted($oEngine, $sType, $bInlcudeRemove);
     }
 
     /**
@@ -1412,7 +1425,8 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Get options_page value from template configuration
+     * Loads the options definition from XML file
+     * @return array|false returns the array of options or false on failing to load the file
      */
     public static function getOptionAttributes($path)
     {
@@ -1433,28 +1447,80 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string)$option['title'] : '';
                 $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string)$option['category'] : gT('Simple options');
                 $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string)$option['width'] : '2';
+                $aOptions['optionAttributes'][$key]['library'] = !empty($option['library']) ? (string)$option['library'] : '';
+                $aOptions['optionAttributes'][$key]['colorSwatch'] = !empty($option['colorSwatch']) ? (bool)$option['colorSwatch'] : '';
                 /* rows for textarea */
                 $aOptions['optionAttributes'][$key]['rows'] = !empty($option['rows']) ? (string)$option['rows'] : '4';
                 $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
                 $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
+                $aOptions['optionAttributes'][$key]['optionimages'] = !empty($option['optionimages']) ? (string)$option['optionimages'] : '';
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';
 
                 if (!empty($option->dropdownoptions)) {
-                    $dropdownOptions = '';
-                    if ($key == 'font') {
-                        $dropdownOptions .= TemplateManifest::getFontDropdownOptions();
+                    $dropdownOptions = $option->dropdownoptions; // The element to insert into
+                    $dropdownOptionsDom = dom_import_simplexml($dropdownOptions);
+                    if ($key === 'font') {
+                        $dropdownOptionsFonts = TemplateManifest::getFontDropdownOptions();
+                        if (!empty($dropdownOptionsFonts)) {
+                            $fontDropdownOptions = simplexml_load_string($dropdownOptionsFonts); // The element to insert
+                            if ($fontDropdownOptions !== false) {
+                                $child_dom = dom_import_simplexml($fontDropdownOptions);
+                                // Import the child node into the parent's document
+                                $child_imported = $dropdownOptionsDom->ownerDocument->importNode($child_dom, true);
+                                // If the parent has children, insert before the first one.
+                                if ($dropdownOptionsDom->firstChild) {
+                                    $dropdownOptionsDom->insertBefore($child_imported, $dropdownOptionsDom->firstChild);
+                                } else {
+                                    // If the parent has no children, you can just append it (which makes it the first)
+                                    $dropdownOptionsDom->appendChild($child_imported);
+                                }
+                            }
+                        }
                     }
-                    foreach ($option->xpath('//options/' . $key . '/dropdownoptions') as $option) {
-                        $dropdownOptions .= $option->asXml();
+                    $dropdownOptionsString = $dropdownOptions->asXML();
+                    $dropdownOptionsArray = [];
+                    if (isset($dropdownOptions->optgroup)) {
+                        $optgroup = 0;
+                        foreach ($dropdownOptions->optgroup as $XMLElementKey => $XMLElement) {
+                            foreach ($XMLElement->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator = 0;
+                            /** @var SimpleXMLElement $options */
+                            foreach ($XMLElement->children() as $optionKey => $options) {
+                                $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['value'] = (string)$options[0];
+                                foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                    $dropdownOptionsArray[$XMLElementKey][$optgroup][$optionKey][$optionIterator]['attributes'][$attributeKey]  = (string)$attributeValue;
+                                }
+                                $optionIterator++;
+                            }
+                            $optgroup++;
+                        }
+                    } else {
+                        $optionIterator = 0;
+                        /** @var SimpleXMLElement $options */
+                        foreach ($dropdownOptions->children() as $optionKey => $options) {
+                            $dropdownOptionsArray[$optionKey][$optionIterator]['value'] = (string)$options[0];
+                            foreach ($options->attributes() as $attributeKey => $attributeValue) {
+                                $dropdownOptionsArray[$optionKey][$optionIterator]['attributes'][$attributeKey] = (string)$attributeValue;
+                            }
+                            $optionIterator++;
+                        }
                     }
-
-                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptions;
+                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptionsString;
+                    $aOptions['optionAttributes'][$key]['dropdownoptionsArray'] = $dropdownOptionsArray;
                 } else {
                     $aOptions['optionAttributes'][$key]['dropdownoptions'] = '';
                 }
 
                 if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])) {
                     $aOptions['categories'][] = $aOptions['optionAttributes'][$key]['category'];
+                }
+            }
+            // different sorting for react part
+            if (isset($oXMLConfig->optionsOrderReact)) {
+                foreach ($oXMLConfig->optionsOrderReact->children() as $key => $optionOrderReact) {
+                    $aOptions['optionsOrderReact'][$key]['category'] = !empty($optionOrderReact['category']) ? (string)$optionOrderReact['category'] : gT('Display options');
                 }
             }
 
@@ -1482,7 +1548,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($coreFontPackages as $coreKey => $corePackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("Core") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("Core") . '">';
             }
             $fontOptions .= '<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
         }
@@ -1495,7 +1561,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($userFontPackages as $userKey => $userPackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("User") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("User") . '">';
             }
             $fontOptions .= '<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
         }
@@ -1522,7 +1588,7 @@ class TemplateManifest extends TemplateConfiguration
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
             $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
-            // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to annoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .

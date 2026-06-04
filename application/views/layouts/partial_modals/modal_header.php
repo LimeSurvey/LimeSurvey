@@ -1,8 +1,12 @@
 <?php
-/**@var $modalTitle string  */
+/** @var string $modalTitle */
+/** @var string|null $modalTitleId Optional id for the title element (for aria-labelledby on the dialog) */
+$modalTitleId = isset($modalTitleId) ? $modalTitleId : null;
 ?>
 
 <div class="modal-header">
-    <h1 class="modal-title"><?php echo $modalTitle; ?></h1>
-    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <h2 class="modal-title h1"<?= !empty($modalTitleId) ? ' id="' . $modalTitleId . '"' : '' ?>>
+        <?= $modalTitle ?>
+    </h2>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close modal window') ?>"></button>
 </div>

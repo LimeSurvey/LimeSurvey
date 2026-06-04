@@ -233,7 +233,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
     /**
      * Append
      *
-     * @param  string $value
+     * @param  string|stdClass $value
      * @return void
      * @throws Zend_View_Exception
      */
@@ -253,7 +253,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
      * OffsetSet
      *
      * @param  string|int $index
-     * @param  string $value
+     * @param  string|stdClass $value
      * @return void
      * @throws Zend_View_Exception
      */
@@ -293,7 +293,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
     /**
      * Prepend
      *
-     * @param  string $value
+     * @param  string|stdClass $value
      * @return void
      * @throws Zend_View_Exception
      */
@@ -312,7 +312,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
     /**
      * Set
      *
-     * @param  string $value
+     * @param  string|stdClass $value
      * @return void
      * @throws Zend_View_Exception
      */

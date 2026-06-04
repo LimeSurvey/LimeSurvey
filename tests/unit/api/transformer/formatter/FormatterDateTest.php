@@ -8,7 +8,7 @@ use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
 /**
  * @testdox API Formatter Date
  */
-class FormatterDateTimeToJsonTest extends TestBaseClass
+class FormatterDateTest extends TestBaseClass
 {
     /**
      * @testdox Cast UTC datetime string to JSON datetime string
@@ -34,6 +34,6 @@ class FormatterDateTimeToJsonTest extends TestBaseClass
 
     private function getConfig($revert = false)
     {
-        return $revert ? ['revert' => true] : [true];
+        return ['revert' => $revert, 'inputTimezone' => 'UTC'];
     }
 }

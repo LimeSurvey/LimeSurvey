@@ -8,10 +8,11 @@
 <div class="row">
     <div class="col-12 border-start border-2 border-secondary">
         <!-- Language tabs -->
-        <ul class="nav nav-tabs">
-            <?php foreach ($oQuota->survey->getAllLanguages() as $lang): ?>
+        <ul class="nav nav-tabs" role="tablist">
+            <?php foreach ($oQuota->survey->getAllLanguages() as $lang) : ?>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link <?= ($lang == $oQuota->survey->language) ? 'active' : null ?>"
+                    <a class="nav-link <?= ($lang == $oQuota->survey->language) ? 'active' : null ?>" role="tab"
+                        aria-selected="<?= ($lang == $oQuota->survey->language) ? 'true' : 'false' ?>"
                        data-bs-toggle="tab" href="#edittxtele<?php echo $lang ?>">
                         <?php echo getLanguageNameFromCode($lang, false); ?>
                         <?php echo($lang == $oQuota->survey->language ? '(' . gT("Base language") . ')' : null); ?>
@@ -27,11 +28,12 @@
                         'id'    => 'edittxtele' . $language,
                         'class' => 'tab-pane fade' . " " . ($language == $oQuota->survey->language ? 'show active ' : ''),
                     ],
-                    $this->renderPartial('_form_langsetting',
+                    $this->renderPartial(
+                        '_form_langsetting',
                         [
                             'form'                  => $form,
                             'oQuota'                => $oQuota,
-                            'oQuotaLanguageSetting' => ($aQuotaLanguageSettings[$language] ?? new QuotaLanguageSetting),
+                            'oQuotaLanguageSetting' => ($aQuotaLanguageSettings[$language] ?? new QuotaLanguageSetting()),
                             'language'              => $language,
                         ],
                         true

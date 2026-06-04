@@ -1,7 +1,7 @@
-<?php echo CHtml::form($url, 'post', array('id'=>"copyconditions",'name'=>"copyconditions")); ?>
+<?php echo CHtml::form($url, 'post', array('id' => "copyconditions",'name' => "copyconditions")); ?>
     <h3><?php eT("Copy conditions"); ?></h3>
 
-    <?php if (count($conditionsList)): ?>
+    <?php if (count($conditionsList)) : ?>
         <script type='text/javascript'>
             $(document).ready(function () {
                 // TODO
@@ -14,7 +14,7 @@
             <div class='condition-tbl-right'>
                 <select class='form-select' name='copyconditionsto[]' id='copytomultiselect'  multiple='multiple' >
 
-                    <?php foreach ($pquestions as $pq): ?>
+                    <?php foreach ($pquestions as $pq) : ?>
                         <option value='<?php echo $pq['fieldname']; ?>'><?php echo $pq['text']; ?></option>
                     <?php endforeach; ?>
                 </select>
@@ -22,14 +22,14 @@
         </div>
         <div class='condition-tbl-full'>
             <br/>
-            <input class='btn btn-outline-secondary' type='submit' value='<?php eT("Copy conditions"); ?>' onclick="prepareCopyconditions(); return true;" />
+            <input class='btn btn-outline-secondary' type='submit' id='copy-conditions-btn' value='<?php eT("Copy conditions"); ?>' onclick="prepareCopyconditions(); return true;" disabled />
             <input type='hidden' name='subaction' value='copyconditions' />
             <input type='hidden' name='sid' value='<?php echo $iSurveyID; ?>' />
             <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
             <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
         </div>
 
-    <?php else: ?>
+    <?php else : ?>
         <div class='messagebox ui-corner-all'>
             <div class='partialheader'>
                 <?php eT("There are no existing conditions in this survey."); ?>
@@ -41,11 +41,21 @@
 
 <script>
 function prepareCopyconditions() {
-    $('input:checked[name^=\"aConditionFromScenario\"]').each(function(i,val) {
+    $('input:checked[name^="aConditionFromScenario"]').each(function(i,val) {
         var thecid = val.value;
         var theform = document.getElementById('copyconditions');
         window.LS.addHiddenElement(theform,'copyconditionsfrom[]',thecid);
         return true;
     });
 }
+
+// Enable/disable the Copy button based on selection
+$(document).ready(function() {
+    function toggleCopyButton() {
+        var anySelected = $('#copytomultiselect option:selected').length > 0;
+        $('#copy-conditions-btn').prop('disabled', !anySelected);
+    }
+    $('#copytomultiselect').on('change', toggleCopyButton);
+    toggleCopyButton(); // Initial state
+});
 </script>

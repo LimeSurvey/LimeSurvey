@@ -7,7 +7,6 @@
  * @var $myfname
  * @var $labelText                  $ansrow['question']
  * @var $prefix
- * @var $kpclass
  * @var $rows                       $drows.' '.$maxlength
  * @var $checkconditionFunction     $checkconditionFunction.'(this.value, this.name, this.type)'
  * @var $dispVal
@@ -35,7 +34,7 @@
                 </div>
             {% endif %}
             <textarea
-                class="form-control {{ kpclass }}"
+                class="form-control"
                 name="{{ myfname }}"
                 id="answer{{ myfname }}"
                 rows="{{ rows }}"
