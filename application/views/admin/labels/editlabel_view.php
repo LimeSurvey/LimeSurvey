@@ -62,24 +62,32 @@
 
                         <!-- Languages -->
                         <div class="mb-3 col-lg-6">
-                            <label class=" form-label"><?php eT("Languages:"); ?></label>
+                            <label class="form-label" id="languageids-label" for="languageids"><?php eT("Languages:"); ?></label>
                             <div class="">
                                 <?php
                                 $aAllLanguages = getLanguageDataRestricted(false, 'short');
                                 if (isset($esrow)) {
                                     unset($aAllLanguages[$esrow['language']]);
                                 }
-                                Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2',
+                                Yii::app()->getController()->widget(
+                                    'yiiwheels.widgets.select2.WhSelect2',
                                     [
                                         'asDropDownList' => true,
-                                        'htmlOptions'    => ['multiple' => 'multiple', 'style' => "width: 80%", 'required' => 'required'],
+                                        'htmlOptions'    => [
+                                            'id' => 'languageids',
+                                            'multiple' => 'multiple',
+                                            'style' => "width: 80%",
+                                            'required' => 'required',
+                                            'aria-labelledby' => 'languageids-label',
+                                        ],
                                         'data'           => $aAllLanguages,
                                         'value'          => $langidsarray,
                                         'name'           => 'languageids',
                                         'pluginOptions'  => [
                                             'placeholder' => gT('Select languages', 'unescaped'),
                                         ]
-                                    ]); ?>
+                                    ]
+                                ); ?>
                                 <input type='hidden' name='oldlanguageids' id='oldlanguageids' value='<?php echo $langids; ?>'/>
                             </div>
                         </div>
@@ -89,14 +97,14 @@
                     <p>
                     <input type='submit' class="d-none" value='<?php if ($action === "newlabelset") {
                             eT("Save");
-                        } else {
-                            eT("Update");
-                        } ?>'/>
+                                                               } else {
+                                                                   eT("Update");
+                                                               } ?>'/>
                         <input type='hidden' name='action' value='<?php if ($action === "newlabelset") {
                             echo "insertlabelset";
-                        } else {
-                            echo "updateset";
-                        } ?>'/>
+                                                                  } else {
+                                                                      echo "updateset";
+                                                                  } ?>'/>
 
                         <?php if ($action === "editlabelset") { ?>
                             <input type='hidden' name='lid' value='<?php echo $lblid; ?>'/>
@@ -105,7 +113,7 @@
                     <?php echo CHtml::endForm() ?>
                 </div>
                 <!-- Import -->
-                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
+                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
                     <div id="neweditlblset1" class="tab-pane fade" role="tabpanel" aria-labelledby="editlabel-tab-1">
                         <?php echo CHtml::form(["admin/labels/sa/import"], 'post', ['enctype' => 'multipart/form-data', 'class' => 'form', 'id' => 'importlabels', 'name' => "importlabels"]); ?>
                         <div class="mb-3 col-6">

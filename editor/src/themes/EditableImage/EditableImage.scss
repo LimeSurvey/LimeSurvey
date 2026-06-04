@@ -1,0 +1,17 @@
+.file-loading-btn-wrapper {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.image-handle-btn-wrapper {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  .image-handle-btn {
+    background: rgba(255, 255, 255, 0.75);
+    &:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+  }
+}
