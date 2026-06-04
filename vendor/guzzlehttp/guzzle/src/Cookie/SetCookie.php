@@ -62,6 +62,10 @@ class SetCookie
                             if (is_numeric($value)) {
                                 $data[$search] = (int) $value;
                             }
+                        } elseif ($search === 'Secure' || $search === 'Discard' || $search === 'HttpOnly') {
+                            if ($value) {
+                                $data[$search] = true;
+                            }
                         } else {
                             $data[$search] = $value;
                         }
@@ -294,7 +298,15 @@ class SetCookie
             trigger_deprecation('guzzlehttp/guzzle', '7.4', 'Not passing an int, string or null to %s::%s() is deprecated and will cause an error in 8.0.', __CLASS__, __FUNCTION__);
         }
 
-        $this->data['Expires'] = null === $timestamp ? null : (\is_numeric($timestamp) ? (int) $timestamp : \strtotime((string) $timestamp));
+        if (null === $timestamp) {
+            $this->data['Expires'] = null;
+        } elseif (\is_numeric($timestamp)) {
+            $this->data['Expires'] = (int) $timestamp;
+        } else {
+            // Store unparseable dates as session cookies, not as expired cookies.
+            $expires = \strtotime((string) $timestamp);
+            $this->data['Expires'] = $expires === false ? null : $expires;
+        }
     }
 
     /**

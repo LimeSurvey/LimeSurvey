@@ -32,7 +32,7 @@ class RenderEquation extends QuestionBaseRenderer
         $inputnames = [];
 
         $sEquation  = $this->setDefaultIfEmpty($this->getQuestionAttribute('equation'), $this->aFieldArray[3]);
-        $sValue     = htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA], ENT_QUOTES);
+        $sValue     = htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$this->sSGQA], ENT_QUOTES);
 
         $answer =  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
             'ia' => $this->aFieldArray,
@@ -43,7 +43,7 @@ class RenderEquation extends QuestionBaseRenderer
             'coreClass' => 'ls-answers answer-item hidden-item  ' . $sCoreClasses,
             'insideClass' => 'em_equation',
             ), true);
-            
+
         $this->registerAssets();
         $inputnames[] = $this->sSGQA;
         return array($answer, $inputnames);

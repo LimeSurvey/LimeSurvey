@@ -14,7 +14,7 @@ if (isset($aAction['selectedUrl'])) {
 
 if (isset($aAction['largeModalView']) && $aAction['largeModalView']) {
     $largeModalView = 'modal-lg';
-}else{
+} else {
     $largeModalView = '';
 }
 ?>
@@ -66,10 +66,10 @@ echo $key; ?>"
                                     echo $aCustomData['name']; ?>"
                                     value="<?php
                                     echo $aCustomData['value']; ?>"/>
-                        <?php
+                            <?php
                         } ?>
                     </div>
-                <?php
+                    <?php
                 } ?>
             </div>
             <?php
