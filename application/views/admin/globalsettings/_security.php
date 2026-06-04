@@ -263,7 +263,7 @@
             <h3><?= gT('Allowed hosts (host header injection protection)') ?></h3>
             <div class="mb-3">
                 <p class="form-text">
-                    <?php eT("The following domain names are configured as trusted hosts for generating URLs in emails (e.g. password reset links, survey registration links). This list is stored in application/config/allowed_hosts.php."); ?>
+                    <?php eT("The following domain names are configured as trusted hosts. Requests from any other hostname will be rejected. The publicurl host is always trusted implicitly. This list is stored in application/config/allowed_hosts.php."); ?>
                 </p>
                 <?php
                 $allowedHosts = App()->loadAllowedHosts();

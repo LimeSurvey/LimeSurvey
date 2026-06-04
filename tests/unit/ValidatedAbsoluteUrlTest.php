@@ -272,6 +272,8 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     {
         // Only allow a host that doesn't match the test environment
         Yii::app()->writeAllowedHosts(['production.example.com']);
+        // Clear publicurl so localhost is not auto-trusted
+        Yii::app()->setConfig('publicurl', '');
 
         $url = Yii::app()->createValidatedAbsoluteUrl('admin/authentication/sa/login');
 
