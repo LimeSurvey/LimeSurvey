@@ -225,7 +225,7 @@ echo viewHelper::getViewTestTag('templateOptions');
         </div>
         <div id="adminthemes" class="tab-pane" role="tabpanel" aria-labelledby="adminthemes-tab">
             <div class="list-surveys">
-                <h3><?php eT('Available admin themes:'); ?></h3>
+                <h2 class="h3"><?php eT('Available admin themes:'); ?></h2>
                 <div id="admin_themes">
                     <table class="items table table-hover">
                         <thead>
@@ -291,7 +291,7 @@ echo viewHelper::getViewTestTag('templateOptions');
         </div>
         <div id="questionthemes" class="tab-pane" role="tabpanel" aria-labelledby="questionthemes-tab">
             <div class="col-12 list-surveys">
-                <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
+                <?php echo '<h2 class="h3">' . gT('Question themes:') . '</h2>'; ?>
                 <!-- Installed Question Themes -->
                 <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
                 <!-- Available Quesiton Themes and broken question themes-->
