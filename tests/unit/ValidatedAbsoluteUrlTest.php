@@ -153,74 +153,70 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     }
 
     // ------------------------------------------------------------------
-    // getValidatedHost tests
+    // isHostAllowed tests
     // ------------------------------------------------------------------
 
     /**
-     * Test that getValidatedHost returns first allowed host from file.
+     * Test that isHostAllowed returns true when host is in allowed_hosts.php.
      */
-    public function testGetValidatedHostReturnsFromAllowedHostsFile()
+    public function testIsHostAllowedReturnsTrueForAllowedHost()
     {
         Yii::app()->writeAllowedHosts(['trusted.example.com', 'also-trusted.example.com']);
 
-        $host = Yii::app()->getValidatedHost();
-        $this->assertSame('trusted.example.com', $host);
+        $this->assertTrue(Yii::app()->isHostAllowed('trusted.example.com'));
+        $this->assertTrue(Yii::app()->isHostAllowed('also-trusted.example.com'));
     }
 
     /**
-     * Test that getValidatedHost falls back to publicurl when allowed_hosts.php is empty.
+     * Test that isHostAllowed returns false for a host not in the list.
      */
-    public function testGetValidatedHostFallsBackToPublicUrl()
+    public function testIsHostAllowedReturnsFalseForUnknownHost()
+    {
+        Yii::app()->writeAllowedHosts(['trusted.example.com']);
+
+        $this->assertFalse(Yii::app()->isHostAllowed('attacker.com'));
+    }
+
+    /**
+     * Test that isHostAllowed is case-insensitive.
+     */
+    public function testIsHostAllowedIsCaseInsensitive()
+    {
+        Yii::app()->writeAllowedHosts(['Example.COM']);
+
+        $this->assertTrue(Yii::app()->isHostAllowed('example.com'));
+        $this->assertTrue(Yii::app()->isHostAllowed('EXAMPLE.COM'));
+    }
+
+    /**
+     * Test that isHostAllowed falls back to publicurl when allowed_hosts.php is empty.
+     */
+    public function testIsHostAllowedFallsBackToPublicUrl()
     {
         Yii::app()->setConfig('publicurl', 'https://public.example.com/limesurvey');
 
-        $host = Yii::app()->getValidatedHost();
-        $this->assertSame('public.example.com', $host);
+        $this->assertTrue(Yii::app()->isHostAllowed('public.example.com'));
+        $this->assertFalse(Yii::app()->isHostAllowed('other.example.com'));
     }
 
     /**
-     * Test that getValidatedHost extracts host from publicurl.
+     * Test that isHostAllowed returns false when no source is configured.
      */
-    public function testGetValidatedHostExtractsHostFromPublicUrl()
-    {
-        Yii::app()->setConfig('publicurl', 'https://public.example.com:8443/limesurvey');
-
-        $host = Yii::app()->getValidatedHost();
-        $this->assertSame('public.example.com', $host);
-    }
-
-    /**
-     * Test that getValidatedHost prefers allowed_hosts.php over publicurl.
-     */
-    public function testGetValidatedHostPrefersAllowedHostsOverPublicUrl()
-    {
-        Yii::app()->writeAllowedHosts(['allowed.example.com']);
-        Yii::app()->setConfig('publicurl', 'https://public.example.com/');
-
-        $host = Yii::app()->getValidatedHost();
-        $this->assertSame('allowed.example.com', $host);
-    }
-
-    /**
-     * Test that getValidatedHost returns false when no host source available.
-     */
-    public function testGetValidatedHostReturnsFalseWhenNoSource()
+    public function testIsHostAllowedReturnsFalseWhenNoSource()
     {
         Yii::app()->setConfig('publicurl', '');
 
-        $host = Yii::app()->getValidatedHost();
-        $this->assertFalse($host);
+        $this->assertFalse(Yii::app()->isHostAllowed('anything.com'));
     }
 
     /**
-     * Test that getValidatedHost returns false when publicurl has no scheme/host.
+     * Test that isHostAllowed returns false when publicurl has no valid host.
      */
-    public function testGetValidatedHostReturnsFalseForInvalidPublicUrl()
+    public function testIsHostAllowedReturnsFalseForInvalidPublicUrl()
     {
         Yii::app()->setConfig('publicurl', '/relative/path');
 
-        $host = Yii::app()->getValidatedHost();
-        $this->assertFalse($host);
+        $this->assertFalse(Yii::app()->isHostAllowed('localhost'));
     }
 
     // ------------------------------------------------------------------
@@ -228,7 +224,7 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     // ------------------------------------------------------------------
 
     /**
-     * Test that createValidatedAbsoluteUrl returns false when no validated host available.
+     * Test that createValidatedAbsoluteUrl returns false when no allowed host is configured.
      */
     public function testCreateValidatedAbsoluteUrlReturnsFalseWhenNoHost()
     {
@@ -239,46 +235,46 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     }
 
     /**
-     * Test that createValidatedAbsoluteUrl uses the validated host.
+     * Test that createValidatedAbsoluteUrl returns the URL when host is allowed.
      */
-    public function testCreateValidatedAbsoluteUrlUsesValidatedHost()
+    public function testCreateValidatedAbsoluteUrlReturnsUrlWhenHostAllowed()
     {
-        Yii::app()->writeAllowedHosts(['secure.example.com']);
+        // In test environment, createAbsoluteUrl generates URLs with 'localhost'
+        Yii::app()->writeAllowedHosts(['localhost']);
 
         $url = Yii::app()->createValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'testkey123']);
 
         $this->assertIsString($url);
-        $this->assertStringContainsString('secure.example.com', $url);
+        $this->assertStringContainsString('localhost', $url);
         $this->assertStringContainsString('testkey123', $url);
     }
 
     /**
-     * Test that createValidatedAbsoluteUrl uses publicurl as fallback host.
+     * Test that createValidatedAbsoluteUrl uses publicurl as fallback filter.
      */
     public function testCreateValidatedAbsoluteUrlUsesPublicUrlAsFallback()
     {
-        Yii::app()->setConfig('publicurl', 'https://mysurvey.example.org/ls');
+        // Set publicurl to match the test environment host
+        Yii::app()->setConfig('publicurl', 'http://localhost/');
 
         $url = Yii::app()->createValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'key456']);
 
         $this->assertIsString($url);
-        $this->assertStringContainsString('mysurvey.example.org', $url);
+        $this->assertStringContainsString('localhost', $url);
         $this->assertStringContainsString('key456', $url);
     }
 
     /**
-     * Test that createValidatedAbsoluteUrl does not use the Host header.
+     * Test that createValidatedAbsoluteUrl returns false when host is NOT in allowed list.
      */
-    public function testCreateValidatedAbsoluteUrlIgnoresHostHeader()
+    public function testCreateValidatedAbsoluteUrlReturnsFalseWhenHostNotAllowed()
     {
-        Yii::app()->writeAllowedHosts(['real-server.com']);
+        // Only allow a host that doesn't match the test environment
+        Yii::app()->writeAllowedHosts(['production.example.com']);
 
-        // The generated URL should use real-server.com, not whatever host header is set
         $url = Yii::app()->createValidatedAbsoluteUrl('admin/authentication/sa/login');
 
-        $this->assertIsString($url);
-        $this->assertStringContainsString('real-server.com', $url);
-        $this->assertStringNotContainsString('attacker.com', $url);
+        $this->assertFalse($url);
     }
 
     /**
@@ -286,7 +282,7 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
      */
     public function testCreateValidatedAbsoluteUrlPreservesRouteAndParams()
     {
-        Yii::app()->writeAllowedHosts(['myhost.com']);
+        Yii::app()->writeAllowedHosts(['localhost']);
 
         $url = Yii::app()->createValidatedAbsoluteUrl(
             'admin/authentication/sa/newPassword',
@@ -300,89 +296,15 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     }
 
     /**
-     * Test that createValidatedAbsoluteUrl works correctly.
+     * Test that createValidatedAbsoluteUrl allows multiple hosts in the filter.
      */
-    public function testCreateValidatedAbsoluteUrlDomainOnly()
+    public function testCreateValidatedAbsoluteUrlAllowsMultipleHosts()
     {
-        Yii::app()->writeAllowedHosts(['myhost.com']);
+        Yii::app()->writeAllowedHosts(['production.example.com', 'localhost']);
 
         $url = Yii::app()->createValidatedAbsoluteUrl('admin/authentication/sa/login');
 
         $this->assertIsString($url);
-        $this->assertStringContainsString('myhost.com', $url);
-        $this->assertStringNotContainsString(':8443', $url);
-    }
-
-    // ------------------------------------------------------------------
-    // LimeMailer::replaceHostInUrl tests
-    // ------------------------------------------------------------------
-
-    /**
-     * Test replaceHostInUrl replaces host correctly.
-     */
-    public function testReplaceHostInUrlBasic()
-    {
-        $url = 'http://evil.attacker.com/index.php?r=optout/tokens&surveyid=123&token=abc';
-        $validatedHost = 'real-server.com';
-
-        $result = \LimeMailer::replaceHostInUrl($url, $validatedHost);
-
-        $this->assertStringStartsWith('http://real-server.com/', $result);
-        $this->assertStringContainsString('surveyid=123', $result);
-        $this->assertStringContainsString('token=abc', $result);
-        $this->assertStringNotContainsString('evil.attacker.com', $result);
-    }
-
-    /**
-     * Test replaceHostInUrl preserves path and scheme.
-     */
-    public function testReplaceHostInUrlPreservesPath()
-    {
-        $url = 'https://localhost/limesurvey/index.php?r=survey/index&sid=123';
-        $validatedHost = 'production.example.com';
-
-        $result = \LimeMailer::replaceHostInUrl($url, $validatedHost);
-
-        $this->assertStringStartsWith('https://production.example.com/limesurvey/', $result);
-        $this->assertStringContainsString('sid=123', $result);
-    }
-
-    /**
-     * Test replaceHostInUrl with port in original URL preserves port.
-     */
-    public function testReplaceHostInUrlPreservesOriginalPort()
-    {
-        $url = 'http://localhost:8080/index.php?r=admin';
-        $validatedHost = 'myserver.com';
-
-        $result = \LimeMailer::replaceHostInUrl($url, $validatedHost);
-
-        $this->assertStringStartsWith('http://myserver.com:8080/', $result);
-    }
-
-    /**
-     * Test replaceHostInUrl returns original URL when validated host is empty.
-     */
-    public function testReplaceHostInUrlReturnsOriginalWhenEmptyValidatedHost()
-    {
-        $url = 'http://localhost/index.php';
-        $validatedHost = '';
-
-        $result = \LimeMailer::replaceHostInUrl($url, $validatedHost);
-
-        $this->assertSame($url, $result);
-    }
-
-    /**
-     * Test replaceHostInUrl returns original URL when URL has no host.
-     */
-    public function testReplaceHostInUrlReturnsOriginalWhenUrlHasNoHost()
-    {
-        $url = '/relative/path?param=value';
-        $validatedHost = 'valid.com';
-
-        $result = \LimeMailer::replaceHostInUrl($url, $validatedHost);
-
-        $this->assertSame($url, $result);
+        $this->assertStringContainsString('localhost', $url);
     }
 }

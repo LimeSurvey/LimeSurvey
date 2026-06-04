@@ -89,53 +89,53 @@ trait LSApplicationTrait
      */
     public function createValidatedAbsoluteUrl($route, $params = array(), $schema = '', $ampersand = '&')
     {
-        $validatedHostName = $this->getValidatedHost();
-        if ($validatedHostName === false) {
-            return false;
-        }
-
         // Generate the URL using createAbsoluteUrl (which may use the untrusted Host header)
         $url = $this->createAbsoluteUrl($route, $params, $schema, $ampersand);
 
-        // Replace just the host portion with the validated host, keeping scheme/path/query intact
         $parsedUrl = parse_url($url);
-
         if (!isset($parsedUrl['scheme']) || !isset($parsedUrl['host'])) {
             return false;
         }
 
-        // Build the original base (scheme://host[:port]) to find where the path starts
-        $generatedBase = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
-        if (isset($parsedUrl['port'])) {
-            $generatedBase .= ':' . $parsedUrl['port'];
+        $currentHost = $parsedUrl['host'];
+
+        // Check if the host in the generated URL is allowed
+        if ($this->isHostAllowed($currentHost)) {
+            return $url;
         }
 
-        // Rebuild URL with the validated host, keeping original scheme, port, and path/query
-        $remainder = substr($url, strlen($generatedBase));
-        $portPart = isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '';
-        return $parsedUrl['scheme'] . '://' . $validatedHostName . $portPart . $remainder;
+        // Host is not allowed — reject
+        return false;
     }
 
     /**
-     * Gets a validated host name from allowed_hosts.php or publicurl config.
+     * Checks whether a given host name is in the allowed hosts list.
+     * Acts as a filter: allowed_hosts.php is checked first, then publicurl as fallback.
      *
-     * @return string|false A validated domain name (no protocol, no port), or false if none available.
+     * @param string $host The host name to validate.
+     * @return bool True if the host is allowed, false otherwise.
      */
-    public function getValidatedHost()
+    public function isHostAllowed($host)
     {
+        $host = strtolower(trim($host));
+
         // First try: allowed_hosts.php
         $allowedHosts = $this->loadAllowedHosts();
         if (!empty($allowedHosts)) {
-            // Return the first allowed host as the canonical one
-            return $allowedHosts[0];
+            foreach ($allowedHosts as $allowed) {
+                if (strtolower(trim($allowed)) === $host) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Second try: publicurl config
         $publicUrl = Yii::app()->getConfig('publicurl');
         if (!empty($publicUrl)) {
             $parsed = parse_url($publicUrl);
-            if (isset($parsed['host'])) {
-                return $parsed['host'];
+            if (isset($parsed['host']) && strtolower($parsed['host']) === $host) {
+                return true;
             }
         }
 
