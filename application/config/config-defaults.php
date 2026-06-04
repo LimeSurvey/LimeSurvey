@@ -870,9 +870,9 @@ $config['reverseProxyIpAddresses'] = [];
 // Works together with "reverseProxyIpAddresses" setting.
 $config['reverseProxyIpHeader'] = 'HTTP_X_FORWARDED_FOR';
 
-// List of allowed hostnames for this LimeSurvey instance.
-// If set, any request with a Host header not matching one of these entries will be rejected.
-// This protects against Host header injection attacks (e.g. in password reset emails).
+// If set, secure absolute URLs will only use the current request host when it matches one of these entries.
+// Otherwise LimeSurvey falls back to an absolute publicurl or refuses to generate the absolute URL.
+// This protects link-generation paths (e.g. password reset emails) against Host header injection.
 // Example: ['survey.example.com', 'internal.example.com']
 $config['allowedHosts'] = [];
 
