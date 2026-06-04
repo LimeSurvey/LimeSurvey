@@ -7,7 +7,10 @@ $codeids = '';
 
 <div class="tab-content">
     <?php foreach ($lslanguages as $lslanguage) : ?>
-        <div id='neweditlblset<?php echo $i ?>' class="table-responsive tab-pane lang-<?= $lslanguage ?> <?= $i === 0 ? "active show first" : "not_first" ?>">
+        <div id="neweditlblset<?php echo (int) $i ?>"
+             class="table-responsive tab-pane lang-<?= $lslanguage ?> <?= $i === 0 ? "active show first" : "not_first" ?>"
+             role="tabpanel"
+             aria-labelledby="labelview-lang-tab-<?php echo (int) $i ?>">
             <input type='hidden' class='lslanguage' value='<?= $lslanguage ?>' <?= $i === 0 ? 'id="lslanguagemain"' : '' ?>/>
             <table class='answertable table table-hover'>
                 <thead>
