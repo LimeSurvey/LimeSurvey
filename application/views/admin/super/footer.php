@@ -135,13 +135,14 @@ $questionEditor = $questionEditor ?? false;
 ?>
 
 <?php /** this one works with assets/packages/adminbasics/src/parts/confirmationModal.js */ ?>
-<div id="confirmation-modal" class="modal fade" role="dialog">
+<div id="confirmation-modal" class="modal fade" role="dialog" aria-modal="true"
+     aria-labelledby="confirmation-modal-title">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Confirm"); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h2 class="h5 modal-title" id="confirmation-modal-title"><?php eT("Confirm"); ?></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo CHtml::encode(gT('Close')); ?>"></button>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
