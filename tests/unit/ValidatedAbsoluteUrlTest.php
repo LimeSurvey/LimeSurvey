@@ -189,34 +189,34 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     }
 
     /**
-     * Test that isHostAllowed falls back to publicurl when allowed_hosts.php is empty.
+     * Test that isHostAllowed is lenient (returns true) when no file exists and publicurl is set.
      */
-    public function testIsHostAllowedFallsBackToPublicUrl()
+    public function testIsHostAllowedIsLenientWhenNoFileExists()
     {
         Yii::app()->setConfig('publicurl', 'https://public.example.com/limesurvey');
 
         $this->assertTrue(Yii::app()->isHostAllowed('public.example.com'));
-        $this->assertFalse(Yii::app()->isHostAllowed('other.example.com'));
+        $this->assertTrue(Yii::app()->isHostAllowed('other.example.com'));
     }
 
     /**
-     * Test that isHostAllowed returns false when no source is configured.
+     * Test that isHostAllowed is lenient (returns true) when no source is configured.
      */
-    public function testIsHostAllowedReturnsFalseWhenNoSource()
+    public function testIsHostAllowedIsLenientWhenNoSource()
     {
         Yii::app()->setConfig('publicurl', '');
 
-        $this->assertFalse(Yii::app()->isHostAllowed('anything.com'));
+        $this->assertTrue(Yii::app()->isHostAllowed('anything.com'));
     }
 
     /**
-     * Test that isHostAllowed returns false when publicurl has no valid host.
+     * Test that isHostAllowed is lenient (returns true) when publicurl has no valid host.
      */
-    public function testIsHostAllowedReturnsFalseForInvalidPublicUrl()
+    public function testIsHostAllowedIsLenientForInvalidPublicUrl()
     {
         Yii::app()->setConfig('publicurl', '/relative/path');
 
-        $this->assertFalse(Yii::app()->isHostAllowed('localhost'));
+        $this->assertTrue(Yii::app()->isHostAllowed('localhost'));
     }
 
     // ------------------------------------------------------------------
@@ -224,14 +224,15 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     // ------------------------------------------------------------------
 
     /**
-     * Test that createValidatedAbsoluteUrl returns false when no allowed host is configured.
+     * Test that createValidatedAbsoluteUrl is lenient (returns URL) when no file exists.
      */
-    public function testCreateValidatedAbsoluteUrlReturnsFalseWhenNoHost()
+    public function testCreateValidatedAbsoluteUrlIsLenientWhenNoFile()
     {
         Yii::app()->setConfig('publicurl', '');
 
         $url = Yii::app()->createValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'abc123']);
-        $this->assertFalse($url);
+        $this->assertIsString($url);
+        $this->assertStringContainsString('abc123', $url);
     }
 
     /**
@@ -250,9 +251,9 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     }
 
     /**
-     * Test that createValidatedAbsoluteUrl uses publicurl as fallback filter.
+     * Test that createValidatedAbsoluteUrl uses publicurl for URL construction.
      */
-    public function testCreateValidatedAbsoluteUrlUsesPublicUrlAsFallback()
+    public function testCreateValidatedAbsoluteUrlUsesPublicUrl()
     {
         // Set publicurl to match the test environment host
         Yii::app()->setConfig('publicurl', 'http://localhost/');

@@ -91,7 +91,13 @@ trait LSApplicationTrait
     {
         // Use createPublicUrl which builds the URL from the configured publicurl,
         // avoiding reliance on the potentially untrusted Host header.
-        $url = $this->createPublicUrl($route, $params, $schema, $ampersand);
+        try {
+            $url = $this->createPublicUrl($route, $params, $schema, $ampersand);
+        } catch (\CHttpException $e) {
+            // getHostInfo() may throw if the request host is not in allowed_hosts.php.
+            // Return false gracefully for email URL generation paths.
+            return false;
+        }
 
         $parsedUrl = parse_url($url);
         if (!isset($parsedUrl['scheme']) || !isset($parsedUrl['host'])) {
@@ -108,31 +114,24 @@ trait LSApplicationTrait
 
     /**
      * Checks whether a given host name is in the allowed hosts list.
-     * Acts as a filter: allowed_hosts.php is checked first, then publicurl as fallback.
+     * Lenient when allowed_hosts.php does not exist yet (returns true).
+     * Once the file exists with entries, strictly enforces the allowlist.
      *
      * @param string $host The host name to validate.
      * @return bool True if the host is allowed, false otherwise.
      */
     public function isHostAllowed($host)
     {
-        $host = strtolower(trim($host));
-
-        // First try: allowed_hosts.php
         $allowedHosts = $this->loadAllowedHosts();
-        if (!empty($allowedHosts)) {
-            foreach ($allowedHosts as $allowed) {
-                if (strtolower(trim($allowed)) === $host) {
-                    return true;
-                }
-            }
-            return false;
+
+        // If no allowed_hosts.php is configured yet, be lenient (don't block).
+        if (empty($allowedHosts)) {
+            return true;
         }
 
-        // Second try: publicurl config
-        $publicUrl = Yii::app()->getConfig('publicurl');
-        if (!empty($publicUrl)) {
-            $parsed = parse_url($publicUrl);
-            if (isset($parsed['host']) && strtolower($parsed['host']) === $host) {
+        $host = strtolower(trim($host));
+        foreach ($allowedHosts as $allowed) {
+            if (strtolower(trim($allowed)) === $host) {
                 return true;
             }
         }
