@@ -175,6 +175,13 @@ class Authentication extends SurveyCommonAction
                 $event->set('identity', $identity);
                 App()->getPluginManager()->dispatchEvent($event);
 
+                // If allowed_hosts.php does not exist, write the current host as valid
+                $allowedHosts = App()->loadAllowedHosts();
+                if (empty($allowedHosts)) {
+                    $currentHost = App()->request->getServerName();
+                    App()->writeAllowedHosts([$currentHost]);
+                }
+
                 return array('success');
             } else {
                 // Failed

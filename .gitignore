@@ -2,6 +2,7 @@
 /application/config/config.php
 /application/config/config.*.php
 /application/config/security.php
+/application/config/allowed_hosts.php
 
 # Don't include LS4 security.php
 

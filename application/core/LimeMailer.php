@@ -866,22 +866,46 @@ class LimeMailer extends PHPMailer
                 $aTokenReplacements[strtoupper((string) $attribute)] = $value;
             }
         }
-        /* Set the minimal url and add it to Placeholders */
-        $aTokenReplacements["OPTOUTURL"] = App()->getController()
-            ->createAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        /* Set the minimal url and add it to Placeholders - use validated URLs to prevent host header injection */
+        $aTokenReplacements["OPTOUTURL"] = App()
+            ->createValidatedAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["OPTOUTURL"] === false) {
+            $aTokenReplacements["OPTOUTURL"] = App()->getController()
+                ->createAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("OPTOUT");
-        $aTokenReplacements["GLOBALOPTOUTURL"] = App()->getController()
-            ->createAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $aTokenReplacements["GLOBALOPTOUTURL"] = App()
+            ->createValidatedAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["GLOBALOPTOUTURL"] === false) {
+            $aTokenReplacements["GLOBALOPTOUTURL"] = App()->getController()
+                ->createAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("GLOBALOPTOUT");
-        $aTokenReplacements["OPTINURL"] = App()->getController()
-            ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $aTokenReplacements["OPTINURL"] = App()
+            ->createValidatedAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["OPTINURL"] === false) {
+            $aTokenReplacements["OPTINURL"] = App()->getController()
+                ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("OPTIN");
-        $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
-            ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $aTokenReplacements["GLOBALOPTINURL"] = App()
+            ->createValidatedAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["GLOBALOPTINURL"] === false) {
+            $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
+                ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("GLOBALOPTINURL");
         $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
+        // Validate the survey URL against allowed hosts to prevent host header injection
+        $validatedHost = App()->getValidatedHost();
+        if ($validatedHost !== false) {
+            $aTokenReplacements["SURVEYURL"] = self::replaceHostInUrl($aTokenReplacements["SURVEYURL"], $validatedHost);
+        }
         $this->addUrlsPlaceholders("SURVEY");
         $aTokenReplacements["SURVEYIDURL"] = $survey->getSurveyUrl($language, ["token" => $token], false);
+        if ($validatedHost !== false) {
+            $aTokenReplacements["SURVEYIDURL"] = self::replaceHostInUrl($aTokenReplacements["SURVEYIDURL"], $validatedHost);
+        }
         $this->addUrlsPlaceholders("SURVEYID");
         return $aTokenReplacements;
     }
@@ -1039,5 +1063,34 @@ class LimeMailer extends PHPMailer
         }
 
         return (new \Html2Text\Html2Text($html))->getText();
+    }
+
+    /**
+     * Replaces the host portion of a URL with a validated host.
+     * Used to prevent host header injection in email URLs.
+     *
+     * @param string $url The original URL to secure.
+     * @param string $validatedHost The validated domain name (no protocol, no port).
+     * @return string The URL with the validated host.
+     */
+    public static function replaceHostInUrl($url, $validatedHost)
+    {
+        $parsedUrl = parse_url($url);
+
+        if (!isset($parsedUrl['host']) || empty($validatedHost)) {
+            return $url;
+        }
+
+        $scheme = isset($parsedUrl['scheme']) ? $parsedUrl['scheme'] : 'http';
+
+        // Build original base to find where the path starts
+        $originalBase = $scheme . '://' . $parsedUrl['host'];
+        if (isset($parsedUrl['port'])) {
+            $originalBase .= ':' . $parsedUrl['port'];
+        }
+
+        $remainder = substr($url, strlen($originalBase));
+        $portPart = isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '';
+        return $scheme . '://' . $validatedHost . $portPart . $remainder;
     }
 }
