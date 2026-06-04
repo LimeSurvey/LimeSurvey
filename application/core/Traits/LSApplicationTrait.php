@@ -191,7 +191,11 @@ trait LSApplicationTrait
             . " * This file is auto-generated on first admin login if it does not exist.\n"
             . " * You may edit it manually to add or change allowed hosts.\n"
             . " */\n"
-            . "return " . var_export($hosts, true) . ";\n";
+            . "return [\n";
+        foreach ($hosts as $host) {
+            $content .= "    " . var_export($host, true) . ",\n";
+        }
+        $content .= "];\n";
         return @file_put_contents($filePath, $content) !== false;
     }
 }
