@@ -7,21 +7,27 @@
 <?php $this->renderPartial("./labels/_labelviewquickadd_view", []); ?>
 
 <div class="col-12 labels">
-    <div class="pagetitle h3">
+    <h2 class="pagetitle h3">
         <?php eT("Labels") ?>
         <?php if (isset($model->label_name)) : ?>
             - <?php echo CHtml::encode($model->label_name); ?>
         <?php endif; ?>
-    </div>
+    </h2>
 
     <!-- Main content -->
     <div class="col-12 content-right text-center">
 
         <!-- tabs -->
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" role="tablist" aria-label="<?= CHtml::encode(gT('Languages')) ?>">
             <?php foreach ($lslanguages as $i => $language) : ?>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link <?= $i === 0 ? 'active' : '' ?>" href='#neweditlblset<?= $i ?>' data-bs-toggle="tab">
+                    <a class="nav-link <?= $i === 0 ? 'active' : '' ?>"
+                       id="labelview-lang-tab-<?= (int) $i ?>"
+                       href="#neweditlblset<?= (int) $i ?>"
+                       role="tab"
+                       data-bs-toggle="tab"
+                       aria-controls="neweditlblset<?= (int) $i ?>"
+                       aria-selected="<?= $i === 0 ? 'true' : 'false' ?>">
                         <?php echo getLanguageNameFromCode($language, false); ?>
                     </a>
                 </li>
