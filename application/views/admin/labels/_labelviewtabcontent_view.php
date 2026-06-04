@@ -14,7 +14,7 @@ $codeids = '';
             <input type='hidden' class='lslanguage' value='<?= $lslanguage ?>' <?= $i === 0 ? 'id="lslanguagemain"' : '' ?>/>
             <table class='answertable table table-hover'>
                 <caption class="sr-only">
-                    <?php eT("Labels for language: ") . getLanguageNameFromCode($lslanguage, false); ?>
+                    <?php echo sprintf(gT("Labels for language: %s"), getLanguageNameFromCode($lslanguage, false)) ?>
                 </caption>
                 <thead>
                 <tr>
