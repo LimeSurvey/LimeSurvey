@@ -170,6 +170,25 @@ trait LSApplicationTrait
      */
     public function writeAllowedHosts(array $hosts)
     {
+        // Sanitize: only allow valid domain names or IP addresses
+        $sanitized = [];
+        foreach ($hosts as $host) {
+            if (!is_string($host)) {
+                continue;
+            }
+            $host = trim($host);
+            // Must match a valid hostname (RFC 952/1123) or IP address
+            if (
+                filter_var($host, FILTER_VALIDATE_IP) !== false
+                || preg_match('/^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)*[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?$/', $host)
+            ) {
+                $sanitized[] = $host;
+            }
+        }
+        if (empty($sanitized)) {
+            return false;
+        }
+
         $filePath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'allowed_hosts.php';
         $content = "<?php\n"
             . "/**\n"
@@ -192,7 +211,7 @@ trait LSApplicationTrait
             . " * You may edit it manually to add or change allowed hosts.\n"
             . " */\n"
             . "return [\n";
-        foreach ($hosts as $host) {
+        foreach ($sanitized as $host) {
             $content .= "    " . var_export($host, true) . ",\n";
         }
         $content .= "];\n";

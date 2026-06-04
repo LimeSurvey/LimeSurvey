@@ -225,6 +225,11 @@ class PasswordManagement
         switch ($type) {
             case self::EMAIL_TYPE_RESET_PW:
                 $renderArray = $this->getRenderArray();
+                if (empty($renderArray)) {
+                    $mailer = new \LimeMailer();
+                    $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
+                    return $mailer;
+                }
                 $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT(
                     "Your login credentials have been reset"
                 );
@@ -238,6 +243,11 @@ class PasswordManagement
             default:
                 //Get email template from globalSettings
                 $aAdminEmail = $this->generateAdminCreationEmail();
+                if ($aAdminEmail === false) {
+                    $mailer = new \LimeMailer();
+                    $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
+                    return $mailer;
+                }
                 $subject = $aAdminEmail["subject"];
                 $body = $aAdminEmail["body"];
                 break;
