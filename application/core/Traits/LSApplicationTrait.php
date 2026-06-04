@@ -89,22 +89,20 @@ trait LSApplicationTrait
      */
     public function createValidatedAbsoluteUrl($route, $params = array(), $schema = '', $ampersand = '&')
     {
-        // Generate the URL using createAbsoluteUrl (which may use the untrusted Host header)
-        $url = $this->createAbsoluteUrl($route, $params, $schema, $ampersand);
+        // Use createPublicUrl which builds the URL from the configured publicurl,
+        // avoiding reliance on the potentially untrusted Host header.
+        $url = $this->createPublicUrl($route, $params, $schema, $ampersand);
 
         $parsedUrl = parse_url($url);
         if (!isset($parsedUrl['scheme']) || !isset($parsedUrl['host'])) {
             return false;
         }
 
-        $currentHost = $parsedUrl['host'];
-
-        // Check if the host in the generated URL is allowed
-        if ($this->isHostAllowed($currentHost)) {
+        // Defense in depth: verify the host is in the allowlist
+        if ($this->isHostAllowed($parsedUrl['host'])) {
             return $url;
         }
 
-        // Host is not allowed — reject
         return false;
     }
 
