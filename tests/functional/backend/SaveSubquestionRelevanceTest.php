@@ -6,7 +6,7 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverDimension;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\TimeoutException;
 
 /**
  * Edit subquestion relevance.
@@ -140,7 +140,7 @@ class SaveSubquestionRelevanceTest extends TestBaseClassWeb
                 )
             );
             $button->click();
-        } catch (TimeOutException $ex) {
+        } catch (TimeoutException $ex) {
             // Do nothing.
         } catch (NoSuchElementException $ex) {
             // Do nothing.

@@ -76,7 +76,7 @@ class Permissiontemplates extends CActiveRecord
      * @param int $ptid Permissiontemplates id
      * @return boolean
      */
-    public function applyToUser(int $iUserId, int $ptid = null): bool
+    public function applyToUser(int $iUserId, ?int $ptid = null): bool
     {
         if ($ptid == null) {
             $ptid = $this->ptid;

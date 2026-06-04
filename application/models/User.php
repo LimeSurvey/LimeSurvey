@@ -1,8 +1,8 @@
 <?php
 
-/*
+/**
 * LimeSurvey
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -25,9 +25,9 @@ use LimeSurvey\Models\Services\UserManager;
  * @property integer $parent_id
  * @property string $lang User's preferred language: (auto: automatic | languagecodes eg 'en')
  * @property string $email User's e-mail address
- * @property string $htmleditormode User's prefferred HTML editor mode:(default|inline|popup|none)
- * @property string $templateeditormode User's prefferred template editor mode:(default|full|none)
- * @property string $questionselectormode User's prefferred Question type selector:(default|full|none)
+ * @property string $htmleditormode User's preferred HTML editor mode:(default|inline|popup|none)
+ * @property string $templateeditormode User's preferred template editor mode:(default|full|none)
+ * @property string $questionselectormode User's preferred Question type selector:(default|full|none)
  * @property string $one_time_pw User's one-time-password hash
  * @property integer $dateformat Date format type 1-12
  * @property string $created Time created Time user was created as 'YYYY-MM-DD hh:mm:ss'
@@ -63,6 +63,9 @@ class User extends LSActiveRecord
     public $lang = 'auto';
 
     public $searched_value;
+
+    /** @var null|string To be in search */
+    public $search_parentUserName;
 
     /**
      * @inheritdoc
@@ -102,11 +105,13 @@ class User extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('users_name, password, email', 'required'),
+            array('users_name, password', 'required'),
+            array('email', 'required', 'on' => 'insert'),
             array('users_name', 'unique'),
             array('users_name', 'length','max' => 64),
             array('full_name', 'length','max' => 50),
-            array('email', 'email'),
+            array('email', 'email', 'allowEmpty' => true),
+            array('email', 'unique', 'allowEmpty' => true, 'message' => gT("Email address '{value}' is already used by another user.", 'unescaped')),
             array('full_name', 'LSYii_Validators'), // XSS if non super-admin
             array('parent_id', 'default', 'value' => 0),
             array('parent_id', 'numerical', 'integerOnly' => true),
@@ -131,6 +136,17 @@ class User extends LSActiveRecord
     }
 
     /** @inheritdoc */
+    protected function beforeSave()
+    {
+        // Normalize empty email to NULL so the database unique index
+        // allows multiple users without an email address.
+        if ($this->email === '') {
+            $this->email = null;
+        }
+        return parent::beforeSave();
+    }
+
+    /** @inheritdoc */
     public function scopes()
     {
         if (App()->getConfig("DBVersion") < 495) {
@@ -143,7 +159,7 @@ class User extends LSActiveRecord
         $notExpiredScope = array(
             'condition' => "expires > :now OR expires IS NULL",
             'params' => array(
-                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                'now' => gmdate("Y-m-d H:i:s"),
             )
         );
         if (App()->getConfig("DBVersion") < 619) {
@@ -177,12 +193,12 @@ class User extends LSActiveRecord
             'lang' => gT('Language'),
             'email' => gT('Email'),
             'htmleditormode' => gT('Editor mode'),
-            'templateeditormode' => gT('Template editor mode'),
+            'templateeditormode' => gT('Theme editor mode'),
             'questionselectormode' => gT('Question selector mode'),
             'one_time_pw' => gT('One-time password'),
             'dateformat' => gT('Date format'),
-            'created' => gT('Created at'),
-            'modified' => gT('Modified at'),
+            'created' => gT('Created'),
+            'modified' => gT('Modified'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
             'user_status' => gT("Status"),
@@ -229,6 +245,7 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Return the needed PHP date format for current user
      * @return string
      */
     public function getDateFormat()
@@ -238,17 +255,39 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo Not used?
+     * Return a formatted date attribute in current user date format.
+     * @param Object $data see https://www.yiiframework.com/doc/api/1.1/CDataColumn#value-detail
+     * @param string $attribute date attribute name
+     * @return string formatted date
+     */
+    private function getFormattedDate($data, $attribute)
+    {
+        if ($data->$attribute) {
+            return strval(convertDateTimeFormat($data->$attribute, 'Y-m-d', $this->getDateFormat()));
+        }
+        return "";
+    }
+
+    /**
+     * @deprecated 6.17.0
      */
     public function getFormattedDateCreated()
     {
-        $dateCreated = $this->created;
-        /**
-         * @todo: Review this. Cast to string added to keep the original behavior (parameter can't be null since PHP 8.1).
-         *        But it returns the current date if the parameter is null (both now with the cast and pre PHP 8.1 without the cast).
-         */
-        $date = new DateTime((string) $dateCreated);
-        return $date->format($this->getDateFormat());
+        return $this->getFormattedDate($this, 'created');
+    }
+
+    /**
+     * get a boolean and return an HTML for grid
+     * @param Object $data see https://www.yiiframework.com/doc/api/1.1/CDataColumn#value-detail
+     * @param string $attribute to use
+     * @return string the html for grid
+     **/
+    private function getFormattedBoolean($data, $attribute)
+    {
+        if ($data->$attribute) {
+            return '<span class="text-success ri-check-fill"></span><span class="sr-only">' . gT("Yes") . '</span>';
+        }
+        return '<span class="sr-only">' . gT("No") . '</span>';
     }
 
     /**
@@ -262,7 +301,7 @@ class User extends LSActiveRecord
      * @param string $new_email
      * @param string|null $expires
      * @param boolean $status
-     * @return integer|boolean User ID if success
+     * @return integer|User User ID on success, User model with errors on validation failure
      */
     public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $status = true)
     {
@@ -273,14 +312,14 @@ class User extends LSActiveRecord
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
         $oUser->email = $new_email;
-        $oUser->created = date('Y-m-d H:i:s');
-        $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->created = gmdate('Y-m-d H:i:s');
+        $oUser->modified = gmdate('Y-m-d H:i:s');
         $oUser->expires = $expires;
         $oUser->user_status = $status;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
-            return false;
+            return $oUser;
         }
     }
 
@@ -487,19 +526,6 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Adds user record
-     *
-     * @access public
-     * @param array $data
-     * @deprecated : just don't use it
-     * @return string
-     */
-    public function insertRecords($data)
-    {
-        return $this->getDb()->insert('users', $data);
-    }
-
-    /**
      * Returns User ID common in Survey_Permissions and User_in_groups
      * @param $surveyid
      * @param $postusergroupid
@@ -542,10 +568,20 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Gets the buttons for the GridView
+     * Returns buttons for gridview.
+     * @deprecated 6.17.0 use directly getButtons
      * @return string
      */
     public function getManagementButtons()
+    {
+        return $this->getButtons();
+    }
+
+    /**
+     * Gets the buttons for the GridView
+     * @return string
+     */
+    public function getButtons()
     {
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $permission_users_read = Permission::model()->hasGlobalPermission('users', 'read');
@@ -702,7 +738,7 @@ class User extends LSActiveRecord
                 )
         ];
         $dropdownItems[] = [
-            'title'            => gT('Delete User'),
+            'title'            => gT('Delete user'),
             'iconClass'        => "ri-delete-bin-fill text-danger",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--delete",
             'linkId'           => "UserManagement--delete-$this->uid",
@@ -758,35 +794,46 @@ class User extends LSActiveRecord
         $lastLogin = $this->last_login;
         if ($lastLogin == null) {
             return '---';
+        } else {
+            $lastLogin = getDateOfUTC($lastLogin);
         }
 
         $date = new DateTime($lastLogin);
         return $date->format($this->getDateFormat()) . ' ' . $date->format('H:i');
     }
 
+    /**
+     * Used in management grid before 6.17.0
+     * @deprecated 6.17.0
+     * @return string
+     */
     public function getManagementCheckbox()
     {
         return "<input type='checkbox' class='usermanagement--selector-userCheckbox' name='selectedUser[]' value='" . $this->uid . "'>";
     }
     /**
+     * Get column definition for grid
      * @return array
      */
     public function getManagementColums()
     {
         $cols = [
             [
-                'name'              => 'managementCheckbox',
-                'type'              => 'raw',
-                'header'            => "<input type='checkbox' id='usermanagement--action-toggleAllUsers' />",
-                'filter'            => false,
+                'id' => 'uid',
+                'class' => 'CCheckBoxColumn',
+                'selectableRows' => 2, // allow multiple selection
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
+                'htmlOptions' => ['class' => 'ls-sticky-column text-end'],
+                'checkBoxHtmlOptions' => ['class' => 'usermanagement--selector-userCheckbox'], // Class used in test
+                'disabled' => function ($data) {
+                    return $data->uid == \App()->getCurrentUserId();
+                }
             ],
             [
                 "name"   => 'uid',
                 "header" => gT("User ID"),
-                'htmlOptions' => ['class' => 'uid']
+                'htmlOptions' => ['class' => 'text-end uid'],// uid class used in test
             ],
             [
                 "name"   => 'users_name',
@@ -803,44 +850,79 @@ class User extends LSActiveRecord
             [
                 "name"   => "created",
                 "header" => gT("Created on"),
-                "value"  => '$data->formattedDateCreated',
+                "value"  => function ($data) {
+                    return $this->getFormattedDate($data, "created");
+                },
+                "filter" => $this->getDateFilter("created"),
             ],
             [
-                "name"   => "parentUserName",
+                "name"   => "search_parentUserName",
+                "value"  => '$data->parentUserName',
                 "header" => gT("Created by"),
             ],
+            /**
+             * CLSGridView include extra columns before the 2 last columns,
+             * Survey have Action column here, User din't have Action column
+             * Add one hidden Action column for CLSGridView
+             */
             [
-                "name"   => "user_status",
-                "header" => gT("Status"),
-                'headerHtmlOptions' => ['class' => 'hidden'],
-                'htmlOptions'       => ['class' => 'hidden activation']
+                'header' => '',
+                'value' => '',
+                'headerHtmlOptions' => ['class' => 'hidden d-none'],
+                'htmlOptions'       => ['class' => 'hidden d-none']
             ],
         ];
+        return $cols;
+    }
 
-        // NOTE: Super Administrators with just the "read" flag also have these flags
+    /**
+     * Get additional (optional) column definition for grid
+     * @return [][]
+     */
+    public function getAdditionalColumns()
+    {
         $permission_read_users      = Permission::model()->hasGlobalPermission('users', 'read');
         $permission_read_usergroups = Permission::model()->hasGlobalPermission('usergroups', 'read');
         $permission_read_surveys    = Permission::model()->hasGlobalPermission('surveys', 'read');
+        $cols = [
+            "expires" => [
+                "name"   => 'expires',
+                "header" => gT('Expires'),
+                "value"  => function ($data) {
+                    return $this->getFormattedDate($data, "expires");
+                },
+                "filter" => $this->getDateFilter("expires"),
+            ],
+            "user_status" => [
+                "name"   => 'user_status',
+                "header" => gT('Status'),
+                "value"  => function ($data) {
+                    return $this->getFormattedBoolean($data, "isActive");
+                },
+                "type" => 'raw',
+                "htmlOptions" => ['class' => 'text-center'],
+                "filter" => ['Y' => gT('Yes'), 'N' => gT('No')], // Y/N, default is set to 1
+            ],
+        ];
 
         // Number of Surveys
         // This info is already guessable by people able to list all Surveys
         if ($permission_read_surveys) {
-            $cols[] = array(
+            $cols['surveysCreated'] = array(
                 "name" => 'surveysCreated',
-                "header" => gT("No of surveys"),
+                "header" => gT("Owned surveys"),
                 'filter' => false
             );
         }
-
         // Usergroups Names
         // This info is safe to be shown to who can read all Users and Groups.
         // TODO: When there will be a more robust Group permissions system,
         //       this column could be enabled by default, since each Group would
         //       be checked individually.
         if ($permission_read_users && $permission_read_usergroups) {
-            $cols[] = array(
+            $cols['groupList'] = array(
                 "name" => 'groupList',
-                "header" => gT("Usergroups"),
+                "header" => gT("User groups"),
                 'filter' => false
             );
         }
@@ -848,32 +930,51 @@ class User extends LSActiveRecord
         // Role Names
         // Knowing this info makes sense if you can read all Users
         if ($permission_read_users) {
-            $cols[] = array(
+            $cols['roleList'] = array(
                 "name" => 'roleList',
                 "header" => gT("Applied role"),
                 'filter' => false
             );
         }
 
-        $cols[] = [
-            "header"            => gT("Action"),
-            "name"              => 'managementButtons',
-            "type"              => 'raw',
-            'filter'            => false,
-            'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-            'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
-        ];
-
+        /** If you can set superadmin : allow see of superadmin permissions */
+        if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+            $cols['isSuperAdmin'] = array(
+                "name" => 'isSuperAdmin',
+                "header" => gT("Superadmin"),
+                "value"  => function ($data) {
+                    return $this->getFormattedBoolean($data, "isSuperAdmin");
+                },
+                "htmlOptions" => ['class' => 'text-center'],
+                "type" => 'raw',
+                "filter" => false
+            );
+        }
+        /**
+         * If you are superadmin : allow see of login via DB permissions.
+         * Useful for systems that use other authentication methods
+         **/
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            $cols['haveDbAuthentication'] = array(
+                "name" => 'haveDbAuthentication',
+                "header" => gT("DB auth"), // need short header, use short word for "Database authentication"
+                "value"  => function ($data) {
+                    return $this->getFormattedBoolean($data, "haveDbAuthentication");
+                },
+                "htmlOptions" => ['class' => 'text-center'],
+                "type" => 'raw',
+                "filter" => false
+            );
+        }
         return $cols;
     }
 
     /**
+     * @deprecated ?
      * @return array
      */
     public function getColums()
     {
-        // TODO should be static
         $cols = array(
             array(
                 "name" => 'buttons',
@@ -913,47 +1014,68 @@ class User extends LSActiveRecord
             "name" => "created",
             "header" => gT("Created on"),
             "value" => '$data->formattedDateCreated',
-
+            "filter" => $this->getDateFilter("created"),
         );
         return $cols;
+    }
+
+    /**
+     * get specific filter for date
+     * @param string $column
+     * @return string the HTML filter for date
+     */
+    public function getDateFilter($column)
+    {
+        $dateFilter = "<div class='input-group'>";
+        $dateFilter .= "<span class='input-group-text'>&gt;=</span>";
+        $dateFilter .= CHtml::dateField(
+            get_class($this) . "[" . $column . "]",
+            $this->getAttribute($column),
+            [
+                'class' => "form-control"
+            ]
+        );
+        $dateFilter .= "</div>";
+        return $dateFilter;
     }
 
     /** @inheritdoc */
     public function search()
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
-        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+        $pageSize = App()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria();
 
         $criteria->compare('t.uid', $this->uid);
         $criteria->compare('t.full_name', $this->full_name, true);
-        $criteria->compare('t.users_name', $this->users_name, true, 'OR');
-        $criteria->compare('t.email', $this->email, true, 'OR');
-
-        //filter for 'created' date comparison
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        if ($this->created) {
-            try {
-                $dateTimeInput = $this->created . ' 00:00'; //append time
-                $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $dateTimeInput);
-                if ($s) {
-                    $s2 = $s->format('Y-m-d H:i');
-                    $criteria->addCondition('t.created >= \'' . $s2 . '\'');
+        $criteria->compare('t.users_name', $this->users_name, true);
+        $criteria->compare('t.email', $this->email, true);
+        if ($this->user_status === "Y") {
+            $criteria->addCondition('t.user_status <> 0 OR t.user_status IS NULL');
+        }
+        if ($this->user_status === "N") {
+            $criteria->addCondition('t.user_status = 0');
+        }
+        //filter for date comparison
+        foreach (['created','expires'] as $dateAttribute) {
+            if ($this->getAttribute($dateAttribute)) {
+                $datetime = DateTime::createFromFormat("Y-m-d", $this->getAttribute($dateAttribute)); // Fix date
+                if ($datetime) {
+                    $dateCompare = $this->getAttribute($dateAttribute) . ' 00:00:00';
+                    $criteria->compare('t.' . $dateAttribute, ">=" . $dateCompare, true);
                 } else {
-                    throw new Exception('wrong date format.');
+                    $this->setAttribute($dateAttribute, null);
                 }
-            } catch (Exception $e) {
-                //could only mean wrong input from user ...reset filter value
-                $this->created = '';
             }
         }
-
-        $getUser = Yii::app()->request->getParam('User');
-        if (!empty($getUser['parentUserName'])) {
-            $getParentName = $getUser['parentUserName'];
+        /* $this->search_parentUserName is not set like default Yii grid, set it manually */
+        $searchValues = App()->getRequest()->getParam("User");
+        if (!empty($searchValues['search_parentUserName'])) {
+            $getParentName = $this->search_parentUserName = strval($searchValues['search_parentUserName']);
             $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
-            $criteria->compare('u.users_name', $getParentName, true, 'OR');
+            $criteria->compare('u.users_name', $getParentName, true);
         }
+
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -983,7 +1105,7 @@ class User extends LSActiveRecord
      */
     public function setValidationExpiration()
     {
-        $datePlusMaxExpiration = new DateTime();
+        $datePlusMaxExpiration = new DateTime('now', new DateTimeZone('UTC'));
         $datePlusString = 'P' . self::MAX_EXPIRATION_TIME_IN_DAYS . 'D';
         $dateInterval = new DateInterval($datePlusString);
         $datePlusMaxExpiration->add($dateInterval);
@@ -1002,14 +1124,23 @@ class User extends LSActiveRecord
     {
         $expired = false;
         if (!empty($this->expires)) {
-            // Time adjust
-            $now = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $expirationTime = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime((string) $this->expires)));
+            // Compare expiration time (stored in UTC) with current UTC time
+            $now = gmdate("Y-m-d H:i:s");
+            $expirationTime = (string) $this->expires;
 
-            // Time comparison
-            $expired = new DateTime($expirationTime) < new DateTime($now);
+            // Time comparison (treat equality as expired, aligning with notexpired scope: expires > now)
+            $expired = new DateTime($expirationTime) <= new DateTime($now);
         }
         return $expired;
+    }
+
+    /**
+     * Check if user is active, used for grid
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive();
     }
 
     /**
@@ -1032,7 +1163,25 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Get the decription to be used in list
+     * Check if user is superadmin for grid
+     * @return boolean
+     */
+    public function getIsSuperAdmin()
+    {
+        return Permission::model()->hasGlobalPermission('superadmin', 'read', $this->uid);
+    }
+
+    /**
+     * Check if user have database authentication allowed
+     * @return boolean
+     */
+    public function getHaveDbAuthentication()
+    {
+        return Permission::model()->hasGlobalPermission('auth_db', 'read', $this->uid);
+    }
+
+    /**
+     * Get the description to be used in list
      * @return string
      */
     public function getDisplayName()
@@ -1157,7 +1306,6 @@ class User extends LSActiveRecord
         } else {
             $this->user_status = 0;
         }
-
         return $this->save();
     }
 }

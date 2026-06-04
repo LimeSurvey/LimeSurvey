@@ -249,7 +249,7 @@ class QuestionAttributeHelper
 
     /**
      * Returns the array of categories with their assigned order.
-     * The array doesn't contain all the posible categories, only those with an order assigned.
+     * The array doesn't contain all the possible categories, only those with an order assigned.
      *
      * @return array<string,int>
      */
@@ -268,7 +268,7 @@ class QuestionAttributeHelper
 
     /**
      * Sorts an array of question attributes by category.
-     * Sorting is based on a predefined list of orders (see QuestionAtributeHelper::getCategoryOrders()).
+     * Sorting is based on a predefined list of orders (see QuestionAttributeHelper::getCategoryOrders()).
      * Categories without a predefined order are considered less relevant.
      * Categories with the same order are sorted alphabetically.
      *

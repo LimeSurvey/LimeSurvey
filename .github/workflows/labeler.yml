@@ -1,0 +1,122 @@
+name: Label PR Conflicts
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches:
+      - master
+      - develop-major
+      - develop-minor
+
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------
+  # 0. Add default labels to new PRs
+  # ---------------------------------------------------------
+  label-new-pr:
+    if: >
+      github.event_name == 'pull_request'
+      && !github.event.pull_request.draft
+      && (github.event.action == 'opened' || github.event.action == 'ready_for_review')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Add default labels
+        run: |
+          pr=${{ github.event.pull_request.number }}
+          repo=${{ github.repository }}
+          gh api "repos/${repo}/issues/${pr}/labels" -f "labels[]=Needs code review" -f "labels[]=Needs testing" --method POST
+
+  # ---------------------------------------------------------
+  # 1. Handle PR-triggered events (single PR)
+  # ---------------------------------------------------------
+  label-single-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Check and label PR
+        run: |
+          pr=${{ github.event.pull_request.number }}
+          repo=${{ github.repository }}
+
+          # Poll until mergeable_state is computed (max 60s)
+          for i in $(seq 1 12); do
+            state=$(gh api "repos/${repo}/pulls/${pr}" --jq '.mergeable_state')
+            echo "Attempt ${i}: mergeable_state=${state}"
+            if [ "$state" != "unknown" ] && [ -n "$state" ] && [ "$state" != "null" ]; then
+              break
+            fi
+            sleep 5
+          done
+
+          if [ "$state" = "dirty" ]; then
+            echo "PR #${pr} has conflicts, adding label"
+            gh api "repos/${repo}/issues/${pr}/labels" -f "labels[]=Has conflicts" --method POST || true
+          else
+            echo "PR #${pr} state is '${state}', removing label if present"
+            gh api "repos/${repo}/issues/${pr}/labels/Has%20conflicts" --method DELETE || true
+          fi
+
+  # ---------------------------------------------------------
+  # 2. Handle base-branch pushes (loop through all PRs)
+  # ---------------------------------------------------------
+  get-pr-list:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      pr_numbers: ${{ steps.collect.outputs.pr_numbers }}
+
+    steps:
+      - name: Collect PR numbers
+        id: collect
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          branch="${GITHUB_REF#refs/heads/}"
+          pr_numbers=$(gh api "repos/${{ github.repository }}/pulls?state=open&base=${branch}&per_page=100" --paginate --jq '.[].number' | jq -sc '.')
+          echo "pr_numbers=$pr_numbers" >> $GITHUB_OUTPUT
+
+  label-all-prs:
+    needs: get-pr-list
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    strategy:
+      matrix:
+        pr: ${{ fromJson(needs.get-pr-list.outputs.pr_numbers) }}
+
+    steps:
+      - name: Check and label PR
+        run: |
+          pr=${{ matrix.pr }}
+          repo=${{ github.repository }}
+
+          # Poll until mergeable_state is computed (max 60s)
+          for i in $(seq 1 12); do
+            state=$(gh api "repos/${repo}/pulls/${pr}" --jq '.mergeable_state')
+            echo "Attempt ${i}: mergeable_state=${state}"
+            if [ "$state" != "unknown" ] && [ -n "$state" ] && [ "$state" != "null" ]; then
+              break
+            fi
+            sleep 5
+          done
+
+          if [ "$state" = "dirty" ]; then
+            echo "PR #${pr} has conflicts, adding label"
+            gh api "repos/${repo}/issues/${pr}/labels" -f "labels[]=Has conflicts" --method POST || true
+          else
+            echo "PR #${pr} state is '${state}', removing label if present"
+            gh api "repos/${repo}/issues/${pr}/labels/Has%20conflicts" --method DELETE || true
+          fi
