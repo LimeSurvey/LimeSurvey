@@ -7,12 +7,12 @@
 <?php $this->renderPartial("./labels/_labelviewquickadd_view", []); ?>
 
 <div class="col-12 labels">
-    <div class="pagetitle h3">
+    <h2 class="pagetitle h3">
         <?php eT("Labels") ?>
         <?php if (isset($model->label_name)) : ?>
             - <?php echo CHtml::encode($model->label_name); ?>
         <?php endif; ?>
-    </div>
+    </h2>
 
     <!-- Main content -->
     <div class="col-12 content-right text-center">

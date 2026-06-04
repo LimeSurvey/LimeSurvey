@@ -13,6 +13,9 @@ $codeids = '';
              aria-labelledby="labelview-lang-tab-<?php echo (int) $i ?>">
             <input type='hidden' class='lslanguage' value='<?= $lslanguage ?>' <?= $i === 0 ? 'id="lslanguagemain"' : '' ?>/>
             <table class='answertable table table-hover'>
+                <caption class="sr-only">
+                    <?php echo sprintf(gT("Labels for language: %s"), getLanguageNameFromCode($lslanguage, false)) ?>
+                </caption>
                 <thead>
                 <tr>
                     <?php if ($first) : ?>
