@@ -116,6 +116,7 @@ trait LSApplicationTrait
      * Checks whether a given host name is in the allowed hosts list.
      * Lenient when allowed_hosts.php does not exist yet (returns true).
      * Once the file exists with entries, strictly enforces the allowlist.
+     * The host from publicurl (if configured) is always auto-included.
      *
      * @param string $host The host name to validate.
      * @return bool True if the host is allowed, false otherwise.
@@ -130,6 +131,16 @@ trait LSApplicationTrait
         }
 
         $host = strtolower(trim($host));
+
+        // publicurl host is always trusted
+        $publicUrl = Yii::app()->getConfig('publicurl');
+        if (!empty($publicUrl)) {
+            $parsed = parse_url($publicUrl);
+            if (isset($parsed['host']) && strtolower($parsed['host']) === $host) {
+                return true;
+            }
+        }
+
         foreach ($allowedHosts as $allowed) {
             if (strtolower(trim($allowed)) === $host) {
                 return true;
