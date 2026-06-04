@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from  (build ranslation:) to 6.17.6 (build 260604) June 4, 2026
+-Fixed issue: updates through ComfortUpdate are no longer incorrectly marked as unstable (Patrick Teichmann)
+-Fixed issue: [security] Vulnerability in twig template engine and deprecated twig attribute calls - this fix requires the minimum PHP version to be raised to 8.1. (#5026) (Carsten Schmitz)
+-Fixed issue #20489: [security] Publicly reachable file upload via RemoteControl API (#4889) (Denis Chenu)
+#Updated translation: Valencian by c_schmitz, joamuran, sergarb1, valdomir, vbraque
+#Updated translation: Spanish (Spain) by aesteban, artasom, atavei, c_schmitz, Ignacio, ireneoh, jmlopez, jparis, larjona, naiara.maya, Nodens, oleggorfinkel, perexat, segui, valdomir, xastrefernando, xtingray
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by actxcellence, assistedmindfulness, c_schmitz, eddylackmann, Joffm, Liam, mfaber
+#Updated translation: French (France) by AnneSophieB, DenisChenu, fgervais, mapage, riqcles
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han, kpadm, L191, mdekker, MrP
+#Updated translation: Dutch by Han, zfocuz
+#Updated translation: Dutch (Informal) by atvoogt, c_schmitz, Han
+#Updated translation: Dutch (Informal) by Aanouk, c_schmitz, Han, zfocuz
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.17.4 (build 260520) to 6.17.5 (build 260527) May 26, 2026
 -Fixed issue #AT-2056: Increase pagination to 250 and 500 (#5001) (Patricia Stell)
 -Fixed issue #AT-1897: design fixes for CSS states (#4992) (Tim Willig)
