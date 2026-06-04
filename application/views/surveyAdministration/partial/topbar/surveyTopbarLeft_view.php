@@ -35,24 +35,24 @@ App()->getClientScript()->registerScriptFile(
 <!-- survey activation -->
 
 <?php
-    if (!$editorEnabled) {
-?>
-<?php if (!$oSurvey->isActive) : ?>
+if (!$editorEnabled) {
+    ?>
+    <?php if (!$oSurvey->isActive) : ?>
     <!-- activate -->
-    <?php
-    $htmlOptions = [
+        <?php
+        $htmlOptions = [
         'class' => 'btn btn-primary btntooltip',
         'role' => 'button',
         'data-surveyid' => $sid,
         'data-url' => Yii::app()->createUrl('surveyAdministration/activateSurvey'),
         'onclick' => 'openModalActivate();'
-    ];
-    ?>
-    <?php if (!$canactivate) : ?>
+        ];
+        ?>
+        <?php if (!$canactivate) : ?>
         <span class="btntooltip" style="display: inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom"
         title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-        <?php $htmlOptions['disabled'] = 'disabled'; ?>
-    <?php endif; ?>
+            <?php $htmlOptions['disabled'] = 'disabled'; ?>
+        <?php endif; ?>
         <?php
         $this->widget('ext.ButtonWidget.ButtonWidget', [
             'name' => 'ls-activate-survey',
@@ -62,14 +62,14 @@ App()->getClientScript()->registerScriptFile(
             //'link' => App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
             'htmlOptions' => $htmlOptions,
         ]); ?>
-    <?php if (!$canactivate) : ?>
+        <?php if (!$canactivate) : ?>
         </span>
-    <?php endif; ?>
-<?php else : ?>
+        <?php endif; ?>
+    <?php else : ?>
     <!-- Stop survey -->
-    <?php if ($candeactivate) : ?>
-        <?php
-        $this->widget('ext.ButtonWidget.ButtonWidget', [
+        <?php if ($candeactivate) : ?>
+            <?php
+            $this->widget('ext.ButtonWidget.ButtonWidget', [
             'name' => 'stop-survey',
             'text' => gT('Stop this survey'),
             'icon' => 'ri-stop-circle-fill',
@@ -77,9 +77,9 @@ App()->getClientScript()->registerScriptFile(
             'htmlOptions' => [
                     'class' => 'btn btn-danger btntooltip'
             ],
-        ]); ?>
+            ]); ?>
+        <?php endif; ?>
     <?php endif; ?>
-<?php endif; ?>
 <?php }?>
 
 <!-- Preview/Run survey -->
@@ -116,7 +116,7 @@ if ($hasSurveyContentPermission) {
                             <li class="dropdown-divider"></li>
                         <?php elseif ($menuItem->isSmallText()) : ?>
                             <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
-                        <?php else: ?>
+                        <?php else : ?>
                             <li>
                                 <a class="dropdown-item" href="<?php echo $menuItem->getHref(); ?>">
                                     <!-- Spit out icon if present -->

@@ -20,6 +20,6 @@
 
 <?php
 if ($this->generalOption->formElement->value == $option['value']) {
-    echo ': ' .$this->generalOption->formElement->value;
+    echo ': ' . $this->generalOption->formElement->value;
 }
 ?>

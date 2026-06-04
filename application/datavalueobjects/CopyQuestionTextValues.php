@@ -21,7 +21,8 @@ class CopyQuestionTextValues
      * @param string $question
      * @param string $help
      */
-    public function __construct($questionText = '', $help = '') {
+    public function __construct($questionText = '', $help = '')
+    {
         $this->questionText = $questionText;
         $this->help = $help;
     }

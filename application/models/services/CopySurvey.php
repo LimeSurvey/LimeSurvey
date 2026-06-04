@@ -10,10 +10,8 @@ use DefaultValue;
 use DefaultValueL10n;
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
-use LSHttpRequest;
 use PluginSetting;
 use Question;
-use QuestionAttribute;
 use QuestionGroup;
 use QuestionL10n;
 use Survey;
@@ -21,6 +19,7 @@ use Permission;
 use SurveyLanguageSetting;
 use Template;
 use Yii;
+use Answer;
 
 /**
  * This class is responsible for copying a survey.
@@ -103,7 +102,12 @@ class CopySurvey
         $copySurveyResult->setCopiedSurvey($destinationSurvey);
 
         $this->copySurveyLanguages($copySurveyResult, $destinationSurvey);
-        $destinationSurvey->currentLanguageSettings->surveyls_title = $this->sourceSurvey->currentLanguageSettings->surveyls_title . ' - Copy';
+        $newTitle = $this->options->getNewTitle();
+        if ($newTitle !== null && $newTitle !== '') {
+            $destinationSurvey->currentLanguageSettings->surveyls_title = $newTitle;
+        } else {
+            $destinationSurvey->currentLanguageSettings->surveyls_title = sprintf(gT('%s - Copy', 'unescaped', $this->sourceSurvey->language), $this->sourceSurvey->currentLanguageSettings->surveyls_title);
+        }
         $destinationSurvey->currentLanguageSettings->save();
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
         $this->copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIdsAndQuestionIds['questionGroupIds']);
@@ -145,6 +149,17 @@ class CopySurvey
         if ($this->options->isResetResponseStartId()) {
             $destinationSurvey->autonumber_start = 0;
             $destinationSurvey->save();
+        } elseif ($this->sourceSurvey->isActive) {
+            $lastResponse = Yii::app()->db->createCommand()
+                ->select("MAX(id) as maxrecordid")
+                ->from("{{responses_" . $this->sourceSurvey->sid . "}}")
+                ->queryAll()
+            ;
+            $result = $lastResponse[0]['maxrecordid'] ?? null;
+            if ($result) {
+                $destinationSurvey->autonumber_start = $lastResponse[0]['maxrecordid'] + 1;
+                $destinationSurvey->save();
+            }
         }
 
         if ($this->options->isPermissions()) {
@@ -178,7 +193,7 @@ class CopySurvey
         );
         $cntCopiedLanguageSettings = 0;
         foreach ($sourceLanguageSettings as $sourceLanguageSetting) {
-            $destLangSet = new SurveyLanguageSetting();
+            $destLangSet = new SurveyLanguageSetting('copy');
             $destLangSet->attributes = $sourceLanguageSetting->attributes;
             $destLangSet->surveyls_attributecaptions = $sourceLanguageSetting->surveyls_attributecaptions;
             if ($this->options->isResourcesAndLinks()) {
@@ -248,12 +263,10 @@ class CopySurvey
                     $destinationSurvey->sid,
                     $destLangSet->email_admin_responses
                 );
-                $destLangSet->attachments = translateLinks(
-                    'survey',
+                $destLangSet->attachments = translateJsonLinks(
                     $this->sourceSurvey->sid,
                     $destinationSurvey->sid,
-                    $destLangSet->attachments,
-                    true
+                    $destLangSet->attachments
                 );
             }
             $destLangSet->surveyls_survey_id = $destinationSurvey->sid;
@@ -503,6 +516,7 @@ class CopySurvey
      * @param array $mappingGroupIds
      * @param int $destinationSurveyId
      * @return int number of conditions copied
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function copyConditions($mappingQuestionIds, $mappingGroupIds, $destinationSurveyId)
     {
@@ -525,17 +539,51 @@ class CopySurvey
             $condition->qid = $mappingQuestionIds[$conditionRow['qid']];
             $condition->cqid = $mappingQuestionIds[$conditionRow['cqid']];
             //rebuild the cfieldname --> "$iSurveyID . "X" . $iGroupID . "X" . $iQuestionID"
-            list(, $oldGroupId, $oldQuestionId) = explode("X", (string) $conditionRow['cfieldname'], 3);
-            //the $oldQuestionId contains the question id from the old question id
-            //and could in addition contain a subquestion code or answer option code
-            //cut out the question id, which is at the beginning of $oldQuestionId
-            $appendSubQuestionOrAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['cqid']));
-            $addPlusSign = "";
-            if (preg_match("/^\+/", $conditionRow['cfieldname'])) {
-                $addPlusSign = "+";
+            $cfieldname = (string) $conditionRow['cfieldname'];
+            $qPos = strpos($cfieldname, 'Q');
+            if (($qPos === false) || ($qPos > 1)) {
+                list(, $oldGroupId, $oldQuestionId) = explode("X", $cfieldname, 3);
+                //the $oldQuestionId contains the question id from the old question id
+                //and could in addition contain a subquestion code or answer option code
+                //cut out the question id, which is at the beginning of $oldQuestionId
+                $appendSubQuestionOrAnswerOption = substr($oldQuestionId, strlen((string) $conditionRow['cqid']));
+                $addPlusSign = "";
+                if (preg_match("/^\+/", $conditionRow['cfieldname'])) {
+                    $addPlusSign = "+";
+                }
+                $condition->cfieldname = $addPlusSign . $destinationSurveyId . "X" . $mappingGroupIds[$oldGroupId] .
+                    "X" . $mappingQuestionIds[$conditionRow['cqid']] . $appendSubQuestionOrAnswerOption;
+            } else {
+                $parts = explode("_", $cfieldname);
+                for ($index = 0; $index < count($parts); $index++) {
+                    $firstLetter = $parts[$index][0];
+                    if (in_array($firstLetter, ['+', 'Q', 'S', 'R'])) {
+                        if ($firstLetter !== 'R') {
+                            $offset = (($firstLetter === '+') ? 2 : 1);
+                            $qid = -1;
+                            if (!isset($mappingQuestionIds[substr($parts[$index], $offset)])) {
+                                $oldQuestion = Question::model()->findByPk(substr($parts[$index], $offset));
+                                if (!$oldQuestion) {
+                                    continue;
+                                }
+                                $newQuestion = Question::model()->find("sid = :sid and title = :title", [":sid" => $destinationSurveyId, ":title" => $oldQuestion->title]);
+                                $qid = $newQuestion->qid;
+                            } else {
+                                $qid = $mappingQuestionIds[substr($parts[$index], $offset)];
+                            }
+                            $parts[$index] = substr($parts[$index], 0, $offset) . $qid;
+                        } else {
+                            $oldAnswer = Answer::model()->findByPk(substr($parts[$index], $offset));
+                            if (!isset($mappingQuestionIds[$oldAnswer->qid])) {
+                                continue;
+                            }
+                            $newAnswer = Answer::model()->find("qid = :qid and code = :code", [":qid" => $mappingQuestionIds[$oldAnswer->qid], ":code" => $oldAnswer->code]);
+                            $parts[$index] = substr($parts[$index], 0, $offset) . $newAnswer->aid;
+                        }
+                    }
+                }
+                $condition->cfieldname = implode("_", $parts);
             }
-            $condition->cfieldname = $addPlusSign . $destinationSurveyId . "X" . $mappingGroupIds[$oldGroupId] .
-                "X" . $mappingQuestionIds[$conditionRow['cqid']] . $appendSubQuestionOrAnswerOption;
             $condition->value = $conditionRow['value'];
             $condition->method = $conditionRow['method'];
             if ($condition->save()) {

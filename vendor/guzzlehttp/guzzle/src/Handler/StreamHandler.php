@@ -22,6 +22,24 @@ use Psr\Http\Message\UriInterface;
  */
 class StreamHandler
 {
+    private const CONNECTION_ERRORS = [
+        'php_network_getaddresses:',
+        'getaddrinfo',
+        'gethostbyname failed',
+        'Connection refused',
+        'No connection could be made because the target machine actively refused it',
+        "couldn't connect to host", // error on HHVM
+        'connection attempt failed',
+        'connect() failed',
+        'Connection timed out',
+        'Operation timed out',
+        'Network is unreachable',
+        'No route to host',
+        'Host is unreachable',
+        'Host is down',
+        'Cannot connect to HTTPS server through proxy',
+    ];
+
     /**
      * @var array
      */
@@ -42,6 +60,11 @@ class StreamHandler
 
         $protocolVersion = $request->getProtocolVersion();
 
+        if ('' === $protocolVersion) {
+            $protocolVersion = '1.1';
+            $request = Psr7\Utils::modifyRequest($request, ['version' => $protocolVersion]);
+        }
+
         if ('1.0' !== $protocolVersion && '1.1' !== $protocolVersion) {
             throw new ConnectException(sprintf('HTTP/%s is not supported by the stream handler.', $protocolVersion), $request);
         }
@@ -53,8 +76,14 @@ class StreamHandler
             $request = $request->withoutHeader('Expect');
 
             // Append a content-length header if body size is zero to match
-            // cURL's behavior.
-            if (0 === $request->getBody()->getSize()) {
+            // the behavior of `CurlHandler`
+            if (
+                (
+                    0 === \strcasecmp('PUT', $request->getMethod())
+                    || 0 === \strcasecmp('POST', $request->getMethod())
+                )
+                && 0 === $request->getBody()->getSize()
+            ) {
                 $request = $request->withHeader('Content-Length', '0');
             }
 
@@ -68,13 +97,7 @@ class StreamHandler
             throw $e;
         } catch (\Exception $e) {
             // Determine if the error was a networking error.
-            $message = $e->getMessage();
-            // This list can probably get more comprehensive.
-            if (false !== \strpos($message, 'getaddrinfo') // DNS lookup failed
-                || false !== \strpos($message, 'Connection refused')
-                || false !== \strpos($message, "couldn't connect to host") // error on HHVM
-                || false !== \strpos($message, 'connection attempt failed')
-            ) {
+            if (self::isConnectionError($e->getMessage())) {
                 $e = new ConnectException($e->getMessage(), $request, $e);
             } else {
                 $e = RequestException::wrapException($request, $e);
@@ -83,6 +106,17 @@ class StreamHandler
 
             return P\Create::rejectionFor($e);
         }
+    }
+
+    private static function isConnectionError(string $message): bool
+    {
+        foreach (self::CONNECTION_ERRORS as $connectionError) {
+            if (false !== \strpos($message, $connectionError)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function invokeStats(
@@ -179,15 +213,12 @@ class StreamHandler
                     // Remove content-encoding header
                     unset($headers[$normalizedKeys['content-encoding']]);
 
-                    // Fix content-length header
+                    // The decoded length cannot be known without inflating the
+                    // stream, so keep the original length for inspection and
+                    // drop the now-unknown Content-Length header.
                     if (isset($normalizedKeys['content-length'])) {
                         $headers['x-encoded-content-length'] = $headers[$normalizedKeys['content-length']];
-                        $length = (int) $stream->getSize();
-                        if ($length === 0) {
-                            unset($headers[$normalizedKeys['content-length']]);
-                        } else {
-                            $headers[$normalizedKeys['content-length']] = [$length];
-                        }
+                        unset($headers[$normalizedKeys['content-length']]);
                     }
                 }
             }
@@ -327,8 +358,15 @@ class StreamHandler
         );
 
         return $this->createResource(
-            function () use ($uri, &$http_response_header, $contextResource, $context, $options, $request) {
+            function () use ($uri, $contextResource, $context, $options, $request) {
                 $resource = @\fopen((string) $uri, 'r', false, $contextResource);
+
+                // See https://wiki.php.net/rfc/deprecations_php_8_5#deprecate_the_http_response_header_predefined_variable
+                if (function_exists('http_get_last_response_headers')) {
+                    /** @var array|null */
+                    $http_response_header = \http_get_last_response_headers();
+                }
+
                 $this->lastHeaders = $http_response_header ?? [];
 
                 if (false === $resource) {
@@ -532,8 +570,20 @@ class StreamHandler
     private function add_cert(RequestInterface $request, array &$options, $value, array &$params): void
     {
         if (\is_array($value)) {
-            $options['ssl']['passphrase'] = $value[1];
+            if (!isset($value[0]) || !\is_string($value[0])) {
+                throw new \InvalidArgumentException('Invalid cert request option');
+            }
+            if (isset($value[1])) {
+                if (!\is_string($value[1])) {
+                    throw new \InvalidArgumentException('Invalid cert request option');
+                }
+                $options['ssl']['passphrase'] = $value[1];
+            }
             $value = $value[0];
+        }
+
+        if (!\is_string($value)) {
+            throw new \InvalidArgumentException('Invalid cert request option');
         }
 
         if (!\file_exists($value)) {
@@ -548,6 +598,10 @@ class StreamHandler
      */
     private function add_progress(RequestInterface $request, array &$options, $value, array &$params): void
     {
+        if (!\is_callable($value)) {
+            throw new \InvalidArgumentException('progress client option must be callable');
+        }
+
         self::addNotification(
             $params,
             static function ($code, $a, $b, $c, $transferred, $total) use ($value) {
