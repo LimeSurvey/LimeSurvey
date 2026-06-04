@@ -255,14 +255,15 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
      */
     public function testCreateValidatedAbsoluteUrlUsesPublicUrl()
     {
-        // Set publicurl to match the test environment host
-        Yii::app()->setConfig('publicurl', 'http://localhost/');
+        // Set publicurl to a distinct host that differs from the default test host
+        Yii::app()->setConfig('publicurl', 'https://example.test/limesurvey');
 
         $url = Yii::app()->createValidatedAbsoluteUrl('admin/authentication/sa/newPassword', ['param' => 'key456']);
 
         $this->assertIsString($url);
-        $this->assertStringContainsString('localhost', $url);
+        $this->assertStringContainsString('example.test', $url);
         $this->assertStringContainsString('key456', $url);
+        $this->assertStringNotContainsString('localhost', $url);
     }
 
     /**
