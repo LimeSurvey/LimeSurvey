@@ -1,17 +1,20 @@
 <?php
 /**
+ * Fallback error modal rendered when an unrecognised modalType is encountered.
+ *
  * @var array  $aAction
  * @var string $massiveModalDomId
  * @var string $massiveModalTitleId
  * @var string $massiveModalDialogSrId
  */
 ?>
-<!-- Modal confirmation for <?php echo $aAction['action']; ?> -->
+<!-- Modal for unknown modal type error -->
 <div id="<?php echo CHtml::encode($massiveModalDomId); ?>"
      class="modal fade"
      role="dialog"
      aria-modal="true"
      aria-labelledby="<?php echo CHtml::encode($massiveModalTitleId . ' ' . $massiveModalDialogSrId); ?>"
+     data-keepopen="<?php echo $aAction['keepopen']; ?>"
 >
     <div class="modal-dialog" role="document">
         <!-- Modal content-->
@@ -20,18 +23,20 @@
             Yii::app()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
                 [
-                    'modalTitle'   => $aAction['sModalTitle'],
+                    'modalTitle'   => gT('Error'),
                     'modalTitleId' => $massiveModalTitleId,
                 ]
             );
             ?>
             <div class="modal-body">
-                <div class="modal-body-text"><?php echo $aAction['htmlModalBody']; ?></div>
+                <?php eT('Unknown modal view type in Massive Actions Widget!'); ?>
             </div>
             <div class="modal-footer modal-footer-buttons">
-                <?php foreach ($aAction['htmlFooterButtons'] as $buttonHtml) : ?>
-                    <?php echo $buttonHtml; ?>
-                <?php endforeach; ?>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <span class="ri-forbid-2-line"></span>
+                    &nbsp;
+                    <?php eT("Close"); ?>
+                </button>
             </div>
         </div>
     </div>
