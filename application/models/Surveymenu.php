@@ -345,6 +345,7 @@ class Surveymenu extends LSActiveRecord
             'title'         => gT('Title'),
             'position'      => gT('Position'),
             'description'   => gT('Description'),
+            'showincollapse' => gT('Show in collapse'),
             'changed_at'    => gT('Changed on'),
             'changed_by'    => gT('Changed by'),
             'created_at'    => gT('Created on'),
