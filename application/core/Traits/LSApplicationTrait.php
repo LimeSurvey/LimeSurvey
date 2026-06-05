@@ -130,19 +130,20 @@ trait LSApplicationTrait
             return true;
         }
 
-        $host = strtolower(trim($host));
+        // Normalize: strip IPv6 brackets, trim, lowercase
+        $host = strtolower(trim($host, " \t\n\r\0\x0B[]"));
 
         // publicurl host is always trusted
         $publicUrl = Yii::app()->getConfig('publicurl');
         if (!empty($publicUrl)) {
             $parsed = parse_url($publicUrl);
-            if (isset($parsed['host']) && strtolower($parsed['host']) === $host) {
+            if (isset($parsed['host']) && strtolower(trim($parsed['host'], " \t\n\r\0\x0B[]")) === $host) {
                 return true;
             }
         }
 
         foreach ($allowedHosts as $allowed) {
-            if (strtolower(trim($allowed)) === $host) {
+            if (strtolower(trim($allowed, " \t\n\r\0\x0B[]")) === $host) {
                 return true;
             }
         }
