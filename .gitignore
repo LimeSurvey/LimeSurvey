@@ -229,7 +229,6 @@ vendor/phpspec/
 vendor/webmozart/
 upload/templates/
 assets/packages/ckeditor/samples
-vendor/symfony/polyfill-php80
 
 ## ignore Vagrantfile and Adminer
 adminer.php

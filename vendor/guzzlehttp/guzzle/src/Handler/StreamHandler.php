@@ -9,6 +9,7 @@ use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\TransferStats;
+use GuzzleHttp\TransportSharing;
 use GuzzleHttp\Utils;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -61,6 +62,8 @@ class StreamHandler
         $protocolVersion = $request->getProtocolVersion();
 
         if ('' === $protocolVersion) {
+            \trigger_deprecation('guzzlehttp/guzzle', '7.11', 'Sending a request with an empty protocol version is deprecated; guzzlehttp/guzzle 8.0 will reject empty protocol versions.');
+
             $protocolVersion = '1.1';
             $request = Psr7\Utils::modifyRequest($request, ['version' => $protocolVersion]);
         }
@@ -70,6 +73,8 @@ class StreamHandler
         }
 
         $startTime = isset($options['on_stats']) ? Utils::currentTime() : null;
+
+        self::triggerUnsupportedRequestOptionDeprecations($request, $options);
 
         try {
             // Does not support the expect header.
@@ -100,7 +105,7 @@ class StreamHandler
             if (self::isConnectionError($e->getMessage())) {
                 $e = new ConnectException($e->getMessage(), $request, $e);
             } else {
-                $e = RequestException::wrapException($request, $e);
+                $e = $e instanceof RequestException ? $e : new RequestException($e->getMessage(), $request, null, $e);
             }
             $this->invokeStats($options, $request, $startTime, null, $e);
 
@@ -142,10 +147,8 @@ class StreamHandler
 
         try {
             [$ver, $status, $reason, $headers] = HeaderProcessor::parseHeaders($hdrs);
-        } catch (\Exception $e) {
-            return P\Create::rejectionFor(
-                new RequestException('An error was encountered while creating the response', $request, null, $e)
-            );
+        } catch (\Throwable $e) {
+            return $this->rejectResponseCreation($options, $request, $startTime, $e);
         }
 
         [$stream, $headers] = $this->checkDecode($options, $headers, $stream);
@@ -158,16 +161,14 @@ class StreamHandler
 
         try {
             $response = new Psr7\Response($status, $headers, $sink, $ver, $reason);
-        } catch (\Exception $e) {
-            return P\Create::rejectionFor(
-                new RequestException('An error was encountered while creating the response', $request, null, $e)
-            );
+        } catch (\Throwable $e) {
+            return $this->rejectResponseCreation($options, $request, $startTime, $e);
         }
 
         if (isset($options['on_headers'])) {
             try {
                 $options['on_headers']($response);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 return P\Create::rejectionFor(
                     new RequestException('An error was encountered during the on_headers event', $request, $response, $e)
                 );
@@ -183,6 +184,24 @@ class StreamHandler
         $this->invokeStats($options, $request, $startTime, $response, null);
 
         return new FulfilledPromise($response);
+    }
+
+    private function rejectResponseCreation(
+        array $options,
+        RequestInterface $request,
+        ?float $startTime,
+        \Throwable $previous
+    ): PromiseInterface {
+        $reason = new RequestException(
+            'An error was encountered while creating the response',
+            $request,
+            null,
+            $previous
+        );
+
+        $this->invokeStats($options, $request, $startTime, null, $reason);
+
+        return P\Create::rejectionFor($reason);
     }
 
     private function createSink(StreamInterface $stream, array $options): StreamInterface
@@ -304,8 +323,14 @@ class StreamHandler
             $methods = \array_flip(\get_class_methods(__CLASS__));
         }
 
-        if (!\in_array($request->getUri()->getScheme(), ['http', 'https'])) {
-            throw new RequestException(\sprintf("The scheme '%s' is not supported.", $request->getUri()->getScheme()), $request);
+        $scheme = $request->getUri()->getScheme();
+        if (!\in_array($scheme, ['http', 'https'], true)) {
+            throw new RequestException(\sprintf("The scheme '%s' is not supported.", $scheme), $request);
+        }
+
+        $protocols = Utils::normalizeProtocols($options['protocols'] ?? ['http', 'https']);
+        if (!\in_array($scheme, $protocols, true)) {
+            throw new RequestException(\sprintf('The scheme "%s" is not allowed by the protocols request option.', $scheme), $request);
         }
 
         // HTTP/1.1 streams using the PHP stream wrapper require a
@@ -363,7 +388,6 @@ class StreamHandler
 
                 // See https://wiki.php.net/rfc/deprecations_php_8_5#deprecate_the_http_response_header_predefined_variable
                 if (function_exists('http_get_last_response_headers')) {
-                    /** @var array|null */
                     $http_response_header = \http_get_last_response_headers();
                 }
 
@@ -448,6 +472,122 @@ class StreamHandler
         return $context;
     }
 
+    private static function triggerUnsupportedRequestOptionDeprecations(RequestInterface $request, array $options): void
+    {
+        if (\array_key_exists('transport_sharing', $options)) {
+            $transportSharingMode = CurlShareHandleState::normalizeMode($options['transport_sharing'], 'transport_sharing');
+
+            if ($transportSharingMode === TransportSharing::HANDLER_REQUIRE) {
+                throw new \InvalidArgumentException('The "transport_sharing" option requires transport sharing, but the stream handler does not support it.');
+            }
+        }
+
+        if (
+            \array_key_exists('curl', $options)
+            && $options['curl'] !== null
+            && $options['curl'] !== []
+            && !self::isCurlOptionGeneratedByAuth($options)
+        ) {
+            \trigger_deprecation('guzzlehttp/guzzle', '7.11', 'Passing the "curl" request option to the stream handler is deprecated; guzzlehttp/guzzle 8.0 will reject this option because the stream handler ignores cURL options.');
+        }
+
+        if (self::usesDigestAuth($options)) {
+            \trigger_deprecation('guzzlehttp/guzzle', '7.11', 'Passing digest authentication to the stream handler is deprecated; guzzlehttp/guzzle 8.0 will reject digest authentication with the stream handler because it is only supported by cURL handlers.');
+        }
+
+        if (\array_key_exists('expect', $options) && $options['expect'] !== false && $request->hasHeader('Expect')) {
+            \trigger_deprecation('guzzlehttp/guzzle', '7.11', 'Passing the "expect" request option to the stream handler is deprecated when it adds an Expect header; guzzlehttp/guzzle 8.0 will reject this option because the stream handler does not support Expect: 100-Continue.');
+        }
+    }
+
+    private static function isCurlOptionGeneratedByAuth(array $options): bool
+    {
+        if (!isset($options['curl']) || !\is_array($options['curl']) || !isset($options['auth'][2]) || !\is_string($options['auth'][2])) {
+            return false;
+        }
+
+        if (!\defined('CURLOPT_HTTPAUTH') || !\defined('CURLOPT_USERPWD')) {
+            return false;
+        }
+
+        $type = \strtolower($options['auth'][2]);
+        if ($type === 'digest') {
+            $httpAuth = \defined('CURLAUTH_DIGEST') ? \constant('CURLAUTH_DIGEST') : null;
+        } elseif ($type === 'ntlm') {
+            $httpAuth = \defined('CURLAUTH_NTLM') ? \constant('CURLAUTH_NTLM') : null;
+        } else {
+            return false;
+        }
+
+        return $httpAuth !== null
+            && \count($options['curl']) === 2
+            && isset($options['curl'][\CURLOPT_HTTPAUTH], $options['curl'][\CURLOPT_USERPWD])
+            && $options['curl'][\CURLOPT_HTTPAUTH] === $httpAuth;
+    }
+
+    private static function usesDigestAuth(array $options): bool
+    {
+        return isset($options['auth'][2])
+            && \is_string($options['auth'][2])
+            && \strtolower($options['auth'][2]) === 'digest';
+    }
+
+    /**
+     * @param mixed $value as passed via Request transfer options.
+     *
+     * @return array{0: string, 1: string|null}
+     */
+    private static function normalizeTlsFileOption(string $option, $value): array
+    {
+        $passphrase = null;
+
+        if (\is_array($value)) {
+            if (!isset($value[0]) || !\is_string($value[0])) {
+                throw new \InvalidArgumentException(\sprintf('Invalid %s request option', $option));
+            }
+            if (isset($value[1])) {
+                if (!\is_string($value[1])) {
+                    throw new \InvalidArgumentException(\sprintf('Invalid %s request option', $option));
+                }
+                $passphrase = $value[1];
+            }
+            $value = $value[0];
+        }
+
+        if (!\is_string($value)) {
+            throw new \InvalidArgumentException(\sprintf('Invalid %s request option', $option));
+        }
+
+        return [$value, $passphrase];
+    }
+
+    private static function setTlsPassphrase(array &$options, ?string $passphrase, string $option): void
+    {
+        if ($passphrase === null) {
+            return;
+        }
+
+        if (isset($options['ssl']['passphrase']) && $options['ssl']['passphrase'] !== $passphrase) {
+            throw new \InvalidArgumentException(\sprintf('Cannot use different passphrases for cert and ssl_key with the stream handler; %s conflicts with an existing TLS passphrase.', $option));
+        }
+
+        $options['ssl']['passphrase'] = $passphrase;
+    }
+
+    /**
+     * @param mixed $value as passed via Request transfer options.
+     */
+    private static function assertStreamTlsType(string $option, $value): void
+    {
+        if (!\is_string($value) || $value === '') {
+            throw new \InvalidArgumentException(\sprintf('%s must be a non-empty string', $option));
+        }
+
+        if (\strtoupper($value) !== 'PEM') {
+            throw new \InvalidArgumentException(\sprintf('The stream handler only supports "PEM" for the %s request option.', $option));
+        }
+    }
+
     /**
      * @param mixed $value as passed via Request transfer options.
      */
@@ -460,7 +600,10 @@ class StreamHandler
         } else {
             $scheme = $request->getUri()->getScheme();
             if (isset($value[$scheme])) {
-                if (!isset($value['no']) || !Utils::isHostInNoProxy($request->getUri()->getHost(), $value['no'])) {
+                if (
+                    !isset($value['no'])
+                    || !Utils::isUriInNoProxy($request->getUri(), $value['no'])
+                ) {
                     $uri = $value[$scheme];
                 }
             }
@@ -569,28 +712,45 @@ class StreamHandler
      */
     private function add_cert(RequestInterface $request, array &$options, $value, array &$params): void
     {
-        if (\is_array($value)) {
-            if (!isset($value[0]) || !\is_string($value[0])) {
-                throw new \InvalidArgumentException('Invalid cert request option');
-            }
-            if (isset($value[1])) {
-                if (!\is_string($value[1])) {
-                    throw new \InvalidArgumentException('Invalid cert request option');
-                }
-                $options['ssl']['passphrase'] = $value[1];
-            }
-            $value = $value[0];
-        }
-
-        if (!\is_string($value)) {
-            throw new \InvalidArgumentException('Invalid cert request option');
-        }
+        [$value, $passphrase] = self::normalizeTlsFileOption('cert', $value);
 
         if (!\file_exists($value)) {
             throw new \RuntimeException("SSL certificate not found: {$value}");
         }
 
+        self::setTlsPassphrase($options, $passphrase, 'cert');
         $options['ssl']['local_cert'] = $value;
+    }
+
+    /**
+     * @param mixed $value as passed via Request transfer options.
+     */
+    private function add_cert_type(RequestInterface $request, array &$options, $value, array &$params): void
+    {
+        self::assertStreamTlsType('cert_type', $value);
+    }
+
+    /**
+     * @param mixed $value as passed via Request transfer options.
+     */
+    private function add_ssl_key(RequestInterface $request, array &$options, $value, array &$params): void
+    {
+        [$value, $passphrase] = self::normalizeTlsFileOption('ssl_key', $value);
+
+        if (!\file_exists($value)) {
+            throw new \RuntimeException("SSL private key not found: {$value}");
+        }
+
+        self::setTlsPassphrase($options, $passphrase, 'ssl_key');
+        $options['ssl']['local_pk'] = $value;
+    }
+
+    /**
+     * @param mixed $value as passed via Request transfer options.
+     */
+    private function add_ssl_key_type(RequestInterface $request, array &$options, $value, array &$params): void
+    {
+        self::assertStreamTlsType('ssl_key_type', $value);
     }
 
     /**
