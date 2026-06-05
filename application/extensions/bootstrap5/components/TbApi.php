@@ -60,7 +60,7 @@ class TbApi extends CApplicationComponent
     {
         parent::init();
         if ($this->bootstrapPath === null) {
-            $this->bootstrapPath = Yii::getPathOfAlias('vendor.twbs.bootstrap.dist');
+            $this->bootstrapPath = Yii::getPathOfAlias('node_modules.bootstrap.dist');
         }
     }
 

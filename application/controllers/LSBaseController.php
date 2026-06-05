@@ -33,7 +33,6 @@ class LSBaseController extends LSYii_Controller
         //REFACTORING we have to set the main layout here (it's in /view/layouts/main)
         $this->layout = 'main';
 
-        App()->getComponent('bootstrap');
         $this->sessionControl();
 
         $this->userId = Yii::app()->user->getId();
