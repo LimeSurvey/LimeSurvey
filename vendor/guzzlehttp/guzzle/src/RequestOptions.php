@@ -5,7 +5,7 @@ namespace GuzzleHttp;
 /**
  * This class contains a list of built-in Guzzle request options.
  *
- * @see https://docs.guzzlephp.org/en/latest/request-options.html
+ * @see https://github.com/guzzle/guzzle/blob/7.11/docs/request-options.md
  */
 final class RequestOptions
 {
@@ -23,41 +23,53 @@ final class RequestOptions
      *   browsers do which is redirect POST requests with GET requests
      * - referer: (bool, default=false) Set to true to enable the Referer
      *   header.
-     * - protocols: (array, default=['http', 'https']) Allowed redirect
-     *   protocols.
+     * - protocols: (non-empty-array<array-key, string>, default=['http', 'https'])
+     *   Allowed redirect protocols. Redirect matching is case-sensitive; use
+     *   "http" and "https".
      * - on_redirect: (callable) PHP callable that is invoked when a redirect
      *   is encountered. The callable is invoked with the request, the redirect
      *   response that was received, and the effective URI. Any return value
      *   from the on_redirect function is ignored.
+     * - track_redirects: (bool, default=false) Track redirected URI and status
+     *   history in response headers.
      */
     public const ALLOW_REDIRECTS = 'allow_redirects';
 
     /**
-     * auth: (array) Pass an array of HTTP authentication parameters to use
-     * with the request. The array must contain the username in index [0],
-     * the password in index [1], and you can optionally provide a built-in
-     * authentication type in index [2]. Pass null to disable authentication
-     * for a request.
+     * auth: (array{0: string, 1: string, 2?: string|null}|string|false|null)
+     * Pass an array of HTTP authentication parameters to use with the request.
+     * The array must contain the username in index [0], the password in index
+     * [1], and you can optionally provide a built-in authentication type in
+     * index [2]. Pass false or null to disable authentication for a request.
+     * String values are passed through for custom handlers.
      */
     public const AUTH = 'auth';
 
     /**
-     * body: (resource|string|null|int|float|StreamInterface|callable|\Iterator)
-     * Body to send in the request.
+     * body: (resource|string|null|int|float|bool|\Psr\Http\Message\StreamInterface|(callable&object)|\Iterator|\Stringable)
+     * Body to send in the request. Callable arrays are arrays, and arrays are
+     * not valid body values in Guzzle.
      */
     public const BODY = 'body';
 
     /**
-     * cert: (string|array) Set to a string to specify the path to a file
-     * containing a PEM formatted SSL client side certificate. If a password
-     * is required, then set cert to an array containing the path to the PEM
-     * file in the first array element followed by the certificate password
-     * in the second array element.
+     * cert: (string|array{0: string, 1?: string|null}) Set to a string to
+     * specify the path to a client certificate file. PEM is the default
+     * certificate format. If a password is required, set cert to an array
+     * containing the certificate path in the first array element followed by
+     * the certificate password in the second array element. A null password is
+     * treated the same as omitting it. Use cert_type to specify another
+     * supported certificate format.
      */
     public const CERT = 'cert';
 
     /**
-     * cookies: (bool|GuzzleHttp\Cookie\CookieJarInterface, default=false)
+     * cert_type: (string) Specify the SSL client certificate file type.
+     */
+    public const CERT_TYPE = 'cert_type';
+
+    /**
+     * cookies: (false|GuzzleHttp\Cookie\CookieJarInterface, default=false)
      * Specifies whether or not cookies are used in a request or what cookie
      * jar to use or what cookies to send. This option only works if your
      * handler has the `cookie` middleware. Valid values are `false` and
@@ -66,9 +78,9 @@ final class RequestOptions
     public const COOKIES = 'cookies';
 
     /**
-     * connect_timeout: (float, default=0) Float describing the number of
-     * seconds to wait while trying to connect to a server. Use 0 to wait
-     * 300 seconds (the default behavior).
+     * connect_timeout: (int|float, default=0) Number of seconds to wait while
+     * trying to connect to a server. Use 0 to wait 300 seconds (the default
+     * behavior).
      */
     public const CONNECT_TIMEOUT = 'connect_timeout';
 
@@ -92,14 +104,15 @@ final class RequestOptions
     public const DEBUG = 'debug';
 
     /**
-     * decode_content: (bool, default=true) Specify whether or not
+     * decode_content: (bool|string, default=true) Specify whether or not
      * Content-Encoding responses (gzip, deflate, etc.) are automatically
      * decoded.
      */
     public const DECODE_CONTENT = 'decode_content';
 
     /**
-     * delay: (int) The amount of time to delay before sending in milliseconds.
+     * delay: (int|float) The amount of time to delay before sending in
+     * milliseconds.
      */
     public const DELAY = 'delay';
 
@@ -122,16 +135,17 @@ final class RequestOptions
     public const EXPECT = 'expect';
 
     /**
-     * form_params: (array) Associative array of form field names to values
-     * where each value is a string or array of strings. Sets the Content-Type
-     * header to application/x-www-form-urlencoded when no Content-Type header
-     * is already present.
+     * form_params: (array<array-key, string|int|float|bool|null|array>)
+     * Associative array of form field names to scalar, null, or nested array
+     * values. Sets the Content-Type header to application/x-www-form-urlencoded
+     * when no Content-Type header is already present.
      */
     public const FORM_PARAMS = 'form_params';
 
     /**
-     * headers: (array) Associative array of HTTP headers. Each value MUST be
-     * a string or array of strings.
+     * headers: (array<array-key, string|non-empty-array<array-key, string>>|null)
+     * Associative array of HTTP headers. Each value MUST be a string or non-empty
+     * array of strings.
      */
     public const HEADERS = 'headers';
 
@@ -144,10 +158,10 @@ final class RequestOptions
     public const HTTP_ERRORS = 'http_errors';
 
     /**
-     * idn: (bool|int, default=true) A combination of IDNA_* constants for
-     * idn_to_ascii() PHP's function (see "options" parameter). Set to false to
-     * disable IDN support completely, or to true to use the default
-     * configuration (IDNA_DEFAULT constant).
+     * idn_conversion: (bool|int|null, default=false) A combination of IDNA_*
+     * constants for PHP's idn_to_ascii() function. Set to false or null to
+     * disable IDN support, or to true to use the default configuration
+     * (IDNA_DEFAULT constant).
      */
     public const IDN_CONVERSION = 'idn_conversion';
 
@@ -159,13 +173,13 @@ final class RequestOptions
     public const JSON = 'json';
 
     /**
-     * multipart: (array) Array of associative arrays, each containing a
-     * required "name" key mapping to the form field, name, a required
-     * "contents" key mapping to a StreamInterface|resource|string, an
-     * optional "headers" associative array of custom headers, and an
-     * optional "filename" key mapping to a string to send as the filename in
-     * the part. If no "filename" key is present, then no "filename" attribute
-     * will be added to the part.
+     * multipart: (array) Array of part arrays, each containing a required
+     * "name" key mapping to the string or integer form field name, a required
+     * "contents" key mapping to any non-array value accepted by PSR-7
+     * Utils::streamFor() or a nested array of field values, an optional
+     * "headers" array of string custom header values, and an optional
+     * "filename" key mapping to a string to send as the filename in the part.
+     * "headers" and "filename" cannot be used when "contents" is an array.
      */
     public const MULTIPART = 'multipart';
 
@@ -197,24 +211,33 @@ final class RequestOptions
     public const PROGRESS = 'progress';
 
     /**
+     * protocols: (non-empty-array<array-key, string>, default=['http', 'https'])
+     * Allowed URI schemes. Built-in handlers accept only the case-sensitive
+     * values "http" and "https".
+     */
+    public const PROTOCOLS = 'protocols';
+
+    /**
      * proxy: (string|array) Pass a string to specify an HTTP proxy, or an
      * array to specify different proxies for different protocols (where the
-     * key is the protocol and the value is a proxy string).
+     * key is the protocol and the value is a proxy string or null). Provide a
+     * "no" key as a comma-delimited string, array of strings, or null to
+     * specify hosts or host-and-port pairs that should not be proxied.
      */
     public const PROXY = 'proxy';
 
     /**
-     * query: (array|string) Associative array of query string values to add
-     * to the request. This option uses PHP's http_build_query() to create
-     * the string representation. Pass a string value if you need more
-     * control than what this method provides
+     * query: (array<array-key, mixed>|string) Associative array of query string
+     * values to add to the request. This option uses PHP's http_build_query()
+     * to create the string representation. Pass a string value if you need
+     * more control than what this method provides
      */
     public const QUERY = 'query';
 
     /**
-     * sink: (resource|string|StreamInterface) Where the data of the
-     * response is written to. Defaults to a PHP temp stream. Providing a
-     * string will write data to a file by the given name.
+     * sink: (resource|string|\Psr\Http\Message\StreamInterface) Where the data
+     * of the response is written to. Defaults to a PHP temp stream. Providing
+     * a string will write data to a file by the given name.
      */
     public const SINK = 'sink';
 
@@ -227,15 +250,22 @@ final class RequestOptions
     public const SYNCHRONOUS = 'synchronous';
 
     /**
-     * ssl_key: (array|string) Specify the path to a file containing a private
-     * SSL key in PEM format. If a password is required, then set to an array
-     * containing the path to the SSL key in the first array element followed
-     * by the password required for the certificate in the second element.
+     * ssl_key: (array{0: string, 1?: string|null}|string) Specify the path to
+     * a private SSL key file. PEM is the default private key format. If a
+     * password is required, set ssl_key to an array containing the key path in
+     * the first array element followed by the key password in the second
+     * element. A null password is treated the same as omitting it. Use
+     * ssl_key_type to specify another supported key format.
      */
     public const SSL_KEY = 'ssl_key';
 
     /**
-     * stream: Set to true to attempt to stream a response rather than
+     * ssl_key_type: (string) Specify the SSL private key file type.
+     */
+    public const SSL_KEY_TYPE = 'ssl_key_type';
+
+    /**
+     * stream: (bool) Set to true to attempt to stream a response rather than
      * download it all up-front.
      */
     public const STREAM = 'stream';
@@ -251,24 +281,26 @@ final class RequestOptions
     public const VERIFY = 'verify';
 
     /**
-     * timeout: (float, default=0) Float describing the timeout of the
+     * timeout: (int|float, default=0) Number describing the timeout of the
      * request in seconds. Use 0 to wait indefinitely (the default behavior).
      */
     public const TIMEOUT = 'timeout';
 
     /**
-     * read_timeout: (float, default=default_socket_timeout ini setting) Float describing
-     * the body read timeout, for stream requests.
+     * read_timeout: (int|float, default=default_socket_timeout ini setting)
+     * Number describing the body read timeout, for stream requests.
      */
     public const READ_TIMEOUT = 'read_timeout';
 
     /**
-     * version: (string|float) Specifies the HTTP protocol version to attempt to use.
+     * version: (string|int|float) Specifies the HTTP protocol version to attempt
+     * to use.
      */
     public const VERSION = 'version';
 
     /**
-     * force_ip_resolve: (bool) Force client to use only ipv4 or ipv6 protocol
+     * force_ip_resolve: (string) Set to "v4" to force IPv4 resolution or "v6"
+     * for IPv6 resolution when supported by the handler.
      */
     public const FORCE_IP_RESOLVE = 'force_ip_resolve';
 }
