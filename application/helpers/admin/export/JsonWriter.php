@@ -44,7 +44,7 @@ class JsonWriter extends Writer
         foreach ($headers as $key => $header) {
             if (!in_array($header, $uniqueHeaders)) {
                 $uniqueHeaders[$key] = $header;
-            }else{
+            } else {
                 $fieldName = array_key_exists($key, $fieldNames) ? $fieldNames[$key] : $key;
                 $uniqueHeaders[$key] = $header . ' (' . $fieldName . ')';
             }

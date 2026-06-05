@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * WhBox.php
@@ -214,6 +215,5 @@ class WhBox extends CWidget
         $cs = Yii::app()->getClientScript();
 
         $cs->registerCssFile($assetsUrl . '/css/box.css');
-
     }
 }

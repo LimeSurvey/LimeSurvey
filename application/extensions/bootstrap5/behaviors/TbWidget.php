@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbWidget class file.
  * @author Christoffer Niska <christoffer.niska@gmail.com>

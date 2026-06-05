@@ -14,9 +14,9 @@
         <select class='form-select <?php echo $this->classes;?>' name='questionposition' id='questionposition'>
             <option value=''><?php eT("At end"); ?></option>
             <option value='0'><?php eT("At beginning"); ?></option>
-            <?php foreach ($aQuestions as $oq): ?>
+            <?php foreach ($aQuestions as $oq) : ?>
                 <option value='<?php echo $oq->attributes['question_order'] + 1; ?>'><?php eT("After"); ?>: <?php echo $oq->attributes['title']; ?></option>
-                <?php endforeach; ?>
+            <?php endforeach; ?>
         </select>
     </div>
 </div>

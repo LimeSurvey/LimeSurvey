@@ -3,7 +3,7 @@
 namespace RobThree\Auth\Providers\Qr;
 
 // http://qrickit.com/qrickit_apps/qrickit_api.php
-class QRicketProvider extends BaseHTTPQRCodeProvider 
+class QRicketProvider extends BaseHTTPQRCodeProvider
 {
     public $errorcorrectionlevel;
     public $margin;
@@ -12,36 +12,35 @@ class QRicketProvider extends BaseHTTPQRCodeProvider
     public $color;
     public $format;
 
-    function __construct($errorcorrectionlevel = 'L', $bgcolor = 'ffffff', $color = '000000', $format = 'p') 
+    function __construct($errorcorrectionlevel = 'L', $bgcolor = 'ffffff', $color = '000000', $format = 'p')
     {
         $this->verifyssl = false;
-        
+
         $this->errorcorrectionlevel = $errorcorrectionlevel;
         $this->bgcolor = $bgcolor;
         $this->color = $color;
         $this->format = $format;
     }
-    
-    public function getMimeType() 
+
+    public function getMimeType()
     {
-        switch (strtolower((string) $this->format))
-        {
-        	case 'p':
+        switch (strtolower((string) $this->format)) {
+            case 'p':
                 return 'image/png';
-        	case 'g':
+            case 'g':
                 return 'image/gif';
-        	case 'j':
+            case 'j':
                 return 'image/jpeg';
         }
         throw new \QRException(sprintf('Unknown MIME-type: %s', $this->format));
     }
-    
-    public function getQRCodeImage($qrtext, $size) 
+
+    public function getQRCodeImage($qrtext, $size)
     {
         return $this->getContent($this->getUrl($qrtext, $size));
     }
-    
-    public function getUrl($qrtext, $size) 
+
+    public function getUrl($qrtext, $size)
     {
         return 'http://qrickit.com/api/qr'
             . '?qrsize=' . $size

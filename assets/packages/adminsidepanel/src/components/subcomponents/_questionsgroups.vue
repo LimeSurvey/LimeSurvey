@@ -102,6 +102,13 @@ export default {
         questionHasCondition(question) {
             return question.relevance !== '1';
         },
+        hasQuestionGroupName(questionGroup) {
+            return typeof questionGroup.group_name === "string" &&
+                questionGroup.group_name.trim().length > 0;
+        },
+        formatQuestionGroupNumber(groupOrder) {
+            return window.sprintf(this.translate('groupNumber'), groupOrder);
+        },
 
         itemActivated(question){
             return  this.$store.state.lastQuestionOpen === question.qid;
@@ -189,6 +196,12 @@ export default {
             this.$store.commit("lastQuestionOpen", question);
             this.updatePjaxLinks();
             $(document).trigger("pjax:load", { url: question.link });
+        },
+        groupDropdownAriaLabel(questiongroup) {
+            return `${this.translate("pageActionsMenu")}: ${questiongroup.group_name}`;
+        },
+        questionDropdownAriaLabel(question) {
+            return `${this.translate("questionActionsMenu")}: [${question.title}] ${question.question_flat}`;
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
@@ -308,7 +321,14 @@ export default {
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">
         <div class="ls-flex-row button-sub-bar mb-2">
-          <div class="scoped-toolbuttons-right me-2">
+          <div class="scoped-toolbuttons-right">
+           <button
+                class="btn btn-sm btn-outline-secondary me-2"
+                @click="collapseAll"
+                :title="translate('collapseAll')"
+            >
+              <i class="ri-link-unlink" />
+            </button>
             <button
                 class="btn btn-sm btn-outline-secondary"
                 @click="toggleOrganizer"
@@ -316,13 +336,7 @@ export default {
             >
               <i :class="allowOrganizer ? 'ri-lock-unlock-fill' : 'ri-lock-fill'" />
             </button>
-            <button
-                class="btn btn-sm btn-outline-secondary me-2"
-                @click="collapseAll"
-                :title="translate('collapseAll')"
-            >
-              <i class="ri-link-unlink" />
-            </button>
+           
           </div>
         </div>
 		<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">
@@ -376,18 +390,30 @@ export default {
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.4646 0.125H3.24762V2.625H0.4646V0.125ZM6.03064 0.125H8.81366V2.625H6.03064V0.125ZM0.4646 5.75H3.24762V8.25H0.4646V5.75ZM6.03064 5.75H8.81366V8.25H6.03064V5.75ZM0.4646 11.375H3.24762V13.875H0.4646V11.375ZM6.03064 11.375H8.81366V13.875H6.03064V11.375Z" fill="currentColor"/>
                       </svg>
                     </div>
-                    <div class="cursor-pointer me-1" @click="toggleQuestionGroup(questiongroup)" 
-                         :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'">
-                         <i class="ri-arrow-right-s-fill"></i>
+                    <div class="cursor-pointer me-1"
+                         role="button"
+                         tabindex="0"
+                         :aria-expanded="isOpen(questiongroup.gid)"
+                         :aria-label="isOpen(questiongroup.gid) ? translate('collapseGroup') : translate('expandGroup')"
+                         :style="isOpen(questiongroup.gid) ? 'transform: rotate(90deg)' : 'transform: rotate(0deg)'"
+                         @click="toggleQuestionGroup(questiongroup)"
+                         @keydown.enter.prevent="toggleQuestionGroup(questiongroup)"
+                         @keydown.space.prevent="toggleQuestionGroup(questiongroup)">
+                         <i class="ri-arrow-right-s-fill" aria-hidden="true"></i>
                     </div>
                     <div class="w-100 position-relative">
                         <div class="cursor-pointer">
                             <a
-                                class="d-flex pjax"
+                                class="d-flex pjax p-1"
                                 :href="questiongroup.link"
                             >
-                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }">
-                                    {{ questiongroup.group_name }}
+                                <span class="question_text_ellipsize" :style="{ 'max-width': itemWidth }" tabindex="0">
+                                    <template v-if="hasQuestionGroupName(questiongroup)">
+                                        {{ questiongroup.group_name }}
+                                    </template>
+                                    <template v-else>
+                                        {{ formatQuestionGroupNumber(questiongroup.group_order) }}
+                                    </template>
                                 </span>
                             </a>
                         </div>
@@ -398,13 +424,20 @@ export default {
                                 </span>
                             </div>
 
-                            <div v-if="groupActivated(questiongroup) || (hoveredQuestionGroup && hoveredQuestionGroup.gid === questiongroup.gid)">
-                            <div class="ls-questiongroup-tools cursor-pointer" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="ri-more-fill"></i>
-                            </div>
+                            <div>
+                            <button
+                                type="button"
+                                class="ls-questiongroup-tools cursor-pointer btn btn-link p-0 align-middle text-body"
+                                :id="'qg-dropdown-' + questiongroup.gid"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                :aria-label="groupDropdownAriaLabel(questiongroup)"
+                                @click.stop
+                            >
+                                <i class="ri-more-fill" aria-hidden="true"></i>
+                            </button>
 
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <ul class="dropdown-menu" :aria-labelledby="'qg-dropdown-' + questiongroup.gid">
                                 <li v-if="key !== 'delete'" v-for="(value, key) in questiongroup.groupDropdown"
                                     :key="key">
                                     <a class="dropdown-item" :id="value.id" :href="value.url">
@@ -487,12 +520,19 @@ export default {
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }}
                                     </span>
                                 </a>
-                                <div v-if="itemActivated(question)||(hoveredQuestion && hoveredQuestion.qid === question.qid)" class="dropdown position-absolute" style="right:10px" >
-                                    <div class="ls-question-tools ms-auto position-relative cursor-pointer" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                     aria-expanded="false">
-                                        <i class="ri-more-fill"></i>
-                                    </div>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <div  class="dropdown position-absolute" style="right:10px" >
+                                    <button
+                                        type="button"
+                                        class="ls-question-tools ms-auto position-relative cursor-pointer btn btn-link p-0 align-middle text-body"
+                                        :id="'q-dropdown-' + question.qid"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        :aria-label="questionDropdownAriaLabel(question)"
+                                        @click.stop
+                                    >
+                                        <i class="ri-more-fill" aria-hidden="true"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" :aria-labelledby="'q-dropdown-' + question.qid">
                                         <li  v-if="key !== 'delete' && !(key === 'language' && Array.isArray(value))"  v-for="(value, key) in question.questionDropdown" :key="key">
                                           <a   class="dropdown-item" :id="value.id" :href="key == 'editDefault' && value.active == 0 ? '#' : value.url" :class=" key == 'editDefault' &&  value.active == 0 ? 'disabled' : '' ">
                                             <span :class="value.icon"></span>
@@ -536,7 +576,7 @@ export default {
                                         </li>
                                         <div v-else-if="key === 'language' && Array.isArray(value)">
                                             <li role="separator" class="dropdown-divider"  ></li>
-                                            <li class="dropdown-header">Survey logic file</li>
+                                            <li class="dropdown-header">{{ translate('surveyLogicFile') }}</li>
                                             <li v-for="language in value" >
                                                 <a class="dropdown-item" :id="language.id" :href="language.url">
                                                   <span :class="language.icon"></span>
@@ -568,14 +608,7 @@ export default {
         flex: 1;
     }
 }
-.scoped-toolbuttons-right {
-    flex: 2 1 auto;
-    align-self: flex-end;
-    white-space: nowrap;
-    .btn {
-        float: right;
-    }
-}
+
 .list-group-item.question-question-list-item .editIcon {
     margin: 10px 10px 10px 5px;
 }

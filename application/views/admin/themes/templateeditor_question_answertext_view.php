@@ -1,9 +1,10 @@
 <?php
+
 echo App()->twigRenderer->renderQuestion('/survey/questions/answer/longfreetext/answer', array(
         'bIsThemeEditor'         => true,
         'extraclass'             => 'col-12',
-        'coreClass'              =>"ls-answers answer-item text-item",
-        'withColumn'             =>true,
+        'coreClass'              => "ls-answers answer-item text-item",
+        'withColumn'             => true,
         'kpclass'                => '',
         'name'                   => '1234X56X78',
         'basename'               => '1234X56X78',
@@ -14,4 +15,3 @@ echo App()->twigRenderer->renderQuestion('/survey/questions/answer/longfreetext/
         'inputsize'              => null,
         'placeholder'            => ''
     ));
-?>

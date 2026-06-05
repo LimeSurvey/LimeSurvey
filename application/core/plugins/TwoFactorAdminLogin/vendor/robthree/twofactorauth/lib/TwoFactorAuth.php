@@ -1,4 +1,5 @@
 <?php
+
 namespace RobThree\Auth;
 
 use RobThree\Auth\Providers\Qr\IQRCodeProvider;
@@ -24,17 +25,20 @@ class TwoFactorAuth
     function __construct($issuer = null, $digits = 6, $period = 30, $algorithm = 'sha1', IQRCodeProvider $qrcodeprovider = null, IRNGProvider $rngprovider = null, ITimeProvider $timeprovider = null)
     {
         $this->issuer = $issuer;
-        if (!is_int($digits) || $digits <= 0)
+        if (!is_int($digits) || $digits <= 0) {
             throw new TwoFactorAuthException('Digits must be int > 0');
+        }
         $this->digits = $digits;
 
-        if (!is_int($period) || $period <= 0)
+        if (!is_int($period) || $period <= 0) {
             throw new TwoFactorAuthException('Period must be int > 0');
+        }
         $this->period = $period;
 
         $algorithm = strtolower(trim((string) $algorithm));
-        if (!in_array($algorithm, self::$_supportedalgos))
+        if (!in_array($algorithm, self::$_supportedalgos)) {
             throw new TwoFactorAuthException('Unsupported algorithm: ' . $algorithm);
+        }
         $this->algorithm = $algorithm;
         $this->qrcodeprovider = $qrcodeprovider;
         $this->rngprovider = $rngprovider;
@@ -52,11 +56,13 @@ class TwoFactorAuth
         $secret = '';
         $bytes = ceil($bits / 5);   //We use 5 bits of each byte (since we have a 32-character 'alphabet' / BASE32)
         $rngprovider = $this->getRngprovider();
-        if ($requirecryptosecure && !$rngprovider->isCryptographicallySecure())
+        if ($requirecryptosecure && !$rngprovider->isCryptographicallySecure()) {
             throw new TwoFactorAuthException('RNG provider is not cryptographically secure');
+        }
         $rnd = $rngprovider->getRandomBytes($bytes);
-        for ($i = 0; $i < $bytes; $i++)
+        for ($i = 0; $i < $bytes; $i++) {
             $secret .= self::$_base32[ord($rnd[$i]) & 31];  //Mask out left 3 bits for 0-31 values
+        }
         return $secret;
     }
 
@@ -101,16 +107,18 @@ class TwoFactorAuth
     /**
      * Timing-attack safe comparison of 2 codes (see http://blog.ircmaxell.com/2014/11/its-all-about-time.html)
      */
-    private function codeEquals($safe, $user) {
+    private function codeEquals($safe, $user)
+    {
         if (function_exists('hash_equals')) {
             return hash_equals($safe, $user);
         }
         // In general, it's not possible to prevent length leaks. So it's OK to leak the length. The important part is that
         // we don't leak information about the difference of the two strings.
-        if (strlen((string) $safe)===strlen((string) $user)) {
+        if (strlen((string) $safe) === strlen((string) $user)) {
             $result = 0;
-            for ($i = 0; $i < strlen((string) $safe); $i++)
+            for ($i = 0; $i < strlen((string) $safe); $i++) {
                 $result |= (ord($safe[$i]) ^ ord($user[$i]));
+            }
             return $result === 0;
         }
         return false;
@@ -121,8 +129,9 @@ class TwoFactorAuth
      */
     public function getQRCodeImageAsDataUri($label, $secret, $size = 200)
     {
-        if (!is_int($size) || $size <= 0)
+        if (!is_int($size) || $size <= 0) {
             throw new TwoFactorAuthException('Size must be int > 0');
+        }
 
         $qrcodeprovider = $this->getQrCodeProvider();
         return 'data:'
@@ -136,26 +145,30 @@ class TwoFactorAuth
      */
     public function ensureCorrectTime(array $timeproviders = null, $leniency = 5)
     {
-        if ($timeproviders != null && !is_array($timeproviders))
+        if ($timeproviders != null && !is_array($timeproviders)) {
             throw new TwoFactorAuthException('No timeproviders specified');
+        }
 
-        if ($timeproviders == null)
+        if ($timeproviders == null) {
             $timeproviders = array(
                 new Providers\Time\NTPTimeProvider(),
                 new Providers\Time\HttpTimeProvider()
             );
+        }
 
         // Get default time provider
         $timeprovider = $this->getTimeProvider();
 
         // Iterate specified time providers
         foreach ($timeproviders as $t) {
-            if (!($t instanceof ITimeProvider))
+            if (!($t instanceof ITimeProvider)) {
                 throw new TwoFactorAuthException('Object does not implement ITimeProvider');
+            }
 
             // Get time from default time provider and compare to specific time provider and throw if time difference is more than specified number of seconds leniency
-            if (abs($timeprovider->getTime() - $t->getTime()) > $leniency)
+            if (abs($timeprovider->getTime() - $t->getTime()) > $leniency) {
                 throw new TwoFactorAuthException(sprintf('Time for timeprovider is off by more than %d seconds when compared to %s', $leniency, get_class($t)));
+            }
         }
     }
 
@@ -184,23 +197,27 @@ class TwoFactorAuth
 
     private function base32Decode($value)
     {
-        if (strlen((string) $value)==0) return '';
+        if (strlen((string) $value) == 0) {
+            return '';
+        }
 
-        if (preg_match('/[^'.preg_quote((string) self::$_base32dict).']/', (string) $value) !== 0)
+        if (preg_match('/[^' . preg_quote((string) self::$_base32dict) . ']/', (string) $value) !== 0) {
             throw new TwoFactorAuthException('Invalid base32 string');
+        }
 
         $buffer = '';
-        foreach (str_split((string) $value) as $char)
-        {
-            if ($char !== '=')
+        foreach (str_split((string) $value) as $char) {
+            if ($char !== '=') {
                 $buffer .= str_pad(decbin(self::$_base32lookup[$char]), 5, 0, STR_PAD_LEFT);
+            }
         }
         $length = strlen($buffer);
         $blocks = trim(chunk_split(substr($buffer, 0, $length - ($length % 8)), 8, ' '));
 
         $output = '';
-        foreach (explode(' ', $blocks) as $block)
+        foreach (explode(' ', $blocks) as $block) {
             $output .= chr(bindec(str_pad($block, 8, 0, STR_PAD_RIGHT)));
+        }
         return $output;
     }
 

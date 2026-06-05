@@ -55,7 +55,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param string $sLayout the name of the layout to render
      * @param array $aData the datas needed to fill the layout
      * @param boolean $bReturn if true, it will return the html string without
-     *                         rendering the whole page. Usefull for debuging, and used for Print Answers
+     *                         rendering the whole page. Useful for debugging, and used for Print Answers
      * @return mixed|string
      * @throws CException
      * @throws Throwable
@@ -115,7 +115,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param array $aData the datas needed to fill the layout
      * @param bool $root
      * @param boolean $bReturn if true, it will return the html string without
-     *                         rendering the whole page. Usefull for debuging, and used for Print Answers
+     *                         rendering the whole page. Useful for debugging, and used for Print Answers
      * @return mixed|string
      * @throws CException
      * @throws Throwable
@@ -217,11 +217,11 @@ window.addEventListener('message', function(event) {
 
     /**
      * Main method to render an admin page or block.
-     * Extendable to use admin templates in the future currently running on pathes, like the yii render methods go.
+     * Extendable to use admin templates in the future currently running on paths, like the yii render methods go.
      * @param $sLayoutFilePath
      * @param array $aData the datas needed to fill the layout
      * @param boolean $bReturn if true, it will return the html string without rendering the whole page.
-     *                         Usefull for debuging, and used for Print Answers
+     *                         Useful for debugging, and used for Print Answers
      * @param boolean $bUseRootDir Prepend application root dir to sLayoutFilePath if true.
      * @return string HTML
      * @throws CException
@@ -285,7 +285,7 @@ window.addEventListener('message', function(event) {
             $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName();
         }
         // Check if question use a custom template and that it provides its own twig view
-        $sDirName = null; // Extra dir name to readed from template before question template
+        $sDirName = null; // Extra dir name to read from template before question template
         if ($sTemplateFolderName) {
             // A template can change only one of the view of the question type.
             // So other views should be rendered by core.
@@ -630,7 +630,7 @@ window.addEventListener('message', function(event) {
             // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
             // additionally checks for submit page to compensate when srid is needed to render other views
             if (
-                isset($_SESSION['survey_' . $surveyid]['srid'])
+                isset($_SESSION['responses_' . $surveyid]['srid'])
                 && isset($aData['aSurveyInfo']['active']) && $aData['aSurveyInfo']['active'] == 'Y'
                 && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit'
                 && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit_preview'
@@ -697,10 +697,10 @@ window.addEventListener('message', function(event) {
 
             // NB: Session is flushed at submit, so sid is not defined here.
             if (
-                isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]) &&
-                isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
+                isset($_SESSION['responses_' . $aData['aSurveyInfo']['sid']]) &&
+                isset($_SESSION['responses_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
             ) {
-                $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_' .
+                $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['responses_' .
                 $aData['aSurveyInfo']['sid']]['totalVisibleQuestions'];
             }
 
@@ -717,6 +717,7 @@ window.addEventListener('message', function(event) {
                     $aData["aSurveyInfo"]["options"][$key] = (string)$value;
                 }
             }
+            $aData["aSurveyInfo"] = $this->setDefaultPrivacyText($aData["aSurveyInfo"]);
         } else {
             // Add the global theme options
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
@@ -730,23 +731,60 @@ window.addEventListener('message', function(event) {
         return $aData;
     }
 
+    /**
+         * Ensure privacy text strings exist and render the privacy notice label.
+         *
+         * If specific privacy strings are empty, sets sensible defaults and renders
+         * the `datasecurity_notice_label` using the privacy twig partial. This
+         * operation runs only once per request; subsequent calls return the input unchanged.
+         *
+         * @param array $aSurveyInfo Survey rendering data; must contain at least `sid` when available.
+         * @return array The updated `$aSurveyInfo` array with `datasecurity_notice_label` and `datasecurity_error` ensured and the notice label rendered as HTML.
+         */
+    private function setDefaultPrivacyText($aSurveyInfo)
+    {
+        /* Do it one time only (and do not recall self when using renderPartial) */
+        static $DefaultPrivacyDone = false;
+        if ($DefaultPrivacyDone) {
+            return $aSurveyInfo;
+        }
+        $DefaultPrivacyDone = true;
+        if (empty($aSurveyInfo['datasecurity_notice_label'])) {
+            $aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
+        }
+        if (empty($aSurveyInfo['datasecurity_error'])) {
+            $aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey privacy policy.");
+        }
+        /* @var string[] for automatic translation */
+        $translation = [
+            "Show policy" => gT("Show policy")
+        ];
+        $aSurveyInfo['datasecurity_notice_label'] =  $this->renderPartial(
+            './subviews/privacy/privacy_datasecurity_notice_label.twig',
+            [
+                'dataSecurityNoticeLabel' => $aSurveyInfo['datasecurity_notice_label'],
+                'sid' => $aSurveyInfo['sid'],
+            ]
+        );
+        return $aSurveyInfo;
+    }
 
     /**
-     * It can happen that user set incoherent values for options (like background is on, but no image file is selected)
-     * With some server configuration, it can lead to critical errors : empty values in image src or url()
-     * can block submition
-     * This function will check thoses cases. It can be used in the future for further checks
-     * @param array $aData
-     * @return array
-     *
-     */
+         * Ensure option flags that depend on files are coherent.
+         *
+         * If a file-related option (e.g., `brandlogofile`, `backgroundimagefile`) is empty,
+         * the corresponding boolean-like option (`brandlogo`, `backgroundimage`) is set to `"false"`.
+         *
+         * @param array $aData Rendering data (expects `aSurveyInfo['options']` when present).
+         * @return array The input `$aData` with corrected option flags where applicable.
+         */
     private function fixDataCoherence($aData)
     {
         // Clean option with files
         $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
 
         foreach ($aFilesOptions as $sOption => $sFileOption) {
-            if (is_array($aData["aSurveyInfo"]["options"])) {
+            if (isset($aData["aSurveyInfo"]["options"]) && is_array($aData["aSurveyInfo"]["options"])) {
                 if (array_key_exists($sFileOption, $aData["aSurveyInfo"]["options"])) {
                     if (empty($aData["aSurveyInfo"]["options"][$sFileOption])) {
                         $aData["aSurveyInfo"]["options"][$sOption] = "false";
