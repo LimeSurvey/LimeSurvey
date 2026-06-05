@@ -99,8 +99,6 @@ class QuestionExplorer {
             ['asc']
         );
 
-        var itemWidth = (parseInt(StateManager.get('sidebarwidth') || 300) - 120) + 'px';
-
         var html = '<div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane h-100 pt-2">';
 
         // Toolbar buttons
@@ -140,7 +138,7 @@ class QuestionExplorer {
         html += '<ul class="list-group col-12 questiongroup-list-group">';
 
         orderedQuestionGroups.forEach((questiongroup) => {
-            html += this.renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive, itemWidth);
+            html += this.renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive);
         });
 
         html += '</ul>';
@@ -183,7 +181,7 @@ class QuestionExplorer {
     /**
      * Render question group - matching Vue template
      */
-    renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
+    renderQuestionGroup(questiongroup, allowOrganizer, surveyIsActive) {
         var classes = 'list-group-item ls-flex-column' + this.questionGroupItemClasses(questiongroup);
         var isGroupOpen = this.isOpen(questiongroup.gid);
         var groupActivated = this.isActive(questiongroup.gid);
@@ -211,7 +209,7 @@ class QuestionExplorer {
         html += '<div class="w-100 position-relative">';
         html += '<div class="cursor-pointer">';
         html += '<a class="d-flex pjax questiongroup-link" href="' + questiongroup.link + '" data-gid="' + questiongroup.gid + '">';
-        html += '<span class="question_text_ellipsize" style="max-width: ' + itemWidth + '">' + UIHelpers.escapeHtml(questiongroup.group_name) + '</span>';
+        html += '<span class="question_text_ellipsize">' + UIHelpers.escapeHtml(questiongroup.group_name) + '</span>';
         html += '</a>';
         html += '</div>';
 
@@ -261,7 +259,7 @@ class QuestionExplorer {
 
         // Questions list (if open) - matching Vue transition
         if (isGroupOpen && questiongroup.questions) {
-            html += this.renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive, itemWidth);
+            html += this.renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive);
         }
 
         html += '</li>';
@@ -271,7 +269,7 @@ class QuestionExplorer {
     /**
      * Render questions list
      */
-    renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
+    renderQuestionsList(questiongroup, allowOrganizer, surveyIsActive) {
         var orderedQuestions = LS.ld.orderBy(
             questiongroup.questions,
             function(a) { return UIHelpers.parseIntOr(a.question_order, 999999); },
@@ -281,7 +279,7 @@ class QuestionExplorer {
         var html = '<ul class="list-group background-muted padding-left question-question-list" style="padding-right:15px">';
 
         orderedQuestions.forEach((question) => {
-            html += this.renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, itemWidth);
+            html += this.renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive);
         });
 
         html += '</ul>';
@@ -291,7 +289,7 @@ class QuestionExplorer {
     /**
      * Render single question - matching Vue template exactly
      */
-    renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive, itemWidth) {
+    renderQuestion(question, questiongroup, allowOrganizer, surveyIsActive) {
         var classes = 'list-group-item question-question-list-item ls-flex-row align-items-flex-start ' + this.questionItemClasses(question);
         var itemActivated = Number(StateManager.get('lastQuestionOpen')) === Number(question.qid);
         // Always show dropdown HTML, use CSS/JS hover to control visibility
@@ -311,8 +309,8 @@ class QuestionExplorer {
         }
 
         // Question link
-        html += '<a href="' + question.link + '" class="col-9 pjax question-question-list-item-link display-as-container question-link" data-qid="' + question.qid + '" data-gid="' + question.gid + '" title="' + UIHelpers.escapeHtml(question.question_flat) + '" data-bs-toggle="tooltip" data-bs-placement="top">';
-        html += '<span class="question_text_ellipsize ' + (question.hidden ? 'question-hidden' : '') + '" style="width: ' + itemWidth + '">';
+        html += '<a href="' + question.link + '" class="pjax question-question-list-item-link display-as-container question-link" data-qid="' + question.qid + '" data-gid="' + question.gid + '" title="' + UIHelpers.escapeHtml(question.question_flat) + '" data-bs-toggle="tooltip" data-bs-placement="top">';
+        html += '<span class="question_text_ellipsize ' + (question.hidden ? 'question-hidden' : '') + '">';
         html += '[' + UIHelpers.escapeHtml(question.title) + '] &rsaquo; ' + UIHelpers.escapeHtml(question.question_flat);
         html += '</span>';
         html += '</a>';
@@ -478,11 +476,11 @@ class QuestionExplorer {
             }
         });
 
-        // The question 3-dot menu is always visible; on hover only shift it clear
-        // of the resize button for the item whose row the resize button actually
-        // overlaps vertically. Measured against the item (not the dropdown) so
-        // shifting it can't feed back.
-        $container.on('mouseover.qe', '.question-question-list-item', function(e) {
+        // The question / group 3-dot menu is always visible; on hover only shift it
+        // clear of the resize button for the row the resize button actually overlaps
+        // vertically. Measured against the row (not the dropdown) so shifting it can't
+        // feed back.
+        $container.on('mouseover.qe', '.question-question-list-item, .q-group', function(e) {
             var resizeBtn = document.querySelector('#sidebar .resize-btn');
             if (resizeBtn) {
                 var b = resizeBtn.getBoundingClientRect();

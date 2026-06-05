@@ -290,8 +290,22 @@ div[class*=" col-"].nofloat {
   display: block;
 }
 
+#sidebar .q-group .questiongroup-link {
+  padding-left: 70px;
+}
+
+#sidebar #questionexplorer .question-question-list-item-link {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-left: 40px;
+}
+
 .question-question-list-item.resize-covered:hover .question-dropdown {
   left: 34px !important;
+}
+
+.q-group.resize-covered:hover .position-absolute {
+  left: 29px !important;
 }
 
 .sidebar_loader {

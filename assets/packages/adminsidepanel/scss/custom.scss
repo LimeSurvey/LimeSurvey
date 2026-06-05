@@ -298,8 +298,28 @@ div[class*=" col-"] {
     display: block;
 }
 
+// Reserve space on the group name for the absolutely-positioned badge + actions
+// menu so a long name truncates with an ellipsis before them instead of running underneath.
+#sidebar .q-group .questiongroup-link {
+    padding-right: 70px;
+}
+
+// Let the question name fill the row up to the absolutely-positioned actions menu,
+// reserving space for it. Replaces the fixed col-9 width, which truncated too early.
+// The #questionexplorer id keeps this ahead of the theme's padding on this element.
+#sidebar #questionexplorer .question-question-list-item-link {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-right: 40px;
+}
+
 .question-question-list-item.resize-covered:hover .question-dropdown {
     right: 34px !important;
+}
+
+// Same for question groups: shift the badge + actions menu clear of the resize button.
+.q-group.resize-covered:hover .position-absolute {
+    right: 29px !important;
 }
 
 // Sidebar loader overlay
