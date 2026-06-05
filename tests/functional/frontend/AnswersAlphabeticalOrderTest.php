@@ -39,7 +39,7 @@ class AnswersAlphabeticalOrderTest extends TestBaseClassWeb
         );
         self::$webDriver->get($url);
         $questions = $this->getAllSurveyQuestions();
-        $SGQ = self::$surveyId . "X" . $questions['MultipleSame']['gid'] . "X" . $questions['MultipleSame']['qid'];
+        $SGQ = "Q" . $questions['MultipleSame']['qid'];
         /* order options must be A,A, B ,B */
         $expectedOrderLabels = ['A', 'A', 'B', 'B'];
         $index = 2; // 1st element is empty(Please select), nth-of-type start at 1
@@ -73,7 +73,7 @@ class AnswersAlphabeticalOrderTest extends TestBaseClassWeb
         self::$webDriver->get($url);
         $questions = $this->getAllSurveyQuestions();
         /* 1st with spanish language */
-        $SGQ = self::$surveyId . "X" . $questions['SpanishLanguage']['gid'] . "X" . $questions['SpanishLanguage']['qid'];
+        $SGQ = "Q" . $questions['SpanishLanguage']['qid'];
         /* order options must be */
         $expectedOrderLabels = ['árabe', 'coreano', 'español', 'francés'];
         $index = 2; // nth-of-type start at 1
@@ -89,7 +89,7 @@ class AnswersAlphabeticalOrderTest extends TestBaseClassWeb
         }
 
         /* 2,nd with french 1st name (in spanich order) */
-        $SGQ = self::$surveyId . "X" . $questions['FrFirstName']['gid'] . "X" . $questions['FrFirstName']['qid'];
+        $SGQ = "Q" . $questions['FrFirstName']['qid'];
         /* order options must be */
         $expectedOrderLabels = ['emile', 'Emile', 'émile', 'Émile', 'zoé', 'Zoé'];
         $index = 2; // nth-of-type start at 1

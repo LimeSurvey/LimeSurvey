@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Installer class for the TwoFactorAdminLogin Plugin
  * A collecton of static helpers to install the Plugin
  */
-class TFAPluginInstaller {
+class TFAPluginInstaller
+{
     public static $instance = null;
     private $errors = [];
 
@@ -14,7 +16,7 @@ class TFAPluginInstaller {
      */
     public static function instance()
     {
-        if(self::$instance == null) {
+        if (self::$instance == null) {
             self::$instance = new TFAPluginInstaller();
         }
         return self::$instance;
@@ -22,7 +24,7 @@ class TFAPluginInstaller {
 
     /**
      * Combined installation for all necessary options
-     * 
+     *
      * @throws CHttpException
      * @return void
      */
@@ -30,37 +32,41 @@ class TFAPluginInstaller {
     {
         try {
             $this->installTables();
-        } catch(CHttpException $e) {
+        } catch (CHttpException $e) {
             $this->errors[] = $e;
         }
 
-        if(count($this->errors) > 0) {
-            throw new CHttpException(500, join(",\n", array_map(function($oError){ return $oError->getMessage();},$this->errors)));
+        if (count($this->errors) > 0) {
+            throw new CHttpException(500, join(",\n", array_map(function ($oError) {
+                return $oError->getMessage();
+            }, $this->errors)));
         }
     }
 
     /**
      * Combined uninstallation for all necessary options
-     * 
+     *
      * @throws CHttpException
      * @return void
      */
     public function uninstall()
     {
-         try {
-             $this->uninstallTables();
-        } catch(CHttpException $e) {
+        try {
+            $this->uninstallTables();
+        } catch (CHttpException $e) {
             $this->errors[] = $e;
         }
 
-        if(count($this->errors) > 0) {
-            throw new CHttpException(500, join(",\n", array_map(function($oError){ return $oError->getMessage();},$this->errors)));
+        if (count($this->errors) > 0) {
+            throw new CHttpException(500, join(",\n", array_map(function ($oError) {
+                return $oError->getMessage();
+            }, $this->errors)));
         }
     }
 
     /**
      * Install tables for the plugin
-     * 
+     *
      * @throws CHttpException
      * @return boolean
      */
@@ -68,7 +74,7 @@ class TFAPluginInstaller {
     {
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
-        try{
+        try {
             $oDB->createCommand()->createTable('{{user_mfa_settings}}', array(
                 'uid' => 'integer NOT NULL',
                 'secretKey' => 'string NOT NULL',
@@ -79,7 +85,7 @@ class TFAPluginInstaller {
 
             $oTransaction->commit();
             return true;
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $oTransaction->rollback();
             throw new CHttpException(500, $e->getMessage());
         }
@@ -87,7 +93,7 @@ class TFAPluginInstaller {
 
     /**
      * Uninstall tables for the plugin
-     * 
+     *
      * @throws CHttpException
      * @return boolean
      */
@@ -95,11 +101,11 @@ class TFAPluginInstaller {
     {
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
-        try{
+        try {
             $oDB->createCommand()->dropTable('{{user_mfa_settings}}');
             $oTransaction->commit();
             return true;
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $oTransaction->rollback();
             throw new CHttpException(500, $e->getMessage());
         }

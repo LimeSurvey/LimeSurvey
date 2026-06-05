@@ -3,7 +3,6 @@
 use LimeSurvey\Api\Command\V1\{
     SiteSettings
 };
-
 use LimeSurvey\Api\Rest\V1\SchemaFactory\SchemaFactorySiteSettings;
 
 $rest = [];
@@ -18,7 +17,7 @@ $rest['v1/site-settings'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactorySiteSettings)->make()
+                'schema' => (new SchemaFactorySiteSettings())->make()
             ]
         ]
     ]

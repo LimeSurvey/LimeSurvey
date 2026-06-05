@@ -1,6 +1,9 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\DummyController;
+use ls\tests\TestBaseClass;
 
 class GroupHelperTest extends TestBaseClass
 {
