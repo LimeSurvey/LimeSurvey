@@ -721,6 +721,10 @@ class LimeExpressionManager
                 /* $_SESSION['LEMsingleton'] can be not empty but unserialize return false */
                 /* You need to check if it's OK */
                 if (!($restored instanceof self) || !($restored->em instanceof ExpressionManager)) {
+                    if (!empty($_SESSION['LEMsid'])) {
+                        killSurveySession($_SESSION['LEMsid']);
+                    }
+                    unset($_SESSION['LEMsingleton']);
                     throw new CHttpException(400, gT("We are sorry but your session has expired.", 'unescaped'));
                 }
                 self::$instance = $restored;
