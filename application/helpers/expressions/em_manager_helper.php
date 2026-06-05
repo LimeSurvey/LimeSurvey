@@ -721,7 +721,7 @@ class LimeExpressionManager
                 /* $_SESSION['LEMsingleton'] can be not empty but unserialize return false */
                 /* You need to check if it's OK */
                 if (!($restored instanceof self) || !($restored->em instanceof ExpressionManager)) {
-                    throw new CHttpException(400, gT("Your session seems broken", 'unescaped'));
+                    throw new CHttpException(400, gT("We are sorry but your session has expired.", 'unescaped'));
                 }
                 self::$instance = $restored;
                 /* Since we get it via session, need to launch core event again */
