@@ -138,7 +138,7 @@ class LayoutHelper
 
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
-            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && !$updateNotification->unstable_update;
+            $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result;
 
             // Fetch extra menus from plugins, e.g. last visited surveys
             $aData['extraMenus'] = $this->fetchExtraMenus($aData);
@@ -156,15 +156,16 @@ class LayoutHelper
     }
 
     /**
-     * Returns extra menu for the new create process (including survey, survey group, import survey)
+     * Returns extra menu for the new create process (including create, copy, and import survey).
      *
      * @return Menu
      */
     public function getCreateMenu() {
+        $itemClass = 'create-menu-item';
         $menuItemHeader = [
             'isDivider' => false,
             'isSmallText' => true,
-            'label' => gT('Create new...'),
+            'label' => gT('New survey...'),
             'href' => '#',
             'iconClass' => 'ri-add-line',
         ];
@@ -173,37 +174,43 @@ class LayoutHelper
         $menuItemNewSurvey = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => gT('Survey'),
+            'label' => gT('Create'),
             'href' => \Yii::app()->createUrl('surveyAdministration/newSurvey'),
             'iconClass' => 'ri-add-line',
             'id' => 'create-survey-link',
+            'itemClass' => $itemClass
         ];
         $menuItems[] = (new MenuItem($menuItemNewSurvey));
 
-        $menuItemNewSurvey = [
+        $menuItemCopySurvey = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => gT('Survey group'),
-            'href' => \Yii::app()->createUrl('admin/surveysgroups/sa/create'),
-            'iconClass' => 'ri-add-circle-line',
+            'label' => gT('Copy'),
+            'isModal' => true,
+            'modalId' => 'copySurvey_modal',
+            'iconClass' => 'ri-file-copy-line',
+            'itemClass' => $itemClass
         ];
-        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+        $menuItems[] = (new MenuItem($menuItemCopySurvey));
 
-        $menuItemNewSurvey = [
+        $menuItemImport = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => gT('Import survey'),
+            'label' => gT('Import'),
             'isModal' => true,
             'modalId' => 'importSurvey_modal',
             'iconClass' => 'ri-upload-line',
+            'itemClass' => $itemClass
         ];
-        $menuItems[] = (new MenuItem($menuItemNewSurvey));
+        $menuItems[] = (new MenuItem($menuItemImport));
 
         $options = [
+            'id' => 'createMenuButton',
             'label' => '+',
             'iconClass' => 'ri-add-line',
             'isDropDown' => true,
             'isDropDownButton' => true,
+            'dropDownButtonClass' => 'btn btn-info btn-create dropdown-toggle-no-caret',
             'menuItems' => $menuItems,
             'isPrepended' => true,
         ];
@@ -285,7 +292,10 @@ class LayoutHelper
     }
 
     /**
-     * Display the update notification
+     * Display the update notification bar.
+     * Passes security_update_available and stability_labels to the notification view.
+     *
+     * @return string|void Rendered notification HTML, or void if no update
      * @throws CException
      */
     public function updatenotification()
@@ -317,7 +327,10 @@ class LayoutHelper
                 App()->getClientScript()->registerScriptFile(App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
                 return App()->getController()->renderPartial(
                     "/admin/update/_update_notification",
-                    array('security_update_available' => $updateNotification->security_update)
+                    array(
+                        'security_update_available' => $updateNotification->security_update,
+                        'stability_labels' => Yii::app()->session['update_stability_labels'] ?? [],
+                    )
                 );
             }
         }
@@ -402,7 +415,7 @@ class LayoutHelper
 
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        if (App()->getConfig('editorEnabled') && $survey->getTemplateEffectiveName() == 'fruity_twentythree') {
+        if (!empty($survey) && $survey->hasNewEditor) {
             App()->controller->widget('ext.admin.survey.SurveySidemenuWidget.SurveySidemenuWidget', ['sid' => $iSurveyID]);
             return;
         }

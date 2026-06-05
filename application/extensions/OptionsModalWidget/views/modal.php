@@ -10,7 +10,7 @@
                 <?php foreach ($options as $optionData): ?>
                     <li class="list-group-item">
                         <?php $targetAttribute = isset($optionData['target']) ? 'target="' . $optionData['target'] . '"' : '' ?>
-                        <a class="<?= $optionData['linkClass'] ?>" href="<?= $optionData['href'] ?>" <?= $targetAttribute ?>><?= $optionData['text'] ?></a>
+                        <a class="<?= $optionData['linkClass'] ?> ls-link" href="<?= $optionData['href'] ?>" <?= $targetAttribute ?>><?= $optionData['text'] ?></a>
                     </li>
                 <?php endforeach; ?>
                 </ul>

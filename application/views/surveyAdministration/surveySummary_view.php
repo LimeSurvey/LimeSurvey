@@ -12,8 +12,6 @@ if (!isset($iSurveyID)) {
     $iSurveyID = $oSurvey->sid;
 }
 
-App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
-
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveySummary');
 

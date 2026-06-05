@@ -10,13 +10,12 @@
         <div class="row">
             <!-- Title or breadcrumb -->
             <div class="ls-breadcrumb col-12">
-                <h1 class="align-items-center d-flex">
-                    <?php
-                        if ($titleBackLink !== null) {
-                            echo '<a class="h1" href="'.$titleBackLink.'">
-                            <i class="ri-arrow-left-s-line"></i></a>' ;
-                        }
-                    ?>
+                <h1 role="presentation" class="align-items-center d-flex">
+                    <?php if ($titleBackLink !== null): ?>
+                        <a class="topbar-back-link ls-link" aria-label="<?= gT('Back') ?>" href="<?= $titleBackLink ?>">
+                            <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
+                        </a>
+                    <?php endif; ?>
                     <?= $leftSide ?>
                 </h1>
             </div>

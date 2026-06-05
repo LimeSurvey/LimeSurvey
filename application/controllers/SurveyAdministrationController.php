@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\CopySurveyOptions;
 use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FileUploadService;
 use LimeSurvey\Models\Services\FilterImportedResources;
@@ -45,6 +46,7 @@ class SurveyAdministrationController extends LSBaseController
                     'fakebrowser',
                     'getAjaxMenuArray',
                     'getAjaxQuestionGroupArray',
+                    'getAjaxSurveyList',
                     'getCurrentEditorValues',
                     'getDataSecTextSettings',
                     'getDateFormatOptions',
@@ -67,6 +69,7 @@ class SurveyAdministrationController extends LSBaseController
             'postOnly + copy'
         ];
     }
+
     /**
      * SurveyAdministrationController constructor.
      * @param $id
@@ -113,8 +116,6 @@ class SurveyAdministrationController extends LSBaseController
      * Load complete view of survey properties and actions specified by $iSurveyID
      *
      * @return void
-     *
-     * @access public
      * @throws CException
      */
     public function actionView()
@@ -423,7 +424,7 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['title_bar']['title'] = gT('New survey');
 
         // topbar
-        $aData['topbar']['title'] = gT('Create or copy survey');
+        $aData['topbar']['title'] = gT('Create survey');
         $aData['topbar']['rightButtons'] = $this->renderPartial(
             'partial/topbarBtns_create_survey/rightSideButtons',
             [],
@@ -628,7 +629,6 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @todo is this function used? the function editlocalsetting does not exists  (also not in old controller surveyadmin)
      *
-     * @access public
      * @return void
      */
     public function actionImportsurveyresources()
@@ -732,11 +732,11 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Function to call current Editor Values by Ajax
      *
-     * @param integer $sid Given Survey ID
+     * @param int $sid Given Survey ID
      *
      * is still used in sidemenu Text elemnts (see vue.js ajaxcall)
      *
-     * @return JSON
+     * @return void
      * @throws CException
      */
     public function actionGetCurrentEditorValues($sid)
@@ -1179,6 +1179,50 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * Returns a JSON list of surveys the current user has read permission on,
+     * filtered by an optional search term. Used by Select2 AJAX in the copy survey modal.
+     *
+     * Reuses Survey::search() so that the filtering logic (SID, title, admin, owner,
+     * survey group) and permission scoping stay consistent with the main survey list grid.
+     *
+     * Note: The permission scope filters by read only. The actual copy action (actionCopy)
+     * additionally checks surveycontent.export permission server-side.
+     *
+     * @return void
+     */
+    public function actionGetAjaxSurveyList()
+    {
+        $term = Yii::app()->request->getParam('term', '');
+
+        $model = new Survey('search');
+        $model->searched_value = $term;
+        $model->active = null;
+
+        $dataProvider = $model->search([
+            'pageSize' => 10,
+            'currentPage' => 0,
+            'skipCacheFlush' => true,
+        ]);
+
+        $results = [];
+        foreach ($dataProvider->getData() as $survey) {
+            $title = isset($survey->correct_relation_defaultlanguage->surveyls_title)
+                ? $survey->correct_relation_defaultlanguage->surveyls_title
+                : '';
+            $results[] = [
+                'id' => (int) $survey->sid,
+                'text' => $survey->sid . ' - ' . $title,
+                'title' => $title,
+            ];
+        }
+
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            array('data' => ['results' => $results])
+        );
+    }
+
+    /**
      * Ajaxified get MenuItems with containing questions
      *
      * @todo this could go into surveymenucontroller
@@ -1315,10 +1359,9 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Collect the data necessary for the data security settings and return a JSON document
      *
-     * @param integer|null $sid Survey ID
+     * @param int|null $sid Survey ID
      *
-     * @return JSON | string
-     *
+     * @return void
      * @throws CException
      */
     public function actionGetDataSecTextSettings($sid = null)
@@ -1404,10 +1447,9 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Method to store data edited in the data security text editor component
      *
-     * @param integer $sid Survey ID
+     * @param int $sid Survey ID
      *
-     * @return JSON | string
-     *
+     * @return void
      * @throws CException
      */
     public function actionSaveDataSecTextData($sid)
@@ -1477,7 +1519,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Apply current theme options for imported survey theme
      *
-     * @param integer $iSurveyID The survey ID of imported survey
+     * @param int $iSurveyID The survey ID of imported survey
      *
      * @return void
      */
@@ -1605,7 +1647,6 @@ class SurveyAdministrationController extends LSBaseController
      * Function responsible to deactivate a survey.
      *
      * @return void
-     * @access public
      * @throws CException
      */
     public function actionDeactivate()
@@ -1880,7 +1921,6 @@ class SurveyAdministrationController extends LSBaseController
      * Function responsible to delete a survey.
      *
      * @return string
-     * @access public
      */
     public function actionDelete()
     {
@@ -2045,7 +2085,6 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
 
         // override survey settings if global settings exist
@@ -2072,7 +2111,18 @@ class SurveyAdministrationController extends LSBaseController
         if ($subaction === 'resources' || $subaction === 'panelintegration') {
             $aData['topBar']['showSaveButton'] = false;
         } else {
-            $aData['topBar']['showSaveButton'] = true;
+            // Since the save action for survey texts checks two permissions and survey menu entries only support one permission,
+            // we need to check the permissions here and decide whether to show the save button or not for that screen.
+            /** @todo: Generalize for other subactions */
+            if (
+                $subaction === 'surveytexts'
+                && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')
+                && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
+            ) {
+                $aData['topBar']['showSaveButton'] = false;
+            } else {
+                $aData['topBar']['showSaveButton'] = true;
+            }
         }
         $topbarData = TopbarConfiguration::getSurveyTopbarData($iSurveyID);
         $topbarData = array_merge($topbarData, $aData['topBar']);
@@ -2208,11 +2258,11 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Function responsible to import/copy a survey based on $action.
+     * Function responsible to copy a survey.
      *
-     * @access public
      * @return void
      * @throws CException
+     * @throws Exception
      */
     public function actionCopy()
     {
@@ -2221,133 +2271,61 @@ class SurveyAdministrationController extends LSBaseController
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
         }
-
-        $iSurveyID = sanitize_int(App()->request->getPost('copysurveylist'));
-
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+        $surveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            App()->user->setFlash('error', gT("Survey does not exist."));
+            $this->redirect(App()->request->urlReferrer);
+        }
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'export')) {
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
         }
 
+        //the new survey id
+        $rawNewSid = App()->request->getPost('copysurveyid');
+        $newSurveyId = ($rawNewSid === '' || $rawNewSid === null)
+            ? null
+            : sanitize_int($rawNewSid, 1, 999999);
+
+        //the source survey id
+        $sourceSurveyId = sanitize_int(App()->request->getPost('surveyIdToCopy'));
+
+        $sourceSurvey = Survey::model()->findByPk($sourceSurveyId);
+
+        $options = $this->getPostParamsForCopySurvey(App()->request);
+        $copySurveyService = new \LimeSurvey\Models\Services\CopySurvey(
+            $sourceSurvey,
+            $options,
+            $newSurveyId,
+        );
+
+        $copyResults = $copySurveyService->copy();
+
+        $copiedSurvey = $copyResults->getCopiedSurvey();
+        if ($copiedSurvey !== null) {
+            $groupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
+            $this->resetExpressionManager($copiedSurvey, $groupList);
+        }
+
         $aData = [];
+        $aData['copyResults'] = $copyResults;
 
-        $aData['sHeader'] = gT("Copy survey");
-        $aData['sSummaryHeader'] = gT("Survey copy summary");
-        $aData['textCompleted'] = gT("Copy of survey is completed.");
-
-        // Start treatment and messagebox
-        $aData['bFailed'] = false;
-        $aExcludes = array();
-        if (App()->request->getPost('copysurveyexcludequotas') == "1") {
-            $aExcludes['quotas'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyexcludepermissions') == "1") {
-            $aExcludes['permissions'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyexcludeanswers') == "1") {
-            $aExcludes['answers'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyresetconditions') == "1") {
-            $aExcludes['conditions'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyresetstartenddate') == "1") {
-            $aExcludes['dates'] = true;
-        }
-
-        if (App()->request->getPost('copysurveyresetresponsestartid') == "1") {
-            $aExcludes['reset_response_id'] = true;
-        }
-
-        if (!$iSurveyID) {
-            $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
-            $aData['bFailed'] = true;
-        } elseif (!Survey::model()->findByPk($iSurveyID)) {
-            $aData['sErrorMessage'] = gT("Invalid survey ID");
-            $aData['bFailed'] = true;
-        } else {
-            App()->loadHelper('export');
-            $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
-            if (empty(App()->request->getPost('copysurveyname'))) {
-                $sourceSurvey = Survey::model()->findByPk($iSurveyID);
-                $sNewSurveyName = $sourceSurvey->currentLanguageSettings->surveyls_title;
-            } else {
-                $sNewSurveyName = App()->request->getPost('copysurveyname');
-            }
-        }
-
-        App()->loadHelper('admin.import');
-        if (!$aData['bFailed']) {
-            $copyResources = App()->request->getPost('copysurveytranslinksfields') == '1';
-            $translateLinks = $copyResources;
-            $aImportResults = XMLImportSurvey(
-                '',
-                $copysurveydata,
-                $sNewSurveyName,
-                sanitize_int(App()->request->getParam('copysurveyid'), '1', '999999'),
-                $translateLinks
-            );
-            if (isset($aExcludes['conditions'])) {
-                Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
-                QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
-            }
-
-            if (isset($aExcludes['reset_response_id'])) {
-                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-                $oSurvey->autonumber_start = 0;
-                $oSurvey->save();
-            }
-
-            if (!isset($aExcludes['permissions'])) {
-                Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
-            }
-
-            if (!empty($aImportResults['newsid']) && $copyResources) {
-                $resourceCopier = new CopySurveyResources();
-                [, $errorFilesInfo] = $resourceCopier->copyResources($iSurveyID, $aImportResults['newsid']);
-                $surveyDetailService = new SurveyDetailService();
-                $surveyDetailService->removeCache($aImportResults['newsid']);
-                if (!empty($errorFilesInfo)) {
-                    $aImportResults['importwarnings'][] = gT("Some resources could not be copied from the source survey");
-                }
-            }
-        } else {
-            $aData['bFailed'] = true;
-        }
-
-        // If the import failed, set the status and error message in order to keep consistency with other errors
-        if (!empty($aImportResults['error'])) {
-            $aData['sErrorMessage'] = $aImportResults['error'];
-            $aData['bFailed'] = true;
-        }
-
-        if (!$aData['bFailed'] && isset($aImportResults)) {
-            $aData['aImportResults'] = $aImportResults;
-            if (isset($aImportResults['newsid'])) {
-                // Set link pointing to survey administration overview. This link will be updated if the survey has groups
-                $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
-                $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $aImportResults['newsid'];
-            }
-        }
-        if (!empty($aImportResults['newsid'])) {
-            $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $aImportResults['newsid']]);
-
-            $this->resetExpressionManager($oSurvey, $aGrouplist);
+        if ($copiedSurvey !== null) {
+            $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $copiedSurvey->sid]);
+            $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $copiedSurvey->sid;
+            $questionGroupList = QuestionGroup::model()->findAllByAttributes(['sid' => $copiedSurvey->sid]);
 
             // Make the link point to the first group/question if available
-            if (!empty($aGrouplist)) {
-                $oFirstGroup = $aGrouplist[0];
+            if (!empty($questionGroupList)) {
+                $oFirstGroup = $questionGroupList[0];
                 $oFirstQuestion = Question::model()->primary()->findByAttributes(
                     ['gid' => $oFirstGroup->gid],
                     ['order' => 'question_order ASC']
                 );
 
                 $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
-                    $aImportResults['newsid'],
+                    $copiedSurvey->sid,
                     $oFirstGroup->gid,
                     !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
                     'structure'
@@ -2355,18 +2333,68 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
-            if (!isset($oSurvey)) {
-                $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
-            }
-            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
-                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
+        if ($copiedSurvey !== null) {
+            $copiedSurvey->setOptions();
+            if ($copiedSurvey->hasNewEditor) {
+                $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $copiedSurvey->sid]);
             }
         }
         $this->aData = $aData;
-        $this->render('importSurvey_view', $this->aData);
+
+        $this->render('copySurveyResult_view', $this->aData);
     }
 
+    /**
+     * Reads POST parameters from the copy survey form and builds a CopySurveyOptions container.
+     * Handles all checkbox options (resources, quotas, permissions, etc.) and the optional custom title.
+     *
+     * @param CHttpRequest $request
+     * @return CopySurveyOptions
+     */
+    private function getPostParamsForCopySurvey($request): CopySurveyOptions
+    {
+        $optionsDataContainer = new CopySurveyOptions();
+
+        //Survey resource files and adapt links
+        $option = $request->getPost('copyResourcesAndLinks');
+        $optionsDataContainer->setResourcesAndLinks(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyQuotas');
+        $optionsDataContainer->setQuotas(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyPermissions');
+        $optionsDataContainer->setPermissions(isset($option) && $option == "1");
+
+        $option = $request->getPost('copyAnswerOptions');
+        $optionsDataContainer->setAnswerOptions(isset($option) && $option == "1");
+
+        $option = $request->getPost('copySurveyConditions');
+        $optionsDataContainer->setConditions(isset($option) && $option == "1");
+
+        $option = $request->getPost('copyStartEndDate');
+        $optionsDataContainer->setStartAndEndDate(isset($option) && $option == "1");
+
+        $option = $request->getPost('resetResponseStartId');
+        $optionsDataContainer->setResetResponseStartId(isset($option) && $option == "1");
+
+        $newTitle = $request->getPost('copysurveytitle');
+        if (is_string($newTitle) && trim($newTitle) !== '') {
+            $optionsDataContainer->setNewTitle(trim($newTitle));
+        }
+
+        return $optionsDataContainer;
+    }
+
+
+    /**
+     * Import an uploaded survey file, create the survey if valid, and render the import summary view.
+     *
+     * Validates upload permissions and file type/size, moves the uploaded file to a temporary location,
+     * calls importSurveyFile(...) (passing the "translinksfields" flag and optional "surveysgroup" request parameter),
+     * translates import results into view data (including links to the new survey and theme-apply action),
+     * resets the expression manager for the newly created survey (if any), cleans up the temporary file,
+     * and renders the importSurvey_view with import results or error information.
+     */
     public function actionImport()
     {
         //everybody who has permission to create surveys
@@ -2404,7 +2432,11 @@ class SurveyAdministrationController extends LSBaseController
         App()->loadHelper('admin.import');
 
         if (!$aData['bFailed']) {
-            $aImportResults = importSurveyFile($sFullFilepath, (App()->request->getPost('translinksfields') == '1'));
+            $targetSurveysGroup = App()->request->getPost('surveysgroup');
+            if (!in_array($targetSurveysGroup, ['default', 'from_survey'], true)) {
+                $targetSurveysGroup = 'default';
+            }
+            $aImportResults = importSurveyFile($sFullFilepath, (App()->request->getPost('translinksfields') == '1'), null, null, null, $targetSurveysGroup);
             if (is_null($aImportResults)) {
                 $aImportResults = array(
                     'error' => gT("Unknown error while reading the file, no survey created.")
@@ -2456,11 +2488,11 @@ class SurveyAdministrationController extends LSBaseController
             }
         }
 
-        if ((App()->getConfig("editorEnabled")) && isset($aImportResults['newsid'])) {
+        if (isset($aImportResults['newsid'])) {
             if (!isset($oSurvey)) {
                 $oSurvey = Survey::model()->findByPk($aImportResults['newsid']);
             }
-            if ($oSurvey->getTemplateEffectiveName() == 'fruity_twentythree') {
+            if ($oSurvey->hasNewEditor) {
                 $aData['sLink'] = App()->createUrl("editorLink/index", ["route" => "survey/" . $aImportResults['newsid']]);
             }
         }
@@ -2847,9 +2879,9 @@ class SurveyAdministrationController extends LSBaseController
      * This method will return the url for the current survey and set
      * the direction for the sidemenue.
      *
-     * @param integer $sid Given Survey ID
-     * @param integer $gid Given Group ID
-     * @param integer $qid Given Question ID
+     * @param int $sid Given Survey ID
+     * @param int $gid Given Group ID
+     * @param int $qid Given Question ID
      * @param string $landOnSideMenuTab Given SideMenuTab
      *
      * @return string
@@ -3209,7 +3241,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Returns Data for general template.
      *
-     * @param integer $iSurveyID Given Survey ID
+     * @param int $iSurveyID Given Survey ID
      *
      * @return array
      */

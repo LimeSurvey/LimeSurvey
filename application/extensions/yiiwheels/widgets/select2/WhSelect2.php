@@ -93,6 +93,9 @@ class WhSelect2 extends CInputWidget
 
         $cs->registerPackage('select2-bootstrap');
 
+        $cs->registerScriptFile(
+            $assetsUrl . '/js/select2-aria.js',
+            CClientScript::POS_END);
 
         if ($this->language) {
             $cs->registerScriptFile(

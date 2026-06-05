@@ -53,9 +53,9 @@ $questionEditor = $questionEditor ?? false;
 <!-- Footer -->
 <footer class="container-fluid footer d-flex flex-grow-1 flex-column justify-content-end text-end">
     <div>
-        <a data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
+        <a class="ls-link" data-bs-toggle="tooltip" title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a>
         <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
-            <a href="#modalSystemInformation" data-bs-toggle="modal" title="<?= gT("Get system information") ?>">
+            <a class="ls-link" href="#modalSystemInformation" data-bs-toggle="modal" title="<?= gT("Get system information") ?>">
         <?php } ?>
             <?php echo $versiontitle . "  " . $versionnumber . $buildtext; ?>
             <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
@@ -213,6 +213,11 @@ $questionEditor = $questionEditor ?? false;
 <?php
 //modal for survey activation
 App()->getController()->renderPartial('/surveyAdministration/partial/topbar/_modalSurveyActivation');
+?>
+
+<?php
+//modal for copying a survey
+App()->getController()->renderPartial('/surveyAdministration/partial/_modalCopySurvey');
 ?>
 
 <!-- Modal for admin notifications -->

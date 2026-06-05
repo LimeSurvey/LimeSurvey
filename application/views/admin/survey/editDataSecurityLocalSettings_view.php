@@ -31,11 +31,13 @@ echo viewHelper::getViewTestTag('surveyTexts');
 
 <div id="editdatasecele-<?php echo $i; ?>" class="tab-pane fade <?php if ($i == 0) {
                                                                     echo "show active";
-                                                                } ?> center-box">
+                                                                } ?> center-box" role="tabpanel" aria-label="<?= CHtml::encode(gT('Privacy policy settings') . ' - ' . getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false)) ?>">
     <div class="row mt-4">
         <div class="col-12 col-xl-6 mb-3">
             <!-- Privacy policy checkbox label -->
-            <label class="form-label"><?php eT("Privacy policy checkbox label:"); ?></label>
+            <label class="form-label" for="dataseclabel_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>">
+    <?php eT("Privacy policy checkbox label:"); ?>
+</label>
             <?php echo CHtml::textField(
                 "dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",
                 $aSurveyLanguageSettings['surveyls_policy_notice_label'],
@@ -57,7 +59,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
             <?php echo CHtml::textArea(
                 "datasec_{$aSurveyLanguageSettings['surveyls_language']}",
                 $aSurveyLanguageSettings['surveyls_policy_notice'],
-                array('class' => 'form-control', 'cols' => '80', 'rows' => '20', 'id' => "datasec_{$aSurveyLanguageSettings['surveyls_language']}")
+                array('class' => 'form-control', 'cols' => '80', 'rows' => '20', 'id' => "datasec_{$aSurveyLanguageSettings['surveyls_language']}", 'aria-label' => gT("Privacy policy message:"))
             ); ?>
             <?php echo getEditor(
                 "survey-datasec",
@@ -76,7 +78,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
             <?php echo CHtml::textArea(
                 "datasecerror_{$aSurveyLanguageSettings['surveyls_language']}",
                 $aSurveyLanguageSettings['surveyls_policy_error'],
-                array('class' => 'form-control', 'cols' => '80', 'rows' => '15', 'id' => "datasecerror_{$aSurveyLanguageSettings['surveyls_language']}")
+                array('class' => 'form-control', 'cols' => '80', 'rows' => '15', 'id' => "datasecerror_{$aSurveyLanguageSettings['surveyls_language']}", 'aria-label' => gT("Privacy policy error message:"))
             ); ?>
             <?php echo getEditor(
                 "survey-datasec-error",

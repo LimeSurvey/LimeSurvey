@@ -161,10 +161,10 @@ class DemomodeCommand extends CConsoleCommand
     private function createDemo()
     {
         Yii::app()->loadHelper('admin.import');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/replacements_helper.php');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_manager_helper.php');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_core_helper.php');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/admin/activate_helper.php');
+        Yii::import('application.helpers.replacements_helper', true);
+        Yii::import('application.helpers.expressions.em_manager_helper', true);
+        Yii::import('application.helpers.expressions.em_core_helper', true);
+        Yii::import('application.helpers.admin.activate_helper', true);
 
         Yii::app()->session->add('loginID', 1);
         $documentationSurveyPath = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR;
