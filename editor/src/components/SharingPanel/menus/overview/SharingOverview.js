@@ -111,8 +111,7 @@ export const SharingOverview = () => {
           link={link}
           title={survey.languageSettings[selectedLanguage]?.title || ''}
         />
-        <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_BOTTOM_LEFT} />
-        <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_BOTTOM_RIGHT} />
+        <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_CARD_BOTTOM} />
         <ParticipantsListCard
           hasUpdatePermission={hasUpdatePermission}
           surveyId={surveyId}
