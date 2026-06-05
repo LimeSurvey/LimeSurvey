@@ -76,12 +76,24 @@ class ConsoleApplication extends CConsoleApplication
                 $lsConfig = array_merge($lsConfig, $securityConfig);
             }
         }
+        if (file_exists(__DIR__ . '/../config/allowed_hosts.php')) {
+            $allowedHostsConfig = require(__DIR__ . '/../config/allowed_hosts.php');
+            if (is_array($allowedHostsConfig)) {
+                $lsConfig = array_merge($lsConfig, $allowedHostsConfig);
+            }
+        }
         /* Custom config file */
         $configdir = $coreConfig['configdir'];
         if (file_exists($configdir .  '/security.php')) {
             $securityConfig = require($configdir . '/security.php');
             if (is_array($securityConfig)) {
                 $lsConfig = array_merge($lsConfig, $securityConfig);
+            }
+        }
+        if (file_exists($configdir . '/allowed_hosts.php')) {
+            $allowedHostsConfig = require($configdir . '/allowed_hosts.php');
+            if (is_array($allowedHostsConfig)) {
+                $lsConfig = array_merge($lsConfig, $allowedHostsConfig);
             }
         }
 

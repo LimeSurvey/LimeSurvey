@@ -56,6 +56,7 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
             unlink(self::$allowedHostsFile);
         }
         Yii::app()->setConfig('publicurl', '');
+        Yii::app()->setConfig('allowedHosts', null);
     }
 
     protected function tearDown(): void
@@ -65,6 +66,7 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
             unlink(self::$allowedHostsFile);
         }
         Yii::app()->setConfig('publicurl', self::$originalPublicUrl);
+        Yii::app()->setConfig('allowedHosts', null);
         parent::tearDown();
     }
 
@@ -73,9 +75,9 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     // ------------------------------------------------------------------
 
     /**
-     * Test that loadAllowedHosts returns empty array when file does not exist.
+     * Test that loadAllowedHosts returns empty array when config is not set.
      */
-    public function testLoadAllowedHostsReturnsEmptyWhenFileNotExists()
+    public function testLoadAllowedHostsReturnsEmptyWhenNotConfigured()
     {
         $hosts = Yii::app()->loadAllowedHosts();
         $this->assertIsArray($hosts);
@@ -83,11 +85,11 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     }
 
     /**
-     * Test that loadAllowedHosts returns the array from the file.
+     * Test that loadAllowedHosts returns the array from config.
      */
-    public function testLoadAllowedHostsReturnsArrayFromFile()
+    public function testLoadAllowedHostsReturnsArrayFromConfig()
     {
-        file_put_contents(self::$allowedHostsFile, "<?php\nreturn ['example.com', 'www.example.com'];\n");
+        Yii::app()->setConfig('allowedHosts', ['example.com', 'www.example.com']);
 
         $hosts = Yii::app()->loadAllowedHosts();
         $this->assertIsArray($hosts);
@@ -97,11 +99,11 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     }
 
     /**
-     * Test that loadAllowedHosts returns empty array when file returns empty array.
+     * Test that loadAllowedHosts returns empty array when config is empty array.
      */
-    public function testLoadAllowedHostsReturnsEmptyWhenFileHasEmptyArray()
+    public function testLoadAllowedHostsReturnsEmptyWhenConfigEmpty()
     {
-        file_put_contents(self::$allowedHostsFile, "<?php\nreturn [];\n");
+        Yii::app()->setConfig('allowedHosts', []);
 
         $hosts = Yii::app()->loadAllowedHosts();
         $this->assertIsArray($hosts);
@@ -109,11 +111,11 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     }
 
     /**
-     * Test that loadAllowedHosts returns empty array when file returns non-array.
+     * Test that loadAllowedHosts returns empty array when config is non-array.
      */
-    public function testLoadAllowedHostsReturnsEmptyWhenFileReturnsNonArray()
+    public function testLoadAllowedHostsReturnsEmptyWhenConfigNonArray()
     {
-        file_put_contents(self::$allowedHostsFile, "<?php\nreturn 'not an array';\n");
+        Yii::app()->setConfig('allowedHosts', 'not an array');
 
         $hosts = Yii::app()->loadAllowedHosts();
         $this->assertIsArray($hosts);
@@ -135,9 +137,11 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
         $this->assertTrue($result);
         $this->assertFileExists(self::$allowedHostsFile);
 
-        // Verify the file is valid PHP and returns the correct array
+        // Verify the file is valid PHP and returns a config array with allowedHosts
         $loaded = require(self::$allowedHostsFile);
-        $this->assertSame($hosts, $loaded);
+        $this->assertIsArray($loaded);
+        $this->assertArrayHasKey('allowedHosts', $loaded);
+        $this->assertSame($hosts, $loaded['allowedHosts']);
     }
 
     /**
@@ -149,7 +153,7 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
         Yii::app()->writeAllowedHosts(['new.example.com']);
 
         $loaded = require(self::$allowedHostsFile);
-        $this->assertSame(['new.example.com'], $loaded);
+        $this->assertSame(['new.example.com'], $loaded['allowedHosts']);
     }
 
     // ------------------------------------------------------------------

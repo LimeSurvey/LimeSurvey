@@ -152,21 +152,17 @@ trait LSApplicationTrait
     }
 
     /**
-     * Loads the allowed hosts from /application/config/allowed_hosts.php
+     * Loads the allowed hosts from the application config.
+     * The config key 'allowedHosts' is populated from application/config/allowed_hosts.php
+     * (loaded at application startup, same pattern as security.php).
      *
-     * The file should return an array of allowed domain names (no protocol, no port), e.g.:
-     * <?php return ['example.com', 'www.example.com'];
-     *
-     * @return array List of allowed host names, or empty array if file doesn't exist or is empty.
+     * @return array List of allowed host names, or empty array if not configured.
      */
     public function loadAllowedHosts()
     {
-        $filePath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'allowed_hosts.php';
-        if (file_exists($filePath)) {
-            $hosts = require($filePath);
-            if (is_array($hosts) && !empty($hosts)) {
-                return $hosts;
-            }
+        $hosts = Yii::app()->getConfig('allowedHosts');
+        if (is_array($hosts) && !empty($hosts)) {
+            return $hosts;
         }
         return [];
     }
@@ -198,7 +194,7 @@ trait LSApplicationTrait
         }
 
         $filePath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'allowed_hosts.php';
-        $content = "<?php\n"
+        $content = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n"
             . "/**\n"
             . " * Allowed Hosts Configuration\n"
             . " *\n"
@@ -219,11 +215,17 @@ trait LSApplicationTrait
             . " * This file is auto-generated on first admin login if it does not exist.\n"
             . " * You may edit it manually to add or change allowed hosts.\n"
             . " */\n"
-            . "return [\n";
+            . "\n\$hosts = [\n";
         foreach ($sanitized as $host) {
             $content .= "    " . var_export($host, true) . ",\n";
         }
-        $content .= "];\n";
-        return @file_put_contents($filePath, $content) !== false;
+        $content .= "];\n"
+            . "\nreturn [ 'allowedHosts' => \$hosts ];\n";
+        $result = @file_put_contents($filePath, $content);
+        if ($result !== false) {
+            // Update running config so the change takes effect immediately
+            Yii::app()->setConfig('allowedHosts', $sanitized);
+        }
+        return $result !== false;
     }
 }
