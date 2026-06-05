@@ -50,14 +50,13 @@ class massiveActionsWidget extends CWidget
             // Not all action require a modal (eg: downloads, etc)
             if (isset($aAction['actionType']) && $aAction['actionType'] === 'modal') {
                 // Modal type define the view to render in views/modal
+                $massiveModalDomId      = 'massive-actions-modal-' . $this->gridid . '-' . $aAction['action'] . '-' . $key;
+                $massiveModalTitleId    = $massiveModalDomId . '-title';
+                $massiveModalDialogSrId = $massiveModalTitleId . '-dialogsr';
+                $showSelected           = $aAction['showSelected'] ?? 'no';
+                $selectedUrl            = $aAction['selectedUrl'] ?? '#';
+                $largeModalView         = !empty($aAction['largeModalView']) ? 'modal-lg' : '';
                 if ($this->isView($aAction['modalType'])) {
-                    // Pre-compute shared modal variables so individual view files stay minimal.
-                    $massiveModalDomId      = 'massive-actions-modal-' . $this->gridid . '-' . $aAction['action'] . '-' . $key;
-                    $massiveModalTitleId    = $massiveModalDomId . '-title';
-                    $massiveModalDialogSrId = $massiveModalTitleId . '-dialogsr';
-                    $showSelected           = $aAction['showSelected'] ?? 'no';
-                    $selectedUrl            = $aAction['selectedUrl'] ?? '#';
-                    $largeModalView         = !empty($aAction['largeModalView']) ? 'modal-lg' : '';
                     $this->render(
                         'modals/' . $aAction['modalType'],
                         array(
