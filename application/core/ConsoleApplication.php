@@ -77,6 +77,7 @@ class ConsoleApplication extends CConsoleApplication
             }
         }
         if (file_exists(__DIR__ . '/../config/allowed_hosts.php')) {
+            /** @psalm-suppress MissingFile file is auto-generated and may not exist in CI */
             $allowedHostsConfig = require(__DIR__ . '/../config/allowed_hosts.php');
             if (is_array($allowedHostsConfig)) {
                 $lsConfig = array_merge($lsConfig, $allowedHostsConfig);
