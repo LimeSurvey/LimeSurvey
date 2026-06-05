@@ -185,10 +185,9 @@ trait LSApplicationTrait
                 continue;
             }
             $host = trim($host);
-            // Must match a valid hostname (RFC 952/1123) or IP address
             if (
-                filter_var($host, FILTER_VALIDATE_IP) !== false
-                || preg_match('/^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)*[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?$/', $host)
+                filter_var($host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) !== false
+                || filter_var($host, FILTER_VALIDATE_IP) !== false
             ) {
                 $sanitized[] = $host;
             }
