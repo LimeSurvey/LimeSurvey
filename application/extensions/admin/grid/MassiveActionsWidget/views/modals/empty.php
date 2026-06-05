@@ -20,7 +20,7 @@ $massiveModalDialogSrId = $massiveModalTitleId . '-dialogsr';
             </div>
 
             <div class="modal-footer modal-footer-buttons">
-                <?php foreach ($aAction['htmlFooterButtons'] as $buttonHtml): ?>
+                <?php foreach ($aAction['htmlFooterButtons'] as $buttonHtml) : ?>
                     <?php echo $buttonHtml; ?>
                 <?php endforeach;?>
             </div>

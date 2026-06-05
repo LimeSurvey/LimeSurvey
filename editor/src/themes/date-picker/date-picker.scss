@@ -1,0 +1,33 @@
+.MuiTextField-root {
+  min-width: 100% !important;
+
+  .settings-buttons {
+    background-color: $g-700 !important;
+    border-radius: 0 4px 4px 0;
+    .settings-button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: $white;
+    }
+  }
+
+  .MuiInputBase-input {
+    color: $g-900;
+    padding: 10px 12px;
+  }
+  .MuiOutlinedInput-notchedOutline {
+    border-radius: 4px !important;
+    border: 2px solid $g-700 !important;
+  }
+}
+
+input[type='date'].selected::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: block;
+  background: url('../../assets/icons/calendar-selected.svg') no-repeat;
+  width: 20px;
+  height: 20px;
+  border-width: thin;
+}
