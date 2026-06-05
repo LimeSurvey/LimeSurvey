@@ -199,7 +199,7 @@ class TokenDynamic extends LSActiveRecord
         }
 
         if ($aTokenIds) {
-            $command->addCondition("tid IN ('" . implode("', '", $aTokenIds) . "')");
+            $command->addInCondition("tid", $aTokenIds);
         }
 
         if ($iMaxEmails) {
