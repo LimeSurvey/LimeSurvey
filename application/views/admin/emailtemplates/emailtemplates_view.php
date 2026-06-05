@@ -10,7 +10,8 @@ $count = 0;
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyEmailTemplates');
 
-App()->getClientScript()->registerScript("EmailTemplateViews_variables",
+App()->getClientScript()->registerScript(
+    "EmailTemplateViews_variables",
     "
 var sReplaceTextConfirmation='" . gT("This will replace the existing text. Continue?", "js") . "';
 var sKCFinderLanguage='" . sTranslateLangCode2CK(App()->language) . "';
@@ -20,7 +21,8 @@ var LS = LS || {};  // namespace
     LS.lang['Remove attachment'] = '" . gT("Remove attachment") . "';
     LS.lang['Edit condition'] = '" . gT("Edit condition") . "';
 ",
-    LSYii_ClientScript::POS_BEGIN);
+    LSYii_ClientScript::POS_BEGIN
+);
 
 ?>
 <div class="side-body">
@@ -28,10 +30,11 @@ var LS = LS || {};  // namespace
     <div class="row">
         <div class="col-12 content-right">
             <?php echo CHtml::form(['admin/emailtemplates/sa/update/surveyid/' . $surveyid], 'post', ['name' => 'emailtemplates', 'class' => '', 'id' => 'emailtemplates']); ?>
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" role="tablist">
                 <?php foreach ($oSurvey->allLanguages as $grouplang): ?>
+                    <?php $langTabId = 'tab-lang-' . CHtml::encode($grouplang); ?>
                     <li role="presentation" class="nav-item">
-                        <a class="nav-link <?= ($count == 0) ? 'active' : '' ?>" data-bs-toggle="tab" href='#tab-<?= $grouplang ?>'>
+                        <a class="nav-link <?= ($count == 0) ? 'active' : '' ?>" id="<?= $langTabId ?>" role="tab" aria-selected="<?= ($count == 0) ? 'true' : 'false' ?>" aria-controls="tab-<?= $grouplang ?>" data-bs-toggle="tab" href="#tab-<?= $grouplang ?>">
                             <?php $count++ ?>
                             <?= getLanguageNameFromCode($grouplang, false) . " " . (($grouplang == $oSurvey->language) ? "(" . gT("Base language") . ")" : "") ?>
                         </a>
@@ -68,12 +71,12 @@ var LS = LS || {};  // namespace
     </div>
 </div>
 
-<div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open">
+<div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open" aria-modal="true" aria-labelledby="kc-modal-open-title">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title h5"><?= gT("Choose file to add") ?></h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h2 id="kc-modal-open-title" class="modal-title h5"><?= gT("Choose file to add") ?></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"></button>
             </div>
             <div class="modal-body" style="padding: 0;">
                 <iframe id="browseiframe" frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>

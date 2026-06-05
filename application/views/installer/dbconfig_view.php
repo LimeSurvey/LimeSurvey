@@ -20,9 +20,9 @@ $('#InstallerConfigForm_dbengine').change(function(){
 });
 
 function checkDbType(){
-    if($('#InstallerConfigForm_dbtype').val() == '".InstallerConfigForm::DB_TYPE_MYSQL."') {
+    if($('#InstallerConfigForm_dbtype').val() == '" . InstallerConfigForm::DB_TYPE_MYSQL . "') {
         $('#InstallerConfigForm_dbengine_row').show();
-    } else if($('#InstallerConfigForm_dbtype').val() == '".InstallerConfigForm::DB_TYPE_MYSQLI."') {
+    } else if($('#InstallerConfigForm_dbtype').val() == '" . InstallerConfigForm::DB_TYPE_MYSQLI . "') {
         $('#InstallerConfigForm_dbengine_row').show();
     } else {
         $('#InstallerConfigForm_dbengine_row').hide();
@@ -30,7 +30,7 @@ function checkDbType(){
 }
 
 function checkDbEngine(){
-    if($('#InstallerConfigForm_dbengine').val() == '".InstallerConfigForm::ENGINE_TYPE_INNODB."') {
+    if($('#InstallerConfigForm_dbengine').val() == '" . InstallerConfigForm::ENGINE_TYPE_INNODB . "') {
         $('#innodb-warning').addClass('d-flex');
         $('#innodb-warning').removeClass('d-none');
     } else {
@@ -60,13 +60,13 @@ function checkDbEngine(){
 
         <div id="InstallerConfigForm_dbtype_row" class="mb-3">
             <?= CHtml::activeLabelEx($model, 'dbtype'); ?>
-            <?= CHtml::activeDropDownList($model, 'dbtype', $model->supportedDbTypes, ['required' => 'required', 'class'=>'form-control', 'autofocus' => 'autofocus']); ?>
+            <?= CHtml::activeDropDownList($model, 'dbtype', $model->supportedDbTypes, ['required' => 'required', 'class' => 'form-control', 'autofocus' => 'autofocus']); ?>
             <div class="help-block"><?= $model->attributeHints()['dbtype'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbengine_row" class="mb-3">
             <?= CHtml::activeLabelEx($model, 'dbengine'); ?>
-            <?= CHtml::activeDropDownList($model, 'dbengine', $model->dbEngines, array('prompt'=>gT("Select"), 'autocomplete'=>'off', 'class' => 'form-control')); ?>
+            <?= CHtml::activeDropDownList($model, 'dbengine', $model->dbEngines, array('prompt' => gT("Select"), 'autocomplete' => 'off', 'class' => 'form-control')); ?>
             <?php
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'text' => gT('Warning! Using InnoDB instead of MyISAM will reduce the possible maximum number of questions in your surveys. Please read more about MyISAM vs InnoDB table column limitations in our manual before selecting InnoDB.'),
@@ -78,31 +78,31 @@ function checkDbEngine(){
 
         <div id="InstallerConfigForm_dblocation_row" class="mb-3">
             <?= CHtml::activeLabelEx($model, 'dblocation'); ?>
-            <?= CHtml::activeTextField($model, 'dblocation',['class' => 'form-control']); ?>
+            <?= CHtml::activeTextField($model, 'dblocation', ['class' => 'form-control']); ?>
             <div class="help-block"><?= $model->attributeHints()['dblocation'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbuser_row" class="mb-3">
             <?= CHtml::activeLabelEx($model, 'dbuser'); ?>
-            <?= CHtml::activeTextField($model, 'dbuser',['class' => 'form-control']); ?>
+            <?= CHtml::activeTextField($model, 'dbuser', ['class' => 'form-control']); ?>
             <div class="help-block"><?= $model->attributeHints()['dbuser'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbpwd_row" class="mb-3">
             <?= CHtml::activeLabelEx($model, 'dbpwd'); ?>
-            <?= CHtml::activePasswordField($model, 'dbpwd',['class' => 'form-control']); ?>
+            <?= CHtml::activePasswordField($model, 'dbpwd', ['class' => 'form-control']); ?>
             <div class="help-block"><?= $model->attributeHints()['dbpwd'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbname_row" class="mb-3">
             <?= CHtml::activeLabelEx($model, 'dbname'); ?>
-            <?= CHtml::activeTextField($model, 'dbname',['class' => 'form-control']); ?>
+            <?= CHtml::activeTextField($model, 'dbname', ['class' => 'form-control']); ?>
             <div class="help-block"><?= $model->attributeHints()['dbname'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbname_row" class="mb-3">
             <?= CHtml::activeLabelEx($model, 'dbprefix'); ?>
-            <?= CHtml::activeTextField($model, 'dbprefix',['class' => 'form-control']); ?>
+            <?= CHtml::activeTextField($model, 'dbprefix', ['class' => 'form-control']); ?>
             <div class="help-block"><?= $model->attributeHints()['dbprefix'] ?></div>
         </div>
 

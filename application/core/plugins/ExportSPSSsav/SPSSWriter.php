@@ -185,7 +185,7 @@ class SPSSWriter extends Writer
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 0,
-                        'answer' => gT('Not Selected')
+                        'answer' => gT('Not selected')
                     );
                 } elseif ($aQuestion['type'] == "P") {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
@@ -194,7 +194,7 @@ class SPSSWriter extends Writer
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 0,
-                        'answer' => gT('Not Selected')
+                        'answer' => gT('Not selected')
                     );
                 } elseif ($aQuestion['type'] == "G") {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(

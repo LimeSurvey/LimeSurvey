@@ -51,12 +51,13 @@ Yii::app()->getController()->renderPartial(
                 'id'            => 'expires',
                 'value'         => $oUser->expires ? date(
                     $dateformatdetails['phpdate'] . " H:i",
-                    strtotime((string) $oUser->expires)
+                    strtotime((string) getDateOfUTC($oUser->expires))
                 ) : '',
                 'pluginOptions' => [
                     'format'           => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' => true,
                     'showClear'        => true,
+                    'theme' => 'light',
                     'locale'           => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 ]
             ]);

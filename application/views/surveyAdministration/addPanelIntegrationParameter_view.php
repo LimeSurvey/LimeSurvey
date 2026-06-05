@@ -1,15 +1,16 @@
 <?php
 /** @var array $questions */
 ?>
-<div id="dlgEditParameter" class="modal fade" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="dlgEditParameter-title"
+<div id="dlgEditParameter" class="modal fade" role="dialog" tabindex="-1" aria-modal="true"
+     aria-labelledby="dlgEditParameterTitle"
      data-save-url='<?= Yii::app()->createUrl("surveyAdministration/saveUrlParam") ?>'
 >
 
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="dlgEditParameter-title" class="modal-title h5"><?php eT("Add URL parameter"); ?></h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo gT('Close'); ?>"></button>
+                <h2 id="dlgEditParameterTitle" class="modal-title h5"><?php eT("Add URL parameter"); ?></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class='mb-3 row'>
@@ -37,7 +38,6 @@
                                         ),
                                         43,
                                         .70
-
                                     );
                                     if ($question['sqquestion'] != '') {
                                         echo ' - ' . ellipsize(

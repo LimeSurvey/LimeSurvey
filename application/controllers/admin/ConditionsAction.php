@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -81,7 +81,7 @@ class ConditionsAction extends SurveyCommonAction
         $this->nonStringComparisonOperators = array(
             "<"  => gT("Less than"),
             "<=" => gT("Less than or equal to"),
-            "==" => gT("equals"),
+            "==" => gT("Equals"),
             "!=" => gT("Not equal to"),
             ">=" => gT("Greater than or equal to"),
             ">"  => gT("Greater than"),
@@ -508,7 +508,20 @@ class ConditionsAction extends SurveyCommonAction
      */
     protected function copyConditions(array $args)
     {
-        $this->surveyCondition->copyConditions(returnGlobal('copyconditionsfrom'), returnGlobal('copyconditionsto'), Yii::app());
+        $copyconditionsfrom = returnGlobal('copyconditionsfrom');
+        $copyconditionsto = returnGlobal('copyconditionsto');
+
+        // Validate that target questions are selected
+        if (!is_array($copyconditionsto) || count($copyconditionsto) === 0) {
+            throw new CHttpException(400, 'Invalid request: No target question selected.');
+        }
+
+        // Validate that source conditions are selected
+        if (!is_array($copyconditionsfrom) || count($copyconditionsfrom) === 0) {
+            throw new CHttpException(400, 'Invalid request: No conditions selected to copy.');
+        }
+
+        $this->surveyCondition->copyConditions($copyconditionsfrom, $copyconditionsto, Yii::app());
     }
 
     /**
@@ -887,12 +900,12 @@ class ConditionsAction extends SurveyCommonAction
     /**
      * Maps keywords with paths so we can ensure that the service is agnostic to where the paths are which gives us flexibility
      * @param string $what the keyname of the view to be rendered
-     * @param array $data data array to be passed to the renderPartial method
+     * @param ?array $data data array to be passed to the renderPartial method
      * @param bool $return return to be passed to the renderPartial method
      * @param bool $processOutput processOutput to be passed to the renderPartial method
      * @return string
      */
-    public function renderPartialView(string $what, array $data = null, bool $return = false, bool $processOutput = false)
+    public function renderPartialView(string $what, ?array $data = null, bool $return = false, bool $processOutput = false)
     {
         switch ($what) {
             case 'navigator':

@@ -3,8 +3,8 @@
 $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfiguration['gsid']));
 
 $dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inherit") . ' [' . gT(
-        "inherited value:"
-    ) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
+    "Inherited value:"
+) . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
 
 /** @var string The html for image file dropdown options */
 $imageOptions = '';
@@ -97,9 +97,9 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
             <?php // If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template ?>
             <?php if ($bInherit) : ?>
                 <div class='row' id="general_inherit_active">
-                    <label for='simple_edit_options_general_inherit' class='form-label'><?php echo gT("Inherit everything"); ?></label>
-                    <div class='col-12'>
-                        <div class="btn-group" role="group">
+                    <label id="inherit_label_announcement" class='form-label'><?php echo gT("Inherit everything"); ?></label>
+                    <div class='col-12' role="radiogroup" aria-labelledby="inherit_label_announcement">
+                        <div class="btn-group">
                             <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='btn-check selector_option_general_inherit '
                                    data-id='simple_edit_options_general_inherit'/>
                             <label for="general_inherit_on" class="btn btn-outline-secondary">
@@ -138,7 +138,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                     ?>
                     <?php if (array_key_exists('category', $attribute) && $category === $attribute['category']) : ?>
                         <div class="col-<?= $attribute['width'] ?>">
-                            <label for="simple_edit_options_<?= $attributeKey ?>" class="form-label">
+                            <label for="simple_edit_options_<?=$attributeKey ?>" id="lbl_simple_edit_options_<?=$attributeKey ?>" class="form-label">
                                 <?= gT($attribute['title']) ?>
                             </label>
                             <?php if ($attribute['type'] === 'buttons') : ?>
@@ -159,6 +159,9 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     $options['inherit']['value'] = $sParentOption . " ᴵ";
                                     if (!empty($options[$sParentOption]['image'])) {
                                         $options['inherit']['image'] = $options[$sParentOption]['image'];
+                                    } elseif (!empty($optionImages)) {
+                                        // Fallback: use the first option image when parent value is empty/unknown
+                                        $options['inherit']['image'] = $optionImages[0];
                                     }
                                 }
                                 if ($bInherit && isset($sParentOption)) {
@@ -172,7 +175,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 }
                                 ?>
                                 <!-- buttons type -->
-                                <div class="col-12">
+                                <div class="col-12" role="radiogroup" aria-labelledby="lbl_simple_edit_options_<?=$attributeKey ?>">
                                     <div class="btn-group" role="group">
                                         <?php foreach ($options as $optionKey => $optionSettings) : ?>
                                             <?php $id = $attributeKey . "_" . $optionKey; ?>
@@ -180,13 +183,14 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                                    class="btn-check selector_option_radio_field simple_edit_options_<?= $attributeKey ?>"/>
                                             <label for="<?= $id ?>" class="btn btn-outline-secondary">
                                                 <?php if (!empty($optionSettings['image'])) : ?>
-                                                    <?php $imageFilePath = App()->getConfig('standardthemerootdir') . DIRECTORY_SEPARATOR . $aTemplateConfiguration['template_name'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $optionSettings['image'] ?>
-                                                    <?php if (file_exists($imageFilePath)) : ?>
+                                                    <?php $imageFilePath = $attribute['resolvedOptionImagePaths'][$optionSettings['image']] ?? ''; ?>
+                                                    <?php if (!empty($imageFilePath) && file_exists($imageFilePath)) : ?>
                                                         <?= file_get_contents($imageFilePath) ?>
                                                         <?= $optionKey === 'inherit' ? ' ᴵ' : '' ?>
+                                                    <?php else : ?>
+                                                        <?= gT($optionSettings['value']) ?>
                                                     <?php endif; ?>
-                                                <?php endif; ?>
-                                                <?php if (empty($optionSettings['image'])) : ?>
+                                                <?php else : ?>
                                                     <?= gT($optionSettings['value']) ?>
                                                 <?php endif; ?>
                                             </label>
@@ -257,7 +261,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                             }
                                             ?>
 
-                                            <option <?= $dataAttributes ?> value="inherit"><?= gT("Inherit") ?>[<?= gT("inherited value:") ?> <?= $inheritedValue ?>]</option>
+                                            <option <?= $dataAttributes ?> value="inherit"><?= gT("Inherit") ?>[<?= gT("Inherited value:") ?> <?= $inheritedValue ?>]</option>
                                         <?php endif; ?>
                                         <?php // dropdown options from config.xml file ?>
                                         <?= $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'] ?>
@@ -286,7 +290,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                                 $inheritedValue = isset($sParentOption) ? $sParentOption : '';
                                             }
                                             ?>
-                                            <option value="inherit"><?= gT("Inherit") ?>[<?= gT("inherited value:") ?> <?= $inheritedValue ?>]</option>
+                                            <option value="inherit"><?= gT("Inherit") ?>[<?= gT("Inherited value:") ?> <?= $inheritedValue ?>]</option>
                                         <?php endif; ?>
                                         <?php // Dropdown options for image files ?>
                                         <?= $imageOptions ?>
@@ -298,7 +302,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     <select class="selector_option_value_field form-select simple_edit_options_checkicon" <?= $parentDataAttribute ?>
                                             id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>">
                                         <?php if ($bInherit) : ?>
-                                            <option value="inherit"><?= gT("Inherit") ?>[<?= gT("inherited value:") ?> <?= ($sParentOption ?? '') ?>]</option>
+                                            <option value="inherit"><?= gT("Inherit") ?>[<?= gT("Inherited value:") ?> <?= ($sParentOption ?? '') ?>]</option>
                                         <?php endif; ?>
                                         <?php // dropdown options from config.xml file ?>
                                         <?= $aOptionAttributes['optionAttributes'][$attributeKey]['dropdownoptions'] ?>
@@ -309,7 +313,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                             <i class="ri-" data-inheritvalue="<?= $sParentOption ?>">
                                                 &#x<?= $sParentOption ?>
                                             </i>
-                                        <?php else: ?>
+                                        <?php else : ?>
                                             <i class="fa" data-inheritvalue="<?= $sParentOption ?>"
                                                style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
                                                 &#x<?= $sParentOption ?>
@@ -323,7 +327,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 <div class="col-12">
                                     <input type="text" class="form-control selector-text-input selector_text_option_value_field" <?= $parentDataAttribute ?>
                                            id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
-                                           title="<?= gT("inherited value:") ?> <?= CHtml::encode($sParentOption) ?>"/>
+                                           title="<?= gT("Inherited value:") ?> <?= CHtml::encode($sParentOption) ?>"/>
                                 </div>
                             <?php elseif ($attribute['type'] === 'textarea') : ?>
                                 <!-- textarea type -->
@@ -332,7 +336,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                         class="form-control selector-text-input selector_text_option_value_field" <?= $parentDataAttribute ?>
                                         id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
                                         rows="<?= (int)$attribute['rows'] ?>"
-                                        title="<?= gT("inherited value:") . CHtml::encode($sParentOption) ?>"
+                                        title="<?= gT("Inherited value:") . CHtml::encode($sParentOption) ?>"
                                     >
                                     </textarea>
                                 </div>
@@ -341,7 +345,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                 <div class="col-12">
                                     <input type="text" class="form-control selector-numerical-input selector_text_option_value_field selector_radio_childfield"
                                            <?= $parentDataAttribute ?> id="simple_edit_options_<?= $attributeKey ?>" name="<?= $attributeKey ?>"
-                                           title="<?= gT("inherited value:") ?> <?= $sParentOption ?>"/>
+                                           title="<?= gT("Inherited value:") ?> <?= $sParentOption ?>"/>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -372,7 +376,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                             </div>
                             <div class="col-8">
                                 <span id="fileselector_frontend">
-                                    <label class="btn btn-outline-secondary" for="upload_image_frontend">
+                                    <label class="btn btn-outline-secondary" for="upload_image_frontend" role="button" tabindex="0">
                                     <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
                                         <i class="ri-upload-fill ls-space margin right-10"></i>
                                         <?php eT("Upload"); ?>
@@ -401,7 +405,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title selector__title"></h5>
+                <h2 class="modal-title selector__title h5"></h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

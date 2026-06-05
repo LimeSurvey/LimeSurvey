@@ -1,0 +1,98 @@
+.input-range {
+  min-width: 250px;
+}
+
+.input-range-track {
+  display: flex;
+  height: 4px;
+  width: 100%;
+
+  .input-range-track-background {
+    align-self: center;
+    height: 4px;
+    width: 100%;
+    border-radius: 2px;
+  }
+
+  &.vertical {
+    height: 200px;
+    width: 4px;
+
+    .input-range-track-background {
+      height: 100%;
+      width: 4px;
+    }
+  }
+}
+
+.image-attributes-range .input-range-input {
+  width: 45%;
+  padding-right: 6px;
+}
+
+.input-range-value {
+  position: absolute;
+  color: $white;
+  font-weight: $font-weight-normal;
+  font-size: 11px;
+  padding: 4px;
+  border-radius: $border-radius;
+  background-color: $g-800;
+  text-align: center;
+  top: -36px;
+  min-width: 36px;
+
+  &.vertical {
+    top: -10px;
+    right: -42px;
+  }
+}
+
+.input-range-handle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $grape;
+  box-shadow: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+
+  &.active {
+    box-shadow: $boxshadow-slider-handle;
+  }
+
+  &.type-0 {
+    // Circle
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+  }
+
+  &.type-1 {
+    // Square
+    height: 12px;
+    width: 12px;
+    border-radius: 0;
+  }
+
+  &.type-2 {
+    // Triangle
+    height: 0;
+    width: 0;
+    background-color: transparent;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid rgb(129, 70, 246);
+  }
+
+  &.type-3 {
+    // Custom
+    height: 16px;
+    width: 16px;
+    border-radius: 0;
+    background-color: transparent;
+    color: rgb(129, 70, 246);
+    font-size: $font-size-base;
+  }
+}
