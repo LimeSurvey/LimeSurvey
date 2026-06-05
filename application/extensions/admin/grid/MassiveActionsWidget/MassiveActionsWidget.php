@@ -73,7 +73,16 @@ class massiveActionsWidget extends CWidget
                     );
                 } else {
                     // We could rather raise an exception.
-                    $this->render('unknown_modal_type');
+                    $this->render(
+                        'unknown_modal_type',
+                        array(
+                            'aAction'                => $aAction,
+                            'key'                    => $key,
+                            'massiveModalDomId'      => $massiveModalDomId,
+                            'massiveModalTitleId'    => $massiveModalTitleId,
+                            'massiveModalDialogSrId' => $massiveModalDialogSrId,
+                        )
+                    );
                 }
             }
         }
