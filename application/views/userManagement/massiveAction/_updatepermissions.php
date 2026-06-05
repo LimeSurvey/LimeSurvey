@@ -47,9 +47,13 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
 
                 <!-- Warning super admin -->
                 <td>
-                    <?php if ($sPermissionKey == 'superadmin') { ?> <span class='warning'> <?php };
+                    <?php if ($sPermissionKey == 'superadmin') {
+                        ?> <span class='warning'> <?php
+                    };
                                                                                     echo $aCRUDPermissions['title'];
-                                                                                    if ($sPermissionKey == 'superadmin') { ?> </span> <?php }; ?>
+                    if ($sPermissionKey == 'superadmin') {
+                        ?> </span> <?php
+                    }; ?>
                 </td>
 
                 <!-- checkbox  -->
@@ -59,15 +63,18 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
 
                 <!-- CRUD -->
                 <?php foreach ($aCRUDPermissions as $sCRUDKey => $CRUDValue) : ?>
-                    <?php if (!in_array($sCRUDKey, array('create', 'read', 'update', 'delete', 'import', 'export'))) continue; ?>
+                    <?php if (!in_array($sCRUDKey, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
+                        continue;
+                    } ?>
 
                     <!-- Extended container -->
                     <td class='specific-settings-block'>
                         <?php if ($CRUDValue) : ?>
                             <?php if (!($sPermissionKey == 'survey' && $sCRUDKey == 'read')) : ?>
-
                                 <!-- checkbox -->
-                                <input type="checkbox" class="specific-permission-selector custom-data" name='Permission[<?php echo $sPermissionKey . '][' . $sCRUDKey; ?>]' id='perm_<?php echo $sPermissionKey . '_' . $sCRUDKey; ?>' <?php if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') : ?> style="visibility:hidden" <?php endif; ?> />
+                                <input type="checkbox" class="specific-permission-selector custom-data" name='Permission[<?php echo $sPermissionKey . '][' . $sCRUDKey; ?>]' id='perm_<?php echo $sPermissionKey . '_' . $sCRUDKey; ?>' <?php if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') :
+                                    ?> style="visibility:hidden" <?php
+                                                                                                                         endif; ?> />
                             <?php endif; ?>
                         <?php endif; ?>
                     </td>
