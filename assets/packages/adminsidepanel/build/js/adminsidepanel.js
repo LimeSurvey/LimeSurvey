@@ -878,12 +878,17 @@ class QuestionExplorer {
 
   /**
    * Re-initialize the question-item tooltips with a fixed positioning strategy.
+   *
+   * The links deliberately omit data-bs-toggle="tooltip" so the global
+   * LS.doToolTip() (re-run on every pjax navigation) doesn't re-create them with
+   * its default 'absolute' strategy, which mispositions them inside the sidebar.
+   * We own these tooltips here and always use the 'fixed' strategy.
    */
   initQuestionTooltips() {
     if (typeof bootstrap === 'undefined' || !bootstrap.Tooltip || !this.container) {
       return;
     }
-    this.container.querySelectorAll('.question-link[data-bs-toggle="tooltip"]').forEach(function (el) {
+    this.container.querySelectorAll('.question-link[title]').forEach(function (el) {
       var existing = bootstrap.Tooltip.getInstance(el);
       if (existing) {
         try {
@@ -891,6 +896,7 @@ class QuestionExplorer {
         } catch (e) {}
       }
       new bootstrap.Tooltip(el, {
+        placement: 'top',
         container: 'body',
         popperConfig: {
           strategy: 'fixed'
@@ -1026,7 +1032,7 @@ class QuestionExplorer {
     }
 
     // Question link
-    html += '<a href="' + question.link + '" class="pjax question-question-list-item-link display-as-container question-link" data-qid="' + question.qid + '" data-gid="' + question.gid + '" title="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(question.question_flat) + '" data-bs-toggle="tooltip" data-bs-placement="top">';
+    html += '<a href="' + question.link + '" class="pjax question-question-list-item-link display-as-container question-link" data-qid="' + question.qid + '" data-gid="' + question.gid + '" title="' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(question.question_flat) + '">';
     html += '<span class="question_text_ellipsize ' + (question.hidden ? 'question-hidden' : '') + '">';
     html += '[' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(question.title) + '] &rsaquo; ' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].escapeHtml(question.question_flat);
     html += '</span>';
