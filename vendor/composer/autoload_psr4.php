@@ -34,7 +34,7 @@ return array(
     'LimeSurvey\\Exceptions\\' => array($baseDir . '/application/exceptions'),
     'LimeSurvey\\Datavalueobjects\\' => array($baseDir . '/application/datavalueobjects'),
     'LimeSurvey\\' => array($baseDir . '/application/libraries'),
-    'League\\OAuth2\\Client\\' => array($vendorDir . '/league/oauth2-client/src', $vendorDir . '/league/oauth2-google/src'),
+    'League\\OAuth2\\Client\\' => array($vendorDir . '/league/oauth2-google/src', $vendorDir . '/league/oauth2-client/src'),
     'Laravel\\SerializableClosure\\' => array($vendorDir . '/laravel/serializable-closure/src'),
     'Invoker\\' => array($vendorDir . '/php-di/invoker/src'),
     'Html2Text\\' => array($vendorDir . '/html2text/html2text/src'),

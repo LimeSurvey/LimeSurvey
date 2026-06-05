@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitddb1a145e450f862353420acc5153e40
+class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -227,8 +227,8 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         ),
         'League\\OAuth2\\Client\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/oauth2-client/src',
-            1 => __DIR__ . '/..' . '/league/oauth2-google/src',
+            0 => __DIR__ . '/..' . '/league/oauth2-google/src',
+            1 => __DIR__ . '/..' . '/league/oauth2-client/src',
         ),
         'Laravel\\SerializableClosure\\' => 
         array (
@@ -379,10 +379,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitddb1a145e450f862353420acc5153e40::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite74269ee3bc74422f85caadd926dd3be::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite74269ee3bc74422f85caadd926dd3be::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInite74269ee3bc74422f85caadd926dd3be::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInite74269ee3bc74422f85caadd926dd3be::$classMap;
 
         }, null, ClassLoader::class);
     }
