@@ -193,7 +193,7 @@ trait LSApplicationTrait
             return false;
         }
 
-        $filePath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'allowed_hosts.php';
+        $filePath = Yii::app()->getConfig('configdir') . DIRECTORY_SEPARATOR . 'allowed_hosts.php';
         $content = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n"
             . "/**\n"
             . " * Allowed Hosts Configuration\n"

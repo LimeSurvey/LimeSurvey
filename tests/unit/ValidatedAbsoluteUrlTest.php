@@ -21,10 +21,14 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     /** @var string|null Original content of allowed_hosts.php if it existed */
     private static $originalAllowedHostsContent;
 
+    /** @var mixed Original allowedHosts config value */
+    private static $originalAllowedHosts;
+
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
         self::$originalPublicUrl = Yii::app()->getConfig('publicurl');
+        self::$originalAllowedHosts = Yii::app()->getConfig('allowedHosts');
         self::$allowedHostsFile = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'allowed_hosts.php';
 
         // Backup existing allowed_hosts.php if present
@@ -35,8 +39,9 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
 
     public static function tearDownAfterClass(): void
     {
-        // Restore publicurl
+        // Restore publicurl and allowedHosts
         Yii::app()->setConfig('publicurl', self::$originalPublicUrl);
+        Yii::app()->setConfig('allowedHosts', self::$originalAllowedHosts);
 
         // Restore allowed_hosts.php
         if (self::$originalAllowedHostsContent !== null) {
@@ -66,7 +71,7 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
             unlink(self::$allowedHostsFile);
         }
         Yii::app()->setConfig('publicurl', self::$originalPublicUrl);
-        Yii::app()->setConfig('allowedHosts', null);
+        Yii::app()->setConfig('allowedHosts', self::$originalAllowedHosts);
         parent::tearDown();
     }
 
