@@ -11,7 +11,7 @@ use LimeSurvey\Api\Transformer\Formatter\FormatterDateTimeToJson;
 /**
  * @testdox Authentication Token Simple
  */
-class AuthenticationTokenSimpleTest extends TestBaseClass
+class AuthTokenSimpleTest extends TestBaseClass
 {
     public static function tearDownAfterClass(): void
     {

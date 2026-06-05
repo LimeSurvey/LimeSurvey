@@ -14,7 +14,7 @@ if (isset($aAction['selectedUrl'])) {
 
 if (isset($aAction['largeModalView']) && $aAction['largeModalView']) {
     $largeModalView = 'modal-lg';
-}else{
+} else {
     $largeModalView = '';
 }
 $massiveModalDomId = 'massive-actions-modal-' . $this->gridid . '-' . $aAction['action'] . '-' . $key;
@@ -71,10 +71,10 @@ echo $aAction['action']; ?> -->
                                     echo $aCustomData['name']; ?>"
                                     value="<?php
                                     echo $aCustomData['value']; ?>"/>
-                        <?php
+                            <?php
                         } ?>
                     </div>
-                <?php
+                    <?php
                 } ?>
             </div>
             <?php

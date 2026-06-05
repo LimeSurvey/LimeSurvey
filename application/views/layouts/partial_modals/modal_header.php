@@ -17,9 +17,11 @@ $modalDialogSrId = !empty($modalTitleId) ? $modalTitleId . '-dialogsr' : null;
 ?>
 
 <div class="modal-header">
-    <h2 class="modal-title h5"<?= !empty($modalTitleId) ? ' id="' . CHtml::encode($modalTitleId) . '"' : '' ?>><?php echo CHtml::encode($modalTitle); ?></h2>
+    <h2 class="modal-title h1"<?= !empty($modalTitleId) ? ' id="' . CHtml::encode($modalTitleId) . '"' : '' ?>>
+        <?php echo CHtml::encode($modalTitle); ?>
+    </h2>
     <?php if (!empty($modalTitleId) && !empty($modalDialogSrId)) : ?>
         <span class="visually-hidden" id="<?= CHtml::encode($modalDialogSrId) ?>"><?= gT('Dialog') ?></span>
     <?php endif; ?>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close modal window') ?>"></button>
 </div>
