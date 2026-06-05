@@ -51,12 +51,24 @@ class massiveActionsWidget extends CWidget
             if (isset($aAction['actionType']) && $aAction['actionType'] === 'modal') {
                 // Modal type define the view to render in views/modal
                 if ($this->isView($aAction['modalType'])) {
-                    //TODO: common view for all modal types.
+                    // Pre-compute shared modal variables so individual view files stay minimal.
+                    $massiveModalDomId      = 'massive-actions-modal-' . $this->gridid . '-' . $aAction['action'] . '-' . $key;
+                    $massiveModalTitleId    = $massiveModalDomId . '-title';
+                    $massiveModalDialogSrId = $massiveModalTitleId . '-dialogsr';
+                    $showSelected           = $aAction['showSelected'] ?? 'no';
+                    $selectedUrl            = $aAction['selectedUrl'] ?? '#';
+                    $largeModalView         = !empty($aAction['largeModalView']) ? 'modal-lg' : '';
                     $this->render(
                         'modals/' . $aAction['modalType'],
                         array(
-                            'aAction' => $aAction,
-                            'key'     => $key,
+                            'aAction'                => $aAction,
+                            'key'                    => $key,
+                            'massiveModalDomId'      => $massiveModalDomId,
+                            'massiveModalTitleId'    => $massiveModalTitleId,
+                            'massiveModalDialogSrId' => $massiveModalDialogSrId,
+                            'showSelected'           => $showSelected,
+                            'selectedUrl'            => $selectedUrl,
+                            'largeModalView'         => $largeModalView,
                         )
                     );
                 } else {
