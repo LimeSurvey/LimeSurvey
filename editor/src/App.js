@@ -24,9 +24,9 @@ import {
 
 initInstrumentation()
 
-function App() {
-  const router = createRouter(routes)
+const router = createRouter(routes)
 
+function App() {
   useEffect(() => {
     const fetchVersionInfoInterval = setInterval(() => {
       const versionInfoService = new VersionInfoService(getApiUrl())

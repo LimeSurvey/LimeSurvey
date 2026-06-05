@@ -413,9 +413,10 @@ class AdminController extends LSYii_Controller
      * @access protected
      * @param bool $meta
      * @param bool $return
+     * @param array $pageData Optional page data (e.g. topbar, title_bar) to set document title for screen readers
      * @return string|null
      */
-    public function getAdminHeader($meta = false, $return = false)
+    public function getAdminHeader($meta = false, $return = false, $pageData = [])
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -446,7 +447,7 @@ class AdminController extends LSYii_Controller
         $aData['sitename'] = Yii::app()->getConfig("sitename");
 
         if (!empty(Yii::app()->session['dateformat'])) {
-                    $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
         }
 
         // Register admin theme package with asset manager
@@ -454,6 +455,13 @@ class AdminController extends LSYii_Controller
 
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
+
+        $aData['pageTitle'] = null;
+        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
+            $aData['pageTitle'] = strip_tags((string) $pageData['topbar']['title']);
+        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
+            $aData['pageTitle'] = strip_tags((string) $pageData['title_bar']['title']);
+        }
 
             //foreach ($aData['aPackageStyles'] as &$filename)
             //{

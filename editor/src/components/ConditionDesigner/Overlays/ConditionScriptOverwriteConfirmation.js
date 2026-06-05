@@ -4,7 +4,7 @@ import { EditorView } from '@codemirror/view'
 
 import { Button } from 'components/UIComponents'
 import { SwalAlert } from 'helpers'
-import { CodeEditor } from 'components/UIComponents/ContentEditor/CodeMirror/CodeMirror'
+import { CodeEditor } from 'components/UIComponents/ContentEditor/CodeEditor/CodeEditor'
 
 import { makeExpressionReadable } from '../utils'
 

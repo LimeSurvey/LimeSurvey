@@ -21,6 +21,7 @@
 !.eslintrc
 !.env-cmdrc
 !.eslintignore
+!.npmrc
 !/.github
 
 # upload directory : whole except the index.html and readme.txt
@@ -45,8 +46,8 @@
 /upload/themes/survey/generalfiles/*.*
 !/upload/themes/survey/generalfiles/index.html
 !/upload/themes/survey/index.html
-/upload/themes/question/*.*
-/upload/themes/question/**/*.*
+/upload/themes/question/*
+/upload/themes/question/**/*
 !/upload/themes/question/readme.txt
 /upload/plugins/*
 !/upload/plugins/index.html

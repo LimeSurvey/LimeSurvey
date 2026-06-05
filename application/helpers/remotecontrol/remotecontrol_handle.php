@@ -1733,10 +1733,12 @@ class remotecontrol_handle
     }
 
     /**
-     * Get properties of a question in a survey.
+     * Retrieve requested properties for a specific survey question.
      *
-     * @see \Question for available properties.
-     * Some more properties are available_answers, subquestions, attributes, attributes_lang, answeroptions, answeroptions_multiscale, defaultvalue
+     * Returns an associative array mapping requested property names to their values.
+     * Supported special properties include `available_answers`, `subquestions`, `attributes`,
+     * `attributes_lang`, `answeroptions`, `answeroptions_multiscale`, and `defaultvalue`.
+     * On error or permission/session failure the method returns an array with a `status` message.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1902,12 +1904,12 @@ class remotecontrol_handle
                             $aResult['answeroptions'] = 'No available answer options';
                         }
                     } elseif ($sPropertyName == 'defaultvalue') {
-                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultvaluel10ns')
+                        $oDefaultValue = DefaultValue::model()->with('defaultvaluel10ns')
                                                                         ->find(
                                                                             'qid = :qid AND defaultvaluel10ns.language = :language',
                                                                             array(':qid' => $iQuestionID, ':language' => $sLanguage)
-                                                                        )
-                                                                        ->defaultvalue;
+                                                                        );
+                        $aResult['defaultvalue'] = $oDefaultValue !== null ? $oDefaultValue->defaultvalue : null;
                     } elseif ($sPropertyName == 'question' || $sPropertyName == 'help' || $sPropertyName == 'script') {
                         $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->$sPropertyName;
                     } elseif ($sPropertyName == 'questionl10ns') {
@@ -3149,7 +3151,8 @@ class remotecontrol_handle
                     return array('status' => $addConditionError, 'error_code' => self::ERR_INVALID_PARAMETERS);
                 }
             } else {
-                $sNow = date('Y-m-d H:i:s', strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date('Y-m-d H:i:s'))));
+                // Get current time in UTC (all DB times are stored in UTC)
+                $sNow = gmdate('Y-m-d H:i:s');
                 $command->addCondition('usesleft > 0');
                 $command->addCondition("sent = 'N'");
                 $command->addCondition("remindersent = 'N'");
@@ -3310,7 +3313,6 @@ class remotecontrol_handle
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
-            $timeadjust = Yii::app()->getConfig('timeadjust');
 
             if (!tableExists("{{tokens_$iSurveyID}}")) {
                 return array('status' => 'Error: No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
@@ -3323,7 +3325,7 @@ class remotecontrol_handle
 
             if (!is_null($iMinDaysBetween)) {
                 $iMinDaysBetween = (int) $iMinDaysBetween;
-                $compareddate = dateShift(date('Y-m-d H:i:s', time() - 86400 * $iMinDaysBetween), 'Y-m-d H:i', $timeadjust);
+                $compareddate = gmdate("Y-m-d H:i", time() - 86400 * $iMinDaysBetween);
                 $SQLreminderdelaycondition = " ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";
             }
 
@@ -3393,7 +3395,7 @@ class remotecontrol_handle
             if (array_key_exists('submitdate', $aResponseData) && empty($aResponseData['submitdate'])) {
                 unset($aResponseData['submitdate']);
             } elseif (!isset($aResponseData['submitdate'])) {
-                $aResponseData['submitdate'] = date('Y-m-d H:i:s');
+                $aResponseData['submitdate'] = gmdate('Y-m-d H:i:s');
             }
             if (!isset($aResponseData['startlanguage'])) {
                 $aResponseData['startlanguage'] = $oSurvey->language;
@@ -3403,12 +3405,12 @@ class remotecontrol_handle
                 if (array_key_exists('datestamp', $aResponseData) && empty($aResponseData['datestamp'])) {
                     unset($aResponseData['datestamp']);
                 } elseif (!isset($aResponseData['datestamp'])) {
-                    $aResponseData['datestamp'] = date('Y-m-d H:i:s');
+                    $aResponseData['datestamp'] = gmdate('Y-m-d H:i:s');
                 }
                 if (array_key_exists('startdate', $aResponseData) && empty($aResponseData['startdate'])) {
                     unset($aResponseData['startdate']);
                 } elseif (!isset($aResponseData['startdate'])) {
-                    $aResponseData['startdate'] = date('Y-m-d H:i:s');
+                    $aResponseData['startdate'] = gmdate('Y-m-d H:i:s');
                 }
             }
 
@@ -3651,7 +3653,7 @@ class remotecontrol_handle
         // This also accounts for BASE64 overhead
         $size = (0.001 * 3 * strlen($sFileContent)) / 4;
 
-        $randfilename = 'fu_' . randomChars(15) . '_' . $pathinfo['extension'];
+        $randfilename = 'fu_' . randomChars(15);
         $randfileloc = $sUploadDir . $randfilename;
 
         if ($size > $maxfilesize) {

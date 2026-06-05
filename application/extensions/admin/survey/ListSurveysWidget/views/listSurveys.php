@@ -43,6 +43,7 @@
                 'window.LS.doToolTip();',
                 'bindListItemclick();',
                 'switchStatusOfListActions();',
+                'LS.restoreFocusAfterSort("survey-grid");',
             ],
             'rowLink'               =>
                 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',

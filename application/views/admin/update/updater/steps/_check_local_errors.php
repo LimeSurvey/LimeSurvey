@@ -56,7 +56,7 @@ if (isset($localChecks->html)) {
         <?php if ($errors) : ?>
             <div>
             <em>
-                <?php eT("Note: With some shared hosting configuration, it can happen that the available free space is not correctly evaluated. If you checked manually that you have enough free space to update, just ignore this error."); ?>
+                <?php eT("Some shared hosting configurations may report available disk space incorrectly. If you have verified manually that sufficient disk space is available, you can safely ignore this error."); ?>
             </em>
             <br/><br/>
             </div>

@@ -153,6 +153,11 @@ export const getQuestionItemsList = () => [
         label: getQuestionTypeInfo().MULTIPLE_SHORT_TEXTS.title,
         theme: getQuestionTypeInfo().MULTIPLE_SHORT_TEXTS.theme,
       },
+      {
+        value: getQuestionTypeInfo().TEXT_DISPLAY.type,
+        label: getQuestionTypeInfo().TEXT_DISPLAY.title,
+        theme: getQuestionTypeInfo().TEXT_DISPLAY.theme,
+      },
     ],
   },
   {
@@ -168,11 +173,6 @@ export const getQuestionItemsList = () => [
         value: getQuestionTypeInfo().MULTIPLE_NUMERICAL_INPUTS.type,
         label: getQuestionTypeInfo().MULTIPLE_NUMERICAL_INPUTS.title,
         theme: getQuestionTypeInfo().MULTIPLE_NUMERICAL_INPUTS.theme,
-      },
-      {
-        value: getQuestionTypeInfo().TEXT_DISPLAY.type,
-        label: getQuestionTypeInfo().TEXT_DISPLAY.title,
-        theme: getQuestionTypeInfo().TEXT_DISPLAY.theme,
       },
       {
         value: getQuestionTypeInfo().EQUATION.type,

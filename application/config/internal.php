@@ -16,10 +16,7 @@ if (!file_exists(dirname(__FILE__) . '/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 
-if (!date_default_timezone_set(@date_default_timezone_get())) {
-    date_default_timezone_set('Europe/London');
-}
-
+date_default_timezone_set('UTC'); 
 
 if (function_exists('mb_internal_encoding')) {
     // Needed to substring arabic etc
@@ -290,7 +287,7 @@ $internalConfig = array(
                 'getLanguageRTL'          => 'LS_Twig_Extension::getLanguageRTL',
 
                 'intval'                  => 'intval',
-                'empty'                   => 'empty',
+                'empty'                   => 'LS_Twig_Extension::isEmpty',
                 'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
                 'strip_tags'              => 'strip_tags',
@@ -301,7 +298,7 @@ $internalConfig = array(
                 'getPost'                 => 'LS_Twig_Extension::getPost',
                 'getParam'                => 'LS_Twig_Extension::getParam',
                 'getQuery'                => 'LS_Twig_Extension::getQuery',
-                'isset'                   => 'isset',
+                'isset'                   => 'LS_Twig_Extension::isSet',
                 'assetPublish'            => 'LS_Twig_Extension::assetPublish',
                 'image'                   => 'LS_Twig_Extension::image',
                 'imageSrc'                => 'LS_Twig_Extension::imageSrc',

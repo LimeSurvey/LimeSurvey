@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v7.0.0-RC1!
+Welcome to LimeSurvey v7.0.0!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -34,6 +34,47 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.5 (build 260527) to 6.17.6 (build 260604) June 4, 2026
+-Fixed issue: updates through ComfortUpdate are no longer incorrectly marked as unstable (Patrick Teichmann)
+-Fixed issue: [security] Vulnerability in twig template engine and deprecated twig attribute calls - this fix requires the minimum PHP version to be raised to 8.1. (#5026) (Carsten Schmitz)
+-Fixed issue #20489: [security] Publicly reachable file upload via RemoteControl API (#4889) (Denis Chenu)
+#Updated translation: Valencian by c_schmitz, joamuran, sergarb1, valdomir, vbraque
+#Updated translation: Spanish (Spain) by aesteban, artasom, atavei, c_schmitz, Ignacio, ireneoh, jmlopez, jparis, larjona, naiara.maya, Nodens, oleggorfinkel, perexat, segui, valdomir, xastrefernando, xtingray
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by actxcellence, assistedmindfulness, c_schmitz, eddylackmann, Joffm, Liam, mfaber
+#Updated translation: French (France) by AnneSophieB, DenisChenu, fgervais, mapage, riqcles
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han, kpadm, L191, mdekker, MrP
+#Updated translation: Dutch by Han, zfocuz
+#Updated translation: Dutch (Informal) by atvoogt, c_schmitz, Han
+#Updated translation: Dutch (Informal) by Aanouk, c_schmitz, Han, zfocuz
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.17.4 (build 260520) to 6.17.5 (build 260527) May 26, 2026
+-Fixed issue #AT-2056: Increase pagination to 250 and 500 (#5001) (Patricia Stell)
+-Fixed issue #AT-1897: design fixes for CSS states (#4992) (Tim Willig)
+-Fixed issue #20527: Bad order of default response list for multiple text question (Carsten Schmitz)
+-Fixed issue #20524: [security] Unsanitized null condition key (thank you for reporting Nagarajan Selvaraj Paulmony)(#4988) (Stefan K)
+-Fixed issue #20507: Unclosed twig comments in vanilla/fruity_twentythree themes (Mathieu Bruyen)
+-Fixed issue #19824: Page size of central participant list was limited to 100 (Carsten Schmitz)
+-Fixed issue #19571: Text fixes for templates -> themes (Carsten Schmitz)
+-Fixed issue #15946: File upload question: cannot select csv file (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu
+
+Changes from 6.17.4 (build 260520) to 7.0.0 (build 260526) May 26, 2026
+New feature: Great easy-to-use survey editor - check it out!
+New feature: Ability to set global and personal timezone - also all date/timestamps are saved as UTC
+New feature: Response table name & schema changes
+New feature: Machine-readable error codes in RemoteControl will now be given back. Please check the documentation.
+New feature #20387: Keep certain subquestions/answer options at original positions on randomization (#4613) (Tõnis Ormisson)
+
 Changes from 6.17.3 (build 260512) to 6.17.4 (build 260520) May 20, 2026
 -Fixed issue: prevent error when language for survey is missing and instead provide guidance on how to resolve it (Patrick Teichmann)
 -Fixed issue: add focus for some flash messages as well as add aria tags to them and aria focus state for multiselect in participant CSV export (a11y) (#4784) (Anblik Audit Team)

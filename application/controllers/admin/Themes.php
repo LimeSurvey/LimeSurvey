@@ -747,8 +747,8 @@ JAVASCRIPT
                 $mkdirresult = mkdir_p($newdirname);
 
                 if ($mkdirresult == 1) {
-                    // We just copy the while directory structure, but only the xml file
-                    $oFileHelper->copyDirectory($copydirname, $newdirname, array('fileTypes' => array('xml', 'png', 'jpg'), 'newDirMode' => 0755));
+                    // We just copy the whole directory structure, but only the xml and image files
+                    $oFileHelper->copyDirectory($copydirname, $newdirname, array('fileTypes' => array('xml', 'png', 'jpg', 'svg'), 'newDirMode' => 0755));
                     //TemplateConfiguration::removeAllNodes($newdirname);
                     TemplateManifest::extendsConfig($copydir, $newname);
                     TemplateManifest::importManifest($newname, ['extends' => $copydir]);
@@ -1201,7 +1201,7 @@ JAVASCRIPT
                         // If there are conditions on a question, list the conditions.
                         'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',
                         'QUESTION_CLASS' => ' mandatory list-radio',
-                        'QUESTION_TYPE_HELP' => gT('Please choose only one of the following:'),
+                        'QUESTION_TYPE_HELP' => gT('Please choose only one of the following options:'),
                         // (not sure if this is used) mandatory error
                         'QUESTION_MAN_MESSAGE' => '',
                         // (not sure if this is used) validation error

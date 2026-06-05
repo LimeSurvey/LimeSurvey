@@ -1,4 +1,5 @@
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useMemo } from 'react'
 
 import { useAppState } from 'hooks'
 import { PAGES, STATES, SURVEY_MENU_TITLES } from 'helpers'
@@ -6,39 +7,50 @@ import { getSharingPanels } from 'shared/getSharingPanels'
 import { ToggleButtons } from 'components/UIComponents/Buttons/ToggleButtons'
 
 const isActiveMenuItem = (url, location) => {
-  if (!url) return false
+  if (!url) {
+    return false
+  }
+
   const currentPath = location.pathname
-  const cleanURL = url.replace('#', '')
-  return currentPath === cleanURL || currentPath.startsWith(`${cleanURL}/`)
+
+  return currentPath === url || currentPath.startsWith(`${url}/`)
 }
 
 const EditorIcon = () => <i className="ri-pencil-line" />
 const ShareIcon = () => <i className="ri-share-forward-line" />
 const ResultsIcon = () => <i className="ri-bar-chart-2-line" />
 
+const NAV_CONFIG = [
+  {
+    page: PAGES.EDITOR,
+    value: 'editor',
+    getUrl: (surveyId) => `/${PAGES.EDITOR}/${surveyId}/structure`,
+  },
+  {
+    page: PAGES.SHARE,
+    value: 'share',
+    getUrl: (surveyId) =>
+      `/${PAGES.SHARE}/${surveyId}/${getSharingPanels().sharing.panel}/${SURVEY_MENU_TITLES.sharingOverview}`,
+  },
+  {
+    page: PAGES.RESPONSES,
+    value: 'results',
+    getUrl: (surveyId) => `/${PAGES.RESPONSES}/${surveyId}`,
+  },
+]
+
 export const SurveyNavigation = ({ surveyId }) => {
   const location = useLocation()
+  const navigate = useNavigate()
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
 
-  const editorUrl = `#/${PAGES.EDITOR}/${surveyId}/structure`
-  const shareUrl = `#/${PAGES.SHARE}/${surveyId}/${getSharingPanels().sharing.panel}/${SURVEY_MENU_TITLES.sharingOverview}`
-  const resultsUrl = `#/${PAGES.RESPONSES}/${surveyId}`
-
-  const urlMap = {
-    editor: editorUrl,
-    share: shareUrl,
-    results: resultsUrl,
-  }
-
-  const getCurrentValue = () => {
-    if (isActiveMenuItem(`/${PAGES.EDITOR}/${surveyId}`, location))
-      return 'editor'
-    if (isActiveMenuItem(`/${PAGES.SHARE}/${surveyId}`, location))
-      return 'share'
-    if (isActiveMenuItem(`/${PAGES.RESPONSES}/${surveyId}`, location))
-      return 'results'
-    return ''
-  }
+  const currentValue = useMemo(
+    () =>
+      NAV_CONFIG.find(({ page }) =>
+        isActiveMenuItem(`/${page}/${surveyId}`, location)
+      )?.value ?? '',
+    [location.pathname, surveyId]
+  )
 
   const toggleOptions = [
     { name: t('Editor'), value: 'editor', icon: EditorIcon },
@@ -52,8 +64,10 @@ export const SurveyNavigation = ({ surveyId }) => {
   ]
 
   const handleNavigate = (value) => {
-    if (urlMap[value]) {
-      window.location.href = urlMap[value]
+    const config = NAV_CONFIG.find((_config) => _config.value === value)
+
+    if (config) {
+      navigate(config.getUrl(surveyId))
     }
   }
 
@@ -63,7 +77,7 @@ export const SurveyNavigation = ({ surveyId }) => {
         id="survey-navigation"
         name="survey-navigation"
         toggleOptions={toggleOptions}
-        value={getCurrentValue()}
+        value={currentValue}
         update={handleNavigate}
       />
     </div>
