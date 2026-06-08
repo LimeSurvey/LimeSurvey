@@ -16,7 +16,9 @@
             <div class="ls-breadcrumb col-12">
                 <h1 class="align-items-center d-flex">
                     <?php if ($titleBackLink !== null): ?>
-                        <a class="h1 topbar-back-link ls-link" aria-label="<?= gT('Back') ?>" href="<?= $titleBackLink ?>">
+                        <a class="h1 topbar-back-link ls-link"
+                           href="<?= CHtml::encode($titleBackLink); ?>"
+                           aria-label="<?= CHtml::encode(gT('Back')); ?>">
                             <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
                         </a>
                     <?php endif; ?>
