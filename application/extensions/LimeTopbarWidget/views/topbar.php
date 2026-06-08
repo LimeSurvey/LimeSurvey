@@ -18,7 +18,7 @@
                     <?php if ($titleBackLink !== null): ?>
                         <a class="h1 topbar-back-link ls-link"
                            href="<?= CHtml::encode($titleBackLink); ?>"
-                           aria-label="<?= CHtml::encode(gT('Back')); ?>">
+                           aria-label="<?= gT('Back'); ?>">
                             <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
                         </a>
                     <?php endif; ?>

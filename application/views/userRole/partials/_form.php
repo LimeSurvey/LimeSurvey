@@ -44,7 +44,7 @@ Yii::app()->getController()->renderPartial(
                     'class' => 'form-label required',
                     'encode' => false,
                     'label' => CHtml::encode($model->getAttributeLabel('name'))
-                        . ' <span class="required" aria-label="' . CHtml::encode(gT('required')) . '">*</span>',
+                        . ' <span class="required" aria-label="' . gT('required') . '">*</span>',
                 ]);
                 ?>
                 <?php echo $form->textField($model, 'name', [
@@ -68,7 +68,7 @@ Yii::app()->getController()->renderPartial(
                     'class' => 'form-label required',
                     'encode' => false,
                     'label' => CHtml::encode($model->getAttributeLabel('description'))
-                        . ' <span class="required" aria-label="' . CHtml::encode(gT('required')) . '">*</span>',
+                        . ' <span class="required" aria-label="' . gT('required') . '">*</span>',
                 ]);
                 ?>
                 <?php echo $form->textArea($model, 'description', [
