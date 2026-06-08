@@ -1,9 +1,11 @@
 <?php
+
 /** @var ListSurveysWidget $this */
 /**
  * Render the selector for surveys massive actions.
  *
  */
+
 ?>
 <!-- Set hidden url for ajax post in listActions JS.   -->
 <!-- Rendering massive action widget -->
@@ -58,7 +60,7 @@
                     'selectedUrl'  => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'keepopen'     => 'yes',
                     'sModalTitle'  => gT('Apply survey theme'),
-                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_select_survey_theme.php', array(), true),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__ . '/_select_survey_theme.php', array(), true),
                 ),
 
                 // Change survey group selector
@@ -77,7 +79,7 @@
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Change survey group'),
-                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_change_survey_group.php',array(),true),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__ . '/_change_survey_group.php', array(), true),
                 ),
                 // Publication multiple
                 array(
@@ -95,7 +97,7 @@
                     'selectedUrl'  => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'keepopen'    => 'yes',
                     'sModalTitle'   => gT('Set expiry date'),
-                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_expiry_dialog.php', array(), true),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__ . '/_expiry_dialog.php', array(), true),
                 ),
 
                 // Separator
@@ -129,7 +131,7 @@
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Export survey archive'),
-                    'htmlModalBody' => gT('This will export the survey archive (.lsa) for all selected active surveys. They will be provided in a single ZIP archive.').' '.gT('Continue?'),
+                    'htmlModalBody' => gT('This will export the survey archive (.lsa) for all selected active surveys. They will be provided in a single ZIP archive.') . ' ' . gT('Continue?'),
                 ),
 
                 // Export multiple survey archive
@@ -149,7 +151,7 @@
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Export survey structure'),
-                    'htmlModalBody' => gT('This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single ZIP archive.').' '.gT('Continue?'),
+                    'htmlModalBody' => gT('This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single ZIP archive.') . ' ' . gT('Continue?'),
 
                 ),
                 // Export multiple printable
@@ -167,9 +169,9 @@
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Export printable survey'),
-                    'htmlModalBody' => gT('This will export a printable version of your survey.').' '.gT('Continue?'),
+                    'htmlModalBody' => gT('This will export a printable version of your survey.') . ' ' . gT('Continue?'),
                 ),
             ),
 
     ));
-?>
+    ?>
