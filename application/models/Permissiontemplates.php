@@ -51,6 +51,22 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
+     * @inheritdoc
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'ptid' => 'ID',
+            'name' => gT('Name'),
+            'description' => gT('Description'),
+            'renewed_last' => gT('Last renewed'),
+            'created_at' => gT('Created at'),
+            'created_by' => gT('Created by'),
+        ];
+    }
+
+    /**
      * Collects and maps the connected userids to userobjects
      *
      * @return array filled with usermodels
