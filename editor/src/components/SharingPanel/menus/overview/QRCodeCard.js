@@ -3,7 +3,6 @@ import { Card } from 'react-bootstrap'
 
 import { BrandedQRCode } from 'shared/BrandedQRCode'
 
-
 export const QRCodeCard = ({ link }) => {
   return (
     <div className="col-md-3 d-flex align-items-stretch">
