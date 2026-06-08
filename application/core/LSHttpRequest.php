@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -43,10 +43,10 @@ class LSHttpRequest extends CHttpRequest
     private $queryParams;
 
     /**
-     * Return the referal url,
+     * Return the referral url,
      * it's used for the "close" buttons, and the "save and close" buttons
      * So it checks if the referrer url is the same than the current url to avoid looping.
-     * If it the case, a paramater can be set to tell what referrer to return.
+     * If it the case, a parameter can be set to tell what referrer to return.
      * If the referrer is an external url, Yii return by default the current url.
      *
      * DEPRECATED

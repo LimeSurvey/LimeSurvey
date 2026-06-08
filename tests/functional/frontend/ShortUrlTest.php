@@ -2,14 +2,43 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\WebDriverBy;
+use CUrlManager;
 use Survey;
+use Yii;
 
 /**
  * @group shorturl
  */
 class ShortUrlTest extends TestBaseClassWeb
 {
+    /**
+     * Build a short URL for the given alias and query params, respecting the
+     * configured urlFormat ('path' or 'get') from application/config/config.php.
+     *
+     * path format: http://domain/index.php/alias?key=val
+     * get  format: http://domain/index.php?r=alias&key=val
+     */
+    private function buildShortUrl(string $alias, array $params = []): string
+    {
+        $baseUrl = 'http://' . self::$domain . '/index.php';
+        $urlManager = Yii::app()->getUrlManager();
+        $urlFormat = $urlManager->getUrlFormat();
+
+        if ($urlFormat === CUrlManager::GET_FORMAT) {
+            $params = [$urlManager->routeVar => $alias] + $params;
+            $url = $baseUrl;
+        } else {
+            $url = $baseUrl . '/' . $alias;
+        }
+
+        $query = $urlManager->createPathInfo($params, '=', '&');
+        if (!empty($query)) {
+            $url .= '?' . $query;
+        }
+
+        return $url;
+    }
+
     /**
      * Test short urls without extra params (except language)
      * @dataProvider shortUrlDataProvider
@@ -19,11 +48,9 @@ class ShortUrlTest extends TestBaseClassWeb
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
         self::$testHelper->activateSurvey(self::$surveyId);
 
-        $url = 'http://' . self::$domain . '/index.php/' . $alias;
-        if (!empty($params)) {
-            $url .= "?" . $params;
-        }
-        $web  = self::$webDriver;
+        parse_str($params, $queryParams);
+        $url = $this->buildShortUrl($alias, $queryParams);
+        $web = self::$webDriver;
 
         try {
             // Go to welcome
@@ -44,22 +71,15 @@ class ShortUrlTest extends TestBaseClassWeb
             $web->next();
 
             // Check the completed text is there
-            $completedText = $web->findByCss(".completed-text");
-
+            $web->findByCss(".completed-text");
         } catch (\Exception $ex) {
-            self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
+            self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__ . $alias);
+            $this->fail(
                 'Url: ' . $url . PHP_EOL
-                .  'Screenshot taken.' . PHP_EOL
-                .  self::$testHelper->javaTrace($ex)
+                . 'Screenshot taken.' . PHP_EOL
+                . self::$testHelper->javaTrace($ex)
             );
         }
-
-        // Cleanup
-        self::$testSurvey->delete();
-        self::$testSurvey = null;
-        Survey::model()->resetCache();
     }
 
     /**
@@ -71,12 +91,11 @@ class ShortUrlTest extends TestBaseClassWeb
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_shortUrlOpen.lss');
         self::$testHelper->activateSurvey(self::$surveyId);
 
-        $url = 'http://' . self::$domain . '/index.php/' . $alias . "?Q01=Prefilled";
-        if (!empty($params)) {
-            $url .= "&" . $params;
-        }
+        parse_str($params, $queryParams);
+        $queryParams['Q01'] = 'Prefilled';
+        $url = $this->buildShortUrl($alias, $queryParams);
         list(, , $sgqa) = self::$testHelper->getSgqa('Q01', self::$surveyId);
-        $web  = self::$webDriver;
+        $web = self::$webDriver;
 
         try {
             // Go to welcome
@@ -93,22 +112,15 @@ class ShortUrlTest extends TestBaseClassWeb
             $web->next();
 
             // Check the completed text is there
-            $completedText = $web->findByCss(".completed-text");
-
+            $web->findByCss(".completed-text");
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
+            $this->fail(
                 'Url: ' . $url . PHP_EOL
-                .  'Screenshot taken.' . PHP_EOL
-                .  self::$testHelper->javaTrace($ex)
+                . 'Screenshot taken.' . PHP_EOL
+                . self::$testHelper->javaTrace($ex)
             );
         }
-
-        // Cleanup
-        self::$testSurvey->delete();
-        self::$testSurvey = null;
-        Survey::model()->resetCache();
     }
 
     /**
@@ -119,11 +131,10 @@ class ShortUrlTest extends TestBaseClassWeb
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
 
-        $url = 'http://' . self::$domain . '/index.php/' . $alias . "?token=123456";
-        if (!empty($params)) {
-            $url .= "&" . $params;
-        }
-        $web  = self::$webDriver;
+        parse_str($params, $queryParams);
+        $queryParams['token'] = '123456';
+        $url = $this->buildShortUrl($alias, $queryParams);
+        $web = self::$webDriver;
 
         try {
             // Go to welcome
@@ -144,22 +155,15 @@ class ShortUrlTest extends TestBaseClassWeb
             $web->next();
 
             // Check the completed text is there
-            $completedText = $web->findByCss(".completed-text");
-
+            $web->findByCss(".completed-text");
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
+            $this->fail(
                 'Url: ' . $url . PHP_EOL
-                .  'Screenshot taken.' . PHP_EOL
-                .  self::$testHelper->javaTrace($ex)
+                . 'Screenshot taken.' . PHP_EOL
+                . self::$testHelper->javaTrace($ex)
             );
         }
-
-        // Cleanup
-        self::$testSurvey->delete();
-        self::$testSurvey = null;
-        Survey::model()->resetCache();
     }
 
     /**
@@ -170,14 +174,14 @@ class ShortUrlTest extends TestBaseClassWeb
     {
         self::importSurvey(self::$surveysFolder . '/survey_archive_shortUrlClosed.lsa');
 
-        $url = 'http://' . self::$domain . '/index.php/' . $alias . "?token=123456&Q01=Prefilled";
-        if (!empty($params)) {
-            $url .= "&" . $params;
-        }
+        parse_str($params, $queryParams);
+        $queryParams['token'] = '123456';
+        $queryParams['Q01'] = 'Prefilled';
+        $url = $this->buildShortUrl($alias, $queryParams);
 
         list(, , $sgqa) = self::$testHelper->getSgqa('Q01', self::$surveyId);
 
-        $web  = self::$webDriver;
+        $web = self::$webDriver;
 
         try {
             // Go to welcome
@@ -194,22 +198,15 @@ class ShortUrlTest extends TestBaseClassWeb
             $web->next();
 
             // Check the completed text is there
-            $completedText = $web->findByCss(".completed-text");
-
+            $web->findByCss(".completed-text");
         } catch (\Exception $ex) {
-            self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
+            self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__ . '_stepFinal');
+            $this->fail(
                 'Url: ' . $url . PHP_EOL
-                .  'Screenshot taken.' . PHP_EOL
-                .  self::$testHelper->javaTrace($ex)
+                . 'Screenshot taken.' . PHP_EOL
+                . self::$testHelper->javaTrace($ex)
             );
         }
-
-        // Cleanup
-        self::$testSurvey->delete();
-        self::$testSurvey = null;
-        Survey::model()->resetCache();
     }
 
     /**
@@ -222,5 +219,28 @@ class ShortUrlTest extends TestBaseClassWeb
             ["prueba", "lang=it", "Questo è il testo di benvenuto in italiano.", "Domanda 1"],
             ["prueba", "lang=es", "Este es el texto de bienvenida en español.", "Pregunta 1"],
         ];
+    }
+
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+//        self::$webDriver->manage()->deleteAllCookies();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->cleanUpPreviousSurvey();
+    }
+
+
+    private function cleanUpPreviousSurvey(): void
+    {
+        if (!empty(self::$surveyId)) {
+            Survey::model()->deleteSurvey(self::$surveyId);
+            self::$testSurvey = null;
+            self::$surveyId = null;
+        }
     }
 }

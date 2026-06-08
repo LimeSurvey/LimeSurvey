@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey (tm)
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -161,10 +161,10 @@ class DemomodeCommand extends CConsoleCommand
     private function createDemo()
     {
         Yii::app()->loadHelper('admin.import');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/replacements_helper.php');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_manager_helper.php');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/expressions/em_core_helper.php');
-        require_once(dirname(dirname(dirname(__FILE__))) . '/application/helpers/admin/activate_helper.php');
+        Yii::import('application.helpers.replacements_helper', true);
+        Yii::import('application.helpers.expressions.em_manager_helper', true);
+        Yii::import('application.helpers.expressions.em_core_helper', true);
+        Yii::import('application.helpers.admin.activate_helper', true);
 
         Yii::app()->session->add('loginID', 1);
         $documentationSurveyPath = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR;
