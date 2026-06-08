@@ -9,11 +9,11 @@ echo viewHelper::getViewTestTag('expressionsNavigationTest');
 <?php
 if (count($_POST) == 0) {
     $aSurveys = Survey::model()->with('defaultlanguage')->findAll();
-    $surveyList='';
-    foreach($aSurveys as $row) {
-        $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row->defaultlanguage->surveyls_title) . "</option>\n";
+    $surveyList = '';
+    foreach ($aSurveys as $row) {
+        $surveyList .= "<option value='" . $row['sid'] . '|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row->defaultlanguage->surveyls_title) . "</option>\n";
     }
-    $sFormTag= CHtml::form(array('admin/expressions/sa/navigation_test'), 'post');
+    $sFormTag = CHtml::form(array('admin/expressions/sa/navigation_test'), 'post');
 
     $form = <<< EOD
 $sFormTag    
@@ -46,11 +46,7 @@ Specify which debugging features to use
 </form>
 EOD;
     echo $form;
-}
-else {
-
-
-
+} else {
     // $surveyInfo = explode('|',Yii::app()->request->getParam('sid'));
     // $surveyid = sanitize_int($surveyInfo[0]);
     $assessments = ($surveyInfo[1] == 'Y');
@@ -61,26 +57,26 @@ else {
             ((isset($_POST['LEM_DEBUG_VALIDATION_DETAIL']) && $_POST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
             ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
             );
-    $deletenonvalues = ((isset($_POST['deletenonvalues']) && $_POST['deletenonvalues']=='Y') ? 1 : 0);
+    $deletenonvalues = ((isset($_POST['deletenonvalues']) && $_POST['deletenonvalues'] == 'Y') ? 1 : 0);
 
     $surveyOptions = array(
-        'active'=>false,
-        'allowsave'=>true,
-        'anonymized'=>false,
-        'assessments'=>$assessments,
-        'datestamp'=>true,
-        'deletenonvalues'=>$deletenonvalues,
-        'hyperlinkSyntaxHighlighting'=>true,
-        'ipaddr'=>true,
-        'rooturl'=>'../../..',
+        'active' => false,
+        'allowsave' => true,
+        'anonymized' => false,
+        'assessments' => $assessments,
+        'datestamp' => true,
+        'deletenonvalues' => $deletenonvalues,
+        'hyperlinkSyntaxHighlighting' => true,
+        'ipaddr' => true,
+        'rooturl' => '../../..',
     );
 
-    print '<h3>Starting survey ' . $surveyid . " using Survey Mode '". $surveyMode . (($assessments) ? "' [Uses Assessments]" : "'") . "</h3>";
+    print '<h3>Starting survey ' . $surveyid . " using Survey Mode '" . $surveyMode . (($assessments) ? "' [Uses Assessments]" : "'") . "</h3>";
     $now = microtime(true);
-    LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, true,$LEMdebugLevel);
+    LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, true, $LEMdebugLevel);
     print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
 
-    while(true) {
+    while (true) {
         $now = microtime(true);
         $result = LimeExpressionManager::NavigateForwards(true);
         print $result['message'] . "<br/>";
@@ -95,4 +91,4 @@ else {
     }
     print "<h3>Finished survey " . $surveyid . "</h3>";
 }
-?>
+

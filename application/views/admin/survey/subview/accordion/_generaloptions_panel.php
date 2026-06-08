@@ -4,8 +4,11 @@
  * General options
  * @var AdminController $this
  * @var Survey $oSurvey
+ * @var TemplateConfiguration $themeConf
+ * @var string $inheritedThemeName
+ * @var array $aTemplateList
  */
-$scriptVarsNeccessary = "
+$scriptVarsNecessary = "
         var jsonUrl = '';
         var sAction = '';
         var sParameter = '';
@@ -17,7 +20,7 @@ $scriptVarsNeccessary = "
     ";
 Yii::app()->getClientScript()->registerScript(
     "GeneralOption-variables",
-    $scriptVarsNeccessary,
+    $scriptVarsNecessary,
     LSYii_ClientScript::POS_BEGIN
 );
 ?>
@@ -28,8 +31,8 @@ $controller = $yii->getController();
 $action = 'editsurveysettings';
 
 $formatSelectOptions = array(
-    'S' => gT('Question by Question', 'unescaped'),
-    'G' => gT('Group by Group', 'unescaped'),
+    'S' => gT('Question by question', 'unescaped'),
+    'G' => gT('Group by group', 'unescaped'),
     'A' => gT('All in one', 'unescaped')
 );
 $bGlobalSettings = !empty($this->currentModuleAction) && $this->currentModuleAction == 'globalsettings';
@@ -164,6 +167,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         'name'          => 'adminbutton',
                         'checkedOption' => ($bShowInherited && $admin === 'inherit' ? 'Y' : 'N'),
                         'selectOptions' => $optionsOnOff,
+                        'ariaLabel'    => gT('Inherit:'),
                         'htmlOptions'   => [
                             'class' => 'text-option-inherit'
                         ]
@@ -190,6 +194,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         'name'          => 'adminemailbutton',
                         'checkedOption' => ($bShowInherited && $adminemail === 'inherit' ? 'Y' : 'N'),
                         'selectOptions' => $optionsOnOff,
+                        'ariaLabel'    => gT('Inherit:'),
                         'htmlOptions'   => [
                             'class' => 'text-option-inherit'
                         ]
@@ -217,6 +222,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         'name'          => 'bounce_emailbutton',
                         'checkedOption' => ($bShowInherited && $bounce_email === 'inherit' ? 'Y' : 'N'),
                         'selectOptions' => $optionsOnOff,
+                        'ariaLabel'    => gT('Inherit:'),
                         'htmlOptions'   => [
                             'class' => 'text-option-inherit '
                         ]
@@ -312,13 +318,10 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     'name'          => 'format',
                     'checkedOption'         => $oSurvey->format,
                     'selectOptions' => $formatSelectOptions,
+                    'ariaLabel'    => gT('Format:'),
                 ]); ?>
             </div>
         </div>
-        <?php
-            $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template);
-            $inheritedThemeName = $oSurvey->oOptions->template;
-        ?>
         <!-- Theme -->
         <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
@@ -331,10 +334,9 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         </option>
                     <?php endif; ?>
                     <?php
-                    $aTemplateList = Template::getTemplateList();
-                    foreach ($aTemplateList as $templateName => $folder) {
-                        if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($templateName
-                            ) || $oSurvey->template == htmlspecialchars((string) $templateName)) { ?>
+                    foreach ($aTemplateList as $templateEntry) {
+                        $templateName = $templateEntry['name'];
+                    ?>
                             <option value='<?php echo CHtml::encode($templateName); ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars((string) $templateName) === $themeConf->template_name && $oSurvey->template !== 'inherit') { ?>
                                     selected='selected'
@@ -342,7 +344,6 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                                     selected='selected'
                                 <?php } ?>
                             ><?php echo CHtml::encode($templateName); ?></option>
-                        <?php } ?>
 
                     <?php } ?>
                 </select>

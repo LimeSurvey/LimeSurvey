@@ -17,17 +17,17 @@ Yii::app()->getController()->renderPartial(
 );
 ?>
 
-<?php $form=$this->beginWidget('TbActiveForm', array(
-    'id'=>'RoleControl--modalform',
+<?php $form = $this->beginWidget('TbActiveForm', array(
+    'id' => 'RoleControl--modalform',
     'action' => App()->createUrl('userRole/applyEdit'),
-    'enableAjaxValidation'=>false,
+    'enableAjaxValidation' => false,
 )); ?>
 <div class="modal-body">
     <div class="container">
 
             <div class="mb-3" id="RoleControl--errors">
             </div>
-            <?php echo $form->hiddenField($model,'ptid'); ?>
+            <?php echo $form->hiddenField($model, 'ptid'); ?>
 
             <?php
             $nameFieldId = 'RoleControl_modalform_name';
@@ -83,12 +83,12 @@ Yii::app()->getController()->renderPartial(
                 <?php echo $form->error($model, 'description'); ?>
             </div>
 
-            <?php echo $form->hiddenField($model,'renewed_last', ['value' => date('Y-m-d H:i:s')]); ?>
+            <?php echo $form->hiddenField($model, 'renewed_last', ['value' => date('Y-m-d H:i:s')]); ?>
             
-            <?php if ($model->isNewRecord ) {
-                    echo $form->hiddenField($model,'created_at', ['value' =>  date('Y-m-d H:i:s')]);
-                    echo $form->hiddenField($model,'created_by', ['value' =>Yii::app()->user->id]);
-                }
+            <?php if ($model->isNewRecord) {
+                    echo $form->hiddenField($model, 'created_at', ['value' =>  date('Y-m-d H:i:s')]);
+                    echo $form->hiddenField($model, 'created_by', ['value' => Yii::app()->user->id]);
+            }
             ?>
     </div>
 </div>

@@ -1,0 +1,73 @@
+.sharing-panel {
+  background-color: $g-100;
+  padding: 0 5vw;
+
+  .title {
+    color: #9294a3 !important;
+    font-size: 21px;
+    font-weight: $font-weight-500;
+  }
+
+  .sharing-panel-select {
+    min-width: 230px;
+
+    .select__control {
+      border-color: $grape;
+    }
+
+    .select__value-container > *,
+    .select__indicator,
+    .select__option {
+      color: $grape;
+      font-weight: $font-weight-500;
+    }
+
+    .select__option--is-selected {
+      color: $white;
+    }
+  }
+
+  .alias-info {
+    min-height: 40px;
+  }
+
+  .bg-purple {
+    background-color: $grape;
+  }
+}
+
+.survey-alias-input {
+  padding: 10px 10px 10px 20px;
+  gap: 10px;
+  background: $g-100;
+  border: none;
+  outline: none;
+
+  .form-control {
+    background: $g-100;
+  }
+
+  .qe-input-icon-right {
+    transform: translate(0, -50%);
+  }
+
+  .copy-btn {
+    min-width: 90px;
+  }
+}
+
+#text-area-custom {
+  width: 100%;
+  border: 2px solid $g-700;
+  border-radius: 4px;
+  padding: 4px 12px;
+  overflow: auto;
+}
+
+.textarea-length-text {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(-20%, -50%);
+  color: $g-600;
+}

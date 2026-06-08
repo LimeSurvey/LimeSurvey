@@ -644,6 +644,8 @@ function populateDatabase($oDB)
             'refurl' => "string(1) NOT NULL DEFAULT 'N'",
             'datecreated' => "datetime",
             'showsurveypolicynotice' => 'integer DEFAULT 0',
+            'showregisterpolicy' => "string(1) NOT NULL DEFAULT 'I'",
+            'showtokenpolicy' => "string(1) NOT NULL DEFAULT 'I'",
             'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
             'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
             'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
@@ -673,7 +675,6 @@ function populateDatabase($oDB)
             'showprogress' => "string(1) DEFAULT 'Y'",
             'questionindex' => "integer DEFAULT '0' NOT NULL",
             'navigationdelay' => "integer NOT NULL DEFAULT '0'",
-            'nokeyboard' => "string(1) DEFAULT 'N'",
             'alloweditaftercompletion' => "string(1) DEFAULT 'N'",
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
@@ -734,6 +735,8 @@ function populateDatabase($oDB)
             'ipanonymize' => "string(1) NOT NULL DEFAULT 'N'",
             'refurl' => "string(1) NOT NULL DEFAULT 'N'",
             'showsurveypolicynotice' => "integer NULL DEFAULT '0'",
+            'showregisterpolicy' => "string(1) NOT NULL DEFAULT 'I'",
+            'showtokenpolicy' => "string(1) NOT NULL DEFAULT 'I'",
             'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
             'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
             'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
@@ -755,7 +758,6 @@ function populateDatabase($oDB)
             'showprogress' => "string(1) NULL DEFAULT 'Y'",
             'questionindex' => "integer NULL DEFAULT '0'",
             'navigationdelay' => "integer NULL DEFAULT '0'",
-            'nokeyboard' => "string(1) NULL DEFAULT 'N'",
             'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
         ), $options);
 
@@ -783,6 +785,8 @@ function populateDatabase($oDB)
             'ipanonymize' => 'N',
             'refurl' => 'N',
             'showsurveypolicynotice' => '0',
+            'showtokenpolicy' => 'N',
+            'showregisterpolicy' => 'N',
             'publicstatistics' => 'N',
             'publicgraphs' => 'N',
             'listpublic' => 'N',
@@ -800,7 +804,6 @@ function populateDatabase($oDB)
             'showprogress' => 'Y',
             'questionindex' => '0',
             'navigationdelay' => '0',
-            'nokeyboard' => 'N',
             'alloweditaftercompletion' => 'N'
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes1);
@@ -848,7 +851,6 @@ function populateDatabase($oDB)
                 "showprogress" => "I",
                 "questionindex" => -1,
                 "navigationdelay" => -1,
-                "nokeyboard" => "I",
                 "alloweditaftercompletion" => "I",
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
