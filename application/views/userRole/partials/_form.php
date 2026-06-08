@@ -44,7 +44,7 @@ Yii::app()->getController()->renderPartial(
                     'class' => 'form-label required',
                     'encode' => false,
                     'label' => $model->getAttributeLabel('name')
-                        . ' <span class="required" aria-label="' . gT('required') . '">*</span>',
+                        . ' <span class="required" aria-label="' . gT('Required') . '">*</span>',
                 ]);
                 ?>
                 <?php echo $form->textField($model, 'name', [
