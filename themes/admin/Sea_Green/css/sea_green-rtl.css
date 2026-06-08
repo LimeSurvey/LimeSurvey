@@ -16329,14 +16329,6 @@ body {
   flex-direction: column;
 }
 
-.ls-breadcrumb .topbar-back-link:focus {
-  outline: 2px solid currentColor !important;
-}
-
-.sort-link:focus {
-  outline: 2px solid currentColor !important;
-}
-
 .container-40 {
   padding: 0 40px;
   width: 100%;
