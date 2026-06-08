@@ -211,6 +211,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->tokenencryptionoptions = '';
         $this->showregisterpolicy = 'I';
         $this->showtokenpolicy = 'I';
+        $this->crypt_method = 'I';
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = App()->getConfig('googleanalyticsapikey');
         if ($globalKey != "") {
@@ -549,6 +550,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showsurveypolicynotice', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => true),
             array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
+            array('crypt_method', 'in', 'range' => array('B', 'H', 'I'), 'allowEmpty' => false),
             array('showprogress', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('questionindex', 'numerical', 'min' => -1, 'max' => 2, 'allowEmpty' => false),
             array('nokeyboard', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),

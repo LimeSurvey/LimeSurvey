@@ -28,6 +28,7 @@
  * @property integer $showsurveypolicynotice
  * @property string $showregisterpolicy
  * @property string $showtokenpolicy
+ * @property string $crypt_method
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
@@ -101,6 +102,7 @@ class SurveysGroupsettings extends LSActiveRecord
             array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly' => true),
             array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
+            array('crypt_method', 'in', 'range' => array('B', 'H', 'I'), 'allowEmpty' => false),
             array('admin', 'length', 'max' => 50),
             array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
@@ -114,7 +116,7 @@ class SurveysGroupsettings extends LSActiveRecord
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
 			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, showregisterpolicy, showtokenpolicy, navigationdelay, nokeyboard, alloweditaftercompletion, crypt_method', 'safe', 'on' => 'search'),
+			questionindex, showregisterpolicy, showtokenpolicy, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
 
@@ -494,6 +496,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 !($attribute === 'ipanonymize' && $dbversion < 412)
                 && !($attribute === 'showregisterpolicy' && $dbversion < 649)
                 && !($attribute === 'showtokenpolicy' && $dbversion < 649)
+                && !($attribute === 'crypt_method' && $dbversion < 652)
             ) {
                 $this->$attribute = 'I';
             }
