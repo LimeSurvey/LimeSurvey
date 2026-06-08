@@ -68,7 +68,7 @@ class LSBaseController extends LSYii_Controller
             Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));
         } // for html editor integration
 
-        // This line is needed for template editor to work
+        // we load the AdminTheme
         AdminTheme::getInstance();
 
         Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));

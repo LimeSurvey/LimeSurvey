@@ -52,12 +52,17 @@ class AdminTheme extends CFormModel
     }
 
     /**
-     * Set the Admin Theme :
-     * - checks if the required template exists
-     * - set the admin theme variables
-     * - set the admin theme constants
-     * - Register all the needed CSS/JS files
-     * @return AdminTheme
+     * Initializes the admin theme for the current request.
+     *
+     * Resolves the configured admin theme name (from global settings or config-defaults.php),
+     * falls back to Sea_Green if the theme directory does not exist (e.g. after an upgrade
+     * or if a custom theme was deleted), then:
+     *  - Sets \->name, \->path, \->sTemplateUrl
+     *  - Parses config.xml into \->config
+     *  - Defines theme constants via defineConstants()
+     *  - Registers all CSS/JS assets via registerStylesAndScripts()
+     *
+     * @return AdminTheme \, to allow chaining from getInstance()
      */
     public function setAdminTheme()
     {
@@ -133,17 +138,8 @@ class AdminTheme extends CFormModel
     {
         // First we register the different needed packages
 
-        // Bootstrap Registration
-        // We don't want to use bootstrap extension's register functionality, to be able to set dependencies between packages
-        // ie: to control load order setting 'depends' in our package
-        // So, we take the usual Bootstrap extensions TbApi::register (called normally with  App()->bootstrap->register()) see: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l162-l169
-        // keep here the necessary  (registerMetaTag and registerAllScripts),
-        // and move the rest to the bootstrap package.
-        // NB: registerAllScripts could be replaced by js definition in package. If needed: not a problem to do it
-
         if (!Yii::app()->request->getQuery('isAjax', false)) {
-            Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
-            //            App()->bootstrap->registerTooltipAndPopover(); // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
+            Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
             App()->getClientScript()->registerScript('coreuser', '
            window.LS = window.LS || {}; window.LS.globalUserId = "' . Yii::app()->user->id . '";', CClientScript::POS_HEAD);
             App()->getClientScript()->registerPackage('jquery-migrate'); // jquery + migrate
@@ -250,9 +246,11 @@ class AdminTheme extends CFormModel
     }
 
     /**
-     * Get instance of theme object.
-     * Will instantiate the Admin Theme object first time it is called.
-     * Please use this instead of global variable.
+     * Returns the singleton AdminTheme instance, creating and initializing it on first call.
+     *
+     * Prefer this over direct instantiation or global variables to ensure
+     * the theme is only loaded once per request.
+     *
      * @return AdminTheme
      */
     public static function getInstance()

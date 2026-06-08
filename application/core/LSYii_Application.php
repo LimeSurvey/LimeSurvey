@@ -33,7 +33,6 @@ use LimeSurvey\Yii\Application\AppErrorHandler;
 * @property CWebUser $user The user session information.
 * @property LSETwigViewRenderer $twigRenderer Twig rendering plugin
 * @property PluginManager $pluginManager The LimeSurvey Plugin manager
-* @property TbApi $bootstrap The bootstrap renderer
 * @property CHttpSession $session The HTTP session
 *
 */
