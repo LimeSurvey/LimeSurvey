@@ -36,8 +36,10 @@
         "pear/pear-core-minimal": "^1.10"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2",
+        "friendsofphp/php-cs-fixer": "^3.64",
         "php-coveralls/php-coveralls": "^2.2",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
+        "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": ">=5 <10",
         "sanmai/phpunit-legacy-adapter": "^6 || ^8"
     },
@@ -59,5 +61,8 @@
     "support": {
         "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Spreadsheet_Excel_Writer",
         "source": "https://github.com/pear/Spreadsheet_Excel_Writer"
+    },
+    "config": {
+        "sort-packages": true
     }
 }
