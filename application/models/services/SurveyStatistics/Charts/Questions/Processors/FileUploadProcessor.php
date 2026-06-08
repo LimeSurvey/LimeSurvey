@@ -11,7 +11,7 @@ class FileUploadProcessor extends AbstractQuestionProcessor
 
     public function rt(): void
     {
-        $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     public function process(): StatisticsChartDTO
@@ -55,9 +55,9 @@ class FileUploadProcessor extends AbstractQuestionProcessor
 
     protected function getFileCounts(): array
     {
-        $sql = "SELECT SUM(" . Yii::app()->db->quoteColumnName($this->rt . '_filecount') . ") as sum,
-                AVG(" . Yii::app()->db->quoteColumnName($this->rt . '_filecount') . ") as avg 
-             FROM {{survey_{$this->surveyId}}}";
+        $sql = "SELECT SUM(" . Yii::app()->db->quoteColumnName($this->rt . '_Cfilecount') . ") as sum,
+                AVG(" . Yii::app()->db->quoteColumnName($this->rt . '_Cfilecount') . ") as avg 
+             FROM {{responses_{$this->surveyId}}}";
 
         $row = Yii::app()->db->createCommand($sql)->queryRow();
 
@@ -69,7 +69,7 @@ class FileUploadProcessor extends AbstractQuestionProcessor
 
     protected function getFileStats(): array
     {
-        $sql = "SELECT " . Yii::app()->db->quoteColumnName($this->rt) . " as json FROM {{survey_{$this->surveyId}}}";
+        $sql = "SELECT " . Yii::app()->db->quoteColumnName($this->rt) . " as json FROM {{responses_{$this->surveyId}}}";
 
         $rows = Yii::app()->db->createCommand($sql)->queryAll();
 

@@ -27,39 +27,39 @@
                 </div>
                 <div class="col-12">
                     <?php
-                echo CHtml::openTag(
-                    'select',
-                    array(
+                    echo CHtml::openTag(
+                        'select',
+                        array(
                         'id' => 'translationlanguage',
                         'name' => 'lang',
                         'class' => 'form-select',
                         'onchange' => "$(this).closest('form').submit();"
-                    )
-                );
-                if (count($additionalLanguages) > 1) {
-                    echo CHtml::tag(
-                        'option',
-                        array(
+                        )
+                    );
+                    if (count($additionalLanguages) > 1) {
+                        echo CHtml::tag(
+                            'option',
+                            array(
                             'selected' => empty($languageToTranslate),
                             'value' => ''
-                        ),
-                        gT("Please choose...")
-                    );
-                }
-                foreach ($additionalLanguages as $lang) {
-                    $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
-                    $tolangtext = $supportedLanguages[$lang]['description'];
-                    echo CHtml::tag(
-                        'option',
-                        array(
+                            ),
+                            gT("Please choose...")
+                        );
+                    }
+                    foreach ($additionalLanguages as $lang) {
+                        $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
+                        $tolangtext = $supportedLanguages[$lang]['description'];
+                        echo CHtml::tag(
+                            'option',
+                            array(
                             'selected' => ($languageToTranslate == $lang),
                             'value' => $lang
-                        ),
-                        $tolangtext
-                    );
-                }
-                echo CHtml::closeTag('select');
-                ?>
+                            ),
+                            $tolangtext
+                        );
+                    }
+                    echo CHtml::closeTag('select');
+                    ?>
                 </div>
             </div>
             <?php

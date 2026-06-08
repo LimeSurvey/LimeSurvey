@@ -2,5 +2,4 @@
 
 class DataSetShortFreeText extends QuestionBaseDataSet
 {
-
 }

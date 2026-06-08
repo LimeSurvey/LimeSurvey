@@ -1,6 +1,6 @@
 /*
  * This file is part of LimeSurvey
- * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -51,8 +51,8 @@ function checkconditions(value, name, type, evt_type)
 
     var questionCode;
     if(typeof name !== 'undefined') {
-        var parts = name.split('X');
-        questionCode = parts[2];
+        var parts = name.split('_');
+        questionCode = parts[0].substring(1);
         var LEMvarNameAttr = LEMvarNameAttr || {};
         if (LEMvarNameAttr['java' + name] != undefined) {
             questionCode = '' + LEMvarNameAttr['java' + name].qid;
@@ -314,7 +314,7 @@ function LEMcountif()
 
 function LEMcountifop()
 {
-    // takes variable number of arguments - returns count of answered questions which meet the criteria (arg op value)
+    // takes variable number of arguments - returns count of answered questions which meet the criteria (argument - operator - value)
     var result=0;
     var op=arguments[0];
     var value=arguments[1];
@@ -348,7 +348,7 @@ function LEMcountifop()
 
 function LEMsumifop()
 {
-    // takes variable number of arguments - returns sum of answered questions which meet the criteria (arg op value)
+    // takes variable number of arguments - returns sum of answered questions which meet the criteria (argument - operator - value)
     var result=0;
     var op=arguments[0];
     var value=arguments[1];
@@ -1059,6 +1059,13 @@ function LEMval(alias)
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
                         answer = htmlentities(value);
+                    } else if (attr.type == 'R') {
+                        if (value) {
+                            let context = document.getElementById(whichJsName);
+                            answer = context.querySelector(`option[value='${CSS.escape(context.value)}']`).innerText.trim().substring(5);
+                        } else {
+                            answer = '';
+                        }
                     }
                     else {
                         which_ans = '0~' + value;
@@ -1301,9 +1308,6 @@ function LEMval(alias)
                 return value;
             }
             else if (isNaN(value)) {
-                if (value==='false') {
-                    return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
-                }
                 return value;
             }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
