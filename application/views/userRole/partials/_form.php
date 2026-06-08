@@ -8,7 +8,7 @@ if ($model->isNewRecord) {
     $modalTitle =  gT('Create permission role');
     $buttonTitle = gT('Create');
 } else {
-    $modalTitle = sprintf(gT("Edit permission role '%s'"), CHtml::encode($model->name));
+    $modalTitle = sprintf(gT("Edit permission role '%s'"), $model->name);
     $buttonTitle = gT('Save');
 }
 Yii::app()->getController()->renderPartial(
@@ -43,7 +43,7 @@ Yii::app()->getController()->renderPartial(
                     'required' => false,
                     'class' => 'form-label required',
                     'encode' => false,
-                    'label' => CHtml::encode($model->getAttributeLabel('name'))
+                    'label' => $model->getAttributeLabel('name')
                         . ' <span class="required" aria-label="' . gT('required') . '">*</span>',
                 ]);
                 ?>
@@ -67,8 +67,8 @@ Yii::app()->getController()->renderPartial(
                     'required' => false,
                     'class' => 'form-label required',
                     'encode' => false,
-                    'label' => CHtml::encode($model->getAttributeLabel('description'))
-                        . ' <span class="required" aria-label="' . gT('required') . '">*</span>',
+                    'label' => $model->getAttributeLabel('description')
+                        . ' <span class="required" aria-label="' . gT('Required') . '">*</span>',
                 ]);
                 ?>
                 <?php echo $form->textArea($model, 'description', [
