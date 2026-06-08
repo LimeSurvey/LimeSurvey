@@ -9,6 +9,7 @@ echo viewHelper::getViewTestTag('globalsettings');
 ?>
 <script type="text/javascript">
     var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
+    var msgEmailPluginRequired = '<?php eT("Email method 'Plugin' requires a plugin to be selected.", 'js'); ?>';
 </script>
 <ul class="nav nav-tabs" id="settingTabs" role="tablist">
     <li role="presentation" class="nav-item"><a role="tab" class="nav-link active" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>

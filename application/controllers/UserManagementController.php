@@ -157,7 +157,7 @@ class UserManagementController extends LSBaseController
             if ($passwordTest !== $aUser['password']) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'errors' => gT('Passwords do not match'),
+                    'errors' => gT('Passwords do not match!'),
                 ]]);
             }
             $user = new User();
@@ -172,8 +172,19 @@ class UserManagementController extends LSBaseController
         $expires = Yii::app()->request->getPost('expires', null);
         if (!empty($expires)) {
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-            $datetimeobj = new Date_Time_Converter($expires, $dateformatdetails['phpdate'] . ' H:i');
-            $aUser['expires'] = $datetimeobj->convert("Y-m-d H:i:s");
+            $displayTz = Yii::app()->getConfig('displayTimezone') ?: 'UTC';
+            $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'] . ' H:i', $expires, new DateTimeZone($displayTz));
+            $errors = DateTime::getLastErrors();
+            if (!$datetimeobj || ($errors && ($errors['error_count'] > 0 || $errors['warning_count'] > 0))) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    "data" => [
+                        'success' => false,
+                        'errors'  => sprintf(gT('Invalid expiry date, please use "%s" format.'), $dateformatdetails['phpdate'] . ' H:i'),
+                    ]
+                ]);
+            }
+            $datetimeobj->setTimezone(new DateTimeZone('UTC'));
+            $aUser['expires'] = $datetimeobj->format('Y-m-d H:i:s');
         } else {
             $aUser['expires'] = null;
         }
@@ -211,7 +222,7 @@ class UserManagementController extends LSBaseController
                 $aUser['password'] =  $newPassword;
             }
 
-            //retrive the raw password
+            //retrieve the raw password
             $aUser['rawPassword'] = $aUser['password'];
 
             $passwordSetByUser = Yii::app()->request->getParam('preset_password');
@@ -678,7 +689,7 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Opens a modal to edit user template permissions
+     * Opens a modal to edit user theme permissions
      *
      * @return string|null
      * @throws CException
@@ -895,14 +906,22 @@ class UserManagementController extends LSBaseController
         }
         $created = [];
         $updated = [];
+        $hasDuplicateIdentity = false;
+        $canOverwriteDuplicateEmail = false;
         $existingAttributes = User::model()->attributeNames();
         $dateAttributes = ['last_login', 'validation_key_expiration','last_forgot_email_password','expires'];
         foreach ($aNewUsers as $aNewUser) {
             // Unset not imported or invalid attribute
             $aNewUser = array_intersect_key($aNewUser, array_flip($existingAttributes));
             $aNewUser = array_diff_key($aNewUser, array_flip(['uid','parent_id', 'created', 'modified']));
-            /* Find if exist */
-            $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
+            $oUser = User::model()->find(
+                'users_name = :name OR email = :email',
+                [
+                    ':name' => $aNewUser['users_name'],
+                    ':email' => $aNewUser['email'],
+                ]
+            );
+
             if ($oUser  !== null) {
                 if ($overwriteUsers) {
                     /* Check permission to edit this user */
@@ -929,6 +948,13 @@ class UserManagementController extends LSBaseController
                     $save = $oUser->save(true, array_keys($aNewUser));
                     if ($save) {
                         $updated[] = $aNewUser;
+                    }
+                } else {
+                    if (
+                        (!empty($aNewUser['email']) && $oUser->email === $aNewUser['email']) ||
+                        (!empty($aNewUser['users_name']) && $oUser->users_name === $aNewUser['users_name'])
+                    ) {
+                        $hasDuplicateIdentity = true;
                     }
                 }
             } else {
@@ -964,6 +990,11 @@ class UserManagementController extends LSBaseController
         if (count($created) || count($updated)) {
             Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
         }
+
+        if ($hasDuplicateIdentity) {
+            Yii::app()->setFlashMessage(gT("One or more usernames or email addresses already exist. Please use unique values for each user."), 'warning');
+        }
+
         $this->redirect(['userManagement/index']);
     }
 
@@ -1031,11 +1062,20 @@ class UserManagementController extends LSBaseController
                 fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
                 $header = array_keys($exportUser);
                 //Add csv header
-                fputcsv($fp, $header, ';', '"');
-
+                fputcsv(
+                    stream: $fp,
+                    fields: $header,
+                    separator: ';',
+                    escape: "\\"
+                );
                 //add csv row datas
                 foreach ($aUsers as $fields) {
-                    fputcsv($fp, $fields, ';', '"');
+                    fputcsv(
+                        stream: $fp,
+                        fields: $fields,
+                        separator: ';',
+                        escape: "\\"
+                    );
                 }
                 fclose($fp);
                 header('Content-Encoding: UTF-8');
@@ -1294,7 +1334,7 @@ class UserManagementController extends LSBaseController
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
             array(
                 'aResults'     => $aResults,
-                'successLabel' => gT('Usergroup updated'),
+                'successLabel' => gT('User group updated'),
                 'tableLabels' =>  $tableLabels
             )
         );
@@ -1318,10 +1358,13 @@ class UserManagementController extends LSBaseController
         if (trim((string) $expires) === "") {
             $expires = null;
         } else {
-            $datetimeobj = DateTime::createFromFormat('!' . $formatdata['phpdate'] . ' H:i', $expires);
-            if (!is_object($datetimeobj)) {
+            $displayTz = Yii::app()->getConfig('displayTimezone') ?: 'UTC';
+            $datetimeobj = DateTime::createFromFormat('!' . $formatdata['phpdate'] . ' H:i', $expires, new DateTimeZone($displayTz));
+            $errors = DateTime::getLastErrors();
+            if (!is_object($datetimeobj) || ($errors && ($errors['error_count'] > 0 || $errors['warning_count'] > 0))) {
                 throw new CHttpException(400, sprintf(gT('Invalid date, please use "%s" format.', 'unescaped'), $formatdata['phpdate'] . " H:i"));
             }
+            $datetimeobj->setTimezone(new DateTimeZone('UTC'));
             $expires = $datetimeobj->format('Y-m-d H:i:s');
         }
         $aResults = [];
@@ -1430,7 +1473,7 @@ class UserManagementController extends LSBaseController
                 && $oUser->parent_id != App()->session['loginID']
             )
         ) {
-            App()->user->setFlash('error', gT("Access denied"));
+            App()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(App()->createUrl("userManagement/index"));
         }
 

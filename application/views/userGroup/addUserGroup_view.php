@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-lg-8 offset-lg-2 content-right">
-            <?php echo CHtml::form(array("userGroup/addGroup"), 'post', array('class'=>'', 'id'=>'usergroupform')); ?>
+            <?php echo CHtml::form(array("userGroup/addGroup"), 'post', array('class' => '', 'id' => 'usergroupform')); ?>
 
                 <!-- Name -->
                 <div class="mb-3 col-12">

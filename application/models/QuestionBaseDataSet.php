@@ -5,7 +5,7 @@ use LimeSurvey\Datavalueobjects\SwitchOption;
 use LimeSurvey\Datavalueobjects\FormElement;
 
 /**
- * This is a base class to enable all question tpyes to extend the general settings.
+ * This is a base class to enable all question types to extend the general settings.
  * @TODO: Create an xml based solution to use external question type definitions as well
  */
 abstract class QuestionBaseDataSet extends StaticModel
@@ -50,7 +50,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         /*
         @todo Discussion:
         General options currently are
-        - Question theme => this should have a seperate advanced tab in my opinion
+        - Question theme => this should have a separate advanced tab in my opinion
         - Question group
         - Mandatory switch
         - Save as default switch

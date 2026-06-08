@@ -1,4 +1,5 @@
 <?php
+
 /** @var bool $ownsAddParticipantsButton */
 
 if (Permission::model()->hasGlobalPermission('participantpanel', 'read')) {
