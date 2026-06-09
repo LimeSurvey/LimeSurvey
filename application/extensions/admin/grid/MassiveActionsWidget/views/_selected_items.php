@@ -11,7 +11,7 @@ if (!isset($tableLabels)) {
 ?>
 <hr>
 <table class="table table-striped">
-    <caption class="sr-only"><?php eT('Selected users'); ?></caption>
+    <caption class="sr-only"><?php echo isset($caption) ? $caption : gT('Selected items'); ?></caption>
     <thead>
         <?php foreach ($tableLabels as $label) :?>
         <th><?php echo $label?></th>
