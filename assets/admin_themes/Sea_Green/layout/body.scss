@@ -6,15 +6,3 @@ body {
     min-height       : 100vh;
     flex-direction   : column;
 }
-
-// Grid column sort controls (links with role="button"): keyboard focus ring follows text color
-.grid-view-ls a.sort-link[role='button']:focus-visible {
-    outline        : 2px solid currentColor;
-    outline-offset : 2px;
-}
-
-// Primary row links (e.g. plugin name in first column): keyboard focus ring; excludes description-column links
-.grid-view-ls .items tbody tr td:first-child a:focus-visible {
-    outline        : 2px solid currentColor;
-    outline-offset : 2px;
-}
