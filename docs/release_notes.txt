@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v6.x!
+Welcome to LimeSurvey v7.0.0!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -15,7 +15,7 @@ HOW TO INSTALL
 This release does have the following requirements:
 
 *MySQL 5.5.3 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
-*PHP 7.0.0 or later with the following modules/libraries enabled:
+*PHP 8.1.29 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv for Windows and pdo_dblib for Linux)
 
@@ -34,6 +34,111 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.5 (build 260527) to 6.17.6 (build 260604) June 4, 2026
+-Fixed issue: updates through ComfortUpdate are no longer incorrectly marked as unstable (Patrick Teichmann)
+-Fixed issue: [security] Vulnerability in twig template engine and deprecated twig attribute calls - this fix requires the minimum PHP version to be raised to 8.1. (#5026) (Carsten Schmitz)
+-Fixed issue #20489: [security] Publicly reachable file upload via RemoteControl API (#4889) (Denis Chenu)
+#Updated translation: Valencian by c_schmitz, joamuran, sergarb1, valdomir, vbraque
+#Updated translation: Spanish (Spain) by aesteban, artasom, atavei, c_schmitz, Ignacio, ireneoh, jmlopez, jparis, larjona, naiara.maya, Nodens, oleggorfinkel, perexat, segui, valdomir, xastrefernando, xtingray
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by actxcellence, assistedmindfulness, c_schmitz, eddylackmann, Joffm, Liam, mfaber
+#Updated translation: French (France) by AnneSophieB, DenisChenu, fgervais, mapage, riqcles
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han, kpadm, L191, mdekker, MrP
+#Updated translation: Dutch by Han, zfocuz
+#Updated translation: Dutch (Informal) by atvoogt, c_schmitz, Han
+#Updated translation: Dutch (Informal) by Aanouk, c_schmitz, Han, zfocuz
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 6.17.4 (build 260520) to 6.17.5 (build 260527) May 26, 2026
+-Fixed issue #AT-2056: Increase pagination to 250 and 500 (#5001) (Patricia Stell)
+-Fixed issue #AT-1897: design fixes for CSS states (#4992) (Tim Willig)
+-Fixed issue #20527: Bad order of default response list for multiple text question (Carsten Schmitz)
+-Fixed issue #20524: [security] Unsanitized null condition key (thank you for reporting Nagarajan Selvaraj Paulmony)(#4988) (Stefan K)
+-Fixed issue #20507: Unclosed twig comments in vanilla/fruity_twentythree themes (Mathieu Bruyen)
+-Fixed issue #19824: Page size of central participant list was limited to 100 (Carsten Schmitz)
+-Fixed issue #19571: Text fixes for templates -> themes (Carsten Schmitz)
+-Fixed issue #15946: File upload question: cannot select csv file (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu
+
+Changes from 6.17.4 (build 260520) to 7.0.0 (build 260526) May 26, 2026
+New feature: Great easy-to-use survey editor - check it out!
+New feature: Ability to set global and personal timezone - also all date/timestamps are saved as UTC
+New feature: Response table name & schema changes
+New feature: Machine-readable error codes in RemoteControl will now be given back. Please check the documentation.
+New feature #20387: Keep certain subquestions/answer options at original positions on randomization (#4613) (Tõnis Ormisson)
+
+Changes from 6.17.3 (build 260512) to 6.17.4 (build 260520) May 20, 2026
+-Fixed issue: prevent error when language for survey is missing and instead provide guidance on how to resolve it (Patrick Teichmann)
+-Fixed issue: add focus for some flash messages as well as add aria tags to them and aria focus state for multiselect in participant CSV export (a11y) (#4784) (Anblik Audit Team)
+-Fixed issue: Demo console command not properly loading helpers (Carsten Schmitz)
+-Fixed issue: Dashboard crashing if survey language entry is corrupted (Carsten Schmitz)
+-Fixed issue: A11y remaining adjustments for improved label and error message associations in survey groups form (#4764) (Anblik Audit Team)
+-Fixed issue: A11y focus on sort columns in token table, screen reader improvements for privacy policy settings and breadcrumbs (Anblik Audit Team)
+-Fixed issue: A11y adjustments for improved label and error message associations in survey groups form (#4757) (Anblik Audit Team)
+-Fixed issue #LB-147: Fixed executability of change scripts for SQL Server (#4962) (lajosarpad)
+-Fixed issue #AT-1999: Changed default|hover|click background colors and borders (#4927) (Patricia Stell)
+-Fixed issue #20495: [security] Unrestricted getConfig() access in Twig sandbox (Thank you to supperhellokitty20 for reporting the issue) (#4917)
+-Fixed issue #20468: Condition not properly behaving when respondents enter 'false' as a response (#4797) (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: French (France) by DenisChenu, fgervais, GuillaumeZ6, pasglop
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.17.2 (build 260507) to 6.17.3 (build 260512) May 12, 2026
++New feature #AT-1979: Improved survey copy  (#4834) (Carsten Schmitz)
+-Fixed issue: Ability to set email method plugin, but not able to select any plugin (Carsten Schmitz)
+-Fixed issue #20502: [security] POST-based self-XSS in Statistics View (#4945) (Gabriel Jenik)
+#Updated translation: Thai by adzpire, anucha, tomzt, twilllig
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 6.17.1 (build 260427) to 6.17.2 (build 260507) May 7, 2026
+-Fixed issue: various improvements to the dashboard page regarding accessibility, navigation, and aria labels, as well as all improvements to all tables (a11y) (#4413) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: small aria adjustments to header backlinks (a11y) (#4508) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: multiple small aria adjustments for survey settings, themes (a11y) (#4444) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: modal save button focusable (a11y) (#4669) (Anblik Audit Team)
+-Fixed issue: additional aria attributes for email templates (a11y) (#4769) (Anblik Audit Team)
+-Fixed issue: added table captions as well as additional aria tags in group & question view and participants view (#4448) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue #CR-1454: Added automatic fixing of code sniffer findings (#4023) (tiborpacalat)
+-Fixed issue #8030: Prefilled values for not relevant questions lost (#4941) (Denis Chenu)
+-Fixed issue #20507: Missing comment closing (#4958) (lajosarpad)
+-Fixed issue #20506: Add default 'type' key to participant attribute arrays, preventing undefined index errors (#4955) (Tim Willig)
+-Fixed issue #20505: [security] Stored XSS in LimeSurvey via Global Settings (reported by masquerad3r) (#4919) (Denis Chenu)
+-Fixed issue #20499: Updating question code didn't update condition (#4940) (Raymond Oyondi)
+-Fixed issue #20495: [security] Unrestricted getConfig() access in Twig sandbox (#4917) (Denis Chenu)
+-Fixed issue #20463: Quick add labels in label sets don't generate label codes correctly (#4799) (Carsten Schmitz)
+-Fixed issue #20382: Logo is not shown on smaller screens + spacing issues (#4943) (Raymond Oyondi)
+-Fixed issue #19852: Privacy policy not shown for "All in one" surveys (#4932) (Denis Chenu)
+-Fixed issue #19510: Labels - Assessment value - Evaluation values are not reported when creating a question (#4952) (Gabriel Jenik)
+#Updated translation: Thai by tomzt
+#Updated translation: Swahili by FredaM
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by ricardo.santos, xastrefernando
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+
 Changes from 6.17.0 (build 260421) to 6.17.1 (build 260427) April 27, 2026
 -Fixed issue #LB-137: Fixed cookie creation when there is a tokens table (#4903) (lajosarpad)
 -Fixed issue #20494: Conditional Remote Code Execution via Question Theme Path Traversal and Custom Twig Extension Injection (Thank you to lavie3k for reporting the issue) (#4900) (Gabriel Jenik)
@@ -91,6 +196,17 @@ Changes from 6.16.17 (build 260414) to 6.17.0 (build 260421) April 21, 2026
 #Updated translation: Azerbaijani by nemoralis
 #Updated translation: Armenian by Mazi
 #Updated translation: Armenian (Western) by aghjoyan
+
+
+Changes from 7.0.0-beta1 (build 260121) to 7.0.0-beta2 (build 260415) April 14, 2026
+IMPORTANT
+-Migration script could have issues, so don't use this version for production
+
+KNOWN ISSUES
+-There are issues with the importing of groups and questions
+-Ranking question type doesn't work properly
+
+New feature: New easy-to-use survey editor - check it out!
 
 
 Changes from 6.16.16 (build 260408) to 6.16.17 (build 260414) April 14, 2026
@@ -188,7 +304,7 @@ Changes from 6.16.13 (build 260316) to 6.16.14 (build 260323) March 23, 2026
 
 
 Changes from 6.16.12 (build 260309) to 6.16.13 (build 260316) March 16, 2026
--Fixed issue: Adjusted panel cards, import survey and import user, toolbuttons for sidebar (a11y) (#4437) (Anblik Audit Team)
+-Fixed issue: Adjusted panel cards, import survey and import user, toolbuttons for sidebar (a11y) (#4437) (Anblik Audit Team)
 -Fixed issue: Added and adjusted missing tags and roles on question summary page (a11y) (#4435) (Anblik Audit Team)
 -Fixed issue #LE-633: Prevent type error when quota language settings are missing (#4758) (haythem chibani)
 -Fixed issue #LE-534: Switching access mode in classic editor does not get updated in new editor (#4761) (haythem chibani)
@@ -217,15 +333,15 @@ Changes from 6.16.11 (build 260303) to 6.16.12 (build 260309) March 9, 2026
 -Fixed issue #20106: Broken loading of survey theme options with force_xmlsettings_for_survey_rendering enabled (Carsten Schmitz)
 -Fixed issue: Token views - added header element changes instead of aria-level declaration (a11y) (#4602) (Tim Willig)
 -Fixed issue: a11y compliant dropdowns in extraMenu.php (a11y) (#4709) (Tim Willig)
--Fixed issue: tab roles for text element settings and themes (a11y) (#4680) (Anblik Audit Team)
+-Fixed issue: tab roles for text element settings and themes (a11y) (#4680) (Anblik Audit Team)
 -Fixed issue: roles and tags for lists of participants and surveythemes (a11y) (#4676) (Anblik Audit Team)
--Fixed issue: adding descriptive ARIA labels to email method, SMTP encryption, and SMTP debug controls in global settings (a11y) (#4675) (Anblik Audit Team)
--Fixed issue: added roles to massive action and added roles/aria labels to question and groups overview page (a11y) (#4737) (Anblik Audit Team)
--Fixed issue: added disabled attribute on massive action menu (a11y) (#4674) (Anblik Audit Team)
--Fixed issue: improved label–input associations in assessments + correct tab roles for Quotas (a11y) (#4678) (Anblik Audit Team)
--Fixed issue: add screen-reader-only table captions (a11y) (#4749) (Anblik Audit Team)
--Fixed issue: add optional table captions, fix modal dialogs with aria-labelledby/aria-modal, add aria-labels to close buttons, and enhance data grid header checkbox ARIA labeling (a11y) (#4735) (Anblik Audit Team)
--Fixed issue: improvements to mass edit form in send email dropdown (a11y) (#4738) (Anblik Audit Team)
+-Fixed issue: adding descriptive ARIA labels to email method, SMTP encryption, and SMTP debug controls in global settings (a11y) (#4675) (Anblik Audit Team)
+-Fixed issue: added roles to massive action and added roles/aria labels to question and groups overview page (a11y) (#4737) (Anblik Audit Team)
+-Fixed issue: added disabled attribute on massive action menu (a11y) (#4674) (Anblik Audit Team)
+-Fixed issue: improved label–input associations in assessments + correct tab roles for Quotas (a11y) (#4678) (Anblik Audit Team)
+-Fixed issue: add screen-reader-only table captions (a11y) (#4749) (Anblik Audit Team)
+-Fixed issue: add optional table captions, fix modal dialogs with aria-labelledby/aria-modal, add aria-labels to close buttons, and enhance data grid header checkbox ARIA labeling (a11y) (#4735) (Anblik Audit Team)
+-Fixed issue: improvements to mass edit form in send email dropdown (a11y) (#4738) (Anblik Audit Team)
 
 
 Changes from 6.16.10 (build 260223) to 6.16.11 (build 260303) March 3, 2026
@@ -238,8 +354,8 @@ Changes from 6.16.10 (build 260223) to 6.16.11 (build 260303) March 3, 2026
 -Fixed issue #20423: [security] Open redirect vulnerability (#4727) (Tim Willig)
 -Fixed issue #20407: Other option not in condition designer for multiple-choice question (#4707) (Denis Chenu)
 -Fixed issue #20367: 500 server error (division by zero) when using Excel export at statistics (#4721) (Gabriel Jenik)
--Fixed issue: adding appropriate accessibility attributes to the loading spinner (a11y)  (#4689) (Anblik Audit Team)
--Fixed issue: improved label–input associations in text elements settings (a11y) (#4690) (Anblik Audit Team)
+-Fixed issue: adding appropriate accessibility attributes to the loading spinner (a11y)  (#4689) (Anblik Audit Team)
+-Fixed issue: improved label–input associations in text elements settings (a11y) (#4690) (Anblik Audit Team)
 -Fixed issue: added multiple aria-label and role tags in global settings (a11y) (Anblik Audit Team)
 -Fixed issue: Privacy policy settings form, added proper label-to-input associations and enhanced tab navigation controls (a11y) (#4691) (Anblik Audit Team)
 #Updated translation: German by c_schmitz
@@ -2158,7 +2274,7 @@ Changes from 6.2.9 (build 230925) to 6.2.10 (build 231004) October 4, 2023
 -Fixed issue #CR-1305: Structure tab question menu should always show "Edit default answers" option (#3367) (Mohab E)
 -Fixed issue #19136: Undefined variable in admin global settings general subview (#3499) (Matthew)
 -Fixed issue #19115: Menu toggler appears when not needed (#3494) (Denis Chenu)
--Fixed issue #19112: [security] Store XSS at Label sets list (#3503) (Denis Chenu)
+-Fixed issue #19112: [security] Store XSS at Label set list (#3503) (Denis Chenu)
 -Fixed issue #19098: Add XSD files to allowed files for plugin uploads (Marko Bischof)
 -Fixed issue #18995: [security] Confidentiality issue about username (#3447) (Gabriel Jenik)
 -Fixed issue #18294: User can not see group created and user in group created (#3504) (Denis Chenu)
@@ -3521,7 +3637,7 @@ Changes from 5.3.22 (build 220628) to 5.3.23 (build 220705) July 5, 2022
 -Fixed issue #18116: Ability to disable animation layer regarding saving in header section (#2462) (Gabriel Jenik)
 -Fixed issue #18092: File upload show title/comment=off not yet fully respected (#2427) (Gabriel Jenik)
 -Fixed issue #18073: Can't change reminder / invitation date (#2420) (Gabriel Jenik)
--Fixed issue #17952: Command action potentially try to open uneeded session (#2293) (Denis Chenu)
+-Fixed issue #17952: Command action potentially try to open unneeded session (#2293) (Denis Chenu)
 -Fixed issue #17938: Deleting first question group jumps to system frontpage (#2413) (Gabriel Jenik)
 -Fixed issue #17881: Question code / ID on quick translation screen showing question text not ID making it impossible to translate surveys (#2357) (Gabriel Jenik)
 -Fixed issue #17836: Adding a "smiley" to a question creates an image that does not survive upgrades (Carsten Schmitz)
@@ -5240,7 +5356,7 @@ For more information, check the fixed issues below:
 -Fixed issue [security] #16884: LimeSurvey registration emails can be abused (thanks to  winfried) (Denis Chenu)
 -Fixed issue #17020: Bug on invitation+reminder dates when creating a new token using the integrated LS GUI (#1732) (Gabriel Jenik)
 -Fixed issue #17017: Unable to use quote in advanced settings (Denis Chenu)
--Fixed issue #17002: Can not select "Display theme option" in Boostrap buttons question theme (Denis Chenu)
+-Fixed issue #17002: Can not select "Display theme option" in Bootstrap buttons question theme (Denis Chenu)
 -Fixed issue #16982: Server error if template are invalid (Denis Chenu)
 -Fixed issue #16973: Cannot activate browser reponses after activating survey (trischi80)
 -Fixed issue #16966: No way to edit role Permission (Denis Chenu)
@@ -5970,7 +6086,7 @@ Changes from 4.2.1 (build 200428) to 4.2.2 (build 200504) May 4, 2020
 Changes from 4.2.0 (build 200422) to 4.2.1 (build 200428) April 28, 2020
 -Fixed issue: [security] Superadmin can delete a protected superadmin (Carsten Schmitz)
 -Fixed issue: Very high memory usage when importing TSV files (Carsten Schmitz)
--Fixed issue #15824: Misleading gui for subquestion details when using array texts or similiar question types (Jessica Höck)
+-Fixed issue #15824: Misleading gui for subquestion details when using array texts or similar question types (Jessica Höck)
 -Fixed issue #16179: Update 3.20.2 -> 4.2.0 running into database error (Patricia Stelling)
 -Fixed issue #16160: (Email to user group does not work)fix has been done already in master. Since develop differs from master, fix has to be done again at this point. (Patricia Stelling)
 -Fixed issue #16122: Encryption of "email" field in participants database: Limesurvey does not mark participant as invited (Denis Chenu)
@@ -6006,7 +6122,7 @@ Changes from 4.1.17 (build 200414) to 4.1.18 (build 200416) April 16, 2020
 Changes from 4.1.16 (build 200407) to 4.1.17 (build 200414) April 14, 2020
 -Fixed issue: Original superadmin should always be able to edit other users passwords (Carsten Schmitz)
 -Fixed issue #16134: Unable to disable XSS , inversion with script enable (Denis Chenu)
--Fixed issue #16132: ext.SettingsWidget.SettingsWidget add uneeded, broken and anasked buttons (Denis Chenu)
+-Fixed issue #16132: ext.SettingsWidget.SettingsWidget add unneeded, broken and unasked buttons (Denis Chenu)
 -Fixed issue #16123: TSV export does not properly export a single group/question/answer option etc. (Carsten Schmitz)
 -Fixed issue #16115: .lsg group export does not export subquestion texts (Carsten Schmitz)
 -Fixed issue #16098: Typo in survey groups (#1403) (jmantysalo)
@@ -6713,7 +6829,7 @@ Changes from 3.17.13 (build 190824) to 3.17.14 (build 190902) September 2, 2019
 -Fixed issue #15197: Submitting empty menu entry crashes application ( Application Denial of Service) (lacrioque)
 -Fixed issue #15194: Unable to remove page title from PDF generated at "print answers" screen (LouisGac)
 -Fixed issue #15192: entering html code inside the answeroptions for List type questions will break/alter the html for editing answers (Patrick Teichmann)
--Fixed issue #15188: Access Label sets list (lacrioque)
+-Fixed issue #15188: Access Label set list (lacrioque)
 -Fixed issue #14863: Extending core theme using the same core theme name (Eddy Lackmann)
 -Fixed issue #10168: Commit test! Ignore (Carsten Schmitz)
 -New translation: Filipino (Carsten Schmitz)
@@ -9688,7 +9804,7 @@ Changes from 1.90 (build 9642) to 1.91+ (build 120302) Mar 3, 2012
 +New feature: Support for the "maximum_chars" attribute to the array/numbers question type, when using the text input layout. (c_schmitz)
 +New feature: Spread sheet type row and colum totals for Array Multi text (numbers only) (eric_t_cruiser)
 +New feature: Switching SSL on and off  (eric_t_cruiser)
-+New feature #4069: Differentiate String comparizon and numerical comparizon operators. By default numerical order is now assume. Old surveys that were using string comparizons must be updated. The stringcomparizonoperators parameter must be set to 1 in config.php in order to enable these string comparizons. (lemeur)
++New feature #4069: Differentiate String comparison and numerical comparison operators. By default numerical order is now assumed. Old surveys that were using string comparisons must be updated. The stringcomparisonoperators parameter must be set to 1 in config.php in order to enable these string comparisons. (lemeur)
 +New feature #4661 : add some placeholder : {SURVEYLANG}, {SURVEYFORMAT}, {SURVEYCONTACT} (shnoulle)
 #Updated feature: Sets "equals" as the default comparison operator for conditions (jcleeland)
 #Updated feature #4426: Separation of survey settings - survey settings and editing of survey text elements are now separated to two different icons because users had problems to find the text elemens - patch kindly provided by CarbonaCat (c_schmitz)
@@ -11210,7 +11326,7 @@ Fixed #1990: Public registration forget to add emailstatus=OK, thus email is dis
 Fixed #1984 (corrupted survey URL in some emails): Applied a workaround in SurveyURL displayed in  invitation/registration emails so that bogus(?) email clients won't translate the GET parameter '& l a n g' to the '& l a n g ;' entity (lemeur)
 Fixed #1986: token link in browse results not displaying (c_schmitz)
 Fixed #1983: incorrect request in browse.php - patch by steph33560 (c_schmitz)
-Fixed #1967: correctly sets default email settings for new additionnal languages and set default email settings for survey base language. Takes Email format (html,text) into account (lemeur)
+Fixed #1967: correctly sets default email settings for new additional languages and set default email settings for survey base language. Takes Email format (html,text) into account (lemeur)
 Fixed #1931: answers are recorded as not-completed (not finalized) if last survey page was hidden due to condition (lemeur)
 Upload the latest version of queXML-Export (to fix output of type "L") - Thx to Adam Zammit (el-matador-69)
 Fixed #1959, added multiple numerical to printablesurvey.php. (Also tidied up the layout for multiple numerical and short text) (jcleeland)

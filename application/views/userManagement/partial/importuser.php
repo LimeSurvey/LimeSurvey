@@ -7,6 +7,7 @@
  * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */
+
 ?>
 
 <?php
@@ -37,7 +38,7 @@ Yii::app()->getController()->renderPartial(
         <label class="form-check-label" for="overwrite">
             <?= eT("Overwrite existing users"); ?>
         </label>
-        <small id="overwrite-help" class="form-text"><?= eT("Duplicate found by users_name"); ?></small>
+        <small id="overwrite-help" class="form-text"><?= eT("Duplicates are identified by username and/or email"); ?></small>
     </div>
 
     <div class="mb-3">

@@ -15,11 +15,11 @@
         <div class="d-flex align-items-baseline">
 
             <!-- select state -->
-            <p class="survey-actionbar-title"><?php eT('All surveys'); ?></p>
+            <p id="survey_search_all_surveys" class="survey-actionbar-title"><?php eT('All surveys'); ?></p>
             <?php if ($this->onlyfilter) : ?>
                 <div class="survey-actionbar-filters">
                     <div class="survey-actionbar-item">
-                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield">
+                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield" aria-labelledby="survey_search_all_surveys">
                             <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
                                 <?= gT('Status') ?>
                             </option>
@@ -46,11 +46,11 @@
                 <!-- select group -->
                 <div class="survey-actionbar-filters">
                     <div class="survey-actionbar-item search-bar">
-                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => 'Search', 'value' => App()->request->getQuery('Survey')['searched_value'] ?? '']) ?>
+                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => 'Search', 'value' => App()->request->getQuery('Survey')['searched_value'] ?? '', 'aria-labelledby' => 'survey_search_all_surveys', 'id' => 'survey_searched_value']) ?>
                         <i class="ri-search-line"></i>
                     </div>
                     <div class="survey-actionbar-item">
-                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield">
+                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield" aria-labelledby="survey_search_all_surveys">
                             <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
                                 <?= gT('Status') ?>
                             </option>
@@ -72,7 +72,7 @@
                         </select>
                     </div>
                     <div class="survey-actionbar-item">
-                        <select name="gsid" id='survey_gsid' class="form-select survey-actionbar-formfield">
+                        <select name="gsid" id='survey_gsid' class="form-select survey-actionbar-formfield" aria-labelledby="survey_search_all_surveys">
                             <option value=""><?= gT('Group') ?></option>
                             <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
                                 <option value="<?= $gsid ?>" <?= (App()->request->getQuery('gsid') == $gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>

@@ -83,15 +83,10 @@ class BoxesWidget extends CWidget
                         'external' => $item->external ?? false,
                         'state' => $survey->getState(),
                         'buttons' => $survey->getButtons(),
-                        'link' => $survey->hasNewEditor
-                            ? App()->createUrl(
-                                'editorLink/index',
-                                ['route' => 'survey/' . $survey->sid]
-                            )
-                            : Yii::app()->createUrl(
-                                'surveyAdministration/view/',
-                                ['iSurveyID' => $survey->sid]
-                            ),
+                        'link' => Yii::app()->createUrl(
+                            'surveyAdministration/view/',
+                            ['iSurveyID' => $survey->sid]
+                        ),
                     ];
                 }
             }
@@ -108,16 +103,16 @@ class BoxesWidget extends CWidget
 
         switch (Survey::model()->count()) {
             case 0:
-                if (!empty($createSurveyBox) ) {
+                if (!empty($createSurveyBox)) {
                     $boxes[] = $createSurveyBox;
                 }
-                if (!empty($createSurveyGroupBox) ) {
+                if (!empty($createSurveyGroupBox)) {
                     $boxes[] = $createSurveyGroupBox;
                 }
-                $boxes = array_merge($boxes, $this->getPlaceholders(2 ));
+                $boxes = array_merge($boxes, $this->getPlaceholders(2));
                 break;
             case 1:
-                if (!empty($createSurveyGroupBox) ) {
+                if (!empty($createSurveyGroupBox)) {
                     $boxes[] = $createSurveyGroupBox;
                 }
                 break;
@@ -174,7 +169,7 @@ class BoxesWidget extends CWidget
     private function getPlaceholders($amount)
     {
         $placeholders = [];
-        for($i = 0; $i < $amount; $i++){
+        for ($i = 0; $i < $amount; $i++) {
             $placeholders[] = [
                 'type' => self::TYPE_PLACEHOLDER,
                 'link' => '#',

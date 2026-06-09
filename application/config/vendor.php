@@ -9,7 +9,7 @@ if (!defined('BASEPATH')) {
  * This file contains package definition for third party libraries.
  * Defining them here allows for easy inclusion in views.
  */
-/* Tag if debug is set : debug is set in user config file and this file is directly required in internal.php where $userConfig var arry is set */
+/* Tag if debug is set : debug is set in user config file and this file is directly required in internal.php where $userConfig var array is set */
 /* This allow us to use minified version according to debug */
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
@@ -210,17 +210,6 @@ return array(
         'basePath' => 'node_modules.js-cookie.dist',
         'js' => array(
             'js.cookie' . $minVersion . '.js'
-        )
-    ),
-
-    // jQuery json
-    'jquery-json' => array(
-        'basePath' => 'vendor.jquery-json',
-        'js' => array(
-            'jquery.json-2.4.min.js'
-        ),
-        'depends' => array(
-            'jquery'
         )
     ),
 

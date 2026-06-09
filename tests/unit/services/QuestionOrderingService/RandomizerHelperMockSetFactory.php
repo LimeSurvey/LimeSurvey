@@ -10,7 +10,7 @@ class RandomizerHelperMockSetFactory
     /**
      * @param ?RandomizerHelperMockSet $init
      */
-    public function make(RandomizerHelperMockSet $init = null
+    public function make(?RandomizerHelperMockSet $init = null
     ): RandomizerHelperMockSet {
         $mockSet = new RandomizerHelperMockSet;
 

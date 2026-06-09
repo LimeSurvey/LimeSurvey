@@ -326,8 +326,7 @@ abstract class Token extends Dynamic
      */
     public static function sanitizeAttribute($attribute)
     {
-        // TODO: Use HTML Purifier?
-        return filter_var($attribute, @FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+        return htmlspecialchars(strip_tags((string) $attribute), ENT_NOQUOTES, 'UTF-8');
     }
 
     /**
@@ -405,7 +404,7 @@ abstract class Token extends Dynamic
     public function relations()
     {
         $result = array(
-            'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
+            'responses' => array(self::HAS_MANY, 'Responses_' . $this->dynamicId, array('token' => 'token')),
             'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
             'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
         );
@@ -458,7 +457,7 @@ abstract class Token extends Dynamic
     /** @inheritdoc */
     public function scopes()
     {
-        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
+        $now = gmdate("Y-m-d H:i:s");
         return array(
             'incomplete' => array(
                 'condition' => "completed = 'N'"
