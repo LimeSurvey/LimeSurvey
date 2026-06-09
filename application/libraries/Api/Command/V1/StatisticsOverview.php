@@ -90,7 +90,6 @@ class StatisticsOverview implements CommandInterface
         if (empty($survey)) {
             return $this->responseFactory->makeErrorNotFound('Survey not found');
         }
-
         try {
             $latestResponses = $this->getLatestResponses($request);
             [$dailyActivity, $overview] = $this->getStatisticsOverviewData();

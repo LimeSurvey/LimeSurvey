@@ -70,20 +70,21 @@ class ValueLabel extends Record
 
         // Number of variables that the associated value labels from the value label record are to be applied.
         $varCount = $buffer->readInt();
+        $decodeShortVar = false;
         for ($i = 0; $i < $varCount; $i++) {
             $varIndex = $buffer->readInt() - 1;
-
-            // Decode values for short variables
-            if (isset($this->variables[$varIndex])) {
-                $varWidth = $this->variables[$varIndex]->width;
-                if ($varWidth > 0) {
-                    foreach ($this->labels as $labelIdx => $label) {
-                        $this->labels[$labelIdx]['value'] = rtrim(Utils::doubleToString($label['value']));
-                    }
-                }
-            }
-
             $this->indexes[] = $varIndex;
+
+            if (isset($this->variables[$varIndex]) && ($this->variables[$varIndex]->width > 0)) {
+                $decodeShortVar = true;
+            }
+        }
+
+        // Decode values for short variables
+        if ($decodeShortVar) {
+            foreach ($this->labels as $labelIdx => $label) {
+                $this->labels[$labelIdx]['value'] = rtrim(Utils::doubleToString($label['value']));
+            }
         }
     }
 

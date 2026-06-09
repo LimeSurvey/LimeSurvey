@@ -147,6 +147,11 @@ class CLSGridView extends TbGridView
             App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
             CClientScript::POS_BEGIN
         );
+        // Accessibility: restore focus to sort column after AJAX grid update
+        App()->clientScript->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/restoreFocusAfterSort.js',
+            CClientScript::POS_BEGIN
+        );
         // changePageSize
         $script = '
 			jQuery(document).on("change", "#' . $this->id . ' .changePageSize", function(){
@@ -251,7 +256,7 @@ class CLSGridView extends TbGridView
         if (!$this->dataProvider instanceof CActiveDataProvider) {
             return;
         }
-        $columns_filter_button = '<button role="button" type="button" class="btn b-0" data-bs-toggle="modal" data-bs-target="#survey-column-filter-modal">
+        $columns_filter_button = '<button role="button" type="button" aria-label="' . gT('Select columns') . '" class="btn b-0" data-bs-toggle="modal" data-bs-target="#column-filter-modal">
                 <i class="ri-layout-column-fill"></i>
             </button>';
         $this->columns[]  = [
@@ -261,6 +266,7 @@ class CLSGridView extends TbGridView
             'type'              => 'raw',
             'headerHtmlOptions' => ['class' => 'text-center ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
             'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+            'filter'            => false
         ];
         /* Updating the columns to be added */
         if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {

@@ -11,7 +11,7 @@ if (!isset($tableLabels)) {
     $tableLabels = array(gT('ID'), gT('Title'), gT('Status'));
 }
 ?>
-<?php if(isset($additionalMessage)):?>
+<?php if (isset($additionalMessage)) :?>
     <?php echo $additionalMessage?>
 <?php endif;?>
 <table class="table table-striped">
@@ -21,12 +21,12 @@ if (!isset($tableLabels)) {
         }
     ?></caption>
     <thead>
-        <?php foreach($tableLabels as $label):?>
+        <?php foreach ($tableLabels as $label) :?>
             <th><?php echo $label?></th>
         <?php endforeach;?>
     </thead>
     <tbody>
-        <?php foreach($aResults as $iSid => $result):?>
+        <?php foreach ($aResults as $iSid => $result) :?>
             <tr>
                 <td>
                     <?php echo $iSid;?>
@@ -34,18 +34,18 @@ if (!isset($tableLabels)) {
                 <td>
                     <?php echo CHtml::encode($result['title']);?>
                 </td>
-                <?php if ($result['result']):?>
+                <?php if ($result['result']) :?>
                     <td class="text-success">
                         <?php echo $successLabel ?>
                     </td>
-                <?php else: ?>
+                <?php else : ?>
                     <td class="text-danger">
                         <?php ;
-                            if(isset($result['error'])){
-                                echo $result['error'] ;
-                            }else{
-                                eT('Error!');
-                            }
+                        if (isset($result['error'])) {
+                            echo $result['error'] ;
+                        } else {
+                            eT('Error!');
+                        }
                         ; ?>
                     </td>
                 <?php endif;?>

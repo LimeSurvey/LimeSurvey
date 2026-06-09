@@ -127,7 +127,7 @@ var PrepEmailTemplates = function(){
             e.preventDefault();
             var target = $(this).parents('tr');
             var ckTarget = $(this).parents('table').data('ck-target');
-            uri = LS.data.baseUrl + '/vendor/kcfinder/browse.php?opener=custom&type=files&CKEditor='+ckTarget+'&langCode='+sKCFinderLanguage;
+            uri = LS.data.baseUrl + '/assets/packages/kcfinder/browse.php?opener=custom&type=files&CKEditor='+ckTarget+'&langCode='+sKCFinderLanguage;
             openKCFinderSingleFile(target, uri);
         });
     
@@ -161,6 +161,9 @@ var PrepEmailTemplates = function(){
                 window.KCFinder.target = target;
                 window.KCFinder.callBack = kcFinderCallback;
                 $('#kc-modal-open').find('iframe').attr('src', uri);
+                window.setTimeout(function () {
+                    modalElement.focus();
+                }, 50);
             }, {once: true});
             modalElement.addEventListener('hidden.bs.modal', function () {
                 $(this).find('iframe').attr('src', 'about:blank');
@@ -216,7 +219,7 @@ var PrepEmailTemplates = function(){
             e.preventDefault();
             var target = $($(this).data('target'));
             var ckTarget =  $(this).data('ck-target');
-            var uri = LS.data.baseUrl + '/vendor/kcfinder/browse.php?opener=custom&type=files&CKEditor='+ckTarget+'&langCode='+sKCFinderLanguage
+            var uri = LS.data.baseUrl + '/assets/packages/kcfinder/browse.php?opener=custom&type=files&CKEditor='+ckTarget+'&langCode='+sKCFinderLanguage
 
             openKCFinderSingleFile(target, uri);
 

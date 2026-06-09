@@ -13,7 +13,7 @@ use Psr\Http\Message\UriInterface;
  * Request redirect middleware.
  *
  * Apply this middleware like other middleware using
- * {@see \GuzzleHttp\Middleware::redirect()}.
+ * {@see Middleware::redirect()}.
  *
  * @final
  */
@@ -177,8 +177,8 @@ class RedirectMiddleware
         }
 
         $uri = self::redirectUri($request, $response, $protocols);
-        if (isset($options['idn_conversion']) && ($options['idn_conversion'] !== false)) {
-            $idnOptions = ($options['idn_conversion'] === true) ? \IDNA_DEFAULT : $options['idn_conversion'];
+        $idnOptions = Utils::normalizeIdnConversionOption($options['idn_conversion'] ?? null);
+        if ($idnOptions !== null) {
             $uri = Utils::idnUriConvert($uri, $idnOptions);
         }
 

@@ -1,4 +1,4 @@
-<?php if ($subaction == "copyconditionsform" || $subaction == "copyconditions"): ?>
+<?php if ($subaction == "copyconditionsform" || $subaction == "copyconditions") : ?>
     <input type='checkbox' id='scenarioCbx<?php echo $scenarionr['scenario']; ?>' checked='checked'/>
     <script type='text/javascript'>
         $(document).ready(function () {
@@ -16,11 +16,11 @@
         <div class='row mb-4'>
             <div class='col-md-4'>
             <!-- Scenario header -->
-            <?php if ($showScenarioText == 'normal'): ?>
+            <?php if ($showScenarioText == 'normal') : ?>
                 <h5 class="card-title">Scenario <?php echo $scenarionr['scenario']; ?></h5>
-            <?php elseif ($showScenarioText == 'withOr'): ?>
+            <?php elseif ($showScenarioText == 'withOr') : ?>
                 <h5 class="card-title"><?php eT('OR'); ?> Scenario <?php echo $scenarionr['scenario']; ?></h5>
-            <?php else: ?>
+            <?php else : ?>
                 <h5 class="card-title"><?php eT('Default scenario'); ?></h5>
             <?php endif; ?>
             </div>
@@ -28,7 +28,7 @@
             <div class='col-md-8'>
                 <div class="text-end">
                 <!-- Small form to change scenario number -->
-                <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/updatescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'display: none','id'=>'editscenario'.$scenarionr['scenario']));?>
+                <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/updatescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style' => 'display: none','id' => 'editscenario' . $scenarionr['scenario']));?>
                     <label>
                         <?php eT("New scenario number:"); ?>&nbsp;
                         <input type='text' name='newscenarionum' size='3' value='<?php echo $scenarionr['scenario']; ?>' required/>
@@ -42,9 +42,9 @@
                     <input type='button' class="btn btn-cancel" name='cancel' value='<?php eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
                 </form>
 
-                <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;', 'class' => 'delete-scenario-form', 'id'=>'deletescenario'.$scenarionr['scenario'],'name'=>'deletescenario'.$scenarionr['scenario']));?>
+                <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deletescenario/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style' => 'margin-bottom:0;', 'class' => 'delete-scenario-form', 'id' => 'deletescenario' . $scenarionr['scenario'],'name' => 'deletescenario' . $scenarionr['scenario']));?>
 
-                    <?php if ($showScenarioButtons): ?>
+                    <?php if ($showScenarioButtons) : ?>
                         <div class="mt-1">
                             <span data-bs-toggle="tooltip" title='<?php eT('Delete all conditions in this scenario'); ?>'>
                                 <button

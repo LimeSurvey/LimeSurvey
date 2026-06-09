@@ -13,7 +13,6 @@ class EncryptAttributesTest extends TestBaseClass
      */
     public static function setupBeforeClass(): void
     {
-        \Yii::import('application.helpers.globalsettings_helper', true);
         parent::setUpBeforeClass();
 
         // Import survey.
@@ -164,7 +163,7 @@ class EncryptAttributesTest extends TestBaseClass
             $questions[$q->title] = $q;
         }
 
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q00']->qid;
+        $sgqa = 'Q' . $questions['Q00']->qid;
 
         // Change answer
         $response->$sgqa = "New answer.";
@@ -201,7 +200,7 @@ class EncryptAttributesTest extends TestBaseClass
             $questions[$q->title] = $q;
         }
 
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q00']->qid;
+        $sgqa = 'Q' . $questions['Q00']->qid;
 
         // Change answer
         $response->$sgqa = "New answer.";
@@ -239,7 +238,7 @@ class EncryptAttributesTest extends TestBaseClass
             $questions[$q->title] = $q;
         }
 
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q00']->qid;
+        $sgqa = 'Q' . $questions['Q00']->qid;
 
         // Change answer
         $response->$sgqa = "0";
@@ -277,7 +276,7 @@ class EncryptAttributesTest extends TestBaseClass
             $questions[$q->title] = $q;
         }
 
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q00']->qid;
+        $sgqa = 'Q' . $questions['Q00']->qid;
 
         // Change answer
         $response->$sgqa = "";
