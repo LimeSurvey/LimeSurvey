@@ -26,8 +26,6 @@ $(function () {
         });
     }
 
-    $form.off('.checkintegrity');
-
     $form.on('change.checkintegrity', '.redundancy-group-toggle', function () {
         var $groupToggle = $(this);
 
