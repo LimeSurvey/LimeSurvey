@@ -15,7 +15,7 @@ if (!isset($tableLabels)) {
     <?php echo $additionalMessage?>
 <?php endif;?>
 <table class="table table-striped">
-    <caption class="massive-action-results-caption "><?php
+    <caption class="massive-action-results-caption visually-hidden"><?php
         if (isset($tableCaption) && $tableCaption !== '') {
             echo CHtml::encode($tableCaption);
         }
