@@ -1,0 +1,44 @@
+.checkbox-radio-component {
+  .checkbox-radio-component-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  }
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    min-width: 175px; /* Fixed width for alignment across rows */
+    justify-content: flex-start;
+  }
+
+  label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-500;
+    color: $g-700;
+  }
+
+  .form-check-input {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    outline-color: $g-700;
+    &[type='checkbox'] {
+      font-size: $font-size-md;
+      line-height: 18px;
+    }
+    &:checked[type='checkbox'] {
+      outline-color: $active-green;
+    }
+  }
+
+  .reset {
+    margin-left: auto;
+    cursor: pointer;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-500;
+    line-height: 16px;
+    color: $grape;
+  }
+}

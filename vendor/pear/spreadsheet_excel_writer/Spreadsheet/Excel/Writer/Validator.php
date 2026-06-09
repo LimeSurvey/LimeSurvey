@@ -1,4 +1,5 @@
 <?php
+
 /*
 *  Module written by Herman Kuiper <herman@ozuzo.net>
 *
@@ -47,20 +48,20 @@ define("OP_LTE",        0x07);
 */
 class Spreadsheet_Excel_Writer_Validator
 {
-   public $_type;
-   public $_style;
-   public $_fixedList;
-   public $_blank;
-   public $_incell;
-   public $_showprompt;
-   public $_showerror;
-   public $_title_prompt;
-   public $_descr_prompt;
-   public $_title_error;
-   public $_descr_error;
-   public $_operator;
-   public $_formula1;
-   public $_formula2;
+    public $_type;
+    public $_style;
+    public $_fixedList;
+    public $_blank;
+    public $_incell;
+    public $_showprompt;
+    public $_showerror;
+    public $_title_prompt;
+    public $_descr_prompt;
+    public $_title_error;
+    public $_descr_error;
+    public $_operator;
+    public $_formula1;
+    public $_formula2;
     /**
     * The parser from the workbook. Used to parse validation formulas also
     * @var Spreadsheet_Excel_Writer_Parser
@@ -86,29 +87,29 @@ class Spreadsheet_Excel_Writer_Validator
         $this->_formula2    = '';
     }
 
-   public function setPrompt($promptTitle = "\x00", $promptDescription = "\x00", $showPrompt = true)
-   {
-      $this->_showprompt = $showPrompt;
-      $this->_title_prompt = $promptTitle;
-      $this->_descr_prompt = $promptDescription;
-   }
+    public function setPrompt($promptTitle = "\x00", $promptDescription = "\x00", $showPrompt = true)
+    {
+        $this->_showprompt = $showPrompt;
+        $this->_title_prompt = $promptTitle;
+        $this->_descr_prompt = $promptDescription;
+    }
 
-   public function setError($errorTitle = "\x00", $errorDescription = "\x00", $showError = true)
-   {
-      $this->_showerror = $showError;
-      $this->_title_error = $errorTitle;
-      $this->_descr_error = $errorDescription;
-   }
+    public function setError($errorTitle = "\x00", $errorDescription = "\x00", $showError = true)
+    {
+        $this->_showerror = $showError;
+        $this->_title_error = $errorTitle;
+        $this->_descr_error = $errorDescription;
+    }
 
-   public function allowBlank()
-   {
-      $this->_blank = true;
-   }
+    public function allowBlank()
+    {
+        $this->_blank = true;
+    }
 
-   public function onInvalidStop()
-   {
-      $this->_style = 0x00;
-   }
+    public function onInvalidStop()
+    {
+        $this->_style = 0x00;
+    }
 
     public function onInvalidWarn()
     {
@@ -169,32 +170,32 @@ class Spreadsheet_Excel_Writer_Validator
         if ($this->_showerror) {
             $options |= 0x80000;
         }
-      $options |= $this->_operator << 20;
+        $options |= $this->_operator << 20;
 
-      return $options;
-   }
+        return $options;
+    }
 
-   protected function _getData()
-   {
-      $title_prompt_len = strlen($this->_title_prompt);
-      $descr_prompt_len = strlen($this->_descr_prompt);
-      $title_error_len = strlen($this->_title_error);
-      $descr_error_len = strlen($this->_descr_error);
+    protected function _getData()
+    {
+        $title_prompt_len = strlen($this->_title_prompt);
+        $descr_prompt_len = strlen($this->_descr_prompt);
+        $title_error_len = strlen($this->_title_error);
+        $descr_error_len = strlen($this->_descr_error);
 
-      $formula1_size = strlen($this->_formula1);
-      $formula2_size = strlen($this->_formula2);
+        $formula1_size = strlen($this->_formula1);
+        $formula2_size = strlen($this->_formula2);
 
-      $data  = pack("V", $this->_getOptions());
-      $data .= pack("vC", $title_prompt_len, 0x00) . $this->_title_prompt;
-      $data .= pack("vC", $title_error_len, 0x00) . $this->_title_error;
-      $data .= pack("vC", $descr_prompt_len, 0x00) . $this->_descr_prompt;
-      $data .= pack("vC", $descr_error_len, 0x00) . $this->_descr_error;
+        $data  = pack("V", $this->_getOptions());
+        $data .= pack("vC", $title_prompt_len, 0x00) . $this->_title_prompt;
+        $data .= pack("vC", $title_error_len, 0x00) . $this->_title_error;
+        $data .= pack("vC", $descr_prompt_len, 0x00) . $this->_descr_prompt;
+        $data .= pack("vC", $descr_error_len, 0x00) . $this->_descr_error;
 
-      $data .= pack("vv", $formula1_size, 0x0000) . $this->_formula1;
-      $data .= pack("vv", $formula2_size, 0x0000) . $this->_formula2;
+        $data .= pack("vv", $formula1_size, 0x0000) . $this->_formula1;
+        $data .= pack("vv", $formula2_size, 0x0000) . $this->_formula2;
 
-      return $data;
-   }
+        return $data;
+    }
 }
 
 /*class Spreadsheet_Excel_Writer_Validation_List extends Spreadsheet_Excel_Writer_Validation

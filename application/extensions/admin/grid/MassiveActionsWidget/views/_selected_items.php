@@ -13,13 +13,13 @@ if (!isset($tableLabels)) {
 <table class="table table-striped">
     <caption class="sr-only"><?php eT('Selected users'); ?></caption>
     <thead>
-        <?php foreach($tableLabels as $label):?>
+        <?php foreach ($tableLabels as $label) :?>
         <th><?php echo $label?></th>
         <?php endforeach;?>
     </thead>
     
     <tbody>
-        <?php foreach($aResults as $iSid => $result):?>
+        <?php foreach ($aResults as $iSid => $result) :?>
             <tr>
                 <td>
                     <?php echo CHtml::encode($iSid);?>
@@ -27,11 +27,11 @@ if (!isset($tableLabels)) {
                 <td>
                     <?php echo CHtml::encode($result['title']);?>
                 </td>
-                <?php if ($result['result']):?>
+                <?php if ($result['result']) :?>
                     <td class="text-success">
                         <?php eT('Selected'); ?>
                     </td>
-                <?php else: ?>
+                <?php else : ?>
                     <td class="text-danger">
                         <?php echo CHtml::encode($result['error']) ; ?>
                     </td>

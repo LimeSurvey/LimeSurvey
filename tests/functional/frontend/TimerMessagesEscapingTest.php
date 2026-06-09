@@ -5,11 +5,12 @@ namespace ls\tests;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\TimeoutException;
 use Question;
 
 /**
  * @since 2021-08-17
+ * @group navigation
  */
 class TimerMessagesEscapingTest extends TestBaseClassWeb
 {
