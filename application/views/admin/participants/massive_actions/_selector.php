@@ -53,7 +53,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'actionType' => 'modal',
                 'modalType' => 'cancel-save',
                 'keepopen' => 'yes',
-        
+
                 'sModalTitle' => gT('Batch edit the participants'),
                 'htmlModalBody' => $this->renderPartial('./participants/massive_actions/_update', [], true)
             ],

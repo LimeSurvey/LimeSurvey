@@ -94,6 +94,7 @@ $font-weight-600: 600;
 $line-height-20: 20px;
 $line-height-24: 24px;
 $line-height-26: 26px;
+$line-height-32: 32px;
 // Typography End
 
 // Buttons START
@@ -136,7 +137,7 @@ $tooltip-arrow-color:               $tooltip-bg;
 
 // links
 $link-color-action:                       $action !default;
-$link-color:                              $active-green !default;
+$link-color:                              #2D7A53 !default; // a11y needs more contrast on g-200 background
 $link-decoration:                         none !default;
 $link-shade-percentage:                   20% !default;
 $link-hover-color-action:                 shift-color($link-color-action, $link-shade-percentage) !default;
@@ -148,6 +149,7 @@ $breadcrumb-spacing:                6px;
 $breadcrumb-divider-color:          $g-600;
 $breadcrumb-active-color:           $g-900;
 $breadcrumb-link-color:             $link-color;
+$breadcrumb-item-max-width:         80ch; // Per-crumb cap; longer text truncates with an ellipsis
 
 // forms
 // input variables

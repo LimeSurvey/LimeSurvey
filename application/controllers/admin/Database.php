@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -213,7 +213,7 @@ class Database extends SurveyCommonAction
         if ($questionThemeMetaData['settings']->answerscales == 0 && $questionThemeMetaData['settings']->subquestions == 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
                 // Qick and dirty insert for yes/no defaul value
-                // write the the selectbox option, or if "EM" is slected, this value to table
+                // write the selectbox option, or if "EM" is selected, this value to table
                 if ($sQuestionType == 'Y') {
                     /// value for all langs
                     if (Yii::app()->request->getPost('samedefault') == 1) {
@@ -278,7 +278,7 @@ class Database extends SurveyCommonAction
         // form inputs are named differently from db fields
         // - they have a prefix and a language suffix
         // - we need to convert this to a array of database
-        // - fields for each language indexed by lanuage code
+        // - fields for each language indexed by language code
         $langFields = [
             'surveyls_url' => 'url_',
             'surveyls_urldescription' => 'urldescrip_',
@@ -307,6 +307,13 @@ class Database extends SurveyCommonAction
             }
         }
 
+        if ($input['expires'] ?? false) {
+            $input['expires'] = getUTCOfDate(($input['expires']));
+        }
+
+        if ($input['startdate'] ?? false) {
+            $input['startdate'] = getUTCOfDate(($input['startdate']));
+        }
 
         $metaData = [];
         try {
