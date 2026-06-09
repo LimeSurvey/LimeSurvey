@@ -27,7 +27,7 @@ class WhPlugin extends CBehavior
         if (isset($this->_assetsUrl)) {
             return $this->_assetsUrl;
         }
-        $assetsUrl = Yii::app()->assetManager->publish($path, false, -1, false);
+        $assetsUrl = Yii::app()->assetManager->publish($path, false, -1, null);
         return $this->_assetsUrl = $assetsUrl;
     }
 
