@@ -14,16 +14,20 @@
         <div class="row">
             <!-- Title or breadcrumb -->
             <div class="ls-breadcrumb col-12">
-                <h1 class="align-items-center d-flex">
-                    <?php if ($titleBackLink !== null): ?>
-                        <a class="h1 topbar-back-link ls-link"
-                           href="<?= CHtml::encode($titleBackLink); ?>"
-                           aria-label="<?= gT('Back'); ?>">
-                            <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
-                        </a>
+                <div class="align-items-center d-flex">
+                    <?php
+                    if ($titleBackLink !== null) {
+                        // Keep the back link outside <h1> so it is announced only as a link, not with heading level.
+                        echo '<a class="h1 me-1 ls-link" href="' . CHtml::encode($titleBackLink) . '" aria-label="' . gT('Back') . '">'
+                            . '<i class="ri-arrow-left-s-line" aria-hidden="true"></i></a>';
+                    }
+                    ?>
+                    <?php if (!$isBreadCrumb) : ?>
+                        <h1 class="h1 mb-0"><?= $leftSide ?></h1>
+                    <?php else : ?>
+                        <?= $leftSide ?>
                     <?php endif; ?>
-                    <?= $leftSide ?>
-                </h1>
+                </div>
             </div>
 
             <!-- middle part with buttons -->
