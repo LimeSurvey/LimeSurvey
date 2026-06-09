@@ -175,6 +175,21 @@ class Authentication extends SurveyCommonAction
                 $event->set('identity', $identity);
                 App()->getPluginManager()->dispatchEvent($event);
 
+                // If allowed_hosts.php does not exist, write the current host as valid
+                $allowedHosts = App()->loadAllowedHosts();
+                if (empty($allowedHosts)) {
+                    $currentHost = App()->request->getServerName();
+                    if (App()->writeAllowedHosts([$currentHost])) {
+                        Yii::app()->setFlashMessage(
+                            sprintf(
+                                gT('The allowed hosts file (application/config/allowed_hosts.php) has been created with "%s" as trusted host. For security reasons, LimeSurvey can only be accessed through that domain. If you need additional hosts, please edit the allowed hosts file directly.'),
+                                htmlspecialchars($currentHost)
+                            ),
+                            'info'
+                        );
+                    }
+                }
+
                 return array('success');
             } else {
                 // Failed

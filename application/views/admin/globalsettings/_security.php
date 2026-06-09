@@ -257,6 +257,26 @@
                 </div>
             </div>
         </div>
+
+        <!-- Allowed Hosts -->
+        <div class="col-6 mt-4">
+            <h3><?= gT('Allowed hosts (host header injection protection)') ?></h3>
+            <div class="mb-3">
+                <p class="form-text">
+                    <?php eT("The following domain names are configured as trusted hosts. Requests from any other hostname will be rejected. The publicurl host is always trusted implicitly. This list is stored in application/config/allowed_hosts.php."); ?>
+                </p>
+                <?php
+                $allowedHosts = App()->loadAllowedHosts();
+                if (!empty($allowedHosts)) : ?>
+                    <textarea class="form-control" readonly rows="<?= min(count($allowedHosts), 5) ?>"><?= htmlspecialchars(implode("\n", $allowedHosts)) ?></textarea>
+                <?php else : ?>
+                    <?php App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("No allowed hosts configured. The file application/config/allowed_hosts.php does not exist or is empty. It will be auto-generated on the next admin login."),
+                        'type' => 'warning',
+                    ]); ?>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
 </div>
 
