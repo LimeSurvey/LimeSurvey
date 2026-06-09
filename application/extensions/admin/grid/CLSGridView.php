@@ -120,7 +120,7 @@ class CLSGridView extends TbGridView
             $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
             $this->afterAjaxUpdate .= 'LS.rowlink.create();';
             if (!empty($this->lsAdditionalColumns)) {
-                $this->afterAjaxUpdate .= 'initColumnFilter()';
+                $this->afterAjaxUpdate .= 'initColumnFilter();';
             }
             $this->afterAjaxUpdate .= $restoreFocusJs;
             $this->afterAjaxUpdate .= '}';
