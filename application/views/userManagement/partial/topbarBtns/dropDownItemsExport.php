@@ -1,20 +1,28 @@
-<?php
-$exportCsvUrl = App()->createUrl("userManagement/exportUser", ["outputFormat" => "csv"]);
-$exportJsonUrl = App()->createUrl("userManagement/exportUser", ["outputFormat" => "json"]);
-?>
 <ul class="dropdown-menu">
     <li>
-        <button
-            type="button"
-            class="dropdown-item"
-            onclick='window.location.href = <?= json_encode($exportCsvUrl) ?>'
-        ><?php eT("CSV") ?></button>
+        <?= CHtml::link(
+            gT("CSV"),
+            App()->createUrl(
+                "userManagement/exportUser",
+                ["outputFormat" => "csv"]
+            ),
+            [
+                "class" => "dropdown-item",
+                "aria-label" => gT("Export users as CSV", "unescaped")
+            ]
+        ); ?>
     </li>
     <li>
-        <button
-            type="button"
-            class="dropdown-item"
-            onclick='window.location.href = <?= json_encode($exportJsonUrl) ?>'
-        ><?php eT("JSON") ?></button>
+        <?= CHtml::link(
+            gT("JSON"),
+            App()->createUrl(
+                "userManagement/exportUser",
+                ["outputFormat" => "json"]
+            ),
+            [
+                "class" => "dropdown-item",
+                "aria-label" => gT("Export users as JSON", "unescaped")
+            ]
+        ); ?>
     </li>
 </ul>
