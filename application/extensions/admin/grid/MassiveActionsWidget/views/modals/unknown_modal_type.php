@@ -29,7 +29,7 @@
             );
             ?>
             <div class="modal-body">
-                <?php eT('Unknown modal view type in Massive Actions Widget!'); ?>
+                Unknown modal view type in Massive Actions Widget!
             </div>
             <div class="modal-footer modal-footer-buttons">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
