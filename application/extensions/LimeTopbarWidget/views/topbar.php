@@ -18,13 +18,15 @@
                     <?php
                     if ($titleBackLink !== null) {
                         // Keep the back link outside <h1> so it is announced only as a link, not with heading level.
-                        echo '<a class="h1 me-1 text-decoration-none" href="' . CHtml::encode($titleBackLink) . '" aria-label="' . CHtml::encode(gT('Back')) . '">'
+                        echo '<a class="h1 me-1 ls-link" href="' . CHtml::encode($titleBackLink) . '" aria-label="' . CHtml::encode(gT('Back')) . '">'
                             . '<i class="ri-arrow-left-s-line" aria-hidden="true"></i></a>';
                     }
                     ?>
-                    <h1 class="h1 mb-0">
+                    <?php if (!$isBreadCrumb) : ?>
+                        <h1 class="h1 mb-0"><?= $leftSide ?></h1>
+                    <?php else : ?>
                         <?= $leftSide ?>
-                    </h1>
+                    <?php endif; ?>
                 </div>
             </div>
 
