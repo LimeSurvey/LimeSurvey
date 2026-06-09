@@ -164,6 +164,12 @@ class LSYii_Application extends CWebApplication
                 $this->config = array_merge($this->config, $securityConfig);
             }
         }
+        if (file_exists($configdir . '/allowed_hosts.php')) {
+            $allowedHostsConfig = require($configdir . '/allowed_hosts.php');
+            if (is_array($allowedHostsConfig)) {
+                $this->config = array_merge($this->config, $allowedHostsConfig);
+            }
+        }
         if (file_exists($configdir .  '/config.php')) {
             $userConfigs = require($configdir . '/config.php');
             if (is_array($userConfigs['config'])) {
