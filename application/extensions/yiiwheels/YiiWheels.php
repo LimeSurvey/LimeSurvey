@@ -1,5 +1,4 @@
 <?php
-
 /**
  * YiiWheels class file.
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
@@ -7,7 +6,6 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package yiiwheels
  */
-
 class YiiWheels extends CApplicationComponent
 {
     /**
@@ -26,28 +24,15 @@ class YiiWheels extends CApplicationComponent
     public $assetsCss = array();
 
     /**
-     * @var TbApi $_api
-     */
-    protected $_api;
-
-    /**
      * @var string holds the published assets
      */
     protected $_assetsUrl;
 
-
     /**
      * Widget's initialization
-     * @throws CException
      */
     public function init()
     {
-        $this->_api = Yii::app()->getComponent('bootstrap5');
-
-        if (null === $this->_api) {
-            throw new CException(Yii::t('zii', '"YiiWheels" must work in conjunction with "YiiStrap".'));
-        }
-
         /* ensure all widgets - plugins are accessible to the library */
         Yii::import('yiistrap_fork.widgets.*');
         /* ensure common behavior is also accessible to the library */
@@ -65,15 +50,6 @@ class YiiWheels extends CApplicationComponent
     }
 
     /**
-     * Returns the core library (yiistrap) component
-     * @return TbApi
-     */
-    public function getApi()
-    {
-        return $this->_api;
-    }
-
-    /**
      * Returns the assets URL.
      * Assets folder has few orphan and very useful utility libraries.
      * @return string
@@ -83,13 +59,12 @@ class YiiWheels extends CApplicationComponent
         if (isset($this->_assetsUrl)) {
             return $this->_assetsUrl;
         } else {
-            $forceCopyAssets = $this->getApi()->forceCopyAssets;
-            $path            = Yii::getPathOfAlias('yiiwheels');
-            $assetsUrl       = Yii::app()->assetManager->publish(
+            $path      = Yii::getPathOfAlias('yiiwheels');
+            $assetsUrl = Yii::app()->assetManager->publish(
                 $path . DIRECTORY_SEPARATOR . 'assets',
                 false,
                 -1,
-                $forceCopyAssets
+                false
             );
 
             return $this->_assetsUrl = $assetsUrl;
