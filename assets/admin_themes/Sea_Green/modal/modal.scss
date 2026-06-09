@@ -44,7 +44,25 @@
     border : 1px solid $g-900;
 }
 
-.modal-header .btn-close:focus {
-    outline        : 2px solid currentColor;
-    outline-offset : 2px;
+#copySurvey_modal [data-bs-target="#copySurveyAdvanced"] {
+    &:hover,
+    &:focus,
+    &:active {
+        background-color : transparent;
+        color            : inherit;
+        box-shadow       : none;
+        text-decoration  : none;
+        border-color     : transparent;
+    }
+}
+#copySurvey_modal legend.form-label {
+    float         : none;
+    font-size     : $font-size-sm;
+    font-weight   : $font-weight-500;
+    color         : $heading-title-color;
+    line-height   : $line-height-20;
+    width         : auto;
+    padding       : 0;
+    margin-bottom : $spacer * 0.5;
+    border-bottom : none;
 }

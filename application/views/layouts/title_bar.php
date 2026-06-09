@@ -35,5 +35,3 @@ App()->getController()->widget('ext.BreadcrumbWidget.BreadcrumbWidget', [
 
     ],
 ]);
-?>
-
