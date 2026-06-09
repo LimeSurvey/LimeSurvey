@@ -232,4 +232,31 @@ class AttributesService
         $question->refresh();
         return $question;
     }
+
+    /**
+     * Removes question attributes from the database that are not valid
+     * for the question's current type. This prevents orphaned attributes
+     * from a previous question type from interfering with the current type.
+     *
+     * @param Question $question
+     * @return void
+     */
+    public function sanitizeAttributesByType(Question $question)
+    {
+        $validAttributes = $this->questionAttributeHelper
+            ->getQuestionAttributesWithValues($question);
+        $validAttributeNames = array_keys($validAttributes);
+
+        $existingAttributes = $this->modelQuestionAttribute->resetScope()
+            ->findAll(
+                'qid = :qid',
+                [':qid' => $question->qid]
+            );
+
+        foreach ($existingAttributes as $attr) {
+            if (!in_array($attr->attribute, $validAttributeNames)) {
+                $attr->delete();
+            }
+        }
+    }
 }

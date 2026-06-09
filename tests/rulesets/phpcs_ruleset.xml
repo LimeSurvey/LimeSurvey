@@ -5,6 +5,7 @@
         <!-- TODO: This rule should be disabled when support for PHP 7.0 is dropped -->
         <exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
         <exclude name="Generic.Files.LineLength"/>
+        <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace"/>
     </rule>
 
     <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
