@@ -30,8 +30,8 @@
                 data-none-selected-text=''
                 name="{{ name }}"
                 id="answer{{ name }}"
-                data-style="btn-outline-secondary"
-                {% if dropdownSize %} size={{ dropdownSize }} {% endif %}
+                data-style="border"
+                {% if dropdownSize %} data-size={{ dropdownSize }} {% endif %}
                 aria-labelledby="ls-question-text-{{ basename }}"
         >
                 {# rows/option.php #}

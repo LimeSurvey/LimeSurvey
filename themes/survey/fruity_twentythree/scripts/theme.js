@@ -1,7 +1,7 @@
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -125,7 +125,8 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
    * in endpage and in $(window).resize
    */
   var fixBodyPadding = function fixBodyPadding() {
-    $('body').css('padding-top', Math.round($('#survey-nav').outerHeight()) + 'px');
+    var navHeight = Math.round($('#survey-nav.fixed-top').outerHeight() || 0);
+    $('body').css('padding-top', navHeight + 'px');
   };
 
   /**
@@ -567,7 +568,7 @@ function triggerEmRelevanceQuestion() {
   });
   $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:off', function (event, data) {
     if (event.target != this) return;
-    if ($(this).closest("[id^='group-']").find("[id^='question']").length == $(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length) {
+    if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
       $(this).closest("[id^='group-']").addClass("ls-hidden");
     }
   });
@@ -585,12 +586,14 @@ function triggerEmRelevanceGroup() {
 }
 /* On subquestion and answers-list */
 function triggerEmRelevanceSubQuestion() {
-  $("[id^='question']").on('relevance:on', "[id^='javatbd']", function (event, data) {
+  $("[id^='question'].question-container").on('relevance:on', "[id^='javatbd']", function (event, data) {
     if (event.target != this) return; // not needed now, but after (2016-11-07)
     data = $.extend({
       style: 'hidden'
     }, data);
     $(this).removeClass("ls-irrelevant ls-" + data.style);
+    /* In all in one mode : need updating group too */
+    $(this).closest("[id^='group-']").removeClass("ls-hidden");
     if (data.style == 'disabled') {
       if ($(event.target).hasClass("answer-item")) {
         $(event.target).find('input').each(function (itrt, item) {
@@ -607,7 +610,7 @@ function triggerEmRelevanceSubQuestion() {
       updateRepeatHeading($(this).closest(".ls-answers"));
     }
   });
-  $("[id^='question']").on('relevance:off', "[id^='javatbd']", function (event, data) {
+  $("[id^='question'].question-container").on('relevance:off', "[id^='javatbd']", function (event, data) {
     if (event.target != this) return; // not needed now, but after (2016-11-07)
     data = $.extend({
       style: 'hidden'
@@ -625,8 +628,14 @@ function triggerEmRelevanceSubQuestion() {
       updateLineClass($(this));
       updateRepeatHeading($(this).closest(".ls-answers"));
     }
+    /* In all in one mode : need updating group too */
+    if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
+      $(this).closest("[id^='group-']").addClass("ls-hidden");
+    }
     console.ls.log($(this).find('input[disabled]'));
   });
+
+  
 }
 
 /**
@@ -910,7 +919,7 @@ function activateConfirmButton() {
 /**
  * has-error management for ls-error-mandatory
  * Only add ls-error-mandatory in PHP currently, not in js : different behaviour after try next and don't try next
- * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no boostrap, for before submit : use only css in template
+ * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no bootstrap, for before submit : use only css in template
  */
 function updateMandatoryErrorClass() {
   $(".ls-error-mandatory .has-error,.ls-error-mandatory.has-error").on("blur", ":text,textarea", function (event) {
@@ -1075,7 +1084,7 @@ window.ArrayScripts = ArrayScripts;
 /*
     LimeSurvey
     Copyright (C) 2007-2023
-    The LimeSurvey Project Team / Patrick Teichmann
+    The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v3 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
