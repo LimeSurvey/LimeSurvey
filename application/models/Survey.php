@@ -170,8 +170,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public $bShowRealOptionValues = true;
 
 
-    private $sSurveyUrl;
-
     /**
      * Set defaults
      * @inheritdoc
@@ -2013,12 +2011,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Fix invalid question in this survey
-     * Delete question that don't exist in primary language
+     * Removes orphan questions and subquestions from this survey.
+     *
+     * Deletes base questions (parent_qid = 0) whose `qid` is not found in the full question set for this survey,
+     * and deletes subquestions (parent_qid != 0) whose `title` is not found in the full subquestion set.
+     * Note: queries compare against all rows in the questions table for this survey, not scoped to a specific language.
      */
     public function fixInvalidQuestions()
     {
-        /* Delete invalid questions (don't exist in primary language) using qid like column name*/
+        /* Delete invalid questions using qid as identifier */
         $validQuestion = Question::model()->findAll(array(
             'select' => 'qid',
             'condition' => 'sid=:sid AND parent_qid = 0',
@@ -2030,7 +2031,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $criteria->addNotInCondition('qid', CHtml::listData($validQuestion, 'qid', 'qid'));
         Question::model()->deleteAll($criteria); // Must log count of deleted ?
 
-        /* Delete invalid Sub questions (don't exist in primary language) using title like column name*/
+        /* Delete invalid subquestions using title as identifier */
         $validSubQuestion = Question::model()->findAll(array(
             'select' => 'title',
             'condition' => 'sid=:sid AND parent_qid != 0',
@@ -2042,23 +2043,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion, 'title', 'title'));
         Question::model()->deleteAll($criteria); // Must log count of deleted ?
     }
-
-    /**
-     * TODO: Not used anywhere. Deprecate it?
-     */
-    public function getsSurveyUrl()
-    {
-        if ($this->sSurveyUrl == '') {
-            if (!in_array(App()->language, $this->getAllLanguages())) {
-                $surveylang = $this->language;
-            } else {
-                $surveylang = App()->language;
-            }
-            $this->sSurveyUrl = App()->createUrl('survey/index', array('sid' => $this->sid, 'lang' => $surveylang));
-        }
-        return $this->sSurveyUrl;
-    }
-
 
     /**
      * @return Question[]
@@ -2498,9 +2482,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return Permission::model()->hasPermission($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
-    /*
-     * Find all public surveys
-     * @return Survey[]
+    /**
+     * Get surveys configured to be listed publicly.
+     *
+     * Filters surveys whose `listpublic` setting is `'Y'` (public) or `'I'` (inherit) and that evaluate as list-public.
+     *
+     * @return Survey[] Array of Survey models that are publicly listable.
      */
     public function findAllPublic()
     {
@@ -2523,6 +2510,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      * @param string|null $language
      * @param array|string|mixed $params   Optional parameters to include in the URL.
      * @param bool $preferShortUrl  If true, tries to return the short URL instead of the traditional one.
+     * @deprecated please use the new service class SurveyUrl
      * @return string
      */
     public function getSurveyUrl($language = null, $params = [], $preferShortUrl = true)
@@ -2530,44 +2518,12 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if (empty($language)) {
             $language = $this->language;
         }
-        if ($preferShortUrl) {
-            $alias = $this->getAliasForLanguage($language);
-
-            if (!empty($alias)) {
-                // Check if there is other language with the same alias. If it does, we need to include the 'lang' parameter in the URL.
-                foreach ($this->languagesettings as $otherLang => $settings) {
-                    if ($otherLang == $language || empty($settings->surveyls_alias)) {
-                        continue;
-                    }
-                    if ($settings->surveyls_alias == $alias) {
-                        $params['lang'] = $language;
-                        break;
-                    }
-                }
-
-                // Create the URL according to the configured format
-                $baseUrl = App()->getPublicBaseUrl(true);
-                $urlManager = Yii::app()->getUrlManager();
-                $urlFormat = $urlManager->getUrlFormat();
-                if ($urlFormat == CUrlManager::GET_FORMAT) {
-                    $url = $baseUrl;
-                    $params = [$urlManager->routeVar => $alias] + $params;
-                } else {
-                    $url = $baseUrl . '/' . $alias;
-                }
-                $query = $urlManager->createPathInfo($params, '=', '&');
-                if (!empty($query)) {
-                    $url .= "?" . $query;
-                }
-                return $url;
-            }
-        }
-
-        // If short url is not preferred or no alias is found, return a traditional URL
-        $urlParams = array_merge($params, ['sid' => $this->sid, 'lang' => $language]);
-        $url = App()->createPublicUrl('survey/index', $urlParams);
-
-        return $url;
+        $surveyUrlService = new \LimeSurvey\Models\Services\SurveyUrl($language, $params, $preferShortUrl);
+        return $surveyUrlService->getUrl(
+            $this->sid,
+            $this->languagesettings,
+            $this->getAliasForLanguage($language)
+        );
     }
 
     /**
