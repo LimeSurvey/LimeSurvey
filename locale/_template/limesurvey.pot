@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-06-09 08:48:17+00:00\n"
+"POT-Creation-Date: 2026-06-09 15:08:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -57,7 +57,7 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:4501
 #: application/helpers/admin/import_helper.php:4546
 #: application/models/TemplateManifest.php:173
-#: application/models/services/PasswordManagement.php:88
+#: application/models/services/PasswordManagement.php:90
 #: application/views/admin/checkintegrity/fix_view.php:16
 #: application/views/admin/dataentry/active_html_view.php:116
 #: application/views/admin/dataentry/vvimport_result.php:16
@@ -420,7 +420,7 @@ msgstr ""
 
 #: application/controllers/FailedEmailController.php:20
 #: application/controllers/FailedEmailController.php:21
-#: application/controllers/admin/Authentication.php:424
+#: application/controllers/admin/Authentication.php:439
 #: application/core/LsDefaultDataSets.php:387
 #: application/core/LsDefaultDataSets.php:388
 #: application/views/failedEmail/failedEmail_index.php:10
@@ -2196,7 +2196,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:894
 #: application/helpers/SurveyRuntimeHelper.php:1172
 #: application/helpers/update/update_helper.php:37
-#: application/models/services/PasswordManagement.php:102
+#: application/models/services/PasswordManagement.php:104
 #: application/views/admin/dataentry/import_result.php:8
 #: application/views/admin/dataentry/insert.php:37
 #: application/views/admin/dataentry/iteratesurvey.php:6
@@ -3880,8 +3880,8 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1457
 #: application/controllers/UserManagementController.php:1546
 #: application/controllers/UserManagementController.php:1631
-#: application/core/LSYii_Application.php:625
-#: application/core/LSYii_Application.php:636
+#: application/core/LSYii_Application.php:631
+#: application/core/LSYii_Application.php:642
 msgid "Your request is invalid."
 msgstr ""
 
@@ -4120,41 +4120,45 @@ msgid "Successful login"
 msgstr ""
 
 #: application/controllers/admin/Authentication.php:64
-#: application/controllers/admin/Authentication.php:188
+#: application/controllers/admin/Authentication.php:203
 msgid "Incorrect username and/or password!"
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:220
+#: application/controllers/admin/Authentication.php:185
+msgid "The allowed hosts file (application/config/allowed_hosts.php) has been created with \"%s\" as trusted host. For security reasons, LimeSurvey can only be accessed through that domain. If you need additional hosts, please edit the allowed hosts file directly."
+msgstr ""
+
+#: application/controllers/admin/Authentication.php:235
 msgid "The validation key is invalid. Please contact the administrator."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:231
+#: application/controllers/admin/Authentication.php:246
 msgid "The validation key expired. Please contact the administrator."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:248
+#: application/controllers/admin/Authentication.php:263
 msgid "Password cannot be blank and must fulfill minimum requirements: %s"
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:271
+#: application/controllers/admin/Authentication.php:286
 msgid "Logout successful."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:300
-#: application/models/services/PasswordManagement.php:181
+#: application/controllers/admin/Authentication.php:315
 #: application/models/services/PasswordManagement.php:186
+#: application/models/services/PasswordManagement.php:191
 msgid "If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:345
+#: application/controllers/admin/Authentication.php:360
 msgid "Please log in first."
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:350
+#: application/controllers/admin/Authentication.php:365
 msgid "Welcome %s!"
 msgstr ""
 
-#: application/controllers/admin/Authentication.php:354
+#: application/controllers/admin/Authentication.php:369
 msgid "Reloading screen. Please wait."
 msgstr ""
 
@@ -7320,7 +7324,7 @@ msgstr ""
 msgid "Show policy"
 msgstr ""
 
-#: application/core/LSHttpRequest.php:312
+#: application/core/LSHttpRequest.php:313
 msgid "The requested hostname is invalid."
 msgstr ""
 
@@ -17177,51 +17181,60 @@ msgstr ""
 msgid "Participant ID cannot be empty"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:93
+#: application/models/services/PasswordManagement.php:95
 msgid "Email to %s (%s) failed."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:107
+#: application/models/services/PasswordManagement.php:109
 msgid "Username : %s - Email : %s."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:112
+#: application/models/services/PasswordManagement.php:114
 msgid "An email with a generated link was sent to the user."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:157
+#: application/models/services/PasswordManagement.php:159
 msgid "Request to reset your password"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:173
+#: application/models/services/PasswordManagement.php:174
+msgid "The system is not properly configured to send password reset emails. Please contact the administrator."
+msgstr ""
+
+#: application/models/services/PasswordManagement.php:178
 msgid "You have requested to reset the password for your account."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:174
+#: application/models/services/PasswordManagement.php:179
 msgid "To complete this process, please click on the following link: %s"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:175
+#: application/models/services/PasswordManagement.php:180
 msgid "If you did not request to reset your password, please ignore this email."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:183
+#: application/models/services/PasswordManagement.php:188
 msgid "Email failed"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:223
+#: application/models/services/PasswordManagement.php:230
+#: application/models/services/PasswordManagement.php:248
+msgid "The system is not properly configured to send emails. Please contact the administrator."
+msgstr ""
+
+#: application/models/services/PasswordManagement.php:233
 msgid "Your login credentials have been reset"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:267
+#: application/models/services/PasswordManagement.php:284
 msgid "Hello %s,"
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:269
+#: application/models/services/PasswordManagement.php:286
 msgid "This is an automated email to notify you that your login credentials for '%s' have been reset."
 msgstr ""
 
-#: application/models/services/PasswordManagement.php:274
+#: application/models/services/PasswordManagement.php:291
 msgid "Here are your new credentials."
 msgstr ""
 
@@ -19058,7 +19071,7 @@ msgstr ""
 #: application/views/admin/globalsettings/_interfaces.php:64
 #: application/views/admin/globalsettings/_language.php:74
 #: application/views/admin/globalsettings/_presentation.php:151
-#: application/views/admin/globalsettings/_security.php:264
+#: application/views/admin/globalsettings/_security.php:284
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr ""
 
@@ -19583,6 +19596,18 @@ msgstr ""
 
 #: application/views/admin/globalsettings/_security.php:255
 msgid "Reset participant attempts"
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:263
+msgid "Allowed hosts (host header injection protection)"
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:266
+msgid "The following domain names are configured as trusted hosts. Requests from any other hostname will be rejected. The publicurl host is always trusted implicitly. This list is stored in application/config/allowed_hosts.php."
+msgstr ""
+
+#: application/views/admin/globalsettings/_security.php:274
+msgid "No allowed hosts configured. The file application/config/allowed_hosts.php does not exist or is empty. It will be auto-generated on the next admin login."
 msgstr ""
 
 #: application/views/admin/globalsettings/_storage.php:13
