@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -196,25 +196,6 @@ class Answer extends LSActiveRecord
     public function updateRecord($data, $condition = false)
     {
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
-    }
-
-    /**
-     * @param array $data
-     * @return boolean|null
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     *
-     */
-    public function insertRecords($data)
-    {
-        $oRecord = new self();
-        foreach ($data as $k => $v) {
-            $oRecord->$k = $v;
-        }
-        if ($oRecord->validate()) {
-            return $oRecord->save();
-        }
-        Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Answer.insertRecords');
-        return null;
     }
 
     /**

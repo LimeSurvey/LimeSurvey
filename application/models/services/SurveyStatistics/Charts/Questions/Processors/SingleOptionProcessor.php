@@ -22,7 +22,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
      */
     public function rt(): void
     {
-        $this->rt = $this->surveyId . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     /**
@@ -77,9 +77,9 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
      */
     private function addOtherOption(array &$legend, array &$dataItems): void
     {
-        $mfield = $this->rt . 'other';
+        $mfield = $this->rt . '_Cother';
         $legend[] = 'other';
-        $count = $this->getResponseCount($mfield);
+        $count = $this->countFieldResponses($mfield);
         $dataItems[] = [
             'key' => 'other',
             'value' => $count,
@@ -93,9 +93,9 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
      */
     private function addCommentOption(array &$legend, array &$dataItems): void
     {
-        $mfield = $this->rt . 'comment';
+        $mfield = $this->rt . '_Ccomment';
         $legend[] = 'comment';
-        $count = $this->getResponseCount($mfield);
+        $count = $this->countFieldResponses($mfield);
         $dataItems[] = [
             'key' => 'comment',
             'value' => $count,
@@ -202,23 +202,11 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
      */
     private function handleDefault(): array
     {
-        $legend = [];
-        $items = [];
+        $codes = array_column($this->answers, 'code');
+        $labels = array_map('flattenText', array_column($this->answers, 'answer'));
 
-        foreach ($this->answers as $answer) {
-            if (!isset($answer['code'], $answer['answer'])) {
-                continue;
-            }
+        [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
 
-            $code = $answer['code'];
-            $title = flattenText($answer['answer']);
-
-            $legend[] = $title;
-            $count = $this->getResponseCount($this->rt, $code);
-            $items[] = ['key' => $code, 'title' => $title, 'value' => $count];
-        }
-
-        $items[] = ['key' => 'NoAnswer', 'title' => 'No Answer', 'value' => $this->getResponseNotAnsweredCount($this->rt)];
         return [
             'title' => $this->question['question'],
             'legend' => $legend,
