@@ -70,7 +70,7 @@ export const RowQuestionGroup = ({
             handleDuplicate={handleDuplicate}
             additionalItems={[
               {
-                label: t('Check Logic'),
+                label: t('Check logic'),
                 testId: 'show-logic-button',
                 onClick: () => setShowLogicModal(true),
               },

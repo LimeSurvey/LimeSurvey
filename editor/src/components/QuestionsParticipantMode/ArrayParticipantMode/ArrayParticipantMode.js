@@ -220,10 +220,10 @@ export const ArrayParticipantMode = ({
         ? mockAnswer(t('Yes'), [language], { code: 'Y' })
         : mockAnswer(t('Increase'), [language], { code: 'I' })
       const secondItem = isYesNoUncertain
-        ? mockAnswer(t('No'), [language], { code: 'N' })
+        ? mockAnswer(t('Uncertain'), [language], { code: 'U' })
         : mockAnswer(t('Same'), [language], { code: 'S' })
       const thirdItem = isYesNoUncertain
-        ? mockAnswer(t('Uncertain'), [language], { code: 'U' })
+        ? mockAnswer(t('No'), [language], { code: 'N' })
         : mockAnswer(t('Decrease'), [language], { code: 'D' })
 
       result = {

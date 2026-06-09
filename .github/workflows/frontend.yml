@@ -33,7 +33,7 @@ jobs:
     name: Build Frontend Packages
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup nodeJS
         uses: actions/setup-node@v4
@@ -75,7 +75,7 @@ jobs:
     name: Run Frontend Tests
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       - name: Setup nodeJS
         uses: actions/setup-node@v4

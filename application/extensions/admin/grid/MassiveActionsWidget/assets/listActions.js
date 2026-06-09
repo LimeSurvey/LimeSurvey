@@ -15,7 +15,8 @@
  *      perform an ajax request and close
  *      perform an ajax request and show the result in the modal
  */
-var onClickListAction =  function () {
+var onClickListAction =  function (e) {
+    e.preventDefault();
     console.log('onClickListAction');
     if($(this).data('disabled')) {
         console.log('disabled');
@@ -35,8 +36,15 @@ var onClickListAction =  function () {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
         console.log('error first');
-        const modal = new bootstrap.Modal(document.getElementById('error-first-select' + $grididvalue), {})
-        modal.show();
+        const errModalEl = document.getElementById('error-first-select' + $grididvalue);
+        if (errModalEl) {
+            errModalEl.setAttribute('tabindex', '-1');
+            const errBsModal = bootstrap.Modal.getOrCreateInstance(errModalEl, {});
+            errModalEl.addEventListener('shown.bs.modal', function focusErrModal() {
+                errModalEl.focus({ preventScroll: true });
+            }, { once: true });
+            errBsModal.show();
+        }
         return;
     }
     
@@ -257,11 +265,20 @@ var onClickListAction =  function () {
         });
     });
 
-    // Open the modal
+    // Open the modal (focus moves into dialog for screen readers / keyboard)
     const modalId = $that.data('modal-id');
     console.log('modalId = ', modalId);
-    var modal = new bootstrap.Modal(document.getElementById(modalId), {})
-    modal.show();
+    const modalEl = document.getElementById(modalId);
+    if (!modalEl) {
+        return;
+    }
+    modalEl.setAttribute('tabindex', '-1');
+    const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl, {});
+    const focusModal = function () {
+        modalEl.focus({ preventScroll: true });
+    };
+    modalEl.addEventListener('shown.bs.modal', focusModal, { once: true });
+    bsModal.show();
 };
 
 function prepareBsDateTimePicker($gridid){
