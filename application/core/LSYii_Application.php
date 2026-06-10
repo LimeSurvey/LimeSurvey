@@ -650,8 +650,8 @@ class LSYii_Application extends CWebApplication
         if (!$groupId || !self::checkInteger($groupId, $throwError)) {
             return false;
         }
-        /* intGroupId is set and is an integer */
-        $group = Group::model()->findByPk($groupId);
+        /* groupId is set and is an integer */
+        $group = QuestionGroup::model()->findByPk($groupId);
         if (!$group) {
             if ($throwError) {
                 throw new CHttpException(404, gT('Group not found.'));
