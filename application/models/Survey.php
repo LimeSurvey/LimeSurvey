@@ -1703,7 +1703,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'htmlOptions'       => ['class' => 'd-md-none d-lg-table-cell has-link'],
             ],
             'partial' => [
-                'header'      => gT('Partial'),
+                'header'      => gT('Incomplete'),
                 'value'       => '$data->countPartialAnswers',
                 'name'        => 'partial',
                 'htmlOptions' => ['class' => 'has-link'],
