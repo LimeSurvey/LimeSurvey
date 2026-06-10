@@ -15,7 +15,7 @@ export const PaginationButtons = ({
   canGoPrevPage = false,
   currentPageIndex = 0,
   totalPages = 0,
-  totalResults,
+  totalResults = 0,
   maxNumberOfButtons = 5,
   pageSize = 10,
 }) => {
