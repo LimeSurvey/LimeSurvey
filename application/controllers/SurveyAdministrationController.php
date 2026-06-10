@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\DI;
 use LimeSurvey\Models\Services\CopySurveyOptions;
 use LimeSurvey\Models\Services\CopySurveyResources;
 use LimeSurvey\Models\Services\FileUploadService;
@@ -7,6 +8,7 @@ use LimeSurvey\Models\Services\FilterImportedResources;
 use LimeSurvey\Models\Services\GroupHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 use LimeSurvey\Models\Services\SurveyDetailService;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 
 /**
  * Class SurveyAdministrationController
@@ -85,10 +87,14 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * This part comes from renderWrappedTemplate
+     * Prepare controller state before rendering a view.
      *
-     * @param string $view
-     * @return bool
+     * Sets the controller layout based on whether a survey context is present, initializes
+     * the LimeExpressionManager for the current survey when applicable, and registers
+     * editor-related client scripts unless the request is an Ajax request.
+     *
+     * @param string $view The view name about to be rendered.
+     * @return bool True to continue with rendering, false to abort.
      */
     protected function beforeRender($view)
     {
@@ -303,7 +309,8 @@ class SurveyAdministrationController extends LSBaseController
             array(
                 'aResults' => $aResults,
                 'successLabel' => gT('Selected'),
-                'tableLabels' => $tableLabels
+                'tableLabels' => $tableLabels,
+                'caption'     => gT('Selected surveys'),
             )
         );
     }
@@ -366,8 +373,11 @@ class SurveyAdministrationController extends LSBaseController
             $iQuestionNumber++;
             $iGroupNumber = $oQuestion->gid;
         }
+        /* Expression text need to be update from condition */
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+        LimeExpressionManager::SetDirtyFlag();
         Yii::app()->setFlashMessage(gT("Question codes were successfully regenerated."));
-        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
     }
 
@@ -3057,7 +3067,7 @@ class SurveyAdministrationController extends LSBaseController
             $surveysummary2[] = gT("Responses will be date stamped.");
         }
         if ($oSurvey->isIpAddr) {
-            $surveysummary2[] = gT("IP addresses will be logged");
+            $surveysummary2[] = gT("IP addresses will be saved.");
         }
         if ($oSurvey->isRefUrl) {
             $surveysummary2[] = gT("Referrer URL will be saved.");
@@ -3322,6 +3332,11 @@ class SurveyAdministrationController extends LSBaseController
     protected function generalTabEditSurvey($survey)
     {
         $aData['survey'] = $survey;
+
+        // Prepare theme configuration data for the view
+        $themeService = DI::getContainer()->get(SurveyThemeConfiguration::class);
+        $aData = array_merge($aData, $themeService->getThemeViewData($survey->template, $survey->oOptions ?? null));
+
         return $aData;
     }
 

@@ -2,6 +2,7 @@
 /application/config/config.php
 /application/config/config.*.php
 /application/config/security.php
+/application/config/allowed_hosts.php
 
 # Don't include LS4 security.php
 
@@ -21,6 +22,7 @@
 !.eslintrc
 !.env-cmdrc
 !.eslintignore
+!.npmrc
 !/.github
 
 # upload directory : whole except the index.html and readme.txt
@@ -45,8 +47,8 @@
 /upload/themes/survey/generalfiles/*.*
 !/upload/themes/survey/generalfiles/index.html
 !/upload/themes/survey/index.html
-/upload/themes/question/*.*
-/upload/themes/question/**/*.*
+/upload/themes/question/*
+/upload/themes/question/**/*
 !/upload/themes/question/readme.txt
 /upload/plugins/*
 !/upload/plugins/index.html

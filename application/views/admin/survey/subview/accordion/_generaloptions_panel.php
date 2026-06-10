@@ -4,6 +4,9 @@
  * General options
  * @var AdminController $this
  * @var Survey $oSurvey
+ * @var TemplateConfiguration $themeConf
+ * @var string $inheritedThemeName
+ * @var array $aTemplateList
  */
 $scriptVarsNecessary = "
         var jsonUrl = '';
@@ -319,10 +322,6 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 ]); ?>
             </div>
         </div>
-        <?php
-            $themeConf = TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template === 'inherit') ? $oSurveyOptions->template : $oSurvey->template);
-            $inheritedThemeName = $oSurvey->oOptions->template;
-        ?>
         <!-- Theme -->
         <div class="mb-3" >
             <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
@@ -335,10 +334,9 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         </option>
                     <?php endif; ?>
                     <?php
-                    $aTemplateList = Template::getTemplateList();
-                    foreach ($aTemplateList as $templateName => $folder) {
-                        if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($templateName
-                            ) || $oSurvey->template == htmlspecialchars((string) $templateName)) { ?>
+                    foreach ($aTemplateList as $templateEntry) {
+                        $templateName = $templateEntry['name'];
+                    ?>
                             <option value='<?php echo CHtml::encode($templateName); ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars((string) $templateName) === $themeConf->template_name && $oSurvey->template !== 'inherit') { ?>
                                     selected='selected'
@@ -346,7 +344,6 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                                     selected='selected'
                                 <?php } ?>
                             ><?php echo CHtml::encode($templateName); ?></option>
-                        <?php } ?>
 
                     <?php } ?>
                 </select>

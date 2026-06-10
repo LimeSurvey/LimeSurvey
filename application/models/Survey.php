@@ -361,9 +361,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } else {
             // This code is only necessary since there have been issues in the past with missing language settings.
             $checkIntegrityLink = App()->urlManager->createUrl('/admin/checkintegrity');
-            $errorString = gT('The survey language for one or more surveys could not be found.') . '<br>'
+            $errorString = gT('The texts for one or more survey languages could not be found.') . '<br>'
                 . sprintf(
-                    gT('Please use the %s data integrity %s tool from the top navigation to fix the issue automatically.'),
+                    gT('Please use the %sdata integrity%s tool from the top navigation to fix the issue automatically.'),
                     "<a href='" . $checkIntegrityLink . "'>",
                     '</a>'
                 );
@@ -934,7 +934,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getHasNewEditor(): bool
     {
         return App()->getConfig('editorEnabled')
-            && $this->getTemplateEffectiveName() === 'fruity_twentythree';
+            && Template::isBasedOn($this->getTemplateEffectiveName(), 'fruity_twentythree');
     }
 
     /**

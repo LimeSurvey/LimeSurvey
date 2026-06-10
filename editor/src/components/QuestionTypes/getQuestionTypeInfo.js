@@ -43,10 +43,10 @@ export const getQuestionTypeInfo = () => {
     },
     EQUATION: { type: '*', theme: 'equation', title: t('Equation') },
     GENDER: { type: 'G', theme: 'gender', title: t('Gender') },
-    INCREASE_DECREASE: {
+    INCREASE_SAME_DECREASE: {
       type: 'E',
       theme: 'increasedecrease',
-      title: t('Increase Decrease'),
+      title: t('Array (Increase/Same/Decrease)'),
     },
     LONG_TEXT: {
       type: 'T',

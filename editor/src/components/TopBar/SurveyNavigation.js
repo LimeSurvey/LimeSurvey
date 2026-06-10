@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useMemo } from 'react'
 
 import { useAppState } from 'hooks'
 import { PAGES, STATES, SURVEY_MENU_TITLES } from 'helpers'
 import { getSharingPanels } from 'shared/getSharingPanels'
 import { ToggleButtons } from 'components/UIComponents/Buttons/ToggleButtons'
-import { useMemo } from 'react'
 
 const isActiveMenuItem = (url, location) => {
   if (!url) {

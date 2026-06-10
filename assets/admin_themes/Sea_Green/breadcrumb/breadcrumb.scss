@@ -16,10 +16,13 @@ ol.breadcrumb.title-bar-breadcrumb {
         flex       : 0 1 auto; // Shrink but don't grow
 
         &.active {
-            color       : $breadcrumb-active-color;
-            font-weight : $font-weight-base;
-            white-space : nowrap;
-            flex        : 0 0 auto; // Don't shrink, show full text
+            color         : $breadcrumb-active-color;
+            font-weight   : $font-weight-base;
+            white-space   : nowrap;
+            display       : inline-block;
+            max-width     : $breadcrumb-item-max-width; // Cap width to prevent covering other breadcrumb items
+            overflow      : hidden;
+            text-overflow : ellipsis;
         }
     }
 
@@ -28,6 +31,7 @@ ol.breadcrumb.title-bar-breadcrumb {
         font-weight   : $font-weight-normal;
         padding       : 2px 6px;
         display       : inline-block;
+        max-width     : $breadcrumb-item-max-width; // Cap width so text-overflow:ellipsis triggers
         @include state-border(1px, transparent);
         overflow      : hidden;
         text-overflow : ellipsis;

@@ -20,6 +20,96 @@ class SurveyThemeConfiguration
     }
 
     /**
+     * Returns the theme-related view data (themeConf, inheritedThemeName, aTemplateList)
+     * needed by _generaloptions_panel.php.
+     *
+     * Centralizes logic previously duplicated across multiple controllers.
+     *
+     * @param string|null $surveyTemplate  The survey's current template value (e.g. 'inherit' or a theme name).
+     * @param object|null $surveyOptions   The resolved survey options object (must have ->template property).
+     * @return array{themeConf: TemplateConfiguration, inheritedThemeName: string, aTemplateList: array}
+     */
+    public function getThemeViewData(?string $surveyTemplate, ?object $surveyOptions = null): array
+    {
+        $defaultTheme = \App()->getConfig('defaulttheme');
+        $inheritedThemeName = $surveyOptions->template ?? $defaultTheme;
+
+        $templateName = ($surveyTemplate === 'inherit')
+            ? ($surveyOptions->template ?? $defaultTheme)
+            : ($surveyTemplate ?? $defaultTheme);
+
+        $themeConf = TemplateConfiguration::getInstanceFromTemplateName($templateName);
+
+        $aTemplateList = $this->getAvailableTemplates(null, $templateName);
+
+        return [
+            'themeConf'          => $themeConf,
+            'inheritedThemeName' => $inheritedThemeName,
+            'aTemplateList'      => $aTemplateList,
+        ];
+    }
+
+    /**
+     * Returns the list of available templates for the current user,
+     * optionally filtered to only those that are (or extend from) a given base template.
+     *
+     * Each entry contains 'name' and 'folder'.
+     * Permission checks mirror what _generaloptions_panel.php does:
+     * - global 'templates' read permission, OR
+     * - specific template permission, OR
+     * - the template is the survey's currently assigned template.
+     *
+     * @param string|null $baseTemplateName    If provided, only templates that ARE this template
+     *                                         or inherit from it (directly or transitively) are returned.
+     * @param string|null $currentTemplateName The survey's currently assigned template name.
+     *                                         Always included regardless of permissions.
+     * @return array<int, array{name: string, folder: string}>
+     */
+    public function getAvailableTemplates(?string $baseTemplateName = null, ?string $currentTemplateName = null): array
+    {
+        $allTemplates = Template::getTemplateList();
+        $result = [];
+
+        foreach ($allTemplates as $templateName => $folder) {
+            // Permission check: global permission, template-specific permission, or current survey template
+            $hasPermission = $this->permission->hasGlobalPermission('templates', 'read')
+                || $this->permission->hasTemplatePermission($templateName)
+                || ($currentTemplateName !== null && $templateName === $currentTemplateName);
+
+            if (!$hasPermission) {
+                continue;
+            }
+
+            // If a base template filter is given, check inheritance
+            if ($baseTemplateName !== null && !$this->isBasedOn($templateName, $baseTemplateName)) {
+                continue;
+            }
+
+            $result[] = [
+                'name'   => $templateName,
+                'folder' => $folder,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Checks whether a given template is the specified base template
+     * or extends from it (walks up the full inheritance chain).
+     *
+     * Delegates to Template::isBasedOn().
+     *
+     * @param string $templateName      The template to check.
+     * @param string $baseTemplateName  The base template name to look for.
+     * @return bool
+     */
+    protected function isBasedOn(string $templateName, string $baseTemplateName): bool
+    {
+        return Template::isBasedOn($templateName, $baseTemplateName);
+    }
+
+    /**
      * @param int $surveyId
      * @param array $props properties (in options json string)
      *
@@ -89,6 +179,22 @@ class SurveyThemeConfiguration
         }
         $themeCategoriesAndOptions = TemplateManifest::getOptionAttributes($preparedThemeConfigurationModel->path);
         $themeConfigurationAttributesAndFiles = $preparedThemeConfigurationModel->getOptionPageAttributes();
+
+        // Resolve option image file paths by walking up the inheritance chain
+        if (!empty($themeCategoriesAndOptions['optionAttributes'])) {
+            foreach ($themeCategoriesAndOptions['optionAttributes'] as $key => &$attribute) {
+                if (!empty($attribute['optionimages'])) {
+                    $imageNames = explode('|', $attribute['optionimages']);
+                    $resolvedPaths = [];
+                    foreach ($imageNames as $imageName) {
+                        $resolvedPaths[$imageName] = $preparedThemeConfigurationModel->resolveOptionImagePath($imageName);
+                    }
+                    $attribute['resolvedOptionImagePaths'] = $resolvedPaths;
+                }
+            }
+            unset($attribute);
+        }
+
         if ($themeCategoriesAndOptions['optionsPage'] === 'core') {
             App()->clientScript->registerPackage('themeoptions-core');
             $customThemeOptionsPage = '';

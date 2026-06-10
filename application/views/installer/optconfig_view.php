@@ -26,17 +26,17 @@
     <?php
         $rows = array();
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminLoginName', array('class' => 'form-label ', 'label' => gT("Admin username"), 'autofocus' => 'autofocus')),
-            'description' => gT("This will be the userid by which admin of board will login."),
+            'label' => CHtml::activeLabelEx($model, 'adminLoginName', array('class' => 'form-label ', 'label' => gT("Administrator username"), 'autofocus' => 'autofocus')),
+            'description' => gT("This will be the username of the administrator user and used for logging in."),
             'control' => CHtml::activeTextField($model, 'adminLoginName', array('class' => 'form-control', 'required' => true))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminLoginPwd', array('class' => 'form-label ', 'label' => gT("Admin password"))),
-            'description' => gT("This will be the password of admin user."),
+            'label' => CHtml::activeLabelEx($model, 'adminLoginPwd', array('class' => 'form-label ', 'label' => gT("Administrator password"))),
+            'description' => gT("This will be the password of the administrator user."),
             'control' => CHtml::activePasswordField($model, 'adminLoginPwd', array('class' => 'form-control', 'required' => true))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'confirmPwd', array('class' => 'form-label ', 'label' => gT("Confirm your admin password"))),
+            'label' => CHtml::activeLabelEx($model, 'confirmPwd', array('class' => 'form-label ', 'label' => gT("Confirm your administrator password"))),
             'control' => CHtml::activePasswordField($model, 'confirmPwd', array('class' => 'form-control', 'required' => true))
         );
         $rows[] = array(
