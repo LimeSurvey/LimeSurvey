@@ -63,7 +63,7 @@ class GetQuestionIdPermissionTest extends TestBaseClassWeb
         \Yii::app()->session['loginID'] = self::$userId;
         App()->user->setId(self::$userId);
         /* Check good url but survey without access */
-        $url = $urlMan->createUrl('admin/conditions/sa/index/subaction', array('surveyid' => self::$superadminSurveyId, 'qid' => $superadminQid));
+        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
             $this->fail("User can see question in survey without permission");
@@ -76,7 +76,7 @@ class GetQuestionIdPermissionTest extends TestBaseClassWeb
             throw $exception;
         }
         /* Check good url but survey with access but invalid qid */
-        $url = $urlMan->createUrl('admin/conditions/sa/index/subaction', array('surveyid' => self::$surveyId, 'qid' => $superadminQid));
+        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
             $this->fail("User can see question in survey without permission with other surveyId set.");
