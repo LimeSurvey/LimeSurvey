@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.6 (build 260604) to 6.17.7 (build 260610) June 10, 2026
+-Fixed issue: [security] Hardening CPDB response link deletion (Carsten Schmitz)
+-Fixed issue #CT-1758: Decrypting encrypted responses in the new editor (#5034) (Rami)
+-Fixed issue #20549: [security] SQL Injection in RemoteControl invite_participants and remind_participants (#5031) (Denis Chenu)
+-Fixed issue #20548: [security] Host header injection in password reset (#5032) (Carsten Schmitz)
+#Updated translation: Italian by c_schmitz, drsi.staff, lfanfoni, lfortunato, myliserta, ritapas
+#Updated translation: Italian (Informal) by c_schmitz, ciampix, lfanfoni, murya, myliserta
+#Updated translation: French (France) by b00z00, DenisChenu, GuillaumeZ6, jayce, pasglop
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.17.5 (build 260527) to 6.17.6 (build 260604) June 4, 2026
 -Fixed issue: updates through ComfortUpdate are no longer incorrectly marked as unstable (Patrick Teichmann)
 -Fixed issue: [security] Vulnerability in twig template engine and deprecated twig attribute calls - this fix requires the minimum PHP version to be raised to 8.1. (#5026) (Carsten Schmitz)
