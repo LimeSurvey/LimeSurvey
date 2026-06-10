@@ -6,6 +6,7 @@ namespace ls\tests;
  * Check permission on condition.
  * Usage of LSYii_Application::getQuestionId() and check with LSYii_Application::getSurveyId();
  * @since 2026-06-10
+ * @group security
  */
 
 class GetQuestionIdPermissionTest extends TestBaseClass
@@ -76,7 +77,7 @@ class GetQuestionIdPermissionTest extends TestBaseClass
         $url = $urlMan->createUrl('admin/conditions/sa/index/subaction', array('surveyid' => self::$surveyId, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
-             $this->fail("User can see question in survey without permission with other surveyId set.");
+            $this->fail("User can see question in survey without permission with other surveyId set.");
         } catch (\CException $exception) {
             if ($exception->statusCode == 400) {
                 $this->assertTrue(true);
