@@ -99,18 +99,15 @@ class ConditionsAction extends SurveyCommonAction
      * Main Entry Method.
      *
      * @param string $subaction Given Subaction
-     * @param int $iSurveyID Given Survey ID
-     * @param int $gid Given Group ID
-     * @param int $qid Given Question ID
      *
      * @return void
      * @throws CException
      * @throws CHttpException
      */
-    public function index($subaction, $iSurveyID = null, $gid = null, $qid = null)
+    public function index($subaction)
     {
         $request = Yii::app()->request;
-        $iSurveyID = (int) $iSurveyID;
+        $iSurveyID = LSYii_Application::getSurveyId();
         $imageurl = Yii::app()->getConfig("adminimageurl");
         list($this->iSurveyID, $this->tokenTableExists, $this->tokenFieldsAndNames) = $this->surveyCondition->initialize([
             'iSurveyID' => $iSurveyID
@@ -129,14 +126,9 @@ class ConditionsAction extends SurveyCommonAction
             $subaction = $postSubaction;
         }
 
-        //BEGIN Sanitizing POSTed data
-        $iSurveyID = LSYii_Application::getSurveyId();
         $qid = LSYii_Application::getQuestionId();
+        $gid = LSYii_Application::getGroupId();
 
-        if (!isset($gid)) {
-            $gid = returnGlobal('gid');
-        }
-        $gid = (int) $gid;
         $this->checkPermission($qid, 'read');
         $p_scenario = returnGlobal('scenario');
         $p_cqid = returnGlobal('cqid');
@@ -628,8 +620,8 @@ class ConditionsAction extends SurveyCommonAction
 
 
     /**
-     * @param int $qid
-     * @param int $gid
+     * @param int $qid unused since 7.0.1
+     * @param int $gid unused since 7.0.1
      * @param array $conditionsList
      * @param array $pquestions
      * @return string html
@@ -639,6 +631,7 @@ class ConditionsAction extends SurveyCommonAction
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkgroup.js', LSYii_ClientScript::POS_BEGIN);
         $qid = LSYii_Application::getQuestionId();
+        $gid = LSYii_Application::getGroupId();
         $this->checkPermission($qid, 'read');
         $url = $this->getcontroller()->createUrl(
             '/admin/conditions/sa/index/subaction/copyconditions/',
@@ -676,8 +669,6 @@ class ConditionsAction extends SurveyCommonAction
         /** @var string $p_cquestions */
         /** @var array $p_canswers */
         /** @var string $subaction */
-        /** @var integer $iSurveyID */
-        /** @var integer $gid */
         /** @var integer $qid */
         /** @var integer $qcount */
         /** @var string $p_csrctoken */
@@ -685,7 +676,11 @@ class ConditionsAction extends SurveyCommonAction
         /** @var string $method */
         /** @var string $scenariocount */
         extract($args);
+        $iSurveyID = LSYii_Application::getSurveyId();
         $qid = LSYii_Application::getQuestionId();
+        $gid = LSYii_Application::getGroupId();
+        $this->checkPermission($qid, 'read');
+
         $result = '';
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
@@ -727,7 +722,6 @@ class ConditionsAction extends SurveyCommonAction
             'addConditionToScenarioNr' => Yii::app()->request->getQuery('scenarioNr'),
             'surveyIsAnonymized' => $this->getSurveyIsAnonymized(),
         );
-        $this->checkPermission($qid, 'read');
         $result .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
 
         $scriptResult = ""
@@ -960,13 +954,12 @@ class ConditionsAction extends SurveyCommonAction
     }
 
     /**
-     * @param int $gid Group id
-     * @param int $qid Questino id
      * @return string url
      */
-    public function createNavigatorUrl(int $gid, int $qid): string
+    public function createNavigatorUrl(): string
     {
         $qid = LSYii_Application::getQuestionId();
+        $gid = LSYii_Application::getGroupId();
         $this->checkPermission($qid, 'read');
         return $this->getController()->createUrl(
             '/admin/conditions/sa/index/subaction/editconditionsform/',
