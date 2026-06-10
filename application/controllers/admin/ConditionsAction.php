@@ -126,6 +126,14 @@ class ConditionsAction extends SurveyCommonAction
             $subaction = $postSubaction;
         }
 
+        /* resetsurveylogic didn't need qid, and redirect after logic is reset */
+        if ($subaction == "resetsurveylogic") {
+            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
+                throw new CHttpException(403, gT("Access denied!", 'unescaped'));
+            }
+            $this->resetSurveyLogic($iSurveyID);
+        }
+        /* Other acttion need qid */
         $qid = LSYii_Application::getQuestionId();
         $gid = LSYii_Application::getGroupId();
 
@@ -174,14 +182,6 @@ class ConditionsAction extends SurveyCommonAction
         if (!isset($iSurveyID) || !$iSurveyID) {
             Yii::app()->setFlashMessage(gT('You have not selected a survey'), 'error');
             $this->getController()->redirect(array('admin'));
-        }
-
-        // This will redirect after logic is reset
-        if ($p_subaction == "resetsurveylogic") {
-            if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-                throw new CHttpException(403, gT("Access denied!", 'unescaped'));
-            }
-            $this->resetSurveyLogic($iSurveyID);
         }
 
         // Make sure that there is a qid
