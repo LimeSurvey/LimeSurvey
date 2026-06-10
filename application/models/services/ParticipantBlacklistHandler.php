@@ -119,11 +119,12 @@ class ParticipantBlacklistHandler
         $optedoutSurveyIds = [];
         foreach ($surveys as $survey) {
             if ($survey->hasTokensTable) {
-                $token = \Token::model($survey->sid)->findByAttributes(['participant_id' => $participant->participant_id], "emailstatus <> 'OptOut'");
+                $token = \Token::model($survey->sid)->findByAttributes(['participant_id' => $participant->participant_id], "emailstatus NOT LIKE 'OptOut%' OR emailstatus IS NULL");
                 if (!empty($token)) {
-                    $token->emailstatus = 'OptOut';
-                    $token->save();
-                    $optedoutSurveyIds[] = $survey->sid;
+                    $token->optOut();
+                    if($token->save(true, ['emailstatus'])) {
+                        $optedoutSurveyIds[] = $survey->sid;
+                    }
                 }
             }
         }
