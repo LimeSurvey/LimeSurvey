@@ -67,7 +67,7 @@ export const OptionQuestionEditMode = ({
       >
         {_children?.map((child, index) => (
           <Draggable
-            key={`${child[childrenInfo.idKey]}-choice`}
+            key={`${index}-choice`}
             draggableId={`${child[childrenInfo.idKey]}-choice`}
             index={index}
           >
@@ -146,7 +146,7 @@ export const OptionQuestionEditMode = ({
                           childrenInfo.entity
                         )
                       }
-                      key={`uicomponent-${child[childrenInfo.idKey]}-questionmode`}
+                      key={`uicomponent-${index}-questionmode`}
                       index={index}
                       isFocused={true}
                       idPrefix={isSingleChoiceTheme ? 'a' : 'q'}

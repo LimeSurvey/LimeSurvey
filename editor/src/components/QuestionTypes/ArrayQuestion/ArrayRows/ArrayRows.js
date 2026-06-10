@@ -160,7 +160,7 @@ export const ArrayRows = ({
       >
         {entitiesInfo.items?.map((entity, index) => (
           <Draggable
-            key={`${entity[entitiesInfo.idKey]}${index}-subquestion`}
+            key={`${index}-subquestion`}
             draggableId={`${entity[entitiesInfo.idKey]}${index}-subquestion`}
             index={index}
           >

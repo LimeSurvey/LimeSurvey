@@ -34,7 +34,7 @@ export const RankingQuestionSubquestions = ({
       <DragAndDrop onDragEnd={handleOnDragEnd} droppableId={'droppable'}>
         {subquestions.map((subquestion, index) => (
           <Draggable
-            key={`ranking-${subquestion.parentQid}-${subquestion.qid}`}
+            key={`ranking-${index}`}
             draggableId={`ranking-${subquestion.parentQid}-${subquestion.qid}`}
             index={index}
           >

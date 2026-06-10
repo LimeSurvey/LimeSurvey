@@ -63,7 +63,7 @@ export const RankingAdvancedQuestionSubquestions = ({
       {subquestions.map((subquestion, index) => {
         return (
           <Draggable
-            key={`advanced-subquestion${subquestion.qid}-${index}`}
+            key={`advanced-subquestion-${index}`}
             draggableId={`advanced-subquestion${subquestion.qid}-${index}`}
             index={index}
           >
