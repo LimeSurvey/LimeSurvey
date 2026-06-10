@@ -8,7 +8,6 @@ import { useAppState } from 'hooks'
 export const PreviewButton = ({ survey }) => {
   const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
-  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
 
   const languageNames = allLanguages?.[userDetails?.lang]
 
@@ -28,14 +27,13 @@ export const PreviewButton = ({ survey }) => {
     }))
   }, [survey, surveyLanguages, languageNames])
 
-  const currentLanguage = activeLanguage || survey.language
-
   return (
     <div className="preview-button-wrapper me-2">
       <Button
         className="preview-button p-0 d-flex align-items-center justify-content-center"
         variant="light"
         id="preview-button"
+        aria-label={t('Preview survey')}
       >
         <EyeIcon />
       </Button>
