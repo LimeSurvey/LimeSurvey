@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { format } from 'util'
 import { Button } from '../Buttons'
 import { DoubleGreaterThanArrow, GreaterThanArrow } from 'components/icons'
 import ReactSelect from 'react-select'
@@ -14,6 +15,7 @@ export const PaginationButtons = ({
   canGoPrevPage = false,
   currentPageIndex = 0,
   totalPages = 0,
+  totalResults,
   maxNumberOfButtons = 5,
   pageSize = 10,
 }) => {
@@ -34,110 +36,85 @@ export const PaginationButtons = ({
 
   return (
     <div className="pagination-buttons">
-      <Button
-        className={`pagination-button arrows ${!canGoPrevPage ? 'disabled' : ''}`}
-        variant="outline-dark"
-        onClick={onFirstPageClick}
-        disabled={!canGoPrevPage}
-      >
-        <div className="rotate-180">
-          <DoubleGreaterThanArrow />
+      <div className="pagination-buttons__content">
+        {totalResults != null && (
+          <span className="pagination-buttons__results">
+            {format(t('%s results'), totalResults)}
+          </span>
+        )}
+        <div className="pagination-buttons__nav">
+          <Button
+            className={`pagination-button arrows arrows-left ${!canGoPrevPage ? 'disabled' : ''}`}
+            variant="outline-dark"
+            onClick={onFirstPageClick}
+            disabled={!canGoPrevPage}
+          >
+            <DoubleGreaterThanArrow />
+          </Button>
+          <Button
+            className={`pagination-button arrows arrows-left ${!canGoPrevPage ? 'disabled' : ''}`}
+            variant="outline-dark"
+            onClick={onPrevPageClick}
+            disabled={!canGoPrevPage}
+          >
+            <GreaterThanArrow />
+          </Button>
+          {pageNumbers.map((number) => (
+            <Button
+              key={`pagination-${number}`}
+              onClick={() => OnPageNumberClick(number - 1)}
+              className={`pagination-button page-number ${currentPageIndex + 1 === number ? 'active' : ''}`}
+              variant="outline-dark"
+              active={currentPageIndex + 1 === number}
+            >
+              {number}
+            </Button>
+          ))}
+          <Button
+            className={`pagination-button arrows ${!canGoNextPage ? 'disabled' : ''}`}
+            variant="outline-dark"
+            onClick={onNextPageClick}
+            disabled={!canGoNextPage}
+          >
+            <GreaterThanArrow />
+          </Button>
+          <Button
+            className={`pagination-button arrows ${!canGoNextPage ? 'disabled' : ''}`}
+            variant="outline-dark"
+            onClick={onLastPageClick}
+            disabled={!canGoNextPage}
+          >
+            <DoubleGreaterThanArrow />
+          </Button>
         </div>
-      </Button>
-      <Button
-        className={`pagination-button arrows${!canGoPrevPage ? 'disabled' : ''}`}
-        variant="outline-dark"
-        onClick={onPrevPageClick}
-        disabled={!canGoPrevPage}
-      >
-        <div className="rotate-180">
-          <GreaterThanArrow />
+        <div className="pagination-buttons__page-size">
+          <span>{t('items per page')}</span>
+          <ReactSelect
+            options={[
+              { value: 10, label: 10 },
+              { value: 20, label: 20 },
+              { value: 50, label: 50 },
+              { value: 100, label: 100 },
+            ]}
+            value={{ value: pageSize, label: pageSize }}
+            onChange={({ value }) => onPageSizeChange(value)}
+            className="pagination-select"
+            classNamePrefix="pagination-select"
+            menuPlacement="top"
+            isSearchable={false}
+            theme={(theme) => ({
+              ...theme,
+              colors: {
+                ...theme.colors,
+                primary: '#8146F6',
+              },
+            })}
+            components={{
+              IndicatorSeparator: () => null,
+            }}
+          />
         </div>
-      </Button>
-      {pageNumbers.map((number) => (
-        <Button
-          key={`pagination-${number}`}
-          onClick={() => OnPageNumberClick(number - 1)}
-          className={`pagination-button ${currentPageIndex + 1 === number ? 'active' : ''}`}
-          variant="outline-dark"
-        >
-          {number}
-        </Button>
-      ))}
-
-      <Button
-        className="pagination-button arrows"
-        variant="outline-dark"
-        onClick={onNextPageClick}
-        disabled={!canGoNextPage}
-      >
-        <GreaterThanArrow />
-      </Button>
-      <Button
-        className="pagination-button arrows"
-        variant="outline-dark"
-        onClick={onLastPageClick}
-        disabled={!canGoNextPage}
-      >
-        <DoubleGreaterThanArrow />
-      </Button>
-      <span className="ps-4"> {t('Rows per page')}</span>
-      <ReactSelect
-        options={[
-          { value: 10, label: 10 },
-          { value: 20, label: 20 },
-          { value: 50, label: 50 },
-          { value: 100, label: 100 },
-        ]}
-        defaultValue={{ value: pageSize, label: pageSize }}
-        onChange={({ value }) => onPageSizeChange(value)}
-        className="pagination-select"
-        menuPlacement="top"
-        theme={(theme) => ({
-          ...theme,
-          colors: {
-            ...theme.colors,
-            primary: '#8146F6',
-          },
-        })}
-        components={{
-          IndicatorSeparator: () => null,
-        }}
-        styles={{
-          control: (baseStyles) => ({
-            ...baseStyles,
-            fontWeight: 400,
-            minHeight: 24,
-            minWidth: 60,
-            color: '$g-900',
-            borderColor: '$g-700',
-          }),
-          indicatorsContainer: (baseStyles) => ({
-            ...baseStyles,
-            minHeight: 24,
-          }),
-          dropdownIndicator: (baseStyles) => ({
-            ...baseStyles,
-            padding: 0,
-            color: '$g-900',
-          }),
-          option: (baseStyles) => ({
-            ...baseStyles,
-            whiteSpace: 'normal',
-            wordWrap: 'break-word',
-            zIndex: 9999,
-          }),
-          menu: (baseStyles) => ({
-            ...baseStyles,
-            width: '100%',
-            minWidth: 'min-content',
-            whiteSpace: 'normal',
-            wordWrap: 'break-word',
-            color: '$g-900',
-            zIndex: 99,
-          }),
-        }}
-      />
+      </div>
     </div>
   )
 }
