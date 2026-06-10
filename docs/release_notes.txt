@@ -34,6 +34,99 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.0 (build 260526) to 7.0.1 (build 260611) June 10, 2026
++New feature #12393: Check all boxes at data integrity check (#5038) (Gabriel Jenik)
+-Fixed issue: updates through ComfortUpdate are incorrectly marked as unstable (Patrick Teichmann)
+-Fixed issue: retain focus state on sorting tables (a11y) (#4959) (Anblik Audit Team)
+-Fixed issue: rebuilt editor and added missing JS and CSS files (twilligls)
+-Fixed issue: [security] Vulnerability in twig template engine and deprecated twig attribute calls - this fix requires the minimum PHP version to be raised to 8.1. (#5026) (Carsten Schmitz)
+-Fixed issue: [security] Updated twig template engine and updated deprecated twig attribute calls (#5021) (Carsten Schmitz)
+-Fixed issue: [security] Hardening CPDB response link deletion (Carsten Schmitz)
+-Fixed issue: Survey publish button is always disabled when showXQuestions is off. (ramishenouda)
+-Fixed issue: Survey navigation should only be possible by POST (Carsten Schmitz)
+-Fixed issue: New editor example image not visible when switching (Carsten Schmitz)
+-Fixed issue: A11y tab navigation ARIA structure and correct heading levels for themes page (#4648) (Anblik Audit Team)
+-Fixed issue: A11y role="presentation" added to dropdown-headers (#4837) (Anblik Audit Team)
+-Fixed issue: A11y improvements for the edit labels page (#4864) (Anblik Audit Team)
+-Fixed issue: A11y focusable buttons for action menu in sidebar (#4788) (Anblik Audit Team)
+-Fixed issue: A11y captions for massive actions modals and swap of sr-only class to BS5 equivalent "visually-hidden" (#4933) (Anblik Audit Team)
+-Fixed issue: A11y UserRole form: deterministic IDs and ARIA wiring + UserRole label translations + prevent double encoding (#4847) (Anblik Audit Team)
+-Fixed issue: A11y User management views add localized table captions for screen readers (#4935) (Anblik Audit Team)
+-Fixed issue: A11y Theme tab navigation elements role and aria-selected + Gridview filter inputs now with aria-labels (#4899) (Anblik Audit Team)
+-Fixed issue: A11y Restructure heading and link semantics in topbar (#4907) (Anblik Audit Team)
+-Fixed issue: A11y Modal ARIA attributes and title wiring (#4890) (Anblik Audit Team)
+-Fixed issue: A11y Introducing dynamic caption for screen-readers in massive actions widget (#4926) (Anblik Audit Team)
+-Fixed issue: A11y Improving browser tab labels and navigation clarity by adding dynamic page titles (#4755) (Anblik Audit Team)
+-Fixed issue: A11y Improved user role gridview (#4852) (Anblik Audit Team)
+-Fixed issue: A11y Improved screen reader support and semantic structure, better keyboard navigation for tabs in label sets (#4862) (Anblik Audit Team)
+-Fixed issue: A11y Improved modal dialog accessibility and keyboard navigation for massive actions  (#4819) (Anblik Audit Team)
+-Fixed issue: A11y Improved focus retention in survey list grids when sorting columns (#4760) (Anblik Audit Team)
+-Fixed issue: A11y Improved accessibility semantics for multiple modals (#4875) (Anblik Audit Team)
+-Fixed issue: A11y Improved accessibility of the confirmation modal (#4948) (Anblik Audit Team)
+-Fixed issue: A11y Enhances accessibility across user management views (#4913) (Anblik Audit Team)
+-Fixed issue: A11y Enhanced screen reader and assistive technology compatibility across admin interface elements, including label management, language selection, and theme configuration pages (#4901) (Anblik Audit Team)
+-Fixed issue: A11y Enhanced (massive actions) modal dialogs with proper ARIA attributes to improve screen reader compatibility (#4796) (#4800) (Anblik Audit Team)
+-Fixed issue: A11y Enabled keyboard control for nav-tabs (#4833) (Anblik Audit Team)
+-Fixed issue: A11y Added ARIA attributes and a stable title id to the panel-integration-parameter modal and added ariaLabel to two ButtonGroupWidget usages in the quotas form  (#4765) (Anblik Audit Team)
+-Fixed issue: A11y Accessibility Enhancements for tabs in admin token views (#4770) (Anblik Audit Team)
+-Fixed issue: A11y ARIA role attribute updates for label sets (#4861) (Anblik Audit Team)
+-Fixed issue #CT-1758: Decrypting encrypted in responses page in the new editor (#5034) (Rami)
+-Fixed issue #AT-2070: Slowdown in sidebar when accessing content in core app (#5017) (Patrick Teichmann)
+-Fixed issue #AT-2069: Active breadcrumb breaking layout (#5024) (Stefan K)
+-Fixed issue #AT-2067: Wrong representation of some array questions inside the results list (#5018) (Rami S. Zaki)
+-Fixed issue #AT-2064: Corner radius icons of theme options missing for extended themes (#5013) (Tim Willig)
+-Fixed issue #AT-1990: Allow custom themes based on fruity23 for new editor (#5003) (Tim Willig)
+-Fixed issue #AT-1983: Added check logic functionality to react (#4998) (Stefan K)
+-Fixed issue #AT-1957: Block non-create operations with tempId to ensure proper handling of operations (#5041) (Rami S. Zaki)
+-Fixed issue #AT-1941: Condition designer style update (#4974) (Rami S. Zaki)
+-Fixed issue #AT-1774: User should be able to select multiple items across different response pages (react app) (#5011) (Rami S. Zaki)
+-Fixed issue #20549: [security] SQL Injection in RemoteControl invite_participants and remind_participants (#5031) (Denis Chenu)
+-Fixed issue #20548: [security] Host header injection in password reset (#5032) (Carsten Schmitz)
+-Fixed issue #20542: Expression .question not set for file upload question type (#5012) (Denis Chenu)
+-Fixed issue #20541: Unauthorized access when navigating to react editor on apache environments (#5029) (Patrick Teichmann)
+-Fixed issue #20503: Using quick add for multilingual label sets fails on save (#4968) (Gabriel Jenik)
+-Fixed issue #20500: Some files in upload shown in git diff (Carsten Schmitz)
+-Fixed issue #20498: Condition expression are not updated when use regenerate (#4989) (Denis Chenu)
+-Fixed issue #20489: [security] Publicly reachable file upload via RemoteControl API (#4889) (Denis Chenu)
+-Fixed issue #20477: Type C description matches rendered Yes/Uncertain/No order (#4953) (Clyde)
+-Fixed issue #20321: Question group shows as a blank group if it contains one question with no relevant subquestions (#4996) (Denis Chenu)
+-Fixed issue #20320: Subquestion validation equation is applied to subquestions that are not relevant (#4993) (Denis Chenu)
+-Fixed issue #20138: ComfortUpdate does not sufficiently check if existing files can be modified (#5005) (Carsten Schmitz)
+-Fixed issue #19545: Unable to check Expression error in quota text (Carsten Schmitz)
+#Updated translation: Valencian by c_schmitz, joamuran, sergarb1, valdomir, vbraque
+#Updated translation: Spanish (Spain) by ireneoh
+#Updated translation: Spanish (Spain) by aesteban, artasom, atavei, c_schmitz, diegor, Gronnd, Ignacio, ireneoh, jmlopez, jparis, larjona, naiara.maya, Nodens, oleggorfinkel, perexat, segui, twilllig, valdomir, xastrefernando, xtingray
+#Updated translation: Spanish (Spain) by aesteban, artasom, atavei, c_schmitz, Ignacio, ireneoh, jmlopez, jparis, larjona, naiara.maya, Nodens, oleggorfinkel, perexat, segui, valdomir, xastrefernando, xtingray
+#Updated translation: Russian by vipgroup
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Papiamento (Curaçao and Bonaire) by indigoblueconsult
+#Updated translation: Italian by c_schmitz, drsi.staff, lfanfoni, lfortunato, myliserta, ritapas
+#Updated translation: Italian (Informal) by c_schmitz, ciampix, lfanfoni, murya, myliserta
+#Updated translation: German by c_schmitz
+#Updated translation: German by actxcellence, c_schmitz, Joffm
+#Updated translation: German by actxcellence, assistedmindfulness, c_schmitz, eddylackmann, Joffm, Liam, mfaber
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz, HonkXL, richterd
+#Updated translation: French (France) by b00z00, DenisChenu, GuillaumeZ6, jayce, pasglop
+#Updated translation: French (France) by DenisChenu, fgervais
+#Updated translation: French (France) by AnneSophieB, DenisChenu, fgervais, mapage, riqcles
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han, kpadm, L191, mdekker, MrP
+#Updated translation: Dutch by c_schmitz, Han, MrP
+#Updated translation: Dutch by Han, zfocuz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch by BloomingPrime, Han, twilllig
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Dutch (Informal) by atvoogt, c_schmitz, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch (Informal) by Aanouk, c_schmitz, Han, zfocuz
+#Updated translation: Dutch (Informal) by Aanouk, BloomingPrime, Han, twilllig
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 6.17.6 (build 260604) to 6.17.7 (build 260610) June 10, 2026
 -Fixed issue: [security] Hardening CPDB response link deletion (Carsten Schmitz)
 -Fixed issue #CT-1758: Decrypting encrypted responses in the new editor (#5034) (Rami)
