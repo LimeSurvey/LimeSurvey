@@ -107,14 +107,13 @@ class ImportExportIrrelevantTest extends TestBaseClassWeb
             $confirmExportButton->click();
 
             $exportedSurveyFile = ROOT . '/tmp/survey_archive_' . self::$surveyId . '.lsa';
-            // We need to give it time to export. To avoid sleeping for too long, we will wait for 1 second up to 10 times.
-            for ($i = 0; $i < 10; $i++) {
-                if (file_exists($exportedSurveyFile)) {
-                    break;
-                }
-                sleep(1);
-            }
-            $this->assertTrue(file_exists($exportedSurveyFile));
+            self::$webDriver->wait(10, 1000)->until(
+                function () use ($exportedSurveyFile) {
+                    return file_exists($exportedSurveyFile);
+                },
+                'Export file was not created within 10 seconds'
+            );
+            $this->assertFileExists($exportedSurveyFile);
 
             // Import LSA
             self::importSurvey($exportedSurveyFile);

@@ -86,7 +86,7 @@
             <li role="separator" class="dropdown-divider"></li>
 
             <!-- Survey logic overview -->
-            <li class="dropdown-header"><?php eT("Survey logic overview"); ?></li>
+            <li class="dropdown-header" role="presentation"><?php eT("Survey logic overview"); ?></li>
 
             <!-- Base language -->
             <li>
@@ -138,7 +138,7 @@
         <li role="separator" class="dropdown-divider"></li>
 
         <!-- Regenerate question codes -->
-        <li class="dropdown-header">
+        <li class="dropdown-header" role="presentation">
             <?php eT("Regenerate question codes"); ?>
         </li>
 
@@ -166,7 +166,7 @@
             <?php if ($menuItem->isDivider()) : ?>
                 <li class="dropdown-divider"></li>
             <?php elseif ($menuItem->isSmallText()) : ?>
-                <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
+                <li class="dropdown-header" role="presentation"><?php echo $menuItem->getLabel(); ?></li>
             <?php else : ?>
                 <li>
                     <a class="dropdown-item" href="<?php echo $menuItem->getHref(); ?>">
