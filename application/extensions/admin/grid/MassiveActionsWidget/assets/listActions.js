@@ -47,7 +47,7 @@ var onClickListAction =  function (e) {
     var onSuccess      = $that.data('on-success');
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
     var $grididvalue   = $gridid.attr('id');
-    var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
+    var $oCheckedItems = LS.gridSelection.getAll($grididvalue); // All pages, not just current
     $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType     = $that.data('actionType');   
     var selectedList   = $(".selected-items-list");
@@ -77,7 +77,7 @@ var onClickListAction =  function (e) {
     // TODO : Switch case "redirection (with 2 type; post or fill session)"
     if(actionType == "redirect")
     {
-        $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
+        $oCheckedItems = LS.gridSelection.getAll($grididvalue); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
             'target': $that.data('target') ?? '_blank',
@@ -112,7 +112,7 @@ var onClickListAction =  function (e) {
 
     // Set window location href. Used by download files in responses list view.
     if (actionType == 'window-location-href') {
-        var $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
+        var $oCheckedItems = LS.gridSelection.getAll($grididvalue); // So we can join
         console.log('href = ...');
         window.location.href = $actionUrl + $oCheckedItems.join(',');
         return;
@@ -182,6 +182,7 @@ var onClickListAction =  function (e) {
 
         if ($that.data('grid-reload') == "yes")
         {
+            LS.gridSelection.clear($grididvalue);              // Reset persisted selection
             $gridid.yiiGridView('update');                         // Update the surveys list
             setTimeout(function(){
                 $(document).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
