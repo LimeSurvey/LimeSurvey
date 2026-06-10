@@ -20,6 +20,7 @@ echo viewHelper::getViewTestTag('roles');
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'RoleControl--identity-gridPanel',
+                    'caption' => gT('User roles'),
                     'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
@@ -31,16 +32,24 @@ echo viewHelper::getViewTestTag('roles');
                     'pager' => [
                         'class' => 'application.extensions.admin.grid.CLSYiiPager',
                     ],
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                        . sprintf(
+                    'summaryText' => html_entity_decode(
+                        gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+                        '<span id="RoleControl--identity-gridPanel-rows-per-page-label">' .
+                        sprintf(
                             gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
                                 App()->params['pageSizeOptions'],
-                                array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
+                                [
+                                    'class' => 'changePageSize form-select',
+                                    'style' => 'display: inline; width: auto',
+                                    'aria-labelledby' => 'RoleControl--identity-gridPanel-rows-per-page-label',
+                                ]
                             )
-                        ),
+                        ) .
+                        '</span>'
+                    ),
                 ]
             );
             ?>

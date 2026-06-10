@@ -1,5 +1,5 @@
 <div id="help-button-dropup" class="dropup">
-    <button type="button" aria-label="<?php echo CHtml::encode(gT('Useful resources')); ?>" class="btn btn-black60 btn-circle" data-bs-toggle="dropdown" aria-expanded="false">
+    <button type="button" aria-label="<?php echo gT('Useful resources'); ?>" class="btn btn-black60 btn-circle" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="ri-questionnaire-line remix-xl"></i>
     </button>
     <ul class="dropdown-menu">

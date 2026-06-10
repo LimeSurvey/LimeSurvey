@@ -33,7 +33,6 @@ class LSBaseController extends LSYii_Controller
         //REFACTORING we have to set the main layout here (it's in /view/layouts/main)
         $this->layout = 'main';
 
-        App()->getComponent('bootstrap');
         $this->sessionControl();
 
         $this->userId = Yii::app()->user->getId();
@@ -69,7 +68,7 @@ class LSBaseController extends LSYii_Controller
             Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));
         } // for html editor integration
 
-        // This line is needed for template editor to work
+        // we load the AdminTheme
         AdminTheme::getInstance();
 
         Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));

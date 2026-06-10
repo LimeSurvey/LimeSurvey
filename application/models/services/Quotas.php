@@ -219,6 +219,7 @@ class Quotas
                 $oQuotaLanguageSetting->attributes = $settingAttributes;
                 $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
                 $oQuotaLanguageSetting->quotals_language = $language;
+                $oQuotaLanguageSetting->quotals_name = $oQuota->name ?? '';
 
                 //Clean XSS - Automatically provided by CI
                 $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");
@@ -256,6 +257,7 @@ class Quotas
             foreach ($_POST['QuotaLanguageSetting'] as $language => $settingAttributes) {
                 $oQuotaLanguageSetting = $oQuota->languagesettings[$language];
                 $oQuotaLanguageSetting->attributes = $settingAttributes;
+                $oQuotaLanguageSetting->quotals_name = $oQuota->name ?? '';
 
                 //Clean XSS - Automatically provided by CI
                 $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");

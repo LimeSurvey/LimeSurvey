@@ -258,6 +258,7 @@ class ThemeOptionsController extends LSBaseController
                 'aResults'     => $aResults,
                 'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels,
+                'caption'      => gT('Selected themes'),
             )
         );
     }

@@ -33,7 +33,6 @@ use LimeSurvey\Yii\Application\AppErrorHandler;
 * @property CWebUser $user The user session information.
 * @property LSETwigViewRenderer $twigRenderer Twig rendering plugin
 * @property PluginManager $pluginManager The LimeSurvey Plugin manager
-* @property TbApi $bootstrap The bootstrap renderer
 * @property CHttpSession $session The HTTP session
 *
 */
@@ -163,6 +162,12 @@ class LSYii_Application extends CWebApplication
             $securityConfig = require($configdir . '/security.php');
             if (is_array($securityConfig)) {
                 $this->config = array_merge($this->config, $securityConfig);
+            }
+        }
+        if (file_exists($configdir . '/allowed_hosts.php')) {
+            $allowedHostsConfig = require($configdir . '/allowed_hosts.php');
+            if (is_array($allowedHostsConfig)) {
+                $this->config = array_merge($this->config, $allowedHostsConfig);
             }
         }
         if (file_exists($configdir .  '/config.php')) {
