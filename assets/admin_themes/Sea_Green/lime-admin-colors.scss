@@ -866,15 +866,6 @@ fieldset[disabled] {
         border: 1px solid $grape;
       }
     }
-
-    .disabled > a {
-      color: $gray-15;
-
-      &:hover,
-      &:focus {
-        color: $gray-15;
-      }
-    }
   }
 }
 @keyframes notification-pulse {

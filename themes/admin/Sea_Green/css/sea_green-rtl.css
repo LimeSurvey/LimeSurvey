@@ -15758,12 +15758,7 @@ fieldset[disabled] .form-control {
   color: #35363f;
   background-color: #EEEFF7;
 }
-.notification-list > li > a:focus {
-  color: #35363f;
-  background-color: #fff;
-  border: 1px solid #8146F6;
-}
-.notification-list > li > a:active {
+.notification-list > li > a:focus, .notification-list > li > a:active {
   color: #35363f;
   background-color: #fff;
   border: 1px solid #8146F6;
@@ -15773,29 +15768,10 @@ fieldset[disabled] .form-control {
   background-color: #fff;
   border: 1px solid #8146F6;
 }
-.notification-list > .active > a:hover {
+.notification-list > .active > a:hover, .notification-list > .active > a:focus, .notification-list > .active > a:active {
   color: #35363f;
   background-color: #fff;
   border: 1px solid #8146F6;
-}
-.notification-list > .active > a:focus {
-  color: #35363f;
-  background-color: #fff;
-  border: 1px solid #8146F6;
-}
-.notification-list > .active > a:active {
-  color: #35363f;
-  background-color: #fff;
-  border: 1px solid #8146F6;
-}
-.notification-list > .disabled > a {
-  color: #858585;
-}
-.notification-list > .disabled > a:hover {
-  color: #858585;
-}
-.notification-list > .disabled > a:focus {
-  color: #858585;
 }
 
 @keyframes notification-pulse {
