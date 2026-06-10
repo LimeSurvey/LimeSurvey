@@ -121,8 +121,8 @@ class CLSGridView extends TbGridView
             $definedFunction = ($this->afterAjaxUpdate instanceof CJavaScriptExpression)
                 ? (string) $this->afterAjaxUpdate // has a __toString magic function which returns the code
                 : $this->afterAjaxUpdate;
-            // execute the defined function with the supplied (id, data) from the wrapper function(id, data){}
-            $parts[] = '(' . $definedFunction . ')(id, data);';
+            // execute the defined function preserving `this` context from the grid settings object
+            $parts[] = '(' . $definedFunction . ').call(this, id, data);';
         }
 
         // Add per-grid custom snippets from lsAfterAjaxUpdate
