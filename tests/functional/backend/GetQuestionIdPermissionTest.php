@@ -9,7 +9,7 @@ namespace ls\tests;
  * @group security
  */
 
-class GetQuestionIdPermissionTest extends TestBaseClass
+class GetQuestionIdPermissionTest extends TestBaseClassWeb
 {
     /**
      * @var integer $userId
