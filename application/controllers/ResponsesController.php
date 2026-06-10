@@ -117,7 +117,7 @@ class ResponsesController extends LSBaseController
     public function actionView(int $surveyId, int $id, string $browseLang = ''): void
     {
 
-        // logging for webserver when parameter is somehting like $surveyid=125<script ...
+        // logging for webserver when parameter is something like $surveyid=125<script ...
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
@@ -129,7 +129,7 @@ class ResponsesController extends LSBaseController
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
-            App()->end(); // More clear, uneeded.
+            App()->end(); // More clear, unneeded.
         }
         /* TODO : Check if response still exist, after checking survey */
         $aData = $this->getData($surveyId, $id, $browseLang);
@@ -145,7 +145,7 @@ class ResponsesController extends LSBaseController
         // We just check it again here to be sure.
         $exist = SurveyDynamic::model($surveyId)->exist($id);
         if (!$exist) {
-            throw new CHttpException(404, gT("Invalid response id."));
+            throw new CHttpException(404, gT("Invalid response ID"));
         }
         $next = SurveyDynamic::model($surveyId)->next($id, true);
         $previous = SurveyDynamic::model($surveyId)->previous($id, true);
@@ -354,6 +354,14 @@ class ResponsesController extends LSBaseController
                 } else {
                     $answervalue = "";
                 }
+            } elseif (
+                in_array($fnames[$i][0], ['startdate', 'datestamp', 'submitdate'])
+                && !in_array($aResult[$fnames[$i][0]], [null, '', 'N'], true)
+            ) {
+                $date = $aResult[$fnames[$i][0]];
+                $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+                $date = new Date_Time_Converter(getDateOfUTC($date), "Y-m-d H:i:s");
+                $answervalue = $date->convert($dateformatdetails['phpdate'] . " H:i:s");
             } else {
                 $answervalue = htmlspecialchars(
                     viewHelper::flatten(
@@ -410,7 +418,7 @@ class ResponsesController extends LSBaseController
     {
         // Force it to accept `surveyid` as well, to maintain consistency with other menu entries.
         $surveyId = !empty($surveyId) ? $surveyId : (!empty($surveyid) ? $surveyid : null);
-        // logging for webserver when parameter is somehting like $surveyid=125<script ...
+        // logging for webserver when parameter is something like $surveyid=125<script ...
         if (!is_numeric($surveyId)) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
@@ -462,8 +470,8 @@ class ResponsesController extends LSBaseController
             }
 
             // Model filters
-            if (isset($_SESSION['survey_' . $surveyId])) {
-                $sessionSurveyArray = App()->session->get('survey_' . $surveyId);
+            if (isset($_SESSION['responses_' . $surveyId])) {
+                $sessionSurveyArray = App()->session->get('responses_' . $surveyId);
                 $visibleColumns = $sessionSurveyArray['filteredColumns'] ?? null;
                 if (!empty($visibleColumns)) {
                     $model->setAttributes($visibleColumns, false);
@@ -490,7 +498,7 @@ class ResponsesController extends LSBaseController
             }
 
             // Sets which columns to filter
-            $filteredColumns = !empty(isset($_SESSION['survey_' . $surveyId]['filteredColumns'])) ? $_SESSION['survey_' . $surveyId]['filteredColumns'] : null;
+            $filteredColumns = !empty(isset($_SESSION['responses_' . $surveyId]['filteredColumns'])) ? $_SESSION['responses_' . $surveyId]['filteredColumns'] : null;
             $aData['filteredColumns'] = $filteredColumns;
 
             // rendering
@@ -582,9 +590,9 @@ class ResponsesController extends LSBaseController
                             $aFilteredColumns[] = $sColumn;
                         }
                     }
-                    $_SESSION['survey_' . $surveyId]['filteredColumns'] = $aFilteredColumns;
+                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = $aFilteredColumns;
                 } else {
-                    $_SESSION['survey_' . $surveyId]['filteredColumns'] = [];
+                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = [];
                 }
             }
         }
@@ -802,12 +810,12 @@ class ResponsesController extends LSBaseController
      * Delete all uploaded files for one response.
      *
      * @param int $surveyId
-     * @param int|null $responseId
+     * @param ?int $responseId
      * @return void
      * @throws CException
      * @throws CHttpException
      */
-    public function actionDeleteAttachments(int $surveyId, int $responseId = null): void
+    public function actionDeleteAttachments(int $surveyId, ?int $responseId = null): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -905,17 +913,17 @@ class ResponsesController extends LSBaseController
             }
 
             if ($fielddetails['type'] === 'page_time') {
-                $fnames[] = [$fielddetails['fieldname'], gT('Group') . ": " . $fielddetails['group_name']];
+                $fnames[] = [$fielddetails['fieldname'], sprintf(gT('Group: %s'), $fielddetails['group_name'])];
                 $aData['columns'][] = [
-                    'header' => gT('Group: ') . $fielddetails['group_name'],
+                    'header' => sprintf(gT('Group: %s'), $fielddetails['group_name']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
 
             if ($fielddetails['type'] === 'answer_time') {
-                $fnames[] = [$fielddetails['fieldname'], gT('Question') . ": " . $fielddetails['title']];
+                $fnames[] = [$fielddetails['fieldname'], sprintf(gT('Question: %s'), $fielddetails['title'])];
                 $aData['columns'][] = [
-                    'header' => gT('Question: ') . $fielddetails['title'],
+                    'header' => sprintf(gT('Question: %s'), $fielddetails['title']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
@@ -1077,7 +1085,7 @@ class ResponsesController extends LSBaseController
         if (!empty($responseId)) {
             /* Check if exists  */
             if (empty(SurveyDynamic::model($surveyId)->findByPk($responseId))) {
-                throw new CHttpException(404, gT("Invalid response id."));
+                throw new CHttpException(404, gT("Invalid response ID"));
             }
             $aData['iId'] = $responseId;
         }

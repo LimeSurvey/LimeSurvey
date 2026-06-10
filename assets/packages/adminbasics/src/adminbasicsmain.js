@@ -2,7 +2,7 @@
  * JavaScript functions for LimeSurvey administrator
  *
  * This file is part of LimeSurvey
- * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -46,6 +46,8 @@ import createUrl from './parts/createUrl';
 import saveBindings from './parts/save';
 import parameterGlobals from './parts/parameterGlobals';
 import focusStatusMessage from './accessibility/statusMessageFocus';
+import dismissTooltipsOnEscapePress from './accessibility/dismissTooltipsOnEscapePress';
+import tabsControl from './accessibility/tabsControl';
 
 // import components
 import activateSubSubMenues from './components/bootstrap-sub-submenues';
@@ -93,6 +95,8 @@ const AdminCore = function(){
             appendToLoad(globalWindowMethods.fixAccordionPosition);
             appendToLoad(globalWindowMethods.doSelect2);
             appendToLoad(focusStatusMessage, 'pjax:scriptcomplete ready ajaxStop');
+            appendToLoad(tabsControl, 'pjax:scriptcomplete ready ajaxStop');
+            dismissTooltipsOnEscapePress();
         },
         appendToLoad = (fn, event, root, delay) => {
             event = event || 'pjax:scriptcomplete ready';

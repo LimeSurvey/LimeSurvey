@@ -50,7 +50,6 @@
  * @property string $showprogress
  * @property integer $questionindex
  * @property integer $navigationdelay
- * @property string $nokeyboard
  * @property string $alloweditaftercompletion
  * @property string $ipanonymize
  */
@@ -69,7 +68,7 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesInteger  = array('owner_id', 'tokenlength', 'questionindex', 'navigationdelay');
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
-                                                'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard',
+                                                'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress',
                                                 'alloweditaftercompletion', 'showregisterpolicy', 'showtokenpolicy', 'crypt_method');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
 
@@ -104,7 +103,7 @@ class SurveysGroupsettings extends LSActiveRecord
             array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('crypt_method', 'in', 'range' => array('B', 'H', 'I'), 'allowEmpty' => false),
             array('admin', 'length', 'max' => 50),
-            array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
+            array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, alloweditaftercompletion, ipanonymize', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
             array('template', 'length', 'max' => 100),
             array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
@@ -116,7 +115,7 @@ class SurveysGroupsettings extends LSActiveRecord
 			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence,
 			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto,
 			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress,
-			questionindex, showregisterpolicy, showtokenpolicy, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
+			questionindex, showregisterpolicy, showtokenpolicy, navigationdelay, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
 
@@ -191,11 +190,10 @@ class SurveysGroupsettings extends LSActiveRecord
             'showprogress' => 'Showprogress',
             'questionindex' => 'Questionindex',
             'navigationdelay' => 'Navigationdelay',
-            'nokeyboard' => 'Nokeyboard',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
             'crypt_method' => 'Crypt method',
             'showregisterpolicy' => gT("Show privacy policy on register form"),
-            'showtokenpolicy' => gT("Show privacy policy on token form"),
+            'showtokenpolicy' => gT("Show privacy policy on access code form"),
         );
     }
 
@@ -260,7 +258,6 @@ class SurveysGroupsettings extends LSActiveRecord
         $criteria->compare('showprogress', $this->showprogress, true);
         $criteria->compare('questionindex', $this->questionindex);
         $criteria->compare('navigationdelay', $this->navigationdelay);
-        $criteria->compare('nokeyboard', $this->nokeyboard, true);
         $criteria->compare('alloweditaftercompletion', $this->alloweditaftercompletion, true);
         $criteria->compare('crypt_method', $this->crypt_method, true);
         $criteria->compare('showregisterpolicy', $this->showregisterpolicy, true);
@@ -339,7 +336,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->optionAttributes = new stdClass();
             } else {
                 $instance = $model;
-                $instance->optionAttributes = array_keys($model->attributes);
+                $instance->optionAttributes = $model->attributeNames();
                 // unset gsid
                 unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
             }

@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
             ],
             true
         );
-        ?>
+            ?>
     </div>
 
     <h2 class="summary-title mt-4 pb-2 mb-3"><?php eT("Response summary"); ?></h2>
@@ -49,7 +49,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 ],
                 true
             );
-            ?>
+                                                                                                                                                        ?>
         </div>
         <div id="notSubmittedResponses" class="tab-pane row">
             <?php echo $this->renderPartial(
@@ -60,7 +60,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 ],
                 true
             );
-            ?>
+?>
         </div>
     </div>
 

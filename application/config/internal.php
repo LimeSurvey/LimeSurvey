@@ -16,10 +16,7 @@ if (!file_exists(dirname(__FILE__) . '/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 
-if (!date_default_timezone_set(@date_default_timezone_get())) {
-    date_default_timezone_set('Europe/London');
-}
-
+date_default_timezone_set('UTC'); 
 
 if (function_exists('mb_internal_encoding')) {
     // Needed to substring arabic etc
@@ -48,6 +45,7 @@ $internalConfig = array(
         'node_modules_decimal' => realpath(__DIR__ . '/../../node_modules/decimal.js'),
         'node_modules_jquery_actual' => realpath(__DIR__ . '/../../node_modules/jquery.actual'),
         'node_modules.chartjs' => realpath(__DIR__ . '/../../node_modules/chart.js/dist'),
+        'node_modules.moment.min' => realpath(__DIR__ . '/../../node_modules/moment/min'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
         'fonts' => realpath(__DIR__ . '/../../assets/fonts'),
 
@@ -105,7 +103,6 @@ $internalConfig = array(
         'yiistrap_fork.widgets.*',
         'yiistrap_fork.helpers.*',
         'yiistrap_fork.behaviors.*',
-        'yiistrap_fork.components.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'vendor.Twig.*',
         'vendor.sodium.*',
@@ -115,10 +112,6 @@ $internalConfig = array(
     ),
     'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
-        // yiistrap_fork configuration
-        'bootstrap5' => array(
-            'class' => 'yiistrap_fork.components.TbApi',
-        ),
         // yiiwheels configuration
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',
@@ -248,7 +241,7 @@ $internalConfig = array(
                 '\Twig\Extension\SandboxExtension',
                 '\Twig\Extension\StringLoaderExtension',
                 '\Twig\Extension\DebugExtension',
-                // 'Twig_Extension_Escaper' // In the future, this extenstion could be use to build a powerfull XSS filter
+                // 'Twig_Extension_Escaper' // In the future, this extension could be used to build a powerful XSS filter
             ),
             'globals' => array(
                 'html' => 'CHtml'
@@ -289,7 +282,7 @@ $internalConfig = array(
                 'getLanguageRTL'          => 'LS_Twig_Extension::getLanguageRTL',
 
                 'intval'                  => 'intval',
-                'empty'                   => 'empty',
+                'empty'                   => 'LS_Twig_Extension::isEmpty',
                 'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
                 'strip_tags'              => 'strip_tags',
@@ -300,7 +293,7 @@ $internalConfig = array(
                 'getPost'                 => 'LS_Twig_Extension::getPost',
                 'getParam'                => 'LS_Twig_Extension::getParam',
                 'getQuery'                => 'LS_Twig_Extension::getQuery',
-                'isset'                   => 'isset',
+                'isset'                   => 'LS_Twig_Extension::isSet',
                 'assetPublish'            => 'LS_Twig_Extension::assetPublish',
                 'image'                   => 'LS_Twig_Extension::image',
                 'imageSrc'                => 'LS_Twig_Extension::imageSrc',
@@ -369,7 +362,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
-                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'crypt_method', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions', 'isListPublic', 'sSurveyUrl', 'localizedTitle'),
+                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'alloweditaftercompletion', 'crypt_method', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions', 'isListPublic', 'sSurveyUrl', 'localizedTitle'),
                     'SurveyLanguageSetting' => array('surveyls_description', 'surveyls_welcometext', 'surveyls_endtext', 'surveyls_policy_notice', 'surveyls_policy_error', 'surveyls_policy_notice_label', 'surveyls_title'),
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'relevance', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid', 'questionType', 'questionl10ns', 'survey', 'text', 'scenario', 'answer', 'code', 'comment'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance'),

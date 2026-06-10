@@ -51,7 +51,7 @@ Yii::app()->getController()->renderPartial(
                 'id'            => 'expires',
                 'value'         => $oUser->expires ? date(
                     $dateformatdetails['phpdate'] . " H:i",
-                    strtotime((string) $oUser->expires)
+                    strtotime((string) getDateOfUTC($oUser->expires))
                 ) : '',
                 'pluginOptions' => [
                     'format'           => $dateformatdetails['jsdate'] . " HH:mm",
@@ -79,15 +79,14 @@ Yii::app()->getController()->renderPartial(
     <?php else: ?>
         <div class="mb-3" id="utility_set_password">
             <div class="col-6">
-                <label><?= gT("Set password now?") ?></label>
+                <label id="UserManagement--set_password_grouplabel"><?= gT("Set password now?") ?></label>
             </div>
-            <div class="btn-group col-6" data-bs-toggle="buttons">
+            <div class="btn-group col-6" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="UserManagement--set_password_grouplabel">
                 <input class="btn-check" type="radio" id="utility_set_password_yes" name="preset_password" value="1">
                 <label for="utility_set_password_yes" class="btn btn-outline-secondary col-xs-6">
                     <?= gT("Yes") ?>
                 </label>
-                <input class="btn-check" type="radio" id="utility_set_password_no" checked="checked"
-                       name="preset_password" value="0">
+                <input class="btn-check" type="radio" id="utility_set_password_no" name="preset_password" value="0" checked="checked">
                 <label for="utility_set_password_no" class="btn btn-outline-secondary col-xs-6">
                     <?= gT("No") ?>
                 </label>
@@ -126,10 +125,10 @@ Yii::app()->getController()->renderPartial(
         </div>
         <?php if ($oUser->isNewRecord) { ?>
             <div class="mb-3">
-                <label class="form-label">
+                <label class="form-label" for="random_example_password">
                     <?= gT('Random password (suggestion):') ?>
                 </label>
-                <input type="text" class="form-control" readonly name="random_example_password"
+                <input type="text" class="form-control" readonly name="random_example_password" id="random_example_password"
                        value="<?= htmlspecialchars((string) $randomPassword) ?>"/>
             </div>
         <?php } ?>

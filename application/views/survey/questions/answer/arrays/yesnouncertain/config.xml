@@ -5,7 +5,7 @@
     <metadata>
         <name>arrays/yesnouncertain</name>
         <type>question_theme</type>
-        <title>Array (Yes/No/Uncertain)</title>
+        <title>Array (Yes/Uncertain/No)</title>
         <creationDate>09/08/2018</creationDate>
         <author>LimeSurvey GmbH</author>
         <authorEmail>info@limesurvey.org</authorEmail>
@@ -14,7 +14,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>1</apiVersion>
-        <description>Array (Yes/No/Uncertain) question type configuration</description>
+        <description>Array (Yes/Uncertain/No) question type configuration</description>
         <questionType>C</questionType>
         <group>Arrays</group>
         <subquestions>1</subquestions>
@@ -27,6 +27,8 @@
     <compatibility>
         <version>4.0</version>
         <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
     </compatibility>
 
     <!--

@@ -15,6 +15,10 @@ if (\PHP_VERSION_ID >= 80200) {
     return;
 }
 
+if (\extension_loaded('curl') && !defined('CURLOPT_SSH_HOST_PUBLIC_KEY_SHA256') && curl_version()['version_number'] >= 0x075000) {
+    define('CURLOPT_SSH_HOST_PUBLIC_KEY_SHA256', 10311);
+}
+
 if (extension_loaded('odbc')) {
     if (!function_exists('odbc_connection_string_is_quoted')) {
         function odbc_connection_string_is_quoted(string $str): bool { return p\Php82::odbc_connection_string_is_quoted($str); }

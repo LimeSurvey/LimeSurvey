@@ -156,7 +156,7 @@ class LSSodium
      * Decrypt encrypted string.
      * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
      * @param bool $bReturnFalseIfError false by default. If TRUE, return false in case of error (bad decryption). Else, return given $encryptedInput value
-     * @return string|false Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
+     * @return string|false Return decrypted value (string or unserialized object) if succeeded. Return false if an error occurs (bad password/salt given) or input encryptedString
      * @throws SodiumException
      */
     public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string
@@ -264,7 +264,7 @@ class LSSodium
         $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             . "/*" . "\n"
             . " * LimeSurvey" . "\n"
-            . " * Copyright (C) 2007-2019 The LimeSurvey Project Team / Carsten Schmitz" . "\n"
+            . " * Copyright (C) 2007-2026 The LimeSurvey Project Team" . "\n"
             . " * All rights reserved." . "\n"
             . " * License: GNU/GPL License v3 or later, see LICENSE.php" . "\n"
             . " * LimeSurvey is free software. This version may have been modified pursuant" . "\n"
