@@ -42,6 +42,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                                 'dataProvider' => $model->search(),
                                 'id' => 'surveymenu-grid',
                                 'columns' => $model->getColumns(),
+                                'caption' => gT('Survey menus'),
                                 'filter' => $model,
                                 'emptyText' => gT('No customizable entries found.'),
                                 'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
@@ -85,7 +86,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Delete this survey menu?"); ?></h5>
+                <h2 class="modal-title h5"><?php eT("Delete this survey menu?"); ?></h2>
             </div>
             <div class="modal-body">
                 <?php eT("All menu entries of this menu will also be deleted."); ?>
