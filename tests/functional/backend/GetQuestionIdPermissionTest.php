@@ -16,6 +16,8 @@ class GetQuestionIdPermissionTest extends TestBaseClass
      */
     private static $userId;
 
+    /** @var  integer */
+    protected static $superadminSurveyId;
     /** @var  \Survey */
     protected static $superadminSurvey;
 
@@ -48,7 +50,7 @@ class GetQuestionIdPermissionTest extends TestBaseClass
         /* Import first survey as superamin */
         self::importSurvey($surveyFile, 1);
         self::$superadminSurvey = self::$testSurvey;
-        $superadminSurveyId = self::$surveyId;
+        self::$superadminSurveyId = self::$surveyId;
         $superadminQuestions = $this->getAllSurveyQuestions();
         $questions = $this->getAllSurveyQuestions();
         $superadminQid = $questions['Q2']->qid;
@@ -61,10 +63,10 @@ class GetQuestionIdPermissionTest extends TestBaseClass
         \Yii::app()->session['loginID'] = self::$userId;
         App()->user->setId(self::$userId);
         /* Check good url but survey without access */
-        $url = $urlMan->createUrl('admin/conditions/sa/index/subaction', array('surveyid' => self::$superadminSurvey, 'qid' => $superadminQid));
+        $url = $urlMan->createUrl('admin/conditions/sa/index/subaction', array('surveyid' => self::$superadminSurveyId, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
-             $this->fail("User can see question in survey without permission");
+            $this->fail("User can see question in survey without permission");
         } catch (\CException $exception) {
             if ($exception->statusCode == 403) {
                 $this->assertTrue(true);
