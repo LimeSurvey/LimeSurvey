@@ -135,8 +135,10 @@
                         'header' => gT('User group'),
                         'type'   => 'raw',
                         'value'  => function ($data) use ($oSurveyPermissions) {
-                            $groupsStr = $oSurveyPermissions->getUserGroupNames($data->uid,
-                                App()->getConfig('usercontrolSameGroupPolicy'));
+                            $groupsStr = $oSurveyPermissions->getUserGroupNames(
+                                $data->uid,
+                                App()->getConfig('usercontrolSameGroupPolicy')
+                            );
                             return implode(", ", $groupsStr);
                         },
 
