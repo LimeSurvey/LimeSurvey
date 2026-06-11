@@ -70,10 +70,8 @@
             </fieldset>
 
             <div class="mb-3">
-                <div class="form-check">
-                    <?php echo $form->checkBox($model, 'showincollapse', ['class' => 'form-check-input', 'aria-labelledby' => 'Surveymenu_showincollapse_label']); ?>
-                    <?php echo $form->labelEx($model, 'showincollapse', ['class' => 'form-check-label', 'id' => 'Surveymenu_showincollapse_label']); ?>
-                </div>
+                <?php echo $form->labelEx($model, 'showincollapse', ['id' => 'Surveymenu_showincollapse_label']); ?>
+                <?php echo $form->checkBox($model, 'showincollapse', ['aria-labelledby' => 'Surveymenu_showincollapse_label']); ?>
                 <?php echo $form->error($model, 'showincollapse'); ?>
             </div>
 
