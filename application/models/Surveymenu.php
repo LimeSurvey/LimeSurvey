@@ -336,20 +336,20 @@ class Surveymenu extends LSActiveRecord
     {
         return array(
             'id' => 'ID',
-            'parent_id'     => gT('Parent'),
-            'survey_id'     => gT('Survey'),
-            'user_id'       => gT('User'),
-            'ordering'      => gT('Order'),
-            'level'         => gT('Level'),
-            'name'          => gT('Name'),
-            'title'         => gT('Title'),
-            'position'      => gT('Position'),
-            'description'   => gT('Description'),
+            'parent_id'      => gT('Parent'),
+            'survey_id'      => gT('Survey'),
+            'user_id'        => gT('User'),
+            'ordering'       => gT('Order'),
+            'level'          => gT('Level'),
+            'name'           => gT('Name'),
+            'title'          => gT('Title'),
+            'position'       => gT('Position'),
+            'description'    => gT('Description'),
             'showincollapse' => gT('Show in collapse'),
-            'changed_at'    => gT('Changed on'),
-            'changed_by'    => gT('Changed by'),
-            'created_at'    => gT('Created on'),
-            'created_by'    => gT('Created by'),
+            'changed_at'     => gT('Changed on'),
+            'changed_by'     => gT('Changed by'),
+            'created_at'     => gT('Created on'),
+            'created_by'     => gT('Created by'),
         );
     }
 

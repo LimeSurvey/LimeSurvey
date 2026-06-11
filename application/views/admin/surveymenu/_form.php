@@ -43,30 +43,30 @@
             <fieldset class="mb-3" aria-labelledby="surveymenu-form-assignment-legend">
                 <legend id="surveymenu-form-assignment-legend" class="visually-hidden"><?php eT('Menu assignment'); ?></legend>
 
-            <div class="mb-3">
-                <?php echo $form->labelEx($model, 'parent_id', ['id' => 'Surveymenu_parent_id_label']); ?>
-                <?php echo $form->dropDownList($model, 'parent_id', $model->getMenuIdOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_parent_id_label']); ?>
-                <?php echo $form->error($model, 'parent_id'); ?>
-            </div>
+                <div class="mb-3">
+                    <?php echo $form->labelEx($model, 'parent_id', ['id' => 'Surveymenu_parent_id_label']); ?>
+                    <?php echo $form->dropDownList($model, 'parent_id', $model->getMenuIdOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_parent_id_label']); ?>
+                    <?php echo $form->error($model, 'parent_id'); ?>
+                </div>
 
-            <div class="mb-3">
-                <?php echo $form->labelEx($model, 'survey_id', ['id' => 'Surveymenu_survey_id_label']); ?>
-                <?php echo $form->dropDownList($model, 'survey_id', $model->getSurveyIdOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_survey_id_label']); ?>
-                <?php echo $form->error($model, 'survey_id'); ?>
-            </div>
+                <div class="mb-3">
+                    <?php echo $form->labelEx($model, 'survey_id', ['id' => 'Surveymenu_survey_id_label']); ?>
+                    <?php echo $form->dropDownList($model, 'survey_id', $model->getSurveyIdOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_survey_id_label']); ?>
+                    <?php echo $form->error($model, 'survey_id'); ?>
+                </div>
 
-            <div class="mb-3">
-                <?php echo $form->labelEx($model, 'user_id', ['id' => 'Surveymenu_user_id_label']); ?>
-                <?php echo $form->dropDownList($model, 'user_id', $model->getUserIdOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_user_id_label']); ?>
-                <?php echo $form->error($model, 'user_id'); ?>
-            </div>
+                <div class="mb-3">
+                    <?php echo $form->labelEx($model, 'user_id', ['id' => 'Surveymenu_user_id_label']); ?>
+                    <?php echo $form->dropDownList($model, 'user_id', $model->getUserIdOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_user_id_label']); ?>
+                    <?php echo $form->error($model, 'user_id'); ?>
+                </div>
 
-            <div class="mb-3">
-                <?php echo $form->labelEx($model, 'ordering', ['id' => 'Surveymenu_ordering_label']); ?>
-                <?php $model->ordering = $model->getNextOrderPosition(); ?>
-                <?php echo $form->dropDownList($model, 'ordering', $model->getOrderOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_ordering_label']); ?>
-                <?php echo $form->error($model, 'ordering'); ?>
-            </div>
+                <div class="mb-3">
+                    <?php echo $form->labelEx($model, 'ordering', ['id' => 'Surveymenu_ordering_label']); ?>
+                    <?php $model->ordering = $model->getNextOrderPosition(); ?>
+                    <?php echo $form->dropDownList($model, 'ordering', $model->getOrderOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_ordering_label']); ?>
+                    <?php echo $form->error($model, 'ordering'); ?>
+                </div>
             </fieldset>
 
             <div class="mb-3">
@@ -80,33 +80,33 @@
             <fieldset class="mb-3" aria-labelledby="surveymenu-form-details-legend">
                 <legend id="surveymenu-form-details-legend" class="visually-hidden"><?php eT('Menu details'); ?></legend>
 
-            <div class="mb-3">
-                <?php echo $form->labelEx($model, 'name', ['id' => 'Surveymenu_name_label']); ?>
-                <?php echo $form->textField($model, 'name', array('title' => gT('Lowercase characters and digits, starting with a character - length from 6 to 60 characters'), 'required' => true, 'size' => 60,'maxlength' => 255, 'pattern' => '[a-z][a-z0-9]{5,59}', 'aria-labelledby' => 'Surveymenu_name_label')); ?>
-                <?php echo $form->error($model, 'name'); ?>
-            </div>
+                <div class="mb-3">
+                    <?php echo $form->labelEx($model, 'name', ['id' => 'Surveymenu_name_label']); ?>
+                    <?php echo $form->textField($model, 'name', array('title' => gT('Lowercase characters and digits, starting with a character - length from 6 to 60 characters'), 'required' => true, 'size' => 60,'maxlength' => 255, 'pattern' => '[a-z][a-z0-9]{5,59}', 'aria-labelledby' => 'Surveymenu_name_label')); ?>
+                    <?php echo $form->error($model, 'name'); ?>
+                </div>
 
-            <div class="mb-3">
-                <?php echo $form->labelEx($model, 'title', ['id' => 'Surveymenu_title_label']); ?>
-                <?php echo $form->textField($model, 'title', array('size' => 60,'maxlength' => 255, 'aria-labelledby' => 'Surveymenu_title_label')); ?>
-                <?php echo $form->error($model, 'title'); ?>
-            </div>
+                <div class="mb-3">
+                    <?php echo $form->labelEx($model, 'title', ['id' => 'Surveymenu_title_label']); ?>
+                    <?php echo $form->textField($model, 'title', array('size' => 60,'maxlength' => 255, 'aria-labelledby' => 'Surveymenu_title_label')); ?>
+                    <?php echo $form->error($model, 'title'); ?>
+                </div>
 
-            <div class="mb-3">
-                <?php echo $form->labelEx($model, 'description', ['id' => 'Surveymenu_description_label']); ?>
-                <?php echo $form->textArea($model, 'description', array('rows' => 6, 'cols' => 50, 'aria-labelledby' => 'Surveymenu_description_label')); ?>
-                <?php echo $form->error($model, 'description'); ?>
-            </div>
+                <div class="mb-3">
+                    <?php echo $form->labelEx($model, 'description', ['id' => 'Surveymenu_description_label']); ?>
+                    <?php echo $form->textArea($model, 'description', array('rows' => 6, 'cols' => 50, 'aria-labelledby' => 'Surveymenu_description_label')); ?>
+                    <?php echo $form->error($model, 'description'); ?>
+                </div>
             </fieldset>
 
             <fieldset class="mb-3" aria-labelledby="surveymenu-form-display-legend">
                 <legend id="surveymenu-form-display-legend" class="visually-hidden"><?php eT('Display'); ?></legend>
 
-            <div class="mb-3">
-                <?php echo $form->labelEx($model, 'position', ['id' => 'Surveymenu_position_label']); ?>
-                <?php echo $form->dropDownList($model, 'position', $model->getPositionOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_position_label']); ?>
-                <?php echo $form->error($model, 'position'); ?>
-            </div>
+                <div class="mb-3">
+                    <?php echo $form->labelEx($model, 'position', ['id' => 'Surveymenu_position_label']); ?>
+                    <?php echo $form->dropDownList($model, 'position', $model->getPositionOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_position_label']); ?>
+                    <?php echo $form->error($model, 'position'); ?>
+                </div>
             </fieldset>
 
         <?php echo $form->hiddenField($model, 'changed_by', ['value' => $user]);?>
