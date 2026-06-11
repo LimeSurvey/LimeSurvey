@@ -91,6 +91,7 @@ export const useFocused = (focused, groupIndex, questionIndex) => {
   return {
     setFocused,
     unFocus,
+    focused: data?.focused || {},
     ...data,
   }
 }

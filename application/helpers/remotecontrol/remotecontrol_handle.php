@@ -1733,10 +1733,12 @@ class remotecontrol_handle
     }
 
     /**
-     * Get properties of a question in a survey.
+     * Retrieve requested properties for a specific survey question.
      *
-     * @see \Question for available properties.
-     * Some more properties are available_answers, subquestions, attributes, attributes_lang, answeroptions, answeroptions_multiscale, defaultvalue
+     * Returns an associative array mapping requested property names to their values.
+     * Supported special properties include `available_answers`, `subquestions`, `attributes`,
+     * `attributes_lang`, `answeroptions`, `answeroptions_multiscale`, and `defaultvalue`.
+     * On error or permission/session failure the method returns an array with a `status` message.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1902,12 +1904,12 @@ class remotecontrol_handle
                             $aResult['answeroptions'] = 'No available answer options';
                         }
                     } elseif ($sPropertyName == 'defaultvalue') {
-                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultvaluel10ns')
+                        $oDefaultValue = DefaultValue::model()->with('defaultvaluel10ns')
                                                                         ->find(
                                                                             'qid = :qid AND defaultvaluel10ns.language = :language',
                                                                             array(':qid' => $iQuestionID, ':language' => $sLanguage)
-                                                                        )
-                                                                        ->defaultvalue;
+                                                                        );
+                        $aResult['defaultvalue'] = $oDefaultValue !== null ? $oDefaultValue->defaultvalue : null;
                     } elseif ($sPropertyName == 'question' || $sPropertyName == 'help' || $sPropertyName == 'script') {
                         $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->$sPropertyName;
                     } elseif ($sPropertyName == 'questionl10ns') {

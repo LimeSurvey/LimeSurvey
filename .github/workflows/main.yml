@@ -53,7 +53,11 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' || matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' || 'mysql' }}
+          extensions: >-
+            dom, xml, libxml,
+            ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' ||
+                matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' ||
+                'mysqli, pdo_mysql' }}
 
       - name: Setup
         run: |
@@ -166,6 +170,11 @@ jobs:
         with:
           name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
           path: cov.xml
+
+      - name: Run unit tests with debug mode (surfaces hidden warnings)
+        env:
+          LIMESURVEY_DEBUG: 2
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped --exclude-group ${{ matrix.db-type != 'mysql' && 'debugoff,mysql' || 'debugoff' }} tests/unit
 
   test-coverage:
     runs-on: ubuntu-22.04

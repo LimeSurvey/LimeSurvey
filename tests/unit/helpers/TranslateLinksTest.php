@@ -12,20 +12,23 @@ class TranslateLinksTest extends TestBaseClass
 {
     private static $originalPublicUrl;
     private static $originalBaseUrl;
+    private static $originalHostInfo;
 
     public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
         \Yii::import('application.helpers.common_helper', true);
-        self::$originalPublicUrl = \Yii::app()->getConfig('publicUrl');
+        self::$originalPublicUrl = \Yii::app()->getConfig('publicurl');
         self::$originalBaseUrl = \Yii::app()->getRequest()->getBaseUrl();
+        self::$originalHostInfo = \Yii::app()->getRequest()->getHostInfo();
     }
 
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
-        \Yii::app()->setConfig('publicUrl', self::$originalPublicUrl);
+        \Yii::app()->setConfig('publicurl', self::$originalPublicUrl);
         \Yii::app()->getRequest()->setBaseUrl(self::$originalBaseUrl);
+        \Yii::app()->getRequest()->setHostInfo(self::$originalHostInfo);
     }
 
     /**
@@ -173,10 +176,11 @@ class TranslateLinksTest extends TestBaseClass
     {
         $linkString = 'http://limesurvey.org/upload/labels/111111/files/file.ext<br>/upload/labels/111111/files/file.ext';
 
-        \Yii::app()->getRequest()->setBaseUrl('www.example.com');
+        \Yii::app()->getRequest()->setHostInfo('http://www.example.com');
+        \Yii::app()->getRequest()->setBaseUrl('');
 
-        // Default public url
-        \Yii::app()->setConfig('publicUrl', \Yii::app()->baseUrl . '/');
+        // Default public url (relative - no scheme/host)
+        \Yii::app()->setConfig('publicurl', '/');
 
         $link = translateLinks('label', '111111', '222222', $linkString);
 
