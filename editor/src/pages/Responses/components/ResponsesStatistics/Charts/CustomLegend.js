@@ -1,4 +1,4 @@
-export const CustomLegend = ({ payload }) => {
+export const CustomLegend = ({ payload, isImage = false }) => {
   return (
     <div className="overflow-auto d-flex justify-content-center gap-2 mt-4">
       {payload.map((entry, index) => (
@@ -8,7 +8,15 @@ export const CustomLegend = ({ payload }) => {
             style={{ background: entry.color }}
           ></div>
           <div title={entry.value} className="recharts-square-value">
-            {entry.value}
+            {isImage ? (
+              <img
+                src={entry.value}
+                alt={entry.value}
+                className="recharts-legend-image"
+              />
+            ) : (
+              entry.value
+            )}
           </div>
         </div>
       ))}

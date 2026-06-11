@@ -1,15 +1,23 @@
 import { Table } from 'react-bootstrap'
 
-export const StatisticsTable = ({ data = [] }) => {
+import { VALUE_TYPE } from '../../ResponsesStatistics/ChartsUtils'
+
+export const StatisticsTable = ({
+  data = [],
+  valueType = VALUE_TYPE.PERCENTAGE,
+  isImage = false,
+}) => {
   const total = data.reduce((sum, item) => sum + (Number(item.value) || 0), 0)
+  const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
 
   return (
     <Table className="table statistics-table">
       <thead>
         <tr>
           <th>{t('Answer')}</th>
-          <th className="text-end">{t('Responses')}</th>
-          <th className="text-end">{t('Percentage')}</th>
+          <th className="text-end">
+            {isPercentage ? t('Percentage') : t('Responses')}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -20,18 +28,26 @@ export const StatisticsTable = ({ data = [] }) => {
                 className="statistics-table-swatch"
                 style={{ backgroundColor: item.fill }}
               />
-              {item.title}
+              {isImage ? (
+                <img
+                  src={item.title}
+                  alt={item.title}
+                  className="statistics-table-image"
+                />
+              ) : (
+                item.title
+              )}
             </td>
-            <td className="text-end">{item.value}</td>
-            <td className="text-end">{item.percentage}%</td>
+            <td className="text-end">
+              {isPercentage ? `${item.percentage}%` : item.value}
+            </td>
           </tr>
         ))}
       </tbody>
       <tfoot>
         <tr>
           <td>{t('Total')}</td>
-          <td className="text-end">{total}</td>
-          <td className="text-end">100%</td>
+          <td className="text-end">{isPercentage ? '100%' : total}</td>
         </tr>
       </tfoot>
     </Table>

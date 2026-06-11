@@ -4,7 +4,7 @@ import { Badge } from 'components/UIComponents'
 export const ChartHeader = ({
   index,
   code,
-  type,
+  question_theme_name,
   title,
   help,
   actions = [],
@@ -17,7 +17,7 @@ export const ChartHeader = ({
             {index} <i className="ri-arrow-right-line" />
           </span>
           <span className="chart-title-key">{code}</span>
-          <Badge>{type}</Badge>
+          <Badge>{question_theme_name}</Badge>
           <span className="chart-title-text">{title}</span>
         </div>
         {actions.length > 0 && (
@@ -31,7 +31,7 @@ export const ChartHeader = ({
           </div>
         )}
       </div>
-      {help && <p className="chart-title-help">{help}</p>}
+      <p className="chart-title-help">{help}</p>
     </div>
   )
 }

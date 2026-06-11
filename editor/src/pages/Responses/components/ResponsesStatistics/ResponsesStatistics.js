@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react'
 
+import { ToggleButtons } from 'components'
 import { useStatistics } from 'hooks'
 
-import { getDataWithPercentages, statisticsGraphs } from './ChartsUtils'
-import { ChartRenderer } from '../ChartRenderer'
-import { ChartRendererV2 } from '../ChartRenderV2.js'
+import {
+  getDataWithPercentages,
+  statisticsGraphs,
+  VALUE_TYPE,
+} from './ChartsUtils'
 import { StatisticsContainer } from '../Statistics/Components/StatisticsContainer.js'
+
+const valueTypeOptions = [
+  { name: t('Percentage'), value: VALUE_TYPE.PERCENTAGE },
+  { name: t('Response count'), value: VALUE_TYPE.COUNT },
+]
 
 export const ResponsesStatistics = ({
   surveyId,
@@ -15,6 +23,7 @@ export const ResponsesStatistics = ({
   const { statistics, isFetching } = useStatistics(surveyId, filters)
   const [selectedCharts, setSelectedCharts] = useState([])
   const [formattedStatistics, setFormattedStatistics] = useState(null)
+  const [valueType, setValueType] = useState(VALUE_TYPE.PERCENTAGE)
 
   useEffect(() => {
     const formattedStatistics = []
@@ -65,5 +74,22 @@ export const ResponsesStatistics = ({
     )
   }
 
-  return <StatisticsContainer statistics={statistics} surveyId={surveyId} />
+  return (
+    <>
+      <div className="responses-statistics-toolbar d-flex justify-content-end mb-3">
+        <ToggleButtons
+          id="statistics-value-type"
+          value={valueType}
+          onChange={setValueType}
+          toggleOptions={valueTypeOptions}
+          theme="lime"
+        />
+      </div>
+      <StatisticsContainer
+        statistics={statistics}
+        surveyId={surveyId}
+        valueType={valueType}
+      />
+    </>
+  )
 }

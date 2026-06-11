@@ -9,8 +9,10 @@ import {
   Tooltip,
 } from 'recharts'
 
-import { COLORS, CustomTooltip } from '../ChartsUtils'
+import { COLORS, CustomTooltip, VALUE_TYPE } from '../ChartsUtils'
 import { CustomLegend } from './CustomLegend'
+
+const LABEL_IMAGE_SIZE = 40
 
 const RADIAN = Math.PI / 180
 
@@ -85,6 +87,9 @@ const renderActiveShapeNew = ({
   percent,
   payload,
   name,
+  value,
+  valueType = VALUE_TYPE.PERCENTAGE,
+  isImage = false,
 }) => {
   const cos = Math.cos(-RADIAN * (midAngle ?? 1))
   const sin = Math.sin(-RADIAN * (midAngle ?? 1))
@@ -105,6 +110,10 @@ const renderActiveShapeNew = ({
   const displayPercentage = payload?.percentage
     ? parseFloat(payload.percentage).toFixed(1).replace('.', ',')
     : ((percent ?? 0) * 100).toFixed(1).replace('.', ',')
+  const displayMetric =
+    valueType === VALUE_TYPE.COUNT
+      ? `${value ?? payload?.value ?? ''}`
+      : `${displayPercentage}%`
 
   return (
     <g>
@@ -129,14 +138,27 @@ const renderActiveShapeNew = ({
         </text>
       )}
 
-      <text
-        x={tx}
-        y={id ? ey - 2 : ey - 8}
-        textAnchor={anchor}
-        className="active-shape-name"
-      >
-        {name}
-      </text>
+      {isImage ? (
+        <image
+          href={name}
+          x={isRight ? tx : tx - LABEL_IMAGE_SIZE}
+          y={(id ? ey - 2 : ey - 8) - LABEL_IMAGE_SIZE / 2}
+          width={LABEL_IMAGE_SIZE}
+          height={LABEL_IMAGE_SIZE}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <title>{name}</title>
+        </image>
+      ) : (
+        <text
+          x={tx}
+          y={id ? ey - 2 : ey - 8}
+          textAnchor={anchor}
+          className="active-shape-name"
+        >
+          {name}
+        </text>
+      )}
 
       <text
         x={tx}
@@ -144,13 +166,25 @@ const renderActiveShapeNew = ({
         textAnchor={anchor}
         className="active-shape-percent-value"
       >
-        {`${displayPercentage}%`}
+        {displayMetric}
       </text>
     </g>
   )
 }
 
-export const PieChart = ({ data, newLabels = false }) => {
+export const PieChart = ({
+  data,
+  newLabels = true,
+  valueType = VALUE_TYPE.PERCENTAGE,
+  isImage = false,
+}) => {
+  const renderLabel = (props) =>
+    (newLabels ? renderActiveShapeNew : renderActiveShapeOld)({
+      ...props,
+      valueType,
+      isImage,
+    })
+
   return (
     <ResponsiveContainer minHeight={500} width="100%" height="100%">
       <RechartsPieChart
@@ -164,7 +198,7 @@ export const PieChart = ({ data, newLabels = false }) => {
           cy="50%"
           dataKey="value"
           nameKey="title"
-          label={newLabels ? renderActiveShapeNew : renderActiveShapeOld}
+          label={renderLabel}
           labelLine={newLabels ? false : undefined}
           outerRadius={newLabels ? '60%' : undefined}
           fill="#8884d8"
@@ -177,7 +211,11 @@ export const PieChart = ({ data, newLabels = false }) => {
           ))}
         </Pie>
         <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
-        <Legend content={CustomLegend} />
+        <Legend
+          content={(legendProps) => (
+            <CustomLegend {...legendProps} isImage={isImage} />
+          )}
+        />
       </RechartsPieChart>
     </ResponsiveContainer>
   )

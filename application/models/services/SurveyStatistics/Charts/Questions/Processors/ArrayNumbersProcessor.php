@@ -66,30 +66,35 @@ class ArrayNumbersProcessor extends AbstractQuestionProcessor
         $minValue = 1;
         $maxValue = 10;
         $attributes = $this->question['attributes'] ?? [];
+        $checkbox = $attributes['multiflexible_checkbox'] ?? 0;
+        $multiflexibleMin = $attributes['multiflexible_min'] ?? '';
+        $multiflexibleMax = $attributes['multiflexible_max'] ?? '';
+        $multiflexibleStep = $attributes['multiflexible_step'] ?? '';
+        $reverse = $attributes['reverse'] ?? 0;
 
-        if ($attributes['multiflexible_checkbox'] != 0) {
+        if ($checkbox != 0) {
             return [0, 1, 1];
         }
 
-        if (trim((string) $attributes['multiflexible_max']) != '' && trim((string) $attributes['multiflexible_min']) == '') {
-            $maxValue = $attributes['multiflexible_max'];
+        if (trim((string) $multiflexibleMax) != '' && trim((string) $multiflexibleMin) == '') {
+            $maxValue = $multiflexibleMax;
         }
 
-        if (trim((string) $attributes['multiflexible_min']) != '' && trim((string) $attributes['multiflexible_max']) == '') {
-            $minValue = $attributes['multiflexible_min'];
-            $maxValue = $attributes['multiflexible_min'] + 10;
+        if (trim((string) $multiflexibleMin) != '' && trim((string) $multiflexibleMax) == '') {
+            $minValue = $multiflexibleMin;
+            $maxValue = $multiflexibleMin + 10;
         }
 
-        if (trim((string) $attributes['multiflexible_min']) != '' && trim((string) $attributes['multiflexible_max']) != '') {
-            if ($attributes['multiflexible_min'] < $attributes['multiflexible_max']) {
-                $minValue = $attributes['multiflexible_min'];
-                $maxValue = $attributes['multiflexible_max'];
+        if (trim((string) $multiflexibleMin) != '' && trim((string) $multiflexibleMax) != '') {
+            if ($multiflexibleMin < $multiflexibleMax) {
+                $minValue = $multiflexibleMin;
+                $maxValue = $multiflexibleMax;
             }
         }
 
-        $stepValue = (trim((string) $attributes['multiflexible_step']) != '' && $attributes['multiflexible_step'] > 0) ? $attributes['multiflexible_step'] : 1;
+        $stepValue = (trim((string) $multiflexibleStep) != '' && $multiflexibleStep > 0) ? $multiflexibleStep : 1;
 
-        if ((int) $attributes['reverse'] === 1) {
+        if ((int) $reverse === 1) {
             [$minValue, $maxValue] = [$maxValue, $minValue];
             $stepValue = -$stepValue;
         }

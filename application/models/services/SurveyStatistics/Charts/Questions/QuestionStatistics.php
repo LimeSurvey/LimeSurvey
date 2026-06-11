@@ -154,7 +154,11 @@ class QuestionStatistics implements StatisticsChartInterface
                 'qid' => $question['qid'] ?? null,
                 'gid' => $question['gid'] ?? null,
                 'code' => $question['title'] ?? null,
-                'type' => QuestionType::modelsAttributes($this->language)[$question['type']]['description'] ?? $question['type'] ?? null,
+                'type' => $question['type'] ?? null,
+                'question_theme_name' => QuestionType::modelsAttributes($this->language)[$question['type']]['description'] ?? $question['type'] ?? null,
+                // Actual question theme (e.g. image_select-listradio), used by the
+                // front-end to decide whether answer options are images.
+                'theme' => $question['question_theme_name'] ?? null,
                 'help' => $question['help'] ?? null,
                 'attributes' => $question['attributes'] ?? [],
             ];
@@ -167,6 +171,7 @@ class QuestionStatistics implements StatisticsChartInterface
         $select = [
             'q.qid', 'q.sid', 'q.gid', 'q.type', 'q.title',
             'q.parent_qid', 'q.scale_id', 'q.question_order', 'q.other',
+            'q.question_theme_name',
             'ql.question as question_text', 'ql.help as help_text',
             'a.aid', 'a.qid as answer_qid', 'a.code', 'a.sortorder',
             'a.scale_id as answer_scale_id',
@@ -209,6 +214,7 @@ class QuestionStatistics implements StatisticsChartInterface
                         'type' => $row['type'], 'title' => $row['title'],
                         'question' => flattenText($row['question_text']),
                         'help' => flattenText($row['help_text']), 'other' => $row['other'],
+                        'question_theme_name' => $row['question_theme_name'],
                         'subQuestions' => [], 'attributes' => [],
                     ];
                 }

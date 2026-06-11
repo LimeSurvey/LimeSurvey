@@ -17,9 +17,9 @@
       &-main {
         display: flex;
         flex-wrap: wrap;
-        gap: 6px;
+        align-items: center;
+        gap: 4px;
         flex: 1;
-        min-width: 0;
       }
 
       &-actions {
@@ -28,10 +28,12 @@
 
       &-index {
         color: $grape;
+        font-size: $font-size-xs;
       }
 
       &-key {
         color: $g-700;
+        font-size: $font-size-xs;
       }
 
       &-text {
@@ -43,6 +45,10 @@
         padding: 0 26px;
         color: $g-700;
         font-size: $font-size-xs;
+        line-height: $line-height-16;
+        // Reserve one line so cards without help text keep the same spacing.
+        min-height: $line-height-16;
+        margin: 0;
       }
     }
   }
@@ -65,6 +71,7 @@
     tbody td {
       color: $g-900;
       vertical-align: middle;
+      padding: 12px 0;
     }
 
     tfoot td {
@@ -80,6 +87,106 @@
       border-radius: 2px;
       margin-right: 8px;
       vertical-align: middle;
+    }
+
+    &-image {
+      max-width: 80px;
+      max-height: 48px;
+      vertical-align: middle;
+      object-fit: contain;
+      border: 1px solid $g-400;
+      padding: 12px 30px;
+    }
+  }
+
+  // The toggle uses the white pencil asset; inherit the button's text color
+  // (via currentColor) so the icon matches the other view toggles.
+  .comments-toggle-icon {
+    width: 24px;
+    height: 24px;
+
+    path {
+      fill: currentColor;
+    }
+  }
+
+  .responses-comments {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    &-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+      color: $g-700;
+      font-size: $font-size-sm;
+
+      .loader {
+        position: relative;
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    &-filter {
+      align-self: flex-start;
+      min-width: 200px;
+      padding: 6px 12px;
+      border: 1px solid $g-400;
+      border-radius: $border-radius;
+      color: $g-900;
+      font-size: $font-size-sm;
+      background: white;
+    }
+
+    &-blocks {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-block {
+      padding: 8px 12px;
+      border-bottom: 1px solid $g-400;
+      color: $g-900;
+      font-size: $font-size-sm;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    &-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      td {
+        padding: 8px 12px;
+        border-bottom: 1px solid $g-400;
+        color: $g-900;
+        font-size: $font-size-sm;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+    }
+
+    &-more {
+      display: flex;
+      justify-content: center;
+
+      &-btn {
+        background: none;
+        border: none;
+        color: $grape;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-600;
+        cursor: pointer;
+        padding: 8px 16px;
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: default;
+        }
+      }
     }
   }
 
@@ -104,6 +211,14 @@
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 200px;
+    }
+
+    .recharts-legend-image {
+      max-width: 60px;
+      max-height: 32px;
+      object-fit: contain;
+      border: 1px solid $g-400;
+      padding: 12px 30px;
     }
 
     .chart-wrapper {

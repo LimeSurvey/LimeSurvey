@@ -15,22 +15,30 @@ import {
   CustomTooltip,
   TruncatedTick,
   getLabelInterval,
+  VALUE_TYPE,
 } from '../ChartsUtils'
 
-export const BarChart = ({ data }) => {
+export const BarChart = ({
+  data,
+  valueType = VALUE_TYPE.PERCENTAGE,
+  isImage = false,
+}) => {
+  const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
+  const dataKey = isPercentage ? 'percentageValue' : 'value'
+
   return (
     <ResponsiveContainer width="100%" minHeight={500} height="100%">
-      <RechartsBarChart dataKey="value" nameKey="title" data={data}>
+      <RechartsBarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="title"
           height={80}
           interval={getLabelInterval(data.length)}
-          tick={<TruncatedTick />}
+          tick={<TruncatedTick isImage={isImage} />}
         />
-        <YAxis />
+        <YAxis unit={isPercentage ? '%' : undefined} />
         <Tooltip cursor={{ fill: '#eeeff7' }} content={<CustomTooltip />} />
-        <Bar maxBarSize={60} dataKey="value" nameKey="title" data={data}>
+        <Bar maxBarSize={60} dataKey={dataKey} nameKey="title" data={data}>
           {data.map((_, index) => {
             return (
               <Cell

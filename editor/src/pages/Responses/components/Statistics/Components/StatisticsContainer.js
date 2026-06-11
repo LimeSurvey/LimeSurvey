@@ -42,7 +42,7 @@ const getGroupTitle = (group, activeLanguage) => {
   return localized?.groupName ?? group.groupName ?? null
 }
 
-const renderCharts = (items, surveyId) => (
+const renderCharts = (items, surveyId, valueType) => (
   <div className="responses-charts row">
     {items.map(({ item, index }) => {
       const chartId =
@@ -55,8 +55,11 @@ const renderCharts = (items, surveyId) => (
             chartId={chartId}
             data={getDataWithPercentages(item)}
             graphType={item}
+            valueType={valueType}
             question={{
               type: item?.meta?.question?.type,
+              question_theme_name: item?.meta?.question?.question_theme_name,
+              theme: item?.meta?.question?.theme,
               code: item?.meta?.question?.code,
               title: item?.title,
               help: item?.meta?.question?.help,
@@ -69,7 +72,7 @@ const renderCharts = (items, surveyId) => (
   </div>
 )
 
-export const StatisticsContainer = ({ statistics, surveyId }) => {
+export const StatisticsContainer = ({ statistics, surveyId, valueType }) => {
   const { survey } = useSurvey(surveyId)
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const [collapsedGroups, setCollapsedGroups] = useState(() =>
@@ -140,10 +143,10 @@ export const StatisticsContainer = ({ statistics, surveyId }) => {
                 open={open}
                 onToggle={(next) => toggleGroup(group.key, next)}
               >
-                {renderCharts(group.items, surveyId)}
+                {renderCharts(group.items, surveyId, valueType)}
               </Collapsible>
             ) : (
-              renderCharts(group.items, surveyId)
+              renderCharts(group.items, surveyId, valueType)
             )}
           </div>
         )
