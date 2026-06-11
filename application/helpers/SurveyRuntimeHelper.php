@@ -780,6 +780,7 @@ class SurveyRuntimeHelper
             // for backward compatibilty convert timezone string to +/- hours
             'timeadjust'                  => convertTimezoneDiffToHours(),
             'token'                       => $clienttoken,
+            'popupPreview'                => (($this->aSurveyInfo['popupPreview'] ?? false) === true),
         );
     }
 
@@ -1758,7 +1759,7 @@ class SurveyRuntimeHelper
         extract($args);
 
         $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
-        if (isset($args['popuppreview']) && $args['popuppreview']) {
+        if (($args['popuppreview'] ?? false) === true) {
             $this->aSurveyInfo['showxquestions'] = 'N';
             $this->aSurveyInfo['shownoanswer'] = 'N';
             $this->aSurveyInfo['showwelcome'] = 'N';

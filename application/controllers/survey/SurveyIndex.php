@@ -91,7 +91,7 @@ class SurveyIndex extends CAction
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
-        $redata['popuppreview'] = Yii::app()->request->getParam('popuppreview', false);
+        $redata['popuppreview'] = filter_var(Yii::app()->request->getParam('popuppreview', false), FILTER_VALIDATE_BOOLEAN);
 
         $canPreviewSurvey = $this->canUserPreviewSurvey($surveyid);
 
