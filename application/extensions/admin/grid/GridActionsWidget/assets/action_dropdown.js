@@ -6,9 +6,6 @@ LS.actionDropdown = {
     },
     create: function () {
         'use strict';
-        document.querySelectorAll('.ls-action_dropdown').forEach(function (wrapper) {
-            wrapper.removeAttribute('tabindex');
-        });
         this.removeOrphanedDropdowns();
         this.calculateSubmenuPosition();
         let dropdownElementList = [].slice.call(
@@ -198,7 +195,6 @@ LS.actionDropdown = {
                     return;
                 }
                 wrapper.setAttribute('data-submenu-positioning-initialized', 'true');
-                wrapper.removeAttribute('tabindex');
 
                 // When the main dropdown is shown, configure submenus
                 wrapper.addEventListener('shown.bs.dropdown', function() {
