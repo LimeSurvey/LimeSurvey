@@ -48,6 +48,8 @@ class CheckIntegrity extends SurveyCommonAction
      */
     public function index()
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkintegrity.js');
+
         $aData = $this->checkintegrity();
 
         $aData['topbar']['title'] = gT('Check data integrity');
