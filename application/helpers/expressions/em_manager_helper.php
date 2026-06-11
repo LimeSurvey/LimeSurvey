@@ -4654,7 +4654,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['displayTimezone'] = Yii::app()->getConfig('displayTimezone') ?: date_default_timezone_get();
         $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
-        $LEM->surveyOptions['popupPreview'] = (isset($aSurveyOptions['popupPreview']) ? (bool) $aSurveyOptions['popupPreview'] : false);
+        $LEM->surveyOptions['popupPreview'] = (isset($aSurveyOptions['popupPreview']) && $aSurveyOptions['popupPreview'] === true);
         $LEM->debugLevel = $debugLevel;
         $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {
