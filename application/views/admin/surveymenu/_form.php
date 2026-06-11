@@ -63,7 +63,7 @@
 
                 <div class="mb-3">
                     <?php echo $form->labelEx($model, 'ordering', ['id' => 'Surveymenu_ordering_label']); ?>
-                    <?php $model->ordering = $model->getNextOrderPosition(); ?>
+                    <?php $model->ordering = $model->isNewRecord ? $model->getNextOrderPosition() : $model->ordering; ?>
                     <?php echo $form->dropDownList($model, 'ordering', $model->getOrderOptions(), ['class' => 'form-select', 'aria-labelledby' => 'Surveymenu_ordering_label']); ?>
                     <?php echo $form->error($model, 'ordering'); ?>
                 </div>
