@@ -57,6 +57,7 @@ export const STATES = {
   HAS_RESPONSES_READ_PERMISSION: 'has_responses_read_permission',
   HAS_RESPONSES_UPDATE_PERMISSION: 'has_responses_update_permission',
   SURVEY_REQUEST_UTC_TIMESTAMP: 'survey_request_utc_timestamp',
+  SURVEY_LOGIC: 'survey_logic',
   TOPBAR_CONFIG: 'topbar_config',
 }
 

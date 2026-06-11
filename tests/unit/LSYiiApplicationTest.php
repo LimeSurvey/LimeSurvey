@@ -64,10 +64,10 @@ class LSYiiApplicationTest extends TestBaseClass
     {
         $tmpPublicUrl = Yii::app()->getRequest()->getBaseUrl();
 
-        Yii::app()->getRequest()->baseUrl = 'absoluteRequest.example.com/';
+        Yii::app()->getRequest()->baseUrl = '/absoluteRequest';
         $url = Yii::app()->getPublicBaseUrl(true);
 
-        $this->assertSame($url, 'http://absoluteRequest.example.com/', 'Unexpected url. The url does not correspond to the one previously set.');
+        $this->assertSame('http://localhost/absoluteRequest', $url, 'Unexpected url. The url does not correspond to the one previously set.');
 
         // Reset original value.
         Yii::app()->getRequest()->baseUrl = $tmpPublicUrl;
