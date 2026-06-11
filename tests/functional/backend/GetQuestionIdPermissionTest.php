@@ -60,6 +60,7 @@ class GetQuestionIdPermissionTest extends TestBaseClassWeb
         $questionQ2 = $questions['Q2'];
         $qid = $questions['Q2']->qid;
         $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php')
         \Yii::app()->session['loginID'] = self::$userId;
         App()->user->setId(self::$userId);
         /* Check good url but survey without access */
