@@ -11,67 +11,76 @@
 ?>
 
 <form class="custom-modal-datas form form-horizontal">
-    <div class="container-fluid">
-        <div class="ex-form-group mb-3">
-            <div class="col-md-1">
-                <label class="" >
-                <?php eT("Modify"); ?>
-                </label>
-            </div>
-            <div class="col-md-11"></div>
-        </div>
-        <div class="ex-form-group mb-3">
-            <div class="col-md-1">
-                <label class="" >
-                    <input type="checkbox" class="action_check_to_keep_old_value"></input>
-                </label>
-            </div>
-            <label class="col-md-3 form-label"  for='menu_id'><?php eT("Position:"); ?></label>
-            <div class="col-md-8">
-                <?php echo TbHtml::dropDownList('position', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getPositionOptions()), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
-            </div>
-        </div>
-        
-        <div class="ex-form-group mb-3">
-            <div class="col-md-1">
-                <label class="" >
-                    <input type="checkbox" class="action_check_to_keep_old_value"></input>
-                </label>
-            </div>
-            <label class="col-md-3 form-label"  for='menu_class'><?php eT("Parent menu:"); ?></label>
-            <div class="col-md-8">
-                    <?php echo TbHtml::dropDownList('parent_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getMenuIdOptions()), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
-                </div>
-            </div>
-            
-            
+	<div class="container-fluid">
+        <fieldset class="mb-0" aria-labelledby="massedit-menu-modify-legend">
+            <legend id="massedit-menu-modify-legend" class="visually-hidden"><?php eT("Modify"); ?></legend>
             <div class="ex-form-group mb-3">
                 <div class="col-md-1">
-                    <label class="" >
-                        <input type="checkbox" class="action_check_to_keep_old_value"></input>
-                    </label>
+                    <span class="form-label"><?php eT("Modify"); ?></span>
                 </div>
-                <label class="col-md-3 form-label"  for='permission'><?php eT("Survey:"); ?></label>
+                <div class="col-md-11"></div>
+            </div>
+            <div class="ex-form-group mb-3">
+                <div class="col-md-1">
+                    <input
+                        type="checkbox"
+                        id="massedit_menu_position_modify"
+                        class="action_check_to_keep_old_value"
+                        aria-labelledby="massedit_menu_position_fieldlabel" />
+                </div>
+                <label id="massedit_menu_position_fieldlabel" class="col-md-3 form-label" for="position"><?php eT("Position:"); ?></label>
                 <div class="col-md-8">
-                    <?php echo TbHtml::dropDownList('survey_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getSurveyIdOptions()), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
+                    <?php echo TbHtml::dropDownList('position', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getPositionOptions()), ['id' => 'position', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
+                </div>
             </div>
-        </div>
 
-        <div class="ex-form-group mb-3">
-            <div class="col-md-1">
-                <label class="" >
-                    <input type="checkbox" class="action_check_to_keep_old_value"></input>
-                </label>
+            <div class="ex-form-group mb-3">
+                <div class="col-md-1">
+                    <input
+                        type="checkbox"
+                        id="massedit_menu_parent_id_modify"
+                        class="action_check_to_keep_old_value"
+                        aria-labelledby="massedit_menu_parent_id_fieldlabel" />
+                </div>
+                <label id="massedit_menu_parent_id_fieldlabel" class="col-md-3 form-label" for="parent_id"><?php eT("Parent menu:"); ?></label>
+                <div class="col-md-8">
+                        <?php echo TbHtml::dropDownList('parent_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getMenuIdOptions()), ['id' => 'parent_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
+                    </div>
+                </div>
+
+
+                <div class="ex-form-group mb-3">
+                    <div class="col-md-1">
+                        <input
+                            type="checkbox"
+                            id="massedit_menu_survey_id_modify"
+                            class="action_check_to_keep_old_value"
+                            aria-labelledby="massedit_menu_survey_id_fieldlabel" />
+                    </div>
+                    <label id="massedit_menu_survey_id_fieldlabel" class="col-md-3 form-label" for="survey_id"><?php eT("Survey:"); ?></label>
+                    <div class="col-md-8">
+                        <?php echo TbHtml::dropDownList('survey_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getSurveyIdOptions()), ['id' => 'survey_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
+                </div>
             </div>
-            <label class="col-md-3 form-label"  for='permission_grade'><?php eT("User:"); ?></label>
-            <div class="col-md-8">
-                <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
+
+            <div class="ex-form-group mb-3">
+                <div class="col-md-1">
+                    <input
+                        type="checkbox"
+                        id="massedit_menu_user_id_modify"
+                        class="action_check_to_keep_old_value"
+                        aria-labelledby="massedit_menu_user_id_fieldlabel"/>
+                </div>
+                <label id="massedit_menu_user_id_fieldlabel" class="col-md-3 form-label" for="user_id"><?php eT("User:"); ?></label>
+                <div class="col-md-8">
+                    <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['id' => 'user_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
+                </div>
             </div>
-        </div>
+        </fieldset>
 
         <?php echo TbHtml::hiddenField('changed_by', Yii::app()->user->id, ['class' => 'custom-data']);?>
         <?php echo TbHtml::hiddenField('changed_at', date('Y-m-d H:i:s'), ['class' => 'custom-data']);?>
-        
+
     </div>
 </form>
 <!-- form -->

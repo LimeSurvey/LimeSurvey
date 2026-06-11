@@ -41,6 +41,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                             [
                                 'dataProvider' => $model->search(),
                                 'id' => 'surveymenu-grid',
+                                'caption' => gT('Survey menus'),
                                 'columns' => $model->getColumns(),
                                 'filter' => $model,
                                 'emptyText' => gT('No customizable entries found.'),
@@ -85,7 +86,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Delete this survey menu?"); ?></h5>
+                <h2 class="modal-title h5"><?php eT("Delete this survey menu?"); ?></h2>
             </div>
             <div class="modal-body">
                 <?php eT("All menu entries of this menu will also be deleted."); ?>
@@ -104,7 +105,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Really restore the default survey menus (survey menu entries)?"); ?></h5>
+                <h2 class="modal-title h5"><?php eT("Really restore the default survey menus (survey menu entries)?"); ?></h2>
             </div>
             <div class="modal-body">
                 <p>

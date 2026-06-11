@@ -1638,7 +1638,8 @@ class QuestionAdministrationController extends LSBaseController
             [
                 'aResults'     =>  $aResults,
                 'successLabel' =>  gT('Selected'),
-                'tableLabels'  =>  $tableLabels
+                'tableLabels'  =>  $tableLabels,
+                'caption'      =>  gT('Selected questions'),
             ]
         );
     }

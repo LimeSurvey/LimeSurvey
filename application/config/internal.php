@@ -103,7 +103,6 @@ $internalConfig = array(
         'yiistrap_fork.widgets.*',
         'yiistrap_fork.helpers.*',
         'yiistrap_fork.behaviors.*',
-        'yiistrap_fork.components.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'vendor.Twig.*',
         'vendor.sodium.*',
@@ -113,10 +112,6 @@ $internalConfig = array(
     ),
     'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
-        // yiistrap_fork configuration
-        'bootstrap5' => array(
-            'class' => 'yiistrap_fork.components.TbApi',
-        ),
         // yiiwheels configuration
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',

@@ -18,7 +18,7 @@
     <div class="col-12 content-right text-center">
 
         <!-- tabs -->
-        <ul class="nav nav-tabs" role="tablist" aria-label="<?= CHtml::encode(gT('Languages')) ?>">
+        <ul class="nav nav-tabs" role="tablist" aria-label="<?= gT('Languages') ?>">
             <?php foreach ($lslanguages as $i => $language) : ?>
                 <li class="nav-item" role="presentation">
                     <a class="nav-link <?= $i === 0 ? 'active' : '' ?>"

@@ -33,7 +33,6 @@ class AdminController extends LSYii_Controller
     protected function customInit()
     {
         parent::customInit();
-        App()->getComponent('bootstrap');
         $this->sessioncontrol();
 
         $this->user_id = Yii::app()->user->getId();
