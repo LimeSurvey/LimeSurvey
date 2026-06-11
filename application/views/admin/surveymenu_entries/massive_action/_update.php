@@ -85,7 +85,7 @@
                 </div>
                 <label class="col-md-3 form-label"  for='permission_grade'><?php eT("User:"); ?></label>
                 <div class="col-md-8">
-                    <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
+                    <?php echo TbHtml::dropDownList('user_id', 'lskeep', ['lskeep' => gT('Keep old value')] + $model->getUserIdOptions(), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
                 </div>
             </div>
             

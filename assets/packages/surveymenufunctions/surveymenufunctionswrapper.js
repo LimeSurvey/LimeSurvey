@@ -207,7 +207,7 @@ var getBindActionForSurveymenus = function (targetCreateModal, targetGrid, urls)
         e.stopPropagation();
         e.preventDefault();
         actions.runEditModal({
-            menuid: $(this).closest('tr').data('surveymenu-id'),
+            menuid: $(this).data('menuid'),
         });
     });
 
@@ -217,7 +217,7 @@ var getBindActionForSurveymenus = function (targetCreateModal, targetGrid, urls)
         var idDeleteModal = $('#deletesurveymenumodal');
         var idDeleteModalBtn = $('#deletemodal-confirm');
         actions.runDeleteModal(idDeleteModal,{
-            menuid: $(this).closest('tr').data('surveymenu-id'),
+            menuid: $(this).data('menuid'),
             ajax: true
         },idDeleteModalBtn);
     });
