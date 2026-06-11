@@ -16,8 +16,7 @@
             <legend id="massedit-menu-modify-legend" class="visually-hidden"><?php eT("Modify"); ?></legend>
             <div class="ex-form-group mb-3">
                 <div class="col-md-1">
-                    <span id="massedit-menu-modify-group-label"
-                          class="form-label"><?php eT("Modify"); ?></span>
+                    <span class="form-label"><?php eT("Modify"); ?></span>
                 </div>
                 <div class="col-md-11"></div>
             </div>
@@ -27,7 +26,7 @@
                         type="checkbox"
                         id="massedit_menu_position_modify"
                         class="action_check_to_keep_old_value"
-                        aria-labelledby="massedit-menu-modify-legend massedit_menu_position_fieldlabel" />
+                        aria-labelledby="massedit_menu_position_fieldlabel" />
                 </div>
                 <label id="massedit_menu_position_fieldlabel" class="col-md-3 form-label" for="position"><?php eT("Position:"); ?></label>
                 <div class="col-md-8">
@@ -41,7 +40,7 @@
                         type="checkbox"
                         id="massedit_menu_parent_id_modify"
                         class="action_check_to_keep_old_value"
-                        aria-labelledby="massedit-menu-modify-legend massedit_menu_parent_id_fieldlabel" />
+                        aria-labelledby="massedit_menu_parent_id_fieldlabel" />
                 </div>
                 <label id="massedit_menu_parent_id_fieldlabel" class="col-md-3 form-label" for="parent_id"><?php eT("Parent menu:"); ?></label>
                 <div class="col-md-8">
@@ -56,7 +55,7 @@
                             type="checkbox"
                             id="massedit_menu_survey_id_modify"
                             class="action_check_to_keep_old_value"
-                            aria-labelledby="massedit-menu-modify-legend massedit_menu_survey_id_fieldlabel" />
+                            aria-labelledby="massedit_menu_survey_id_fieldlabel" />
                     </div>
                     <label id="massedit_menu_survey_id_fieldlabel" class="col-md-3 form-label" for="survey_id"><?php eT("Survey:"); ?></label>
                     <div class="col-md-8">
@@ -70,7 +69,7 @@
                         type="checkbox"
                         id="massedit_menu_user_id_modify"
                         class="action_check_to_keep_old_value"
-                        aria-labelledby="massedit-menu-modify-legend massedit_menu_user_id_fieldlabel"/>
+                        aria-labelledby="massedit_menu_user_id_fieldlabel"/>
                 </div>
                 <label id="massedit_menu_user_id_fieldlabel" class="col-md-3 form-label" for="user_id"><?php eT("User:"); ?></label>
                 <div class="col-md-8">
