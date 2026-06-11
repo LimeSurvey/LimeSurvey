@@ -122,7 +122,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function update($id)
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'update')) || Yii::app()->getConfig('demoMode')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
         //Update or create
@@ -137,7 +137,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         }
         //Don't update  main menu entries when not superadmin
         if (($model->menu_id == 1 || $model->menu_id == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -231,7 +231,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function restore()
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete') && Permission::model()->hasGlobalPermission('settings', 'update'))) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -280,7 +280,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function massDelete()
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete'))) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -328,7 +328,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function delete()
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete'))) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -338,7 +338,7 @@ class SurveymenuEntryController extends SurveyCommonAction
             $model = SurveymenuEntries::model()->findByPk((int)$menuEntryid);
             //Don't delete  main menu entries when not superadmin
             if (($model->menu_id == 1 || $model->menu_id == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                Yii::app()->user->setFlash('error', gT("Access denied"));
+                Yii::app()->user->setFlash('error', gT("Access denied!"));
                 $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             }
             $debug = App()->getConfig('debug');
@@ -377,7 +377,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function reorder()
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'update'))) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -409,24 +409,6 @@ class SurveymenuEntryController extends SurveyCommonAction
                 false
             );
         }
-    }
-
-
-    /**
-     * Returns the data model based on the primary key given in the GET variable.
-     * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
-     * @return SurveymenuEntries the loaded model
-     * @throws CHttpException
-     * * @deprecated do not use this function in future
-     */
-    public function loadModel($id)
-    {
-        $model = SurveymenuEntries::model()->findByPk($id);
-        if ($model === null) {
-                    throw new CHttpException(404, 'The requested page does not exist.');
-        }
-        return $model;
     }
 
     /**

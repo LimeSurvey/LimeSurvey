@@ -28,7 +28,7 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
 
             if ($("textarea[name="+sId+"]").val()){
 
-                // fallback if the FCKEditor is not avaliable
+                // fallback if the FCKEditor is not available
                 sTargetInnerText = strip($("textarea[name="+sId+"]").val());
 
 
