@@ -52,7 +52,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-2">
                 <table class="table table-striped table-condensed ">
-                    <caption class="sr-only">
+                    <caption class="visually-hidden">
                         <?php eT("Survey copy summary"); ?>
                     </caption>
                     <tr>

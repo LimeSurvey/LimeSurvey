@@ -11673,7 +11673,7 @@ blockquote.float-end {
 }
 
 .ls-survey-menu-item.menu-label {
-  padding-left: 33px !important;
+  padding-left: 30px !important;
 }
 
 .bg-white {
@@ -17814,13 +17814,17 @@ ol.breadcrumb.title-bar-breadcrumb li.active {
   color: #1E1E1E;
   font-weight: 400;
   white-space: nowrap;
-  flex: 0 0 auto;
+  display: inline-block;
+  max-width: 80ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 ol.breadcrumb.title-bar-breadcrumb a {
   color: #2D7A53;
   font-weight: 400;
   padding: 2px 6px;
   display: inline-block;
+  max-width: 80ch;
   outline: none;
   border-radius: 2px;
   border: 1px solid transparent;
