@@ -39,6 +39,10 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         array (
             'bcmath_compat\\' => 14,
         ),
+        'Z' => 
+        array (
+            'ZipStream\\' => 10,
+        ),
         'T' => 
         array (
             'Twig\\' => 5,
@@ -55,11 +59,17 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         ),
         'P' => 
         array (
+            'Psr\\SimpleCache\\' => 16,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
+            'PhpOffice\\PhpSpreadsheet\\' => 25,
             'ParagonIE\\ConstantTime\\' => 23,
             'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'M' => 
+        array (
+            'Matrix\\' => 7,
         ),
         'L' => 
         array (
@@ -97,6 +107,11 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         array (
             'DI\\' => 3,
         ),
+        'C' => 
+        array (
+            'Composer\\Pcre\\' => 14,
+            'Complex\\' => 8,
+        ),
         'A' => 
         array (
             'ArPHP\\I18N\\' => 11,
@@ -116,6 +131,10 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         'bcmath_compat\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/bcmath_compat/src',
+        ),
+        'ZipStream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
         'Twig\\' => 
         array (
@@ -149,6 +168,10 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         array (
             0 => __DIR__ . '/..' . '/tiamo/spss/src',
         ),
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
@@ -162,6 +185,10 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
+        'PhpOffice\\PhpSpreadsheet\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
         'ParagonIE\\ConstantTime\\' => 
         array (
             0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
@@ -169,6 +196,10 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Matrix\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
         'LimeSurvey\\PluginManager\\' => 
         array (
@@ -257,6 +288,14 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         array (
             0 => __DIR__ . '/..' . '/php-di/php-di/src',
         ),
+        'Composer\\Pcre\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/pcre/src',
+        ),
+        'Complex\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
         'ArPHP\\I18N\\' => 
         array (
             0 => __DIR__ . '/..' . '/khaled.alshamaa/ar-php/src',
@@ -273,27 +312,6 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
             'Zend_' => 
             array (
                 0 => __DIR__ . '/..' . '/shardj/zf1-future/library',
-            ),
-        ),
-        'S' => 
-        array (
-            'Spreadsheet' => 
-            array (
-                0 => __DIR__ . '/..' . '/pear/spreadsheet_excel_writer',
-            ),
-        ),
-        'O' => 
-        array (
-            'OLE' => 
-            array (
-                0 => __DIR__ . '/..' . '/pear/ole',
-            ),
-        ),
-        'C' => 
-        array (
-            'Console' => 
-            array (
-                0 => __DIR__ . '/..' . '/pear/console_getopt',
             ),
         ),
     );
@@ -313,13 +331,8 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         'DateMalformedStringException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateMalformedStringException.php',
         'DateObjectError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateObjectError.php',
         'DateRangeError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateRangeError.php',
-        'OS_Guess' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/OS/Guess.php',
         'Override' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/Override.php',
         'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
-        'PEAR' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
-        'PEAR_Error' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
-        'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
-        'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
         'Random\\BrokenRandomEngineError' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/BrokenRandomEngineError.php',
@@ -333,7 +346,6 @@ class ComposerStaticInite74269ee3bc74422f85caadd926dd3be
         'SensitiveParameter' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameter.php',
         'SensitiveParameterValue' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameterValue.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
-        'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
         'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
         'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
         'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
