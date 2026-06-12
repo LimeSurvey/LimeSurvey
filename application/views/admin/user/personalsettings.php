@@ -91,10 +91,10 @@ echo $oQuestionSelector->getModal();
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="nav-item"><a id="tab-your-profile" class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab" aria-controls="your-profile" aria-selected="true" tabindex="0"><?php eT("Profile"); ?></a></li>
-                <li role="presentation" class="nav-item"><a id="tab-your-personal-settings" class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab" aria-controls="your-personal-settings" aria-selected="false" tabindex="-1"><?php eT("Personal settings"); ?></a></li>
-                <li role="presentation" class="nav-item"><a id="tab-your-personal-menues" class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menues" aria-selected="false" tabindex="-1"><?php eT("Personalized menus"); ?></a></li>
-                <li role="presentation" class="nav-item"><a id="tab-your-personal-menueentries" class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menueentries" aria-selected="false" tabindex="-1"><?php eT("Personalized menu entries"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-profile" class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab" aria-controls="your-profile" aria-selected="true"><?php eT("Profile"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-personal-settings" class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab" aria-controls="your-personal-settings" aria-selected="false"><?php eT("Personal settings"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-personal-menues" class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menues" aria-selected="false"><?php eT("Personalized menus"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-personal-menueentries" class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menueentries" aria-selected="false"><?php eT("Personalized menu entries"); ?></a></li>
             </ul>
             <div class="tab-content">
 
@@ -471,7 +471,6 @@ echo $oQuestionSelector->getModal();
     <?php echo TbHtml::endForm(); ?>
 
 </div>
-
 
 <?php
 Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'personalsettings.js');
