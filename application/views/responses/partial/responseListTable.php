@@ -209,8 +209,9 @@ $hideCryptedFilter = $survey->oOptions->crypt_method == 'H';
         foreach ($model->metaData->columns as $column) {
             if (!in_array($column->name, $model->defaultColumns)) {
                 /* Add encryption symbole to question title for table header (if question is encrypted) */
+                $encryptedColumn = (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y');
                 $encryptionSymbol = '';
-                if (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y') {
+                if ($encrypted) {
                     $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
                 }
 
@@ -248,10 +249,11 @@ $hideCryptedFilter = $survey->oOptions->crypt_method == 'H';
                         'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
                         'name'              => $column->name,
                         'type'              => 'raw',
-                        'filter'            => $hideCryptedFilter && $encryptionSymbol ? false : TbHtml::textField(
+                        'filter'            => $encryptedColumn && $hideCryptedFilter ? false : TbHtml::textField(
                             'SurveyDynamic[' . $column->name . ']',
                             $model->{$column->name}
                         ),
+                        'sortable'          => !($encryptedColumn && $hideCryptedFilter),
                         'value'             => $columnValueExpression,
                     ];
                 }
