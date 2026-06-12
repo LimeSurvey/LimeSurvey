@@ -76,7 +76,6 @@
         "phpunit/phpunit": "^9.6",
         "vimeo/psalm": "^5.0",
 		"misantron/dbunit": "^5.4",
-		"tebazil/yii1-db-seeder": "^0.0.0",
 		"mockery/mockery": "^1.5"
     },
     "scripts": {
