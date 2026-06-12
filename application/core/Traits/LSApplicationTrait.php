@@ -221,11 +221,32 @@ trait LSApplicationTrait
         }
         $content .= "];\n"
             . "\nreturn [ 'allowedHosts' => \$hosts ];\n";
-        $result = @file_put_contents($filePath, $content);
-        if ($result !== false) {
-            // Update running config so the change takes effect immediately
-            Yii::app()->setConfig('allowedHosts', $sanitized);
+
+        // Check that the target directory is writable before attempting to write,
+        // so we can report the failure instead of failing silently.
+        $configDir = dirname($filePath);
+        if ((!file_exists($filePath) && !is_writable($configDir)) || (file_exists($filePath) && !is_writable($filePath))) {
+            Yii::log(
+                "Unable to write allowed hosts file '$filePath': the file or its directory is not writable.",
+                CLogger::LEVEL_ERROR,
+                'application.security.allowedHosts'
+            );
+            return false;
         }
-        return $result !== false;
+
+        $result = @file_put_contents($filePath, $content);
+        if ($result === false) {
+            $error = error_get_last();
+            Yii::log(
+                "Unable to write allowed hosts file '$filePath'." . (isset($error['message']) ? ' ' . $error['message'] : ''),
+                CLogger::LEVEL_ERROR,
+                'application.security.allowedHosts'
+            );
+            return false;
+        }
+
+        // Update running config so the change takes effect immediately
+        Yii::app()->setConfig('allowedHosts', $sanitized);
+        return true;
     }
 }

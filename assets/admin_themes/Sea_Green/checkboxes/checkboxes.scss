@@ -75,3 +75,9 @@ $checkbox-selectors: 'input[type="checkbox"]', '.checkbox input[type="checkbox"]
         }
     }
 }
+
+.form-check-input {
+    &:focus {
+        box-shadow: none;
+    }
+}

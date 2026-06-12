@@ -22,10 +22,17 @@
     RewriteRule ^composer.json - [F]
     # issue #19865
     RewriteRule ^setdebug.php - [F]
+
+    # deny access to the runtime directory (cache files, application.log, plugin.log)
+    # kept here so protection survives clearing the tmp directory content
+    RewriteRule ^tmp/runtime/ - [F]
 </IfModule>
 
 # deny access to hidden files and directories without mod_rewrite
 RedirectMatch 403 ^/(?!\.well-known/)(.*/)?\.+
+
+# deny access to the runtime directory without mod_rewrite
+RedirectMatch 403 ^/(.*/)?tmp/runtime/
 
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on
