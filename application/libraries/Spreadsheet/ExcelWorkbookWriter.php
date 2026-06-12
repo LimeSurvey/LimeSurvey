@@ -45,27 +45,6 @@ class ExcelWorkbookWriter
     }
 
     /**
-     * No-op. Kept for API compatibility with Spreadsheet_Excel_Writer, which
-     * used this to select the BIFF version.
-     *
-     * @param int $version
-     * @return void
-     */
-    public function setVersion($version)
-    {
-    }
-
-    /**
-     * No-op. PhpSpreadsheet manages its own temporary storage.
-     *
-     * @param string $directory
-     * @return void
-     */
-    public function setTempDir($directory)
-    {
-    }
-
-    /**
      * Register the download file name used when streaming to the browser.
      * The actual headers are emitted by close().
      *

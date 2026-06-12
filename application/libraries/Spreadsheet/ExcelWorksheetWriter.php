@@ -10,8 +10,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
  * Worksheet writer compatibility shim.
  *
  * Exposes the small subset of the legacy Spreadsheet_Excel_Writer_Worksheet
- * API used by the statistics exporters (write/writeNumber/setColumn/
- * setInputEncoding) and forwards the calls to a PhpSpreadsheet worksheet.
+ * API used by the statistics exporters (write/writeNumber/setColumn) and
+ * forwards the calls to a PhpSpreadsheet worksheet.
  *
  * Like the legacy library, row and column indexes are zero-based.
  */
@@ -23,17 +23,6 @@ class ExcelWorksheetWriter
     public function __construct(Worksheet $sheet)
     {
         $this->sheet = $sheet;
-    }
-
-    /**
-     * No-op. PhpSpreadsheet works with UTF-8 natively, so the legacy input
-     * encoding hint is not required.
-     *
-     * @param string $encoding
-     * @return void
-     */
-    public function setInputEncoding($encoding)
-    {
     }
 
     /**

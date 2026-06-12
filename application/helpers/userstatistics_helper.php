@@ -2666,16 +2666,6 @@ class userstatistics_helper
                 $this->workbook = new \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter();
             }
 
-            $this->workbook->setVersion(8);
-            // Inform the module that our data will arrive as UTF-8.
-            // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            $this->workbook->setTempDir($sTempDir);
-
-            // Inform the module that our data will arrive as UTF-8.
-            // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            if (!empty($sTempDir)) {
-                $this->workbook->setTempDir($sTempDir);
-            }
             if ($pdfOutput != 'F') {
                 $this->workbook->send('statistic-survey' . $surveyid . '.xlsx');
             }
@@ -2685,7 +2675,6 @@ class userstatistics_helper
             $this->xlsPercents = $this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
             $this->formatBold = $this->workbook->addFormat(array('Bold' => 1));
-            $this->sheet->setInputEncoding('utf-8');
             $this->sheet->setColumn(0, 20, 20);
             /**XXX*/
         }
