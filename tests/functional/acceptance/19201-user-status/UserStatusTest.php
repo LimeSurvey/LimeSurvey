@@ -194,7 +194,7 @@ class UserStatusTest extends TestBaseClassWeb
         // Choose "Deactivate" in dropdown
         (new WebDriverSelect($web->findByCss('select[name=status_selector]')))->selectByValue('deactivate');
 
-        $web->findByCss('.btn-ok')->click();
+        $web->findByCss('.modal.show .btn-ok')->click();
 
         // Check database for result
         $user = User::model()->findByPk($uid);
