@@ -14,6 +14,8 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
+/* @var boolean hide crypted filter columns */
+$hideCryptedFilter = $survey->oOptions->crypt_method == 'H';
 ?>
 <!-- for filter columns with datepicker-->
 <div style="display: none;">
@@ -207,8 +209,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         foreach ($model->metaData->columns as $column) {
             if (!in_array($column->name, $model->defaultColumns)) {
                 /* Add encryption symbole to question title for table header (if question is encrypted) */
+                $encryptedColumn = (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y');
                 $encryptionSymbol = '';
-                if (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y') {
+                if ($encrypted) {
                     $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
                 }
 
@@ -246,10 +249,11 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
                         'name'              => $column->name,
                         'type'              => 'raw',
-                        'filter'            => TbHtml::textField(
+                        'filter'            => $encryptedColumn && $hideCryptedFilter ? false : TbHtml::textField(
                             'SurveyDynamic[' . $column->name . ']',
                             $model->{$column->name}
                         ),
+                        'sortable'          => !($encryptedColumn && $hideCryptedFilter),
                         'value'             => $columnValueExpression,
                     ];
                 }

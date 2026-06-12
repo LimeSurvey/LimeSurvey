@@ -680,6 +680,7 @@ function populateDatabase($oDB)
             'googleanalyticsapikey' => "string(25) NULL",
             'tokenencryptionoptions' => "text NULL",
             'access_mode' => "string(1) DEFAULT 'O'",
+            'crypt_method' => "string(1) DEFAULT 'I'",
             'lastmodified' => 'datetime NOT NULL',
         ), $options);
 
@@ -758,7 +759,8 @@ function populateDatabase($oDB)
             'showprogress' => "string(1) NULL DEFAULT 'Y'",
             'questionindex' => "integer NULL DEFAULT '0'",
             'navigationdelay' => "integer NULL DEFAULT '0'",
-            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
+            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'",
+            'crypt_method' => "string(1) DEFAULT 'I'"
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_groupsettings_pk}}', '{{surveys_groupsettings}}', ['gsid']);
@@ -804,7 +806,8 @@ function populateDatabase($oDB)
             'showprogress' => 'Y',
             'questionindex' => '0',
             'navigationdelay' => '0',
-            'alloweditaftercompletion' => 'N'
+            'alloweditaftercompletion' => 'N',
+            'crypt_method' => 'B'
         );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes1);
 

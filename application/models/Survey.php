@@ -78,6 +78,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
  * @property string $googleanalyticsapikey Google Analytics Tracking ID
  * @property string $tokenencryptionoptions Token encryption options
+ * @property string $crypt_method Crypt method: I : inherit, B : Basic (allow filter and search), H : Hardened (better crypt method; no filter, no search) see mantis issue #19645
  *
  * @property Permission[] $permissions
  * @property SurveyLanguageSetting[] $languagesettings
@@ -208,6 +209,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->tokenencryptionoptions = '';
         $this->showregisterpolicy = 'I';
         $this->showtokenpolicy = 'I';
+        $this->crypt_method = 'I';
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = Yii::app()->getConfig('googleanalyticsapikey');
         if ($globalKey != "") {
@@ -546,6 +548,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showsurveypolicynotice', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => true),
             array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
+            array('crypt_method', 'in', 'range' => array('B', 'H', 'I'), 'allowEmpty' => false),
             array('showprogress', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('questionindex', 'numerical', 'min' => -1, 'max' => 2, 'allowEmpty' => false),
             array('alloweditaftercompletion', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -554,6 +557,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showgroupinfo', 'in', 'range' => array('B', 'N', 'D', 'X', 'I'), 'allowEmpty' => true),
             array('showqnumcode', 'in', 'range' => array('B', 'N', 'C', 'X', 'I'), 'allowEmpty' => true),
             array('format', 'in', 'range' => array('G', 'S', 'A', 'I'), 'allowEmpty' => true),
+            array('crypt_method', 'in', 'range' => array('I', 'B', 'H'), 'allowEmpty' => true),
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
