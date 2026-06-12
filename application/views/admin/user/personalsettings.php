@@ -472,69 +472,6 @@ echo $oQuestionSelector->getModal();
 
 </div>
 
-<script>
-(function(){
-    var tabs = document.querySelectorAll('.nav[role="tablist"] a[role="tab"]');
-    if (!tabs || tabs.length === 0) return;
-
-    function getFocusableElements(container){
-        return container.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-    }
-
-    function focusFirstInteractiveElement(tabPanelId){
-        var panel = document.getElementById(tabPanelId);
-        if (panel){
-            var focusableElements = getFocusableElements(panel);
-            if (focusableElements.length > 0){
-                focusableElements[0].focus();
-            }
-        }
-    }
-
-    function updateAria(activeIndex){
-        tabs.forEach(function(t, i){
-            t.setAttribute('aria-selected', i === activeIndex ? 'true' : 'false');
-            t.setAttribute('tabindex', i === activeIndex ? '0' : '-1');
-        });
-    }
-
-    tabs.forEach(function(tab, idx){
-        tab.addEventListener('keydown', function(e){
-            var key = e.key || e.keyCode;
-            if (key === 'ArrowLeft' || key === 37){
-                e.preventDefault();
-                var prev = (idx - 1 + tabs.length) % tabs.length;
-                tabs[prev].focus();
-                tabs[prev].click();
-                updateAria(prev);
-                var prevPanelId = tabs[prev].getAttribute('aria-controls');
-                focusFirstInteractiveElement(prevPanelId);
-            } else if (key === 'ArrowRight' || key === 39){
-                e.preventDefault();
-                var next = (idx + 1) % tabs.length;
-                tabs[next].focus();
-                tabs[next].click();
-                updateAria(next);
-                var nextPanelId = tabs[next].getAttribute('aria-controls');
-                focusFirstInteractiveElement(nextPanelId);
-            }
-        });
-
-        tab.addEventListener('click', function(){
-            var active = Array.prototype.indexOf.call(tabs, tab);
-            updateAria(active);
-            var panelId = tab.getAttribute('aria-controls');
-            focusFirstInteractiveElement(panelId);
-        });
-    });
-
-    var activeIndex = Array.prototype.findIndex.call(tabs, function(t){ return t.classList.contains('active'); });
-    if (activeIndex === -1) activeIndex = 0;
-    updateAria(activeIndex);
-})();
-</script>
 
 <?php
 Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'personalsettings.js');
