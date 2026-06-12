@@ -780,7 +780,6 @@ class SurveyRuntimeHelper
             // for backward compatibilty convert timezone string to +/- hours
             'timeadjust'                  => convertTimezoneDiffToHours(),
             'token'                       => $clienttoken,
-            'popupPreview'                => (($this->aSurveyInfo['popupPreview'] ?? false) === true),
         );
     }
 
@@ -1776,6 +1775,7 @@ class SurveyRuntimeHelper
         $this->setSurveyMode();
         $this->setSurveyOptions();
 
+        $this->aSurveyOptions['previewmode'] = $args['previewmode'];
         $this->previewgrp      = (isset($this->param['action']) && $this->param['action'] == 'previewgroup') ? true : false;
         $this->previewquestion = (isset($this->param['action']) && $this->param['action'] == 'previewquestion') ? true : false;
 
