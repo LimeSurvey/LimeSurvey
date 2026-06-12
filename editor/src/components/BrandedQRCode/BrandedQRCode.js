@@ -44,7 +44,11 @@ export const BrandedQRCode = ({
   }
 
   const previewRenderSize = previewSize * previewPixelRatio
-  const downloadSize = downloadTotal - 2 * downloadQuietZone
+  const downloadQuiet = Math.min(
+    downloadQuietZone,
+    Math.floor((downloadTotal - 1) / 2)
+  )
+  const downloadSize = downloadTotal - 2 * downloadQuiet
 
   const sharedProps = {
     value,
