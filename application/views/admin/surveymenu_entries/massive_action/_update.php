@@ -90,7 +90,7 @@
                     </div>
                     <label id="massedit_entries_user_id_fieldlabel" class="col-md-3 form-label" for="massedit_entries_user_id"><?php eT("User:"); ?></label>
                     <div class="col-md-8">
-                        <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['id' => 'massedit_entries_user_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
+                        <?php echo TbHtml::dropDownList('user_id', 'lskeep', ['lskeep' => gT('Keep old value')] + $model->getUserIdOptions(), ['disabled' => 'disabled','class' => 'form-select custom-data selector_submitField']);?>
                     </div>
                 </div>
 

@@ -30,7 +30,7 @@
                 </div>
                 <label id="massedit_menu_position_fieldlabel" class="col-md-3 form-label" for="position"><?php eT("Position:"); ?></label>
                 <div class="col-md-8">
-                    <?php echo TbHtml::dropDownList('position', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getPositionOptions()), ['id' => 'position', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
+                    <?php echo TbHtml::dropDownList('position', 'lskeep', ['lskeep' => gT('Keep old value')] + $model->getPositionOptions(), ['id' => 'position', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
                 </div>
                 <label id="massedit_menu_parent_id_fieldlabel" class="col-md-3 form-label" for="parent_id"><?php eT("Parent menu:"); ?></label>
                 <div class="col-md-8">
-                        <?php echo TbHtml::dropDownList('parent_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getMenuIdOptions()), ['id' => 'parent_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
+                        <?php echo TbHtml::dropDownList('parent_id', 'lskeep', ['lskeep' => gT('Keep old value')] + $model->getMenuIdOptions(), ['id' => 'parent_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
                     </div>
                 </div>
 
@@ -59,7 +59,7 @@
                     </div>
                     <label id="massedit_menu_survey_id_fieldlabel" class="col-md-3 form-label" for="survey_id"><?php eT("Survey:"); ?></label>
                     <div class="col-md-8">
-                        <?php echo TbHtml::dropDownList('survey_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getSurveyIdOptions()), ['id' => 'survey_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
+                        <?php echo TbHtml::dropDownList('survey_id', 'lskeep', ['lskeep' => gT('Keep old value')] + $model->getSurveyIdOptions(), ['id' => 'survey_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
                 </div>
             </div>
 
@@ -73,7 +73,7 @@
                 </div>
                 <label id="massedit_menu_user_id_fieldlabel" class="col-md-3 form-label" for="user_id"><?php eT("User:"); ?></label>
                 <div class="col-md-8">
-                    <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['id' => 'user_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
+                    <?php echo TbHtml::dropDownList('user_id', 'lskeep', ['lskeep' => gT('Keep old value')] + $model->getUserIdOptions(), ['id' => 'user_id', 'disabled' => 'disabled', 'class' => 'form-select custom-data selector_submitField']); ?>
                 </div>
             </div>
         </fieldset>
