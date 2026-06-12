@@ -151,6 +151,13 @@ class ExcelWorkbookWriter
      */
     private function ensureXlsxExtension($filename)
     {
-        return preg_replace('/\.xls$/i', '.xlsx', (string)$filename);
+        $filename = (string)$filename;
+        if (preg_match('/\.xlsx$/i', $filename)) {
+            return $filename;
+        }
+        if (preg_match('/\.[^.]+$/', $filename)) {
+            return preg_replace('/\.[^.]+$/', '.xlsx', $filename);
+        }
+        return $filename . '.xlsx';
     }
 }
