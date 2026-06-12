@@ -5159,7 +5159,8 @@ class LimeExpressionManager
         //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
         $updatedValues = $this->updatedValues;
         $message = '';
-        if ($this->surveyOptions['active'] !== 'Y' || $this->sPreviewMode) {
+        // Note: surveyOptions['active'] is a boolean (set as $info['active'] == 'Y')
+        if (!$this->surveyOptions['active'] || $this->sPreviewMode) {
             return $message;
         }
 
