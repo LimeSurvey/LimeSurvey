@@ -18962,6 +18962,10 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 .nav-tabs .nav-link.active:focus {
   box-shadow: none;
 }
+.nav-tabs .nav-link.active:focus-visible {
+  outline: none;
+  box-shadow: inset 2px 0 0 #14AE5C, inset -2px 0 0 #14AE5C, inset 0 -2px 0 #14AE5C, inset 0 2px 0 #14AE5C;
+}
 
 .tab-content {
   padding: 1rem;
