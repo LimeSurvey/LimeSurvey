@@ -145,7 +145,6 @@ export const SurveyFooter = ({
                       update={(value) => handleUpdate({ endText: value })}
                       placeholder={t('Enter your end message here.')}
                       style={{ marginLeft: '-4px' }}
-                      useRichTextEditor={false}
                       noPermissionDisabled={true}
                       showToolTip={false}
                       testId="survey-footer-end-text-content-editor"

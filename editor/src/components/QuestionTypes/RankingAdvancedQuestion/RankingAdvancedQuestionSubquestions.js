@@ -126,6 +126,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                           }
                         )}
                         testId="ranking-advanced-subquestion-content-editor"
+                        showToolbar={true}
                       />
                     </div>
                     <div
