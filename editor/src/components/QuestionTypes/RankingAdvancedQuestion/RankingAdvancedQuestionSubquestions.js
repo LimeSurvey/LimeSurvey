@@ -63,8 +63,8 @@ export const RankingAdvancedQuestionSubquestions = ({
       {subquestions.map((subquestion, index) => {
         return (
           <Draggable
-            key={`advanced-subquestion${subquestion.qid}-${index}`}
-            draggableId={`advanced-subquestion${subquestion.qid}-${index}`}
+            key={`advanced-subquestion${subquestion.appKey || subquestion.qid}-${index}`}
+            draggableId={`advanced-subquestion${subquestion.appKey || subquestion.qid}-${index}`}
             index={index}
           >
             {(provided, snapshot) => {
