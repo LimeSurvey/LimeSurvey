@@ -1,40 +1,168 @@
 .pagination-buttons {
   display: flex;
-  gap: 8px;
-  height: 40px;
   justify-content: center;
   align-items: center;
   padding: 8px 12px;
   background-color: $white;
+  border: none;
   border-radius: $border-radius;
   color: $g-700;
   @include reg12;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
 
-  .disabled {
-    color: $g-400 !important;
+  &__content {
+    display: flex;
+    gap: 20px;
+    align-items: center;
   }
 
-  .pagination-button {
-    outline: 1px solid $g-700 !important;
-    border: none;
-    border-radius: 2px;
-    height: 28px;
-    min-width: 28px;
+  &__results {
+    color: $g-700;
+    line-height: $line-height-20;
+    white-space: nowrap;
+  }
+
+  &__nav {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  &__page-size {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    white-space: nowrap;
+    line-height: $line-height-20;
+  }
+
+  .pagination-button.button {
+    display: inline-flex;
     justify-content: center;
     align-items: center;
-    display: flex;
+    margin: 0;
+    padding: 0;
+    min-width: unset;
+    border: 1px solid rgba($g-700, 0.5); // note: this opacity is used to make the border style a bit more like Figma.. in figma the border width is 0.5px, but in code it is 1px because we can't have 0.5px in HTML, so opacity makes it feel like 0.5px.
+    border-radius: 2px;
+    background-color: $white;
     color: $g-700;
     @include reg12;
+    box-shadow: none;
 
-    &:hover {
-      border-color: $g-700;
+    &:hover:not(:disabled):not(.active) {
       background-color: $g-100;
+      color: $g-700;
+    }
+
+    &.arrows {
+      width: 24px;
+      height: 24px;
+      padding: 4px;
+
+      svg {
+        display: block;
+        width: 16px;
+        height: 16px;
+      }
+
+      &.arrows-left svg {
+        transform: rotate(180deg);
+      }
+    }
+
+    &.page-number {
+      min-width: 24px;
+      height: 24px;
+      padding: 4px 8px;
+      line-height: $line-height-16;
+    }
+
+    &:disabled,
+    &.disabled {
+      background-color: $white;
+      border-color: $g-400;
+      color: $g-400;
+      pointer-events: none;
+
+      span {
+        color: $g-400;
+      }
+
+      svg {
+        fill: currentColor;
+      }
+    }
+
+    &.active {
+      color: $white;
+      background-color: $g-800;
+      border-color: $g-800;
+
+      &:hover {
+        background-color: $g-800;
+        color: $white;
+      }
     }
   }
 
-  .active {
-    color: $white;
-    background-color: $g-800 !important;
+  .pagination-select {
+    width: auto;
+
+    .pagination-select__control {
+      min-height: 24px;
+      height: 24px;
+      min-width: 52px;
+      border: 1px solid $g-700;
+      border-radius: 3px;
+      box-shadow: none;
+      color: $g-900;
+      font-weight: $font-weight-normal;
+      @include reg12;
+      cursor: pointer;
+
+      &:hover {
+        border-color: $g-700;
+      }
+    }
+
+    .pagination-select__value-container {
+      padding: 4px 2px 4px 8px;
+    }
+
+    .pagination-select__single-value {
+      color: $g-900;
+      margin: 0;
+      line-height: $line-height-16;
+    }
+
+    .pagination-select__indicators {
+      height: 24px;
+    }
+
+    .pagination-select__dropdown-indicator {
+      padding: 0 4px 0 0;
+      color: $g-900;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .pagination-select__menu {
+      width: 100%;
+      min-width: min-content;
+      white-space: normal;
+      word-wrap: break-word;
+      color: $g-900;
+      z-index: 99;
+    }
+
+    .pagination-select__option {
+      white-space: normal;
+      word-wrap: break-word;
+      z-index: 9999;
+    }
   }
 }
