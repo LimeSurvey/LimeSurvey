@@ -65,6 +65,10 @@ class LSYii_Application extends CWebApplication
 
     /* @var integer|false the current survey ID */
     private static $surveyId = false;
+    /* @var integer|false the current survey ID */
+    private static $questionId = false;
+    /* @var integer|false the current group ID */
+    private static $groupId = false;
 
     /**
      *
@@ -631,27 +635,109 @@ class LSYii_Application extends CWebApplication
                 Yii::app()->request->getParam('surveyId')
             )
         );
-        if (!$surveyId) {
+        if (!$surveyId || !self::checkInteger($surveyId, $throwError)) {
             return false;
         }
-        $intSurveyId = intval($surveyId);
-        if (strval($intSurveyId) !== strval($surveyId)) {
+        /* surveyId is set and is an integer */
+        $survey = Survey::model()->findByPk($surveyId);
+        if (!$survey) {
+            if ($throwError) {
+                throw new CHttpException(404, gT('Survey not found.'));
+            }
+            return false;
+        }
+        self::$surveyId = $surveyId;
+        return self::$surveyId;
+    }
+
+    /**
+     * Get survey survey id by param
+     * @param boolean $throwError Whether to throw an error
+     * @return false|integer
+     */
+    public static function getGroupId($throwError = true)
+    {
+        if (is_int(self::$groupId)) {
+            /* groupId is set and is valid */
+            return self::$groupId;
+        }
+        $groupId = Yii::app()->request->getParam('gid');
+        if (!$groupId || !self::checkInteger($groupId, $throwError)) {
+            return false;
+        }
+        /* groupId is set and is an integer */
+        $group = QuestionGroup::model()->findByPk($groupId);
+        if (!$group) {
+            if ($throwError) {
+                throw new CHttpException(404, gT('Group not found.'));
+            }
+            return false;
+        }
+        $surveyId = self::getSurveyId($throwError);
+        if ($surveyId && $surveyId != $group->sid) {
             if ($throwError) {
                 throw new CHttpException(400, gT('Your request is invalid.'));
             }
             return false;
         }
-        $surveyId = intval($surveyId);
-        /* surveyId is set and is an integer */
-        $survey = Survey::model()->findByPk($surveyId);
-        if ($survey) {
-             self::$surveyId = $surveyId;
-        } else {
+        /* We can set self::$surveyId according to question */
+        self::$surveyId = $group->sid;
+        self::$groupId = $groupId;
+        return self::$groupId;
+    }
+
+    /**
+     * Get question id by param (sid)
+     * @param boolean $throwError Whether to throw an error
+     * @return false|integer
+     */
+    public static function getQuestionId($throwError = true)
+    {
+        if (is_int(self::$questionId)) {
+            /* questionId is set and is valid */
+            return self::$questionId;
+        }
+        $questionId = Yii::app()->request->getParam('qid');
+        if (!$questionId || !self::checkInteger($questionId, $throwError)) {
+            return false;
+        }
+        /* questionId is set and is an integer */
+        $question = Question::model()->findByPk($questionId);
+        if (!$question) {
             if ($throwError) {
-                throw new CHttpException(404, gT('Your request is invalid.'));
+                throw new CHttpException(404, gT('Question not found.'));
             }
             return false;
         }
-        return self::$surveyId;
+        $surveyId = self::getSurveyId($throwError);
+        if ($surveyId && $surveyId != $question->sid) {
+            if ($throwError) {
+                throw new CHttpException(400, gT('Your request is invalid.'));
+            }
+            return false;
+        }
+        /* We can set self::$surveyId according to question */
+        self::$surveyId = $question->sid;
+        self::$questionId = $questionId;
+        return self::$questionId;
+    }
+    
+    /**
+     * Check validity of an integer
+     * @param $id mixed
+     * @param $throwError Whether to throw an error
+     * @throws CHttpException
+     * @return boolean
+     */
+    private static function checkInteger($id, $throwError = true)
+    {
+        $intId = intval($id);
+        if (strval($intId) !== strval($id)) {
+            if ($throwError) {
+                throw new CHttpException(400, gT('Your request is invalid.'));
+            }
+            return false;
+        }
+        return true;
     }
 }
