@@ -91,7 +91,6 @@ class SurveyIndex extends CAction
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
-        $redata['popuppreview'] = Yii::app()->request->getParam('popuppreview', false);
 
         $canPreviewSurvey = $this->canUserPreviewSurvey($surveyid);
 
@@ -103,7 +102,7 @@ class SurveyIndex extends CAction
             throw new CHttpException(401, $message);
         }
 
-        $previewmode = false;
+        $previewmode = (bool) Yii::app()->request->getParam('popuppreview', false);
         if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
             if (!$canPreviewSurvey) {
                 $aErrors  = array(gT('Error'));
