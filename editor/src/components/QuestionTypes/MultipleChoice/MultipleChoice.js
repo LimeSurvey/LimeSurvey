@@ -5,7 +5,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import { Button, Form } from 'react-bootstrap'
 import { PlusLg } from 'react-bootstrap-icons'
 
-import { useAppState } from 'hooks'
+import { useAppState, useChildKeyboardShortcuts } from 'hooks'
 import { STATES, Entities } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { DragAndDrop } from 'components/UIComponents'
@@ -29,6 +29,14 @@ export const MultipleChoice = ({
 
   const subquestionsRef = useRef(null)
   subquestionsRef.current = subquestions
+
+  const { getKeyDownHandler } = useChildKeyboardShortcuts({
+    children: subquestions,
+    entityType: Entities.subquestion,
+    handleChildAdd,
+    handleChildDelete,
+    isSurveyActive,
+  })
 
   const isButtonsTheme =
     questionThemeName === getQuestionTypeInfo().MULTIPLE_CHOICE_BUTTONS.theme
@@ -95,6 +103,7 @@ export const MultipleChoice = ({
                     attributes={attributes}
                     isSurveyActive={isSurveyActive}
                     language={language}
+                    onKeyDown={getKeyDownHandler(subQuestion.qid, index)}
                   />
                 </div>
               )}

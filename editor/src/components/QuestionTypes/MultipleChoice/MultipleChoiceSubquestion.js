@@ -23,6 +23,7 @@ export const MultipleChoiceSubquestion = ({
   isFocused = false,
   language,
   isSurveyActive,
+  onKeyDown,
   attributes: {
     slider_layout,
     sliderOrientation = Direction.Right,
@@ -145,6 +146,7 @@ export const MultipleChoiceSubquestion = ({
               testId="choice-content-editor"
               value={value}
               update={(value) => handleUpdateSubquestion(value, index)}
+              onKeyDown={onKeyDown}
             />
           )}
         </div>
