@@ -16,7 +16,6 @@ import {
   getDefaultColumns,
   generateColumns,
   generateData,
-  getSelectedRowIdsFromTable,
   SelectColumnId,
   ActionsColumnId,
 } from '../../utils'
@@ -52,6 +51,8 @@ export const ResponsesTable = ({
   const [firstLoad, setFirstLoad] = useState(true)
   const [data, setData] = useState([])
   const [columns, setColumns] = useState([])
+  const [rowSelection, setRowSelection] = useState({})
+  const [persistentSelection, setPersistentSelection] = useState({})
   const clickedRowRef = useRef({})
   const isBulkActionRef = useRef(false)
   const [responseViewRowInfo, setResponseViewRowInfo] = useState(null)
@@ -72,12 +73,46 @@ export const ResponsesTable = ({
   const [columnsOrder, setColumnsOrder] = useState([])
   const [pinnedColumns, setPinnedColumns] = useState([SelectColumnId])
 
+  const handleRowSelectionChange = (updaterOrValue) => {
+    const newSelection =
+      typeof updaterOrValue === 'function'
+        ? updaterOrValue(rowSelection)
+        : updaterOrValue
+
+    setRowSelection(newSelection)
+
+    // Sync with persistent selection
+    setPersistentSelection((prev) => {
+      const updated = { ...prev }
+
+      // Remove deselected rows (rows on current page that are no longer selected)
+      const currentPageRowIds = data.map((row) =>
+        row?.id === undefined ? '' : String(row.id)
+      )
+      currentPageRowIds.forEach((id) => {
+        if (!newSelection[id]) {
+          delete updated[id]
+        }
+      })
+
+      // Add newly selected rows
+      Object.keys(newSelection).forEach((id) => {
+        if (newSelection[id]) {
+          updated[id] = true
+        }
+      })
+
+      return updated
+    })
+  }
+
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
       pagination,
+      rowSelection,
       columnVisibility,
       columnOrder: columnsOrder,
       columnPinning: {
@@ -92,6 +127,7 @@ export const ResponsesTable = ({
     },
     onColumnOrderChange: setColumnsOrder,
     onSortingChange: setSorting,
+    onRowSelectionChange: handleRowSelectionChange,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -179,11 +215,24 @@ export const ResponsesTable = ({
     setColumnsOrder(columns.map((c) => c?.id))
   }, [columns])
 
+  // Reset selection when sorting or filters change (dataset identity changes)
   useEffect(() => {
-    if (table.getSelectedRowModel().rows.length > 0) {
-      table.resetRowSelection()
-    }
-  }, [sorting, columnsFilters, pagination])
+    setRowSelection({})
+    setPersistentSelection({})
+  }, [sorting, columnsFilters])
+
+  // Restore checkboxes from persistentSelection when page data changes
+  useEffect(() => {
+    if (!data.length) return
+    const restoredSelection = {}
+    data.forEach((row) => {
+      const id = row?.id === undefined ? '' : String(row.id)
+      if (persistentSelection[id]) {
+        restoredSelection[id] = true
+      }
+    })
+    setRowSelection(restoredSelection)
+  }, [data])
 
   const handleResponseDelete = () => {
     isBulkActionRef.current = false
@@ -194,7 +243,7 @@ export const ResponsesTable = ({
     const row = clickedRowRef.current
     const currentSelectedRowId = row.original?.id
     const hasFiles = row.original?.hasFiles
-    const selectedRowsIds = getSelectedRowIdsFromTable(table)
+    const selectedRowsIds = Object.keys(persistentSelection)
     const responseIdsToDownload = isBulkActions
       ? selectedRowsIds
       : [currentSelectedRowId]
@@ -253,10 +302,14 @@ export const ResponsesTable = ({
 
   const onResponsesDeleteConfirm = () => {
     const selectedRowsIds = isBulkActionRef.current
-      ? getSelectedRowIdsFromTable(table)
+      ? Object.keys(persistentSelection)
       : [clickedRowRef.current.original.id]
 
     handleResponsesDelete(selectedRowsIds, false)
+    if (isBulkActionRef.current) {
+      setPersistentSelection({})
+      setRowSelection({})
+    }
   }
 
   const handleOnActionFilesDeleteClick = () => {
@@ -266,13 +319,17 @@ export const ResponsesTable = ({
   const handleDeletingFiles = () => {
     const row = clickedRowRef.current
     const currentSelectedRowId = row.original?.id
-    const selectedRowsIds = getSelectedRowIdsFromTable(table)
+    const selectedRowsIds = Object.keys(persistentSelection)
 
     const responseIdsToDeleteFiles = isBulkActionRef.current
       ? selectedRowsIds
       : [currentSelectedRowId]
 
     handleAttachmentsDelete(responseIdsToDeleteFiles)
+    if (isBulkActionRef.current) {
+      setPersistentSelection({})
+      setRowSelection({})
+    }
     isBulkActionRef.current = false
   }
 
@@ -362,6 +419,7 @@ export const ResponsesTable = ({
       </div>
       <BulkActions
         table={table}
+        selectedCount={Object.keys(persistentSelection).length}
         onDeleteClick={() => {
           setShowResponsesDeleteModal(true)
           isBulkActionRef.current = true
@@ -371,11 +429,15 @@ export const ResponsesTable = ({
           isBulkActionRef.current = true
         }}
         onDownloadFilesClick={handleDownloadAllFiles}
+        onUnselectAll={() => {
+          setPersistentSelection({})
+          setRowSelection({})
+        }}
       />
       <ResponseModals
         showResponsesDeleteModal={showResponsesDeleteModal}
         isBulkAction={isBulkActionRef.current}
-        selectedRowsIds={getSelectedRowIdsFromTable(table)}
+        selectedRowsIds={Object.keys(persistentSelection)}
         setShowResponsesDeleteModal={setShowResponsesDeleteModal}
         setShowAttachmentsDeleteModal={setShowAttachmentsDeleteModal}
         onAttachmentsDeleteConfirm={handleDeletingFiles}

@@ -1601,7 +1601,7 @@ EOD;
                 case self::INPUT_TYPE_DATE:
                 case self::INPUT_TYPE_FILE:
                 case self::INPUT_TYPE_SEARCH:
-                    self::addCssClass('sr-only', $labelOptions);
+                    self::addCssClass('visually-hidden', $labelOptions);
                     if (($label !== null) && (TbArray::getValue('placeholder', $htmlOptions) !== null)) {
                         $htmlOptions['placeholder'] = $label;
                     }
@@ -2480,7 +2480,7 @@ EOD;
                 case self::INPUT_TYPE_DATE:
                 case self::INPUT_TYPE_FILE:
                 case self::INPUT_TYPE_SEARCH:
-                    self::addCssClass('sr-only', $labelOptions);
+                    self::addCssClass('visually-hidden', $labelOptions);
                     if (($label !== null) && (TbArray::getValue('placeholder', $htmlOptions) !== null)) {
                         $htmlOptions['placeholder'] = $label;
                     }
@@ -3935,7 +3935,7 @@ EOD;
         $htmlOptions['data-bs-toggle'] = 'collapse';
         $htmlOptions['data-target'] = $target;
         self::addCssClass('navbar-toggle', $htmlOptions);
-        $content = self::tag('span', array('class' => 'sr-only'), 'Toggle navigation');
+        $content = self::tag('span', array('class' => 'visually-hidden'), 'Toggle navigation');
         $content .= '<span class="navbar-toggler-icon"></span>';
         return self::tag('button', $htmlOptions, $content);
     }
@@ -4018,7 +4018,7 @@ EOD;
         $linkOptions = TbArray::popValue('linkOptions', $htmlOptions, array());
         if (TbArray::popValue('active', $htmlOptions, false)) {
             self::addCssClass('active', $htmlOptions);
-            $label .= ' ' . self::tag('span', array('class' => 'sr-only'), '(current)');
+            $label .= ' ' . self::tag('span', array('class' => 'visually-hidden'), '(current)');
         }
         if (TbArray::popValue('disabled', $htmlOptions, false)) {
             self::addCssClass('disabled', $htmlOptions);

@@ -188,14 +188,16 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Helper function to render form.
-     * Used by create and edit actions.
-     *
-     * @param Question $question Question
-     * @return void
-     * @throws CException
-     * @todo Move to service class
-     */
+         * Prepare data and render the question create/edit form for the given Question.
+         *
+         * Registers editor assets when the request is not AJAX, initializes file-manager context,
+         * builds advanced and general settings, prepares JS variables and modal HTML, sets UI flags,
+         * and renders the 'create' view with the assembled view data.
+         *
+         * @param Question $question The question model to render/edit.
+         * @return void
+         * @throws CException
+         */
     private function renderFormAux(Question $question)
     {
         Yii::app()->loadHelper("admin.htmleditor");
@@ -1636,7 +1638,8 @@ class QuestionAdministrationController extends LSBaseController
             [
                 'aResults'     =>  $aResults,
                 'successLabel' =>  gT('Selected'),
-                'tableLabels'  =>  $tableLabels
+                'tableLabels'  =>  $tableLabels,
+                'caption'      =>  gT('Selected questions'),
             ]
         );
     }

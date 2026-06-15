@@ -2007,10 +2007,10 @@ function getMove()
     $aAcceptedMove = array('default', 'movenext', 'movesubmit', 'moveprev', 'saveall', 'loadall', 'clearall', 'changelang');
     // We can control is save and load are OK : todo fix according to survey settings
     // Maybe allow $aAcceptedMove in Plugin
-    $move = Yii::app()->request->getParam('move');
+    $move = Yii::app()->request->getPost('move');
     /* @deprecated since we use button and not input with different value. */
     foreach ($aAcceptedMove as $sAccepteMove) {
-        if (Yii::app()->request->getParam($sAccepteMove)) {
+        if (Yii::app()->request->getPost($sAccepteMove)) {
                     $move = $sAccepteMove;
         }
     }

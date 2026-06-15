@@ -5,7 +5,13 @@ import { useSurvey } from '../../../hooks'
 
 export const Theme = (props) => {
   const { survey } = useSurvey(props.surveyId)
-  let templatePreview = survey?.templatePreview
+
+  const currentTemplate = survey?.template
+  const availableThemes = survey?.availableThemes || []
+  const selectedTheme = availableThemes.find(
+    (theme) => theme.value === currentTemplate
+  )
+  let templatePreview = selectedTheme?.preview || survey?.templatePreview || ''
   if (process.env.REACT_APP_DEV_MODE && templatePreview) {
     templatePreview = process.env.REACT_APP_SITE_URL + templatePreview
   }
