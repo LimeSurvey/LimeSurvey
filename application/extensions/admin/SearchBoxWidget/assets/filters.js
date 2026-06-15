@@ -19,14 +19,25 @@ $('.view-switch').on('click keydown', function (e) {
 });
 
 $('#survey_gsid, #survey_active').change(function (e) {
-    console.log($(this).find(':selected').val());
     $('#survey-search').submit();
+});
+
+$('.search-bar input').each(function () {
+    $(this).data('original-value', $(this).val());
 });
 
 $('.search-bar input').keydown(function (e) {
     if (e.key === "Enter" || e.keyCode === 13) {
-        e.preventDefault(); 
+        e.preventDefault();
+        $(this).data('original-value', $(this).val());
         $('#survey-search').submit();  // 🔍 trigger search
+    }
+});
+
+$('.search-bar input').on('blur', function () {
+    if ($(this).val() !== $(this).data('original-value')) {
+        $(this).data('original-value', $(this).val());
+        $('#survey-search').submit();
     }
 });
 

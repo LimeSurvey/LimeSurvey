@@ -5,8 +5,10 @@ namespace GuzzleHttp;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\Handler\CurlMultiHandler;
+use GuzzleHttp\Handler\CurlShareHandleState;
 use GuzzleHttp\Handler\Proxy;
 use GuzzleHttp\Handler\StreamHandler;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 
 final class Utils
@@ -79,28 +81,51 @@ final class Utils
      *
      * The returned handler is not wrapped by any default middlewares.
      *
-     * @return callable(\Psr\Http\Message\RequestInterface, array): Promise\PromiseInterface Returns the best handler for the given system.
+     * @param array{transport_sharing?: mixed} $handlerOptions Handler constructor options.
+     *
+     * @return callable(RequestInterface, array): Promise\PromiseInterface Returns the best handler for the given system.
      *
      * @throws \RuntimeException if no viable Handler is available.
      */
-    public static function chooseHandler(): callable
+    public static function chooseHandler(array $handlerOptions = []): callable
     {
         $handler = null;
+        $sharingMode = CurlShareHandleState::normalizeMode($handlerOptions['transport_sharing'] ?? null, 'transport_sharing');
+        $sharingRequested = $sharingMode !== TransportSharing::NONE;
+        $sharingRequired = $sharingMode === TransportSharing::HANDLER_REQUIRE;
+        $curlHandlerOptions = [];
+        $curlSupported = \defined('CURLOPT_CUSTOMREQUEST')
+            && \function_exists('curl_version')
+            && version_compare(curl_version()['version'], '7.21.2') >= 0
+            && (\function_exists('curl_multi_exec') || \function_exists('curl_exec'));
 
-        if (\defined('CURLOPT_CUSTOMREQUEST') && \function_exists('curl_version') && version_compare(curl_version()['version'], '7.21.2') >= 0) {
+        if ($sharingRequired && !$curlSupported) {
+            throw new \RuntimeException('Required transport sharing requires the PHP cURL extension, curl_exec() or curl_multi_exec(), and libcurl 7.21.2 or higher.');
+        }
+
+        if ($curlSupported) {
+            if ($sharingRequested) {
+                $shareState = CurlShareHandleState::fromOption($sharingMode);
+                if ($shareState !== null) {
+                    $curlHandlerOptions['transport_sharing'] = $shareState;
+                }
+            }
+
             if (\function_exists('curl_multi_exec') && \function_exists('curl_exec')) {
-                $handler = Proxy::wrapSync(new CurlMultiHandler(), new CurlHandler());
+                $handler = Proxy::wrapSync(new CurlMultiHandler($curlHandlerOptions), new CurlHandler($curlHandlerOptions));
             } elseif (\function_exists('curl_exec')) {
-                $handler = new CurlHandler();
+                $handler = new CurlHandler($curlHandlerOptions);
             } elseif (\function_exists('curl_multi_exec')) {
-                $handler = new CurlMultiHandler();
+                $handler = new CurlMultiHandler($curlHandlerOptions);
             }
         }
 
         if (\ini_get('allow_url_fopen')) {
+            $streamHandler = new StreamHandler(['transport_sharing' => $sharingMode]);
+
             $handler = $handler
-                ? Proxy::wrapStreaming($handler, new StreamHandler())
-                : new StreamHandler();
+                ? Proxy::wrapStreaming($handler, $streamHandler)
+                : $streamHandler;
         } elseif (!$handler) {
             throw new \RuntimeException('GuzzleHttp requires cURL, the allow_url_fopen ini setting, or a custom HTTP handler.');
         }
@@ -176,7 +201,7 @@ No system CA bundle could be found in any of the the common system locations.
 PHP versions earlier than 5.6 are not properly configured to use the system's
 CA bundle by default. In order to verify peer certificates, you will need to
 supply the path on disk to a certificate bundle to the 'verify' request
-option: https://docs.guzzlephp.org/en/latest/request-options.html#verify. If
+option: https://github.com/guzzle/guzzle/blob/7.11/docs/request-options.md#verify. If
 you do not need a specific certificate bundle, then Mozilla provides a commonly
 used CA bundle which can be downloaded here (provided by the maintainer of
 cURL): https://curl.haxx.se/ca/cacert.pem. Once you have a CA bundle available
@@ -195,10 +220,40 @@ EOT
     {
         $result = [];
         foreach (\array_keys($headers) as $key) {
-            $result[\strtolower($key)] = $key;
+            $result[\strtolower((string) $key)] = $key;
         }
 
         return $result;
+    }
+
+    /**
+     * @param mixed $protocols
+     *
+     * @return string[]
+     *
+     * @throws InvalidArgumentException
+     */
+    public static function normalizeProtocols($protocols): array
+    {
+        if (!\is_array($protocols) || $protocols === []) {
+            throw new InvalidArgumentException('protocols must be a non-empty array of "http" and/or "https"');
+        }
+
+        $normalized = [];
+
+        foreach ($protocols as $protocol) {
+            if (!\is_string($protocol)) {
+                throw new InvalidArgumentException('protocols must contain only strings');
+            }
+
+            if ($protocol !== 'http' && $protocol !== 'https') {
+                throw new InvalidArgumentException('protocols may only contain "http" and "https"');
+            }
+
+            $normalized[$protocol] = true;
+        }
+
+        return \array_keys($normalized);
     }
 
     /**
@@ -226,8 +281,7 @@ EOT
             throw new InvalidArgumentException('Empty host provided');
         }
 
-        // Strip port if present.
-        [$host] = \explode(':', $host, 2);
+        $host = self::normalizeNoProxyHost($host, true);
 
         foreach ($noProxyArray as $area) {
             // Always match on wildcards.
@@ -235,10 +289,11 @@ EOT
                 return true;
             }
 
-            if (empty($area)) {
-                // Don't match on empty values.
+            if ($area === '') {
                 continue;
             }
+
+            $area = self::normalizeNoProxyHost($area, false);
 
             if ($area === $host) {
                 // Exact matches.
@@ -247,12 +302,164 @@ EOT
             // Special match if the area when prefixed with ".". Remove any
             // existing leading "." and add a new leading ".".
             $area = '.'.\ltrim($area, '.');
-            if (\substr($host, -\strlen($area)) === $area) {
+            if (
+                \strpos($host, ':') === false
+                && \strpos($area, ':') === false
+                && \substr($host, -\strlen($area)) === $area
+            ) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Returns true if the provided URI matches any of the no proxy areas.
+     *
+     * @param mixed $noProxy No-proxy host patterns.
+     *
+     * @internal
+     */
+    public static function isUriInNoProxy(UriInterface $uri, $noProxy): bool
+    {
+        if (\is_string($noProxy)) {
+            $noProxy = \explode(',', $noProxy);
+        }
+
+        if (!\is_array($noProxy)) {
+            return false;
+        }
+
+        $host = $uri->getHost();
+        if ($host === '') {
+            return false;
+        }
+
+        $port = $uri->getPort();
+        if ($port === null) {
+            $port = self::getDefaultPort($uri->getScheme());
+        }
+
+        foreach ($noProxy as $area) {
+            if (!\is_string($area)) {
+                continue;
+            }
+
+            $area = \trim($area);
+
+            // Always match on wildcards.
+            if ($area === '*') {
+                return true;
+            }
+
+            if ($area === '') {
+                continue;
+            }
+
+            [$area, $areaPort] = self::splitNoProxyHostAndPort($area);
+            if ($areaPort !== null && $areaPort !== $port) {
+                continue;
+            }
+
+            if (self::isHostInNoProxy($host, [$area])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function normalizeNoProxyHost(string $host, bool $stripPort): string
+    {
+        if ($host !== '' && $host[0] === '[') {
+            $closingBracket = \strpos($host, ']');
+
+            if ($closingBracket !== false) {
+                $address = \substr($host, 1, $closingBracket - 1);
+                $tail = \substr($host, $closingBracket + 1);
+
+                if (
+                    ($tail === '' || ($stripPort && \preg_match('/^:\d+$/', $tail)))
+                    && \filter_var($address, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)
+                ) {
+                    return \strtolower($address);
+                }
+            }
+        }
+
+        if (\filter_var($host, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+            return \strtolower($host);
+        }
+
+        if ($stripPort) {
+            [$host] = \explode(':', $host, 2);
+        }
+
+        return $host;
+    }
+
+    /**
+     * @return array{0: string, 1: int|null}
+     */
+    private static function splitNoProxyHostAndPort(string $area): array
+    {
+        if ($area !== '' && $area[0] === '[') {
+            $closingBracket = \strpos($area, ']');
+
+            if ($closingBracket !== false) {
+                $tail = \substr($area, $closingBracket + 1);
+                if ($tail !== '' && $tail[0] === ':') {
+                    $port = self::parseNoProxyPort(\substr($tail, 1));
+
+                    if ($port !== null) {
+                        return [\substr($area, 0, $closingBracket + 1), $port];
+                    }
+                }
+            }
+
+            return [$area, null];
+        }
+
+        if (\filter_var($area, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+            return [$area, null];
+        }
+
+        $colon = \strrpos($area, ':');
+        if ($colon === false) {
+            return [$area, null];
+        }
+
+        $port = self::parseNoProxyPort(\substr($area, $colon + 1));
+        if ($port === null) {
+            return [$area, null];
+        }
+
+        return [\substr($area, 0, $colon), $port];
+    }
+
+    private static function parseNoProxyPort(string $port): ?int
+    {
+        if ($port === '' || !\ctype_digit($port)) {
+            return null;
+        }
+
+        $port = (int) $port;
+
+        return $port <= 65535 ? $port : null;
+    }
+
+    private static function getDefaultPort(string $scheme): ?int
+    {
+        if ($scheme === 'http') {
+            return 80;
+        }
+
+        if ($scheme === 'https') {
+            return 443;
+        }
+
+        return null;
     }
 
     /**
@@ -272,6 +479,10 @@ EOT
      */
     public static function jsonDecode(string $json, bool $assoc = false, int $depth = 512, int $options = 0)
     {
+        if ($depth < 1) {
+            throw new InvalidArgumentException('json_decode error: Maximum stack depth exceeded');
+        }
+
         $data = \json_decode($json, $assoc, $depth, $options);
         if (\JSON_ERROR_NONE !== \json_last_error()) {
             throw new InvalidArgumentException('json_decode error: '.\json_last_error_msg());
@@ -313,6 +524,39 @@ EOT
     public static function currentTime(): float
     {
         return (float) \function_exists('hrtime') ? \hrtime(true) / 1e9 : \microtime(true);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @internal
+     */
+    public static function normalizeIdnConversionOption($value): ?int
+    {
+        if ($value === null || $value === false) {
+            return null;
+        }
+
+        if ($value === true) {
+            return \IDNA_DEFAULT;
+        }
+
+        if (\is_int($value)) {
+            return $value;
+        }
+
+        if ((\is_string($value) && \is_numeric($value)) || (\is_float($value) && \is_finite($value))) {
+            \trigger_deprecation(
+                'guzzlehttp/guzzle',
+                '7.11',
+                'Passing %s as the "idn_conversion" request option is deprecated; guzzlehttp/guzzle 8.0 will reject values that are not true, false, null, or an integer IDNA_* bitmask.',
+                self::describeType($value)
+            );
+
+            return (int) $value;
+        }
+
+        throw new InvalidArgumentException('idn_conversion must be true, false, null, or an integer IDNA_* bitmask');
     }
 
     /**

@@ -22,7 +22,7 @@ class RenderYesNoRadio extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/dummy/answer';
     }
-    
+
     public function getRows()
     {
         return;
