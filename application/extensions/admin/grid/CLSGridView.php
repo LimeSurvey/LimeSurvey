@@ -135,23 +135,18 @@ class CLSGridView extends TbGridView
 
         // Add per-grid custom snippets from lsAfterAjaxUpdate
         if (isset($this->lsAfterAjaxUpdate)) {
-            $this->afterAjaxUpdate = 'function(id, data){';
             foreach ($this->lsAfterAjaxUpdate as $jsCode) {
                 $parts[] = $jsCode;
             }
-            $this->afterAjaxUpdate .= $alwaysJs;
-            if (!empty($this->lsAdditionalColumns)) {
-                $this->afterAjaxUpdate .= 'initColumnFilter()';
-        }
-            $this->afterAjaxUpdate .= '}';
-        } else {
-            // No custom lsAfterAjaxUpdate defined – still wire up the restore
-            // so that selection persists for grids that don't use lsAfterAjaxUpdate.
-            $this->afterAjaxUpdate = 'function(id, data){' . $alwaysJs . '}';
         }
 
-        // Always run the standard LS post-update handler
+        // Always include selection restore and standard handlers
+        $parts[] = $alwaysJs;
         $parts[] = 'LS.gridView.afterAjaxUpdate(id, data);';
+
+        if (!empty($this->lsAdditionalColumns)) {
+            $parts[] = 'initColumnFilter();';
+        }
 
         $this->afterAjaxUpdate = 'function(id, data){' . implode('', $parts) . '}';
     }
@@ -174,13 +169,13 @@ class CLSGridView extends TbGridView
 
     private function registerGridviewScripts()
     {
-        // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
+        $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
+
+        // Grid selection // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
         App()->clientScript->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridSelection.js',
+            $extensionsUrl . 'gridSelection.js',
             CClientScript::POS_BEGIN
         );
-
-        $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
 
         // Scrollbar
         App()->clientScript->registerScriptFile(
