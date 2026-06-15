@@ -409,6 +409,7 @@ echo $oQuestionSelector->getModal();
                                     <?php
                                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => 'showScriptEdit',
+                                        'ariaLabel'     => gT("Show script field"),
                                         'checkedOption' => $aUserSettings['showScriptEdit'] ?? 0,
                                         'selectOptions' =>    [
                                             '1' => gT("Yes", 'unescaped'),
@@ -427,6 +428,7 @@ echo $oQuestionSelector->getModal();
                                     <?php
                                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => 'noViewMode',
+                                        'ariaLabel'     => gT("Directly show edit mode"),
                                         'checkedOption' => $aUserSettings['noViewMode'] ?? 0,
                                         'selectOptions' =>    [
                                             '1' => gT("Yes", 'unescaped'),
@@ -446,6 +448,7 @@ echo $oQuestionSelector->getModal();
                                     <?php
                                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => 'lock_organizer',
+                                        'ariaLabel'     => gT("Lock question organizer in sidebar by default"),
                                         'checkedOption' => $aUserSettings['lock_organizer'] ?? 0,
                                         'selectOptions' =>    [
                                             '1' => gT("Yes", 'unescaped'),
@@ -464,6 +467,7 @@ echo $oQuestionSelector->getModal();
                                     <?php
                                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                         'name'          => 'createsample',
+                                        'ariaLabel'     => gT("Create example question group and question"),
                                         'checkedOption' => $aUserSettings['createsample'] ?? 'default',
                                         'selectOptions' =>    [
                                             '1' => gT("Yes", 'unescaped'),
