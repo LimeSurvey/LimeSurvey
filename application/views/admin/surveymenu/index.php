@@ -134,93 +134,10 @@ echo viewHelper::getViewTestTag('surveyMenus');
 </div>
 
 <script>
-    var focusTab = function ($tab) {
-        var $tabs = $('#menueslist a[role="tab"]');
-        $tabs.attr({
-            tabindex: '-1'
-        });
-        $tab.attr({
-            tabindex: '0'
-        }).focus();
-    };
-
-    var activateTab = function ($tab) {
-        var $tabs = $('#menueslist a[role="tab"]');
-        $tabs.attr({
-            'aria-selected': 'false',
-            tabindex: '-1'
-        });
-        $tab.attr({
-            'aria-selected': 'true',
-            tabindex: '0'
-        }).focus();
-
-        if (typeof bootstrap !== 'undefined' && bootstrap.Tab) {
-            new bootstrap.Tab($tab[0]).show();
-        } else {
-            $tab.trigger('click');
-        }
-    };
-
-    $('#menueslist a[role="tab"]').on('keydown', function (event) {
-        var $tabs = $('#menueslist a[role="tab"]');
-        var index = $tabs.index(this);
-        var nextIndex;
-
-        switch (event.which) {
-            case 37: // ArrowLeft
-            case 38: // ArrowUp
-                nextIndex = (index - 1 + $tabs.length) % $tabs.length;
-                focusTab($tabs.eq(nextIndex));
-                event.preventDefault();
-                break;
-            case 39: // ArrowRight
-            case 40: // ArrowDown
-                nextIndex = (index + 1) % $tabs.length;
-                focusTab($tabs.eq(nextIndex));
-                event.preventDefault();
-                break;
-            case 13: // Enter
-            case 32: // Space
-                activateTab($(this));
-                event.preventDefault();
-                break;
-            case 36: // Home
-                focusTab($tabs.first());
-                event.preventDefault();
-                break;
-            case 35: // End
-                focusTab($tabs.last());
-                event.preventDefault();
-                break;
-        }
-    });
-
-    $('#menueslist a[role="tab"]').on('focus', function () {
-        $('#menueslist a[role="tab"]').attr({
-            tabindex: '-1'
-        });
-        $(this).attr({
-            tabindex: '0'
-        });
-    });
-
     $('#menueslist a').on('shown.bs.tab', function () {
         var tabId = $(this).attr('href');
         $('.tab-dependent-button:not([data-tab="' + tabId + '"])').hide();
         $('.tab-dependent-button[data-tab="' + tabId + '"]').show();
-
-        $('#menueslist a[role="tab"]').attr({
-            'aria-selected': 'false',
-            tabindex: '-1'
-        });
-        $(this).attr({
-            'aria-selected': 'true',
-            tabindex: '0'
-        });
-
-        $('.tab-pane').attr('aria-hidden', 'true');
-        $(tabId).attr('aria-hidden', 'false');
     });
     $(document).on('ready pjax:scriptcomplete', function () {
         if (window.location.hash) {
