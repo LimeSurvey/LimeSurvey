@@ -489,7 +489,7 @@ class LSActiveRecord extends CActiveRecord
                 $sodium->setEncryptionMethod($oSurvey->oOptions->crypt_method);
             }
         } else {
-            // @TODO : check if use default Surveys settings or new settings ?
+            // @TODO : Global : H, Particpant : S or H ?
         }
         $class = get_class($this);
         // TODO: Use OOP polymorphism instead of switching on class names.
@@ -512,7 +512,7 @@ class LSActiveRecord extends CActiveRecord
     }
 
     /**
-     * Function to show encryption symbol in gridview attribute header if value ois encrypted
+     * Function to show encryption symbol in gridview attribute header if value is encrypted
      * @param int $surveyId
      * @param string $className
      * @param string $attributeName
@@ -523,6 +523,14 @@ class LSActiveRecord extends CActiveRecord
     {
         $encryptedAttributes = $this->getAllEncryptedAttributes($surveyId, $className);
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
+        if ($surveyId) {
+            /* Set notice according to survey */
+            if ($oSurvey = Survey::model()->findByPk($surveyId)) {
+                if ($oSurvey->oOptions->crypt_method == "H") {
+                    $encryptionNotice = gT("This field is encrypted and can not be searched or ordered.");
+                }
+            }
+        }
         if (isset($encryptedAttributes)) {
             if (in_array($attributeName, $encryptedAttributes)) {
                 return ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
