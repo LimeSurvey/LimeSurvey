@@ -91,10 +91,10 @@ echo $oQuestionSelector->getModal();
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="nav-item"><a id="tab-your-profile" class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab" aria-controls="your-profile" aria-selected="true"><?php eT("Profile"); ?></a></li>
-                <li role="presentation" class="nav-item"><a id="tab-your-personal-settings" class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab" aria-controls="your-personal-settings" aria-selected="false"><?php eT("Personal settings"); ?></a></li>
-                <li role="presentation" class="nav-item"><a id="tab-your-personal-menues" class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menues" aria-selected="false"><?php eT("Personalized menus"); ?></a></li>
-                <li role="presentation" class="nav-item"><a id="tab-your-personal-menueentries" class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menueentries" aria-selected="false"><?php eT("Personalized menu entries"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-profile" class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab" aria-controls="your-profile" aria-selected="true" tabindex="0"><?php eT("Profile"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-personal-settings" class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab" aria-controls="your-personal-settings" aria-selected="false" tabindex="-1"><?php eT("Personal settings"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-personal-menues" class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menues" aria-selected="false" tabindex="-1"><?php eT("Personalized menus"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-personal-menueentries" class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menueentries" aria-selected="false" tabindex="-1"><?php eT("Personalized menu entries"); ?></a></li>
             </ul>
             <div class="tab-content">
 
@@ -104,34 +104,33 @@ echo $oQuestionSelector->getModal();
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
-    <?php
-    echo TbHtml::label(
-        gT("User name:"),
-        'username',
-        ['class' => 'form-label']
-    );
-    ?>
+                                <?php
+                                echo TbHtml::label(
+                                    gT("User name:"),
+                                    'username',
+                                    ['class' => 'form-label']
+                                );
+                                ?>
+                                <div>
+                                    <?php
+                                    echo TbHtml::textField(
+                                        'username',
+                                        $sUsername,
+                                        [
+                                            'class' => 'form-control',
+                                            'readonly' => true,
+                                            'aria-describedby' => 'username-info'
+                                        ]
+                                    );
+                                    ?>
+                                </div>
 
-    <div>
-        <?php
-        echo TbHtml::textField(
-            'username',
-            $sUsername,
-            [
-                'class' => 'form-control',
-                'readonly' => true,
-                'aria-describedby' => 'username-info'
-            ]
-        );
-        ?>
-    </div>
-
-    <div>
-        <span id="username-info" class="text-info">
-            <?php eT("The user name cannot be changed."); ?>
-        </span>
-    </div>
-</div>
+                                <div>
+                                    <span id="username-info" class="text-info">
+                                        <?php eT("The user name cannot be changed."); ?>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -179,7 +178,20 @@ echo $oQuestionSelector->getModal();
                                     <span class="required">*</span>
                                 </label>
                                 <div class="">
-                                    <?php echo TbHtml::passwordField('oldpassword', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
+                                    <?php echo TbHtml::passwordField(
+                                        'oldpassword',
+                                        '',
+                                        [
+                                            'disabled' => true,
+                                            'class' => 'form-control',
+                                            'autocomplete' => "off",
+                                            'placeholder' => html_entity_decode(
+                                                str_repeat("&#9679;", 10),
+                                                ENT_COMPAT,
+                                                'utf-8'
+                                            )
+                                        ]
+                                    ); ?>
                                 </div>
                             </div>
                         </div>
@@ -190,7 +202,21 @@ echo $oQuestionSelector->getModal();
                             <div class="mb-3">
                                 <?php echo TbHtml::label(gT("New password:"), 'password', ['class' => " form-label"]); ?>
                                 <div class="">
-                                    <?php echo TbHtml::passwordField('password', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'aria-describedby' => 'password-help', 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
+                                    <?php echo TbHtml::passwordField(
+                                        'password',
+                                        '',
+                                        [
+                                            'disabled' => true,
+                                            'class' => 'form-control',
+                                            'autocomplete' => "off",
+                                            'aria-describedby' => 'password-help',
+                                            'placeholder' => html_entity_decode(
+                                                str_repeat("&#9679;", 10),
+                                                ENT_COMPAT,
+                                                'utf-8'
+                                            )
+                                        ]
+                                    ); ?>
                                 </div>
                                 <div class="">
                                     <span class='text-info' id="password-help"><?php echo $passwordHelpText; ?></span>
@@ -201,7 +227,20 @@ echo $oQuestionSelector->getModal();
                             <div class="mb-3">
                                 <?php echo TbHtml::label(gT("Repeat new password:"), 'repeatpassword', ['class' => " form-label"]); ?>
                                 <div class="">
-                                    <?php echo TbHtml::passwordField('repeatpassword', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
+                                    <?php echo TbHtml::passwordField(
+                                        'repeatpassword',
+                                        '',
+                                        [
+                                            'disabled' => true,
+                                            'class' => 'form-control',
+                                            'autocomplete' => "off",
+                                            'placeholder' => html_entity_decode(
+                                                str_repeat("&#9679;", 10),
+                                                ENT_COMPAT,
+                                                'utf-8'
+                                            )
+                                        ]
+                                    ); ?>
                                 </div>
                             </div>
                         </div>
