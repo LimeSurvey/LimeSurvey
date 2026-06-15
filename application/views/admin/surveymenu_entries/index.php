@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
         $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider' => $model->search(),
             'id' => 'surveymenu-entries-grid',
-            'caption' => gT('Survey Menu Entries'),
+            'caption' => gT('Survey menu entries'),
             'columns' => $model->getColumns(),
             'filter' => $model,
             'emptyText' => gT('No customizable entries found.'),

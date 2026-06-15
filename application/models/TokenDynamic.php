@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -120,7 +120,7 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * Checks to make sure that all required columns exist in this tokens table
-     * (some older tokens tables dont' get udated properly)
+     * (some older token tables don't get updated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
      * once per survey participant list / backup survey participant list
@@ -199,7 +199,7 @@ class TokenDynamic extends LSActiveRecord
         }
 
         if ($aTokenIds) {
-            $command->addCondition("tid IN ('" . implode("', '", $aTokenIds) . "')");
+            $command->addInCondition("tid", $aTokenIds);
         }
 
         if ($iMaxEmails) {
@@ -495,7 +495,7 @@ class TokenDynamic extends LSActiveRecord
         }
         $command = Yii::app()->db->createCommand()
             ->select('COUNT(token)')
-            ->from('{{survey_' . intval(self::$sid) . '}}')
+            ->from('{{responses_' . intval(self::$sid) . '}}')
             ->where('token=:token')
             ->bindParam(':token', $sToken, PDO::PARAM_STR);
 

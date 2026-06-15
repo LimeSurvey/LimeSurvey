@@ -3,7 +3,7 @@
 /** @var bool $canImport */
 /** @var string $importErrorMessage*/
 
-if($canImport) {
+if ($canImport) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [
@@ -23,7 +23,7 @@ if($canImport) {
 <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom"
       title="<?php echo $importErrorMessage; ?>"
       style="display: inline-block">
-<?php
+    <?php
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [
