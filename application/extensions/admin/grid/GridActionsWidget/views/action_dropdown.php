@@ -5,7 +5,7 @@
  */
 
 ?>
-<div id="<?= 'dropdown_' . $id; ?>" class="dropdown ls-action_dropdown" tabindex="0">
+<div id="<?= 'dropdown_' . $id; ?>" class="dropdown ls-action_dropdown">
     <button class="ls-dropdown-toggle" aria-label="<?= gT('Action Menu'); ?>" data-bs-toggle="dropdown" type="button"
             aria-expanded="false">
         <i class="ri-more-fill"></i>
@@ -25,7 +25,8 @@
                     foreach ($dropdownItem['submenu_items'] as $subItem) { ?>
                         <li>
                             <?php
-                            $this->render('dropdown_item',
+                            $this->render(
+                                'dropdown_item',
                                 [
                                     'tooltip' => $subItem['tooltip'] ?? '',
                                     'title' => $subItem['title'],
@@ -44,7 +45,8 @@
                 <?php
             } else { ?>
                 <li>
-                <?php $this->render('dropdown_item',
+                <?php $this->render(
+                    'dropdown_item',
                     [
                         'tooltip' => $dropdownItem['tooltip'] ?? '',
                         'title' => $dropdownItem['title'],

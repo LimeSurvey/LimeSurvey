@@ -60,7 +60,7 @@ class QuickTranslationController extends LSBaseController
     public function actionIndex($surveyid)
     {
         /* existing + read (survey) already checked in SurveyCommonAction : existing use model : then if surveyid is not valid : return a 404 */
-        /* survey : read OK, not survey:tranlations:read … */
+        /* survey : read OK, not survey:translations:read … */
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
         }
@@ -182,7 +182,7 @@ class QuickTranslationController extends LSBaseController
             }
         }
 
-        $updateOccured = false;
+        $updateOccurred = false;
         foreach ($tab_names_full as $type) {
             $size = (int) Yii::app()->getRequest()->getPost("{$type}_size"); //todo: what is size here?
             // start a loop in order to update each record
@@ -199,14 +199,14 @@ class QuickTranslationController extends LSBaseController
                         $answerCode = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
                         $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
                         $quickTranslation->updateTranslations($type, $tolang, $new, $qidOrGid, $answerCode, $iScaleID);
-                        $updateOccured = true;
+                        $updateOccurred = true;
                     }
                 }
                 $i++;
             } // end while
         } // end foreach
 
-        if ($updateOccured) {
+        if ($updateOccurred) {
             $survey = Survey::model()->findByPk($surveyid);
             if ($survey) {
                 $surveyDetailService = new \LimeSurvey\Models\Services\SurveyDetailService();
@@ -446,7 +446,7 @@ class QuickTranslationController extends LSBaseController
     public function actionAjaxtranslategoogleapi($surveyid)
     {
         // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
-        /* No Permission check on survey, seems unneded (return a josn with current string posted */
+        /* No Permission check on survey, seems unneeded (return a josn with current string posted */
 
         //todo: check if googletranslate is activated ...
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {

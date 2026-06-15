@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -62,17 +62,6 @@ class UserInGroup extends LSActiveRecord
             'users' => array(self::BELONGS_TO, 'User', 'uid'),
             'group' => array(self::BELONGS_TO, 'UserGroup', 'ugid'),
         );
-    }
-
-    /**
-     * @param array $data
-     * @return bool
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $changedRows = Yii::app()->db->createCommand()->insert($this->tableName(), $data);
-        return (bool) $changedRows;
     }
 
     public function join($fields, $from, $condition = false, $join = false, $order = false)

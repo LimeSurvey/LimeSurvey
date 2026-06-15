@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -445,7 +445,7 @@ class ParticipantsAction extends SurveyCommonAction
             // Deletes from central and survey participant list
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
         } elseif ($selectoption == 'ptta') {
-            // Deletes from central , token and assosiated responses as well
+            // Deletes from central , token and associated responses as well
             $deletedParticipants = Participant::model()->deleteParticipantTokenAnswer($participantIds);
         } else {
             // Internal error
@@ -627,7 +627,7 @@ class ParticipantsAction extends SurveyCommonAction
                 [':can_edit' => '1']
             ))
         ) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             return;
         }
@@ -899,7 +899,7 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Uploads the file to the server and process it for valid enteries and import them into database
+     * Uploads the file to the server and process it for valid entries and import them into database
      * Also creates attributes from the mapping drag-n-drop form.
      */
     public function uploadCSV()
@@ -1087,7 +1087,7 @@ class ParticipantsAction extends SurveyCommonAction
                     $aEmailAddresses = explode(';', $writearray['email']);
                     // Ignore additional email addresses
                     $sEmailaddress = $aEmailAddresses[0];
-                    if (!validateEmailAddress($sEmailaddress)) {
+                    if (!LimeMailer::validateAddress($sEmailaddress)) {
                         $invalidemail = true;
                         $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
                     }
@@ -1100,7 +1100,7 @@ class ParticipantsAction extends SurveyCommonAction
                         $uuid = Participant::genUuid(); //Generate a UUID for the new participant
                         $writearray['participant_id'] = $uuid;
                     }
-                    if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == '')) {
+                    if (isset($writearray['emailstatus']) && trim((string) $writearray['emailstatus']) == '') {
                         unset($writearray['emailstatus']);
                     }
                     if (!isset($writearray['language']) || $writearray['language'] == "") {
@@ -1110,10 +1110,10 @@ class ParticipantsAction extends SurveyCommonAction
                         $writearray['blacklisted'] = "N";
                     }
                     $writearray['owner_uid'] = Yii::app()->session['loginID'];
-                    if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == '')) {
+                    if (isset($writearray['validfrom']) && trim((string) $writearray['validfrom']) == '') {
                         unset($writearray['validfrom']);
                     }
-                    if (isset($writearray['validuntil']) && trim($writearray['validuntil'] == '')) {
+                    if (isset($writearray['validuntil']) && trim((string) $writearray['validuntil']) == '') {
                         unset($writearray['validuntil']);
                     }
                     $dontimport = false;
@@ -2174,7 +2174,7 @@ class ParticipantsAction extends SurveyCommonAction
             echo $participantid; //echo the participant id's
         } else {
             // if no search condition
-            $participantid = ""; // initiallise the participant id to blank
+            $participantid = ""; // initialise the participant id to blank
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 //If super admin all the participants will be visible
                 $query = Participant::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin

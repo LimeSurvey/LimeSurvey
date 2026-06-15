@@ -1,5 +1,6 @@
 <?php
 /** @var string $successLabel */
+/** @var string|null $tableCaption Optional table caption; when not set, MassiveActionsWidget listActions.js sets it from the modal title. */
 
 /**
  * This view display the result of delete multiple action. It's rendered via ajax for the confirmation modal in survey list
@@ -10,17 +11,22 @@ if (!isset($tableLabels)) {
     $tableLabels = array(gT('ID'), gT('Title'), gT('Status'));
 }
 ?>
-<?php if(isset($additionalMessage)):?>
+<?php if (isset($additionalMessage)) :?>
     <?php echo $additionalMessage?>
 <?php endif;?>
 <table class="table table-striped">
+    <caption class="massive-action-results-caption visually-hidden"><?php
+        if (isset($tableCaption) && $tableCaption !== '') {
+            echo CHtml::encode($tableCaption);
+        }
+    ?></caption>
     <thead>
-        <?php foreach($tableLabels as $label):?>
+        <?php foreach ($tableLabels as $label) :?>
             <th><?php echo $label?></th>
         <?php endforeach;?>
     </thead>
     <tbody>
-        <?php foreach($aResults as $iSid => $result):?>
+        <?php foreach ($aResults as $iSid => $result) :?>
             <tr>
                 <td>
                     <?php echo $iSid;?>
@@ -28,18 +34,18 @@ if (!isset($tableLabels)) {
                 <td>
                     <?php echo CHtml::encode($result['title']);?>
                 </td>
-                <?php if ($result['result']):?>
+                <?php if ($result['result']) :?>
                     <td class="text-success">
                         <?php echo $successLabel ?>
                     </td>
-                <?php else: ?>
+                <?php else : ?>
                     <td class="text-danger">
                         <?php ;
-                            if(isset($result['error'])){
-                                echo $result['error'] ;
-                            }else{
-                                eT('Error!');
-                            }
+                        if (isset($result['error'])) {
+                            echo $result['error'] ;
+                        } else {
+                            eT('Error!');
+                        }
                         ; ?>
                     </td>
                 <?php endif;?>

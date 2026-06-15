@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -73,15 +73,15 @@ $config['printanswershonorsconditions'] = 1; // If set to 1, only relevant answe
 $config['repeatheadings']            = '25'; // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
 $config['minrepeatheadings']         = 3; // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
 $config['defaultlang']               = 'en'; // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
-$config['timeadjust']                = 0; // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
+$config['displayTimezone']           = ''; // Timezone (for example 'Europe/Berlin') which is used to displayed any date/time information in the application - if empty defaults to UTC
 
-$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouput in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
+$config['maxdumpdbrecords']          = 500; // The maximum number of records that would be output in one go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['maxdbsizeforbackup']        = 0; // The maximum database size in MB that is backed up up by ComfortUpdate - 0 means that the default will be determined by the ComfortUpdate server (currently 50 MB)
 $config['allowexportalldb']          = 0; // Default 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported (use carefully)
 $config['maxDatabaseSizeForDump']    = 256; // Maximum database size in megabytes to be able to download without errors
 
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
-$config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
+$config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numerical order for comparison operators in conditions. If you need string comparison operators, set this parameter to 1
 $config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
 $config['blacklistallsurveys']       = 'N'; // Blocklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blocklist participant for any new added survey once the global field is set
@@ -153,7 +153,7 @@ $config['strip_query_from_referer_url'] = false;
 $config['defaulthtmleditormode'] = 'inline';
 
 // surveyPreview_require_Auth
-// Enforce Authentication to the LS system before beeing able to preview a survey (testing a non active survey)
+// Enforce Authentication to the LS system before being able to preview a survey (testing a non active survey)
 // Default is true
 $config['surveyPreview_require_Auth'] = true;
 
@@ -197,7 +197,7 @@ $config['auth_webserver'] = false;
 // Enable username mapping
 // This parameter is an array mapping username from the webserver to username
 // defined in LimeSurvey
-// Can be usefull if you have no way to add an 'admin' user to the database
+// Can be useful if you have no way to add an 'admin' user to the database
 // used by the webserver, then you could map your true loginame to admin with
 // $config['auth_webserver_user_map'] = array ('mylogin' => 'admin');
 $config['auth_webserver_user_map'] = array();
@@ -314,7 +314,7 @@ $config['demoMode'] = false;
 * Prefill the login mask using the parameters 'defaultuser' and  'default pass'. This works only if demo mode (demoMode) is activated.
 * Also a notice will be shown that the user knows that he can just login by using the Login button.
 *
-* @var $config['demoModePrefill']  boolan  If set to true prefill the login mask
+* @var $config['demoModePrefill']  boolean  If set to true prefill the login mask
 */
 $config['demoModePrefill'] = false;
 
@@ -363,7 +363,7 @@ $config['standard_themes_readonly'] = true;
 
 /**
 * When this settings is true/1 (default = false/0) then the printable survey option will show a reference
-* to the "lime_survey_12345" table which stores the survey answers.
+* to the "lime_responses_12345" table which stores the survey answers.
 * It will show a code like "12345X22X333name":
 * 12345 = surveyID
 * 22 = groupID
@@ -441,7 +441,7 @@ $config['quexmlshowprintablehelp'] = false;
 // QueXML-PDF: If set to true, each question in the PDF will be identified by the question title instead of the section and number
 $config['quexmlusequestiontitleasid'] = false;
 
-// QueXML: If set to true, the Data/Time answers will be formated with the survey's date format
+// QueXML: If set to true, the Date/Time answers will be formatted with the survey's date format
 $config['quexmlkeepsurveydateformat'] = false;
 
 // QueXML: Width of the question title column in MM
@@ -711,7 +711,7 @@ if (!isset($argv[0]) && Yii::app() != null) {
 
 $config['assets'] = 'assets/';
 
-// URL defintions
+// URL definitions
 $config['homeurl']                = $config['publicurl'] . 'admin'; // The website location (url) of the admin scripts
 $config['tempurl']                = $config['publicurl'] . 'tmp';
 $config['imageurl']               = $config['publicurl'] . 'assets/images'; // Location of button bar files for admin script
@@ -846,8 +846,6 @@ $config['passwordValidationRules'] = array(
     'symbol' => 0,
 );
 
-// Enable or disable single page application editor
-$config['editorEnabled'] = false;
 
 /**
  * Default breadcrumb mode:

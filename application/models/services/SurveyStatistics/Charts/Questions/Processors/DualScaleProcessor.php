@@ -9,7 +9,7 @@ class DualScaleProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
     {
-        $this->rt = $this->surveyId . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     public function process()
@@ -88,7 +88,7 @@ class DualScaleProcessor extends AbstractQuestionProcessor
             $subCode = $sq['title'];
 
             foreach ([0, 1] as $scaleId) {
-                $field = $this->rt . $subCode . '#' . $scaleId;
+                $field = $this->rt . "_S" . $sq['qid'] . '#' . $scaleId;
                 $col   = $db->quoteColumnName($field);
 
                 // answers
@@ -97,19 +97,19 @@ class DualScaleProcessor extends AbstractQuestionProcessor
                     $value = $db->quoteValue($code);
                     $alias = $this->aliasFor($subCode, $scaleId, $code);
 
-                    $selects[] = "SUM(CASE WHEN {$col} = {$value} THEN 1 ELSE 0 END) AS `{$alias}`";
+                    $selects[] = "SUM(CASE WHEN {$col} = {$value} THEN 1 ELSE 0 END) AS " . dbQuoteFields($alias);
                     $aliasMap[$subCode][$scaleId]['answers'][$code] = $alias;
                 }
 
                 // blank per field
                 $blankAlias = $this->aliasForBlank($subCode, $scaleId);
-                $selects[]  = "SUM(CASE WHEN {$col} IS NULL OR {$col} = '' THEN 1 ELSE 0 END) AS `{$blankAlias}`";
+                $selects[]  = "SUM(CASE WHEN {$col} IS NULL OR {$col} = '' THEN 1 ELSE 0 END) AS " . dbQuoteFields($blankAlias);
                 $aliasMap[$subCode][$scaleId]['blank'] = $blankAlias;
             }
         }
 
         $where = '';
-        $sql = 'SELECT ' . implode(",\n  ", $selects) . "\nFROM {{survey_{$this->surveyId}}}{$where}";
+        $sql = 'SELECT ' . implode(",\n  ", $selects) . "\nFROM {{responses_{$this->surveyId}}}{$where}";
 
         return [$sql, $aliasMap];
     }

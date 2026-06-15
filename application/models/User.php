@@ -2,7 +2,7 @@
 
 /**
 * LimeSurvey
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -25,9 +25,9 @@ use LimeSurvey\Models\Services\UserManager;
  * @property integer $parent_id
  * @property string $lang User's preferred language: (auto: automatic | languagecodes eg 'en')
  * @property string $email User's e-mail address
- * @property string $htmleditormode User's prefferred HTML editor mode:(default|inline|popup|none)
- * @property string $templateeditormode User's prefferred template editor mode:(default|full|none)
- * @property string $questionselectormode User's prefferred Question type selector:(default|full|none)
+ * @property string $htmleditormode User's preferred HTML editor mode:(default|inline|popup|none)
+ * @property string $templateeditormode User's preferred template editor mode:(default|full|none)
+ * @property string $questionselectormode User's preferred Question type selector:(default|full|none)
  * @property string $one_time_pw User's one-time-password hash
  * @property integer $dateformat Date format type 1-12
  * @property string $created Time created Time user was created as 'YYYY-MM-DD hh:mm:ss'
@@ -105,11 +105,13 @@ class User extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('users_name, password, email', 'required'),
+            array('users_name, password', 'required'),
+            array('email', 'required', 'on' => 'insert'),
             array('users_name', 'unique'),
             array('users_name', 'length','max' => 64),
             array('full_name', 'length','max' => 50),
-            array('email', 'email'),
+            array('email', 'email', 'allowEmpty' => true),
+            array('email', 'unique', 'allowEmpty' => true, 'message' => gT("Email address '{value}' is already used by another user.", 'unescaped')),
             array('full_name', 'LSYii_Validators'), // XSS if non super-admin
             array('parent_id', 'default', 'value' => 0),
             array('parent_id', 'numerical', 'integerOnly' => true),
@@ -134,6 +136,17 @@ class User extends LSActiveRecord
     }
 
     /** @inheritdoc */
+    protected function beforeSave()
+    {
+        // Normalize empty email to NULL so the database unique index
+        // allows multiple users without an email address.
+        if ($this->email === '') {
+            $this->email = null;
+        }
+        return parent::beforeSave();
+    }
+
+    /** @inheritdoc */
     public function scopes()
     {
         if (App()->getConfig("DBVersion") < 495) {
@@ -146,7 +159,7 @@ class User extends LSActiveRecord
         $notExpiredScope = array(
             'condition' => "expires > :now OR expires IS NULL",
             'params' => array(
-                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                'now' => gmdate("Y-m-d H:i:s"),
             )
         );
         if (App()->getConfig("DBVersion") < 619) {
@@ -180,12 +193,12 @@ class User extends LSActiveRecord
             'lang' => gT('Language'),
             'email' => gT('Email'),
             'htmleditormode' => gT('Editor mode'),
-            'templateeditormode' => gT('Template editor mode'),
+            'templateeditormode' => gT('Theme editor mode'),
             'questionselectormode' => gT('Question selector mode'),
             'one_time_pw' => gT('One-time password'),
             'dateformat' => gT('Date format'),
-            'created' => gT('Created at'),
-            'modified' => gT('Modified at'),
+            'created' => gT('Created'),
+            'modified' => gT('Modified'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
             'user_status' => gT("Status"),
@@ -288,7 +301,7 @@ class User extends LSActiveRecord
      * @param string $new_email
      * @param string|null $expires
      * @param boolean $status
-     * @return integer|boolean User ID if success
+     * @return integer|User User ID on success, User model with errors on validation failure
      */
     public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $status = true)
     {
@@ -299,14 +312,14 @@ class User extends LSActiveRecord
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
         $oUser->email = $new_email;
-        $oUser->created = date('Y-m-d H:i:s');
-        $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->created = gmdate('Y-m-d H:i:s');
+        $oUser->modified = gmdate('Y-m-d H:i:s');
         $oUser->expires = $expires;
         $oUser->user_status = $status;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
-            return false;
+            return $oUser;
         }
     }
 
@@ -510,19 +523,6 @@ class User extends LSActiveRecord
             $txt .= sprintf(ngT('At least %d special character.|At least %d special characters.', $settings['symbol']), $settings['symbol']) . ' ';
         }
         return($txt);
-    }
-
-    /**
-     * Adds user record
-     *
-     * @access public
-     * @param array $data
-     * @deprecated : just don't use it
-     * @return string
-     */
-    public function insertRecords($data)
-    {
-        return $this->getDb()->insert('users', $data);
     }
 
     /**
@@ -738,7 +738,7 @@ class User extends LSActiveRecord
                 )
         ];
         $dropdownItems[] = [
-            'title'            => gT('Delete User'),
+            'title'            => gT('Delete user'),
             'iconClass'        => "ri-delete-bin-fill text-danger",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--delete",
             'linkId'           => "UserManagement--delete-$this->uid",
@@ -794,6 +794,8 @@ class User extends LSActiveRecord
         $lastLogin = $this->last_login;
         if ($lastLogin == null) {
             return '---';
+        } else {
+            $lastLogin = getDateOfUTC($lastLogin);
         }
 
         $date = new DateTime($lastLogin);
@@ -908,7 +910,7 @@ class User extends LSActiveRecord
         if ($permission_read_surveys) {
             $cols['surveysCreated'] = array(
                 "name" => 'surveysCreated',
-                "header" => gT("No of surveys"),
+                "header" => gT("Owned surveys"),
                 'filter' => false
             );
         }
@@ -920,7 +922,7 @@ class User extends LSActiveRecord
         if ($permission_read_users && $permission_read_usergroups) {
             $cols['groupList'] = array(
                 "name" => 'groupList',
-                "header" => gT("Usergroups"),
+                "header" => gT("User groups"),
                 'filter' => false
             );
         }
@@ -939,7 +941,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
             $cols['isSuperAdmin'] = array(
                 "name" => 'isSuperAdmin',
-                "header" => gT("Super admin"),
+                "header" => gT("Superadmin"),
                 "value"  => function ($data) {
                     return $this->getFormattedBoolean($data, "isSuperAdmin");
                 },
@@ -955,7 +957,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $cols['haveDbAuthentication'] = array(
                 "name" => 'haveDbAuthentication',
-                "header" => gT("Auth DB"), // need short header
+                "header" => gT("DB auth"), // need short header, use short word for "Database authentication"
                 "value"  => function ($data) {
                     return $this->getFormattedBoolean($data, "haveDbAuthentication");
                 },
@@ -1103,7 +1105,7 @@ class User extends LSActiveRecord
      */
     public function setValidationExpiration()
     {
-        $datePlusMaxExpiration = new DateTime();
+        $datePlusMaxExpiration = new DateTime('now', new DateTimeZone('UTC'));
         $datePlusString = 'P' . self::MAX_EXPIRATION_TIME_IN_DAYS . 'D';
         $dateInterval = new DateInterval($datePlusString);
         $datePlusMaxExpiration->add($dateInterval);
@@ -1122,12 +1124,12 @@ class User extends LSActiveRecord
     {
         $expired = false;
         if (!empty($this->expires)) {
-            // Time adjust
-            $now = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $expirationTime = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime((string) $this->expires)));
+            // Compare expiration time (stored in UTC) with current UTC time
+            $now = gmdate("Y-m-d H:i:s");
+            $expirationTime = (string) $this->expires;
 
-            // Time comparison
-            $expired = new DateTime($expirationTime) < new DateTime($now);
+            // Time comparison (treat equality as expired, aligning with notexpired scope: expires > now)
+            $expired = new DateTime($expirationTime) <= new DateTime($now);
         }
         return $expired;
     }
@@ -1179,7 +1181,7 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Get the decription to be used in list
+     * Get the description to be used in list
      * @return string
      */
     public function getDisplayName()

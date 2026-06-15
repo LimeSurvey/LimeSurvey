@@ -8,6 +8,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2023-04-02
+ * @group validation
  */
 class MandatorySoftTest extends TestBaseClassWeb
 {
@@ -85,7 +86,7 @@ class MandatorySoftTest extends TestBaseClassWeb
         $url = $this->getSurveyUrl();
         $questions = $this->getAllSurveyQuestions();
         $ManOnQid = $questions['ManOn']->qid;
-        $ManOnSgqa = self::$surveyId . 'X' . $questions['ManOn']->gid . 'X' . $questions['ManOn']->qid;
+        $ManOnSgqa = 'Q' . $questions['ManOn']->qid;
         try {
             self::$webDriver->get($url);
             self::$webDriver->scrollToBottom();

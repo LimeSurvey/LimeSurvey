@@ -4,7 +4,6 @@
  * @var $ld
  * @var $myfname2
  * @var $labelText $labelans[$thiskey]
- * @var $kpclass
  * @var $maxlength
  * @var $inputwidth
  * @var $value
@@ -20,7 +19,7 @@
     {{ C.Html.textField(myfname2,value,({
         'id' : "answer"~myfname2,
         'aria-labelledby' : "answertext" ~ basename ~ "_" ~ ld,
-        'class' : "form-control "~kpclass,
+        'class' : "form-control",
         'size' : (inputsize ? inputsize : null),
         'maxlength' : (maxlength ? maxlength : null),
         'placeholder' : flatString(processString(placeholder,1),1),

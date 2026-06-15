@@ -15,11 +15,13 @@ $massiveAction = App()->getController()->renderPartial(
     true,
     false
 );
-$this->widget('application.extensions.admin.grid.CLSGridView',
+$this->widget(
+    'application.extensions.admin.grid.CLSGridView',
     [
         'dataProvider' => $oSurveyTheme->searchGrid(),
         'filter' => $oSurveyTheme,
         'id' => 'themeoptions-grid',
+        'caption' => gT('Survey themes'),
         'pager' => [
             'class' => 'application.extensions.admin.grid.CLSYiiPager',
         ],
@@ -33,13 +35,14 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                     $pageSize,
                     Yii::app()->params['pageSizeOptions'],
                     array(
+                        'id' => 'themeoptions-pageSize',
                         'class' => 'changePageSize form-select',
                         'style' => 'display: inline; width: auto',
-                        'aria-labelledby' => 'rows-per-page-label',
+                        'aria-label' => gT('Rows per page'),
                     )
-                ) . '<span id="rows-per-page-label">'
+                )
             ) .
-            '</span>'
+            ''
         ),
 
         'columns' => [
@@ -109,7 +112,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
 <!-- To update rows per page via ajax setSession-->
 <?php
 $script = '
-                jQuery(document).on("change", "#pageSize", function(){
+                jQuery(document).on("change", "#themeoptions-pageSize", function(){
                     $.fn.yiiGridView.update("themeoptions-grid",{ data:{ pageSize: $(this).val() }});
                 });
                 ';

@@ -1,6 +1,6 @@
 /*
 * LimeSurvey
-* Copyright (C) 2007-2012 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -92,7 +92,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $("input[name=dataToSend]").remove();
 
         $("#mainform").append("<input type='hidden' id='dataToSend' name='dataToSend' value='' />");
-        $('#dataToSend').val($.toJSON(dataToSend));
+        $('#dataToSend').val(JSON.stringify(dataToSend));
     });
 
     fix_highlighting();
@@ -198,9 +198,11 @@ function quickaddfunction() {
     retrieveRowHtml(datas)
         .then((result) => {
             $.each(parsedRows, (index, parsedRow) => {
+                // One randomid per label, shared across all language tabs so the save
+                // serializer can correlate title_en_XXXX with title_es_XXXX, etc.
+                const randomid = 'new' + Math.floor(Math.random()*1111111);
                 // We insert each row for each language
                 $.each(result.arrayofhtml, (lang, htmlRow) => {
-                    const randomid = 'new' + Math.floor(Math.random()*1111111);
                     const title = parsedRow.titles[lang] || '';
                     let finalRowHtml = htmlRow;
                     finalRowHtml = finalRowHtml.replaceAll("{{newid_placeholder}}", randomid);
