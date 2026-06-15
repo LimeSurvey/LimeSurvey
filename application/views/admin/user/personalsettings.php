@@ -104,14 +104,34 @@ echo $oQuestionSelector->getModal();
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("User name:"), 'username', ['class' => " form-label"]); ?>
-                                <div class="">
-                                    <?php echo TbHtml::textField('username', $sUsername, ['class' => 'form-control', 'readonly' => 'readonly']); ?>
-                                </div>
-                                <div class="">
-                                    <span class='text-info'><?php eT("The user name cannot be changed."); ?></span>
-                                </div>
-                            </div>
+    <?php
+    echo TbHtml::label(
+        gT("User name:"),
+        'username',
+        ['class' => 'form-label']
+    );
+    ?>
+
+    <div>
+        <?php
+        echo TbHtml::textField(
+            'username',
+            $sUsername,
+            [
+                'class' => 'form-control',
+                'readonly' => true,
+                'aria-describedby' => 'username-info'
+            ]
+        );
+        ?>
+    </div>
+
+    <div>
+        <span id="username-info" class="text-info">
+            <?php eT("The user name cannot be changed."); ?>
+        </span>
+    </div>
+</div>
                         </div>
                     </div>
                     <div class="row">
@@ -170,10 +190,10 @@ echo $oQuestionSelector->getModal();
                             <div class="mb-3">
                                 <?php echo TbHtml::label(gT("New password:"), 'password', ['class' => " form-label"]); ?>
                                 <div class="">
-                                    <?php echo TbHtml::passwordField('password', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
+                                    <?php echo TbHtml::passwordField('password', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'aria-describedby' => 'password-help', 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
                                 </div>
                                 <div class="">
-                                    <span class='text-info'><?php echo $passwordHelpText; ?></span>
+                                    <span class='text-info' id="password-help"><?php echo $passwordHelpText; ?></span>
                                 </div>
                             </div>
                         </div>
