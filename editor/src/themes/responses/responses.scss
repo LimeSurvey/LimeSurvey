@@ -1,10 +1,7 @@
 .responses {
-  min-height: 100vh;
   background: $g-200;
   padding: 0;
-  position: relative;
-  height: calc(90vh - $top-bar-height);
-  overflow-y: auto;
+  height: 100%;
 
   .sidebar,
   .right-side-bar {
@@ -27,7 +24,6 @@
   }
 
   .responses-body {
-    position: relative;
     display: flex;
     flex-direction: row;
     gap: 20px;

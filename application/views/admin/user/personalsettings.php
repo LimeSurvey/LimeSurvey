@@ -91,20 +91,20 @@ echo $oQuestionSelector->getModal();
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="nav-item"><a class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab"><?php eT("Profile"); ?></a></li>
-                <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab"><?php eT("Personal settings"); ?></a></li>
-                <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab"><?php eT("Personalized menus"); ?></a></li>
-                <li role="presentation" class="nav-item"><a class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab"><?php eT("Personalized menu entries"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-profile" class="nav-link active" href="#your-profile" role="tab" data-bs-toggle="tab" aria-controls="your-profile" aria-selected="true"><?php eT("Profile"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-personal-settings" class="nav-link" href="#your-personal-settings" role="tab" data-bs-toggle="tab" aria-controls="your-personal-settings" aria-selected="false"><?php eT("Personal settings"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-personal-menues" class="nav-link" href="#your-personal-menues" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menues" aria-selected="false"><?php eT("Personalized menus"); ?></a></li>
+                <li role="presentation" class="nav-item"><a id="tab-your-personal-menueentries" class="nav-link" href="#your-personal-menueentries" role="tab" data-bs-toggle="tab" aria-controls="your-personal-menueentries" aria-selected="false"><?php eT("Personalized menu entries"); ?></a></li>
             </ul>
             <div class="tab-content">
 
                 <!-- TAB: My profile settings -->
-                <div role="tabpanel" class="tab-pane fade show active" id="your-profile">
+                <div role="tabpanel" class="tab-pane fade show active" id="your-profile" aria-labelledby="tab-your-profile" tabindex="0">
                     <div class="pagetitle h3"><?php eT("Profile"); ?></div>
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("User name:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("User name:"), 'username', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::textField('username', $sUsername, ['class' => 'form-control', 'readonly' => 'readonly']); ?>
                                 </div>
@@ -120,7 +120,7 @@ echo $oQuestionSelector->getModal();
                     <div class="row">
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Full name:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Full name:"), 'fullname', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::textField('fullname', $sFullname, ['class' => 'form-control', 'maxlength' => 50]); ?>
                                 </div>
@@ -128,7 +128,7 @@ echo $oQuestionSelector->getModal();
                         </div>
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Email address:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Email address:"), 'email', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::emailField('email', $sEmailAddress, ['readonly' => true, 'class' => 'form-control', 'maxlength' => 254]); ?>
                                 </div>
@@ -168,7 +168,7 @@ echo $oQuestionSelector->getModal();
                         <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0" />
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("New password:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("New password:"), 'password', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::passwordField('password', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
                                 </div>
@@ -179,7 +179,7 @@ echo $oQuestionSelector->getModal();
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Repeat new password:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("Repeat new password:"), 'repeatpassword', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::passwordField('repeatpassword', '', ['disabled' => true, 'class' => 'form-control', 'autocomplete' => "off", 'placeholder' => html_entity_decode(str_repeat("&#9679;", 10), ENT_COMPAT, 'utf-8')]); ?>
                                 </div>
@@ -190,7 +190,7 @@ echo $oQuestionSelector->getModal();
                         <input type="hidden" id="newemailshown" name="newemailshown" value="0" />
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <?php echo TbHtml::label(gT("New email address:"), 'lang', ['class' => " form-label"]); ?>
+                                <?php echo TbHtml::label(gT("New email address:"), 'newemail', ['class' => " form-label"]); ?>
                                 <div class="">
                                     <?php echo TbHtml::emailField('newemail', $sEmailAddress, ['class' => 'form-control', 'maxlength' => 254]); ?>
                                 </div>
@@ -200,7 +200,7 @@ echo $oQuestionSelector->getModal();
                 </div>
 
                 <!-- TAB: My personal settings -->
-                <div role="tabpanel" class="tab-pane fade" id="your-personal-settings">
+                <div role="tabpanel" class="tab-pane fade" id="your-personal-settings" aria-labelledby="tab-your-personal-settings" tabindex="0">
                     <div class="pagetitle h3"><?php eT("My personal settings"); ?></div>
                     <div class="row">
                         <div class="col-12 col-lg-6">
@@ -457,10 +457,10 @@ echo $oQuestionSelector->getModal();
                         </div>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="your-personal-menues">
+                <div role="tabpanel" class="tab-pane fade" id="your-personal-menues" aria-labelledby="tab-your-personal-menues" tabindex="0">
                     <?php $this->renderPartial('/admin/surveymenu/shortlist', $surveymenu_data); ?>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="your-personal-menueentries">
+                <div role="tabpanel" class="tab-pane fade" id="your-personal-menueentries" aria-labelledby="tab-your-personal-menueentries" tabindex="0">
                     <?php $this->renderPartial('/admin/surveymenu_entries/shortlist', $surveymenuentry_data); ?>
                 </div>
             </div>

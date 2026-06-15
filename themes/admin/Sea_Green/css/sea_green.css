@@ -11673,7 +11673,7 @@ blockquote.float-end {
 }
 
 .ls-survey-menu-item.menu-label {
-  padding-left: 33px !important;
+  padding-left: 30px !important;
 }
 
 .bg-white {
@@ -18962,6 +18962,10 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 .nav-tabs .nav-link.active:focus {
   box-shadow: none;
 }
+.nav-tabs .nav-link.active:focus-visible {
+  outline: none;
+  box-shadow: inset 2px 0 0 #14AE5C, inset -2px 0 0 #14AE5C, inset 0 -2px 0 #14AE5C, inset 0 2px 0 #14AE5C;
+}
 
 .tab-content {
   padding: 1rem;
@@ -21007,6 +21011,10 @@ input[type=checkbox]:checked:after {
 .checkbox-inline input[type=checkbox]:checked:after {
   background-color: #1E1E1E;
   border-color: #1E1E1E;
+}
+
+.form-check-input:focus {
+  box-shadow: none;
 }
 
 #ls-loading {

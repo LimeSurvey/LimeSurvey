@@ -18,7 +18,7 @@ $modalDialogSrId = !empty($modalTitleId) ? $modalTitleId . '-dialogsr' : null;
 
 <div class="modal-header">
     <h2 class="modal-title h1"<?= !empty($modalTitleId) ? ' id="' . CHtml::encode($modalTitleId) . '"' : '' ?>>
-        <?php echo CHtml::encode($modalTitle); ?>
+        <?php echo $modalTitle; ?>
     </h2>
     <?php if (!empty($modalTitleId) && !empty($modalDialogSrId)) : ?>
         <span class="visually-hidden" id="<?= CHtml::encode($modalDialogSrId) ?>"><?= gT('Dialog') ?></span>

@@ -33,7 +33,6 @@ use LimeSurvey\Yii\Application\AppErrorHandler;
 * @property CWebUser $user The user session information.
 * @property LSETwigViewRenderer $twigRenderer Twig rendering plugin
 * @property PluginManager $pluginManager The LimeSurvey Plugin manager
-* @property TbApi $bootstrap The bootstrap renderer
 * @property CHttpSession $session The HTTP session
 *
 */
@@ -92,6 +91,11 @@ class LSYii_Application extends CWebApplication
             $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'] . DIRECTORY_SEPARATOR . 'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
+        /* Make sure the runtime path exists, e.g. after the tempdir content was cleared */
+        if (!is_dir($aApplicationConfig['runtimePath'])) {
+            @mkdir($aApplicationConfig['runtimePath'], 0775, true);
+        }
+
         /* If LimeSurvey is configured to load custom Twig exstensions, add them to Twig Component */
         if (array_key_exists('use_custom_twig_extensions', $baseConfig) && $baseConfig ['use_custom_twig_extensions']) {
             $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
@@ -111,7 +115,12 @@ class LSYii_Application extends CWebApplication
             App()->getAssetManager()->setBaseUrl($this->config['tempurl'] . '/assets');
         }
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
-            App()->getAssetManager()->setBasePath($this->config['tempdir'] . '/assets');
+            $assetPath = $this->config['tempdir'] . '/assets';
+            /* Make sure the assets path exists, e.g. after the tempdir content was cleared */
+            if (!is_dir($assetPath)) {
+                @mkdir($assetPath, 0775, true);
+            }
+            App()->getAssetManager()->setBasePath($assetPath);
         }
 
         // Load common helper
@@ -163,6 +172,12 @@ class LSYii_Application extends CWebApplication
             $securityConfig = require($configdir . '/security.php');
             if (is_array($securityConfig)) {
                 $this->config = array_merge($this->config, $securityConfig);
+            }
+        }
+        if (file_exists($configdir . '/allowed_hosts.php')) {
+            $allowedHostsConfig = require($configdir . '/allowed_hosts.php');
+            if (is_array($allowedHostsConfig)) {
+                $this->config = array_merge($this->config, $allowedHostsConfig);
             }
         }
         if (file_exists($configdir .  '/config.php')) {

@@ -228,7 +228,7 @@ class TbModal extends CWidget
         // do we render a button? If so, bootstrap will handle its behavior through its
         // mark-up, otherwise, register the plugin.
         if (empty($this->buttonOptions)) {
-            $this->registerPlugin(TbApi::PLUGIN_MODAL, $selector, $this->options);
+            $this->registerPlugin('modal', $selector, $this->options);
         }
 
         $this->registerEvents($selector, $this->events);

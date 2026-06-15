@@ -31,6 +31,7 @@ echo viewHelper::getViewTestTag('usersIndex');
             'columns' => $model->getManagementColums(),
             'lsAdditionalColumns' => $model->getAdditionalColumns(),
             'massiveActionTemplate' => $massiveAction,
+            'caption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
                 'bindListItemclick();',
                 'LS.UserManagement.bindButtons();',
