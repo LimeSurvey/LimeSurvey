@@ -1,7 +1,9 @@
 <?php
+
 /**
  * View for a selector modal with preview capabilities and a grouped structure
  */
+
 ?>
 
 <?php //The modal ?>

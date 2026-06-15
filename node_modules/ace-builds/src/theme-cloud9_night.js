@@ -6,7 +6,7 @@ define("ace/theme/cloud9_night",["require","exports","module","ace/theme/cloud9_
 exports.cssClass = "ace-cloud9-night";
 exports.cssText = require("./cloud9_night-css");
 var dom = require("../lib/dom");
-dom.importCssString(exports.cssText, exports.cssClass);
+dom.importCssString(exports.cssText, exports.cssClass, false);
 
 });                (function() {
                     window.require(["ace/theme/cloud9_night"], function(m) {

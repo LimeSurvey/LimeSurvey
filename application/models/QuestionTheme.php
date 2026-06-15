@@ -228,7 +228,8 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Install Button for the available questions
+     * Render the install button form for available (uninstalled) question themes.
+     * @return string HTML form with an install button
      */
     public function getManifestButtons()
     {
@@ -250,7 +251,7 @@ class QuestionTheme extends LSActiveRecord
      *
      * @param string $sXMLDirectoryPath the relative path to the Question Theme XML directory
      * @param bool   $bSkipConversion   If converting should be skipped
-     * @param $bThrowConversionException If true, throws exception instead of redirecting
+     * @param bool $bThrowConversionException If true, throws exception instead of redirecting
      * @return bool|string
      * @throws Exception
      * @todo Please never redirect at this level, only from controllers.
@@ -405,7 +406,7 @@ class QuestionTheme extends LSActiveRecord
                 ':extends'       => '',
             ]
         );
-        //set extends if there is allready an existing Question with this type
+        //set extends if there is already an existing Question with this type
         if (empty($aQuestionThemes)) {
             $questionMetaData['extends'] = '';
         } else {
@@ -705,7 +706,8 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * Returns the directory paths for each question theme type.
+     * @return array<string, string> Keyed by theme type constant (e.g. THEME_TYPE_CORE) => directory path
      */
     public static function getQuestionThemeDirectories()
     {
@@ -757,9 +759,9 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Return the question Theme preview URL
      *
-     * @param $sType : type of question
+     * @param string|null $sType The single-character question type code
      *
-     * @return string : question theme preview URL
+     * @return string The preview image filename (e.g. 'S.png')
      */
     public static function getQuestionThemeImageName($sType = null)
     {
@@ -1048,6 +1050,13 @@ class QuestionTheme extends LSActiveRecord
         return $additionalAttributes;
     }
 
+    /**
+     * Extract the theme directory name from a question config file path.
+     * Parses the path segment between 'questions/answer/' and '/config.xml'.
+     *
+     * @param string $sQuestionConfigFilePath Full path to a question theme config.xml
+     * @return string The theme directory name, or empty string if not found
+     */
     public static function getThemeDirectoryPath($sQuestionConfigFilePath)
     {
         $sQuestionConfigFilePath = str_replace('\\', '/', (string) $sQuestionConfigFilePath);

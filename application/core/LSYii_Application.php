@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -33,7 +33,6 @@ use LimeSurvey\Yii\Application\AppErrorHandler;
 * @property CWebUser $user The user session information.
 * @property LSETwigViewRenderer $twigRenderer Twig rendering plugin
 * @property PluginManager $pluginManager The LimeSurvey Plugin manager
-* @property TbApi $bootstrap The bootstrap renderer
 * @property CHttpSession $session The HTTP session
 *
 */
@@ -92,6 +91,11 @@ class LSYii_Application extends CWebApplication
             $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'] . DIRECTORY_SEPARATOR . 'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
+        /* Make sure the runtime path exists, e.g. after the tempdir content was cleared */
+        if (!is_dir($aApplicationConfig['runtimePath'])) {
+            @mkdir($aApplicationConfig['runtimePath'], 0775, true);
+        }
+
         /* If LimeSurvey is configured to load custom Twig exstensions, add them to Twig Component */
         if (array_key_exists('use_custom_twig_extensions', $baseConfig) && $baseConfig ['use_custom_twig_extensions']) {
             $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
@@ -111,7 +115,12 @@ class LSYii_Application extends CWebApplication
             App()->getAssetManager()->setBaseUrl($this->config['tempurl'] . '/assets');
         }
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
-            App()->getAssetManager()->setBasePath($this->config['tempdir'] . '/assets');
+            $assetPath = $this->config['tempdir'] . '/assets';
+            /* Make sure the assets path exists, e.g. after the tempdir content was cleared */
+            if (!is_dir($assetPath)) {
+                @mkdir($assetPath, 0775, true);
+            }
+            App()->getAssetManager()->setBasePath($assetPath);
         }
 
         // Load common helper
@@ -148,7 +157,7 @@ class LSYii_Application extends CWebApplication
     public function setConfigs()
     {
 
-        // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
+        // TODO: check the whole configuration process. It must be easier and clearer. Too many repetitions
 
         /* Default config */
         $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
@@ -163,6 +172,12 @@ class LSYii_Application extends CWebApplication
             $securityConfig = require($configdir . '/security.php');
             if (is_array($securityConfig)) {
                 $this->config = array_merge($this->config, $securityConfig);
+            }
+        }
+        if (file_exists($configdir . '/allowed_hosts.php')) {
+            $allowedHostsConfig = require($configdir . '/allowed_hosts.php');
+            if (is_array($allowedHostsConfig)) {
+                $this->config = array_merge($this->config, $allowedHostsConfig);
             }
         }
         if (file_exists($configdir .  '/config.php')) {
@@ -226,7 +241,7 @@ class LSYii_Application extends CWebApplication
      * Loads a library
      *
      * @access public
-     * @param string $library Libraby name
+     * @param string $library Library name
      * @return void
      */
     public function loadLibrary($library)
@@ -250,7 +265,7 @@ class LSYii_Application extends CWebApplication
     /**
      * Set a 'flash message'.
      *
-     * A flahs message will be shown on the next request and can contain a message
+     * A flash message will be shown on the next request and can contain a message
      * to tell that the action was successful or not. The message is displayed and
      * cleared when it is shown in the view using the widget:
      * <code>
@@ -541,13 +556,13 @@ class LSYii_Application extends CWebApplication
         $alias = explode("/", $route)[0];
         /* Remove all non printable see mantis #20090 */
         /* @see https://stackoverflow.com/a/66587087 for regexp source */
-        $alias = preg_replace('/[^\PCc^\PCn^\PCs]/u','', $alias);
+        $alias = preg_replace('/[^\PCc^\PCn^\PCs]/u', '', $alias);
         if (empty($alias)) {
             return null;
         }
 
         // When updating from versions that didn't support short urls, this code runs before the update process,
-        // so we cannot asume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
+        // so we cannot assume the field exists. We try to retrieve the Survey Language Settings and, if it fails,
         // just don't do anything.
         try {
             $criteria = new CDbCriteria();
@@ -600,31 +615,31 @@ class LSYii_Application extends CWebApplication
 
     /**
      * Get survey survey id by param
-     * @param boolan throw error
+     * @param boolean $throwError Whether to throw an error
      * @return false|integer
      */
-     public static function getSurveyId($throwError = true)
-     {
-         if (is_int(self::$surveyId)) {
-             /* Survey is set and is valid */
-             return self::$surveyId;
-         }
-         $surveyId = Yii::app()->request->getParam(
+    public static function getSurveyId($throwError = true)
+    {
+        if (is_int(self::$surveyId)) {
+            /* Survey is set and is valid */
+            return self::$surveyId;
+        }
+        $surveyId = Yii::app()->request->getParam(
             'sid',
             Yii::app()->request->getParam(
                 'surveyid',
                 Yii::app()->request->getParam('surveyId')
             )
-         );
-         if (!$surveyId) {
-             return false;
-         }
-         $intSurveyId = intval($surveyId);
-         if (strval($intSurveyId) !== strval($surveyId)) {
-             if ($throwError) {
-                 throw new CHttpException(400, gT('Your request is invalid.'));
-             }
-             return false;
+        );
+        if (!$surveyId) {
+            return false;
+        }
+        $intSurveyId = intval($surveyId);
+        if (strval($intSurveyId) !== strval($surveyId)) {
+            if ($throwError) {
+                throw new CHttpException(400, gT('Your request is invalid.'));
+            }
+            return false;
         }
         $surveyId = intval($surveyId);
         /* surveyId is set and is an integer */

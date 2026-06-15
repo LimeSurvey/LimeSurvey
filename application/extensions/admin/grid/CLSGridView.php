@@ -50,6 +50,7 @@ class CLSGridView extends TbGridView
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = 'grid-view-ls';
+        $this->htmlOptions['data-select-all-label'] = gT('Select all');
         $classes = ['table', 'table-hover'];
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
         $this->rowLink();
@@ -108,20 +109,33 @@ class CLSGridView extends TbGridView
      */
     protected function lsAfterAjaxUpdate(): void
     {
-        // this will override afterAjaxUpdate if lsAfterAjaxUpdate is defined
-        // please do not override afterAjaxUpdate by default to keep compatibility with base functionality of yii
-        if (isset($this->lsAfterAjaxUpdate)) {
-            $this->afterAjaxUpdate = 'function(id, data){';
-            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
-                $this->afterAjaxUpdate .= $jsCode;
-            }
-            $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
-            $this->afterAjaxUpdate .= 'LS.rowlink.create();';
-            if (!empty($this->lsAdditionalColumns)) {
-                $this->afterAjaxUpdate .= 'initColumnFilter()';
-            }
-            $this->afterAjaxUpdate .= '}';
+        // Non-AJAX grids have no afterAjaxUpdate callback to build
+        if ($this->ajaxUpdate === false) {
+            return;
         }
+
+        $parts = [];
+
+        // Preserve any existing afterAjaxUpdate set by the caller
+        if ($this->afterAjaxUpdate !== null) {
+            $definedFunction = ($this->afterAjaxUpdate instanceof CJavaScriptExpression)
+                ? (string) $this->afterAjaxUpdate // has a __toString magic function which returns the code
+                : $this->afterAjaxUpdate;
+            // execute the defined function preserving `this` context from the grid settings object
+            $parts[] = '(' . $definedFunction . ').call(this, id, data);';
+        }
+
+        // Add per-grid custom snippets from lsAfterAjaxUpdate
+        if (isset($this->lsAfterAjaxUpdate)) {
+            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
+                $parts[] = $jsCode;
+            }
+        }
+
+        // Always run the standard LS post-update handler
+        $parts[] = 'LS.gridView.afterAjaxUpdate(id, data);';
+
+        $this->afterAjaxUpdate = 'function(id, data){' . implode('', $parts) . '}';
     }
 
     /**
@@ -142,33 +156,43 @@ class CLSGridView extends TbGridView
 
     private function registerGridviewScripts()
     {
+        $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
+
         // Scrollbar
         App()->clientScript->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
+            $extensionsUrl . 'gridScrollbar.js',
             CClientScript::POS_BEGIN
         );
-        // changePageSize
-        $script = '
-			jQuery(document).on("change", "#' . $this->id . ' .changePageSize", function(){
-				var pageSizeName = $(this).attr("name");
-				if (!pageSizeName) {
-					pageSizeName = "pageSize";
-				}
-				var data = $("#' . $this->id . ' .filters input, #' . $this->id . ' .filters select").serialize();
-				data += (data ? "&" : "") + pageSizeName + "=" + $(this).val();
-				$.fn.yiiGridView.update("' . $this->id . '", {data: data});
-			});
-		';
-        App()->getClientScript()->registerScript('pageChanger#' . $this->id, $script, LSYii_ClientScript::POS_POSTSCRIPT);
-
-        // Accessibility: announce "Select all" for header checkboxes (id ending with _all)
-        $selectAllLabel = gT('Select all');
-        $scriptAria = 'jQuery(document).ready(function(){ jQuery("#' . $this->id . ' input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
-        App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll#' . $this->id, $scriptAria, LSYii_ClientScript::POS_POSTSCRIPT);
-        if (!App()->getClientScript()->isScriptRegistered('CLSGridView-ariaSelectAll-ajax')) {
-            $scriptAriaAjax = 'jQuery(document).ajaxComplete(function(){ jQuery(".grid-view-ls input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
-            App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll-ajax', $scriptAriaAjax, LSYii_ClientScript::POS_POSTSCRIPT);
-        }
+        // Accessibility: restore focus to sort column after AJAX grid update
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'restoreFocusAfterSort.js',
+            CClientScript::POS_BEGIN
+        );
+        // Row link: make entire table rows clickable via data-rowlink attribute
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'rowLink.js',
+            CClientScript::POS_END
+        );
+        // Page size selector
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'changePageSize.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: aria-label for "Select all" checkboxes
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'ariaSelectAll.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: keyboard navigation and focus management for sort links
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'sortAccessibility.js',
+            CClientScript::POS_END
+        );
+        // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'afterAjaxUpdate.js',
+            CClientScript::POS_END
+        );
     }
 
     /**
