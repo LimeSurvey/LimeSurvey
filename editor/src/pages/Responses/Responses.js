@@ -164,6 +164,9 @@ export const Responses = () => {
             filters={statisticsFilters}
             surveyId={surveyId}
             isRightBar={showStatisticsFilters}
+            showFilters={showStatisticsFilters}
+            setShowFilters={setShowStatisticsFilters}
+            setFilters={setStatisticsFilters}
           />
         )
       case panelItemsKeys.list:
@@ -236,26 +239,16 @@ export const Responses = () => {
           surveyId={surveyId}
         />
         <div className="body-content mt-3">
-          <div className="mb-3">
-            <ResponsesHeader
-              setShowFilters={
-                tabKey === TAB_KEYS.RESPONSES
-                  ? setShowTableFilters
-                  : setShowStatisticsFilters
-              }
-              showFilters={
-                tabKey === TAB_KEYS.RESPONSES
-                  ? showTableFilters
-                  : showStatisticsFilters
-              }
-              setFilters={
-                tabKey === TAB_KEYS.RESPONSES
-                  ? setColumnsFilters
-                  : setStatisticsFilters
-              }
-              tabKey={tabKey}
-            />
-          </div>
+          {tabKey !== TAB_KEYS.STATISTICS && (
+            <div className="mb-3">
+              <ResponsesHeader
+                setShowFilters={setShowTableFilters}
+                showFilters={showTableFilters}
+                setFilters={setColumnsFilters}
+                tabKey={tabKey}
+              />
+            </div>
+          )}
           {renderCurrentMenu()}
         </div>
         <RightSideBar

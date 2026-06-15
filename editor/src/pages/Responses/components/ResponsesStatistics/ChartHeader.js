@@ -1,14 +1,27 @@
 import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
 import { Badge } from 'components/UIComponents'
+import { getQuestionTypeInfo } from 'components/QuestionTypes'
+
+const resolveThemeTitle = (type, themeName, fallback) => {
+  if (!themeName) return fallback
+  const info = Object.values(getQuestionTypeInfo()).find(
+    (entry) => entry.type === type && entry.theme === themeName
+  )
+  return info?.title ?? fallback
+}
 
 export const ChartHeader = ({
   index,
   code,
-  question_theme_name,
+  type,
+  themeName,
+  typeLabel,
   title,
   help,
   actions = [],
 }) => {
+  const themeTitle = resolveThemeTitle(type, themeName, typeLabel)
+
   return (
     <div className="chart-header">
       <div className="chart-title">
@@ -17,7 +30,7 @@ export const ChartHeader = ({
             {index} <i className="ri-arrow-right-line" />
           </span>
           <span className="chart-title-key">{code}</span>
-          <Badge>{question_theme_name}</Badge>
+          <Badge>{themeTitle}</Badge>
           <span className="chart-title-text">{title}</span>
         </div>
         {actions.length > 0 && (
@@ -26,6 +39,7 @@ export const ChartHeader = ({
               items={actions}
               shouldDisableIfSurveyActive={false}
               meatballClassName="chart-header-meatball-menu"
+              actionsTitle="Chart Actions"
               placement="bottom-end"
             />
           </div>

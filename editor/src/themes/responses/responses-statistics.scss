@@ -1,7 +1,7 @@
 .responses-comments {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 
   &-swatch {
     display: inline-block;
@@ -25,17 +25,6 @@
       width: 32px;
       height: 32px;
     }
-  }
-
-  &-filter {
-    align-self: flex-start;
-    min-width: 200px;
-    padding: 6px 12px;
-    border: 1px solid $g-400;
-    border-radius: $border-radius;
-    color: $g-900;
-    font-size: $font-size-sm;
-    background: white;
   }
 
   &-blocks {
@@ -101,15 +90,82 @@
   }
 }
 
-.responses-comments-modal-body {
+.statistics-detail-modal-body {
   padding: 0 24px 24px;
   max-height: 70vh;
   overflow-y: auto;
 }
 
+.statistics-detail-modal-title {
+  font-size: $font-size-md;
+  font-weight: $font-weight-normal;
+  color: $g-900;
+  margin-bottom: 16px;
+}
+
+.statistics-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 16px;
+
+  &-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-normal;
+    color: $g-900;
+  }
+
+  &-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 220px;
+    padding: 6px 12px;
+    border: 1px solid $g-400;
+    border-radius: $border-radius;
+    color: $g-900;
+    font-size: $font-size-sm;
+    background: $white;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: $g-900 !important;
+      background: $white !important;
+      border-color: $g-400 !important;
+      box-shadow: none !important;
+    }
+  }
+
+  &-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: $font-size-sm;
+  }
+}
+
 .responses-statistics-toolbar {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
@@ -118,7 +174,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 60vh;
 
   .loader {
     position: relative;
@@ -138,6 +194,110 @@
     position: relative;
     width: 32px;
     height: 32px;
+  }
+}
+
+.ranking-leaderboard {
+  display: flex;
+  background: $white;
+
+  &-badges {
+    flex-shrink: 0;
+  }
+
+  &-badge-row {
+    display: flex;
+    align-items: center;
+  }
+
+  &-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-500;
+    color: $g-900;
+    background: $g-200;
+  }
+
+  &-chart {
+    flex: 1;
+    min-width: 0;
+
+    // Bars are clickable (open the per-option rank breakdown).
+    .recharts-bar-rectangle {
+      cursor: pointer;
+    }
+  }
+}
+
+.ranking-tooltip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1f1f1f;
+  color: #ffffff;
+  font-size: $font-size-sm;
+  padding: 8px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.ranking-modal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-size-sm;
+
+  th,
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid $g-400;
+    color: $g-900;
+    text-align: start;
+  }
+
+  th {
+    color: $g-700;
+    font-weight: $font-weight-500;
+  }
+
+  th:last-child,
+  td:last-child {
+    text-align: end;
+  }
+}
+
+// Mirror the look of .responses-meatball-menu (rendered in a portal, so it must
+// stay top-level). Sized to content since the chart menu has few actions.
+.chart-header-meatball-menu {
+  min-width: 260px;
+  border-radius: 2px;
+  border: 1px solid $g-400;
+  background: $white;
+  padding: 8px 4px !important;
+  box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+  z-index: 10;
+
+  .action-title {
+    padding: 8px 12px 0 12px;
+  }
+
+  .meatball-button {
+    height: 40px;
+    width: 240px;
+    align-items: center;
+    padding: 0 8px;
+    margin-left: 4px;
+
+    &:hover {
+      border-radius: 2px;
+      outline: 1px solid $grape;
+      color: $g-900;
+    }
   }
 }
 
@@ -213,9 +373,9 @@
   .statistics-table {
     font-size: $font-size-sm;
 
-    // Metric column (Percentage / Responses) is right-aligned.
-    th:last-child,
-    td:last-child {
+    // Metric columns (Responses / Percentage) are right-aligned.
+    th:not(:first-child),
+    td:not(:first-child) {
       text-align: end;
     }
 
@@ -253,14 +413,31 @@
       border: 1px solid $g-400;
       padding: 12px 30px;
     }
-  }
 
-  .comments-toggle-icon {
-    width: 24px;
-    height: 24px;
+    &-wrap {
+      overflow-x: auto;
+    }
 
-    path {
-      fill: currentColor;
+    &-answer {
+      text-align: start;
+    }
+
+    // Ranking renders as a matrix (option × rank position). Give the cells
+    // horizontal breathing room and pin the answer column while the rank
+    // columns scroll horizontally.
+    &--ranking {
+      tbody td,
+      thead th {
+        padding: 12px 16px;
+        white-space: nowrap;
+      }
+
+      .statistics-table-answer {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        background: $white;
+      }
     }
   }
 

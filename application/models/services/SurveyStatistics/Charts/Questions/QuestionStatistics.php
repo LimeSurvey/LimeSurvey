@@ -239,6 +239,15 @@ class QuestionStatistics implements StatisticsChartInterface
         $total = 0;
         foreach ($plan['data'] as $item) {
             $item['value'] = (int)$item['value']();
+            // Resolve an optional deferred per-row breakdown (e.g. ranking's
+            // per-position counts) the same way as the main value.
+            if (!empty($item['ranks']) && is_array($item['ranks'])) {
+                foreach ($item['ranks'] as $i => $rankRow) {
+                    if (isset($rankRow['value']) && is_callable($rankRow['value'])) {
+                        $item['ranks'][$i]['value'] = (int)$rankRow['value']();
+                    }
+                }
+            }
             $total += $item['value'];
             $data[] = $item;
         }
@@ -272,8 +281,11 @@ class QuestionStatistics implements StatisticsChartInterface
                 'gid' => $question['gid'] ?? null,
                 'code' => $question['title'] ?? null,
                 'type' => $question['type'] ?? null,
-                'question_theme_name' => QuestionType::modelsAttributes($this->language)[$question['type']]['description'] ?? $question['type'] ?? null,
-                'theme' => $question['question_theme_name'] ?? null,
+                // Human-readable question type description (e.g. "List (Radio)").
+                'typeLabel' => QuestionType::modelsAttributes($this->language)[$question['type']]['description'] ?? $question['type'] ?? null,
+                // Theme code (e.g. "image_select-listradio") used to resolve the
+                // specific theme display name and image handling on the client.
+                'themeName' => $question['question_theme_name'] ?? null,
                 'help' => $question['help'] ?? null,
                 'attributes' => $question['attributes'] ?? [],
             ];

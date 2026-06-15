@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 
-import { ComponentModal } from 'components'
 import { useQuestionComments } from 'hooks'
 import { dayJsHelper } from 'helpers'
 
-// Pseudo entries the chart adds that are not real, filterable answer options.
+import { StatisticsDetailModal } from './StatisticsDetailModal.js'
+import { StatisticsFilterSelect } from './StatisticsFilterSelect.js'
+
 const NON_ANSWER_KEYS = ['comment', 'other']
-// Rows shown in the inline table before the user opens the full modal.
 const PREVIEW_LIMIT = 5
 
 export const QuestionComments = ({
@@ -14,6 +14,7 @@ export const QuestionComments = ({
   questionCode,
   qid,
   answerOptions = [],
+  questionTitle = '',
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [showModal, setShowModal] = useState(false)
@@ -29,10 +30,6 @@ export const QuestionComments = ({
     [answerOptions]
   )
 
-  // Map each answer option to the color it is drawn with in the chart so a
-  // comment can show the swatch of the answer it belongs to. A comment's
-  // subQuestion carries the subquestion text, so we key by title (and fall
-  // back to key) to resolve the option.
   const optionByAnswer = useMemo(() => {
     const map = {}
     answerOptions.forEach((option) => {
@@ -42,9 +39,6 @@ export const QuestionComments = ({
     return map
   }, [answerOptions])
 
-  // The comments endpoint is paginated server-side over all comment answers, so
-  // we narrow to the picked answer here by matching the comment's subQuestion
-  // text against the selected option.
   const visibleComments = useMemo(() => {
     if (!selectedAnswer) return comments
     const selectedOption = options.find((option) => option.key === selectedAnswer)
@@ -145,49 +139,43 @@ export const QuestionComments = ({
     <div className="responses-comments">
       {renderInline()}
 
-      <ComponentModal
+      <StatisticsDetailModal
         show={showModal}
         onHide={() => setShowModal(false)}
         modalClassname="responses-comments-modal"
-        componentClassname="responses-comments responses-comments-modal-body"
-        Component={
-          <>
-            {options.length > 0 && (
-              <select
-                className="responses-comments-filter"
-                value={selectedAnswer}
-                onChange={(event) => setSelectedAnswer(event.target.value)}
+        title={questionTitle}
+      >
+        <div className="responses-comments">
+          {options.length > 0 && (
+            <StatisticsFilterSelect
+              label={t('See all comments for:')}
+              options={options}
+              value={selectedAnswer}
+              onChange={setSelectedAnswer}
+              allOption={{ label: t('All answers') }}
+            />
+          )}
+          {visibleComments.length ? (
+            renderBlocks(visibleComments)
+          ) : (
+            <div className="responses-comments-status">
+              {t('No comments for this answer.')}
+            </div>
+          )}
+          {hasNextPage && (
+            <div className="responses-comments-more">
+              <button
+                type="button"
+                className="responses-comments-more-btn"
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
               >
-                <option value="">{t('All answers')}</option>
-                {options.map((option) => (
-                  <option key={option.key} value={option.key}>
-                    {option.title || option.label || option.key}
-                  </option>
-                ))}
-              </select>
-            )}
-            {visibleComments.length ? (
-              renderBlocks(visibleComments)
-            ) : (
-              <div className="responses-comments-status">
-                {t('No comments for this answer.')}
-              </div>
-            )}
-            {hasNextPage && (
-              <div className="responses-comments-more">
-                <button
-                  type="button"
-                  className="responses-comments-more-btn"
-                  onClick={() => fetchNextPage()}
-                  disabled={isFetchingNextPage}
-                >
-                  {isFetchingNextPage ? t('Loading...') : t('Load more')}
-                </button>
-              </div>
-            )}
-          </>
-        }
-      />
+                {isFetchingNextPage ? t('Loading...') : t('Load more')}
+              </button>
+            </div>
+          )}
+        </div>
+      </StatisticsDetailModal>
     </div>
   )
 }

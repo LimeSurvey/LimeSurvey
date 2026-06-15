@@ -3,15 +3,23 @@ import React, { useEffect, useState } from 'react'
 import { ToggleButtons } from 'components'
 import { useStatistics } from 'hooks'
 
+import { ResponsesHeader } from '../../ResponsesHeader'
+import { TAB_KEYS } from '../../utils'
 import { VALUE_TYPE } from './ChartsUtils'
-import { StatisticsContainer } from '../Statistics/Components/StatisticsContainer.js'
+import { StatisticsContainer } from './StatisticsContainer.js'
 
 const valueTypeOptions = [
   { name: '%', value: VALUE_TYPE.PERCENTAGE },
   { name: '#', value: VALUE_TYPE.COUNT },
 ]
 
-export const ResponsesStatistics = ({ surveyId, filters = {} }) => {
+export const ResponsesStatistics = ({
+  surveyId,
+  filters = {},
+  showFilters,
+  setShowFilters,
+  setFilters,
+}) => {
   const {
     statistics,
     isFetching,
@@ -37,24 +45,45 @@ export const ResponsesStatistics = ({ surveyId, filters = {} }) => {
     return () => observer.disconnect()
   }, [loadMoreNode, hasNextPage, isFetchingNextPage, fetchNextPage, statistics])
 
-  if (!statistics?.length) {
+  const renderContent = () => {
+    if (!statistics?.length) {
+      return (
+        <div className="responses-statistics-loading">
+          {isFetching && <span className="loader"></span>}
+          <h2>
+            {isFetching
+              ? t('Loading statistics...')
+              : t(
+                  'No responses or compatible data available to display statistics.'
+                )}
+          </h2>
+        </div>
+      )
+    }
+
     return (
-      <div className="responses-statistics-loading">
-        {isFetching && <span className="loader"></span>}
-        <h2>
-          {isFetching
-            ? t('Loading statistics...')
-            : t(
-                'No responses or compatible data available to display statistics.'
-              )}
-        </h2>
-      </div>
+      <>
+        <StatisticsContainer
+          statistics={statistics}
+          surveyId={surveyId}
+          valueType={valueType}
+        />
+        <div ref={setLoadMoreNode} className="responses-statistics-load-more">
+          {isFetchingNextPage && <span className="loader"></span>}
+        </div>
+      </>
     )
   }
 
   return (
     <>
       <div className="responses-statistics-toolbar">
+        <ResponsesHeader
+          setShowFilters={setShowFilters}
+          showFilters={showFilters}
+          setFilters={setFilters}
+          tabKey={TAB_KEYS.STATISTICS}
+        />
         <ToggleButtons
           id="statistics-value-type"
           value={valueType}
@@ -63,14 +92,7 @@ export const ResponsesStatistics = ({ surveyId, filters = {} }) => {
           theme="lime"
         />
       </div>
-      <StatisticsContainer
-        statistics={statistics}
-        surveyId={surveyId}
-        valueType={valueType}
-      />
-      <div ref={setLoadMoreNode} className="responses-statistics-load-more">
-        {isFetchingNextPage && <span className="loader"></span>}
-      </div>
+      {renderContent()}
     </>
   )
 }

@@ -3,8 +3,8 @@ import React, { useMemo } from 'react'
 import { useAppState, useSurvey } from 'hooks'
 import { STATES } from 'helpers'
 
-import { getDataWithPercentages } from '../../ResponsesStatistics/index.js'
-import { ChartRendererV2 } from '../../ChartRenderV2.js'
+import { getDataWithPercentages } from './ChartsUtils.js'
+import { ChartRendererV2 } from './ChartRenderV2.js'
 
 const UNGROUPED_KEY = '__ungrouped__'
 
@@ -40,8 +40,8 @@ const renderCharts = (items, surveyId, valueType) => (
             valueType={valueType}
             question={{
               type: item?.meta?.question?.type,
-              question_theme_name: item?.meta?.question?.question_theme_name,
-              theme: item?.meta?.question?.theme,
+              typeLabel: item?.meta?.question?.typeLabel,
+              themeName: item?.meta?.question?.themeName,
               code: item?.meta?.question?.code,
               title: item?.title,
               help: item?.meta?.question?.help,

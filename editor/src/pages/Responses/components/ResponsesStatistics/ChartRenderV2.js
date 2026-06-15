@@ -3,12 +3,11 @@ import classNames from 'classnames'
 import { Card } from 'react-bootstrap'
 
 import { Collapsible, ToggleButtons } from 'components'
-import { ReactComponent as PencilIcon } from 'assets/icons/pencil-icon-white.svg'
 
-import { ChartHeader } from './Statistics/Components/ChartHeader.js'
-import { StatisticsTable } from './Statistics/Components/StatisticsTable.js'
-import { BarChart, PieChart } from './ResponsesStatistics/Charts/index.js'
-import { isImageTheme } from './ResponsesStatistics/ChartsUtils.js'
+import { ChartHeader } from './ChartHeader.js'
+import { StatisticsTable } from './StatisticsTable.js'
+import { BarChart, PieChart, RankingBarChart } from './Charts/index.js'
+import { isImageTheme } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
 
 const VIEW = {
@@ -21,25 +20,50 @@ const VIEW = {
 // Question types that store free-text comments in the response table.
 const COMMENT_QUESTION_TYPES = ['O', 'P']
 
-const viewOptions = [
+// Ranking questions render as a horizontal bar chart of rank positions.
+const RANKING_QUESTION_TYPE = 'R'
+
+const VIEWS = [
   {
-    icon: () => <i className="ri-bar-chart-2-line"></i>,
     value: VIEW.BAR_CHART,
+    icon: () => <i className="ri-bar-chart-2-line"></i>,
+    render: ({ isRanking, data, valueType, isImage, question }) =>
+      isRanking ? (
+        <RankingBarChart data={data} title={question?.title} />
+      ) : (
+        <BarChart data={data} valueType={valueType} isImage={isImage} />
+      ),
   },
   {
-    icon: () => <i className="ri-pie-chart-line"></i>,
     value: VIEW.PIE_CHART,
+    icon: () => <i className="ri-pie-chart-line"></i>,
+    isAvailable: ({ isRanking }) => !isRanking,
+    render: ({ data, valueType, isImage }) => (
+      <PieChart data={data} valueType={valueType} isImage={isImage} />
+    ),
   },
   {
-    icon: () => <i className="ri-table-line"></i>,
     value: VIEW.TABLE,
+    icon: () => <i className="ri-table-line"></i>,
+    render: ({ data, isImage }) => (
+      <StatisticsTable data={data} isImage={isImage} />
+    ),
+  },
+  {
+    value: VIEW.COMMENTS,
+    icon: () => <i className="ri-message-2-line"></i>,
+    isAvailable: ({ hasComments }) => hasComments,
+    render: ({ surveyId, question, chartId, data }) => (
+      <QuestionComments
+        surveyId={surveyId}
+        questionCode={question?.code}
+        qid={chartId}
+        answerOptions={data}
+        questionTitle={question?.title}
+      />
+    ),
   },
 ]
-
-const commentsViewOption = {
-  icon: () => <PencilIcon className="comments-toggle-icon" />,
-  value: VIEW.COMMENTS,
-}
 
 const HIDDEN_CHARTS_STORAGE_KEY = 'responses-statistics-hidden-charts'
 
@@ -71,11 +95,31 @@ export const ChartRendererV2 = ({
   valueType,
 }) => {
   const [view, setView] = useState(VIEW.BAR_CHART)
-  const isImage = isImageTheme(question?.theme)
+  const isImage = isImageTheme(question?.themeName)
+  const isRanking = question?.type === RANKING_QUESTION_TYPE
   const hasComments = COMMENT_QUESTION_TYPES.includes(question?.type)
-  const toggleOptions = hasComments
-    ? [...viewOptions, commentsViewOption]
-    : viewOptions
+
+  const availableViews = VIEWS.filter(
+    ({ isAvailable }) => isAvailable?.({ isRanking, hasComments }) ?? true
+  )
+  const toggleOptions = availableViews.map(({ value, icon }) => ({
+    value,
+    icon,
+  }))
+  // Fall back to the first available view if the active one isn't offered.
+  const activeView =
+    availableViews.find(({ value }) => value === view) ?? availableViews[0]
+
+  const renderContext = {
+    data,
+    valueType,
+    isImage,
+    isRanking,
+    surveyId,
+    chartId,
+    question,
+  }
+
   const storageKey = getStorageKey(surveyId, chartId, index)
   const [isHidden, setIsHidden] = useState(
     () => !!readHiddenCharts()[storageKey]
@@ -118,33 +162,11 @@ export const ChartRendererV2 = ({
       />
       <Collapsible open={!isHidden}>
         <>
-          <div>
-            {view === VIEW.BAR_CHART && (
-              <BarChart data={data} valueType={valueType} isImage={isImage} />
-            )}
-            {view === VIEW.PIE_CHART && (
-              <PieChart data={data} valueType={valueType} isImage={isImage} />
-            )}
-            {view === VIEW.TABLE && (
-              <StatisticsTable
-                data={data}
-                valueType={valueType}
-                isImage={isImage}
-              />
-            )}
-            {view === VIEW.COMMENTS && (
-              <QuestionComments
-                surveyId={surveyId}
-                questionCode={question?.code}
-                qid={chartId}
-                answerOptions={data}
-              />
-            )}
-          </div>
+          <div>{activeView?.render(renderContext)}</div>
           <div className="responses-chart-view-toggle">
             <ToggleButtons
               id={`chart-view-${index}`}
-              value={view}
+              value={activeView?.value}
               onChange={setView}
               toggleOptions={toggleOptions}
             />
