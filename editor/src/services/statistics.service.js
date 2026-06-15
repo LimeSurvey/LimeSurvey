@@ -9,7 +9,7 @@ export class StatisticsService {
     this.restClient = new RestClient(baseUrl, auth.restHeaders)
   }
 
-  getSurveyStatistics = async (sid, filters) => {
+  getSurveyStatistics = async (sid, filters, page = 0, pageSize = 15) => {
     let { completed, minId, maxId } = filters
 
     // Ensure minId is not greater than maxId, if provided.
@@ -20,7 +20,7 @@ export class StatisticsService {
     const minIdIsNumber = typeof minId === 'number'
     const maxIdIsNumber = typeof maxId === 'number'
 
-    const queryFilters = `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}`
+    const queryFilters = `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}&page=${page}&pageSize=5`
     return await this.restClient.get(`statistics/${sid}?${queryFilters}`)
   }
 
@@ -73,6 +73,7 @@ export class StatisticsService {
         responseId: answer.responseId,
         comment: answer.value,
         subQuestion: answer.subquestion || null,
+        date: answer.date || null,
       }))
 
     return { comments, pagination: data?.answers?._meta?.pagination || null }

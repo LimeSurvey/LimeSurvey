@@ -13,14 +13,16 @@ export const truncateLabel = (value) => {
     : text
 }
 
-// Question themes whose answer options are images: the answer label is an
-// image path (e.g. /upload/surveys/123/images/x.png) rather than text.
 export const IMAGE_THEMES = [
   'image_select-listradio',
   'image_select-multiplechoice',
 ]
 
 export const isImageTheme = (theme) => IMAGE_THEMES.includes(theme)
+
+// NoAnswer rows have no image even on image themes; their labels stay text.
+export const shouldRenderImage = (isImage, item) =>
+  isImage && item?.key !== 'NoAnswer'
 
 const LABEL_IMAGE_SIZE = 40
 
@@ -103,7 +105,7 @@ export const CustomTooltip = ({ active, payload }) => {
         }}
       />
       <div>{count} {t('participants selected this option')}</div>
-      <div>{t('Percentage')}: {percentage}</div>
+      <div>{t('Percentage')}: {percentage}%</div>
     </div>
   )
 }
@@ -122,6 +124,22 @@ export const statisticsGraphs = {
 export const VALUE_TYPE = {
   COUNT: 'count',
   PERCENTAGE: 'percentage',
+}
+
+// Numeric data field that should drive bar/axis sizing for the value type.
+export const getMetricDataKey = (valueType) =>
+  valueType === VALUE_TYPE.COUNT ? 'value' : 'percentageValue'
+
+// Metric to render for a data row: the raw count or the percentage (one
+// decimal, comma separator) depending on the active value type. The percent
+// fallback is recharts' 0-1 ratio, used when the row has no percentage.
+export const getDisplayMetric = (item, valueType, percentFallback) => {
+  if (valueType === VALUE_TYPE.COUNT) return `${item?.value ?? ''}`
+  const percentage =
+    item?.percentage != null
+      ? parseFloat(item.percentage)
+      : (percentFallback ?? 0) * 100
+  return `${percentage.toFixed(1).replace('.', ',')}%`
 }
 
 export const COLORS = [
@@ -148,36 +166,4 @@ export const getDataWithPercentages = (statisticsData) => {
       fill: COLORS[index % COLORS.length],
     }
   })
-}
-
-export const renderCustomLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-}) => {
-  if (percent < 0.05) {
-    return null // Don't show labels for slices < 5%
-  }
-
-  const RADIAN = Math.PI / 180
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-  const x = cx + radius * Math.cos(-midAngle * RADIAN)
-  const y = cy + radius * Math.sin(-midAngle * RADIAN)
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? 'start' : 'end'}
-      dominantBaseline="central"
-      fontSize="12"
-      fontWeight="bold"
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  )
 }

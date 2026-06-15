@@ -10,6 +10,7 @@ use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
     MultipleChoiceProcessor,
+    ResponseAggregateBatch,
     SingleOptionMultipleChartsProcessor,
     TextProcessor,
     RankingProcessor,
@@ -28,6 +29,15 @@ class QuestionStatistics implements StatisticsChartInterface
     private array $output = [];
 
     private $filters = null;
+
+    /** @var int Zero-based page index, used when a page size is set */
+    private int $page = 0;
+
+    /** @var int|null Charts per page; null disables pagination */
+    private ?int $pageSize = null;
+
+    /** @var array|null Pagination details of the last run, null when unpaginated */
+    private ?array $paginationMeta = null;
 
     /** @var array<string, string>|null Cached type code -> human-readable description map */
     private ?array $typeDescriptions = null;
@@ -83,6 +93,12 @@ class QuestionStatistics implements StatisticsChartInterface
         $survey = $this->fetchSurveyMetadata();
         $surveyQuestions = $survey['questions'];
 
+        $batch = new ResponseAggregateBatch($surveyId, $this->filters);
+
+        // Pair each chart-producing question with its processor; types without
+        // a processor (equations, dates, text display, ...) produce no chart
+        // and never occupy a page slot.
+        $eligible = [];
         foreach ($surveyQuestions as $question) {
             $type = $question['type'];
             if (empty($this->factories[$type])) {
@@ -94,7 +110,25 @@ class QuestionStatistics implements StatisticsChartInterface
                 continue;
             }
 
-            $this->output[] = $this->handleFactory($factory, $survey, $question);
+            $eligible[] = [$factory, $question];
+        }
+
+        $eligible = $this->paginate($eligible);
+
+        // Phase 1 — plan: processors describe their charts and register every
+        // aggregate they need in the shared batch.
+        $jobs = [];
+        foreach ($eligible as [$factory, $question]) {
+            $jobs[] = $this->planFactory($factory, $batch, $survey, $question);
+        }
+
+        // One scan of the responses table for the whole survey (chunked into
+        // a few queries only for extremely large surveys).
+        $batch->execute();
+
+        // Phase 2 — resolve: turn the plans into DTOs with real counts.
+        foreach ($jobs as [$plans, $question]) {
+            $this->output[] = $this->resolvePlans($plans, $question);
         }
 
         return $this->output;
@@ -105,34 +139,117 @@ class QuestionStatistics implements StatisticsChartInterface
         $this->filters = $filters;
     }
 
-    private function handleFactory($factory, $survey, $question)
+    /**
+     * Limit the run to one page of chart-producing questions.
+     *
+     * @param int $page Zero-based page index
+     * @param int $pageSize Charts per page
+     */
+    public function setPagination(int $page, int $pageSize): void
     {
+        if ($page < 0 || $pageSize < 1) {
+            throw new InvalidArgumentException('Invalid pagination parameters');
+        }
+        $this->page = $page;
+        $this->pageSize = $pageSize;
+    }
+
+    /**
+     * Pagination details of the last run, null when pagination was not set.
+     */
+    public function getPaginationMeta(): ?array
+    {
+        return $this->paginationMeta;
+    }
+
+    /**
+     * Slice the eligible [factory, question] pairs to the configured page and
+     * record the pagination meta.
+     */
+    private function paginate(array $eligible): array
+    {
+        $this->paginationMeta = null;
+        if ($this->pageSize === null) {
+            return $eligible;
+        }
+
+        $total = count($eligible);
+        $offset = $this->page * $this->pageSize;
+        $pageItems = array_slice($eligible, $offset, $this->pageSize);
+        $this->paginationMeta = [
+            'page' => $this->page,
+            'pageSize' => $this->pageSize,
+            'total' => $total,
+            'hasMore' => $offset + count($pageItems) < $total,
+        ];
+
+        return $pageItems;
+    }
+
+    /**
+     * Configure the processor and let it plan its charts against the batch.
+     *
+     * @return array{0: array, 1: array} [chart plan(s), question data]
+     */
+    private function planFactory($factory, ResponseAggregateBatch $batch, $survey, $question): array
+    {
+        $factory->setBatch($batch);
         $factory->setQuestion($question);
         $answers = $survey['answers'][$question['qid']] ?? [];
         if (!empty($answers)) {
             $factory->setAnswers($answers);
         }
 
-        if (!empty($this->filters) && $this->filters->count() > 0) {
-            foreach ($this->filters->getFilters() as $key => $value) {
-                if ($value !== null) {
-                    $method = 'set' . ucfirst($key);
-                    if (method_exists($factory, $method)) {
-                        $factory->$method($value);
-                    }
-                }
-            }
-        }
-
         try {
-            $output = $factory->process($question);
+            $plans = $factory->process();
         } catch (Exception $e) {
             throw new InvalidArgumentException('There was an error processing question: ' . $question['type'] . ' ' . $question['qid']);
         }
 
-        $this->trimMeta($output);
+        return [$plans, $factory->getQuestion()];
+    }
 
-        return $output;
+    /**
+     * Resolve one plan or a list of plans into StatisticsChartDTO(s).
+     *
+     * @param array $plans Single chart plan (has 'title') or list of plans
+     * @param array $question Question data for the chart meta
+     * @return StatisticsChartDTO|StatisticsChartDTO[]
+     */
+    private function resolvePlans(array $plans, array $question)
+    {
+        if (isset($plans['title'])) {
+            $dto = $this->resolvePlan($plans, $question);
+            $this->trimMeta($dto);
+            return $dto;
+        }
+
+        $dtos = array_map(fn($plan) => $this->resolvePlan($plan, $question), $plans);
+        $this->trimMeta($dtos);
+        return $dtos;
+    }
+
+    /**
+     * Materialize a chart plan: resolve every deferred value against the
+     * executed batch and compute the total.
+     */
+    private function resolvePlan(array $plan, array $question): StatisticsChartDTO
+    {
+        $data = [];
+        $total = 0;
+        foreach ($plan['data'] as $item) {
+            $item['value'] = (int)$item['value']();
+            $total += $item['value'];
+            $data[] = $item;
+        }
+
+        return new StatisticsChartDTO(
+            $plan['title'],
+            $plan['legend'],
+            $data,
+            $total,
+            ['question' => $question]
+        );
     }
 
     /**
@@ -156,8 +273,6 @@ class QuestionStatistics implements StatisticsChartInterface
                 'code' => $question['title'] ?? null,
                 'type' => $question['type'] ?? null,
                 'question_theme_name' => QuestionType::modelsAttributes($this->language)[$question['type']]['description'] ?? $question['type'] ?? null,
-                // Actual question theme (e.g. image_select-listradio), used by the
-                // front-end to decide whether answer options are images.
                 'theme' => $question['question_theme_name'] ?? null,
                 'help' => $question['help'] ?? null,
                 'attributes' => $question['attributes'] ?? [],
@@ -179,15 +294,19 @@ class QuestionStatistics implements StatisticsChartInterface
             'qa.attribute', 'qa.value'
         ];
 
+        // Charts follow the survey structure: question groups in their survey
+        // order, questions in their group order. Paginated pages therefore
+        // load group by group.
         $command = Yii::app()->db->createCommand()
             ->select($select)
             ->from('{{questions}} q')
+            ->leftJoin('{{groups}} g', 'q.gid = g.gid')
             ->leftJoin('{{question_l10ns}} ql', 'q.qid = ql.qid AND ql.language = :language')
             ->leftJoin('{{answers}} a', 'q.qid = a.qid')
             ->leftJoin('{{answer_l10ns}} al', 'a.aid = al.aid AND al.language = :language')
             ->leftJoin('{{question_attributes}} qa', 'q.qid = qa.qid')
             ->where('q.sid = :sid AND (q.parent_qid = 0 OR q.parent_qid IN (SELECT qid FROM {{questions}} WHERE sid = :sid))')
-            ->order('q.parent_qid ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
+            ->order('q.parent_qid ASC, g.group_order ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
 
         $command->params = [
             ':sid' => $this->surveyId,

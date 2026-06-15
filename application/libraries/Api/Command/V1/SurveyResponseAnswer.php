@@ -196,8 +196,13 @@ class SurveyResponseAnswer implements CommandInterface
     {
         $answers = [];
         foreach ($responses as $response) {
+            $date = $response['submitDate']
+                ?? $response['dateLastAction']
+                ?? $response['startDate']
+                ?? null;
             foreach ($response['answers'] ?? [] as $answer) {
                 $answer['responseId'] = $response['id'] ?? null;
+                $answer['date'] = $date;
                 $answers[] = $answer;
             }
         }

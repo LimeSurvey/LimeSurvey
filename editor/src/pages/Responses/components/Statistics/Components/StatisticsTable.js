@@ -1,13 +1,16 @@
 import { Table } from 'react-bootstrap'
 
-import { VALUE_TYPE } from '../../ResponsesStatistics/ChartsUtils'
+import {
+  VALUE_TYPE,
+  getDisplayMetric,
+  shouldRenderImage,
+} from '../../ResponsesStatistics/ChartsUtils'
 
 export const StatisticsTable = ({
   data = [],
   valueType = VALUE_TYPE.PERCENTAGE,
   isImage = false,
 }) => {
-  const total = data.reduce((sum, item) => sum + (Number(item.value) || 0), 0)
   const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
 
   return (
@@ -15,9 +18,7 @@ export const StatisticsTable = ({
       <thead>
         <tr>
           <th>{t('Answer')}</th>
-          <th className="text-end">
-            {isPercentage ? t('Percentage') : t('Responses')}
-          </th>
+          <th>{isPercentage ? t('Percentage') : t('Responses')}</th>
         </tr>
       </thead>
       <tbody>
@@ -28,7 +29,7 @@ export const StatisticsTable = ({
                 className="statistics-table-swatch"
                 style={{ backgroundColor: item.fill }}
               />
-              {isImage ? (
+              {shouldRenderImage(isImage, item) ? (
                 <img
                   src={item.title}
                   alt={item.title}
@@ -38,18 +39,10 @@ export const StatisticsTable = ({
                 item.title
               )}
             </td>
-            <td className="text-end">
-              {isPercentage ? `${item.percentage}%` : item.value}
-            </td>
+            <td>{getDisplayMetric(item, valueType)}</td>
           </tr>
         ))}
       </tbody>
-      <tfoot>
-        <tr>
-          <td>{t('Total')}</td>
-          <td className="text-end">{isPercentage ? '100%' : total}</td>
-        </tr>
-      </tfoot>
     </Table>
   )
 }

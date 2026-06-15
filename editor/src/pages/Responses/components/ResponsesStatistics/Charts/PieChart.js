@@ -5,78 +5,32 @@ import {
   PieChart as RechartsPieChart,
   Pie,
   ResponsiveContainer,
-  Sector,
   Tooltip,
 } from 'recharts'
 
-import { COLORS, CustomTooltip, VALUE_TYPE } from '../ChartsUtils'
+import {
+  COLORS,
+  CustomTooltip,
+  VALUE_TYPE,
+  getDisplayMetric,
+  shouldRenderImage,
+} from '../ChartsUtils'
 import { CustomLegend } from './CustomLegend'
 
-const LABEL_IMAGE_SIZE = 40
+// Label image frame: a fixed white box with a border, the image inset by a
+// uniform padding so every label keeps the same footprint regardless of the
+// image's aspect ratio (an SVG <image> can't take CSS border/padding).
+const LABEL_IMAGE_WIDTH = 56
+const LABEL_IMAGE_HEIGHT = 40
+const LABEL_IMAGE_PADDING = 6
+const LABEL_IMAGE_BORDER = '#d3d5da' // $g-400
+
+// Answer-name row: capped width with CSS ellipsis (rendered via foreignObject
+// since an SVG <text> can't truncate). Height fits the $font-size-xl line.
+const LABEL_MAX_WIDTH = 160
+const LABEL_NAME_HEIGHT = 32
 
 const RADIAN = Math.PI / 180
-
-const renderActiveShapeOld = ({
-  cx,
-  cy,
-  midAngle,
-  outerRadius,
-  startAngle,
-  endAngle,
-  fill,
-  percent,
-  value,
-  payload,
-}) => {
-  const sin = Math.sin(-RADIAN * (midAngle ?? 1))
-  const cos = Math.cos(-RADIAN * (midAngle ?? 1))
-  const sx = (cx ?? 0) + ((outerRadius ?? 0) + 10) * cos
-  const sy = (cy ?? 0) + ((outerRadius ?? 0) + 10) * sin
-  const mx = (cx ?? 0) + ((outerRadius ?? 0) + 30) * cos
-  const my = (cy ?? 0) + ((outerRadius ?? 0) + 30) * sin
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22
-  const ey = my
-  const textAnchor = cos >= 0 ? 'start' : 'end'
-
-  const displayPercentage = payload?.percentage
-    ? parseFloat(payload.percentage).toFixed(2)
-    : ((percent ?? 1) * 100).toFixed(2)
-
-  return (
-    <g>
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={(outerRadius ?? 0) + 6}
-        outerRadius={(outerRadius ?? 0) + 10}
-        fill={fill}
-      />
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={fill}
-        fill="none"
-      />
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        className="active-shape-value"
-      >{`${value}`}</text>
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        dy={18}
-        textAnchor={textAnchor}
-        className="active-shape-percent-value"
-      >
-        {`(${displayPercentage}%)`}
-      </text>
-    </g>
-  )
-}
 
 const renderActiveShapeNew = ({
   cx,
@@ -87,50 +41,75 @@ const renderActiveShapeNew = ({
   percent,
   payload,
   name,
-  value,
   valueType = VALUE_TYPE.PERCENTAGE,
   isImage = false,
+  yOffset = 0,
 }) => {
   const cos = Math.cos(-RADIAN * (midAngle ?? 1))
   const sin = Math.sin(-RADIAN * (midAngle ?? 1))
   const isRight = cos >= 0
+  const showImage = shouldRenderImage(isImage, payload)
 
   const r = outerRadius ?? 0
+  // Image labels are a taller stack (code + image + metric), so push them
+  // further out radially; otherwise the top (code) row of a bottom slice's
+  // label reaches back into the pie.
+  const elbow = r + 20 + (showImage ? 18 : 0)
   const sx = (cx ?? 0) + r * cos
   const sy = (cy ?? 0) + r * sin
-  const mx = (cx ?? 0) + (r + 20) * cos
-  const my = (cy ?? 0) + (r + 20) * sin
+  const mx = (cx ?? 0) + elbow * cos
+  const my = (cy ?? 0) + elbow * sin + yOffset
   const ex = mx + (isRight ? 26 : -26)
   const ey = my
-  const tx = ex + (isRight ? 10 : -10)
-  const anchor = isRight ? 'start' : 'end'
 
-  const id = payload?.id
-  const isOther = payload?.isOther
-  const displayPercentage = payload?.percentage
-    ? parseFloat(payload.percentage).toFixed(1).replace('.', ',')
-    : ((percent ?? 0) * 100).toFixed(1).replace('.', ',')
-  const displayMetric =
-    valueType === VALUE_TYPE.COUNT
-      ? `${value ?? payload?.value ?? ''}`
-      : `${displayPercentage}%`
+  // Data rows carry the answer code in `key`; synthetic rows (other, comment,
+  // NoAnswer) have no real code, so their labels get no code row
+  const key = payload?.key
+  const isOther = payload?.isOther ?? key === 'other'
+  const id =
+    payload?.id ??
+    (['other', 'comment', 'NoAnswer'].includes(key) ? null : key)
+  // Middle row is the answer label; `name` is recharts' nameKey value, with
+  // `payload.title` as the reliable fallback.
+  const label = payload?.title ?? name ?? ''
+  const displayMetric = getDisplayMetric(payload, valueType, percent)
+
+  // Block width is estimated from the widest row so its near edge stays clear
+  // of the connector dot; text rows then left-align to that block's left edge.
+  const estimatedWidth = Math.max(
+    `${id ?? ''}`.length * 7,
+    showImage ? LABEL_IMAGE_WIDTH : LABEL_MAX_WIDTH,
+    displayMetric.length * 7
+  )
+  const centerX = ex + (isRight ? 1 : -1) * (10 + estimatedWidth / 2)
+
+  // Text labels are left-aligned to a common left edge (matching the name
+  // row); image labels stay centered on the block.
+  const labelAnchor = showImage ? 'middle' : 'start'
+  const labelX = showImage ? centerX : centerX - LABEL_MAX_WIDTH / 2
+
+  // Image label is sourced from the row title (the image URL); recharts does
+  // not reliably pass `name` to the label renderer.
+  const imageUrl = payload?.title ?? name
+  const imageFrameX = centerX - LABEL_IMAGE_WIDTH / 2
+  const imageFrameY = (id ? ey - 2 : ey - 8) - LABEL_IMAGE_HEIGHT / 2
 
   return (
     <g>
       <path
         d={`M${sx},${sy} L${mx},${my} L${ex},${ey}`}
         stroke={fill}
-        strokeWidth={1.5}
+        strokeWidth={2.5}
         fill="none"
         strokeDasharray={isOther ? '3 3' : undefined}
       />
-      <circle cx={ex} cy={ey} r={4} fill={fill} />
+      <circle cx={ex} cy={ey} r={5} fill={fill} />
 
       {id && (
         <text
-          x={tx}
-          y={ey - 22}
-          textAnchor={anchor}
+          x={labelX}
+          y={showImage ? imageFrameY - 6 : ey - 18}
+          textAnchor={labelAnchor}
           className="active-shape-id"
         >
           <tspan>{id}</tspan>
@@ -138,33 +117,50 @@ const renderActiveShapeNew = ({
         </text>
       )}
 
-      {isImage ? (
-        <image
-          href={name}
-          x={isRight ? tx : tx - LABEL_IMAGE_SIZE}
-          y={(id ? ey - 2 : ey - 8) - LABEL_IMAGE_SIZE / 2}
-          width={LABEL_IMAGE_SIZE}
-          height={LABEL_IMAGE_SIZE}
-          preserveAspectRatio="xMidYMid meet"
-        >
-          <title>{name}</title>
-        </image>
+      {showImage ? (
+        <g>
+          <rect
+            x={imageFrameX}
+            y={imageFrameY}
+            width={LABEL_IMAGE_WIDTH}
+            height={LABEL_IMAGE_HEIGHT}
+            rx={4}
+            fill="#FFFFFF"
+            stroke={LABEL_IMAGE_BORDER}
+            strokeWidth={1}
+          />
+          <image
+            href={imageUrl}
+            xlinkHref={imageUrl}
+            x={imageFrameX + LABEL_IMAGE_PADDING}
+            y={imageFrameY + LABEL_IMAGE_PADDING}
+            width={LABEL_IMAGE_WIDTH - LABEL_IMAGE_PADDING * 2}
+            height={LABEL_IMAGE_HEIGHT - LABEL_IMAGE_PADDING * 2}
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <title>{imageUrl}</title>
+          </image>
+        </g>
       ) : (
-        <text
-          x={tx}
-          y={id ? ey - 2 : ey - 8}
-          textAnchor={anchor}
-          className="active-shape-name"
+        <foreignObject
+          x={centerX - LABEL_MAX_WIDTH / 2}
+          y={(id ? ey + 6 : ey) - 24}
+          width={LABEL_MAX_WIDTH}
+          height={LABEL_NAME_HEIGHT}
         >
-          {name}
-        </text>
+          <div className="active-shape-name-wrap">
+            <div className="active-shape-name" title={label}>
+              {label}
+            </div>
+          </div>
+        </foreignObject>
       )}
 
       <text
-        x={tx}
-        y={id ? ey + 18 : ey + 12}
-        textAnchor={anchor}
-        className="active-shape-percent-value"
+        x={labelX}
+        y={(showImage ? ey + 6 : ey) + (id ? 24 : 18)}
+        textAnchor={labelAnchor}
+        className="active-shape-metric"
       >
         {displayMetric}
       </text>
@@ -172,26 +168,59 @@ const renderActiveShapeNew = ({
   )
 }
 
+// Vertical label-block footprint (id + value/image + metric rows)
+const LABEL_MIN_GAP = 58
+
+// Zero (or tiny) slices share the same midAngle, so their labels land on the
+// same point. Recompute every slice's label anchor with the same angle math
+// recharts uses and push down any label that would overlap the one above it
+// on the same side of the pie.
+const computeLabelYOffsets = (data, cy, outerRadius) => {
+  const total = data.reduce((sum, entry) => sum + (entry.value || 0), 0) || 1
+  let startAngle = 0
+  const anchors = data.map((entry, index) => {
+    const span = ((entry.value || 0) / total) * 360
+    const midAngle = startAngle + span / 2
+    startAngle += span
+    return {
+      index,
+      isRight: Math.cos(-RADIAN * midAngle) >= 0,
+      ey: cy + (outerRadius + 20) * Math.sin(-RADIAN * midAngle),
+    }
+  })
+
+  const offsets = new Array(data.length).fill(0)
+  ;[true, false].forEach((side) => {
+    anchors
+      .filter((anchor) => anchor.isRight === side)
+      .sort((a, b) => a.ey - b.ey)
+      .reduce((minY, anchor) => {
+        const y = Math.max(anchor.ey, minY)
+        offsets[anchor.index] = y - anchor.ey
+        return y + LABEL_MIN_GAP
+      }, -Infinity)
+  })
+  return offsets
+}
+
 export const PieChart = ({
   data,
-  newLabels = true,
   valueType = VALUE_TYPE.PERCENTAGE,
   isImage = false,
 }) => {
-  const renderLabel = (props) =>
-    (newLabels ? renderActiveShapeNew : renderActiveShapeOld)({
+  const renderLabel = (props) => {
+    const offsets = computeLabelYOffsets(data, props.cy, props.outerRadius)
+    return renderActiveShapeNew({
       ...props,
       valueType,
       isImage,
+      yOffset: offsets[props.index] ?? 0,
     })
+  }
 
   return (
-    <ResponsiveContainer minHeight={500} width="100%" height="100%">
-      <RechartsPieChart
-        margin={
-          newLabels ? { top: 60, right: 160, bottom: 60, left: 160 } : undefined
-        }
-      >
+    <ResponsiveContainer minHeight={560} width="100%" height="100%">
+      <RechartsPieChart margin={{ top: 60, right: 160, bottom: 60, left: 160 }}>
         <Pie
           data={data}
           cx="50%"
@@ -199,8 +228,10 @@ export const PieChart = ({
           dataKey="value"
           nameKey="title"
           label={renderLabel}
-          labelLine={newLabels ? false : undefined}
-          outerRadius={newLabels ? '60%' : undefined}
+          labelLine={false}
+          outerRadius="70%"
+          animationBegin={0}
+          animationDuration={600}
           fill="#8884d8"
         >
           {data.map((_, index) => (
@@ -211,11 +242,15 @@ export const PieChart = ({
           ))}
         </Pie>
         <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
-        <Legend
-          content={(legendProps) => (
-            <CustomLegend {...legendProps} isImage={isImage} />
-          )}
-        />
+        {/* Images already label each slice directly, so the legend (which can't
+            render them here) is redundant and hidden for image themes. */}
+        {!isImage && (
+          <Legend
+            content={(legendProps) => (
+              <CustomLegend {...legendProps} isImage={isImage} />
+            )}
+          />
+        )}
       </RechartsPieChart>
     </ResponsiveContainer>
   )

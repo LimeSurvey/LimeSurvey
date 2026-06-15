@@ -3,66 +3,44 @@ import React, { useEffect, useState } from 'react'
 import { ToggleButtons } from 'components'
 import { useStatistics } from 'hooks'
 
-import {
-  getDataWithPercentages,
-  statisticsGraphs,
-  VALUE_TYPE,
-} from './ChartsUtils'
+import { VALUE_TYPE } from './ChartsUtils'
 import { StatisticsContainer } from '../Statistics/Components/StatisticsContainer.js'
 
 const valueTypeOptions = [
-  { name: t('Percentage'), value: VALUE_TYPE.PERCENTAGE },
-  { name: t('Response count'), value: VALUE_TYPE.COUNT },
+  { name: '%', value: VALUE_TYPE.PERCENTAGE },
+  { name: '#', value: VALUE_TYPE.COUNT },
 ]
 
-export const ResponsesStatistics = ({
-  surveyId,
-  filters = {},
-  isRightBarOpen = false,
-}) => {
-  const { statistics, isFetching } = useStatistics(surveyId, filters)
-  const [selectedCharts, setSelectedCharts] = useState([])
-  const [formattedStatistics, setFormattedStatistics] = useState(null)
+export const ResponsesStatistics = ({ surveyId, filters = {} }) => {
+  const {
+    statistics,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useStatistics(surveyId, filters)
   const [valueType, setValueType] = useState(VALUE_TYPE.PERCENTAGE)
+  const [loadMoreNode, setLoadMoreNode] = useState(null)
 
+  // Load the next page of charts when the sentinel below the chart list
+  // scrolls into view. The observer is recreated after each page (statistics
+  // dependency) so it fires again immediately if the sentinel is still
+  // visible after the new charts render.
   useEffect(() => {
-    const formattedStatistics = []
-    if (!statistics?.length) {
-      return
-    }
+    if (!loadMoreNode || !hasNextPage || isFetchingNextPage) return
 
-    const questionsChartTypes = statistics.map((statisticsData) => {
-      const questionAttributes = statisticsData?.meta?.question?.attributes
-      const dataFormatted = getDataWithPercentages(statisticsData)
-      formattedStatistics.push(dataFormatted)
+    const observer = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && fetchNextPage(),
+      { rootMargin: '300px' }
+    )
+    observer.observe(loadMoreNode)
+    return () => observer.disconnect()
+  }, [loadMoreNode, hasNextPage, isFetchingNextPage, fetchNextPage, statistics])
 
-      if (!questionAttributes) {
-        return statisticsGraphs.DONT_SHOW
-      }
-
-      return (
-        // default to bar chart if no graph type is set
-        // chart validation is done on the backend whether chart should be shown or not
-        questionAttributes.statistics_graphtype || statisticsGraphs.BAR_CHART
-      )
-    })
-
-    setFormattedStatistics(formattedStatistics)
-    setSelectedCharts(questionsChartTypes)
-  }, [statistics])
-
-  if (!statistics?.length || !formattedStatistics || !selectedCharts.length) {
+  if (!statistics?.length) {
     return (
-      <div
-        style={{ height: '100vh' }}
-        className="d-flex flex-column justify-content-center align-items-center"
-      >
-        {isFetching && (
-          <span
-            style={{ width: 48, height: 48 }}
-            className="loader mb-4"
-          ></span>
-        )}
+      <div className="responses-statistics-loading">
+        {isFetching && <span className="loader"></span>}
         <h2>
           {isFetching
             ? t('Loading statistics...')
@@ -76,7 +54,7 @@ export const ResponsesStatistics = ({
 
   return (
     <>
-      <div className="responses-statistics-toolbar d-flex justify-content-end mb-3">
+      <div className="responses-statistics-toolbar">
         <ToggleButtons
           id="statistics-value-type"
           value={valueType}
@@ -90,6 +68,9 @@ export const ResponsesStatistics = ({
         surveyId={surveyId}
         valueType={valueType}
       />
+      <div ref={setLoadMoreNode} className="responses-statistics-load-more">
+        {isFetchingNextPage && <span className="loader"></span>}
+      </div>
     </>
   )
 }

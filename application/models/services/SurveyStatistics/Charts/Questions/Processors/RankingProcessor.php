@@ -2,8 +2,6 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
-
 class RankingProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
@@ -38,20 +36,17 @@ class RankingProcessor extends AbstractQuestionProcessor
                 $fieldName = 'RANK ' . $rank;
                 $legends[] = $fieldName;
                 $rankCol = $rankColumns[$rank - 1];
-                $count = (int)(($items[$rankCol][1][$index - 1]['value'] ?? 0));
                 $dataItems[] = [
                     'key' => $subQuestion['title'],
                     'title' => $fieldName,
-                    'value' => $count,
+                    'value' => $items[$rankCol][1][$index - 1]['value'],
                 ];
             }
-            $charts[] = new StatisticsChartDTO(
-                $this->question['question'] . ': ' . $subQuestion['question'],
-                $legends,
-                $dataItems,
-                $this->calculateTotal($dataItems),
-                ['question' => $this->question]
-            );
+            $charts[] = [
+                'title' => $this->question['question'] . ': ' . $subQuestion['question'],
+                'legend' => $legends,
+                'data' => $dataItems,
+            ];
         }
 
         return $charts;

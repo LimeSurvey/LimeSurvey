@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 
-import { Collapsible } from 'components'
 import { useAppState, useSurvey } from 'hooks'
 import { STATES } from 'helpers'
 
@@ -8,26 +7,6 @@ import { getDataWithPercentages } from '../../ResponsesStatistics/index.js'
 import { ChartRendererV2 } from '../../ChartRenderV2.js'
 
 const UNGROUPED_KEY = '__ungrouped__'
-const COLLAPSED_GROUPS_STORAGE_PREFIX = 'responses-statistics-collapsed-groups'
-
-const getStorageKey = (surveyId) =>
-  `${COLLAPSED_GROUPS_STORAGE_PREFIX}:${surveyId ?? 'unknown'}`
-
-const readCollapsedGroups = (surveyId) => {
-  try {
-    return JSON.parse(localStorage.getItem(getStorageKey(surveyId))) || {}
-  } catch {
-    return {}
-  }
-}
-
-const writeCollapsedGroups = (surveyId, collapsed) => {
-  try {
-    localStorage.setItem(getStorageKey(surveyId), JSON.stringify(collapsed))
-  } catch {
-    // ignore
-  }
-}
 
 const getQuestionGroupId = (statisticsItem) =>
   statisticsItem?.meta?.question?.gid ??
@@ -42,6 +21,9 @@ const getGroupTitle = (group, activeLanguage) => {
   return localized?.groupName ?? group.groupName ?? null
 }
 
+// Charts render in API order, which follows the survey structure (groups in
+// survey order, questions in group order), so paginated pages append
+// sequentially.
 const renderCharts = (items, surveyId, valueType) => (
   <div className="responses-charts row">
     {items.map(({ item, index }) => {
@@ -75,13 +57,6 @@ const renderCharts = (items, surveyId, valueType) => (
 export const StatisticsContainer = ({ statistics, surveyId, valueType }) => {
   const { survey } = useSurvey(surveyId)
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
-  const [collapsedGroups, setCollapsedGroups] = useState(() =>
-    readCollapsedGroups(surveyId)
-  )
-
-  useEffect(() => {
-    setCollapsedGroups(readCollapsedGroups(surveyId))
-  }, [surveyId])
 
   const grouped = useMemo(() => {
     const questionGroups = survey?.questionGroups || []
@@ -116,41 +91,16 @@ export const StatisticsContainer = ({ statistics, surveyId, valueType }) => {
     }))
   }, [statistics, survey?.questionGroups, activeLanguage])
 
-  const toggleGroup = (groupKey, open) => {
-    const next = { ...collapsedGroups }
-    if (open) {
-      delete next[groupKey]
-    } else {
-      next[groupKey] = true
-    }
-    writeCollapsedGroups(surveyId, next)
-    setCollapsedGroups(next)
-  }
-
   return (
     <div className="responses-statistics-body">
-      {grouped.map((group) => {
-        const open = !collapsedGroups[group.key]
-        const hasTitle = !!group.title
-        return (
-          <div
-            className="responses-statistics-group"
-            key={`group-${group.key}`}
-          >
-            {hasTitle ? (
-              <Collapsible
-                text={group.title}
-                open={open}
-                onToggle={(next) => toggleGroup(group.key, next)}
-              >
-                {renderCharts(group.items, surveyId, valueType)}
-              </Collapsible>
-            ) : (
-              renderCharts(group.items, surveyId, valueType)
-            )}
-          </div>
-        )
-      })}
+      {grouped.map((group) => (
+        <div className="responses-statistics-group" key={`group-${group.key}`}>
+          {group.title && (
+            <h2 className="responses-statistics-group-title">{group.title}</h2>
+          )}
+          {renderCharts(group.items, surveyId, valueType)}
+        </div>
+      ))}
     </div>
   )
 }

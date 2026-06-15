@@ -1,6 +1,156 @@
+.responses-comments {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  &-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    color: $g-700;
+    font-size: $font-size-sm;
+
+    .loader {
+      position: relative;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &-filter {
+    align-self: flex-start;
+    min-width: 200px;
+    padding: 6px 12px;
+    border: 1px solid $g-400;
+    border-radius: $border-radius;
+    color: $g-900;
+    font-size: $font-size-sm;
+    background: white;
+  }
+
+  &-blocks {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-block {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid $g-400;
+    color: $g-900;
+    font-size: $font-size-sm;
+
+    &-main {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    &-time {
+      flex-shrink: 0;
+      color: $g-700;
+      font-size: $font-size-xs;
+      white-space: nowrap;
+    }
+  }
+
+  &-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid $g-400;
+      color: $g-900;
+      font-size: $font-size-sm;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  }
+
+  &-more {
+    display: flex;
+    justify-content: center;
+
+    &-btn {
+      background: none;
+      border: none;
+      color: $grape;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-600;
+      cursor: pointer;
+      padding: 8px 16px;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+    }
+  }
+}
+
+.responses-comments-modal-body {
+  padding: 0 24px 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.responses-statistics-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.responses-statistics-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .loader {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 24px;
+  }
+}
+
+.responses-statistics-load-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0;
+
+  .loader {
+    position: relative;
+    width: 32px;
+    height: 32px;
+  }
+}
+
 .responses-statistics-body {
   .responses-statistics-group {
     margin-bottom: 24px;
+
+    &-title {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      color: $g-900;
+      margin-bottom: 12px;
+    }
   }
 
   .chart-header {
@@ -63,6 +213,12 @@
   .statistics-table {
     font-size: $font-size-sm;
 
+    // Metric column (Percentage / Responses) is right-aligned.
+    th:last-child,
+    td:last-child {
+      text-align: end;
+    }
+
     th {
       color: $g-700;
       font-weight: $font-weight-500;
@@ -99,8 +255,6 @@
     }
   }
 
-  // The toggle uses the white pencil asset; inherit the button's text color
-  // (via currentColor) so the icon matches the other view toggles.
   .comments-toggle-icon {
     width: 24px;
     height: 24px;
@@ -110,88 +264,27 @@
     }
   }
 
-  .responses-comments {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-
-    &-status {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 120px;
-      color: $g-700;
-      font-size: $font-size-sm;
-
-      .loader {
-        position: relative;
-        width: 32px;
-        height: 32px;
-      }
-    }
-
-    &-filter {
-      align-self: flex-start;
-      min-width: 200px;
-      padding: 6px 12px;
-      border: 1px solid $g-400;
-      border-radius: $border-radius;
-      color: $g-900;
-      font-size: $font-size-sm;
-      background: white;
-    }
-
-    &-blocks {
-      display: flex;
-      flex-direction: column;
-    }
-
-    &-block {
-      padding: 8px 12px;
-      border-bottom: 1px solid $g-400;
-      color: $g-900;
-      font-size: $font-size-sm;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    &-table {
-      width: 100%;
-      border-collapse: collapse;
-
-      td {
-        padding: 8px 12px;
-        border-bottom: 1px solid $g-400;
-        color: $g-900;
-        font-size: $font-size-sm;
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-    }
-
-    &-more {
-      display: flex;
-      justify-content: center;
-
-      &-btn {
-        background: none;
-        border: none;
-        color: $grape;
-        font-size: $font-size-sm;
-        font-weight: $font-weight-600;
-        cursor: pointer;
-        padding: 8px 16px;
-
-        &:disabled {
-          opacity: 0.6;
-          cursor: default;
-        }
-      }
-    }
-  }
-
   .responses-charts {
     gap: 12px;
+
+    .responses-chart-view-toggle {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .recharts-custom-legend {
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .recharts-custom-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
 
     .recharts-pie-label-line {
       display: none;
@@ -203,6 +296,35 @@
 
     .active-shape-percent-value {
       fill: $g-700;
+    }
+
+    .active-shape-id,
+    .active-shape-metric {
+      fill: $g-700;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-500;
+    }
+
+    // Answer-name row inside the pie label's foreignObject (HTML, so it uses
+    // `color` not `fill`). The box hugs its content, centered in the label
+    // region, and caps at the region width with a single-line ellipsis.
+    .active-shape-name-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100%;
+    }
+
+    .active-shape-name {
+      min-width: 0;
+      max-width: 100%;
+      color: $g-900;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-500;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .recharts-square-value {

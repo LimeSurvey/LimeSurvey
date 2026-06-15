@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use Question;
 use RuntimeException;
 use Survey;
@@ -27,9 +26,9 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
 
     /**
      * @inheritDoc
-     * @return StatisticsChartDTO
+     * @return array Single chart plan
      */
-    public function process(): StatisticsChartDTO
+    public function process(): array
     {
         $this->rt();
 
@@ -41,15 +40,11 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
 
         $this->addSpecialOptions($legend, $dataItems);
 
-        $totalResponses = array_sum(array_column($dataItems, 'value'));
-
-        return new StatisticsChartDTO(
-            $title,
-            $legend,
-            $dataItems,
-            $totalResponses,
-            ['question' => $this->question]
-        );
+        return [
+            'title' => $title,
+            'legend' => $legend,
+            'data' => $dataItems,
+        ];
     }
 
     /**
@@ -79,10 +74,9 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     {
         $mfield = $this->rt . '_Cother';
         $legend[] = 'other';
-        $count = $this->countFieldResponses($mfield);
         $dataItems[] = [
             'key' => 'other',
-            'value' => $count,
+            'value' => $this->countFieldResponses($mfield),
             'title' => gT('Other')
         ];
     }
@@ -95,10 +89,9 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     {
         $mfield = $this->rt . '_Ccomment';
         $legend[] = 'comment';
-        $count = $this->countFieldResponses($mfield);
         $dataItems[] = [
             'key' => 'comment',
-            'value' => $count,
+            'value' => $this->countFieldResponses($mfield),
             'title' => gT('Comments')
         ];
     }

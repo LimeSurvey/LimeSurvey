@@ -2,9 +2,6 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
-use Question;
-
 class ArrayNumbersProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
@@ -49,13 +46,11 @@ class ArrayNumbersProcessor extends AbstractQuestionProcessor
 
         foreach ($fieldMeta as $field => [$subQuestion1, $subQuestion2]) {
             [$legend, $dataItems] = $batch[$field];
-            $charts[] = new StatisticsChartDTO(
-                $this->question['question'] . ' [' . $subQuestion1['question'] . '] [' . $subQuestion2['question'] . ']',
-                $legend,
-                $dataItems,
-                $this->calculateTotal($dataItems),
-                ['question' => $this->question]
-            );
+            $charts[] = [
+                'title' => $this->question['question'] . ' [' . $subQuestion1['question'] . '] [' . $subQuestion2['question'] . ']',
+                'legend' => $legend,
+                'data' => $dataItems,
+            ];
         }
 
         return $charts;

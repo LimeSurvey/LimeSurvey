@@ -15,6 +15,8 @@ import {
   CustomTooltip,
   TruncatedTick,
   getLabelInterval,
+  getMetricDataKey,
+  shouldRenderImage,
   VALUE_TYPE,
 } from '../ChartsUtils'
 
@@ -24,7 +26,7 @@ export const BarChart = ({
   isImage = false,
 }) => {
   const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
-  const dataKey = isPercentage ? 'percentageValue' : 'value'
+  const dataKey = getMetricDataKey(valueType)
 
   return (
     <ResponsiveContainer width="100%" minHeight={500} height="100%">
@@ -34,7 +36,12 @@ export const BarChart = ({
           dataKey="title"
           height={80}
           interval={getLabelInterval(data.length)}
-          tick={<TruncatedTick isImage={isImage} />}
+          tick={(props) => (
+            <TruncatedTick
+              {...props}
+              isImage={shouldRenderImage(isImage, data[props.payload?.index])}
+            />
+          )}
         />
         <YAxis unit={isPercentage ? '%' : undefined} />
         <Tooltip cursor={{ fill: '#eeeff7' }} content={<CustomTooltip />} />

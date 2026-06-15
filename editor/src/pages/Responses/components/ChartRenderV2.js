@@ -69,7 +69,6 @@ export const ChartRendererV2 = ({
   chartId,
   question = {},
   valueType,
-  emptyMessage = null,
 }) => {
   const [view, setView] = useState(VIEW.BAR_CHART)
   const isImage = isImageTheme(question?.theme)
@@ -142,7 +141,7 @@ export const ChartRendererV2 = ({
               />
             )}
           </div>
-          <div className="d-flex justify-content-end">
+          <div className="responses-chart-view-toggle">
             <ToggleButtons
               id={`chart-view-${index}`}
               value={view}

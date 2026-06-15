@@ -1,14 +1,16 @@
+import { shouldRenderImage } from '../ChartsUtils'
+
 export const CustomLegend = ({ payload, isImage = false }) => {
   return (
-    <div className="overflow-auto d-flex justify-content-center gap-2 mt-4">
+    <div className="recharts-custom-legend">
       {payload.map((entry, index) => (
-        <div className="d-flex align-items-center gap-1" key={index}>
+        <div className="recharts-custom-legend-item" key={index}>
           <div
             className="recharts-square"
             style={{ background: entry.color }}
           ></div>
           <div title={entry.value} className="recharts-square-value">
-            {isImage ? (
+            {shouldRenderImage(isImage, entry.payload) ? (
               <img
                 src={entry.value}
                 alt={entry.value}
