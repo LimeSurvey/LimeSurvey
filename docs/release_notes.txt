@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.7 (build 260610) to 6.17.8 (build 260616) June 16, 2026
+-Fixed issue #20560: Automatically writing the Allowed hosts file may fail silenty (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Czech by jelen1
+
+
 Changes from 6.17.6 (build 260604) to 6.17.7 (build 260610) June 10, 2026
 -Fixed issue: [security] Hardening CPDB response link deletion (Carsten Schmitz)
 -Fixed issue #CT-1758: Decrypting encrypted responses in the new editor (#5034) (Rami)
