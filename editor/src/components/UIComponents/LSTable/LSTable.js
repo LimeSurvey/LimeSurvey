@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react'
-import PropTypes from 'prop-types'
 import { Table } from 'react-bootstrap'
 import classNames from 'classnames'
 
@@ -29,12 +28,6 @@ const SortIcon = ({ isSorted, sortDirection, ariaLabel }) => (
   />
 )
 
-SortIcon.propTypes = {
-  isSorted: PropTypes.bool.isRequired,
-  sortDirection: PropTypes.oneOf(['asc', 'desc']),
-  ariaLabel: PropTypes.string,
-}
-
 export const LSTable = ({
   columns,
   data,
@@ -47,6 +40,8 @@ export const LSTable = ({
   sortDirection: sortDirectionProp = 'asc',
   onSortChange,
 }) => {
+  // In uncontrolled mode (no `onSortChange`), `sortBy`/`sortDirection` are
+  // only used to seed the initial state; later prop changes are ignored.
   const [internalSortBy, setInternalSortBy] = useState(sortByProp ?? null)
   const [internalSortDirection, setInternalSortDirection] =
     useState(sortDirectionProp)
@@ -149,13 +144,15 @@ export const LSTable = ({
                     className={classNames('ls-table__header-cell', {
                       'ls-table__header-cell--sortable': column.sortable,
                       'highlight-cell': isSorted,
-                      'ls-table__actions-cell': column.key === 'actions',
+                      'ls-table__actions-cell': column.align === 'right',
                     })}
                     onClick={
                       column.sortable
                         ? () => handleSortClick(column.key)
                         : undefined
                     }
+                    role={column.sortable ? 'button' : undefined}
+                    tabIndex={column.sortable ? 0 : undefined}
                   >
                     <div className="ls-table__header-content">
                       <span>{column.title}</span>
@@ -215,7 +212,7 @@ export const LSTable = ({
                         key={`${id}-${column.key}`}
                         className={classNames('ls-table__cell', {
                           'highlight-cell': currentSortBy === column.key,
-                          'ls-table__actions-cell': column.key === 'actions',
+                          'ls-table__actions-cell': column.align === 'right',
                         })}
                       >
                         {column.render ? column.render(row) : row[column.key]}

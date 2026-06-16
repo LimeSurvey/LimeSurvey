@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
 
@@ -24,18 +23,4 @@ export const RowActions = ({
       testId={testId}
     />
   )
-}
-
-RowActions.propTypes = {
-  actions: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      onClick: PropTypes.func.isRequired,
-      danger: PropTypes.bool,
-      icon: PropTypes.node,
-      className: PropTypes.string,
-    })
-  ),
-  placement: PropTypes.string,
-  testId: PropTypes.string,
 }

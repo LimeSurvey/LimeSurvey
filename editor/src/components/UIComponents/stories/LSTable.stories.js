@@ -36,6 +36,7 @@ const SurveyListExample = ({
         {
           key: 'actions',
           title: '',
+          align: 'right',
           render: (row) => (
             <RowActions
               actions={[
