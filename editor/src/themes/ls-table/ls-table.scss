@@ -1,0 +1,126 @@
+.ls-table-wrapper {
+  .form-check-input {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    margin-top: 4px !important;
+  }
+
+  .ls-table-container {
+    border-radius: $border-radius;
+    box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+    background-color: $white;
+    padding: 8px;
+  }
+
+  .ls-table {
+    position: relative;
+    margin: 0;
+    width: 100%;
+    padding: 20px 20px 0 20px;
+    border-radius: 20px;
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      box-shadow: 0 1px 4px 0 $elevation-shadow-soft;
+    }
+
+    tr {
+      border-bottom: 1px solid $g-400;
+    }
+
+    .ls-table__row {
+      &:hover {
+        background-color: $g-200 !important;
+
+        td {
+          background: $g-200 !important;
+        }
+      }
+
+      &.row-selected {
+        background: $g-100;
+
+        td {
+          background: $g-100;
+        }
+      }
+    }
+
+    .highlight-cell {
+      background: $g-200 !important;
+      color: $g-900;
+    }
+
+    .ls-table__header-cell,
+    .ls-table__cell {
+      @include reg16;
+      padding: 12px 20px;
+      text-align: start;
+      word-wrap: break-word;
+      white-space: normal;
+      vertical-align: middle;
+    }
+
+    .ls-table__header-cell {
+      @include med16-c;
+      color: $g-900;
+      height: 46px;
+      white-space: nowrap;
+      border-bottom: 1px solid $g-400;
+
+      &--sortable {
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+
+    .ls-table__cell {
+      height: 48px;
+    }
+
+    .ls-table__select-cell {
+      width: 48px;
+      text-align: center;
+    }
+
+    .ls-table__header-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ls-table__sort-icon {
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      color: $g-700;
+    }
+
+    .ls-table__empty {
+      text-align: center;
+      color: $g-700;
+      padding: 24px 20px;
+    }
+
+    .ls-table__actions-cell {
+      text-align: right;
+      width: 48px;
+    }
+  }
+}
+
+.ls-table-row-actions {
+  border: 1px solid $g-400;
+  background: $white;
+  padding: 8px 4px !important;
+  box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+  z-index: 10;
+
+  .meatball-button.meat-ball-delete-button span {
+    color: $r-900;
+  }
+}
