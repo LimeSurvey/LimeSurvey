@@ -23,29 +23,29 @@ export const ChartHeader = ({
   const themeTitle = resolveThemeTitle(type, themeName, typeLabel)
 
   return (
-    <div className="chart-header">
-      <div className="chart-title">
-        <div className="chart-title-main">
-          <span className="chart-title-index">
+    <div className="responses-statistics-chart-header">
+      <div className="responses-statistics-chart-title">
+        <div className="responses-statistics-chart-title-main">
+          <span className="responses-statistics-chart-title-index">
             {index} <i className="ri-arrow-right-line" />
           </span>
-          <span className="chart-title-key">{code}</span>
+          <span className="responses-statistics-chart-title-key">{code}</span>
           <Badge>{themeTitle}</Badge>
-          <span className="chart-title-text">{title}</span>
+          <span className="responses-statistics-chart-title-text">{title}</span>
         </div>
         {actions.length > 0 && (
-          <div className="chart-title-actions">
+          <div className="responses-statistics-chart-title-actions">
             <MeatballMenu
               items={actions}
               shouldDisableIfSurveyActive={false}
-              meatballClassName="chart-header-meatball-menu"
+              meatballClassName="responses-statistics-chart-menu"
               actionsTitle="Chart Actions"
               placement="bottom-end"
             />
           </div>
         )}
       </div>
-      <p className="chart-title-help">{help}</p>
+      <p className="responses-statistics-chart-title-help">{help}</p>
     </div>
   )
 }

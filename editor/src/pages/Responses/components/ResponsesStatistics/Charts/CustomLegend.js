@@ -2,19 +2,19 @@ import { shouldRenderImage } from '../ChartsUtils'
 
 export const CustomLegend = ({ payload, isImage = false }) => {
   return (
-    <div className="recharts-custom-legend">
+    <div className="responses-statistics-legend">
       {payload.map((entry, index) => (
-        <div className="recharts-custom-legend-item" key={index}>
+        <div className="responses-statistics-legend-item" key={index}>
           <div
             className="recharts-square"
             style={{ background: entry.color }}
           ></div>
-          <div title={entry.value} className="recharts-square-value">
+          <div title={entry.value} className="responses-statistics-legend-value">
             {shouldRenderImage(isImage, entry.payload) ? (
               <img
                 src={entry.value}
                 alt={entry.value}
-                className="recharts-legend-image"
+                className="responses-statistics-legend-image"
               />
             ) : (
               entry.value

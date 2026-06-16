@@ -63,7 +63,6 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => null,
             Question::QT_SEMICOLON_ARRAY_TEXT => fn() => null,
             Question::QT_X_TEXT_DISPLAY => fn() => null,
-            Question::QT_O_LIST_WITH_COMMENT => fn() => null,
 
             // Single option with multiple graphs for each subquestion
             Question::QT_A_ARRAY_5_POINT => fn() => new SingleOptionMultipleChartsProcessor(),
@@ -79,6 +78,9 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_5_POINT_CHOICE => fn() => new SingleOptionProcessor(),
             Question::QT_L_LIST => fn() => new SingleOptionProcessor(),
             Question::QT_EXCLAMATION_LIST_DROPDOWN => fn() => new SingleOptionProcessor(),
+            // List with comment: chart the list answers (plus a comment count);
+            // the comment texts are shown via the comments view.
+            Question::QT_O_LIST_WITH_COMMENT => fn() => new SingleOptionProcessor(),
 
             'default' => fn() => null,
         ];

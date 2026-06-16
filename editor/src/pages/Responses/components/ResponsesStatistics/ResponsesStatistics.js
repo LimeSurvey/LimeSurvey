@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { ToggleButtons } from 'components'
 import { useStatistics } from 'hooks'
+import { useIsInViewport } from 'hooks/useInViewport'
 
 import { ResponsesHeader } from '../../ResponsesHeader'
 import { TAB_KEYS } from '../../utils'
@@ -28,22 +29,16 @@ export const ResponsesStatistics = ({
     fetchNextPage,
   } = useStatistics(surveyId, filters)
   const [valueType, setValueType] = useState(VALUE_TYPE.PERCENTAGE)
-  const [loadMoreNode, setLoadMoreNode] = useState(null)
+  const [loadMoreRef, isLoadMoreInView] = useIsInViewport()
 
-  // Load the next page of charts when the sentinel below the chart list
-  // scrolls into view. The observer is recreated after each page (statistics
-  // dependency) so it fires again immediately if the sentinel is still
-  // visible after the new charts render.
+  // Auto-load the next page of charts while the sentinel below the list is in
+  // view. Re-runs when fetching settles, so it chains pages as long as the
+  // sentinel stays visible.
   useEffect(() => {
-    if (!loadMoreNode || !hasNextPage || isFetchingNextPage) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => entry.isIntersecting && fetchNextPage(),
-      { rootMargin: '300px' }
-    )
-    observer.observe(loadMoreNode)
-    return () => observer.disconnect()
-  }, [loadMoreNode, hasNextPage, isFetchingNextPage, fetchNextPage, statistics])
+    if (isLoadMoreInView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage()
+    }
+  }, [isLoadMoreInView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   const renderContent = () => {
     if (!statistics?.length) {
@@ -62,16 +57,11 @@ export const ResponsesStatistics = ({
     }
 
     return (
-      <>
-        <StatisticsContainer
-          statistics={statistics}
-          surveyId={surveyId}
-          valueType={valueType}
-        />
-        <div ref={setLoadMoreNode} className="responses-statistics-load-more">
-          {isFetchingNextPage && <span className="loader"></span>}
-        </div>
-      </>
+      <StatisticsContainer
+        statistics={statistics}
+        surveyId={surveyId}
+        valueType={valueType}
+      />
     )
   }
 
@@ -89,10 +79,14 @@ export const ResponsesStatistics = ({
           value={valueType}
           onChange={setValueType}
           toggleOptions={valueTypeOptions}
-          theme="lime"
         />
       </div>
       {renderContent()}
+      {/* Sentinel is always mounted so useIsInViewport's observer (set up once
+          on a stable ref) reliably tracks it once the charts render. */}
+      <div ref={loadMoreRef} className="responses-statistics-load-more">
+        {isFetchingNextPage && <span className="loader"></span>}
+      </div>
     </>
   )
 }

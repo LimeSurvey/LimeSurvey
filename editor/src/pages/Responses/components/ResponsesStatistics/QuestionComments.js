@@ -8,19 +8,25 @@ import { StatisticsFilterSelect } from './StatisticsFilterSelect.js'
 
 const NON_ANSWER_KEYS = ['comment', 'other']
 const PREVIEW_LIMIT = 5
+// Types whose comment is a single question-wide field (not per answer/sub-
+// question), so the answer filter doesn't apply. 'O' = list with comment.
+const QUESTION_WIDE_COMMENT_TYPES = ['O']
 
 export const QuestionComments = ({
   surveyId,
   questionCode,
-  qid,
   answerOptions = [],
   questionTitle = '',
+  questionType = '',
 }) => {
+  // Per-answer comment types (e.g. 'P') can be filtered by answer; question-wide
+  // ones ('O') cannot, so the answer select is hidden for them.
+  const isPerAnswer = !QUESTION_WIDE_COMMENT_TYPES.includes(questionType)
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [showModal, setShowModal] = useState(false)
 
   const { comments, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
-    useQuestionComments(surveyId, questionCode, { qid })
+    useQuestionComments(surveyId, questionCode)
 
   const options = useMemo(
     () =>
@@ -51,14 +57,14 @@ export const QuestionComments = ({
     if (!fill) return null
     return (
       <span
-        className="responses-comments-swatch"
+        className="responses-statistics-comments-swatch"
         style={{ backgroundColor: fill }}
       />
     )
   }
 
   const renderTable = (items) => (
-    <table className="responses-comments-table">
+    <table className="responses-statistics-comments-table">
       <thead>
         <tr>
           <th>{t('Answer option')}</th>
@@ -82,18 +88,18 @@ export const QuestionComments = ({
   )
 
   const renderBlocks = (items) => (
-    <div className="responses-comments-blocks">
+    <div className="responses-statistics-comments-blocks">
       {items.map((comment, index) => (
         <div
-          className="responses-comments-block"
+          className="responses-statistics-comments-block"
           key={`${comment.responseId}-${index}`}
         >
-          <span className="responses-comments-block-main">
+          <span className="responses-statistics-comments-block-main">
             {renderSwatch(comment.subQuestion)}
             {comment.comment}
           </span>
           {comment.date && (
-            <span className="responses-comments-block-time">
+            <span className="responses-statistics-comments-block-time">
               {dayJsHelper(comment.date).fromNow()}
             </span>
           )}
@@ -105,7 +111,7 @@ export const QuestionComments = ({
   const renderInline = () => {
     if (isLoading) {
       return (
-        <div className="responses-comments-status">
+        <div className="responses-statistics-comments-status">
           <span className="loader"></span>
         </div>
       )
@@ -113,7 +119,7 @@ export const QuestionComments = ({
 
     if (!comments.length) {
       return (
-        <div className="responses-comments-status">
+        <div className="responses-statistics-comments-status">
           {t('No comments for this question.')}
         </div>
       )
@@ -122,10 +128,10 @@ export const QuestionComments = ({
     return (
       <>
         {renderTable(comments.slice(0, PREVIEW_LIMIT))}
-        <div className="responses-comments-more">
+        <div className="responses-statistics-comments-more">
           <button
             type="button"
-            className="responses-comments-more-btn"
+            className="responses-statistics-comments-more-btn"
             onClick={() => setShowModal(true)}
           >
             {t('Show more')}
@@ -136,17 +142,17 @@ export const QuestionComments = ({
   }
 
   return (
-    <div className="responses-comments">
+    <div className="responses-statistics-comments">
       {renderInline()}
 
       <StatisticsDetailModal
         show={showModal}
         onHide={() => setShowModal(false)}
-        modalClassname="responses-comments-modal"
+        modalClassname="responses-statistics-comments-modal"
         title={questionTitle}
       >
-        <div className="responses-comments">
-          {options.length > 0 && (
+        <div className="responses-statistics-comments">
+          {isPerAnswer && options.length > 0 && (
             <StatisticsFilterSelect
               label={t('See all comments for:')}
               options={options}
@@ -158,15 +164,17 @@ export const QuestionComments = ({
           {visibleComments.length ? (
             renderBlocks(visibleComments)
           ) : (
-            <div className="responses-comments-status">
-              {t('No comments for this answer.')}
+            <div className="responses-statistics-comments-status">
+              {isPerAnswer
+                ? t('No comments for this answer.')
+                : t('No comments for this question.')}
             </div>
           )}
           {hasNextPage && (
-            <div className="responses-comments-more">
+            <div className="responses-statistics-comments-more">
               <button
                 type="button"
-                className="responses-comments-more-btn"
+                className="responses-statistics-comments-more-btn"
                 onClick={() => fetchNextPage()}
                 disabled={isFetchingNextPage}
               >

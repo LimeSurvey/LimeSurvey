@@ -20,7 +20,7 @@ export class StatisticsService {
     const minIdIsNumber = typeof minId === 'number'
     const maxIdIsNumber = typeof maxId === 'number'
 
-    const queryFilters = `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}&page=${page}&pageSize=5`
+    const queryFilters = `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}&page=${page}&pageSize=${pageSize}`
     return await this.restClient.get(`statistics/${sid}?${queryFilters}`)
   }
 

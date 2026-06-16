@@ -36,12 +36,20 @@ export const BarChart = ({
           dataKey="title"
           height={80}
           interval={getLabelInterval(data.length)}
-          tick={(props) => (
-            <TruncatedTick
-              {...props}
-              isImage={shouldRenderImage(isImage, data[props.payload?.index])}
-            />
-          )}
+          tick={(props) => {
+            // Resolve the row by its category value (the title) rather than the
+            // tick's `index`, which recharts doesn't reliably include in the
+            // payload (varies by version / interval skipping).
+            const item = isImage
+              ? data.find((row) => row.title === props.payload?.value)
+              : null
+            return (
+              <TruncatedTick
+                {...props}
+                isImage={shouldRenderImage(isImage, item)}
+              />
+            )
+          }}
         />
         <YAxis unit={isPercentage ? '%' : undefined} />
         <Tooltip cursor={{ fill: '#eeeff7' }} content={<CustomTooltip />} />

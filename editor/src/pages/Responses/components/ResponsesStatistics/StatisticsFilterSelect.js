@@ -12,14 +12,14 @@ export const StatisticsFilterSelect = ({
   const selectedLabel = selected?.title || allOption?.label || ''
 
   return (
-    <div className="statistics-filter">
-      {label && <span className="statistics-filter-label">{label}</span>}
-      <Dropdown className="statistics-filter-dropdown">
-        <Dropdown.Toggle variant="light" className="statistics-filter-toggle">
-          <span className="statistics-filter-value">
+    <div className="responses-statistics-filter">
+      {label && <span className="responses-statistics-filter-label">{label}</span>}
+      <Dropdown className="responses-statistics-filter-dropdown">
+        <Dropdown.Toggle variant="light" className="responses-statistics-filter-toggle">
+          <span className="responses-statistics-filter-value">
             {selected?.fill && (
               <span
-                className="statistics-filter-swatch"
+                className="responses-statistics-filter-swatch"
                 style={{ backgroundColor: selected.fill }}
               />
             )}
@@ -40,7 +40,7 @@ export const StatisticsFilterSelect = ({
             >
               {option.fill && (
                 <span
-                  className="statistics-filter-swatch"
+                  className="responses-statistics-filter-swatch"
                   style={{ backgroundColor: option.fill }}
                 />
               )}

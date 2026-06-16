@@ -3,11 +3,12 @@ import classNames from 'classnames'
 import { Card } from 'react-bootstrap'
 
 import { Collapsible, ToggleButtons } from 'components'
+import { isRankingQuestion } from 'helpers'
 
 import { ChartHeader } from './ChartHeader.js'
 import { StatisticsTable } from './StatisticsTable.js'
 import { BarChart, PieChart, RankingBarChart } from './Charts/index.js'
-import { isImageTheme } from './ChartsUtils.js'
+import { isImageTheme, isCommentQuestionType } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
 
 const VIEW = {
@@ -16,12 +17,6 @@ const VIEW = {
   TABLE: 'table',
   COMMENTS: 'comments',
 }
-
-// Question types that store free-text comments in the response table.
-const COMMENT_QUESTION_TYPES = ['O', 'P']
-
-// Ranking questions render as a horizontal bar chart of rank positions.
-const RANKING_QUESTION_TYPE = 'R'
 
 const VIEWS = [
   {
@@ -53,13 +48,13 @@ const VIEWS = [
     value: VIEW.COMMENTS,
     icon: () => <i className="ri-message-2-line"></i>,
     isAvailable: ({ hasComments }) => hasComments,
-    render: ({ surveyId, question, chartId, data }) => (
+    render: ({ surveyId, question, data }) => (
       <QuestionComments
         surveyId={surveyId}
         questionCode={question?.code}
-        qid={chartId}
         answerOptions={data}
         questionTitle={question?.title}
+        questionType={question?.type}
       />
     ),
   },
@@ -96,8 +91,8 @@ export const ChartRendererV2 = ({
 }) => {
   const [view, setView] = useState(VIEW.BAR_CHART)
   const isImage = isImageTheme(question?.themeName)
-  const isRanking = question?.type === RANKING_QUESTION_TYPE
-  const hasComments = COMMENT_QUESTION_TYPES.includes(question?.type)
+  const isRanking = isRankingQuestion(question?.themeName)
+  const hasComments = isCommentQuestionType(question?.type)
 
   const availableViews = VIEWS.filter(
     ({ isAvailable }) => isAvailable?.({ isRanking, hasComments }) ?? true
@@ -152,8 +147,8 @@ export const ChartRendererV2 = ({
 
   return (
     <Card
-      className={classNames('responses-chart-card', {
-        'responses-chart-card--hidden': isHidden,
+      className={classNames('responses-statistics-card', {
+        'responses-statistics-card--hidden': isHidden,
       })}
     >
       <ChartHeader
@@ -163,7 +158,7 @@ export const ChartRendererV2 = ({
       <Collapsible open={!isHidden}>
         <>
           <div>{activeView?.render(renderContext)}</div>
-          <div className="responses-chart-view-toggle">
+          <div className="responses-statistics-chart-toggle">
             <ToggleButtons
               id={`chart-view-${index}`}
               value={activeView?.value}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
 import {
   Legend,
   Cell,
@@ -31,6 +31,31 @@ const LABEL_MAX_WIDTH = 160
 const LABEL_NAME_HEIGHT = 32
 
 const RADIAN = Math.PI / 180
+
+// Answer-name label. Exposes the full text as a native hover tooltip only when
+// it is actually truncated (overflows the capped width), so hovering a
+// shortened label reveals the full text.
+const LabelName = ({ label, justify }) => {
+  const ref = useRef(null)
+  const [isTruncated, setIsTruncated] = useState(false)
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (el) setIsTruncated(el.scrollWidth > el.clientWidth)
+  }, [label])
+
+  return (
+    <div className="responses-statistics-pie-label-name-wrap" style={{ justifyContent: justify }}>
+      <div
+        ref={ref}
+        className="responses-statistics-pie-label-name"
+        title={isTruncated ? label : undefined}
+      >
+        {label}
+      </div>
+    </div>
+  )
+}
 
 const renderActiveShapeNew = ({
   cx,
@@ -75,7 +100,7 @@ const renderActiveShapeNew = ({
   const displayMetric = getDisplayMetric(payload, valueType, percent)
 
   // Block width is estimated from the widest row so its near edge stays clear
-  // of the connector dot; text rows then left-align to that block's left edge.
+  // of the connector dot.
   const estimatedWidth = Math.max(
     `${id ?? ''}`.length * 7,
     showImage ? LABEL_IMAGE_WIDTH : LABEL_MAX_WIDTH,
@@ -83,10 +108,13 @@ const renderActiveShapeNew = ({
   )
   const centerX = ex + (isRight ? 1 : -1) * (10 + estimatedWidth / 2)
 
-  // Text labels are left-aligned to a common left edge (matching the name
-  // row); image labels stay centered on the block.
-  const labelAnchor = showImage ? 'middle' : 'start'
-  const labelX = showImage ? centerX : centerX - LABEL_MAX_WIDTH / 2
+  // Text rows anchor to the block edge nearest the dot and flow outward, so
+  // short labels hug the dot on both sides (instead of pinning to the far edge
+  // and leaving a gap on the left). Image labels stay centered on the block.
+  const labelAnchor = showImage ? 'middle' : isRight ? 'start' : 'end'
+  const labelX = showImage
+    ? centerX
+    : centerX + (isRight ? -1 : 1) * (LABEL_MAX_WIDTH / 2)
 
   // Image label is sourced from the row title (the image URL); recharts does
   // not reliably pass `name` to the label renderer.
@@ -110,7 +138,7 @@ const renderActiveShapeNew = ({
           x={labelX}
           y={showImage ? imageFrameY - 6 : ey - 18}
           textAnchor={labelAnchor}
-          className="active-shape-id"
+          className="responses-statistics-pie-label-id"
         >
           <tspan>{id}</tspan>
           {isOther && <tspan fontStyle="italic"> - Other</tspan>}
@@ -148,11 +176,10 @@ const renderActiveShapeNew = ({
           width={LABEL_MAX_WIDTH}
           height={LABEL_NAME_HEIGHT}
         >
-          <div className="active-shape-name-wrap">
-            <div className="active-shape-name" title={label}>
-              {label}
-            </div>
-          </div>
+          <LabelName
+            label={label}
+            justify={isRight ? 'flex-start' : 'flex-end'}
+          />
         </foreignObject>
       )}
 
@@ -160,7 +187,7 @@ const renderActiveShapeNew = ({
         x={labelX}
         y={(showImage ? ey + 6 : ey) + (id ? 24 : 18)}
         textAnchor={labelAnchor}
-        className="active-shape-metric"
+        className="responses-statistics-pie-label-metric"
       >
         {displayMetric}
       </text>

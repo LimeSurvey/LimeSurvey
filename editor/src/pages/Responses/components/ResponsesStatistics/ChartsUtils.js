@@ -1,3 +1,5 @@
+import { getQuestionTypeInfo } from 'components/QuestionTypes'
+
 export const MAX_LABEL_LENGTH = 18
 
 export const getLabelInterval = (count) => {
@@ -29,12 +31,25 @@ export const ordinal = (n) => {
   }
 }
 
-export const IMAGE_THEMES = [
-  'image_select-listradio',
-  'image_select-multiplechoice',
-]
+// Chart capabilities are derived from the question-type registry rather than
+// re-listing type/theme codes here, so new image-select or comment-bearing
+// themes are picked up automatically. The registry's theme codes follow naming
+// conventions: image-select themes contain "image_select" and comment-bearing
+// themes contain "comment".
+const registryEntries = () => Object.values(getQuestionTypeInfo())
 
-export const isImageTheme = (theme) => IMAGE_THEMES.includes(theme)
+// True for themes that render answer images (e.g. image_select-listradio).
+export const isImageTheme = (themeName) =>
+  registryEntries().some(
+    (entry) => entry.theme === themeName && entry.theme.includes('image_select')
+  )
+
+// True for question types whose registry theme indicates free-text comments
+// (e.g. list_with_comment, multiplechoice_with_comments).
+export const isCommentQuestionType = (type) =>
+  registryEntries().some(
+    (entry) => entry.type === type && entry.theme?.includes('comment')
+  )
 
 // NoAnswer rows have no image even on image themes; their labels stay text.
 export const shouldRenderImage = (isImage, item) =>
@@ -72,7 +87,7 @@ export const TruncatedTick = ({
   return (
     <g transform={`translate(${x},${y})`}>
       <text
-        className="chart-labels"
+        className="responses-statistics-chart-labels"
         x={0}
         y={0}
         dy={dy}
@@ -120,7 +135,13 @@ export const CustomTooltip = ({ active, payload }) => {
           borderRight: '7px solid #1F1F1F',
         }}
       />
-      <div>{count} {t('participants selected this option')}</div>
+      <div>
+        {count}
+        {' '}
+        {count === 1
+          ? t('participant selected this option')
+          : t('participants selected this option')}
+      </div>
       <div>{t('Percentage')}: {percentage}%</div>
     </div>
   )

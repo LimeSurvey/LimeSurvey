@@ -12,7 +12,7 @@ const PAGE_SIZE = 15
 export function useQuestionComments(
   surveyId,
   questionCode,
-  { qid, selectedAnswer = '', enabled = true } = {}
+  { enabled = true } = {}
 ) {
   const auth = useAuth()
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
@@ -21,9 +21,6 @@ export function useQuestionComments(
     () => new StatisticsService(auth, surveyId, getApiUrl()),
     [auth, surveyId]
   )
-
-  const answerFilter =
-    selectedAnswer && qid ? { field: `Q${qid}`, value: selectedAnswer } : null
 
   const {
     data,
@@ -38,7 +35,6 @@ export function useQuestionComments(
       surveyId,
       questionCode,
       activeLanguage,
-      selectedAnswer,
     ],
     queryFn: ({ pageParam = 0 }) =>
       statisticsService.getQuestionComments(
@@ -46,8 +42,7 @@ export function useQuestionComments(
         questionCode,
         pageParam,
         PAGE_SIZE,
-        activeLanguage,
-        answerFilter
+        activeLanguage
       ),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {

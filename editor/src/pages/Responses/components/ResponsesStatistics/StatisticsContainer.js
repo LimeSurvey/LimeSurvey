@@ -25,12 +25,12 @@ const getGroupTitle = (group, activeLanguage) => {
 // survey order, questions in group order), so paginated pages append
 // sequentially.
 const renderCharts = (items, surveyId, valueType) => (
-  <div className="responses-charts row">
+  <div className="responses-statistics-charts row">
     {items.map(({ item, index }) => {
       const chartId =
         item?.meta?.question?.qid ?? item?.meta?.question?.id ?? item?.title
       return (
-        <div className="col-12" key={`responses-charts-${index}`}>
+        <div className="col-12" key={`responses-statistics-charts-${index}`}>
           <ChartRendererV2
             index={index}
             surveyId={surveyId}
@@ -96,7 +96,7 @@ export const StatisticsContainer = ({ statistics, surveyId, valueType }) => {
       {grouped.map((group) => (
         <div className="responses-statistics-group" key={`group-${group.key}`}>
           {group.title && (
-            <h2 className="responses-statistics-group-title">{group.title}</h2>
+            <span className="responses-statistics-group-title">{group.title}</span>
           )}
           {renderCharts(group.items, surveyId, valueType)}
         </div>

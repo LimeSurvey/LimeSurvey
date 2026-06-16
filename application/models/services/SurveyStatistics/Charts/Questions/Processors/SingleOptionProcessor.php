@@ -60,10 +60,8 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         ) {
             $this->addOtherOption($legend, $dataItems);
         }
-
-        if ($this->question['type'] === Question::QT_O_LIST_WITH_COMMENT) {
-            $this->addCommentOption($legend, $dataItems);
-        }
+        // List-with-comment (O): the comment texts are surfaced via the
+        // comments view, so they are intentionally not charted here.
     }
 
     /**
@@ -78,21 +76,6 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
             'key' => 'other',
             'value' => $this->countFieldResponses($mfield),
             'title' => gT('Other')
-        ];
-    }
-
-    /**
-     * @param array $legend
-     * @param array $dataItems
-     */
-    private function addCommentOption(array &$legend, array &$dataItems): void
-    {
-        $mfield = $this->rt . '_Ccomment';
-        $legend[] = 'comment';
-        $dataItems[] = [
-            'key' => 'comment',
-            'value' => $this->countFieldResponses($mfield),
-            'title' => gT('Comments')
         ];
     }
 

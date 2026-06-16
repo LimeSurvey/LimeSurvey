@@ -35,15 +35,15 @@ export const StatisticsTable = ({ data = [], isImage = false }) => {
       ]
 
   return (
-    <div className="statistics-table-wrap">
+    <div className="responses-statistics-table-wrap">
       <Table
-        className={`table statistics-table${
-          isRanking ? ' statistics-table--ranking' : ''
+        className={`table responses-statistics-table${
+          isRanking ? ' responses-statistics-table--ranking' : ''
         }`}
       >
         <thead>
           <tr>
-            <th className="statistics-table-answer">
+            <th className="responses-statistics-table-answer">
               {isRanking ? '' : t('Answer')}
             </th>
             {valueColumns.map((column) => (
@@ -53,17 +53,17 @@ export const StatisticsTable = ({ data = [], isImage = false }) => {
         </thead>
         <tbody>
           {rows.map((row, index) => (
-            <tr key={`statistics-table-row-${index}`}>
-              <td className="statistics-table-answer">
+            <tr key={`responses-statistics-table-row-${index}`}>
+              <td className="responses-statistics-table-answer">
                 <span
-                  className="statistics-table-swatch"
+                  className="responses-statistics-table-swatch"
                   style={{ backgroundColor: row.fill }}
                 />
                 {shouldRenderImage(isImage, row) ? (
                   <img
                     src={row.title}
                     alt={row.title}
-                    className="statistics-table-image"
+                    className="responses-statistics-table-image"
                   />
                 ) : (
                   row.title

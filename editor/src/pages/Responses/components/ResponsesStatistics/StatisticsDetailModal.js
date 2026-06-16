@@ -12,11 +12,11 @@ export const StatisticsDetailModal = ({
   <ComponentModal
     show={show}
     onHide={onHide}
-    modalClassname={`statistics-detail-modal ${modalClassname}`.trim()}
-    componentClassname="statistics-detail-modal-body"
+    modalClassname={`responses-statistics-modal ${modalClassname}`.trim()}
+    componentClassname="responses-statistics-modal-body"
     Component={
       <>
-        {title && <h2 className="statistics-detail-modal-title">{title}</h2>}
+        {title && <h2 className="responses-statistics-modal-title">{title}</h2>}
         {children}
       </>
     }

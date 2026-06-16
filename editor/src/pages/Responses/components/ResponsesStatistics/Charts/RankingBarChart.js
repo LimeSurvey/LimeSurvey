@@ -21,7 +21,7 @@ const CHART_TOP_MARGIN = 22
 
 // Option name sitting just above its bar.
 const NameLabel = ({ x, y, value }) => (
-  <text className="chart-labels" x={x} y={y - 8}>
+  <text className="responses-statistics-chart-labels" x={x} y={y - 8}>
     {value}
     <title>{value}</title>
   </text>
@@ -30,7 +30,7 @@ const NameLabel = ({ x, y, value }) => (
 const ClickHintTooltip = ({ active }) => {
   if (!active) return null
   return (
-    <div className="ranking-tooltip">
+    <div className="responses-statistics-ranking-tooltip">
       <i className="ri-eye-line" />
       <span>{t('Click to view all rankings for this option')}</span>
     </div>
@@ -49,23 +49,23 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
   const chartHeight = Math.max(ranked.length, 1) * ROW_HEIGHT + CHART_TOP_MARGIN
 
   return (
-    <div className="ranking-leaderboard">
+    <div className="responses-statistics-ranking">
       <div
-        className="ranking-leaderboard-badges"
+        className="responses-statistics-ranking-badges"
         style={{ paddingTop: CHART_TOP_MARGIN }}
       >
         {ranked.map((entry, index) => (
           <div
             key={`ranking-badge-${index}`}
-            className="ranking-leaderboard-badge-row"
+            className="responses-statistics-ranking-badge-row"
             style={{ height: ROW_HEIGHT }}
           >
-            <span className="ranking-leaderboard-badge">{entry.position}</span>
+            <span className="responses-statistics-ranking-badge">{entry.position}</span>
           </div>
         ))}
       </div>
 
-      <div className="ranking-leaderboard-chart">
+      <div className="responses-statistics-ranking-chart">
         <ResponsiveContainer width="100%" height={chartHeight}>
           <RechartsBarChart
             layout="vertical"
@@ -98,7 +98,7 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
                 dataKey="value"
                 position="right"
                 offset={16}
-                className="chart-labels"
+                className="responses-statistics-chart-labels"
               />
             </Bar>
           </RechartsBarChart>
@@ -108,7 +108,7 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
       <StatisticsDetailModal
         show={!!selectedKey}
         onHide={() => setSelectedKey(null)}
-        modalClassname="ranking-modal"
+        modalClassname="responses-statistics-ranking-modal"
         title={title}
       >
         <StatisticsFilterSelect
@@ -118,22 +118,18 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
           onChange={setSelectedKey}
         />
         {selectedOption && (
-          <table className="ranking-modal-table">
-            <thead>
-              <tr>
-                <th>{t('Ranking')}</th>
-                <th>{t('Responses')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(selectedOption.ranks ?? []).map((rank) => (
-                <tr key={`rank-${rank.position}`}>
-                  <td>{ordinal(rank.position)}</td>
-                  <td>{rank.value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="responses-statistics-ranking-rows">
+            {(selectedOption.ranks ?? []).map((rank) => (
+              <div className="responses-statistics-ranking-row" key={`rank-${rank.position}`}>
+                <span className="responses-statistics-ranking-badge">
+                  {ordinal(rank.position)}
+                </span>
+                <span className="responses-statistics-ranking-row-value">
+                  {rank.value} {rank.value === 1 ? t('vote') : t('votes')}
+                </span>
+              </div>
+            ))}
+          </div>
         )}
       </StatisticsDetailModal>
     </div>

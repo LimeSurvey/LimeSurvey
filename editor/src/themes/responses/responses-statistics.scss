@@ -1,4 +1,17 @@
-.responses-comments {
+// =============================================================================
+// Responses statistics
+//
+// Every class is namespaced `responses-statistics-*`. Pieces rendered through a
+// portal (detail modal, filter dropdown, ranking tooltip, chart meatball menu)
+// are declared at top level because they mount outside `.responses-statistics-
+// body`; everything else is nested under that root.
+//
+// recharts' own classes (`.recharts-*`) and `.recharts-square` (styled in
+// responses.scss) are intentionally left untouched.
+// =============================================================================
+
+// --- Comments (inline table preview + modal block list) ---------------------
+.responses-statistics-comments {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -90,20 +103,24 @@
   }
 }
 
-.statistics-detail-modal-body {
-  padding: 0 24px 24px;
-  max-height: 70vh;
-  overflow-y: auto;
+// --- Detail modal (shared by comments + ranking drill-downs) -----------------
+.responses-statistics-modal {
+  &-body {
+    padding: 0 24px 24px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  &-title {
+    font-size: $font-size-md;
+    font-weight: $font-weight-normal;
+    color: $g-900;
+    margin-bottom: 16px;
+  }
 }
 
-.statistics-detail-modal-title {
-  font-size: $font-size-md;
-  font-weight: $font-weight-normal;
-  color: $g-900;
-  margin-bottom: 16px;
-}
-
-.statistics-filter {
+// --- Filter dropdown (label + bootstrap select inside the modals) ------------
+.responses-statistics-filter {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -116,6 +133,7 @@
     color: $g-900;
   }
 
+  // Style the bootstrap dropdown toggle like a select control.
   &-toggle {
     display: flex;
     align-items: center;
@@ -161,12 +179,13 @@
   }
 }
 
+// --- Toolbar / loading / load-more sentinel ----------------------------------
 .responses-statistics-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .responses-statistics-loading {
@@ -197,7 +216,8 @@
   }
 }
 
-.ranking-leaderboard {
+// --- Ranking leaderboard chart + tooltip + modal breakdown -------------------
+.responses-statistics-ranking {
   display: flex;
   background: $white;
 
@@ -232,48 +252,45 @@
       cursor: pointer;
     }
   }
-}
 
-.ranking-tooltip {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #1f1f1f;
-  color: #ffffff;
-  font-size: $font-size-sm;
-  padding: 8px 12px;
-  border-radius: 8px;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-}
-
-.ranking-modal-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: $font-size-sm;
-
-  th,
-  td {
+  // Hover hint shown over each bar.
+  &-tooltip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #1f1f1f;
+    color: #ffffff;
+    font-size: $font-size-sm;
     padding: 8px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+
+  // Per-rank breakdown list inside the detail modal.
+  &-rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-row {
+    display: flex;
+    align-items: center;
+    gap: 12px; // gap between the rank badge and its value
+    padding: 6px 12px;
     border-bottom: 1px solid $g-400;
-    color: $g-900;
-    text-align: start;
-  }
 
-  th {
-    color: $g-700;
-    font-weight: $font-weight-500;
-  }
-
-  th:last-child,
-  td:last-child {
-    text-align: end;
+    &-value {
+      color: $g-900;
+      font-size: $font-size-sm;
+    }
   }
 }
 
-// Mirror the look of .responses-meatball-menu (rendered in a portal, so it must
-// stay top-level). Sized to content since the chart menu has few actions.
-.chart-header-meatball-menu {
+// --- Chart header meatball menu (portal) -------------------------------------
+// Mirrors the look of .responses-meatball-menu; sized to content since the
+// chart menu has few actions.
+.responses-statistics-chart-menu {
   min-width: 260px;
   border-radius: 2px;
   border: 1px solid $g-400;
@@ -301,24 +318,27 @@
   }
 }
 
+// --- Statistics body (chart list root) ---------------------------------------
 .responses-statistics-body {
+  font-family: $ibm-font-family;
+
   .responses-statistics-group {
     margin-bottom: 24px;
 
     &-title {
-      font-size: $font-size-sm;
+      font-size: $font-size-md;
       font-weight: $font-weight-500;
       color: $g-900;
       margin-bottom: 12px;
     }
   }
 
-  .chart-header {
+  .responses-statistics-chart-header {
     display: flex;
     flex-direction: column;
     gap: 12px;
 
-    .chart-title {
+    .responses-statistics-chart-title {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -363,14 +383,15 @@
     }
   }
 
-  .chart-labels {
+  .responses-statistics-chart-labels {
+    font-family: $ibm-font-family;
     font-size: $font-size-xs;
     fill: $g-900;
     color: $g-900;
     font-weight: $font-weight-500;
   }
 
-  .statistics-table {
+  .responses-statistics-table {
     font-size: $font-size-sm;
 
     // Metric columns (Responses / Percentage) are right-aligned.
@@ -432,7 +453,7 @@
         white-space: nowrap;
       }
 
-      .statistics-table-answer {
+      .responses-statistics-table-answer {
         position: sticky;
         left: 0;
         z-index: 1;
@@ -441,58 +462,68 @@
     }
   }
 
-  .responses-charts {
+  .responses-statistics-charts {
     gap: 12px;
 
-    .responses-chart-view-toggle {
+    .responses-statistics-chart-toggle {
       display: flex;
       justify-content: flex-end;
     }
 
-    .recharts-custom-legend {
+    .responses-statistics-legend {
       overflow: auto;
       display: flex;
       justify-content: center;
       gap: 8px;
       margin-top: 24px;
+
+      &-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      &-value {
+        color: $g-900;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+      }
+
+      &-image {
+        max-width: 60px;
+        max-height: 32px;
+        object-fit: contain;
+        border: 1px solid $g-400;
+        padding: 12px 30px;
+      }
     }
 
-    .recharts-custom-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
+    // recharts library class.
     .recharts-pie-label-line {
       display: none;
     }
 
-    .active-shape-value {
-      fill: $g-900;
-    }
-
-    .active-shape-percent-value {
-      fill: $g-700;
-    }
-
-    .active-shape-id,
-    .active-shape-metric {
+    // Pie slice label rows (code / name / metric).
+    .responses-statistics-pie-label-id,
+    .responses-statistics-pie-label-metric {
       fill: $g-700;
       font-size: $font-size-xs;
       font-weight: $font-weight-500;
     }
 
     // Answer-name row inside the pie label's foreignObject (HTML, so it uses
-    // `color` not `fill`). The box hugs its content, centered in the label
-    // region, and caps at the region width with a single-line ellipsis.
-    .active-shape-name-wrap {
+    // `color` not `fill`). The box hugs its content and caps at the region
+    // width with a single-line ellipsis.
+    .responses-statistics-pie-label-name-wrap {
       display: flex;
       align-items: center;
       justify-content: flex-start;
       height: 100%;
     }
 
-    .active-shape-name {
+    .responses-statistics-pie-label-name {
       min-width: 0;
       max-width: 100%;
       color: $g-900;
@@ -504,28 +535,7 @@
       text-overflow: ellipsis;
     }
 
-    .recharts-square-value {
-      color: $g-900;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 200px;
-    }
-
-    .recharts-legend-image {
-      max-width: 60px;
-      max-height: 32px;
-      object-fit: contain;
-      border: 1px solid $g-400;
-      padding: 12px 30px;
-    }
-
-    .chart-wrapper {
-      width: 100%;
-      min-height: 400px;
-    }
-
-    .responses-chart-card {
+    .responses-statistics-card {
       border-radius: $border-radius;
       box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
       padding: 20px;
@@ -535,46 +545,6 @@
       &--hidden {
         gap: 0;
       }
-    }
-
-    .question-card {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e5e7eb;
-      position: relative;
-      min-height: 350px;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .question-title {
-      font-size: $font-size-base;
-      font-weight: $font-weight-600;
-      color: $g-900;
-    }
-
-    .menu-dots {
-      color: $g-700;
-      font-size: $font-size-md;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .menu-dots:hover {
-      color: $g-700;
-    }
-
-    .chart-container {
-      position: relative;
-      height: 280px;
-      width: 100%;
     }
   }
 }
