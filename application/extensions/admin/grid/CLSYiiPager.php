@@ -103,9 +103,9 @@ class CLSYiiPager extends CLinkPager
         } elseif ($label === $this->firstPageLabel) {
             $ariaLabel = $selected ? gT('First page, current page') : gT('Go to first page');
         } elseif ($label === $this->prevPageLabel) {
-            $ariaLabel = $selected ? gT('Previous page, current page') : gT('Go to previous page');
+            $ariaLabel = gT('Go to previous page');
         } elseif ($label === $this->nextPageLabel) {
-            $ariaLabel = $selected ? gT('Next page, current page') : gT('Go to next page');
+            $ariaLabel = gT('Go to next page');
         } elseif ($label === $this->lastPageLabel) {
             $ariaLabel = $selected ? gT('Last page, current page') : gT('Go to last page');
         }
