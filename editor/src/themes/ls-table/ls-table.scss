@@ -94,10 +94,17 @@
     }
 
     .ls-table__sort-icon {
-      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
       font-size: 16px;
       line-height: 1;
       color: $g-700;
+
+      &--active {
+        color: $g-900;
+      }
     }
 
     .ls-table__empty {

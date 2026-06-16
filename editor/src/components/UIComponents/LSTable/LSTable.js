@@ -11,10 +11,28 @@ const compareValues = (a, b) => {
   return String(a).localeCompare(String(b))
 }
 
-const getSortIconClass = (columnKey, sortBy, sortDirection) => {
-  if (sortBy !== columnKey) return 'ri-sort-desc'
-  if (sortDirection === 'desc') return 'ri-sort-asc'
-  return 'ri-format-clear'
+const getSortIconClass = (isSorted, sortDirection) => {
+  if (!isSorted) return ''
+  if (sortDirection === 'desc') return 'ri-arrow-down-s-line'
+  return 'ri-arrow-up-s-line'
+}
+
+const SortIcon = ({ isSorted, sortDirection, ariaLabel }) => (
+  <i
+    className={classNames(
+      'ls-table__sort-icon',
+      getSortIconClass(isSorted, sortDirection),
+      { 'ls-table__sort-icon--active': isSorted }
+    )}
+    aria-label={isSorted ? ariaLabel : undefined}
+    aria-hidden={!isSorted}
+  />
+)
+
+SortIcon.propTypes = {
+  isSorted: PropTypes.bool.isRequired,
+  sortDirection: PropTypes.oneOf(['asc', 'desc']),
+  ariaLabel: PropTypes.string,
 }
 
 export const LSTable = ({
@@ -29,14 +47,12 @@ export const LSTable = ({
   sortDirection: sortDirectionProp = 'asc',
   onSortChange,
 }) => {
-  const [internalSortBy, setInternalSortBy] = useState(
-    sortByProp ?? rowId
-  )
+  const [internalSortBy, setInternalSortBy] = useState(sortByProp ?? null)
   const [internalSortDirection, setInternalSortDirection] =
     useState(sortDirectionProp)
 
   const isSortControlled = typeof onSortChange === 'function'
-  const currentSortBy = isSortControlled ? sortByProp ?? rowId : internalSortBy
+  const currentSortBy = isSortControlled ? (sortByProp ?? null) : internalSortBy
   const currentSortDirection = isSortControlled
     ? sortDirectionProp
     : internalSortDirection
@@ -53,17 +69,30 @@ export const LSTable = ({
   }, [data, currentSortBy, currentSortDirection])
 
   const handleSortClick = (columnKey) => {
-    let newDirection = 'asc'
+    if (currentSortBy !== columnKey) {
+      if (isSortControlled) {
+        onSortChange(columnKey, 'asc')
+      } else {
+        setInternalSortBy(columnKey)
+        setInternalSortDirection('asc')
+      }
+      return
+    }
 
-    if (currentSortBy === columnKey) {
-      newDirection = currentSortDirection === 'asc' ? 'desc' : 'asc'
+    if (currentSortDirection === 'asc') {
+      if (isSortControlled) {
+        onSortChange(columnKey, 'desc')
+      } else {
+        setInternalSortDirection('desc')
+      }
+      return
     }
 
     if (isSortControlled) {
-      onSortChange(columnKey, newDirection)
+      onSortChange(null, null)
     } else {
-      setInternalSortBy(columnKey)
-      setInternalSortDirection(newDirection)
+      setInternalSortBy(null)
+      setInternalSortDirection('asc')
     }
   }
 
@@ -131,16 +160,16 @@ export const LSTable = ({
                     <div className="ls-table__header-content">
                       <span>{column.title}</span>
                       {column.sortable && (
-                        <i
-                          className={classNames(
-                            'ls-table__sort-icon',
-                            getSortIconClass(
-                              column.key,
-                              currentSortBy,
-                              currentSortDirection
-                            )
-                          )}
-                          aria-hidden="true"
+                        <SortIcon
+                          isSorted={isSorted}
+                          sortDirection={currentSortDirection}
+                          ariaLabel={
+                            isSorted
+                              ? currentSortDirection === 'asc'
+                                ? t('Sorted ascending')
+                                : t('Sorted descending')
+                              : t('Sortable')
+                          }
                         />
                       )}
                     </div>
@@ -189,9 +218,7 @@ export const LSTable = ({
                           'ls-table__actions-cell': column.key === 'actions',
                         })}
                       >
-                        {column.render
-                          ? column.render(row)
-                          : row[column.key]}
+                        {column.render ? column.render(row) : row[column.key]}
                       </td>
                     ))}
                   </tr>
@@ -203,24 +230,4 @@ export const LSTable = ({
       </div>
     </div>
   )
-}
-
-LSTable.propTypes = {
-  columns: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      title: PropTypes.string,
-      sortable: PropTypes.bool,
-      render: PropTypes.func,
-    })
-  ).isRequired,
-  data: PropTypes.array.isRequired,
-  rowId: PropTypes.string.isRequired,
-  emptyMessage: PropTypes.string,
-  selectable: PropTypes.bool,
-  onSelectionChange: PropTypes.func,
-  selectedRows: PropTypes.array,
-  sortBy: PropTypes.string,
-  sortDirection: PropTypes.oneOf(['asc', 'desc']),
-  onSortChange: PropTypes.func,
 }

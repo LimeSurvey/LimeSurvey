@@ -82,7 +82,7 @@ export const Selectable = () => {
 }
 
 export const Sortable = () => {
-  const [sortBy, setSortBy] = useState('id')
+  const [sortBy, setSortBy] = useState(null)
   const [sortDirection, setSortDirection] = useState('asc')
 
   return (
@@ -91,7 +91,7 @@ export const Sortable = () => {
       sortDirection={sortDirection}
       onSortChange={(column, direction) => {
         setSortBy(column)
-        setSortDirection(direction)
+        setSortDirection(direction ?? 'asc')
       }}
     />
   )
