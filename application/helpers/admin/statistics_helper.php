@@ -867,6 +867,9 @@ class statistics_helper
             } else {
                 $showem = array();
                 $fld = substr($rt, 1, strlen($rt));
+                if (!array_key_exists($fld, $fieldmap)) {
+                    return [];
+                }
                 $fielddata = $fieldmap[$fld];
 
                 $qtitle = flattenText($fielddata['title']);
