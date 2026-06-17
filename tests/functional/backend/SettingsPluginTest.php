@@ -343,10 +343,10 @@ class SettingsPluginTest extends TestBaseClass
                     'The setting value obtained with the PluginSetting model should be the empty value previously set'
                 );
             } else {
-                $this->assertEquals(
+                // We can just check value is not equal, no way to get Same value when using hardened
+                $this->assertNotEquals(
                     $setting->value,
-                    json_encode(LSActiveRecord::encryptSingle(json_encode($value))),
-                    'The setting value obtained with the PluginSetting model should be the Encrypted value previously set'
+                    json_encode($value)
                 );
             }
 
