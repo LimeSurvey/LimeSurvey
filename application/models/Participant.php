@@ -324,6 +324,8 @@ class Participant extends LSActiveRecord
      */
     public function getColumns()
     {
+        $hardenedCrypt = App()->getConfig('CPDB_crypt_method', 'S') == "H";
+        $encryptedAttributesColums = $this->getencryptedAttributesColums();
         $cols = [
             [
                 "name"              => 'checkbox',
@@ -336,12 +338,15 @@ class Participant extends LSActiveRecord
             ],
             [
                 "name" => 'lastname',
+                "filter" => $hardenedCrypt && in_array('lastname', $encryptedAttributesColums) ? false : null,
             ],
             [
                 "name" => 'firstname',
+                "filter" => $hardenedCrypt && in_array('firstname', $encryptedAttributesColums) ? false : null,
             ],
             [
                 "name" => 'email',
+                "filter" => $hardenedCrypt && in_array('email', $encryptedAttributesColums) ? false : null,
             ],
             [
                 "name"   => 'language',
@@ -387,8 +392,10 @@ class Participant extends LSActiveRecord
                 "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
                 "type"   => "html",
             ];
-            //textbox
-            if ($attribute['attribute_type'] === "TB") {
+            if ($hardenedCrypt && $attribute['encrypted'] == "Y") {
+                $col_array["filter"] = false;
+            } elseif ($attribute['attribute_type'] === "TB") {
+                //textbox
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             } elseif ($attribute['attribute_type'] === "DD") {
                 //dropdown
@@ -399,7 +406,6 @@ class Participant extends LSActiveRecord
                 foreach ($options_raw as $option) {
                     $options_array[$option['value']] = $option['value'];
                 }
-
                 $col_array["filter"] = TbHtml::dropDownList("extraAttribute[" . $name . "]", $extraAttributeParams[$name], $options_array);
             } elseif ($attribute['attribute_type'] === "DP") {
                 //date -> still a text field, too many errors with the gridview
@@ -425,15 +431,7 @@ class Participant extends LSActiveRecord
      */
     public function search()
     {
-        $encryptedAttributes = $this->getParticipantsEncryptionOptions();
-        $encryptedAttributesColums = isset($encryptedAttributes) && isset($encryptedAttributes['columns'])
-            ? $encryptedAttributes['columns']
-            : [];
-        $encryptedAttributesColums = array_filter($encryptedAttributesColums, function ($column) {
-            return $column === 'Y';
-        });
-        $encryptedAttributesColums = array_keys($encryptedAttributesColums);
-
+        $encryptedAttributesColums = $this->getencryptedAttributesColums();
         $sort = new CSort();
         $sort->defaultOrder = 'lastname';
         $sortAttributes = array(
@@ -563,6 +561,22 @@ class Participant extends LSActiveRecord
         ));
     }
 
+    /**
+     * get the encrypted columns
+     * @return string[]
+     */
+    public function getencryptedAttributesColums()
+    {
+        $encryptedAttributes = $this->getParticipantsEncryptionOptions();
+        $encryptedAttributesColums = isset($encryptedAttributes) && isset($encryptedAttributes['columns'])
+            ? $encryptedAttributes['columns']
+            : [];
+        $encryptedAttributesColums = array_filter($encryptedAttributesColums, function ($column) {
+            return $column === 'Y';
+        });
+        $encryptedAttributesColums = array_keys($encryptedAttributesColums);
+        return $encryptedAttributesColums;
+    }
     /**
      * @param int $selected Owner id
      * @return string HTML
