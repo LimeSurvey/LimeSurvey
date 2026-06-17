@@ -8,6 +8,8 @@ export const NEW_OBJECT_ID_PREFIX = 'temp__'
 
 export const SOFT_MANDATORY = 'S'
 
+export const OTHER_CODE = '-oth-'
+
 export const ignoreUpdate = '_________________________ignore_update________'
 
 export const STATES = {

@@ -3,7 +3,9 @@ import {
   Entities,
   getStringPartsUsingSeperator,
   getAttributeValue,
+  isTrue,
   L10ns,
+  OTHER_CODE,
 } from 'helpers'
 import {
   Button,
@@ -31,9 +33,9 @@ const dropdownThemeComponents = [
 
 const commentedCheckboxOptions = getCommentedCheckboxOptions()
 
-// todo: add an input for other and input fields for mutliple numerical/texts
+// todo: add input fields for mutliple numerical/texts
 export const OptionQuestionViewMode = ({
-  question: { questionThemeName, qid, gid, attributes, mandatory } = {},
+  question: { questionThemeName, qid, gid, attributes, mandatory, other } = {},
   language,
   _children = [],
   onValueChange = () => {},
@@ -109,6 +111,15 @@ export const OptionQuestionViewMode = ({
       [getQuestionTypeInfo().MULTIPLE_NUMERICAL_INPUTS.theme]: ContentEditor,
     }[questionThemeName] || FormCheck
 
+  // "Other" is only supported on choice themes (radio/checkbox/buttons/dropdown),
+  // not on the text/numerical themes that render a ContentEditor or ImageChoice.
+  const hasOther = isTrue(other)
+  const supportsOther =
+    hasOther &&
+    (isDropdownTheme ||
+      UiComponentToRender === FormCheck ||
+      UiComponentToRender === Button)
+
   const children = useMemo(() => {
     const childrenArray = cloneDeep(_children)
 
@@ -126,6 +137,10 @@ export const OptionQuestionViewMode = ({
         }
       })
 
+      if (supportsOther) {
+        selectOptions.push({ label: t('Other'), value: OTHER_CODE })
+      }
+
       // incase of a dropdown question, we only need one select
       return [{ options: selectOptions }]
     } else {
@@ -137,9 +152,19 @@ export const OptionQuestionViewMode = ({
           isNoAnswer: true,
         })
       }
+
+      if (supportsOther) {
+        childrenArray.push({
+          l10ns: { [language]: { [childrenInfo.titleKey]: t('Other') } },
+          [childrenInfo.idKey]: OTHER_CODE,
+          [childrenInfo.codeKey]: OTHER_CODE,
+          isOther: true,
+        })
+      }
+
       return childrenArray
     }
-  }, [_children])
+  }, [_children, supportsOther])
 
   const getChildTitle = (l10ns) => {
     const text = L10ns({
@@ -329,6 +354,19 @@ export const OptionQuestionViewMode = ({
                   participantMode={participantMode}
                 />
               </div>
+            )}
+            {child.isOther && (
+              <Input
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+                placeholder={st('Enter your answer here.')}
+                rows={1}
+                maxLength={Infinity}
+                className={`w-100 d-block ${!participantMode ? 'comment-input' : ''}`}
+                dataTestId="other-option-input"
+                type="textarea"
+              />
             )}
           </div>
         )
