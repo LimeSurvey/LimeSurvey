@@ -148,7 +148,7 @@ class SurveymenuController extends SurveyCommonAction
             $aResults['global']['result'] = true;
 
             // Core Fields
-            $aCoreTokenFields = array('position', 'parent', 'survey', 'user');
+            $aCoreTokenFields = array('position', 'parent_id', 'survey_id', 'user_id');
 
             foreach ($aCoreTokenFields as $sCoreTokenField) {
                 if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {

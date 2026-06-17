@@ -173,7 +173,24 @@ exports.Split = Split;
 
 });
 
-ace.define("ace/ext/split",["require","exports","module","ace/split"], function(require, exports, module){"use strict";
+ace.define("ace/ext/split",["require","exports","module","ace/ext/split","ace/split"], function(require, exports, module){/**
+ * ## Split editor container extension for multiple editor instances
+ *
+ * Provides functionality to create and manage multiple editor instances within a single container,
+ * arranged either horizontally (beside) or vertically (below). Enables synchronized editing sessions
+ * with shared configurations while maintaining independent cursor positions and selections.
+ *
+ * **Usage:**
+ * ```javascript
+ * var Split = require("ace/ext/split").Split;
+ * var split = new Split(container, theme, numberOfSplits);
+ * split.setOrientation(split.BESIDE); // or split.BELOW
+ * ```
+ *
+ * @experimental
+ * @module
+ */
+"use strict";
 module.exports = require("../split");
 
 });                (function() {

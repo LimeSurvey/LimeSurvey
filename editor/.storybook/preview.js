@@ -7,6 +7,7 @@ import { I18Provider } from '../src/providers'
 import { i18nInstance } from '../src/i18nInit'
 import { StoryWrapper } from '../src/sbook/helpers/fixtures/StoryWrapper'
 import 'themes/index.scss'
+import '../public/remixicon/remixicon.css'
 
 export const preview = {
   decorators: [
