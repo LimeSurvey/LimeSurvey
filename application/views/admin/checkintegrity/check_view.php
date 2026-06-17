@@ -313,11 +313,16 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     ?>
                 <?php } else { ?>
                 <?php echo CHtml::form(["admin/checkintegrity", 'sa' => 'fixredundancy'], 'post'); ?>
+            <div>
             <ul id="data-redundancy-list" class='data-redundancy-list list-unstyled'>
                 <?php
                 if (isset($redundantsurveytables)) { ?>
                     <li><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?>
                         <ul class='response-tables-list list-unstyled'>
+                            <li>
+                                <input type='checkbox' id='check-all-response-tables' class='check-all-checkbox' data-target-list='response-tables-list'/>
+                                <label for='check-all-response-tables'><strong><?php eT("Check all"); ?></strong></label>
+                            </li>
                             <?php
                             foreach ($redundantsurveytables as $surveytable) { ?>
                                 <li>
@@ -333,8 +338,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                 if (isset($redundanttokentables) && count($redundanttokentables) > 0) { ?>
-                    <li><?php eT("The following old participant lists exist and may be deleted if no longer required:"); ?>
+                    <li class="mt-3"><?php eT("The following old participant lists exist and may be deleted if no longer required:"); ?>
                         <ul class='token-tables-list list-unstyled'>
+                            <li>
+                                <input type='checkbox' id='check-all-token-tables' class='check-all-checkbox' data-target-list='token-tables-list'/>
+                                <label for='check-all-token-tables'><strong><?php eT("Check all"); ?></strong></label>
+                            </li>
                             <?php
                             foreach ($redundanttokentables as $tokentable) { ?>
                                 <li>
@@ -348,6 +357,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <?php
                 } ?>
             </ul>
+            </div>
              <input type='hidden' name='ok' value='Y' />
             <button id='delete-checked-items-button' type='submit' name='ok' value='Y'
                     class="btn btn-danger mb-2"><?php
@@ -359,7 +369,20 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 'type' => 'warning',
             ]);
             ?>
-            </form><?php
+            </form>
+            <?php App()->getClientScript()->registerScript('checkintegrity-check-all', "
+                $(document).on('change', '.check-all-checkbox', function () {
+                    var targetList = $(this).data('target-list');
+                    $('.' + targetList).find(\"input[type='checkbox']:not('.check-all-checkbox')\").prop('checked', this.checked);
+                });
+                $(document).on('change', \".response-tables-list input[type='checkbox']:not('.check-all-checkbox'), .token-tables-list input[type='checkbox']:not('.check-all-checkbox')\", function () {
+                    var \$list = $(this).closest('ul');
+                    var \$itemCheckboxes = \$list.find(\"input[type='checkbox']:not('.check-all-checkbox')\");
+                    var allChecked = \$itemCheckboxes.length === \$itemCheckboxes.filter(':checked').length;
+                    \$list.find('.check-all-checkbox').prop('checked', allChecked);
+                });
+            ", CClientScript::POS_READY); ?>
+            <?php
             } ?>
         </div>
     </div>
