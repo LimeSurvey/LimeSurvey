@@ -157,6 +157,12 @@ $config['defaulthtmleditormode'] = 'inline';
 // Default is true
 $config['surveyPreview_require_Auth'] = true;
 
+// CPDB_crypt_method
+// Crypt method for Central participant database, in LimeSurvey 7.1 : You can choose a better cryot methid,
+// But hardened crypt method disable search or duplicate controls when import data.
+// Can be 'S' for simple  (default) or 'H' for hardened
+$config['CPDB_crypt_method'] = 'S';
+
 
 // use_one_time_passwords
 // Activate One time passwords

@@ -461,6 +461,7 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting($googleapikey, $fixedValue);
         }
         SettingGlobal::setSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
+        SettingGlobal::setSetting('CPDB_crypt_method', Yii::app()->getRequest()->getPost('CPDB_crypt_method'));
         SettingGlobal::setSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
         SettingGlobal::setSetting('rpc_publish_api', Yii::app()->getRequest()->getPost('rpc_publish_api'));
         SettingGlobal::setSetting('add_access_control_header', Yii::app()->getRequest()->getPost('add_access_control_header'));

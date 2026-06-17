@@ -10,7 +10,6 @@
     <div class="row">
         <div class="col-6">
             <div class="mb-3">
-
                 <label class=" form-label" for='surveyPreview_require_Auth'><?php eT("Survey preview only for administration users:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -20,6 +19,25 @@
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),
+                        ]
+                    ]); ?>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" id='label-CPDB_crypt_method' for='CPDB_crypt_method'>
+                    <?php eT(' Crypt method for Central participant database:'); ?>
+                </label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'CPDB_crypt_method',
+                        'htmlOptions'   =>  [
+                            'aria-labelledby' => 'label-CPDB_crypt_method'
+                        ],
+                        'checkedOption' => Yii::app()->getConfig('CPDB_crypt_method', 'S'),
+                        'selectOptions' => [
+                            "S"      => gT("Simple", 'unescaped'),
+                            "H" => gT("hardened", 'unescaped')
                         ]
                     ]); ?>
                 </div>

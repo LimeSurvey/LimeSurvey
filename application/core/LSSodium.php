@@ -212,7 +212,7 @@ class LSSodium
             // check that encrypted string is of sufficient length to
             // contain at minimum the random nonce and authentication tag
             // split the string into nonce and cipher text then try to decrypt
-            if (strlen($sEncryptedString) < $minLength) {
+            if (!ctype_xdigit($sEncryptedString) || strlen($sEncryptedString) < $minLength) {
                 return false;
             }
             $nonceAndCipherText = ParagonIE_Sodium_Compat::hex2bin($sEncryptedString);
