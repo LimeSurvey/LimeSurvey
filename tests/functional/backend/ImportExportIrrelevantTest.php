@@ -107,11 +107,23 @@ class ImportExportIrrelevantTest extends TestBaseClassWeb
             $confirmExportButton->click();
 
             $exportedSurveyFile = ROOT . '/tmp/survey_archive_' . self::$surveyId . '.lsa';
-            self::$webDriver->wait(10, 1000)->until(
-                function () use ($exportedSurveyFile) {
-                    return file_exists($exportedSurveyFile);
+            $lastSize = -1;
+            self::$webDriver->wait(10, 500)->until(
+                function () use ($exportedSurveyFile, &$lastSize) {
+                    if (!file_exists($exportedSurveyFile)) {
+                        return false;
+                    }
+                    clearstatcache(true, $exportedSurveyFile);
+                    $size = filesize($exportedSurveyFile);
+                    // Wait until file size is stable (non-zero and unchanged between polls)
+                    // to avoid reading a partially written ZIP/LSA archive
+                    if ($size > 0 && $size === $lastSize) {
+                        return true;
+                    }
+                    $lastSize = $size;
+                    return false;
                 },
-                'Export file was not created within 10 seconds'
+                'Export file was not created or completed within 10 seconds'
             );
             $this->assertFileExists($exportedSurveyFile);
 
