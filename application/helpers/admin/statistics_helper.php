@@ -464,25 +464,21 @@ function buildSelects($allfields, $surveyid, $language)
 
                 //D - Date
             elseif ($firstletter == "D" && $_POST[$pv] != "") {
-                $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
                 //Date equals
                 if (substr($pv, -2) == "eq") {
-                    $dateValue = $datetimeobj->convert("Y-m-d");
+                    $dateValue = convertDateTimeFormat($_POST[$pv], $formatdata['phpdate'] . ' H:i', "Y-m-d");
                     $columnName = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3));
                     $selects[] = $columnName . " >= " . Yii::app()->db->quoteValue($dateValue . " 00:00:00") . " and " . $columnName . " <= " . Yii::app()->db->quoteValue($dateValue . " 23:59:59");
                 } else {
-                    $dateValue = $datetimeobj->convert("Y-m-d H:i");
                     //date less than
                     if (substr($pv, -4) == "more") {
-                        $dateTimeObj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $dateTimeObj->convert("Y-m-d H:i:s");
+                        $sDateValue = convertDateTimeFormat($_POST[$pv], $formatdata['phpdate'] . ' H:i', "Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($sDateValue);
                     }
 
                     //date greater than
                     if (substr($pv, -4) == "less") {
-                        $dateTimeObj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $dateTimeObj->convert("Y-m-d H:i:s");
+                        $sDateValue = convertDateTimeFormat($_POST[$pv], $formatdata['phpdate'] . ' H:i', "Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($sDateValue);
                     }
                 }
@@ -492,22 +488,19 @@ function buildSelects($allfields, $surveyid, $language)
             elseif (substr($pv, 0, 9) == "datestamp") {
                 //timestamp equals
                 if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
-                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                    $sDateValue = $datetimeobj->convert("Y-m-d");
+                    $sDateValue = convertDateTimeFormat($_POST[$pv], $formatdata['phpdate'] . ' H:i', "Y-m-d");
 
                     $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " >= " . App()->db->quoteValue($sDateValue . " 00:00:00") . " and " . Yii::app()->db->quoteColumnName('datestamp') . " <= " . App()->db->quoteValue($sDateValue . " 23:59:59");
                 } else {
                     //timestamp less than
                     if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv])) {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $sDateValue = convertDateTimeFormat($_POST[$pv], $formatdata['phpdate'] . ' H:i', "Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " < " . App()->db->quoteValue($sDateValue);
                     }
 
                     //timestamp greater than
                     if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv])) {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $sDateValue = convertDateTimeFormat($_POST[$pv], $formatdata['phpdate'] . ' H:i', "Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
                     }
                 }

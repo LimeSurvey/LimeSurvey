@@ -232,14 +232,13 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 );
 
                 if (!isset($filteredColumns) || in_array($column->name, $filteredColumns)) {
-                    Yii::import('application.libraries.Date_Time_Converter');
                     $encodedTitle = CHtml::encode($colTitle) == '' ? ' ' : CHtml::encode($colTitle);
                     $columnValueExpression = '$data->getExtendedData("' . $column->name . '", "' . $language . '", "' . $base64jsonFieldMap . '")';
                     if ($column->name === 'startdate') {
-                        $columnValueExpression = '(new Date_Time_Converter(getDateOfUTC($data->startdate), "Y-m-d H:i:s"))->convert("' . $dateformatdetails['phpdate'] . ' H:i:s")';
+                        $columnValueExpression = 'convertDateTimeFormat(getDateOfUTC($data->startdate), "Y-m-d H:i:s", "' . $dateformatdetails['phpdate'] . ' H:i:s")';
                     }
                     if ($column->name === 'datestamp') {
-                        $columnValueExpression = '(new Date_Time_Converter(getDateOfUTC($data->datestamp), "Y-m-d H:i:s"))->convert("' . $dateformatdetails['phpdate'] . ' H:i:s")';
+                        $columnValueExpression = 'convertDateTimeFormat(getDateOfUTC($data->datestamp), "Y-m-d H:i:s", "' . $dateformatdetails['phpdate'] . ' H:i:s")';
                     }
                     $aColumns[] = [
                         'header'            => '<div data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" title="' . $colName . '" data-bs-content="' . $encodedTitle . '" data-bs-html="true" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',

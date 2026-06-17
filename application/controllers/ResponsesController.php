@@ -360,8 +360,7 @@ class ResponsesController extends LSBaseController
             ) {
                 $date = $aResult[$fnames[$i][0]];
                 $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                $date = new Date_Time_Converter(getDateOfUTC($date), "Y-m-d H:i:s");
-                $answervalue = $date->convert($dateformatdetails['phpdate'] . " H:i:s");
+                $answervalue = convertDateTimeFormat(getDateOfUTC($date), "Y-m-d H:i:s", $dateformatdetails['phpdate'] . " H:i:s");
             } else {
                 $answervalue = htmlspecialchars(
                     viewHelper::flatten(

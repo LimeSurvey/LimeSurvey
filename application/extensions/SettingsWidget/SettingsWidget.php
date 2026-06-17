@@ -627,8 +627,7 @@ class SettingsWidget extends CWidget
          **/
         if (!empty($metaData['saveformat'])) {
             if (is_string($value) && $value !== "") {
-                $datetimeobj = new Date_Time_Converter($value, $metaData['saveformat']);
-                $value = $datetimeobj->convert($dateformatdetails['phpdate'] . "H:i");
+                $value = convertDateTimeFormat($value, $metaData['saveformat'], $dateformatdetails['phpdate'] . "H:i");
             } else {
                 $value = "";
             }

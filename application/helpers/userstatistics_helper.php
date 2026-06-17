@@ -482,22 +482,19 @@ function buildSelects($allfields, $surveyid, $language)
                 //timestamp equals
                 $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
                 if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
-                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                    $sDateValue = $datetimeobj->convert("Y-m-d");
+                    $sDateValue = convertDateTimeFormat($_POST[$pv], $formatdata['phpdate'] . ' H:i', "Y-m-d");
 
                     $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " >= " . App()->db->quoteValue($sDateValue . " 00:00:00") . " and " . Yii::app()->db->quoteColumnName('datestamp') . " <= " . App()->db->quoteValue($sDateValue . " 23:59:59");
                 } else {
                     //timestamp less than
                     if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv])) {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $sDateValue = convertDateTimeFormat($_POST[$pv], $formatdata['phpdate'] . ' H:i', "Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " < " . App()->db->quoteValue($sDateValue);
                     }
 
                     //timestamp greater than
                     if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv])) {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $sDateValue = convertDateTimeFormat($_POST[$pv], $formatdata['phpdate'] . ' H:i', "Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
                     }
                 }

@@ -37,7 +37,6 @@ Yii::import('application.helpers.expressions.warnings.EMWarningHTMLBaker', true)
 Yii::app()->loadHelper('database');
 Yii::app()->loadHelper('frontend');
 Yii::app()->loadHelper('surveytranslator');
-Yii::import("application.libraries.Date_Time_Converter");
 Yii::import('application.helpers.expressions.emcache.em_cache_exception', true);
 Yii::import('application.helpers.expressions.emcache.em_cache_helper', true);
 define('LEM_DEBUG_TIMING', 1);
@@ -4706,8 +4705,7 @@ class LimeExpressionManager
                         } else {
                             // We don't really validate date here, anyone can send anything : forced too
                             $dateformatdatat = getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
-                            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                            $value = $datetimeobj->convert("Y-m-d H:i");
+                            $value = convertDateTimeFormat($value, $dateformatdatat['phpdate'], "Y-m-d H:i");
                         }
                         break;
                     case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE

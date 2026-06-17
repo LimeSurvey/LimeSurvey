@@ -676,7 +676,6 @@ class LimesurveyApi
             $currentFormat = intval(App()->session['dateformat']);
         }
         $dateformatdetails = getDateFormatData($currentFormat);
-        $datetimeobj = new \Date_Time_Converter($dateValue, $dateformatdetails['phpdate'] . " H:i");
-        return $datetimeobj->convert($returnFormat);
+        return convertDateTimeFormat($dateValue, $dateformatdetails['phpdate'] . " H:i", $returnFormat);
     }
 }

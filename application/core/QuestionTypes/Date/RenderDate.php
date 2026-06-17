@@ -292,12 +292,12 @@ class RenderDate extends QuestionBaseRenderer
     public function renderDropdownDates($dateoutput, $coreClass)
     {
         if (!empty($this->mSessionValue) && ($this->mSessionValue != 'INVALID')) {
-            $datetimeobj   = new Date_Time_Converter($this->mSessionValue, "Y-m-d H:i:s");
-            $currentyear   = $datetimeobj->years;
-            $currentmonth  = $datetimeobj->months;
-            $currentday   = $datetimeobj->days;
-            $currenthour   = $datetimeobj->hours;
-            $currentminute = $datetimeobj->minutes;
+            $timestamp     = strtotime((string) $this->mSessionValue);
+            $currentyear   = date('Y', $timestamp);
+            $currentmonth  = date('m', $timestamp);
+            $currentday    = date('d', $timestamp);
+            $currenthour   = date('H', $timestamp);
+            $currentminute = date('i', $timestamp);
         } else {
             // If date is invalid get the POSTED value
             $currentday   = App()->request->getPost("day{$this->sSGQA}", '');

@@ -104,10 +104,8 @@ class GlobalSettings extends SurveyCommonAction
         foreach ($this->checkSettings() as $key => $row) {
             $data[$key] = $row;
         }
-        Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = new Date_Time_Converter(dateShift(Yii::app()->getConfig("updatelastcheck"), 'Y-m-d H:i:s'), 'Y-m-d H:i:s');
-        $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
+        $data['updatelastcheck'] = convertDateTimeFormat(dateShift(Yii::app()->getConfig("updatelastcheck"), 'Y-m-d H:i:s'), 'Y-m-d H:i:s', $dateformatdetails['phpdate'] . " H:i:s");
 
         $data['updateavailable'] = (Yii::app()->getConfig("updateavailable") && Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");

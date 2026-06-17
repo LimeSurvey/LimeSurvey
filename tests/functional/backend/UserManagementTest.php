@@ -165,8 +165,7 @@ class UserManagementTest extends TestBaseClassWeb
         // Define expiration date in default frontend and db formats
         $dateformatdetails = getDateFormatData(1);
         $expiration = date($dateformatdetails['phpdate'] . ' H:i', strtotime("+1 day"));
-        $datetimeobj = new \Date_Time_Converter($expiration, $dateformatdetails['phpdate'] . ' H:i');
-        $expirationDbValue = $datetimeobj->convert("Y-m-d H:i:s");
+        $expirationDbValue = convertDateTimeFormat($expiration, $dateformatdetails['phpdate'] . ' H:i', "Y-m-d H:i:s");
 
         try {
             $urlMan = \Yii::app()->urlManager;
@@ -284,8 +283,7 @@ class UserManagementTest extends TestBaseClassWeb
         // Define expiration date in default frontend and db formats
         $dateformatdetails = getDateFormatData(1);
         $expiration = date($dateformatdetails['phpdate'] . ' H:i', strtotime("-1 day"));
-        $datetimeobj = new \Date_Time_Converter($expiration, $dateformatdetails['phpdate'] . ' H:i');
-        $expirationDbValue = $datetimeobj->convert("Y-m-d H:i:s");
+        $expirationDbValue = convertDateTimeFormat($expiration, $dateformatdetails['phpdate'] . ' H:i', "Y-m-d H:i:s");
 
         try {
             $urlMan = \Yii::app()->urlManager;

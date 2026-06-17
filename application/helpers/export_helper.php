@@ -2443,7 +2443,6 @@ function tokensExport($iSurveyID)
     echo $tokenoutput;
     $tokenoutput = "";
     // Export token line by line and fill $aExportedTokens with token exported
-    Yii::import('application.libraries.Date_Time_Converter', true);
 
     // creating TokenDynamic object to be able to decrypt easier
     $token = TokenDynamic::model($iSurveyID);
@@ -2477,12 +2476,10 @@ function tokensExport($iSurveyID)
                 $brow = array_map('MaskFormula', $brow);
             }
             if (trim((string) $brow['validfrom']) != '') {
-                $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
-                $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
+                $brow['validfrom'] = convertDateTimeFormat($brow['validfrom'], "Y-m-d H:i:s", 'Y-m-d H:i');
             }
             if (trim((string) $brow['validuntil']) != '') {
-                $datetimeobj = new Date_Time_Converter($brow['validuntil'], "Y-m-d H:i:s");
-                $brow['validuntil'] = $datetimeobj->convert('Y-m-d H:i');
+                $brow['validuntil'] = convertDateTimeFormat($brow['validuntil'], "Y-m-d H:i:s", 'Y-m-d H:i');
             }
 
             $tokenoutput .= '"' . trim((string) $brow['tid']) . '",';

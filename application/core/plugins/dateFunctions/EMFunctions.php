@@ -51,7 +51,6 @@ class EMFunctions
 
         $dateFormat = $survey->languagesettings[$language]->surveyls_dateformat;
         $dateFormatDetails = getDateFormatData($dateFormat);
-        $datetimeobj = new \Date_Time_Converter($date, "Y-m-d H:i:s");
-        return $datetimeobj->convert($dateFormatDetails['phpdate']);
+        return convertDateTimeFormat($date, "Y-m-d H:i:s", $dateFormatDetails['phpdate']);
     }
 }

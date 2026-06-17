@@ -2568,12 +2568,10 @@ class SurveyAdministrationController extends LSBaseController
         $aResults = array();
         $expires = App()->request->getPost('expires');
         $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
-        Yii::import('application.libraries.Date_Time_Converter', true);
         if (trim((string) $expires) == "") {
             $expires = null;
         } else {
-            $datetimeobj = new Date_Time_Converter($expires, $formatdata['phpdate'] . ' H:i');
-            $expires = $datetimeobj->convert("Y-m-d H:i:s");
+            $expires = convertDateTimeFormat($expires, $formatdata['phpdate'] . ' H:i', "Y-m-d H:i:s");
         }
 
         foreach ($aSIDs as $sid) {
@@ -3090,19 +3088,15 @@ class SurveyAdministrationController extends LSBaseController
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim((string)$oSurvey->startdate) != '') {
-            Yii::import('application.libraries.Date_Time_Converter');
             $startdate = getDateOfUTC(($oSurvey->startdate));
-            $datetimeobj = new Date_Time_Converter($startdate, 'Y-m-d H:i:s');
-            $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
+            $aData['startdate'] = convertDateTimeFormat($startdate, 'Y-m-d H:i:s', $dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['startdate'] = "-";
         }
 
         if (trim((string)$oSurvey->expires) != '') {
-            Yii::import('application.libraries.Date_Time_Converter');
             $expires = getDateOfUTC(($oSurvey->expires));
-            $datetimeobj = new Date_Time_Converter($expires, 'Y-m-d H:i:s');
-            $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
+            $aData['expdate'] = convertDateTimeFormat($expires, 'Y-m-d H:i:s', $dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['expdate'] = "-";
         }

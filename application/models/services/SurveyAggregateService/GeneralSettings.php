@@ -6,7 +6,6 @@ use Survey;
 use Permission;
 use LSYii_Application;
 use PluginEvent;
-use Date_Time_Converter;
 use CHttpSession;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\Exception\{
@@ -530,16 +529,15 @@ class GeneralSettings
     private function formatDateTimeInput($inputDateTimeString)
     {
         $this->yiiApp->loadHelper('surveytranslator');
-        $this->yiiApp->loadLibrary('Date_Time_Converter');
         $dateFormat = !empty($this->session['dateformat'])
             ? $this->session['dateformat']
             : 1;
         $formatData = getDateFormatData($dateFormat);
-        $dateTimeObj = new Date_Time_Converter(
+        return convertDateTimeFormat(
             $inputDateTimeString,
-            $formatData['phpdate'] . ' H:i'
+            $formatData['phpdate'] . ' H:i',
+            'Y-m-d H:i:s'
         );
-        return $dateTimeObj->convert('Y-m-d H:i:s');
     }
 
     /**
