@@ -41,6 +41,7 @@ export const ChartHeader = ({
               meatballClassName="responses-statistics-chart-menu"
               actionsTitle="Chart Actions"
               placement="bottom-end"
+              submenuPlacement="left"
             />
           </div>
         )}

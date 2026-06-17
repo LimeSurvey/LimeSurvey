@@ -60,21 +60,52 @@ export class StatisticsService {
 
     const answers = data?.answers?.answers || []
 
+    const belongsToQuestion = (answer) =>
+      String(answer?.title) === String(questionCode)
+
+    const hasValue = (answer) =>
+      answer?.value !== undefined &&
+      answer?.value !== null &&
+      answer?.value !== ''
+
+    // Question-wide comment types (e.g. 'O' list-with-comment) store a single
+    // comment with no sub-question. Map each response to its selected answer so
+    // those comments can still be grouped and filtered by the chosen option.
+    const selectedByResponse = {}
+    answers.forEach((answer) => {
+      if (
+        belongsToQuestion(answer) &&
+        !String(answer?.aid || '').endsWith('comment') &&
+        hasValue(answer)
+      ) {
+        selectedByResponse[answer.responseId] = answer.value
+      }
+    })
+
     const comments = answers
       .filter(
         (answer) =>
-          String(answer?.title) === String(questionCode) &&
+          belongsToQuestion(answer) &&
           String(answer?.aid || '').endsWith('comment') &&
-          answer?.value !== undefined &&
-          answer?.value !== null &&
-          answer?.value !== ''
+          hasValue(answer)
       )
-      .map((answer) => ({
-        responseId: answer.responseId,
-        comment: answer.value,
-        subQuestion: answer.subquestion || null,
-        date: answer.date || null,
-      }))
+      .map((answer) => {
+        // A bare "comment" aid is a question-wide comment (e.g. 'O'
+        // list-with-comment); its sub-question is just a generic "Comment"
+        // label, so group it by the response's selected option instead. Other
+        // comment fields ("<subquestion>comment") keep their real sub-question.
+        const isQuestionWide = String(answer?.aid || '') === 'comment'
+        return {
+          responseId: answer.responseId,
+          comment: answer.value,
+          subQuestion: isQuestionWide
+            ? selectedByResponse[answer.responseId] ?? null
+            : answer.subquestion ||
+              selectedByResponse[answer.responseId] ||
+              null,
+          date: answer.date || null,
+        }
+      })
 
     return { comments, pagination: data?.answers?._meta?.pagination || null }
   }

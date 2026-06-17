@@ -10,6 +10,7 @@ import { StatisticsTable } from './StatisticsTable.js'
 import { BarChart, PieChart, RankingBarChart } from './Charts/index.js'
 import { isImageTheme, isCommentQuestionType } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
+import { CommentsModal } from './CommentsModal.js'
 
 const VIEW = {
   BAR_CHART: 'bar-chart',
@@ -21,16 +22,32 @@ const VIEW = {
 const VIEWS = [
   {
     value: VIEW.BAR_CHART,
+    label: () => t('Bar chart'),
     icon: () => <i className="ri-bar-chart-2-line"></i>,
-    render: ({ isRanking, data, valueType, isImage, question }) =>
+    render: ({
+      isRanking,
+      data,
+      valueType,
+      isImage,
+      question,
+      hasComments,
+      onViewComments,
+    }) =>
       isRanking ? (
         <RankingBarChart data={data} title={question?.title} />
       ) : (
-        <BarChart data={data} valueType={valueType} isImage={isImage} />
+        <BarChart
+          data={data}
+          valueType={valueType}
+          isImage={isImage}
+          hasComments={hasComments}
+          onViewComments={onViewComments}
+        />
       ),
   },
   {
     value: VIEW.PIE_CHART,
+    label: () => t('Pie chart'),
     icon: () => <i className="ri-pie-chart-line"></i>,
     isAvailable: ({ isRanking }) => !isRanking,
     render: ({ data, valueType, isImage }) => (
@@ -39,6 +56,7 @@ const VIEWS = [
   },
   {
     value: VIEW.TABLE,
+    label: () => t('Table'),
     icon: () => <i className="ri-table-line"></i>,
     render: ({ data, isImage }) => (
       <StatisticsTable data={data} isImage={isImage} />
@@ -46,15 +64,15 @@ const VIEWS = [
   },
   {
     value: VIEW.COMMENTS,
+    label: () => t('Comments'),
     icon: () => <i className="ri-message-2-line"></i>,
     isAvailable: ({ hasComments }) => hasComments,
-    render: ({ surveyId, question, data }) => (
+    render: ({ surveyId, question, data, onViewComments }) => (
       <QuestionComments
         surveyId={surveyId}
         questionCode={question?.code}
         answerOptions={data}
-        questionTitle={question?.title}
-        questionType={question?.type}
+        onViewComments={onViewComments}
       />
     ),
   },
@@ -90,6 +108,8 @@ export const ChartRendererV2 = ({
   valueType,
 }) => {
   const [view, setView] = useState(VIEW.BAR_CHART)
+  // Answer option whose comments are shown in the bar-click modal (null = closed).
+  const [commentsAnswer, setCommentsAnswer] = useState(null)
   const isImage = isImageTheme(question?.themeName)
   const isRanking = isRankingQuestion(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
@@ -113,6 +133,8 @@ export const ChartRendererV2 = ({
     surveyId,
     chartId,
     question,
+    hasComments,
+    onViewComments: setCommentsAnswer,
   }
 
   const storageKey = getStorageKey(surveyId, chartId, index)
@@ -132,6 +154,16 @@ export const ChartRendererV2 = ({
   }
 
   const actions = [
+    {
+      label: t('All chart options'),
+      icon: <i className="ri-add-line"></i>,
+      subItems: availableViews.map((option) => ({
+        label: option.label(),
+        icon: option.icon(),
+        active: option.value === activeView?.value,
+        onClick: () => setView(option.value),
+      })),
+    },
     isHidden
       ? {
           label: t('Show chart'),
@@ -156,18 +188,28 @@ export const ChartRendererV2 = ({
         actions={actions}
       />
       <Collapsible open={!isHidden}>
-        <>
-          <div>{activeView?.render(renderContext)}</div>
-          <div className="responses-statistics-chart-toggle">
-            <ToggleButtons
-              id={`chart-view-${index}`}
-              value={activeView?.value}
-              onChange={setView}
-              toggleOptions={toggleOptions}
-            />
-          </div>
-        </>
+        <div>{activeView?.render(renderContext)}</div>
+        <div className="responses-statistics-chart-toggle">
+          <ToggleButtons
+            id={`chart-view-${index}`}
+            value={activeView?.value}
+            onChange={setView}
+            toggleOptions={toggleOptions}
+          />
+        </div>
       </Collapsible>
+
+      {hasComments && (
+        <CommentsModal
+          show={commentsAnswer !== null}
+          onHide={() => setCommentsAnswer(null)}
+          surveyId={surveyId}
+          questionCode={question?.code}
+          questionTitle={question?.title}
+          answerOptions={data}
+          initialAnswer={commentsAnswer ?? ''}
+        />
+      )}
     </Card>
   )
 }

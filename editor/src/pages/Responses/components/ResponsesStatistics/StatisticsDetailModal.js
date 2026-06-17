@@ -14,11 +14,11 @@ export const StatisticsDetailModal = ({
     onHide={onHide}
     modalClassname={`responses-statistics-modal ${modalClassname}`.trim()}
     componentClassname="responses-statistics-modal-body"
-    Component={
-      <>
-        {title && <h2 className="responses-statistics-modal-title">{title}</h2>}
-        {children}
-      </>
+    title={
+      title ? (
+        <h2 className="responses-statistics-modal-title">{title}</h2>
+      ) : null
     }
+    Component={children}
   />
 )

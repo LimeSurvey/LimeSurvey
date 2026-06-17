@@ -55,7 +55,9 @@ export const isCommentQuestionType = (type) =>
 export const shouldRenderImage = (isImage, item) =>
   isImage && item?.key !== 'NoAnswer'
 
-const LABEL_IMAGE_SIZE = 40
+// Cap for bar width, shared with the x-axis image labels so an image label is
+// rendered at the same width as the bar it sits under.
+export const BAR_MAX_SIZE = 120
 
 export const TruncatedTick = ({
   x,
@@ -64,22 +66,31 @@ export const TruncatedTick = ({
   textAnchor = 'middle',
   dy = 12,
   isImage = false,
+  imageWidth = BAR_MAX_SIZE,
 }) => {
   const value = payload?.value ?? ''
 
   if (isImage && value) {
+    // Render the image as HTML inside the SVG so it can keep its natural
+    // aspect ratio (width = bar width, height auto) and carry the same bordered
+    // look as the legend/table image labels. `overflow: visible` keeps tall
+    // (portrait) images from being clipped by the foreignObject box.
     return (
       <g transform={`translate(${x},${y})`}>
-        <image
-          href={value}
-          x={-LABEL_IMAGE_SIZE / 2}
+        <foreignObject
+          x={-imageWidth / 2}
           y={4}
-          width={LABEL_IMAGE_SIZE}
-          height={LABEL_IMAGE_SIZE}
-          preserveAspectRatio="xMidYMid meet"
+          width={imageWidth}
+          height={imageWidth}
+          overflow="visible"
         >
-          <title>{value}</title>
-        </image>
+          <img
+            src={value}
+            alt={value}
+            title={value}
+            className="responses-statistics-bar-image"
+          />
+        </foreignObject>
       </g>
     )
   }
@@ -100,7 +111,7 @@ export const TruncatedTick = ({
   )
 }
 
-export const CustomTooltip = ({ active, payload }) => {
+export const CustomTooltip = ({ active, payload, showCommentsHint = false }) => {
   if (!active || !payload?.length) return null
 
   // Read from the data item so the count is correct regardless of which metric
@@ -143,9 +154,52 @@ export const CustomTooltip = ({ active, payload }) => {
           : t('participants selected this option')}
       </div>
       <div>{t('Percentage')}: {percentage}%</div>
+      {showCommentsHint && (
+        <div
+          style={{
+            marginTop: 8,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            opacity: 0.85,
+          }}
+        >
+          <i className="ri-eye-line" />
+          <span>{t('Click to view comments')}</span>
+        </div>
+      )}
     </div>
   )
 }
+
+// Answer-option keys that are not real answers (free-text comment / "other"),
+// excluded from the comment answer filter list.
+export const NON_ANSWER_KEYS = ['comment', 'other']
+
+// The selectable answer options for the comment filter.
+export const getAnswerFilterOptions = (answerOptions = []) =>
+  answerOptions.filter(
+    (option) => option?.key && !NON_ANSWER_KEYS.includes(option.key)
+  )
+
+// Lookup of an answer option by either its title or its key, so a comment's
+// sub-question (which may carry either) can resolve back to its option.
+export const buildOptionByAnswer = (answerOptions = []) => {
+  const map = {}
+  answerOptions.forEach((option) => {
+    if (option?.title != null) map[option.title] = option
+    if (option?.key != null && !(option.key in map)) map[option.key] = option
+  })
+  return map
+}
+
+export const CommentSwatch = ({ fill }) =>
+  fill ? (
+    <span
+      className="responses-statistics-comments-swatch"
+      style={{ backgroundColor: fill }}
+    />
+  ) : null
 
 export const statisticsGraphs = {
   DONT_SHOW: -1,

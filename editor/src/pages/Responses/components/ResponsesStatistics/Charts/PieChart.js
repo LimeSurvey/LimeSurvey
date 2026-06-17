@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react'
 import {
-  Legend,
   Cell,
   PieChart as RechartsPieChart,
   Pie,
@@ -15,7 +14,6 @@ import {
   getDisplayMetric,
   shouldRenderImage,
 } from '../ChartsUtils'
-import { CustomLegend } from './CustomLegend'
 
 // Label image frame: a fixed white box with a border, the image inset by a
 // uniform padding so every label keeps the same footprint regardless of the
@@ -246,39 +244,34 @@ export const PieChart = ({
   }
 
   return (
-    <ResponsiveContainer minHeight={560} width="100%" height="100%">
-      <RechartsPieChart margin={{ top: 60, right: 160, bottom: 60, left: 160 }}>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          dataKey="value"
-          nameKey="title"
-          label={renderLabel}
-          labelLine={false}
-          outerRadius="70%"
-          animationBegin={0}
-          animationDuration={600}
-          fill="#8884d8"
+    <div className="responses-statistics-pie-chart">
+      <ResponsiveContainer width="100%" height={400}>
+        <RechartsPieChart
+          margin={{ top: 30, right: 160, bottom: 40, left: 160 }}
         >
-          {data.map((_, index) => (
-            <Cell
-              key={`peie-cell-${index}`}
-              fill={COLORS[index % COLORS.length]}
-            />
-          ))}
-        </Pie>
-        <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
-        {/* Images already label each slice directly, so the legend (which can't
-            render them here) is redundant and hidden for image themes. */}
-        {!isImage && (
-          <Legend
-            content={(legendProps) => (
-              <CustomLegend {...legendProps} isImage={isImage} />
-            )}
-          />
-        )}
-      </RechartsPieChart>
-    </ResponsiveContainer>
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            dataKey="value"
+            nameKey="title"
+            label={renderLabel}
+            labelLine={false}
+            outerRadius="80%"
+            animationBegin={0}
+            animationDuration={600}
+            fill="#8884d8"
+          >
+            {data.map((_, index) => (
+              <Cell
+                key={`peie-cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
+        </RechartsPieChart>
+      </ResponsiveContainer>
+    </div>
   )
 }

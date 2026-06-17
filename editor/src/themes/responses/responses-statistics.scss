@@ -84,16 +84,18 @@
 
   &-more {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
 
     &-btn {
       background: none;
       border: none;
       color: $grape;
-      font-size: $font-size-sm;
-      font-weight: $font-weight-600;
+      font-family: $ibm-font-family;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-500;
+      text-align: left;
       cursor: pointer;
-      padding: 8px 16px;
+      padding: 8px 0;
 
       &:disabled {
         opacity: 0.6;
@@ -115,7 +117,8 @@
     font-size: $font-size-md;
     font-weight: $font-weight-normal;
     color: $g-900;
-    margin-bottom: 16px;
+    // Sits inline with the close button in the modal header.
+    margin: 0;
   }
 }
 
@@ -125,7 +128,6 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
-  margin-bottom: 16px;
 
   &-label {
     font-size: $font-size-sm;
@@ -316,6 +318,49 @@
       color: $g-900;
     }
   }
+
+  // "All chart options" submenu: opens as a side flyout on hover.
+  .meatball-submenu {
+    position: relative;
+  }
+
+  .meatball-submenu-caret {
+    margin-left: auto;
+    font-size: $font-size-md;
+  }
+
+  .meatball-submenu-items {
+    position: absolute;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    min-width: 240px;
+    padding: 8px 4px;
+    background: $white;
+    border: 1px solid $g-400;
+    border-radius: 2px;
+    box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+    z-index: 11;
+
+    &--left {
+      right: 100%;
+    }
+
+    &--right {
+      left: 100%;
+    }
+  }
+
+  .meatball-submenu:hover .meatball-submenu-items {
+    display: flex;
+  }
+
+  .meatball-submenu-item {
+    &.is-active {
+      color: $grape;
+      font-weight: $font-weight-600;
+    }
+  }
 }
 
 // --- Statistics body (chart list root) ---------------------------------------
@@ -427,12 +472,11 @@
     }
 
     &-image {
-      max-width: 80px;
-      max-height: 48px;
+      max-width: 100px;
       vertical-align: middle;
       object-fit: contain;
       border: 1px solid $g-400;
-      padding: 12px 30px;
+      padding: 12px 18px;
     }
 
     &-wrap {
@@ -468,6 +512,22 @@
     .responses-statistics-chart-toggle {
       display: flex;
       justify-content: flex-end;
+    }
+
+    // X-axis image labels: rendered at the bar width with auto height, bordered
+    // to match the legend/table image labels.
+    .responses-statistics-bar-image {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border: 1px solid $g-400;
+    }
+
+    // Comment question types: bars open the comments for that option on click.
+    .responses-statistics-bar-chart--clickable .recharts-bar-rectangle {
+      cursor: pointer;
     }
 
     .responses-statistics-legend {
@@ -544,6 +604,12 @@
 
       &--hidden {
         gap: 0;
+      }
+
+      .collapsible-body {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
       }
     }
   }

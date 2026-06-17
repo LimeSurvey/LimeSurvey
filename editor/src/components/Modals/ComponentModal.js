@@ -8,6 +8,7 @@ export const ComponentModal = ({
   show = false,
   onHide = () => {},
   Component,
+  title = null,
   componentClassname = '',
   modalClassname = '',
   headerClassname = '',
@@ -25,9 +26,12 @@ export const ComponentModal = ({
       {...props}
     >
       <Modal.Header
-        className={`border-none d-flex align-items-center gap-2 text-center ${headerClassname}`}
+        className={`border-none d-flex align-items-center gap-2 ${
+          title ? 'justify-content-between' : 'justify-content-end'
+        } ${headerClassname}`}
         closeButton={false}
       >
+        {title}
         <Button
           className="modal-close-button p-0"
           variant="link"
