@@ -1,6 +1,60 @@
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 
+export const COLORS = [
+  '#FFBA68',
+  '#FF9AA2',
+  '#25003E',
+  '#8146F6',
+  '#7FF409',
+  '#FFE872',
+  '#A3C8FF',
+]
+
+export const BAR_MAX_SIZE = 120
+
 export const MAX_LABEL_LENGTH = 18
+
+export const NON_ANSWER_KEYS = ['comment', 'other']
+
+// Single-option ('L','!','O','5','G','Y','I') and multiple-choice ('M','P')
+// question types that support the alternative chart renderings.
+const CHOICE_QUESTION_TYPES = ['L', '!', 'O', '5', 'G', 'Y', 'I', 'M', 'P']
+
+// Whether charts display raw response counts or percentages.
+export const VALUE_TYPE = {
+  COUNT: 'count',
+  PERCENTAGE: 'percentage',
+}
+
+export const statisticsGraphs = {
+  DONT_SHOW: -1,
+  BAR_CHART: 0,
+  PIE_CHART: 1,
+  RADAR: 2,
+  LINE: 3,
+  POLAR_AREA: 4,
+  DOUGHNUT_CHART: 5,
+}
+
+const registryEntries = () => Object.values(getQuestionTypeInfo())
+
+// True for themes that render answer images (e.g. image_select-listradio).
+export const isImageTheme = (themeName) =>
+  registryEntries().some(
+    (entry) => entry.theme === themeName && entry.theme.includes('image_select')
+  )
+
+export const isCommentQuestionType = (type) =>
+  registryEntries().some(
+    (entry) => entry.type === type && entry.theme?.includes('comment')
+  )
+
+export const isChoiceQuestion = (type) => CHOICE_QUESTION_TYPES.includes(type)
+
+export const shouldRenderImage = (isImage, item) =>
+  isImage &&
+  item?.key !== 'NoAnswer' &&
+  !NON_ANSWER_KEYS.includes(item?.key)
 
 export const getLabelInterval = (count) => {
   if (count > 20) return 2
@@ -31,33 +85,48 @@ export const ordinal = (n) => {
   }
 }
 
-// Chart capabilities are derived from the question-type registry rather than
-// re-listing type/theme codes here, so new image-select or comment-bearing
-// themes are picked up automatically. The registry's theme codes follow naming
-// conventions: image-select themes contain "image_select" and comment-bearing
-// themes contain "comment".
-const registryEntries = () => Object.values(getQuestionTypeInfo())
+export const getMetricDataKey = (valueType) =>
+  valueType === VALUE_TYPE.COUNT ? 'value' : 'percentageValue'
 
-// True for themes that render answer images (e.g. image_select-listradio).
-export const isImageTheme = (themeName) =>
-  registryEntries().some(
-    (entry) => entry.theme === themeName && entry.theme.includes('image_select')
+export const getDisplayMetric = (item, valueType, percentFallback) => {
+  if (valueType === VALUE_TYPE.COUNT) return `${item?.value ?? ''}`
+  const percentage =
+    item?.percentage != null
+      ? parseFloat(item.percentage)
+      : (percentFallback ?? 0) * 100
+  return `${percentage.toFixed(1).replace('.', ',')}%`
+}
+
+// The selectable answer options for the comment filter.
+export const getAnswerFilterOptions = (answerOptions = []) =>
+  answerOptions.filter(
+    (option) => option?.key && !NON_ANSWER_KEYS.includes(option.key)
   )
 
-// True for question types whose registry theme indicates free-text comments
-// (e.g. list_with_comment, multiplechoice_with_comments).
-export const isCommentQuestionType = (type) =>
-  registryEntries().some(
-    (entry) => entry.type === type && entry.theme?.includes('comment')
-  )
+export const buildOptionByAnswer = (answerOptions = []) => {
+  const map = {}
+  answerOptions.forEach((option) => {
+    if (option?.title != null) map[option.title] = option
+    if (option?.key != null && !(option.key in map)) map[option.key] = option
+  })
+  return map
+}
 
-// NoAnswer rows have no image even on image themes; their labels stay text.
-export const shouldRenderImage = (isImage, item) =>
-  isImage && item?.key !== 'NoAnswer'
+export const getDataWithPercentages = (statisticsData) => {
+  if (!statisticsData?.data) return []
 
-// Cap for bar width, shared with the x-axis image labels so an image label is
-// rendered at the same width as the bar it sits under.
-export const BAR_MAX_SIZE = 120
+  const newData = [...statisticsData.data]
+
+  return newData.map((item, index) => {
+    const percentageValue = (item.value / (statisticsData.total || 1)) * 100
+    return {
+      ...item,
+      percentage: percentageValue.toFixed(1),
+      percentageValue,
+      fill: COLORS[index % COLORS.length],
+    }
+  })
+}
 
 export const TruncatedTick = ({
   x,
@@ -172,27 +241,6 @@ export const CustomTooltip = ({ active, payload, showCommentsHint = false }) => 
   )
 }
 
-// Answer-option keys that are not real answers (free-text comment / "other"),
-// excluded from the comment answer filter list.
-export const NON_ANSWER_KEYS = ['comment', 'other']
-
-// The selectable answer options for the comment filter.
-export const getAnswerFilterOptions = (answerOptions = []) =>
-  answerOptions.filter(
-    (option) => option?.key && !NON_ANSWER_KEYS.includes(option.key)
-  )
-
-// Lookup of an answer option by either its title or its key, so a comment's
-// sub-question (which may carry either) can resolve back to its option.
-export const buildOptionByAnswer = (answerOptions = []) => {
-  const map = {}
-  answerOptions.forEach((option) => {
-    if (option?.title != null) map[option.title] = option
-    if (option?.key != null && !(option.key in map)) map[option.key] = option
-  })
-  return map
-}
-
 export const CommentSwatch = ({ fill }) =>
   fill ? (
     <span
@@ -200,61 +248,3 @@ export const CommentSwatch = ({ fill }) =>
       style={{ backgroundColor: fill }}
     />
   ) : null
-
-export const statisticsGraphs = {
-  DONT_SHOW: -1,
-  BAR_CHART: 0,
-  PIE_CHART: 1,
-  RADAR: 2,
-  LINE: 3,
-  POLAR_AREA: 4,
-  DOUGHNUT_CHART: 5,
-}
-
-// Whether charts display raw response counts or percentages.
-export const VALUE_TYPE = {
-  COUNT: 'count',
-  PERCENTAGE: 'percentage',
-}
-
-// Numeric data field that should drive bar/axis sizing for the value type.
-export const getMetricDataKey = (valueType) =>
-  valueType === VALUE_TYPE.COUNT ? 'value' : 'percentageValue'
-
-// Metric to render for a data row: the raw count or the percentage (one
-// decimal, comma separator) depending on the active value type. The percent
-// fallback is recharts' 0-1 ratio, used when the row has no percentage.
-export const getDisplayMetric = (item, valueType, percentFallback) => {
-  if (valueType === VALUE_TYPE.COUNT) return `${item?.value ?? ''}`
-  const percentage =
-    item?.percentage != null
-      ? parseFloat(item.percentage)
-      : (percentFallback ?? 0) * 100
-  return `${percentage.toFixed(1).replace('.', ',')}%`
-}
-
-export const COLORS = [
-  '#FFBA68',
-  '#FF9AA2',
-  '#25003E',
-  '#8146F6',
-  '#7FF409',
-  '#FFE872',
-  '#A3C8FF',
-]
-
-export const getDataWithPercentages = (statisticsData) => {
-  if (!statisticsData?.data) return []
-
-  const newData = [...statisticsData.data]
-
-  return newData.map((item, index) => {
-    const percentageValue = (item.value / (statisticsData.total || 1)) * 100
-    return {
-      ...item,
-      percentage: percentageValue.toFixed(1),
-      percentageValue,
-      fill: COLORS[index % COLORS.length],
-    }
-  })
-}

@@ -29,7 +29,9 @@ export const ResponsesStatistics = ({
     fetchNextPage,
   } = useStatistics(surveyId, filters)
   const [valueType, setValueType] = useState(VALUE_TYPE.PERCENTAGE)
-  const [loadMoreRef, isLoadMoreInView] = useIsInViewport()
+  const [loadMoreRef, isLoadMoreInView] = useIsInViewport(null, {
+    initialInView: false,
+  })
 
   // Auto-load the next page of charts while the sentinel below the list is in
   // view. Re-runs when fetching settles, so it chains pages as long as the

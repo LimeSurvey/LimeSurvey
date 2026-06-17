@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { useQuestionComments } from 'hooks'
+import { LSTable } from 'components'
 
 import { CommentSwatch, buildOptionByAnswer } from './ChartsUtils.js'
 
@@ -19,28 +20,36 @@ export const QuestionComments = ({
     [answerOptions]
   )
 
-  const renderTable = (items) => (
-    <table className="responses-statistics-comments-table">
-      <thead>
-        <tr>
-          <th>{t('Answer option')}</th>
-          <th>{t('Comment')}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((comment, index) => (
-          <tr key={`${comment.responseId}-${index}`}>
-            <td>
-              <CommentSwatch fill={optionByAnswer[comment.subQuestion]?.fill} />
-              {optionByAnswer[comment.subQuestion]?.title ||
-                comment.subQuestion ||
-                ''}
-            </td>
-            <td>{comment.comment}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+  const columns = useMemo(
+    () => [
+      {
+        key: 'answer',
+        title: t('Answer option'),
+        render: (comment) => (
+          <>
+            <CommentSwatch fill={optionByAnswer[comment.subQuestion]?.fill} />
+            {optionByAnswer[comment.subQuestion]?.title ||
+              comment.subQuestion ||
+              ''}
+          </>
+        ),
+      },
+      {
+        key: 'comment',
+        title: t('Comment'),
+        render: (comment) => comment.comment,
+      },
+    ],
+    [optionByAnswer]
+  )
+
+  const previewRows = useMemo(
+    () =>
+      comments.slice(0, PREVIEW_LIMIT).map((comment, index) => ({
+        ...comment,
+        id: `${comment.responseId}-${index}`,
+      })),
+    [comments]
   )
 
   if (isLoading) {
@@ -65,7 +74,7 @@ export const QuestionComments = ({
 
   return (
     <div className="responses-statistics-comments">
-      {renderTable(comments.slice(0, PREVIEW_LIMIT))}
+      <LSTable columns={columns} data={previewRows} rowId="id" />
       <div className="responses-statistics-comments-more">
         <button
           type="button"

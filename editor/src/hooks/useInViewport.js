@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
-export const useIsInViewport = (externalRef = null) => {
+export const useIsInViewport = (externalRef = null, { initialInView = true } = {}) => {
   const internalRef = useRef(null)
-  const [isInView, setIsInView] = useState(true)
+  // Defaults to `true` so consumers that render-until-proven-offscreen behave correctly
+  const [isInView, setIsInView] = useState(initialInView)
 
   const ref = externalRef || internalRef
 

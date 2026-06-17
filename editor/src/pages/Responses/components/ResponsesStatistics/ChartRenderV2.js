@@ -7,8 +7,20 @@ import { isRankingQuestion } from 'helpers'
 
 import { ChartHeader } from './ChartHeader.js'
 import { StatisticsTable } from './StatisticsTable.js'
-import { BarChart, PieChart, RankingBarChart } from './Charts/index.js'
-import { isImageTheme, isCommentQuestionType } from './ChartsUtils.js'
+import {
+  BarChart,
+  PieChart,
+  RankingBarChart,
+  RadarChart,
+  LineChart,
+  PolarAreaChart,
+  DoughnutChart,
+} from './Charts/index.js'
+import {
+  isImageTheme,
+  isCommentQuestionType,
+  isChoiceQuestion,
+} from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
 import { CommentsModal } from './CommentsModal.js'
 
@@ -17,6 +29,10 @@ const VIEW = {
   PIE_CHART: 'pie-chart',
   TABLE: 'table',
   COMMENTS: 'comments',
+  RADAR: 'radar',
+  LINE: 'line',
+  POLAR_AREA: 'polar-area',
+  DOUGHNUT: 'doughnut',
 }
 
 const VIEWS = [
@@ -53,6 +69,38 @@ const VIEWS = [
     render: ({ data, valueType, isImage }) => (
       <PieChart data={data} valueType={valueType} isImage={isImage} />
     ),
+  },
+  {
+    value: VIEW.RADAR,
+    label: () => t('Radar chart'),
+    icon: () => <i className="ri-radar-line"></i>,
+    menuOnly: true,
+    isAvailable: ({ isChoice }) => isChoice,
+    render: ({ data }) => <RadarChart data={data} />,
+  },
+  {
+    value: VIEW.LINE,
+    label: () => t('Line chart'),
+    icon: () => <i className="ri-line-chart-line"></i>,
+    menuOnly: true,
+    isAvailable: ({ isChoice }) => isChoice,
+    render: ({ data }) => <LineChart data={data} />,
+  },
+  {
+    value: VIEW.POLAR_AREA,
+    label: () => t('Polar area chart'),
+    icon: () => <i className="ri-pie-chart-2-line"></i>,
+    menuOnly: true,
+    isAvailable: ({ isChoice }) => isChoice,
+    render: ({ data }) => <PolarAreaChart data={data} />,
+  },
+  {
+    value: VIEW.DOUGHNUT,
+    label: () => t('Doughnut chart'),
+    icon: () => <i className="ri-donut-chart-line"></i>,
+    menuOnly: true,
+    isAvailable: ({ isChoice }) => isChoice,
+    render: ({ data }) => <DoughnutChart data={data} />,
   },
   {
     value: VIEW.TABLE,
@@ -108,20 +156,22 @@ export const ChartRendererV2 = ({
   valueType,
 }) => {
   const [view, setView] = useState(VIEW.BAR_CHART)
-  // Answer option whose comments are shown in the bar-click modal (null = closed).
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const isImage = isImageTheme(question?.themeName)
   const isRanking = isRankingQuestion(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
+  const isChoice = isChoiceQuestion(question?.type)
+  // No responses for this question when every answer option has a zero count.
+  const hasResponses =
+    (data ?? []).reduce((sum, item) => sum + (item?.value || 0), 0) > 0
 
   const availableViews = VIEWS.filter(
-    ({ isAvailable }) => isAvailable?.({ isRanking, hasComments }) ?? true
+    ({ isAvailable }) =>
+      isAvailable?.({ isRanking, hasComments, isChoice }) ?? true
   )
-  const toggleOptions = availableViews.map(({ value, icon }) => ({
-    value,
-    icon,
-  }))
-  // Fall back to the first available view if the active one isn't offered.
+  const toggleOptions = availableViews
+    .filter(({ menuOnly }) => !menuOnly)
+    .map(({ value, icon }) => ({ value, icon }))
   const activeView =
     availableViews.find(({ value }) => value === view) ?? availableViews[0]
 
@@ -188,15 +238,23 @@ export const ChartRendererV2 = ({
         actions={actions}
       />
       <Collapsible open={!isHidden}>
-        <div>{activeView?.render(renderContext)}</div>
-        <div className="responses-statistics-chart-toggle">
-          <ToggleButtons
-            id={`chart-view-${index}`}
-            value={activeView?.value}
-            onChange={setView}
-            toggleOptions={toggleOptions}
-          />
-        </div>
+        {hasResponses ? (
+          <>
+            <div>{activeView?.render(renderContext)}</div>
+            <div className="responses-statistics-chart-toggle">
+              <ToggleButtons
+                id={`chart-view-${index}`}
+                value={activeView?.value}
+                onChange={setView}
+                toggleOptions={toggleOptions}
+              />
+            </div>
+          </>
+        ) : (
+          <div className="responses-statistics-empty">
+            {t('There are no responses for this question yet.')}
+          </div>
+        )}
       </Collapsible>
 
       {hasComments && (

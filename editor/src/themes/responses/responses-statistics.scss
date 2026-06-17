@@ -10,6 +10,18 @@
 // responses.scss) are intentionally left untouched.
 // =============================================================================
 
+// Empty state shown in a chart card when a question has no responses yet.
+.responses-statistics-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: $g-700;
+  font-family: $ibm-font-family;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-sm;
+}
+
 // --- Comments (inline table preview + modal block list) ---------------------
 .responses-statistics-comments {
   display: flex;
@@ -37,48 +49,6 @@
       position: relative;
       width: 32px;
       height: 32px;
-    }
-  }
-
-  &-blocks {
-    display: flex;
-    flex-direction: column;
-  }
-
-  &-block {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 8px 12px;
-    border-bottom: 1px solid $g-400;
-    color: $g-900;
-    font-size: $font-size-sm;
-
-    &-main {
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    &-time {
-      flex-shrink: 0;
-      color: $g-700;
-      font-size: $font-size-xs;
-      white-space: nowrap;
-    }
-  }
-
-  &-table {
-    width: 100%;
-    border-collapse: collapse;
-
-    td {
-      padding: 8px 12px;
-      border-bottom: 1px solid $g-400;
-      color: $g-900;
-      font-size: $font-size-sm;
-      white-space: pre-wrap;
-      word-break: break-word;
     }
   }
 
@@ -120,6 +90,48 @@
     // Sits inline with the close button in the modal header.
     margin: 0;
   }
+
+  // Drill-down list shared by the comments and ranking modals.
+  &-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid $g-400;
+    color: $g-900;
+    font-size: $font-size-sm;
+
+    // Comment rows: long text on the left, timestamp pinned to the right.
+    &--spread {
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    &-main {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    &-meta {
+      flex-shrink: 0;
+      color: $g-700;
+      font-size: $font-size-xs;
+      white-space: nowrap;
+    }
+  }
+}
+
+// Ranking modal content (filter → title → list) lacks the comments wrapper, so
+// match the comment modal's 16px vertical rhythm here.
+.responses-statistics-ranking-modal .responses-statistics-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 // --- Filter dropdown (label + bootstrap select inside the modals) ------------
@@ -223,13 +235,14 @@
   display: flex;
   background: $white;
 
-  &-badges {
-    flex-shrink: 0;
-  }
-
-  &-badge-row {
+  // Wraps the rank badge inside the YAxis tick's foreignObject; centers the
+  // badge vertically on its bar and tucks it against the bars.
+  &-badge-cell {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    padding-right: 8px;
   }
 
   &-badge {
@@ -269,24 +282,6 @@
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   }
 
-  // Per-rank breakdown list inside the detail modal.
-  &-rows {
-    display: flex;
-    flex-direction: column;
-  }
-
-  &-row {
-    display: flex;
-    align-items: center;
-    gap: 12px; // gap between the rank badge and its value
-    padding: 6px 12px;
-    border-bottom: 1px solid $g-400;
-
-    &-value {
-      color: $g-900;
-      font-size: $font-size-sm;
-    }
-  }
 }
 
 // --- Chart header meatball menu (portal) -------------------------------------
@@ -606,7 +601,10 @@
         gap: 0;
       }
 
-      .collapsible-body {
+      // Only style the open state: an unscoped `display` here would override
+      // Bootstrap's `.collapse:not(.show) { display: none }` (equal specificity,
+      // later in the cascade) and keep the body visible when hidden.
+      .collapsible-body.show {
         display: flex;
         flex-direction: column;
         gap: 24px;

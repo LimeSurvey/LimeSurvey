@@ -64,13 +64,13 @@ export const CommentsModal = ({
           />
         )}
         {visibleComments.length ? (
-          <div className="responses-statistics-comments-blocks">
+          <div className="responses-statistics-modal-list">
             {visibleComments.map((comment, index) => (
               <div
-                className="responses-statistics-comments-block"
+                className="responses-statistics-modal-row responses-statistics-modal-row--spread"
                 key={`${comment.responseId}-${index}`}
               >
-                <span className="responses-statistics-comments-block-main">
+                <span className="responses-statistics-modal-row-main">
                   {!selectedAnswer && (
                     <CommentSwatch
                       fill={optionByAnswer[comment.subQuestion]?.fill}
@@ -79,7 +79,7 @@ export const CommentsModal = ({
                   {comment.comment}
                 </span>
                 {comment.date && (
-                  <span className="responses-statistics-comments-block-time">
+                  <span className="responses-statistics-modal-row-meta">
                     {dayJsHelper(comment.date).fromNow()}
                   </span>
                 )}
