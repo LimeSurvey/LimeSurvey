@@ -11580,6 +11580,12 @@ blockquote.float-end {
   cursor: not-allowed;
 }
 
+.data-consistency-list,
+.data-redundancy-list {
+  display: inline-block;
+  text-align: right;
+}
+
 /**
  * Lime Admin Common CSS File
  *
