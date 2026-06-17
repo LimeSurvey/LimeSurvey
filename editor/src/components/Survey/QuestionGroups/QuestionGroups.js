@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -38,14 +38,6 @@ export const QuestionGroups = ({
     [...Array(questionGroups.length)].map(() => `Q${RandomNumber()}`)
   )
 
-  useEffect(() => {
-    if (keys.length === questionGroups.length) {
-      return
-    }
-
-    setKeys([...keys, `Q${RandomNumber()}`])
-  }, [questionGroups.length])
-
   const handleUpdate = (index, questionGroup) => {
     update([
       ...questionGroups.slice(0, index),
@@ -66,6 +58,7 @@ export const QuestionGroups = ({
       return questionGroup
     })
 
+    setKeys([...keys, `Q${RandomNumber()}`])
     update(updatedQuestionGroups)
     setFocused(newQuestionGroup, newQuestionGroupIndex)
   }
@@ -90,6 +83,7 @@ export const QuestionGroups = ({
       unFocus()
     }
 
+    setKeys([...keys.slice(0, index)])
     setDeleteState({ show: false, index: null })
   }
 
