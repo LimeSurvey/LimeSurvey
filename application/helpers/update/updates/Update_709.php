@@ -16,6 +16,7 @@ class Update_709 extends DatabaseUpdateBase
     public function up()
     {
         /* Create or alter crypt_method column, handling cases where dev git users may already have it */
+        $surveysTable = $this->db->schema->getTable('{{surveys}}', true);
         if (!isset($surveysTable->columns['crypt_method'])) {
             addColumn('{{surveys}}', 'crypt_method', "string(1) DEFAULT 'I'");
         } else {
