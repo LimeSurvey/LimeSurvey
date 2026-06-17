@@ -3606,7 +3606,7 @@ function convertFromGlobalSettingFormat(?string $sDate, bool $withTime = false):
     if (empty($sDate)) {
         return null;
     }
-    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);
+    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat'] ?? 1);
     $fromFormat = $withTime
         ? $sDateformatdata['phpdate'] . ' H:i'
         : $sDateformatdata['phpdate'];
