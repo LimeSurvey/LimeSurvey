@@ -4632,6 +4632,8 @@ class LimeExpressionManager
             $aSurveyOptions = [];
         }
         $LEM->surveyOptions['active'] = (isset($aSurveyOptions['active']) ? $aSurveyOptions['active'] : false);
+        // make sure to get the previewmode set by aSurveyOptions because LEM reset happens inbetween
+        self::SetPreviewMode($aSurveyOptions['previewmode'] ?? false);
         $LEM->surveyOptions['allowsave'] = (isset($aSurveyOptions['allowsave']) ? $aSurveyOptions['allowsave'] : false);
         $LEM->surveyOptions['alloweditaftercompletion'] = (isset($aSurveyOptions['alloweditaftercompletion']) ? $aSurveyOptions['alloweditaftercompletion'] : false);
         $LEM->surveyOptions['anonymized'] = (isset($aSurveyOptions['anonymized']) ? $aSurveyOptions['anonymized'] : false);
@@ -5157,7 +5159,8 @@ class LimeExpressionManager
         //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
         $updatedValues = $this->updatedValues;
         $message = '';
-        if ($this->surveyOptions['active'] != 'Y' || $this->sPreviewMode) {
+        // Note: surveyOptions['active'] is a boolean (set as $info['active'] == 'Y')
+        if (!$this->surveyOptions['active'] || $this->sPreviewMode) {
             return $message;
         }
 

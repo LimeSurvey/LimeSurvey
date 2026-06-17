@@ -50,18 +50,38 @@ class massiveActionsWidget extends CWidget
             // Not all action require a modal (eg: downloads, etc)
             if (isset($aAction['actionType']) && $aAction['actionType'] === 'modal') {
                 // Modal type define the view to render in views/modal
+                $massiveModalDomId      = 'massive-actions-modal-' . $this->gridid . '-' . $aAction['action'] . '-' . $key;
+                $massiveModalTitleId    = $massiveModalDomId . '-title';
+                $massiveModalDialogSrId = $massiveModalTitleId . '-dialogsr';
+                $showSelected           = $aAction['showSelected'] ?? 'no';
+                $selectedUrl            = $aAction['selectedUrl'] ?? '#';
+                $largeModalView         = !empty($aAction['largeModalView']) ? 'modal-lg' : '';
                 if ($this->isView($aAction['modalType'])) {
-                    //TODO: common view for all modal types.
                     $this->render(
                         'modals/' . $aAction['modalType'],
                         array(
-                            'aAction' => $aAction,
-                            'key'     => $key,
+                            'aAction'                => $aAction,
+                            'key'                    => $key,
+                            'massiveModalDomId'      => $massiveModalDomId,
+                            'massiveModalTitleId'    => $massiveModalTitleId,
+                            'massiveModalDialogSrId' => $massiveModalDialogSrId,
+                            'showSelected'           => $showSelected,
+                            'selectedUrl'            => $selectedUrl,
+                            'largeModalView'         => $largeModalView,
                         )
                     );
                 } else {
                     // We could rather raise an exception.
-                    $this->render('unknown_modal_type');
+                    $this->render(
+                        'unknown_modal_type',
+                        array(
+                            'aAction'                => $aAction,
+                            'key'                    => $key,
+                            'massiveModalDomId'      => $massiveModalDomId,
+                            'massiveModalTitleId'    => $massiveModalTitleId,
+                            'massiveModalDialogSrId' => $massiveModalDialogSrId,
+                        )
+                    );
                 }
             }
         }

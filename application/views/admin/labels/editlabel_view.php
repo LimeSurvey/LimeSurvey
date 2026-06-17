@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-12 content-right">
             <!-- Tabs -->
-            <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection" role="tablist" aria-label="<?= CHtml::encode(gT('Label set')) ?>">
+            <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection" role="tablist" aria-label="<?= gT('Label set') ?>">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active"
                        id="editlabel-tab-0"

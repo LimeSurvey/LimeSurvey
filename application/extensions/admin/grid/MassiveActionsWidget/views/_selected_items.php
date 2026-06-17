@@ -11,6 +11,7 @@ if (!isset($tableLabels)) {
 ?>
 <hr>
 <table class="table table-striped">
+    <caption class="visually-hidden"><?php echo isset($caption) ? $caption : gT('Selected items'); ?></caption>
     <thead>
         <?php foreach ($tableLabels as $label) :?>
         <th><?php echo $label?></th>
