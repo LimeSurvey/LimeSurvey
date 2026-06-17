@@ -520,7 +520,6 @@ class GeneralSettings
 
     /**
      * Format date time input
-    /**
      * Converts date time string from user local format to internal database format.
      *
      * The input (in the user's locale format, e.g. 'd.m.Y H:i') is parsed to an
@@ -532,7 +531,6 @@ class GeneralSettings
      */
     private function formatDateTimeInput($inputDateTimeString)
     {
-        $this->yiiApp->loadHelper('common');
         return getUTCOfDate(convertFromGlobalSettingFormat($inputDateTimeString, true));
     }
 

@@ -3611,9 +3611,25 @@ function convertFromGlobalSettingFormat(?string $sDate, bool $withTime = false):
         ? $sDateformatdata['phpdate'] . ' H:i'
         : $sDateformatdata['phpdate'];
 
-    $oDate = DateTime::createFromFormat($fromFormat, $sDate);
-    if ($oDate === false) {
-        // Fallback: let PHP try to parse the string as-is
+    // The '!' prefix resets all fields not present in the format to the Unix epoch,
+    // so a date-only value yields 00:00:00 deterministically (instead of "now").
+    $oDate = DateTime::createFromFormat('!' . $fromFormat, $sDate);
+
+    if ($oDate !== false) {
+        // Whether a value is a valid date depends on $fromFormat (e.g. "13.02.2023"
+        // is valid as d.m.Y but not as m.d.Y). createFromFormat() parses against the
+        // user's configured $fromFormat but silently normalises dates that are invalid
+        // *for that format* (e.g. "30.02.2023" as d.m.Y => "2023-03-02") instead of
+        // returning false. Such cases set parser warnings; reject them rather than
+        // persisting a silently shifted date. (Do NOT fall back to new DateTime() here,
+        // as the constructor would re-normalise the invalid date in the same way.)
+        $errors = DateTime::getLastErrors();
+        if ($errors !== false && (($errors['warning_count'] ?? 0) > 0 || ($errors['error_count'] ?? 0) > 0)) {
+            return null;
+        }
+    } else {
+        // The value did not match the user's locale format at all
+        // (e.g. it is already an ISO 'Y-m-d H:i:s' string) - let PHP try to parse it.
         try {
             $oDate = new DateTime($sDate);
         } catch (Exception $e) {
