@@ -39,7 +39,7 @@ export const ChartHeader = ({
               items={actions}
               shouldDisableIfSurveyActive={false}
               meatballClassName="responses-statistics-chart-menu"
-              actionsTitle="Chart Actions"
+              actionsTitle={t('Chart Actions')}
               placement="bottom-end"
               submenuPlacement="left"
             />

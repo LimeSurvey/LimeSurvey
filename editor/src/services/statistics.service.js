@@ -58,7 +58,7 @@ export class StatisticsService {
       body
     )
 
-    const answers = data?.answers?.answers || []
+    const answers = data?.answers || []
 
     const belongsToQuestion = (answer) =>
       String(answer?.title) === String(questionCode)
@@ -107,6 +107,6 @@ export class StatisticsService {
         }
       })
 
-    return { comments, pagination: data?.answers?._meta?.pagination || null }
+    return { comments, pagination: data?._meta?.pagination || null }
   }
 }

@@ -73,9 +73,12 @@ class SurveyResponseAnswer implements CommandInterface
         try {
             $data = $this->process($request);
 
-            return $this->responseFactory->makeSuccess(['answers' => $data]);
+            return $this->responseFactory->makeSuccess($data);
         } catch (TransformerException $e) {
             return $this->responseFactory->makeError('Invalid key sent');
+        } catch (\InvalidArgumentException $e) {
+            // Invalid survey id / response id from the request validation.
+            return $this->responseFactory->makeErrorBadRequest($e->getMessage());
         } catch (PermissionDeniedException $e) {
             return $this->responseFactory->makeErrorUnauthorised();
         }
@@ -135,18 +138,17 @@ class SurveyResponseAnswer implements CommandInterface
         $responses = $this->mapResponsesToQuestions($responses, $surveyQuestions);
 
         $totalItems = $dataProvider->getTotalItemCount();
+        $pageSize = max(1, $pagination['pageSize'] ?? 1);
 
         return [
             'answers' => $this->flattenAnswers($responses),
             'surveyQuestions' => $surveyQuestions,
             '_meta' => [
                 'pagination' => [
-                    'pageSize' => $pagination['pageSize'],
+                    'pageSize' => $pageSize,
                     'currentPage' => $pagination['currentPage'],
                     'totalItems' => $totalItems,
-                    'totalPages' => (int) ceil(
-                        $totalItems / ($pagination['pageSize'] ?? 1)
-                    ),
+                    'totalPages' => (int) ceil($totalItems / $pageSize),
                 ],
             ],
         ];
