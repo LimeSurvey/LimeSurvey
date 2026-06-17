@@ -43,7 +43,10 @@ const LabelName = ({ label, justify }) => {
   }, [label])
 
   return (
-    <div className="responses-statistics-pie-label-name-wrap" style={{ justifyContent: justify }}>
+    <div
+      className="responses-statistics-pie-label-name-wrap"
+      style={{ justifyContent: justify }}
+    >
       <div
         ref={ref}
         className="responses-statistics-pie-label-name"
@@ -90,8 +93,7 @@ const renderActiveShapeNew = ({
   const key = payload?.key
   const isOther = payload?.isOther ?? key === 'other'
   const id =
-    payload?.id ??
-    (['other', 'comment', 'NoAnswer'].includes(key) ? null : key)
+    payload?.id ?? (['other', 'comment', 'NoAnswer'].includes(key) ? null : key)
   // Middle row is the answer label; `name` is recharts' nameKey value, with
   // `payload.title` as the reliable fallback.
   const label = payload?.title ?? name ?? ''

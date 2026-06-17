@@ -99,7 +99,7 @@ export class StatisticsService {
           responseId: answer.responseId,
           comment: answer.value,
           subQuestion: isQuestionWide
-            ? selectedByResponse[answer.responseId] ?? null
+            ? (selectedByResponse[answer.responseId] ?? null)
             : answer.subquestion ||
               selectedByResponse[answer.responseId] ||
               null,

@@ -9,7 +9,10 @@ export const CustomLegend = ({ payload, isImage = false }) => {
             className="recharts-square"
             style={{ background: entry.color }}
           ></div>
-          <div title={entry.value} className="responses-statistics-legend-value">
+          <div
+            title={entry.value}
+            className="responses-statistics-legend-value"
+          >
             {shouldRenderImage(isImage, entry.payload) ? (
               <img
                 src={entry.value}

@@ -41,7 +41,9 @@ export const CommentsModal = ({
 
   const visibleComments = useMemo(() => {
     if (!selectedAnswer) return comments
-    const selectedOption = options.find((option) => option.key === selectedAnswer)
+    const selectedOption = options.find(
+      (option) => option.key === selectedAnswer
+    )
     const matches = [selectedAnswer, selectedOption?.title].filter(Boolean)
     return comments.filter((comment) => matches.includes(comment.subQuestion))
   }, [comments, selectedAnswer, options])

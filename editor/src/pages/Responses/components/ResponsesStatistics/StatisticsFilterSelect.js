@@ -13,9 +13,14 @@ export const StatisticsFilterSelect = ({
 
   return (
     <div className="responses-statistics-filter">
-      {label && <span className="responses-statistics-filter-label">{label}</span>}
+      {label && (
+        <span className="responses-statistics-filter-label">{label}</span>
+      )}
       <Dropdown className="responses-statistics-filter-dropdown">
-        <Dropdown.Toggle variant="light" className="responses-statistics-filter-toggle">
+        <Dropdown.Toggle
+          variant="light"
+          className="responses-statistics-filter-toggle"
+        >
           <span className="responses-statistics-filter-value">
             {selected?.fill && (
               <span

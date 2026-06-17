@@ -233,10 +233,7 @@ export const ChartRendererV2 = ({
         'responses-statistics-card--hidden': isHidden,
       })}
     >
-      <ChartHeader
-        {...question}
-        actions={actions}
-      />
+      <ChartHeader {...question} actions={actions} />
       <Collapsible open={!isHidden}>
         {hasResponses ? (
           <>

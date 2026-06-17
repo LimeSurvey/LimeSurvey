@@ -96,7 +96,9 @@ export const StatisticsContainer = ({ statistics, surveyId, valueType }) => {
       {grouped.map((group) => (
         <div className="responses-statistics-group" key={`group-${group.key}`}>
           {group.title && (
-            <span className="responses-statistics-group-title">{group.title}</span>
+            <span className="responses-statistics-group-title">
+              {group.title}
+            </span>
           )}
           {renderCharts(group.items, surveyId, valueType)}
         </div>

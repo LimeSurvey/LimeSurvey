@@ -52,9 +52,7 @@ export const isCommentQuestionType = (type) =>
 export const isChoiceQuestion = (type) => CHOICE_QUESTION_TYPES.includes(type)
 
 export const shouldRenderImage = (isImage, item) =>
-  isImage &&
-  item?.key !== 'NoAnswer' &&
-  !NON_ANSWER_KEYS.includes(item?.key)
+  isImage && item?.key !== 'NoAnswer' && !NON_ANSWER_KEYS.includes(item?.key)
 
 export const getLabelInterval = (count) => {
   if (count > 20) return 2
@@ -180,7 +178,11 @@ export const TruncatedTick = ({
   )
 }
 
-export const CustomTooltip = ({ active, payload, showCommentsHint = false }) => {
+export const CustomTooltip = ({
+  active,
+  payload,
+  showCommentsHint = false,
+}) => {
   if (!active || !payload?.length) return null
 
   // Read from the data item so the count is correct regardless of which metric
@@ -216,13 +218,14 @@ export const CustomTooltip = ({ active, payload, showCommentsHint = false }) => 
         }}
       />
       <div>
-        {count}
-        {' '}
+        {count}{' '}
         {count === 1
           ? t('participant selected this option')
           : t('participants selected this option')}
       </div>
-      <div>{t('Percentage')}: {percentage}%</div>
+      <div>
+        {t('Percentage')}: {percentage}%
+      </div>
       {showCommentsHint && (
         <div
           style={{
