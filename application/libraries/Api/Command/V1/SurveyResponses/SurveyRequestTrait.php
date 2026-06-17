@@ -44,27 +44,24 @@ trait SurveyRequestTrait
         ];
 
         if ($pagination) {
-            $paginationRequiredKeys = ['currentPage', 'pageSize'];
+            $pageSize = isset($pagination['pageSize'])
+                ? (int)$pagination['pageSize']
+                : 0;
+            $currentPage = isset($pagination['currentPage'])
+                ? (int)$pagination['currentPage']
+                : null;
 
-            if (
-                isset($pagination['pageSize'])
-                && (int)$pagination['pageSize'] == 0
-            ) {
-                $pagination['pageSize'] = $paginationDefault['pageSize'];
+            if ($pageSize <= 0) {
+                $pageSize = $paginationDefault['pageSize'];
+            }
+            if ($currentPage === null || $currentPage < 0) {
+                $currentPage = $paginationDefault['currentPage'];
             }
 
-            if (
-                !empty(
-                    array_diff_key(
-                        array_flip($paginationRequiredKeys),
-                        $pagination
-                    )
-                )
-            ) {
-                return array_merge($paginationDefault, $pagination);
-            }
-
-            return $pagination;
+            return [
+                'pageSize' => $pageSize,
+                'currentPage' => $currentPage,
+            ];
         }
 
         return $paginationDefault;

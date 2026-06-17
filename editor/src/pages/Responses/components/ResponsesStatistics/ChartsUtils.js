@@ -133,11 +133,15 @@ export const TruncatedTick = ({
   textAnchor = 'middle',
   dy = 12,
   isImage = false,
+  item = null,
   imageWidth = BAR_MAX_SIZE,
 }) => {
   const value = payload?.value ?? ''
 
-  if (isImage && value) {
+  // Guard with the backing data row, not just `value`: synthetic rows
+  // (NoAnswer / other / comment) keep text titles even on image themes, so
+  // rendering them as <img> would 404 to a broken-image icon.
+  if (shouldRenderImage(isImage, item) && value) {
     // Render the image as HTML inside the SVG so it can keep its natural
     // aspect ratio (width = bar width, height auto) and carry the same bordered
     // look as the legend/table image labels. `overflow: visible` keeps tall

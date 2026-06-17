@@ -18,7 +18,6 @@ import {
   TruncatedTick,
   getLabelInterval,
   getMetricDataKey,
-  shouldRenderImage,
   VALUE_TYPE,
 } from '../ChartsUtils'
 
@@ -59,7 +58,8 @@ export const BarChart = ({
               return (
                 <TruncatedTick
                   {...props}
-                  isImage={shouldRenderImage(isImage, item)}
+                  isImage={isImage}
+                  item={item}
                   imageWidth={BAR_MAX_SIZE}
                 />
               )
