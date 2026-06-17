@@ -177,12 +177,12 @@ class SettingsPluginTest extends TestBaseClass
             if (empty($value)) {
                 $this->assertEquals($setting->value, json_encode($value));
             } else {
-                $this->assertEquals(
+                // We can just check value is not equal, no way to get Same vaklue when using hardened
+                $this->assertNotEquals(
                     $setting->value,
-                    json_encode(LSActiveRecord::encryptSingle(json_encode($value)))
+                    json_encode($value)
                 );
             }
-
             $settingValue = self::$plugin->getSetting($key);
             $this->assertEquals($settingValue, json_decode(json_encode($value), true));
         }
