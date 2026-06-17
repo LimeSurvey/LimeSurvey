@@ -62,14 +62,15 @@
                                 href='#'
                             >
                                 <?php if ($not->status == 'new') : ?>
-                                    <span class='ri-checkbox-blank-circle-fill text-<?php echo $not->display_class; ?>'></span>&nbsp;
-                                    <strong><?php echo $not->title; ?></strong>
-                                    <br />
-                                    <span class='text-muted'><?php echo ellipsize($not->message, 50); ?></span>
+                                    <span class='d-flex align-items-center gap-1'>
+                                        <span class='ri-checkbox-blank-circle-fill text-<?php echo $not->display_class; ?>'></span>
+                                        <strong><?php echo $not->title; ?></strong>
+                                    </span>
+                                    <span class='text-muted'><?php echo ellipsize($not->message, 55); ?></span>
                                 <?php else : ?>
                                     <span class='text-muted'><?php echo $not->title; ?></span>
                                     <br />
-                                    <span class='text-muted' style='opacity: 0.5;'><?php echo ellipsize($not->message, 50); ?></span>
+                                    <span class='text-read'><?php echo ellipsize($not->message, 55); ?></span>
                                 <?php endif; ?>
                             </a>
                         </li>
@@ -80,8 +81,10 @@
 
             <li id='notification-clear-all'>
                 <a href='#'  class="dropdown-item" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()' data-params="<?= $clearAllNotificationsParams ?>">
-                    <span class='ri-delete-bin-fill text-danger'></span>&nbsp;
-                    <?php eT('Delete all notifications'); ?>
+                    <span class='d-flex align-items-center gap-1'>
+                        <span class='ri-delete-bin-fill text-danger'></span>
+                        <?php eT('Delete all notifications'); ?>
+                    </span>
                 </a>
             </li>
         </ul>
