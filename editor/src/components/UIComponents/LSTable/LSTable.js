@@ -16,6 +16,12 @@ const getSortIconClass = (isSorted, sortDirection) => {
   return 'ri-arrow-up-s-line'
 }
 
+const getAriaSort = (sortable, isSorted, sortDirection) => {
+  if (!sortable) return undefined
+  if (!isSorted) return 'none'
+  return sortDirection === 'desc' ? 'descending' : 'ascending'
+}
+
 const SortIcon = ({ isSorted, sortDirection, ariaLabel }) => (
   <i
     className={classNames(
@@ -146,30 +152,38 @@ export const LSTable = ({
                       'highlight-cell': isSorted,
                       'ls-table__actions-cell': column.align === 'right',
                     })}
-                    onClick={
-                      column.sortable
-                        ? () => handleSortClick(column.key)
-                        : undefined
-                    }
-                    role={column.sortable ? 'button' : undefined}
-                    tabIndex={column.sortable ? 0 : undefined}
+                    aria-sort={getAriaSort(
+                      column.sortable,
+                      isSorted,
+                      currentSortDirection
+                    )}
                   >
-                    <div className="ls-table__header-content">
-                      <span>{column.title}</span>
-                      {column.sortable && (
-                        <SortIcon
-                          isSorted={isSorted}
-                          sortDirection={currentSortDirection}
-                          ariaLabel={
-                            isSorted
-                              ? currentSortDirection === 'asc'
-                                ? t('Sorted ascending')
-                                : t('Sorted descending')
-                              : t('Sortable')
-                          }
-                        />
-                      )}
-                    </div>
+                    {column.sortable ? (
+                      <button
+                        type="button"
+                        className="ls-table__sort-button"
+                        onClick={() => handleSortClick(column.key)}
+                      >
+                        <span className="ls-table__header-content">
+                          <span>{column.title}</span>
+                          <SortIcon
+                            isSorted={isSorted}
+                            sortDirection={currentSortDirection}
+                            ariaLabel={
+                              isSorted
+                                ? currentSortDirection === 'asc'
+                                  ? t('Sorted ascending')
+                                  : t('Sorted descending')
+                                : t('Sortable')
+                            }
+                          />
+                        </span>
+                      </button>
+                    ) : (
+                      <span className="ls-table__header-content">
+                        <span>{column.title}</span>
+                      </span>
+                    )}
                   </th>
                 )
               })}

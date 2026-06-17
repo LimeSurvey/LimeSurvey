@@ -93,6 +93,18 @@
       gap: 8px;
     }
 
+    .ls-table__sort-button {
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      text-align: inherit;
+      cursor: pointer;
+    }
+
     .ls-table__sort-icon {
       display: inline-flex;
       align-items: center;
