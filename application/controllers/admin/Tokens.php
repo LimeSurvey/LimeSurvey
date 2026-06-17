@@ -203,13 +203,13 @@ class Tokens extends SurveyCommonAction
                 $accounttype    = strtoupper((string) Yii::app()->getConfig('bounceaccounttype'));
                 $hostname       = Yii::app()->getConfig('bounceaccounthost');
                 $username       = Yii::app()->getConfig('bounceaccountuser');
-                $pass           = LSActiveRecord::decryptSingle(Yii::app()->getConfig('bounceaccountpass'));
+                $pass           = Yii::app()->getConfig('bounceaccountpass');
                 $hostencryption = strtolower((string) Yii::app()->getConfig('bounceencryption'));
             } else {
                 $accounttype    = strtoupper((string) $thissurvey['bounceaccounttype']);
                 $hostname       = $thissurvey['bounceaccounthost'];
                 $username       = $thissurvey['bounceaccountuser'];
-                $pass           = LSActiveRecord::decryptSingle($thissurvey['bounceaccountpass']);
+                $pass           = LSActiveRecord::decryptSingle($thissurvey['bounceaccountpass'], 'H');
                 $hostencryption = strtolower((string) $thissurvey['bounceaccountencryption']);
             }
 
@@ -1474,7 +1474,7 @@ class Tokens extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $oTokens = Token::model($iSurveyId)->findAll();
         $aTokenencryptionoptions['enabled'] = 'Y';
-
+        $cryptMethod = $oSurvey->oOptions->crypt_method;
         // find default attributes
         $aDefaultAttributes = $oSurvey->getTokenEncryptionOptions();
         // default attributes
@@ -1506,9 +1506,9 @@ class Tokens extends SurveyCommonAction
             $aUpdateData = [];
             foreach ($aEncryptionSettings as $column => $value) {
                 if ($aEncryptionSettingsOld[$column]['encrypted'] == 'Y' && $aEncryptionSettings[$column]['encrypted'] == 'N') {
-                    $aUpdateData[$column] = LSActiveRecord::decryptSingle($token->$column);
+                    $aUpdateData[$column] = LSActiveRecord::decryptSingle($token->$column, $cryptMethod);
                 } elseif ($aEncryptionSettingsOld[$column]['encrypted'] == 'N' && $aEncryptionSettings[$column]['encrypted'] == 'Y') {
-                    $aUpdateData[$column] = LSActiveRecord::encryptSingle($token->$column);
+                    $aUpdateData[$column] = LSActiveRecord::encryptSingle($token->$column, $cryptMethod);
                 }
             }
 
@@ -2734,7 +2734,7 @@ class Tokens extends SurveyCommonAction
                 $fieldvalue['bounceaccountencryption'] = Yii::app()->request->getPost('bounceaccountencryption');
                 $fieldvalue['bounceaccountuser'] = Yii::app()->request->getPost('bounceaccountuser');
                 if (Yii::app()->request->getPost('bounceaccountpass') != 'somepassword') {
-                    $fieldvalue['bounceaccountpass'] = LSActiveRecord::encryptSingle(Yii::app()->request->getPost('bounceaccountpass'));
+                    $fieldvalue['bounceaccountpass'] = LSActiveRecord::encryptSingle(Yii::app()->request->getPost('bounceaccountpass'), 'H');
                 }
                 $fieldvalue['bounceaccounttype'] = Yii::app()->request->getPost('bounceaccounttype');
                 $fieldvalue['bounceaccounthost'] = Yii::app()->request->getPost('bounceaccounthost');

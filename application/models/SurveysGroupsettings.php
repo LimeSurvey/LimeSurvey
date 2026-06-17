@@ -493,7 +493,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 !($attribute === 'ipanonymize' && $dbversion < 412)
                 && !($attribute === 'showregisterpolicy' && $dbversion < 649)
                 && !($attribute === 'showtokenpolicy' && $dbversion < 649)
-                && !($attribute === 'crypt_method' && $dbversion < 652)
+                && !($attribute === 'crypt_method' && $dbversion < 709)
             ) {
                 $this->$attribute = 'I';
             }

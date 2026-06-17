@@ -26,7 +26,7 @@
 
             <div class="mb-3">
                 <label class="form-label" id='label-CPDB_crypt_method' for='CPDB_crypt_method'>
-                    <?php eT(' Crypt method for Central participant database:'); ?>
+                    <?php eT('Crypt method for Central participant database:'); ?>
                 </label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -34,10 +34,10 @@
                         'htmlOptions'   =>  [
                             'aria-labelledby' => 'label-CPDB_crypt_method'
                         ],
-                        'checkedOption' => Yii::app()->getConfig('CPDB_crypt_method', 'S'),
+                        'checkedOption' => Yii::app()->getConfig('CPDB_crypt_method', 'B'),
                         'selectOptions' => [
-                            "S"      => gT("Simple", 'unescaped'),
-                            "H" => gT("hardened", 'unescaped')
+                            "B"      => gT("Basic", 'unescaped'),
+                            "H"      => gT("Hardened", 'unescaped')
                         ]
                     ]); ?>
                 </div>

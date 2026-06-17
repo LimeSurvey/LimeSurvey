@@ -1460,6 +1460,7 @@ class ParticipantsAction extends SurveyCommonAction
         $attributeName->encrypted = $encrypted_value;
         $encryptedAfterChange = $attributeName->isEncrypted();
         $sDefaultname = $attributeName->defaultname;
+        $cryptMedthod = App()->getConfig('CPDB_crypt_method', 'B');
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeeded or none
         $oDB = Yii::app()->db;
@@ -1471,12 +1472,17 @@ class ParticipantsAction extends SurveyCommonAction
                 foreach ($oParticipants as $participant) {
                     $aUpdateData = array();
                     if ($encryptedBeforeChange && !$encryptedAfterChange) {
-                        $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname);
+                        $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname, $cryptMedthod);
                     } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
-                        $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname);
+                        $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname, $cryptMedthod);
                     }
                     if (!empty($aUpdateData)) {
-                        $oDB->createCommand()->update('{{participants}}', $aUpdateData, "participant_id='" . $participant->participant_id . "'");
+                        $oDB->createCommand()->update(
+                            '{{participants}}',
+                            $aUpdateData,
+                            'participant_id = :participant_id',
+                            [':participant_id' => $participant->participant_id]
+                        );
                     }
                 }
             } else {
@@ -1488,9 +1494,9 @@ class ParticipantsAction extends SurveyCommonAction
                 foreach ($oAttributes as $attribute) {
                     $aUpdateData = array();
                     if ($encryptedBeforeChange && !$encryptedAfterChange) {
-                        $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value);
+                        $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMedthod);
                     } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
-                        $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
+                        $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMedthod);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {
                         $oDB->createCommand()->update(
@@ -1616,6 +1622,7 @@ class ParticipantsAction extends SurveyCommonAction
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
         $operation = Yii::app()->request->getPost('oper');
+        $cryptMedthod = App()->getConfig('CPDB_crypt_method', 'B');
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
@@ -1640,9 +1647,9 @@ class ParticipantsAction extends SurveyCommonAction
             foreach ($oAttributes as $attribute) {
                 $aUpdateData = array();
                 if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
-                    $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value);
+                    $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMedthod);
                 } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y') {
-                    $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
+                    $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMedthod);
                 }
                 if (!empty($aUpdateData)) {
                     $oDB->createCommand()->update(

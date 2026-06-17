@@ -26,8 +26,8 @@ class LSSodium
         }
     }
 
-    /** 
-     * Set the encrytion method
+    /**
+     * Set the encryption method
      * @param string 
      * @return void
      */
@@ -159,7 +159,7 @@ class LSSodium
      * @return string|false Return decrypted value (string or unserialized object) if succeeded. Return false if an error occurs (bad password/salt given) or input encryptedString
      * @throws SodiumException
      */
-    public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string
+    public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string|false
     {
         if ($this->bLibraryExists === true) {
             if (!empty($sEncryptedString) && $sEncryptedString !== 'null') {
@@ -199,9 +199,9 @@ class LSSodium
     }
 
     /**
-     * Decrypt encrypted string using Hardened methos
+     * Decrypt encrypted string using Hardened method
      * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
-     * @return string|false Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
+     * @return string|false Return decrypted value (string or unserialized object) if succeeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
     */
     private function decryptHardened($sEncryptedString)
     {

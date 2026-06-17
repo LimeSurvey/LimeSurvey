@@ -1638,7 +1638,7 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     /* Added in 649 update */
     unset($attributes['showregisterpolicy']);
     unset($attributes['showtokenpolicy']);
-    /* Added in 652 update */
+    /* Added in 709 update */
     unset($attributes['crypt_method']);
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);

@@ -15,7 +15,7 @@
 echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 /* @var boolean hide crypted filter columns */
-$hideCryptedFilter = $survey->oOptions->crypt_method == 'H';
+$hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->crypt_method == 'H';
 ?>
 <!-- for filter columns with datepicker-->
 <div style="display: none;">

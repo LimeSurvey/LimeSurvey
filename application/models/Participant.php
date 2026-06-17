@@ -2144,6 +2144,7 @@ class Participant extends LSActiveRecord
 
                 if (
                     $existing == null
+                    && App()->getConfig('CPDB_crypt_method', 'B') != 'H' // Disable if cryot method is hardened
                     && (!empty($oTokenDynamic->firstname)
                         || !empty($oTokenDynamic->lastname)
                         || !empty($oTokenDynamic->email))

@@ -325,7 +325,7 @@ class LSActiveRecord extends CActiveRecord
         $iSurveyId = 0;
         $class = get_class($this);
         if ($class == 'ParticipantAttribute' || $class == 'Participant') {
-            $sodium->setEncryptionMethod(App()->getConfig('CPDB_crypt_method', 'S'));
+            $sodium->setEncryptionMethod(App()->getConfig('CPDB_crypt_method', 'B'));
         } elseif (method_exists($this, 'getSurveyId')) {
             $iSurveyId = $this->getSurveyId();
             if ($iSurveyId && $oSurvey = Survey::model()->findByPk($iSurveyId)) {
@@ -379,16 +379,17 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Decrypt single value
      * @param string $value String value which needs to be decrypted
+     * @param string $cryptmethod 'B' or 'H' , if not 'H' : hardened
      * @return string the decrypted string
      */
-    public static function decryptSingle($value = ''): string
+    public static function decryptSingle($value = '', $cryptmethod = 'B' ): string
     {
         // if $value is provided, it would decrypt
         if (!empty($value)) {
             // load sodium library
             $sodium = Yii::app()->sodium;
-            // @TODO : check if use default Surveys settings or new settings ?
-            // But default test both, then decrypt in all case
+            $sodium->setEncryptionMethod($cryptmethod);
+            // efault test both, then decrypt in all case
             return $sodium->decrypt($value);
         }
         return '';
@@ -428,17 +429,18 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Encrypt single value
      * @param string $value String value which needs to be encrypted
+     * @param string $cryptmethod 'B' or 'H' , if not 'H' : hardened
+     * @return string
      */
-    public static function encryptSingle($value = '')
+    public static function encryptSingle($value = '', $cryptmethod = 'B')
     {
-        // if $value is provided, it would decrypt
-        if (isset($value) && $value !== "") {
-            // load sodium library
-            $sodium = Yii::app()->sodium;
-            // @TODO : check if use default Surveys settings or new settings ?
-            // But default test both, then decrypt in all case
-            return $sodium->encrypt($value);
+        if ($value === null || $value === '') {
+            return $value;
         }
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $sodium->setEncryptionMethod($cryptmethod);
+        return $sodium->encrypt($value);
     }
 
 

@@ -45,6 +45,25 @@ class SettingGlobal extends LSActiveRecord
     );
 
     /**
+     * @var null|string[] crypted settings
+     */
+    private static $cryptedSettings = null;
+
+    /**
+     * Return the crypted settings list
+     * @return string[]
+     */
+    public static function getCryptedSettings()
+    {
+        if (is_null(self::$cryptedSettings)) {
+            self::$cryptedSettings = [
+                'emailsmtppassword',
+                'bounceaccountpass'
+            ];
+        }
+        return self::$cryptedSettings;
+    }
+    /**
      * @inheritdoc
      * @return CActiveRecord
      */
@@ -96,6 +115,9 @@ class SettingGlobal extends LSActiveRecord
         if (empty($setting)) {
             $setting = new self();
             $setting->stg_name = $settingname;
+        }
+        if (in_array($settingname, self::getCryptedSettings())) {
+            $settingvalue = LSActiveRecord::encryptSingle($settingvalue, 'H');
         }
         $setting->stg_value = $settingvalue;
         $setting->save();

@@ -682,7 +682,7 @@ class TokenDynamic extends LSActiveRecord
     public function getStandardColsForGrid()
     {
         $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
-        $hardenedCrypt = $oSurvey->oOptions->crypt_method == 'H';
+        $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->crypt_method == 'H';
         $encryptedAttributes = $this->getAllEncryptedAttributes(self::$sid, 'Token');
         return [
             [
@@ -816,7 +816,7 @@ class TokenDynamic extends LSActiveRecord
 
         $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
         $aCustomAttributes = $oSurvey->tokenAttributes;
-        $hardenedCrypt = $oSurvey->oOptions->crypt_method == 'H';
+        $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->crypt_method == 'H';
         $encryptedAttributes = $this->getAllEncryptedAttributes(self::$sid, 'Token');
         // Custom attributes
         foreach ($aCustomAttributes as $sColName => $oColumn) {
