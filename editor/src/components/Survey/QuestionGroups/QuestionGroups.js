@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -34,9 +34,16 @@ export const QuestionGroups = ({
   const [, setSurveyRefreshRequired] = useAppState(
     STATES.SURVEY_REFRESH_REQUIRED
   )
+  const [keys, setKeys] = useState(
+    [...Array(questionGroups.length)].map(() => `Q${RandomNumber()}`)
+  )
 
-  const keys = useMemo(() => {
-    return [...Array(questionGroups.length)].map(() => `Q${RandomNumber()}`)
+  useEffect(() => {
+    if (keys.length === questionGroups.length) {
+      return
+    }
+
+    setKeys([...keys, `Q${RandomNumber()}`])
   }, [questionGroups.length])
 
   const handleUpdate = (index, questionGroup) => {
