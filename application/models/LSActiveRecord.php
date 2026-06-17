@@ -382,7 +382,7 @@ class LSActiveRecord extends CActiveRecord
      * @param string $cryptmethod 'B' or 'H' , if not 'H' : hardened
      * @return string the decrypted string
      */
-    public static function decryptSingle($value = '', $cryptmethod = 'B' ): string
+    public static function decryptSingle($value = '', $cryptmethod = 'B'): string
     {
         // if $value is provided, it would decrypt
         if (!empty($value)) {
