@@ -978,6 +978,17 @@ class CheckIntegrity extends SurveyCommonAction
         }
 
         /**********************************************************************/
+        /*     Check subquestions whose parent question is missing            */
+        /**********************************************************************/
+        $oCriteria = new CDbCriteria();
+        $oCriteria->join = 'LEFT JOIN {{questions}} parentq ON t.parent_qid = parentq.qid';
+        $oCriteria->condition = 't.parent_qid <> 0 AND parentq.qid IS NULL';
+        $orphanSubquestions = Question::model()->findAll($oCriteria);
+        foreach ($orphanSubquestions as $orphanSubquestion) {
+            $aDelete['questions'][] = array('qid' => $orphanSubquestion['qid'], 'reason' => gT('No parent question'));
+        }
+
+        /**********************************************************************/
         /*     Check subquestions and answer options against question type    */
         /*     Some question types require subquestions, some require answer  */
         /*     options and some require both. Flag for deletion subquestions  */
