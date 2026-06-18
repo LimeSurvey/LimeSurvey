@@ -159,6 +159,9 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                     $options['inherit']['value'] = $sParentOption . " ᴵ";
                                     if (!empty($options[$sParentOption]['image'])) {
                                         $options['inherit']['image'] = $options[$sParentOption]['image'];
+                                    } elseif (!empty($optionImages)) {
+                                        // Fallback: use the first option image when parent value is empty/unknown
+                                        $options['inherit']['image'] = $optionImages[0];
                                     }
                                 }
                                 if ($bInherit && isset($sParentOption)) {
@@ -180,13 +183,14 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                                                    class="btn-check selector_option_radio_field simple_edit_options_<?= $attributeKey ?>"/>
                                             <label for="<?= $id ?>" class="btn btn-outline-secondary">
                                                 <?php if (!empty($optionSettings['image'])) : ?>
-                                                    <?php $imageFilePath = App()->getConfig('standardthemerootdir') . DIRECTORY_SEPARATOR . $aTemplateConfiguration['template_name'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . $optionSettings['image'] ?>
-                                                    <?php if (file_exists($imageFilePath)) : ?>
+                                                    <?php $imageFilePath = $attribute['resolvedOptionImagePaths'][$optionSettings['image']] ?? ''; ?>
+                                                    <?php if (!empty($imageFilePath) && file_exists($imageFilePath)) : ?>
                                                         <?= file_get_contents($imageFilePath) ?>
                                                         <?= $optionKey === 'inherit' ? ' ᴵ' : '' ?>
+                                                    <?php else : ?>
+                                                        <?= gT($optionSettings['value']) ?>
                                                     <?php endif; ?>
-                                                <?php endif; ?>
-                                                <?php if (empty($optionSettings['image'])) : ?>
+                                                <?php else : ?>
                                                     <?= gT($optionSettings['value']) ?>
                                                 <?php endif; ?>
                                             </label>

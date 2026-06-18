@@ -179,6 +179,22 @@ class SurveyThemeConfiguration
         }
         $themeCategoriesAndOptions = TemplateManifest::getOptionAttributes($preparedThemeConfigurationModel->path);
         $themeConfigurationAttributesAndFiles = $preparedThemeConfigurationModel->getOptionPageAttributes();
+
+        // Resolve option image file paths by walking up the inheritance chain
+        if (!empty($themeCategoriesAndOptions['optionAttributes'])) {
+            foreach ($themeCategoriesAndOptions['optionAttributes'] as $key => &$attribute) {
+                if (!empty($attribute['optionimages'])) {
+                    $imageNames = explode('|', $attribute['optionimages']);
+                    $resolvedPaths = [];
+                    foreach ($imageNames as $imageName) {
+                        $resolvedPaths[$imageName] = $preparedThemeConfigurationModel->resolveOptionImagePath($imageName);
+                    }
+                    $attribute['resolvedOptionImagePaths'] = $resolvedPaths;
+                }
+            }
+            unset($attribute);
+        }
+
         if ($themeCategoriesAndOptions['optionsPage'] === 'core') {
             App()->clientScript->registerPackage('themeoptions-core');
             $customThemeOptionsPage = '';

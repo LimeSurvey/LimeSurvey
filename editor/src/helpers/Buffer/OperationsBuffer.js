@@ -401,11 +401,18 @@ export class OperationsBuffer {
       operation.props &&
       hasTempId(operation.props[0], 'qid')
 
+    // Block any non-create operation whose own id is still a tempId.
+    // This happens when a create is flushed but the backend hasn't yet responded
+    // with the real id — updates/deletes must wait for the tempId to be replaced.
+    const isNonCreateOperationWithTempId =
+      operation.op !== Operations.create && hasTempId(operation.id?.toString())
+
     if (
       isQuestionGroupHasATempIdAndOpIsNotGroupCreate ||
       isAddingQuestionAndQuestionHasAGroupTempId ||
       isAddingSubquestionAndQuestionHasATempId ||
       isAddingAnswerAndQuestionHasATempid ||
+      isNonCreateOperationWithTempId ||
       operation.error
     ) {
       return false

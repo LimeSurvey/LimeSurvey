@@ -1171,6 +1171,7 @@ class UserManagementController extends LSBaseController
                 'aResults'     => $aResults,
                 'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels,
+                'caption'      => gT('Selected users'),
             )
         );
     }
