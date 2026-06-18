@@ -9,7 +9,7 @@ namespace ls\tests;
  * @group security
  */
 
-class GetQuestionIdPermissionTest extends TestBaseClassWeb
+class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
 {
     /**
      * @var integer $userId
@@ -42,6 +42,8 @@ class GetQuestionIdPermissionTest extends TestBaseClassWeb
 
 
     /**
+     * Check permission by ID in condition function, 
+     * This check LSYii_Application::getQuestionId() and LSYii_Application::getGroupId() permission check
      * @return void
      */
     public function testPermissionOnCondition()
@@ -54,17 +56,19 @@ class GetQuestionIdPermissionTest extends TestBaseClassWeb
         $superadminQuestions = $this->getAllSurveyQuestions();
         $questions = $this->getAllSurveyQuestions();
         $superadminQid = $questions['Q2']->qid;
+        $superadminGid = $questions['Q2']->gid;
         /* Import second survey as userOId */
         self::importSurvey($surveyFile, $userId);
         $questions = $this->getAllSurveyQuestions();
         $questionQ2 = $questions['Q2'];
         $qid = $questions['Q2']->qid;
+        $gid = $questions['Q2']->gid;
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php')
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         \Yii::app()->session['loginID'] = self::$userId;
         App()->user->setId(self::$userId);
         /* Check good url but survey without access */
-        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'qid' => $superadminQid));
+        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'gid' => $superadminGid, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
             $this->fail("User can see question in survey without permission");
@@ -77,10 +81,23 @@ class GetQuestionIdPermissionTest extends TestBaseClassWeb
             throw $exception;
         }
         /* Check good url but survey with access but invalid qid */
-        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'qid' => $superadminQid));
+        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $gid, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
-            $this->fail("User can see question in survey without permission with other surveyId set.");
+            $this->fail("User can get question without permission hacking surveyId in url.");
+        } catch (\CException $exception) {
+            if ($exception->statusCode == 400) {
+                $this->assertTrue(true);
+                return;
+            }
+            /* throw the exception : must be a 400 */
+            throw $exception;
+        }
+        /* Check good url but survey with access valid qid but invalid gid*/
+        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $superadminGid, 'qid' => $qid));
+        try {
+            self::$webDriver->get($url);
+            $this->fail("User can get group without permission hacking surveyId in url.");
         } catch (\CException $exception) {
             if ($exception->statusCode == 400) {
                 $this->assertTrue(true);

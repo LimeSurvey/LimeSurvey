@@ -111,7 +111,7 @@
     <testsuite name="security">
       <file>tests/functional/backend/XssAndScriptCheckTest.php</file>
       <file>tests/functional/backend/XssAndScriptForSuperadminCheckTest.php</file>
-      <file>tests/functional/backend/GetQuestionIdPermissionTest.php</file>
+      <file>tests/functional/backend/GetGroupAndQuestionIdPermissionTest.php</file>
       <file>tests/functional/acceptance/15997-ip-anonymize/IpAddressAnonymizeTest.php</file>
     </testsuite>
     <testsuite name="api">
