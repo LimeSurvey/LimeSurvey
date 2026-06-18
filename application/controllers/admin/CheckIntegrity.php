@@ -977,6 +977,54 @@ class CheckIntegrity extends SurveyCommonAction
             $aDelete['question_l10ns'][] = array('id' => $question['id'], 'qid' => $question['qid'], 'reason' => gT('No parent question'));
         }
 
+        /**********************************************************************/
+        /*     Check subquestions and answer options against question type    */
+        /*     Some question types require subquestions, some require answer  */
+        /*     options and some require both. Flag for deletion subquestions  */
+        /*     and answer options that do not belong to the parent question's */
+        /*     type.                                                          */
+        /**********************************************************************/
+        $aTypesWithoutSubquestions = array();
+        $aTypesWithoutAnswers = array();
+        foreach (QuestionType::modelsAttributes() as $sTypeCode => $aTypeAttributes) {
+            if (empty($aTypeAttributes['subquestions'])) {
+                $aTypesWithoutSubquestions[] = $sTypeCode;
+            }
+            if (empty($aTypeAttributes['answerscales'])) {
+                $aTypesWithoutAnswers[] = $sTypeCode;
+            }
+        }
+
+        // Subquestions belonging to a question whose type does not allow subquestions
+        if (!empty($aTypesWithoutSubquestions)) {
+            $oCriteria = new CDbCriteria();
+            $oCriteria->join = 'INNER JOIN {{questions}} parentq ON t.parent_qid = parentq.qid';
+            $oCriteria->addCondition('t.parent_qid <> 0');
+            $oCriteria->addInCondition('parentq.type', $aTypesWithoutSubquestions);
+            $orphanSubquestions = Question::model()->findAll($oCriteria);
+            foreach ($orphanSubquestions as $orphanSubquestion) {
+                $aDelete['questions'][] = array(
+                    'qid' => $orphanSubquestion['qid'],
+                    'reason' => gT('The question type does not allow subquestions')
+                );
+            }
+        }
+
+        // Answer options belonging to a question whose type does not allow answer options
+        if (!empty($aTypesWithoutAnswers)) {
+            $oCriteria = new CDbCriteria();
+            $oCriteria->join = 'INNER JOIN {{questions}} q ON t.qid = q.qid';
+            $oCriteria->addInCondition('q.type', $aTypesWithoutAnswers);
+            $orphanAnswers = Answer::model()->findAll($oCriteria);
+            foreach ($orphanAnswers as $orphanAnswer) {
+                $aDelete['answers'][] = array(
+                    'qid' => $orphanAnswer['qid'],
+                    'code' => $orphanAnswer['code'],
+                    'reason' => gT('The question type does not allow answer options')
+                );
+            }
+        }
+
 
         /**********************************************************************/
         /*     Check groups                                                   */
