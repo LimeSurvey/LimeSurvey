@@ -107,7 +107,6 @@ export const QuestionHeader = ({
               )}
               innerRef={titleRef}
               placeholder={t('Your question here')}
-              useRichTextEditor={!process.env.STORYBOOK_DEV}
               update={(question) => updateTitle({ question })}
               value={questionTitle}
               testValidation={TestValidation}
