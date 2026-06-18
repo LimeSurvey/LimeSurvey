@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-06-17 14:57:53+00:00\n"
+"POT-Creation-Date: 2026-06-18 11:18:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4299,187 +4299,200 @@ msgstr ""
 msgid "Deleting survey table: %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:85
+#: application/controllers/admin/CheckIntegrity.php:86
 msgid "No old survey or survey participant list selected."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:196
+#: application/controllers/admin/CheckIntegrity.php:197
 msgid "Deleting orphan survey participant list: %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:212
+#: application/controllers/admin/CheckIntegrity.php:213
 msgid "Deleting orphan survey table: %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:232
+#: application/controllers/admin/CheckIntegrity.php:247
+msgid "Deleting related archived questions table: %s"
+msgstr ""
+
+#: application/controllers/admin/CheckIntegrity.php:267
 msgid "Unable to delete question group %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:235
+#: application/controllers/admin/CheckIntegrity.php:270
 msgid "Deleting groups: %u groups deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:255
+#: application/controllers/admin/CheckIntegrity.php:290
 msgid "Unable to delete groups text %s, code %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:258
+#: application/controllers/admin/CheckIntegrity.php:293
 msgid "Deleting group texts: %u entries deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:280
+#: application/controllers/admin/CheckIntegrity.php:315
 msgid "Deleting orphaned user group assignments: %u assignments deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:300
+#: application/controllers/admin/CheckIntegrity.php:335
 msgid "Unable to delete question %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:303
+#: application/controllers/admin/CheckIntegrity.php:338
 msgid "Deleting questions: %u questions deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:323
+#: application/controllers/admin/CheckIntegrity.php:358
 msgid "Unable to delete question text %s, code %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:326
+#: application/controllers/admin/CheckIntegrity.php:361
 msgid "Deleting question texts: %u entries deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:345
+#: application/controllers/admin/CheckIntegrity.php:380
 msgid "Unable to delete survey languagesettings %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:348
+#: application/controllers/admin/CheckIntegrity.php:383
 msgid "Deleting survey languagesettings: %u survey languagesettings deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:366
+#: application/controllers/admin/CheckIntegrity.php:401
 msgid "Unable to delete survey %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:369
+#: application/controllers/admin/CheckIntegrity.php:404
 msgid "Deleting surveys: %u surveys deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:390
-#: application/controllers/admin/CheckIntegrity.php:414
+#: application/controllers/admin/CheckIntegrity.php:425
+#: application/controllers/admin/CheckIntegrity.php:449
 msgid "Unable to delete answer %s, code %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:394
+#: application/controllers/admin/CheckIntegrity.php:429
 msgid "Deleting answers: %u answers deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:417
+#: application/controllers/admin/CheckIntegrity.php:452
 msgid "Deleting answer localizations: %u entries deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:436
+#: application/controllers/admin/CheckIntegrity.php:471
 msgid "Unable to delete assessment %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:439
+#: application/controllers/admin/CheckIntegrity.php:474
 msgid "Deleting assessments: %u assessment entries deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:459
+#: application/controllers/admin/CheckIntegrity.php:494
 msgid "Deleting orphaned quota rules: %u quota rules deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:481
+#: application/controllers/admin/CheckIntegrity.php:516
 msgid "Deleting orphaned quota languages: %u quota languages deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:503
+#: application/controllers/admin/CheckIntegrity.php:538
 msgid "Deleting orphaned quotas: %u quotas deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:525
+#: application/controllers/admin/CheckIntegrity.php:560
 msgid "Deleting orphaned default values: %u default values deleted."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:544
+#: application/controllers/admin/CheckIntegrity.php:579
 msgid "Unable to delete question attributes for question %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:547
+#: application/controllers/admin/CheckIntegrity.php:582
 msgid "Deleting question attributes: %u attributes deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:566
+#: application/controllers/admin/CheckIntegrity.php:601
 msgid "Unable to delete condition %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:569
+#: application/controllers/admin/CheckIntegrity.php:604
 msgid "Deleting conditions: %u conditions deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:799
+#: application/controllers/admin/CheckIntegrity.php:834
 msgid "No matching CQID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:809
+#: application/controllers/admin/CheckIntegrity.php:844
 msgid "No matching QID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:820
+#: application/controllers/admin/CheckIntegrity.php:855
 msgid "No CFIELDNAME field set!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:878
+#: application/controllers/admin/CheckIntegrity.php:913
 msgid "No matching survey"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:890
-#: application/controllers/admin/CheckIntegrity.php:965
+#: application/controllers/admin/CheckIntegrity.php:925
+#: application/controllers/admin/CheckIntegrity.php:1000
 msgid "No matching group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:903
-#: application/controllers/admin/CheckIntegrity.php:977
+#: application/controllers/admin/CheckIntegrity.php:938
+#: application/controllers/admin/CheckIntegrity.php:1012
+#: application/controllers/admin/CheckIntegrity.php:1023
 msgid "No parent question"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:914
+#: application/controllers/admin/CheckIntegrity.php:949
 msgid "No parent answer"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:953
+#: application/controllers/admin/CheckIntegrity.php:988
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:990
+#: application/controllers/admin/CheckIntegrity.php:1054
+msgid "The question type does not allow subquestions"
+msgstr ""
+
+#: application/controllers/admin/CheckIntegrity.php:1069
+msgid "The question type does not allow answer options"
+msgstr ""
+
+#: application/controllers/admin/CheckIntegrity.php:1084
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1003
+#: application/controllers/admin/CheckIntegrity.php:1097
 #: application/models/SurveysGroups.php:386
 msgid "No parent group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1015
+#: application/controllers/admin/CheckIntegrity.php:1109
 msgid "There is no matching user %s in group %s."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1050
+#: application/controllers/admin/CheckIntegrity.php:1144
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1055
+#: application/controllers/admin/CheckIntegrity.php:1149
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1076
+#: application/controllers/admin/CheckIntegrity.php:1170
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1122
+#: application/controllers/admin/CheckIntegrity.php:1216
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1187
+#: application/controllers/admin/CheckIntegrity.php:1310
 msgid "Some automatic fixes were already applied."
 msgstr ""
 
@@ -18216,7 +18229,11 @@ msgid "All question texts meet consistency standards."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:173
-msgid "The following surveys have an erroneous question order. That could lead to errors during the design and/or processing of the survey. Please go to each question and group respectively, check the question order and save it."
+msgid "The following surveys have an erroneous question order. That could lead to errors during the design and/or processing of the survey."
+msgstr ""
+
+#: application/views/admin/checkintegrity/check_view.php:173
+msgid "Please go to each question and group respectively, check the question order and save it."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:177
