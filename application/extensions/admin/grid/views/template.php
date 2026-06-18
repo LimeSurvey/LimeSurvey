@@ -9,6 +9,15 @@
 <div id="bottom-scroller" class="content-right scrolling-wrapper">
     {items}
 </div>
+<div class="grid-selection-bar"
+     data-grid-id="<?= CHtml::encode($this->id) ?>"
+     data-label="<?= CHtml::encode(gT('rows selected')) ?>"
+     style="display:none;">
+    <span class="grid-selection-count"></span>
+    <button type="button" class="btn btn-outline-g-700 btn-sm grid-deselect-all">
+        <i class="ri-close-line"></i> <?= gT('Deselect all') ?>
+    </button>
+</div>
     <div class="grid-view-ls-footer">
             <div class="massive-action-container" id="massive-action-container">
                 <?= $massiveActionTemplate ?>
