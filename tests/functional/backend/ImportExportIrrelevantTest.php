@@ -117,13 +117,21 @@ class ImportExportIrrelevantTest extends TestBaseClassWeb
                     $size = filesize($exportedSurveyFile);
                     // Wait until file size is stable (non-zero and unchanged between polls)
                     // to avoid reading a partially written ZIP/LSA archive
-                    if ($size > 0 && $size === $lastSize) {
-                        return true;
+                    if ($size <= 0 || $size !== $lastSize) {
+                        $lastSize = $size;
+                        return false;
                     }
-                    $lastSize = $size;
-                    return false;
+                    // Verify the file is a valid ZIP archive (LSA files are ZIPs with a different extension).
+                    // The ZIP central directory is written last, so a stable size alone is not sufficient.
+                    $zip = new \ZipArchive();
+                    $result = $zip->open($exportedSurveyFile);
+                    if ($result !== true) {
+                        return false;
+                    }
+                    $zip->close();
+                    return true;
                 },
-                'Export file was not created or completed within 10 seconds'
+                'Export file was not created or is not a valid ZIP/LSA archive within 10 seconds'
             );
             $this->assertFileExists($exportedSurveyFile);
 
