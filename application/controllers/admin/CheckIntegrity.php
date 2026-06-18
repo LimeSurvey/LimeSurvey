@@ -78,6 +78,7 @@ class CheckIntegrity extends SurveyCommonAction
                     if (in_array($aSurveyTable['table'], $oldsmultidelete)) {
                         Yii::app()->db->createCommand()->dropTable($aSurveyTable['table']);
                         $aData['messages'][] = sprintf(gT('Deleting survey table: %s'), $aSurveyTable['table']);
+                        $aData = $this->dropRelatedArchivedQuestionsTable($aSurveyTable['table'], $aData);
                     }
                 }
             }
@@ -210,6 +211,40 @@ class CheckIntegrity extends SurveyCommonAction
         foreach ($surveyTables as $aSurveyTable) {
             Yii::app()->db->createCommand()->dropTable($aSurveyTable);
             $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'), $aSurveyTable);
+            $aData = $this->dropRelatedArchivedQuestionsTable($aSurveyTable, $aData);
+        }
+        return $aData;
+    }
+
+    /**
+     * Drops the archived questions table (old_questions_<sid>_<date>) related to a
+     * given archived survey responses table (old_responses_<sid>_<date>), if it exists.
+     *
+     * On deactivation a survey responses table is archived as old_responses_<sid>_<date>
+     * together with a snapshot of the questions as old_questions_<sid>_<date>. When the
+     * archived responses table is removed, its related questions archive is no longer
+     * needed and would otherwise be left orphaned in the database.
+     *
+     * @param string $sSurveyTableName Full (prefixed) name of the archived survey responses table
+     * @param array $aData
+     * @return array
+     */
+    private function dropRelatedArchivedQuestionsTable($sSurveyTableName, array $aData)
+    {
+        $sDBPrefix = Yii::app()->db->tablePrefix;
+        // Only response archive tables (old_responses_<sid>_<date>) have a matching questions archive
+        if (strpos((string) $sSurveyTableName, $sDBPrefix . 'old_responses_') !== 0) {
+            return $aData;
+        }
+        $sQuestionsTableName = str_replace(
+            $sDBPrefix . 'old_responses_',
+            $sDBPrefix . 'old_questions_',
+            (string) $sSurveyTableName
+        );
+        $sQuestionsTableNameNoPrefix = substr($sQuestionsTableName, strlen((string) $sDBPrefix));
+        if (tableExists($sQuestionsTableNameNoPrefix)) {
+            Yii::app()->db->createCommand()->dropTable($sQuestionsTableName);
+            $aData['messages'][] = sprintf(gT('Deleting related archived questions table: %s'), $sQuestionsTableName);
         }
         return $aData;
     }
@@ -1181,6 +1216,35 @@ class CheckIntegrity extends SurveyCommonAction
                         $aOldTokenTableAsk[] = array('table' => $sTableName, 'details' => sprintf(gT('Survey ID %d saved at %s containing %d record(s)'), $iSurveyID, $sDate, $aFirstRow['recordcount']));
                     }
                 }
+            }
+        }
+
+        /**********************************************************************/
+        /*     CHECK OLD QUESTIONS TABLES                                     */
+        /**********************************************************************/
+        //1: Get list of 'old_questions' tables (old_questions_<sid>_<date>)
+        //2: An old_questions table is only useful together with its matching
+        //   old_responses_<sid>_<date> archive (it is used during reactivation).
+        //   It is orphaned when the survey no longer exists or when its matching
+        //   old_responses archive is gone, so offer it for immediate deletion.
+        $sQuery = dbSelectTablesLike('{{old_questions}}%');
+        $aQuestionsTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
+
+        $sQuery = dbSelectTablesLike('{{old_responses}}%');
+        $aResponsesTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
+        $aSIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
+
+        foreach ($aQuestionsTables as $sTableName) {
+            $aTableParts = explode('_', substr((string) $sTableName, strlen((string) $sDBPrefix)));
+            // Expected format: old_questions_<sid>_<date> => 4 parts
+            if (count($aTableParts) < 4) {
+                continue;
+            }
+            $iQuestionsSID = $aTableParts[2];
+            $sDateTime = $aTableParts[3];
+            $sMatchingResponsesTable = $sDBPrefix . "old_responses_{$iQuestionsSID}_{$sDateTime}";
+            if (!in_array($iQuestionsSID, $aSIDs) || !in_array($sMatchingResponsesTable, $aResponsesTables)) {
+                $aDelete['orphansurveytables'][] = $sTableName;
             }
         }
 
