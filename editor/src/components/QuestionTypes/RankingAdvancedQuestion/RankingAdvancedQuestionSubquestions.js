@@ -3,7 +3,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import classNames from 'classnames'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
 import { useSurvey, useAppState } from 'hooks'
-import { Entities, STATES } from 'helpers'
+import { Entities, hasTempId, STATES } from 'helpers'
 import { useParams } from 'react-router-dom'
 import { ContentEditor } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
@@ -18,6 +18,7 @@ export const RankingAdvancedQuestionSubquestions = ({
   qid,
   language,
   handleCodeUpdate,
+  isTitleFocused,
 }) => {
   const subquestionsRef = useRef(null)
   const { surveyId } = useParams()
@@ -125,6 +126,12 @@ export const RankingAdvancedQuestionSubquestions = ({
                             'focus-element': snapshot.isDragging,
                           }
                         )}
+                        // Focus the child if it's a new child and also if the question is not a new question.
+                        focus={
+                          hasTempId(subquestion.qid) &&
+                          !hasTempId(qid) &&
+                          !isTitleFocused
+                        }
                         testId="ranking-advanced-subquestion-content-editor"
                       />
                     </div>

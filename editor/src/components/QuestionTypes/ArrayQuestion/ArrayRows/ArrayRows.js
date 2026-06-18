@@ -29,6 +29,7 @@ export const ArrayRows = ({
   setVerticalEntitiesInfo,
   showNoAnswer = false,
   handleChildCodeUpdate = () => {},
+  isTitleFocused,
 }) => {
   const subQuestionsContainerRef = useRef(null)
   const isArrayByColumn =
@@ -199,6 +200,7 @@ export const ArrayRows = ({
                   itemsKey={entitiesInfo.itemsKey}
                   entity={entity}
                   scaleId={scaleId}
+                  id={entity[entitiesInfo.idKey]}
                   code={entity[entitiesInfo.codeKey]}
                   showQuestionCode={showQuestionCode}
                   handleCodeUpdate={(value, index) =>
@@ -213,6 +215,7 @@ export const ArrayRows = ({
                       entityTitleKey: entitiesInfo.titleKey,
                     })
                   }
+                  istitleFocused={isTitleFocused}
                 />
               </div>
             )}
@@ -250,6 +253,7 @@ export const ArrayRows = ({
                 entityTitleKey: entitiesInfo.titleKey,
               })
             }
+            istitleFocused={isTitleFocused}
           />
         </div>
       )}
