@@ -24,6 +24,22 @@ declare module "ace-builds/src-noconflict/snippets-c_cpp" {
     export const snippetText: string;
     export const scope: "c_cpp";
 }
+declare module "ace-builds/src-noconflict/snippets-cedar.snippets" {
+    const _exports: string;
+    export = _exports;
+}
+declare module "ace-builds/src-noconflict/snippets-cedar" {
+    export const snippetText: string;
+    export const scope: "cedar";
+}
+declare module "ace-builds/src-noconflict/snippets-cedarschema.snippets" {
+    const _exports: string;
+    export = _exports;
+}
+declare module "ace-builds/src-noconflict/snippets-cedarschema" {
+    export const snippetText: string;
+    export const scope: "cedarschema";
+}
 declare module "ace-builds/src-noconflict/snippets-clojure.snippets" {
     const _exports: string;
     export = _exports;

@@ -34,6 +34,39 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.2 (build 260617) to 7.0.3 (build 260618) June 17, 2026
+-Fixed issue AT-2090: [security] SQL injection vulnerability in statistics (Carsten Schmitz)
+-Fixed issue #20565: survey start and expiry date are now displayed and saved correctly (#5061) (Patrick Teichmann)
+#Updated translation: Italian by c_schmitz, drsi.staff, lfanfoni, ritapas, twilllig, Valentina Tessaro
+#Updated translation: Italian (Informal) by c_schmitz, ciampix, lfanfoni, twilllig, Valentina Tessaro
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+
+
+Changes from 7.0.1 (build 260611) to 7.0.2 (build 260617) June 16, 2026
+-Fixed issue: Batch edit and edit for survey menus didn't work correctly (#5049) (Tim Willig)
+-Fixed issue: A11y survey menu tabs improvements (#4990) (Anblik Audit Team)
+-Fixed issue: A11y nav-tabs in personal settings (#5051) (Anblik Audit Team)
+-Fixed issue: A11y fieldset markup and form control accessibility in surveymenu massive action form (#5008) (Anblik Audit Team)
+-Fixed issue: A11y fieldset markup and form control accessibility in surveymenu entries massive action form (#5022) (Anblik Audit Team)
+-Fixed issue: A11y add localized table captions for screen readers on survey menu tables (#5004) (Anblik Audit Team)
+-Fixed issue: A11y Survey menu modal improvements (#5014) (Anblik Audit Team)
+-Fixed issue: A11y Primary button is not triggerable via keyboard in massive action modals (#5039) (Anblik Audit Team)
+-Fixed issue: A11y Table pagination page buttons enhanced with contextual ARIA labels, action dropdown items improved with disabled state indicators via ARIA attributes and proper keyboard focus management (#4969) (Anblik Audit Team)
+-Fixed issue: A11y Improvements for survey menu forms (#5036) (Anblik Audit Team)
+-Fixed issue: A11y Improved plugin configuration tabs with tab markup and ARIA structure (#4977) (Anblik Audit Team)
+-Fixed issue: A11y Improved Account tabs and settings (#5054) (Anblik Audit Team)
+-Fixed issue: A11y Enhanced confirmation modal accessibility (#4947) (Anblik Audit Team)
+-Fixed issue: A11y Enhanced accessibility for notifications (#4966) (Anblik Audit Team)
+-Fixed issue #AT-2087: Layout issue on sidebar in statistics charts page (#5052) (haythem chibani)
+-Fixed issue #AT-2085: Empty responses were created when going to theme options preview (#5050) (haythem chibani, Patrick Teichmann)
+-Fixed issue #20560: Automatically writing the allowed hosts file may fail silently (Carsten Schmitz)
+-Fixed issue #20558: Error when trying add/upload a picture in the editor (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 7.0.0 (build 260526) to 7.0.1 (build 260611) June 10, 2026
 +New feature #12393: Check all boxes at data integrity check (#5038) (Gabriel Jenik)
 -Fixed issue: updates through ComfortUpdate are incorrectly marked as unstable (Patrick Teichmann)

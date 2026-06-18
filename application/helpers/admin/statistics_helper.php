@@ -872,7 +872,11 @@ class statistics_helper
             } else {
                 $showem = array();
                 $fld = $rt;
-                $fielddata = $fieldmap[($fld[1] === 'Q') ? substr($fld, 1) : $fld];
+                $fieldkey = ($fld[1] === 'Q') ? substr($fld, 1) : $fld;
+                if (!array_key_exists($fieldkey, $fieldmap)) {
+                    return [];
+                }
+                $fielddata = $fieldmap[$fieldkey];
 
                 $qtitle = flattenText($fielddata['title']);
                 $qtype = $fielddata['type'];

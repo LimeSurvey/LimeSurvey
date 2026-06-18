@@ -19,12 +19,12 @@ echo viewHelper::getViewTestTag('surveyMenus');
         <!-- Tabs -->
         <ul class="nav nav-tabs" id="menueslist" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" role="tab" data-bs-toggle="tab" href="#surveymenues" aria-controls="surveymenues">
+                <a id="menueslist-tab-surveymenues" class="nav-link active" role="tab" data-bs-toggle="tab" href="#surveymenues" aria-controls="surveymenues" aria-selected="true" tabindex="0">
                     <?php eT('Survey menus'); ?>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" role="tab" data-bs-toggle="tab" href="#surveymenuentries" aria-controls="surveymenuentries">
+                <a id="menueslist-tab-surveymenuentries" class="nav-link" role="tab" data-bs-toggle="tab" href="#surveymenuentries" aria-controls="surveymenuentries" aria-selected="false" tabindex="-1">
                     <?php eT('Survey menu entries'); ?>
                 </a>
             </li>
@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
         <!-- Tab Content -->
         <div class="tab-content">
             <!-- Survey Menu -->
-            <div id="surveymenues" class="tab-pane show active">
+            <div id="surveymenues" class="tab-pane show active" role="tabpanel" aria-labelledby="menueslist-tab-surveymenues">
                 <div class="col-12 ls-space margin top-15">
                     <div class="col-12 ls-flex-item">
                         <?php
@@ -66,7 +66,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
             </div>
 
             <!-- Survey Menue Entries -->
-            <div id="surveymenuentries" class="tab-pane">
+            <div id="surveymenuentries" class="tab-pane" role="tabpanel" aria-labelledby="menueslist-tab-surveymenuentries">
                 <?php App()->getController()->renderPartial('surveymenu_entries/index', ['model' => $entries_model]); ?>
             </div>
         </div>
