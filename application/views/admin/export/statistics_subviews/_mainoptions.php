@@ -38,8 +38,9 @@
         <div class='mb-3'>
             <?php
             $sViewsummaryall = (int)Yii::app()->request->getPost('viewsummaryall'); ?>
-            <label class="form-label" for='viewsummaryall'><?php
-                eT("View summary of all available fields:"); ?></label>
+            <label class="form-label" id='viewsummaryall-label' for='viewsummaryall'>
+                <?php eT("View summary of all available fields:"); ?>
+            </label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => 'viewsummaryall',
@@ -49,10 +50,19 @@
                         '0' => gT('Off', 'unescaped'),
                     ],
                     'htmlOptions'   => [
-                        'class' => 'text-option-inherit'
+                        'class' => 'text-option-inherit',
+                        'aria-labelledby' =>  'viewsummaryall-label',
+                        'aria-describedby' => ($warningCryptedQuestionHidden ? 'viewsummaryall-extrahelp' : null)
                     ]
                 ]); ?>
             </div>
+            <?php if ($warningCryptedQuestionHidden) {
+                echo CHtml::tag(
+                    'div',
+                    ['class' => 'form-text', 'id' => 'viewsummaryall-extrahelp'],
+                    gT('Encrypted question are not shown in statistics.')
+                );
+            } ?>
         </div>
         <div class='mb-3'>
             <label for='usegraph' class="form-label"><?php

@@ -1,7 +1,19 @@
 <div id='statistics_general_filter'>
     <div class="col-12">
         <!-- Data Selection -->
-        <?php $this->renderPartial('/admin/export/statistics_subviews/_mainoptions', array('error' => $error, 'surveyid' => $surveyid, 'selectshow' => $selectshow, 'selecthide' => $selecthide, 'selectinc' => $selectinc, 'survlangs' => $survlangs, 'sStatisticsLanguage' => $sStatisticsLanguage)); ?>
+        <?php $this->renderPartial(
+            '/admin/export/statistics_subviews/_mainoptions',
+            array(
+                'error' => $error,
+                'surveyid' => $surveyid,
+                'warningCryptedQuestionHidden' => $warningCryptedQuestionHidden,
+                'selectshow' => $selectshow,
+                'selecthide' => $selecthide,
+                'selectinc' => $selectinc,
+                'survlangs' => $survlangs,
+                'sStatisticsLanguage' => $sStatisticsLanguage
+            )
+        ); ?>
         <!-- Output options -->
         <?php $this->renderPartial('/admin/export/statistics_subviews/_outputoptions', array()); ?>
         <!-- Filter -->

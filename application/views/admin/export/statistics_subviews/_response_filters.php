@@ -1,7 +1,14 @@
 <!-- AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
 <div id="statisticsresponsefilters" class="statisticsfilters scrollheight_400">
     <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
-
+    <?php
+        if ($warningCryptedQuestionHidden) {
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => "Crypted question can not be filtered or choose in statistics with hardened crypt.",
+                'type' => 'warning',
+            ]);
+        }
+    ?>
     <?php
         $dshresults = $dshresults ?? '';
         $dshresults2 = $dshresults2 ?? '';
