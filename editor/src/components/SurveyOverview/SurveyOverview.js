@@ -89,22 +89,24 @@ export const SurveyOverview = ({
               </div>
             )}
             <div className="row g-4">
-              <div className="col-md-4">
-                <Card className="h-100 w-100">
-                  <Card.Body className="d-flex flex-row flex-wrap justify-content-center align-items-center gap-2">
+              <div className="col-md-4 p-fixed">
+                <Card className="h-68 w-100">
+                  <Card.Body className="d-flex flex-row flex-nowrap align-items-center gap-8px">
                     <span
                       className="reg28 text-nowrap"
                       ref={(el) => (numberRefs.current[0] = el)}
                     >
                       {statistics.totalResponses}
                     </span>
-                    <span className="reg14">{t('Total responses')}</span>
+                    <div className="reg14-container">
+                      <span className="reg14">{t('Total responses')}</span>
+                    </div>
                   </Card.Body>
                 </Card>
               </div>
-              <div className="col-md-4">
-                <Card className="h-100 w-100">
-                  <Card.Body className="d-flex flex-row flex-wrap justify-content-center align-items-center gap-2">
+              <div className="col-md-4 p-fixed">
+                <Card className="h-68 w-100">
+                  <Card.Body className="d-flex flex-row flex-nowrap align-items-center gap-8px">
                     <span
                       className="reg28 text-nowrap"
                       ref={(el) => (numberRefs.current[1] = el)}
@@ -112,13 +114,15 @@ export const SurveyOverview = ({
                       {statistics.totalResponses -
                         statistics.incompleteResponses}
                     </span>
-                    <span className="reg14">{t('Full responses')}</span>
+                    <div className="reg14-container">
+                      <span className="reg14">{t('Full responses')}</span>
+                    </div>
                   </Card.Body>
                 </Card>
               </div>
-              <div className="col-md-4">
-                <Card className="h-100 w-100">
-                  <Card.Body className="d-flex flex-row flex-wrap justify-content-center align-items-center gap-2">
+              <div className="col-md-4 p-fixed">
+                <Card className="h-68 w-100">
+                  <Card.Body className="d-flex flex-row flex-nowrap align-items-center gap-8px">
                     {statistics.completionRate ? (
                       <>
                         <span
@@ -127,7 +131,9 @@ export const SurveyOverview = ({
                         >
                           {`${statistics.completionRate}%`}
                         </span>
-                        <span className="reg14">{t('Response rate')}</span>
+                        <div className="reg14-container">
+                          <span className="reg14">{t('Response rate')}</span>
+                        </div>
                       </>
                     ) : (
                       <span className="reg14">{t('No responses')}</span>
@@ -135,16 +141,18 @@ export const SurveyOverview = ({
                   </Card.Body>
                 </Card>
               </div>
-              <div className="col-md-4">
-                <Card className="h-100 w-100">
-                  <Card.Body className="d-flex flex-row flex-wrap justify-content-center align-items-center gap-2">
+              <div className="col-md-4 p-fixed">
+                <Card className="h-68 w-100">
+                  <Card.Body className="d-flex flex-row flex-nowrap align-items-center gap-8px">
                     <span
                       className="reg28 text-nowrap"
                       ref={(el) => (numberRefs.current[3] = el)}
                     >
                       {statistics.incompleteResponses}
                     </span>
-                    <span className="reg14">{t('Incomplete responses')}</span>
+                    <div className="reg14-container">
+                      <span className="reg14">{t('Incomplete responses')}</span>
+                    </div>
                   </Card.Body>
                 </Card>
               </div>
