@@ -2007,8 +2007,11 @@ class Tokens extends SurveyCommonAction
 
             // define $attrlist: list of attributes to read from users' entries
             $attrparams = array(
-                'firstname_attr', 'lastname_attr',
-                'email_attr', 'token_attr', 'language'
+                'firstname_attr',
+                'lastname_attr',
+                'email_attr',
+                'token_attr',
+                'language'
             );
 
             $aTokenAttr = getAttributeFieldNames($iSurveyId);
@@ -2527,19 +2530,25 @@ class Tokens extends SurveyCommonAction
         $aData['iSurveyId'] = $iSurveyId;
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
+        $aData['surveyCryptmethod'] = $survey->oOptions->crypt_method;
         $aTokenTableFields = getTokenFieldsAndNames($iSurveyId);
         unset($aTokenTableFields['sent']);
         unset($aTokenTableFields['remindersent']);
         unset($aTokenTableFields['remindercount']);
         unset($aTokenTableFields['usesleft']);
+        unset($aTokenTableFields['token']); // token are already duplicate forbidden mantis #14334, remove it
         foreach ($aTokenTableFields as $sKey => $sValue) {
             if ($sValue['description'] != $sKey) {
                 $sValue['description'] .= ' - ' . $sKey;
             }
             $aNewTokenTableFields[$sKey] = $sValue['description'];
         }
+        /* Removed crypted field for hardened survey */
+        if ($aData['surveyCryptmethod'] == "H") {
+            $aEncryptedAttributes = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
+            $aNewTokenTableFields = array_diff_key($aNewTokenTableFields, array_flip($aEncryptedAttributes));
+        }
         $aData['aTokenTableFields'] = $aNewTokenTableFields;
-
         // Get default character set from global settings
         $thischaracterset = Yii::app()->getConfig('characterset');
         // If no encoding was set yet, use the old "auto" default
