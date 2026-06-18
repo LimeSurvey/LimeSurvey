@@ -163,7 +163,7 @@ class LSSodium
     {
         if ($this->bLibraryExists === true) {
             if (!empty($sEncryptedString) && $sEncryptedString !== 'null') {
-                /* Try to decrypt according to sEncryptionMethod if H */
+                /* Try to decrypt according to sEncryptionMethod */
                 switch ($this->sEncryptionMethod) {
                     case 'H':
                         $plaintext = $this->decryptHardened($sEncryptedString);
@@ -189,9 +189,9 @@ class LSSodium
                 }
                 /* We get here : all solution return false */
                 if ($bReturnFalseIfError) {
-                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));
+                    return false;
                 }
-                return false;
+                throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));
             }
             return '';
         }
