@@ -28,7 +28,7 @@ class LSSodium
 
     /**
      * Set the encryption method
-     * @param string 
+     * @param string
      * @return void
      */
     public function setEncryptionMethod($string)
@@ -205,25 +205,24 @@ class LSSodium
     */
     private function decryptHardened($sEncryptedString)
     {
-            $minLength = (
-                ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES +
-                ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_MACBYTES
-            );
-            // check that encrypted string is of sufficient length to
-            // contain at minimum the random nonce and authentication tag
-            // split the string into nonce and cipher text then try to decrypt
-            if (!ctype_xdigit($sEncryptedString) || strlen($sEncryptedString) < $minLength) {
-                return false;
-            }
-            $nonceAndCipherText = ParagonIE_Sodium_Compat::hex2bin($sEncryptedString);
-            $nonce = substr($nonceAndCipherText, 0, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
-            $ciphertext = substr($nonceAndCipherText, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
-            $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(
-                $ciphertext,
-                $nonce,
-                $this->sEncryptionSecretBoxKey
-            );
-            return $plaintext;
+        $minLengthBytes = (
+            ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES +
+            ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_MACBYTES
+        );
+        $minLengthChars = $minLengthBytes * 2; // each byte is represented by 2 hexadecimal characters (80 characters for 40 bytes)
+        if (!ctype_xdigit($sEncryptedString) || strlen($sEncryptedString) < $minLengthChars) {
+            // Avoid broke of ParagonIE_Sodium_Compat::hex2bin
+            return false;
+        }
+        $nonceAndCipherText = ParagonIE_Sodium_Compat::hex2bin($sEncryptedString);
+        $nonce = substr($nonceAndCipherText, 0, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
+        $ciphertext = substr($nonceAndCipherText, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
+        $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(
+            $ciphertext,
+            $nonce,
+            $this->sEncryptionSecretBoxKey
+        );
+        return $plaintext;
     }
 
     /**
