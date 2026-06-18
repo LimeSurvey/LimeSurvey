@@ -543,7 +543,6 @@ class ConditionsAction extends SurveyCommonAction
         /** @var string $p_newscenarionum */
         /** @var string $p_scenario */
         extract($args);
-        $qid = LSYii_Application::getQuestionId();
         switch ($p_subaction) {
             // Insert new condition
             case "insertcondition":
