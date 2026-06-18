@@ -3588,6 +3588,59 @@ function convertToGlobalSettingFormat($sDate, $withTime = false)
 }
 
 /**
+ * Parses a date string that is in the user's global setting format and returns
+ * a normalised 'Y-m-d H:i:s' string that is safe for PHP's DateTime constructor
+ * (e.g. as direct input to getUTCOfDate()).
+ *
+ * This is the counterpart of convertToGlobalSettingFormat(): where that function
+ * converts an arbitrary date INTO the user's display format, this function parses
+ * a value that already IS in the user's display format and converts it back to an
+ * unambiguous ISO-style string.
+ *
+ * @param string|null $sDate   Date string in the user's phpdate (+ time) format
+ * @param bool        $withTime Whether a H:i time component is present
+ * @return string|null Normalised 'Y-m-d H:i:s' string, or null when parsing fails
+ */
+function convertFromGlobalSettingFormat(?string $sDate, bool $withTime = false): ?string
+{
+    if (empty($sDate)) {
+        return null;
+    }
+    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat'] ?? 1);
+    $fromFormat = $withTime
+        ? $sDateformatdata['phpdate'] . ' H:i'
+        : $sDateformatdata['phpdate'];
+
+    // The '!' prefix resets all fields not present in the format to the Unix epoch,
+    // so a date-only value yields 00:00:00 deterministically (instead of "now").
+    $oDate = DateTime::createFromFormat('!' . $fromFormat, $sDate);
+
+    if ($oDate !== false) {
+        // Whether a value is a valid date depends on $fromFormat (e.g. "13.02.2023"
+        // is valid as d.m.Y but not as m.d.Y). createFromFormat() parses against the
+        // user's configured $fromFormat but silently normalises dates that are invalid
+        // *for that format* (e.g. "30.02.2023" as d.m.Y => "2023-03-02") instead of
+        // returning false. Such cases set parser warnings; reject them rather than
+        // persisting a silently shifted date. (Do NOT fall back to new DateTime() here,
+        // as the constructor would re-normalise the invalid date in the same way.)
+        $errors = DateTime::getLastErrors();
+        if ($errors !== false && (($errors['warning_count'] ?? 0) > 0 || ($errors['error_count'] ?? 0) > 0)) {
+            return null;
+        }
+    } else {
+        // The value did not match the user's locale format at all
+        // (e.g. it is already an ISO 'Y-m-d H:i:s' string) - let PHP try to parse it.
+        try {
+            $oDate = new DateTime($sDate);
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+    return $oDate->format('Y-m-d H:i:s');
+}
+
+
+/**
 * This function removes the UTF-8 Byte Order Mark from a string
 *
 * @param string $str
