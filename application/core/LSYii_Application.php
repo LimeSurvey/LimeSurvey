@@ -311,7 +311,7 @@ class LSYii_Application extends CWebApplication
      */
     public function getConfig($name, $default = false)
     {
-        if (!isset($this->config[$name]) || is_null($this->config[$name])) {
+        if (!isset($this->config[$name])) {
             return $default;
         }
         if (in_array($name, SettingGlobal::getCryptedSettings())) {

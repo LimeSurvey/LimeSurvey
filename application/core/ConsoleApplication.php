@@ -165,12 +165,16 @@ class ConsoleApplication extends CConsoleApplication
     public function getConfig($name = null, $default = false)
     {
         if (isset($this->$name)) {
+            // Console specific : unsure of usage
             return $this->name;
-        } elseif (isset($this->config[$name])) {
-            return $this->config[$name];
-        } else {
+        }
+        if (!isset($this->config[$name])) {
             return $default;
         }
+        if (in_array($name, SettingGlobal::getCryptedSettings())) {
+            return LSActiveRecord::decryptSingle($this->config[$name], 'H');
+        }
+        return $this->config[$name];
     }
 
     /**
