@@ -68,7 +68,7 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         \Yii::app()->session['loginID'] = self::$userId;
         App()->user->setId(self::$userId);
         /* Check good url but survey without access */
-        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'gid' => $superadminGid, 'qid' => $superadminQid));
+        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
             $this->fail("User can see question in survey without permission");
