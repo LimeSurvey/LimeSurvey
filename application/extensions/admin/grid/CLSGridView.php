@@ -152,6 +152,11 @@ class CLSGridView extends TbGridView
             App()->getConfig("extensionsurl") . 'admin/grid/assets/restoreFocusAfterSort.js',
             CClientScript::POS_BEGIN
         );
+        // Accessibility: restore focus to sort column after AJAX grid update
+        App()->clientScript->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/restoreFocusAfterSort.js',
+            CClientScript::POS_BEGIN
+        );
         // changePageSize
         $script = '
 			jQuery(document).on("change", "#' . $this->id . ' .changePageSize", function(){
