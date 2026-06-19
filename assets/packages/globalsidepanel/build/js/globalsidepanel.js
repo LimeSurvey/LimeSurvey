@@ -851,8 +851,6 @@ var GlobalSidemenu = /*#__PURE__*/function () {
     key: "mousedown",
     value: function mousedown(e) {
       this.isMouseDown = true;
-      // Remember where the cursor grabbed relative to the sidebar's right edge
-      // so the handle stays under the pointer (no snap) during the drag.
       var sidebar = document.getElementById('sidebar');
       this.grabOffset = sidebar ? sidebar.getBoundingClientRect().right - e.clientX : 0;
       $("#sidebar").removeClass("transition-animate-width");
@@ -884,10 +882,6 @@ var GlobalSidemenu = /*#__PURE__*/function () {
           this.sideBarWidth = screen.width / 2;
           return;
         }
-        // Width = (cursor position + the grab offset) measured from the
-        // sidebar's left edge. Accounting for the sidebar's actual left offset
-        // (the global settings sidebar is not at x=0) and the grab offset keeps
-        // the handle under the pointer instead of jumping on the first move.
         var sidebar = document.getElementById('sidebar');
         var left = sidebar ? sidebar.getBoundingClientRect().left : 0;
         this.sideBarWidth = e.clientX - left + (this.grabOffset || 0);
@@ -13450,11 +13444,6 @@ var init = function init() {
 
   // Initialize actions
   var actions = new _actions__WEBPACK_IMPORTED_MODULE_1__["default"](store);
-
-  // Mount on the <global-sidemenu> placeholder's parent so the surrounding markup
-  // (the tabs <ul role="tablist"> and .tab-content wrapper in the global settings view)
-  // is preserved. This mirrors the previous Vue mount, which only replaced the
-  // <global-sidemenu/> placeholder instead of overwriting the whole container.
   var placeholder = container.querySelector('global-sidemenu');
   var mountEl = placeholder ? placeholder.parentElement : container;
 
