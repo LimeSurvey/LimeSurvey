@@ -74,8 +74,30 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'gid' => $superadminGid, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
-            $this->fail("User can see question in survey without permission");
+            $title = trim(self::$webDriver->getTitle());
+            // From SurveyCommonAction in 7.0.2 (2026-06-19)
+            if ($title != "403: Forbidden") {
+                $this->fail("User can set surveyId without permission (page title : " . $title . ")");
+            }
         } catch (\CException $exception) {
+            /* No exception throw whene error happen, keep it if test is updated in 7.0.2 (2026-06-19) */
+            if ($exception->statusCode != 403) {
+                /* throw the exception : must be a 403 */
+                throw $exception;
+            }
+            // Continue : it's OK
+        }
+        /* Check surveyid with XSS */
+        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId . '"<script>alert("XSS")</script>', 'gid' => $gid, 'qid' => $qid));
+        try {
+            self::$webDriver->get($url);
+            $title = trim(self::$webDriver->getTitle());
+            // From SurveyCommonAction in 7.0.2 (2026-06-19)
+            if ($title != "403: Forbidden") {
+                $this->fail("User can set surveyId with XSS (page title : " . $title . ")");
+            }
+        } catch (\CException $exception) {
+            /* No exception throw when error happen in 7.0.2 (2026-06-19), keep it if test is updated */
             if ($exception->statusCode != 403) {
                 /* throw the exception : must be a 403 */
                 throw $exception;
@@ -86,8 +108,12 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         $url = $urlMan->createUrl('admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $gid, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
-            $this->fail("User can get question without permission hacking surveyid in url.");
+            $title = trim(self::$webDriver->getTitle());
+            if ($title != "400: Bad Request") {
+                $this->fail("User can get question ID without permission hacking surveyid in url (page title : " . $title . ")");
+            }
         } catch (\CException $exception) {
+            /* No exception throw when error happen in 7.0.2 (2026-06-19), keep it if test is updated */
             if ($exception->statusCode != 400) {
                 /* throw the exception : must be a 400 */
                 throw $exception;
@@ -98,9 +124,12 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         $url = $urlMan->createUrl('admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $superadminGid, 'qid' => $qid));
         try {
             self::$webDriver->get($url);
-            $this->fail("User can get question without permission hacking surveyid in url.");
-
+            $title = trim(self::$webDriver->getTitle());
+            if ($title != "400: Bad Request") {
+                $this->fail("User can get group ID without permission hacking surveyid in url (page title : " . $title . ")");
+            }
         } catch (\CException $exception) {
+            /* No exception throw when error happen in 7.0.2 (2026-06-19), keep it if test is updated */
             if ($exception->statusCode != 400) {
                 /* throw the exception : must be a 400 */
                 throw $exception;
@@ -111,10 +140,14 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         $url = $urlMan->createUrl('admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => "<script>alert('XSS')</script>", 'qid' => $qid));
         try {
             self::$webDriver->get($url);
-            $this->fail("User can get question without permission hacking surveyid in url.");
-
+            $title = trim(self::$webDriver->getTitle());
+            // From SurveyCommonAction in 7.0.2 (2026-06-19)
+            if ($title != "403: Forbidden") {
+                $this->fail("User can set group ID with XSS (page title : " . $title . ")");
+            }
         } catch (\CException $exception) {
-            if ($exception->statusCode != 400) {
+            /* No exception throw when error happen in 7.0.2 (2026-06-19), keep it if test is updated */
+            if ($exception->statusCode != 403) {
                 /* throw the exception : must be a 400 */
                 throw $exception;
             }
