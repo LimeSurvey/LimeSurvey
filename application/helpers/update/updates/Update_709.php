@@ -11,7 +11,7 @@ namespace LimeSurvey\Helpers\Update;
  *
  * @see https://bugs.limesurvey.org/view.php?id=18275
  */
-class Update_704 extends DatabaseUpdateBase
+class Update_709 extends DatabaseUpdateBase
 {
     /**
      * Alter TEXT columns to MEDIUMTEXT for Long free text (T) and Huge free text (U)
@@ -65,7 +65,7 @@ class Update_704 extends DatabaseUpdateBase
                         \alterColumn($sTableName, $columnName, 'mediumtext');
                     } catch (\Exception $e) {
                         \Yii::log(
-                            "Update_702: Failed to alter column '$columnName' in table '$sTableName': " . $e->getMessage(),
+                            "Failed to alter column '$columnName' in table '$sTableName': " . $e->getMessage(),
                             'error',
                             'application.db.upgrade'
                         );
