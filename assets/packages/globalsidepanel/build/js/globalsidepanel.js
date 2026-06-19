@@ -750,10 +750,11 @@ var GlobalSidemenu = /*#__PURE__*/function () {
     key: "init",
     value: function init() {
       var _this = this;
+      this.render();
+      this.attachEventListeners();
       this.actions.getMenus().then(function () {
         _this.controlActiveLink();
-        _this.render();
-        _this.attachEventListeners();
+        _this.update();
         _this.mounted();
       }).catch(function (error) {
         LOG.error('Failed to load menus', error);

@@ -60,10 +60,12 @@ class GlobalSidemenu {
     }
 
     init() {
+        this.render();
+        this.attachEventListeners();
+
         this.actions.getMenus().then(() => {
             this.controlActiveLink();
-            this.render();
-            this.attachEventListeners();
+            this.update();
             this.mounted();
         }).catch((error) => {
             LOG.error('Failed to load menus', error);
