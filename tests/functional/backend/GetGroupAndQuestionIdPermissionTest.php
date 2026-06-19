@@ -64,7 +64,7 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         self::adminLogin(self::$username, self::$password);
         \Yii::app()->session['loginID'] = self::$userId;
         App()->user->setId(self::$userId);
-        self::importSurvey($surveyFile, $userId);
+        self::importSurvey($surveyFile, self::$userId);
         $questions = $this->getAllSurveyQuestions();
         $questionQ2 = $questions['Q2'];
         $qid = $questions['Q2']->qid;
