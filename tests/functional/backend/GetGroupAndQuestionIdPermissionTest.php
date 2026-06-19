@@ -42,7 +42,7 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
 
 
     /**
-     * Check permission by ID in condition function, 
+     * Check permission by ID in condition function,
      * This check LSYii_Application::getQuestionId() and LSYii_Application::getGroupId() permission check
      * @return void
      */
@@ -84,27 +84,29 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $gid, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
-            $this->fail("User can get question without permission hacking surveyId in url.");
-        } catch (\CException $exception) {
-            if ($exception->statusCode == 400) {
-                $this->assertTrue(true);
-                return;
+            $title = self::$webDriver->getTitle();
+            if ($title != "400: Bad Request") {
+                $this->fail("User can get question without permission hacking surveyId in url. HTML page have title : " . $title);
             }
-            /* throw the exception : must be a 400 */
-            throw $exception;
+        } catch (\CException $exception) {
+            if ($exception->statusCode != 400) {
+                /* throw the exception : must be a 400 */
+                throw $exception;
+            }
         }
         /* Check good url but survey with access valid qid but invalid gid*/
         $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $superadminGid, 'qid' => $qid));
         try {
             self::$webDriver->get($url);
-            $this->fail("User can get group without permission hacking surveyId in url.");
-        } catch (\CException $exception) {
-            if ($exception->statusCode == 400) {
-                $this->assertTrue(true);
-                return;
+            $title = self::$webDriver->getTitle();
+            if ($title != "400: Bad Request") {
+                $this->fail("User can get question without permission hacking surveyId in url. HTML page have title : " . $title);
             }
-            /* throw the exception : must be a 400 */
-            throw $exception;
+        } catch (\CException $exception) {
+            if ($exception->statusCode != 400) {
+                /* throw the exception : must be a 400 */
+                throw $exception;
+            }
         }
     }
 

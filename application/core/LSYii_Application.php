@@ -466,7 +466,7 @@ class LSYii_Application extends CWebApplication
             /* Security issue */
             Yii::log("Disable access to " . $realFilePath . " directory", 'error', 'application.security.files.is_file');
             if ($throwException) {
-                throw new CHttpException(403, "Disable for security reasons.");
+                throw new CHttpException(403, "Disable for security reasons.", 'unescaped');
             }
             return false;
         }
@@ -642,7 +642,7 @@ class LSYii_Application extends CWebApplication
         $survey = Survey::model()->findByPk($surveyId);
         if (!$survey) {
             if ($throwError) {
-                throw new CHttpException(404, gT('Survey not found.'));
+                throw new CHttpException(404, gT('Survey not found.', 'unescaped'));
             }
             return false;
         }
@@ -669,14 +669,14 @@ class LSYii_Application extends CWebApplication
         $group = QuestionGroup::model()->findByPk($groupId);
         if (!$group) {
             if ($throwError) {
-                throw new CHttpException(404, gT('Group not found.'));
+                throw new CHttpException(404, gT('Group not found.', 'unescaped'));
             }
             return false;
         }
         $surveyId = self::getSurveyId($throwError);
         if ($surveyId && $surveyId != $group->sid) {
             if ($throwError) {
-                throw new CHttpException(400, gT('Your request is invalid.'));
+                throw new CHttpException(400, gT('Your request is invalid.', 'unescaped'));
             }
             return false;
         }
@@ -705,14 +705,14 @@ class LSYii_Application extends CWebApplication
         $question = Question::model()->findByPk($questionId);
         if (!$question) {
             if ($throwError) {
-                throw new CHttpException(404, gT('Question not found.'));
+                throw new CHttpException(404, gT('Question not found.', 'unescaped'));
             }
             return false;
         }
         $surveyId = self::getSurveyId($throwError);
         if ($surveyId && $surveyId != $question->sid) {
             if ($throwError) {
-                throw new CHttpException(400, gT('Your request is invalid.'));
+                throw new CHttpException(400, gT('Your request is invalid.', 'unescaped'));
             }
             return false;
         }
@@ -734,7 +734,7 @@ class LSYii_Application extends CWebApplication
         $intId = intval($id);
         if (strval($intId) !== strval($id)) {
             if ($throwError) {
-                throw new CHttpException(400, gT('Your request is invalid.'));
+                throw new CHttpException(400, gT('Your request is invalid.', 'unescaped'));
             }
             return false;
         }
