@@ -84,10 +84,10 @@ class GlobalSidemenu {
                         <div id="sidemenu-container" style="min-height: ${this.calculateSideBarMenuHeight}px"></div>
                     </div>
                 </div>
-                <div class="resize-handle ls-flex-column" style="height: 100%; max-height: ${this.getWindowHeight}px">
+                <div class="resize-handle ls-flex-column" style="height: 100%;">
                     <button
                         id="resize-handle-btn"
-                        class="btn"
+                        class="btn resize-btn"
                         style="display: ${this.store.get('isCollapsed') ? 'none' : 'block'}"
                     >
                         <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,6 +182,8 @@ class GlobalSidemenu {
 
     mousedown(e) {
         this.isMouseDown = true;
+        const sidebar = document.getElementById('sidebar');
+        this.grabOffset = sidebar ? (sidebar.getBoundingClientRect().right - e.clientX) : 0;
         $("#sidebar").removeClass("transition-animate-width");
         $("#pjax-content").removeClass("transition-animate-width");
     }
@@ -209,7 +211,9 @@ class GlobalSidemenu {
                 this.sideBarWidth = screen.width / 2;
                 return;
             }
-            this.sideBarWidth = e.pageX - 4;
+            const sidebar = document.getElementById('sidebar');
+            const left = sidebar ? sidebar.getBoundingClientRect().left : 0;
+            this.sideBarWidth = (e.clientX - left) + (this.grabOffset || 0);
         }
     }
 
