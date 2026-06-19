@@ -166,7 +166,7 @@ class ConsoleApplication extends CConsoleApplication
     {
         if (isset($this->$name)) {
             // Console specific : unsure of usage
-            return $this->name;
+            return $this->$name;
         }
         if (!isset($this->config[$name])) {
             return $default;
