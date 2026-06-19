@@ -11,12 +11,13 @@ namespace ls\tests;
 
 class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
 {
-    /**
-     * @var integer $userId
-     */
+    /** @var integer $userId */
     private static $userId;
+    /** @var string $username */
+    private static $username;
+    /** @var integer $password */
+    private static $password;
 
-    /** @var  integer */
     protected static $superadminSurveyId;
     /** @var  \Survey */
     protected static $superadminSurvey;
@@ -29,9 +30,9 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
     {
         parent::setupBeforeClass();
         /* Create an random user and login */
-        $username = "test_" . \Yii::app()->securityManager->generateRandomString(10);
-        $password = createPassword();
-        $result = \User::insertUser($username, $password, 'Test user for GetQuestionId', 1, 'user@example.org');
+        self::$username = "test_" . \Yii::app()->securityManager->generateRandomString(10);
+        self::$password = createPassword();
+        $result = \User::insertUser(self::$username, self::$password, 'Test user for GetQuestionId', 1, 'user@example.org');
         if ($result instanceof \User) {
             self::fail('Failed to create user: ' . json_encode($result->getErrors()));
         }
@@ -58,15 +59,17 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         $superadminQid = $questions['Q2']->qid;
         $superadminGid = $questions['Q2']->gid;
         /* Import second survey as userOId */
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        self::adminLogin(self::$username, self::$password);
+        \Yii::app()->session['loginID'] = self::$userId;
+        App()->user->setId(self::$userId);
         self::importSurvey($surveyFile, $userId);
         $questions = $this->getAllSurveyQuestions();
         $questionQ2 = $questions['Q2'];
         $qid = $questions['Q2']->qid;
         $gid = $questions['Q2']->gid;
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-        \Yii::app()->session['loginID'] = self::$userId;
-        App()->user->setId(self::$userId);
+
         /* Check good url but survey without access */
         //~ $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'gid' => $superadminGid, 'qid' => $superadminQid));
         //~ try {
@@ -81,12 +84,12 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
             //~ throw $exception;
         //~ }
         /* Check good url but survey with access but invalid qid */
-        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $gid, 'qid' => $superadminQid));
+        $url = $urlMan->createUrl('admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $gid, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
             $title = self::$webDriver->getTitle();
             if ($title != "400: Bad Request") {
-                $this->fail("User can get question without permission hacking surveyId in url. HTML page have title : " . $title);
+                $this->fail("User can get question without permission hacking surveyid in url. HTML page have title : " . $title . ", url is " . $url);
             }
         } catch (\CException $exception) {
             if ($exception->statusCode != 400) {
@@ -95,12 +98,12 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
             }
         }
         /* Check good url but survey with access valid qid but invalid gid*/
-        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $superadminGid, 'qid' => $qid));
+        $url = $urlMan->createUrl('admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $superadminGid, 'qid' => $qid));
         try {
             self::$webDriver->get($url);
             $title = self::$webDriver->getTitle();
             if ($title != "400: Bad Request") {
-                $this->fail("User can get question without permission hacking surveyId in url. HTML page have title : " . $title);
+                $this->fail("User can get question without permission hacking surveyid in url. HTML page have title : " . $title . ", url is " . $url);
             }
         } catch (\CException $exception) {
             if ($exception->statusCode != 400) {
