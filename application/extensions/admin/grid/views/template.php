@@ -1,21 +1,23 @@
 <?php
-
 /**
  * @var $this CLSGridView
  * @var $massiveActionTemplate string
  */
 ?>
-
 <div id="bottom-scroller" class="content-right scrolling-wrapper">
     {items}
 </div>
 <div class="grid-selection-bar"
      data-grid-id="<?= CHtml::encode($this->id) ?>"
-     data-label="<?= CHtml::encode(gT('rows selected')) ?>"
+     data-label="<?= CHtml::encode(gT('selected')) ?>"
      style="display:none;">
     <span class="grid-selection-count"></span>
-    <button type="button" class="btn btn-outline-g-700 btn-sm grid-deselect-all">
-        <i class="ri-close-line"></i> <?= gT('Deselect all') ?>
+    <span class="grid-selection-bar__divider" aria-hidden="true"></span>
+    <button type="button" class="grid-selection-bar__deselect grid-deselect-all">
+        <?= gT('Deselect all') ?>
+    </button>
+    <button type="button" class="grid-selection-bar__close grid-deselect-all" aria-label="<?= gT('Deselect all') ?>">
+        <i class="ri-close-line"></i>
     </button>
 </div>
     <div class="grid-view-ls-footer">

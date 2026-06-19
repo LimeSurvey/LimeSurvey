@@ -416,3 +416,69 @@ table {
     align-items: center;
   }
 }
+
+.grid-selection-bar {
+  display: flex;
+  width: fit-content;
+  gap: 0;
+  align-items: center;
+  margin: 4px 0;
+  padding: 4px 12px;
+  font-size: 0.8125rem;
+  line-height: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--LSD-Color-G-900, #1E1E1E);
+  background: var(--LSD-Color-White, #FFF);
+  /* LSD/Elevation/ShadowSoft */
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.20);
+  .grid-selection-count {
+    white-space: nowrap;
+    padding-right: 12px;
+  }
+  .grid-selection-bar__divider {
+    display: inline-block;
+    width: 1px;
+    height: 16px;
+    background-color: $g-600;
+    flex-shrink: 0;
+  }
+  .grid-selection-bar__deselect {
+    background: none;
+    border: none;
+    padding: 0 0 0 12px;
+    font-weight: 500;
+    cursor: pointer;
+    color: $black;
+    white-space: nowrap;
+    line-height: inherit;
+    margin-right: 8px;
+    box-shadow: none;
+    &:hover, &:focus, &:active {
+      background: none;
+      border: none;
+      box-shadow: none;
+      color: $black;
+    }
+  }
+  .grid-selection-bar__close {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: $black;
+    line-height: inherit;
+    box-shadow: none;
+    i {
+      font-size: 1rem;
+      vertical-align: middle;
+    }
+    &:hover, &:focus, &:active {
+      background: none;
+      border: none;
+      box-shadow: none;
+      color: $black;
+    }
+  }
+}
