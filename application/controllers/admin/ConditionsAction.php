@@ -668,13 +668,13 @@ class ConditionsAction extends SurveyCommonAction
         /** @var string $p_cquestions */
         /** @var array $p_canswers */
         /** @var string $subaction */
-        /** @var integer $qid */
         /** @var integer $qcount */
         /** @var string $p_csrctoken */
         /** @var string $p_prevquestionsgqa */
         /** @var string $method */
         /** @var string $scenariocount */
         extract($args);
+        /* Take core part from request directly for security */
         $iSurveyID = LSYii_Application::getSurveyId();
         $qid = LSYii_Application::getQuestionId();
         $gid = LSYii_Application::getGroupId();

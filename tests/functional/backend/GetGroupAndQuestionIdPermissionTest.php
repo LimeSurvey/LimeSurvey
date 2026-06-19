@@ -71,45 +71,54 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         $gid = $questions['Q2']->gid;
 
         /* Check good url but survey without access */
-        //~ $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'gid' => $superadminGid, 'qid' => $superadminQid));
-        //~ try {
-            //~ self::$webDriver->get($url);
-            //~ $this->fail("User can see question in survey without permission");
-        //~ } catch (\CException $exception) {
-            //~ if ($exception->statusCode == 403) {
-                //~ $this->assertTrue(true);
-                //~ return;
-            //~ }
-            //~ /* throw the exception : must be a 403 */
-            //~ throw $exception;
-        //~ }
+        $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'gid' => $superadminGid, 'qid' => $superadminQid));
+        try {
+            self::$webDriver->get($url);
+            $this->fail("User can see question in survey without permission");
+        } catch (\CException $exception) {
+            if ($exception->statusCode != 403) {
+                /* throw the exception : must be a 403 */
+                throw $exception;
+            }
+            // Continue : it's OK
+        }
         /* Check good url but survey with access but invalid qid */
         $url = $urlMan->createUrl('admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $gid, 'qid' => $superadminQid));
         try {
             self::$webDriver->get($url);
-            $title = self::$webDriver->getTitle();
-            if ($title != "400: Bad Request") {
-                $this->fail("User can get question without permission hacking surveyid in url. HTML page have title : " . $title . ", url is " . $url);
-            }
+            $this->fail("User can get question without permission hacking surveyid in url.");
         } catch (\CException $exception) {
             if ($exception->statusCode != 400) {
                 /* throw the exception : must be a 400 */
                 throw $exception;
             }
+            // Continue : it's OK
         }
         /* Check good url but survey with access valid qid but invalid gid*/
         $url = $urlMan->createUrl('admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => $superadminGid, 'qid' => $qid));
         try {
             self::$webDriver->get($url);
-            $title = self::$webDriver->getTitle();
-            if ($title != "400: Bad Request") {
-                $this->fail("User can get question without permission hacking surveyid in url. HTML page have title : " . $title . ", url is " . $url);
-            }
+            $this->fail("User can get question without permission hacking surveyid in url.");
+
         } catch (\CException $exception) {
             if ($exception->statusCode != 400) {
                 /* throw the exception : must be a 400 */
                 throw $exception;
             }
+            // Continue : it's OK
+        }
+        /* Check invalid gid : with HTML XSS*/
+        $url = $urlMan->createUrl('admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$surveyId, 'gid' => "<script>alert('XSS')</script>", 'qid' => $qid));
+        try {
+            self::$webDriver->get($url);
+            $this->fail("User can get question without permission hacking surveyid in url.");
+
+        } catch (\CException $exception) {
+            if ($exception->statusCode != 400) {
+                /* throw the exception : must be a 400 */
+                throw $exception;
+            }
+            // Continue : it's OK
         }
     }
 
