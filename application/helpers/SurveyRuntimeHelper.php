@@ -1758,7 +1758,7 @@ class SurveyRuntimeHelper
         extract($args);
 
         $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
-        if (isset($args['popuppreview']) && $args['popuppreview']) {
+        if (($args['popuppreview'] ?? false) === true) {
             $this->aSurveyInfo['showxquestions'] = 'N';
             $this->aSurveyInfo['shownoanswer'] = 'N';
             $this->aSurveyInfo['showwelcome'] = 'N';
@@ -1775,6 +1775,7 @@ class SurveyRuntimeHelper
         $this->setSurveyMode();
         $this->setSurveyOptions();
 
+        $this->aSurveyOptions['previewmode'] = $args['previewmode'];
         $this->previewgrp      = (isset($this->param['action']) && $this->param['action'] == 'previewgroup') ? true : false;
         $this->previewquestion = (isset($this->param['action']) && $this->param['action'] == 'previewquestion') ? true : false;
 
