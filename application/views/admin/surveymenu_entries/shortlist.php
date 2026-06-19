@@ -6,7 +6,7 @@
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 ?>
 <div class="ls-flex-column">
-    <div class="col-12 h1"><?php eT('Menu entries') ?></div>
+    <h2 class="col-12 h3 pagetitle" ><?php eT('Menu entries') ?></h2>
     <div class="ls-flex-row">
         <div class="col-12 ls-flex-item">
             <?php
