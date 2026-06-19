@@ -2141,10 +2141,8 @@ class Participant extends LSActiveRecord
                         $oTokenDynamic->participant_id
                     );
                 }
-
                 if (
                     $existing == null
-                    && App()->getConfig('CPDB_crypt_method', 'B') != 'H' // Disable if cryot method is hardened
                     && (!empty($oTokenDynamic->firstname)
                         || !empty($oTokenDynamic->lastname)
                         || !empty($oTokenDynamic->email))
@@ -2160,32 +2158,34 @@ class Participant extends LSActiveRecord
                             $cpdbEncrypted[$attr->defaultname] = ($attr->encrypted === 'Y');
                         }
                     }
+                    /* Disable $existing control by firstname+lastname+email if one of data is crypted and hardened crypted */
+                    if (empty($cpdbEncrypted) || App()->getConfig('CPDB_crypt_method', 'B') != 'H') {
+                        // Build comparison values: re-encrypt if the CPDB column is encrypted
+                        $compareFirstname = !empty($cpdbEncrypted['firstname']) ? LSActiveRecord::encryptSingle(
+                            $oTokenDynamic->firstname
+                        ) : $oTokenDynamic->firstname;
+                        $compareLastname = !empty($cpdbEncrypted['lastname']) ? LSActiveRecord::encryptSingle(
+                            $oTokenDynamic->lastname
+                        ) : $oTokenDynamic->lastname;
+                        $compareEmail = !empty($cpdbEncrypted['email']) ? LSActiveRecord::encryptSingle(
+                            $oTokenDynamic->email
+                        ) : $oTokenDynamic->email;
 
-                    // Build comparison values: re-encrypt if the CPDB column is encrypted
-                    $compareFirstname = !empty($cpdbEncrypted['firstname']) ? LSActiveRecord::encryptSingle(
-                        $oTokenDynamic->firstname
-                    ) : $oTokenDynamic->firstname;
-                    $compareLastname = !empty($cpdbEncrypted['lastname']) ? LSActiveRecord::encryptSingle(
-                        $oTokenDynamic->lastname
-                    ) : $oTokenDynamic->lastname;
-                    $compareEmail = !empty($cpdbEncrypted['email']) ? LSActiveRecord::encryptSingle(
-                        $oTokenDynamic->email
-                    ) : $oTokenDynamic->email;
-
-                    $participantCriteria = new CDbCriteria();
-                    $participantCriteria->addCondition(
-                        'firstname = :firstname'
-                    );
-                    $participantCriteria->addCondition('lastname = :lastname');
-                    $participantCriteria->addCondition('email = :email');
-                    $participantCriteria->params = [
-                        ":firstname" => $compareFirstname,
-                        ":lastname" => $compareLastname,
-                        ":email" => $compareEmail,
-                    ];
-                    $existing = Participant::model()->find(
-                        $participantCriteria
-                    );
+                        $participantCriteria = new CDbCriteria();
+                        $participantCriteria->addCondition(
+                            'firstname = :firstname'
+                        );
+                        $participantCriteria->addCondition('lastname = :lastname');
+                        $participantCriteria->addCondition('email = :email');
+                        $participantCriteria->params = [
+                            ":firstname" => $compareFirstname,
+                            ":lastname" => $compareLastname,
+                            ":email" => $compareEmail,
+                        ];
+                        $existing = Participant::model()->find(
+                            $participantCriteria
+                        );
+                    }
                 }
                 /* If there is already an existing entry, add to the duplicate count */
                 if ($existing != null) {

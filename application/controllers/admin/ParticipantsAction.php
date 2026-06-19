@@ -869,13 +869,25 @@ class ParticipantsAction extends SurveyCommonAction
             $iLineCount = count(array_filter(array_filter((array) file($sFilePath), 'trim')));
 
             $attributes = ParticipantAttributeName::model()->model()->getCPDBAttributes();
+                /* Warning for duplicate control */
+                $duplicateControlDisable = false;
+                if (App()->getConfig('CPDB_crypt_method', 'B') == 'H') {
+                    $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
+                    $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
+                        return $attribute->encrypted == "Y";
+                    });
+                    if (count($cpdbCoreCryptedAttributes) > 0 ) {
+                        $duplicateControlDisable = true;
+                    }
+                }
             $aData = array(
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,
                 'fullfilepath' => $sRandomFileName,
                 'linecount' => $iLineCount - 1,
                 'filterbea' => $filterblankemails,
-                'participant_id_exists' => in_array('participant_id', $fieldlist)
+                'participant_id_exists' => in_array('participant_id', $fieldlist),
+                'duplicateControlDisable' => $duplicateControlDisable
             );
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'attributeMapCSV.js');
@@ -2677,6 +2689,7 @@ class ParticipantsAction extends SurveyCommonAction
         $iSurveyID = (int) Yii::app()->request->getQuery('sid');
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
         $aTokenAttributes = getTokenFieldsAndNames($iSurveyID, true);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         //string of participant IDs which should be added to CPDB, if not set to sessionvar those will not be added!!
         $participants = Yii::app()->request->getPost('itemsid');
@@ -2690,7 +2703,6 @@ class ParticipantsAction extends SurveyCommonAction
         $alreadymappedattid = array();
         $alreadymappedattdisplay = array();
         $alreadymappedattnames = array();
-
         foreach ($aTokenAttributes as $key => $value) {
             if ($value['cpdbmap'] == '') {
                 $selectedattribute[$value['description']] = $key;
@@ -2720,15 +2732,27 @@ class ParticipantsAction extends SurveyCommonAction
         if (count($selectedattribute) === 0) {
             Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'warning');
         }
+        /* Warning for duplicate control */
+        $duplicateControlDisable = false;
+        if (App()->getConfig('CPDB_crypt_method', 'B') == 'H') {
+            $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
+            $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
+                return $attribute->encrypted == "Y";
+            });
+            if (count($cpdbCoreCryptedAttributes) > 0 ) {
+                $duplicateControlDisable = true;
+            }
+        }
 
         $aData = array(
             'attribute' => $selectedcentralattribute,
             'tokenattribute' => $selectedattribute,
             'alreadymappedattributename' => $alreadymappedattdisplay,
-            'alreadymappedattdescription' => $alreadymappedattnames
+            'alreadymappedattdescription' => $alreadymappedattnames,
+            'duplicateControlDisable' => $duplicateControlDisable
         );
 
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        
         $aData['subaction'] = gT('Add participants to central database');
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
