@@ -49,11 +49,9 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT  ? 4 : 30)
         );
 
-        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        if (intval(trim((string) $this->getQuestionAttribute('maximum_chars'))) > 0) {
-            $maxlength = $this->getEffectiveMaxChars(1048576);
-            $extraclass .= " ls-input-maxchars";
-        }
+        // Always apply a maxlength; when 'maximum_chars' is empty/null, fall back to the fixed default (1MB).
+        $maxlength = $this->getEffectiveMaxChars(1048576);
+        $extraclass .= " ls-input-maxchars";
 
         // text_input_width can not be empty, except with old survey (where can be empty or up to 12 see bug #11743
         if (trim((string) $this->getQuestionAttribute('text_input_width')) != '') {
