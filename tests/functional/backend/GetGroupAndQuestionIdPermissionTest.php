@@ -59,6 +59,7 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         $superadminQid = $questions['Q2']->qid;
         $superadminGid = $questions['Q2']->gid;
         /* Import second survey as userOId */
+        $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         self::adminLogin(self::$username, self::$password);
         \Yii::app()->session['loginID'] = self::$userId;
@@ -68,7 +69,6 @@ class GetGroupAndQuestionIdPermissionTest extends TestBaseClassWeb
         $questionQ2 = $questions['Q2'];
         $qid = $questions['Q2']->qid;
         $gid = $questions['Q2']->gid;
-        $urlMan = \Yii::app()->urlManager;
 
         /* Check good url but survey without access */
         //~ $url = $urlMan->createUrl('/admin/conditions/sa/index/subaction/editconditionsform', array('surveyid' => self::$superadminSurveyId, 'gid' => $superadminGid, 'qid' => $superadminQid));
