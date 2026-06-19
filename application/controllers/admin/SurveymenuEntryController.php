@@ -186,7 +186,7 @@ class SurveymenuEntryController extends SurveyCommonAction
             $aResults['global']['result'] = true;
 
             // Core Fields
-            $aCoreTokenFields = array('menu_id', 'menu_class', 'permission', 'permission_grade', 'language');
+            $aCoreTokenFields = array('menu_id', 'menu_class', 'permission', 'permission_grade', 'user_id', 'language');
 
             foreach ($aCoreTokenFields as $sCoreTokenField) {
                 if (trim((string) Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
