@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\DummyController;
 
 /**
  * Tests for the LimeSurvey remote API.
@@ -234,7 +236,10 @@ class ExportStatisticsTest extends BaseTest
 
         // Get the table.
         $doc = new \DOMDocument();
+        $previous = libxml_use_internal_errors(true);
         $doc->loadHtml($htmlStatistics);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
 
         $table = $doc->getElementById($tableHtmlId);
 

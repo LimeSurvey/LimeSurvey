@@ -9,10 +9,13 @@ use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
 use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Exception\ElementNotVisibleException;
+use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Login and create a survey, add a group
  * and a question.
+ *
+ * @group question
  */
 class CreateQuestionTest extends TestBaseClassWeb
 {
@@ -66,7 +69,7 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             // Ignore welcome modal.
             try {
-                $button = self::$webDriver->wait(1)->until(
+                $button = self::$webDriver->wait(10)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
                         WebDriverBy::cssSelector('#welcomeModal button.btn-outline-secondary')
                     )
@@ -81,58 +84,103 @@ class CreateQuestionTest extends TestBaseClassWeb
             $web->dismissModal();
 
             // Go to structure sidebar
-            $selectStructureSidebar = $web->findById('adminsidepanel__sidebar--selectorStructureButton');
+            $selectStructureSidebar = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('adminsidepanel__sidebar--selectorStructureButton')
+                )
+            );
             $selectStructureSidebar->click();
-            sleep(1);
 
             // Create question.
-            $sidemenuCreateQuestionButton = $web->findById('adminsidepanel__sidebar--selectorCreateQuestion');
+            $sidemenuCreateQuestionButton = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('adminsidepanel__sidebar--selectorCreateQuestion')
+                )
+            );
             $sidemenuCreateQuestionButton->click();
-            sleep(1);
 
             $questionBadCode = rand(1, 10000) . 'question';
             $questionCode = 'question' . rand(1, 10000);
-            $input = $web->findById('questionCode');
-            $input->clear()->sendKeys($questionBadCode);
-            /* blur out action : ajax call */
-            $web->findById('relevance')->click();
-            sleep(1);
-            $checkValidateText = $web->findById('question-title-warning')->getText();
-            $this->assertEquals(
-                "Question codes must start with a letter and may only contain alphanumeric characters.",
-                 $checkValidateText,
-                 "Title validation didn't update in question-title-warning, get “".$checkValidateText."”"
+
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('pjaxClickInhibitor')
+                )
             );
-            $input->clear()->sendKeys($questionCode);
-            $input->click();
-            $web->findById('relevance')->click();
-            sleep(1);
-            $checkValidateText = trim($web->findById('question-title-warning')->getText());
-            $this->assertEquals(
-                "",
-                 $checkValidateText,
-                 "Title validation in question-title-warning are not empty on success, get “".$checkValidateText."”"
+            $questionCodeInput = $web->findElement(WebDriverBy::id('questionCode'));
+            $questionCodeInput->sendKeys([WebDriverKeys::CONTROL, 'a']);
+            $questionCodeInput->sendKeys($questionBadCode);
+            /* blur out trigger */
+            $questionCodeInput->sendKeys(WebDriverKeys::TAB);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementTextIs(
+                    WebDriverBy::id('question-title-warning'),
+                    'Question codes must start with a letter and may only contain alphanumeric characters.'
+                )
+            );
+            /* Wait for pjax overlay to disappear after first validation */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('pjaxClickInhibitor')
+                )
+            );
+            $questionCodeInput->sendKeys([WebDriverKeys::CONTROL, 'a']);
+            $questionCodeInput->sendKeys($questionCode);
+            /* blur out trigger */
+            $questionCodeInput->sendKeys(WebDriverKeys::TAB);
+            /* Wait for AJAX validation to complete - warning must become empty */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementTextIs(
+                    WebDriverBy::id('question-title-warning'),
+                    ''
+                )
             );
 
             $questionTypeSelector = $web->findById('trigger_questionTypeSelector_button');
             $questionTypeSelector->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('heading_single_choice_questions')
+                )
+            );
 
             $questionTypeSelector = $web->findById('heading_single_choice_questions');
             $questionTypeSelector->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#collapsible_single_choice_questions a:first-child')
+                )
+            );
 
             $link = $web->findByCss('#collapsible_single_choice_questions a:first-child');
             $link->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('selector__select-this-questionTypeSelector')
+                )
+            );
 
             $link = $web->findById('selector__select-this-questionTypeSelector');
             $link->click();
-            sleep(1);
+            /* Wait for modal backdrop to disappear */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::cssSelector('.modal-backdrop')
+                )
+            );
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('save-button-create-question')
+                )
+            );
 
             $link = $web->findById('save-button-create-question');
             $link->click();
-            sleep(1);
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated(
+                    WebDriverBy::cssSelector('#notif-container .alert-success')
+                )
+            );
 
             $question = \Question::model()->findByAttributes(['title' => $questionCode]);
             $this->assertNotEmpty($question);

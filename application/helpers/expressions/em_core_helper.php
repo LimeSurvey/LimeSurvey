@@ -206,7 +206,7 @@ class ExpressionManager
             'cos' => array('cos', 'Decimal.asNum.cos', gT('Cosine'), 'number cos(number)', 'http://php.net/cos', 1),
             'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
             'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
-            'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the criteria (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
+            'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the criteria (argument - operator - value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
             'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1, 2),
             'exp' => array('exp', 'Decimal.asNum.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
             'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
@@ -269,7 +269,7 @@ class ExpressionManager
             'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Convert a string to uppercase'), 'string strtoupper(string)', 'http://php.net/strtoupper', 1),
             'substr' => array('exprmgr_substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://php.net/substr', 2, 3),
             'sum' => array('exprmgr_array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
-            'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the criteria (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
+            'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the criteria (argument - operator - value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
             'tan' => array('tan', 'Decimal.asNum.tan', gT('Tangent'), 'number tan(arg)', 'http://php.net/tan', 1),
             'convert_value' => array('exprmgr_convert_value', 'LEMconvert_value', gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convert_value(fValue, iStrict, sTranslateFromList, sTranslateToList)', '', 4),
             'time' => array('time', 'time', gT('Return current UNIX timestamp'), 'number time()', 'http://php.net/time', 0),
@@ -2572,7 +2572,7 @@ class ExpressionManager
 
         // 508 fix, don't output empty anchor tags
             if ($func[4]) {
-                $output .= "<a href='" . $func[4] . "'>" . $func[4] . "</a>";
+                $output .= "<a class='ls-link' href='" . $func[4] . "'>" . $func[4] . "</a>";
             }
 
             $output .= "&nbsp;</td></tr>\n";
@@ -2693,7 +2693,7 @@ function exprmgr_countif($args)
 }
 
 /**
- * Count the number of answered questions (non-empty) which meet the criteria (arg op value)
+ * Count the number of answered questions (non-empty) which meet the criteria (argument - operator - value)
  * @param array $args
  * @return int
  */
@@ -2844,9 +2844,15 @@ function exprmgr_substr($string, $start, $end = null)
     return mb_substr(($string ?? ''), $start, $end, 'UTF-8');
 }
 /**
- * Sum of values of answered questions which meet the criteria (arg op value)
- * @param array $args
- * @return int
+ * Sum values from a list that satisfy a comparison against a reference value.
+ *
+ * $args must contain: the comparison operator (e.g. '==','!=','>','<','>=','<=','eq','ne','gt','lt','ge','le','RX'),
+ * then the comparison value (or regex when operator is 'RX'), followed by one or more values to test and include in the sum.
+ *
+ * For operator 'RX', values are tested with preg_match against the provided pattern; invalid regex patterns are ignored.
+ *
+ * @param array $args [operator, comparisonValue, value1, value2, ...]
+ * @return int The sum of values that match the comparison criteria.
  */
 function exprmgr_sumifop($args)
 {
@@ -2906,21 +2912,21 @@ function exprmgr_sumifop($args)
 }
 
 /**
- * Validate a Gregorian date
- * @see https://www.php.net/checkdate
- * Check if all params are valid before send it to PHP checkdate to avoid PHP Warning
+ * Determine whether the given month, day, and year form a valid Gregorian calendar date.
  *
- * @param mixed $month
- * @param mixed $day
- * @param mixed $year
- * @return boolean
+ * Accepts integers or numeric strings for each component; non-numeric inputs cause the function to return `false`.
+ *
+ * @param mixed $month Month value (1-12) as an integer or numeric string.
+ * @param mixed $day Day value as an integer or numeric string.
+ * @param mixed $year Year value as an integer or numeric string.
+ * @return bool `true` if the three values form a valid Gregorian date, `false` otherwise.
  */
 function exprmgr_checkdate($month, $day, $year)
 {
     if (
-        (!ctype_digit($month) && !is_int($month))
-        || (!ctype_digit($day) && !is_int($day))
-        || (!ctype_digit($year) && !is_int($year))
+        (!ctype_digit((string) $month) && !is_int($month))
+        || (!ctype_digit((string) $day) && !is_int($day))
+        || (!ctype_digit((string) $year) && !is_int($year))
     ) {
         return false;
     }

@@ -929,6 +929,16 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Removes any existing subquestions of ranking questions before
+     * the ranking answers are converted into subquestions, to avoid duplicates.
+     * @return string
+     */
+    public function deleteRankingSubquestions()
+    {
+        return "DELETE FROM {{questions}} WHERE parent_qid IN (SELECT qid FROM (SELECT qid FROM {{questions}} WHERE type = '" . Question::QT_R_RANKING . "' AND parent_qid = 0) AS rankingquestions)";
+    }
+
+    /**
      * Creating subquestions for ranking instead of its answers
      * @return string
      */
@@ -936,7 +946,7 @@ class Update_700 extends DatabaseUpdateBase
     {
         return "
             INSERT INTO {{questions}}(parent_qid, sid, gid, type, title, question_order, relevance)
-            SELECT q.qid, q.sid, q.gid, '" . Question::QT_T_LONG_FREE_TEXT . "', a.code, a.sortorder, '1'
+            SELECT q.qid, q.sid, q.gid, '" . Question::QT_R_RANKING . "', a.code, a.sortorder, '1'
             FROM {{answers}} a
             JOIN {{questions}} q
             ON a.qid = q.qid and q.type = '" . Question::QT_R_RANKING . "'
@@ -1234,15 +1244,9 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
+        $this->db->createCommand($this->deleteRankingSubquestions())->execute();
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
         $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
-        $leftSeparator = $rightSeparator = "`";
-        if (Yii::app()->db->getDriverName() === 'pgsql') {
-            $leftSeparator = $rightSeparator = '"';
-        } elseif (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
-            $leftSeparator = "[";
-            $rightSeparator = "]";
-        }
         $this->doPreparations();
         $this->scriptMapping = [
             'responses' => $this->getResponsesScript(),
@@ -1330,7 +1334,7 @@ class Update_700 extends DatabaseUpdateBase
             }
             $scripts[$TABLE_NAME]['CREATE'] = str_replace("{$TABLE_NAME}", "{$scripts[$TABLE_NAME]['new_name']}", $scripts[$TABLE_NAME]['CREATE']);
             foreach ($fields as $oldField => $newField) {
-                $scripts[$TABLE_NAME]['CREATE'] = str_replace($leftSeparator . "{$oldField}" . $rightSeparator, $leftSeparator . "{$newField}" . $rightSeparator, $scripts[$TABLE_NAME]['CREATE']);
+                $scripts[$TABLE_NAME]['CREATE'] = str_replace(dbQuoteFields($oldField), dbQuoteFields($newField), $scripts[$TABLE_NAME]['CREATE']);
             }
             $fromColumns = [];
             $toColumns = [];
@@ -1340,11 +1344,11 @@ class Update_700 extends DatabaseUpdateBase
                         $column['COLUMN_NAME'] = $column['column_name'];
                     }
                 }
-                $fromColumns [] = $leftSeparator . $column['COLUMN_NAME'] . $rightSeparator;
+                $fromColumns [] = dbQuoteFields($column['COLUMN_NAME']);
                 if (isset($fieldMap[$TABLE_NAME][$column['COLUMN_NAME']])) {
-                    $toColumns [] = $leftSeparator . $fieldMap[$TABLE_NAME][$column['COLUMN_NAME']] . $rightSeparator;
+                    $toColumns [] = dbQuoteFields($fieldMap[$TABLE_NAME][$column['COLUMN_NAME']]);
                 } else {
-                    $toColumns [] = $leftSeparator . $column['COLUMN_NAME'] . $rightSeparator;
+                    $toColumns [] = dbQuoteFields($column['COLUMN_NAME']);
                 }
             }
             $from = implode(",", $fromColumns);

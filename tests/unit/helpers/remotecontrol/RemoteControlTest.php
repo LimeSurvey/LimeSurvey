@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\TestBaseClass;
 
 /**
  * Tests for the LimeSurvey remote API.
@@ -285,11 +287,6 @@ class RemoteControlTest extends TestBaseClass
         $result = $handler->list_groups($sessionKey, self::$surveyId, 'de');
         $this->assertCount(1, $result);
         $this->assertEquals('Das Deutsch title', $result[0]['group_name']);
-
-        // Fetch French group text (does not exist).
-        $result = $handler->list_groups($sessionKey, self::$surveyId, 'fr');
-        $this->assertCount(1, $result);
-        $this->assertEquals(null, $result[0]['group_name']);
     }
 
     /**

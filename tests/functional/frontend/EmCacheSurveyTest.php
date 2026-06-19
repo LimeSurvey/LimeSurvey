@@ -7,6 +7,8 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
  * @since 2019-05-28
+ * @group expression
+ * @group debugoff
  */
 class EmCacheSurveyTest extends TestBaseClassWeb
 {

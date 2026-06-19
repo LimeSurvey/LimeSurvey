@@ -14,6 +14,10 @@ See COPYRIGHT.php for copyright notices and details.
 Show the privacy message and the data security message will be available in a modal
 #}
 {% set describedbyprivacy = "datasecurity_notice" %}
+    {% set privacychecked = "" %}
+    {% if getPost('datasecurity_accepted') %}
+        {% set privacychecked = "checked" %}
+    {%endif %}
 {% if aSurveyInfo.datasecurity_error %}
     <div class="ls-privacy-block">
         <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }}
@@ -29,7 +33,7 @@ Show the privacy message and the data security message will be available in a mo
 <div class="ls-privacy-block">
     <div class="row row-cols-lg-auto align-items-center datasecurity-checkbox-container">
         <div class="col-12 checkbox-item">
-            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" aria-describedby="{{ describedbyprivacy }}"/>
+            <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" {{ privacychecked }} type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" aria-describedby="{{ describedbyprivacy }}"/>
             <label for="datasecurity_accepted"
                    class="control-label checkbox-label form-check-label datasecurity-checkbox-label {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">
                 {{ aSurveyInfo.datasecurity_notice_label }}

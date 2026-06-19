@@ -7,6 +7,8 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * Test import and export of survey data with irrelevant questions.
+ *
+ * @group import-export
  */
 class ImportExportIrrelevantTest extends TestBaseClassWeb
 {
@@ -105,14 +107,33 @@ class ImportExportIrrelevantTest extends TestBaseClassWeb
             $confirmExportButton->click();
 
             $exportedSurveyFile = ROOT . '/tmp/survey_archive_' . self::$surveyId . '.lsa';
-            // We need to give it time to export. To avoid sleeping for too long, we will wait for 1 second up to 10 times.
-            for ($i = 0; $i < 10; $i++) {
-                if (file_exists($exportedSurveyFile)) {
-                    break;
-                }
-                sleep(1);
-            }
-            $this->assertTrue(file_exists($exportedSurveyFile));
+            $lastSize = -1;
+            self::$webDriver->wait(10, 500)->until(
+                function () use ($exportedSurveyFile, &$lastSize) {
+                    if (!file_exists($exportedSurveyFile)) {
+                        return false;
+                    }
+                    clearstatcache(true, $exportedSurveyFile);
+                    $size = filesize($exportedSurveyFile);
+                    // Wait until file size is stable (non-zero and unchanged between polls)
+                    // to avoid reading a partially written ZIP/LSA archive
+                    if ($size <= 0 || $size !== $lastSize) {
+                        $lastSize = $size;
+                        return false;
+                    }
+                    // Verify the file is a valid ZIP archive (LSA files are ZIPs with a different extension).
+                    // The ZIP central directory is written last, so a stable size alone is not sufficient.
+                    $zip = new \ZipArchive();
+                    $result = $zip->open($exportedSurveyFile);
+                    if ($result !== true) {
+                        return false;
+                    }
+                    $zip->close();
+                    return true;
+                },
+                'Export file was not created or is not a valid ZIP/LSA archive within 10 seconds'
+            );
+            $this->assertFileExists($exportedSurveyFile);
 
             // Import LSA
             self::importSurvey($exportedSurveyFile);

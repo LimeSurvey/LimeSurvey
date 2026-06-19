@@ -7,13 +7,18 @@ import { downloadCanvasAsImage, errorToast } from 'helpers'
 
 export const BrandedQRCode = ({
   value = 'https://www.limesurvey.org/',
-  size = 150,
-  quietZone = 10,
-  ecLevel = 'L',
+  previewSize = 150,
+  previewPixelRatio = 3,
+  previewQuietZone = 10,
+  downloadTotal = 600,
+  downloadQuietZone = 16,
+  logoFraction = 0.2,
+  ecLevel = 'Q',
   logoOpacity = 1,
+  logoPadding = 4,
   logoPaddingStyle = 'square',
   removeQrCodeBehindLogo = true,
-  qrStyle = 'dots',
+  qrStyle = 'fluid',
   eyeRadius = [
     { outer: [10, 10, 10, 10], inner: [0, 0, 0, 0] },
     { outer: [10, 10, 10, 10], inner: [0, 0, 0, 0] },
@@ -27,36 +32,62 @@ export const BrandedQRCode = ({
   bgColor = '#ffffff',
   showDownloadButton = true,
 }) => {
-  const qrWrapperRef = useRef(null)
+  const qrDownloadRef = useRef(null)
 
   const handleDownload = () => {
-    if (!qrWrapperRef.current) return
-
-    const canvas = qrWrapperRef.current.querySelector('canvas')
-    if (canvas && typeof canvas.toDataURL === 'function') {
-      downloadCanvasAsImage(canvas, 'QRCode.png')
-    } else {
+    const canvas = qrDownloadRef.current?.querySelector('canvas')
+    if (!canvas) {
       errorToast(t('Failed to download QR code'), 'center')
+      return
     }
+    downloadCanvasAsImage(canvas, 'QRCode.png')
+  }
+
+  const previewRenderSize = previewSize * previewPixelRatio
+  const downloadQuiet = Math.min(
+    downloadQuietZone,
+    Math.floor((downloadTotal - 1) / 2)
+  )
+  const downloadSize = downloadTotal - 2 * downloadQuiet
+
+  const sharedProps = {
+    value,
+    logoImage: lsIcon,
+    ecLevel,
+    logoOpacity,
+    logoPadding,
+    logoPaddingStyle,
+    removeQrCodeBehindLogo,
+    qrStyle,
+    eyeRadius,
+    eyeColor,
+    fgColor,
+    bgColor,
   }
 
   return (
     <>
-      <div className="text-center mb-4" ref={qrWrapperRef}>
+      <div className="text-center mb-4">
         <QRCode
-          value={value}
-          logoImage={lsIcon}
-          size={size}
-          quietZone={quietZone}
-          ecLevel={ecLevel}
-          logoOpacity={logoOpacity}
-          removeQrCodeBehindLogo={removeQrCodeBehindLogo}
-          qrStyle={qrStyle}
-          eyeRadius={eyeRadius}
-          eyeColor={eyeColor}
-          fgColor={fgColor}
-          bgColor={bgColor}
-          logoPaddingStyle={logoPaddingStyle}
+          size={previewRenderSize}
+          quietZone={previewQuietZone * previewPixelRatio}
+          logoWidth={previewRenderSize * logoFraction}
+          logoHeight={previewRenderSize * logoFraction}
+          style={{ width: previewSize, height: previewSize }}
+          {...sharedProps}
+        />
+      </div>
+
+      <div
+        ref={qrDownloadRef}
+        style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}
+      >
+        <QRCode
+          size={downloadSize}
+          quietZone={downloadQuietZone}
+          logoWidth={downloadSize * logoFraction}
+          logoHeight={downloadSize * logoFraction}
+          {...sharedProps}
         />
       </div>
 

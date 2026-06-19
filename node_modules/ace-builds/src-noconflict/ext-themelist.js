@@ -1,9 +1,15 @@
 ace.define("ace/ext/themelist",["require","exports","module"], function(require, exports, module){/**
- * Generates a list of themes available when ace was built.
- * @fileOverview Generates a list of themes available when ace was built.
+ * ## Theme enumeration utility
+ *
+ * Provides theme management for the Ace Editor by generating and organizing available themes into
+ * categorized collections. Automatically maps theme data into structured objects containing theme metadata including
+ * display captions, theme paths, brightness classification (dark/light), and normalized names. Exports both an
+ * indexed theme collection and a complete themes array for easy integration with theme selection components
+ * and configuration systems.
+ *
  * @author <a href="mailto:matthewkastor@gmail.com">
  *  Matthew Christopher Kastor-Inare III </a><br />
- *  ☭ Hial Atropa!! ☭
+ * @module
  */
 "use strict";
 var themeData = [

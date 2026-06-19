@@ -392,13 +392,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 
     $questionId = $ia[0];
     $surveyId = Yii::app()->getConfig('surveyID');
-    $langTimer = array(
-        'hours' => gT("hours"),
-        'mins' => gT("minutes"),
-        'seconds' => gT("seconds"),
-    );
-    /* Registering script : don't go to EM : no need usage of ls_json_encode */
-    App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
     /**
      * The following lines cover for previewing questions, because no $_SESSION['responses_'.$surveyId]['fieldarray'] exists.
      * This just stops error messages occurring
@@ -900,7 +893,7 @@ function do_shortfreetext($ia)
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
 
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "map.js", LSYii_ClientScript::POS_END);
-        $sGoogleMapsAPIKey = trim((string) Yii::app()->getConfig("googleMapsAPIKey"));
+        $sGoogleMapsAPIKey = sanitize_googleapikey(App()->getConfig("googleMapsAPIKey"));
         if ($aQuestionAttributes['location_mapservice'] == 1 && !empty($sGoogleMapsAPIKey)) {
             Yii::app()->getClientScript()->registerScriptFile("//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}", LSYii_ClientScript::POS_BEGIN);
         } elseif ($aQuestionAttributes['location_mapservice'] == 2) {

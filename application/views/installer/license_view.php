@@ -7,7 +7,7 @@
             echo CHtml::tag('h2', array(), $title);
             echo CHtml::tag('p', array(), $descp);
         ?>
-        <iframe src="<?php echo $this->createUrl('installer/viewlicense'); ?>" style="height: 268px; width: 100%; border-width: 0px;"> </iframe>
+        <iframe src="<?php echo $this->createUrl('installer/viewlicense'); ?>" style="height: 268px; width: 100%; border-width: 0px; background-color:#f7f8ff;"> </iframe>
         <?php echo CHtml::form(array("installer/license"), 'post', array('name' => 'formcheck')); ?>
 
 

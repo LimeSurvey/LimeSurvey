@@ -1,5 +1,8 @@
 <?php
 
+use LimeSurvey\DI;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2026 The LimeSurvey Project Team
@@ -103,7 +106,7 @@ class GlobalSettings extends SurveyCommonAction
         }
         Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = new Date_Time_Converter(dateShift(Yii::app()->getConfig("updatelastcheck"), 'Y-m-d H:i:s', Yii::app()->getConfig('timeadjust')), 'Y-m-d H:i:s');
+        $datetimeobj = new Date_Time_Converter(dateShift(Yii::app()->getConfig("updatelastcheck"), 'Y-m-d H:i:s'), 'Y-m-d H:i:s');
         $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
 
         $data['updateavailable'] = (Yii::app()->getConfig("updateavailable") && Yii::app()->getConfig("updatable"));
@@ -362,6 +365,14 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
 
         $emailMethod = strip_tags(Yii::app()->getRequest()->getPost('emailmethod', ''));
+        $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));
+
+        // Prevent saving email method 'plugin' without a plugin selected
+        if ($emailMethod == LimeMailer::MethodPlugin && empty($emailPlugin)) {
+            $emailMethod = Yii::app()->getConfig('emailmethod');
+            $warning .= gT("Email method 'Plugin' requires a plugin to be selected. The email method was not changed.") . '<br/>';
+        }
+
         SettingGlobal::setSetting('emailmethod', $emailMethod);
         SettingGlobal::setSetting('emailsmtphost', strip_tags((string) returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
@@ -383,7 +394,6 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss', '')));
 
         $oldEmailPlugin = Yii::app()->getConfig('emailplugin');
-        $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));
         SettingGlobal::setSetting('emailplugin', $emailPlugin);
         // If the email plugin has changed, dispatch an event to allow the new plugin to do any necessary setup.
         if ($emailMethod == LimeMailer::MethodPlugin && $oldEmailPlugin != $emailPlugin) {
@@ -437,9 +447,19 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('bPdfQuestionBold', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBold')));
         SettingGlobal::setSetting('bPdfQuestionBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBorder')));
         SettingGlobal::setSetting('bPdfResponseBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfResponseBorder')));
-        SettingGlobal::setSetting('googleMapsAPIKey', Yii::app()->getRequest()->getPost('googleMapsAPIKey'));
-        SettingGlobal::setSetting('googleanalyticsapikey', Yii::app()->getRequest()->getPost('googleanalyticsapikey'));
-        SettingGlobal::setSetting('googletranslateapikey', Yii::app()->getRequest()->getPost('googletranslateapikey'));
+        /* @see https://docs.cloud.google.com/docs/authentication/api-keys#components */
+        $googleapikeys = ['googleMapsAPIKey', 'googleanalyticsapikey', 'googletranslateapikey'];
+        foreach ($googleapikeys as $googleapikey) {
+            $value = trim(strval(App()->getRequest()->getPost($googleapikey)));
+            $fixedValue = sanitize_googleapikey($value);
+            if ($value !== $fixedValue) {
+                /* Add an alert to the user */
+                Yii::app()->setFlashMessage(sprintf(gT("Invalid value set for %s, reset to %s"), $googleapikey, $fixedValue), 'warning');
+                /* Add a warning for log for server admin */
+                Yii::log("Invalid value set for {$googleapikey} in global settings.", 'warning', 'application.controller.admin.globalsettings');
+            }
+            SettingGlobal::setSetting($googleapikey, $fixedValue);
+        }
         SettingGlobal::setSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
         SettingGlobal::setSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
         SettingGlobal::setSetting('rpc_publish_api', Yii::app()->getRequest()->getPost('rpc_publish_api'));
@@ -453,11 +473,14 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('admincreationemailsubject', App()->getRequest()->getPost('admincreationemailsubject'));
         SettingGlobal::setSetting('admincreationemailtemplate', App()->getRequest()->getPost('admincreationemailtemplate'));
 
-        $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60) . ' minutes'; //makes sure it is a number, at least 0
-        if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
-            $savetime = '+' . $savetime;
+        // Check if time zone exists, then save it
+        $timezone = App()->getRequest()->getPost('displayTimezone');
+        if ($timezone === '' || in_array($timezone, DateTimeZone::listIdentifiers())) {
+            SettingGlobal::setSetting('displayTimezone', $timezone);
+        } else {
+            Yii::app()->setFlashMessage(gT("The selected timezone is not valid and was not saved."), 'error');
         }
-        SettingGlobal::setSetting('timeadjust', $savetime);
+
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy', '')));
 
         // event to attach general settings defined by the event beforeGlobalGeneralSettings
@@ -574,6 +597,10 @@ class GlobalSettings extends SurveyCommonAction
         asort($aData['users']);
 
         $aData['oSurvey'] = $oSurveyGroupSetting;
+
+        // Prepare theme configuration data for the view
+        $themeService = DI::getContainer()->get(SurveyThemeConfiguration::class);
+        $aData = array_merge($aData, $themeService->getThemeViewData($oSurveyGroupSetting->template, $oSurveyGroupSetting->oOptions ?? null));
 
         if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
             $this->getController()->redirect($this->getController()->createUrl('dashboard/view'));

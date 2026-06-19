@@ -45,7 +45,7 @@ class Statistics extends SurveyCommonAction
          *  5 - 5 point choice
          *  A - Array (5 point choice)
          *  B - Array (10 point choice)
-         *  C - Array (Yes/No/Uncertain)
+         *  C - Array (Yes/Uncertain/No)
          *  D - Date
          *  E - Array (Increase, Same, Decrease)
          *  F - Array
@@ -249,6 +249,10 @@ class Statistics extends SurveyCommonAction
         //second row below options -> filter settings headline
 
         $filterchoice_state = returnGlobal('filterchoice_state');
+        // filterchoice_state is expected to be '1' or '' (it's used effectively as a boolean).
+        // @todo: Check if this is actually used, as the listeners in statistics.js seem stale. For now,
+        //        just coherce it to a valid value, to make it safe in case it is used later.
+        $filterchoice_state = !empty($filterchoice_state) ? '1' : '';
         $aData['filterchoice_state'] = $filterchoice_state;
 
 

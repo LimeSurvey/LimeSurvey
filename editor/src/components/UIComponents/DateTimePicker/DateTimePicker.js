@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { DateIcon, CloseIcon } from 'components/icons'
 
-import { TooltipContainer } from 'components'
+import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 import { useAppState } from 'hooks'
 import { dayJsHelper, STATES, getTooltipMessages } from 'helpers'
 
@@ -34,7 +34,9 @@ export const DateTimePickerComponent = ({
   const disabled =
     (noPermissionDisabled && !hasSurveyUpdatePermission) || noAccessDisabled
   const [siteSettings] = useAppState(STATES.SITE_SETTINGS)
-  const timezone = siteSettings?.timezone ? siteSettings.timezone : null
+  const [userDetails] = useAppState(STATES.USER_DETAIL)
+  const appTimezone = siteSettings?.timezone ? siteSettings.timezone : null
+  const timezone = userDetails?.timezone ? userDetails.timezone : appTimezone
 
   const handleOnAccept = (value) => {
     onParticipantValueChange(

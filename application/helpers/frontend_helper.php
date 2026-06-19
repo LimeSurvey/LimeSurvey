@@ -385,8 +385,8 @@ function submittokens($quotaexit = false)
         return; //optional
     }
 
-    // Shift the date due to global timeadjust setting
-    $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+    // Shift the date due to global timezone setting
+    $today = gmdate("Y-m-d H:i");
 
     // check how many uses the token has left
     $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken ? $clienttoken : $tokenused));
@@ -2007,10 +2007,10 @@ function getMove()
     $aAcceptedMove = array('default', 'movenext', 'movesubmit', 'moveprev', 'saveall', 'loadall', 'clearall', 'changelang');
     // We can control is save and load are OK : todo fix according to survey settings
     // Maybe allow $aAcceptedMove in Plugin
-    $move = Yii::app()->request->getParam('move');
+    $move = Yii::app()->request->getPost('move');
     /* @deprecated since we use button and not input with different value. */
     foreach ($aAcceptedMove as $sAccepteMove) {
-        if (Yii::app()->request->getParam($sAccepteMove)) {
+        if (Yii::app()->request->getPost($sAccepteMove)) {
                     $move = $sAccepteMove;
         }
     }

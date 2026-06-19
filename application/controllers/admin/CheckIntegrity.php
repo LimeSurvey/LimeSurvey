@@ -48,6 +48,8 @@ class CheckIntegrity extends SurveyCommonAction
      */
     public function index()
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkintegrity.js');
+
         $aData = $this->checkintegrity();
 
         $aData['topbar']['title'] = gT('Check data integrity');
@@ -76,6 +78,7 @@ class CheckIntegrity extends SurveyCommonAction
                     if (in_array($aSurveyTable['table'], $oldsmultidelete)) {
                         Yii::app()->db->createCommand()->dropTable($aSurveyTable['table']);
                         $aData['messages'][] = sprintf(gT('Deleting survey table: %s'), $aSurveyTable['table']);
+                        $aData = $this->dropRelatedArchivedQuestionsTable($aSurveyTable['table'], $aData);
                     }
                 }
             }
@@ -208,6 +211,40 @@ class CheckIntegrity extends SurveyCommonAction
         foreach ($surveyTables as $aSurveyTable) {
             Yii::app()->db->createCommand()->dropTable($aSurveyTable);
             $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'), $aSurveyTable);
+            $aData = $this->dropRelatedArchivedQuestionsTable($aSurveyTable, $aData);
+        }
+        return $aData;
+    }
+
+    /**
+     * Drops the archived questions table (old_questions_<sid>_<date>) related to a
+     * given archived survey responses table (old_responses_<sid>_<date>), if it exists.
+     *
+     * On deactivation a survey responses table is archived as old_responses_<sid>_<date>
+     * together with a snapshot of the questions as old_questions_<sid>_<date>. When the
+     * archived responses table is removed, its related questions archive is no longer
+     * needed and would otherwise be left orphaned in the database.
+     *
+     * @param string $sSurveyTableName Full (prefixed) name of the archived survey responses table
+     * @param array $aData
+     * @return array
+     */
+    private function dropRelatedArchivedQuestionsTable($sSurveyTableName, array $aData)
+    {
+        $sDBPrefix = Yii::app()->db->tablePrefix;
+        // Only response archive tables (old_responses_<sid>_<date>) have a matching questions archive
+        if (strpos((string) $sSurveyTableName, $sDBPrefix . 'old_responses_') !== 0) {
+            return $aData;
+        }
+        $sQuestionsTableName = str_replace(
+            $sDBPrefix . 'old_responses_',
+            $sDBPrefix . 'old_questions_',
+            (string) $sSurveyTableName
+        );
+        $sQuestionsTableNameNoPrefix = substr($sQuestionsTableName, strlen((string) $sDBPrefix));
+        if (tableExists($sQuestionsTableNameNoPrefix)) {
+            Yii::app()->db->createCommand()->dropTable($sQuestionsTableName);
+            $aData['messages'][] = sprintf(gT('Deleting related archived questions table: %s'), $sQuestionsTableName);
         }
         return $aData;
     }
@@ -454,7 +491,7 @@ class CheckIntegrity extends SurveyCommonAction
             $deleted = QuotaMember::model()->deleteAllByAttributes($aRecord);
             $count += $deleted;
         }
-        $aData['messages'][] = sprintf(gT('Deleting orphaned quota members: %u quota members deleted'), $count);
+        $aData['messages'][] = sprintf(gT('Deleting orphaned quota rules: %u quota rules deleted'), $count);
         return $aData;
     }
 
@@ -975,6 +1012,65 @@ class CheckIntegrity extends SurveyCommonAction
             $aDelete['question_l10ns'][] = array('id' => $question['id'], 'qid' => $question['qid'], 'reason' => gT('No parent question'));
         }
 
+        /**********************************************************************/
+        /*     Check subquestions whose parent question is missing            */
+        /**********************************************************************/
+        $oCriteria = new CDbCriteria();
+        $oCriteria->join = 'LEFT JOIN {{questions}} parentq ON t.parent_qid = parentq.qid';
+        $oCriteria->condition = 't.parent_qid <> 0 AND parentq.qid IS NULL';
+        $orphanSubquestions = Question::model()->findAll($oCriteria);
+        foreach ($orphanSubquestions as $orphanSubquestion) {
+            $aDelete['questions'][] = array('qid' => $orphanSubquestion['qid'], 'reason' => gT('No parent question'));
+        }
+
+        /**********************************************************************/
+        /*     Check subquestions and answer options against question type    */
+        /*     Some question types require subquestions, some require answer  */
+        /*     options and some require both. Flag for deletion subquestions  */
+        /*     and answer options that do not belong to the parent question's */
+        /*     type.                                                          */
+        /**********************************************************************/
+        $aTypesWithoutSubquestions = array();
+        $aTypesWithoutAnswers = array();
+        foreach (QuestionType::modelsAttributes() as $sTypeCode => $aTypeAttributes) {
+            if (empty($aTypeAttributes['subquestions'])) {
+                $aTypesWithoutSubquestions[] = $sTypeCode;
+            }
+            if (empty($aTypeAttributes['answerscales'])) {
+                $aTypesWithoutAnswers[] = $sTypeCode;
+            }
+        }
+
+        // Subquestions belonging to a question whose type does not allow subquestions
+        if (!empty($aTypesWithoutSubquestions)) {
+            $oCriteria = new CDbCriteria();
+            $oCriteria->join = 'INNER JOIN {{questions}} parentq ON t.parent_qid = parentq.qid';
+            $oCriteria->addCondition('t.parent_qid <> 0');
+            $oCriteria->addInCondition('parentq.type', $aTypesWithoutSubquestions);
+            $orphanSubquestions = Question::model()->findAll($oCriteria);
+            foreach ($orphanSubquestions as $orphanSubquestion) {
+                $aDelete['questions'][] = array(
+                    'qid' => $orphanSubquestion['qid'],
+                    'reason' => gT('The question type does not allow subquestions')
+                );
+            }
+        }
+
+        // Answer options belonging to a question whose type does not allow answer options
+        if (!empty($aTypesWithoutAnswers)) {
+            $oCriteria = new CDbCriteria();
+            $oCriteria->join = 'INNER JOIN {{questions}} q ON t.qid = q.qid';
+            $oCriteria->addInCondition('q.type', $aTypesWithoutAnswers);
+            $orphanAnswers = Answer::model()->findAll($oCriteria);
+            foreach ($orphanAnswers as $orphanAnswer) {
+                $aDelete['answers'][] = array(
+                    'qid' => $orphanAnswer['qid'],
+                    'code' => $orphanAnswer['code'],
+                    'reason' => gT('The question type does not allow answer options')
+                );
+            }
+        }
+
 
         /**********************************************************************/
         /*     Check groups                                                   */
@@ -1062,7 +1158,7 @@ class CheckIntegrity extends SurveyCommonAction
 
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                     Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new Date_Time_Converter(dateShift($sDate, 'Y-m-d H:i:s', Yii::app()->getConfig('timeadjust')), 'Y-m-d H:i:s');
+                    $datetimeobj = new Date_Time_Converter(dateShift($sDate, 'Y-m-d H:i:s'), 'Y-m-d H:i:s');
                     $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
 
                     $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
@@ -1120,6 +1216,35 @@ class CheckIntegrity extends SurveyCommonAction
                         $aOldTokenTableAsk[] = array('table' => $sTableName, 'details' => sprintf(gT('Survey ID %d saved at %s containing %d record(s)'), $iSurveyID, $sDate, $aFirstRow['recordcount']));
                     }
                 }
+            }
+        }
+
+        /**********************************************************************/
+        /*     CHECK OLD QUESTIONS TABLES                                     */
+        /**********************************************************************/
+        //1: Get list of 'old_questions' tables (old_questions_<sid>_<date>)
+        //2: An old_questions table is only useful together with its matching
+        //   old_responses_<sid>_<date> archive (it is used during reactivation).
+        //   It is orphaned when the survey no longer exists or when its matching
+        //   old_responses archive is gone, so offer it for immediate deletion.
+        $sQuery = dbSelectTablesLike('{{old_questions}}%');
+        $aQuestionsTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
+
+        $sQuery = dbSelectTablesLike('{{old_responses}}%');
+        $aResponsesTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
+        $aSIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
+
+        foreach ($aQuestionsTables as $sTableName) {
+            $aTableParts = explode('_', substr((string) $sTableName, strlen((string) $sDBPrefix)));
+            // Expected format: old_questions_<sid>_<date> => 4 parts
+            if (count($aTableParts) < 4) {
+                continue;
+            }
+            $iQuestionsSID = $aTableParts[2];
+            $sDateTime = $aTableParts[3];
+            $sMatchingResponsesTable = $sDBPrefix . "old_responses_{$iQuestionsSID}_{$sDateTime}";
+            if (!in_array($iQuestionsSID, $aSIDs) || !in_array($sMatchingResponsesTable, $aResponsesTables)) {
+                $aDelete['orphansurveytables'][] = $sTableName;
             }
         }
 

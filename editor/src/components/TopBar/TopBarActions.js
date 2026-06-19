@@ -1,8 +1,9 @@
 import { useLocation } from 'react-router-dom'
 import classNames from 'classnames'
 
-import { useAppState } from 'hooks'
+import { useAppState, useBuffer, useSurvey } from 'hooks'
 import {
+  createBufferOperation,
   getSiteUrl,
   getTooltipMessages,
   PAGES,
@@ -36,6 +37,8 @@ export const TopBarActions = ({
   setShowOverviewModalRef,
 }) => {
   const location = useLocation()
+  const { update } = useSurvey(surveyId)
+  const { addToBuffer } = useBuffer()
   const [, startEditorTutorial] = useAppState(
     STATES.START_EDITOR_TUTORIAL,
     false
@@ -43,6 +46,20 @@ export const TopBarActions = ({
 
   const handleStartEditorTutorial = () => {
     startEditorTutorial(true)
+  }
+
+  const handleToggleQuestionCodes = () => {
+    const operationAttr = {
+      showQNumCode: {
+        showCode: !survey.showQNumCode?.showCode,
+        showNumber: !survey.showQNumCode?.showNumber,
+      },
+    }
+    update(operationAttr)
+    const operation = createBufferOperation(surveyId)
+      .survey()
+      .update(operationAttr)
+    addToBuffer(operation)
   }
 
   const isActiveMenuItem = (url) => {
@@ -102,6 +119,19 @@ export const TopBarActions = ({
           ? getTooltipMessages().SURVEY_NOT_ACTIVE_NO_RESULTS
           : t('Current page'),
       },
+    },
+    {
+      type: 'divider',
+    },
+    {
+      type: 'header',
+      label: t('View'),
+    },
+    {
+      type: 'item',
+      label: t('Question codes'),
+      onClick: handleToggleQuestionCodes,
+      checked: !!survey.showQNumCode?.showCode,
     },
     {
       type: 'divider',
@@ -196,7 +226,7 @@ export const TopBarActions = ({
     title: '',
   }
   return (
-    <div className="d-flex align-items-center">
+    <div className="topbar-right-area d-flex align-items-center">
       <span className="small text-muted me-1">
         {process.env.REACT_APP_DEV_MODE && '(Dev Mode) '}
         {process.env.REACT_APP_DEMO_MODE && '(Demo Mode) '}

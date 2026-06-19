@@ -1,5 +1,4 @@
 <?php
-
 /**
  * WhPlugin class file.
  * Extends the plugins with common shared methods.
@@ -11,43 +10,74 @@
  */
 class WhPlugin extends CBehavior
 {
-    protected $_assetsUrl;
+    /** @var int Static counter for generating unique script IDs. */
+    public static $counter = 0;
 
-    protected static $_api;
+    protected $_assetsUrl;
 
     protected static $_wheels;
 
     /**
-     * Returns
-     * @param $path
-     * @return mixed
+     * Returns the asset URL, publishing from $path if not yet published.
+     * @param string $path
+     * @return string
      */
     public function getAssetsUrl($path)
     {
         if (isset($this->_assetsUrl)) {
             return $this->_assetsUrl;
-        } else {
-            $forceCopyAssets = $this->getApi()->forceCopyAssets;
-
-            $assetsUrl = Yii::app()->assetManager->publish($path, false, -1, $forceCopyAssets);
-
-            return $this->_assetsUrl = $assetsUrl;
         }
+        $assetsUrl = Yii::app()->assetManager->publish($path, false, -1, null);
+        return $this->_assetsUrl = $assetsUrl;
     }
 
     /**
-     * @return TbApi
+     * Returns self so widgets can call $this->getApi()->registerPlugin() unchanged.
+     * @return $this
      */
     public function getApi()
     {
-        if (self::$_api === null) {
-            self::$_api = self::getYiiWheels()->getApi();
-        }
-        return self::$_api;
+        return $this;
     }
 
     /**
-     * Returns the main component
+     * Registers a jQuery plugin call via clientScript.
+     * @param string $name the plugin name.
+     * @param string $selector the CSS selector.
+     * @param array $options the JavaScript options for the plugin.
+     * @param int $position the position of the JavaScript code.
+     */
+    public function registerPlugin($name, $selector, $options = array(), $position = CClientScript::POS_END)
+    {
+        $options = !empty($options) ? CJavaScript::encode($options) : '';
+        $script = "jQuery('{$selector}').{$name}({$options});";
+        $id = __CLASS__ . '#Plugin' . self::$counter++;
+        Yii::app()->clientScript->registerScript($id, $script, $position);
+    }
+
+    /**
+     * Registers jQuery event handlers via clientScript.
+     * @param string $selector the CSS selector.
+     * @param string[] $events the JavaScript event configuration (name=>handler).
+     * @param int $position the position of the JavaScript code.
+     */
+    public function registerEvents($selector, $events, $position = CClientScript::POS_END)
+    {
+        if (!empty($events)) {
+            $script = '';
+            foreach ($events as $name => $handler) {
+                if (!$handler instanceof CJavaScriptExpression) {
+                    $handler = new CJavaScriptExpression($handler);
+                }
+                $script .= "jQuery('{$selector}').on('{$name}', {$handler});";
+            }
+            $id = __CLASS__ . '#Events' . self::$counter++;
+            Yii::app()->clientScript->registerScript($id, $script, $position);
+        }
+    }
+
+    /**
+     * Returns the main YiiWheels component.
      * @return YiiWheels
      */
     public function getYiiWheels()

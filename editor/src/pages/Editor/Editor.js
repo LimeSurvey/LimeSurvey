@@ -4,8 +4,14 @@ import Container from 'react-bootstrap/Container'
 import { useTranslation } from 'react-i18next'
 
 import { useAppState, useSurvey } from 'hooks'
-import { STATES, Toast, isSurveyExpired, SURVEY_MENU_TITLES } from 'helpers'
-import { getSurveyPauseToastOptions, TopBar } from 'components'
+import {
+  STATES,
+  Toast,
+  isSurveyExpired,
+  SURVEY_MENU_TITLES,
+  PAGES,
+} from 'helpers'
+import { getSurveyPauseToastOptions } from 'components'
 import ThemeOptionsPreview from 'components/ThemeOptions/ThemeOptionsPreview'
 
 import Layout from './Layout'
@@ -17,6 +23,7 @@ export const Editor = () => {
   const navigate = useNavigate()
   const { survey = {} } = useSurvey(surveyId)
   const { ready } = useTranslation()
+  const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
 
   const surveyActivationHandlerRef = useRef(null)
   const setShowOverviewModalRef = useRef(null)
@@ -68,6 +75,15 @@ export const Editor = () => {
     hasOverviewAutoRan.current = true
   }, [surveyId, setShowOverviewModalRef.current])
 
+  useEffect(() => {
+    setTopbarConfig({
+      surveyId,
+      surveyActivationHandlerRef,
+      setShowOverviewModalRef,
+      pageName: PAGES.EDITOR,
+    })
+  }, [surveyId, surveyActivationHandlerRef, setShowOverviewModalRef])
+
   const isLoadingSurvey =
     !survey?.sid ||
     hasSurveyUpdatePermission === undefined ||
@@ -80,11 +96,6 @@ export const Editor = () => {
   return (
     <div id="editor" key={activeLanguage}>
       <EditorTutorial survey={survey} isSurveyActive={survey.active} />
-      <TopBar
-        surveyId={surveyId}
-        surveyActivationHandlerRef={surveyActivationHandlerRef}
-        setShowOverviewModalRef={setShowOverviewModalRef}
-      />
       {isLoadingSurvey || isLoadingTranslations ? (
         <LoadingIndicator isLoadingSurvey={isLoadingSurvey} />
       ) : (

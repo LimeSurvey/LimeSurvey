@@ -45,13 +45,10 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                     <?= gT('Welcome to the new LimeSurvey') ?>
                                 </h1>
                                 <p class="card-text reg-14 mb-16"><?= gT(
-                                    'With the LimeSurvey Editor, you can create surveys in a 
-                                        squeeze of a lime, combining intuitive design with powerful features for a 
-                                        faster, smarter survey-building experience.'
+                                    'With the LimeSurvey Editor, you can create surveys in a squeeze of lime, combining intuitive design with powerful features for a faster, smarter survey-building experience.'
                                 ) ?>
                                     <br><br>
-                                    <?= gT('Discover what the new editor can do '); ?>
-                                    <a class="link-info" href="https://www.limesurvey.org" target="_blank"><?= gt('here'); ?></a>.
+                                    <?php printf(gT('%sDiscover now%s what the new editor can do!'), '<a class="link-info" href="https://www.limesurvey.org" target="_blank">', '</a>'); ?>
                                 </p>
                                 <div class="row mb-16">
                                     <label class="label-s mb-1" for='editor-switch-btn'><?php eT("Editor version"); ?></label>
@@ -76,11 +73,11 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                 <?php if ($hasPathUrlFormat) : ?>
                                 <div class="hint-text-box p-3">
                                     <p class="hint-text med-14-c mb-1">
-                                        <?= gT('Good to know') ?>
+                                        <?= gT('Good to know...') ?>
                                     </p>
                                     <p class="hint-text reg-12">
                                         <?= gT(
-                                            "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version, now out of beta and we’d love to hear your feedback!"
+                                            "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version -  it’s now out of beta, and we’d love to hear your feedback!"
                                         ) ?>
                                     </p>
                                 </div>
@@ -94,7 +91,7 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                             </div>
                         </div>
                         <div class="<?= $colClassRight ?>">
-                            <img src="<?= Yii::app()->baseUrl ?>/application/core/plugins/ReactEditor/images/new_editor_image_small.png"
+                            <img src="<?= Yii::app()->baseUrl ?>/assets/images/new_editor_image_small.png"
                                  class="img-fluid editor-preview"
                                  alt="Editor preview">
                         </div>

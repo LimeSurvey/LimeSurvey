@@ -1,10 +1,7 @@
 .responses {
-  min-height: 100vh;
   background: $g-200;
   padding: 0;
-  position: relative;
-  height: calc(90vh - $top-bar-height);
-  overflow-y: auto;
+  height: 100%;
 
   .sidebar,
   .right-side-bar {
@@ -21,30 +18,29 @@
     }
   }
 
-  .btn-group {
-    background-color: $g-900;
-
-    i {
-      &::before {
-        font-size: $font-size-lg;
-      }
-    }
-
-    .btn-check:checked + .btn {
-      color: $g-900;
-    }
-  }
-
   .recharts-square {
     width: 14px;
     height: 14px;
   }
 
   .responses-body {
-    position: relative;
     display: flex;
     flex-direction: row;
     gap: 20px;
+
+    .btn-group {
+      background-color: $g-900;
+
+      i {
+        &::before {
+          font-size: $font-size-lg;
+        }
+      }
+
+      .btn-check:checked + .btn {
+        color: $g-900;
+      }
+    }
   }
 
   .select-component-open {

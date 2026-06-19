@@ -58,9 +58,9 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                 if ($quotamembers) { ?>
-                    <li><?php printf(gT("There are %s orphaned quota members which can be deleted."), $quotamembers); ?> </li>
+                    <li><?php printf(gT("There are %s orphaned quota rules which can be deleted."), $quotamembers); ?> </li>
                 <?php } else { ?>
-                    <li><?php eT("All quota quota members meet consistency standards."); ?> </li> <?php
+                    <li><?php eT("All quota rules meet consistency standards."); ?> </li> <?php
                 } ?>
 
                 <?php
@@ -129,7 +129,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($surveylanguagesettings as $surveylanguagesetting) { ?>
-                                <li><?php printf(gT("Survey Language Setting ID: %s"), $surveylanguagesetting['slid']); ?> <?php printf(gT("Reason: %s"), $surveylanguagesetting['reason']); ?></li><?php
+                                <li><?php printf(gT("Survey language setting ID: %s"), $surveylanguagesetting['slid']); ?> <?php printf(gT("Reason: %s"), $surveylanguagesetting['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -170,7 +170,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
 
                 <?php if (isset($questionOrderDuplicates) && !empty($questionOrderDuplicates)) : ?>
-                    <li><?php eT("The following surveys have an erroneous question order. That could lead to errors during the design and/or processing of the survey. Please go to each question and group respectively, check the question order and save it."); ?>
+                    <li><?php eT("The following surveys have an erroneous question order. That could lead to errors during the design and/or processing of the survey.") ?><br><?php eT("Please go to each question and group respectively, check the question order and save it."); ?></li>
                     <ul>
                         <?php foreach ($questionOrderDuplicates as $info) : ?>
                             <li>
@@ -222,7 +222,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled">
                             <?php
                             foreach ($user_in_groups as $user_in_group) { ?>
-                                <li><?php printf(gT("User ID: %s"), $user_in_group['uid']); ?> <?php printf(gT("UGID: %s"), $user_in_group['ugid']); ?> <?php printf(gT("Reason: %s"), $user_in_group['reason']); ?></li><?php
+                                <li><?php printf(gT("User ID: %s"), $user_in_group['uid']); ?> <?php printf(gT("User group ID: %s"), $user_in_group['ugid']); ?> <?php printf(gT("Reason: %s"), $user_in_group['reason']); ?></li><?php
                             } ?>
                         </ul>
                     </li>
@@ -312,11 +312,24 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     ]);
                     ?>
                 <?php } else { ?>
-                    <?php echo CHtml::form(["admin/checkintegrity", 'sa' => 'fixredundancy'], 'post'); ?>
+                    <?php echo CHtml::form(["admin/checkintegrity", 'sa' => 'fixredundancy'], 'post', ['id' => 'redundancy-check-form']); ?>
             <ul id="data-redundancy-list" class='data-redundancy-list list-unstyled'>
                     <?php
                     if (isset($redundantsurveytables)) { ?>
-                    <li><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?>
+                    <li class="pb-2"><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?>
+                        <?php if (count($redundantsurveytables) > 1) { ?>
+                            <div class='mb-2'>
+                                <input
+                                    type='checkbox'
+                                    class='redundancy-group-toggle'
+                                    id='check-all-response-tables'
+                                    data-target-list='response-tables-list'
+                                />
+                                <label for='check-all-response-tables'>
+                                    <?php printf(gT("Check all items in this group (%s)."), count($redundantsurveytables)); ?>
+                                </label>
+                            </div>
+                        <?php } ?>
                         <ul class='response-tables-list list-unstyled'>
                                 <?php
                                 foreach ($redundantsurveytables as $surveytable) { ?>
@@ -334,6 +347,19 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <?php
                     if (isset($redundanttokentables) && count($redundanttokentables) > 0) { ?>
                     <li><?php eT("The following old participant lists exist and may be deleted if no longer required:"); ?>
+                        <?php if (count($redundanttokentables) > 1) { ?>
+                            <div class='mb-2'>
+                                <input
+                                    type='checkbox'
+                                    class='redundancy-group-toggle'
+                                    id='check-all-token-tables'
+                                    data-target-list='token-tables-list'
+                                />
+                                <label for='check-all-token-tables'>
+                                    <?php printf(gT("Check all items in this group (%s)."), count($redundanttokentables)); ?>
+                                </label>
+                            </div>
+                        <?php } ?>
                         <ul class='token-tables-list list-unstyled'>
                                 <?php
                                 foreach ($redundanttokentables as $tokentable) { ?>

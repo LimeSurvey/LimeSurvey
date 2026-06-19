@@ -107,7 +107,6 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getSurveyList($bReturnArray = false)
 {
     static $cached = null;
-    $timeadjust = Yii::app()->getConfig('timeadjust');
     App()->setLanguage((Yii::app()->session['adminlang'] ?? 'en'));
     $surveynames = array();
 
@@ -153,7 +152,7 @@ function getSurveyList($bReturnArray = false)
                 $inactivesurveys .= " class='mysurvey emphasis inactivesurvey'";
             }
             $inactivesurveys .= " value='{$sv['sid']}'>{$surveylstitle}</option>\n";
-        } elseif ($sv['expires'] != '' && $sv['expires'] < dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) {
+        } elseif ($sv['expires'] != '' && $sv['expires'] < gmdate("Y-m-d H:i:s")) {
             $expiredsurveys .= "<option ";
             if (Yii::app()->user->getId() == $sv['owner_id']) {
                 $expiredsurveys .= " class='mysurvey emphasis expiredsurvey'";
@@ -1504,7 +1503,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
             }
         }
     }
-    return $newFieldName ?? $fieldName;
+    return $newFieldName ? $newFieldName : $fieldName;
 }
 
 
@@ -2843,24 +2842,88 @@ function isTokenCompletedDatestamped($thesurvey)
 }
 
 /**
-* example usage
-* $date = "2006-12-31 21:00";
-* $shift "+6 hours"; // could be days, weeks... see function strtotime() for usage
+* Converts a date/time from one timezone to another.
 *
-* echo sql_date_shift($date, "Y-m-d H:i:s", $shift);
-*
-* will output: 2007-01-01 03:00:00
-*
-* @param string $date
-* @param string $dformat
-* @param string $shift
-* @return string
+* @param string $date The input date in a format accepted by DateTime
+* @param string $toDateFormat Output format (PHP date() format string)
+* @param string|null $toTimezone Target timezone identifier (e.g. 'Europe/Berlin').
+*        If null, uses the global 'displayTimezone' setting.
+* @param string $fromTimezone Input timezone identifier, defaults to 'UTC'
+* @return string The date converted to the target timezone and formatted
 */
-function dateShift($date, $dformat, string $shift)
+function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UTC')
 {
-    return date($dformat, strtotime($shift, strtotime($date)));
+    if ($fromTimezone === "") {
+        $fromTimezone = "UTC";
+    }
+    if (!$toTimezone) {
+        $toTimezone = Yii::app()->getConfig('displayTimezone');
+        if (empty($toTimezone)) {
+            // get default timezone
+            return $date;
+        }
+    }
+    $datetime = new DateTime($date, new DateTimeZone($fromTimezone));
+    $datetime->setTimezone(new DateTimeZone($toTimezone));
+    return $datetime->format($toDateFormat);
 }
 
+/**
+ * Gets the UTC of the date to be stored
+ * @param string|null $date
+ * @return string|null
+ */
+function getUTCOfDate(?string $date = null)
+{
+    if (!$date) {
+        return $date;
+    }
+    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
+    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    return dateShift($date, "Y-m-d H:i:s", 'UTC', $tz);
+}
+
+/**
+ * Gets the date of the UTC to be displayed
+ * @param string|null $date
+ * @return string|null
+ */
+function getDateOfUTC(?string $date = null)
+{
+    if (!$date) {
+        return $date;
+    }
+    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
+    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    return dateShift($date, "Y-m-d H:i:s", $tz, 'UTC');
+}
+
+/**
+ * Applies a relative time modifier (e.g. '-1 minute', '+2 hours') to a date
+ * and returns the result in the given format.
+ *
+ * @param string $date         The input date in a format accepted by DateTime
+ * @param string $toDateFormat The desired output date format.
+ * @param string $modifier     A relative date/time modifier accepted by DateTime::modify().
+ * @param string $timeZone     The timezone of the input date (default: 'UTC').
+ * @return string The modified date formatted according to $toDateFormat.
+ */
+function dateShiftRelative($date, $toDateFormat, $modifier, $timeZone = 'UTC')
+{
+    $datetime = new DateTime($date, new DateTimeZone($timeZone));
+    $datetime->modify($modifier);
+    return $datetime->format($toDateFormat);
+}
+
+
+function convertTimezoneDiffToHours(){
+    $desiredTimezone = new DateTimeZone(Yii::app()->getConfig('displayTimezone') ?: 'UTC');
+    // Get the current time in the desired timezone
+    $currentDateTime = new DateTime('now', new DateTimeZone(date_default_timezone_get()));
+    // Get the offset in hours from UTC
+    $hoursOffset = $desiredTimezone->getOffset($currentDateTime) / 3600;
+    return $hoursOffset;
+}
 
 // getBounceEmail: returns email used to receive error notifications
 function getBounceEmail($surveyid)
@@ -3322,7 +3385,9 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'description' => $sField,
             'mandatory' => 'N',
             'showregister' => 'N',
-            'cpdbmap' => ''
+            'cpdbmap' => '',
+            'type' => 'TB', // TB = text input (default)
+            'type_options' => '[]',
             );
         } elseif (empty($aSavedExtraTokenFields[$sField]['description'])) {
             $aSavedExtraTokenFields[$sField]['description'] = $sField;
@@ -3521,6 +3586,59 @@ function convertToGlobalSettingFormat($sDate, $withTime = false)
         return $sDate; // We return the string date
     }
 }
+
+/**
+ * Parses a date string that is in the user's global setting format and returns
+ * a normalised 'Y-m-d H:i:s' string that is safe for PHP's DateTime constructor
+ * (e.g. as direct input to getUTCOfDate()).
+ *
+ * This is the counterpart of convertToGlobalSettingFormat(): where that function
+ * converts an arbitrary date INTO the user's display format, this function parses
+ * a value that already IS in the user's display format and converts it back to an
+ * unambiguous ISO-style string.
+ *
+ * @param string|null $sDate   Date string in the user's phpdate (+ time) format
+ * @param bool        $withTime Whether a H:i time component is present
+ * @return string|null Normalised 'Y-m-d H:i:s' string, or null when parsing fails
+ */
+function convertFromGlobalSettingFormat(?string $sDate, bool $withTime = false): ?string
+{
+    if (empty($sDate)) {
+        return null;
+    }
+    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat'] ?? 1);
+    $fromFormat = $withTime
+        ? $sDateformatdata['phpdate'] . ' H:i'
+        : $sDateformatdata['phpdate'];
+
+    // The '!' prefix resets all fields not present in the format to the Unix epoch,
+    // so a date-only value yields 00:00:00 deterministically (instead of "now").
+    $oDate = DateTime::createFromFormat('!' . $fromFormat, $sDate);
+
+    if ($oDate !== false) {
+        // Whether a value is a valid date depends on $fromFormat (e.g. "13.02.2023"
+        // is valid as d.m.Y but not as m.d.Y). createFromFormat() parses against the
+        // user's configured $fromFormat but silently normalises dates that are invalid
+        // *for that format* (e.g. "30.02.2023" as d.m.Y => "2023-03-02") instead of
+        // returning false. Such cases set parser warnings; reject them rather than
+        // persisting a silently shifted date. (Do NOT fall back to new DateTime() here,
+        // as the constructor would re-normalise the invalid date in the same way.)
+        $errors = DateTime::getLastErrors();
+        if ($errors !== false && (($errors['warning_count'] ?? 0) > 0 || ($errors['error_count'] ?? 0) > 0)) {
+            return null;
+        }
+    } else {
+        // The value did not match the user's locale format at all
+        // (e.g. it is already an ISO 'Y-m-d H:i:s' string) - let PHP try to parse it.
+        try {
+            $oDate = new DateTime($sDate);
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+    return $oDate->format('Y-m-d H:i:s');
+}
+
 
 /**
 * This function removes the UTF-8 Byte Order Mark from a string
@@ -5169,6 +5287,12 @@ function convertPHPSizeToBytes($sSize)
     return (int) $iValue;
 }
 
+
+/**
+ * Get the maximum allowed file upload size in bytes
+ *
+ * @return int The maximum allowed file upload size in bytes
+ **/
 function getMaximumFileUploadSize()
 {
     return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
@@ -5208,6 +5332,21 @@ function decodeTokenAttributes(string $tokenAttributeData)
     unset($aReturnData['firstname']);
     unset($aReturnData['lastname']);
     unset($aReturnData['email']);
+
+    // Ensure all additional attributes have 'type' (text input) and 'type_options' defaults.
+    // Needed for surveys created before participant attribute types (AT-1771) were introduced.
+    foreach ($aReturnData as $sKey => &$aAttrData) {
+        if (preg_match('/^attribute_\d+$/', $sKey) && is_array($aAttrData) && count($aAttrData) > 1) {
+            if (!array_key_exists('type', $aAttrData)) {
+                $aAttrData['type'] = 'TB'; // TB = text input (default)
+            }
+            if (!array_key_exists('type_options', $aAttrData)) {
+                $aAttrData['type_options'] = '[]';
+            }
+        }
+    }
+    unset($aAttrData);
+
     return $aReturnData;
 }
 

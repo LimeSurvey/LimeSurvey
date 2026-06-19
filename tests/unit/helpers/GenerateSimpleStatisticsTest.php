@@ -1,6 +1,9 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\DummyController;
+use ls\tests\TestBaseClass;
 
 use Yii;
 
@@ -10,6 +13,14 @@ use Yii;
 class GenerateSimpleStatisticsTest extends TestBaseClass
 {
     private static $questions = array();
+
+    protected function loadHtmlWithoutWarnings(\DOMDocument $doc, string $html): void
+    {
+        $previous = libxml_use_internal_errors(true);
+        $doc->loadHtml($html);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+    }
 
     public static function setUpBeforeClass(): void
     {
@@ -42,7 +53,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
 
         $doc = new \DOMDocument();
-        $doc->loadHtml($statistics);
+        $this->loadHtmlWithoutWarnings($doc, $statistics);
 
         // Get the script string based on the question id and order the data by title.
         $assertions = array();
@@ -79,7 +90,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
 
         $doc = new \DOMDocument();
-        $doc->loadHtml($statistics);
+        $this->loadHtmlWithoutWarnings($doc, $statistics);
 
         // Get the script string based on the question id and order the data by title.
         $assertions = array();
@@ -116,7 +127,7 @@ class GenerateSimpleStatisticsTest extends TestBaseClass
         $statistics = $helper->generate_simple_statistics(self::$surveyId, $summary, $summary, 1, 'html', 'DD');
 
         $doc = new \DOMDocument();
-        $doc->loadHtml($statistics);
+        $this->loadHtmlWithoutWarnings($doc, $statistics);
 
         // Get the script string based on the question id and order the data by title.
         $assertions = array();

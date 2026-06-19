@@ -101,13 +101,6 @@ abstract class QuestionBaseRenderer extends StaticModel
         Yii::app()->getClientScript()->registerPackage('timer-addition');
 
         $surveyId = App()->getConfig('surveyID');
-        $langTimer = array(
-            'hours' => gT("hours"),
-            'mins' => gT("minutes"),
-            'seconds' => gT("seconds"),
-        );
-        /* Registering script : don't go to EM : no need usage of ls_json_encode */
-        App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
         /**
          * The following lines cover for previewing questions, because no $_SESSION['responses_'.$surveyId]['fieldarray'] exists.
          * This just stops error messages occurring

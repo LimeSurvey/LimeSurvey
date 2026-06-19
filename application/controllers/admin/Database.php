@@ -306,8 +306,6 @@ class Database extends SurveyCommonAction
                 $input[$langCode] = $langInput;
             }
         }
-
-
         $metaData = [];
         try {
             $metaData = $surveyUpdater->update(

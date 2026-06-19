@@ -126,6 +126,14 @@ class UserAction extends SurveyCommonAction
                 SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
                 SettingsUser::setUserSetting('createsample', Yii::app()->request->getPost('createsample'));
                 SettingsUser::setUserSetting('breadcrumbMode', Yii::app()->request->getPost('breadcrumbMode'));
+                
+                // Validate and save displayTimezone: accept empty string or valid timezone identifier
+                $postTimezone = Yii::app()->request->getPost('displayTimezone', '');
+                $displayTimezone = is_string($postTimezone) ? trim($postTimezone) : '';
+                if ($displayTimezone === '' || in_array($displayTimezone, timezone_identifiers_list(), true)) {
+                    SettingsUser::setUserSetting('displayTimezone', $displayTimezone);
+                }
+                // If invalid timezone, silently skip saving (preserves existing setting)
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -186,6 +194,9 @@ class UserAction extends SurveyCommonAction
 
         $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : App()->getConfig('preselectquestiontype');
         $currentPreselectedQuestionTheme = array_key_exists('preselectquestiontheme', $aUserSettings) ? $aUserSettings['preselectquestiontheme'] : App()->getConfig('preselectquestiontheme');
+
+        $globalDisplayTimezone = SettingGlobal::model()->findByPk('displayTimezone');
+        $aData['globalDisplayTimezone'] = ($globalDisplayTimezone && !empty($globalDisplayTimezone->stg_value)) ? $globalDisplayTimezone->stg_value : 'UTC';
 
         $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
         $aData['currentPreselectedQuestionTheme'] = $currentPreselectedQuestionTheme;

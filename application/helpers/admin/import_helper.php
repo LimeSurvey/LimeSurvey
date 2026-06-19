@@ -1532,7 +1532,7 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 $columns[$index] = Yii::app()->db->quoteColumnName($column);
             }
         }
-        $command = "";
+        $command = $command2 = "";
         switch (Yii::app()->db->getDriverName()) {
             case 'mysqli':
             case 'mysql':
@@ -1541,7 +1541,9 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 break;
             case 'mssql':
             case 'sqlsrv':
+            case 'dblib':
                 $command = "SELECT " . implode(",", $columns) . " into " . Yii::app()->db->quoteTableName($table) . " FROM " . Yii::app()->db->quoteTableName($pattern) . $whereClause;
+                $command2 = "ALTER TABLE " . Yii::app()->db->quoteTableName($table) . " ADD CONSTRAINT " . Yii::app()->db->quoteTableName("pk_" . $table) . " PRIMARY KEY (qid)";
                 break;
         }
     } else {
@@ -1560,7 +1562,11 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 break;
         }
     }
-    return Yii::app()->db->createCommand($command)->execute();
+    $result = Yii::app()->db->createCommand($command)->execute();
+    if ($command2) {
+        Yii::app()->db->createCommand($command2)->execute();
+    }
+    return $result;
 }
 
 function polyfillSUBSTRING_INDEX($driver)
@@ -3334,11 +3340,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     foreach ($errors as $error) {
                         $errorText .= 'Field "' . $attribute . '": ' . $error . " Value: '{$quotaMember->$attribute}'\n";
                     }
-                    throw new Exception(gT("Error:") . " Failed to insert quota member" . "\n" . $errorText);
+                    throw new Exception(gT("Error:") . " Failed to insert quota rule" . "\n" . $errorText);
                 }
             }
             if (!$quotaMember->save()) {
-                throw new Exception(gT("Error:") . " Failed to insert quota member database entry\n");
+                throw new Exception(gT("Error:") . " Failed to insert quota rule database entry\n");
             }
             $results['quotamembers']++;
         }

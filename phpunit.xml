@@ -29,6 +29,95 @@
       <file>tests/functional/backend/RemoteControlJsonrpcTest.php</file>
       <file>tests/functional/backend/RemoteControlXmlrpcTest.php</file>
     </testsuite>
+    <!-- Domain-grouped functional suites -->
+    <testsuite name="survey">
+      <file>tests/functional/backend/AccessModeChangeTest.php</file>
+      <file>tests/functional/backend/CreateSurveyTest.php</file>
+      <file>tests/functional/backend/InstallationControllerTest.php</file>
+    </testsuite>
+    <testsuite name="question-a">
+      <file>tests/functional/backend/SaveQuestionAttributesTest.php</file>
+      <file>tests/functional/backend/QuestionThemeTest.php</file>
+      <file>tests/functional/backend/LabelSetsCreateUpdate.php</file>
+      <file>tests/functional/frontend/ArrayNumberCheckboxTest.php</file>
+      <file>tests/functional/frontend/MultipleChoiceMandatoryWithCommentTest.php</file>
+      <file>tests/functional/frontend/ListRadioOtherPositionTest.php</file>
+      <file>tests/functional/frontend/MultipleChoiceWithExpressionTest.php</file>
+      <file>tests/functional/frontend/RankingArrayFilterMaxColumnTest.php</file>
+    </testsuite>
+    <testsuite name="question-b">
+      <file>tests/functional/backend/CreateQuestionTest.php</file>
+      <file>tests/functional/backend/SaveDualScaleAnswerOptionsTest.php</file>
+      <file>tests/functional/backend/QuestionGroupEditorTest.php</file>
+      <file>tests/functional/backend/SaveSubquestionRelevanceTest.php</file>
+      <file>tests/functional/backend/OldCodesReplacementTest.php</file>
+      <file>tests/functional/backend/QuestionAttributeFunctionalTest.php</file>
+      <file>tests/functional/frontend/MultipleChoiceNextPreviousTest.php</file>
+      <file>tests/functional/frontend/RankingFilterHideShowTest.php</file>
+      <file>tests/functional/frontend/AnswersAlphabeticalOrderTest.php</file>
+    </testsuite>
+    <testsuite name="expression">
+      <file>tests/functional/frontend/AllInOneConditionGroupTest.php</file>
+      <file>tests/functional/frontend/AutoCalcTest.php</file>
+      <file>tests/functional/frontend/EmCacheSurveyTest.php</file>
+      <file>tests/functional/frontend/GroupExpressionUpdateGoodQidTest.php</file>
+      <file>tests/functional/frontend/IntvalFloatvalTest.php</file>
+      <file>tests/functional/frontend/JsPhpCompareTest.php</file>
+      <file>tests/functional/frontend/MinMaxCompareTest.php</file>
+      <file>tests/functional/frontend/ScreenOutTest.php</file>
+      <file>tests/functional/frontend/SelfExpressionTest.php</file>
+      <file>tests/functional/acceptance/15246-fixed-em-function/FixedFunctionExpressionPluginTest.php</file>
+      <file>tests/functional/acceptance/15532-em-warnings/ExpressionWarningsOnLogicTest.php</file>
+    </testsuite>
+    <testsuite name="validation">
+      <file>tests/functional/frontend/DateTimeValidationTest.php</file>
+      <file>tests/functional/frontend/MandatorySoftTest.php</file>
+    </testsuite>
+    <testsuite name="navigation">
+      <file>tests/functional/acceptance/14782-override-translation/LSMessageSourceTest.php</file>
+      <file>tests/functional/frontend/EndUrlRedirectTest.php</file>
+      <file>tests/functional/frontend/GroupRandomizationTest.php</file>
+      <file>tests/functional/frontend/LanguageChangerTest.php</file>
+      <file>tests/functional/frontend/PreviewGroupAndQuestionTest.php</file>
+      <file>tests/functional/frontend/ShortUrlTest.php</file>
+      <file>tests/functional/frontend/SurveyIndexNavigationTest.php</file>
+      <file>tests/functional/frontend/SurveyNavigationTest.php</file>
+      <file>tests/functional/frontend/TimerMessagesEscapingTest.php</file>
+      <file>tests/functional/frontend/TokenAttributeInDescriptionTest.php</file>
+    </testsuite>
+    <testsuite name="import-export">
+      <file>tests/functional/backend/ImportExportIrrelevantTest.php</file>
+      <file>tests/functional/backend/ImportResponsesTest.php</file>
+      <file>tests/functional/backend/SaveEditedResponseTest.php</file>
+    </testsuite>
+    <testsuite name="theme">
+      <file>tests/functional/backend/ThemeControllerTest.php</file>
+    </testsuite>
+    <testsuite name="admin">
+      <file>tests/functional/backend/AdminViewsTest.php</file>
+      <file>tests/functional/backend/NoGreenBarTest.php</file>
+      <file>tests/functional/acceptance/18282-FailedEmail/FailedEmailTest.php</file>
+    </testsuite>
+    <testsuite name="user">
+      <file>tests/functional/backend/UserManagementTest.php</file>
+      <file>tests/functional/acceptance/19201-user-status/UserStatusControllerTest.php</file>
+      <file>tests/functional/acceptance/19201-user-status/UserStatusTest.php</file>
+    </testsuite>
+    <testsuite name="plugin">
+      <file>tests/functional/backend/SettingsPluginTest.php</file>
+      <file>tests/functional/frontend/AnswerOptionsFunctionsPluginTest.php</file>
+      <file>tests/functional/frontend/VariableExpressionEndPluginTest.php</file>
+    </testsuite>
+    <testsuite name="security">
+      <file>tests/functional/backend/XssAndScriptCheckTest.php</file>
+      <file>tests/functional/backend/XssAndScriptForSuperadminCheckTest.php</file>
+      <file>tests/functional/acceptance/15997-ip-anonymize/IpAddressAnonymizeTest.php</file>
+    </testsuite>
+    <testsuite name="api">
+      <file>tests/functional/backend/LimesurveyApiTest.php</file>
+      <file>tests/functional/backend/RemoteControlJsonrpcTest.php</file>
+      <file>tests/functional/backend/RemoteControlXmlrpcTest.php</file>
+    </testsuite>
   </testsuites>
   <!-- This filter is for the code coverage -->
   <logging/>
