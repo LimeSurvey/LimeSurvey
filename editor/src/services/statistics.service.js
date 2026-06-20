@@ -1,5 +1,10 @@
 import { RestClient } from './restClient.service'
 
+// An answer belongs to a question when its field-map `title` is the question
+// code (every column of a question shares that title).
+const belongsToQuestion = (answer, questionCode) =>
+  String(answer?.title) === String(questionCode)
+
 export class StatisticsService {
   constructor(auth, surveyId, baseUrl) {
     this.auth = auth
@@ -29,6 +34,40 @@ export class StatisticsService {
   }
 
   /**
+   * POST the survey-response-answers endpoint scoped to a single question and
+   * return its flat answer list plus the pagination envelope. Shared prologue
+   * of getQuestionComments and getQuestionResponses.
+   */
+  fetchQuestionAnswers = async (
+    sid,
+    questionCode,
+    currentPage,
+    pageSize,
+    language,
+    answerValue
+  ) => {
+    // Scope to this question's columns so the endpoint doesn't return (and
+    // transfer) every other question's answers.
+    const body = { page: { currentPage, pageSize }, questionCode }
+    if (language) {
+      body.language = language
+    }
+    if (answerValue) {
+      body.answerValue = answerValue
+    }
+
+    const data = await this.restClient.post(
+      `survey-response-answers/${sid}`,
+      body
+    )
+
+    return {
+      answers: data?.answers || [],
+      pagination: data?._meta?.pagination || null,
+    }
+  }
+
+  /**
    * Load every comment of a question.
    *
    * Comments live in the response table, so we use the survey-response-answers
@@ -42,26 +81,18 @@ export class StatisticsService {
     currentPage = 0,
     pageSize = 15,
     language,
-    answerFilter
+    selectedAnswer = ''
   ) => {
-    const body = { page: { currentPage, pageSize } }
-    if (language) {
-      body.language = language
-    }
-    if (answerFilter?.field && answerFilter?.value) {
-      body.answerField = answerFilter.field
-      body.answerValue = answerFilter.value
-    }
-
-    const data = await this.restClient.post(
-      `survey-response-answers/${sid}`,
-      body
+    // When an answer is selected, let the endpoint page through only that
+    // answer's responses (server-side filter via answerValue).
+    const { answers, pagination } = await this.fetchQuestionAnswers(
+      sid,
+      questionCode,
+      currentPage,
+      pageSize,
+      language,
+      selectedAnswer
     )
-
-    const answers = data?.answers || []
-
-    const belongsToQuestion = (answer) =>
-      String(answer?.title) === String(questionCode)
 
     const hasValue = (answer) =>
       answer?.value !== undefined &&
@@ -74,7 +105,7 @@ export class StatisticsService {
     const selectedByResponse = {}
     answers.forEach((answer) => {
       if (
-        belongsToQuestion(answer) &&
+        belongsToQuestion(answer, questionCode) &&
         !String(answer?.aid || '').endsWith('comment') &&
         hasValue(answer)
       ) {
@@ -85,7 +116,7 @@ export class StatisticsService {
     const comments = answers
       .filter(
         (answer) =>
-          belongsToQuestion(answer) &&
+          belongsToQuestion(answer, questionCode) &&
           String(answer?.aid || '').endsWith('comment') &&
           hasValue(answer)
       )
@@ -107,6 +138,62 @@ export class StatisticsService {
         }
       })
 
-    return { comments, pagination: data?._meta?.pagination || null }
+    return { comments, pagination }
+  }
+
+  /**
+   * Load the raw per-response answers of an Array (Texts) question and pivot
+   * them into a table: one row per participant (response), one column per
+   * subquestion cell. Each cell answer carries its `responseId`, the question
+   * `title` (code) and the `subquestion1`/`subquestion2` scale labels, so the
+   * columns and rows can be reconstructed from the flat answer list.
+   */
+  getQuestionResponses = async (
+    sid,
+    questionCode,
+    currentPage = 0,
+    pageSize = 15,
+    language
+  ) => {
+    const { answers, pagination } = await this.fetchQuestionAnswers(
+      sid,
+      questionCode,
+      currentPage,
+      pageSize,
+      language
+    )
+
+    // Columns in first-seen (field map) order; rows grouped by response.
+    const columnByKey = {}
+    const columnOrder = []
+    const rowByResponse = {}
+    const rowOrder = []
+
+    answers
+      .filter((answer) => belongsToQuestion(answer, questionCode))
+      .forEach((answer) => {
+        const columnKey = answer.key
+        if (columnKey && !columnByKey[columnKey]) {
+          const primary = answer.subquestion1 || answer.subquestion || ''
+          const secondary = answer.subquestion1 ? answer.subquestion2 || '' : ''
+          columnByKey[columnKey] = { key: columnKey, primary, secondary }
+          columnOrder.push(columnKey)
+        }
+
+        const responseId = answer.responseId
+        if (responseId != null && !rowByResponse[responseId]) {
+          rowByResponse[responseId] = { responseId, cells: {} }
+          rowOrder.push(responseId)
+        }
+        if (responseId != null && columnKey) {
+          rowByResponse[responseId].cells[columnKey] = answer.value ?? ''
+        }
+      })
+
+    return {
+      columns: columnOrder.map((key) => columnByKey[key]),
+      rows: rowOrder.map((id) => rowByResponse[id]),
+      pagination,
+    }
   }
 }

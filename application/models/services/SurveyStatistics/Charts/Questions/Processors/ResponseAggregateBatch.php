@@ -25,6 +25,7 @@ final class ResponseAggregateBatch
     private const KIND_BLANK = 'blank';
     private const KIND_NON_EMPTY = 'nonEmpty';
     private const KIND_TOTAL = 'total';
+    private const KIND_SUM = 'sum';
 
     private int $surveyId;
 
@@ -78,6 +79,17 @@ final class ResponseAggregateBatch
     public function countTotal(): string
     {
         return $this->register(self::KIND_TOTAL, '', '');
+    }
+
+    /**
+     * Sum of the numeric values in a column (non-numeric/empty cells count as
+     * 0). Combined with countNonEmpty() this yields a column mean. The result
+     * is truncated to an integer by value(), so it suits whole-number scales
+     * (e.g. Array Numbers "hours").
+     */
+    public function sumValues(string $field): string
+    {
+        return $this->register(self::KIND_SUM, $field, '');
     }
 
     /**
@@ -151,6 +163,10 @@ final class ResponseAggregateBatch
             case self::KIND_NON_EMPTY:
                 $col = $db->quoteColumnName($request['field']);
                 return "SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END)";
+            case self::KIND_SUM:
+                $col = $db->quoteColumnName($request['field']);
+                return "SUM(CASE WHEN $col IS NOT NULL AND $col <> ''"
+                    . " THEN CAST($col AS DECIMAL(30, 4)) ELSE 0 END)";
             default:
                 return 'COUNT(*)';
         }

@@ -1,5 +1,3 @@
-import { Table } from 'react-bootstrap'
-
 import { LSTable } from 'components'
 
 import {
@@ -9,7 +7,7 @@ import {
   shouldRenderImage,
 } from './ChartsUtils'
 
-// Answer cell content (colour swatch + image or text) shared by both tables.
+// Answer cell content (colour swatch + image or text) shared by the tables.
 const AnswerCell = ({ row, isImage }) => (
   <>
     <span
@@ -28,51 +26,49 @@ const AnswerCell = ({ row, isImage }) => (
   </>
 )
 
-// Ranking renders as an option × rank-position matrix with a pinned first
-// column and horizontal scroll, which the shared LSTable doesn't support, so it
-// keeps its bespoke table.
-const RankingTable = ({ rows, isImage }) => {
-  const valueColumns = (rows[0]?.ranks ?? []).map((rank) => ({
-    key: `rank-${rank.position}`,
-    header: ordinal(rank.position),
-    render: (row) =>
-      row.ranks?.find((r) => r.position === rank.position)?.value ?? '',
-  }))
-
-  return (
-    <div className="responses-statistics-table-wrap">
-      <Table className="table responses-statistics-table responses-statistics-table--ranking">
-        <thead>
-          <tr>
-            <th className="responses-statistics-table-answer"></th>
-            {valueColumns.map((column) => (
-              <th key={column.key}>{column.header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => (
-            <tr key={`responses-statistics-table-row-${index}`}>
-              <td className="responses-statistics-table-answer">
-                <AnswerCell row={row} isImage={isImage} />
-              </td>
-              {valueColumns.map((column) => (
-                <td key={column.key}>{column.render(row)}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
-  )
-}
+const withRowIds = (rows) =>
+  rows.map((row, index) => ({ ...row, id: row.key ?? `row-${index}` }))
 
 export const StatisticsTable = ({ data = [], isImage = false }) => {
   const isRanking = data.some((item) => Array.isArray(item?.ranks))
+  const isSegmented = data.some((item) => Array.isArray(item?.segments))
 
   if (isRanking) {
-    const rows = [...data].sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
-    return <RankingTable rows={rows} isImage={isImage} />
+    // Option × rank-position matrix, options sorted by total.
+    const rows = withRowIds(
+      [...data].sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
+    )
+    const columns = [
+      {
+        key: 'answer',
+        title: '',
+        render: (row) => <AnswerCell row={row} isImage={isImage} />,
+      },
+      ...(rows[0]?.ranks ?? []).map((rank) => ({
+        key: `rank-${rank.position}`,
+        title: ordinal(rank.position),
+        render: (row) =>
+          row.ranks?.find((r) => r.position === rank.position)?.value ?? '',
+      })),
+    ]
+    return <LSTable columns={columns} data={rows} rowId="id" resizable />
+  }
+
+  if (isSegmented) {
+    // Array: subquestion rows × scale-point/answer columns, cells are the
+    // per-segment counts.
+    const columns = [
+      { key: 'subquestion', title: '', render: (row) => row.title },
+      ...(data[0]?.segments ?? []).map((segment) => ({
+        key: segment.key,
+        title: segment.title,
+        render: (row) =>
+          row.segments?.find((s) => s.key === segment.key)?.value ?? '',
+      })),
+    ]
+    return (
+      <LSTable columns={columns} data={withRowIds(data)} rowId="id" resizable />
+    )
   }
 
   const columns = [
@@ -93,10 +89,5 @@ export const StatisticsTable = ({ data = [], isImage = false }) => {
     },
   ]
 
-  const rows = data.map((row, index) => ({
-    ...row,
-    id: row.key ?? `row-${index}`,
-  }))
-
-  return <LSTable columns={columns} data={rows} rowId="id" />
+  return <LSTable columns={columns} data={withRowIds(data)} rowId="id" resizable />
 }

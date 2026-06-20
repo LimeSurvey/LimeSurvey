@@ -9,6 +9,7 @@ use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
+    ArrayTextProcessor,
     MultipleChoiceProcessor,
     ResponseAggregateBatch,
     SingleOptionMultipleChartsProcessor,
@@ -61,7 +62,7 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_VERTICAL_FILE_UPLOAD => fn() => null,
             Question::QT_U_HUGE_FREE_TEXT => fn() => null,
             Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => null,
-            Question::QT_SEMICOLON_ARRAY_TEXT => fn() => null,
+            Question::QT_SEMICOLON_ARRAY_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_X_TEXT_DISPLAY => fn() => null,
 
             // Single option with multiple graphs for each subquestion
@@ -117,18 +118,13 @@ class QuestionStatistics implements StatisticsChartInterface
 
         $eligible = $this->paginate($eligible);
 
-        // Phase 1 — plan: processors describe their charts and register every
-        // aggregate they need in the shared batch.
         $jobs = [];
         foreach ($eligible as [$factory, $question]) {
             $jobs[] = $this->planFactory($factory, $batch, $survey, $question);
         }
 
-        // One scan of the responses table for the whole survey (chunked into
-        // a few queries only for extremely large surveys).
         $batch->execute();
 
-        // Phase 2 — resolve: turn the plans into DTOs with real counts.
         foreach ($jobs as [$plans, $question]) {
             $this->output[] = $this->resolvePlans($plans, $question);
         }
@@ -240,7 +236,9 @@ class QuestionStatistics implements StatisticsChartInterface
         $data = [];
         $total = 0;
         foreach ($plan['data'] as $item) {
-            $item['value'] = (int)$item['value']();
+            if (isset($item['value']) && is_callable($item['value'])) {
+                $item['value'] = (int)$item['value']();
+            }
             // Resolve an optional deferred per-row breakdown (e.g. ranking's
             // per-position counts) the same way as the main value.
             if (!empty($item['ranks']) && is_array($item['ranks'])) {
@@ -250,7 +248,21 @@ class QuestionStatistics implements StatisticsChartInterface
                     }
                 }
             }
-            $total += $item['value'];
+            // Resolve a deferred stacked breakdown (array-type segments); when
+            // the row has no own value, its total is the sum of its segments.
+            if (!empty($item['segments']) && is_array($item['segments'])) {
+                $segmentsTotal = 0;
+                foreach ($item['segments'] as $i => $segment) {
+                    if (isset($segment['value']) && is_callable($segment['value'])) {
+                        $item['segments'][$i]['value'] = (int)$segment['value']();
+                    }
+                    $segmentsTotal += (int)$item['segments'][$i]['value'];
+                }
+                if (!isset($item['value']) || !is_int($item['value'])) {
+                    $item['value'] = $segmentsTotal;
+                }
+            }
+            $total += is_int($item['value'] ?? null) ? $item['value'] : 0;
             $data[] = $item;
         }
 

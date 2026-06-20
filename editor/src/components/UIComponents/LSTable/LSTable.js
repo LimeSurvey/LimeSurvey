@@ -2,6 +2,8 @@ import React, { useMemo, useState } from 'react'
 import { Table } from 'react-bootstrap'
 import classNames from 'classnames'
 
+const MIN_COLUMN_WIDTH = 60
+
 const compareValues = (a, b) => {
   if (a == null && b == null) return 0
   if (a == null) return 1
@@ -45,12 +47,52 @@ export const LSTable = ({
   sortBy: sortByProp,
   sortDirection: sortDirectionProp = 'asc',
   onSortChange,
+  resizable = false,
 }) => {
   // In uncontrolled mode (no `onSortChange`), `sortBy`/`sortDirection` are
   // only used to seed the initial state; later prop changes are ignored.
   const [internalSortBy, setInternalSortBy] = useState(sortByProp ?? null)
   const [internalSortDirection, setInternalSortDirection] =
     useState(sortDirectionProp)
+
+  // Per-column widths set by dragging the resize handles (only when resizable);
+  // `resizingKey` is the column currently being dragged.
+  const [columnWidths, setColumnWidths] = useState({})
+  const [resizingKey, setResizingKey] = useState(null)
+
+  const startResize = (event, columnKey) => {
+    event.preventDefault()
+    event.stopPropagation()
+    const th = event.currentTarget.closest('th')
+    const getClientX = (e) => e.touches?.[0]?.clientX ?? e.clientX
+    const startX = getClientX(event)
+    const startWidth = th ? th.getBoundingClientRect().width : MIN_COLUMN_WIDTH
+
+    setResizingKey(columnKey)
+    const onMove = (moveEvent) => {
+      const nextWidth = Math.max(
+        MIN_COLUMN_WIDTH,
+        startWidth + (getClientX(moveEvent) - startX)
+      )
+      setColumnWidths((prev) => ({ ...prev, [columnKey]: nextWidth }))
+    }
+    const onUp = () => {
+      setResizingKey(null)
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onUp)
+      document.removeEventListener('touchmove', onMove)
+      document.removeEventListener('touchend', onUp)
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onUp)
+    document.addEventListener('touchmove', onMove)
+    document.addEventListener('touchend', onUp)
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+  }
 
   const isSortControlled = typeof onSortChange === 'function'
   const currentSortBy = isSortControlled ? (sortByProp ?? null) : internalSortBy
@@ -127,7 +169,27 @@ export const LSTable = ({
   return (
     <div className="ls-table-wrapper">
       <div className="ls-table-container">
-        <Table hover className="ls-table align-middle">
+        <Table
+          hover
+          className={classNames('ls-table align-middle', {
+            'ls-table--resizable': resizable,
+          })}
+        >
+          {resizable && (
+            <colgroup>
+              {selectable && <col className="ls-table__select-col" />}
+              {columns.map((column) => (
+                <col
+                  key={column.key}
+                  style={
+                    columnWidths[column.key]
+                      ? { width: columnWidths[column.key] }
+                      : undefined
+                  }
+                />
+              ))}
+            </colgroup>
+          )}
           <thead>
             <tr>
               {selectable && (
@@ -141,8 +203,10 @@ export const LSTable = ({
                   />
                 </th>
               )}
-              {columns.map((column) => {
+              {columns.map((column, columnIndex) => {
                 const isSorted = currentSortBy === column.key
+                // No handle on the last column — there's nothing to its right.
+                const showResizer = resizable && columnIndex < columns.length - 1
 
                 return (
                   <th
@@ -183,6 +247,19 @@ export const LSTable = ({
                       <span className="ls-table__header-content">
                         <span>{column.title}</span>
                       </span>
+                    )}
+                    {showResizer && (
+                      <div
+                        className={classNames('resizer', {
+                          isResizing: resizingKey === column.key,
+                        })}
+                        onMouseDown={(event) => startResize(event, column.key)}
+                        onTouchStart={(event) => startResize(event, column.key)}
+                        onClick={(event) => event.stopPropagation()}
+                        role="separator"
+                        aria-orientation="vertical"
+                        aria-hidden="true"
+                      />
                     )}
                   </th>
                 )

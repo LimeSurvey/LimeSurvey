@@ -36,20 +36,45 @@ export const statisticsGraphs = {
   DOUGHNUT_CHART: 5,
 }
 
-const registryEntries = () => Object.values(getQuestionTypeInfo())
+// The registry's type/theme strings are static (only `title` is translated),
+// so derive the lookup sets once on first use instead of rebuilding and
+// scanning the whole registry on every render.
+let imageThemes = null
+let commentTypes = null
+
+const ensureRegistrySets = () => {
+  if (imageThemes !== null) return
+  const entries = Object.values(getQuestionTypeInfo())
+  imageThemes = new Set(
+    entries
+      .map((entry) => entry.theme)
+      .filter((theme) => theme?.includes('image_select'))
+  )
+  commentTypes = new Set(
+    entries
+      .filter((entry) => entry.theme?.includes('comment'))
+      .map((entry) => entry.type)
+  )
+}
 
 // True for themes that render answer images (e.g. image_select-listradio).
-export const isImageTheme = (themeName) =>
-  registryEntries().some(
-    (entry) => entry.theme === themeName && entry.theme.includes('image_select')
-  )
+export const isImageTheme = (themeName) => {
+  ensureRegistrySets()
+  return imageThemes.has(themeName)
+}
 
-export const isCommentQuestionType = (type) =>
-  registryEntries().some(
-    (entry) => entry.type === type && entry.theme?.includes('comment')
-  )
+export const isCommentQuestionType = (type) => {
+  ensureRegistrySets()
+  return commentTypes.has(type)
+}
 
 export const isChoiceQuestion = (type) => CHOICE_QUESTION_TYPES.includes(type)
+
+export const isArrayPointChoice = (type) => type === 'A'
+
+export const isArrayTextQuestion = (type) => type === ';'
+
+export const isArrayNumbersQuestion = (type) => type === ':'
 
 export const shouldRenderImage = (isImage, item) =>
   isImage && item?.key !== 'NoAnswer' && !NON_ANSWER_KEYS.includes(item?.key)
@@ -126,6 +151,25 @@ export const getDataWithPercentages = (statisticsData) => {
   })
 }
 
+export const getSegmentedCategories = (data = []) =>
+  data.map((row) => {
+    const segments = row.segments ?? []
+    const total = segments.reduce((sum, s) => sum + (s.value || 0), 0) || 1
+    return {
+      key: row.key ?? row.title,
+      title: row.title,
+      options: segments.map((segment, index) => {
+        const percentageValue = (segment.value / total) * 100
+        return {
+          ...segment,
+          percentage: percentageValue.toFixed(1),
+          percentageValue,
+          fill: COLORS[index % COLORS.length],
+        }
+      }),
+    }
+  })
+
 export const TruncatedTick = ({
   x,
   y,
@@ -182,6 +226,52 @@ export const TruncatedTick = ({
   )
 }
 
+export const TooltipShell = ({ children }) => (
+  <div
+    style={{
+      position: 'relative',
+      background: '#1F1F1F',
+      color: '#FFFFFF',
+      fontSize: 14,
+      lineHeight: 1.5,
+      padding: '12px 16px',
+      borderRadius: 8,
+      boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)',
+      whiteSpace: 'nowrap',
+    }}
+  >
+    {/* Left-pointing tail */}
+    <div
+      style={{
+        position: 'absolute',
+        top: '50%',
+        right: '100%',
+        transform: 'translateY(-50%)',
+        width: 0,
+        height: 0,
+        borderTop: '7px solid transparent',
+        borderBottom: '7px solid transparent',
+        borderRight: '7px solid #1F1F1F',
+      }}
+    />
+    {children}
+  </div>
+)
+
+export const TooltipMetricLines = ({ count, percentage }) => (
+  <>
+    <div>
+      {count}{' '}
+      {count === 1
+        ? t('participant selected this option')
+        : t('participants selected this option')}
+    </div>
+    <div>
+      {t('Percentage')}: {percentage}%
+    </div>
+  </>
+)
+
 export const CustomTooltip = ({
   active,
   payload,
@@ -189,47 +279,11 @@ export const CustomTooltip = ({
 }) => {
   if (!active || !payload?.length) return null
 
-  // Read from the data item so the count is correct regardless of which metric
-  // (count or percentage) drives the bar/slice size.
   const count = payload[0].payload.value
   const percentage = payload[0].payload.percentage
   return (
-    <div
-      style={{
-        position: 'relative',
-        background: '#1F1F1F',
-        color: '#FFFFFF',
-        fontSize: 14,
-        lineHeight: 1.5,
-        padding: '12px 16px',
-        borderRadius: 8,
-        boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)',
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {/* Left-pointing tail */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          right: '100%',
-          transform: 'translateY(-50%)',
-          width: 0,
-          height: 0,
-          borderTop: '7px solid transparent',
-          borderBottom: '7px solid transparent',
-          borderRight: '7px solid #1F1F1F',
-        }}
-      />
-      <div>
-        {count}{' '}
-        {count === 1
-          ? t('participant selected this option')
-          : t('participants selected this option')}
-      </div>
-      <div>
-        {t('Percentage')}: {percentage}%
-      </div>
+    <TooltipShell>
+      <TooltipMetricLines count={count} percentage={percentage} />
       {showCommentsHint && (
         <div
           style={{
@@ -244,7 +298,7 @@ export const CustomTooltip = ({
           <span>{t('Click to view comments')}</span>
         </div>
       )}
-    </div>
+    </TooltipShell>
   )
 }
 

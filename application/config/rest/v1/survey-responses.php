@@ -88,6 +88,7 @@ $rest['v1/survey-response-answers/$id'] = [
             'responseId' => ['type' => 'int'],
             'language' => ['type' => 'string'],
             'fields' => ['type' => 'array'],
+            'questionCode' => ['type' => 'string'],
             'page' => ['type' => 'array'],
             'answerField' => ['type' => 'string'],
             'answerValue' => ['type' => 'string']

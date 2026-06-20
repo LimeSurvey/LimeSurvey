@@ -12,6 +12,27 @@
     box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
     background-color: $white;
     padding: 8px;
+
+    // Contain a wide table: clip overflow and scroll horizontally. Keep the
+    // scrollbar visible whenever the table overflows (instead of the macOS
+    // auto-hide overlay) by styling it explicitly.
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: $g-400 transparent;
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $g-400;
+      border-radius: 4px;
+    }
   }
 
   .ls-table {
@@ -75,6 +96,32 @@
       &--sortable {
         cursor: pointer;
         user-select: none;
+      }
+    }
+
+    // Column resize handle — matches the responses list table's `.resizer`
+    // (a thin grey bar with a col-resize cursor), pinned to each header's right
+    // edge. Enabled via the LSTable `resizable` prop.
+    &.ls-table--resizable {
+      .ls-table__header-cell {
+        position: relative;
+      }
+
+      .resizer {
+        position: absolute;
+        top: 25%;
+        right: 0;
+        width: 2px;
+        height: 50%;
+        background: $g-400;
+        cursor: col-resize;
+        user-select: none;
+        touch-action: none;
+
+        &.isResizing,
+        &:hover {
+          background: $g-700;
+        }
       }
     }
 

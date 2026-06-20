@@ -107,6 +107,8 @@ class SurveyResponseAnswer implements CommandInterface
         $this->applyResponseFilter($criteria, $request);
         $this->applyAnswerFilter($criteria, $request);
         $this->applyFieldSelection($criteria, $request);
+        $this->applyQuestionFilter($criteria, $request);
+        $this->applyAnswerValueFilter($criteria, $request);
         $criteria->order = 'id DESC';
 
         $pagination = $this->buildPagination($request);
@@ -180,6 +182,22 @@ class SurveyResponseAnswer implements CommandInterface
     }
 
     /**
+     * The responses table's date columns that exist for this survey, validated
+     * against the field map (so datestamp-less surveys, which have neither
+     * `startdate` nor `datestamp`, are handled). flattenAnswers() timestamps
+     * every answer from these columns, so they must survive any narrowed select.
+     *
+     * @return string[]
+     */
+    protected function dateColumns(): array
+    {
+        $dateColumns = ['submitdate', 'startdate', 'datestamp'];
+        $validColumns = array_keys($this->transformerOutputSurveyResponses->fieldMap);
+
+        return array_values(array_intersect($dateColumns, $validColumns));
+    }
+
+    /**
      * Restrict the query to responses whose answer column equals a given value
      * (e.g. only responses that picked a specific answer option). The column is
      * validated against the field map so only real response columns are used.
@@ -243,8 +261,99 @@ class SurveyResponseAnswer implements CommandInterface
             return;
         }
 
-        // Always keep the primary key so answers remain identifiable.
-        $criteria->select = array_values(array_unique(array_merge(['id'], $selected)));
+        // Always keep the primary key and date columns so answers remain
+        // identifiable and timestamped (flattenAnswers reads the date columns).
+        $criteria->select = array_values(array_unique(
+            array_merge(['id'], $this->dateColumns(), $selected)
+        ));
+    }
+
+    /**
+     * Restrict the selected columns to a single question's fields, so the
+     * endpoint only returns that question's answers (every field of a question
+     * shares the question code as its field-map `title`). No-op when no
+     * questionCode is given.
+     *
+     * @param \LSDbCriteria $criteria
+     * @param Request $request
+     */
+    protected function applyQuestionFilter(\LSDbCriteria $criteria, Request $request): void
+    {
+        $questionCode = $request->getData('questionCode');
+        if (!is_string($questionCode) || $questionCode === '') {
+            return;
+        }
+
+        $questionColumns = [];
+        foreach ($this->transformerOutputSurveyResponses->fieldMap as $column => $meta) {
+            if (($meta['title'] ?? null) === $questionCode) {
+                $questionColumns[] = $column;
+            }
+        }
+
+        // Only narrow the selection when the question actually maps to columns.
+        if (empty($questionColumns)) {
+            return;
+        }
+
+        // Keep the primary key and date columns alongside the question columns,
+        // so answers remain identifiable and timestamped (flattenAnswers reads
+        // the date columns).
+        $criteria->select = array_values(array_unique(
+            array_merge(['id'], $this->dateColumns(), $questionColumns)
+        ));
+    }
+
+    /**
+     * Restrict responses to those that selected a given answer of a question,
+     * resolving the response column from the question's field map. Lets the
+     * comments view page server-side through a single answer's comments. No-op
+     * without questionCode + answerValue, or when an explicit answerField is
+     * already provided.
+     *
+     * @param \LSDbCriteria $criteria
+     * @param Request $request
+     */
+    protected function applyAnswerValueFilter(\LSDbCriteria $criteria, Request $request): void
+    {
+        $questionCode = $request->getData('questionCode');
+        $answerValue = $request->getData('answerValue');
+        if (
+            !is_string($questionCode) || $questionCode === ''
+            || $answerValue === null || $answerValue === ''
+            || $request->getData('answerField')
+        ) {
+            return;
+        }
+
+        // The question's answer columns (excluding its comment columns).
+        $answerColumns = [];
+        foreach ($this->transformerOutputSurveyResponses->fieldMap as $column => $meta) {
+            if (($meta['title'] ?? null) !== $questionCode) {
+                continue;
+            }
+            $aid = (string)($meta['aid'] ?? '');
+            if (str_ends_with($aid, 'comment')) {
+                continue;
+            }
+            $answerColumns[$column] = $aid;
+        }
+
+        if (count($answerColumns) === 1) {
+            // Single selection (e.g. list-with-comment): the column stores the
+            // chosen answer code.
+            $criteria->compare(array_key_first($answerColumns), (string)$answerValue, false);
+            return;
+        }
+
+        // Sub-question selection (e.g. multiple-choice-with-comments): the
+        // chosen sub-question column is "Y" when selected.
+        foreach ($answerColumns as $column => $aid) {
+            if ($aid === (string)$answerValue) {
+                $criteria->compare($column, 'Y', false);
+                return;
+            }
+        }
     }
 
     /**

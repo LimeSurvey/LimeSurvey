@@ -126,8 +126,6 @@
   }
 }
 
-// Ranking modal content (filter → title → list) lacks the comments wrapper, so
-// match the comment modal's 16px vertical rhythm here.
 .responses-statistics-ranking-modal .responses-statistics-modal-body {
   display: flex;
   flex-direction: column;
@@ -154,6 +152,7 @@
     justify-content: space-between;
     gap: 8px;
     min-width: 220px;
+    max-width: 280px;
     padding: 6px 12px;
     border: 1px solid $g-400;
     border-radius: $border-radius;
@@ -175,25 +174,40 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    // Allow the label to shrink so it can be truncated with an ellipsis.
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  // Long answer labels truncate instead of stretching the select.
+  &-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &-swatch {
     display: inline-block;
+    flex-shrink: 0;
     width: 10px;
     height: 10px;
     border-radius: 2px;
     vertical-align: middle;
   }
 
+  .dropdown-menu {
+    max-width: 320px;
+  }
+
   .dropdown-item {
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
     font-size: $font-size-sm;
   }
 }
 
-// --- Toolbar / loading / load-more sentinel ----------------------------------
 .responses-statistics-toolbar {
   display: flex;
   align-items: center;
@@ -230,13 +244,10 @@
   }
 }
 
-// --- Ranking leaderboard chart + tooltip + modal breakdown -------------------
 .responses-statistics-ranking {
   display: flex;
   background: $white;
 
-  // Wraps the rank badge inside the YAxis tick's foreignObject; centers the
-  // badge vertically on its bar and tucks it against the bars.
   &-badge-cell {
     display: flex;
     align-items: center;
@@ -283,9 +294,6 @@
   }
 }
 
-// --- Chart header meatball menu (portal) -------------------------------------
-// Mirrors the look of .responses-meatball-menu; sized to content since the
-// chart menu has few actions.
 .responses-statistics-chart-menu {
   min-width: 260px;
   border-radius: 2px;
@@ -357,7 +365,6 @@
   }
 }
 
-// --- Statistics body (chart list root) ---------------------------------------
 .responses-statistics-body {
   font-family: $ibm-font-family;
 
@@ -481,10 +488,7 @@
       text-align: start;
     }
 
-    // Ranking renders as a matrix (option × rank position). Give the cells
-    // horizontal breathing room and pin the answer column while the rank
-    // columns scroll horizontally.
-    &--ranking {
+    &--matrix {
       tbody td,
       thead th {
         padding: 12px 16px;
@@ -497,6 +501,64 @@
         z-index: 1;
         background: $white;
       }
+    }
+  }
+
+  .responses-statistics-array-text-col-primary {
+    font-weight: 600;
+    color: $g-900;
+  }
+
+  .responses-statistics-array-text-col-secondary {
+    font-weight: 500;
+    color: $g-700;
+  }
+
+  .responses-statistics-stacked-legend {
+    display: flex;
+    align-items: center;
+    // 10px here + the chart's 10px top band padding = a 20px gap to the first
+    // bar, matching the 20px gap between bars.
+    margin-bottom: 10px;
+
+    // Occupy the same left column as the chart's subquestion labels (chart
+    // margin-left 8 + YAxis width 180) and right-align like them, so the title
+    // lines up with the row labels and the items start where the bars do.
+    &-title {
+      box-sizing: border-box;
+      width: 188px;
+      flex-shrink: 0;
+      padding-right: 8px;
+      text-align: right;
+      color: $g-700;
+      font-size: $font-size-xs;
+    }
+
+    // Spans the bar area; the right padding mirrors the chart's right margin so
+    // the last swatch lines up with the end of the bars.
+    &-items {
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding-right: 16px;
+      gap: 8px 16px;
+    }
+
+    &-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: $font-size-xs;
+      color: $g-900;
+      white-space: nowrap;
+    }
+
+    &-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      flex-shrink: 0;
     }
   }
 
@@ -522,6 +584,31 @@
     // Comment question types: bars open the comments for that option on click.
     .responses-statistics-bar-chart--clickable .recharts-bar-rectangle {
       cursor: pointer;
+    }
+
+    .responses-statistics-bar-chart__category {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .responses-statistics-bar-chart__category-label {
+      width: 110px;
+      flex-shrink: 0;
+      padding-right: 12px;
+      text-align: right;
+      font-weight: 500;
+      font-size: 14px;
+      color: $g-900;
+    }
+
+    .responses-statistics-bar-chart__category-chart {
+      flex: 1;
+      min-width: 0;
     }
 
     .responses-statistics-legend {
@@ -554,12 +641,10 @@
       }
     }
 
-    // recharts library class.
     .recharts-pie-label-line {
       display: none;
     }
 
-    // Pie slice label rows (code / name / metric).
     .responses-statistics-pie-label-id,
     .responses-statistics-pie-label-metric {
       fill: $g-700;
@@ -567,9 +652,6 @@
       font-weight: $font-weight-500;
     }
 
-    // Answer-name row inside the pie label's foreignObject (HTML, so it uses
-    // `color` not `fill`). The box hugs its content and caps at the region
-    // width with a single-line ellipsis.
     .responses-statistics-pie-label-name-wrap {
       display: flex;
       align-items: center;
@@ -595,6 +677,7 @@
       padding: 20px;
       height: 100%;
       gap: 24px;
+      scroll-margin-top: calc(#{$top-bar-height} + 16px);
 
       &--hidden {
         gap: 0;
@@ -610,4 +693,9 @@
       }
     }
   }
+}
+
+
+#statistics-value-type label {
+  padding: 3px 16px;
 }
