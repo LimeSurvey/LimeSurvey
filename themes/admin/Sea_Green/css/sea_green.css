@@ -17807,14 +17807,12 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   align-items: center;
 }
 .navbar .nav-item > a:not(.dropdown-item):hover {
-  color: inherit;
   box-shadow: none;
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
 }
 .navbar .nav-item > a:not(.dropdown-item):focus-visible {
-  color: inherit;
   outline: none;
   border-radius: 0px;
   border: 1px solid #9b87ff;

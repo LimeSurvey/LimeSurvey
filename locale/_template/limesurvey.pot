@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-06-17 14:58:08+00:00\n"
+"POT-Creation-Date: 2026-06-18 11:18:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17756,19 +17756,24 @@ msgstr ""
 msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:319
+#: application/views/admin/checkintegrity/check_view.php:320
 msgid "The following old survey response tables exist and may be deleted if no longer required:"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:336
+#: application/views/admin/checkintegrity/check_view.php:324
+#: application/views/admin/checkintegrity/check_view.php:345
+msgid "Check all"
+msgstr ""
+
+#: application/views/admin/checkintegrity/check_view.php:341
 msgid "The following old participant lists exist and may be deleted if no longer required:"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:354
+#: application/views/admin/checkintegrity/check_view.php:364
 msgid "Delete checked items!"
 msgstr ""
 
-#: application/views/admin/checkintegrity/check_view.php:358
+#: application/views/admin/checkintegrity/check_view.php:368
 msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
 msgstr ""
 
