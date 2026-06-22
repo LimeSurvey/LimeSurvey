@@ -5,7 +5,7 @@
  * @var $massiveActionTemplate string
  */
 
-$countSpan = "<span class='grid-selection-count'>0</span>"
+$countSpan = "<span class='grid-selection-count'>0</span>";
 ?>
 
 <div id="bottom-scroller" class="content-right scrolling-wrapper">
