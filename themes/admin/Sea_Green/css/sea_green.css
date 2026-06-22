@@ -293,7 +293,7 @@ kbd {
   font-size: 0.875em;
   color: #fff;
   background-color: #212529;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 kbd kbd {
   padding: 0;
@@ -2210,7 +2210,7 @@ progress {
   min-height: calc(1.5em + 0.5rem + 2px);
   padding: 0.25rem 0.5rem;
   font-size: 0.9975rem;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 .form-control-sm::file-selector-button {
   padding: 0.25rem 0.5rem;
@@ -2322,7 +2322,7 @@ textarea.form-control-lg {
   padding-bottom: 0.25rem;
   padding-left: 0.5rem;
   font-size: 0.9975rem;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 
 .form-select-lg {
@@ -2650,7 +2650,7 @@ textarea.form-control-lg {
 .input-group-sm > .btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.9975rem;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 
 .input-group-lg > .form-select,
@@ -3628,7 +3628,7 @@ textarea.form-control-lg {
 .btn-sm, .btn-group-sm > .btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.855rem;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 
 .fade {
@@ -5025,12 +5025,12 @@ textarea.form-control-lg {
   font-size: 0.9975rem;
 }
 .pagination-sm .page-item:first-child .page-link {
-  border-top-left-radius: 0.2rem;
-  border-bottom-left-radius: 0.2rem;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
 }
 .pagination-sm .page-item:last-child .page-link {
-  border-top-right-radius: 0.2rem;
-  border-bottom-right-radius: 0.2rem;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 .badge {
@@ -8356,7 +8356,7 @@ textarea.form-control-lg {
 }
 
 .rounded-1 {
-  border-radius: 0.2rem !important;
+  border-radius: 2px !important;
 }
 
 .rounded-2 {
@@ -19961,21 +19961,24 @@ table [class^=ri-], table [class*=" ri-"] {
 .grid-selection-bar {
   display: flex;
   width: fit-content;
-  gap: 0;
+  gap: 12px;
   align-items: center;
   margin: 4px 0;
   padding: 4px 12px;
-  font-size: 0.8125rem;
-  line-height: 20px;
-  border-radius: 4px;
-  border: 1px solid var(--LSD-Color-G-900, #1E1E1E);
-  background: var(--LSD-Color-White, #FFF);
-  /* LSD/Elevation/ShadowSoft */
+  font-size: 0.855rem;
+  line-height: 16px;
+  border-radius: 2px;
+  border: 1px solid #1E1E1E;
+  background: #fff;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
 }
-.grid-selection-bar .grid-selection-count {
+.grid-selection-bar .grid-selection-count-text {
   white-space: nowrap;
-  padding-right: 12px;
+}
+.grid-selection-bar .grid-selection-count {
+  border-radius: 2px;
+  background-color: #EEEFF7;
+  padding: 0 4px;
 }
 .grid-selection-bar .grid-selection-bar__divider {
   display: inline-block;
@@ -19985,43 +19988,33 @@ table [class^=ri-], table [class*=" ri-"] {
   flex-shrink: 0;
 }
 .grid-selection-bar .grid-selection-bar__deselect {
-  background: none;
-  border: none;
-  padding: 0 0 0 12px;
+  padding: 4px 8px;
   font-weight: 500;
-  cursor: pointer;
-  color: #000;
   white-space: nowrap;
-  line-height: inherit;
-  margin-right: 8px;
-  box-shadow: none;
-}
-.grid-selection-bar .grid-selection-bar__deselect:hover, .grid-selection-bar .grid-selection-bar__deselect:focus, .grid-selection-bar .grid-selection-bar__deselect:active {
-  background: none;
-  border: none;
-  box-shadow: none;
-  color: #000;
 }
 .grid-selection-bar .grid-selection-bar__close {
-  background: none;
-  border: none;
   padding: 0;
-  cursor: pointer;
   display: flex;
-  align-items: center;
-  color: #000;
-  line-height: inherit;
   box-shadow: none;
 }
 .grid-selection-bar .grid-selection-bar__close i {
-  font-size: 1rem;
-  vertical-align: middle;
+  font-size: 1.14rem;
 }
-.grid-selection-bar .grid-selection-bar__close:hover, .grid-selection-bar .grid-selection-bar__close:focus, .grid-selection-bar .grid-selection-bar__close:active {
+.grid-selection-bar .grid-selection-action {
   background: none;
   border: none;
-  box-shadow: none;
-  color: #000;
+  border-radius: 2px;
+  margin: 4px 0;
+}
+.grid-selection-bar .grid-selection-action:hover {
+  background-color: #EEEFF7;
+}
+.grid-selection-bar .grid-selection-action:active, .grid-selection-bar .grid-selection-action:focus-visible {
+  outline: none;
+  box-shadow: inset 1px 0 0 #8146F6, inset -1px 0 0 #8146F6, inset 0 -1px 0 #8146F6, inset 0 1px 0 #8146F6;
+}
+.grid-selection-bar .grid-selection-action:focus-visible {
+  border-radius: 0;
 }
 
 .pagination {

@@ -63,10 +63,10 @@ LS.gridSelection = (function () {
         if (!$bar.length) { return; }
 
         if (count > 0) {
-            var label = $bar.data('label') || 'rows selected';
-            $bar.find('.grid-selection-count').text(count + ' ' + label);
+            $bar.find('.grid-selection-count').text(count);
             $bar.show();
         } else {
+            $bar.find('.grid-selection-count').text(0);
             $bar.hide();
         }
     }
