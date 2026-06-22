@@ -13055,7 +13055,7 @@ a:hover {
 }
 
 .no-left-othertext .othertext-label-checkox-container {
-  padding-right: 0;
+  margin-right: 0;
 }
 .no-left-othertext .control-label {
   padding: 0;
