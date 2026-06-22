@@ -703,6 +703,10 @@ class ExpressionManager
                         }
                         $this->RDP_StackPush($result);
                         return true;
+                    } elseif ($this->RDP_isKnownNonEmPlaceholder($token[0])) {
+                        // Pass through non-EM placeholders like STARTPOLICYLINK
+                        $this->RDP_StackPush(array('{' . $token[0] . '}', $token[1], 'WORD'));
+                        return true;
                     } else {
                         $this->RDP_AddError(self::gT("Undefined variable"), $token);
                         return false;
@@ -1563,10 +1567,7 @@ class ExpressionManager
                         $stringParts[] = $token[0];
                         $stringParts[] = "</span>";
                     } else {
-                        if (!$this->RDP_isValidVariable($token[0])) {
-                            $class = 'em-var-error';
-                            $displayName = $token[0];
-                        } else {
+                        if ($this->RDP_isValidVariable($token[0])) {
                             $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
                             $code = $this->GetVarAttribute($token[0], 'code', '');
                             $question = $this->GetVarAttribute($token[0], 'question', '');
@@ -1633,6 +1634,13 @@ class ExpressionManager
                             } else {
                                 $class = 'em-var-after em-var-inpage';
                             }
+                        } elseif ($this->RDP_isKnownNonEmPlaceholder($token[0])) {
+                            // Don't show non-EM placeholders like STARTPOLICYLINK as errors.
+                            $stringParts[] = CHtml::encode($token[0]);
+                            break;
+                        } else {
+                            $class = 'em-var-error';
+                            $displayName = $token[0];
                         }
                         // prevent EM processing of messages within span
                         $message = implode('; ', $messages);
@@ -1810,7 +1818,7 @@ class ExpressionManager
                             $this->RDP_AddError(self::gT("Undefined function"), $token);
                         }
                     } else {
-                        if (!($this->RDP_isValidVariable($token[0]))) {
+                        if (!($this->RDP_isValidVariable($token[0])) && !$this->RDP_isKnownNonEmPlaceholder($token[0])) {
                             $this->RDP_AddError(self::gT("Undefined variable"), $token);
                         }
                     }
@@ -2605,6 +2613,16 @@ class ExpressionManager
             $sEscapeMode,
             Yii::app()->session->get('adminlang', App()->getConfig("defaultlang"))
         );
+    }
+
+    /**
+     * Return true for placeholders that are intentionally resolved outside EM, like those handled by survey themes.
+     * @param string $name
+     * @return bool
+     */
+    private function RDP_isKnownNonEmPlaceholder($name)
+    {
+        return in_array($name, ['STARTPOLICYLINK', 'ENDPOLICYLINK'], true);
     }
 }
 

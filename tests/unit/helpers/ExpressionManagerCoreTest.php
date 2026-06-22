@@ -67,4 +67,21 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $this->assertTrue($success, "Expression should evaluate without errors: $expression (errors: " . implode('; ', $em->GetErrors()) . ")");
         $this->assertSame($expected, $em->GetResult(), "With var='$varValue', expression: $expression");
     }
+
+    public function testKnownNonEmPlaceholdersDoNotRaiseErrors(): void
+    {
+        $em = new \ExpressionManager();
+        $result = $em->sProcessStringContainingExpressions(
+            'I accept the {STARTPOLICYLINK}privacy policy{ENDPOLICYLINK}.'
+        );
+
+        $this->assertSame('I accept the {STARTPOLICYLINK}privacy policy{ENDPOLICYLINK}.', $result);
+        $this->assertFalse($em->HasErrors());
+
+        $prettyPrint = $em->GetLastPrettyPrintExpression();
+        $this->assertStringContainsString('STARTPOLICYLINK', $prettyPrint);
+        $this->assertStringContainsString('ENDPOLICYLINK', $prettyPrint);
+        $this->assertStringNotContainsString('em-error', $prettyPrint);
+        $this->assertStringNotContainsString('em-var-error', $prettyPrint);
+    }
 }
