@@ -32,6 +32,7 @@ export const RankingAdvancedQuestion = ({
   participantMode,
   language,
   onValueChange = () => {},
+  isTitleFocused,
   handleChildCodeUpdate,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
@@ -134,6 +135,7 @@ export const RankingAdvancedQuestion = ({
                 setSubQuestionsHeight={setSubquestionsHeight}
                 language={language}
                 handleCodeUpdate={handleChildCodeUpdate}
+                isTitleFocused={isTitleFocused}
               />
               {provided.placeholder}
             </div>
