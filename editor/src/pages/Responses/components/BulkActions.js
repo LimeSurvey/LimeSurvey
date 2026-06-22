@@ -10,15 +10,17 @@ import {
 
 export const BulkActions = ({
   table,
+  selectedCount = 0,
   onDeleteClick = () => {},
   onAttachmentsDeleteClick = () => {},
   onDownloadFilesClick = () => {},
+  onUnselectAll = () => {},
 }) => {
-  const selectedRows = table?.getSelectedRowModel()?.rows || []
-  const tableHasRowsSelected = selectedRows.length > 0
+  const tableHasRowsSelected = selectedCount > 0
 
   const handleUnSelectAll = () => {
     table.toggleAllRowsSelected(false)
+    onUnselectAll()
   }
 
   return (
@@ -31,7 +33,7 @@ export const BulkActions = ({
       }}
     >
       <div className="number-selected">
-        <span className="number">{selectedRows.length}</span> {t('selected')}
+        <span className="number">{selectedCount}</span> {t('selected')}
       </div>
       <div className="seprator">
         <Seprator />

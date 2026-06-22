@@ -115,7 +115,7 @@ if ($hasSurveyContentPermission) {
                         <?php if ($menuItem->isDivider()) : ?>
                             <li class="dropdown-divider"></li>
                         <?php elseif ($menuItem->isSmallText()) : ?>
-                            <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
+                            <li class="dropdown-header" role="presentation"><?php echo $menuItem->getLabel(); ?></li>
                         <?php else : ?>
                             <li>
                                 <a class="dropdown-item" href="<?php echo $menuItem->getHref(); ?>">

@@ -846,6 +846,11 @@ $config['passwordValidationRules'] = array(
     'symbol' => 0,
 );
 
+// Allowed host of the LimeSurvey instance, avoid Host Header Injection in some case
+// For security purpose : Host Header Injection in password reset function
+// You can set an array of string, for example : ['example.limesurvey.org','limesurvey.example.org']
+// Send a 400 error if the server host is not in this list.
+$config['allowedHosts'] = null;
 
 /**
  * Default breadcrumb mode:

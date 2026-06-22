@@ -107,8 +107,11 @@
                     // toolbar: 'mode,10'
                 });
             }
-            CKEDITOR.document.appendStyleText('.cke_button__markdown_label {display: inline;}'); // display button Label
-            editor.on('mode', function() {
+            if (!CKEDITOR._markdownStyleAdded) {
+                CKEDITOR.document.appendStyleText('.cke_button__markdown_label {display: inline;}');
+                CKEDITOR._markdownStyleAdded = true;
+            } // display button Label
+            editor.on('mode', function () {
                 editor.getCommand('markdown').setState(editor.mode == 'markdown' ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF);
             });
 

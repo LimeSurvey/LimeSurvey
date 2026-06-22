@@ -111,7 +111,7 @@ class User extends LSActiveRecord
             array('users_name', 'length','max' => 64),
             array('full_name', 'length','max' => 50),
             array('email', 'email', 'allowEmpty' => true),
-            array('email', 'unique', 'allowEmpty' => true, 'message' => gT("E-mail address '{value}' is already used by another user.", 'unescaped')),
+            array('email', 'unique', 'allowEmpty' => true, 'message' => gT("Email address '{value}' is already used by another user.", 'unescaped')),
             array('full_name', 'LSYii_Validators'), // XSS if non super-admin
             array('parent_id', 'default', 'value' => 0),
             array('parent_id', 'numerical', 'integerOnly' => true),
@@ -941,7 +941,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
             $cols['isSuperAdmin'] = array(
                 "name" => 'isSuperAdmin',
-                "header" => gT("Super admin"),
+                "header" => gT("Superadmin"),
                 "value"  => function ($data) {
                     return $this->getFormattedBoolean($data, "isSuperAdmin");
                 },
@@ -957,7 +957,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $cols['haveDbAuthentication'] = array(
                 "name" => 'haveDbAuthentication',
-                "header" => gT("Auth DB"), // need short header
+                "header" => gT("DB auth"), // need short header, use short word for "Database authentication"
                 "value"  => function ($data) {
                     return $this->getFormattedBoolean($data, "haveDbAuthentication");
                 },

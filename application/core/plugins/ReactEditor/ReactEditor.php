@@ -297,14 +297,17 @@ class ReactEditor extends \PluginBase
         }
 
         try {
-            $isCompatible = $survey->getTemplateEffectiveName() === 'fruity_twentythree';
+            $isCompatible = Template::isBasedOn(
+                $survey->getTemplateEffectiveName(),
+                'fruity_twentythree'
+            );
         } catch (\Throwable $e) {
             $isCompatible = false;
         }
 
         if (!$isCompatible) {
             App()->setFlashMessage(
-                gT("The new editor is currently only compatible with the 'Fruity TwentyThree' theme"),
+                gT("The new editor is currently compatible only with the 'Fruity TwentyThree' theme and themes based on it."),
                 'warning'
             );
         }

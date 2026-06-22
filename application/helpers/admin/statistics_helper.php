@@ -872,7 +872,11 @@ class statistics_helper
             } else {
                 $showem = array();
                 $fld = $rt;
-                $fielddata = $fieldmap[($fld[1] === 'Q') ? substr($fld, 1) : $fld];
+                $fieldkey = ($fld[1] === 'Q') ? substr($fld, 1) : $fld;
+                if (!array_key_exists($fieldkey, $fieldmap)) {
+                    return [];
+                }
+                $fielddata = $fieldmap[$fieldkey];
 
                 $qtitle = flattenText($fielddata['title']);
                 $qtype = $fielddata['type'];
@@ -1479,11 +1483,21 @@ class statistics_helper
     }
 
     /**
-     * @param string $outputType
-     * @param integer $usegraph
-     * @param boolean $browse
-     * @return array
-     * @psalm-suppress UndefinedVariable
+     * Render simplified statistics for a single question: compute per-answer counts and percentages, build display rows, and prepare optional graph metadata.
+     *
+     * @param array $outputs Answer/list metadata and question descriptors (alist, qtype, parentqid, etc.).
+     * @param int $results Total number of responses considered for percentage calculations.
+     * @param string $rt Question token (SGQA-style) identifying the question/column.
+     * @param string $outputType Output mode, e.g. 'html', 'pdf', or 'xls'.
+     * @param int|string $surveyid Survey identifier.
+     * @param string|null $sql Additional SQL filter fragment to apply to per-answer COUNT queries.
+     * @param int|bool $usegraph Flag indicating whether graph data should be prepared (truthy to enable).
+     * @param bool $browse When true, include "browse" controls/markup for text/other columns.
+     * @param string|null $sLanguage Language code used for localized labels.
+     * @return array Array with keys:
+     *               - 'statisticsoutput' (string): rendered HTML/PDF content for the question section,
+     *               - 'pdf' (mixed): PDF object or null (as maintained by the class) for further processing,
+     *               - 'astatdata' (array): metadata used to build/describe graphs/maps for this question.
      */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -1736,15 +1750,10 @@ class statistics_helper
                 $i = 0;
 
                 while (isset($gdata[$i])) {
-                    if (isset($showaggregated_indice_table[$i]) && $showaggregated_indice_table[$i] == "aggregated") {
-                        // do nothing, we don't rewrite aggregated results
-                        // or at least I don't know how !!! (lemeur)
-                    } else {
-                        //we want to have some "real" data here
-                        if ($gdata[$i] != "N/A") {
-                            //calculate percentage
-                            $gdata[$i] = ($grawdata[$i] / $TotalCompleted) * 100;
-                        }
+                    //we want to have some "real" data here
+                    if ($gdata[$i] != "N/A") {
+                        //calculate percentage
+                        $gdata[$i] = ($grawdata[$i] / $TotalCompleted) * 100;
                     }
 
                     //increase counter
@@ -1816,6 +1825,7 @@ class statistics_helper
             ///// We'll render at the end of this loop statisticsoutput_answer
 
             //repeat header (answer, count, ...) for each new question
+            /** @psalm-suppress UndefinedVariable */
             unset($showheadline);
 
 
@@ -1924,6 +1934,7 @@ class statistics_helper
             $aData['label'] = $label;
             $aData['grawdata'] = $grawdata;
             $aData['gdata'] = $gdata;
+            /** @psalm-suppress UndefinedVariable */
             $aData['extraline'] = $extraline ?? false;
             $aData['aggregated'] = $aggregated ?? false;
             $aData['aggregatedPercentage'] = $aggregatedPercentage ?? false;
@@ -2146,16 +2157,27 @@ class statistics_helper
     }
 
     /**
-     * displayResults builds html output to display the actual results from a survey
+     * Build and return the formatted statistics output for a single question selector.
      *
-     * @param mixed $outputs
-     * @param INT $results The number of results being displayed overall
-     * @param mixed $rt
-     * @param string $outputType
-     * @param mixed $surveyid
-     * @param mixed $sql
-     * @param integer $usegraph
-     * @psalm-suppress UndefinedVariable
+     * Processes the provided answer list and result counts to produce HTML/PDF/XLS output,
+     * optional graphs and graph-related session data, and auxiliary metadata about available
+     * graph/map features for the question.
+     *
+     * @param array $outputs Question/output metadata and answer list (expects keys like 'alist', 'qtype', 'qtitle', 'qquestion', 'parentqid').
+     * @param int $results Total number of records considered for this question.
+     * @param string $rt SGQA selector or question token used to identify the question/column.
+     * @param string $outputType Output target: 'html', 'pdf', or 'xls'.
+     * @param int|string $surveyid Survey identifier used to query response tables.
+     * @param string $sql Optional additional SQL WHERE fragment to apply to per-answer counts.
+     * @param int $usegraph Non-zero to enable server-side graph generation and graph metadata.
+     * @param bool $browse Whether browse controls (show text / browse buttons) should be included.
+     * @param string|null $sLanguage Language code used for graph/chart localization.
+     *
+     * @return array{
+     *   statisticsoutput: string,   // Rendered output (HTML fragment or aggregated output for XLS/PDF)
+     *   pdf: mixed,                 // PDF object when generating PDF output (or null/previous state otherwise)
+     *   astatdata: array            // Per-question metadata describing graph/map availability and settings
+     * }
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -2170,6 +2192,8 @@ class statistics_helper
         $TotalIncomplete    = 0;
         /* @var int|false total for multiple choice, if int : is set (used in foreach) */
         $totalMultiAnswers = false;
+        $showheadline = true;
+        $extraline = false;
 
         $sColumnName = null;
         $noncompleted = App()->getRequest()->getPost('noncompleted');
@@ -2591,7 +2615,7 @@ class statistics_helper
 
 
             // For Graph labels
-            switch ($_POST['graph_labels']) {
+            switch ($_POST['graph_labels'] ?? 'default') {
                 case 'qtext':
                     $aGraphLabels[] = $sFlatLabel = $flatLabel;
                     break;
@@ -2613,7 +2637,6 @@ class statistics_helper
         }    //end foreach -> loop through answer data
         //no filtering of incomplete answers and NO multiple option questions
         //if ((incompleteAnsFilterState() != "complete") and ($outputs['qtype'] != "M") and ($outputs['qtype'] != "P"))
-        //error_log("TIBO ".print_r($showaggregated_indice_table,true));
         if (($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE) and ($outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
             //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
             //if (isset($_POST[''noncompleted']) and ($_POST['noncompleted'] == 1) && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
@@ -2623,22 +2646,15 @@ class statistics_helper
                 //counter
                 $i = 0;
                 while (isset($gdata[$i])) {
-                    if (isset($showaggregated_indice_table[$i]) && $showaggregated_indice_table[$i] == "aggregated") {
-                        // do nothing, we don't rewrite aggregated results
-                        // or at least I don't know how !!! (lemeur)
-                    } else {
-                        //we want to have some "real" data here
-                        if ($gdata[$i] != "N/A") {
-                            //calculate percentage
-                            $gdata[$i] = $TotalCompleted !== 0 ? ($grawdata[$i] / $TotalCompleted) * 100 : 0;
-                        }
+                    //we want to have some "real" data here
+                    if ($gdata[$i] != "N/A") {
+                        //calculate percentage
+                        $gdata[$i] = $TotalCompleted !== 0 ? ($grawdata[$i] / $TotalCompleted) * 100 : 0;
                     }
                     //increase counter
                     $i++;
                 }    //end while (data available)
-            }    //end if -> noncompleted checked
-            //noncompleted is NOT checked
-            else {
+            } else {
                 //calculate total number of incompleted records
                 $TotalIncomplete = max(($results - $TotalCompleted), 0); // don't show negative number
 
@@ -2744,7 +2760,7 @@ class statistics_helper
             }
         }
         // Columns
-        $statsColumns = $_POST['stats_columns'];
+        $statsColumns = $_POST['stats_columns'] ?? '2';
 
         switch ($statsColumns) {
             case "1":
@@ -2788,6 +2804,7 @@ class statistics_helper
             ///// We'll render at the end of this loop statisticsoutput_answer
 
             //repeat header (answer, count, ...) for each new question
+            /** @psalm-suppress UndefinedVariable */
             unset($showheadline);
 
 
@@ -3036,6 +3053,7 @@ class statistics_helper
             $aData['grawdata_percent']     = $grawdata_percents;
             $aData['gdata']                = $gdata;
 
+            /** @psalm-suppress UndefinedVariable */
             $aData['extraline']            = $extraline ?? false;
             $aData['aggregated']           = $aggregated ?? false;
             $aData['aggregatedPercentage'] = (isset($aggregatedPercentage)) ? ($i < 6 ? $aggregatedPercentage : false) : false;
@@ -3262,7 +3280,7 @@ class statistics_helper
                     // This takes care of graph_lables for PDF output (previous fix only supported HTML).
                     $graphLbl = [];
                     foreach ($outputs['alist'] as $al) {
-                        switch ($_POST['graph_labels']) {
+                        switch ($_POST['graph_labels'] ?? 'default') {
                             case 'qtext':
                                 $graphLbl[] = $al[1];
                                 break;
@@ -3293,13 +3311,6 @@ class statistics_helper
 
                 if ($cachefilename || $outputType == 'html') {
                     // Add the image only if constructed
-                    //introduce new counter
-                    if (!isset($ci)) {
-                        $ci = 0;
-                    }
-
-                    //increase counter, start value -> 1
-                    $ci++;
                     switch ($outputType) {
                         case 'xls':
                             /**

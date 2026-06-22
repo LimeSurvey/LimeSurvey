@@ -190,7 +190,7 @@ class SurveysGroupsettings extends LSActiveRecord
             'navigationdelay' => 'Navigationdelay',
             'alloweditaftercompletion' => 'Alloweditaftercompletion',
             'showregisterpolicy' => gT("Show privacy policy on register form"),
-            'showtokenpolicy' => gT("Show privacy policy on token form"),
+            'showtokenpolicy' => gT("Show privacy policy on access code form"),
         );
     }
 

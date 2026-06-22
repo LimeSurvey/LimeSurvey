@@ -361,9 +361,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         } else {
             // This code is only necessary since there have been issues in the past with missing language settings.
             $checkIntegrityLink = App()->urlManager->createUrl('/admin/checkintegrity');
-            $errorString = gT('The survey language for one or more surveys could not be found.') . '<br>'
+            $errorString = gT('The texts for one or more survey languages could not be found.') . '<br>'
                 . sprintf(
-                    gT('Please use the %s data integrity %s tool from the top navigation to fix the issue automatically.'),
+                    gT('Please use the %sdata integrity%s tool from the top navigation to fix the issue automatically.'),
                     "<a href='" . $checkIntegrityLink . "'>",
                     '</a>'
                 );
@@ -567,9 +567,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('additional_languages', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('additional_languages', 'LSYii_Validators', 'isLanguageMulti' => true),
             array('running', 'safe', 'on' => 'search'),
-            array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('expires', 'date','format' => ['yyyy-MM-dd HH:mm:ss','yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('startdate', 'date','format' => ['yyyy-MM-dd HH:mm:ss','yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('datecreated', 'date','format' => ['yyyy-MM-dd HH:mm:ss','yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
             array('expires', 'checkExpireAfterStart'),
             // The Google Analytics Tracking ID is inserted in a JS script. If the following rule is changed, make sure
             // that it doesn't render it vulnerable to XSS attacks.
@@ -934,7 +934,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getHasNewEditor(): bool
     {
         return App()->getConfig('editorEnabled')
-            && $this->getTemplateEffectiveName() === 'fruity_twentythree';
+            && Template::isBasedOn($this->getTemplateEffectiveName(), 'fruity_twentythree');
     }
 
     /**

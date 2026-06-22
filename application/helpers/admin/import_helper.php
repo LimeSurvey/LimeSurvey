@@ -3340,11 +3340,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     foreach ($errors as $error) {
                         $errorText .= 'Field "' . $attribute . '": ' . $error . " Value: '{$quotaMember->$attribute}'\n";
                     }
-                    throw new Exception(gT("Error:") . " Failed to insert quota member" . "\n" . $errorText);
+                    throw new Exception(gT("Error:") . " Failed to insert quota rule" . "\n" . $errorText);
                 }
             }
             if (!$quotaMember->save()) {
-                throw new Exception(gT("Error:") . " Failed to insert quota member database entry\n");
+                throw new Exception(gT("Error:") . " Failed to insert quota rule database entry\n");
             }
             $results['quotamembers']++;
         }

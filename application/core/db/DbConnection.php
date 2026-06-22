@@ -24,9 +24,14 @@ class DbConnection extends \CDbConnection
         $driver = strtolower((string) $pdo->getAttribute(PDO::ATTR_DRIVER_NAME));
         if (in_array($driver, array('mysql', 'mysqli'))) {
             $pdo->exec("SET collation_connection='utf8mb4_unicode_ci'");
+            $pdo->exec("SET SESSION time_zone = '+00:00'");
             if (Yii::app()->getConfig('debug') > 1) {
                 $pdo->exec("SET SESSION SQL_MODE='STRICT_ALL_TABLES,IGNORE_SPACE,ONLY_FULL_GROUP_BY'");
             }
+        } elseif ($driver === 'pgsql') {
+            $pdo->exec("SET timezone = 'UTC'");
+        } elseif (in_array($driver, array('mssql', 'dblib', 'sqlsrv'))) {
+            $pdo->exec("SET DATEFIRST 7");
         }
     }
 
