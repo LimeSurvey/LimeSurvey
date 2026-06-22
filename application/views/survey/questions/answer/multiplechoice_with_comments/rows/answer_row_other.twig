@@ -20,6 +20,8 @@
  * @var $commentLabelText           gT('Make a comment on your choice here:') }}
  * @var $inputCommentName           $myfname2
  * @var $inputCOmmentValue          if (isset($_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
+ * @var $otherInputSize
+ * @var $otherMaxLength
  */
 #}
 <!-- answer_row -->
@@ -36,6 +38,8 @@
                    id="{{ id }}"
                    value="{{ value }}"
                    data-number={{ otherNumber }}
+                   {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
+                   {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
                 />
             </div>
         </div>

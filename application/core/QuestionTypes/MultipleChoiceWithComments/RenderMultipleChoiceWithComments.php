@@ -182,6 +182,17 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             $sValue .= CHtml::encode($dispVal);
         }
 
+        // Get other_input_size and other_maximum_chars attributes
+        $otherInputSize = null;
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
+            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
+        }
+
+        $otherMaxLength = null;
+        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
+            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
+        }
+
         ////
         // Insert row
         // Display the answer row
@@ -193,6 +204,8 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             'id'                   => 'answer' . $myfname,
             'value'                => $sValue, // TODO : check if it should be the same than javavalue
             'classes'              => '',
+            'otherInputSize'       => $otherInputSize,
+            'otherMaxLength'       => $otherMaxLength,
             'otherNumber'          => $this->getQuestionAttribute('other_numbers_only'),
             'labeltext'            => $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')),
             'inputCommentId'       => 'answer' . $myfname2,
