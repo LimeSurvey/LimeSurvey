@@ -6,12 +6,12 @@ import pencilIcon from 'assets/icons/pencil-icon.svg'
 export const CustomizeButton = ({ text, onClick, isDisabled }) => {
   return (
     <span
-      onClick={onClick}
+      onClick={isDisabled ? undefined : onClick}
       className={classNames('customize-button-container med14-c gap-1', {
         'disable-settings': isDisabled,
       })}
     >
-      <img src={pencilIcon} /> {text}
+      <img src={pencilIcon} alt="" /> {text}
     </span>
   )
 }
