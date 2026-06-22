@@ -19961,7 +19961,7 @@ table [class^=ri-], table [class*=" ri-"] {
   width: fit-content;
   gap: 12px;
   align-items: center;
-  margin: 4px 0;
+  margin-top: 12px;
   padding: 4px 12px;
   font-size: 0.855rem;
   line-height: 16px;
