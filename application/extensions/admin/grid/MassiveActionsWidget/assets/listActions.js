@@ -125,7 +125,7 @@ var onClickListAction =  function (e) {
     if (actionType == 'custom') {
         var js = $that.data('custom-js');
         var func = eval(js);
-        var itemIds = $gridid.yiiGridView('getChecked', $('.listActions').data('pk'));
+        var itemIds = LS.gridSelection.getAll($grididvalue);
         func(itemIds);
         console.log('func itemIds');
         return;
