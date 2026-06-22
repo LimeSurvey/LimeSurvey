@@ -169,54 +169,45 @@ class CLSGridView extends TbGridView
 
     private function registerGridviewScripts()
     {
-        $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
+        // Scrollbar
+        App()->clientScript->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
+            CClientScript::POS_BEGIN
+        );
 
         // Grid selection // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
         App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'gridSelection.js',
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridSelection.js',
             CClientScript::POS_BEGIN
         );
 
-        // Scrollbar
-        App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'gridScrollbar.js',
-            CClientScript::POS_BEGIN
-        );
         // Accessibility: restore focus to sort column after AJAX grid update
         App()->clientScript->registerScriptFile(
             App()->getConfig("extensionsurl") . 'admin/grid/assets/restoreFocusAfterSort.js',
             CClientScript::POS_BEGIN
         );
-        // Accessibility: restore focus to sort column after AJAX grid update
-        App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'restoreFocusAfterSort.js',
-            CClientScript::POS_BEGIN
-        );
-        // Row link: make entire table rows clickable via data-rowlink attribute
-        App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'rowLink.js',
-            CClientScript::POS_END
-        );
-        // Page size selector
-        App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'changePageSize.js',
-            CClientScript::POS_END
-        );
-        // Accessibility: aria-label for "Select all" checkboxes
-        App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'ariaSelectAll.js',
-            CClientScript::POS_END
-        );
-        // Accessibility: keyboard navigation and focus management for sort links
-        App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'sortAccessibility.js',
-            CClientScript::POS_END
-        );
-        // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
-        App()->clientScript->registerScriptFile(
-            $extensionsUrl . 'afterAjaxUpdate.js',
-            CClientScript::POS_END
-        );
+        // changePageSize
+        $script = '
+			jQuery(document).on("change", "#' . $this->id . ' .changePageSize", function(){
+				var pageSizeName = $(this).attr("name");
+				if (!pageSizeName) {
+					pageSizeName = "pageSize";
+				}
+				var data = $("#' . $this->id . ' .filters input, #' . $this->id . ' .filters select").serialize();
+				data += (data ? "&" : "") + pageSizeName + "=" + $(this).val();
+				$.fn.yiiGridView.update("' . $this->id . '", {data: data});
+			});
+		';
+        App()->getClientScript()->registerScript('pageChanger#' . $this->id, $script, LSYii_ClientScript::POS_POSTSCRIPT);
+
+        // Accessibility: announce "Select all" for header checkboxes (id ending with _all)
+        $selectAllLabel = gT('Select all');
+        $scriptAria = 'jQuery(document).ready(function(){ jQuery("#' . $this->id . ' input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
+        App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll#' . $this->id, $scriptAria, LSYii_ClientScript::POS_POSTSCRIPT);
+        if (!App()->getClientScript()->isScriptRegistered('CLSGridView-ariaSelectAll-ajax')) {
+            $scriptAriaAjax = 'jQuery(document).ajaxComplete(function(){ jQuery(".grid-view-ls input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
+            App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll-ajax', $scriptAriaAjax, LSYii_ClientScript::POS_POSTSCRIPT);
+        }
     }
 
     /**
