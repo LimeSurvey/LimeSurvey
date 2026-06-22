@@ -107,10 +107,27 @@ class AttributesService
     {
         $questionBaseAttributes = $question->attributes;
 
+        // When the survey is active, attributes flagged as read-only (always, or
+        // read-only while the survey is active) must not be modified, even if they
+        // are present in the submitted data.
+        $survey = $question->survey;
+        $surveyIsActive = !empty($survey) && $survey->active === 'Y';
+        $readOnlyAttributes = [];
+        $attributeSettings = QuestionAttribute::getQuestionAttributesSettings($question->type);
+        foreach ($attributeSettings as $attributeName => $attributeSetting) {
+            if (
+                !empty($attributeSetting['readonly'])
+                || ($surveyIsActive && !empty($attributeSetting['readonly_when_active']))
+            ) {
+                $readOnlyAttributes[$attributeName] = true;
+            }
+        }
+
         foreach ($dataSet as $attributeKey => $attributeValue) {
             if (
                 !isset($attributeValue) ||
-                in_array($attributeKey, ['qid', 'debug', 'tempId'])
+                in_array($attributeKey, ['qid', 'debug', 'tempId']) ||
+                isset($readOnlyAttributes[$attributeKey])
             ) {
                 continue;
             }
