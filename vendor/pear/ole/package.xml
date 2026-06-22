@@ -16,19 +16,18 @@
   <email>xnoguer@php.net</email>
   <active>no</active>
  </lead>
- <date>2017-06-20</date>
+ <date>2025-12-14</date>
  <version>
-  <release>1.0.0RC3</release>
-  <api>1.0.0RC3</api>
+  <release>1.0.1</release>
+  <api>1.0.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
  <notes>
-Bug #19284:  RC2 breaks header in excel files from Spreadsheet_Excel_Writer
-Bug #21216:  Call to undefined method PEAR::OLE_PPS()
+- (Composer only) fix dependency on pear-core-minimal
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -42,7 +41,7 @@ Bug #21216:  Call to undefined method PEAR::OLE_PPS()
  <dependencies>
   <required>
    <php>
-    <min>5.0.0</min>
+    <min>5.6.0</min>
    </php>
    <pearinstaller>
     <min>1.4.0b1</min>
@@ -206,6 +205,41 @@ Bug #17685 OLE doesn&apos;t save multistreams
    <notes>
 Bug #19284:  RC2 breaks header in excel files from Spreadsheet_Excel_Writer
 Bug #21216:  Call to undefined method PEAR::OLE_PPS()
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2024-01-18</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+- Stable release after 9 release candidates
+- Resolved PHP 8 deprecations  
+- Full compatibility with PHP 5.6 through PHP 8.2
+- Changes to comply with MS documentation
+- Added type casting improvements
+- Fixed PHP 7.4 compatibility issues
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.1</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2025-12-14</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>
+- (Composer only) fix dependency on pear-core-minimal
    </notes>
   </release>
  </changelog>

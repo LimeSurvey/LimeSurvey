@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -48,6 +48,8 @@ class CheckIntegrity extends SurveyCommonAction
      */
     public function index()
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkintegrity.js');
+
         $aData = $this->checkintegrity();
 
         $aData['topbar']['title'] = gT('Check data integrity');
@@ -76,6 +78,7 @@ class CheckIntegrity extends SurveyCommonAction
                     if (in_array($aSurveyTable['table'], $oldsmultidelete)) {
                         Yii::app()->db->createCommand()->dropTable($aSurveyTable['table']);
                         $aData['messages'][] = sprintf(gT('Deleting survey table: %s'), $aSurveyTable['table']);
+                        $aData = $this->dropRelatedArchivedQuestionsTable($aSurveyTable['table'], $aData);
                     }
                 }
             }
@@ -208,6 +211,40 @@ class CheckIntegrity extends SurveyCommonAction
         foreach ($surveyTables as $aSurveyTable) {
             Yii::app()->db->createCommand()->dropTable($aSurveyTable);
             $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'), $aSurveyTable);
+            $aData = $this->dropRelatedArchivedQuestionsTable($aSurveyTable, $aData);
+        }
+        return $aData;
+    }
+
+    /**
+     * Drops the archived questions table (old_questions_<sid>_<date>) related to a
+     * given archived survey responses table (old_responses_<sid>_<date>), if it exists.
+     *
+     * On deactivation a survey responses table is archived as old_responses_<sid>_<date>
+     * together with a snapshot of the questions as old_questions_<sid>_<date>. When the
+     * archived responses table is removed, its related questions archive is no longer
+     * needed and would otherwise be left orphaned in the database.
+     *
+     * @param string $sSurveyTableName Full (prefixed) name of the archived survey responses table
+     * @param array $aData
+     * @return array
+     */
+    private function dropRelatedArchivedQuestionsTable($sSurveyTableName, array $aData)
+    {
+        $sDBPrefix = Yii::app()->db->tablePrefix;
+        // Only response archive tables (old_responses_<sid>_<date>) have a matching questions archive
+        if (strpos((string) $sSurveyTableName, $sDBPrefix . 'old_responses_') !== 0) {
+            return $aData;
+        }
+        $sQuestionsTableName = str_replace(
+            $sDBPrefix . 'old_responses_',
+            $sDBPrefix . 'old_questions_',
+            (string) $sSurveyTableName
+        );
+        $sQuestionsTableNameNoPrefix = substr($sQuestionsTableName, strlen((string) $sDBPrefix));
+        if (tableExists($sQuestionsTableNameNoPrefix)) {
+            Yii::app()->db->createCommand()->dropTable($sQuestionsTableName);
+            $aData['messages'][] = sprintf(gT('Deleting related archived questions table: %s'), $sQuestionsTableName);
         }
         return $aData;
     }
@@ -454,7 +491,7 @@ class CheckIntegrity extends SurveyCommonAction
             $deleted = QuotaMember::model()->deleteAllByAttributes($aRecord);
             $count += $deleted;
         }
-        $aData['messages'][] = sprintf(gT('Deleting orphaned quota members: %u quota members deleted'), $count);
+        $aData['messages'][] = sprintf(gT('Deleting orphaned quota rules: %u quota rules deleted'), $count);
         return $aData;
     }
 
@@ -628,6 +665,11 @@ class CheckIntegrity extends SurveyCommonAction
             foreach ($oSurveys as $oSurvey) {
                 // This actually clears the schema cache, not just refreshes it
                 $oDB->schema->refresh();
+                $rawQuestions = Question::model()->findAll('sid = :sid', [':sid' => $oSurvey->sid]);
+                $questions = [];
+                foreach ($rawQuestions as $rawQuestion) {
+                    $questions[$rawQuestion->qid] = $rawQuestion;
+                }
                 // We get the active surveys
                 if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
                     $model    = SurveyDynamic::model($oSurvey->sid);
@@ -638,24 +680,15 @@ class CheckIntegrity extends SurveyCommonAction
                     foreach ($aColumns as $oColumn) {
                         // Question columns start with the SID
                         if (strpos((string) $oColumn->name, (string)$oSurvey->sid) !== false) {
-                            // Fileds are separated by X
-                            $aFields = explode('X', (string) $oColumn->name);
+                            // Fields are separated by '_' — extract the question id from the first segment
+                            $qid = substr(explode("_", (string) $oColumn->Name)[0], 1);
 
-                            if (isset($aFields[1])) {
-                                $sGid = $aFields[1];
+                            if (isset($questions[$qid])) {
+                                $sGid = $questions[$qid]->gid;
 
                                 // QID field can be more than just QID, like: 886other or 886A1
                                 // So we clean it by finding the first alphabetical character
-                                $sDirtyQid = $aFields[2];
-                                preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
-
-                                if (isset($match[0][1])) {
-                                    $sQID = substr($sDirtyQid, 0, $match[0][1]);
-                                } else {
-                                    // It was just the QID.... (maybe)
-                                    $sQID = $sDirtyQid;
-                                }
-
+                                $sQID = $qid;
                                 // Here, we get the question as defined in backend
                                 try {
                                     $oQuestion = Question::model()->findByAttributes(['qid' => $sQID , 'sid' => $oSurvey->sid]);
@@ -667,7 +700,7 @@ class CheckIntegrity extends SurveyCommonAction
                                     // We check if its GID is the same as the one defined in the column name
                                     if ($oQuestion->gid != $sGid) {
                                         // If not, we change the column name
-                                        $sNvColName = $oSurvey->sid . 'X' . $oQuestion->group->gid . 'X' . $sDirtyQid;
+                                        $sNvColName = $oColumn->Name;
 
                                         if (array_key_exists($sNvColName, $aColumns)) {
                                             // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
@@ -719,7 +752,7 @@ class CheckIntegrity extends SurveyCommonAction
 
         /*** Check for active survey tables with missing survey entry or where survey entry is inactivate and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
-        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{survey}}\_%'))->queryColumn();
+        $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{responses}}\_%'))->queryColumn();
         $sSurveyIDs = Yii::app()->db->createCommand("select sid from {{surveys}} where active='Y'")->queryColumn();
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr((string) $aRow, strlen((string) $sDBPrefix));
@@ -734,10 +767,10 @@ class CheckIntegrity extends SurveyCommonAction
                     $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
                     $DBDate = date('Y-m-d H:i:s', $datestamp);
                     $userID = Yii::app()->user->getId();
-                    // Check if it's really a survey_XXX table mantis #14938
+                    // Check if it's really a responses_XXX table mantis #14938
                     if (empty($aTableName[2])) {
-                        $sOldTable = "survey_{$iSurveyID}";
-                        $sNewTable = "old_survey_{$iSurveyID}_{$date}";
+                        $sOldTable = "responses_{$iSurveyID}";
+                        $sNewTable = "old_responses_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $archivedTokenSettings = new ArchivedTableSettings();
                         $archivedTokenSettings->survey_id = $iSurveyID;
@@ -750,8 +783,8 @@ class CheckIntegrity extends SurveyCommonAction
                         $bDirectlyFixed = true;
                     }
                     if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
-                        $sOldTable = "survey_{$iSurveyID}_timings";
-                        $sNewTable = "old_survey_{$iSurveyID}_timings_{$date}";
+                        $sOldTable = "timings_{$iSurveyID}";
+                        $sNewTable = "old_timings_{$iSurveyID}_{$date}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $archivedTokenSettings = new ArchivedTableSettings();
                         $archivedTokenSettings->survey_id = $iSurveyID;
@@ -815,18 +848,7 @@ class CheckIntegrity extends SurveyCommonAction
             }
             //Only do this if there actually is a 'cfieldname'
             if ($condition['cfieldname']) {
-                // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
-                if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', (string) $condition['cfieldname'])) {
-                    list ($surveyid, $gid, $rest) = explode('X', (string) $condition['cfieldname']);
-
-                    $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid' => $gid)));
-                    if (!$iRowCount) {
-                        $aDelete['conditions'][] = array(
-                            'cid'    => $condition['cid'],
-                            'reason' => gT('No matching CFIELDNAME group!') . " ($gid) ({$condition['cfieldname']})"
-                        );
-                    }
-                }
+                //we have a cfieldname
             } elseif (!$condition['cfieldname']) {
                 $aDelete['conditions'][] = array(
                     'cid'    => $condition['cid'],
@@ -990,6 +1012,65 @@ class CheckIntegrity extends SurveyCommonAction
             $aDelete['question_l10ns'][] = array('id' => $question['id'], 'qid' => $question['qid'], 'reason' => gT('No parent question'));
         }
 
+        /**********************************************************************/
+        /*     Check subquestions whose parent question is missing            */
+        /**********************************************************************/
+        $oCriteria = new CDbCriteria();
+        $oCriteria->join = 'LEFT JOIN {{questions}} parentq ON t.parent_qid = parentq.qid';
+        $oCriteria->condition = 't.parent_qid <> 0 AND parentq.qid IS NULL';
+        $orphanSubquestions = Question::model()->findAll($oCriteria);
+        foreach ($orphanSubquestions as $orphanSubquestion) {
+            $aDelete['questions'][] = array('qid' => $orphanSubquestion['qid'], 'reason' => gT('No parent question'));
+        }
+
+        /**********************************************************************/
+        /*     Check subquestions and answer options against question type    */
+        /*     Some question types require subquestions, some require answer  */
+        /*     options and some require both. Flag for deletion subquestions  */
+        /*     and answer options that do not belong to the parent question's */
+        /*     type.                                                          */
+        /**********************************************************************/
+        $aTypesWithoutSubquestions = array();
+        $aTypesWithoutAnswers = array();
+        foreach (QuestionType::modelsAttributes() as $sTypeCode => $aTypeAttributes) {
+            if (empty($aTypeAttributes['subquestions'])) {
+                $aTypesWithoutSubquestions[] = $sTypeCode;
+            }
+            if (empty($aTypeAttributes['answerscales'])) {
+                $aTypesWithoutAnswers[] = $sTypeCode;
+            }
+        }
+
+        // Subquestions belonging to a question whose type does not allow subquestions
+        if (!empty($aTypesWithoutSubquestions)) {
+            $oCriteria = new CDbCriteria();
+            $oCriteria->join = 'INNER JOIN {{questions}} parentq ON t.parent_qid = parentq.qid';
+            $oCriteria->addCondition('t.parent_qid <> 0');
+            $oCriteria->addInCondition('parentq.type', $aTypesWithoutSubquestions);
+            $orphanSubquestions = Question::model()->findAll($oCriteria);
+            foreach ($orphanSubquestions as $orphanSubquestion) {
+                $aDelete['questions'][] = array(
+                    'qid' => $orphanSubquestion['qid'],
+                    'reason' => gT('The question type does not allow subquestions')
+                );
+            }
+        }
+
+        // Answer options belonging to a question whose type does not allow answer options
+        if (!empty($aTypesWithoutAnswers)) {
+            $oCriteria = new CDbCriteria();
+            $oCriteria->join = 'INNER JOIN {{questions}} q ON t.qid = q.qid';
+            $oCriteria->addInCondition('q.type', $aTypesWithoutAnswers);
+            $orphanAnswers = Answer::model()->findAll($oCriteria);
+            foreach ($orphanAnswers as $orphanAnswer) {
+                $aDelete['answers'][] = array(
+                    'qid' => $orphanAnswer['qid'],
+                    'code' => $orphanAnswer['code'],
+                    'reason' => gT('The question type does not allow answer options')
+                );
+            }
+        }
+
 
         /**********************************************************************/
         /*     Check groups                                                   */
@@ -1031,10 +1112,10 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     Check old survey tables                                        */
         /**********************************************************************/
-        //1: Get list of 'old_survey' tables and extract the survey ID
+        //1: Get list of 'old_responses' tables and extract the survey ID
         //2: Check if that survey ID still exists
         //3: If it doesn't offer it for deletion
-        $sQuery = dbSelectTablesLike('{{old_survey}}%');
+        $sQuery = dbSelectTablesLike('{{old_responses}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
 
         $aOldSIDs = array();
@@ -1077,7 +1158,7 @@ class CheckIntegrity extends SurveyCommonAction
 
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                     Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new Date_Time_Converter(dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+                    $datetimeobj = new Date_Time_Converter(dateShift($sDate, 'Y-m-d H:i:s'), 'Y-m-d H:i:s');
                     $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
 
                     $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
@@ -1138,6 +1219,35 @@ class CheckIntegrity extends SurveyCommonAction
             }
         }
 
+        /**********************************************************************/
+        /*     CHECK OLD QUESTIONS TABLES                                     */
+        /**********************************************************************/
+        //1: Get list of 'old_questions' tables (old_questions_<sid>_<date>)
+        //2: An old_questions table is only useful together with its matching
+        //   old_responses_<sid>_<date> archive (it is used during reactivation).
+        //   It is orphaned when the survey no longer exists or when its matching
+        //   old_responses archive is gone, so offer it for immediate deletion.
+        $sQuery = dbSelectTablesLike('{{old_questions}}%');
+        $aQuestionsTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
+
+        $sQuery = dbSelectTablesLike('{{old_responses}}%');
+        $aResponsesTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
+        $aSIDs = Yii::app()->db->createCommand("select sid from {{surveys}}")->queryColumn();
+
+        foreach ($aQuestionsTables as $sTableName) {
+            $aTableParts = explode('_', substr((string) $sTableName, strlen((string) $sDBPrefix)));
+            // Expected format: old_questions_<sid>_<date> => 4 parts
+            if (count($aTableParts) < 4) {
+                continue;
+            }
+            $iQuestionsSID = $aTableParts[2];
+            $sDateTime = $aTableParts[3];
+            $sMatchingResponsesTable = $sDBPrefix . "old_responses_{$iQuestionsSID}_{$sDateTime}";
+            if (!in_array($iQuestionsSID, $aSIDs) || !in_array($sMatchingResponsesTable, $aResponsesTables)) {
+                $aDelete['orphansurveytables'][] = $sTableName;
+            }
+        }
+
         if (
             $aDelete['defaultvalues'] == 0 && $aDelete['quotamembers'] == 0 &&
             $aDelete['quotas'] == 0 && $aDelete['quotals'] == 0 && count($aDelete) == 4
@@ -1180,8 +1290,8 @@ class CheckIntegrity extends SurveyCommonAction
         $aDelete['questionOrderDuplicates'] = $this->checkQuestionOrderDuplicates();
 
         /**********************************************************************/
-        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT Survey participant listS       */
-        /**********************************************************************/
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDANT Survey participant lists       */
+        /*********************************************************************/
         //1: Get distinct list of survey_link survey IDs, check if tokens
         //   table still exists for each one, and remove if not
 
@@ -1189,7 +1299,7 @@ class CheckIntegrity extends SurveyCommonAction
         /* TODO */
 
         /**********************************************************************/
-        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDENT TOKEN ENTRIES      */
+        /*     CHECK CPDB SURVEY_LINKS TABLE FOR REDUNDANT TOKEN ENTRIES      */
         /**********************************************************************/
         //1: For each survey_link, see if the matching entry still exists in
         //   the survey participant list and remove if it doesn't.

@@ -49,8 +49,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                 'enableAjaxValidation' => false,
                                 'htmlOptions'          => ['class' => 'form action_update_options_string_form'],
                                 'action'               => $actionUrl
-                            ]
-                        ); ?>
+                            ]); ?>
                 <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
             <!-- Tab panes -->
                 <div class="tab-content">
@@ -101,7 +100,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 <?php echo $form->hiddenField($model, 'gsid'); ?>
                 <?php echo $form->hiddenField($model, 'uid'); ?>
 
-                <?php echo CHtml::hiddenField('optionInheritedValues', json_encode($optionInheritedValues)); ?>
                 <?php echo CHtml::hiddenField('optionCssFiles', $optionCssFiles); ?>
                 <?php echo CHtml::hiddenField('optionCssFramework', json_encode($optionCssFramework)); ?>
                 <?php echo CHtml::hiddenField('translationInheritedValue', gT("Inherited value:") . ' '); ?>
@@ -111,7 +109,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                     [
                         'model' => $model,
                         'form' => $form,
-                        'optionInheritedValues' => $optionInheritedValues,
                         'optionCssFiles' => $optionCssFiles,
                         'optionCssFramework' => $optionCssFramework
                     ]

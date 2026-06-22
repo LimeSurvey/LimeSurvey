@@ -51,6 +51,18 @@ class Pool implements PromisorInterface
             $opts = [];
         }
 
+        if (!\is_iterable($requests)) {
+            \trigger_deprecation(
+                'guzzlehttp/guzzle',
+                '7.11',
+                'Passing a non-iterable request collection to %s::__construct() or %s::batch() is deprecated; guzzlehttp/guzzle 8.0 will require an iterable.',
+                __CLASS__,
+                __CLASS__
+            );
+
+            $requests = [$requests];
+        }
+
         $iterable = P\Create::iterFor($requests);
         $requests = static function () use ($iterable, $client, $opts) {
             foreach ($iterable as $key => $rfn) {
@@ -86,7 +98,7 @@ class Pool implements PromisorInterface
      * @param ClientInterface $client   Client used to send the requests
      * @param array|\Iterator $requests Requests to send concurrently.
      * @param array           $options  Passes through the options available in
-     *                                  {@see \GuzzleHttp\Pool::__construct}
+     *                                  {@see Pool::__construct}
      *
      * @return array Returns an array containing the response or an exception
      *               in the same order that the requests were sent.

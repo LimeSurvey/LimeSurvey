@@ -24,21 +24,18 @@ Responsive navbar-brand image CSS
 ***********************************/
 
 .logo-container {
-    padding: 0px;
+    padding: 0;
     float: left;
-
+    flex-shrink: 0;
     font-size: 18px;
     line-height: 20px;
 }
 
-.logo-container>img {
-    max-height: 90px;
-    padding: 15px;
-    width: auto;
-}
-
-.brand-logo  .top-container .top-content{
-    padding-top: 2em;
+.logo-container > img {
+  display: block;
+  max-height: 84px;
+  padding: 8px 0;
+  width: auto;
 }
 
 /* text overflows, ellipsis and hyphens */
@@ -94,10 +91,6 @@ Responsive navbar-brand image CSS
         //.navbar-nav .nav-item:hover::after {
         //    width : 100%;
         //}
-    }
-    @media(max-width : 768px) {
-        padding-top    : 15px;
-        padding-bottom : 15px;
     }
 
 }

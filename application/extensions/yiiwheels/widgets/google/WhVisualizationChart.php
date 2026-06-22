@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhVisualizationChart widget class
  * A simple implementation for for Google
@@ -47,7 +48,7 @@ class WhVisualizationChart extends CWidget
         $id                      = $this->getId();
         // if no container is set, it will create one
         if ($this->containerId == null) {
-            $this->htmlOptions['id'] = 'div-chart'.$id;
+            $this->htmlOptions['id'] = 'div-chart' . $id;
             $this->containerId = $this->htmlOptions['id'];
             echo '<div ' . CHtml::renderAttributes($this->htmlOptions) . '></div>';
         }

@@ -28,6 +28,8 @@
     <compatibility>
         <version>4.0</version>
         <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
     </compatibility>
 
     <!--
@@ -150,6 +152,19 @@
             <default>normal</default>
             <help>Present subquestions in normal, random or alphabetical order</help>
             <caption>Subquestions order</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>keep_codes_order</name>
+            <category>Display</category>
+            <sortorder>101</sortorder>
+            <inputtype>text</inputtype>
+            <default></default>
+            <help>Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized</help>
+            <caption>Keep codes at original positions</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

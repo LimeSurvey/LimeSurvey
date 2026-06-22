@@ -94,3 +94,9 @@ $alert-status : (
     height : 300px;
 }
 
+.alert-dismissible .btn-close:focus{
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+

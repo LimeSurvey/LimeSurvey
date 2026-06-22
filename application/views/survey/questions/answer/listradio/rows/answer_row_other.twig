@@ -11,7 +11,6 @@
  * @var $otherTextRight
  * @var $otherItemExtraClass
  * @var $checkedState
- * @var $kpclass
  * @var $sValue
  * @var $checkconditionFunction
  * @var $otherInputSize
@@ -38,9 +37,9 @@
         <div class="text-item other-text-item col">
             <input
             type="text"
-            class="form-control {{ kpclass }} input-sm"
+            class="form-control input-sm"
             id="answer{{ name }}othertext"
-            name="{{ name }}other"
+            name="{{ name }}_Cother"
             title="{{ flatString(processString(othertext,1),1) }}"
             {{ answer_other }}
             aria-labelledby="label-id-{{ name }}"

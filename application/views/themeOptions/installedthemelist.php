@@ -30,7 +30,12 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'pageSize',
                 $pageSize,
                 App()->params['pageSizeOptions'],
-                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                [
+                    'id' => 'questionthemes-pageSize',
+                    'class' => 'changePageSize form-select',
+                    'style' => 'display: inline; width: auto',
+                    'aria-label' => gT('Rows per page')
+                ]
             )
         ),
     'columns'               => [
@@ -53,16 +58,14 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             'name'        => 'description',
             'value'       => '$data->description',
             'htmlOptions' => ['class' => 'col-lg-3'],
-            'type'        => 'raw',
         ],
 
         [
             'header'      => gT('Type'),
             'name'        => 'core_theme',
-            'value'       => '($data->core_theme == 1) ? gT("Core Theme") : gT("User Theme")',
-            'type'        => 'raw',
+            'value'       => '($data->core_theme == 1) ? gT("Core theme, "unescaped") : gT("User theme, "unescaped")',
             'htmlOptions' => ['class' => 'col-lg-2'],
-            "filter"      => [1 => gT("Core Theme"), 0 => gT('User Theme')]
+            "filter"      => [1 => gT("Core theme", "unescaped"), 0 => gT("User theme", "unescaped")]
         ],
 
         [
@@ -73,10 +76,10 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
         ],
         [
             'header'            => gT('Visibility'),
-            'headerHtmlOptions' => ['title' => gT('Visible inside the Question Selector')],
+            'headerHtmlOptions' => ['title' => gT('Visible inside the question type selector')],
             'name'              => 'visible',
             'value'             => '$data->getVisibilityButton()',
-            'type'              => 'raw',
+            'type'              => 'raw', // From model HTML directly
             'htmlOptions'       => ['class' => 'col-lg-1'],
             "filter"            => ['N' => gT("Off"), 'Y' => gT('On')],
         ]
@@ -106,7 +109,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
 <?php
 // todo create a new javascript file and call function from here, related: 1573120573738
 $script = '
-                jQuery(document).on("change", "#pageSize", function () {
+                jQuery(document).on("change", "#questionthemes-pageSize", function () {
                     $.fn.yiiGridView.update("questionthemes-grid", {
                         data: {
                             pageSize: $(this).val()
@@ -126,5 +129,5 @@ $script = '
                 }
                 ';
 App()->getClientScript()->registerScript('questionthemes-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
-?>
+
 

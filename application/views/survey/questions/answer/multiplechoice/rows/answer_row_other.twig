@@ -8,7 +8,6 @@
  * @var $othertextRight
  * @var $otherItemExtraClass
  * @var $checkedState
- * @var $kpclass
  * @var $sValue
  * @var $oth_checkconditionFunction
  * @var $checkconditionFunction
@@ -22,7 +21,7 @@
 <!-- answer_row_other -->
 <li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-text-item {{ relevanceClass }} {{ otherItemExtraClass }}'>
     <div class="row">
-        <div class="col-auto">
+        <div class="col-auto d-flex">
             <!-- Checkbox + label -->
             <div class="checkbox-item othertext-label-checkox-container">
                 <!-- checkbox -->
@@ -41,7 +40,7 @@
         <div class="col">
             <div class="text-item other-text-item">
                 <input
-                    class="form-control input-sm {{ kpclass }}"
+                    class="form-control input-sm"
                     type="text"
                     name="{{ myfname }}"
                     id="answer{{ myfname }}"

@@ -1,18 +1,22 @@
 <?php
+
 /**
  * Import tokens from CSV file
  *
  */
+
 ?>
 
 <div class='side-body'>
-    <h3 aria-level="1"><?php eT("Import survey participants from CSV file"); ?></h3>
+    <h1 class="h3"><?php eT("Import survey participants from CSV file"); ?></h1>
 
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(["admin/tokens/sa/import/surveyid/{$iSurveyId}"],
+            <?php echo CHtml::form(
+                ["admin/tokens/sa/import/surveyid/{$iSurveyId}"],
                 'post',
-                ['id' => 'tokenimport', 'name' => 'tokenimport', 'class' => '', 'enctype' => 'multipart/form-data']); ?>
+                ['id' => 'tokenimport', 'name' => 'tokenimport', 'class' => '', 'enctype' => 'multipart/form-data']
+            ); ?>
 
             <!-- Choose the CSV file to upload -->
             <div class="mb-3">
@@ -37,7 +41,7 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'separator',
                         'checkedOption'         => 'auto',
-                        'ariaLabel'    => gT("Separator used"),
+                        'ariaLabel'    => gT("Separator used:"),
                         'selectOptions' => [
                             "auto"      => gT("Automatic", 'unescaped'),
                             "comma"     => gT("Comma", 'unescaped'),
@@ -53,7 +57,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'filterblankemail',
-                        'ariaLabel'    => gT("Filter blank email addresses"),
+                        'ariaLabel'    => gT("Filter blank email addresses:"),
                         'checkedOption' => '1',
                         'selectOptions' => [
                             "1" => gT('On'),
@@ -70,7 +74,7 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'allowinvalidemail',
                         'checkedOption' => '0',
-                        'ariaLabel'    => gT("Allow invalid email addresses"),
+                        'ariaLabel'    => gT("Allow invalid email addresses:"),
                         'selectOptions' => [
                             "1" => gT('On'),
                             "0" => gT('Off')
@@ -86,7 +90,7 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'showwarningtoken',
                         'checkedOption' => '0',
-                        'ariaLabel'    => gT("Display attribute warnings"),
+                        'ariaLabel'    => gT("Display attribute warnings:"),
                         'selectOptions' => [
                             "1" => gT('On'),
                             "0" => gT('Off')
@@ -102,7 +106,7 @@
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'filterduplicatetoken',
                         'checkedOption' => '1',
-                        'ariaLabel'    => gT("Filter duplicate records"),
+                        'ariaLabel'    => gT("Filter duplicate records:"),
                         'selectOptions' => [
                             "1" => gT('On'),
                             "0" => gT('Off')
@@ -124,10 +128,12 @@
                 <div class="">
                     <?php
                     unset($aTokenTableFields['token']); // token are already duplicate forbidden mantis #14334, remove it
-                    echo CHtml::listBox('filterduplicatefields',
+                    echo CHtml::listBox(
+                        'filterduplicatefields',
                         ['firstname', 'lastname', 'email'],
                         $aTokenTableFields,
-                        ['multiple' => 'multiple', 'size' => '7', 'class' => 'form-control']);
+                        ['multiple' => 'multiple', 'size' => '7', 'class' => 'form-control']
+                    );
                     ?>
                 </div>
             </div>
