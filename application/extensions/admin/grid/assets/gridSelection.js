@@ -77,11 +77,16 @@ LS.gridSelection = (function () {
     // are no longer part of the filtered results must not stay selected.
     // This handler fires before the grid's own AJAX-update is triggered,
     // so the store is already empty when restoreCheckboxes() runs afterwards.
+    // Add keydown to the event listener and filter for Enter key only
+    // to match Yii's core grid filter behavior.
     // ------------------------------------------------------------------
     $(document).on(
-        'change',
+        'change keydown',
         '.grid-view-ls .filters input, .grid-view-ls .filters select',
-        function () {
+        function (e) {
+            if (e.type === 'keydown' && e.key !== 'Enter' && e.keyCode !== 13) {
+                return;
+            }
             var gridId = $(this).closest('.grid-view-ls').attr('id');
             if (!gridId) { return; }
             _store.set(gridId, new Set());

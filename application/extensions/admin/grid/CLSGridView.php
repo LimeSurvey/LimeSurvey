@@ -114,8 +114,6 @@ class CLSGridView extends TbGridView
         // Always restore persisted checkbox selection after an AJAX page update.
         // LS.gridSelection is registered for every CLSGridView via registerGridviewScripts().
         $alwaysJs  = 'LS.gridSelection.restoreCheckboxes(' . $gridId . ');';
-        $alwaysJs .= 'LS.actionDropdown.create();';
-        $alwaysJs .= 'LS.rowlink.create();';
 
         // Non-AJAX grids have no afterAjaxUpdate callback to build
         if ($this->ajaxUpdate === false) {
