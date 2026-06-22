@@ -34,7 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-Changes from  (build ranslation:) to 6.17.9 (build 260619) June 17, 2026
+Changes from 6.17.9 (build 260619) to 6.17.10 (build 260622) June 22, 2026
++New feature #12393: 'Check all' boxes in data integrity check (Carsten Schmitz)
+-Fixed issue: navbar hover and focus styles not fitting with light buttons (#5069) (Tim Willig)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by c_schmitz, johnyh, kkd
+#Updated translation: Hungarian (Informal) by c_schmitz, kkd
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
+Changes from 6.17.8 (build 260616) to 6.17.9 (build 260619) June 17, 2026
 -Fixed issue AT-2090: [security] SQL injection vulnerability in statistics (Carsten Schmitz)
 #Updated translation: Portuguese (Portugal) by ricardo.santos
 #Updated translation: Italian by lfanfoni
