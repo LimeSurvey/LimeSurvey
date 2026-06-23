@@ -28,6 +28,14 @@ LS.gridSelection = (function () {
     var _store = new Map();
 
     /**
+     * Confirmed deleted rows: gridId -> Set of PK values to remove from
+     * the selection store on the next restoreCheckboxes() call.
+     * Populated by markRowDeleted() on delete success; consumed and cleared in restoreCheckboxes().
+     * @type {Map<string, Set<string>>}
+     */
+    var _deletedRows = new Map();
+
+    /**
      * Returns (and lazily creates) the Set for a given gridId.
      * @param  {string} gridId
      * @return {Set<string>}
@@ -218,6 +226,21 @@ LS.gridSelection = (function () {
             var stored = _set(gridId);
             if (stored.size === 0) { return; }
 
+            // Remove confirmed deleted rows from the store (registered via markRowDeleted()).
+            var deleted = _deletedRows.get(gridId);
+            if (deleted && deleted.size > 0) {
+                deleted.forEach(function (pkValue) {
+                    stored.delete(pkValue);
+                });
+                _deletedRows.delete(gridId);
+            }
+
+            if (stored.size === 0) {
+                _syncSelectionBar(gridId);
+                _syncMassiveActionButton(gridId);
+                return;
+            }
+
             $('#' + gridId + ' tbody input[type="checkbox"]').each(function () {
                 if (stored.has(String($(this).val()))) {
                     $(this).prop('checked', true);
@@ -227,6 +250,23 @@ LS.gridSelection = (function () {
             _syncHeaderCheckbox(gridId);
             _syncMassiveActionButton(gridId);
             _syncSelectionBar(gridId);
+        },
+
+        /**
+         * Marks a single row as deleted so that restoreCheckboxes() will remove
+         * it from the selection store on the next grid refresh.
+         * Call this from the delete-action success callback, before or after
+         * yiiGridView.update() — both orderings are safe since the deleted set
+         * is only consumed when the AJAX response arrives.
+         *
+         * @param {string} gridId   The HTML id of the CLSGridView container.
+         * @param {string} pkValue  The PK value of the deleted row (checkbox value).
+         */
+        markRowDeleted: function (gridId, pkValue) {
+            if (!_deletedRows.has(gridId)) {
+                _deletedRows.set(gridId, new Set());
+            }
+            _deletedRows.get(gridId).add(String(pkValue));
         },
 
         /**

@@ -200,7 +200,8 @@ LS.CPDB = (function() {
 
         $('.action_participant_deleteModal').on('click', function(e) {
             e.preventDefault();
-            var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).data('participantId')};
+            var participantId = String($(this).data('participantId'));
+            var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : participantId};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
                 openModalParticipantPanel,
@@ -210,6 +211,7 @@ LS.CPDB = (function() {
                 'list_central_participants',
                 function (result) {
                     if (!result.error) {
+                        LS.gridSelection.markRowDeleted('list_central_participants', participantId);
                         window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                     }
                 }
