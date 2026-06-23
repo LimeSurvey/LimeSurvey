@@ -212,3 +212,7 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
         left : auto;
     }
 }
+
+li.radio-text-item .other-text-item {
+    min-width: 150px;
+}
