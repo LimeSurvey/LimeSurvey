@@ -2,7 +2,7 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-class Update_642 extends DatabaseUpdateBase
+class Update_709 extends DatabaseUpdateBase
 {
     /**
      * Add savequotaexit column to surveys and surveys_groupsettings tables
