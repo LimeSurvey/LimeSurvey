@@ -63,20 +63,24 @@ LS.CPDB = (function() {
 
     /**
      * Run when user clicks 'Export'
-     * Used for both all participants and checked participants
-     * @param {boolean} all - If true, export all participants
+     * Used for all participants, checked participants, or a specific list of IDs.
+     * @param {boolean|Array} itemIds - If true, export all participants. If an array, export those IDs. If falsy, read from checked DOM checkboxes.
      * @return
      */
-    onClickExport = function(all) {
+    onClickExport = function(itemIds) {
         var postdata = {
             selectedParticipant: [],
         }; /* csrf is already in ajaxSetup */
 
-        if (!all) {
+        if (Array.isArray(itemIds)) {
+            postdata.selectedParticipant = itemIds;
+        } else if (!itemIds) {
+            // Legacy: read IDs from checked DOM checkboxes
             $('.selector_participantCheckbox:checked').each(function(i,item){
                 postdata.selectedParticipant.push($(item).val());
             });
         }
+        // If itemIds === true, selectedParticipant stays [] (server exports all)
         $.ajax({
             url: exporttocsvcountall,
             data: postdata,
