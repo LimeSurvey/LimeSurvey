@@ -1062,68 +1062,48 @@ class Tokens extends SurveyCommonAction
             $aData['amount'] = (int) App()->request->getPost('amount');
             $aData['tokenlength'] = (int) App()->request->getPost('tokenlen');
 
-            // Fill an array with all existing tokens
-            $existingtokens = array();
-            $tokenModel     = Token::model($iSurveyId);
-            $criteria       = $tokenModel->getDbCriteria();
-            $criteria->select = 'token';
-            $criteria->distinct = true;
-            $command = $tokenModel->getCommandBuilder()->createFindCommand($tokenModel->getTableSchema(), $criteria);
-            $result  = $command->query();
-            while ($tokenRow = $result->read()) {
-                $existingtokens[$tokenRow['token']] = true;
-            }
-            $result->close();
+            // No attributer error : go
+            if ($cntAttributeErrors == 0) {
+                $invalidtokencount = 0;
+                $newDummyToken = 0;
+                while ($newDummyToken < $aData['amount'] && $invalidtokencount < 50) {
+                    $token = Token::create($iSurveyId);
+                    $token->setAttributes($aData, false);
 
-            $invalidtokencount = 0;
-            $newDummyToken = 0;
-            while ($newDummyToken < $aData['amount'] && $invalidtokencount < 50) {
-                $token = Token::create($iSurveyId);
-                $token->setAttributes($aData, false);
+                    $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->firstname);
+                    $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->lastname);
+                    $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->email);
 
-                $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->firstname);
-                $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->lastname);
-                $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->email);
+                    $token->generateToken($aData['tokenlength']);
 
-                $token->generateToken($aData['tokenlength']);
-
-                $existingtokens[$token->token] = true;
-                $token->encryptSave(true);
-                $newDummyToken++;
-            }
-            $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-            $aData['surveyid'] = $iSurveyId;
-            if ($newDummyToken === 0) {
-                $aData['success'] = false;
-                Yii::app()->session['flashmessage'] = gT("No dummy participants were added.");
-                $this->getController()->redirect(array("/admin/tokens/sa/browse/surveyid/{$iSurveyId}"));
-            } elseif ($cntAttributeErrors > 0) { // attribute validation errors
-                $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
-                $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
-                $aData['showSaveButton'] = true;
-                $aData['topBar']['name'] = 'tokensTopbar_view';
-                $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
-
-                $this->renderWrappedTemplate('token', array('dummytokenform'), $aData);
-            } elseif (!$invalidtokencount) {
-                $aData['success'] = true;
-                Yii::app()->session['flashmessage'] = gT("New dummy participants were added.");
-                //admin/tokens/sa/browse/surveyid/652779//
-                $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSurveyId));
-            } else {
-                $aData['success'] = false;
-                $aData['topBar']['name'] = 'tokensTopbar_view';
-                $message = array(
-                    'title' => gT("Failed"),
-                    'message' => "<p>" . sprintf(gT("Only %s new dummy participants were added after %s trials."), $newDummyToken, $invalidtokencount)
-                        . gT("Try with a bigger access code length.") . "</p>"
-                        . "\n<input type='button' value='"
-                        . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
-                );
-                $this->renderWrappedTemplate('token', array('message' => $message), $aData);
+                    $existingtokens[$token->token] = true;
+                    $token->encryptSave(true);
+                    $newDummyToken++;
+                }
+                $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+                $aData['surveyid'] = $iSurveyId;
+                if ($newDummyToken === 0) {
+                    $aData['success'] = false;
+                    Yii::app()->session['flashmessage'] = gT("No dummy participants were added.");
+                    $this->getController()->redirect(array("/admin/tokens/sa/browse/surveyid/{$iSurveyId}"));
+                } elseif (!$invalidtokencount) {
+                    $aData['success'] = true;
+                    Yii::app()->session['flashmessage'] = gT("New dummy participants were added.");
+                    $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSurveyId));
+                } else {
+                    $aData['success'] = false;
+                    $aData['topBar']['name'] = 'tokensTopbar_view';
+                    $message = array(
+                        'title' => gT("Failed"),
+                        'message' => "<p>" . sprintf(gT("Only %s new dummy participants were added after %s trials."), $newDummyToken, $invalidtokencount)
+                            . gT("Try with a bigger access code length.") . "</p>"
+                            . "\n<a href='" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "'"
+                            . gT("Browse participants") . "</a>\n"
+                    );
+                    $this->renderWrappedTemplate('token', array('message' => $message), $aData);
+                }
             }
         } else {
-            $survey = Survey::model()->findByPk($iSurveyId);
             // default values
             $aData['firstname'] = '';
             $aData['lastname'] = '';
@@ -1138,33 +1118,33 @@ class Tokens extends SurveyCommonAction
             $aData['validuntil'] = null;
             $aData['amount'] = 100;
             $aData['tokenlength'] = ($survey->hasTokensTable && !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength)) ? Token::model($iSurveyId)->survey->oOptions->tokenlength : 15;
-
-            $thissurvey = getSurveyInfo($iSurveyId);
-            $aData['thissurvey'] = $thissurvey;
-            $aData['surveyid'] = $iSurveyId;
-
-            $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
-            $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
-            $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
-                '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
-                [
-                    'showSaveAndCloseButton' => true,
-                    'showWhiteCloseButton' => true,
-                    // Save button doesn’t apply to this screen
-                    'showSaveButton' => false,
-                    'closeUrl' => Yii::app()->createUrl(
-                        "admin/tokens",
-                        [
-                            "sa" => 'index',
-                            "surveyid" => $iSurveyId,
-                        ]
-                    )
-                ],
-                true
-            );
-
-            $this->renderWrappedTemplate('token', array('dummytokenform'), $aData);
         }
+        // We get there : construct the form
+        $thissurvey = getSurveyInfo($iSurveyId);
+        $aData['thissurvey'] = $thissurvey;
+        $aData['surveyid'] = $iSurveyId;
+
+        $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
+        $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
+        $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
+            '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
+            [
+                'showSaveAndCloseButton' => true,
+                'showWhiteCloseButton' => true,
+                // Save button doesn’t apply to this screen
+                'showSaveButton' => false,
+                'closeUrl' => Yii::app()->createUrl(
+                    "admin/tokens",
+                    [
+                        "sa" => 'index',
+                        "surveyid" => $iSurveyId,
+                    ]
+                )
+            ],
+            true
+        );
+
+        $this->renderWrappedTemplate('token', array('dummytokenform'), $aData);
     }
 
     /**
