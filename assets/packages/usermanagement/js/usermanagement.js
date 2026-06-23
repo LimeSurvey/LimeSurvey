@@ -98,6 +98,15 @@ var UserManagement = function () {
                         $('#UserManagement--modalform').off('submit.USERMANAGERMODAL');
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         if (!result.hasOwnProperty('html')) {
+                            var isDelete = /\/deleteUser/.test($('#UserManagement--modalform').attr('action'));
+                            console.log(isDelete);
+                            if (isDelete) {
+                                var userId = data.find(function(f) { return f.name === 'userid'; });
+                                console.log(userId, data);
+                                if (userId) {
+                                    LS.gridSelection.markRowDeleted('usermanagement--identity-gridPanel', userId.value);
+                                }
+                            }
                             triggerModalClose();
                             window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true, useHtml: true, showIcon: true});
                             if (result.hasOwnProperty('href')) {
