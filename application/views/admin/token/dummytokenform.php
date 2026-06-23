@@ -66,9 +66,9 @@
                 <div class="mb-3 col-6">
                     <label  class=" form-label" for='email'><?php eT("Email address:"); ?></label>
                     <div class="">
-                        <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' value="<?= CHtml::encode($email); ?>" />
+                        <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' aria-describedby='email-help' value="<?= CHtml::encode($email); ?>" />
                     </div>
-                    <div class="form-text" id="lastname-help">
+                    <div class="form-text" id="email-help">
                         <?= sprintf(gT('You can use %1$s to add the generated counter number, for example, “user%1$s@example.org”.'), "{TOKEN_COUNTER}"); ?>
                     </div>
                 </div>

@@ -1035,17 +1035,17 @@ class Tokens extends SurveyCommonAction
                 $aData['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            $aData['firstname'] = App()->request->getPost('firstname');
-            $aData['lastname'] = App()->request->getPost('lastname');
-            $aData['email'] = App()->request->getPost('email');
+            $aData['firstname'] = App()->request->getPost('firstname', '');
+            $aData['lastname'] = App()->request->getPost('lastname', '');
+            $aData['email'] = App()->request->getPost('email', '');
             $aData['token'] = '';
-            $aData['language'] = \LSYii_Validators::languageCodeFilter(App()->request->getPost('language'));
+            $aData['language'] = \LSYii_Validators::languageCodeFilter(App()->request->getPost('language', $survey->language));
             $aData['sent'] = 'N';
             $aData['remindersent'] = 'N';
             $aData['completed'] = 'N';
-            $aData['usesleft'] = App()->request->getPost('usesleft');
-            $aData['amount'] = App()->request->getPost('amount');
-            $aData['tokenlength'] = App()->request->getPost('tokenlen');
+            $aData['usesleft'] = App()->request->getPost('usesleft', '');
+            $aData['amount'] = App()->request->getPost('amount', 100);
+            $aData['tokenlength'] = App()->request->getPost('tokenlen', intval($survey->oOptions->tokenlength) > 0 ? intval($survey->oOptions->tokenlength) : 15);
 
             // add attributes
             $cntAttributeErrors = 0;
@@ -1062,7 +1062,7 @@ class Tokens extends SurveyCommonAction
             $aData['amount'] = (int) App()->request->getPost('amount');
             $aData['tokenlength'] = (int) App()->request->getPost('tokenlen');
 
-            // No attributer error : go
+            // No attribute error : go
             if ($cntAttributeErrors == 0) {
                 $invalidtokencount = 0;
                 $newDummyToken = 0;
@@ -1075,22 +1075,20 @@ class Tokens extends SurveyCommonAction
                     $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->email);
 
                     $token->generateToken($aData['tokenlength']);
-
-                    $existingtokens[$token->token] = true;
-                    $token->encryptSave(true);
-                    $newDummyToken++;
+                    if ($token->encryptSave(true)) {
+                        $newDummyToken++;
+                    }
                 }
                 $aData['thissurvey'] = getSurveyInfo($iSurveyId);
                 $aData['surveyid'] = $iSurveyId;
+                /* No token created */
                 if ($newDummyToken === 0) {
                     $aData['success'] = false;
                     Yii::app()->session['flashmessage'] = gT("No dummy participants were added.");
                     $this->getController()->redirect(array("/admin/tokens/sa/browse/surveyid/{$iSurveyId}"));
-                } elseif (!$invalidtokencount) {
-                    $aData['success'] = true;
-                    Yii::app()->session['flashmessage'] = gT("New dummy participants were added.");
-                    $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSurveyId));
-                } else {
+                }
+                /* We stop during while and create only some dummy token*/
+                if ($invalidtokencount) {
                     $aData['success'] = false;
                     $aData['topBar']['name'] = 'tokensTopbar_view';
                     $message = array(
@@ -1102,7 +1100,11 @@ class Tokens extends SurveyCommonAction
                     );
                     $this->renderWrappedTemplate('token', array('message' => $message), $aData);
                 }
+                $aData['success'] = true;
+                Yii::app()->session['flashmessage'] = gT("New dummy participants were added.");
+                $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSurveyId));
             }
+            /* If attribute have error : we continue to show the form */
         } else {
             // default values
             $aData['firstname'] = '';
@@ -1117,7 +1119,7 @@ class Tokens extends SurveyCommonAction
             $aData['validfrom'] = null;
             $aData['validuntil'] = null;
             $aData['amount'] = 100;
-            $aData['tokenlength'] = ($survey->hasTokensTable && !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength)) ? Token::model($iSurveyId)->survey->oOptions->tokenlength : 15;
+            $aData['tokenlength'] = intval($survey->oOptions->tokenlength) > 0 ? intval($survey->oOptions->tokenlength) : 15;
         }
         // We get there : construct the form
         $thissurvey = getSurveyInfo($iSurveyId);
