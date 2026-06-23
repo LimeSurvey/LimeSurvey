@@ -14,26 +14,35 @@ $this->showHeaders($aData);
 $this->showadminmenu($aData);
 $layoutHelper = new LayoutHelper();
 ?>
+<?php // Render the sidebar widget only for authenticated users. Guests should not trigger the widget (which expects a non-null user id). ?>
+<?php if (!Yii::app()->user->isGuest) : ?>
+<div id="layout_sidebar">
+    <?php App()->getController()->widget('ext.SideBarWidget.SideBarWidget'); ?>
+    <div class="container-40">
+<?php endif; ?>
+        <?= $layoutHelper->renderTopbarTemplate($aData) ?>
+        <!-- BEGIN LAYOUT_MAIN -->
+        <div class='container-fluid'>
+            <?= $this->updatenotification() ?>
+        </div>
 
-<?= $layoutHelper->renderTopbarTemplate($aData) ?>
-<!-- BEGIN LAYOUT_MAIN -->
+        <?= $this->notifications() ?>
 
-<div class='container-fluid'>
-    <?= $this->updatenotification() ?>
+        <!--The load indicator for pjax-->
+        <div id="pjax-file-load-container" class="ls-flex-row col-12">
+            <div style="height:2px;width:0;"></div>
+        </div>
+
+        <?php $containerClass = !App()->user->isGuest ? 'container-fluid' : 'container-fluid ps-0' ?>
+        <!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
+        <div class="<?= $containerClass ?>" id="in_survey_common_action">
+            <?= $content ?>
+        </div>
+<?php // Close layout wrapper only for authenticated users (was opened above) ?>
+<?php if (!Yii::app()->user->isGuest) : ?>
+    </div>
 </div>
-
-<?= $this->notifications() ?>
-
-<!--The load indicator for pjax-->
-<div id="pjax-file-load-container" class="ls-flex-row col-12">
-    <div style="height:2px;width:0;"></div>
-</div>
-
-<?php $containerClass = !App()->user->isGuest ? 'container-fluid' : 'container-fluid ps-0' ?>
-<!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
-<div class="<?= $containerClass ?>" id="in_survey_common_action">
-    <?= $content ?>
-</div>
+<?php endif; ?>
 <!-- END LAYOUT_MAIN -->
 
 <?php

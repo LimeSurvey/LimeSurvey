@@ -159,8 +159,8 @@ class Zend_Service_Rackspace_Servers extends Zend_Service_Rackspace_Abstract
         if (!empty($metadata)) {
             $data['metadata']= $metadata;
         }
-        $data['flavorId']= (integer) $data['flavorId'];
-        $data['imageId']= (integer) $data['imageId'];
+        $data['flavorId']= (int) $data['flavorId'];
+        $data['imageId']= (int) $data['imageId'];
         if (!empty($files)) {
             foreach ($files as $serverPath => $filePath) {
                 if (!file_exists($filePath)) {
@@ -409,7 +409,7 @@ class Zend_Service_Rackspace_Servers extends Zend_Service_Rackspace_Abstract
             throw new Zend_Service_Rackspace_Exception('You didn\'t specified the group id to use');
         }
         $data= [
-            'sharedIpGroupId' => (integer) $groupId,
+            'sharedIpGroupId' => (int) $groupId,
             'configureServer' => $configure
         ];
         $result = $this->httpCall($this->getManagementUrl().'/servers/'.rawurlencode($id).'/ips/public/'.rawurlencode($ip),'PUT',
@@ -561,7 +561,7 @@ class Zend_Service_Rackspace_Servers extends Zend_Service_Rackspace_Abstract
         }
         $data= [
             'rebuild' => [
-                'imageId' => (integer) $imageId
+                'imageId' => (int) $imageId
             ]
         ];
         $result = $this->httpCall($this->getManagementUrl().'/servers/'.rawurlencode($id).'/action',
@@ -617,7 +617,7 @@ class Zend_Service_Rackspace_Servers extends Zend_Service_Rackspace_Abstract
         }
         $data= [
             'resize' => [
-                'flavorId' => (integer) $flavorId
+                'flavorId' => (int) $flavorId
             ]
         ];
         $result = $this->httpCall($this->getManagementUrl().'/servers/'.rawurlencode($id).'/action',
@@ -915,7 +915,7 @@ class Zend_Service_Rackspace_Servers extends Zend_Service_Rackspace_Abstract
         }
         $data = [
             'image' => [
-                'serverId' => (integer) $serverId,
+                'serverId' => (int) $serverId,
                 'name'     => $name
             ]
         ];
@@ -1216,7 +1216,7 @@ class Zend_Service_Rackspace_Servers extends Zend_Service_Rackspace_Abstract
         $data = [
             'sharedIpGroup' => [
                 'name'   => $name,
-                'server' => (integer) $serverId
+                'server' => (int) $serverId
             ]
         ];
         $result= $this->httpCall($this->getManagementUrl().'/shared_ip_groups',

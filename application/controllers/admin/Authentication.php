@@ -5,7 +5,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -35,7 +35,7 @@ class Authentication extends SurveyCommonAction
      */
     public function index()
     {
-        // if the session is not readeable clear browser cookies
+        // if the session is not readable clear browser cookies
         if (!session_id()) {
             App()->request->cookies->clear();
         }
@@ -142,11 +142,11 @@ class Authentication extends SurveyCommonAction
             // Call the plugin method newLoginForm
             // For Authdb:  @see: application/core/plugins/Authdb/Authdb.php: function newLoginForm()
             $newLoginForm = new PluginEvent('newLoginForm');
-            App()->getPluginManager()->dispatchEvent($newLoginForm); // inject the HTML of the form inside the private varibale "_content" of the plugin
+            App()->getPluginManager()->dispatchEvent($newLoginForm); // inject the HTML of the form inside the private variable "_content" of the plugin
             $aData['summary'] = self::getSummary('logout');
-            $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
+            $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retrieves the private variable "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
         } else {
-            // The form has been submitted, or the plugin has been stoped (so normally, the value of login/password are available)
+            // The form has been submitted, or the plugin has been stopped (so normally, the value of login/password are available)
 
                 // Handle getting the post and populating the identity there
             $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin); // If form has been submitted, $_POST['authMethod'] is set, else  $identity->plugin should be set, ELSE: TODO error
@@ -174,6 +174,26 @@ class Authentication extends SurveyCommonAction
                 $event = new PluginEvent('afterSuccessfulLogin');
                 $event->set('identity', $identity);
                 App()->getPluginManager()->dispatchEvent($event);
+
+                // If allowed_hosts.php does not exist, write the current host as valid
+                $allowedHosts = App()->loadAllowedHosts();
+                if (empty($allowedHosts)) {
+                    $currentHost = App()->request->getServerName();
+                    if (App()->writeAllowedHosts([$currentHost])) {
+                        Yii::app()->setFlashMessage(
+                            sprintf(
+                                gT('The allowed hosts file (application/config/allowed_hosts.php) has been created with "%s" as trusted host. For security reasons, LimeSurvey can only be accessed through that domain. If you need additional hosts, please edit the allowed hosts file directly.'),
+                                htmlspecialchars($currentHost)
+                            ),
+                            'info'
+                        );
+                    } else {
+                        Yii::app()->setFlashMessage(
+                            gT('The allowed hosts file (application/config/allowed_hosts.php) could not be created because the application/config directory is not writable. No trusted host restriction is currently enforced. Please make the directory writable, then login again, to enable host header protection.'),
+                            'warning'
+                        );
+                    }
+                }
 
                 return array('success');
             } else {
@@ -317,7 +337,7 @@ class Authentication extends SurveyCommonAction
     {
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
-            $sDBVersion = getGlobalSetting('DBVersion');
+            $sDBVersion = Yii::app()->getConfig('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber')) {
                 // Try a silent update first
                 Yii::app()->loadHelper('update.updatedb');

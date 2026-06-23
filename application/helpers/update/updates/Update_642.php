@@ -2,31 +2,40 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use CException;
+
 class Update_642 extends DatabaseUpdateBase
 {
     /**
-     * Add savequotaexit column to surveys and surveys_groupsettings tables
+     * @inheritDoc
+     * @throws CException
      */
     public function up()
     {
-        // Add to surveys table if not exists
-        $surveysTable = $this->db->schema->getTable('{{surveys}}');
-        if (!isset($surveysTable->columns['savequotaexit'])) {
-            $this->db->createCommand()->addColumn(
-                '{{surveys}}',
-                'savequotaexit',
-                "string(1) NOT NULL DEFAULT 'N'"
-            );
-        }
+        $templateConfigurations = $this->db->createCommand()
+            ->select('id, options')
+            ->from('{{template_configuration}}')
+            ->where('template_name = :template_name', [':template_name' => 'fruity_twentythree'])
+            ->andWhere(['NOT IN', 'options', 'inherit'])
+            ->queryAll();
 
-        // Add to surveys_groupsettings table if not exists
-        $surveysGroupsettingsTable = $this->db->schema->getTable('{{surveys_groupsettings}}');
-        if (!isset($surveysGroupsettingsTable->columns['savequotaexit'])) {
-            $this->db->createCommand()->addColumn(
-                '{{surveys_groupsettings}}',
-                'savequotaexit',
-                "string(1) NOT NULL DEFAULT 'N'"
-            );
+        if (!empty($templateConfigurations)) {
+            foreach ($templateConfigurations as $templateConfiguration) {
+                if ($templateConfiguration['options'] !== 'inherit') {
+                    $optionsJson = $templateConfiguration['options'];
+                    $oldOptions = json_decode($optionsJson);
+                    if (isset($oldOptions->checkicon) && $oldOptions->checkicon !== 'inherit') {
+                        $oldOptions->checkicon = 'EB7A';
+                        $newOptionsJson = json_encode($oldOptions);
+                        $this->db->createCommand()->update(
+                            '{{template_configuration}}',
+                            ['options' => $newOptionsJson],
+                            'id = :id',
+                            [':id' => $templateConfiguration['id']]
+                        );
+                    }
+                }
+            }
         }
     }
 }

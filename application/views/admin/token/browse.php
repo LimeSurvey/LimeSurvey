@@ -47,12 +47,15 @@ $aLanguageNames = implode(";", $aLanguageNames);
                 'id'                    => 'token-grid',
                 'emptyText'             => gT('No survey participants found.'),
                 'massiveActionTemplate' => $massiveAction,
-                'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSizeTokenView',
-                            $pageSizeTokenView,
-                            Yii::app()->params['pageSizeOptionsTokens'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto'])),
+                'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                    gT('%s rows per page'),
+                    CHtml::dropDownList(
+                        'pageSizeTokenView',
+                        $pageSizeTokenView,
+                        Yii::app()->params['pageSizeOptionsTokens'],
+                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                    )
+                ),
                 'columns'               => $model->getAttributesForGrid(),
                 'ajaxUpdate'            => 'token-grid',
                 'ajaxType'              => 'POST',
@@ -74,7 +77,8 @@ $aLanguageNames = implode(";", $aLanguageNames);
         "if($('#token-grid').length > 0){
             reinstallParticipantsFilterDatePicker();
         }",
-        LSYii_ClientScript::POS_POSTSCRIPT);
+        LSYii_ClientScript::POS_POSTSCRIPT
+    );
     ?>
 </div>
 

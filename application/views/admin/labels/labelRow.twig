@@ -17,7 +17,7 @@
         <td>{{ assessmentValue }}</td>
     {% else %}
         <td>
-            <span class="ri-menu-fill bigIcons text-success"></span>
+            <span class="ri-menu-fill bigIcons"></span>
         </td>
 
         <td>
@@ -36,7 +36,7 @@
     <td>
         <div class="icon-btn-row">
             {% if hasLabelSetUpdatePermission %}
-                <a
+                <a role="button"
                     href='#'
                     class="btn btn-outline-secondary btn-sm htmleditor--openmodal"
                     data-target-field-id="title_{{ language }}_{{ rowId }}"
@@ -46,7 +46,7 @@
                 </a>
                 {% if first %}
                     <button class="btn btn-outline-secondary btn-sm btnaddanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Add label") }}">
-                        <i class="ri-add-circle-fill text-success"></i>
+                        <i class="ri-add-circle-fill text-primary"></i>
                     </button>
                     <button class="btn btn-outline-secondary btn-sm btndelanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Delete label") }}">
                         <i class="ri-indeterminate-circle-fill text-danger"></i>

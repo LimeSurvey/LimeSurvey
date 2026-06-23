@@ -15,10 +15,10 @@ use Survey;
 class QuestionGroupMockSetFactory
 {
     /**
-     * @param QuestionGroupMockSet|null $init
+     * @param ?QuestionGroupMockSet $init
      * @return QuestionGroupMockSet
      */
-    public function make(QuestionGroupMockSet $init = null)
+    public function make(?QuestionGroupMockSet $init = null)
     {
         $mockSet = new QuestionGroupMockSet();
 

@@ -2,31 +2,42 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use CException;
+
 class Update_641 extends DatabaseUpdateBase
 {
     /**
-     * Update existing response tables to add quota_exit column
+     * @inheritDoc
+     * @throws CException
      */
     public function up()
     {
-        // Get all active survey IDs (includes expired surveys)
-        $command = \Yii::app()->db->createCommand();
-        $activeSurveyIds = $command->select('sid')
-            ->from('{{surveys}}')
-            ->where("active='Y'")
-            ->queryColumn();
+        $templateConfigurations = $this->db->createCommand()
+            ->select('id, options')
+            ->from('{{template_configuration}}')
+            ->where('template_name = :template_name', [':template_name' => 'fruity_twentythree'])
+            ->andWhere(['NOT IN', 'options', 'inherit'])
+            ->queryAll();
 
-        foreach ($activeSurveyIds as $surveyId) {
-            $responseTableName = "{{survey_" . $surveyId . "}}";
-            if (!tableExists($responseTableName)) {
-                continue;
+        if (!empty($templateConfigurations)) {
+            foreach ($templateConfigurations as $templateConfiguration) {
+                if ($templateConfiguration['options'] !== 'inherit') {
+                    $sOptionsJson = $templateConfiguration['options'];
+                    $oOldOptions = json_decode($sOptionsJson);
+                    $oOldOptions->cornerradius = '2';
+                    $oOldOptions->bodybackgroundcolor = '#ffffff';
+                    $oOldOptions->fontcolor = '#444444';
+                    $oOldOptions->questionbackgroundcolor = '#ffffff';
+                    $oOldOptions->checkicon = 'f00c';
+                    $oNewOtionsJson = json_encode($oOldOptions);
+                    $this->db->createCommand()->update(
+                        '{{template_configuration}}',
+                        ['options' => $oNewOtionsJson],
+                        'id = :id',
+                        [':id' => $templateConfiguration['id']]
+                    );
+                }
             }
-
-            \Yii::app()->db->createCommand()->addColumn(
-                $responseTableName,
-                'quota_exit',
-                'integer'
-            );
         }
     }
 }

@@ -6,7 +6,6 @@ use Survey;
 use Permission;
 use LSYii_Application;
 use PluginEvent;
-use Date_Time_Converter;
 use CHttpSession;
 use LimeSurvey\PluginManager\PluginManager;
 use LimeSurvey\Models\Services\Exception\{
@@ -67,7 +66,7 @@ class GeneralSettings
     /**
      * Set REST Mode
      *
-     * In rest mode we have different expecations about data formats.
+     * In rest mode we have different expectations about data formats.
      * For example datetime objects inputs/output
      * as UTC JSON format Y-m-d\TH:i:s.000\Z.
      *
@@ -137,6 +136,7 @@ class GeneralSettings
      *
      * @param Survey $survey
      * @param array $input
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @throws PersistErrorException
      * @throws NotFoundException
      * @throws PermissionDeniedException
@@ -182,7 +182,7 @@ class GeneralSettings
 
             $saved = $survey->save();
             if (array_key_exists('allowregister', $input)) {
-                $this->ensureTokensTableExistance($survey);
+                $this->ensureTokensTableExistence($survey);
             }
 
             if (!$saved) {
@@ -266,9 +266,10 @@ class GeneralSettings
             'shownoanswer' => ['type' => static::FIELD_TYPE_YN],
             'showwelcome' => ['type' => static::FIELD_TYPE_YN],
             'showsurveypolicynotice' => ['default' => 0],
+            'showtokenpolicy' => ['type' => static::FIELD_TYPE_YN],
+            'showregisterpolicy' => ['type' => static::FIELD_TYPE_YN],
             'allowprev' => ['type' => static::FIELD_TYPE_YN],
             'questionindex' => [],
-            'nokeyboard' => ['type' => static::FIELD_TYPE_YN],
             'showprogress' => ['type' => static::FIELD_TYPE_YN],
             'listpublic' => ['type' => static::FIELD_TYPE_YN],
             'htmlemail' => ['type' => static::FIELD_TYPE_YN],
@@ -523,25 +524,18 @@ class GeneralSettings
 
     /**
      * Format date time input
-     *
      * Converts date time string from user local format to internal database format.
      *
+     * The input (in the user's locale format, e.g. 'd.m.Y H:i') is parsed to an
+     * unambiguous 'Y-m-d H:i:s' string via convertFromGlobalSettingFormat() and then
+     * shifted from the user's display timezone to UTC via getUTCOfDate() for storage.
+     *
      * @param string $inputDateTimeString
-     * @return string
+     * @return string|null
      */
     private function formatDateTimeInput($inputDateTimeString)
     {
-        $this->yiiApp->loadHelper('surveytranslator');
-        $this->yiiApp->loadLibrary('Date_Time_Converter');
-        $dateFormat = !empty($this->session['dateformat'])
-            ? $this->session['dateformat']
-            : 1;
-        $formatData = getDateFormatData($dateFormat);
-        $dateTimeObj = new Date_Time_Converter(
-            $inputDateTimeString,
-            $formatData['phpdate'] . ' H:i'
-        );
-        return $dateTimeObj->convert('Y-m-d H:i:s');
+        return getUTCOfDate(convertFromGlobalSettingFormat($inputDateTimeString, true));
     }
 
     /**
@@ -654,7 +648,7 @@ class GeneralSettings
      *
      * @return void
      */
-    private function ensureTokensTableExistance(Survey $survey): void
+    private function ensureTokensTableExistence(Survey $survey): void
     {
         $survey->setOptions($survey->gsid);
         $isSurveyActive = $survey->getIsActive();

@@ -17,7 +17,7 @@ class DeleteMockSetFactory
     /**
      * @param ?DeleteMockSet $init
      */
-    public function make(DeleteMockSet $init = null): DeleteMockSet
+    public function make(?DeleteMockSet $init = null): DeleteMockSet
     {
         $mockSet = new DeleteMockSet;
 
