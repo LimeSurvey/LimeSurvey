@@ -901,7 +901,10 @@ class SurveyCondition
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
-                    $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $aresult[$i - 1 ]->aid);
+                    $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $aresult[$i - 1 ]->qid);
+                    if (strpos($fieldName, 'Q') === false) {
+                        $fieldName = "Q{$rows['qid']}_S{$aresult[$i - 1]->qid}";
+                    }
                     $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $fieldName);
                     foreach ($quicky as $qck) {
                         $canswers[] = array($fieldName, $qck[0], $qck[1]);
