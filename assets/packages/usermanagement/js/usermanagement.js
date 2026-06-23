@@ -99,7 +99,6 @@ var UserManagement = function () {
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         if (!result.hasOwnProperty('html')) {
                             var isDelete = /\/deleteUser/.test($('#UserManagement--modalform').attr('action'));
-                            console.log(isDelete);
                             if (isDelete) {
                                 var userId = data.find(function(f) { return f.name === 'userid'; });
                                 if (userId) {
