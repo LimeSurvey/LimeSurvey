@@ -132,7 +132,7 @@ LS.gridSelection = (function () {
 
         $('#' + gridId + ' tbody input[type="checkbox"]').each(function () {
             var pk = String($(this).val());
-            if (isChecked) {
+            if (isChecked && !$(this).is(':disabled')) {
                 _set(gridId).add(pk);
             } else {
                 _set(gridId).delete(pk);
@@ -242,7 +242,7 @@ LS.gridSelection = (function () {
             }
 
             $('#' + gridId + ' tbody input[type="checkbox"]').each(function () {
-                if (stored.has(String($(this).val()))) {
+                if (stored.has(String($(this).val())) && !$(this).is(':disabled')) {
                     $(this).prop('checked', true);
                 }
             });

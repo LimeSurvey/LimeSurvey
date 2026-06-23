@@ -102,7 +102,6 @@ var UserManagement = function () {
                             console.log(isDelete);
                             if (isDelete) {
                                 var userId = data.find(function(f) { return f.name === 'userid'; });
-                                console.log(userId, data);
                                 if (userId) {
                                     LS.gridSelection.markRowDeleted('usermanagement--identity-gridPanel', userId.value);
                                 }
