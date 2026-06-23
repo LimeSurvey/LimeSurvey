@@ -140,9 +140,8 @@ class CLSGridView extends TbGridView
             }
         }
 
-        // Always include selection restore and standard handlers
+        // Always restore persisted checkbox selection
         $parts[] = $alwaysJs;
-        $parts[] = 'LS.gridView.afterAjaxUpdate(id, data);';
 
         if (!empty($this->lsAdditionalColumns)) {
             $parts[] = 'initColumnFilter();';
