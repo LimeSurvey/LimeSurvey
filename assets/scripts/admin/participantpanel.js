@@ -324,6 +324,7 @@ LS.CPDB = (function() {
     },
     //JS-bindings especially for the attributePanel
     attributePanel = function(){
+        LS.gridSelection.tagFirstColumnCheckboxes('list_attributes');
         $('#addParticipantAttributeName').on('click', function(e){
             e.preventDefault();
             var data = {modalTarget: 'editattribute'};
@@ -395,8 +396,9 @@ LS.CPDB = (function() {
     },
     //JS-bindings especially for the sharePanel
     sharePanel = function() {
-        $('#action_toggleAllParticipant').on('click', function(){
-            $('.selector_participantCheckbox').prop('checked', $('#action_toggleAllParticipant').prop('checked'));
+        LS.gridSelection.tagFirstColumnCheckboxes('share_central_participants');
+        $('#action_toggleAllParticipantShare').on('click', function() {
+            $('.selector_participantShareCheckbox').prop('checked', $('#action_toggleAllParticipantShare').prop('checked'));
         });
 
         let changeSharedEditableStatusButtons = document.querySelectorAll('.action_changeEditableStatus input');

@@ -326,13 +326,14 @@ class Participant extends LSActiveRecord
     {
         $cols = [
             [
-                "name"              => 'checkbox',
-                "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllParticipant' />",
-                "filter"            => false,
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column'],
+                'class'               => 'CCheckBoxColumn',
+                'selectableRows'      => 2,
+                'name'                => 'id',
+                'checkBoxHtmlOptions' => ['name' => 'selectedParticipant[]', 'class' => 'selector_participantCheckbox'],
+                'header'              => "<input type='checkbox' id='action_toggleAllParticipant' />",
+                'filterHtmlOptions'   => ['class' => 'ls-sticky-column'],
+                'headerHtmlOptions'   => ['class' => 'ls-sticky-column'],
+                'htmlOptions'         => ['class' => 'ls-sticky-column'],
             ],
             [
                 "name" => 'lastname',

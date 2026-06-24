@@ -212,6 +212,15 @@ LS.gridSelection = (function () {
     }
 
     // ------------------------------------------------------------------
+    // Fallback: tag first-column checkboxes that could not receive the class server-side
+    // (e.g. custom raw columns in Participant, ParticipantShare, ParticipantAttributeName).
+    // The :not() guard makes this idempotent – CCheckBoxColumn rows already have the class.
+    // ------------------------------------------------------------------
+    function _tagFirstColumnCheckboxes(gridId) {
+        $('#' + gridId + ' tbody tr td:first-child input[type="checkbox"]:not(.massiveActionsCheckbox)').addClass('massiveActionsCheckbox');
+    }
+
+    // ------------------------------------------------------------------
     // Public API
     // ------------------------------------------------------------------
     return {
@@ -222,6 +231,7 @@ LS.gridSelection = (function () {
          * @param {string} gridId  â€“ the HTML id of the CLSGridView container
          */
         restoreCheckboxes: function (gridId) {
+            _tagFirstColumnCheckboxes(gridId);
             var stored = _set(gridId);
             if (stored.size === 0) { return; }
 
@@ -300,7 +310,28 @@ LS.gridSelection = (function () {
          */
         count: function (gridId) {
             return _set(gridId).size;
+        },
+
+        /**
+         * Adds the massiveActionsCheckbox class to first-column checkboxes not already tagged.
+         * Call this from panel init functions where the grid is rendered after page load
+         * and standard event hooks (document.ready, pjax:scriptcomplete) fire too early.
+         *
+         * @param {string} gridId
+         */
+        tagFirstColumnCheckboxes: function (gridId) {
+            _tagFirstColumnCheckboxes(gridId);
         }
     };
+    // Tag first-column checkboxes for server-rendered grids on initial page load,
+    // and for pjax-navigated panels (e.g. CPDB share/attribute tabs) after pjax completes its DOM update.
+    function _tagAllGrids() {
+        $('.grid-view-ls').each(function () {
+            _tagFirstColumnCheckboxes($(this).attr('id'));
+        });
+    }
+    $(document).ready(_tagAllGrids);
+    $(document).on('pjax:scriptcomplete', _tagAllGrids);
+
 }());
 
