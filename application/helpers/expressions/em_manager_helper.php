@@ -5319,7 +5319,6 @@ class LimeExpressionManager
                     // The response row was deleted (e.g. admin deleted incomplete response while survey was running).
                     // Kill the stale session and redirect to the survey start page for a fresh start.
                     killSurveySession($this->sid);
-                    $survey = Survey::model()->findByPk($this->sid);
                     if ($survey) {
                         App()->getController()->redirect($survey->getSurveyUrl());
                     }
