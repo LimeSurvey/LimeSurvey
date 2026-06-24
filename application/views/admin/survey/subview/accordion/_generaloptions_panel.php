@@ -130,13 +130,15 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         <?php
         if (isset($oSurvey->owner_id) && Yii::app()->session['loginID'] == $oSurvey->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read')):?>
             <div class="mb-3">
-                <label class=" form-label" for='owner_id'><?php eT("Survey owner:"); ?></label>
+                <label id="owner_id_label" class="form-label" for="owner_id"><?php eT("Survey owner:"); ?></label>
                 <div class=""><?php
                     Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2',
                         array(
                             'asDropDownList' => true,
                             'htmlOptions' => array(
-                                'style' => 'width:100%;'
+                                'id' => 'owner_id',
+                                'style' => 'width:100%;',
+                                'aria-labelledby' => 'owner_id_label'
                             ),
                             'data' => isset($users) ? $users : [],
                             'value' => $oSurvey->owner_id,
@@ -324,9 +326,9 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         </div>
         <!-- Theme -->
         <div class="mb-3" >
-            <label class=" form-label" for='template'><?php eT("Theme:"); ?></label>
+            <label id="template_label" class="form-label" for='template'><?php eT("Theme:"); ?></label>
             <div class="">
-                <select id='template' style="width:100%;" class="form-select activate-search" name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
+                <select id='template' style="width:100%;" class="form-select activate-search" name='template' aria-labelledby="template_label" data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>'
                         data-inherit-template-name='<?= $themeConf->template_name ?>'>
                     <?php if ($bShowInherited || $bGlobalSettings) : ?>
                         <option value="inherit" <?= ($oSurvey->template == 'inherit') ? 'selected="selected"' : ''; ?>>
