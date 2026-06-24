@@ -33,7 +33,7 @@ class Update_709 extends DatabaseUpdateBase
     }
 
     /**
-     * Alters MySQL table by adding a new JSON field, updating it with values and removing the original fields
+     * Alters SQL Server table by adding a new JSON field, updating it with values and removing the original fields
      * @param int $sid
      * @param int $parent_qid
      * @param array $cols
@@ -56,6 +56,29 @@ class Update_709 extends DatabaseUpdateBase
     }
 
     /**
+     * Alters PostgreSQL table by adding a new JSON field, updating it with values and removing the original fields
+     * @param int $sid
+     * @param int $parent_qid
+     * @param array $cols
+     * @return void
+     */
+    protected function alterPostgreSQL(int $sid, int $parent_qid, array $cols)
+    {
+        $this->db->createCommand("alter table {{responses_" . $sid . "}} add column Q{$parent_qid} json")->execute();
+        $alterElements = [];
+        foreach ($cols as $col) {
+            $alterElements[] = (!count($alterElements) ?
+            "CASE WHEN LENGTH(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT('\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END," :
+            "CASE WHEN LENGTH(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT(',\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END,");
+        }
+        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = to_json(CONCAT('[', " . implode($alterElements) . " ']'))";
+        $this->db->createCommand($updateCommand)->execute();
+        foreach ($cols as $col) {
+            dropColumn("{{responses_" . $sid . "}}", $col);
+        }
+    }
+
+    /**
      * Alters table by adding a new JSON field, updating it with values and removing the original fields
      * @param int $sid
      * @param int $parent_qid
@@ -70,7 +93,7 @@ class Update_709 extends DatabaseUpdateBase
                 $this->alterMySQL($sid, $parent_qid, $cols);
                 break;
             case 'pgsql':
-                //TODO: Implement PostgreSQL equivalent
+                $this->alterPostgreSQL($sid, $parent_qid, $cols);
                 break;
             case 'mssql':
             case 'sqlsrv':
