@@ -5304,13 +5304,13 @@ class LimeExpressionManager
             }
 
             if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active']) {
+                $survey = Survey::model()->findByPk($this->sid);
                 try {
                     $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                 } catch (\Exception $ex) {
                     // The response table no longer exists (survey deactivated/deleted while user had a stale session).
                     // Kill the stale session and redirect to the survey start page for a fresh start.
                     killSurveySession($this->sid);
-                    $survey = Survey::model()->findByPk($this->sid);
                     if ($survey) {
                         App()->getController()->redirect($survey->getSurveyUrl());
                     }
@@ -5329,6 +5329,26 @@ class LimeExpressionManager
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {
+                        $questions = $survey->questions;
+                        foreach ($questions as $question) {
+                            if (!$question->parent_qid && ($question->type === Question::QT_R_RANKING)) {
+                                $toUpdate = false;
+                                $rankingToStore = [];
+                                foreach ($question->subquestions as $subquestion) {
+                                    $key = "Q{$question->qid}_S{$subquestion->qid}";
+                                    if (isset($aResponseAttributes[$key])) {
+                                        if (($aResponseAttributes[$key] ?? '')) {
+                                            $rankingToStore[] = $aResponseAttributes[$key];
+                                        }
+                                        unset($aResponseAttributes[$key]);
+                                        $toUpdate = true;
+                                    }
+                                }
+                                if ($toUpdate) {
+                                    $aResponseAttributes["Q{$question->qid}"] = json_encode($rankingToStore);
+                                }
+                            }
+                        }
                         $oResponse->setAllAttributes($aResponseAttributes, false);
                     } catch (Exception $ex) {
                         // This can happen if the table is missing fields. It should never happen, but somehow it does.
