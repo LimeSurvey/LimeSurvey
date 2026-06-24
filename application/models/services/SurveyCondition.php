@@ -88,7 +88,7 @@ class SurveyCondition
     public function getFieldName(int $sid, int $gid, int $qid, string $title = '')
     {
         $questions = $title ? \Question::model()->findAll($qid . ' IN (qid, parent_qid)') : [\Question::model()->findByPk($qid)];
-        return getFieldName("{{responses_{$sid}}}", $sid . self::X . $gid . self::X . $qid . $title, $questions, $sid, $gid, true);
+        return getFieldName("{{responses_{$sid}}}", $sid . self::X . $gid . self::X . $qid . $title, $questions, $sid, $gid);
     }
 
     /**
@@ -901,10 +901,7 @@ class SurveyCondition
                 }
 
                 for ($i = 1; $i <= $acount; $i++) {
-                    $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], $aresult[$i - 1 ]->qid);
-                    if (strpos($fieldName, 'Q') === false) {
-                        $fieldName = "Q{$rows['qid']}_S{$aresult[$i - 1]->qid}";
-                    }
+                    $fieldName = $this->getFieldName($rows['sid'], $rows['gid'], $rows['qid'], (string)$i);
                     $cquestions[] = array("{$rows['title']}: [RANK $i] " . strip_tags((string) $rows['question']), $rows['qid'], $rows['type'], $fieldName);
                     foreach ($quicky as $qck) {
                         $canswers[] = array($fieldName, $qck[0], $qck[1]);
