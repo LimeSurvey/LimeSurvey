@@ -33,6 +33,29 @@ class Update_709 extends DatabaseUpdateBase
     }
 
     /**
+     * Alters MySQL table by adding a new JSON field, updating it with values and removing the original fields
+     * @param int $sid
+     * @param int $parent_qid
+     * @param array $cols
+     * @return void
+     */
+    protected function alterSQLServer(int $sid, int $parent_qid, array $cols)
+    {
+        addColumn("{{responses_" . $sid . "}}", "Q{$parent_qid}", "json");
+        $alterElements = [];
+        foreach ($cols as $col) {
+            $alterElements[] = (!count($alterElements) ?
+            "CASE WHEN LEN(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT('\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END," :
+            "CASE WHEN LEN(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT(',\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END,");
+        }
+        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = CONCAT('[', " . implode($alterElements) . " ']')";
+        $this->db->createCommand($updateCommand)->execute();
+        foreach ($cols as $col) {
+            dropColumn("{{responses_" . $sid . "}}", $col);
+        }
+    }
+
+    /**
      * Alters table by adding a new JSON field, updating it with values and removing the original fields
      * @param int $sid
      * @param int $parent_qid
@@ -45,12 +68,15 @@ class Update_709 extends DatabaseUpdateBase
             case 'mysqli':
             case 'mysql':
                 $this->alterMySQL($sid, $parent_qid, $cols);
+                break;
             case 'pgsql':
                 //TODO: Implement PostgreSQL equivalent
+                break;
             case 'mssql':
             case 'sqlsrv':
             case 'dblib':
-                //TODO: Implement SQL Server equivalent
+                $this->alterSQLServer($sid, $parent_qid, $cols);
+                break;
         }
     }
 
