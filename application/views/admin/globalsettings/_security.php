@@ -75,7 +75,8 @@
                             '0' => gT('Off'),
                         ],
                         'htmlOptions' => [
-                            'disabled' => App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui'
+                            'disabled' => App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui',
+                            'aria-describedby' => 'disablescriptwithxss-hint'
                         ]
                     ]); ?>
                 </div>
