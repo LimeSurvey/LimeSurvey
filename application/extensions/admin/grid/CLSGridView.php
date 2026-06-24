@@ -101,6 +101,13 @@ class CLSGridView extends TbGridView
             }
         }
         parent::initColumns();
+
+        // Add massiveActionsCheckbox class to the first column if it is a CCheckBoxColumn
+        $firstColumn = reset($this->columns);
+        if ($firstColumn instanceof CCheckBoxColumn) {
+            $existing = isset($firstColumn->checkBoxHtmlOptions['class']) ? $firstColumn->checkBoxHtmlOptions['class'] . ' ' : '';
+            $firstColumn->checkBoxHtmlOptions['class'] = $existing . 'massiveActionsCheckbox';
+        }
     }
 
     /**

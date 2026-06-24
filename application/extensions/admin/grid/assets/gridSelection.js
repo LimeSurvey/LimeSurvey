@@ -108,10 +108,9 @@ LS.gridSelection = (function () {
         // Clear internal store
         _store.set(gridId, new Set());
 
-        // Uncheck only row-selection checkboxes (tbody) and the header checkbox.
-        // Intentionally avoids the broad input[type="checkbox"] selector to prevent
-        // clearing unrelated controls that may exist inside the grid container.
-        $('#' + gridId + ' tbody input[type="checkbox"]').prop('checked', false);
+        // Uncheck only row-selection checkboxes (tbody) via .massiveActionsCheckbox and the header checkbox.
+        // Using the specific class avoids accidentally clearing unrelated controls inside the grid container.
+        $('#' + gridId + ' tbody .massiveActionsCheckbox').prop('checked', false);
         $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', false);
 
         _syncSelectionBar(gridId);
@@ -130,7 +129,7 @@ LS.gridSelection = (function () {
 
         var isChecked = $(this).is(':checked');
 
-        $('#' + gridId + ' tbody input[type="checkbox"]').each(function () {
+        $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
             var pk = String($(this).val());
             if (isChecked && !$(this).is(':disabled')) {
                 _set(gridId).add(pk);
@@ -148,7 +147,7 @@ LS.gridSelection = (function () {
     // survives AJAX grid replacements because it is bound to `document`.
     // Only tracks tbody checkboxes (not the "select all" header checkbox).
     // ------------------------------------------------------------------
-    $(document).on('change', '.grid-view-ls tbody input[type="checkbox"]', function () {
+    $(document).on('change', '.grid-view-ls tbody .massiveActionsCheckbox', function () {
         var gridId = _gridIdFromCheckbox(this);
         if (!gridId) { return; }
 
@@ -172,7 +171,7 @@ LS.gridSelection = (function () {
      */
     function _syncHeaderCheckbox(gridId) {
         var $grid    = $('#' + gridId);
-        var $tbodyCb = $grid.find('tbody input[type="checkbox"]');
+        var $tbodyCb = $grid.find('tbody .massiveActionsCheckbox');
         var total    = $tbodyCb.length;
 
         if (total === 0) {
@@ -241,7 +240,7 @@ LS.gridSelection = (function () {
                 return;
             }
 
-            $('#' + gridId + ' tbody input[type="checkbox"]').each(function () {
+            $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
                 if (stored.has(String($(this).val())) && !$(this).is(':disabled')) {
                     $(this).prop('checked', true);
                 }
