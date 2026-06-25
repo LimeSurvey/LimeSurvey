@@ -1680,9 +1680,7 @@ class DataEntry extends SurveyCommonAction
                     $rankValues = array();
                     foreach ($rankSubquestions as $rankSubquestion) {
                         $posValue = Yii::app()->request->getPost($rankFieldBase . '_S' . $rankSubquestion->qid, '');
-                        if ($posValue !== '') {
-                            $rankValues[] = $posValue;
-                        }
+                        $rankValues[] = $posValue;
                     }
                     $oResponse->$fieldname = empty($rankValues) ? null : json_encode($rankValues);
                     break;
@@ -1900,9 +1898,7 @@ class DataEntry extends SurveyCommonAction
                         $rankValues = array();
                         foreach ($rankSubquestions as $rankSubquestion) {
                             $posValue = Yii::app()->request->getPost($fieldname . '_S' . $rankSubquestion->qid, '');
-                            if ($posValue !== '') {
-                                $rankValues[] = $posValue;
-                            }
+                            $rankValues[] = $posValue;
                         }
                         if (!empty($rankValues)) {
                             $insert_data[$fieldname] = json_encode($rankValues);
