@@ -23,6 +23,12 @@
     height: 14px;
   }
 
+  .table-header {
+    .content-editable {
+      padding: 2px 0 0 0;
+    }
+  }
+
   .responses-body {
     display: flex;
     flex-direction: row;
