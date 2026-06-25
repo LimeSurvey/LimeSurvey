@@ -182,7 +182,7 @@ class Participant extends LSActiveRecord
      */
     public function getCheckbox()
     {
-        return "<input type='checkbox' class='selector_participantCheckbox' name='selectedParticipant[]' value='" . $this->id . "' >";
+        return "<input type='checkbox' class='selector_participantCheckbox massiveActionsCheckbox' name='selectedParticipant[]' value='" . $this->id . "' >";
     }
 
     /**
@@ -326,14 +326,13 @@ class Participant extends LSActiveRecord
     {
         $cols = [
             [
-                'class'               => 'CCheckBoxColumn',
-                'selectableRows'      => 2,
-                'name'                => 'id',
-                'checkBoxHtmlOptions' => ['name' => 'selectedParticipant[]', 'class' => 'selector_participantCheckbox'],
-                'header'              => "<input type='checkbox' id='action_toggleAllParticipant' />",
-                'filterHtmlOptions'   => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions'   => ['class' => 'ls-sticky-column'],
-                'htmlOptions'         => ['class' => 'ls-sticky-column'],
+                "name"              => 'checkbox',
+                "type"              => 'raw',
+                "header"            => "<input type='checkbox' id='action_toggleAllParticipant' />",
+                "filter"            => false,
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column'],
             ],
             [
                 "name" => 'lastname',
