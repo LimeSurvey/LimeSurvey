@@ -54,7 +54,7 @@ li.checkbox-text-item {
 }
 
 li.radio-text-item .other-text-item {
-    min-width: 150px;
+    min-width: 9em;
 }
 
 /* map item : .input-group-addon.checkbox-item : put awesome padding */
