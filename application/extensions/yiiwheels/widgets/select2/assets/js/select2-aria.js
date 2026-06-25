@@ -17,7 +17,8 @@
         }
         var $combobox = $select.next('.select2-container').find('[role="combobox"]');
         var existing = $combobox.attr('aria-labelledby') || '';
-        if (existing.indexOf(ariaLabelledBy) === -1) {
+        var existingTokens = existing.split(/\s+/).filter(Boolean);
+        if (existingTokens.indexOf(ariaLabelledBy) === -1) {
             $combobox.attr('aria-labelledby', ariaLabelledBy + ' ' + existing);
         }
     }
