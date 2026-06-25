@@ -110,12 +110,12 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 </div>
                 <!-- Base language -->
                 <div class="mb-3">
-                    <label class=" form-label"><?php eT("Base language:"); ?></label>
+                    <label id="language_label" class=" form-label" for="language"><?php eT("Base language:"); ?></label>
                     <div class="">
                         <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
                             array(
                                 'asDropDownList' => true,
-                                'htmlOptions' => array('style' => "width: 100%"),
+                                'htmlOptions' => array('id' => 'language', 'style' => "width: 100%", 'aria-labelledby' => 'language_label'),
                                 'data' => array_intersect_key($aAllLanguages, array_flip($oSurvey->allLanguages)),
                                 'value' => $oSurvey->language,
                                 'name' => 'language',
@@ -296,12 +296,12 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
         <!-- Survey Group -->
         <?php if ($bShowAllOptions === true) { ?>
             <div class="mb-3">
-                <label class=" form-label" for='gsid'><?php eT("Group:"); ?></label>
+                <label id="gsid_label" class=" form-label" for='gsid'><?php eT("Group:"); ?></label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
                         array(
                             'asDropDownList' => true,
-                            'htmlOptions' => array('style' => "width: 100%"),
+                            'htmlOptions' => array('style' => "width: 100%", 'aria-labelledby' => 'gsid_label'),
                             'data' => isset($aSurveyGroupList) ? $aSurveyGroupList : [],
                             'value' => $oSurvey->gsid,
                             'name' => 'gsid',
