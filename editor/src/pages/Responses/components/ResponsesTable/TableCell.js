@@ -5,7 +5,7 @@ import { Badge } from 'react-bootstrap'
 export const TableCell = ({ cell }) => {
   const cellValue = cell.getContext().getValue()
   let value = ''
-
+  
   if (typeof cellValue === 'object') {
     value = cellValue?.map(
       (

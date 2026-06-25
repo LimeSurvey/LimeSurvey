@@ -1050,7 +1050,16 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             case Question::QT_O_LIST_WITH_COMMENT:
             case Question::QT_I_LANGUAGE:
             case Question::QT_R_RANKING:
-                $this_answer = Question::model()->getQuestionFromTitle($fields['qid'], $sValue, $sLanguage);
+                $items = json_decode($sValue, true);
+                if (is_array($items)) {
+                    $indexedQuestions = [];
+                    foreach ($items as $index => $item) {
+                        $question = Question::model()->getQuestionFromTitle($fields['qid'], $item, $sLanguage);
+                        if ($question) {
+                            $indexedQuestions[] = 'Rank ' . ($index + 1) . ': ' . $question;                        }
+                    }
+                    $sValue = implode(' | ', $indexedQuestions);
+                }
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
@@ -1960,6 +1969,26 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             // Ranking questions now use subquestions instead of answer options
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             $i = 0;
+            $fieldmap[$fieldname] = [
+                'fieldname' => $fieldname,
+                'type' => $arow['type'],
+                'sid' => $surveyid,
+                'gid' => $arow['gid'],
+                'qid' => $arow['qid'],
+                'suffix' => ''
+            ];
+            if ($style == "full") {
+                $fieldmap[$fieldname]['title'] = $arow['title'];
+                $fieldmap[$fieldname]['question'] = $arow['question'];
+                $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
+                $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
+                $fieldmap[$fieldname]['hasconditions'] = $conditions;
+                $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
+                $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
+                $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+                $fieldmap[$fieldname]['SQrelevance'] = $arow['relevance'];
+            }
             foreach ($abrows as $abrow) {
                 $i++;
                 $fieldname = "Q{$arow['qid']}_S{$abrow['qid']}";

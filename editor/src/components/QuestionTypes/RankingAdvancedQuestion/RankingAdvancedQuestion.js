@@ -53,7 +53,7 @@ export const RankingAdvancedQuestion = ({
     const sourceIndex = +dropResult.source.index
     const destinationIndex = +dropResult.destination.droppableId
     const newSubquestionValue = { ...rankingSubquestions[sourceIndex] }
-
+    
     let subquestionAlreadyExists = false
     subquestionsValue.forEach((subquestion) => {
       if (subquestion.qid === newSubquestionValue.qid) {
@@ -80,8 +80,10 @@ export const RankingAdvancedQuestion = ({
     }
 
     setSubquestionsValue([...subquestionsValue])
+    const newRankings = subquestionsValue.map((subquestion) => subquestion.value)
+    const newRankingsJson = JSON.stringify(newRankings);
     onValueChange(
-      newSubquestionValue.title,
+      newRankingsJson,
       subquestionsValue[destinationIndex].key
     )
   }
@@ -99,7 +101,9 @@ export const RankingAdvancedQuestion = ({
     }
 
     setSubquestionsValue([...subquestionsValue])
-    onValueChange('', subquestionsValue[index].key)
+    const newRankings = subquestionsValue.map((subquestion) => subquestion.value)
+    const newRankingsJson = JSON.stringify(newRankings);
+    onValueChange(newRankingsJson, subquestionsValue[index].key)
   }
 
   const handleSubquestionUpdate = (value, index) => {

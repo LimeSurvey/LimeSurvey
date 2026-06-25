@@ -900,9 +900,10 @@ class DataEntry extends SurveyCommonAction
                         $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                         $unseen = true;
                         while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
+                            $isParent = !isset($fname['aid']);
                             //Let's get all the existing values into an array
-                            if ($idrow[$fname['fieldname']]) {
-                                $currentvalues[] = $idrow[$fname['fieldname']];
+                            if (isset($idrow[$fname['fieldname']]) && $isParent) {
+                                $currentvalues = json_decode($idrow[$fname['fieldname']], true);;
                             }
                             // If any ranking field is not null, we mark the question as seen.
                             if (isset($idrow[$fname['fieldname']])) {
@@ -1665,6 +1666,26 @@ class DataEntry extends SurveyCommonAction
                     }
                     $oResponse->$fieldname = $thisvalue;
                     break;
+                case Question::QT_R_RANKING:
+                    $isParent = !isset($irow['aid']);
+                    if (!$isParent) {
+                        break;
+                    }
+                    $rankFieldBase = 'Q' . $irow['qid'];
+                    $rankSubquestions = Question::model()->findAll(array(
+                        'condition' => 'parent_qid = :qid',
+                        'params'    => array(':qid' => $irow['qid']),
+                        'order'     => 'question_order',
+                    ));
+                    $rankValues = array();
+                    foreach ($rankSubquestions as $rankSubquestion) {
+                        $posValue = Yii::app()->request->getPost($rankFieldBase . '_S' . $rankSubquestion->qid, '');
+                        if ($posValue !== '') {
+                            $rankValues[] = $posValue;
+                        }
+                    }
+                    $oResponse->$fieldname = empty($rankValues) ? null : json_encode($rankValues);
+                    break;
                 case 'submitdate':
                     if (Yii::app()->request->getPost('completed') == "N") {
                         $oResponse->$fieldname = null;
@@ -1866,6 +1887,28 @@ class DataEntry extends SurveyCommonAction
                 $phparray = [];
                 foreach ($fieldmap as $irow) {
                     $fieldname = $irow['fieldname'];
+                    if ($irow['type'] == Question::QT_R_RANKING) {
+                        $isParent = !isset($irow['aid']);
+                        if (!$isParent) {
+                            continue;
+                        }
+                        $rankSubquestions = Question::model()->findAll(array(
+                            'condition' => 'parent_qid = :qid',
+                            'params'    => array(':qid' => $irow['qid']),
+                            'order'     => 'question_order',
+                        ));
+                        $rankValues = array();
+                        foreach ($rankSubquestions as $rankSubquestion) {
+                            $posValue = Yii::app()->request->getPost($fieldname . '_S' . $rankSubquestion->qid, '');
+                            if ($posValue !== '') {
+                                $rankValues[] = $posValue;
+                            }
+                        }
+                        if (!empty($rankValues)) {
+                            $insert_data[$fieldname] = json_encode($rankValues);
+                        }
+                        continue;
+                    }
                     if (isset($_POST[$fieldname])) {
                         if ($_POST[$fieldname] == "" && ($irow['type'] == Question::QT_D_DATE || $irow['type'] == Question::QT_N_NUMERICAL || $irow['type'] == Question::QT_K_MULTIPLE_NUMERICAL)) {
                             // can't add '' in Date column

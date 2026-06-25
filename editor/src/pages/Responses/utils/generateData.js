@@ -96,11 +96,17 @@ export const generateData = (responses, language, generatedColumns) => {
         : 'sqid'
 
       if (isRankingQuestion(question.questionThemeName)) {
-        questionSubquestion = getSubquestionByProperty(
-          answer.value,
-          'title',
-          question
-        ).subquestion
+        handleRankingQuestionType(
+          answer,
+          value,
+          qid,
+          index,
+          response,
+          cell,
+          question,
+          language
+        )
+        return
       }
 
       if (
@@ -206,4 +212,44 @@ const handleFileUploadQuestionType = (
     // eslint-disable-next-line no-console
     console.error('Error parsing file upload value:', error)
   }
+}
+
+const handleRankingQuestionType = (
+  answer,
+  value,
+  qid,
+  index,
+  response,
+  cell,
+  question,
+  language
+) => {
+  let values = []
+  try {
+    values = JSON.parse(value) || []
+  } catch (error) {
+    //
+  }
+
+  values.forEach((subquestionTitle) => {
+    const questionSubquestion = getSubquestionByProperty(
+      subquestionTitle,
+      'title',
+      question
+    ).subquestion
+
+    cell.push({
+      value: subquestionTitle,
+      key: answer.key,
+      aid: answer.actual_aid,
+      qid: questionSubquestion?.qid ?? '',
+      checked: subquestionTitle ? true : false,
+      responseId: response.id,
+      questionThemeName: question.questionThemeName,
+      subquestionTitle:
+        RemoveHTMLTagsInString(
+          questionSubquestion?.l10ns[language]?.question
+        ) || subquestionTitle,
+    })
+  })
 }

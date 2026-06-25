@@ -216,7 +216,17 @@ class ResponsesController extends LSBaseController
                 continue;
             }
 
-            if ($field['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
+
+            if ($field['type'] == Question::QT_R_RANKING) {
+                $isParent = !isset($field['aid']);
+                if ($isParent) {
+                    $fnames[] = [
+                        $field['fieldname'],
+                        viewHelper::getFieldText($field),
+                        'code' => viewHelper::getFieldCode($field, ['LEMcompat' => true])
+                    ];
+                } 
+            } elseif ($field['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $fnames[] = [
                     $field['fieldname'],
                     viewHelper::getFieldText($field),
