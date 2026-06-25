@@ -1965,7 +1965,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 'type' => $arow['type'],
                 'sid' => $surveyid,
                 'gid' => $arow['gid'],
-                'qid' => $arow['gid'],
+                'qid' => $arow['qid'],
                 'suffix' => ''
             ];
             if ($style == "full") {
