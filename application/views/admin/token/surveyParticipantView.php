@@ -142,6 +142,9 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             echo eT("No survey participants found.");
             ?>
                 <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Add participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/" . $surveyid); ?>', '_top')" />
+                <?php if (!$oSurvey->hasTokensTable) : ?>
+                    <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Create empty table"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/startfromscratch/surveyId/" . $surveyid); ?>', '_top')" />
+                <?php endif; ?>
                 <?php
                 if (isset($oldlist)) {
                     ?>

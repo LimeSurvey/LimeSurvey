@@ -48,21 +48,6 @@ class Tokens extends SurveyCommonAction
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
-        // Create the new participant table automatically when the user opens
-        // the Participants tab
-        if (
-            !$survey->hasTokensTable && (
-                Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')
-                || Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')
-            )
-        ) {
-            $accessModeService = \LimeSurvey\DI::getContainer()
-                ->get(\LimeSurvey\Models\Services\SurveyAccessModeService::class);
-            if ($accessModeService->newParticipantTable($survey, true)) {
-                $this->getController()->redirect(array("/admin/tokens/sa/index/surveyid/{$iSurveyId}"));
-            }
-        }
-
         Yii::app()->loadHelper("surveytranslator");
 
         $aData = array();
