@@ -1584,7 +1584,7 @@ class ParticipantsAction extends SurveyCommonAction
         $data['participant_id'] = $participant_id;
         $data['count'] = substr_count((string) $participant_id, ',') + 1;
 
-        $surveys = Survey::getSurveysWithTokenTable();
+        $surveys = Survey::getSurveysForAddingParticipants();
         $data['surveys'] = $surveys;
         $data['hasGlobalPermission'] = Permission::model()->hasGlobalPermission('surveys', 'update');
 
@@ -2531,6 +2531,20 @@ class ParticipantsAction extends SurveyCommonAction
         $participantIds = explode(",", (string) $participantIdsString);
 
         $surveyId = (int)Yii::app()->request->getPost('surveyid');
+
+        $survey = Survey::model()->findByPk($surveyId);
+        if ($survey && !$survey->hasTokensTable) {
+            if (
+                !Permission::model()->hasGlobalPermission('surveys', 'update')
+                && !Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'update')
+            ) {
+                echo gT('No permission');
+                return;
+            }
+            $accessModeService = \LimeSurvey\DI::getContainer()
+                ->get(\LimeSurvey\Models\Services\SurveyAccessModeService::class);
+            $accessModeService->newParticipantTable($survey, true);
+        }
 
         /**
          * mapped can take values like
