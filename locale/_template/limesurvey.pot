@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-06-18 11:18:03+00:00\n"
+"POT-Creation-Date: 2026-06-22 10:50:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -513,6 +513,8 @@ msgstr ""
 #: application/controllers/UserGroupController.php:209
 #: application/controllers/UserGroupController.php:396
 #: application/controllers/UserManagementController.php:1477
+#: application/controllers/admin/ConditionsAction.php:132
+#: application/controllers/admin/ConditionsAction.php:1105
 #: application/controllers/admin/Expressions.php:52
 #: application/controllers/admin/Expressions.php:99
 #: application/controllers/admin/Labels.php:117
@@ -3853,6 +3855,7 @@ msgid "User could not be added."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:410
+#: application/core/LSYii_Application.php:672
 msgid "Group not found."
 msgstr ""
 
@@ -3988,8 +3991,10 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1501
 #: application/controllers/UserManagementController.php:1590
 #: application/controllers/UserManagementController.php:1675
-#: application/core/LSYii_Application.php:640
-#: application/core/LSYii_Application.php:651
+#: application/controllers/admin/ConditionsAction.php:1101
+#: application/core/LSYii_Application.php:679
+#: application/core/LSYii_Application.php:715
+#: application/core/LSYii_Application.php:737
 msgid "Your request is invalid."
 msgstr ""
 
@@ -4555,21 +4560,21 @@ msgstr ""
 msgid "Greater than (Strings)"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:122
-#: application/controllers/admin/ConditionsAction.php:124
+#: application/controllers/admin/ConditionsAction.php:119
+#: application/controllers/admin/ConditionsAction.php:121
 #: application/views/admin/conditions/conditionshead_view.php:3
 msgid "Conditions designer"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:187
+#: application/controllers/admin/ConditionsAction.php:183
 msgid "You have not selected a survey"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:198
+#: application/controllers/admin/ConditionsAction.php:189
 msgid "You have not selected a question"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:269
+#: application/controllers/admin/ConditionsAction.php:261
 #: application/controllers/admin/Tokens.php:1780
 #: application/helpers/SurveyRuntimeHelper.php:1188
 #: application/views/admin/checkintegrity/fix_view.php:30
@@ -4584,33 +4589,33 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:275
+#: application/controllers/admin/ConditionsAction.php:267
 msgid "All conditions in this survey have been deleted."
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:336
-#: application/controllers/admin/ConditionsAction.php:371
-#: application/controllers/admin/ConditionsAction.php:405
+#: application/controllers/admin/ConditionsAction.php:328
+#: application/controllers/admin/ConditionsAction.php:363
+#: application/controllers/admin/ConditionsAction.php:397
 #: application/models/services/SurveyCondition.php:180
 #: application/models/services/SurveyCondition.php:221
 msgid "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:366
-#: application/controllers/admin/ConditionsAction.php:400
+#: application/controllers/admin/ConditionsAction.php:358
+#: application/controllers/admin/ConditionsAction.php:392
 #: application/models/services/SurveyCondition.php:175
 #: application/models/services/SurveyCondition.php:219
 msgid "Could not insert all conditions."
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:368
-#: application/controllers/admin/ConditionsAction.php:402
+#: application/controllers/admin/ConditionsAction.php:360
+#: application/controllers/admin/ConditionsAction.php:394
 #: application/models/services/SurveyCondition.php:177
 #: application/models/services/SurveyCondition.php:216
 msgid "Condition added."
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:681
+#: application/controllers/admin/ConditionsAction.php:690
 #: application/views/admin/conditions/includes/conditions_edit.php:20
 #: application/views/admin/emailtemplates/email_language_template_tab.php:162
 #: application/views/admin/emailtemplates/email_language_template_tab.php:165
@@ -4618,11 +4623,11 @@ msgstr ""
 msgid "Edit condition"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:682
+#: application/controllers/admin/ConditionsAction.php:691
 msgid "Update condition"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:686
+#: application/controllers/admin/ConditionsAction.php:695
 #: editor/src/components/ConditionDesigner/ConditionDesigner.js:221
 msgid "Add condition"
 msgstr ""
@@ -5562,55 +5567,55 @@ msgstr ""
 msgid "Create or import new label set(s)"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:290
-#: application/controllers/admin/Labels.php:307
+#: application/controllers/admin/Labels.php:292
+#: application/controllers/admin/Labels.php:309
 #: application/views/questionAdministration/modals.twig:65
 msgid "Label set list"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:339
-#: application/controllers/admin/Labels.php:507
+#: application/controllers/admin/Labels.php:341
+#: application/controllers/admin/Labels.php:509
 msgid "Label set successfully saved."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:356
+#: application/controllers/admin/Labels.php:358
 msgid "Label set successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:388
+#: application/controllers/admin/Labels.php:390
 msgid "Label set successfully created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:391
+#: application/controllers/admin/Labels.php:393
 msgid "Label could not be created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:407
+#: application/controllers/admin/Labels.php:409
 msgid "Label set “%s” was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:409
+#: application/controllers/admin/Labels.php:411
 msgid "Unable to delete label set %s."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:423
+#: application/controllers/admin/Labels.php:425
 #: application/views/admin/labels/partials/topbarBtns/rightSideButtons.php:11
 msgid "Export multiple label sets"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:486
+#: application/controllers/admin/Labels.php:488
 msgid "Could not save label set: Label set name is empty."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:489
+#: application/controllers/admin/Labels.php:491
 msgid "Could not save label set: Found no answers."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:535
+#: application/controllers/admin/Labels.php:537
 msgid "Label set successfully updated"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:745
+#: application/controllers/admin/Labels.php:747
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:19
 msgid "Label set not found"
 msgstr ""
@@ -6378,6 +6383,7 @@ msgstr ""
 #: application/controllers/admin/SurveymenuEntryController.php:60
 #: application/views/admin/surveymenu_entries/create.php:6
 #: application/views/admin/surveymenu_entries/shortlist.php:9
+#: application/views/admin/surveymenu_entries/shortlist.php:18
 msgid "Menu entries"
 msgstr ""
 
@@ -7495,6 +7501,14 @@ msgstr ""
 msgid "Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."
 msgstr ""
 
+#: application/core/LSYii_Application.php:645
+msgid "Survey not found."
+msgstr ""
+
+#: application/core/LSYii_Application.php:708
+msgid "Question not found."
+msgstr ""
+
 #: application/core/LSYii_CaseValidator.php:31
 msgid "Text needs to be uppercase."
 msgstr ""
@@ -7983,6 +7997,7 @@ msgstr ""
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:53
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:129
 #: application/views/admin/surveymenu/shortlist.php:10
+#: application/views/admin/surveymenu/shortlist.php:20
 msgid "Survey menu"
 msgstr ""
 
@@ -9832,9 +9847,9 @@ msgstr ""
 #: application/views/admin/saved/savedlist_view.php:28
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:54
 #: application/views/admin/surveymenu/index.php:48
-#: application/views/admin/surveymenu/shortlist.php:21
+#: application/views/admin/surveymenu/shortlist.php:22
 #: application/views/admin/surveymenu_entries/index.php:25
-#: application/views/admin/surveymenu_entries/shortlist.php:20
+#: application/views/admin/surveymenu_entries/shortlist.php:21
 #: application/views/admin/token/browse.php:50
 #: application/views/admin/token/surveyParticipantView.php:122
 #: application/views/admin/tutorialentries/index.php:34
@@ -9869,9 +9884,9 @@ msgstr ""
 #: application/views/admin/saved/savedlist_view.php:29
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:55
 #: application/views/admin/surveymenu/index.php:49
-#: application/views/admin/surveymenu/shortlist.php:22
+#: application/views/admin/surveymenu/shortlist.php:23
 #: application/views/admin/surveymenu_entries/index.php:26
-#: application/views/admin/surveymenu_entries/shortlist.php:21
+#: application/views/admin/surveymenu_entries/shortlist.php:22
 #: application/views/admin/token/browse.php:51
 #: application/views/admin/token/surveyParticipantView.php:123
 #: application/views/admin/tutorialentries/index.php:35
@@ -14999,7 +15014,7 @@ msgstr ""
 
 #: application/helpers/twig_translation_helper.php:40
 #: application/views/questionAdministration/subquestions.twig:51
-#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:101
+#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:102
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceSubquestion.js:143
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:196
 msgid "Subquestion"
@@ -16096,7 +16111,7 @@ msgid "Question id (qid) : '%s' is already in use."
 msgstr ""
 
 #: application/models/Question.php:215
-#: editor/src/hooks/useQuestionChildren.js:333
+#: editor/src/hooks/useQuestionChildren.js:337
 msgid "Subquestion codes must be unique."
 msgstr ""
 
@@ -21403,9 +21418,9 @@ msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:27
 #: application/views/admin/surveymenu/index.php:47
-#: application/views/admin/surveymenu/shortlist.php:20
+#: application/views/admin/surveymenu/shortlist.php:21
 #: application/views/admin/surveymenu_entries/index.php:24
-#: application/views/admin/surveymenu_entries/shortlist.php:19
+#: application/views/admin/surveymenu_entries/shortlist.php:20
 #: application/views/admin/tutorialentries/index.php:33
 #: application/views/admin/tutorials/index.php:35
 #: application/views/assessment/assessments_view.php:43
@@ -27684,7 +27699,7 @@ msgid "Image description"
 msgstr ""
 
 #: editor/src/components/QuestionSettings/attributes/QuestionCodeAttribute.js:39
-#: editor/src/hooks/useQuestionChildren.js:325
+#: editor/src/hooks/useQuestionChildren.js:329
 msgid "Only letters and numbers are allowed."
 msgstr ""
 
@@ -27936,7 +27951,7 @@ msgstr ""
 msgid "Number"
 msgstr ""
 
-#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:119
+#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:120
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:213
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:236
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:249
@@ -27984,7 +27999,7 @@ msgstr ""
 
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoice.js:122
 #: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionEditMode.js:184
-#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:178
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:180
 #: editor/src/components/QuestionTypes/RankingQuestion/RankingQuestionSubquestions.js:90
 msgid "Add subquestion"
 msgstr ""
@@ -27995,11 +28010,11 @@ msgstr ""
 msgid "Enter your comment here."
 msgstr ""
 
-#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:65
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:66
 msgid "Subquestion already exists"
 msgstr ""
 
-#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestionSubquestions.js:121
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestionSubquestions.js:122
 #: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestionSubquestionsPlaceholder.js:48
 msgid "Subquestion option"
 msgstr ""
@@ -28801,7 +28816,7 @@ msgstr ""
 msgid "Please try again later!"
 msgstr ""
 
-#: editor/src/hooks/useQuestionChildren.js:331
+#: editor/src/hooks/useQuestionChildren.js:335
 msgid "Answer codes must be unique."
 msgstr ""
 

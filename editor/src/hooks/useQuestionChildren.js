@@ -11,6 +11,8 @@ import {
   getNextAnswerCode,
   getQuestionExample,
   getNextSubQuestionCode,
+  RandomNumber,
+  APP_KEY_PREFIX,
 } from 'helpers'
 import { reportExtras } from 'appInstrumentation'
 import { singleChoiceThemes } from 'components/QuestionTypes'
@@ -102,6 +104,8 @@ export const useQuestionChildren = ({
             title: getNextSubQuestionCode(codeToQuestion, question.qid, null),
             ...props,
           })
+
+    newChild.appKey = `${entityType}-${APP_KEY_PREFIX}${RandomNumber()}`
 
     const updatedChildren = filterAndSortChildren(childArray, props, newChild)
 
