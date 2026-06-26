@@ -1820,7 +1820,7 @@ class Update_700 extends DatabaseUpdateBase
         // Maximum number of qids per IN (...) batch.
         // Keeps individual query result sets small and avoids driver bind-parameter
         // limits (e.g. SQL Server caps at 2100 parameters per statement).
-        const ANSWER_CHUNK_SIZE = 500;
+        $chunksize = 500;
 
         $db = Yii::app()->db;
         $params[':sid'] = $sid;
@@ -1840,7 +1840,7 @@ class Update_700 extends DatabaseUpdateBase
         // and lets us free each batch result set immediately after grouping.
         $qids = array_column($questions, 'qid');
         $answersByQid = [];
-        foreach (array_chunk($qids, self::ANSWER_CHUNK_SIZE) as $qidChunk) {
+        foreach (array_chunk($qids, $chunksize) as $qidChunk) {
             $placeholders = implode(',', array_fill(0, count($qidChunk), '?'));
             $chunkAnswers = $db->createCommand()
                 ->select('*')
@@ -2070,6 +2070,7 @@ class Update_700 extends DatabaseUpdateBase
                             }
                         }
                     }
+
                 }
             }
             $this->convertSurveyInsertans($sid, $questions, $newFields, $additionalNames);
