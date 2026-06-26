@@ -43,6 +43,9 @@ class QuestionStatistics implements StatisticsChartInterface
     /** @var array<string, string>|null Cached type code -> human-readable description map */
     private ?array $typeDescriptions = null;
 
+    /** @var array<int, string[]> Question id -> its response-table column fieldnames */
+    private array $questionFields = [];
+
     public function __construct()
     {
         $this->factories = [
@@ -95,6 +98,7 @@ class QuestionStatistics implements StatisticsChartInterface
 
         $survey = $this->fetchSurveyMetadata();
         $surveyQuestions = $survey['questions'];
+        $this->questionFields = $this->buildQuestionFields();
 
         $batch = new ResponseAggregateBatch($surveyId, $this->filters);
 
@@ -254,15 +258,15 @@ class QuestionStatistics implements StatisticsChartInterface
                 $segmentsTotal = 0;
                 foreach ($item['segments'] as $i => $segment) {
                     if (isset($segment['value']) && is_callable($segment['value'])) {
-                        $item['segments'][$i]['value'] = (int)$segment['value']();
+                        $item['segments'][$i]['value'] = $this->toNumber($segment['value']());
                     }
-                    $segmentsTotal += (int)$item['segments'][$i]['value'];
+                    $segmentsTotal += $this->toNumber($item['segments'][$i]['value']);
                 }
-                if (!isset($item['value']) || !is_int($item['value'])) {
+                if (!isset($item['value']) || !is_numeric($item['value'])) {
                     $item['value'] = $segmentsTotal;
                 }
             }
-            $total += is_int($item['value'] ?? null) ? $item['value'] : 0;
+            $total += is_numeric($item['value'] ?? null) ? $item['value'] : 0;
             $data[] = $item;
         }
 
@@ -273,6 +277,19 @@ class QuestionStatistics implements StatisticsChartInterface
             $total,
             ['question' => $question]
         );
+    }
+
+    /**
+     * Normalise a (possibly numeric-string) value to an int or float,
+     * preserving fractional precision instead of truncating means to whole
+     * numbers. Non-numeric values become 0.
+     *
+     * @param mixed $value
+     * @return int|float
+     */
+    private function toNumber($value)
+    {
+        return is_numeric($value) ? $value + 0 : 0;
     }
 
     /**
@@ -302,6 +319,10 @@ class QuestionStatistics implements StatisticsChartInterface
                 'themeName' => $question['question_theme_name'] ?? null,
                 'help' => $question['help'] ?? null,
                 'attributes' => $question['attributes'] ?? [],
+                // Response-table columns of this question; the client passes
+                // them as `fields` to survey-responses so the comments/answers
+                // views fetch only this question's columns.
+                'fields' => $this->questionFields[(int) ($question['qid'] ?? 0)] ?? [],
             ];
             $dto->setMeta($meta);
         }
@@ -384,5 +405,32 @@ class QuestionStatistics implements StatisticsChartInterface
         }
 
         return compact('questions', 'answers');
+    }
+
+    /**
+     * Map every question id to its response-table column fieldnames (e.g.
+     * Q12, Q12_S34, Q12_Ccomment). These are the columns the client passes as
+     * `fields` to the survey-responses endpoint to fetch only that question's
+     * answers. Built once per run from the authoritative survey field map.
+     *
+     * @return array<int, string[]>
+     */
+    private function buildQuestionFields(): array
+    {
+        $survey = \Survey::model()->findByPk($this->surveyId);
+        if ($survey === null) {
+            return [];
+        }
+
+        $fieldMap = createFieldMap($survey, 'full', false, false, $this->language);
+
+        $byQid = [];
+        foreach ($fieldMap as $fieldname => $item) {
+            if (!empty($item['qid'])) {
+                $byQid[(int) $item['qid']][] = $fieldname;
+            }
+        }
+
+        return $byQid;
     }
 }

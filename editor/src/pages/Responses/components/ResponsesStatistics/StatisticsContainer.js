@@ -45,6 +45,7 @@ const renderCharts = (items, surveyId, valueType) => (
               code: item?.meta?.question?.code,
               title: item?.title,
               help: item?.meta?.question?.help,
+              fields: item?.meta?.question?.fields,
               index: index,
             }}
           />

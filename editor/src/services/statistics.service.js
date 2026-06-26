@@ -5,6 +5,23 @@ import { RestClient } from './restClient.service'
 const belongsToQuestion = (answer, questionCode) =>
   String(answer?.title) === String(questionCode)
 
+// Flatten the per-response answers into a single list, tagging each answer with
+// the response it belongs to and a single date (mirrors the server's flattening
+// of the old survey-response-answers endpoint).
+const flattenAnswers = (responses) =>
+  (responses || []).flatMap((response) => {
+    const date =
+      response.submitDate ??
+      response.dateLastAction ??
+      response.startDate ??
+      null
+    return Object.values(response.answers || {}).map((answer) => ({
+      ...answer,
+      responseId: response.id ?? null,
+      date,
+    }))
+  })
+
 export class StatisticsService {
   constructor(auth, surveyId, baseUrl) {
     this.auth = auth
@@ -34,9 +51,12 @@ export class StatisticsService {
   }
 
   /**
-   * POST the survey-response-answers endpoint scoped to a single question and
-   * return its flat answer list plus the pagination envelope. Shared prologue
-   * of getQuestionComments and getQuestionResponses.
+   * POST the survey-responses endpoint and flatten the per-response answers
+   * into a single list plus the pagination envelope. Shared prologue of
+   * getQuestionComments and getQuestionResponses. `fields` restricts the query
+   * to the question's own columns so other questions' answers are not returned
+   * or transferred; the answers are still scoped client-side via
+   * `belongsToQuestion` as a safety net.
    */
   fetchQuestionAnswers = async (
     sid,
@@ -44,25 +64,24 @@ export class StatisticsService {
     currentPage,
     pageSize,
     language,
-    answerValue
+    fields,
+    sort
   ) => {
-    // Scope to this question's columns so the endpoint doesn't return (and
-    // transfer) every other question's answers.
-    const body = { page: { currentPage, pageSize }, questionCode }
+    const body = { page: { currentPage, pageSize } }
     if (language) {
       body.language = language
     }
-    if (answerValue) {
-      body.answerValue = answerValue
+    if (Array.isArray(fields) && fields.length) {
+      body.fields = fields
+    }
+    if (sort) {
+      body.sort = sort
     }
 
-    const data = await this.restClient.post(
-      `survey-response-answers/${sid}`,
-      body
-    )
+    const data = await this.restClient.post(`survey-responses/${sid}`, body)
 
     return {
-      answers: data?.answers || [],
+      answers: flattenAnswers(data?.responses),
       pagination: data?._meta?.pagination || null,
     }
   }
@@ -70,8 +89,8 @@ export class StatisticsService {
   /**
    * Load every comment of a question.
    *
-   * Comments live in the response table, so we use the survey-response-answers
-   * endpoint which returns a flat list of answers (each carrying its `title`,
+   * Comments live in the response table, so we use the survey-responses
+   * endpoint and flatten it into a list of answers (each carrying its `title`,
    * `aid`, `subquestion` and the `responseId`). We keep the comment answers
    * (`aid` ending in "comment") belonging to the requested question.
    */
@@ -81,17 +100,20 @@ export class StatisticsService {
     currentPage = 0,
     pageSize = 15,
     language,
-    selectedAnswer = ''
+    selectedAnswer = '',
+    fields
   ) => {
-    // When an answer is selected, let the endpoint page through only that
-    // answer's responses (server-side filter via answerValue).
     const { answers, pagination } = await this.fetchQuestionAnswers(
       sid,
       questionCode,
       currentPage,
       pageSize,
       language,
-      selectedAnswer
+      fields,
+      // Page through responses newest-first by submit date so comments load
+      // chronologically; response id order doesn't track date (imported/resumed
+      // responses), which is why pages otherwise mix recent and old comments.
+      { submitDate: 'desc' }
     )
 
     const hasValue = (answer) =>
@@ -138,7 +160,17 @@ export class StatisticsService {
         }
       })
 
-    return { comments, pagination }
+    // Answer-option filter: keep only comments whose chosen option (the
+    // comment's sub-question, which for question-wide types is the response's
+    // selected answer code) matches the selection. Done client-side because the
+    // flat list is paged over responses, not narrowed to a column server-side.
+    const filtered = selectedAnswer
+      ? comments.filter(
+          (comment) => String(comment.subQuestion) === String(selectedAnswer)
+        )
+      : comments
+
+    return { comments: filtered, pagination }
   }
 
   /**
@@ -153,14 +185,16 @@ export class StatisticsService {
     questionCode,
     currentPage = 0,
     pageSize = 15,
-    language
+    language,
+    fields
   ) => {
     const { answers, pagination } = await this.fetchQuestionAnswers(
       sid,
       questionCode,
       currentPage,
       pageSize,
-      language
+      language,
+      fields
     )
 
     // Columns in first-seen (field map) order; rows grouped by response.

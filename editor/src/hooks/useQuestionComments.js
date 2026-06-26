@@ -7,7 +7,7 @@ import { PAGE_SIZE, useQuestionAnswers } from './useQuestionAnswers'
 export function useQuestionComments(
   surveyId,
   questionCode,
-  { enabled = true, selectedAnswer = '' } = {}
+  { enabled = true, selectedAnswer = '', fields = [] } = {}
 ) {
   const { data, ...rest } = useQuestionAnswers(
     surveyId,
@@ -29,10 +29,11 @@ export function useQuestionComments(
           pageParam,
           PAGE_SIZE,
           activeLanguage,
-          selectedAnswer
+          selectedAnswer,
+          fields
         ),
     }),
-    { enabled }
+    { enabled, fields }
   )
 
   const comments = useMemo(

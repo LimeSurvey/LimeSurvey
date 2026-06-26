@@ -68,12 +68,12 @@ class ArrayNumbersProcessor extends AbstractQuestionProcessor
         $sumAlias = $this->batch->sumValues($field);
         $countAlias = $this->batch->countNonEmpty($field);
 
-        return function () use ($sumAlias, $countAlias): int {
+        return function () use ($sumAlias, $countAlias): float {
             $count = $this->batch->value($countAlias);
             if ($count <= 0) {
                 return 0;
             }
-            return (int) round($this->batch->value($sumAlias) / $count);
+            return round($this->batch->value($sumAlias) / $count, 2);
         };
     }
 }

@@ -38,7 +38,7 @@ final class ResponseAggregateBatch
     /** @var array<string, string> dedup key => alias */
     private array $aliasIndex = [];
 
-    /** @var array<string, int> alias => count */
+    /** @var array<string, int|float> alias => count, or fractional sum for KIND_SUM */
     private array $results = [];
 
     private bool $executed = false;
@@ -84,8 +84,8 @@ final class ResponseAggregateBatch
     /**
      * Sum of the numeric values in a column (non-numeric/empty cells count as
      * 0). Combined with countNonEmpty() this yields a column mean. The result
-     * is truncated to an integer by value(), so it suits whole-number scales
-     * (e.g. Array Numbers "hours").
+     * preserves up to 4 decimal places, so fractional answers (e.g. 1.5) are
+     * not lost.
      */
     public function sumValues(string $field): string
     {
@@ -116,7 +116,10 @@ final class ResponseAggregateBatch
             $row = $db->createCommand($sql)->queryRow() ?: [];
 
             foreach (array_keys($chunk) as $alias) {
-                $this->results[$alias] = (int)($row[$alias] ?? 0);
+                $value = $row[$alias] ?? 0;
+                // Counts come back as whole numbers; KIND_SUM may be fractional.
+                // "+ 0" yields an int or float, preserving decimal precision.
+                $this->results[$alias] = is_numeric($value) ? $value + 0 : 0;
             }
         }
 
@@ -129,9 +132,12 @@ final class ResponseAggregateBatch
     }
 
     /**
-     * Resolved count for a previously registered alias (0 before execute()).
+     * Resolved value for a previously registered alias (0 before execute()).
+     * Counts are integers; KIND_SUM aggregates may be fractional.
+     *
+     * @return int|float
      */
-    public function value(string $alias): int
+    public function value(string $alias)
     {
         return $this->results[$alias] ?? 0;
     }

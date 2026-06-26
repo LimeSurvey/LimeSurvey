@@ -4,6 +4,7 @@ import { Card } from 'react-bootstrap'
 
 import { Collapsible, ToggleButtons } from 'components'
 import { isRankingQuestion } from 'helpers'
+import { ReactComponent as StackedBarIcon } from 'assets/icons/stacked-bar-icon.svg'
 
 import { ChartHeader } from './ChartHeader.js'
 import { StatisticsTable } from './StatisticsTable.js'
@@ -78,7 +79,7 @@ const VIEWS = [
   {
     value: VIEW.STACKED_BAR,
     label: () => t('Stacked bar chart'),
-    icon: () => <i className="ri-bar-chart-horizontal-line"></i>,
+    icon: (props) => <StackedBarIcon width="20" height="22" {...props} />,
     // Array numbers shows means, which don't stack — grouped only.
     isAvailable: ({ isArray, isArrayNumbers }) => isArray && !isArrayNumbers,
     render: ({ data, valueType }) => (
@@ -145,7 +146,11 @@ const VIEWS = [
     icon: () => <i className="ri-table-line"></i>,
     render: ({ data, isImage, isArrayText, surveyId, question }) =>
       isArrayText ? (
-        <ArrayTextTable surveyId={surveyId} questionCode={question?.code} />
+        <ArrayTextTable
+          surveyId={surveyId}
+          questionCode={question?.code}
+          fields={question?.fields}
+        />
       ) : (
         <StatisticsTable data={data} isImage={isImage} />
       ),
@@ -159,6 +164,7 @@ const VIEWS = [
       <QuestionComments
         surveyId={surveyId}
         questionCode={question?.code}
+        fields={question?.fields}
         answerOptions={data}
         onViewComments={onViewComments}
       />
@@ -336,6 +342,7 @@ export const ChartRendererV2 = ({
           surveyId={surveyId}
           questionCode={question?.code}
           questionTitle={question?.title}
+          fields={question?.fields}
           answerOptions={data}
           initialAnswer={commentsAnswer ?? ''}
         />

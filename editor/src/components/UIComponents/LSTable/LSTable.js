@@ -48,6 +48,7 @@ export const LSTable = ({
   sortDirection: sortDirectionProp = 'asc',
   onSortChange,
   resizable = false,
+  maxHeight,
 }) => {
   // In uncontrolled mode (no `onSortChange`), `sortBy`/`sortDirection` are
   // only used to seed the initial state; later prop changes are ignored.
@@ -168,7 +169,14 @@ export const LSTable = ({
 
   return (
     <div className="ls-table-wrapper">
-      <div className="ls-table-container">
+      <div
+        className="ls-table-container"
+        // `paddingTop: 0` removes the gap above the sticky header where rows
+        // would otherwise peek through while scrolling.
+        style={
+          maxHeight ? { maxHeight, overflowY: 'auto', paddingTop: 0 } : undefined
+        }
+      >
         <Table
           hover
           className={classNames('ls-table align-middle', {

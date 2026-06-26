@@ -17,6 +17,7 @@ export const CommentsModal = ({
   surveyId,
   questionCode,
   questionTitle = '',
+  fields,
   answerOptions = [],
   initialAnswer = '',
 }) => {
@@ -32,7 +33,11 @@ export const CommentsModal = ({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useQuestionComments(surveyId, questionCode, { enabled: show, selectedAnswer })
+  } = useQuestionComments(surveyId, questionCode, {
+    enabled: show,
+    selectedAnswer,
+    fields,
+  })
 
   const options = useMemo(
     () => getAnswerFilterOptions(answerOptions),

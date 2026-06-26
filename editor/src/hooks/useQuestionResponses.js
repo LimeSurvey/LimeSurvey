@@ -10,7 +10,7 @@ import { PAGE_SIZE, useQuestionAnswers } from './useQuestionAnswers'
 export function useQuestionResponses(
   surveyId,
   questionCode,
-  { enabled = true } = {}
+  { enabled = true, fields = [] } = {}
 ) {
   const { data, ...rest } = useQuestionAnswers(
     surveyId,
@@ -28,10 +28,11 @@ export function useQuestionResponses(
           questionCode,
           pageParam,
           PAGE_SIZE,
-          activeLanguage
+          activeLanguage,
+          fields
         ),
     }),
-    { enabled }
+    { enabled, fields }
   )
 
   // Columns are identical across pages, so take them from the first page.

@@ -92,6 +92,9 @@
       height: 46px;
       white-space: nowrap;
       border-bottom: 1px solid $g-400;
+      // Opaque so the sticky header fully hides rows scrolling underneath it
+      // (matches the white container behind it).
+      background-color: $white;
 
       &--sortable {
         cursor: pointer;

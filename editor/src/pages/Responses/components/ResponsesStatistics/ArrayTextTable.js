@@ -26,7 +26,7 @@ const ColumnHeader = ({ primary, secondary }) => (
 
 // Array (Texts): a free-text grid shown as raw per-response data — participant
 // rows × subquestion columns — fetched from the responses endpoint.
-export const ArrayTextTable = ({ surveyId, questionCode }) => {
+export const ArrayTextTable = ({ surveyId, questionCode, fields }) => {
   // Defer the fetch until the card scrolls into view, then keep it loaded.
   const [containerRef, isInView] = useIsInViewport(null, {
     initialInView: false,
@@ -45,7 +45,10 @@ export const ArrayTextTable = ({ surveyId, questionCode }) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useQuestionResponses(surveyId, questionCode, { enabled: shouldLoad })
+  } = useQuestionResponses(surveyId, questionCode, {
+    enabled: shouldLoad,
+    fields,
+  })
 
   const tableColumns = useMemo(
     () => [
@@ -101,7 +104,13 @@ export const ArrayTextTable = ({ surveyId, questionCode }) => {
 
     return (
       <>
-        <LSTable columns={tableColumns} data={tableRows} rowId="id" resizable />
+        <LSTable
+          columns={tableColumns}
+          data={tableRows}
+          rowId="id"
+          resizable
+          maxHeight="400px"
+        />
         {hasNextPage && (
           <div className="responses-statistics-comments-more">
             <button
