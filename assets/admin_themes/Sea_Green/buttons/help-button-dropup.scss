@@ -32,36 +32,29 @@
         padding          : 0px 0px 12px;
         inset            : auto 0px 8px auto !important;
         & > li > a {
-            color : $white;
-            &:hover {
-                background-color : $primary;
-            }
-            &:active, &:focus {
+            color       : $white;
+            font-weight : $font-weight-500;
+            border-width: 2px;
+            padding     : 2px 16px;
+            &:hover:not(:active):not(:focus-visible) {
                 color            : $g-800;
                 background-color : $g-200;
+            }
+            &:active, &:focus {
+                background-color : $active-green;
+                border-color     : $active-green;
+            }
+            &:focus-visible {
+                background-color : $black60;
+                border-color     : $apple;
+                border-radius    : 0;
             }
         }
         & .dropdown-header {
             color     : $white;
+            opacity   : 0.75;
             font-size : var(--bs-root-font-size);
+            padding   : 8px 16px;
         }
-    }
-}
-
-.btn-circle {
-    width         : 44px;
-    height        : 44px;
-    padding       : 12px 10px;
-    border-radius : 35px;
-    text-align    : center;
-}
-
-.btn-black60 {
-    color  : $white;
-    border : 1px solid $black60;
-    &:hover, &:focus, &:active, &.active, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &[aria-expanded="true"] {
-        background-color : $black60;
-        border           : 1px solid $black;
-        box-shadow       : 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
 }
