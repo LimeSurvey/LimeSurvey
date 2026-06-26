@@ -218,7 +218,7 @@ class ResponsesController extends LSBaseController
 
 
             if ($field['type'] == Question::QT_R_RANKING) {
-                $isParent = !isset($field['aid']);
+                $isParent = isRankingQuestionParent($field['aid'] ?? null);
                 if ($isParent) {
                     $fnames[] = [
                         $field['fieldname'],

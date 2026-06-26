@@ -5838,3 +5838,12 @@ function sortByKeyLengthDescending($input)
     }
     return $output;
 }
+
+/**
+ * Check if a question is a ranking question parent
+ * @param int|null $aid The answer ID (null for parent questions)
+ * @return bool
+ */
+function isRankingQuestionParent($aid) {
+    return !isset($aid);
+}

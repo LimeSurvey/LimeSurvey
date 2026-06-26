@@ -226,7 +226,8 @@ const handleRankingQuestionType = (
 ) => {
   let values = []
   try {
-    values = JSON.parse(value) || []
+    const parsed = JSON.parse(value)
+    values = Array.isArray(parsed) ? parsed : []
   } catch (error) {
     //
   }
