@@ -727,13 +727,14 @@ class statistics_helper
             $encrypted    = ($fielddata['encrypted'] ?? 'N') === 'Y';
             $qtype        = $fielddata['type'];
 
-            $rankSubquestions = Question::model()->with('questionl10ns')->findAll(array(
-                'order' => 'question_order',
-                'condition' => 'parent_qid=:pid AND scale_id=0',
-                'params' => array(':pid' => $qqid)
-            ));
-
             $rankingColumn = "Q{$qqid}";
+            $rankSubquestions = array();
+            foreach ($survey->baseQuestions as $baseQuestion) {
+                if ((int) $baseQuestion->qid === (int) $qqid) {
+                    $rankSubquestions = $baseQuestion->subquestions;
+                    break;
+                }
+            }
             $qtitle = flattenText($fielddata['title']) . " [" . sprintf(gT('Rank %s'), $rankPosition) . "]";
             $qquestion = flattenText($fielddata['question']) . " [" . gT("Ranking") . "]";
             $subquestionText = $fielddata['subquestion'];
