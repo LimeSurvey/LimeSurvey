@@ -2536,7 +2536,8 @@ class ParticipantsAction extends SurveyCommonAction
         if ($survey && !$survey->hasTokensTable) {
             if (
                 !Permission::model()->hasGlobalPermission('surveys', 'update')
-                && !Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'update')
+                && !Permission::model()->hasSurveyPermission($surveyId, 'surveysettings', 'update')
+                && !Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'create')
             ) {
                 echo gT('No permission');
                 return;
