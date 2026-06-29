@@ -3597,7 +3597,7 @@ class LimeExpressionManager
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     // csuffix = fieldname suffix ('_S{sqid}'); sqsuffix = qcode/aid suffix ('_1', '_2', ...)
                     $csuffix = $fielddata['suffix'] ?? '';
-                    $isParent = !isset($fielddata['aid']);
+                    $isParent = isRankingQuestionParent($fielddata['aid'] ?? null);
                     $varName = $fielddata['title'] . ((!$isParent) ? '_' . $fielddata['aid'] : '');
                     $question = $fielddata[$isParent ? 'question' :  'subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505

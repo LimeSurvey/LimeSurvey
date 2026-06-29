@@ -80,10 +80,11 @@ export const RankingAdvancedQuestion = ({
     }
 
     setSubquestionsValue([...subquestionsValue])
-    onValueChange(
-      newSubquestionValue.title,
-      subquestionsValue[destinationIndex].key
+    const newRankings = subquestionsValue.map(
+      (subquestion) => subquestion.value
     )
+    const newRankingsJson = JSON.stringify(newRankings)
+    onValueChange(newRankingsJson, subquestionsValue[destinationIndex].key)
   }
 
   const clearSubquestion = (index) => {
@@ -99,7 +100,11 @@ export const RankingAdvancedQuestion = ({
     }
 
     setSubquestionsValue([...subquestionsValue])
-    onValueChange('', subquestionsValue[index].key)
+    const newRankings = subquestionsValue.map(
+      (subquestion) => subquestion.value
+    )
+    const newRankingsJson = JSON.stringify(newRankings)
+    onValueChange(newRankingsJson, subquestionsValue[index].key)
   }
 
   const handleSubquestionUpdate = (value, index) => {

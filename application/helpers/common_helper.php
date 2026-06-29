@@ -1050,7 +1050,16 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             case Question::QT_O_LIST_WITH_COMMENT:
             case Question::QT_I_LANGUAGE:
             case Question::QT_R_RANKING:
-                $this_answer = Question::model()->getQuestionFromTitle($fields['qid'], $sValue, $sLanguage);
+                $items = json_decode($sValue, true);
+                if (is_array($items)) {
+                    $indexedQuestions = [];
+                    foreach ($items as $index => $item) {
+                        $question = Question::model()->getQuestionFromTitle($fields['qid'], $item, $sLanguage);
+                        if ($question) {
+                            $indexedQuestions[] = 'Rank ' . ($index + 1) . ': ' . $question;                        }
+                    }
+                    $sValue = implode(' | ', $indexedQuestions);
+                }
                 if ($sValue == "-oth-") {
                     $this_answer = gT("Other", null, $sLanguage);
                 }
@@ -5828,4 +5837,13 @@ function sortByKeyLengthDescending($input)
         $output[$key] = $input[$key];
     }
     return $output;
+}
+
+/**
+ * Check if a question is a ranking question parent
+ * @param int|null $aid The answer ID (null for parent questions)
+ * @return bool
+ */
+function isRankingQuestionParent($aid) {
+    return !isset($aid);
 }
