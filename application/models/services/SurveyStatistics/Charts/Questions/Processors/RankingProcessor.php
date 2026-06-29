@@ -17,32 +17,42 @@ class RankingProcessor extends AbstractQuestionProcessor
         $charts = [];
         $subQuestions = $this->question['subQuestions'];
 
-        // Build the rank column names
-        $rankColumns = [];
-        foreach ($subQuestions as $subQuestion) {
-            $rankColumns[] = substr($this->rt, 1) . '_S' . $subQuestion['qid'];
+        $column = substr($this->rt, 1);
+        $rawValues = $this->fetchColumnValues($column);
+
+        $rankCount = count($subQuestions);
+
+        $counts = [];
+        foreach ($rawValues as $rawValue) {
+            if ($rawValue === null || $rawValue === '') {
+                continue;
+            }
+            $ranking = json_decode((string)$rawValue, true);
+            if (!is_array($ranking)) {
+                continue;
+            }
+            $rank = 0;
+            foreach ($ranking as $itemCode) {
+                $rank++;
+                if ($rank > $rankCount) {
+                    break;
+                }
+                $itemCode = (string)$itemCode;
+                $counts[$itemCode][$rank] = ($counts[$itemCode][$rank] ?? 0) + 1;
+            }
         }
 
-        $codes = array_column($subQuestions, 'title');
-        $labels = array_column($subQuestions, 'question');
-        $items = $this->buildBatchItemsForSubquestions($rankColumns, $codes, $labels);
-
-        // Re-assemble into per-item charts
-        $rankCount = count($subQuestions);
-        $index = 0;
         foreach ($subQuestions as $subQuestion) {
-            $index++;
+            $itemCode = (string)$subQuestion['title'];
             $legends = [];
             $dataItems = [];
             for ($rank = 1; $rank <= $rankCount; $rank++) {
                 $fieldName = 'RANK ' . $rank;
                 $legends[] = $fieldName;
-                $rankCol = $rankColumns[$rank - 1];
-                $count = (int)(($items[$rankCol][1][$index - 1]['value'] ?? 0));
                 $dataItems[] = [
                     'key' => $subQuestion['title'],
                     'title' => $fieldName,
-                    'value' => $count,
+                    'value' => (int)($counts[$itemCode][$rank] ?? 0),
                 ];
             }
             $charts[] = new StatisticsChartDTO(

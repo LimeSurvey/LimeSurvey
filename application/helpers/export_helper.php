@@ -253,13 +253,15 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                             break; // Break inside if : comment and other are string to be filtered
                         } // else do default action
                     default:
-                        $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
-                        if (trim($strTmp) != '') {
-                            echo quoteSPSS($strTmp, $q, $field);
-                        } elseif ($row[$fieldno] === '') {
-                            echo quoteSPSS($sEmptyAnswerValue, $q, $field);
-                        } else {
-                            echo quoteSPSS($na, $q, $field);
+                        if (isset($row[$fieldno])) {
+                            $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
+                            if (trim($strTmp) != '') {
+                                echo quoteSPSS($strTmp, $q, $field);
+                            } elseif ($row[$fieldno] === '') {
+                                echo quoteSPSS($sEmptyAnswerValue, $q, $field);
+                            } else {
+                                echo quoteSPSS($na, $q, $field);
+                            }
                         }
                 }
             }
