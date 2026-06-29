@@ -2238,18 +2238,20 @@ class QuestionAdministrationController extends LSBaseController
                 for ($scale_id = 0; $scale_id < $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions']; $scale_id++) {
                     $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id] = [];
 
+                    $criteria = new CDbCriteria();
+                    $criteria->condition = 'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionl10ns.language = :language';
+                    $criteria->params = [
+                        ':sid'        => $iSurveyID,
+                        ':gid'        => $gid,
+                        ':parent_qid' => $qid,
+                        ':scale_id'   => 0,
+                        ':language'   => $language
+                    ];
+                    $criteria->order = 'question_order ASC';
+
                     $sqresult = Question::model()
                         ->with('questionl10ns')
-                        ->findAll(
-                            'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionl10ns.language =:language ORDER BY question_order ASC',
-                            [
-                                ':sid'        => $iSurveyID,
-                                ':gid'        => $gid,
-                                ':parent_qid' => $qid,
-                                ':scale_id'   => 0,
-                                ':language'   => $language
-                            ]
-                        );
+                        ->findAll($criteria);
 
                     $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['sqresult'] = [];
 
