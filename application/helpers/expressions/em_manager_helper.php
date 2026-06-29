@@ -5330,6 +5330,7 @@ class LimeExpressionManager
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {
                         $questions = $survey->questions;
+                        $empty = ['', false, null];
                         foreach ($questions as $question) {
                             if (!$question->parent_qid && ($question->type === Question::QT_R_RANKING)) {
                                 $toUpdate = false;
@@ -5337,7 +5338,7 @@ class LimeExpressionManager
                                 foreach ($question->subquestions as $subquestion) {
                                     $key = "Q{$question->qid}_S{$subquestion->qid}";
                                     if (isset($aResponseAttributes[$key])) {
-                                        if (($aResponseAttributes[$key] ?? '')) {
+                                        if (!in_array($aResponseAttributes[$key], $empty)) {
                                             $rankingToStore[] = $aResponseAttributes[$key];
                                         }
                                         unset($aResponseAttributes[$key]);
