@@ -684,35 +684,32 @@ class userstatistics_helper
         } // Ranking OPTION
         elseif ($firstletter == "R") {
             $fieldmapKey = substr($rt, 1);
-            $qqid        = (int) ltrim(explode('_', $fieldmapKey)[0], 'Q');  // numeric qid
-            $rankLabel   = substr($fieldmapKey, strpos($fieldmapKey, '_S') + 2);  // the qid part
-
-            //get question data
-            $nresult = Question::model()->with('questionl10ns')->find(array(
-                'condition' => 'language=:language AND parent_qid=0 AND t.qid=:qid',
-                'params'    => array(':language' => $language, ':qid' => $qqid)
-            ));
-
-            if ($nresult) {
-                $qtitle    = flattenText($nresult->title) . " [" . gT("Ranking") . " " . $rankLabel . "]";
-                $qtype     = $nresult->type;
-                $qquestion = flattenText($nresult->questionl10ns[$language]->question)
-                             . " [" . gT("Ranking") . " " . $rankLabel . "]";
-                $qqid      = $nresult->qid;
+            if (!isset($fieldmap[$fieldmapKey])) {
+                return [];
             }
+            $fielddata    = $fieldmap[$fieldmapKey];
+            $qqid         = $fielddata['qid'];
+            $rankPosition = (int) $fielddata['aid'];
+            $qtype        = $fielddata['type'];
 
-            //get answers – each answer is a possible choice the respondent could rank
-            $result = Answer::model()->with('answerl10ns')->findAll([
-                'condition' => 'language=:language AND qid=:qid',
-                'params'    => [':language' => $language, ':qid' => $qqid],
-                'order'     => 'sortorder'
-            ]);
-
-            foreach ($result as $row) {
-                $alist[] = array($row->code, flattenText($row->answerl10ns[$language]->answer), $fieldmapKey);
+            $rankingColumn = "Q{$qqid}";
+            $rankSubquestions = array();
+            foreach ($survey->baseQuestions as $baseQuestion) {
+                if ((int) $baseQuestion->qid === (int) $qqid) {
+                    $rankSubquestions = $baseQuestion->subquestions;
+                    break;
+                }
             }
-            // "No answer": $al[2] = $fieldmapKey so the correct column is used for counting
-            $alist[] = array("", gT("No answer"), $fieldmapKey);
+            $qtitle    = flattenText($fielddata['title']) . " [" . sprintf(gT('Rank %s'), $rankPosition) . "]";
+            $qquestion = flattenText($fielddata['question']) . " [" . gT("Ranking") . "]";
+            foreach ($rankSubquestions as $rankSubquestion) {
+                $alist[] = array(
+                    $rankSubquestion->title,
+                    flattenText($rankSubquestion->questionl10ns[$language]->question ?? ''),
+                    $rankingColumn,
+                    $rankPosition
+                );
+            }
         } else {
             if ($firstletter == "|") {
                 // File Upload
@@ -1566,14 +1563,17 @@ class userstatistics_helper
                     foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                         if (substr((string) $rt, 0, 1) == "R") {
+                            $rank = (int) ($al[3] ?? 0);
+                            $raw = $oResponse->$sResponseColumn;
                             if ($al[0] === "") {
                                 // Ranking No answer: column is NULL or empty
-                                if ($oResponse->$sResponseColumn === null || $oResponse->$sResponseColumn === '') {
+                                if ($raw === null || $raw === '') {
                                     $row += 1;
                                 }
                             } else {
-                                $sSubquestionCode = $al[0];
-                                if ($oResponse->$sResponseColumn == $sSubquestionCode) {
+                                $rankingArray = json_decode((string) $raw, true);
+                                if (is_array($rankingArray) && isset($rankingArray[$rank - 1])
+                                    && (string) $rankingArray[$rank - 1] === (string) $al[0]) {
                                     $row += 1;
                                 }
                             }
