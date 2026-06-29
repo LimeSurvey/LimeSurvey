@@ -685,7 +685,7 @@ class userstatistics_helper
         elseif ($firstletter == "R") {
             $fieldmapKey = substr($rt, 1);
             if (!isset($fieldmap[$fieldmapKey])) {
-                return [];
+                return array("alist" => $alist, "qtitle" => $qtitle, "qquestion" => $qquestion, "qtype" => $qtype, "statisticsoutput" => $statisticsoutput, "parentqid" => $qqid);
             }
             $fielddata    = $fieldmap[$fieldmapKey];
             $qqid         = $fielddata['qid'];
