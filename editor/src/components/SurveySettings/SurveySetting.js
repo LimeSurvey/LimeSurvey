@@ -60,7 +60,7 @@ export const SurveySetting = (props) => {
           )}
         </p>
         {props.subText && (
-          <Form.Label className='mb-0 text-secondary'>
+          <Form.Label className="mb-0 text-secondary">
             {props.subText}
           </Form.Label>
         )}
@@ -77,7 +77,7 @@ export const SurveySetting = (props) => {
       <div className="w-100 mb-1">
         <p className="h6 mb-0">{props.mainText}</p>
         {props.subText && (
-          <Form.Label className='mb-0 text-secondary'>
+          <Form.Label className="mb-0 text-secondary">
             {props.subText}
           </Form.Label>
         )}

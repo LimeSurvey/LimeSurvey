@@ -28,11 +28,7 @@ export const getThemeOptions = (survey) => {
     if (attribute.type === TYPES.BUTTONS) {
       setting = handleButtonType(attribute, keyPath)
     } else if (attribute.type === TYPES.DROPDOWN) {
-      setting = handleDropdownType(
-        attribute,
-        keyPath,
-        attribute.hasFileUpload
-      )
+      setting = handleDropdownType(attribute, keyPath, attribute.hasFileUpload)
     } else if (attribute.type === TYPES.COLORPICKER) {
       setting = handleColorPickerType(attribute, keyPath)
     } else if (attribute.type === TYPES.ICON) {
