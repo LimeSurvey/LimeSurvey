@@ -31,7 +31,6 @@ export const getThemeOptions = (survey) => {
       setting = handleDropdownType(
         attribute,
         keyPath,
-        null,
         attribute.hasFileUpload
       )
     } else if (attribute.type === TYPES.COLORPICKER) {
