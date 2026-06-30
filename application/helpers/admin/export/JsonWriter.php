@@ -22,6 +22,7 @@ class JsonWriter extends Writer
         parent::init($survey, $sLanguageCode, $oOptions);
         $sStartOutput = '{' . json_encode("responses") . ': [';
         if ($oOptions->output == 'display') {
+            header("Content-Disposition: attachment; filename=results-survey" . $survey->id . ".json");
             header("Content-type: application/json");
             echo $sStartOutput;
         } elseif ($oOptions->output == 'file') {
