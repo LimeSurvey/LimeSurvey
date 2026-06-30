@@ -3824,15 +3824,15 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $tmpVVFile = fileCsvToUtf8($sFullFilePath, $aOptions['sCharset']);
     $aFileResponses = array();
     while (($aLineResponse = fgetcsv($tmpVVFile, 0, $aOptions['sSeparator'], $aOptions['sQuoted'])) !== false) {
-        $aFileResponses[] = $aLineResponse;
+        $aFileResponses[] = explode(",", $aLineResponse[0]);
     }
     if (empty($aFileResponses)) {
         $CSVImportResult['errors'][] = sprintf(gT("File is empty or you selected an invalid character set (%s)."), $aOptions['sCharset']);
         return $CSVImportResult;
     }
-    if ($aOptions['bDeleteFistLine']) {
+    /*if ($aOptions['bDeleteFistLine']) {
         array_shift($aFileResponses);
-    }
+    }*/
 
     $aRealFieldNames = Yii::app()->db->getSchema()->getTable(SurveyDynamic::model($iSurveyId)->tableName())->getColumnNames();
     $aCsvHeader = array_shift($aFileResponses);
@@ -3842,6 +3842,18 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     if (empty($aCsvHeader)) {
         $CSVImportResult['errors'][] = gT("File seems empty or has only one line");
         return $CSVImportResult;
+    }
+    $csv_ans_start_index = (Survey::model()->findByPk($iSurveyId)->hasTokensTable ? 6 : 5);
+    $metaFields = [
+        2 => "lastpage",
+        3 => "startlanguage",
+        4 => "seed"
+    ];
+    if (!$aOptions['bNotFinalized']) {
+        $metaFields[1] = "submitdate";
+    }
+    if ($csv_ans_start_index === 6) {
+        $metaFields[5] = "token";
     }
     // Assign fieldname with $aFileResponses[] key
     foreach ($aRealFieldNames as $sFieldName) {
@@ -3856,19 +3868,10 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             } elseif ($aOptions['bForceImport']) {
                 // as fallback just map questions in order of appearance
 
-                // find out where the answer data columns start in CSV
-                if (!isset($csv_ans_start_index)) {
-                    foreach ($aCsvHeader as $i => $name) {
-                        if (preg_match('/^\d+X\d+X\d+/', (string) $name)) {
-                            $csv_ans_start_index = $i;
-                            break;
-                        }
-                    }
-                }
                 // find out where the answer data columns start in destination table
                 if (!isset($table_ans_start_index)) {
                     foreach ($aRealFieldNames as $i => $name) {
-                        if (preg_match('/^\d+X\d+X\d+/', (string) $name)) {
+                        if (preg_match('/^Q\d+/', (string) $name)) {
                             $table_ans_start_index = $i;
                             break;
                         }
@@ -3911,7 +3914,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
 
     $iMaxId = 0; // If we set the id, keep the max
     // Some specific header (with options)
-    $iIdKey = array_search('id', $aCsvHeader); // the id is always needed and used a lot
+    $iIdKey = 0; // the id is always needed and used a lot
     if (is_int($iIdKey)) {
         unset($aKeyForFieldNames['id']);
         /* Unset it if option is ignore */
@@ -3988,9 +3991,12 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                 if ($aResponses[$iFieldKey] == '{question_not_shown}') {
                     $oSurvey->$sFieldName = new CDbExpression('NULL');
                 } else {
-                    $sResponse = str_replace(array("{quote}", "{tab}", "{cr}", "{newline}", "{lbrace}"), array("\"", "\t", "\r", "\n", "{"), (string) $aResponses[$iFieldKey]);
+                    $sResponse = trim(str_replace(array("{quote}", "{tab}", "{cr}", "{newline}", "{lbrace}"), array("\"", "\t", "\r", "\n", "{"), (string) $aResponses[$iFieldKey]), '"');
                     $oSurvey->$sFieldName = $sResponse;
                 }
+            }
+            foreach ($metaFields as $index => $meta) {
+                $oSurvey->$meta = trim(str_replace(array("{quote}", "{tab}", "{cr}", "{newline}", "{lbrace}"), array("\"", "\t", "\r", "\n", "{"), (string) $aResponses[$index]), '"');
             }
 
             //Check if datestamp is set => throws no default error on importing
