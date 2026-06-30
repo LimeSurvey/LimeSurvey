@@ -360,11 +360,23 @@ function switchStatusOfListActions(e) {
 
 // Function to check if at least one checkbox is checked
 function isAnyCheckboxChecked() {
-    // This assumes there is only one checkbox per row
-    // - Make isAnyCheckboxChecked() to only check the first one
-    // or
-    // - Stamp on the MassiveActions widget the checkbox class for the row selector and the header
-    // - Use that class to only query selector checkboxes
+    // Use LS.gridSelection when available so that selections across all pages
+    // (not just the currently rendered ones) are taken into account.
+    // Without this, unchecking the last visible checkbox on page N would
+    // incorrectly disable the massive-action button even though rows on other
+    // pages are still selected in the LS.gridSelection store.
+    if (typeof LS !== 'undefined' && LS.gridSelection) {
+        var anySelected = false;
+        $('.grid-view-ls').each(function () {
+            var gridId = $(this).attr('id');
+            if (gridId && LS.gridSelection.count(gridId) > 0) {
+                anySelected = true;
+                return false; // break $.each
+            }
+        });
+        return anySelected;
+    }
+    // Fallback for grids that do not use LS.gridSelection
     return $('.grid-view-ls table tbody input[type="checkbox"]:checked').length > 0;
 }
 
