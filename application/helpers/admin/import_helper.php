@@ -3824,15 +3824,20 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $tmpVVFile = fileCsvToUtf8($sFullFilePath, $aOptions['sCharset']);
     $aFileResponses = array();
     while (($aLineResponse = fgetcsv($tmpVVFile, 0, $aOptions['sSeparator'], $aOptions['sQuoted'])) !== false) {
-        $aFileResponses[] = explode(",", $aLineResponse[0]);
+        $response = $aLineResponse;
+        if (count($response) === 1) {
+            $response = explode(",", $aLineResponse[0]);
+        }
+        $aFileResponses[] = $response;
     }
     if (empty($aFileResponses)) {
         $CSVImportResult['errors'][] = sprintf(gT("File is empty or you selected an invalid character set (%s)."), $aOptions['sCharset']);
         return $CSVImportResult;
     }
-    /*if ($aOptions['bDeleteFistLine']) {
+    $hasFieldNames = (($aFileResponses[1][0] ?? "") === "id");
+    if ($hasFieldNames) {
         array_shift($aFileResponses);
-    }*/
+    }
 
     $aRealFieldNames = Yii::app()->db->getSchema()->getTable(SurveyDynamic::model($iSurveyId)->tableName())->getColumnNames();
     $aCsvHeader = array_shift($aFileResponses);
@@ -3854,6 +3859,11 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     }
     if ($csv_ans_start_index === 6) {
         $metaFields[5] = "token";
+    }
+    if ($hasFieldNames) {
+        for ($index = 1; $index < $csv_ans_start_index; $index++) {
+            $metaFields[$index] = $aCsvHeader[$index];
+        }
     }
     // Assign fieldname with $aFileResponses[] key
     foreach ($aRealFieldNames as $sFieldName) {
