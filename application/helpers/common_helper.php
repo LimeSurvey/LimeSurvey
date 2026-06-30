@@ -1298,7 +1298,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
  *
  * @return string the field's name
  */
-function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false)
+function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid)
 {
     $newFieldName = "";
     if (strpos($tableName, "timings") !== false) {
@@ -1474,7 +1474,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                             'order' => 'question_order'
                         ]);
                         if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
-                            $qid = $cd ? $index : $subQuestions[($iRankingSuffix - 1)]->qid;
+                            $qid = $subQuestions[($iRankingSuffix - 1)]->qid;
                             $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
                         } else if (count($subQuestions)) {
                             $minSortOrder = $subQuestions[0]->question_order;
@@ -1485,7 +1485,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                                 $diff = $minSortOrder;
                             }
                             foreach ($subQuestions as $question) {
-                                if (($rankingSuffix == $question->title) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question->question_order))) {
+                                if (($rankingSuffix == $question->title) || (($iRankingSuffix > 0) && ($iRankingSuffix + $diff == $question->question_order))) {
                                     return "Q{$rootQuestion->qid}_{$prefix}{$question->qid}";
                                 }
                             }
