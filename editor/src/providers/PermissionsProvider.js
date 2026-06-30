@@ -34,9 +34,10 @@ export const PermissionsProvider = ({ children }) => {
       .then(({ permissions: { global, survey } }) => {
         setPermissions({ global, survey })
       })
-      .catch(() => {
+      .catch((err) => {
         setError(
-          t('Failed to load permissions. Please try again or contact support.')
+          err?.message ||
+            t('Failed to load permissions. Please try again or contact support.')
         )
         setLoading(false)
       })

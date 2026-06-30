@@ -13,6 +13,6 @@ export class UserService {
   }
 
   getUserPermissions = async () => {
-    return await this.restClient.get('user-permissions')
+    return await this.restClient.get('user-permissions', {}, undefined, true)
   }
 }
