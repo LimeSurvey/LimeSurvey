@@ -106,6 +106,7 @@ class GeneralSettings
             );
         }
 
+        $this->modelSurvey->resetCache();
         $survey = $this->modelSurvey->findByPk(
             $surveyId
         );
