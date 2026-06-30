@@ -1960,10 +1960,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
                         $question->appendChild($response2);
                         break;
                     case "R": // Ranking STYLE
-                        // After Update_700, ranking options are subquestions (answers were deleted).
-                        // After Update_709, responses are stored as JSON in a single Q{qid} column.
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace, true);
-                        //width of a ranking style question for display purposes is the width of the number of subquestions available (eg 12 items, width 2)
                         $rankingSubQCount = Question::model()->countByAttributes(['parent_qid' => $qid]);
                         $response->appendChild(QueXMLCreateFree("integer", max(1, strlen((string)$rankingSubQCount)), ""));
                         $question->appendChild($response);
