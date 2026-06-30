@@ -37,7 +37,9 @@ export const PermissionsProvider = ({ children }) => {
       .catch((err) => {
         setError(
           err?.message ||
-            t('Failed to load permissions. Please try again or contact support.')
+            t(
+              'Failed to load permissions. Please try again or contact support.'
+            )
         )
         setLoading(false)
       })
