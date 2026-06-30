@@ -190,7 +190,7 @@ class Plugin extends LSActiveRecord
         );
         if (!$this->getLoadError()) {
             return sprintf(
-                '<a href="%s">%s</a>',
+                '<a class="ls-link" href="%s">%s</a>',
                 $url,
                 $this->name
             );
