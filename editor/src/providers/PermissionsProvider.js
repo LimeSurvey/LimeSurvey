@@ -120,6 +120,14 @@ export const PermissionsProvider = ({ children }) => {
     setHasResponsesUpdatePermission,
   ])
 
+  if (error) {
+    return (
+      <div className="d-flex vh-100 flex-column justify-content-center align-items-center text-danger">
+        <h1>{error}</h1>
+      </div>
+    )
+  }
+
   if (loading || !permissions) {
     return (
       <>
@@ -131,14 +139,6 @@ export const PermissionsProvider = ({ children }) => {
           <h1>{t('Checking permissions...')}</h1>
         </div>
       </>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="d-flex vh-100 flex-column justify-content-center align-items-center text-danger">
-        <h1>{error}</h1>
-      </div>
     )
   }
 
