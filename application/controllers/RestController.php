@@ -27,21 +27,22 @@ class RestController extends LSYii_Controller
      *
      * @param string $actionID action ID
      * @return void
-     * @throws \Exception
      */
     public function run($actionID)
     {
-        Yii::app()->loadConfig('rest');
-        $action = new CInlineAction($this, 'index');
-        if (Yii::app()->beforeControllerAction($this, $action)) {
-            $endpointFactory = DI::getContainer()
-                ->get(EndpointFactory::class);
-
-            ($endpointFactory)->create(
-                Yii::app()->request
-            )->run();
-
-            Yii::app()->afterControllerAction($this, $action);
+        try {
+            Yii::app()->loadConfig('rest');
+            $action = new CInlineAction($this, 'index');
+            if (Yii::app()->beforeControllerAction($this, $action)) {
+                $endpointFactory = DI::getContainer()
+                    ->get(EndpointFactory::class);
+                ($endpointFactory)->create(
+                    Yii::app()->request
+                )->run();
+                Yii::app()->afterControllerAction($this, $action);
+            }
+        } catch (\Throwable $e) {
+            (new RendererBasic())->returnException($e);
         }
     }
 }
