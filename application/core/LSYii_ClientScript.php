@@ -39,6 +39,14 @@ class LSYii_ClientScript extends CClientScript
     const POS_POSTSCRIPT = 5;
     const POS_PREBEGIN = 6;
     /**
+     * Packages that must never be published through the asset manager.
+     * These packages reference sibling packages using runtime-relative paths
+     * (e.g. CKEditor builds the KCFinder URL as `CKEDITOR.basePath + "../kcfinder/..."`),
+     * which only resolves correctly when served directly from assets/packages.
+     * @var string[]
+     */
+    protected $packagesNotPublishedByAssetManager = ['ckeditor'];
+    /**
      * cssFiles is protected on CClientScript. It can be useful to access it for debugging purpose
      * @return array
      */
@@ -209,6 +217,18 @@ class LSYii_ClientScript extends CClientScript
      */
     public function registerPackage($name)
     {
+        // Some packages must never be published through the asset manager because they
+        // reference sibling packages using runtime-relative paths. For example, CKEditor's
+        // config.js builds the KCFinder file browser URLs as `CKEDITOR.basePath + "../kcfinder/..."`.
+        // If CKEditor is copied into the hashed tmp/assets/<hash>/ folder, that relative path
+        // resolves to a non-existent location (e.g. /tmp/assets/kcfinder/...). Serving it
+        // directly from assets/packages keeps the `../kcfinder/` sibling path valid.
+        if (in_array($name, $this->packagesNotPublishedByAssetManager)) {
+            $this->convertDevBaseUrl($name);
+            parent::registerPackage($name);
+            return;
+        }
+
         if (!YII_DEBUG || Yii::app()->getConfig('use_asset_manager')) {
             parent::registerPackage($name);
         } else {
