@@ -11,8 +11,14 @@ import {
 } from 'helpers/options'
 import { L10ns } from 'helpers'
 import { Input, Select, ToggleButtons } from 'components/UIComponents'
+import { getQuestionTypeInfo } from 'components/QuestionTypes'
 
 import { ImageAttributes } from '../attributes'
+
+const imageChoiceThemes = [
+  getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
+  getQuestionTypeInfo().MULTIPLE_CHOICE_IMAGE_SELECT.theme,
+]
 
 export const getDisplayAttributes = () => ({
   IMAGE_SETTINGS: {
@@ -397,26 +403,31 @@ export const getDisplayAttributes = () => ({
     getOptions: ({ question, language }) => {
       const answers = question?.answers || []
       const subquestions = question?.subquestions || []
+      const isImageChoiceTheme = imageChoiceThemes.includes(
+        question?.questionThemeName
+      )
 
       if (answers.length) {
         return answers.map((answer = {}) => ({
-          label:
-            L10ns({
-              prop: 'answer',
-              language,
-              l10ns: answer.l10ns,
-            }) || answer.code,
+          label: isImageChoiceTheme
+            ? answer.code
+            : L10ns({
+                prop: 'answer',
+                language,
+                l10ns: answer.l10ns,
+              }) || answer.code,
           value: answer.code,
         }))
       }
 
       return subquestions.map((subquestion = {}) => ({
-        label:
-          L10ns({
-            prop: 'question',
-            language,
-            l10ns: subquestion.l10ns,
-          }) || subquestion.title,
+        label: isImageChoiceTheme
+          ? subquestion.title
+          : L10ns({
+              prop: 'question',
+              language,
+              l10ns: subquestion.l10ns,
+            }) || subquestion.title,
         value: subquestion.title,
       }))
     },
