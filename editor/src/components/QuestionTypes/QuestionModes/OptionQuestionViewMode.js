@@ -111,14 +111,9 @@ export const OptionQuestionViewMode = ({
       [getQuestionTypeInfo().MULTIPLE_NUMERICAL_INPUTS.theme]: ContentEditor,
     }[questionThemeName] || FormCheck
 
-  // "Other" is only supported on choice themes (radio/checkbox/buttons/dropdown),
-  // not on the text/numerical themes that render a ContentEditor or ImageChoice.
+  // "Other" is only supported on choice themes (radio/checkbox/buttons/dropdown/ImageChoice)
   const hasOther = isTrue(other)
-  const supportsOther =
-    hasOther &&
-    (isDropdownTheme ||
-      UiComponentToRender === FormCheck ||
-      UiComponentToRender === Button)
+  const supportsOther = hasOther && UiComponentToRender !== ContentEditor
 
   const children = useMemo(() => {
     const childrenArray = cloneDeep(_children)
