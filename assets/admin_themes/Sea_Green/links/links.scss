@@ -2,18 +2,21 @@ a {
     color       : $link-color;
     font-weight : $font-weight-500;
 
-    &.ls-link:hover {
-        color           : $link-color;
-        text-decoration : underline;
-    }
+    &.ls-link,
+    .can-contain-link & {
+        &:hover {
+            color           : $link-color;
+            text-decoration : underline;
+        }
 
-    &.ls-link:focus-visible {
-        padding : 1px 4px;
-        @include state-border(2px, $grape90, 0px);
-    }
+        &:focus-visible {
+            padding : 1px 4px;
+            @include state-border(2px, $grape90, 0px);
+        }
 
-    &.ls-link:active {
-        color  : $g-900;
-        border : 1px solid $grape75;
+        &:active {
+            color  : $g-900;
+            border : 1px solid $grape75;
+        }
     }
 }
