@@ -12,9 +12,9 @@ use LimeSurvey\Models\Services\SurveyAggregateService\GeneralSettings;
 class GeneralSettingsFactory
 {
     /**
-     * @param ?GeneralSettingsMockSet $init
+     * @param ?GeneralSettingsMockSet $mockSet
      */
-    public function make(GeneralSettingsMockSet $mockSet = null): GeneralSettings
+    public function make(?GeneralSettingsMockSet $mockSet = null): GeneralSettings
     {
         $mockSet = (new GeneralSettingsMockSetFactory())->make($mockSet);
 

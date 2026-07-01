@@ -47,11 +47,11 @@
         <div class="col-12 mt-2">
             <?php
                 $url = Yii::app()->createUrl('/admin/update/sa/backup');
-                echo CHtml::beginForm($url, 'post', array("id"=>"launchBackupForm"));
-                echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
-                echo CHtml::hiddenField('access_token' , $access_token);
-                echo '<a class="btn btn-cancel me-1" href="'.Yii::app()->createUrl("admin/update").'" role="button" aria-disabled="false">
-                        '.gT("Cancel").'
+                echo CHtml::beginForm($url, 'post', array("id" => "launchBackupForm"));
+                echo CHtml::hiddenField('destinationBuild', $destinationBuild);
+                echo CHtml::hiddenField('access_token', $access_token);
+                echo '<a class="btn btn-cancel me-1" href="' . Yii::app()->createUrl("admin/update") . '" role="button" aria-disabled="false">
+                        ' . gT("Cancel") . '
                     </a>';
                 echo CHtml::submitButton(sprintf(gT('Continue')), array("class" => "btn btn-primary"));
                 echo CHtml::endForm();

@@ -5,7 +5,7 @@
         <div class="jumbotron message-box <?= !$success ? 'message-box-error' : ''?>">
             <h2><?php eT("Email test result"); ?></h2>
             <p class="h4 <?= !$success ? 'text-danger' : 'text-success'?>"><?php echo $message;?></p>
-            <?php if(!$success) { ?>
+            <?php if (!$success) { ?>
                 <div> <?php echo $maildebug ?></div>
             <?php } ?>       
             <p>

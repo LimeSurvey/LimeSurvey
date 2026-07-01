@@ -2,6 +2,7 @@
 /application/config/config.php
 /application/config/config.*.php
 /application/config/security.php
+/application/config/allowed_hosts.php
 
 # Don't include LS4 security.php
 
@@ -21,6 +22,8 @@
 !.eslintrc
 !.env-cmdrc
 !.eslintignore
+!.npmrc
+!/.github
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*.*
@@ -44,8 +47,8 @@
 /upload/themes/survey/generalfiles/*.*
 !/upload/themes/survey/generalfiles/index.html
 !/upload/themes/survey/index.html
-/upload/themes/question/*.*
-/upload/themes/question/**/*.*
+/upload/themes/question/*
+/upload/themes/question/**/*
 !/upload/themes/question/readme.txt
 /upload/plugins/*
 !/upload/plugins/index.html
@@ -75,9 +78,6 @@
 /plugins/*
 !/plugins/index.html
 !/plugins/Demo/
-
-# ignore editor contents - reserved for future use
-/editor/*
 
 #ignore old styles
 /styles/
@@ -145,6 +145,45 @@ vendor/**/less/
 vendor/**/*.sh
 vendor/**/*.md
 vendor/**/gulpfile.js
+
+# Dev-only composer packages (require-dev)
+/vendor/php-webdriver/
+/vendor/squizlabs/
+/vendor/phpmd/
+/vendor/phpunit/
+/vendor/vimeo/
+/vendor/misantron/
+/vendor/tebazil/
+/vendor/mockery/
+/vendor/hamcrest/
+/vendor/phpstan/
+/vendor/sebastian/
+/vendor/phar-io/
+/vendor/nikic/
+/vendor/theseer/
+/vendor/doctrine/instantiator
+/vendor/myclabs/
+/vendor/pdepend/
+/vendor/composer/xdebug-handler
+/vendor/fidry/
+/vendor/felixfbecker/
+/vendor/amphp/
+/vendor/dnoegel/
+/vendor/fzaninotto/
+/vendor/symfony/yaml
+/vendor/symfony/var-exporter/
+/vendor/symfony/string/
+/vendor/symfony/service-contracts
+/vendor/symfony/config/
+/vendor/symfony/console/
+/vendor/symfony/dependency-injection/
+/vendor/symfony/filesystem/
+/vendor/symfony/polyfill-intl-grapheme/
+/vendor/symfony/polyfill-intl-normalizer/
+/vendor/symfony/process/
+/vendor/composer/pcre/
+/vendor/psr/log/
+/vendor/spatie/
 yarn-error.log
 
 # Test stuff
@@ -177,34 +216,18 @@ enabletests
 ## Ignore files and dependencies for testing
 vendor/bin/phpcbf
 vendor/bin/phpcs
-vendor/squizlabs/
-vendor/amphp/
 vendor/bin/
 vendor/composer/autoload_files.php
 vendor/composer/installed\.json
 vendor/composer/package-versions-deprecated/
 vendor/composer/semver/
-vendor/composer/xdebug-handler/
 #vendor/doctrine/
-vendor/dnoegel/
-vendor/felixfbecker/
-vendor/myclabs/
 vendor/netresearch/
-vendor/nikic/
 vendor/ocramius/
 vendor/openlss/
-vendor/pdepend/
-vendor/phar-io/
-vendor/php-webdriver/
 vendor/phpdocumentor/
-vendor/phpmd/
 vendor/phpspec/
-vendor/phpunit/
-vendor/sebastian/
-vendor/theseer/
-vendor/vimeo/
 vendor/webmozart/
-vendor/misantron/
 upload/templates/
 assets/packages/ckeditor/samples
 

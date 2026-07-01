@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Add dummy token
  */
+
 ?>
 
 <div class='side-body'>
@@ -9,7 +11,7 @@
 
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id'=>'edittoken', 'name'=>'edittoken', 'class'=>'form30 ')); ?>
+            <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id' => 'edittoken', 'name' => 'edittoken', 'class' => 'form30 ')); ?>
             <div class="row">
                 <!-- ID  -->
                 <div class="mb-3 col-12">
@@ -80,15 +82,13 @@
                 </div>
             </div>
             <?php
-                if (isset($validfrom) && $validfrom != 'N')
-                {
-                    $validfrom = convertToGlobalSettingFormat($validfrom, true);
-                }
+            if (isset($validfrom) && $validfrom != 'N') {
+                $validfrom = convertToGlobalSettingFormat($validfrom, true);
+            }
 
-                if (isset($validuntil) && $validuntil != 'N')
-                {
-                    $validuntil = convertToGlobalSettingFormat($validuntil, true);
-                }
+            if (isset($validuntil) && $validuntil != 'N') {
+                $validuntil = convertToGlobalSettingFormat($validuntil, true);
+            }
             ?>
             <div class="row">
                 <!--  Validity -->
@@ -102,10 +102,11 @@
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' => true,
                                     'showClear' => true,
+                                    'theme' => 'light',
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 ]
                             ]);
-                        ?>
+                                                                ?>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
@@ -128,7 +129,7 @@
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 )
                             ));
-                        ?>
+                                                                    ?>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
@@ -140,13 +141,19 @@
                 </div>
             </div>
                 <!-- Attribute fields  -->
-                <?php foreach ($aAttributeFields as $attr_name => $attr_description): ?>
-                    <div class="mb-3 col-6">
-                        <label  class=" form-label" for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
-                        <div class="">
-                            <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
-                        </div>
-                    </div>
+                <?php foreach ($aAttributeFields as $attrName => $attrDescription) : ?>
+                    <?php
+                    $this->renderPartial(
+                        '/admin/token/attribute_subviews/tokenformAttributesWrapper',
+                        [
+                                    'attrDescription' => $attrDescription,
+                                    'attrName' => $attrName,
+                                    'inputValue' => null,
+                                    'jsDate' => $dateformatdetails['jsdate'],
+                                    'addClass' => 'col-6',
+                            ]
+                    );
+                    ?>
                 <?php endforeach; ?>
 
                 <!--Hidden Buttons (default action) -->

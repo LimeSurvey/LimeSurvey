@@ -1,7 +1,5 @@
 <?php
 
-use LimeSurvey\Menu\MenuButton;
-
 class TopbarWidget extends CWidget
 {
     /**

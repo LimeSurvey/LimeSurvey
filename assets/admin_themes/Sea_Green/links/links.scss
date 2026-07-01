@@ -1,0 +1,22 @@
+a {
+    color       : $link-color;
+    font-weight : $font-weight-500;
+
+    &.ls-link,
+    .can-contain-link & {
+        &:hover {
+            color           : $link-color;
+            text-decoration : underline;
+        }
+
+        &:focus-visible {
+            padding : 1px 4px;
+            @include state-border(2px, $grape90, 0px);
+        }
+
+        &:active {
+            color  : $g-900;
+            border : 1px solid $grape75;
+        }
+    }
+}
