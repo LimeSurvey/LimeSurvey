@@ -496,6 +496,7 @@ class remotecontrol_handle
                 // Remove invalid fields
                 $aDestinationFields = array_flip(Survey::model()->tableSchema->columnNames);
                 $aSurveyData = array_intersect_key($aSurveyData, $aDestinationFields);
+                Survey::model()->resetCache();
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 $aBasicAttributes = $oSurvey->getAttributes();
                 $aResult = array();
