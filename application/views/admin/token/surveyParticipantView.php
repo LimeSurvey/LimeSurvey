@@ -141,9 +141,13 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
         if ((!$oSurvey->hasTokens()) && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'create'))) :
             echo eT("No survey participants found.");
             ?>
-                <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Add participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/" . $surveyid); ?>', '_top')" />
+                <a href="<?php echo $this->createUrl('admin/tokens/sa/addnew', ['surveyid' => $surveyid]); ?>" class="btn btn-large btn-block btn-outline-secondary" target="_top">
+                    <?php eT("Add participants"); ?>
+                </a>
                 <?php if (!$oSurvey->hasTokensTable) : ?>
-                    <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Create empty table"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/startfromscratch/surveyId/" . $surveyid); ?>', '_top')" />
+                    <a href="<?php echo $this->createUrl('admin/tokens/sa/startfromscratch', ['surveyid' => $surveyid]); ?>" class="btn btn-large btn-block btn-outline-secondary" target="_top">
+                        <?php eT("Create empty table"); ?>
+                    </a>
                 <?php endif; ?>
                 <?php
                 if (isset($oldlist)) {
