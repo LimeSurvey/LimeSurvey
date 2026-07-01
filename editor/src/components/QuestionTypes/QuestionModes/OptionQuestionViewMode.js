@@ -33,6 +33,45 @@ const dropdownThemeComponents = [
 
 const commentedCheckboxOptions = getCommentedCheckboxOptions()
 
+const OTHER_POSITIONS = {
+  BEGINNING: 'beginning',
+  END: 'end',
+  SPECIFIC: 'specific',
+}
+
+const insertOtherByPosition = (
+  items = [],
+  otherItem,
+  { position = OTHER_POSITIONS.END, specificCode, getCode }
+) => {
+  if (!otherItem) {
+    return
+  }
+
+  if (position === OTHER_POSITIONS.BEGINNING) {
+    items.unshift(otherItem)
+    return
+  }
+
+  if (
+    position === OTHER_POSITIONS.SPECIFIC &&
+    specificCode !== undefined &&
+    specificCode !== null &&
+    specificCode !== ''
+  ) {
+    const index = items.findIndex((item) => {
+      return String(getCode(item)) === String(specificCode)
+    })
+
+    if (index !== -1) {
+      items.splice(index + 1, 0, otherItem)
+      return
+    }
+  }
+
+  items.push(otherItem)
+}
+
 // todo: add input fields for mutliple numerical/texts
 export const OptionQuestionViewMode = ({
   question: { questionThemeName, qid, gid, attributes, mandatory, other } = {},
@@ -44,7 +83,14 @@ export const OptionQuestionViewMode = ({
 }) => {
   const valueInfo = values?.[0] || {}
   const [selectedIndex, setSelectedIndex] = useState(-1)
-  const { commented_checkbox, slider_layout, slider_separator } = attributes
+  const {
+    commented_checkbox,
+    slider_layout,
+    slider_separator,
+    other_replace_text,
+    other_position,
+    other_position_code,
+  } = attributes || {}
   const isDropdownTheme = useMemo(
     () => dropdownThemeComponents.includes(questionThemeName),
     [questionThemeName]
@@ -115,6 +161,26 @@ export const OptionQuestionViewMode = ({
   const hasOther = isTrue(other)
   const supportsOther = hasOther && UiComponentToRender !== ContentEditor
 
+  const otherLabel = useMemo(() => {
+    const replaceText = getAttributeValue(other_replace_text, language)
+    return replaceText || t('Other')
+  }, [other_replace_text, language])
+
+  const otherPosition = useMemo(() => {
+    const position = (getAttributeValue(other_position) || '').toLowerCase()
+
+    if (Object.values(OTHER_POSITIONS).includes(position)) {
+      return position
+    }
+
+    return OTHER_POSITIONS.END
+  }, [other_position])
+
+  const otherPositionCode = useMemo(
+    () => getAttributeValue(other_position_code),
+    [other_position_code]
+  )
+
   const children = useMemo(() => {
     const childrenArray = cloneDeep(_children)
 
@@ -133,7 +199,18 @@ export const OptionQuestionViewMode = ({
       })
 
       if (supportsOther) {
-        selectOptions.push({ label: t('Other'), value: OTHER_CODE })
+        insertOtherByPosition(
+          selectOptions,
+          {
+            label: otherLabel,
+            value: OTHER_CODE,
+          },
+          {
+            position: otherPosition,
+            specificCode: otherPositionCode,
+            getCode: (item) => item.value,
+          }
+        )
       }
 
       // incase of a dropdown question, we only need one select
@@ -149,17 +226,38 @@ export const OptionQuestionViewMode = ({
       }
 
       if (supportsOther) {
-        childrenArray.push({
-          l10ns: { [language]: { [childrenInfo.titleKey]: t('Other') } },
-          [childrenInfo.idKey]: OTHER_CODE,
-          [childrenInfo.codeKey]: OTHER_CODE,
-          isOther: true,
-        })
+        insertOtherByPosition(
+          childrenArray,
+          {
+            l10ns: { [language]: { [childrenInfo.titleKey]: otherLabel } },
+            [childrenInfo.idKey]: OTHER_CODE,
+            [childrenInfo.codeKey]: OTHER_CODE,
+            isOther: true,
+          },
+          {
+            position: otherPosition,
+            specificCode: otherPositionCode,
+            getCode: (item) => item?.[childrenInfo.codeKey],
+          }
+        )
       }
 
       return childrenArray
     }
-  }, [_children, supportsOther])
+  }, [
+    _children,
+    childrenInfo.codeKey,
+    childrenInfo.idKey,
+    childrenInfo.titleKey,
+    isDropdownTheme,
+    isSingleChoiceTheme,
+    language,
+    mandatory,
+    otherLabel,
+    otherPosition,
+    otherPositionCode,
+    supportsOther,
+  ])
 
   const getChildTitle = (l10ns) => {
     const text = L10ns({

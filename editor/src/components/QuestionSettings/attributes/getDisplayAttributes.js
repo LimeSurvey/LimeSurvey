@@ -384,19 +384,42 @@ export const getDisplayAttributes = () => ({
           value: 'end',
         },
         {
-          label: t('After specific answer option'),
+          label: t('After specific option'),
           value: 'specific',
         },
       ],
     },
   },
-  SUBQUESTION_TITLE: {
-    component: Input,
+  OTHER_POSITION_CODE: {
+    component: Select,
     attributePath: 'attributes.other_position_code',
-    languageBased: true,
+    getOptions: ({ question }) => {
+      const answers = question?.answers || []
+      const subquestions = question?.subquestions || []
+
+      if (answers.length) {
+        return answers.map((answer = {}) => ({
+          label: answer.code,
+          value: answer.code,
+        }))
+      }
+
+      return subquestions.map((subquestion = {}) => ({
+        label: subquestion.title,
+        value: subquestion.title,
+      }))
+    },
+    dependsOn: {
+      attributePath: 'attributes.other_position',
+      value: 'specific',
+    },
+    onDependsToggle: {
+      onFalse: '',
+    },
     props: {
-      dataTestId: 'sub-question-title',
-      labelText: t("Subquestion title for 'After specific subquestion'"),
+      dataTestId: 'other-position-code',
+      labelText: t("Option for 'After specific option'"),
+      options: [],
     },
   },
   RANDOM_ORDER: {
@@ -410,14 +433,6 @@ export const getDisplayAttributes = () => ({
         { label: t('Random'), value: '1' },
       ],
       defaultValue: { label: t('Normal'), value: '0' },
-    },
-  },
-  ANSWER_CODE: {
-    component: Input,
-    attributePath: 'attributes.other_position_code',
-    props: {
-      dataTestId: 'answer-code',
-      labelText: t("Answer code for 'After specific answer option'"),
     },
   },
   SUBQUESTION_WIDTH: {
