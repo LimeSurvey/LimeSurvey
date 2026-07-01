@@ -12,7 +12,10 @@
  * @return {boolean}
  */
 export default class PluginService {
-    _init: any[];
+    _init: {
+        plugin: any;
+        options: any;
+    }[];
     /**
        * Calls enabled plugins for `chart` on the specified hook and with the given args.
        * This method immediately returns as soon as a plugin explicitly returns false. The

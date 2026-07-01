@@ -1298,7 +1298,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
  *
  * @return string the field's name
  */
-function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false)
+function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid)
 {
     $newFieldName = "";
     if (strpos($tableName, "timings") !== false) {
@@ -1474,7 +1474,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                             'order' => 'question_order'
                         ]);
                         if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
-                            $qid = $cd ? $index : $subQuestions[($iRankingSuffix - 1)]->qid;
+                            $qid = $subQuestions[($iRankingSuffix - 1)]->qid;
                             $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
                         } else if (count($subQuestions)) {
                             $minSortOrder = $subQuestions[0]->question_order;
@@ -1485,7 +1485,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                                 $diff = $minSortOrder;
                             }
                             foreach ($subQuestions as $question) {
-                                if (($rankingSuffix == $question->title) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question->question_order))) {
+                                if (($rankingSuffix == $question->title) || (($iRankingSuffix > 0) && ($iRankingSuffix + $diff == $question->question_order))) {
                                     return "Q{$rootQuestion->qid}_{$prefix}{$question->qid}";
                                 }
                             }
@@ -1959,6 +1959,12 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         } elseif ($arow['type'] == Question::QT_R_RANKING) {
             // Ranking questions now use subquestions instead of answer options
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
+            // If max_subquestions is set and lower than the number of ranking items,
+            // cap the number of response columns (rank slots) to that value.
+            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qs[$arow['qid']] ?? $arow['qid']);
+            if (isset($qidattributes['max_subquestions']) && intval($qidattributes['max_subquestions']) > 0 && intval($qidattributes['max_subquestions']) < count($abrows)) {
+                $abrows = array_slice($abrows, 0, intval($qidattributes['max_subquestions']));
+            }
             $i = 0;
             foreach ($abrows as $abrow) {
                 $i++;
@@ -3586,6 +3592,59 @@ function convertToGlobalSettingFormat($sDate, $withTime = false)
         return $sDate; // We return the string date
     }
 }
+
+/**
+ * Parses a date string that is in the user's global setting format and returns
+ * a normalised 'Y-m-d H:i:s' string that is safe for PHP's DateTime constructor
+ * (e.g. as direct input to getUTCOfDate()).
+ *
+ * This is the counterpart of convertToGlobalSettingFormat(): where that function
+ * converts an arbitrary date INTO the user's display format, this function parses
+ * a value that already IS in the user's display format and converts it back to an
+ * unambiguous ISO-style string.
+ *
+ * @param string|null $sDate   Date string in the user's phpdate (+ time) format
+ * @param bool        $withTime Whether a H:i time component is present
+ * @return string|null Normalised 'Y-m-d H:i:s' string, or null when parsing fails
+ */
+function convertFromGlobalSettingFormat(?string $sDate, bool $withTime = false): ?string
+{
+    if (empty($sDate)) {
+        return null;
+    }
+    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat'] ?? 1);
+    $fromFormat = $withTime
+        ? $sDateformatdata['phpdate'] . ' H:i'
+        : $sDateformatdata['phpdate'];
+
+    // The '!' prefix resets all fields not present in the format to the Unix epoch,
+    // so a date-only value yields 00:00:00 deterministically (instead of "now").
+    $oDate = DateTime::createFromFormat('!' . $fromFormat, $sDate);
+
+    if ($oDate !== false) {
+        // Whether a value is a valid date depends on $fromFormat (e.g. "13.02.2023"
+        // is valid as d.m.Y but not as m.d.Y). createFromFormat() parses against the
+        // user's configured $fromFormat but silently normalises dates that are invalid
+        // *for that format* (e.g. "30.02.2023" as d.m.Y => "2023-03-02") instead of
+        // returning false. Such cases set parser warnings; reject them rather than
+        // persisting a silently shifted date. (Do NOT fall back to new DateTime() here,
+        // as the constructor would re-normalise the invalid date in the same way.)
+        $errors = DateTime::getLastErrors();
+        if ($errors !== false && (($errors['warning_count'] ?? 0) > 0 || ($errors['error_count'] ?? 0) > 0)) {
+            return null;
+        }
+    } else {
+        // The value did not match the user's locale format at all
+        // (e.g. it is already an ISO 'Y-m-d H:i:s' string) - let PHP try to parse it.
+        try {
+            $oDate = new DateTime($sDate);
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+    return $oDate->format('Y-m-d H:i:s');
+}
+
 
 /**
 * This function removes the UTF-8 Byte Order Mark from a string

@@ -135,12 +135,13 @@ $questionEditor = $questionEditor ?? false;
 ?>
 
 <?php /** this one works with assets/packages/adminbasics/src/parts/confirmationModal.js */ ?>
-<div id="confirmation-modal" class="modal fade" role="dialog" aria-labelledby="confirmationModalTitle" aria-modal="true">
+<div id="confirmation-modal" class="modal fade" role="dialog" aria-modal="true"
+     aria-labelledby="confirmation-modal-title">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalTitle"><?php eT("Confirm"); ?></h5>
+                <h2 class="h5 modal-title" id="confirmation-modal-title"><?php eT("Confirm"); ?></h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo CHtml::encode(gT('Close')); ?>"></button>
             </div>
             <div class="modal-body">
@@ -232,7 +233,7 @@ App()->getController()->renderPartial('/surveyAdministration/partial/_modalDelet
         <div class="modal-content"> <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger
         ?>
             <div class="modal-header card-header">
-                <h5 class="modal-title"><?php eT("Notifications"); ?></h5>
+                <h2 class="modal-title h5"><?php eT("Notifications"); ?></h2>
                 <span class='notification-date'></span>
             </div>
             <div class="modal-body">

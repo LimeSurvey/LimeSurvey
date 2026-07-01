@@ -336,19 +336,20 @@ class Surveymenu extends LSActiveRecord
     {
         return array(
             'id' => 'ID',
-            'parent_id'     => gT('Parent'),
-            'survey_id'     => gT('Survey'),
-            'user_id'       => gT('User'),
-            'ordering'      => gT('Order'),
-            'level'         => gT('Level'),
-            'name'          => gT('Name'),
-            'title'         => gT('Title'),
-            'position'      => gT('Position'),
-            'description'   => gT('Description'),
-            'changed_at'    => gT('Changed on'),
-            'changed_by'    => gT('Changed by'),
-            'created_at'    => gT('Created on'),
-            'created_by'    => gT('Created by'),
+            'parent_id'      => gT('Parent'),
+            'survey_id'      => gT('Survey'),
+            'user_id'        => gT('User'),
+            'ordering'       => gT('Order'),
+            'level'          => gT('Level'),
+            'name'           => gT('Name'),
+            'title'          => gT('Title'),
+            'position'       => gT('Position'),
+            'description'    => gT('Description'),
+            'showincollapse' => gT('Show in collapse'),
+            'changed_at'     => gT('Changed on'),
+            'changed_by'     => gT('Changed by'),
+            'created_at'     => gT('Created on'),
+            'created_by'     => gT('Created by'),
         );
     }
 
@@ -362,12 +363,18 @@ class Surveymenu extends LSActiveRecord
         $dropdownItems[] = [
             'title'            => gT('Edit this survey menu'),
             'linkClass'        => 'action_surveymenu_editModal',
+            'linkAttributes'   => [
+                'data-menuid' => $this->id,
+            ],
             'iconClass'        => 'ri-pencil-fill',
             'enabledCondition' => $permission_settings_update
         ];
         $dropdownItems[] = [
             'title'            => gT('Delete this survey menu'),
             'linkClass'        => 'action_surveymenu_deleteModal',
+            'linkAttributes'   => [
+                'data-menuid' => $this->id,
+            ],
             'iconClass'        => 'ri-delete-bin-fill text-danger',
             'enabledCondition' => $permission_settings_update
         ];

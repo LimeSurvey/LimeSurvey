@@ -85,7 +85,8 @@ $gridColumns = [
         'header' => gT('Description'),
         'name' => 'description',
         'type' => 'html',
-        'value' => '$data->getPossibleDescription()'
+        'value' => '$data->getPossibleDescription()',
+        'htmlOptions' => ['class' => 'can-contain-link'],
     ],
     [
         'header' => gT('Status'),
@@ -118,7 +119,8 @@ $this->widget(
                     Yii::app()->params['pageSizeOptions'],
                     [
                         'class' => 'changePageSize form-select',
-                        'style' => 'display: inline; width: auto'
+                        'style' => 'display: inline; width: auto',
+                        'aria-label' => gT('Rows per page')
                     ]
                 )
             ),

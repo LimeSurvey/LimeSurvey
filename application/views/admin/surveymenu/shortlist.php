@@ -7,7 +7,7 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
 ?>
 
 <div class="ls-flex-column">
-    <div class="col-12 h1"><?php eT('Survey menu') ?></div>
+    <h2 class="col-12 h3 pagetitle" ><?php eT('Survey menu') ?></h2>
     <div class="ls-flex-row">
         <div class="col-12 ls-flex-item">
             <?php
@@ -17,6 +17,7 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
                     'dataProvider'  => $model->search(),
                     'id'            => 'surveymenu-shortlist-grid',
                     'columns'       => $model->getShortListColumns(),
+                    'caption'       => gT('Survey menu'),
                     'emptyText'     => gT('No customizable entries found.'),
                     'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                         gT('%s rows per page'),

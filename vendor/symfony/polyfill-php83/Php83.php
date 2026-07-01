@@ -43,10 +43,6 @@ final class Php83
     /** @return string|false */
     public static function mb_str_pad(string $string, int $length, string $pad_string = ' ', int $pad_type = \STR_PAD_RIGHT, ?string $encoding = null)
     {
-        if (!\in_array($pad_type, [\STR_PAD_RIGHT, \STR_PAD_LEFT, \STR_PAD_BOTH], true)) {
-            throw new \ValueError('mb_str_pad(): Argument #4 ($pad_type) must be STR_PAD_LEFT, STR_PAD_RIGHT, or STR_PAD_BOTH');
-        }
-
         if (null === $encoding) {
             $encoding = mb_internal_encoding();
         }
@@ -62,6 +58,10 @@ final class Php83
 
         if (null === $errorToTrigger && mb_strlen($pad_string, $encoding) <= 0) {
             $errorToTrigger = 'mb_str_pad(): Argument #3 ($pad_string) must be a non-empty string';
+        }
+
+        if (null === $errorToTrigger && !\in_array($pad_type, [\STR_PAD_RIGHT, \STR_PAD_LEFT, \STR_PAD_BOTH], true)) {
+            $errorToTrigger = 'mb_str_pad(): Argument #4 ($pad_type) must be STR_PAD_LEFT, STR_PAD_RIGHT, or STR_PAD_BOTH';
         }
 
         if (null !== $errorToTrigger) {
