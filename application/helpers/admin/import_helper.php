@@ -3848,21 +3848,25 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         $CSVImportResult['errors'][] = gT("File seems empty or has only one line");
         return $CSVImportResult;
     }
-    $csv_ans_start_index = (Survey::model()->findByPk($iSurveyId)->hasTokensTable ? 6 : 5);
-    $metaFields = [
-        2 => "lastpage",
-        3 => "startlanguage",
-        4 => "seed"
-    ];
-    if (!$aOptions['bNotFinalized']) {
-        $metaFields[1] = "submitdate";
-    }
-    if ($csv_ans_start_index === 6) {
-        $metaFields[5] = "token";
-    }
-    if ($hasFieldNames) {
-        for ($index = 1; $index < $csv_ans_start_index; $index++) {
-            $metaFields[$index] = $aCsvHeader[$index];
+    $csv_ans_start_index = 5;
+    $metaFields = [];
+    if (!$hasFieldNames) {
+        $metaFields = [
+            2 => "lastpage",
+            3 => "startlanguage",
+            4 => "seed"
+        ];
+        if (!$aOptions['bNotFinalized']) {
+            $metaFields[1] = "submitdate";
+        }
+        if (Survey::model()->findByPk($iSurveyId)->hasTokensTable) {
+            $metaFields[$csv_ans_start_index++] = "token";
+        }
+        $additionalFields = ["startdate", "datestamp"];
+        foreach ($additionalFields as $additionalField) {
+            if (in_array($additionalField, $aRealFieldNames)) {
+                $metaFields[$csv_ans_start_index++] = $additionalField;
+            }
         }
     }
     // Assign fieldname with $aFileResponses[] key
