@@ -118,14 +118,18 @@ export const RankingAdvancedQuestion = ({
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div
         data-testid="ranking-advanced-question"
-        className={'ranking-advanced-question d-flex flex-row'}
+        className={'ranking-advanced-question gap-3 d-flex flex-wrap w-100'}
       >
         <Droppable
           key={SUBQUESTIONS_DROPPALE_ID}
           droppableId={SUBQUESTIONS_DROPPALE_ID}
         >
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+            <div
+              className="ranking-advanced-column"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
               <RankingAdvancedQuestionSubquestions
                 isFocused={isFocused}
                 handleSubquestionUpdate={handleSubquestionUpdate}
@@ -143,7 +147,11 @@ export const RankingAdvancedQuestion = ({
         </Droppable>
         <Droppable droppableId={PLACEHOLDERS_DROPPALE_ID}>
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+            <div
+              className="ranking-advanced-placeholder-column"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
               {!isFocused && (
                 <RankingAdvancedQuestionSubquestionsPlaceholder
                   isFocused={isFocused}
