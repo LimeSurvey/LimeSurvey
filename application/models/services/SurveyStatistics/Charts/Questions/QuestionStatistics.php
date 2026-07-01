@@ -147,7 +147,7 @@ class QuestionStatistics implements StatisticsChartInterface
             ->leftJoin('{{answers}} a', 'q.qid = a.qid')
             ->leftJoin('{{answer_l10ns}} al', "a.aid = al.aid AND al.language = " . Yii::app()->db->quoteValue($this->language))
             ->leftJoin('{{question_attributes}} qa', 'q.qid = qa.qid')
-            ->where("q.sid = {$this->surveyId} AND (q.parent_qid = 0 OR EXISTS (SELECT 1 FROM {{questions}} qq WHERE qq.sid = {$this->surveyId} AND qq.qid = q.parent_qid))")
+            ->where("q.sid = {$this->surveyId}")
             ->order('q.parent_qid ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
 
         return $command;
