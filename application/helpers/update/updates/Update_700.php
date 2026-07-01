@@ -603,7 +603,7 @@ class Update_700 extends DatabaseUpdateBase
             // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
             $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
-            if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != 'R' && $arow['type'] != '|') {
+            if ($questionTypeMetaData[$arow['type']]->settings->subquestions == 0 && $arow['type'] != 'R' && $arow['type'] != '|') {
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = [
                         'fieldname' => $fieldname,
@@ -701,7 +701,7 @@ class Update_700 extends DatabaseUpdateBase
                         }
                         break;
                 }
-            } elseif ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 2 && $questionTypeMetaData[$arow['type']]['settings']->answerscales == 0) {
+            } elseif ($questionTypeMetaData[$arow['type']]->settings->subquestions == 2 && $questionTypeMetaData[$arow['type']]->settings->answerscales == 0) {
                 // Multi-flexi question types
                 $abrows = $this->getSubQuestionsData((int)$surveyid, (int)$arow['qid'], $sLanguage);
                 $answerset = [];
