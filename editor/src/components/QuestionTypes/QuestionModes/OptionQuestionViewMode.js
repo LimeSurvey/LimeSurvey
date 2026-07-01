@@ -331,9 +331,15 @@ export const OptionQuestionViewMode = ({
   ) {
     return null
   }
+
   return (
     <div className="children-parent">
       {children?.map((child, index) => {
+        const ChildUiComponentToRender =
+          child.isOther && UiComponentToRender === ImageChoice
+            ? FormCheck
+            : UiComponentToRender
+
         const value = isSingleChoiceTheme
           ? childrenValuesInOrder[0]
           : childrenValuesInOrder[index]
@@ -344,14 +350,14 @@ export const OptionQuestionViewMode = ({
             data-testid="child-option"
             key={`view-mode-child-${index}-${child[childrenInfo.idKey]}`}
           >
-            <UiComponentToRender
+            <ChildUiComponentToRender
               value={
-                UiComponentToRender.name === selectName
+                ChildUiComponentToRender.name === selectName
                   ? child.options[selectedIndex]
                   : getChildTitle(child.l10ns)
               }
               defaultValue={
-                UiComponentToRender.name === selectName
+                ChildUiComponentToRender.name === selectName
                   ? child.options[selectedIndex]
                   : getChildTitle(child.l10ns)
               }
@@ -359,7 +365,8 @@ export const OptionQuestionViewMode = ({
               variant="outline-success"
               update={(newValue) => {
                 onValueChange(
-                  isSingleChoiceTheme && UiComponentToRender.name !== selectName
+                  isSingleChoiceTheme &&
+                    ChildUiComponentToRender.name !== selectName
                     ? child[childrenInfo.codeKey]
                     : newValue,
                   value?.key
@@ -401,7 +408,7 @@ export const OptionQuestionViewMode = ({
               }
               groupName={`${gid}X${qid}`}
               active={selectedIndex === index}
-              disabled={UiComponentToRender.name === contentEditorName}
+              disabled={ChildUiComponentToRender.name === contentEditorName}
               isNoAnswer={child.isNoAnswer}
             />
             {shouldShowInput && (
