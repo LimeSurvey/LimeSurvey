@@ -79,10 +79,10 @@ class Tutorial extends LSActiveRecord
     {
         $cols = array(
             array(
-            'name' => 'tid',
-            'value' => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->tid.\'" />\'',
-            'type' => 'raw',
-            'filter' => false
+            'class'               => 'CCheckBoxColumn',
+            'selectableRows'      => 2,
+            'name'                => 'tid',
+            'checkBoxHtmlOptions' => array('name' => 'id[]', 'class' => 'action_selectthisentry'),
             ),
             array(
             'name' => 'name',

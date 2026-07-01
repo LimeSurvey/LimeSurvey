@@ -50,6 +50,7 @@ class CLSGridView extends TbGridView
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = 'grid-view-ls';
+        $this->htmlOptions['data-select-all-label'] = gT('Select all');
         $classes = ['table', 'table-hover'];
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
         $this->rowLink();
@@ -100,6 +101,13 @@ class CLSGridView extends TbGridView
             }
         }
         parent::initColumns();
+
+        // Add massiveActionsCheckbox class to the first column if it is a CCheckBoxColumn
+        $firstColumn = reset($this->columns);
+        if ($firstColumn instanceof CCheckBoxColumn) {
+            $existing = isset($firstColumn->checkBoxHtmlOptions['class']) ? $firstColumn->checkBoxHtmlOptions['class'] . ' ' : '';
+            $firstColumn->checkBoxHtmlOptions['class'] = $existing . 'massiveActionsCheckbox';
+        }
     }
 
     /**
@@ -108,20 +116,45 @@ class CLSGridView extends TbGridView
      */
     protected function lsAfterAjaxUpdate(): void
     {
-        // this will override afterAjaxUpdate if lsAfterAjaxUpdate is defined
-        // please do not override afterAjaxUpdate by default to keep compatibility with base functionality of yii
-        if (isset($this->lsAfterAjaxUpdate)) {
-            $this->afterAjaxUpdate = 'function(id, data){';
-            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
-                $this->afterAjaxUpdate .= $jsCode;
-            }
-            $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
-            $this->afterAjaxUpdate .= 'LS.rowlink.create();';
-            if (!empty($this->lsAdditionalColumns)) {
-                $this->afterAjaxUpdate .= 'initColumnFilter()';
-            }
-            $this->afterAjaxUpdate .= '}';
+        $gridId = CJavaScript::encode($this->id);
+
+        // Always restore persisted checkbox selection after an AJAX page update.
+        // LS.gridSelection is registered for every CLSGridView via registerGridviewScripts().
+        $alwaysJs  = 'LS.gridSelection.restoreCheckboxes(' . $gridId . ');';
+        $alwaysJs .= 'LS.actionDropdown.create();';
+        $alwaysJs .= 'LS.rowlink.create();';
+
+        // Non-AJAX grids have no afterAjaxUpdate callback to build
+        if ($this->ajaxUpdate === false) {
+            return;
         }
+
+        $parts = [];
+
+        // Preserve any existing afterAjaxUpdate set by the caller
+        if ($this->afterAjaxUpdate !== null) {
+            $definedFunction = ($this->afterAjaxUpdate instanceof CJavaScriptExpression)
+                ? (string) $this->afterAjaxUpdate // has a __toString magic function which returns the code
+                : $this->afterAjaxUpdate;
+            // execute the defined function preserving `this` context from the grid settings object
+            $parts[] = '(' . $definedFunction . ').call(this, id, data);';
+        }
+
+        // Add per-grid custom snippets from lsAfterAjaxUpdate
+        if (isset($this->lsAfterAjaxUpdate)) {
+            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
+                $parts[] = $jsCode;
+            }
+        }
+
+        // Always restore persisted checkbox selection
+        $parts[] = $alwaysJs;
+
+        if (!empty($this->lsAdditionalColumns)) {
+            $parts[] = 'initColumnFilter();';
+        }
+
+        $this->afterAjaxUpdate = 'function(id, data){' . implode('', $parts) . '}';
     }
 
     /**
@@ -147,6 +180,13 @@ class CLSGridView extends TbGridView
             App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
             CClientScript::POS_BEGIN
         );
+
+        // Grid selection // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
+        App()->clientScript->registerScriptFile(
+            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridSelection.js',
+            CClientScript::POS_BEGIN
+        );
+
         // Accessibility: restore focus to sort column after AJAX grid update
         App()->clientScript->registerScriptFile(
             App()->getConfig("extensionsurl") . 'admin/grid/assets/restoreFocusAfterSort.js',

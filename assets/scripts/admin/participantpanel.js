@@ -63,20 +63,24 @@ LS.CPDB = (function() {
 
     /**
      * Run when user clicks 'Export'
-     * Used for both all participants and checked participants
-     * @param {boolean} all - If true, export all participants
+     * Used for all participants, checked participants, or a specific list of IDs.
+     * @param {boolean|Array} itemIds - If true, export all participants. If an array, export those IDs. If falsy, read from checked DOM checkboxes.
      * @return
      */
-    onClickExport = function(all) {
+    onClickExport = function(itemIds) {
         var postdata = {
             selectedParticipant: [],
         }; /* csrf is already in ajaxSetup */
 
-        if (!all) {
+        if (Array.isArray(itemIds)) {
+            postdata.selectedParticipant = itemIds;
+        } else if (!itemIds) {
+            // Legacy: read IDs from checked DOM checkboxes
             $('.selector_participantCheckbox:checked').each(function(i,item){
                 postdata.selectedParticipant.push($(item).val());
             });
         }
+        // If itemIds === true, selectedParticipant stays [] (server exports all)
         $.ajax({
             url: exporttocsvcountall,
             data: postdata,
@@ -196,7 +200,8 @@ LS.CPDB = (function() {
 
         $('.action_participant_deleteModal').on('click', function(e) {
             e.preventDefault();
-            var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).data('participantId')};
+            var participantId = String($(this).data('participantId'));
+            var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : participantId};
             //url, data, idString, actionButtonClass, formId, gridViewId
             runBaseModal(
                 openModalParticipantPanel,
@@ -206,6 +211,7 @@ LS.CPDB = (function() {
                 'list_central_participants',
                 function (result) {
                     if (!result.error) {
+                        LS.gridSelection.markRowDeleted('list_central_participants', participantId);
                         window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                     }
                 }
@@ -389,8 +395,8 @@ LS.CPDB = (function() {
     },
     //JS-bindings especially for the sharePanel
     sharePanel = function() {
-        $('#action_toggleAllParticipant').on('click', function(){
-            $('.selector_participantCheckbox').prop('checked', $('#action_toggleAllParticipant').prop('checked'));
+        $('#action_toggleAllParticipantShare').on('click', function() {
+            $('.selector_participantShareCheckbox').prop('checked', $('#action_toggleAllParticipantShare').prop('checked'));
         });
 
         let changeSharedEditableStatusButtons = document.querySelectorAll('.action_changeEditableStatus input');

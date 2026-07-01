@@ -15,7 +15,8 @@
  *      perform an ajax request and close
  *      perform an ajax request and show the result in the modal
  */
-var onClickListAction =  function () {
+var onClickListAction =  function (e) {
+    e.preventDefault();
     console.log('onClickListAction');
     if($(this).data('disabled')) {
         console.log('disabled');
@@ -26,7 +27,7 @@ var onClickListAction =  function () {
     var onSuccess      = $that.data('on-success');
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
     var $grididvalue   = $gridid.attr('id');
-    var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
+    var $oCheckedItems = LS.gridSelection.getAll($grididvalue); // All pages, not just current
     $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType     = $that.data('actionType');   
     var selectedList   = $(".selected-items-list");
@@ -35,8 +36,15 @@ var onClickListAction =  function () {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
         console.log('error first');
-        const modal = new bootstrap.Modal(document.getElementById('error-first-select' + $grididvalue), {})
-        modal.show();
+        const errModalEl = document.getElementById('error-first-select' + $grididvalue);
+        if (errModalEl) {
+            errModalEl.setAttribute('tabindex', '-1');
+            const errBsModal = bootstrap.Modal.getOrCreateInstance(errModalEl, {});
+            errModalEl.addEventListener('shown.bs.modal', function focusErrModal() {
+                errModalEl.focus({ preventScroll: true });
+            }, { once: true });
+            errBsModal.show();
+        }
         return;
     }
     
@@ -49,7 +57,7 @@ var onClickListAction =  function () {
     // TODO : Switch case "redirection (with 2 type; post or fill session)"
     if(actionType == "redirect")
     {
-        $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
+        $oCheckedItems = LS.gridSelection.getAll($grididvalue); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
             'target': $that.data('target') ?? '_blank',
@@ -84,7 +92,7 @@ var onClickListAction =  function () {
 
     // Set window location href. Used by download files in responses list view.
     if (actionType == 'window-location-href') {
-        var $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
+        var $oCheckedItems = LS.gridSelection.getAll($grididvalue); // So we can join
         console.log('href = ...');
         window.location.href = $actionUrl + $oCheckedItems.join(',');
         return;
@@ -97,8 +105,8 @@ var onClickListAction =  function () {
     if (actionType == 'custom') {
         var js = $that.data('custom-js');
         var func = eval(js);
-        var itemIds = $gridid.yiiGridView('getChecked', $('.listActions').data('pk'));
-        func(itemIds);
+        var $oCheckedItems = LS.gridSelection.getAll($grididvalue);
+        func($oCheckedItems);
         console.log('func itemIds');
         return;
     }
@@ -154,6 +162,7 @@ var onClickListAction =  function () {
 
         if ($that.data('grid-reload') == "yes")
         {
+            LS.gridSelection.clear($grididvalue);              // Reset persisted selection
             $gridid.yiiGridView('update');                         // Update the surveys list
             setTimeout(function(){
                 $(document).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
@@ -257,11 +266,20 @@ var onClickListAction =  function () {
         });
     });
 
-    // Open the modal
+    // Open the modal (focus moves into dialog for screen readers / keyboard)
     const modalId = $that.data('modal-id');
     console.log('modalId = ', modalId);
-    var modal = new bootstrap.Modal(document.getElementById(modalId), {})
-    modal.show();
+    const modalEl = document.getElementById(modalId);
+    if (!modalEl) {
+        return;
+    }
+    modalEl.setAttribute('tabindex', '-1');
+    const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl, {});
+    const focusModal = function () {
+        modalEl.focus({ preventScroll: true });
+    };
+    modalEl.addEventListener('shown.bs.modal', focusModal, { once: true });
+    bsModal.show();
 };
 
 function prepareBsDateTimePicker($gridid){
@@ -342,11 +360,23 @@ function switchStatusOfListActions(e) {
 
 // Function to check if at least one checkbox is checked
 function isAnyCheckboxChecked() {
-    // This assumes there is only one checkbox per row
-    // - Make isAnyCheckboxChecked() to only check the first one
-    // or
-    // - Stamp on the MassiveActions widget the checkbox class for the row selector and the header
-    // - Use that class to only query selector checkboxes
+    // Use LS.gridSelection when available so that selections across all pages
+    // (not just the currently rendered ones) are taken into account.
+    // Without this, unchecking the last visible checkbox on page N would
+    // incorrectly disable the massive-action button even though rows on other
+    // pages are still selected in the LS.gridSelection store.
+    if (typeof LS !== 'undefined' && LS.gridSelection) {
+        var anySelected = false;
+        $('.grid-view-ls').each(function () {
+            var gridId = $(this).attr('id');
+            if (gridId && LS.gridSelection.count(gridId) > 0) {
+                anySelected = true;
+                return false; // break $.each
+            }
+        });
+        return anySelected;
+    }
+    // Fallback for grids that do not use LS.gridSelection
     return $('.grid-view-ls table tbody input[type="checkbox"]:checked').length > 0;
 }
 
