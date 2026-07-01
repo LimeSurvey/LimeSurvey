@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-06-17 14:57:53+00:00\n"
+"POT-Creation-Date: 2026-06-22 10:50:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -513,6 +513,8 @@ msgstr ""
 #: application/controllers/UserGroupController.php:209
 #: application/controllers/UserGroupController.php:396
 #: application/controllers/UserManagementController.php:1477
+#: application/controllers/admin/ConditionsAction.php:132
+#: application/controllers/admin/ConditionsAction.php:1105
 #: application/controllers/admin/Expressions.php:52
 #: application/controllers/admin/Expressions.php:99
 #: application/controllers/admin/Labels.php:117
@@ -3853,6 +3855,7 @@ msgid "User could not be added."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:410
+#: application/core/LSYii_Application.php:672
 msgid "Group not found."
 msgstr ""
 
@@ -3988,8 +3991,10 @@ msgstr ""
 #: application/controllers/UserManagementController.php:1501
 #: application/controllers/UserManagementController.php:1590
 #: application/controllers/UserManagementController.php:1675
-#: application/core/LSYii_Application.php:640
-#: application/core/LSYii_Application.php:651
+#: application/controllers/admin/ConditionsAction.php:1101
+#: application/core/LSYii_Application.php:679
+#: application/core/LSYii_Application.php:715
+#: application/core/LSYii_Application.php:737
 msgid "Your request is invalid."
 msgstr ""
 
@@ -4299,187 +4304,200 @@ msgstr ""
 msgid "Deleting survey table: %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:85
+#: application/controllers/admin/CheckIntegrity.php:86
 msgid "No old survey or survey participant list selected."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:196
+#: application/controllers/admin/CheckIntegrity.php:197
 msgid "Deleting orphan survey participant list: %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:212
+#: application/controllers/admin/CheckIntegrity.php:213
 msgid "Deleting orphan survey table: %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:232
+#: application/controllers/admin/CheckIntegrity.php:247
+msgid "Deleting related archived questions table: %s"
+msgstr ""
+
+#: application/controllers/admin/CheckIntegrity.php:267
 msgid "Unable to delete question group %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:235
+#: application/controllers/admin/CheckIntegrity.php:270
 msgid "Deleting groups: %u groups deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:255
+#: application/controllers/admin/CheckIntegrity.php:290
 msgid "Unable to delete groups text %s, code %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:258
+#: application/controllers/admin/CheckIntegrity.php:293
 msgid "Deleting group texts: %u entries deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:280
+#: application/controllers/admin/CheckIntegrity.php:315
 msgid "Deleting orphaned user group assignments: %u assignments deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:300
+#: application/controllers/admin/CheckIntegrity.php:335
 msgid "Unable to delete question %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:303
+#: application/controllers/admin/CheckIntegrity.php:338
 msgid "Deleting questions: %u questions deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:323
+#: application/controllers/admin/CheckIntegrity.php:358
 msgid "Unable to delete question text %s, code %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:326
+#: application/controllers/admin/CheckIntegrity.php:361
 msgid "Deleting question texts: %u entries deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:345
+#: application/controllers/admin/CheckIntegrity.php:380
 msgid "Unable to delete survey languagesettings %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:348
+#: application/controllers/admin/CheckIntegrity.php:383
 msgid "Deleting survey languagesettings: %u survey languagesettings deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:366
+#: application/controllers/admin/CheckIntegrity.php:401
 msgid "Unable to delete survey %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:369
+#: application/controllers/admin/CheckIntegrity.php:404
 msgid "Deleting surveys: %u surveys deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:390
-#: application/controllers/admin/CheckIntegrity.php:414
+#: application/controllers/admin/CheckIntegrity.php:425
+#: application/controllers/admin/CheckIntegrity.php:449
 msgid "Unable to delete answer %s, code %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:394
+#: application/controllers/admin/CheckIntegrity.php:429
 msgid "Deleting answers: %u answers deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:417
+#: application/controllers/admin/CheckIntegrity.php:452
 msgid "Deleting answer localizations: %u entries deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:436
+#: application/controllers/admin/CheckIntegrity.php:471
 msgid "Unable to delete assessment %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:439
+#: application/controllers/admin/CheckIntegrity.php:474
 msgid "Deleting assessments: %u assessment entries deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:459
+#: application/controllers/admin/CheckIntegrity.php:494
 msgid "Deleting orphaned quota rules: %u quota rules deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:481
+#: application/controllers/admin/CheckIntegrity.php:516
 msgid "Deleting orphaned quota languages: %u quota languages deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:503
+#: application/controllers/admin/CheckIntegrity.php:538
 msgid "Deleting orphaned quotas: %u quotas deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:525
+#: application/controllers/admin/CheckIntegrity.php:560
 msgid "Deleting orphaned default values: %u default values deleted."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:544
+#: application/controllers/admin/CheckIntegrity.php:579
 msgid "Unable to delete question attributes for question %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:547
+#: application/controllers/admin/CheckIntegrity.php:582
 msgid "Deleting question attributes: %u attributes deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:566
+#: application/controllers/admin/CheckIntegrity.php:601
 msgid "Unable to delete condition %s"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:569
+#: application/controllers/admin/CheckIntegrity.php:604
 msgid "Deleting conditions: %u conditions deleted"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:799
+#: application/controllers/admin/CheckIntegrity.php:834
 msgid "No matching CQID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:809
+#: application/controllers/admin/CheckIntegrity.php:844
 msgid "No matching QID"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:820
+#: application/controllers/admin/CheckIntegrity.php:855
 msgid "No CFIELDNAME field set!"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:878
+#: application/controllers/admin/CheckIntegrity.php:913
 msgid "No matching survey"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:890
-#: application/controllers/admin/CheckIntegrity.php:965
+#: application/controllers/admin/CheckIntegrity.php:925
+#: application/controllers/admin/CheckIntegrity.php:1000
 msgid "No matching group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:903
-#: application/controllers/admin/CheckIntegrity.php:977
+#: application/controllers/admin/CheckIntegrity.php:938
+#: application/controllers/admin/CheckIntegrity.php:1012
+#: application/controllers/admin/CheckIntegrity.php:1023
 msgid "No parent question"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:914
+#: application/controllers/admin/CheckIntegrity.php:949
 msgid "No parent answer"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:953
+#: application/controllers/admin/CheckIntegrity.php:988
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:990
+#: application/controllers/admin/CheckIntegrity.php:1054
+msgid "The question type does not allow subquestions"
+msgstr ""
+
+#: application/controllers/admin/CheckIntegrity.php:1069
+msgid "The question type does not allow answer options"
+msgstr ""
+
+#: application/controllers/admin/CheckIntegrity.php:1084
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1003
+#: application/controllers/admin/CheckIntegrity.php:1097
 #: application/models/SurveysGroups.php:386
 msgid "No parent group"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1015
+#: application/controllers/admin/CheckIntegrity.php:1109
 msgid "There is no matching user %s in group %s."
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1050
+#: application/controllers/admin/CheckIntegrity.php:1144
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1055
+#: application/controllers/admin/CheckIntegrity.php:1149
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1076
+#: application/controllers/admin/CheckIntegrity.php:1170
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1122
+#: application/controllers/admin/CheckIntegrity.php:1216
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
-#: application/controllers/admin/CheckIntegrity.php:1187
+#: application/controllers/admin/CheckIntegrity.php:1310
 msgid "Some automatic fixes were already applied."
 msgstr ""
 
@@ -4542,21 +4560,21 @@ msgstr ""
 msgid "Greater than (Strings)"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:122
-#: application/controllers/admin/ConditionsAction.php:124
+#: application/controllers/admin/ConditionsAction.php:119
+#: application/controllers/admin/ConditionsAction.php:121
 #: application/views/admin/conditions/conditionshead_view.php:3
 msgid "Conditions designer"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:187
+#: application/controllers/admin/ConditionsAction.php:183
 msgid "You have not selected a survey"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:198
+#: application/controllers/admin/ConditionsAction.php:189
 msgid "You have not selected a question"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:269
+#: application/controllers/admin/ConditionsAction.php:261
 #: application/controllers/admin/Tokens.php:1780
 #: application/helpers/SurveyRuntimeHelper.php:1188
 #: application/views/admin/checkintegrity/fix_view.php:30
@@ -4571,33 +4589,33 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:275
+#: application/controllers/admin/ConditionsAction.php:267
 msgid "All conditions in this survey have been deleted."
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:336
-#: application/controllers/admin/ConditionsAction.php:371
-#: application/controllers/admin/ConditionsAction.php:405
+#: application/controllers/admin/ConditionsAction.php:328
+#: application/controllers/admin/ConditionsAction.php:363
+#: application/controllers/admin/ConditionsAction.php:397
 #: application/models/services/SurveyCondition.php:180
 #: application/models/services/SurveyCondition.php:221
 msgid "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:366
-#: application/controllers/admin/ConditionsAction.php:400
+#: application/controllers/admin/ConditionsAction.php:358
+#: application/controllers/admin/ConditionsAction.php:392
 #: application/models/services/SurveyCondition.php:175
 #: application/models/services/SurveyCondition.php:219
 msgid "Could not insert all conditions."
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:368
-#: application/controllers/admin/ConditionsAction.php:402
+#: application/controllers/admin/ConditionsAction.php:360
+#: application/controllers/admin/ConditionsAction.php:394
 #: application/models/services/SurveyCondition.php:177
 #: application/models/services/SurveyCondition.php:216
 msgid "Condition added."
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:681
+#: application/controllers/admin/ConditionsAction.php:690
 #: application/views/admin/conditions/includes/conditions_edit.php:20
 #: application/views/admin/emailtemplates/email_language_template_tab.php:162
 #: application/views/admin/emailtemplates/email_language_template_tab.php:165
@@ -4605,11 +4623,11 @@ msgstr ""
 msgid "Edit condition"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:682
+#: application/controllers/admin/ConditionsAction.php:691
 msgid "Update condition"
 msgstr ""
 
-#: application/controllers/admin/ConditionsAction.php:686
+#: application/controllers/admin/ConditionsAction.php:695
 #: editor/src/components/ConditionDesigner/ConditionDesigner.js:221
 msgid "Add condition"
 msgstr ""
@@ -5549,55 +5567,55 @@ msgstr ""
 msgid "Create or import new label set(s)"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:290
-#: application/controllers/admin/Labels.php:307
+#: application/controllers/admin/Labels.php:292
+#: application/controllers/admin/Labels.php:309
 #: application/views/questionAdministration/modals.twig:65
 msgid "Label set list"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:339
-#: application/controllers/admin/Labels.php:507
+#: application/controllers/admin/Labels.php:341
+#: application/controllers/admin/Labels.php:509
 msgid "Label set successfully saved."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:356
+#: application/controllers/admin/Labels.php:358
 msgid "Label set successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:388
+#: application/controllers/admin/Labels.php:390
 msgid "Label set successfully created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:391
+#: application/controllers/admin/Labels.php:393
 msgid "Label could not be created."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:407
+#: application/controllers/admin/Labels.php:409
 msgid "Label set “%s” was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:409
+#: application/controllers/admin/Labels.php:411
 msgid "Unable to delete label set %s."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:423
+#: application/controllers/admin/Labels.php:425
 #: application/views/admin/labels/partials/topbarBtns/rightSideButtons.php:11
 msgid "Export multiple label sets"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:486
+#: application/controllers/admin/Labels.php:488
 msgid "Could not save label set: Label set name is empty."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:489
+#: application/controllers/admin/Labels.php:491
 msgid "Could not save label set: Found no answers."
 msgstr ""
 
-#: application/controllers/admin/Labels.php:535
+#: application/controllers/admin/Labels.php:537
 msgid "Label set successfully updated"
 msgstr ""
 
-#: application/controllers/admin/Labels.php:745
+#: application/controllers/admin/Labels.php:747
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:19
 msgid "Label set not found"
 msgstr ""
@@ -6365,6 +6383,7 @@ msgstr ""
 #: application/controllers/admin/SurveymenuEntryController.php:60
 #: application/views/admin/surveymenu_entries/create.php:6
 #: application/views/admin/surveymenu_entries/shortlist.php:9
+#: application/views/admin/surveymenu_entries/shortlist.php:18
 msgid "Menu entries"
 msgstr ""
 
@@ -7482,6 +7501,14 @@ msgstr ""
 msgid "Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."
 msgstr ""
 
+#: application/core/LSYii_Application.php:645
+msgid "Survey not found."
+msgstr ""
+
+#: application/core/LSYii_Application.php:708
+msgid "Question not found."
+msgstr ""
+
 #: application/core/LSYii_CaseValidator.php:31
 msgid "Text needs to be uppercase."
 msgstr ""
@@ -7970,6 +7997,7 @@ msgstr ""
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:53
 #: application/extensions/admin/survey/SurveySidemenuWidget/views/sidemenu.php:129
 #: application/views/admin/surveymenu/shortlist.php:10
+#: application/views/admin/surveymenu/shortlist.php:20
 msgid "Survey menu"
 msgstr ""
 
@@ -9819,9 +9847,9 @@ msgstr ""
 #: application/views/admin/saved/savedlist_view.php:28
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:54
 #: application/views/admin/surveymenu/index.php:48
-#: application/views/admin/surveymenu/shortlist.php:21
+#: application/views/admin/surveymenu/shortlist.php:22
 #: application/views/admin/surveymenu_entries/index.php:25
-#: application/views/admin/surveymenu_entries/shortlist.php:20
+#: application/views/admin/surveymenu_entries/shortlist.php:21
 #: application/views/admin/token/browse.php:50
 #: application/views/admin/token/surveyParticipantView.php:122
 #: application/views/admin/tutorialentries/index.php:34
@@ -9856,9 +9884,9 @@ msgstr ""
 #: application/views/admin/saved/savedlist_view.php:29
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:55
 #: application/views/admin/surveymenu/index.php:49
-#: application/views/admin/surveymenu/shortlist.php:22
+#: application/views/admin/surveymenu/shortlist.php:23
 #: application/views/admin/surveymenu_entries/index.php:26
-#: application/views/admin/surveymenu_entries/shortlist.php:21
+#: application/views/admin/surveymenu_entries/shortlist.php:22
 #: application/views/admin/token/browse.php:51
 #: application/views/admin/token/surveyParticipantView.php:123
 #: application/views/admin/tutorialentries/index.php:35
@@ -14986,7 +15014,7 @@ msgstr ""
 
 #: application/helpers/twig_translation_helper.php:40
 #: application/views/questionAdministration/subquestions.twig:51
-#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:101
+#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:102
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoiceSubquestion.js:143
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:196
 msgid "Subquestion"
@@ -16083,7 +16111,7 @@ msgid "Question id (qid) : '%s' is already in use."
 msgstr ""
 
 #: application/models/Question.php:215
-#: editor/src/hooks/useQuestionChildren.js:333
+#: editor/src/hooks/useQuestionChildren.js:337
 msgid "Subquestion codes must be unique."
 msgstr ""
 
@@ -18216,7 +18244,11 @@ msgid "All question texts meet consistency standards."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:173
-msgid "The following surveys have an erroneous question order. That could lead to errors during the design and/or processing of the survey. Please go to each question and group respectively, check the question order and save it."
+msgid "The following surveys have an erroneous question order. That could lead to errors during the design and/or processing of the survey."
+msgstr ""
+
+#: application/views/admin/checkintegrity/check_view.php:173
+msgid "Please go to each question and group respectively, check the question order and save it."
 msgstr ""
 
 #: application/views/admin/checkintegrity/check_view.php:177
@@ -21386,9 +21418,9 @@ msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:27
 #: application/views/admin/surveymenu/index.php:47
-#: application/views/admin/surveymenu/shortlist.php:20
+#: application/views/admin/surveymenu/shortlist.php:21
 #: application/views/admin/surveymenu_entries/index.php:24
-#: application/views/admin/surveymenu_entries/shortlist.php:19
+#: application/views/admin/surveymenu_entries/shortlist.php:20
 #: application/views/admin/tutorialentries/index.php:33
 #: application/views/admin/tutorials/index.php:35
 #: application/views/assessment/assessments_view.php:43
@@ -27667,7 +27699,7 @@ msgid "Image description"
 msgstr ""
 
 #: editor/src/components/QuestionSettings/attributes/QuestionCodeAttribute.js:39
-#: editor/src/hooks/useQuestionChildren.js:325
+#: editor/src/hooks/useQuestionChildren.js:329
 msgid "Only letters and numbers are allowed."
 msgstr ""
 
@@ -27919,7 +27951,7 @@ msgstr ""
 msgid "Number"
 msgstr ""
 
-#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:119
+#: editor/src/components/QuestionTypes/ArrayQuestion/ArrayColumnsTitles/ArrayColumnsTitles.js:120
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:213
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:236
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:249
@@ -27967,7 +27999,7 @@ msgstr ""
 
 #: editor/src/components/QuestionTypes/MultipleChoice/MultipleChoice.js:122
 #: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionEditMode.js:184
-#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:178
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:180
 #: editor/src/components/QuestionTypes/RankingQuestion/RankingQuestionSubquestions.js:90
 msgid "Add subquestion"
 msgstr ""
@@ -27978,11 +28010,11 @@ msgstr ""
 msgid "Enter your comment here."
 msgstr ""
 
-#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:65
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestion.js:66
 msgid "Subquestion already exists"
 msgstr ""
 
-#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestionSubquestions.js:121
+#: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestionSubquestions.js:122
 #: editor/src/components/QuestionTypes/RankingAdvancedQuestion/RankingAdvancedQuestionSubquestionsPlaceholder.js:48
 msgid "Subquestion option"
 msgstr ""
@@ -28784,7 +28816,7 @@ msgstr ""
 msgid "Please try again later!"
 msgstr ""
 
-#: editor/src/hooks/useQuestionChildren.js:331
+#: editor/src/hooks/useQuestionChildren.js:335
 msgid "Answer codes must be unique."
 msgstr ""
 

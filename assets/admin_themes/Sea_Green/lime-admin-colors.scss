@@ -785,66 +785,6 @@ fieldset[disabled] {
 // ######################## CUSTOM CLASSES ########################
 // ################################################################
 
-// Notification list immitates the dropdown menu //
-.notification-list {
-    background-color: $white;
-    .divider {
-        background-color: $gray-06;
-    }
-    > {
-        li > a {
-            color: $primary-2;
-            &:hover {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-            &:focus {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-        }
-        .active > a {
-            color: $white;
-            background-color: $primary-hover_2;
-            &:hover {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-            &:focus {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-        }
-        .disabled > a {
-            color: $gray-15;
-            &:hover {
-                color: $gray-15;
-            }
-            &:focus {
-                color: $gray-15;
-            }
-        }
-    }
-}
-@keyframes notification-pulse {
-    from {
-        color: $brown-10;
-        text-shadow: 0 0 0 $gray-20;
-    }
-    50% {
-        color: $notification-pulse-1;
-        text-shadow: 0 0 6px $notification-pulse-2;
-    }
-    to {
-        color: $brown-10;
-        text-shadow: 0 0 0 $gray-20;
-    }
-}
-.notification-bell-pulse {
-    animation-name: notification-pulse;
-    animation-duration: 1s;
-    animation-iteration-count: 5;
-}
 .alert-security-update {
     background-color: $white;
     border: 1px solid $alert;

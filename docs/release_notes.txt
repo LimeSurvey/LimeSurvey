@@ -34,6 +34,32 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.4 (build 260620) to 7.0.5 (build 260623) June 22, 2026
+-Fixed issue: navbar hover and focus styles not fitting with light buttons (#5068) (Tim Willig)
+-Fixed issue: A11y correct header semantics in account page (#5066) (Anblik Audit Team)
+-Fixed issue: A11y captions for tables in account page (#5065) (Anblik Audit Team)
+-Fixed issue TB-116: Kcfinder was not initialized for labelsets "Upload resources management" (#5056) (Patricia Stell)
+-Fixed issue #AT-2083: prevent loss of focus for question when creating/editing questions in editor (#5046) (Rami S. Zaki)
+-Fixed issue #20544: Read-only survey user can delete conditions (#5023) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Mongolian by amidral
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: Dutch by c_schmitz, Han, L191
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Croatian by rovinj
+
+
+Changes from 7.0.3 (build 260618) to 7.0.4 (build 260620) June 18, 2026
++New feature: Extended integrity check to look for orphaned old_question tables (Carsten Schmitz)
++New feature: Additional check to find orphaned subquestions in integrity check (Carsten Schmitz)
+-Fixed issue: Remove any superflous subquestions on ranking question type before DB migration (Carsten Schmitz)
+-Fixed issue: Ranking subquestions are written as ranking type (Carsten Schmitz)
+-Fixed issue: Extended integrity check to also catch questions that should not have answer options and should not have subquestions (#5064) (Carsten Schmitz)
+
+
 Changes from 7.0.2 (build 260617) to 7.0.3 (build 260618) June 17, 2026
 -Fixed issue AT-2090: [security] SQL injection vulnerability in statistics (Carsten Schmitz)
 -Fixed issue #20565: survey start and expiry date are now displayed and saved correctly (#5061) (Patrick Teichmann)
