@@ -150,12 +150,14 @@ export const Setting = ({
         )
 
         const isDisabled =
-          [
+          ([
             'questionThemeName',
             'encrypted',
             'attributes.save_as_default',
             'other',
-          ].includes(attribute.attributePath) && isSurveyActive
+          ].includes(attribute.attributePath) ||
+            attribute.disableWhenActive) &&
+          isSurveyActive
 
         return (
           <div
