@@ -3856,6 +3856,9 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             3 => "startlanguage",
             4 => "seed"
         ];
+        if (!$aOptions['bNotFinalized']) {
+            $metaFields[1] = "submitdate";
+        }
         if (Survey::model()->findByPk($iSurveyId)->hasTokensTable) {
             $metaFields[$csv_ans_start_index++] = "token";
         }
