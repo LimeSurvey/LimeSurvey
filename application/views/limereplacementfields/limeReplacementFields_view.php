@@ -46,7 +46,7 @@
                     $isDisabled = " disabled='disabled'";
                 }
                 ?>
-                    <option value='<?php echo $cqn[5];?>.shown' title='<?php echo $cqn[0];?>' <?php echo $isDisabled;?>><?php echo $cqn[0];?></option>
+                    <option value='<?php echo $cqn[6];?>' title='<?php echo $cqn[0];?>' <?php echo $isDisabled;?>><?php echo $cqn[0];?></option>
                     <?php
             }
             ?>

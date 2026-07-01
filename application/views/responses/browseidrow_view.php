@@ -8,7 +8,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php echo sprintf(gT("View response ID %d"), $id); ?></h3>
     <div class="row">
         <div class="col-12 content-right">
@@ -21,10 +21,11 @@
             <table class='detailbrowsetable table table-striped'>
 
                 <?php foreach ($answers as $answer) : ?>
-                    <?php if (!isset($fnames[$answer['i']]['type']) ||
+                    <?php if (
+                    !isset($fnames[$answer['i']]['type']) ||
                         (isset($fnames[$answer['i']]['type']) && $fnames[$answer['i']]['type'] !== '|') ||
                         (isset($fnames[$answer['i']]['type']) && $fnames[$answer['i']]['type'] === '|' && $answer['answervalue'] !== '')
-                    ) : ?>
+) : ?>
                         <tr <?php echo $inserthighlight; ?>>
                             <th>
                                 <?php if (isset($fnames[$answer['i']]['code'])) { ?>

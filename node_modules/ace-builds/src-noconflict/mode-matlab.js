@@ -166,7 +166,7 @@ var MatlabHighlightRules = function () {
                         defaultToken: "string"
                     }]
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: keywordMapper,

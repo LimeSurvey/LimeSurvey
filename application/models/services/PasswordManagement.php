@@ -40,8 +40,13 @@ class PasswordManagement
     {
         $adminEmail = [];
         $siteName = \Yii::app()->getConfig("sitename");
-        $url = 'admin/authentication/sa/newPassword/param/' . $this->user->validation_key;
-        $loginUrl = \Yii::app()->getController()->createAbsoluteUrl($url);
+        $loginUrl = \Yii::app()->createValidatedAbsoluteUrl(
+            'admin/authentication/sa/newPassword',
+            ['param' => $this->user->validation_key]
+        );
+        if ($loginUrl === false) {
+            return false;
+        }
         $siteAdminEmail = \Yii::app()->getConfig("siteadminemail");
         $emailSubject = \Yii::app()->getConfig("admincreationemailsubject");
         $emailTemplate = \Yii::app()->getConfig("admincreationemailtemplate");
@@ -151,7 +156,7 @@ class PasswordManagement
         $mailer = new \LimeMailer();
         $mailer->emailType = 'passwordreminderadminuser';
         $mailer->addAddress($this->user->email, $this->user->full_name);
-        $mailer->Subject = gT('User data');
+        $mailer->Subject = gT('Request to reset your password');
 
         /* Body construct */
         //before setting new validationKey and date,check when was the last attempt
@@ -161,27 +166,29 @@ class PasswordManagement
             $now = new DateTime();
             $this->user->last_forgot_email_password = $now->format('Y-m-d H:i:s');
             $this->user->save();
-            $username = sprintf(gT('Username: %s'), $this->user->users_name);
-
-            $linkToResetPage = \Yii::app()->getController()->createAbsoluteUrl(
-                'admin/authentication/sa/newPassword/param/' . $this->user->validation_key
+            $linkToResetPage = \Yii::app()->createValidatedAbsoluteUrl(
+                'admin/authentication/sa/newPassword/',
+                ['param' => $this->user->validation_key]
             );
-            $linkText = gT("Click here to set your password: ") . $linkToResetPage;
+            if ($linkToResetPage === false) {
+                $sMessage = gT('The system is not properly configured to send password reset emails. Please contact the administrator.');
+                return $sMessage;
+            }
             $body = array();
-            $body[] = sprintf(gT('Your link to reset password %s'), \Yii::app()->getConfig('sitename'));
-            $body[] = $username;
-            $body[] = $linkText;
+            $body[] = gT('You have requested to reset the password for your account.');
+            $body[] = sprintf(gT('To complete this process, please click on the following link: %s') . "\n", $linkToResetPage);
+            $body[] = gt('If you did not request to reset your password, please ignore this email.') . "\n";
             $body = implode("\n", $body);
             $mailer->Body = $body;
             /* Go to send email and set password*/
             if ($mailer->sendMessage()) {
                 // For security reasons, we don't show a successful message
-                $sMessage = sprintf(gt('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), self::MIN_TIME_NEXT_FORGOT_PW_EMAIL);
+                $sMessage = sprintf(gT('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), self::MIN_TIME_NEXT_FORGOT_PW_EMAIL);
             } else {
                 $sMessage = gT('Email failed');
             }
         } else {
-            $sMessage = sprintf(gt('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), self::MIN_TIME_NEXT_FORGOT_PW_EMAIL);
+            $sMessage = sprintf(gT('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), self::MIN_TIME_NEXT_FORGOT_PW_EMAIL);
         }
 
         return $sMessage;
@@ -218,6 +225,11 @@ class PasswordManagement
         switch ($type) {
             case self::EMAIL_TYPE_RESET_PW:
                 $renderArray = $this->getRenderArray();
+                if (empty($renderArray)) {
+                    $mailer = new \LimeMailer();
+                    $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
+                    return $mailer;
+                }
                 $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT(
                     "Your login credentials have been reset"
                 );
@@ -231,6 +243,11 @@ class PasswordManagement
             default:
                 //Get email template from globalSettings
                 $aAdminEmail = $this->generateAdminCreationEmail();
+                if ($aAdminEmail === false) {
+                    $mailer = new \LimeMailer();
+                    $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
+                    return $mailer;
+                }
                 $subject = $aAdminEmail["subject"];
                 $body = $aAdminEmail["body"];
                 break;
@@ -254,10 +271,14 @@ class PasswordManagement
      */
     public function getRenderArray()
     {
-        $absoluteUrl = \Yii::app()->getController()->createAbsoluteUrl("/admin");
-        $passwordResetUrl = \Yii::app()->getController()->createAbsoluteUrl(
-            'admin/authentication/sa/newPassword/param/' . $this->user->validation_key
+        $absoluteUrl = \Yii::app()->createValidatedAbsoluteUrl("/admin");
+        $passwordResetUrl = \Yii::app()->createValidatedAbsoluteUrl(
+            'admin/authentication/sa/newPassword',
+            ['param' => $this->user->validation_key]
         );
+        if ($absoluteUrl === false || $passwordResetUrl === false) {
+            return [];
+        }
         return [
             'surveyapplicationname' => \Yii::app()->getConfig("sitename"),
             'emailMessage' => sprintf(gT("Hello %s,"), $this->user->full_name) . "<br />"
@@ -272,7 +293,7 @@ class PasswordManagement
             'linkToAdminpanel' => $absoluteUrl,
             'username' => $this->user->users_name,
             'password' => $passwordResetUrl,
-            'mainLogoFile' => \Yii::app()->getController()->createAbsoluteUrl(LOGO_URL),
+            'mainLogoFile' => \Yii::app()->createAbsoluteUrl(LOGO_URL),
             'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false
             && \Permission::model() ->hasGlobalPermission('auth_db', 'read', $this->user->uid),
             'showPassword' => \Yii::app()->getConfig("display_user_password_in_email") === true,

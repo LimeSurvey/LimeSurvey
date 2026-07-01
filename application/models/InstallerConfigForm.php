@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -40,7 +40,7 @@ class InstallerConfigForm extends CFormModel
     public const DB_TYPE_ODBC = 'odbc';
 
     public const MINIMUM_MEMORY_LIMIT = 128;
-    public const MINIMUM_PHP_VERSION = '7.4.0';
+    public const MINIMUM_PHP_VERSION = '8.1.29';
 
     // Database
     /** @var string $dbtype */
@@ -85,7 +85,7 @@ class InstallerConfigForm extends CFormModel
     /** @var string $adminName */
     public $adminName = 'Administrator';
     /** @var string $adminEmail */
-    public $adminEmail = 'your-email@example.net';
+    public $adminEmail = '';
     /** @var string $siteName */
     public $siteName = 'LimeSurvey';
     /** @var string $surveylang */
@@ -122,6 +122,9 @@ class InstallerConfigForm extends CFormModel
     public $phpGdHasJpegSupport = false;
 
     /** @var bool */
+    public $phpGdHasFreeTypeSupport = false;
+
+    /** @var bool */
     public $isPhpLdapPresent = false;
 
     /** @var bool */
@@ -135,6 +138,9 @@ class InstallerConfigForm extends CFormModel
 
     /** @var bool */
     public $isSodiumPresent = false;
+
+    /** @var bool */
+    public $isCollatorPresent = false;
 
     /** @var bool */
     public $isConfigPresent = false;
@@ -182,7 +188,7 @@ class InstallerConfigForm extends CFormModel
             'dbuser' => gT('Database user'),
             'dbpwd' => gT('Database password'),
             'dbprefix' => gT('Table prefix'),
-            'dbengine' => gT('MySQL database engine type'),
+            'dbengine' => gT('MariaDB/MySQL database engine type'),
         );
     }
 
@@ -206,26 +212,29 @@ class InstallerConfigForm extends CFormModel
 
     private function checkStatus()
     {
-        $this->isPhpMbStringPresent = function_exists('mb_convert_encoding');
-        $this->isPhpFileInfoPresent = function_exists('finfo_open');
-        $this->isPhpZlibPresent = function_exists('zlib_get_coding_type');
+        $this->isPhpMbStringPresent = extension_loaded('mbstring');
+        $this->isPhpFileInfoPresent = extension_loaded('fileinfo');
+        $this->isPhpZlibPresent =  extension_loaded('zlib');
+        $this->isPhpGdPresent =  extension_loaded('gd');
         $this->isPhpJsonPresent = function_exists('json_encode');
         $this->isMemoryLimitOK = $this->checkMemoryLimit();
-        $this->isPhpLdapPresent = function_exists('ldap_connect');
-        $this->isPhpImapPresent = function_exists('imap_open');
-        $this->isPhpZipPresent = class_exists('ZipArchive');
+        $this->isPhpLdapPresent = extension_loaded('ldap');
+        $this->isPhpImapPresent = extension_loaded('imap');
+        $this->isPhpZipPresent = extension_loaded('zip');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
+        $this->isCollatorPresent = class_exists('Collator');
 
         if (function_exists('gd_info')) {
             $gdInfo = gd_info();
             $this->phpGdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            $this->phpGdHasFreeTypeSupport = !empty($gdInfo['FreeType Support']);
             $this->isPhpGdPresent = true;
         }
         $this->isPhpVersionOK = version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');
     }
 
     /**
-     * Chek whether system meets minimum requirements
+     * Check whether system meets minimum requirements
      * @return bool
      */
     public function getHasMinimumRequirements()
@@ -240,6 +249,8 @@ class InstallerConfigForm extends CFormModel
             or !$this->isPhpMbStringPresent
             or !$this->isPhpFileInfoPresent
             or !$this->isPhpZlibPresent
+            or !$this->isPhpGdPresent
+            or !$this->isPhpZipPresent
             or !$this->isPhpJsonPresent
         ) {
             return false;
@@ -281,7 +292,7 @@ class InstallerConfigForm extends CFormModel
             $this->isMysql
             && ($this->dbengine === null or !in_array($this->dbengine, array_keys($this->dbEngines)))
         ) {
-            $this->addError($attribute, gT('The database engine type must be set for MySQL'));
+            $this->addError($attribute, gT('The database engine type must be set to MariaDB/MySQL'));
         }
 
         if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {

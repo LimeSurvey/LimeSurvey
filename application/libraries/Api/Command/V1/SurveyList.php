@@ -10,34 +10,33 @@ use LimeSurvey\Api\Command\{
     Response\Response,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Auth\AuthSession;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use DI\FactoryInterface;
 
 class SurveyList implements CommandInterface
 {
     use AuthPermissionTrait;
 
     protected Survey $survey;
-    protected AuthSession $authSession;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
 
     /**
      * Constructor
      *
-     * @param Survey $survey
-     * @param AuthSession $authSession
      * @param TransformerOutputSurvey $transformerOutputSurvey
+     * @param FactoryInterface $diFactory
      * @param ResponseFactory $responseFactory
      */
     public function __construct(
-        Survey $survey,
-        AuthSession $authSession,
         TransformerOutputSurvey $transformerOutputSurvey,
+        FactoryInterface $diFactory,
         ResponseFactory $responseFactory
     ) {
-        $this->survey = $survey;
-        $this->authSession = $authSession;
+        $this->survey = $diFactory->make(
+            Survey::class,
+            ['scenario' => 'search']
+        );
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
     }
@@ -50,19 +49,14 @@ class SurveyList implements CommandInterface
      */
     public function run(Request $request)
     {
-        $sessionKey = (string) $request->getData('sessionKey');
-
-        if (
-            !$this->authSession
-                ->checkKey($sessionKey)
-        ) {
-            return $this->responseFactory
-                ->makeErrorUnauthorised();
-        }
-
+        unset($this->survey->active);
         $dataProvider = $this->survey
             ->with('defaultlanguage')
-            ->search();
+            ->search([
+                'pageSize' => $request->getData('pageSize'),
+                // Yii pagination is zero based - so we must deduct 1
+                'currentPage' => $request->getData('page') - 1,
+            ]);
 
         $data = $this->transformerOutputSurvey
             ->transformAll($dataProvider->getData());

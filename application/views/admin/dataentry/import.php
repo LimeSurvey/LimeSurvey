@@ -6,12 +6,11 @@
  */
 
 ?>
-<div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <h3><?php eT("Import responses from a deactivated survey table"); ?></h3>
+<div class="side-body">
+    <h3><?php eT("Import responses from an archived response table"); ?></h3>
     <div class="row">
         <div class="col-12 content-right">
             <?php
-            //  echo CHtml::tag('div', array('class' => 'header ui-widget-header'), gT("Import responses from a deactivated survey table"));
             $this->widget('ext.SettingsWidget.SettingsWidget', [
                 'settings' => $settings,
                 'method'   => 'post',
@@ -23,7 +22,7 @@
                     gT('Cancel')           => [
                         'type'  => 'link',
                         'class' => ['d-none'],
-                        'href'  => App()->createUrl('plugins/index')
+                        'href'  => App()->createUrl('admin/pluginmanager/sa/index')
                     ]
                 ]
             ]);

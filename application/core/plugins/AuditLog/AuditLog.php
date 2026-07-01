@@ -2,12 +2,11 @@
 
 class AuditLog extends \LimeSurvey\PluginManager\PluginBase
 {
-
     protected $storage = 'DbStorage';
     protected static $description = 'Core: Create an audit log of changes';
     protected static $name = 'auditlog';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     protected $settings = array(
@@ -104,6 +103,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('beforeDataEntryImport');
         $this->subscribe('beforeTokenSave');
         $this->subscribe('beforeTokenDelete');
+        $this->subscribe('beforeTokenDeleteMany');
         $this->subscribe('beforeParticipantSave');
         $this->subscribe('beforeParticipantDelete');
         $this->subscribe('beforeLogout');
@@ -232,7 +232,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (count($aValues)) {
             $oAutoLog = $this->api->newModel($this, 'log');
             $oAutoLog->uid = $currentUID;
-            $oAutoLog->entity = 'survey_' . $iSurveyID;
+            $oAutoLog->entity = 'responses_' . $iSurveyID;
             $oAutoLog->action = "create";
             $oAutoLog->newvalues = json_encode($aValues);
             $oAutoLog->save();
@@ -269,7 +269,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (count($aDiffOld)) {
             $oAutoLog = $this->api->newModel($this, 'log');
             $oAutoLog->uid = $currentUID;
-            $oAutoLog->entity = 'survey_' . $iSurveyID;
+            $oAutoLog->entity = 'responses_' . $iSurveyID;
             $oAutoLog->action = "update";
             $oAutoLog->entityid = $event->get('iResponseID');
             $oAutoLog->oldvalues = json_encode($aDiffOld);
@@ -297,7 +297,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
 
         $oAutoLog = $this->api->newModel($this, 'log');
         $oAutoLog->uid = $currentUID;
-        $oAutoLog->entity = 'survey_' . $iSurveyID;
+        $oAutoLog->entity = 'responses_' . $iSurveyID;
         $oAutoLog->action = "delete";
         $oAutoLog->entityid = $event->get('iResponseID');
         $oAutoLog->oldvalues = json_encode($oldvalues);
@@ -324,7 +324,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         if (count($aValues)) {
             $oAutoLog = $this->api->newModel($this, 'log');
             $oAutoLog->uid = $currentUID;
-            $oAutoLog->entity = 'survey_' . $iSurveyID;
+            $oAutoLog->entity = 'responses_' . $iSurveyID;
             $oAutoLog->action = "import";
             $oAutoLog->newvalues = json_encode($aValues);
             $oAutoLog->fields = implode(',', array_keys($aValues));
@@ -371,8 +371,8 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-    * Function catches if a participant of a particular survey was modified or created
-    * All data is saved - only the password hash is anonymized for security reasons
+    * Function catches if a participant of a particular survey was deleted
+    * All data is saved
     */
     public function beforeTokenDelete()
     {
@@ -382,8 +382,21 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
             return;
         }
 
-        $sTokenIds = $this->getEvent()->get('sTokenIds');
-        $aTokenIds = explode(',', (string) $sTokenIds);
+        // beforeTokenDelete mutated through time.
+        // At the very beginning, the event was dispatched with an sTokenIds parameter.
+        // Then, dynamic model events were introduced, and this event mutated its interface.
+        // The code below accepts both kinds of interface.
+        $sTokenIds = $event->get('sTokenIds');
+        if (!empty($sTokenIds)) {
+            $aTokenIds = explode(',', (string) $sTokenIds);
+        } else {
+            // If sTokenIds is empty, assume we're dealing with a dynamic model event.
+            // In this case, the dynamicId parameter contains the token ID.
+            $aTokenIds = [$event->get('dynamicId')];
+        }
+        if (empty($aTokenIds)) {
+            return;
+        }
         $oCurrentUser = $this->api->getCurrentUser();
 
         foreach ($aTokenIds as $tokenId) {
@@ -395,11 +408,54 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
                 $oAutoLog->uid = $oCurrentUser->uid;
                 $oAutoLog->entity = 'token';
                 $oAutoLog->action = 'delete';
-                $oAutoLog->entityid = $aValues['participant_id'];
+                $oAutoLog->entityid = $aValues['tid'];
                 $oAutoLog->oldvalues = json_encode($aValues);
                 $oAutoLog->fields = implode(',', array_keys($aValues));
                 $oAutoLog->save();
             }
+        }
+    }
+
+    /**
+    * Function catches if multiple participants of a particular survey were deleted
+    * All data is saved
+    */
+    public function beforeTokenDeleteMany()
+    {
+        $event = $this->getEvent();
+        $surveyId = $event->get('iSurveyID');
+        if (!$this->checkSetting('AuditLog_Log_TokenDelete') || !$this->get('auditing', 'Survey', $surveyId, true)) {
+            return;
+        }
+
+        $filterCriteria = $event->get('filterCriteria');
+
+        // We need to "fix" (update) the criteria given by parameter.
+        // - SELECT queries are built with the table alias.
+        // - DELETE queries are not.
+        // We are given a DELETE query criteria and need to use it on a SELECT query,
+        // so we replace the table name with the alias.
+        $tokenModel = Token::model($surveyId);
+        $selectCriteria = clone $filterCriteria;
+        $tableName = $tokenModel->getTableSchema()->rawName;
+        $alias = $tokenModel->getTableAlias(true);
+        // Replace the table name with the alias
+        $selectCriteria->condition = str_replace($tableName, $alias, $selectCriteria->condition);
+
+        $tokens = $tokenModel->findAll($selectCriteria);
+
+        $oCurrentUser = $this->api->getCurrentUser();
+
+        foreach ($tokens as $token) {
+            $aValues = $token->getAttributes();
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid = $oCurrentUser->uid;
+            $oAutoLog->entity = 'token';
+            $oAutoLog->action = 'delete';
+            $oAutoLog->entityid = $aValues['tid'];
+            $oAutoLog->oldvalues = json_encode($aValues);
+            $oAutoLog->fields = implode(',', array_keys($aValues));
+            $oAutoLog->save();
         }
     }
 

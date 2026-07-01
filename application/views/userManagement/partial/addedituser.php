@@ -43,7 +43,7 @@ Yii::app()->getController()->renderPartial(
         <?php echo $form->error($oUser, 'email'); ?>
     </div>
     <div class="mb-3">
-        <label class="form-label" for='expires'><?php eT("Expire date/time:"); ?></label>
+        <label class="form-label" for='expires'><?php eT("Expiry date/time"); ?></label>
         <div class="has-feedback">
             <?php
             Yii::app()->getController()->widget('ext.DateTimePickerWidget.DateTimePicker', [
@@ -51,12 +51,13 @@ Yii::app()->getController()->renderPartial(
                 'id'            => 'expires',
                 'value'         => $oUser->expires ? date(
                     $dateformatdetails['phpdate'] . " H:i",
-                    strtotime((string) $oUser->expires)
+                    strtotime((string) getDateOfUTC($oUser->expires))
                 ) : '',
                 'pluginOptions' => [
                     'format'           => $dateformatdetails['jsdate'] . " HH:mm",
                     'allowInputToggle' => true,
                     'showClear'        => true,
+                    'theme' => 'light',
                     'locale'           => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                 ]
             ]);
@@ -78,15 +79,14 @@ Yii::app()->getController()->renderPartial(
     <?php else: ?>
         <div class="mb-3" id="utility_set_password">
             <div class="col-6">
-                <label><?= gT("Set password now?") ?></label>
+                <label id="UserManagement--set_password_grouplabel"><?= gT("Set password now?") ?></label>
             </div>
-            <div class="btn-group col-6" data-bs-toggle="buttons">
+            <div class="btn-group col-6" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="UserManagement--set_password_grouplabel">
                 <input class="btn-check" type="radio" id="utility_set_password_yes" name="preset_password" value="1">
                 <label for="utility_set_password_yes" class="btn btn-outline-secondary col-xs-6">
                     <?= gT("Yes") ?>
                 </label>
-                <input class="btn-check" type="radio" id="utility_set_password_no" checked="checked"
-                       name="preset_password" value="0">
+                <input class="btn-check" type="radio" id="utility_set_password_no" name="preset_password" value="0" checked="checked">
                 <label for="utility_set_password_no" class="btn btn-outline-secondary col-xs-6">
                     <?= gT("No") ?>
                 </label>
@@ -107,10 +107,9 @@ Yii::app()->getController()->renderPartial(
                 $oUser,
                 'password',
                 ($oUser->isNewRecord
-                    ? ['id' => 'User_Form_password', 'value' => '', 'placeholder' => '********']
+                    ? ['id' => 'User_Form_password', 'value' => '']
                     : ['id'          => 'User_Form_password',
                        'value'       => '',
-                       'placeholder' => '********',
                        "disabled"    => "disabled"
                     ]
                 )
@@ -118,18 +117,18 @@ Yii::app()->getController()->renderPartial(
             <?php echo $form->error($oUser, 'password'); ?>
         </div>
         <div class="mb-3">
-            <label for="password_repeat" class="required" required><?= gT("Password safety") ?> <span
+            <label for="password_repeat" class="required" required><?= gT("Repeat password") ?> <span
                     class="required">*</span></label>
             <input name="password_repeat"
-                   placeholder='********' <?= ($oUser->isNewRecord ? '' : 'disabled="disabled"') ?> id="password_repeat"
+                   <?= ($oUser->isNewRecord ? '' : 'disabled="disabled"') ?> id="password_repeat"
                    class="form-control" type="password">
         </div>
         <?php if ($oUser->isNewRecord) { ?>
             <div class="mb-3">
-                <label class="form-label">
+                <label class="form-label" for="random_example_password">
                     <?= gT('Random password (suggestion):') ?>
                 </label>
-                <input type="text" class="form-control" readonly name="random_example_password"
+                <input type="text" class="form-control" readonly name="random_example_password" id="random_example_password"
                        value="<?= htmlspecialchars((string) $randomPassword) ?>"/>
             </div>
         <?php } ?>
@@ -137,7 +136,7 @@ Yii::app()->getController()->renderPartial(
 </div>
 
 <div class="modal-footer modal-footer-buttons" style="margin-top: 15px;">
-    <button class="btn btn-cancel" id="exitForm" data-bs-dismiss="modal">
+    <button type="button" class="btn btn-cancel" id="exitForm" data-bs-dismiss="modal">
         <?= gT('Cancel') ?>
     </button>
     <button class="btn btn-primary" id="submitForm">

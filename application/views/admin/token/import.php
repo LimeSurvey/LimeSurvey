@@ -1,5 +1,5 @@
 <!-- Import.php -->
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <h3><?php eT("Import survey participants from CSV file"); ?></h3>
 
     <div class="row">
@@ -8,7 +8,7 @@
                 <div class="jumbotron message-box">
                     <h2>gT("Participant file upload")</h2>
                 </div>
-            <?php else:?>
+            <?php else :?>
                 <div class="jumbotron message-box message-box-error">
                     <h2>gT("Participant file upload")</h2>
                     <p class="lead text-danger"><?php gT("Error"); ?></p>

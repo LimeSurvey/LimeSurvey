@@ -12,7 +12,8 @@ interface OpHandlerInterface
 
     /*
      * Should be implemented AND called in handle methods separately
-     * D
+     * Needs to return empty array when everything is fine,
+     * or an array of errors
      */
-    public function isValidPatch(OpInterface $op): bool;
+    public function validateOperation(OpInterface $op): array;
 }

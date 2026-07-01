@@ -2,7 +2,7 @@
 
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Theme template permission')]
+    ['modalTitle' => gT('Theme permissions')]
 );
 ?>
 

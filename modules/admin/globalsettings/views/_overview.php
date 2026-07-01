@@ -17,7 +17,7 @@
     $this->widget('ext.AlertWidget.AlertWidget', [
         'tag' => 'p',
         'text' => gT(
-            'this subview is rendered from global setting module. This message is shown only when debug mode is on'
+            'This subview is rendered from global setting module. This message is shown only when debug mode is activated.'
         ),
         'type' => 'info',
         'showCloseButton' => false,
@@ -45,11 +45,11 @@
             <td><?php echo $deactivatedsurveys; ?></td>
         </tr>
         <tr>
-            <th><?php eT("Active survey participants tables"); ?>:</th>
+            <th><?php eT("Active survey participant lists"); ?>:</th>
             <td><?php echo $activetokens; ?></td>
         </tr>
         <tr>
-            <th><?php eT("Deactivated survey participants tables"); ?>:</th>
+            <th><?php eT("Deactivated survey participant lists"); ?>:</th>
             <td><?php echo $deactivatedtokens; ?></td>
         </tr>
 
@@ -76,7 +76,7 @@
 <?php
 if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
     ?>
-        <p><a href="<?php echo $this->createUrl('admin/globalsettings', array('sa' => 'showphpinfo')) ?>" target="blank" class="button"><?php eT("Show PHPInfo"); ?></a></p>
+        <p><a href="<?php echo $this->createUrl('admin/globalsettings', array('sa' => 'showphpinfo')) ?>" target="blank" class="btn btn-primary"><?php eT("Show PHPInfo"); ?></a></p>
     <?php
 }
 ?>

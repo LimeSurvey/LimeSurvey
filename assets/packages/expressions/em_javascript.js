@@ -1,6 +1,6 @@
 /*
  * This file is part of LimeSurvey
- * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -51,8 +51,8 @@ function checkconditions(value, name, type, evt_type)
 
     var questionCode;
     if(typeof name !== 'undefined') {
-        var parts = name.split('X');
-        questionCode = parts[2];
+        var parts = name.split('_');
+        questionCode = parts[0].substring(1);
         var LEMvarNameAttr = LEMvarNameAttr || {};
         if (LEMvarNameAttr['java' + name] != undefined) {
             questionCode = '' + LEMvarNameAttr['java' + name].qid;
@@ -125,15 +125,20 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
      */
     if(LSvar.bFixNumAuto)
     {
-        if(window.correctNumberField!=null) {
-            clearTimeout(window.correctNumberField);
-            window.correctNumberField = null;
+        // If the field value needs to be auto-corrected, we will do it with a timeout in order to avoid
+        // interfering with the user's typing. We will use window.correctNumberField to track one timer
+        // per field, and clear it when the user starts typing again.
+
+        if (typeof window.correctNumberField === 'undefined') {
+            window.correctNumberField = {};
+        }
+
+        if (window.correctNumberField[name] != null) {
+            clearTimeout(window.correctNumberField[name]);
+            window.correctNumberField[name] = null;
         }
 
         var addition = "";
-        if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
-            addition = cleansedValue.split("").pop();
-        }
 
         var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/); /* 1.0 : keep .0 */
         var matchMustGetZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)([0-9]*)$/); /* Maybe have 0 */
@@ -178,7 +183,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         {
             newval=displayVal;
             if(cleansedValue == '' && value != cleansedValue) {
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 500);
+                window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 500);
             }
         }
         else{
@@ -194,7 +199,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
 
             if(value != newval){
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 1500);
+                window.correctNumberField[name] = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 1500);
             }
         }
     }
@@ -309,7 +314,7 @@ function LEMcountif()
 
 function LEMcountifop()
 {
-    // takes variable number of arguments - returns count of answered questions which meet the criteria (arg op value)
+    // takes variable number of arguments - returns count of answered questions which meet the criteria (argument - operator - value)
     var result=0;
     var op=arguments[0];
     var value=arguments[1];
@@ -343,7 +348,7 @@ function LEMcountifop()
 
 function LEMsumifop()
 {
-    // takes variable number of arguments - returns sum of answered questions which meet the criteria (arg op value)
+    // takes variable number of arguments - returns sum of answered questions which meet the criteria (argument - operator - value)
     var result=0;
     var op=arguments[0];
     var value=arguments[1];
@@ -1054,6 +1059,13 @@ function LEMval(alias)
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
                         answer = htmlentities(value);
+                    } else if (attr.type == 'R') {
+                        if (value) {
+                            let context = document.getElementById(whichJsName);
+                            answer = context.querySelector(`option[value='${CSS.escape(context.value)}']`).innerText.trim().substring(5);
+                        } else {
+                            answer = '';
+                        }
                     }
                     else {
                         which_ans = '0~' + value;
@@ -1296,9 +1308,6 @@ function LEMval(alias)
                 return value;
             }
             else if (isNaN(value)) {
-                if (value==='false') {
-                    return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
-                }
                 return value;
             }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
@@ -3077,6 +3086,13 @@ function substr (str, start, len) {
     // *       returns 7: '\uD801\uDC00z'
     // Add: (?) Use unicode.runtime_encoding (e.g., with string wrapped in "binary" or "Binary" class) to
     // allow access of binary (see file_get_contents()) by: charCodeAt(x) & 0xFF (see https://developer.mozilla.org/En/Using_XMLHttpRequest ) or require conversion first?
+
+    // ensure that start/len are integers (even when strings are given)
+    if (!Number.isInteger(Number(start)) || !Number.isInteger(Number(len))) {
+       return false;
+    }
+
+
     var i = 0,
         allBMP = true,
         es = 0,

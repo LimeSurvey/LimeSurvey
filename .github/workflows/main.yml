@@ -1,180 +1,68 @@
 name: LimeSurvey - CI pipeline
-# Triggers the workflow on push or pull request events on all branches
+# Run on PRs against the long-lived branches and on direct pushes to them.
+# Feature-branch pushes are covered by the `pull_request` trigger once a PR
+# exists — listing them under `push` too would double-run CI for the same commit.
 on:
   pull_request:
+    branches:
+      - master
+      - develop-major
+      - develop-minor
+    paths-ignore:
+      - 'editor/**'
   push:
     branches:
-      - '*'
-      - '**'
-      - 'dev/**'
-      - 'bug/**'
-      - 'feature/**'
-      - 'zoho/**'
+      - master
+      - develop-major
+      - develop-minor
+    paths-ignore:
+      - 'editor/**'
+
+permissions:
+  contents: read
 
 jobs:
-  CI-pipeline:
-    runs-on: ubuntu-20.04    # ubuntu runner hosted by Github
-    strategy:
-      matrix:
-        # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
-    # Env vars for this job
-    env:
-      DBENGINE: INNODB
-
-    name: PHP ${{ matrix.php-versions }} # Check each version of php specified in matrix
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-
-      # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
-      - name: Start the MySQL service
-        run: |
-          sudo systemctl start mysql.service
-
-      - name: Initilize and check all dependencies
-        run: |
-          # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
-          php tests/check_autoloader.php
-
-          # Test
-          echo $archive_url
-          php -r 'var_dump(PHP_INT_SIZE);'
-          # Install LimeSurvey.
-          php -m  # Spit out all loaded PHP modules
-          mysql --version
-          touch enabletests
-          # NB: PHPUnit 6.5.* is installed with composer.
-          composer install -vvv
-          ./vendor/bin/phpunit --version
-
-      - name: Set up Apache+PHP
-        run: |
-          # Set up the Apache and PHP
-          sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql libapache2-mod-php8.0 -y
-
-          sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
-          sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
-          sudo service apache2 restart
-
-          # Give permision to access files for Apache
-          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./tmp
-          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./upload
-          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./themes
-          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./tests/tmp
-          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./application/config
-
-          chmod -R 777 ./tmp
-          sudo chown -R www-data:docker ./tmp
-          chmod -R 777 ./upload
-          chmod -R 777 ./themes  # Need 777 so both console and web server can cd into the folder.
-          chmod -R 777 ./tests/tmp
-          chmod -R 777 ./application/config
-          chmod +x ./tests/bin/lint-*
-
-      - name: Check MySQL service
-        run: |
-          # InnoDB needs large_file_prefix & Barracuda file format
-          # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
-          # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
-
-          sudo systemctl start mysql
-          sudo service mysql status
-          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
-          mysql -uroot -proot -e "Show  variables like '%large%';"
-          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
-          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
-          mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
-
-      - name: Load custom console and start the Application
-        run: |
-          cp application/config/config-sample-mysql.php application/config/config.php
-          php application/commands/console.php install admin password TravisLS no@email.com verbose
-
-          # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
-          # TODO: Disable, a lines was added to config file and some tests started to fail.
-          # NB: EmCache is always disabled when debug => 2
-          # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
-          # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
-          # cat application/config/config.php
-
-      - name: Test the server
-        run: |
-          # Test server.
-          wget -O - localhost
-          #sudo tail -n 500 /var/log/apache2/error.log || true
-          #sudo tail -n 500 /var/log/nginx/error.log || true
-          #sudo tail -n 500 /var/log/php7.4-fpm.log || true
-          #sudo tail -n 500 /var/log/php8.0-fpm.log || true
-          # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
-          #which php
-          #php --version
-          #php -r 'phpinfo();' | grep log
-          #php --info | grep log
-          #find /var/log
-
-        # Chromedriver setup.
-        # Note: Keep getting timeout problems on Travis with chromedriver.
-        # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
-        # unzip chromedriver_linux64.zip
-
-      - name: Set up Selenium with firefox (needed for integrity tests)
-        run: |
-          echo `which firefox`
-          echo `firefox -v`
-          echo `geckodriver --version`
-
-          # Setup Selenium with Firefox headless mode, Gecko driver already installed
-          wget "https://selenium-release.storage.googleapis.com/3.9/selenium-server-standalone-3.9.1.jar"
-          export MOZ_HEADLESS=1
-          export MOZ_HEADLESS_WIDTH=1280
-          export MOZ_HEADLESS_HEIGHT=1024
-          java -jar selenium-server-standalone-3.9.1.jar &
-          sleep 1
-
-      - name: Run functional tests
-        env:
-            DOMAIN: localhost
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/functional
-
-      - name: Upload Screenshots
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: screenshots
-          path: tests/tmp/screenshots/
-          retention-days: 5
-  
   unit-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
-        # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        include:
+          # MySQL tests with PHP 8.1 and 8.3
+          - php-version: '8.1'
+            db-type: 'mysql'
+            db-version: '8.0'
+          - php-version: '8.3'
+            db-type: 'mysql'
+            db-version: '8.0'
+          # PostgreSQL tests with PHP 8.3
+          - php-version: '8.3'
+            db-type: 'pgsql'
+            db-version: '14'
+          # MSSQL tests with PHP 8.3
+          - php-version: '8.3'
+            db-type: 'mssql'
+            db-version: '2022'
     env:
       DBENGINE: INNODB
-    steps:
-      - uses: actions/checkout@v2
 
+    name: PHP ${{ matrix.php-version }} - ${{ matrix.db-type }}
+    steps:
+      - uses: actions/checkout@v5
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
+          extensions: >-
+            dom, xml, libxml,
+            ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' ||
+                matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' ||
+                'mysqli, pdo_mysql' }}
 
       - name: Setup
         run: |
           touch enabletests
           composer install -vvv
-
-          sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql -y
-
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
@@ -182,117 +70,228 @@ jobs:
           chmod -R 777 ./application/config
 
       - name: Check MySQL service
+        if: matrix.db-type == 'mysql'
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
-
           sudo systemctl start mysql
           sudo service mysql status
+          mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" 2>/dev/null || \
           mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
           mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
 
-      - name: Load custom console and start the Application
+      - name: Install and setup PostgreSQL
+        if: matrix.db-type == 'pgsql'
+        run: |
+          # Remove any existing PostgreSQL
+          sudo systemctl stop postgresql || true
+          sudo apt-get remove -y postgresql* || true
+          # Add PostgreSQL official repository (PGDG)
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          # Install PostgreSQL
+          sudo apt-get update
+          sudo apt-get install -y postgresql-${{ matrix.db-version }} postgresql-client-${{ matrix.db-version }}
+          # Start PostgreSQL service
+          sudo systemctl start postgresql
+          sudo systemctl status postgresql
+          # Create user and database
+          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+          sudo -u postgres psql -c "CREATE DATABASE limesurvey;"
+          # Verify connection and version
+          PGPASSWORD=postgres psql -h localhost -U postgres -d limesurvey -c "SELECT version();"
+
+      - name: Install and setup MSSQL Server
+        if: matrix.db-type == 'mssql'
+        run: |
+          # Remove pre-existing Microsoft repo entries shipped on the runner
+          # (they conflict with our own signed-by entries)
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
+      
+          # Import Microsoft signing key into a dedicated keyring
+          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
+          | sudo gpg --batch --yes --no-tty --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+      
+          # Add the SQL Server repo WITH signed-by — Microsoft's own .list file omits it,
+          # so don't curl it; write it manually like msprod.list below.
+          echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/mssql-server-${{ matrix.db-version }} jammy main" \
+          | sudo tee /etc/apt/sources.list.d/mssql-server.list
+          # Install MSSQL Server
+          sudo apt-get update
+          sudo apt-get install -y mssql-server
+          # Configure MSSQL Server (non-interactive setup)
+          sudo MSSQL_SA_PASSWORD='LimeSurvey123!' MSSQL_PID='Developer' /opt/mssql/bin/mssql-conf -n setup accept-eula
+          # Verify MSSQL Server is running
+          sudo systemctl status mssql-server --no-pager
+          # Install Command-Line Tools
+          # Create msprod.list manually with signed-by to avoid conflicts with any pre-existing unsigned entries
+          echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main" | sudo tee /etc/apt/sources.list.d/msprod.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev
+          # Wait for MSSQL to be fully ready
+          sleep 10
+          # Create database and verify version
+          /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'LimeSurvey123!' -C -Q "CREATE DATABASE limesurvey"
+          /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'LimeSurvey123!' -C -d limesurvey -Q "SELECT @@VERSION"
+
+      - name: Load custom console and start the Application (MySQL)
+        if: matrix.db-type == 'mysql'
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+
+      - name: Load custom console and start the Application (PostgreSQL)
+        if: matrix.db-type == 'pgsql'
+        run: |
+          cp application/config/config-sample-pgsql.php application/config/config.php
+          # Update config with correct credentials
+          sed -i "s/password=somepassword/password=postgres/g" application/config/config.php
+          sed -i "s/'password' => 'somepassword'/'password' => 'postgres'/g" application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+
+      - name: Load custom console and start the Application (MSSQL)
+        if: matrix.db-type == 'mssql'
+        run: |
+          cp application/config/config-sample-sqlsrv.php application/config/config.php
+          # Update config with correct credentials
+          sed -i "s/'password' => 'somepassword'/'password' => 'LimeSurvey123!'/g" application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
 
       - name: Run unit tests
         env:
           XDEBUG_MODE: coverage
-        run: php vendor/bin/phpunit --testdox --stop-on-failure tests/unit
-
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped ${{ matrix.db-type != 'mysql' && '--exclude-group mysql' || '' }} tests/unit
       - name: Upload cov.xml
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: cov-file-${{ matrix.php-versions }}
+          name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
           path: cov.xml
 
+      - name: Run unit tests with debug mode (surfaces hidden warnings)
+        env:
+          LIMESURVEY_DEBUG: 2
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped --exclude-group ${{ matrix.db-type != 'mysql' && 'debugoff,mysql' || 'debugoff' }} tests/unit
+
   test-coverage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: unit-tests
     strategy:
       matrix:
-        # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+        include:
+          # MySQL tests with PHP 8.1 and 8.3
+          - php-version: '8.1'
+            db-type: 'mysql'
+          - php-version: '8.3'
+            db-type: 'mysql'
+          # PostgreSQL tests with PHP 8.3
+          - php-version: '8.3'
+            db-type: 'pgsql'
+          # MSSQL tests with PHP 8.3
+          - php-version: '8.3'
+            db-type: 'mssql'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
 
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
 
       - name: Check if cov.xml artefact exists
         uses: xSAVIKx/artifact-exists-action@v0
         id: check_coverage_artifact
         with:
-          name: cov-file-${{ matrix.php-versions }}
+          name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
 
       - name: Download cov.xml
         if: steps.check_coverage_artifact.outputs.exists == 'true'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: cov-file-${{ matrix.php-versions }}
+          name: cov-file-${{ matrix.php-version }}-${{ matrix.db-type }}
 
       - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
         run: php tests/bin/check_coverage.php cov.xml 37
 
   code-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     env:
       DBENGINE: INNODB
-    strategy:
-      matrix:
-        # Specify what versions of php you want to test
-        php-versions: ['7.4', '8.2']
+      PHP_VERSION: '8.3'
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
+      - uses: actions/checkout@v5
 
       - name: Setup
         run: |
           touch enabletests
           composer install -vvv
-
-          sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php-mysql php8.0-mysql php7.4-mysql -y
-
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
           chmod -R 777 ./tests/tmp
           chmod -R 777 ./application/config
           chmod +x ./tests/bin/lint-*
-
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
       - name: Check MySQL service
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
-
           sudo systemctl start mysql
           sudo service mysql status
+          mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" 2>/dev/null || \
           mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
           mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
-
       - name: Load custom console and start the Application
         run: |
           cp application/config/config-sample-mysql.php application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
-          
       - name: Run syntax check, CodeSniffer, MessDetector, ...
         run: composer test
+        continue-on-error: true
+
+      - name: Run PHPCBF
+        run: |
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/models
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/controllers
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/FormExtension
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/Api
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php
+          ./vendor/bin/phpcbf --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php
+        continue-on-error: true
+
+        # we need to do this because otherwise the auto commit step commits additional files
+      - name: Ignore file mode changes
+        run: |
+          git config core.fileMode false
+
+      - name: Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Apply PHPCBF changes
+          file_pattern: |
+            application/models/**.php
+            application/controllers/**.php
+            application/libraries/ExtensionInstaller/**.php
+            application/libraries/FormExtension/**.php
+            application/libraries/Api/**.php
+            application/helpers/update/updatedb_helper.php
+            application/helpers/update/updates/**.php
+            application/core/plugins/ExpressionAnswerOptions/**.php
 
       - name: Run Psalm on application/ folder with low strictness
         run: |

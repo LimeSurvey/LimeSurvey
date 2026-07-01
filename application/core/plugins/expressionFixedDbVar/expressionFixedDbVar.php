@@ -27,7 +27,7 @@ class expressionFixedDbVar extends PluginBase
     protected static $description = 'Add SEED and other DB var in ExpressionScript Engine.';
     protected static $name = 'expressionFixedDbVar';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     /**
@@ -98,7 +98,7 @@ class expressionFixedDbVar extends PluginBase
 
     /**
      * Add the fixed know var to valid variables
-     * @link https://manual.limesurvey.org/ExpressionManagerStart
+     * @link https://www.limesurvey.org/manual/ExpressionManagerStart
      */
     public function addFixedDbVar()
     {

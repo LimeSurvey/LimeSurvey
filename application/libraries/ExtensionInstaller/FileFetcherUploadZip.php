@@ -222,8 +222,8 @@ class FileFetcherUploadZip extends FileFetcher
     protected function extractZipFile($tempdir)
     {
         \Yii::import('application.helpers.common_helper', true);
-        \Yii::app()->loadLibrary('admin.pclzip');
 
+        /** @todo: Move this after checking if the file exists? */
         $this->checkZipBomb();
 
         if (!is_file($_FILES['the_file']['tmp_name'])) {
@@ -236,21 +236,14 @@ class FileFetcherUploadZip extends FileFetcher
             throw new Exception("No filter name is set, can't unzip.");
         }
 
-        $zip = new \PclZip($_FILES['the_file']['tmp_name']);
-        $aExtractResult = $zip->extract(
-            PCLZIP_OPT_PATH,
-            $tempdir,
-            PCLZIP_CB_PRE_EXTRACT,
-            $this->filterName
-        );
+        $zipExtractor = new \LimeSurvey\Models\Services\ZipExtractor($_FILES['the_file']['tmp_name']);
+        $zipExtractor->setFilterCallback($this->filterName);
 
-        if ($aExtractResult === 0) {
+        if ($zipExtractor->extractTo($tempdir) === false) {
             throw new Exception(
                 gT("This file is not a valid ZIP file archive. Import failed.")
-                . ' ' . $zip->error_string
+                . ' ' . $zipExtractor->getExtractStatus()
             );
-        } else {
-            // All good?
         }
     }
 

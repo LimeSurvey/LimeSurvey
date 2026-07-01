@@ -5,7 +5,7 @@
 /** @var int $surveyid */
 
 if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <div class="row welcome survey-action">
             <div class="col-12 content-right">
                 <div class="jumbotron message-box">
@@ -14,13 +14,13 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Success"); ?>
                     </p>
                     <p>
-                        <?php eT("Resources Import Summary"); ?>
+                        <?php eT("Resources import summary"); ?>
                     </p>
                     <p>
-                        <?php eT("Total Imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
+                        <?php eT("Total imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong><?php eT("Imported Files List") ?>:</strong>
+                        <strong><?php eT("Imported files list:"); ?></strong>
                     </p>
                     <p>
                         <ul>
@@ -39,23 +39,23 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
         </div>
     </div>
 <?php elseif (count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <div class="row welcome survey-action">
             <div class="col-12 content-right">
                 <div class="jumbotron message-box message-box-warning">
                     <h2><?php eT("Import survey resources"); ?></h2>
                     <p class="lead text-danger">
-                        <?php eT("Partial"); ?>
+                        <?php eT("Partial import"); ?>
                     </p>
                     <p>
-                        <?php eT("Resources Import Summary"); ?>
+                        <?php eT("Resources import summary"); ?>
                     </p>
                     <p>
-                        <?php eT("Total Imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
-                        <?php eT("Total Errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
+                        <?php eT("Total imported files"); ?>: <?php echo count($aImportedFilesInfo); ?><br/>
+                        <?php eT("Total errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong><?php eT("Imported Files List"); ?>:</strong>
+                        <strong><?php eT("Imported files list:"); ?></strong>
                     </p>
                     <p>
                     <ul>
@@ -67,7 +67,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                     </ul>
                     </p>
                     <p>
-                        <strong class="text-danger"><?php eT("Error Files List"); ?>:</strong>
+                        <strong class="text-danger"><?php eT("Error files list"); ?>:</strong>
                     </p>
                     <p>
                         <ul>
@@ -87,7 +87,7 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
         </div>
     </div>
 <?php else : ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <div class='side-body'>
         <div class="row welcome survey-action">
             <div class="col-12 content-right">
                 <div class="jumbotron message-box message-box-error">
@@ -96,14 +96,14 @@ if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)) : ?>
                         <?php eT("Error"); ?>
                     </p>
                     <p>
-                        <?php eT("Resources Import Summary"); ?>
+                        <?php eT("Resources import summary"); ?>
                     </p>
                     <p>
-                        <?php eT("Total Imported files"); ?>: 0<br/>
-                        <?php eT("Total Errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
+                        <?php eT("Total imported files"); ?>: 0<br/>
+                        <?php eT("Total errors"); ?>: <?php echo count($aErrorFilesInfo); ?><br/>
                     </p>
                     <p>
-                        <strong class="text-danger"><?php eT("Error Files List"); ?>:</strong>
+                        <strong class="text-danger"><?php eT("Error files list"); ?>:</strong>
                     </p>
                     <p>
                         <ul>

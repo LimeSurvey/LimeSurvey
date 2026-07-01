@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class PreTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class PreTest extends TestCase
 {
     public function preDataProvider()
     {

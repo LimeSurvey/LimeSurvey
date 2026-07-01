@@ -6,7 +6,7 @@ namespace ls\ajax;
  * Ajax helper
  * This class will help to standardize the Ajax communication
  * between server and client.
- * See the manual page for more info: https://manual.limesurvey.org/Backend_Ajax_protocol
+ * See the manual page for more info: https://www.limesurvey.org/manual/Backend_Ajax_protocol
  *
  * @since 2016-09-27
  * @author Olle Härstedt
@@ -239,7 +239,6 @@ class JsonOutputSuccess extends JsonOutput
  */
 class JsonOutputModal extends JsonOutput
 {
-
     /**
      * @var string
      */
@@ -307,7 +306,6 @@ class JsonOutputNotLoggedIn extends JsonOutputModal
  */
 class JsonOutputHtml extends JsonOutput
 {
-
     /**
      * Content.
      * @var string

@@ -2,7 +2,6 @@
 
 class PgsqlSchema extends CPgsqlSchema
 {
-
     public function __construct($conn)
     {
         parent::__construct($conn);
@@ -74,5 +73,15 @@ class PgsqlSchema extends CPgsqlSchema
             $table,
             implode(', ', $columns)
         );
+    }
+
+    /**
+     * Creates a command builder for the database.
+     * This method may be overridden by child classes to create a DBMS-specific command builder.
+     * @return LSPgsqlDbCommandBuilder command builder instance
+     */
+    protected function createCommandBuilder()
+    {
+        return new LSPgsqlDbCommandBuilder($this);
     }
 }

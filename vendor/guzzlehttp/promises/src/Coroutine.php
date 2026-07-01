@@ -84,8 +84,8 @@ final class Coroutine implements PromiseInterface
     }
 
     public function then(
-        callable $onFulfilled = null,
-        callable $onRejected = null
+        ?callable $onFulfilled = null,
+        ?callable $onRejected = null
     ): PromiseInterface {
         return $this->result->then($onFulfilled, $onRejected);
     }
@@ -117,7 +117,10 @@ final class Coroutine implements PromiseInterface
 
     public function cancel(): void
     {
-        $this->currentPromise->cancel();
+        if (isset($this->currentPromise)) {
+            $this->currentPromise->cancel();
+        }
+
         $this->result->cancel();
     }
 

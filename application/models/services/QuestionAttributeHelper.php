@@ -103,7 +103,11 @@ class QuestionAttributeHelper
         foreach ($attributes as $key => $attribute) {
             if ($attribute['i18n'] == false) {
                 if (isset($attributeValues[$attribute['name']][''])) {
-                    $attributes[$key]['value'] = $attributeValues[$attribute['name']][''];
+                    $value = $attributeValues[$attribute['name']][''];
+                    if ($key === 'image') {
+                        $value = $this->decodeImageAttributes($value);
+                    }
+                    $attributes[$key]['value'] = $value;
                 } else {
                     $attributes[$key]['value'] = $attribute['default'];
                 }
@@ -245,7 +249,7 @@ class QuestionAttributeHelper
 
     /**
      * Returns the array of categories with their assigned order.
-     * The array doesn't contain all the posible categories, only those with an order assigned.
+     * The array doesn't contain all the possible categories, only those with an order assigned.
      *
      * @return array<string,int>
      */
@@ -264,7 +268,7 @@ class QuestionAttributeHelper
 
     /**
      * Sorts an array of question attributes by category.
-     * Sorting is based on a predefined list of orders (see QuestionAtributeHelper::getCategoryOrders()).
+     * Sorting is based on a predefined list of orders (see QuestionAttributeHelper::getCategoryOrders()).
      * Categories without a predefined order are considered less relevant.
      * Categories with the same order are sorted alphabetically.
      *
@@ -299,5 +303,11 @@ class QuestionAttributeHelper
             }
         }
         return $defaultValues;
+    }
+
+    private function decodeImageAttributes($jsonString)
+    {
+        $decoded = json_decode($jsonString, true);
+        return !$decoded ? $jsonString : $decoded;
     }
 }

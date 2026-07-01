@@ -16,7 +16,6 @@ if ($hasUpdatePermission) {
             'link' => $this->createUrl("admin/labels/sa/editlabelset/lid/" . $lid),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
-                'role' => 'button'
             ],
         ]
     );
@@ -54,8 +53,8 @@ if ($hasDeletePermission) {
                 'data-post-url' =>  $this->createUrl('admin/labels/sa/delete/'),
                 'data-post-datas' => $dataPost,
                 'data-btnclass' => 'btn-danger',
-                'data-btntext' => gt('Delete'),
-                'data-title' => gt('Delete label set'),
+                'data-btntext' => gT('Delete'),
+                'data-title' => gT('Delete label set'),
                 'data-bs-target' => '#confirmation-modal',
                 'data-message' => gT("Do you really want to delete this label set?", "js")
             ],

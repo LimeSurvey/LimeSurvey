@@ -7,8 +7,8 @@
 echo viewHelper::getViewTestTag('createSurveyGroups');
 
 ?>
-<div class="row">
-    <div class="col-12 list-surveys">
+<div class="tab-content flex-lg-shrink-1 ps-4">
+    <div class="col-12">
         <?php $this->renderPartial('./surveysgroups/_form', $_data_); ?>
     </div>
 </div>

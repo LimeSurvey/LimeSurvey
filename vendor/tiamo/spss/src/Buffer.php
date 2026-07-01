@@ -169,10 +169,11 @@ class Buffer
                 $this->skip(Utils::roundUp($length, $round) - $length);
             }
             $str = Utils::bytesToString($bytes);
-            if ($charset) {
-                $str = mb_convert_encoding($str, 'utf8', $charset);
-            } elseif (!empty($this->charset)) {
-                $str = mb_convert_encoding($str, 'utf8', $this->charset);
+            
+            $charsetFrom = isset($this->charset) ? $this->charset : mb_internal_encoding();
+            $charsetTo = isset($charset) ? $charset : mb_internal_encoding();
+            if (isset($str) && (strtolower($charsetFrom) != strtolower($charsetTo))) {
+                $str = mb_convert_encoding($str, $charsetTo, $this->charset);
             }
 
             return $str;
@@ -220,12 +221,12 @@ class Buffer
      */
     public function writeString($data, $length = '*', $charset = null)
     {
-        if ($charset) {
-            $data = mb_convert_encoding($data, 'utf8', $charset);
-        } elseif (!empty($this->charset)) {
-            $data = mb_convert_encoding($data, 'utf8', $this->charset);
+        $charsetTo = isset($this->charset) ? $this->charset : mb_internal_encoding();
+        $charsetFrom = isset($charset) ? $charset : mb_internal_encoding();
+        if (isset($data) && (strtolower($charsetFrom) != strtolower($charsetTo))) {
+            $data = mb_convert_encoding($data, $charsetTo, $charsetFrom);
         }
-
+        //file_put_contents("/var/encuestas/test.txt", "To: " . $charsetTo . " FROM:" . $charsetFrom . "\n", FILE_APPEND | LOCK_EX);
         return $this->write(pack('A' . $length, $data));
     }
 
@@ -403,13 +404,14 @@ class Buffer
     private function readNumeric($length, $format)
     {
         $bytes = $this->read($length);
-        if (false !== $bytes) {
+        if ((false !== $bytes) && (strlen($bytes) > 0)) {
             if ($this->isBigEndian) {
                 $bytes = strrev($bytes);
             }
             $data = unpack($format, $bytes);
-
-            return $data[1];
+            if (false !== $data) {
+                return $data[1];
+            }
         }
 
         return false;

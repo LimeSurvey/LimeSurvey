@@ -1,6 +1,6 @@
 <!-- Edit button -->
 <?php
-if($hasSurveyContentUpdatePermission) {
+if ($hasSurveyContentUpdatePermission) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [

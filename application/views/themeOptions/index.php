@@ -8,6 +8,7 @@
  * @var TemplateConfig $oSurveyTheme
  * @var int $pageSize
  * @var array $aAdminThemes
+ * @var array $aTemplatesWithoutDB
  */
 
 // TODO: rename to template_list.php and move to template controller
@@ -16,35 +17,33 @@
 echo viewHelper::getViewTestTag('templateOptions');
 ?>
 <div class="list-themes">
-    <ul class="nav nav-tabs" id="themelist">
-        <li class="nav-item">
-            <a class="nav-link active" href="#surveythemes" data-bs-toggle="tab">
+    <ul class="nav nav-tabs" id="themelist" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="surveythemes-tab" href="#surveythemes" data-bs-toggle="tab" role="tab" aria-controls="surveythemes" aria-selected="true">
                 <?php eT('Survey themes'); ?>
             </a>
         </li>
-        <li>
-            <a class="nav-link" href="#adminthemes" data-bs-toggle="tab">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="adminthemes-tab" href="#adminthemes" data-bs-toggle="tab" role="tab" aria-controls="adminthemes" aria-selected="false">
                 <?php eT('Admin themes'); ?>
             </a>
         </li>
-        <li>
-            <a class="nav-link" href="#questionthemes" data-bs-toggle="tab">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="questionthemes-tab" href="#questionthemes" data-bs-toggle="tab" role="tab" aria-controls="questionthemes" aria-selected="false">
                 <?php eT('Question themes'); ?>
             </a>
         </li>
     </ul>
-    <div class="tab-content">
-        <div id="surveythemes" class="tab-pane active">
+    <div class="tab-content" id="themelistContent">
+        <div id="surveythemes" class="tab-pane active" role="tabpanel" aria-labelledby="surveythemes-tab">
             <div class="list-surveys">
-                <h3><?= gT('Installed survey themes:') ?></h3>
+                <h2 class="h3"><?= gT('Installed survey themes:') ?></h2>
                 <?php $this->renderPartial('./surveythemelist', [
                         'oSurveyTheme' => $oSurveyTheme,
                         'pageSize'     => $pageSize
-                    ]
-                ); ?>
+                    ]); ?>
                 <!-- Available Themes -->
-                <?php $templatewithNoDb = $oSurveyTheme->getTemplatesWithNoDb()?>
-                <?php if (count($templatewithNoDb) > 0) : ?>
+                <?php if (!empty($aTemplatesWithoutDB['valid'])) : ?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
                     <div id="templates_no_db" >
                         <table class="items table table-hover">
@@ -62,16 +61,16 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <tbody>
                             <?php /** @var TemplateManifest $oTemplate */ ?>
                             <?php $surveyThemeIterator = 0 ?>
-                            <?php foreach ($templatewithNoDb as $key => $oTemplate) : ?>
+                            <?php foreach ($aTemplatesWithoutDB['valid'] as $key => $oTemplate) : ?>
                                 <tr class="odd">
                                     <td class="col-lg-1"><?php echo $oTemplate->getPreview(); ?></td>
-                                    <td class="col-lg-2"><?php echo $oTemplate->sTemplateName; ?></td>
+                                    <td class="col-lg-2"><?php echo CHtml::encode($oTemplate->sTemplateName); ?></td>
                                     <td class="col-lg-3"><?php echo $oTemplate->getDescription(); ?></td>
                                     <td class="col-lg-2"><?php eT('XML themes'); ?></td>
                                     <td class="col-lg-1"><?php echo $oTemplate->config->metadata->extends; ?></td>
-                                    <?php if (TemplateConfig::isCompatible($oTemplate->path . 'config.xml')): ?>
+                                    <?php if (TemplateConfig::isCompatible($oTemplate->path . 'config.xml')) : ?>
                                         <td class="col-lg-2"><?php echo $oTemplate->getButtons(); ?></td>
-                                    <?php else: ?>
+                                    <?php else : ?>
                                         <td class="col-lg-2">
                                             <div class="d-grid gap-2">
                                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
@@ -88,7 +87,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                             </div>
                                                             <div class="modal-body">
                                                                 <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?><br>
-                                                                    <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
+                                                                    <a class="ls-link" href="https://www.limesurvey.org/manual/Extension_compatibility" target="_blank">
                                                                         <?= gT('For more information consult our manual.') ?>
                                                                     </a>
                                                                 </p>
@@ -134,11 +133,8 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <?php endif; ?>
                 <!-- End Available Themes -->
                 <!-- Broken Themes  -->
-                <?php $aBrokenThemes = Template::getBrokenThemes();
-                if (count($aBrokenThemes) > 0) : ?>
+                <?php if (!empty($aTemplatesWithoutDB['invalid'])) : ?>
                     <h3><?php eT('Broken survey themes'); ?></h3>
-
-
                     <div id="thembes_broken" >
                         <table class="items table table-hover">
                             <thead>
@@ -150,12 +146,11 @@ echo viewHelper::getViewTestTag('templateOptions');
                             </thead>
 
                             <tbody>
-                            <?php foreach ($aBrokenThemes as $sName => $oBrokenTheme) : ?>
-                                <?php // echo $oTemplate; ?>
+                            <?php foreach ($aTemplatesWithoutDB['invalid'] as $sName => $oBrokenTheme) : ?>
                                 <tr class="odd">
-                                    <td class="col-lg-1 text-danger"><?php echo $sName; ?></td>
+                                    <td class="col-lg-1 text-danger"><?= $sName ?></td>
                                     <td class="col-lg-8 ">
-                                        <blockquote><?php echo $oBrokenTheme->getMessage(); ?></blockquote>
+                                        <blockquote><?= $oBrokenTheme['error'] ?? '' ?></blockquote>
                                     </td>
                                     <td class="col-lg-2">
                                         <div class="d-grid gap-2">
@@ -228,9 +223,9 @@ echo viewHelper::getViewTestTag('templateOptions');
                 <!-- End Deprecated Themes -->
             </div>
         </div>
-        <div id="adminthemes" class="tab-pane">
+        <div id="adminthemes" class="tab-pane" role="tabpanel" aria-labelledby="adminthemes-tab">
             <div class="list-surveys">
-                <h3><?php eT('Available admin themes:'); ?></h3>
+                <h2 class="h3"><?php eT('Available admin themes:'); ?></h2>
                 <div id="admin_themes">
                     <table class="items table table-hover">
                         <thead>
@@ -247,25 +242,25 @@ echo viewHelper::getViewTestTag('templateOptions');
                         <?php foreach ($aAdminThemes as $key => $oTheme) : ?>
                             <tr class="odd">
                                 <td class="col-lg-1"><?php echo $oTheme->preview; ?></td>
-                                <td class="col-lg-2"><?php echo $oTheme->metadata->name; ?></td>
-                                <td class="col-lg-3"><?php echo $oTheme->metadata->description; ?></td>
+                                <td class="col-lg-2"><?php echo CHtml::encode($oTheme->metadata->name); ?></td>
+                                <td class="col-lg-3"><?php echo CHtml::encode($oTheme->metadata->description); ?></td>
                                 <td class="col-lg-2"><?php eT('Core admin theme'); ?></td>
                                 <td class="col-lg-1">
-                                    <?php if (TemplateConfig::isCompatible($oTheme->path . 'config.xml')): ?>
+                                    <?php if (TemplateConfig::isCompatible($oTheme->path . 'config.xml')) : ?>
                                         <?php if ($oTheme->name === App()->getConfig('admintheme')) : ?>
-                                            <h3><strong class="text-info"><?php eT("Selected") ?></strong></h3>
+                                            <h3 role="presentation"><strong class="text-info"><?php eT("Selected") ?></strong></h3>
                                         <?php else : ?>
                                             <a href="<?= $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->name]) ?>"
                                                class="btn btn-outline-secondary btn-sm">
                                                 <?= gT("Select") ?>
                                             </a>
                                         <?php endif; ?>
-                                    <?php else: ?>
+                                    <?php else : ?>
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#admin_theme_error_<?= $adminThemeIterator ?>">
                                             <i class="ri-error-warning-fill"></i><?= gT('Show errors') ?>
                                         </button>
                                         <div class="modal fade" id="admin_theme_error_<?= $adminThemeIterator ?>" tabindex="-1"
-                                             aria-labelledby="#admin_theme_error_title_<?= $adminThemeIterator ?>" aria-hidden="true">
+                                             aria-labelledby="admin_theme_error_title_<?= $adminThemeIterator ?>" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -274,7 +269,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                     </div>
                                                     <div class="modal-body">
                                                         <p><?= gT('The theme is not compatible with your version of LimeSurvey.') ?></p>
-                                                        <a href="https://manual.limesurvey.org/Extension_compatibility" target="_blank">
+                                                        <a href="https://www.limesurvey.org/manual/Extension_compatibility" target="_blank">
                                                             <?= gT('For more information consult our manual.') ?>
                                                         </a>
                                                     </div>
@@ -294,9 +289,9 @@ echo viewHelper::getViewTestTag('templateOptions');
                 </div>
             </div>
         </div>
-        <div id="questionthemes" class="tab-pane">
+        <div id="questionthemes" class="tab-pane" role="tabpanel" aria-labelledby="questionthemes-tab">
             <div class="col-12 list-surveys">
-                <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
+                <?php echo '<h2 class="h3">' . gT('Question themes:') . '</h2>'; ?>
                 <!-- Installed Question Themes -->
                 <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
                 <!-- Available Quesiton Themes and broken question themes-->
@@ -307,10 +302,10 @@ echo viewHelper::getViewTestTag('templateOptions');
 </div>
 
 <?php $this->renderPartial(
-        './surveythememenu',
-        [
-            'canImport'=>$canImport,
-            'importErrorMessage'=>$importErrorMessage,
+    './surveythememenu',
+    [
+            'canImport' => $canImport,
+            'importErrorMessage' => $importErrorMessage,
             'importModal' => 'importSurveyModal',
             'importTemplate' => 'importSurveyTemplate',
             'themeType' => 'survey'
@@ -318,8 +313,8 @@ echo viewHelper::getViewTestTag('templateOptions');
 ); ?>
 
 <?php $this->renderPartial(
-        './surveythememenu',
-        [
+    './surveythememenu',
+    [
             'canImport' => $canImport,
             'importErrorMessage' => $importErrorMessage,
             'importModal' => 'importQuestionModal',

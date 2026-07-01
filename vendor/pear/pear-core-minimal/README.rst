@@ -17,10 +17,5 @@ Included files
 ==============
 - ``OS/Guess.php``
 - ``PEAR.php``
-- ``PEAR/Error.php``
 - ``PEAR/ErrorStack.php``
 - ``System.php``
-
-
-``PEAR/Error.php`` is a dummy file that only includes ``PEAR.php``,
-to make autoloaders work without problems.

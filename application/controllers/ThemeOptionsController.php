@@ -1,5 +1,9 @@
 <?php
 
+use LimeSurvey\DI;
+use LimeSurvey\Models\Services\SurveyDetailService;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
+
 /**
  * @class ThemeOptionsController
  */
@@ -75,7 +79,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Create a new model.
-     * If creation is sucessful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * todo: function not in use (  new TemplateOptions(); there is no model class like this ..)
      *
@@ -118,25 +122,25 @@ class ThemeOptionsController extends LSBaseController
      * @return void
      * @throws CException
      */
-    /*
     public function actionResetMultiple()
     {
-        $aTemplates = json_decode(App()->request->getPost('sItems'));
+        $aTemplates = json_decode(App()->request->getPost('sItems', ''));
         $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
-        if (Permission::model()->hasGlobalPermission('template', 'update')) {
+        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             foreach ($aTemplates as $template) {
+                $templateID = (int) $template;
                 if ($gridid === 'questionthemes-grid') {
-                    /** @var QuestionTheme|null
-                    $questionTheme = QuestionTheme::model()->findByPk($template);
+                    /** @var QuestionTheme|null */
+                    $questionTheme = QuestionTheme::model()->findByPk($templateID);
                     $templatename = $questionTheme->name;
                     $templatefolder = $questionTheme->xml_path;
                     $aResults[$template]['title'] = $templatename;
                     $sQuestionThemeName = $questionTheme->importManifest($templatefolder);
                     $aResults[$template]['result'] = isset($sQuestionThemeName) ? true : false;
                 } elseif ($gridid === 'themeoptions-grid') {
-                    $model = TemplateConfiguration::model()->findByPk($template);
+                    $model = TemplateConfiguration::model()->findByPk($templateID);
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
                     $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
@@ -145,22 +149,20 @@ class ThemeOptionsController extends LSBaseController
             }
 
             //set Modal table labels
-            $tableLabels = array(gT('Theme ID'),gT('Theme name') ,gT('Status'));
+            $tableLabels = array(gT('Theme ID'), gT('Theme name'), gT('Status'));
 
             $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
-                array
-                (
+                array(
                     'aResults'     => $aResults,
                     'successLabel' => gT('Has been reset'),
-                    'tableLabels'  => $tableLabels
+                    'tableLabels'  => $tableLabels,
                 )
             );
         } else {
-            //todo: this message gets never visible for the user ...
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-    }*/
+    }
 
     /**
      * Uninstalls all selected themes from massive action.
@@ -197,7 +199,7 @@ class ThemeOptionsController extends LSBaseController
                             $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
                         } else {
                             $aResults[$template]['result'] = false;
-                            $aResults[$template]['error'] = gT('Error! You cannot uninstall the default template.');
+                            $aResults[$template]['error'] = gT('Error! You cannot uninstall a core or default theme.');
                         }
                     } else {
                         $aResults[$template]['result'] = false;
@@ -256,12 +258,14 @@ class ThemeOptionsController extends LSBaseController
                 'aResults'     => $aResults,
                 'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels,
+                'caption'      => gT('Selected themes'),
             )
         );
     }
 
     /**
-     * Updates a particular model (globally).
+     * Updates the options of a specific theme by themeId (globally).
+     * used when setting the theme options through themes menu.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id ID of the model
@@ -275,9 +279,6 @@ class ThemeOptionsController extends LSBaseController
         $model = $this->loadModel($id);
 
         if (Permission::model()->hasTemplatePermission($model->template_name, 'update')) {
-            $model = $this->turnAjaxmodeOffAsDefault($model);
-            $model->save();
-
             if (isset($_POST['TemplateConfiguration'])) {
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
@@ -293,34 +294,8 @@ class ThemeOptionsController extends LSBaseController
     }
 
     /**
-     * This method turns ajaxmode off as default.
-     *
-     * @param TemplateConfiguration $templateConfiguration Configuration of Template
-     *
-     * @return TemplateConfiguration
-     */
-    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
-    {
-        $attributes = $templateConfiguration->getAttributes();
-        $hasOptions = isset($attributes['options']);
-        if ($hasOptions) {
-            $options = $attributes['options'] ?? '';
-            $optionsJSON = json_decode($options, true);
-
-            if ($options !== 'inherit' && $optionsJSON !== null) {
-                $ajaxModeOn  = (!empty($optionsJSON['ajaxmode']) && $optionsJSON['ajaxmode'] == 'on');
-                if ($ajaxModeOn) {
-                    $optionsJSON['ajaxmode'] = 'off';
-                    $options = json_encode($optionsJSON);
-                    $templateConfiguration->setAttribute('options', $options);
-                }
-            }
-        }
-        return $templateConfiguration;
-    }
-
-    /**
-     * Updates a particular model.
+     * Updates the options of a specific survey theme by surveyId and surveyGroupId.
+     * used when setting the theme options through a surveys theme options menu.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @return void
@@ -338,31 +313,29 @@ class ThemeOptionsController extends LSBaseController
         // Did we really need hasGlobalPermission template ? We are inside survey : hasSurveyPermission only seem better
         $model = TemplateConfiguration::getInstance(null, null, $sid);
 
-        // turn ajaxmode off as default behavior
-        $model = $this->turnAjaxmodeOffAsDefault($model);
-        $model->save();
-
         if (isset($_POST['TemplateConfiguration'])) {
             $model->attributes = $_POST['TemplateConfiguration'];
             if ($model->save()) {
+                $surveyDetailService = DI::getContainer()->get(SurveyDetailService::class);
+                $surveyDetailService->removeCache($sid);
                 App()->user->setFlash('success', gT('Theme options saved.'));
-                $this->redirect(array("themeOptions/updateSurvey", 'surveyid' => $sid, 'gsid' => $gsid));
             }
         }
         $this->updateCommon($model, $sid, $gsid);
     }
 
     /**
-     * Updates particular model.
+     * Updates the options of a survey group theme by themeId and surveyGroupId.
+     * used when setting the theme options through a survey groups theme options menu.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
-     * @param integer $id   ID of model.
      * @param integer $gsid id of survey group
+     * @param null|integer $id   ID of model.
      * @param null    $l    ?
      *
      * @return void
      */
-    public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null)
+    public function actionUpdateSurveyGroup(int $gsid, ?int $id = null, ?int $l = null)
     {
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (empty($gsid)) {
@@ -472,12 +445,14 @@ class ThemeOptionsController extends LSBaseController
         }
 
         $aData['oSurveyTheme'] = $oSurveyTheme;
+        $aData['aTemplatesWithoutDB'] = TemplateConfig::getTemplatesWithNoDb();
+
         $aData['canImport']  = $canImport;
         $aData['importErrorMessage']  = $importErrorMessage;
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
         $aData['topbar']['title'] = gT('Themes');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         if (Permission::model()->hasGlobalPermission('templates', 'import')) {
             //only show upload&install button if user has the permission ...
@@ -560,13 +535,19 @@ class ThemeOptionsController extends LSBaseController
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if ($theme === 'questiontheme') {
                 $templateFolder = App()->request->getPost('templatefolder');
+                if (strpos($templateFolder, "..") !== false) {
+                    throw new CHttpException(eT("Unsafe path"));
+                }
+                //$themeType is being sanitized inside getAbsolutePathForType
+                $themeType = App()->request->getPost('theme_type');
+                $fullTemplateFolder = QuestionTheme::getAbsolutePathForType($templateFolder, $themeType);
                 $questionTheme = new QuestionTheme();
-                //skip convertion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
-                $themeName = $questionTheme->importManifest($templateFolder, true);
+                //skip conversion LS3ToLS4 (this should have been happen BEFORE theme was moved to the uninstalled themes
+                $themeName = $questionTheme->importManifest($fullTemplateFolder, true);
                 if (isset($themeName)) {
-                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been successfully installed'), "$themeName"), 'success');
+                    App()->setFlashMessage(sprintf(gT('The question theme "%s" has been successfully installed'), "$themeName"), 'success');
                 } else {
-                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');
+                    App()->setFlashMessage(sprintf(gT('The question theme "%s" could not be installed'), $themeName), 'error');
                 }
                 $this->redirect(array("themeOptions/index#questionthemes"));
             } else {
@@ -644,8 +625,16 @@ class ThemeOptionsController extends LSBaseController
         }
         TemplateConfiguration::uninstall($templatename);
         TemplateManifest::importManifest($templatename);
-        App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
-        $this->redirect(array("themeOptions/index"));
+        $this->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                'loggedIn'      => true,
+                'hasPermission' => true,
+                'success'       => sprintf(gT("The theme '%s' has been reset.", "unescaped"), $templatename),
+            ]],
+            false,
+            false
+        );
     }
 
     /**
@@ -691,120 +680,75 @@ class ThemeOptionsController extends LSBaseController
      * Updates Common.
      *
      * @param TemplateConfiguration $model Template Configuration
-     * @param int|null $sid Survey ID
-     * @param int|null $gsid Survey Group ID
+     * @param ?int $sid Survey ID
+     * @param ?int $gsid Survey Group ID
      *
      * @return void
+     * @throws CException
      */
-    private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null)
+    private function updateCommon(TemplateConfiguration $model, ?int $sid = null, ?int $gsid = null)
     {
-        /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
-        $oTemplate = Template::model()->getInstance($model->template_name, $sid, $gsid);
-
-        $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
-        $aOptionAttributes            = TemplateManifest::getOptionAttributes($oTemplate->path);
-
-        $oTemplate = $oModelWithInheritReplacement->prepareTemplateRendering($oModelWithInheritReplacement->template->name); // Fix empty file lists
-        $aTemplateConfiguration = $oTemplate->getOptionPageAttributes();
-        App()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
-
-        if ($aOptionAttributes['optionsPage'] == 'core') {
-            App()->clientScript->registerPackage('themeoptions-core');
-            $templateOptionPage = '';
-        } else {
-             $templateOptionPage = $oModelWithInheritReplacement->optionPage;
+        $diContainer = DI::getContainer();
+        if ($diContainer === null) {
+            throw new CException('Dependency Injection Container not found');
         }
-
-        $oSimpleInheritance = Template::getInstance(
-            $oModelWithInheritReplacement->sTemplateName,
-            $sid,
-            $gsid,
-            null,
-            true
-        );
-
-        $oSimpleInheritance->options = 'inherit';
-        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering(
-            $oModelWithInheritReplacement->sTemplateName
-        );
-        $oParentOptions = (array) $oSimpleInheritanceTemplate->oOptions;
-
-        $aData = array(
-            'model'              => $model,
-            'templateOptionPage' => $templateOptionPage,
-            'optionInheritedValues' => $oModelWithInheritReplacement->oOptions,
-            'optionCssFiles'        => $oModelWithInheritReplacement->files_css,
-            'optionCssFramework'    => $oModelWithInheritReplacement->cssframework_css,
-            'aTemplateConfiguration' => $aTemplateConfiguration,
-            'aOptionAttributes'      => $aOptionAttributes,
-            'oParentOptions'  => $oParentOptions,
-            'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load,
-            'sid' => $sid,
-            'gsid' => $gsid
-        );
-
+        try {
+            $surveyThemeService = $diContainer->get(
+                SurveyThemeConfiguration::class
+            );
+        } catch (Exception $e) {
+            App()->user->setFlash(gT('Error'), $e->getMessage());
+        }
+        $data = $surveyThemeService->updateCommon($model, $sid, $gsid);
+        if ($data['aOptionAttributes']['optionsPage'] === 'core') {
+            App()->clientScript->registerPackage('themeoptions-core');
+        }
         if ($sid !== null) {
-            $aData['surveyid'] = $sid;
-            $aData['title_bar']['title'] = gT("Survey theme options");
-            $aData['subaction'] = gT("Survey theme options");
-            $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
+            $data['title_bar']['title'] = gT("Survey theme options");
+            $data['subaction'] = gT("Survey theme options");
+            $data['sidemenu']['landOnSideMenuTab'] = 'settings';
             //buttons in topbar
-            $aData['topBar']['showSaveButton'] = true;
+            $data['topBar']['showSaveButton'] = true;
             $topbarData = TopbarConfiguration::getSurveyTopbarData($sid);
-            $topbarData = array_merge($topbarData, $aData['topBar']);
-            $aData['topbar']['middleButtons'] = $this->renderPartial(
+            $topbarData = array_merge($topbarData, $data['topBar']);
+            $data['topbar']['middleButtons'] = $this->renderPartial(
                 '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
                 $topbarData,
                 true
             );
-            $aData['topbar']['rightButtons'] = $this->renderPartial(
-                '/layouts/partial_topbar/right_close_saveclose_save',
-                [
-                    'isCloseBtn' => false,
-                    'backUrl' => Yii::app()->createUrl('themeOptions'),
-                    'isSaveBtn' => true,
-                    'isSaveAndCloseBtn' => false,
-                    'formIdSave' => 'template-options-form'
-                ],
-                true
-            );
+            $isCloseBtn = false;
         } else {
             // Title concatenation
             $templateName = $model->template_name;
-            $basePageTitle = sprintf('Survey options for theme %s', $templateName);
-
+            $pageTitle = sprintf(gT('Survey options for theme %s (global level)'), $templateName);
+            // @todo Condition is not reachable
             if (!is_null($sid)) {
-                $addictionalSubtitle = gT(" for survey id: $sid");
+                $pageTitle = sprintf(gT("Survey options for theme %s and survey ID %s"), $templateName, $sid);
             } elseif (!is_null($gsid)) {
-                $addictionalSubtitle = gT(" for survey group id: $gsid");
-            } else {
-                $addictionalSubtitle = gT(" global level");
+                $pageTitle = sprintf(gT("Survey options for theme %s and survey group ID %s"), $templateName, $gsid);
             }
-
-            $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
-
-            $aData['topbar']['title'] = $pageTitle;
-            $aData['topbar']['rightButtons'] = $this->renderPartial(
-                '/layouts/partial_topbar/right_close_saveclose_save',
-                [
-                    'isCloseBtn' => true,
-                    'backUrl' => Yii::app()->createUrl('themeOptions'),
-                    'isSaveBtn' => true,
-                    'isSaveAndCloseBtn' => false,
-                    'formIdSave' => 'template-options-form'
-                ],
-                true
-            );
+            $data['topbar']['title'] = $pageTitle;
+            $isCloseBtn = true;
         }
-
-        $this->aData = $aData;
+        $data['topbar']['rightButtons'] = $this->renderPartial(
+            '/layouts/partial_topbar/right_close_saveclose_save',
+            [
+                'isCloseBtn'        => $isCloseBtn,
+                'backUrl'           => Yii::app()->createUrl('themeOptions'),
+                'isSaveBtn'         => true,
+                'isSaveAndCloseBtn' => false,
+                'formIdSave'        => 'template-options-form'
+            ],
+            true
+        );
+        $this->aData = $data;
         // here, render update //
-        $this->render('update', $aData);
+        $this->render('update', $data);
     }
 
     /**
      * Try to get the get-parameter from request.
-     * At the moment there are three namings for a survey id:
+     * At the moment there are three namings for a survey ID:
      * 'sid'
      * 'surveyid'
      * 'iSurveyID'

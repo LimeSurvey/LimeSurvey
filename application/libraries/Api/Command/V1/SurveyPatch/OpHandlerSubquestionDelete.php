@@ -2,8 +2,15 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
-use LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService;
+use LimeSurvey\DI;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
+use LimeSurvey\Models\Services\{Exception\NotFoundException,
+    Exception\PermissionDeniedException,
+    QuestionAggregateService,
+    QuestionAggregateService\SubQuestionsService};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerInterface,
@@ -13,6 +20,7 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerSubquestionDelete implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerValidationTrait;
 
     protected SubQuestionsService $subQuestionsService;
 
@@ -46,14 +54,18 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
      *   }
      * @param OpInterface $op
      * @return void
-     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
-     * @throws \LimeSurvey\Models\Services\Exception\PermissionDeniedException
-     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op)
     {
+        $questionService = DI::getContainer()->get(
+            QuestionAggregateService::class
+        );
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionService->checkDeletePermission($surveyId);
         $this->subQuestionsService->delete(
-            $this->getSurveyIdFromContext($op),
+            $surveyId,
             $op->getEntityId()
         );
     }
@@ -61,10 +73,16 @@ class OpHandlerSubquestionDelete implements OpHandlerInterface
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        return ((int)$op->getEntityId()) > 0;
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateEntityId($op, $validationData);
+        return $this->getValidationReturn(
+            gT('Could not delete subquestion'),
+            $validationData,
+            $op
+        );
     }
 }

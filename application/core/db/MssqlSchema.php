@@ -23,11 +23,11 @@ class MssqlSchema extends CMssqlSchema
          * Auto increment.
          */
         $this->columnTypes['autoincrement'] = 'integer NOT NULL IDENTITY (1,1)';
-        
+
         $this->columnTypes['longbinary'] = 'varbinary(max)';
     }
 
-    
+
     public function getColumnType($type)
     {
         $sResult = $type;
@@ -83,5 +83,15 @@ class MssqlSchema extends CMssqlSchema
             'PRIMARY KEY (%s)',
             implode(', ', $columns)
         );
+    }
+
+    /**
+     * Creates a command builder for the database.
+     * This method may be overridden by child classes to create a DBMS-specific command builder.
+     * @return LSMssqlDbCommandBuilder command builder instance
+     */
+    protected function createCommandBuilder()
+    {
+        return new LSMssqlDbCommandBuilder($this);
     }
 }

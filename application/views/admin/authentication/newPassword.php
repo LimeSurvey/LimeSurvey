@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Login Form
  */
@@ -24,15 +25,17 @@ echo viewHelper::getViewTestTag('login');
                     ?>
                     <!-- Form -->
                     <?php
-                    echo CHtml::form(['admin/authentication/sa/newPassword'],
+                    echo CHtml::form(
+                        ['admin/authentication/sa/newPassword'],
                         'post',
-                        ['id' => 'loginform', 'name' => 'loginform']); ?>
+                        ['id' => 'loginform', 'name' => 'loginform']
+                    ); ?>
                     <div class="row login-content login-content-form">
                         <div class="col-12">
                             <?php
                             ?>
                             <span>
-                                    <label for="password_repeat" class="required" required><?= gT("Password") ?> <span
+                                    <label for="password" class="required" required><?= gT("Password") ?> <span
                                                 class="required">*</span></label>
                                     <input name="password" placeholder='********' id="password" class="form-control ls-important-field"
                                            type="password">
@@ -50,7 +53,7 @@ echo viewHelper::getViewTestTag('login');
                                     <input type="text" class="form-control" readonly name="random_example_password"
                                            value="<?= htmlspecialchars((string) $randomPassword) ?>"/>
                                 </span>
-                            <input type="hidden" name="validation_key" value="<?= $validationKey ?>">
+                            <input type="hidden" name="validation_key" value="<?= CHtml::encode($validationKey) ?>">
                         </div>
                     </div>
 
@@ -60,7 +63,7 @@ echo viewHelper::getViewTestTag('login');
                             <p>
                                 <button type="submit" class="btn btn-outline-secondary" name='login_submit'
                                         value='login'><?php
-                                    eT('Save'); ?></button>
+                                        eT('Save'); ?></button>
                                 <br/>
                             </p>
                         </div>

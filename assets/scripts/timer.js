@@ -199,6 +199,10 @@ var TimerConstructor = function(options){
      * Gets the current timer from the localStorage
      */
     _getTimerFromLocalStorage = function(){
+        if(!window.localStorage) {
+            return null;
+        }
+
         return window.localStorage.getItem('limesurvey_timers_'+timersessionname);
     },
 
@@ -206,6 +210,9 @@ var TimerConstructor = function(options){
      * Sets the current timer to localStorage
      */
     _setTimerToLocalStorage = function(timerValue){
+        if(!window.localStorage) {
+            return;
+        }
         window.localStorage.setItem('limesurvey_timers_'+timersessionname, timerValue);
     },
 
@@ -213,6 +220,9 @@ var TimerConstructor = function(options){
      * Unsets the timer in localStorage
      */
     _unsetTimerInLocalStorage = function(){
+        if(!window.localStorage) {
+            return;
+        }
         window.localStorage.removeItem('limesurvey_timers_'+timersessionname);
     },
 

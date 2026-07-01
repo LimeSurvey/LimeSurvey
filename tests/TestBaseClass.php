@@ -67,7 +67,6 @@ class TestBaseClass extends TestCase
         self::$screenshotsFolder = self::$tempFolder . '/screenshots';
         self::$testHelper->importAll();
 
-        \Yii::import('application.helpers.globalsettings_helper', true);
     }
 
     /**
@@ -193,11 +192,14 @@ class TestBaseClass extends TestCase
     }
 
     /**
-     * Helper dispatch evento to specific plugin
-     * @param string $pluginName
-     * @param \PluginEvent $eventName
-     * @param array $eventValues
-     * @return void
+     * Dispatches an event to a specific plugin.
+     *
+     * The provided key/value pairs are set on the created PluginEvent before dispatch.
+     *
+     * @param string $pluginName The name of the target plugin.
+     * @param string $eventName The event name to dispatch.
+     * @param array $eventValues Key/value pairs to set on the event (each key becomes an event property).
+     * @return \PluginEvent The dispatched event instance with the provided values set.
      */
     public static function dispatchPluginEvent($pluginName, $eventName, $eventValues)
     {
@@ -210,9 +212,30 @@ class TestBaseClass extends TestCase
         return $oEvent;
     }
 
+    /**
+     * Create a new User record, ensure a password is set (defaulting to a known test password if missing),
+     * apply the provided global permissions, and return the created user model.
+     *
+     * If `users_name` is present in `$userData`, any existing users with that name are removed before creation.
+     * If `password` is missing, empty, or a single space, a default password (`testpassword123`) is used; otherwise the provided password is hashed.
+     *
+     * @param array $userData Associative array of user attributes for the new user (e.g., `users_name`, `password`, etc.).
+     * @param array $permissions Map of permission keys to settings applied as global permissions for the new user.
+     * @return \User The newly created user model.
+     * @throws \Exception If the user model cannot be saved (includes validation errors).
+     */
     protected static function createUserWithPermissions(array $userData, array $permissions = [])
     {
-        if ($userData['password'] != ' ') {
+        if (!empty($userData['users_name'])) {
+            \User::model()->deleteAllByAttributes([
+                'users_name' => $userData['users_name']
+            ]);
+        }
+        
+        // Ensure password is set (use default if not provided)
+        if (empty($userData['password']) || $userData['password'] == ' ') {
+            $userData['password'] = password_hash('testpassword123', PASSWORD_DEFAULT);
+        } else {
             $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
         }
 

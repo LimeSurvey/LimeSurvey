@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -37,7 +37,7 @@
 
             ga('create', '{{ aSurveyInfo.googleanalyticsapikey }}', 'auto');
             ga('send', 'pageview');
-            ga('send', 'pageview', '{{ trackUrl }}');
+            ga('send', 'pageview', '{{ trackUrl|escape }}');
             </script>
         {% endif %}
     {% else %}
@@ -53,7 +53,7 @@
 
             {% if not (aSurveyInfo.googleanalyticsstyle is defined and aSurveyInfo.googleanalyticsstyle == 1) %}
                 {% set trackUrl = getGoogleAnalyticsTrackingUrl(aSurveyInfo.sid, aSurveyInfo.trackUrlPageName ?? '') %}
-                gtag('event', 'page_view', { page_title: '{{ trackUrl }}' })
+                gtag('event', 'page_view', { page_title: '{{ trackUrl|escape }}' })
             {% endif %}
         </script>
     {% endif %}

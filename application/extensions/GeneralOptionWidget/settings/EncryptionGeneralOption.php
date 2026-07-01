@@ -22,8 +22,8 @@ class EncryptionGeneralOption extends GeneralOption
             [
                 'classes' => [],
                 'options' => [
-                    new SwitchOption(gt('Off'), 'N'),
-                    new SwitchOption(gt('On'), 'Y'),
+                    new SwitchOption(gT('Off'), 'N'),
+                    new SwitchOption(gT('On'), 'Y'),
                 ]
             ]
         );

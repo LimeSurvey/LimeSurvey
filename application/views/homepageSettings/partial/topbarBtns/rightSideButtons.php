@@ -1,4 +1,5 @@
 <?php
+
 $this->widget(
     'ext.ButtonWidget.ButtonWidget',
     [
@@ -18,19 +19,3 @@ $this->widget(
         ],
     ]
 );
-
-//this save button should only be visible when tab #boxsettings is active
-$this->widget(
-    'ext.ButtonWidget.ButtonWidget',
-    [
-        'name' => 'save_boxes_setting',
-        'id' => 'save_boxes_setting',
-        'text' => gT('Save'),
-        'icon' => 'ri-check-fill',
-        'htmlOptions' => [
-            'class' => 'btn btn-primary',
-            'data-url' => $this->createUrl('homepageSettings/updateBoxesSettings')
-        ],
-    ]
-);
-

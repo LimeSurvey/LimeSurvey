@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -44,7 +44,7 @@ class PluginManagerController extends SurveyCommonAction
             $data[] = [
                 'id'          => $oPlugin->id,
                 'name'        => $oPlugin->name,
-                'load_error'  => $oPlugin->load_error,
+                'load_error'  => $oPlugin->getLoadError(),
                 'description' => '',
                 'active'      => $oPlugin->active,
                 'settings'    => []
@@ -72,7 +72,7 @@ class PluginManagerController extends SurveyCommonAction
         );
 
         $aData['topbar']['title'] = gT('Plugins');
-        $aData['topbar']['backLink'] = App()->createUrl('admin/index');
+        $aData['topbar']['backLink'] = App()->createUrl('dashboard/view');
 
         $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
@@ -362,7 +362,7 @@ class PluginManagerController extends SurveyCommonAction
                 ),
             );
         }
-        // Send to view plugin porperties: name and description
+        // Send to view plugin properties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
         $topbar['title'] = gT('Plugins') . ' ' . $plugin['name'];
@@ -411,13 +411,13 @@ class PluginManagerController extends SurveyCommonAction
             $plugin->load_error_message = '';
             $result = $plugin->update();
             if ($result) {
-                Yii::app()->user->setFlash('success', sprintf(gt('Reset load error for plugin %d'), $pluginId));
+                Yii::app()->user->setFlash('success', sprintf(gT('Reset load error for plugin %s (%s)'), $plugin->name, $plugin->plugin_type));
             } else {
-                Yii::app()->user->setFlash('error', sprintf(gt('Could not update plugin %d'), $pluginId));
+                Yii::app()->user->setFlash('error', sprintf(gT('Could not update plugin %s (%s)'), $plugin->name, $plugin->plugin_type));
             }
             $this->getController()->redirect($url);
         } else {
-            Yii::app()->user->setFlash('error', sprintf(gt('Found no plugin with id %d'), $pluginId));
+            Yii::app()->user->setFlash('error', sprintf(gT('Found no plugin with ID %d'), $pluginId));
             $this->getController()->redirect($url);
         }
     }
@@ -485,7 +485,7 @@ class PluginManagerController extends SurveyCommonAction
         if (empty($plugin)) {
             Yii::app()->setFlashMessage(
                 sprintf(
-                    gT('Found no plugin with id %d.'),
+                    gT('Found no plugin with ID %d'),
                     $pluginId
                 ),
                 'error'
@@ -560,12 +560,18 @@ class PluginManagerController extends SurveyCommonAction
 
             if (!$installer->isWhitelisted()) {
                 $installer->abort();
-                $this->errorAndRedirect(gT('The plugin is not in the plugin whitelist.'));
+                $this->errorAndRedirect(gT('The plugin is not in the plugin allowlist.'));
             }
 
             if (!$config->isCompatible()) {
                 $installer->abort();
                 $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
+            }
+
+            $pluginManager = App()->getPluginManager();
+            if (!$pluginManager->validatePluginName($config->getName())) {
+                $installer->abort();
+                $this->errorAndRedirect(gT('Invalid plugin name in config.xml.'));
             }
 
             // Show confirmation page.
@@ -779,21 +785,20 @@ class PluginManagerController extends SurveyCommonAction
 }
 
 /**
- * PCLZip callback for plugin ZIP install.
- * @param mixed $p_event
- * @param mixed $p_header
+ * Callback for plugin ZIP install. Filters files by extension.
+ * @param mixed $file
  * @return int Return 1 for yes (file can be extracted), 0 for no
  */
-function pluginExtractFilter($p_event, &$p_header)
+function pluginExtractFilter($file)
 {
     $aAllowExtensions = explode(
         ',',
         Yii::app()->getConfig('allowedpluginuploads', '')
     );
-    $info = pathinfo((string) $p_header['filename']);
+    $info = pathinfo((string) $file['name']);
 
     if (
-        $p_header['folder']
+        $file['is_folder']
         || !isset($info['extension'])
         || in_array($info['extension'], $aAllowExtensions)
     ) {

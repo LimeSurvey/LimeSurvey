@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -166,6 +166,10 @@ class Answer extends LSActiveRecord
             if (is_null($aAnswer)) {
                 return null;
             }
+            if (!isset($aAnswer->answerl10ns[$sLanguage])) {
+                Yii::log("AnswerL10n record missing for language \"{$sLanguage}\" and aid {$aAnswer->aid}", 'warning', 'application.models.Answer.getAnswerFromCode');
+                return null;
+            }
             $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerl10ns[$sLanguage]->answer;
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         }
@@ -195,25 +199,6 @@ class Answer extends LSActiveRecord
     }
 
     /**
-     * @param array $data
-     * @return boolean|null
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     *
-     */
-    public function insertRecords($data)
-    {
-        $oRecord = new self();
-        foreach ($data as $k => $v) {
-            $oRecord->$k = $v;
-        }
-        if ($oRecord->validate()) {
-            return $oRecord->save();
-        }
-        Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Answer.insertRecords');
-        return null;
-    }
-
-    /**
      * Updates sort order of answers inside a question
      *
      * @static
@@ -240,7 +225,7 @@ class Answer extends LSActiveRecord
      */
     public function getAnswersForStatistics($fields, $condition, $orderby)
     {
-        return Answer::model()->findAll(['condition' => $condition, 'order' => $orderby]);
+        return Answer::model()->with('answerl10ns')->findAll(['condition' => $condition, 'order' => $orderby]);
     }
 
     /**

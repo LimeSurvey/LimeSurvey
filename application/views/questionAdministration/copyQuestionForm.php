@@ -8,7 +8,7 @@
 
 ?>
 
-<div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div id='edit-question-body' class='side-body'>
 
     <?= $jsVariablesHtml; ?>
 
@@ -21,9 +21,16 @@
 
     <div id="copy-question" class="row">
         <!-- Form for the whole page-->
-        <?php echo CHtml::form(array("questionAdministration/copyQuestion"), 'post',
-            array('class' => 'form30 ', 'id' => 'form_copy_question', 'name' => 'frmeditquestion')); ?>
-        <?php /** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */ ?>
+        <?php echo CHtml::form(
+            array("questionAdministration/copyQuestion"),
+            'post',
+            array('class' => 'form30 ', 'id' => 'form_copy_question', 'name' => 'frmeditquestion')
+        ); ?>
+        <?php
+
+/** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */
+
+        ?>
         <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
         <input
                 type='submit'
@@ -116,7 +123,7 @@
                                     <div class="">
                                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                             'name'          => 'copyattributes',
-                                            'checkedOption' => 'Y',
+                                            'checkedOption' => '1',
                                             'selectOptions' => [
                                                 '1' => gT('Yes'),
                                                 '0' => gT('No'),
@@ -134,12 +141,14 @@
                                 </div>
 
                                 <!-- Rendering position widget -->
-                                <?php $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget',
+                                <?php $this->widget(
+                                    'ext.admin.survey.question.PositionWidget.PositionWidget',
                                     array(
                                         'display' => 'ajax_form_group',
                                         'oQuestionGroup' => $oQuestionGroup,
-                                    ));
-                                ?>
+                                    )
+                                );
+?>
 
                             </div>
                         </div>

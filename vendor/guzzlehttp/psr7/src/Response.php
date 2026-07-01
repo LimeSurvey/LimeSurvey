@@ -86,7 +86,7 @@ class Response implements ResponseInterface
 
     /**
      * @param int                                  $status  Status code
-     * @param array<string, string|string[]>       $headers Response headers
+     * @param (string|string[])[]                  $headers Response headers
      * @param string|resource|StreamInterface|null $body    Response body
      * @param string                               $version Protocol version
      * @param string|null                          $reason  Reason phrase (when empty a default will be used based on the status code)
@@ -96,7 +96,7 @@ class Response implements ResponseInterface
         array $headers = [],
         $body = null,
         string $version = '1.1',
-        string $reason = null
+        ?string $reason = null
     ) {
         $this->assertStatusCodeRange($status);
 
@@ -128,6 +128,24 @@ class Response implements ResponseInterface
 
     public function withStatus($code, $reasonPhrase = ''): ResponseInterface
     {
+        if (!\is_int($code) && \filter_var($code, \FILTER_VALIDATE_INT) !== false) {
+            \trigger_deprecation(
+                'guzzlehttp/psr7',
+                '2.11',
+                'Passing %s to ResponseInterface::withStatus() is deprecated; guzzlehttp/psr7 3.0 requires int for $code.',
+                \get_debug_type($code)
+            );
+        }
+
+        if (!\is_string($reasonPhrase)) {
+            \trigger_deprecation(
+                'guzzlehttp/psr7',
+                '2.11',
+                'Passing %s to ResponseInterface::withStatus() is deprecated; guzzlehttp/psr7 3.0 requires string for $reasonPhrase.',
+                \get_debug_type($reasonPhrase)
+            );
+        }
+
         $this->assertStatusCodeIsInteger($code);
         $code = (int) $code;
         $this->assertStatusCodeRange($code);

@@ -7,12 +7,12 @@ echo viewHelper::getViewTestTag('surveyQuotas');
 
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
-            <h3>
+            <h1 class="h3">
                 <?php eT("Survey quotas");?>
-            </h3>
+            </h1>
             <?php
             $massiveAction = '';
             if ($oDataProvider->itemCount > 0) {
@@ -42,18 +42,18 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                         'emptyText'             => gT('No quotas'),
                         'massiveActionTemplate' => $massiveAction,
                         'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                                gT('%s rows per page'),
-                                CHtml::dropDownList(
-                                    'pageSize',
-                                    $iGridPageSize,
-                                    Yii::app()->params['pageSizeOptions'],
-                                    [
+                            gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $iGridPageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                [
                                         'class'    => 'changePageSize form-select',
                                         'style'    => 'display: inline; width: auto',
                                         'onchange' => "$.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }})"
                                     ]
-                                )
-                            ),
+                            )
+                        ),
                         'columns'               => [
                             [
                                 'id'             => 'id',
@@ -62,20 +62,20 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'htmlOptions'    => ['style' => 'vertical-align:top'],
                             ],
                             [
-                                'name'        => gT('Quota members'),
+                                'name'        => gT('Quota rules'),
                                 'type'        => 'raw',
                                 'htmlOptions' => ['style' => 'vertical-align:top'],
                                 'value'       => function ($oQuota) use ($oSurvey, $aQuotaItems) {
                                     /** @var Quota $oQuota */
                                     $out = '<p>' . $this->renderPartial(
-                                            '/quotas/viewquotas_quota_members',
-                                            [
+                                        '/quotas/viewquotas_quota_members',
+                                        [
                                                 'oSurvey'     => $oSurvey,
                                                 'oQuota'      => $oQuota,
                                                 'aQuotaItems' => $aQuotaItems,
                                             ],
-                                            true
-                                        ) . '<p>';
+                                        true
+                                    ) . '<p>';
                                     return $out;
                                 },
                             ],
@@ -105,7 +105,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                     ]);
                     ?>
                 </div>
-                <?php endif; ?>
+            <?php endif; ?>
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) :?>
                     <div class="float-end">
                         <?php echo CHtml::beginForm(array("quotas/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>

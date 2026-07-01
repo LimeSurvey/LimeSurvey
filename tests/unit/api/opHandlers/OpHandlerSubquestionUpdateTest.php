@@ -3,13 +3,11 @@
 namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionL10ns;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
+use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputSubQuestion;
+use LimeSurvey\DI;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\{
-    Op\OpInterface,
-    Op\OpStandard,
-};
+use LimeSurvey\ObjectPatch\ObjectPatchException;
+use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
 /**
@@ -17,19 +15,15 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerSubquestionUpdateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
      * @testdox can handle a subquestion update
      */
     public function testOpSubquestionUpdateCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getDefaultProps()
         );
-
-        $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($this->getOpHandler()->canHandle($op));
     }
 
     /**
@@ -37,13 +31,11 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
      */
     public function testOpSubquestionCreateCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getDefaultProps(),
             'create'
         );
-
-        $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($this->getOpHandler()->canHandle($op));
     }
 
     /**
@@ -51,36 +43,75 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
      */
     public function testOpSubquestionCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getDefaultProps(),
             'delete'
         );
-
-        $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($this->getOpHandler()->canHandle($op));
     }
 
-    private function initializePatcher(
-        array $propsArray,
-        string $type = 'update'
-    ) {
-        $this->op = OpStandard::factory(
+    /**
+     * @testdox validation hits
+     */
+    public function testOpValidationFailure()
+    {
+        $opHandler = $this->getOpHandler();
+        $op = $this->getOp(
+            $this->getWrongProps(true),
+        );
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+        $op = $this->getOp(
+            $this->getWrongProps()
+        );
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpValidationSuccess()
+    {
+        $op = $this->getOp(
+            $this->getDefaultProps()
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
+     * @param array $props
+     * @param string $type
+     * @return OpStandard
+     * @throws ObjectPatchException
+     */
+    private function getOp(array $props = [], $type = 'update'): OpStandard
+    {
+        return OpStandard::factory(
             'subquestion',
             $type,
             123,
-            $propsArray,
+            $props,
             [
                 'id' => 123456
             ]
         );
     }
 
-    private function getDefaultProps()
+    /**
+     * @param string $operation
+     * @return array
+     */
+    private function getDefaultProps(string $operation = 'update'): array
     {
-        return [
+        $props = [
             '0' => [
                 'qid' => 126,
-                'oldCode' => 'SQ001',
                 'title' => 'SQ001new',
                 'l10ns' => [
                     'en' => [
@@ -92,19 +123,36 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
                 ]
             ]
         ];
+        if ($operation === 'create') {
+            $props[0]['tempId'] = 'XXX125';
+            unset($props[0]['qid']);
+        }
+        return $props;
+    }
+
+    private function getWrongProps($wrongIndex = false, $operation = 'create'): array
+    {
+        $props = $this->getDefaultProps($operation);
+        if ($wrongIndex) {
+            $props['alphabetic'] = $props[0];
+        }
+        return $props;
     }
 
     /**
      * @return OpHandlerSubQuestion
      */
-    private function getOpHandler()
+    private function getOpHandler(): OpHandlerSubQuestion
     {
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService */
         $mockQuestionAggregateService = \Mockery::mock(
             QuestionAggregateService::class
         )->makePartial();
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService */
         $mockSubQuestionsService = \Mockery::mock(
             QuestionAggregateService\SubQuestionsService::class
         )->makePartial();
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService\QuestionService */
         $mockQuestionService = \Mockery::mock(
             QuestionAggregateService\QuestionService::class
         )->makePartial();
@@ -113,8 +161,7 @@ class OpHandlerSubquestionUpdateTest extends TestBaseClass
             $mockQuestionAggregateService,
             $mockSubQuestionsService,
             $mockQuestionService,
-            new TransformerInputQuestionL10ns(),
-            new TransformerInputQuestion()
+            DI::getContainer()->get(TransformerInputSubQuestion::class)
         );
     }
 }

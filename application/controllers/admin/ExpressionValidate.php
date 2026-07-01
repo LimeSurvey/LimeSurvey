@@ -3,20 +3,16 @@
 /*
 * Offer some way to validate Expression in survey
 *
-* @copyright 2014 The LimeSurvey Project Team
+* @copyright 2026 The LimeSurvey Project Team
 * @license http://www.gnu.org/licenses/gpl-3.0.txt
 * @todo : Add any expression
 * @version : 1.1
 */
 class ExpressionValidate extends SurveyCommonAction
 {
-    /**
-     * @var string : Default layout is popup : less header, no footer
-     */
-    public $layout = 'popup';
 
     /**
-     * @var integer : The survey id to start to fill know vars
+     * @var integer : The survey ID to start to fill know vars
      */
     private $iSurveyId;
     /**
@@ -31,7 +27,7 @@ class ExpressionValidate extends SurveyCommonAction
 
     /**
      * Check the Expression in quota
-     * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
+     * @param integer $iSurveyId : the survey ID : can be sid/surveyid url GET parameters
      * @param integer $quota : the quota id
      * @param string $lang : the survey language, optional : if not set get all language of survey
      *
@@ -46,8 +42,7 @@ class ExpressionValidate extends SurveyCommonAction
         }
         $iQuotaId = $quota;
         if (is_string($lang)) {
-            $oValidator = new LSYii_Validators();
-            $aLangs = array($oValidator->languageFilter($lang));
+            $aLangs = array(\LSYii_Validators::languageCodeFilter($lang));
         } else {
             $aLangs = $oSurvey->allLanguages;
         }
@@ -79,14 +74,13 @@ class ExpressionValidate extends SurveyCommonAction
         $aData = array(
             'aExpressions' => $aExpressions,
         );
-        $this->getController()->layout = $this->layout;
         $this->getController()->pageTitle = gT("Validate quota");
 
         $this->getController()->renderPartial("/admin/expressions/validationList", $aData);
     }
     /**
      * Check the Expression in email
-     * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
+     * @param integer $iSurveyId : the survey ID : can be sid/surveyid url GET parameters
      * @param string $lang : the mail language
      *
      * @author Denis Chenu
@@ -241,7 +235,6 @@ class ExpressionValidate extends SurveyCommonAction
             );
         }
         $aData['aExpressions'] = $aExpressions;
-        $this->getController()->layout = $this->layout;
         $this->getController()->pageTitle = sprintf(gT("Validate expressions in email: %s"), $sType);
 
         $this->getController()->renderPartial("/admin/expressions/validationList", $aData);

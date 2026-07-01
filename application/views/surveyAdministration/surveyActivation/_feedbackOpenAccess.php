@@ -14,7 +14,7 @@
                 <ul class="list-unstyled">
                     <li>
                 <?php et('Statistics and responses are now accessible.'); ?>
-                <a href="<?= Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyId])?>"><?= gt('See all responses and statistics')?></a>
+                <a href="<?= Yii::app()->createUrl('responses/browse', ['surveyId' => $surveyId])?>"><?= gT('See all responses and statistics')?></a>
                     </li>
                 <?php
                 et("By default, surveys are activated in open-access mode and participants don't need an invitation code. ");

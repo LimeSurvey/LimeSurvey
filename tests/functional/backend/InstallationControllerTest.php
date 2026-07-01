@@ -8,6 +8,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2017-11-24
+ * @group survey
  */
 class InstallationControllerTest extends TestBaseClassWeb
 {
@@ -172,6 +173,9 @@ class InstallationControllerTest extends TestBaseClassWeb
             $adminLoginPwd->clear()->sendKeys($password);
             $confirmPwd->clear()->sendKeys($password);
 
+            // Fill email
+            $emailField     = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[adminEmail]"]'));
+            $emailField->clear()->sendKeys("admin@example.org");
 
             // Confirm optional settings (admin password etc).
             $button = self::$webDriver->wait(10)->until(

@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey (tm)
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -13,7 +13,6 @@
 */
 class WipeCommand extends CConsoleCommand
 {
-
     /**
      * @return int
      */
@@ -119,9 +118,13 @@ class WipeCommand extends CConsoleCommand
                 $actquery = "truncate table {{auditlog_log}}";
                 Yii::app()->db->createCommand($actquery)->execute();
             }
-            $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_question%'";
+            if (tableExists('{{user_mfa_settings}}')) {
+                $actquery = "truncate table {{user_mfa_settings}}";
+                Yii::app()->db->createCommand($actquery)->execute();
+            }
+            $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_question'";
             Yii::app()->db->createCommand($actquery)->execute();
-            $actquery = "delete from {{settings_global}} where stg_name LIKE 'last_survey%'";
+            $actquery = "delete from {{settings_user}} where stg_name LIKE 'last_survey'";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "update {{users}} set email = 'test@domain.test', full_name='Administrator'";
             Yii::app()->db->createCommand($actquery)->execute();
@@ -132,6 +135,8 @@ class WipeCommand extends CConsoleCommand
             $actquery = "update {{settings_global}} set stg_value='Administrator' where stg_name='siteadminname'";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "update {{settings_global}} set stg_value='Sea_Green' where stg_name='admintheme'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery = "update {{plugins}} set active=0 where name='TwoFactorAdminLogin' OR name='AuditLog'";
             Yii::app()->db->createCommand($actquery)->execute();
 
             foreach (LsDefaultDataSets::getTemplatesData() as $template) {

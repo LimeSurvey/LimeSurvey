@@ -5,7 +5,7 @@
  */
 
 ?>
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
             <?php if (empty($aTokenListArray) || $iRecordImported == 0) :?>
@@ -63,7 +63,7 @@
                                     <?php } ?>
                                     <?php if (!empty($aDuplicateList)) { ?>
                                 <li>
-                                        <?php printf(gT("%s duplicate records removed"), count($aDuplicateList)); ?>
+                                        <?php printf(gT("%s duplicate records skipped"), count($aDuplicateList)); ?>
                                     [<a href='#' onclick='$("#duplicateslist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist well' id='duplicateslist' style='display: none;'>
                                         <ul class="list-unstyled">
@@ -91,7 +91,7 @@
 
                                     <?php if (!empty($aInvalidEmailList)) { ?>
                                 <li>
-                                        <?php printf(gT("%s records with invalid email address removed"), count($aInvalidEmailList)); ?>
+                                        <?php printf(gT("%s records with invalid email address skipped"), count($aInvalidEmailList)); ?>
                                     [<a href='#' onclick='$("#invalidemaillist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist well' id='invalidemaillist' style='display: none;'>
                                         <ul class="list-unstyled">

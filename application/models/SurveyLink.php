@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -94,24 +94,25 @@ class SurveyLink extends LSActiveRecord
     }
 
     /**
-     * Delete a single survey_link based on a survey participants table entry(by token_id and survey_id)
+     * Delete a single survey_link based on a survey participant list entry(by token_id and survey_id)
      *
      * An entry in the survey_links table must be unique by the combination of Token_ID
      * (which is unique within a tokens table) and survey_id (which limits to one single
-     * survey participants table).
+     * survey participant list).
      *
-     * @param int[] $aTokenIds the unique ids of the entry in the survey participants table being deleted
+     * @param int[] $aTokenIds the unique ids of the entry in the survey participant list being deleted
      * @param int $surveyId the id of the survey for the link being deleted
      *
      * @return bool|CDbDataReader
      */
     public function deleteTokenLink($aTokenIds, $surveyId)
     {
-        $query = "DELETE FROM " . SurveyLink::tableName()
-            . " WHERE token_id IN (" . implode(", ", $aTokenIds) . ") AND survey_id=:survey_id";
-        return Yii::app()->db->createCommand($query)
-                    ->bindParam(":survey_id", $surveyId)
-                    ->query();
+        $aTokenIds = array_map('intval', $aTokenIds);
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('token_id', $aTokenIds);
+        $criteria->addCondition('survey_id=:survey_id');
+        $criteria->params[':survey_id'] = $surveyId;
+        return $this->deleteAll($criteria);
     }
 
     /**

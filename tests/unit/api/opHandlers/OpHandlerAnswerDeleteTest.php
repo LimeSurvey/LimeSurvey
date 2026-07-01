@@ -4,45 +4,78 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerAnswerDelete;
 use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\ObjectPatch\{
-    ObjectPatchException,
-    Op\OpInterface,
-    Op\OpStandard
-};
+use LimeSurvey\ObjectPatch\ObjectPatchException;
+use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
+/**
+ * @testdox OpHandlerAnswerDelete
+ */
 class OpHandlerAnswerDeleteTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
+    /**
+     * @testdox can handle delete
+     */
     public function testCanHandleAnswer()
     {
-        $this->initializePatcher('answer');
+        $op = $this->getOp();
         $opHandler = $this->getOpHandler();
-        $this->assertTrue($opHandler->canHandle($this->op));
+        $this->assertTrue($opHandler->canHandle($op));
     }
 
+    /**
+     * @testdox can not handle question delete
+     */
     public function testCanNotHandleAnswer()
     {
-        $this->initializePatcher('question');
+        $op = $this->getOp('question');
         $opHandler = $this->getOpHandler();
-        $this->assertFalse($opHandler->canHandle($this->op));
+        $this->assertFalse($opHandler->canHandle($op));
+    }
+
+    /**
+     * @testdox validation hits when entityId is missing
+     */
+    public function testOpValidationFailure()
+    {
+        $op = $this->getOp(
+            'answer',
+            'create'
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpValidationSuccess()
+    {
+        $op = $this->getOp(
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
     }
 
     /**
      * @param string $entityType
      * @param string $operation
-     * @return void
+     * @return OpStandard
      * @throws ObjectPatchException
      */
-    private function initializePatcher(
+    private function getOp(
         string $entityType = 'answer',
         string $operation = 'delete'
-    ){
-        $this->op = OpStandard::factory(
+    ): OpStandard {
+        $entityId = $operation !== 'delete' ? null : "77";
+        return OpStandard::factory(
             $entityType,
             $operation,
-            "77",
+            $entityId,
             [],
             ['id' => 666]
         );
@@ -51,11 +84,14 @@ class OpHandlerAnswerDeleteTest extends TestBaseClass
     /**
      * @return OpHandlerAnswerDelete
      */
-    private function getOpHandler()
+    private function getOpHandler(): OpHandlerAnswerDelete
     {
+        /** @var \LimeSurvey\Models\Services\QuestionAggregateService */
         $mockQuestionAggregateService = \Mockery::mock(
             QuestionAggregateService::class
         )->makePartial();
-        return new OpHandlerAnswerDelete($mockQuestionAggregateService);
+        return new OpHandlerAnswerDelete(
+            $mockQuestionAggregateService
+        );
     }
 }

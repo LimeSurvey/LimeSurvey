@@ -266,12 +266,12 @@ CKEDITOR.editorConfig = function (a) {
             'xml',
         ];
     
-        a.filebrowserBrowseUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/browse.php?type\x3dfiles";
-        a.filebrowserImageBrowseUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/browse.php?type\x3dimages";
-        a.filebrowserFlashBrowseUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/browse.php?type\x3dflash";
-        a.filebrowserUploadUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/upload.php?type\x3dfiles";
-        a.filebrowserImageUploadUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/upload.php?type\x3dimages";
-        a.filebrowserFlashUploadUrl = CKEDITOR.basePath + "../../../vendor/kcfinder/upload.php?type\x3dflash";
+        a.filebrowserBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dfiles";
+        a.filebrowserImageBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dimages";
+        a.filebrowserFlashBrowseUrl = CKEDITOR.basePath + "../kcfinder/browse.php?type\x3dflash";
+        a.filebrowserUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dfiles";
+        a.filebrowserImageUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dimages";
+        a.filebrowserFlashUploadUrl = CKEDITOR.basePath + "../kcfinder/upload.php?type\x3dflash";
         a.removeDialogTabs = "link:upload;image:Upload";
         a.image_prefillDimensions = !1;
         a.image2_prefillDimensions = !1;
@@ -286,7 +286,7 @@ CKEDITOR.editorConfig = function (a) {
         a.toolbar_popup = [
             ["Save", "Sourcedialog", "Createlimereplacementfields"],
             ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            "Image Html5video VideoDetector Flash Table HorizontalRule EmojiPanel SpecialChar SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
+            "Image Html5video VideoDetector Flash Table HorizontalRule EmojiPanel SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
             "NumberedList BulletedList - Outdent Indent Blockquote CreateDiv".split(" "), ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
             ["Link", "Unlink", "Anchor", "Iframe"], "/", ["Styles", "Format", "Font", "FontSize"],
@@ -339,7 +339,9 @@ CKEDITOR.editorConfig = function (a) {
         a.removePlugins = 'sourcearea';
         a.iframe_attributes = {
             sandbox: 'allow-scripts allow-same-origin'
-        }
+        },
+
+        a.versionCheck = false
 }
 
 CKEDITOR.on("instanceReady", function (event) {

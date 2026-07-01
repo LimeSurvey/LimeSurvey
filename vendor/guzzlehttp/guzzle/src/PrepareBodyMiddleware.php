@@ -52,7 +52,7 @@ class PrepareBodyMiddleware
         ) {
             $size = $request->getBody()->getSize();
             if ($size !== null) {
-                $modify['set_headers']['Content-Length'] = $size;
+                $modify['set_headers']['Content-Length'] = (string) $size;
             } else {
                 $modify['set_headers']['Transfer-Encoding'] = 'chunked';
             }
@@ -76,8 +76,8 @@ class PrepareBodyMiddleware
 
         $expect = $options['expect'] ?? null;
 
-        // Return if disabled or if you're not using HTTP/1.1 or HTTP/2.0
-        if ($expect === false || $request->getProtocolVersion() < 1.1) {
+        // Return if disabled or using HTTP/1.0
+        if ($expect === false || $request->getProtocolVersion() === '1.0') {
             return;
         }
 

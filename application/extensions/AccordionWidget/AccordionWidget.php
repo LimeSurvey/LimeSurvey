@@ -26,7 +26,7 @@ class AccordionWidget extends CWidget
                 'id' => $item['id'] ?? $this->id . '_item_' . bin2hex(random_bytes(2)),
                 'title' => $item['title'] ?? null,
                 'content' => $item['content'] ?? null,
-                'open' => $item['open'] ?? false,
+                'open' => $item['open'] ?? true,
                 'style' => $item['style'] ?? ''
             ];
         }, $items);

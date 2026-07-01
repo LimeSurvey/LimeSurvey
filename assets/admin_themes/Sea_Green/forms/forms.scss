@@ -1,6 +1,6 @@
 // input field
 .form-control {
-    border        : $input-border-width solid $input-border-color !important;
+    border        : $input-border-width solid $input-border-color;
     line-height   : $line-height-16;
     border-radius : $border-radius;
     &:focus {
@@ -65,6 +65,11 @@ input[type="number"] {
     line-height : $line-height-16;
     &:focus {
         box-shadow : 4px 4px 0px $elevation-shadow;
+    }
+    &:hover {
+        //default hover
+        box-shadow : $btn-hover-boxshadow;
+        text-decoration: none;
     }
     &:disabled {
         border           : $input-border-width solid $input-border-color-disabled;

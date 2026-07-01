@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class BasicTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class BasicTest extends TestCase
 {
     public function basicDataProvider() {
         return array(

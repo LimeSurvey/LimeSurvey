@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [{
-                token: "comment.doc.tag",
-                regex: "@[\\w\\d_]+" // TODO: fix email addresses
-            },
-            DocCommentHighlightRules.getTagRule(),
+        "start": [
             {
-                defaultToken: "comment.doc",
+                token: "comment.doc.tag",
+                regex: "@\\w+(?=\\s|$)"
+            }, DocCommentHighlightRules.getTagRule(), {
+                defaultToken: "comment.doc.body",
                 caseInsensitive: true
-            }]
+            }
+        ]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc",
-        regex: "\\/\\*(?=\\*)",
+        token: "comment.doc", // doc comment
+        regex: /\/\*\*(?!\/)/,
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc",
+        token: "comment.doc", // closing comment
         regex: "\\*\\/",
         next: start
     };
@@ -46,29 +46,29 @@ var JsonHighlightRules = function () {
     this.$rules = {
         "start": [
             {
-                token: "variable",
+                token: "variable", // single line
                 regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]\\s*(?=:)'
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: '"',
                 next: "string"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // hex
                 regex: "0[xX][0-9a-fA-F]+\\b"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: "constant.language.boolean",
                 regex: "(?:true|false)\\b"
             }, {
-                token: "text",
+                token: "text", // single quoted strings are not allowed
                 regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
             }, {
-                token: "comment",
+                token: "comment", // comments are not allowed, but who cares?
                 regex: "\\/\\/.*$"
             }, {
-                token: "comment.start",
+                token: "comment.start", // comments are not allowed, but who cares?
                 regex: "\\/\\*",
                 next: "comment"
             }, {
@@ -99,7 +99,7 @@ var JsonHighlightRules = function () {
         ],
         "comment": [
             {
-                token: "comment.end",
+                token: "comment.end", // comments are not allowed, but who cares?
                 regex: "\\*\\/",
                 next: "start"
             }, {
@@ -145,13 +145,13 @@ var RedshiftHighlightRules = function () {
         "keyword": keywords
     }, "identifier", true);
     var sqlRules = [{
-            token: "string",
+            token: "string", // single line string -- assume dollar strings if multi-line for now
             regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
         }, {
-            token: "variable.language",
+            token: "variable.language", // pg identifier
             regex: '".*?"'
         }, {
-            token: "constant.numeric",
+            token: "constant.numeric", // float
             regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
         }, {
             token: keywordMapper,
@@ -180,15 +180,15 @@ var RedshiftHighlightRules = function () {
             },
             DocCommentHighlightRules.getStartRule("doc-start"),
             {
-                token: "comment",
+                token: "comment", // multi-line comment
                 regex: "\\/\\*",
                 next: "comment"
             }, {
                 token: "keyword.statementBegin",
-                regex: "^[a-zA-Z]+",
+                regex: "^[a-zA-Z]+", // Could enumerate starting keywords but this allows things to work when new statements are added.
                 next: "statement"
             }, {
-                token: "support.buildin",
+                token: "support.buildin", // psql directive
                 regex: "^\\\\[\\S]+.*$"
             }
         ],
@@ -196,7 +196,7 @@ var RedshiftHighlightRules = function () {
                 token: "comment",
                 regex: "--.*$"
             }, {
-                token: "comment",
+                token: "comment", // multi-line comment
                 regex: "\\/\\*",
                 next: "commentStatement"
             }, {
@@ -209,7 +209,7 @@ var RedshiftHighlightRules = function () {
                 next: "json-start"
             }, {
                 token: "string",
-                regex: "\\$[\\w_0-9]*\\$$",
+                regex: "\\$[\\w_0-9]*\\$$", // dollar quote at the end of a line
                 next: "dollarSql"
             }, {
                 token: "string",
@@ -221,11 +221,11 @@ var RedshiftHighlightRules = function () {
                 token: "comment",
                 regex: "--.*$"
             }, {
-                token: "comment",
+                token: "comment", // multi-line comment
                 regex: "\\/\\*",
                 next: "commentDollarSql"
             }, {
-                token: "string",
+                token: "string", // end quoting with dollar at the start of a line
                 regex: "^\\$[\\w_0-9]*\\$",
                 next: "statement"
             }, {
@@ -235,47 +235,47 @@ var RedshiftHighlightRules = function () {
             }
         ].concat(sqlRules),
         "comment": [{
-                token: "comment",
+                token: "comment", // closing comment
                 regex: ".*?\\*\\/",
                 next: "start"
             }, {
-                token: "comment",
+                token: "comment", // comment spanning whole line
                 regex: ".+"
             }
         ],
         "commentStatement": [{
-                token: "comment",
+                token: "comment", // closing comment
                 regex: ".*?\\*\\/",
                 next: "statement"
             }, {
-                token: "comment",
+                token: "comment", // comment spanning whole line
                 regex: ".+"
             }
         ],
         "commentDollarSql": [{
-                token: "comment",
+                token: "comment", // closing comment
                 regex: ".*?\\*\\/",
                 next: "dollarSql"
             }, {
-                token: "comment",
+                token: "comment", // comment spanning whole line
                 regex: ".+"
             }
         ],
         "dollarStatementString": [{
-                token: "string",
+                token: "string", // closing dollarstring
                 regex: ".*?\\$[\\w_0-9]*\\$",
                 next: "statement"
             }, {
-                token: "string",
+                token: "string", // dollarstring spanning whole line
                 regex: ".+"
             }
         ],
         "dollarSqlString": [{
-                token: "string",
+                token: "string", // closing dollarstring
                 regex: ".*?\\$[\\w_0-9]*\\$",
                 next: "dollarSql"
             }, {
-                token: "string",
+                token: "string", // dollarstring spanning whole line
                 regex: ".+"
             }
         ]
@@ -288,12 +288,12 @@ exports.RedshiftHighlightRules = RedshiftHighlightRules;
 
 });
 
-define("ace/mode/redshift",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/redshift_highlight_rules","ace/range"], function(require, exports, module){var oop = require("../lib/oop");
+define("ace/mode/redshift",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/redshift_highlight_rules"], function(require, exports, module){var oop = require("../lib/oop");
 var TextMode = require("../mode/text").Mode;
 var RedshiftHighlightRules = require("./redshift_highlight_rules").RedshiftHighlightRules;
-var Range = require("../range").Range;
 var Mode = function () {
     this.HighlightRules = RedshiftHighlightRules;
+    this.$behaviour = this.$defaultBehaviour;
 };
 oop.inherits(Mode, TextMode);
 (function () {

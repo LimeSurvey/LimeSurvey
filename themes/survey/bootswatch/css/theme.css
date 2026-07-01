@@ -1,7 +1,7 @@
 /*
     LimeSurvey
 
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
 
     License: GNU/GPL License v2 or later, see LICENSE.php
@@ -465,8 +465,7 @@ table > tbody > tr > td.ddprefix {
  * We don't have to collapse tables on pads.
  */
 @media
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
+only screen and (max-width: 767px) {
     table.ls-answers  tbody {
         padding: 0 1em 0 1em;
     }
@@ -827,7 +826,7 @@ label {
     font-weight: bold;
 }
 
-/* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
+/* Define the color for Awesome Bootstrap Checkboxes ; based on bg-primary background-color */
 .basic label::after{background-color:#337ab7}
 .cerulean label::after{background-color:#2fa4e7;}
 .cosmos label::after{background-color:#2780e3;}

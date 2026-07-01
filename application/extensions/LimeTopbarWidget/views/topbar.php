@@ -2,22 +2,32 @@
 /** @var string $leftSide this could be a simple text or a breadcrumb */
 /** @var ButtonWidget[] $middle */
 /** @var ButtonWidget[] $rightSide */
-
+/** @var bool $isBreadCrumb */
+/** @var string $titleBackLink */
+/** @var bool $editorEnabled */
 ?>
 
-<div class="topbar sticky-top" id="pjax-content">
+<div class="topbar sticky-top <?php if ($editorEnabled) {
+    echo 'editor';
+} ?>" id="pjax-content">
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->
-            <div class="ls-breadcrumb col-xl-4 col-xxl-3">
-                <h1 class="align-items-center d-flex">
-                <?php
+            <div class="ls-breadcrumb col-12">
+                <div class="align-items-center d-flex">
+                    <?php
                     if ($titleBackLink !== null) {
-                        echo '<a class="h1" href="'.$titleBackLink.'">
-                        <i class="ri-arrow-left-s-line"></i></a>' ;
+                        // Keep the back link outside <h1> so it is announced only as a link, not with heading level.
+                        echo '<a class="h1 me-1 ls-link" href="' . CHtml::encode($titleBackLink) . '" aria-label="' . gT('Back') . '">'
+                            . '<i class="ri-arrow-left-s-line" aria-hidden="true"></i></a>';
                     }
-                ?>
-                <?= $leftSide ?></h1>
+                    ?>
+                    <?php if (!$isBreadCrumb) : ?>
+                        <h1 class="h1 mb-0"><?= $leftSide ?></h1>
+                    <?php else : ?>
+                        <?= $leftSide ?>
+                    <?php endif; ?>
+                </div>
             </div>
 
             <!-- middle part with buttons -->

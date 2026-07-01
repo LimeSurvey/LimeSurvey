@@ -10,9 +10,9 @@ class Update_426 extends DatabaseUpdateBase
             $this->db->createCommand()->addColumn(
                 '{{surveys_groupsettings}}',
                 'ipanonymize',
-                "string(1) NOT NULL default 'N'"
+                "string(1) NOT NULL DEFAULT 'N'"
             );
-            $this->db->createCommand()->addColumn('{{surveys}}', 'ipanonymize', "string(1) NOT NULL default 'N'");
+            $this->db->createCommand()->addColumn('{{surveys}}', 'ipanonymize', "string(1) NOT NULL DEFAULT 'N'");
 
             //all groups (except default group gsid=0), must have inheritance value
             $this->db->createCommand()->update('{{surveys_groupsettings}}', array('ipanonymize' => 'I'), 'gsid<>0');

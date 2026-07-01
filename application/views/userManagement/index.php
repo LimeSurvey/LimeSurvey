@@ -22,15 +22,20 @@ echo viewHelper::getViewTestTag('usersIndex');
 <?php endif; ?>
 
     <?php
-    $this->widget('application.extensions.admin.grid.CLSGridView',
+    $this->widget(
+        'application.extensions.admin.grid.CLSGridView',
         [
             'id' => 'usermanagement--identity-gridPanel',
+            'ajaxUpdate' => 'usermanagement--identity-gridPanel',
             'dataProvider' => $model->search(),
             'columns' => $model->getManagementColums(),
+            'lsAdditionalColumns' => $model->getAdditionalColumns(),
             'massiveActionTemplate' => $massiveAction,
+            'caption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
                 'bindListItemclick();',
                 'LS.UserManagement.bindButtons();',
+                'showDeactivatedUserTooltip();'
             ],
             'filter' => $model,
             'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
@@ -59,6 +64,25 @@ echo viewHelper::getViewTestTag('usersIndex');
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+
+    function showDeactivatedUserTooltip() {
+        $('#usermanagement--identity-gridPanel #bottom-scroller table .activation').each(function (i, item) {
+            if (item.innerHTML == '0'){
+                var tr = item.closest('tr')
+                tr.classList += ' disabled';
+                tr.setAttribute('data-toggle', 'tooltip');
+                tr.setAttribute('data-placement', 'top');
+                tr.setAttribute('title', '<?= gT("Deactivated user") ?>');
+            }
+        });
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    }
+    $(document).on('ready pjax:scriptcomplete', function(){
+        showDeactivatedUserTooltip()
+    });
+
 </script>
 <div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
     <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">

@@ -4,10 +4,12 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionAttributeUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAttribute;
-use LimeSurvey\Models\Services\QuestionAggregateService;
-use LimeSurvey\Models\Services\QuestionAggregateService\AttributesService;
-use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
-use LimeSurvey\ObjectPatch\Op\OpInterface;
+use LimeSurvey\DI;
+use LimeSurvey\Models\Services\{
+    QuestionAggregateService,
+    QuestionAggregateService\AttributesService,
+    QuestionAggregateService\QuestionService
+};
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 
@@ -16,18 +18,16 @@ use ls\tests\TestBaseClass;
  */
 class OpHandlerQuestionAttributeUpdateTest extends TestBaseClass
 {
-    protected OpInterface $op;
-
     /**
      * @testdox can handle
      */
     public function testQuestionAttributeUpdateCanHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps()
         );
         $opHandler = $this->getOpHandler();
-        self::assertTrue($opHandler->canHandle($this->op));
+        self::assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -35,24 +35,23 @@ class OpHandlerQuestionAttributeUpdateTest extends TestBaseClass
      */
     public function testQuestionAttributeUpdateCanNotHandle()
     {
-        $this->initializePatcher(
+        $op = $this->getOp(
             $this->getCorrectProps(),
             'create'
         );
-
         $opHandler = $this->getOpHandler();
-        self::assertFalse($opHandler->canHandle($this->op));
+        self::assertFalse($opHandler->canHandle($op));
     }
 
     /**
      * @param array $props
      * @param string $type
-     * @return void
-     * @throws \LimeSurvey\ObjectPatch\ObjectPatchException
+     * @return OpStandard
+     * @throws \LimeSurvey\ObjectPatch\OpHandlerException
      */
-    private function initializePatcher(array $props, string $type = 'update')
+    private function getOp(array $props, string $type = 'update')
     {
-        $this->op = OpStandard::factory(
+        return OpStandard::factory(
             'questionAttribute',
             $type,
             123,
@@ -90,18 +89,21 @@ class OpHandlerQuestionAttributeUpdateTest extends TestBaseClass
      */
     private function getOpHandler()
     {
+        $transformer = DI::getContainer()->get(TransformerInputQuestionAttribute::class);
+        /** @var AttributesService */
         $mockAttributesService = \Mockery::mock(AttributesService::class)
             ->makePartial();
+        /** @var QuestionService */
         $mockQuestionService = \Mockery::mock(QuestionService::class)
             ->makePartial();
+        /** @var QuestionAggregateService */
         $mockQuestionAggregateService = \Mockery::mock(QuestionAggregateService::class)
             ->makePartial();
-
         return new OpHandlerQuestionAttributeUpdate(
             $mockAttributesService,
             $mockQuestionService,
             $mockQuestionAggregateService,
-            new TransformerInputQuestionAttribute()
+            $transformer
         );
     }
 }

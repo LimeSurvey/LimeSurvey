@@ -34,8 +34,8 @@ class PatcherTest extends TestBaseClass
             ->andReturn(true);
         $opHandler->shouldReceive('handle')
             ->andReturn(true);
-        $opHandler->shouldReceive('isValidPatch')
-            ->andReturn(true);
+        $opHandler->shouldReceive('validateOperation')
+            ->andReturn([]);
 
         $patcher = new Patcher();
         $patcher->addOpHandler($opHandler);

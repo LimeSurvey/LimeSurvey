@@ -120,8 +120,8 @@ class UploadQuestionController {
                     imageOrPlaceholderHtml = '<div class="upload-placeholder"></div>';
                 }
 
-                title = (show_title != 0) ? item.title : '';
-                comment = (show_comment != 0) ? item.comment : '';
+                title = (show_title != 0) ? htmlentities(item.title) : '';
+                comment = (show_comment != 0) ? htmlentities(item.comment) : '';
                 name = item.name;
                 filepointer = iterator;
                 const rowHtml = this.replaceWithObject(templateHtml, {imageOrPlaceholder, imageOrPlaceholderHtml, title, comment, name, filepointer});

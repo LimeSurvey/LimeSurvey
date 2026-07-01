@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
 * LimeSurvey
-* Copyright (C) 2007-2012 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -19,6 +19,7 @@ if (!defined('BASEPATH')) {
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
 use LimeSurvey\PluginManager\PluginEvent;
+use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 function loadanswers()
 {
@@ -43,9 +44,9 @@ function loadanswers()
         $oCriteria->params = $aParams;
         /* relations saved_control is needed: force */
         $oResponses = SurveyDynamic::model($surveyid)->with('saved_control')->find($oCriteria);
-    } elseif (isset($_SESSION['survey_' . $surveyid]['srid'])) {
+    } elseif (isset($_SESSION['responses_' . $surveyid]['srid'])) {
         /* relations saved_control is not needed : only lazy load */
-        $oResponses = SurveyDynamic::model($surveyid)->findByPk($_SESSION['survey_' . $surveyid]['srid']);
+        $oResponses = SurveyDynamic::model($surveyid)->findByPk($_SESSION['responses_' . $surveyid]['srid']);
     } else {
         return false;
     }
@@ -64,11 +65,11 @@ function loadanswers()
             // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
             if (Yii::app()->request->getParam('loadall') === "reload") {
                 // We don't need to control if we have one, because we do the test before
-                $_SESSION['survey_' . $surveyid]['scid'] = $saved_control->scid;
-                $_SESSION['survey_' . $surveyid]['step'] = ($saved_control->saved_thisstep > 1) ? $saved_control->saved_thisstep : 1;
-                $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1; // deprecated ?
-                $_SESSION['survey_' . $surveyid]['srid'] = $saved_control->srid; // Seems OK without
-                $_SESSION['survey_' . $surveyid]['refurl'] = $saved_control->refurl;
+                $_SESSION['responses_' . $surveyid]['scid'] = $saved_control->scid;
+                $_SESSION['responses_' . $surveyid]['step'] = ($saved_control->saved_thisstep > 1) ? $saved_control->saved_thisstep : 1;
+                $thisstep = $_SESSION['responses_' . $surveyid]['step'] - 1; // deprecated ?
+                $_SESSION['responses_' . $surveyid]['srid'] = $saved_control->srid; // Seems OK without
+                $_SESSION['responses_' . $surveyid]['refurl'] = $saved_control->refurl;
             }
         } else {
             return false;
@@ -84,42 +85,44 @@ function loadanswers()
         if ($column === "token") {
             $clienttoken = $value;
             $token = $value;
-        } elseif ($column === 'lastpage' && !isset($_SESSION['survey_' . $surveyid]['step'])) {
+        } elseif ($column === 'lastpage' && !isset($_SESSION['responses_' . $surveyid]['step'])) {
             if (is_null($submitdate) || $submitdate === "N") {
-                $_SESSION['survey_' . $surveyid]['step'] = ($value > 1 ? $value : 1);
-                $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1;
+                $_SESSION['responses_' . $surveyid]['step'] = ($value > 1 ? $value : 1);
+                $thisstep = $_SESSION['responses_' . $surveyid]['step'] - 1;
             } else {
-                $_SESSION['survey_' . $surveyid]['maxstep'] = $_SESSION['survey_' . $surveyid]['totalsteps'];
+                $_SESSION['responses_' . $surveyid]['maxstep'] = $_SESSION['responses_' . $surveyid]['totalsteps'];
             }
         } elseif ($column === "datestamp") {
-            $_SESSION['survey_' . $surveyid]['datestamp'] = $value;
+            $_SESSION['responses_' . $surveyid]['datestamp'] = $value;
         }
         if ($column === "startdate") {
-            $_SESSION['survey_' . $surveyid]['startdate'] = $value;
+            $_SESSION['responses_' . $surveyid]['startdate'] = $value;
         } else {
-            //Only make session variables for those in insertarray[]
-            if (in_array($column, $_SESSION['survey_' . $surveyid]['insertarray']) && isset($_SESSION['survey_' . $surveyid]['fieldmap'][$column])) {
-                if (
-                    ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
-                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL ||
-                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null
-                ) {
-                    // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
-                    // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
-                    // This is especially important for the deletenonvalue feature,
-                    // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
-                    // question types (NKD)
-                    $_SESSION['survey_' . $surveyid][$column] = '';
-                } else {
-                    $_SESSION['survey_' . $surveyid][$column] = $value;
+            //Only make session variables for those in insertarray[] or in fieldmap
+            if (in_array($column, $_SESSION['responses_' . $surveyid]['insertarray']) && isset($_SESSION['responses_' . $surveyid]['fieldmap'][$column])) {
+                /* Fix for numeric value */
+                if (in_array($_SESSION['responses_' . $surveyid]['fieldmap'][$column]['type'], [Question::QT_N_NUMERICAL, Question::QT_K_MULTIPLE_NUMERICAL])) {
+                    /* Value need to be a string if it's null to evaluate conditions. This is especially important for the deletenonvalue feature, otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER */
+                    $value = is_null($value) ? "" : trim($value);
+                    /* If value is set : it came from DB as decimal, must fix for some validation (mantis #19435) */
+                    if ($value != '') {
+                        if ($value[0] === ".") {
+                            $value = "0" . $value;
+                        }
+                        if (strpos($value, ".") !== false) {
+                            $value = rtrim(rtrim($value, "0"), ".");
+                        }
+                    }
                 }
-                if (isset($token) && !empty($token)) {
-                    $_SESSION['survey_' . $surveyid][$column] = $value;
+                if ($_SESSION['responses_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) {
+                    /* Value need to be a string if it's null to evaluate conditions. This is especially important for the deletenonvalue feature, otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER */
+                    $value = is_null($value) ? "" : trim($value);
                 }
-            }  // if (in_array(
-        }  // else
-    } // foreach
-    $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
+                $_SESSION['responses_' . $surveyid][$column] = $value;
+            }
+        }
+    }
+    $_SESSION['responses_' . $surveyid]['LEMtokenResume'] = true;
     return true;
 }
 
@@ -261,13 +264,13 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
 
     $survey = Survey::model()->findByPk($surveyid);
     if (!isset($backok) || $backok != "Y") {
-        $fieldmap = createFieldMap($survey, 'full', false, false, $_SESSION['survey_' . $surveyid]['s_lang']);
+        $fieldmap = createFieldMap($survey, 'full', false, false, $_SESSION['responses_' . $surveyid]['s_lang']);
 
         if (!empty(App()->getRequest()->getPost('fieldnames'))) {
             $fields = explode("|", (string) $_POST['fieldnames']);
 
             foreach ($fields as $field) {
-                if (array_key_exists($field, $fieldmap) && $fieldmap[$field]['type'] == Question::QT_VERTICAL_FILE_UPLOAD && !strrpos((string) $fieldmap[$field]['fieldname'], "_filecount")) {
+                if (array_key_exists($field, $fieldmap) && $fieldmap[$field]['type'] == Question::QT_VERTICAL_FILE_UPLOAD && !strrpos((string) $fieldmap[$field]['fieldname'], "_Cfilecount")) {
                     $validation = QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
 
                     $filecount = 0;
@@ -327,10 +330,10 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
         }
         if (isset($filenotvalidated)) {
             if (isset($move) && $move == "moveprev") {
-                $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
+                $_SESSION['responses_' . $surveyid]['step'] = $thisstep;
             }
             if (isset($move) && $move == "movenext") {
-                $_SESSION['survey_' . $surveyid]['step'] = $thisstep;
+                $_SESSION['responses_' . $surveyid]['step'] = $thisstep;
             }
             return $filenotvalidated;
         }
@@ -369,23 +372,34 @@ function addtoarray_single($array1, $array2)
 function submittokens($quotaexit = false)
 {
     $surveyid = Yii::app()->getConfig('surveyID');
-    if (isset($_SESSION['survey_' . $surveyid]['s_lang'])) {
-        $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
+    if (isset($_SESSION['responses_' . $surveyid]['s_lang'])) {
+        $thissurvey = getSurveyInfo($surveyid, $_SESSION['responses_' . $surveyid]['s_lang']);
     } else {
         $thissurvey = getSurveyInfo($surveyid);
     }
-    $clienttoken = $_SESSION['survey_' . $surveyid]['token'];
+    $clienttoken = $_SESSION['responses_' . $surveyid]['token'] ?? '';
 
-    // Shift the date due to global timeadjust setting
-    $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+    $tokenused = ($_SESSION['responses_' . $surveyid]['tokenused'] ?? false);
+
+    if (($clienttoken === '') && (!$tokenused) && ($thissurvey['access_mode'] !== SurveyAccessModeService::$ACCESS_TYPE_CLOSED)) {
+        return; //optional
+    }
+
+    // Shift the date due to global timezone setting
+    $today = gmdate("Y-m-d H:i");
 
     // check how many uses the token has left
-    $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken ? $clienttoken : $tokenused));
+    if (!$token) {
+        throw new CHttpException(403, gT("Invalid access code"));
+    }
     $token->scenario = 'FinalSubmit'; // Do not XSS filter token data
 
     if ($quotaexit == true) {
         $token->completed = 'Q';
-        $token->usesleft--;
+        if (!$tokenused) {
+            $token->usesleft--;
+        }
     } else {
         if ($token->usesleft <= 1) {
             // Finish the token
@@ -415,7 +429,7 @@ function submittokens($quotaexit = false)
     if ($quotaexit == false) {
         $token->decrypt();
         if ($token && trim(strip_tags((string) $thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
-            $sToAddress = validateEmailAddresses($token->email);
+            $sToAddress = LimeMailer::validateAddresses($token->email);
             if ($sToAddress) {
                 /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
                 $reData = array('thissurvey' => $thissurvey);
@@ -467,40 +481,30 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
     $aReplacementVars['STATISTICSURL'] = App()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
     $aReplacementVars['ANSWERTABLE'] = '';
 
-    if (!isset($_SESSION['survey_' . $surveyid]['srid'])) {
+    if (!isset($_SESSION['responses_' . $surveyid]['srid'])) {
         $responseId = null; /* Maybe just return ? */
     } else {
         //replacementVars for LEM requiring a response id
-        $responseId = $_SESSION['survey_' . $surveyid]['srid'];
+        $responseId = $_SESSION['responses_' . $surveyid]['srid'];
         $aReplacementVars['EDITRESPONSEURL'] = App()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$responseId}");
         $aReplacementVars['VIEWRESPONSEURL'] = App()->getController()->createAbsoluteUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $responseId]);
     }
 
     // set email language
     $emailLanguage = null;
-    if (isset($_SESSION['survey_' . $surveyid]['s_lang'])) {
-        $emailLanguage = $_SESSION['survey_' . $surveyid]['s_lang'];
+    if (isset($_SESSION['responses_' . $surveyid]['s_lang'])) {
+        $emailLanguage = $_SESSION['responses_' . $surveyid]['s_lang'];
     }
 
     // create array of recipients for emailnotifications
     if (!empty($thissurvey['emailnotificationto']) && empty($emails)) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
-        foreach ($aRecipient as $sRecipient) {
-            $sRecipient = trim($sRecipient);
-            if ($mailer::validateAddress($sRecipient)) {
-                $aEmailNotificationTo[] = $sRecipient;
-            }
-        }
+        $recipients = LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true);
+        $aEmailNotificationTo = array_merge($aEmailNotificationTo, LimeMailer::validateAddresses($recipients));
     }
     // // create array of recipients for emailresponses
     if (!empty($thissurvey['emailresponseto']) && empty($emails)) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true));
-        foreach ($aRecipient as $sRecipient) {
-            $sRecipient = trim($sRecipient);
-            if ($mailer::validateAddress($sRecipient)) {
-                $aEmailResponseTo[] = $sRecipient;
-            }
-        }
+        $recipients = LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), 3, true);
+        $aEmailResponseTo = array_merge($aEmailResponseTo, LimeMailer::validateAddresses($recipients));
     }
 
     if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
@@ -531,7 +535,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
                 $mailer->setTo($notificationRecipient);
-                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'],true));
+                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
             } else {
                 $failedNotificationId = null;
                 $notificationRecipient = $sRecipient;
@@ -545,11 +549,13 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 saveFailedEmail($failedNotificationId, $notificationRecipient, $surveyid, $responseId, 'admin_notification', $emailLanguage, $mailer);
                 if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",
+                    echo CHtml::tag(
+                        "div",
                         ['class' => 'alert alert-danger'],
-                        sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError()));
+                        sprintf(gT("Basic admin notification could not be sent because of error: %s"), $mailer->getError())
+                    );
                 }
-            } else{
+            } else {
                 $successfullEmailCount++;
                 //preserve failedEmail if it exists
                 failedEmailSuccess($failedNotificationId);
@@ -560,9 +566,9 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
     // admin_notification (Detailed admin notification)
     if (count($aEmailResponseTo) > 0) {
         // there was no token used so lets remove the token field from insertarray
-        if (isset($_SESSION['survey_' . $surveyid]['insertarray'][0])) {
-            if (!isset($_SESSION['survey_' . $surveyid]['token']) && $_SESSION['survey_' . $surveyid]['insertarray'][0] === 'token') {
-                unset($_SESSION['survey_' . $surveyid]['insertarray'][0]);
+        if (isset($_SESSION['responses_' . $surveyid]['insertarray'][0])) {
+            if (!isset($_SESSION['responses_' . $surveyid]['token']) && $_SESSION['responses_' . $surveyid]['insertarray'][0] === 'token') {
+                unset($_SESSION['responses_' . $surveyid]['insertarray'][0]);
             }
         }
         $mailer = \LimeMailer::getInstance();
@@ -578,7 +584,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 LimeExpressionManager::updateReplacementFields($aReplacementVars);
                 $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
                 $mailer->setTo($responseRecipient);
-                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'],true));
+                $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
             } else {
                 $failedNotificationId = null;
                 $responseRecipient = $sRecipient;
@@ -592,9 +598,11 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 saveFailedEmail($failedNotificationId, $responseRecipient, $surveyid, $responseId, 'admin_responses', $emailLanguage, $mailer);
                 if (empty($emails) && $debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",
+                    echo CHtml::tag(
+                        "div",
                         ['class' => 'alert alert-danger'],
-                        sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError()));
+                        sprintf(gT("Detailed admin notification could not be sent because of error: %s"), $mailer->getError())
+                    );
                 }
             } else {
                 $successfullEmailCount++;
@@ -627,14 +635,17 @@ function getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bI
     Yii::import('application.helpers.viewHelper');
     foreach ($aFullResponseTable as $sFieldname => $fname) {
         if (substr($sFieldname, 0, 4) === 'gid_') {
-            $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
-            $ResultTableText .= "\n{$fname[0]}\n\n";
+            $questionText = viewHelper::flatEllipsizeText($fname[0], true, 0);
+            $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>" . $questionText . "</td></tr>\n";
+            $ResultTableText .= "\n" . $questionText . "\n\n";
         } elseif (substr($sFieldname, 0, 4) === 'qid_') {
-            $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>" . viewHelper::flatEllipsizeText($fname[0], true, 0) . "</td></tr>\n";
-            $ResultTableText .= "\n{$fname[0]}\n";
+            $questionText = viewHelper::flatEllipsizeText($fname[0], true, 0);
+            $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>" . $questionText . "</td></tr>\n";
+            $ResultTableText .= "\n" . $questionText . "\n";
         } else {
-            $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>" . viewHelper::flatEllipsizeText("{$fname[0]} {$fname[1]}", true, 0) . "</td><td class='printanswersanswertext'>" . CHtml::encode($fname[2]) . "</td></tr>\n";
-            $ResultTableText .= "     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
+            $questionText = viewHelper::flatEllipsizeText($fname[0], true, 0) . " " .  viewHelper::flatEllipsizeText($fname[1], true, 0);
+            $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>" . $questionText . "</td><td class='printanswersanswertext'>" . CHtml::encode($fname[2]) . "</td></tr>\n";
+            $ResultTableText .= "     " . $questionText . ": {$fname[2]}\n";
         }
     }
     $ResultTableHTML .= "</table>\n";
@@ -660,31 +671,42 @@ function getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bI
  */
 function saveFailedEmail(?int $id, ?string $recipient, int $surveyId, int $responseId, string $emailType, ?string $language, LimeMailer $mailer): bool
 {
-    $failedEmailModel = new FailedEmail();
     $errorMessage = $mailer->getError();
     $resendVars = json_encode($mailer->getResendEmailVars());
     if (isset($id)) {
-        $failedEmail = $failedEmailModel->findByPk($id);
+        $failedEmail = FailedEmail::model()->findByPk($id);
         if (isset($failedEmail)) {
             $failedEmail->surveyid = $surveyId;
             $failedEmail->error_message = $errorMessage;
             $failedEmail->status = 'SEND FAILED';
             $failedEmail->updated = date('Y-m-d H:i:s');
-            return $failedEmail->save(false);
         }
     }
-    $failedEmailModel->recipient = $recipient;
-    $failedEmailModel->surveyid = $surveyId;
-    $failedEmailModel->responseid = $responseId;
-    $failedEmailModel->email_type = $emailType;
-    $failedEmailModel->language = $language;
-    $failedEmailModel->error_message = $errorMessage;
-    $failedEmailModel->created = date('Y-m-d H:i:s');
-    $failedEmailModel->status = 'SEND FAILED';
-    $failedEmailModel->updated = date('Y-m-d H:i:s');
-    $failedEmailModel->resend_vars = $resendVars;
 
-    return $failedEmailModel->save(false);
+    if (!isset($failedEmail)) {
+        $failedEmail = new FailedEmail();
+        $failedEmail->recipient = $recipient;
+        $failedEmail->surveyid = $surveyId;
+        $failedEmail->responseid = $responseId;
+        $failedEmail->email_type = $emailType;
+        $failedEmail->language = $language;
+        $failedEmail->error_message = $errorMessage;
+        $failedEmail->created = date('Y-m-d H:i:s');
+        $failedEmail->status = 'SEND FAILED';
+        $failedEmail->updated = date('Y-m-d H:i:s');
+        $failedEmail->resend_vars = $resendVars;
+    }
+
+    try {
+        return $failedEmail->save(false);
+    } catch (\CDbException $e) {
+        // If there's an exception, it might be due to the error message, so we log it
+        // and try to save again with a generic error message
+        Yii::log("Error saving failed email: " . $e->getMessage(), CLogger::LEVEL_ERROR);
+        Yii::log("Original error message: " . $errorMessage, CLogger::LEVEL_ERROR);
+        $failedEmail->error_message = gT("Original error message could not be saved.");
+        return $failedEmail->save(false);
+    }
 }
 
 function failedEmailSuccess($id)
@@ -717,7 +739,7 @@ function submitfailed($errormsg = '', $query = null)
     global $surveyid;
 
     $completed = "<p><span class='ri-error-warning-fill'></span>&nbsp;<strong>"
-    . gT("Did Not Save") . "</strong></p>"
+    . gT("Responses were not saved") . "</strong></p>"
     . "<p>"
     . gT("An unexpected error has occurred and your responses cannot be saved.")
     . "</p>";
@@ -728,11 +750,11 @@ function submitfailed($errormsg = '', $query = null)
         if (Yii::app()->getConfig('debug') > 0 && !empty($errormsg)) {
             $completed .= 'Error message: ' . htmlspecialchars($errormsg) . '<br />';
         }
-        $email = gT("An error occurred saving a response to survey id", "unescaped") . " " . $thissurvey['name'] . " - $surveyid\n\n";
+        $email = sprintf(gT("An error occurred saving a response to survey %s", "unescaped"), $thissurvey['name'] . " - $surveyid\n\n");
         $email .= gT("DATA TO BE ENTERED", "unescaped") . ":\n";
-        foreach ($_SESSION['survey_' . $surveyid]['insertarray'] as $value) {
-            if (isset($_SESSION['survey_' . $surveyid][$value])) {
-                $email .= "$value: {$_SESSION['survey_'.$surveyid][$value]}\n";
+        foreach ($_SESSION['responses_' . $surveyid]['insertarray'] as $value) {
+            if (isset($_SESSION['responses_' . $surveyid][$value])) {
+                $email .= "$value: {$_SESSION['responses_'.$surveyid][$value]}\n";
             } else {
                 $email .= "$value: N/A\n";
             }
@@ -742,7 +764,7 @@ function submitfailed($errormsg = '', $query = null)
             . $query . "\n\n";
         }
         if (!empty($errormsg)) {
-            $email .= gT("ERROR MESSAGE", "unescaped") . ":\n"
+            $email .= gT("Error message", "unescaped") . ":\n"
                . $errormsg . "\n\n";
         }
 
@@ -789,9 +811,9 @@ function buildsurveysession($surveyid, $preview = false)
     resetAllSessionVariables($surveyid);
 
     // NOTE: All of this is already done in survey controller.
-    // We keep it here only for Travis Tested thar are still not using Selenium
+    // We keep it here only for Travis Tested that are still not using Selenium
     // As soon as the tests are rewrote to use selenium, those lines can be removed
-    $lang = $_SESSION['survey_' . $surveyid]['s_lang'] ?? '';
+    $lang = $_SESSION['responses_' . $surveyid]['s_lang'] ?? '';
     if (empty($lang)) {
         // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
 
@@ -810,15 +832,18 @@ function buildsurveysession($surveyid, $preview = false)
     }
 
 
-    UpdateGroupList($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
+    UpdateGroupList($surveyid, $_SESSION['responses_' . $surveyid]['s_lang']);
 
-    $totalquestions               = $survey->countTotalQuestions;
+    $totalquestions = $survey->countTotalQuestions;
+    $totalVisibleQuestions = $survey->getCountTotalQuestions(false);
+
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
 
-    $_SESSION['survey_' . $surveyid]['totalquestions'] = $survey->countInputQuestions;
+    $_SESSION['responses_' . $surveyid]['totalquestions'] = $totalquestions;
+    $_SESSION['responses_' . $surveyid]['totalVisibleQuestions'] = $totalVisibleQuestions;
 
     // 2. SESSION VARIABLE: totalsteps
-    setTotalSteps($surveyid, $thissurvey, $totalquestions);
+    setTotalSteps($surveyid, $thissurvey, $totalquestions, $totalVisibleQuestions);
 
     // Break out and crash if there are no questions!
     if (($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0) && !$preview) {
@@ -831,14 +856,14 @@ function buildsurveysession($surveyid, $preview = false)
     //See rem at end..
 
     if ($tokensexist == 1 && $clienttoken) {
-        $_SESSION['survey_' . $surveyid]['token'] = $clienttoken;
+        $_SESSION['responses_' . $surveyid]['token'] = $clienttoken;
     }
 
     if ($thissurvey['anonymized'] == "N") {
-        $_SESSION['survey_' . $surveyid]['insertarray'][] = "token";
+        $_SESSION['responses_' . $surveyid]['insertarray'][] = "token";
     }
 
-    $fieldmap = $_SESSION['survey_' . $surveyid]['fieldmap'] = createFieldMap($survey, 'full', true, false, $_SESSION['survey_' . $surveyid]['s_lang']);
+    $fieldmap = $_SESSION['responses_' . $surveyid]['fieldmap'] = createFieldMap($survey, 'full', true, false, $_SESSION['responses_' . $surveyid]['s_lang']);
 
     // first call to initFieldArray
     initFieldArray($surveyid, $fieldmap);
@@ -846,8 +871,8 @@ function buildsurveysession($surveyid, $preview = false)
     // Prefill questions/answers from command line params
     prefillFromCommandLine($surveyid);
 
-    if (isset($_SESSION['survey_' . $surveyid]['fieldarray'])) {
-        $_SESSION['survey_' . $surveyid]['fieldarray'] = array_values($_SESSION['survey_' . $surveyid]['fieldarray']);
+    if (isset($_SESSION['responses_' . $surveyid]['fieldarray'])) {
+        $_SESSION['responses_' . $surveyid]['fieldarray'] = array_values($_SESSION['responses_' . $surveyid]['fieldarray']);
     }
 
     //Check if a passthru label and value have been included in the query url
@@ -867,18 +892,18 @@ function checkPassthruLabel($surveyid, $preview, $fieldmap)
     $oResult = SurveyURLParameter::model()->getParametersForSurvey($surveyid);
     foreach ($oResult->readAll() as $aRow) {
         if (isset($_GET[$aRow['parameter']]) && !$preview) {
-            $_SESSION['survey_' . $surveyid]['urlparams'][$aRow['parameter']] = $_GET[$aRow['parameter']];
+            $_SESSION['responses_' . $surveyid]['urlparams'][$aRow['parameter']] = $_GET[$aRow['parameter']];
             if ($aRow['targetqid'] != '') {
                 foreach ($fieldmap as $sFieldname => $aField) {
                     if ($aRow['targetsqid'] != '') {
                         if ($aField['qid'] == $aRow['targetqid'] && $aField['sqid'] == $aRow['targetsqid']) {
-                            $_SESSION['survey_' . $surveyid]['startingValues'][$sFieldname] = $_GET[$aRow['parameter']];
-                            $_SESSION['survey_' . $surveyid]['startingValues'][$aRow['parameter']] = $_GET[$aRow['parameter']];
+                            $_SESSION['responses_' . $surveyid]['startingValues'][$sFieldname] = $_GET[$aRow['parameter']];
+                            $_SESSION['responses_' . $surveyid]['startingValues'][$aRow['parameter']] = $_GET[$aRow['parameter']];
                         }
                     } else {
                         if ($aField['qid'] == $aRow['targetqid']) {
-                            $_SESSION['survey_' . $surveyid]['startingValues'][$sFieldname] = $_GET[$aRow['parameter']];
-                            $_SESSION['survey_' . $surveyid]['startingValues'][$aRow['parameter']] = $_GET[$aRow['parameter']];
+                            $_SESSION['responses_' . $surveyid]['startingValues'][$sFieldname] = $_GET[$aRow['parameter']];
+                            $_SESSION['responses_' . $surveyid]['startingValues'][$aRow['parameter']] = $_GET[$aRow['parameter']];
                         }
                     }
                 }
@@ -906,10 +931,10 @@ function prefillFromCommandLine($surveyid)
         'seed'
     );
 
-    if (!isset($_SESSION['survey_' . $surveyid]['startingValues'])) {
+    if (!isset($_SESSION['responses_' . $surveyid]['startingValues'])) {
         $startingValues = array();
     } else {
-        $startingValues = $_SESSION['survey_' . $surveyid]['startingValues'];
+        $startingValues = $_SESSION['responses_' . $surveyid]['startingValues'];
     }
     $request = Yii::app()->getRequest();
     if (in_array($request->getRequestType(), ['GET', 'POST'])) {
@@ -917,12 +942,12 @@ function prefillFromCommandLine($surveyid)
         if (!empty($getValues)) {
             $qcode2sgqa = array();
             Yii::import('application.helpers.viewHelper');
-            foreach ($_SESSION['survey_' . $surveyid]['fieldmap'] as $sgqa => $details) {
+            foreach ($_SESSION['responses_' . $surveyid]['fieldmap'] as $sgqa => $details) {
                 $qcode2sgqa[viewHelper::getFieldCode($details, array('LEMcompat' => true))] = $sgqa;
             }
             foreach ($getValues as $k => $v) {
-                if (isset($_SESSION['survey_' . $surveyid]['fieldmap'][$k])) {
-                    // sXgXqa prefilling
+                if (isset($_SESSION['responses_' . $surveyid]['fieldmap'][$k])) {
+                    // Qqa prefilling
                     $startingValues[$k] = $v;
                 } elseif (array_key_exists($k, $qcode2sgqa)) {
                     // EM code prefilling
@@ -931,7 +956,7 @@ function prefillFromCommandLine($surveyid)
             }
         }
     }
-    $_SESSION['survey_' . $surveyid]['startingValues'] = $startingValues;
+    $_SESSION['responses_' . $surveyid]['startingValues'] = $startingValues;
 }
 
 /**
@@ -942,12 +967,12 @@ function prefillFromCommandLine($surveyid)
 function initFieldArray($surveyid, array $fieldmap)
 {
     // Reset field array if called more than once (should not happen)
-    $_SESSION['survey_' . $surveyid]['fieldarray'] = array();
+    $_SESSION['responses_' . $surveyid]['fieldarray'] = array();
 
     foreach ($fieldmap as $key => $field) {
         if (isset($field['qid']) && $field['qid'] != '') {
-            $_SESSION['survey_' . $surveyid]['fieldnamesInfo'][$field['fieldname']]   = $field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid'];
-            $_SESSION['survey_' . $surveyid]['insertarray'][]                         = $field['fieldname'];
+            $_SESSION['responses_' . $surveyid]['fieldnamesInfo'][$field['fieldname']]   = 'Q' . $field['qid'];
+            $_SESSION['responses_' . $surveyid]['insertarray'][]                         = $field['fieldname'];
             //fieldarray ARRAY CONTENTS -
             //            [0]=questions.qid,
             //            [1]=fieldname,
@@ -962,7 +987,7 @@ function initFieldArray($surveyid, array $fieldmap)
             //            [9]=used in group.php for question count
             //            [10]=new group id for question in randomization group (GroupbyGroup Mode)
 
-            if (!isset($_SESSION['survey_' . $surveyid]['fieldarray'][$field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid']])) {
+            if (!isset($_SESSION['responses_' . $surveyid]['fieldarray']['Q' . $field['qid']])) {
                 //JUST IN CASE : PRECAUTION!
                 //following variables are set only if $style=="full" in createFieldMap() in common_helper.
                 //so, if $style = "short", set some default values here!
@@ -996,8 +1021,8 @@ function initFieldArray($surveyid, array $fieldmap)
                                     $usedinconditions = 'N';
                 }
 
-                $_SESSION['survey_' . $surveyid]['fieldarray'][$field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid']] = array($field['qid'],
-                $field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid'],
+                $_SESSION['responses_' . $surveyid]['fieldarray']['Q' . $field['qid']] = array($field['qid'],
+                'Q' . $field['qid'],
                 $title,
                 $question,
                 $field['type'],
@@ -1008,7 +1033,7 @@ function initFieldArray($surveyid, array $fieldmap)
             }
 
             if (isset($field['random_gid'])) {
-                $_SESSION['survey_' . $surveyid]['fieldarray'][$field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid']][10] = $field['random_gid'];
+                $_SESSION['responses_' . $surveyid]['fieldarray']['Q' . $field['qid']][10] = $field['random_gid'];
             }
         }
     }
@@ -1027,23 +1052,23 @@ function randomizationGroupsAndQuestions($surveyid, $preview = false, $fieldmap 
     // TODO: rewrite this THE YII WAY !!!! (application/vendor + internal config for namespace + aliases; etc)
     ls\mersenne\setSeed($surveyid);
 
-    $fieldmap = (empty($fieldmap)) ? $_SESSION['survey_' . $surveyid]['fieldmap'] : $fieldmap;
+    $fieldmap = (empty($fieldmap)) ? $_SESSION['responses_' . $surveyid]['fieldmap'] : $fieldmap;
 
     [$fieldmap, $randomized1] = randomizationGroup($surveyid, $fieldmap, $preview); // Randomization groups for groups
     [$fieldmap, $randomized2] = randomizationQuestion($surveyid, $fieldmap, $preview); // Randomization groups for questions
 
     $randomized = $randomized1 || $randomized2;
     ;
-    $_SESSION['survey_' . $surveyid]['randomized'] = $randomized;
+    $_SESSION['responses_' . $surveyid]['randomized'] = $randomized;
 
     if ($randomized === true) {
         $fieldmap = finalizeRandomization($fieldmap);
 
-        $_SESSION['survey_' . $surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_' . $surveyid]['s_lang']] = $fieldmap;
-        $_SESSION['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster']                            = 'fieldmap-' . $surveyid . $_SESSION['survey_' . $surveyid]['s_lang'];
+        $_SESSION['responses_' . $surveyid]['fieldmap-' . $surveyid . $_SESSION['responses_' . $surveyid]['s_lang']] = $fieldmap;
+        $_SESSION['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster']                            = 'fieldmap-' . $surveyid . $_SESSION['responses_' . $surveyid]['s_lang'];
     }
 
-    $_SESSION['survey_' . $surveyid]['fieldmap'] = $fieldmap;
+    $_SESSION['responses_' . $surveyid]['fieldmap'] = $fieldmap;
 
     return $fieldmap;
 }
@@ -1079,7 +1104,7 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
         $aGIDCompleteMap = $aGIDCompleteMap + array_combine($aGIDs, $aShuffledIDs);
     }
 
-    $_SESSION['survey_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
+    $_SESSION['responses_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
 
     $randomized = false; // So we can trigger reorder once for group and question randomization
 
@@ -1089,7 +1114,7 @@ function randomizationGroup($surveyid, array $fieldmap, $preview)
 
         // Now adjust the grouplist
         Yii::import('application.helpers.frontend_helper', true); // make sure frontend helper is loaded ???? We are inside frontend_helper..... TODO: check if it can be removed
-        UpdateGroupList($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
+        UpdateGroupList($surveyid, $_SESSION['responses_' . $surveyid]['s_lang']);
         // ... and the fieldmap
 
         // First create a fieldmap with GID as key
@@ -1380,13 +1405,13 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
 function resetAllSessionVariables($surveyid)
 {
     Yii:app()->session->regenerateID(true);
-    unset($_SESSION['survey_' . $surveyid]['grouplist']);
-    unset($_SESSION['survey_' . $surveyid]['fieldarray']);
-    unset($_SESSION['survey_' . $surveyid]['insertarray']);
-    unset($_SESSION['survey_' . $surveyid]['fieldnamesInfo']);
-    unset($_SESSION['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster']);
-    unset($_SESSION['survey_' . $surveyid]['groupReMap']);
-    $_SESSION['survey_' . $surveyid]['fieldnamesInfo'] = array();
+    unset($_SESSION['responses_' . $surveyid]['grouplist']);
+    unset($_SESSION['responses_' . $surveyid]['fieldarray']);
+    unset($_SESSION['responses_' . $surveyid]['insertarray']);
+    unset($_SESSION['responses_' . $surveyid]['fieldnamesInfo']);
+    unset($_SESSION['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster']);
+    unset($_SESSION['responses_' . $surveyid]['groupReMap']);
+    $_SESSION['responses_' . $surveyid]['fieldnamesInfo'] = array();
 }
 
 /**
@@ -1398,21 +1423,22 @@ function resetAllSessionVariables($surveyid)
  * @param integer $totalquestions
  * @return void
  */
-function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
+function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisibleQuestions)
 {
     switch ($thissurvey['format']) {
         case "A":
-            $_SESSION['survey_' . $surveyid]['totalsteps'] = 1;
+            $_SESSION['responses_' . $surveyid]['totalsteps'] = 1;
             break;
 
         case "G":
-            if (isset($_SESSION['survey_' . $surveyid]['grouplist'])) {
-                $_SESSION['survey_' . $surveyid]['totalsteps'] = count($_SESSION['survey_' . $surveyid]['grouplist']);
+            if (isset($_SESSION['responses_' . $surveyid]['grouplist'])) {
+                $_SESSION['responses_' . $surveyid]['totalsteps'] = count($_SESSION['responses_' . $surveyid]['grouplist']);
             }
             break;
 
         case "S":
-            $_SESSION['survey_' . $surveyid]['totalsteps'] = $totalquestions;
+            $_SESSION['responses_' . $surveyid]['totalsteps'] = $totalquestions;
+            $_SESSION['responses_' . $surveyid]['totalVisibleSteps'] = $totalVisibleQuestions;
     }
 }
 
@@ -1473,9 +1499,9 @@ function getNavigatorDatas()
 
     $sMoveNext          = "movenext";
     $sMovePrev          = "";
-    $iSessionStep       = $_SESSION['survey_' . $surveyid]['step'] ?? false;
-    $iSessionMaxStep    = $_SESSION['survey_' . $surveyid]['maxstep'] ?? false;
-    $iSessionTotalSteps = $_SESSION['survey_' . $surveyid]['totalsteps'] ?? false;
+    $iSessionStep       = $_SESSION['responses_' . $surveyid]['step'] ?? false;
+    $iSessionMaxStep    = $_SESSION['responses_' . $surveyid]['maxstep'] ?? false;
+    $iSessionTotalSteps = $_SESSION['responses_' . $surveyid]['totalsteps'] ?? false;
 
     // Count down
     $aNavigator['disabled'] = '';
@@ -1521,9 +1547,9 @@ function getNavigatorDatas()
         // Fill some test here, more clear ....
         $bAnonymized                = $thissurvey["anonymized"] == 'Y';
         $bTokenanswerspersistence   = $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_' . $surveyid);
-        $bAlreadySaved              = isset($_SESSION['survey_' . $surveyid]['scid']);
-        $iSessionStep               = ($_SESSION['survey_' . $surveyid]['step'] ?? false);
-        $iSessionMaxStep            = ($_SESSION['survey_' . $surveyid]['maxstep'] ?? false);
+        $bAlreadySaved              = isset($_SESSION['responses_' . $surveyid]['scid']);
+        $iSessionStep               = ($_SESSION['responses_' . $surveyid]['step'] ?? false);
+        $iSessionMaxStep            = ($_SESSION['responses_' . $surveyid]['maxstep'] ?? false);
 
         // Find out if the user has any saved data
         if ($thissurvey['format'] == 'A') {
@@ -1557,7 +1583,7 @@ function getNavigatorDatas()
 }
 
 /**
- * Caculate assessement scores
+ * Calculate assessment scores
  *
  * @param integer $surveyid
  * @param boolean $onlyCurrent : only current ( ASSESSMENT_CURRENT_TOTAL )
@@ -1586,7 +1612,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
         );
     }
     $currentLanguage = App()->getLanguage();
-    if (!isset($_SESSION['survey_' . $surveyid]['s_lang'])) {
+    if (!isset($_SESSION['responses_' . $surveyid]['s_lang'])) {
         /* Then not inside survey … can surely return directly */
         return array(
             'show' => false,
@@ -1604,10 +1630,10 @@ function doAssessment($surveyid, $onlyCurrent = true)
         $assessmentValue = null;
         if (in_array($field['type'], array('1', 'F', 'H', 'W', 'Z', 'L', '!', 'M', 'O', 'P'))) {
             $fieldmap[$field['fieldname']]['assessment_value'] = 0;
-            if (!empty($_SESSION['survey_' . $surveyid][$field['fieldname']])) {
+            if (!empty($_SESSION['responses_' . $surveyid][$field['fieldname']])) {
                 //Multiflexi choice  - result is the assessment attribute value
                 if (($field['type'] == "M") || ($field['type'] == "P")) {
-                    if ($_SESSION['survey_' . $surveyid][$field['fieldname']] == "Y") {
+                    if ($_SESSION['responses_' . $surveyid][$field['fieldname']] == "Y") {
                         $aAttributes     = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
                         $assessmentValue = (int) $aAttributes['assessment_value'];
                     }
@@ -1616,7 +1642,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
                     $oAssessementAnswer = Answer::model()->find(array(
                         'select' => 'code,assessment_value',
                         'condition' => 'qid = :qid and code = :code',
-                        'params' => array(":qid" => $field['qid'], ":code" => $_SESSION['survey_' . $surveyid][$field['fieldname']])
+                        'params' => array(":qid" => $field['qid'], ":code" => $_SESSION['responses_' . $surveyid][$field['fieldname']])
                     ));
                     if ($oAssessementAnswer) {
                         $assessmentValue    = $oAssessementAnswer->assessment_value;
@@ -1626,7 +1652,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
             }
             $groups[] = $field['gid'];
         }
-        // If this is a question (and not a survey field, like ID), save asessment value
+        // If this is a question (and not a survey field, like ID), save assessment value
         if ($field['qid'] > 0) {
             /**
              * Allow Plugin to update assessment value
@@ -1647,8 +1673,8 @@ function doAssessment($surveyid, $onlyCurrent = true)
             }
 
             $event->set('assessmentValue', $assessmentValue);
-            if (isset($_SESSION['survey_' . $surveyid][$field['fieldname']])) {
-                $event->set('response', $_SESSION['survey_' . $surveyid][$field['fieldname']]);
+            if (isset($_SESSION['responses_' . $surveyid][$field['fieldname']])) {
+                $event->set('response', $_SESSION['responses_' . $surveyid][$field['fieldname']]);
             }
             // Dispatch Event and Get new assessment value
             App()->getPluginManager()->dispatchEvent($event);
@@ -1676,7 +1702,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
         $grouptotal = 0;
         foreach ($fieldmap as $field) {
             if ($field['gid'] == $group && isset($field['assessment_value'])) {
-                if (isset($_SESSION['survey_' . $surveyid][$field['fieldname']])) {
+                if (isset($_SESSION['responses_' . $surveyid][$field['fieldname']])) {
                     $grouptotal = $grouptotal + $field['assessment_value'];
                 }
             }
@@ -1684,7 +1710,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
         $subtotal[$group] = $grouptotal;
     }
 
-    /* Get current assesment (can be only for last page …) */
+    /* Get current assessment (can be only for last page …) */
     $aoAssessements = Assessment::model()->findAll(array(
         'condition' => "sid = :sid and language = :language",
         'order' => 'scope,id', // No real order in assessment, here : group first (why ?) and by creation
@@ -1740,7 +1766,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
 function UpdateGroupList($surveyid, $language)
 {
 
-    unset($_SESSION['survey_' . $surveyid]['grouplist']);
+    unset($_SESSION['responses_' . $surveyid]['grouplist']);
 
     $result = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid], ['order' => 'group_order ASC']);
     $groupList = array();
@@ -1753,9 +1779,9 @@ function UpdateGroupList($surveyid, $language)
         $gidList[$row['gid']] = $group;
     }
 
-    if (!Yii::app()->getConfig('previewmode') && isset($_SESSION['survey_' . $surveyid]['groupReMap']) && count($_SESSION['survey_' . $surveyid]['groupReMap']) > 0) {
+    if (!Yii::app()->getConfig('previewmode') && isset($_SESSION['responses_' . $surveyid]['groupReMap']) && count($_SESSION['responses_' . $surveyid]['groupReMap']) > 0) {
         // Now adjust the grouplist
-        $groupRemap    = $_SESSION['survey_' . $surveyid]['groupReMap'];
+        $groupRemap    = $_SESSION['responses_' . $surveyid]['groupReMap'];
         $groupListCopy = $groupList;
 
         foreach ($groupList as $gseq => $info) {
@@ -1767,7 +1793,7 @@ function UpdateGroupList($surveyid, $language)
         }
         $groupList = $groupListCopy;
     }
-        $_SESSION['survey_' . $surveyid]['grouplist'] = $groupList;
+        $_SESSION['responses_' . $surveyid]['grouplist'] = $groupList;
 }
 
 /**
@@ -1780,207 +1806,17 @@ function updateFieldArray()
     global $surveyid;
 
 
-    if (isset($_SESSION['survey_' . $surveyid]['fieldarray'])) {
-        foreach ($_SESSION['survey_' . $surveyid]['fieldarray'] as $key => $value) {
-            $questionarray = &$_SESSION['survey_' . $surveyid]['fieldarray'][$key];
+    if (isset($_SESSION['responses_' . $surveyid]['fieldarray'])) {
+        foreach ($_SESSION['responses_' . $surveyid]['fieldarray'] as $key => $value) {
+            $questionarray = &$_SESSION['responses_' . $surveyid]['fieldarray'][$key];
             $arQuestion = Question::model()->findByPk($questionarray[0]);
             if (!empty($arQuestion)) {
                 $questionarray[2] = $arQuestion->title;
-                $questionarray[3] = $arQuestion->questionl10ns[$_SESSION['survey_' . $surveyid]['s_lang']]->question;
+                $questionarray[3] = $arQuestion->questionl10ns[$_SESSION['responses_' . $surveyid]['s_lang']]->question;
             }
             unset($questionarray);
         }
     }
-}
-
-/**
-* checkCompletedQuota() returns matched quotas information for the current response
-* @param integer $surveyid - Survey identification number
-* @param bool $return - set to true to return information, false do the quota
-* @return array|void - nested array, Quotas->Members->Fields, includes quota information matched in session.
-*/
-function checkCompletedQuota($surveyid, $return = false)
-{
-    /* Check if session is set */
-    if (!isset(App()->session['survey_' . $surveyid]['srid'])) {
-        return;
-    }
-    /* Check is Response is already submitted : only when "do" the quota: allow to send information about quota */
-    $oResponse = Response::model($surveyid)->findByPk(App()->session['survey_' . $surveyid]['srid']);
-    if (!$return && $oResponse && !is_null($oResponse->submitdate)) {
-        return;
-    }
-    // EM call 2 times quotas with 3 lines of php code, then use static.
-    static $aMatchedQuotas;
-    if (!$aMatchedQuotas) {
-        $aMatchedQuotas = array();
-        /** @var Quota[] $aQuotas */
-        $aQuotas = Quota::model()->with('languagesettings', 'quotaMembers.question')->findAllByAttributes(array('sid' => $surveyid));
-        // if(!$aQuotasInfo || empty($aQuotaInfos)) {
-        if (!$aQuotas || empty($aQuotas)) {
-            return $aMatchedQuotas;
-        }
-
-        // OK, we have some quota, then find if this $_SESSION have some set
-        // foreach ($aQuotasInfos as $aQuotaInfo)
-        foreach ($aQuotas as $oQuota) {
-            // if(!$aQuotaInfo['active']) {
-            if (!$oQuota->active) {
-                continue;
-            }
-            // if(count($aQuotaInfo['members'])===0) {
-            if (count($oQuota->quotaMembers) === 0) {
-                continue;
-            }
-            $iMatchedAnswers = 0;
-            $bPostedField = false;
-
-            ////Create filtering
-            // Array of field with quota array value
-            $aQuotaFields = array();
-            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is irrelevant (em_manager_helper line 6548)
-            $aQuotaRelevantFieldnames = array();
-            // To count number of hidden questions
-            $aQuotaQid = array();
-            //Fill the necessary filter arrays
-            foreach ($oQuota->quotaMembers as $oQuotaMember) {
-                $aQuotaMember = $oQuotaMember->memberInfo;
-                $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
-                $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']] = isset($_SESSION['survey_' . $surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_' . $surveyid]['relevanceStatus'][$aQuotaMember['qid']];
-                $aQuotaQid[] = $aQuotaMember['qid'];
-            }
-            $aQuotaQid = array_unique($aQuotaQid);
-
-            ////Filter
-            // For each field : test if actual responses is in quota (and is relevant)
-            foreach ($aQuotaFields as $sFieldName => $aValues) {
-                $bInQuota = isset($_SESSION['survey_' . $surveyid][$sFieldName]) && in_array($_SESSION['survey_' . $surveyid][$sFieldName], $aValues);
-                if ($bInQuota && $aQuotaRelevantFieldnames[$sFieldName]) {
-                    $iMatchedAnswers++;
-                }
-                if (!is_null(App()->request->getPost($sFieldName))) {
-// Need only one posted value
-                    $bPostedField = true;
-                    $aPostedQuotaFields[$sFieldName] = App()->getRequest()->getPost($sFieldName);
-                }
-            }
-
-
-            // Condition to count quota :
-            // Answers are the same in quota + an answer is submitted at this time (bPostedField)
-            //  OR all questions is hidden (bAllHidden)
-            $bAllHidden = QuestionAttribute::model()
-                ->countByAttributes(array(
-                    'qid' => $aQuotaQid,
-                    'attribute' => 'hidden',
-                    'value' => '1',
-            )) == count($aQuotaQid);
-
-            if ($iMatchedAnswers == count($aQuotaFields) && ($bPostedField || $bAllHidden)) {
-                if ($oQuota->qlimit == 0) {
-                    // Always add the quota if qlimit==0
-                    $aMatchedQuotas[] = $oQuota->viewArray;
-                } else {
-                    $iCompleted = $oQuota->completeCount;
-                    if (!is_null($iCompleted) && ((int) $iCompleted >= (int) $oQuota->qlimit)) {
-                        // This remove invalid quota and not completed
-                        $aMatchedQuotas[] = $oQuota->viewArray;
-                    }
-                }
-            }
-        }
-    }
-    if ($return) {
-        return $aMatchedQuotas;
-    }
-    if (empty($aMatchedQuotas)) {
-        return;
-    }
-
-    // Now we have all the information we need about the quotas and their status.
-    // We need to construct the page and do all needed action
-    $aSurveyInfo = getSurveyInfo($surveyid, $_SESSION['survey_' . $surveyid]['s_lang']);
-
-    $sClientToken = $_SESSION['survey_' . $surveyid]['token'] ?? "";
-    // $redata for templatereplace
-    $aDataReplacement = array(
-        'thissurvey' => $aSurveyInfo,
-        'clienttoken' => $sClientToken,
-        'token' => $sClientToken,
-    );
-
-    // We take only the first matched quota, no need for each
-    $aMatchedQuota = $aMatchedQuotas[0];
-    // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
-    $event = new PluginEvent('afterSurveyQuota');
-    $event->set('surveyId', $surveyid);
-    $event->set('responseId', $_SESSION['survey_' . $surveyid]['srid']); // We always have a responseId
-    $event->set('aMatchedQuotas', $aMatchedQuotas); // Give all the matched quota : the first is the active
-    App()->getPluginManager()->dispatchEvent($event);
-    $blocks = array();
-
-    foreach ($event->getAllContent() as $blockData) {
-        /* @var $blockData \LimeSurvey\PluginManager\PluginEventContent */
-        $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
-    }
-
-    // Allow plugin to update message, url, url description and action
-    $sMessage = $event->get('message', $aMatchedQuota['quotals_message']);
-    $sUrl = $event->get('url', $aMatchedQuota['quotals_url']);
-    $sUrlDescription = $event->get('urldescrip', $aMatchedQuota['quotals_urldescrip']);
-    $sAction = $event->get('action', $aMatchedQuota['action']);
-    /* Tag if we close or not the survey */
-    $closeSurvey = ($sAction == "1" || App()->getRequest()->getPost('move') == 'confirmquota');
-    $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
-    // Doing the action and show the page
-    if ($sAction == \Quota::ACTION_TERMINATE && $sClientToken) {
-        submittokens(true);
-    }
-    // Construct the default message
-    $sMessage        = templatereplace($sMessage, array(), $aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized'] != 'N', null, array(), true);
-    $sUrl            = passthruReplace($sUrl, $aSurveyInfo);
-    $sUrl            = templatereplace($sUrl, array(), $aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized'] != 'N', null, array(), true);
-    $sUrlDescription = templatereplace($sUrlDescription, array(), $aDataReplacement, 'QuotaUrldescription', $aSurveyInfo['anonymized'] != 'N', null, array(), true);
-
-
-    // Datas for twig view
-    $thissurvey['aQuotas']                       = array();
-    $thissurvey['aQuotas']['sMessage']           = $sMessage;
-    $thissurvey['aQuotas']['bShowNavigator']     = !$closeSurvey;
-    $thissurvey['aQuotas']['sClientToken']       = $sClientToken;
-    $thissurvey['aQuotas']['sQuotaStep']         = 'returnfromquota';
-    $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields ?? '';
-    $thissurvey['aQuotas']['sPluginBlocks']      = implode("\n", $blocks);
-    $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
-    $thissurvey['aQuotas']['sUrl']               = $sUrl;
-    $thissurvey['active']                        = 'Y';
-
-
-    $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="' . $surveyid . '" />
-                                              <input type="hidden" name="token"    value="' . $thissurvey['aQuotas']['sClientToken'] . '" />
-                                              <input type="hidden" name="thisstep" value="' . ($_SESSION['survey_' . $surveyid]['step'] ?? 0) . '" />';
-
-
-    if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])) {
-        foreach ($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post) {
-            $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="' . $field . '"   value="' . $post . '" />';
-        }
-    }
-
-
-    //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
-
-    if ($closeSurvey) {
-        killSurveySession($surveyid);
-
-        if ($sAutoloadUrl == 1 && $sUrl != "") {
-            /* Same than end url of survey */
-            $headToSurveyUrl = htmlspecialchars_decode($sUrl);
-            header("Location: " . $headToSurveyUrl);
-        }
-    }
-    $thissurvey['include_content'] = 'quotas';
-    Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
 }
 
 /**
@@ -2037,6 +1873,8 @@ function getReferringUrl()
 
 /**
 * Shows the welcome page, used in group by group and question by question mode
+* @param mixed $thissurvey unused, reset to aSurveyInfo at start of function
+* @param array $aSurveyInfo
 */
 function display_first_page($thissurvey, $aSurveyInfo)
 {
@@ -2045,19 +1883,19 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey                 = $aSurveyInfo;
     $thissurvey['aNavigator']   = getNavigatorDatas();
     LimeExpressionManager::StartProcessingPage();
-    LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid, true); // start on welcome page
+    LimeExpressionManager::StartProcessingGroup(-1, $thissurvey['anonymized'] != "N", $surveyid); // start on welcome page
 
     // WHY HERE ?????
-    $_SESSION['survey_' . $surveyid]['LEMpostKey'] = mt_rand();
+    $_SESSION['responses_' . $surveyid]['LEMpostKey'] = mt_rand();
 
     $loadsecurity = returnGlobal('loadsecurity', true);
 
     $thissurvey['EM']['ScriptsAndHiddenInputs']  = \CHtml::hiddenField('sid', $surveyid, array('id' => 'sid'));
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('lastgroupname', '_WELCOME_SCREEN_', array('id' => 'lastgroupname')); //This is to ensure consistency with mandatory checks, and new group test
-    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('LEMpostKey', $_SESSION['survey_' . $surveyid]['LEMpostKey'], array('id' => 'LEMpostKey'));
+    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('LEMpostKey', $_SESSION['responses_' . $surveyid]['LEMpostKey'], array('id' => 'LEMpostKey'));
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('thisstep', 0, array('id' => 'thisstep'));
-    if (!empty($_SESSION['survey_' . $surveyid]['token']) && $thissurvey['anonymized'] != "Y") {
-        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('token', $_SESSION['survey_' . $surveyid]['token'], array('id' => 'token'));
+    if (!empty($_SESSION['responses_' . $surveyid]['token']) && $thissurvey['anonymized'] != "Y") {
+        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('token', $_SESSION['responses_' . $surveyid]['token'], array('id' => 'token'));
     }
 
     if (!empty($loadsecurity)) {
@@ -2084,7 +1922,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
 function killSurveySession($iSurveyID)
 {
     // Unset the session
-    unset($_SESSION['survey_' . $iSurveyID]);
+    unset($_SESSION['responses_' . $iSurveyID]);
     // Force EM to refresh
     LimeExpressionManager::SetDirtyFlag();
 
@@ -2142,21 +1980,21 @@ function SetSurveyLanguage($surveyid, $sLanguage)
             || ($default_survey_language == $sLanguage)                         //Is the $default_language the chosen language?
         ) {
             // Language not supported, fall back to survey's default language
-            $_SESSION['survey_' . $surveyid]['s_lang'] = $default_survey_language;
+            $_SESSION['responses_' . $surveyid]['s_lang'] = $default_survey_language;
         } else {
-            $_SESSION['survey_' . $surveyid]['s_lang'] = $sLanguage;
+            $_SESSION['responses_' . $surveyid]['s_lang'] = $sLanguage;
         }
 
-        App()->setLanguage($_SESSION['survey_' . $surveyid]['s_lang']);
+        App()->setLanguage($_SESSION['responses_' . $surveyid]['s_lang']);
         Yii::app()->loadHelper('surveytranslator');
-        LimeExpressionManager::SetEMLanguage($_SESSION['survey_' . $surveyid]['s_lang']);
+        LimeExpressionManager::SetEMLanguage($_SESSION['responses_' . $surveyid]['s_lang']);
     } else {
         if (!$sLanguage) {
             $sLanguage = $default_language;
         }
 
-        $_SESSION['survey_' . $surveyid]['s_lang'] = $sLanguage;
-        App()->setLanguage($_SESSION['survey_' . $surveyid]['s_lang']);
+        $_SESSION['responses_' . $surveyid]['s_lang'] = $sLanguage;
+        App()->setLanguage($_SESSION['responses_' . $surveyid]['s_lang']);
     }
 }
 
@@ -2169,10 +2007,10 @@ function getMove()
     $aAcceptedMove = array('default', 'movenext', 'movesubmit', 'moveprev', 'saveall', 'loadall', 'clearall', 'changelang');
     // We can control is save and load are OK : todo fix according to survey settings
     // Maybe allow $aAcceptedMove in Plugin
-    $move = Yii::app()->request->getParam('move');
+    $move = Yii::app()->request->getPost('move');
     /* @deprecated since we use button and not input with different value. */
     foreach ($aAcceptedMove as $sAccepteMove) {
-        if (Yii::app()->request->getParam($sAccepteMove)) {
+        if (Yii::app()->request->getPost($sAccepteMove)) {
                     $move = $sAccepteMove;
         }
     }
@@ -2180,8 +2018,8 @@ function getMove()
     if ($move == 'default') {
         $surveyid = Yii::app()->getConfig('surveyID');
         $thissurvey = getsurveyinfo($surveyid);
-        $iSessionStep = $_SESSION['survey_' . $surveyid]['step'] ?? false;
-        $iSessionTotalSteps = $_SESSION['survey_' . $surveyid]['totalsteps'] ?? false;
+        $iSessionStep = $_SESSION['responses_' . $surveyid]['step'] ?? false;
+        $iSessionTotalSteps = $_SESSION['responses_' . $surveyid]['totalsteps'] ?? false;
         if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps) || $thissurvey['format'] == 'A') {
             $move = "movesubmit";
         } else {
@@ -2189,39 +2027,6 @@ function getMove()
         }
     }
     return $move;
-}
-
-/**
- * Get the margin class for side-body div depending
- * on side-menu behaviour config and page (edit or not
- * etc).
- *
- * @param boolean $sideMenustate - False for pages with collapsed side-menu
- * @return string
- * @throws CException
- */
-function getSideBodyClass($sideMenustate = false)
-{
-    $sideMenuBehaviour = getGlobalSetting('sideMenuBehaviour');
-
-    $class = "";
-
-    if ($sideMenuBehaviour == 'adaptive' || $sideMenuBehaviour == '') {
-        // Adaptive and closed, as in edit question
-        if (!$sideMenustate) {
-            $class = 'side-body-margin';
-        }
-    } elseif ($sideMenuBehaviour == 'alwaysClosed') {
-        $class = 'side-body-margin';
-    } elseif ($sideMenuBehaviour == 'alwaysOpen') {
-        // No margin class
-    } else {
-        throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
-    }
-
-    //TODO something unfinished here?
-    return "";
-    $class;
 }
 
 /**

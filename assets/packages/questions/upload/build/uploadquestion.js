@@ -783,8 +783,8 @@
               imageOrPlaceholderHtml = '<div class="upload-placeholder"></div>';
             }
 
-            title = show_title != 0 ? item.title : '';
-            comment = show_comment != 0 ? item.comment : '';
+            title = show_title != 0 ? htmlentities(item.title) : '';
+            comment = show_comment != 0 ? htmlentities(item.comment) : '';
             name = item.name;
             filepointer = iterator;
             const rowHtml = this.replaceWithObject(templateHtml, {
@@ -882,8 +882,8 @@
         var fieldname = options.sFieldName;
         /* Load the previously uploaded files */
 
-        var filecount = $('#java' + fieldname + '_filecount').val();
-        $('#java' + fieldname + '_filecount').val(filecount);
+        var filecount = $('#java' + fieldname + '_Cfilecount').val();
+        $('#java' + fieldname + '_Cfilecount').val(filecount);
 
         if (filecount > 0) {
           var jsontext = $('#java' + fieldname).val();
@@ -918,7 +918,7 @@
           },
           onSubmit: function (file, ext) {
             var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
-            var filecount = parseInt($('#java' + fieldname + '_filecount').val());
+            var filecount = parseInt($('#java' + fieldname + '_Cfilecount').val());
             var allowed_filetypes = $('#' + fieldname + '_allowed_filetypes').val().split(",");
             /* If maximum number of allowed filetypes have already been uploaded,
              * do not upload the file and display an error message ! */
@@ -948,7 +948,7 @@
             // you can disable upload button
 
             this.disable();
-            button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw ri-loader-fill remix-pulse ri-3x"></i>');
+            button.append('<i id="loading-icon-fielupload" class="fa fa-spinner fa-pulse fa-3x fa-fw ri-loader-fill remix-pulse ri-3x" ></i>');
           },
           onComplete: function (file, response) {
             button.text(uploadLang.selectfile);
@@ -977,11 +977,11 @@
               }
 
               renderPreviewItem(fieldname, metadata, count);
-              var filecount = parseInt($('#java' + fieldname + '_filecount').val());
+              var filecount = parseInt($('#java' + fieldname + '_Cfilecount').val());
               var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
               filecount++;
               var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
-              $('#java' + fieldname + '_filecount').val(filecount);
+              $('#java' + fieldname + '_Cfilecount').val(filecount);
               if (filecount < minfiles) $('#uploadstatus').html(options.uploadLang.errorNeedMore.replace('%s', minfiles - filecount));else if (filecount < maxfiles) $('#uploadstatus').html(options.uploadLang.errorMoreAllowed.replace('%s', maxfiles - filecount));else $('#uploadstatus').html(options.uploadLang.errorMaxReached);
               if (filecount >= maxfiles) $('#notice').html('<p class="alert alert-success"><span class="fa fa-check ri-check-fill"></span>&nbsp;' + options.uploadLang.errorTooMuch + '</p>');
             } else {
@@ -1026,12 +1026,12 @@
       }
 
       const copyJSON = function (filecount, fieldname, show_title, show_comment, pos) {
-        $('#java' + fieldname + '_filecount').val(filecount).trigger('updated');
+        $('#java' + fieldname + '_Cfilecount').val(filecount).trigger('updated');
         window['uploadQuestionController_' + fieldname].displayUploadedFiles(filecount, fieldname, show_title, show_comment, pos);
       };
 
       var saveAndExit = function (fieldname, show_title, show_comment, pos) {
-        var filecount = parseInt($('#java' + fieldname + '_filecount').val());
+        var filecount = parseInt($('#java' + fieldname + '_Cfilecount').val());
         var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
 
         if (minfiles != 0 && filecount < minfiles && showpopups) {
@@ -1051,7 +1051,7 @@
         var file_index;
         var filename = $("#" + fieldname + "_filename_" + count).val();
         var name = $("#" + fieldname + "_name_" + count).val();
-        var filecount = parseInt($('#java' + fieldname + '_filecount').val());
+        var filecount = parseInt($('#java' + fieldname + '_Cfilecount').val());
         var licount = parseInt($('#' + fieldname + '_licount').val());
         $.ajax({
           method: "POST",
@@ -1070,7 +1070,7 @@
           }, 5000);
           $("#" + fieldname + "_li_" + count).hide();
           filecount--;
-          $('#java' + fieldname + '_filecount').val(filecount);
+          $('#java' + fieldname + '_Cfilecount').val(filecount);
           file_index = $("#" + fieldname + "_file_index_" + count).val();
 
           for (j = count; j <= licount; j++) {

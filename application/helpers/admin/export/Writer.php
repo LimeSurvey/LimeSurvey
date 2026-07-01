@@ -13,6 +13,7 @@ abstract class Writer implements IWriter
     /** @var Translator $translator */
     protected $translator;
     public $filename;
+    public $languageCode;
     public $webfilename;
 
     protected function translate($key, $sLanguageCode)
@@ -248,7 +249,7 @@ abstract class Writer implements IWriter
      * initialization process that must take place prior to any of the translation
      * infrastructure to work.
      *
-     * The inialization process is dependent upon the survey being passed into the
+     * The initialization process is dependent upon the survey being passed into the
      * write function and so must be performed when the method is called and not
      * prior to (such as in a constructor).
      *
@@ -264,7 +265,8 @@ abstract class Writer implements IWriter
     {
 
         //Output the survey.
-        $headers = array();
+        $headers = [];
+        $fieldNames = [];
         if ($bOutputHeaders) {
             foreach ($oOptions->selectedColumns as $sColumn) {
                 //Survey question field, $column value is a field name from the getFieldMap function.
@@ -284,6 +286,7 @@ abstract class Writer implements IWriter
                         break;
                 }
                 $headers[] = $value;
+                $fieldNames[] = $sColumn;
             }
         }
         //Output the results.
@@ -313,7 +316,7 @@ abstract class Writer implements IWriter
             $oResponse->decrypt();
             $aResponse = array_merge($aResponse, $oResponse->attributes);
 
-            $elementArray = array();
+            $elementArray = [];
 
             foreach ($oOptions->selectedColumns as $column) {
                 $value = $aResponse[$column];
@@ -328,14 +331,14 @@ abstract class Writer implements IWriter
                             break;
                     }
                 } else {
-//Survey participants table value
+//Survey participant list value
                     $elementArray[] = $value;
                 }
             }
             if ($oOptions->output == 'display') {
-                $this->outputRecord($headers, $elementArray, $oOptions);
+                $this->outputRecord($headers, $elementArray, $oOptions, $fieldNames);
             } else {
-                $sFile .= $this->outputRecord($headers, $elementArray, $oOptions);
+                $sFile .= $this->outputRecord($headers, $elementArray, $oOptions, $fieldNames);
             }
         }
         return $sFile;
@@ -359,6 +362,7 @@ abstract class Writer implements IWriter
      * @param array $headers
      * @param array $values
      * @param FormattingOptions $oOptions
+     * @param array $fieldNames
      */
-    abstract protected function outputRecord($headers, $values, FormattingOptions $oOptions);
+    abstract protected function outputRecord($headers, $values, FormattingOptions $oOptions, $fieldNames = []);
 }

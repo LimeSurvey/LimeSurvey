@@ -10,7 +10,6 @@ $alert-status : (
 );
 
 @mixin alert-variant($color, $status) {
-  border : 1.33px solid $g-900;
 
   @if ($status== "outlined") {
     color  : $g-900;
@@ -18,18 +17,24 @@ $alert-status : (
     border-left      : 8px solid $color;
   } @else {
     background-color : $color;
-    @if ($color== var(--bs-info)) {
+    @if ($color== var(--bs-info) or  $color== var(--bs-dark)) {
       color: $white;
+      .alert-link {
+        color : $white;
+        text-decoration: underline;
+      }
     } @else {
+      border : 1.33px solid $g-900;
       color  : $g-900;
+      .alert-link {
+        color : $g-900;
+        text-decoration: underline;
+      }
     }
   }
 
   hr {
     border-top-color : $color;
-  }
-  .alert-link {
-    color : $grape;
   }
 }
 
@@ -57,17 +62,14 @@ $alert-status : (
   text-align: start;
   font-size: $font-size-sm;
   line-height: $line-height-20;
-  padding: 0.625rem 1rem;
+  padding: 0.625rem 1rem 0.625rem 0.5rem;
   position: relative;
 
   & > span[class*="ri-"] {
     font-size: $font-size-base;
   }
-  & > .alert-header {
-    font-family : $ibm-font-family;
+  .alert-header {
     font-weight : $font-weight-600;
-    font-size   : $font-size-lg;
-    line-height : $line-height-26;
     color:inherit;
 
     & > span[class*="ri-"] {

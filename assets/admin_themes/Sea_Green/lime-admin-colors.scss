@@ -87,7 +87,6 @@ $alert-info: #40ab82;
 
 :root {
     --LS-admintheme-basecolor: #{$primary};
-    --bs-info-rgb: 57, 153, 63;
 }
 
 //@extend-elements
@@ -144,14 +143,6 @@ $alert-info: #40ab82;
     color: $white;
     background-color: $red-110;
     border: 1px solid $red-130;
-}
-
-//original selectors
-//a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus
-%extend_12 {
-    color: $white;
-    background-color: $primary;
-    border: 1px solid $primary;
 }
 
 //original selectors
@@ -220,45 +211,6 @@ a {
         }
         &:focus {
             color: $white;
-        }
-    }
-    &.list-group-item {
-        color: $list-group-item;
-        &.active {
-            @extend %extend_12;
-            &:hover {
-                @extend %extend_12;
-                .list-group-item-text {
-                    color: $primary-active;
-                }
-            }
-            &:focus {
-                @extend %extend_12;
-                .list-group-item-text {
-                    color: $primary-active;
-                }
-            }
-            .list-group-item-text {
-                color: $primary-active;
-            }
-            > .badge {
-                color: $primary;
-                background-color: $white;
-            }
-        }
-        .list-group-item-heading {
-            color: $gray-20;
-        }
-        &:hover {
-            // Extend a.list-group-item:hover
-            $base_color_dark_sky: #000000;
-            @if $primary == $base_color_dark_sky {
-                color: $white;
-            }
-            background-color: $primary-bg_hover;
-        }
-        &:focus {
-            background-color: $primary-bg_hover;
         }
     }
     &.thumbnail {
@@ -833,66 +785,6 @@ fieldset[disabled] {
 // ######################## CUSTOM CLASSES ########################
 // ################################################################
 
-// Notification list immitates the dropdown menu //
-.notification-list {
-    background-color: $white;
-    .divider {
-        background-color: $gray-06;
-    }
-    > {
-        li > a {
-            color: $primary-2;
-            &:hover {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-            &:focus {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-        }
-        .active > a {
-            color: $white;
-            background-color: $primary-hover_2;
-            &:hover {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-            &:focus {
-                color: $white;
-                background-color: $primary-hover_2;
-            }
-        }
-        .disabled > a {
-            color: $gray-15;
-            &:hover {
-                color: $gray-15;
-            }
-            &:focus {
-                color: $gray-15;
-            }
-        }
-    }
-}
-@keyframes notification-pulse {
-    from {
-        color: $brown-10;
-        text-shadow: 0 0 0 $gray-20;
-    }
-    50% {
-        color: $notification-pulse-1;
-        text-shadow: 0 0 6px $notification-pulse-2;
-    }
-    to {
-        color: $brown-10;
-        text-shadow: 0 0 0 $gray-20;
-    }
-}
-.notification-bell-pulse {
-    animation-name: notification-pulse;
-    animation-duration: 1s;
-    animation-iteration-count: 5;
-}
 .alert-security-update {
     background-color: $white;
     border: 1px solid $alert;

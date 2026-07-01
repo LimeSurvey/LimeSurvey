@@ -4,23 +4,25 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerSubquestionDelete;
 use LimeSurvey\Models\Services\QuestionAggregateService\SubQuestionsService;
+use LimeSurvey\ObjectPatch\ObjectPatchException;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
+use LimeSurvey\ObjectPatch\OpHandler\OpHandlerException;
 use ls\tests\TestBaseClass;
+use Mockery;
 
 /**
  * @testdox OpHandlerSubquestionDelete
  */
 class OpHandlerSubquesDeleteTest extends TestBaseClass
 {
-
     /**
      * @testdox Can handle a subquestion delete
      */
     public function testCanHandleAnswer()
     {
-        $this->initializePatcher('subquestion');
+        $op = $this->getOp('subquestion');
         $opHandler = $this->getOpHandler();
-        $this->assertTrue($opHandler->canHandle($this->op));
+        $this->assertTrue($opHandler->canHandle($op));
     }
 
     /**
@@ -28,19 +30,53 @@ class OpHandlerSubquesDeleteTest extends TestBaseClass
      */
     public function testCanNotHandleAnswer()
     {
-        $this->initializePatcher('question');
+        $op = $this->getOp('question');
         $opHandler = $this->getOpHandler();
-        $this->assertFalse($opHandler->canHandle($this->op));
+        $this->assertFalse($opHandler->canHandle($op));
     }
 
-    private function initializePatcher(
-        string $entityType = 'subquestion',
-        string $operation = 'delete'
+    /**
+     * @testdox validation hits when entityId is missing
+     */
+    public function testOpValidationFailure()
+    {
+        $op = $this->getOp(
+            'failure'
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertNotEmpty($validation);
+    }
+
+    /**
+     * @testdox validation doesn't hit when everything is fine
+     */
+    public function testOpValidationSuccess()
+    {
+        $op = $this->getOp(
+        );
+        $opHandler = $this->getOpHandler();
+        $validation = $opHandler->validateOperation($op);
+        $this->assertIsArray($validation);
+        $this->assertEmpty($validation);
+    }
+
+    /**
+     * @param string $entity
+     * @param string $type
+     * @return OpStandard
+     * @throws OpHandlerException|ObjectPatchException
+     */
+    private function getOp(
+        string $entity = 'subquestion',
+        string $type = 'delete'
     ) {
-        $this->op = OpStandard::factory(
-            $entityType,
-            $operation,
-            "77",
+        $entityId = $entity !== 'subquestion' ? null : 77;
+        return OpStandard::factory(
+            $entity,
+            $type,
+            $entityId,
             [],
             ['id' => 666]
         );
@@ -51,7 +87,8 @@ class OpHandlerSubquesDeleteTest extends TestBaseClass
      */
     private function getOpHandler()
     {
-        $mockQuestionAggregateService = \Mockery::mock(
+        /** @var SubQuestionsService */
+        $mockQuestionAggregateService = Mockery::mock(
             SubQuestionsService::class
         )->makePartial();
         return new OpHandlerSubquestionDelete($mockQuestionAggregateService);

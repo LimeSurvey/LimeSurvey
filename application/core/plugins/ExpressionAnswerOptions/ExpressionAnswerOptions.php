@@ -25,7 +25,7 @@ class ExpressionAnswerOptions extends PluginBase
     protected static $description = 'Expression Script: make answer option text available.';
     protected static $name = 'ExpressionAnswerOptions';
 
-    /** @inheritdoc, this plugin settings are update during getSettings */
+    /** @inheritdoc this plugin settings are update during getSettings */
     protected $settings = array(
         'information' => array(
             'type' => 'info',
@@ -34,7 +34,7 @@ class ExpressionAnswerOptions extends PluginBase
         ),
     );
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
@@ -43,7 +43,7 @@ class ExpressionAnswerOptions extends PluginBase
     }
 
     /**
-     * @see https://manual.limesurvey.org/ExpressionManagerStart ExpressionManagerStart event
+     * @see https://www.limesurvey.org/manual/ExpressionManagerStart ExpressionManagerStart event
      * add the getAnswerOptionText static function to Expression Manager function
      * @return void
      */

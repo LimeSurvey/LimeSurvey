@@ -82,7 +82,7 @@ class PanelBoxWidget extends CWidget
                 'description' => $this->description,
                 'buttontext' => $this->buttontext,
                 'external' => $this->external,
-                'sizeClass' => "col-lg-".(12/$this->boxesbyrow)." col-md-".(floor(24/$this->boxesbyrow)) . " col-xs-12"
+                'sizeClass' => "col-lg-" . (12 / $this->boxesbyrow) . " col-md-" . (floor(24 / $this->boxesbyrow)) . " col-xs-12"
             ));
         }
     }
@@ -96,22 +96,20 @@ class PanelBoxWidget extends CWidget
         $boxes = self::getBoxes();
         $boxcount = 0;
         $bIsRowOpened = false;
-                $this->render('row_header', array(
-                    'orientation' => $this->getOrientationClass(),
-                    'containerclass' => ($this->boxesincontainer ? 'container' : '')
-                ));
+        $this->render('row_header', [
+            'orientation'    => $this->getOrientationClass(),
+            'containerclass' => ($this->boxesincontainer ? 'container' : '')
+        ]);
         foreach ($boxes as $box) {
-
-             $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
-                 'display' => 'singlebox',
-                 'fromDb' => true,
-                 'dbPosition' => $box->position,
-                 'offset' => '',
-                 'boxesbyrow' => $this->boxesbyrow
-             ));
-
+            $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', [
+                'display'    => 'singlebox',
+                'fromDb'     => true,
+                'dbPosition' => $box->position,
+                'offset'     => '',
+                'boxesbyrow' => $this->boxesbyrow
+            ]);
         }
-            $this->render('row_footer');
+        $this->render('row_footer');
     }
 
     protected function canSeeBox($box = '')
@@ -148,13 +146,19 @@ class PanelBoxWidget extends CWidget
         }
     }
 
-    private function getOrientationClass(){
-        switch($this->offset){
-            case 1: return 'align-content-flex-start'; break;
-            case 2: return 'align-content-flex-end'; break;
+    private function getOrientationClass()
+    {
+        switch ($this->offset) {
+            case 1:
+                return 'align-content-flex-start';
+            break;
+            case 2:
+                return 'align-content-flex-end';
+            break;
             case 3: //fallthrough
-           default: return 'align-content-space-around'; break;
+            default:
+                return 'align-content-space-around';
+            break;
         }
     }
-
 }

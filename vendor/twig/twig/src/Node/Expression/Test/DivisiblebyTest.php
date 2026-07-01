@@ -29,8 +29,14 @@ class DivisiblebyTest extends TestExpression
             ->raw('(0 == ')
             ->subcompile($this->getNode('node'))
             ->raw(' % ')
-            ->subcompile($this->getNode('arguments')->getNode(0))
+            ->subcompile($this->getNode('arguments')->getNode('0'))
             ->raw(')')
         ;
+    }
+
+    public function getStringCoercedChildNames(): array
+    {
+        // PHP `%` rejects Stringable with a TypeError, no coercion
+        return [];
     }
 }

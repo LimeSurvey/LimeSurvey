@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -73,18 +73,12 @@ class QuotaLanguageSetting extends LSActiveRecord
             array('quotals_url', 'LSYii_Validators', 'isUrl' => true),
             array('quotals_urldescrip', 'LSYii_Validators'),
             array('quotals_url', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
-            array('quotals_url', 'urlValidator'),
+            // URL field is optional and can be left empty even when autoload_url is enabled
+            // (e.g., for multi-language surveys where only some languages have redirect URLs)
             array('quotals_name', 'length', 'min' => 0, 'max' => 255),
             array('quotals_url', 'length', 'min' => 0, 'max' => 255),
             array('quotals_urldescrip', 'length', 'min' => 0, 'max' => 255),
         );
-    }
-    public function urlValidator()
-    {
-        // $quota might be still empty while doing an import
-        if (!empty($this->quota) && $this->quota->autoload_url == 1 && !$this->quotals_url) {
-            $this->addError('quotals_url', gT('URL must be set if autoload URL is turned on!'));
-        }
     }
 
     public function attributeLabels()
@@ -94,23 +88,5 @@ class QuotaLanguageSetting extends LSActiveRecord
             'quotals_url' => gT("URL:"),
             'quotals_urldescrip' => gT("URL Description:"),
         );
-    }
-
-    /**
-     * @param $data
-     * @return bool
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $settings = new self();
-        foreach ($data as $k => $v) {
-            if ($k === 'autoload_url') {
-                $settings->quota->autoload_url = $v;
-            } else {
-                $settings->$k = $v;
-            }
-        }
-        return $settings->save();
     }
 }

@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -31,6 +31,9 @@ function fixNumbering($iQuestionID, $iSurveyID)
     $iNewQID = $iMaxQID + 1;
 
     // Not sure we can do this in MSSQL ?
+    /**
+     * TODO: No the QA in the answer column creation can still be duplicate in the current definition of SGQA example of ranking which can be QA code shorttext 11 (qid=11) and ranking 11 ( qid=1 + answer1=1)
+     */
     $sQuery = "UPDATE {{questions}} SET qid=$iNewQID WHERE qid=$iQuestionID";
     Yii::app()->db->createCommand($sQuery)->query();
     // Update subquestions
@@ -62,7 +65,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
         foreach ($aSwitcher as $aSwitch) {
             $sQuery = "UPDATE {{conditions}}
             SET cqid=$iNewQID,
-            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, (string) $aSwitch['cfieldname']) . "'
+            cfieldname='" . str_replace("Q" . $iQuestionID, "Q" . $iNewQID, str_replace("_S" . $iQuestionID, "_S" . $iNewQID, (string) $aSwitch['cfieldname'])) . "'
             WHERE cqid=$iQuestionID";
             Yii::app()->db->createCommand($sQuery)->query();
         }
@@ -338,7 +341,7 @@ function mssql_drop_primary_index($tablename)
  * @param string $tablename The table the column should be deleted
  * @param string $columnname The column that should be deleted
  */
-function mssql_drop_coulmn_with_constraints($tablename, $columnname)
+function mssql_drop_column_with_constraints($tablename, $columnname)
 {
     Yii::app()->loadHelper("database");
 
@@ -347,9 +350,9 @@ function mssql_drop_coulmn_with_constraints($tablename, $columnname)
     FROM information_schema.constraint_column_usage
     WHERE table_name = '" . $tablename . "' AND column_name = '" . $columnname . "'";
 
-    $result = Yii::app()->db->createCommand($pkquery)->queryAll();
+    $result = Yii::app()->db->createCommand($pkquery)->queryColumn();
     foreach ($result as $constraintName) {
-        Yii::app()->db->createCommand('alter table [' . $tablename . '] drop constraint "' . $constraintName['constraint_name'] . '"')->execute();
+        Yii::app()->db->createCommand('ALTER TABLE [' . $tablename . '] DROP CONSTRAINT "' . $constraintName . '"')->execute();
     }
     $success = Yii::app()->db->createCommand('ALTER TABLE [' . $tablename . '] DROP COLUMN "' . $columnname . '"')->execute();
     return $success;

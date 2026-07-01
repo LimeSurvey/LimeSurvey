@@ -28,11 +28,11 @@ var GherkinHighlightRules = function () {
                 token: "keyword",
                 regex: "\\*"
             }, {
-                token: "string",
+                token: "string", // multi line """ string start
                 regex: '"{3}',
                 next: "qqstring3"
             }, {
-                token: "string",
+                token: "string", // " string
                 regex: '"',
                 next: "qqstring"
             }, {
@@ -65,7 +65,7 @@ var GherkinHighlightRules = function () {
                 token: "constant.language.escape",
                 regex: stringEscape
             }, {
-                token: "string",
+                token: "string", // multi line """ string end
                 regex: '"{3}',
                 next: "start"
             }, {

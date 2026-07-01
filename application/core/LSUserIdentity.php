@@ -4,7 +4,7 @@ use LimeSurvey\PluginManager\PluginEvent;
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -23,7 +23,6 @@ use LimeSurvey\PluginManager\PluginEvent;
  */
 class LSUserIdentity extends CUserIdentity
 {
-
     const ERROR_IP_LOCKED_OUT = 98;
     const ERROR_UNKNOWN_HANDLER = 99;
 
@@ -53,16 +52,16 @@ class LSUserIdentity extends CUserIdentity
 
     public function authenticate()
     {
-        // First initialize the result, we can later retieve it to get the exact error code/message
+        // First initialize the result, we can later retrieve it to get the exact error code/message
         $result = new LSAuthResult(self::ERROR_NONE);
 
         // Check if the ip is locked out
         if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_LOGIN)) {
-            $message = sprintf(gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
+            $message = sprintf(gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'), Yii::app()->getConfig('timeOutTime') / 60);
             $result->setError(self::ERROR_IP_LOCKED_OUT, $message);
         }
 
-        // If still ok, continue
+        /* Plugin action(s) : need a plugin */
         if ($result->isValid()) {
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
@@ -80,6 +79,16 @@ class LSUserIdentity extends CUserIdentity
             }
         }
 
+        /* Check user exist, and can login after plugin actions */
+        if ($result->isValid()) {
+            /** @var \User|null */
+            $user = User::model()->findByAttributes(array('users_name' => $this->username));
+            if (is_null($user) || !$user->canLogin()) {
+                // Set the result as invalid if user is  not active : no specific message
+                $result->setError(self::ERROR_USERNAME_INVALID);
+            }
+        }
+        /* All action and test done : finalize */
         if ($result->isValid()) {
             // Perform postlogin
             regenerateCSRFToken();
@@ -131,20 +140,8 @@ class LSUserIdentity extends CUserIdentity
         $user = $this->getUser();
         App()->user->login($this);
 
-        // Check for default password
-        if ($this->password === 'password') {
-            $not = new UniqueNotification(array(
-                'user_id' => App()->user->id,
-                'importance' => Notification::HIGH_IMPORTANCE,
-                'title' => 'Password warning',
-                'message' => '<span class="ri-error-warning-fill"></span>&nbsp;' .
-                    gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
-            ));
-            $not->save();
-        }
-
         if ((int) App()->request->getPost('width', '1220') < 1220) {
-// Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
+            // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
             Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."), 'error');
         }
 
@@ -156,11 +153,14 @@ class LSUserIdentity extends CUserIdentity
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['session_hash'] = hash('sha256', getGlobalSetting('SessionName') . $user->users_name . $user->uid);
+        Yii::app()->session['session_hash'] = hash('sha256', Yii::app()->getConfig('SessionName') . $user->users_name . $user->uid);
 
         // Perform language settings
-        if (App()->request->getPost('loginlang', 'default') != 'default') {
-            $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
+        if (
+            App()->request->getPost('loginlang', 'default') != 'default'
+            && \LSYii_Validators::languageCodeFilter(App()->request->getPost('loginlang')) != ''
+        ) {
+            $user->lang = \LSYii_Validators::languageCodeFilter(App()->request->getPost('loginlang'));
             $user->save();
             $sLanguage = $user->lang;
         } elseif ($user->lang == 'auto' || $user->lang == '') {

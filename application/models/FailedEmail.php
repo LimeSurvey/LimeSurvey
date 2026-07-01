@@ -73,13 +73,13 @@ class FailedEmail extends LSActiveRecord
     {
         return [
             'id'            => 'ID',
-            'recipient'     => gt('Recipient'),
-            'email_type'    => gt('Email type'),
-            'language'      => gt('Email language'),
-            'created'       => gt('Date'),
-            'status'        => gt('Status'),
-            'updated'       => gt('Updated'),
-            'error_message' => gt('Error message')
+            'recipient'     => gT('Recipient'),
+            'email_type'    => gT('Email type'),
+            'language'      => gT('Email language'),
+            'created'       => gT('Date'),
+            'status'        => gT('Status'),
+            'updated'       => gT('Updated'),
+            'error_message' => gT('Error message')
         ];
     }
 
@@ -210,7 +210,7 @@ class FailedEmail extends LSActiveRecord
 
         $dropdownItems = [];
         $dropdownItems[] = [
-            'title'            => gT('Resend email'),
+            'title'            => gT('Resend'),
             'linkClass'        => 'failedemail-action-modal-open',
             'iconClass'        => 'ri-mail-line',
             'linkAttributes'   => [

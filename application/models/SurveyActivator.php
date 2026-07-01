@@ -27,9 +27,19 @@ class SurveyActivator
     /**
      * @param Survey $survey
      */
-    public function __construct($survey)
+    public function __construct($survey = null)
     {
         $this->survey = $survey;
+    }
+
+    /**
+     * @param Survey $survey
+     * @return SurveyActivator
+     */
+    public function setSurvey(Survey $survey)
+    {
+        $this->survey = $survey;
+        return $this;
     }
 
     /**
@@ -85,7 +95,8 @@ class SurveyActivator
 
         $aResult = array(
             'status' => 'OK',
-            'pluginFeedback' => $event->get('pluginFeedback')
+            'pluginFeedback' => $event->get('pluginFeedback'),
+            'isAllowRegister' => $survey->isAllowRegister
         );
         if (!$this->createSurveyDirectory()) {
             $aResult['warning'] = 'nouploadsurveydir';
@@ -103,7 +114,8 @@ class SurveyActivator
 
     /**
      * See bug #09828: Ranking question : update allowed can broke Survey DB
-     * If max_subquestions is not set or is invalid : set it to actual answers numbers
+     * If max_subquestions is not set or is invalid : set it to actual subquestions numbers
+     * (Ranking items are now stored as subquestions)
      *
      * @return void
      */
@@ -112,8 +124,9 @@ class SurveyActivator
         foreach ($sFieldMap as $aRow) {
             switch ($aRow['type']) {
                 case Question::QT_R_RANKING:
-                    $nrOfAnswers = Answer::model()->countByAttributes(
-                        array('qid' => $aRow['qid'])
+                    // Ranking items are now stored as subquestions, not answers
+                    $nrOfRankingItems = Question::model()->countByAttributes(
+                        array('parent_qid' => $aRow['qid'])
                     );
                     $oQuestionAttribute = QuestionAttribute::model()->find(
                         "qid = :qid AND attribute = 'max_subquestions'",
@@ -123,11 +136,11 @@ class SurveyActivator
                         $oQuestionAttribute = new QuestionAttribute();
                         $oQuestionAttribute->qid = $aRow['qid'];
                         $oQuestionAttribute->attribute = 'max_subquestions';
-                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->value = $nrOfRankingItems;
                         $oQuestionAttribute->save();
                     } elseif (intval($oQuestionAttribute->value) < 1) {
                         // Fix it if invalid : disallow 0, but need a sub question minimum for EM
-                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->value = $nrOfRankingItems;
                         $oQuestionAttribute->save();
                     }
             }
@@ -175,7 +188,7 @@ class SurveyActivator
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_O_LIST_WITH_COMMENT:
-                    if ($aRow['aid'] != 'other' && strpos((string) $aRow['aid'], 'comment') === false && strpos((string) $aRow['aid'], 'othercomment') === false) {
+                    if (strpos((string) $aRow['aid'], 'other') === false && strpos((string) $aRow['aid'], 'comment') === false) {
                         $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)") ;
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
@@ -324,6 +337,7 @@ class SurveyActivator
             // Refresh schema cache just in case the table existed in the past
             Yii::app()->db->schema->getTable($sTableName, true);
         } catch (Exception $e) {
+                $this->error = 'surveytablecreation';
             if (App()->getConfig('debug')) {
                 $this->error = $e->getMessage();
             } else {
@@ -371,6 +385,7 @@ class SurveyActivator
      */
     protected function createResponseTableKeys()
     {
+
         $iAutoNumberStart = Yii::app()->db->createCommand()
             ->select('autonumber_start')
             ->from(Survey::model()->tableName())
@@ -380,7 +395,10 @@ class SurveyActivator
         //if there is an autonumber_start field, start auto numbering here
         if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
             if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-                mssql_drop_coulmn_with_constraints($this->survey->responsesTableName, 'id');
+                if (!function_exists('fixNumbering')) {
+                    Yii::app()->loadHelper("admin.activate"); // needed for mssql_drop_column_with_constraints
+                }
+                mssql_drop_column_with_constraints($this->survey->responsesTableName, 'id');
                 $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
                 Yii::app()->db->createCommand($sQuery)->execute();
                 // Add back the primaryKey
@@ -403,7 +421,14 @@ class SurveyActivator
      */
     protected function createTimingsTable()
     {
-        if ($this->survey->isSaveTimings) {
+        /**
+         * CT-1121: Needed a fix because $this->survey->isSaveTimings is incorrectly N even if it's Y in the database
+         * We will need to look into that problem later and restore the earlier code changed in 28bdcc3fde1e758756d2f4a4984e29a4105d3950
+         * once $this->survey->isSaveTimings becomes reliable again
+         * The idea for the fix was to load this value from the database for the time being until the session creation at the Question Editor is fixed
+         */
+        $prow = $this->survey->find('sid = :sid', array(':sid' => $this->survey->sid));
+        if ($prow->savetimings == "Y") {
             $this->prepareTimingsTable();
             $sTableName = $this->survey->timingsTableName;
             try {
@@ -467,6 +492,6 @@ class SurveyActivator
      */
     public function isCloseAccessMode()
     {
-        return $this->survey->isAllowRegister || tableExists('tokens_' . $this->survey->sid);
+        return $this->survey->access_mode === 'C';
     }
 }

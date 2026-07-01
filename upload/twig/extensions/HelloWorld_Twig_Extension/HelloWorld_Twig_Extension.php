@@ -23,7 +23,9 @@
  *
  */
 
-class HelloWorld_Twig_Extension extends Twig_Extension
+use Twig\Extension\AbstractExtension;
+
+class HelloWorld_Twig_Extension extends AbstractExtension
 {
   /**
    * Return the string "Hello World"

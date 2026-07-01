@@ -2,99 +2,71 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\ObjectPatch\{ObjectPatchException,
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\{ExceptionErrorItem,
+    ExceptionErrors,
+    SurveyResponse,
+    TempIdMapItem,
+    TempIdMapping,
+    ValidationErrors};
+use LimeSurvey\ObjectPatch\{
+    ObjectPatchException,
     Op\OpStandard,
     OpHandler\OpHandlerException,
     Patcher
 };
 use Psr\Container\ContainerInterface;
+use LimeSurvey\Models\Services\SurveyDetailService;
+use Survey;
 
 class PatcherSurvey extends Patcher
 {
-    protected TempIdMapping $tempIdMapping;
+    protected SurveyResponse $surveyResponse;
+    protected SurveyDetailService $surveyDetailService;
 
     /**
      * Constructor
      *
      * @param ContainerInterface $diContainer
-     * @param TempIdMapping $tempIdMapping
+     * @param SurveyResponse $surveyResponse,
+     * @param SurveyDetailService $surveyDetailService
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function __construct(
         ContainerInterface $diContainer,
-        TempIdMapping $tempIdMapping
+        SurveyResponse $surveyResponse,
+        SurveyDetailService $surveyDetailService
     ) {
-        $this->tempIdMapping = $tempIdMapping;
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerSurveyUpdate::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerLanguageSettingsUpdate::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerQuestionGroup::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerQuestionGroupL10n::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerQuestionDelete::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerQuestionCreate::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerQuestionUpdate::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerQuestionL10nUpdate::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerAnswer::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerQuestionAttributeUpdate::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerQuestionGroupReorder::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerSubquestionDelete::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerAnswerDelete::class
-            )
-        );
-        $this->addOpHandler(
-            $diContainer->get(
-                OpHandlerSubQuestion::class
-            )
-        );
+        $this->surveyResponse = $surveyResponse;
+        $this->surveyDetailService = $surveyDetailService;
+        $classes = [
+            OpHandlerSurveyUpdate::class,
+            OpHandlerLanguageSettingsUpdate::class,
+            OpHandlerQuestionGroup::class,
+            OpHandlerQuestionGroupL10n::class,
+            OpHandlerQuestionDelete::class,
+            OpHandlerQuestionCreate::class,
+            OpHandlerQuestionUpdate::class,
+            OpHandlerQuestionL10nUpdate::class,
+            OpHandlerAnswer::class,
+            OpHandlerQuestionAttributeUpdate::class,
+            OpHandlerQuestionGroupReorder::class,
+            OpHandlerSubquestionDelete::class,
+            OpHandlerAnswerDelete::class,
+            OpHandlerSubQuestion::class,
+            OpHandlerSurveyStatus::class,
+            OpHandlerQuestionCondition::class,
+            OpHandlerImport::class,
+            OpHandlerThemeSettings::class,
+            OpHandlerSurveyAccessMode::class,
+        ];
+
+        foreach ($classes as $class) {
+            $this->addOpHandler(
+                $diContainer->get(
+                    $class
+                )
+            );
+        }
     }
 
     /**
@@ -109,42 +81,29 @@ class PatcherSurvey extends Patcher
     public function applyPatch($patch, $context = []): array
     {
         if (is_array($patch) && !empty($patch)) {
+            $entityMap = [];
             foreach ($patch as $patchOpData) {
                 $op = OpStandard::factory(
                     $patchOpData['entity'] ?? '',
                     $patchOpData['op'] ?? '',
-                    $patchOpData['id'] ?? '',
+                    $patchOpData['id'] ?? null,
                     $patchOpData['props'] ?? [],
                     $context ?? []
                 );
-                $this->tempIdMapping->incrementOperationsApplied();
-                $handleResponse = $this->handleOp($op);
-                foreach ($handleResponse as $groupName => $mappingItem) {
-                    $this->addTempIdMapItem($mappingItem, $groupName);
+                try {
+                    $response = $this->handleOp($op);
+                    $this->surveyResponse->handleResponse($response);
+                    $entityMap[$patchOpData['entity']] = $patchOpData['id'] ?? null;
+                } catch (\Exception $e) {
+                    $this->surveyResponse->handleException($e, $op);
                 }
             }
-        }
-        return $this->tempIdMapping->getMappingResponseObject();
-    }
-
-    /**
-     * Recursive function to extract TempIdMapItems from the $mappingItem
-     * @param TempIdMapItem|array $mappingItem
-     * @param string $groupName
-     * @return void
-     * @throws \LimeSurvey\ObjectPatch\OpHandler\OpHandlerException
-     */
-    private function addTempIdMapItem($mappingItem, string $groupName)
-    {
-        if ($mappingItem instanceof TempIdMapItem) {
-            $this->tempIdMapping->addTempIdMapItem(
-                $mappingItem,
-                $groupName
-            );
-        } else {
-            foreach ($mappingItem as $item) {
-                $this->addTempIdMapItem($item, $groupName);
+            $sid = \Yii::app()->getRequest()->getQuery('_id') ?? 0;
+            $survey = ($sid ? Survey::model()->findByPk($sid) : $this->surveyDetailService->getSurveyFromEntityMap($entityMap));
+            if ($survey) {
+                $this->surveyDetailService->updateSurveyLastModified($survey);
             }
         }
+        return $this->surveyResponse->buildResponseObject();
     }
 }

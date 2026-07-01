@@ -1,8 +1,11 @@
 <?php
 
+use LimeSurvey\DI;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
+
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -58,23 +61,33 @@ class GlobalSettings extends SurveyCommonAction
      */
     public function showphpinfo()
     {
-        if (!Yii::app()->getConfig('demoMode')) {
-            phpinfo();
+        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+        phpinfo();
     }
+
 
     /**
-     * Refresh Assets
+     * Clears assets and cache directories.
+     *
+     * This function is used to refresh the assets and cache directories when necessary.
+     * It should only be accessible to people who have at least the permission to create or update themes.
+     *
+     * @return void
+     * @throws CHttpException If the user does not have the necessary permissions.
      */
-    public function refreshAssets()
+    public function clearAssetsAndCache()
     {
-        // Only people who can create or update themes should be allowed to refresh the assets
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
             SettingGlobal::increaseCustomAssetsversionnumber();
+            cleanAssetCacheDirectory();
+            cleanTwigCacheDirectory();
             $this->getController()->redirect(array("admin/globalsettings"));
+        } else {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
     }
-
     /**
      * Displays the settings.
      * @throws CHttpException
@@ -93,16 +106,15 @@ class GlobalSettings extends SurveyCommonAction
         }
         Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = new Date_Time_Converter(dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+        $datetimeobj = new Date_Time_Converter(dateShift(Yii::app()->getConfig("updatelastcheck"), 'Y-m-d H:i:s'), 'Y-m-d H:i:s');
         $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
 
-        // @todo getGlobalSetting is deprecated!
-        $data['updateavailable'] = (getGlobalSetting("updateavailable") && Yii::app()->getConfig("updatable"));
+        $data['updateavailable'] = (Yii::app()->getConfig("updateavailable") && Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
-        $data['updateinfo'] = getGlobalSetting("updateinfo");
-        $data['updatebuild'] = getGlobalSetting("updatebuild");
-        $data['updateversion'] = getGlobalSetting("updateversion");
-        $data['aUpdateVersions'] = json_decode((string) getGlobalSetting("updateversions"), true);
+        $data['updateinfo'] = Yii::app()->getConfig("updateinfo");
+        $data['updatebuild'] = Yii::app()->getConfig("updatebuild");
+        $data['updateversion'] = Yii::app()->getConfig("updateversion");
+        $data['aUpdateVersions'] = json_decode((string) Yii::app()->getConfig("updateversions"), true);
         $data['allLanguages'] = getLanguageData(false, Yii::app()->session['adminlang']);
         if (trim((string) Yii::app()->getConfig('restrictToLanguages')) == '') {
             $data['restrictToLanguages'] = array_keys($data['allLanguages']);
@@ -119,7 +131,7 @@ class GlobalSettings extends SurveyCommonAction
                 'isCloseBtn' => true,
                 'isSaveAndCloseBtn' => true,
                 'isSaveBtn' => true,
-                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'backUrl' => Yii::app()->createUrl('dashboard/view'),
                 'formIdSaveClose' => 'frmglobalsettings',
                 'formIdSave' => 'frmglobalsettings'
             ],
@@ -130,17 +142,22 @@ class GlobalSettings extends SurveyCommonAction
         $data['aEncodings'] = aEncodingsArray();
 
         // Get user administration settings
-        $data['sGlobalSendAdminCreationEmail'] = getGlobalSetting('sendadmincreationemail');
-        $data['sGlobalAdminCreationEmailTemplate'] = getGlobalSetting('admincreationemailtemplate');
-        $data['sGlobalAdminCreationEmailSubject'] = getGlobalSetting('admincreationemailsubject');
+        $data['sGlobalSendAdminCreationEmail'] = Yii::app()->getConfig('sendadmincreationemail');
+        $data['sGlobalAdminCreationEmailTemplate'] = Yii::app()->getConfig('admincreationemailtemplate');
+        $data['sGlobalAdminCreationEmailSubject'] = Yii::app()->getConfig('admincreationemailsubject');
 
         //Prepare editor script for global settings tabs / Textarea fields
         App()->loadHelper("admin.htmleditor");
         $data['scripts'] = PrepareEditorScript(false, $this->getController());
 
+        // event to attach general settings defined by the event beforeGlobalGeneralSettings
+        $beforeGlobalGeneralSettings = new PluginEvent('beforeGlobalGeneralSettings');
+        App()->getPluginManager()->dispatchEvent($beforeGlobalGeneralSettings);
+        $data['globalGeneralSettings'] = $beforeGlobalGeneralSettings->get('globalGeneralSettings') ?? [];
+
         // Get current setting from DB
-        $data['thischaracterset'] = getGlobalSetting('characterset');
-        $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+        $data['thischaracterset'] = Yii::app()->getConfig('characterset');
+        $data['sideMenuBehaviour'] = Yii::app()->getConfig('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
         // List of available email plugins
@@ -270,8 +287,8 @@ class GlobalSettings extends SurveyCommonAction
             $sendingrate = 60;
         }
 
-        $defaultlang = sanitize_languagecode(Yii::app()->getRequest()->getPost('defaultlang'));
-        $aRestrictToLanguages = explode(' ', (string) sanitize_languagecodeS(Yii::app()->getRequest()->getPost('restrictToLanguages')));
+        $defaultlang = \LSYii_Validators::languageCodeFilter(Yii::app()->getRequest()->getPost('defaultlang'));
+        $aRestrictToLanguages = explode(' ', (string) \LSYii_Validators::multiLanguageCodeFilter(Yii::app()->getRequest()->getPost('restrictToLanguages')));
         if (!in_array($defaultlang, $aRestrictToLanguages)) {
             // Force default language in restrictToLanguages
             $aRestrictToLanguages[] = $defaultlang;
@@ -291,6 +308,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
         SettingGlobal::setSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
         SettingGlobal::setSetting('maintenancemode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('maintenancemode', 'off')));
+        SettingGlobal::setSetting('defaultBreadcrumbMode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultBreadcrumbMode', 'short')));
 
         //security: for failed login attempts by user/admin
         SettingGlobal::setSetting('maxLoginAttempt', sanitize_int(Yii::app()->getRequest()->getPost('maxLoginAttempt', 3)));
@@ -305,7 +323,20 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
 
-        SettingGlobal::setSetting('createsample', (bool) Yii::app()->getRequest()->getPost('createsample'));
+        // Minimum stability for update notifications
+        $minimumUpdateStability = Yii::app()->getRequest()->getPost('minimum_update_stability')
+            ?: Yii::app()->getConfig('minimum_update_stability');
+        if (in_array($minimumUpdateStability, ['alpha', 'beta', 'rc', 'stable'])) {
+            SettingGlobal::setSetting('minimum_update_stability', $minimumUpdateStability);
+            // Clear cached update check so the new stability filter takes effect immediately
+            Yii::app()->session['next_update_check'] = null;
+            Yii::app()->session['update_result'] = null;
+            Yii::app()->session['security_update'] = null;
+            Yii::app()->session['unstable_update'] = null;
+            Yii::app()->session['update_stability_labels'] = null;
+        }
+
+        SettingGlobal::setSetting('createsample', Yii::app()->getRequest()->getPost('createsample'));
 
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
@@ -321,12 +352,12 @@ class GlobalSettings extends SurveyCommonAction
         $validatedLoginIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('loginIpWhitelist'));
         SettingGlobal::setSetting('loginIpWhitelist', $validatedLoginIpWhitelistInput['valid']);
         if (!empty($validatedLoginIpWhitelistInput['invalid'])) {
-            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for login")) . '<br/>';
+            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP allowlist for administration login")) . '<br/>';
         }
         $validatedTokenIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('tokenIpWhitelist'));
         SettingGlobal::setSetting('tokenIpWhitelist', $validatedTokenIpWhitelistInput['valid']);
         if (!empty($validatedTokenIpWhitelistInput['invalid'])) {
-            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for token access")) . '<br/>';
+            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP allowlist for participants with access code")) . '<br/>';
         }
 
         // we set the admin theme
@@ -334,6 +365,14 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
 
         $emailMethod = strip_tags(Yii::app()->getRequest()->getPost('emailmethod', ''));
+        $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));
+
+        // Prevent saving email method 'plugin' without a plugin selected
+        if ($emailMethod == LimeMailer::MethodPlugin && empty($emailPlugin)) {
+            $emailMethod = Yii::app()->getConfig('emailmethod');
+            $warning .= gT("Email method 'Plugin' requires a plugin to be selected. The email method was not changed.") . '<br/>';
+        }
+
         SettingGlobal::setSetting('emailmethod', $emailMethod);
         SettingGlobal::setSetting('emailsmtphost', strip_tags((string) returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
@@ -349,13 +388,12 @@ class GlobalSettings extends SurveyCommonAction
         }
 
         SettingGlobal::setSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
-        SettingGlobal::setSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0')));
+        SettingGlobal::setSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0'), 0, 3));
         SettingGlobal::setSetting('emailsmtpuser', strip_tags((string) returnGlobal('emailsmtpuser')));
         SettingGlobal::setSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml', '')));
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss', '')));
 
         $oldEmailPlugin = Yii::app()->getConfig('emailplugin');
-        $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));
         SettingGlobal::setSetting('emailplugin', $emailPlugin);
         // If the email plugin has changed, dispatch an event to allow the new plugin to do any necessary setup.
         if ($emailMethod == LimeMailer::MethodPlugin && $oldEmailPlugin != $emailPlugin) {
@@ -370,7 +408,7 @@ class GlobalSettings extends SurveyCommonAction
         // make sure emails are valid before saving them
         if (
             Yii::app()->request->getPost('siteadminbounce', '') == ''
-            || validateEmailAddress(Yii::app()->request->getPost('siteadminbounce'))
+            || LimeMailer::validateAddress(Yii::app()->request->getPost('siteadminbounce'))
         ) {
             SettingGlobal::setSetting('siteadminbounce', strip_tags(Yii::app()->request->getPost('siteadminbounce', '')));
         } else {
@@ -378,7 +416,7 @@ class GlobalSettings extends SurveyCommonAction
         }
         if (
             Yii::app()->request->getPost('siteadminemail', '') == ''
-            || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))
+            || LimeMailer::validateAddress(Yii::app()->request->getPost('siteadminemail'))
         ) {
             SettingGlobal::setSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail', '')));
         } else {
@@ -409,27 +447,45 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('bPdfQuestionBold', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBold')));
         SettingGlobal::setSetting('bPdfQuestionBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfQuestionBorder')));
         SettingGlobal::setSetting('bPdfResponseBorder', sanitize_int(Yii::app()->getRequest()->getPost('bPdfResponseBorder')));
-        SettingGlobal::setSetting('googleMapsAPIKey', Yii::app()->getRequest()->getPost('googleMapsAPIKey'));
-        SettingGlobal::setSetting('googleanalyticsapikey', Yii::app()->getRequest()->getPost('googleanalyticsapikey'));
-        SettingGlobal::setSetting('googletranslateapikey', Yii::app()->getRequest()->getPost('googletranslateapikey'));
+        /* @see https://docs.cloud.google.com/docs/authentication/api-keys#components */
+        $googleapikeys = ['googleMapsAPIKey', 'googleanalyticsapikey', 'googletranslateapikey'];
+        foreach ($googleapikeys as $googleapikey) {
+            $value = trim(strval(App()->getRequest()->getPost($googleapikey)));
+            $fixedValue = sanitize_googleapikey($value);
+            if ($value !== $fixedValue) {
+                /* Add an alert to the user */
+                Yii::app()->setFlashMessage(sprintf(gT("Invalid value set for %s, reset to %s"), $googleapikey, $fixedValue), 'warning');
+                /* Add a warning for log for server admin */
+                Yii::log("Invalid value set for {$googleapikey} in global settings.", 'warning', 'application.controller.admin.globalsettings');
+            }
+            SettingGlobal::setSetting($googleapikey, $fixedValue);
+        }
         SettingGlobal::setSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
         SettingGlobal::setSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
-        SettingGlobal::setSetting('rpc_publish_api', (bool) Yii::app()->getRequest()->getPost('rpc_publish_api'));
-        SettingGlobal::setSetting('add_access_control_header', (bool) Yii::app()->getRequest()->getPost('add_access_control_header'));
+        SettingGlobal::setSetting('rpc_publish_api', Yii::app()->getRequest()->getPost('rpc_publish_api'));
+        SettingGlobal::setSetting('add_access_control_header', Yii::app()->getRequest()->getPost('add_access_control_header'));
         SettingGlobal::setSetting('characterset', Yii::app()->getRequest()->getPost('characterset'));
         SettingGlobal::setSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
         SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles') == '1' ? 'Y' : 'N');
+        SettingGlobal::setSetting('maxDatabaseSizeForDump', Yii::app()->getRequest()->getPost('global-settings-max-size-for-db-dump'));
         //Save user administration settings
         SettingGlobal::setSetting('sendadmincreationemail', App()->getRequest()->getPost('sendadmincreationemail'));
         SettingGlobal::setSetting('admincreationemailsubject', App()->getRequest()->getPost('admincreationemailsubject'));
         SettingGlobal::setSetting('admincreationemailtemplate', App()->getRequest()->getPost('admincreationemailtemplate'));
 
-        $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60) . ' minutes'; //makes sure it is a number, at least 0
-        if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
-            $savetime = '+' . $savetime;
+        // Check if time zone exists, then save it
+        $timezone = App()->getRequest()->getPost('displayTimezone');
+        if ($timezone === '' || in_array($timezone, DateTimeZone::listIdentifiers())) {
+            SettingGlobal::setSetting('displayTimezone', $timezone);
+        } else {
+            Yii::app()->setFlashMessage(gT("The selected timezone is not valid and was not saved."), 'error');
         }
-        SettingGlobal::setSetting('timeadjust', $savetime);
+
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy', '')));
+
+        // event to attach general settings defined by the event beforeGlobalGeneralSettings
+        $beforeGlobalGeneralSettings = new PluginEvent('beforeGlobalGeneralSettings');
+        App()->getPluginManager()->dispatchEvent($beforeGlobalGeneralSettings);
 
         $request = App()->request;
         Yii::app()->formExtensionService->applySave('globalsettings', $request);
@@ -472,7 +528,7 @@ class GlobalSettings extends SurveyCommonAction
                 $oldtokenlist[] = $table;
             } elseif (strpos((string) $table, Yii::app()->db->tablePrefix . "tokens_") !== false) {
                 $tokenlist[] = $table;
-            } elseif (strpos((string) $table, Yii::app()->db->tablePrefix . "old_survey_") !== false) {
+            } elseif (strpos((string) $table, Yii::app()->db->tablePrefix . "old_responses_") !== false) {
                 $oldresultslist[] = $table;
             }
         }
@@ -542,11 +598,14 @@ class GlobalSettings extends SurveyCommonAction
 
         $aData['oSurvey'] = $oSurveyGroupSetting;
 
+        // Prepare theme configuration data for the view
+        $themeService = DI::getContainer()->get(SurveyThemeConfiguration::class);
+        $aData = array_merge($aData, $themeService->getThemeViewData($oSurveyGroupSetting->template, $oSurveyGroupSetting->oOptions ?? null));
+
         if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
-            $this->getController()->redirect($this->getController()->createUrl('admin/index'));
+            $this->getController()->redirect($this->getController()->createUrl('dashboard/view'));
         }
 
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
@@ -566,7 +625,7 @@ class GlobalSettings extends SurveyCommonAction
                 'isCloseBtn' => true,
                 'isSaveAndCloseBtn' => true,
                 'isSaveBtn' => true,
-                'backUrl' => Yii::app()->createUrl('admin/index'),
+                'backUrl' => Yii::app()->createUrl('dashboard/view'),
                 'formIdSaveClose' => 'frmglobalsettings',
                 'formIdSave' => 'frmglobalsettings'
             ],
@@ -577,7 +636,7 @@ class GlobalSettings extends SurveyCommonAction
     }
 
     /**
-     * Survey Setting Menues
+     * Survey Setting Menus
      */
     public function surveysettingmenues()
     {
@@ -679,7 +738,7 @@ class GlobalSettings extends SurveyCommonAction
      */
     protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'globalsettings.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'globalsettings.js');
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 

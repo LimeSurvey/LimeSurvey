@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -16,13 +16,13 @@
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
 
 /**
-* Database
-*
-* @package LimeSurvey
-* @author
-* @copyright 2011
-* @access public
-*/
+ * Database
+ *
+ * @package LimeSurvey
+ * @author
+ * @copyright 2011
+ * @access public
+ */
 class Database extends SurveyCommonAction
 {
     /**
@@ -48,8 +48,8 @@ class Database extends SurveyCommonAction
 
     /**
      * Database::index()
-     * todo 1591726928167: move called functions to their respective Controllers
-     * @return
+     * @todo move called functions to their respective Controllers
+     * @return void
      */
     public function index()
     {
@@ -66,7 +66,7 @@ class Database extends SurveyCommonAction
         if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveycontent', 'update')) {
             $this->actionUpdateDefaultValues($this->iSurveyID);
         }
-        if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
+        if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveysettings', 'update'))) {
             $this->actionUpdateSurveyLocaleSettings($this->iSurveyID);
         }
         if (
@@ -78,6 +78,28 @@ class Database extends SurveyCommonAction
         }
 
         Yii::app()->setFlashMessage(gT("Unknown action or no permission."), 'error');
+
+        if (Yii::app()->request->getPost('responsejson', 0) == 1) {
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'updated' => null,
+                        'DEBUG' => [
+                            'POST' => $_POST,
+                            'reloaded' => [],
+                            'aURLParams' => '',
+                            'initial' => '',
+                            'afterApply' => ''
+                        ]
+                    ],
+                ),
+                false,
+                false
+            );
+        }
+
         $this->getController()->redirect(Yii::app()->request->urlReferrer);
     }
 
@@ -97,10 +119,10 @@ class Database extends SurveyCommonAction
             ->find(
                 'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id',
                 array(
-                ':specialtype' => $specialtype,
-                ':qid' => $qid,
-                ':sqid' => $sqid,
-                ':scale_id' => $scale_id,
+                    ':specialtype' => $specialtype,
+                    ':qid' => $qid,
+                    ':sqid' => $sqid,
+                    ':scale_id' => $scale_id,
                 )
             );
         $dvid = !empty($arDefaultValue->dvid) ? $arDefaultValue->dvid : null;
@@ -108,7 +130,7 @@ class Database extends SurveyCommonAction
         if ($defaultvalue == '') {
             // Remove the default value if it is empty
             if ($dvid !== null) {
-                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid' => $dvid, 'language' => $language ));
+                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid' => $dvid, 'language' => $language));
                 $iRowCount = DefaultValueL10n::model()->countByAttributes(array('dvid' => $dvid));
                 if ($iRowCount == 0) {
                     DefaultValue::model()->deleteByPk($dvid);
@@ -191,7 +213,7 @@ class Database extends SurveyCommonAction
         if ($questionThemeMetaData['settings']->answerscales == 0 && $questionThemeMetaData['settings']->subquestions == 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
                 // Qick and dirty insert for yes/no defaul value
-                // write the the selectbox option, or if "EM" is slected, this value to table
+                // write the selectbox option, or if "EM" is selected, this value to table
                 if ($sQuestionType == 'Y') {
                     /// value for all langs
                     if (Yii::app()->request->getPost('samedefault') == 1) {
@@ -199,7 +221,7 @@ class Database extends SurveyCommonAction
                     }
 
                     if (Yii::app()->request->getPost('defaultanswerscale_0_' . $sLanguage) == 'EM') {
-// Case EM, write expression to database
+                        // Case EM, write expression to database
                         $this->updateDefaultValues($this->iQuestionID, 0, 0, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_0_' . $sLanguage . '_EM'));
                     } else {
                         // Case "other", write list value to database
@@ -226,7 +248,7 @@ class Database extends SurveyCommonAction
     /**
      * Action to run when update survey settings + survey language
      *
-     * Refactored to use Services\SurveyUpdater 2023-05-30 (kfoster).
+     * Refactored to use Services\SurveyAggregateService 2023-05-30 (kfoster).
      *
      * @param integer $iSurveyID
      * @param ?array $input For dependency injection during testing
@@ -236,7 +258,7 @@ class Database extends SurveyCommonAction
     {
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyUpdater = $diContainer->get(
-            LimeSurvey\Models\Services\SurveyUpdater::class
+            LimeSurvey\Models\Services\SurveyAggregateService::class
         );
 
         $surveyModel = $diContainer->get(Survey::class);
@@ -256,7 +278,7 @@ class Database extends SurveyCommonAction
         // form inputs are named differently from db fields
         // - they have a prefix and a language suffix
         // - we need to convert this to a array of database
-        // - fields for each language indexed by lanuage code
+        // - fields for each language indexed by language code
         $langFields = [
             'surveyls_url' => 'url_',
             'surveyls_urldescription' => 'urldescrip_',
@@ -284,8 +306,6 @@ class Database extends SurveyCommonAction
                 $input[$langCode] = $langInput;
             }
         }
-
-
         $metaData = [];
         try {
             $metaData = $surveyUpdater->update(
@@ -355,7 +375,7 @@ class Database extends SurveyCommonAction
     {
         $diContainer = \LimeSurvey\DI::getContainer();
         $surveyUpdater = $diContainer->get(
-            LimeSurvey\Models\Services\SurveyUpdater::class
+            LimeSurvey\Models\Services\SurveyAggregateService::class
         );
 
         $request = Yii::app()->request;
@@ -379,9 +399,16 @@ class Database extends SurveyCommonAction
             Yii::app()
                 ->setFlashMessage(gT('Survey settings were successfully saved.'));
         } catch (PersistErrorException $e) {
-            Yii::app()->setFlashMessage(
-                $e->getMessage(),
-                'error'
+            \Yii::app()->setFlashMessage(
+                \CHtml::errorSummary(
+                    $e->getErrorModel(),
+                    \CHtml::tag(
+                        "p",
+                        array('class' => 'strong'),
+                        gT("Survey could not be updated, please fix the following error:")
+                    )
+                ),
+                "error"
             );
         }
 

@@ -2,12 +2,20 @@
 
 namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
-use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerSurveyTrait;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{
+    OpHandlerExceptionTrait,
+    OpHandlerSurveyTrait,
+    OpHandlerValidationTrait
+};
+use LimeSurvey\Api\Command\V1\Transformer\Input\{
+    TransformerInputQuestionGroupReorder
+};
 use QuestionGroup;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
-use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionGroup;
-use LimeSurvey\Api\Transformer\TransformerInterface;
-use LimeSurvey\Models\Services\QuestionGroupService;
+use LimeSurvey\Models\Services\{
+    QuestionGroupService,
+    Exception\PermissionDeniedException,
+    Exception\NotFoundException
+};
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
     OpHandler\OpHandlerException,
@@ -22,21 +30,20 @@ use LimeSurvey\ObjectPatch\{
 class OpHandlerQuestionGroupReorder implements OpHandlerInterface
 {
     use OpHandlerSurveyTrait;
+    use OpHandlerExceptionTrait;
+    use OpHandlerValidationTrait;
 
     protected string $entity;
     protected QuestionGroup $model;
-    protected TransformerInterface $transformerGroup;
-    protected TransformerInterface $transformerQuestion;
+    protected TransformerInputQuestionGroupReorder $transformer;
 
     public function __construct(
         QuestionGroup $model,
-        TransformerInputQuestionGroup $transformerGroup,
-        TransformerInputQuestion $transformerQuestion
+        TransformerInputQuestionGroupReorder $transformer
     ) {
         $this->entity = 'questionGroupReorder';
         $this->model = $model;
-        $this->transformerGroup = $transformerGroup;
-        $this->transformerQuestion = $transformerQuestion;
+        $this->transformer = $transformer;
     }
 
     /**
@@ -93,7 +100,8 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
      * @throws OpHandlerException
      * @throws \DI\DependencyException
      * @throws \DI\NotFoundException
-     * @throws \LimeSurvey\Models\Services\Exception\NotFoundException
+     * @throws NotFoundException
+     * @throws PermissionDeniedException
      */
     public function handle(OpInterface $op): void
     {
@@ -101,85 +109,44 @@ class OpHandlerQuestionGroupReorder implements OpHandlerInterface
         $questionGroupService = $diContainer->get(
             QuestionGroupService::class
         );
-        $questionGroupService->reorderQuestionGroups(
-            $this->getSurveyIdFromContext($op),
-            $this->getGroupReorderData($op)
+        $surveyId = $this->getSurveyIdFromContext($op);
+        $questionGroupService->checkUpdatePermission($surveyId);
+        $transformedProps = $this->transformer->transformAll(
+            $op->getProps(),
+            ['operation' => $op->getType()->getId()]
         );
-    }
-
-    /**
-     * Gets the props from the request and restructures the data to be suitable
-     * for the reordering function.
-     * @param OpInterface $op
-     * @return array
-     */
-    public function getGroupReorderData(OpInterface $op)
-    {
-        $groupReorderData = [];
-        $i = 0;
-        foreach ($op->getProps() as $gid => $groupData) {
-            $k = 0;
-            if (is_numeric($gid) && $gid > 0) {
-                $groupData['gid'] = $gid;
-            }
-            $tfGroupData = $this->transformerGroup->transform($groupData);
-            $this->checkGroupReorderData($op, $tfGroupData, 'group');
-            $groupReorderData[$i] = $tfGroupData;
-            if (array_key_exists('questions', $groupData)) {
-                foreach ($groupData['questions'] as $qid => $questionData) {
-                    $questionData['gid'] = $gid;
-                    $questionData['qid'] = $qid;
-                    $tfQuestionData = $this->transformerQuestion->transform(
-                        $questionData
-                    );
-                    $this->checkGroupReorderData(
-                        $op,
-                        $tfQuestionData,
-                        'question'
-                    );
-                    $groupReorderData[$i]['questions'][$k] = $tfQuestionData;
-                    $k++;
-                }
-            }
-            $i++;
-        }
-        return $groupReorderData;
-    }
-
-    /**
-     * @param OpInterface $op
-     * @param array|null $data
-     * @param string $type
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function checkGroupReorderData(
-        OpInterface $op,
-        ?array $data,
-        string $type
-    ) {
-        $requiredForGroup = ['gid', 'group_order'];
-        $requiredForQuestion = ['qid', 'gid', 'question_order'];
-        $required = $type === 'group' ? $requiredForGroup : $requiredForQuestion;
-        if (!is_array($data)) {
+        if (empty($transformedProps)) {
             $this->throwNoValuesException($op);
         }
-        foreach ($required as $param) {
-            /** @var array $data */
-            if (!array_key_exists($param, $data)) {
-                $this->throwRequiredParamException($op, $param);
-            }
-        }
+        $questionGroupService->reorderQuestionGroups(
+            $surveyId,
+            $transformedProps
+        );
     }
 
     /**
      * Checks if patch is valid for this operation.
      * @param OpInterface $op
-     * @return bool
+     * @return array
      */
-    public function isValidPatch(OpInterface $op): bool
+    public function validateOperation(OpInterface $op): array
     {
-        // checkGroupReorderData is doing validation at a later stage
-        return true;
+        $validationData = $this->validateSurveyIdFromContext($op, []);
+        $validationData = $this->validateCollectionIndex(
+            $op,
+            $validationData,
+            false
+        );
+        if (empty($validationData)) {
+            $validationData = $this->transformer->validateAll(
+                $op->getProps(),
+                ['operation' => $op->getType()->getId()]
+            );
+        }
+        return $this->getValidationReturn(
+            gT('Could not reorder'),
+            !is_array($validationData) ? [] : $validationData,
+            $op
+        );
     }
 }

@@ -145,13 +145,13 @@ var ShHighlightRules = function () {
                 token: "support.function",
                 regex: fileDescriptor
             }, {
-                token: "string",
+                token: "string", // ' string
                 start: "'", end: "'"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: floatNumber
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // integer
                 regex: integer + "\\b"
             }, {
                 token: keywordMapper,
@@ -316,17 +316,16 @@ oop.inherits(FoldMode, BaseFoldMode);
 
 });
 
-define("ace/mode/sh",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/sh_highlight_rules","ace/range","ace/mode/folding/cstyle","ace/mode/behaviour/cstyle"], function(require, exports, module){"use strict";
+define("ace/mode/sh",["require","exports","module","ace/lib/oop","ace/mode/text","ace/mode/sh_highlight_rules","ace/range","ace/mode/folding/cstyle"], function(require, exports, module){"use strict";
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
 var ShHighlightRules = require("./sh_highlight_rules").ShHighlightRules;
 var Range = require("../range").Range;
 var CStyleFoldMode = require("./folding/cstyle").FoldMode;
-var CstyleBehaviour = require("./behaviour/cstyle").CstyleBehaviour;
 var Mode = function () {
     this.HighlightRules = ShHighlightRules;
     this.foldingRules = new CStyleFoldMode();
-    this.$behaviour = new CstyleBehaviour();
+    this.$behaviour = this.$defaultBehaviour;
 };
 oop.inherits(Mode, TextMode);
 (function () {

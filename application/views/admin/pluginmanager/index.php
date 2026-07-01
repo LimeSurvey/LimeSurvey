@@ -28,7 +28,11 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             </a>
              */ ?>
         <?php foreach ($extraMenus as $menu) : ?>
-            <a href='<?php echo $menu->getHref(); ?>' <?php if ($menu->getOnClick()) : ?> onclick='<?php echo $menu->getOnClick(); ?>' <?php endif; ?> <?php if ($menu->getTooltip()) : ?> data-bs-toggle='tooltip' data-title='<?php echo $menu->getTooltip(); ?>' <?php endif; ?> class='btn btn-outline-secondary'>
+            <a href='<?php echo $menu->getHref(); ?>' <?php if ($menu->getOnClick()) :
+                ?> onclick='<?php echo $menu->getOnClick(); ?>' <?php
+                     endif; ?> <?php if ($menu->getTooltip()) :
+    ?> data-bs-toggle='tooltip' data-title='<?php echo $menu->getTooltip(); ?>' <?php
+                     endif; ?> class='btn btn-outline-secondary'>
                 <?php if ($menu->getIconClass()) : ?>
                     <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;
                 <?php endif; ?>
@@ -81,7 +85,8 @@ $gridColumns = [
         'header' => gT('Description'),
         'name' => 'description',
         'type' => 'html',
-        'value' => '$data->getPossibleDescription()'
+        'value' => '$data->getPossibleDescription()',
+        'htmlOptions' => ['class' => 'can-contain-link'],
     ],
     [
         'header' => gT('Status'),
@@ -103,6 +108,7 @@ $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [
         'id'                       => 'plugins-grid',
+        'caption'                  => gT('Plugins'),
         'dataProvider'             => $dataProvider,
         'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
             . sprintf(
@@ -113,7 +119,8 @@ $this->widget(
                     Yii::app()->params['pageSizeOptions'],
                     [
                         'class' => 'changePageSize form-select',
-                        'style' => 'display: inline; width: auto'
+                        'style' => 'display: inline; width: auto',
+                        'aria-label' => gT('Rows per page')
                     ]
                 )
             ),

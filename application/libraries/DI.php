@@ -2,6 +2,8 @@
 
 namespace LimeSurvey;
 
+use ArchivedTableSettings;
+use DI\ContainerBuilder;
 use CActiveRecord;
 use LSYii_Application;
 use LimeSurvey\PluginManager\PluginManager;
@@ -41,34 +43,26 @@ class DI
      */
     public static function makeContainer()
     {
-        $container = new \DI\Container;
+        $builder = new ContainerBuilder();
+        $builder->useAnnotations(true);
+        $builder->addDefinitions([
+            LSYii_Application::class => function () {
+                return App();
+            },
+            PluginManager::class => function () {
+                return App()->getPluginManager();
+            },
+            CHttpSession::class => function () {
+                return App()->session;
+            },
+            CDbConnection::class => function () {
+                return App()->db;
+            },
+            'archivedTokenSettings' => \DI\create(ArchivedTableSettings::class),
+            'archivedTimingsSettings' => \DI\create(ArchivedTableSettings::class),
+            'archivedResponseSettings' => \DI\create(ArchivedTableSettings::class),
+        ]);
 
-        // Type hinting on a Yii model / active-record class should return its
-        // - static instance e.g Survey::model(). It is not possible to type hint
-        // - on this, so instead we configure the container to return the correct
-        // - object based on the call time class name, whenever we type hint on
-        // - CActiveRecord or anything that extends CActiveRecord
-        $container->set(CActiveRecord::class, function (CActiveRecord $entry) {
-            $class = $entry->getName();
-            return $class::model();
-        });
-
-        $container->set(LSYii_Application::class, function () {
-            return App();
-        });
-
-        $container->set(PluginManager::class, function () {
-            return App()->getPluginManager();
-        });
-
-        $container->set(CHttpSession::class, function () {
-            return App()->session;
-        });
-
-        $container->set(CDbConnection::class, function () {
-            return App()->db;
-        });
-
-        return $container;
+        return $builder->build();
     }
 }

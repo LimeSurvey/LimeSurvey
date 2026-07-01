@@ -8,7 +8,7 @@ if ($hasPermission) {
         [
             'name' => 'group-mail-button',
             'id' => 'group-mail-button',
-            'text' => gT('Mail to all Members'),
+            'text' => gT('Mail to all members'),
             'icon' => 'ri-mail-send-fill',
             'link' => $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroupId),
             'htmlOptions' => [
@@ -48,11 +48,11 @@ if ($hasPermission) {
                 'data-bs-toggle' => 'modal',
                 'data-post-url' =>  $this->createUrl('userGroup/deleteGroup/'),
                 'data-post-datas' => $dataPost,
-                'data-message' => gt('Are you sure you want to delete this entry?'),
+                'data-message' => gT('Are you sure you want to delete this entry?'),
                 'data-bs-target' => '#confirmation-modal',
                 'data-btnclass' => 'btn btn-danger',
-                'data-title' => gt('Delete group'),
-                'data-btntext' => gt('Delete')
+                'data-title' => gT('Delete group'),
+                'data-btntext' => gT('Delete')
             ],
         ]
     );

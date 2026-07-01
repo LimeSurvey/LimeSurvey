@@ -25,6 +25,17 @@ class AnswersService
 {
     use ValidateTrait;
 
+    private Answer $modelAnswer;
+    private AnswerL10n $modelAnswerL10n;
+
+    public function __construct(
+        Answer $modelAnswer,
+        AnswerL10n $modelAnswerL10n
+    ) {
+        $this->modelAnswer = $modelAnswer;
+        $this->modelAnswerL10n = $modelAnswerL10n;
+    }
+
     /**
      * Based on QuestionAdministrationController::actionSaveQuestionData()
      *
@@ -105,8 +116,7 @@ class AnswersService
             // We use the container to create a model instance
             // allowing us to mock the model instance via
             // container configuration in unit tests
-            $answer = DI::getContainer()
-                ->make(Answer::class)->findByPk($answerId);
+            $answer = $this->modelAnswer->findByPk($answerId);
             if (!$answer) {
                 $answer = DI::getContainer()
                     ->make(Answer::class);
@@ -157,13 +167,12 @@ class AnswersService
      */
     private function storeAnswerL10n(Answer $answer, $language, $text)
     {
-        $l10n = DI::getContainer()
-            ->make(AnswerL10n::class)->findByAttributes(
-                [
-                    'aid' => $answer->aid,
-                    'language' => $language
-                ]
-            );
+        $l10n = $this->modelAnswerL10n->findByAttributes(
+            [
+                'aid' => $answer->aid,
+                'language' => $language
+            ]
+        );
         if (!$l10n) {
             $l10n = DI::getContainer()->make(AnswerL10n::class);
         }
@@ -172,7 +181,6 @@ class AnswersService
             'language' => $language,
             'answer' => $text
         ]);
-
         if (!$l10n->save()) {
             throw new PersistErrorException(
                 gT('Could not save answer option')

@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
     /*
     * LimeSurvey
-    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2007-2026 The LimeSurvey Project Team
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant
@@ -149,10 +149,6 @@ function PrepareEditorScript($load = false, $controller = null)
      */
 function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
     initKcfinder();
 
     $session = &Yii::app()->session;
@@ -195,12 +191,6 @@ function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = 
  */
 function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
-
     $htmlcode = '';
 
     if (
@@ -244,7 +234,7 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         'id' => $fieldname . "_popupctrlena",
     ), '')
     . CHtml::tag('span', array(
-        'class' => "sr-only",
+        'class' => "visually-hidden",
     ), gT("Start HTML editor in a popup window"))
     . CHtml::tag('i', array(
         'class' => "ri-pencil-fill btneditanswerdis",
@@ -277,11 +267,6 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
  */
 function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
     $htmlcode = "<a href='#' class='btn btn-sm btn-outline-secondary htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-bs-toggle='tooltip' data-bs-original-title='" . gT("Open editor") . "'>\n" .
                 "\t<i class='ri-pencil-fill' id='{$fieldname}_modal_icon'></i>\n" .
                 "</a>\n";
@@ -291,10 +276,6 @@ function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
 
 function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
-        $surveyID = 'uniq';
-    }
-
     $htmlcode = '';
     $toolbaroption = "";
     $sFileBrowserAvailable = '';
@@ -306,10 +287,10 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
     // - replace any opening square brackets or "-" from the fieldname, to "_"
     // - remove closing square brackets
     //
-    // Note: This sanitization process is not much needed now, but leave it in case is usefull for laters.
+    // Note: This sanitization process is not much needed now, but leave it in case it is useful for later.
     // This was used before by this function, when in prior times, fieldname could be derived
     // from the name of a textarea, and not just the id (as now)
-    // The name of a texarea can contain quare brackets. Then we needed to sanitize.
+    // The name of a textarea can contain square brackets. Then we needed to sanitize.
     $oCKeditorVarName = "oCKeditor_" . preg_replace("/[-\[]/", "_", (string) $fieldname);
     $oCKeditorVarName = str_replace(']', '', $oCKeditorVarName);
 
@@ -335,7 +316,7 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
     /* fieldtype have language at end , set fullpage for email HTML edit */
     if (substr((string) $fieldtype, 0, 6) === 'email-') {
         $htmlformatoption = ",fullPage:true\n";
-        //~ $htmlformatoption = ",allowedContent:true\n"; // seems uneeded
+        //~ $htmlformatoption = ",allowedContent:true\n"; // seems unneeded
     }
     if ($surveyID == '') {
         $sFakeBrowserURL = Yii::app()->getController()->createUrl('admin/survey/sa/fakebrowser');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhAceEditor widget class
  *
@@ -7,8 +8,9 @@
  * @copyright Copyright &copy; 2amigos.us 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package YiiWheels.widgets.ace
- * @uses Yiistrap.helpers.TbHtml
+ * @uses yiistrap_fork.helpers.TbHtml
  */
+
 Yii::import('yiistrap_fork.helpers.TbHtml');
 Yii::import('yiistrap_fork.helpers.TbArray');
 
@@ -93,8 +95,9 @@ class WhAceEditor extends CInputWidget
         }
 
         $this->htmlOptions = $tagOptions;
-        if (!isset($this->htmlOptions['textareaId']))
+        if (!isset($this->htmlOptions['textareaId'])) {
             $this->htmlOptions['textareaId'] = $id;
+        }
     }
 
     /**
@@ -122,13 +125,13 @@ class WhAceEditor extends CInputWidget
 
         echo $selector . '= ace.edit("' . $id . '");' . PHP_EOL;
         echo $selector . '.setTheme("ace/theme/' . $this->theme . '");' . PHP_EOL;
-        echo $selector . '.getSession().setMode('.(is_array($this->mode) ? CJavaScript::encode($this->mode) : '"ace/mode/'.$this->mode.'"').');' . PHP_EOL;
-        echo $selector . '.setValue($("#'.$this->htmlOptions['textareaId'].'").val());' . PHP_EOL;
+        echo $selector . '.getSession().setMode(' . (is_array($this->mode) ? CJavaScript::encode($this->mode) : '"ace/mode/' . $this->mode . '"') . ');' . PHP_EOL;
+        echo $selector . '.setValue($("#' . $this->htmlOptions['textareaId'] . '").val());' . PHP_EOL;
         echo $selector . '.getSession().on("change", function(){
                 var theVal = ' . $selector . '.getSession().getValue();
-                $("#'.$this->htmlOptions['textareaId'].'").val(theVal);
+                $("#' . $this->htmlOptions['textareaId'] . '").val(theVal);
             });';
-            
+
         if (!empty($this->events) && is_array($this->events)) {
             foreach ($this->events as $name => $handler) {
                 $handler = ($handler instanceof CJavaScriptExpression)
@@ -138,9 +141,10 @@ class WhAceEditor extends CInputWidget
                 echo $id . ".getSession().on('{$name}', {$handler});" . PHP_EOL;
             }
         }
-        
-        if (!empty($this->pluginOptions))
-            echo $selector . '.setOptions('.CJavaScript::encode($this->pluginOptions).')';
+
+        if (!empty($this->pluginOptions)) {
+            echo $selector . '.setOptions(' . CJavaScript::encode($this->pluginOptions) . ')';
+        }
 
         $cs->registerScript(uniqid(__CLASS__ . '#ReadyJS' . $id, true), ob_get_clean());
     }

@@ -1,13 +1,16 @@
 .form-change-lang {
     padding-bottom: 10px;
+
     .control-label {
         @include h2;
     }
+
     .language-icon {
         float: left; //preparation for rtl
         margin-right: 4px;
         font-weight: $font-weight-normal;
     }
+
     #language-changer-select {
         @include h2;
         cursor: pointer;
@@ -21,10 +24,19 @@
         &:focus-visible {
             outline: none;
         }
+
+        &:focus {
+            border: 1px solid;
+            border-radius: 4px;
+            padding: 4px;
+        }
     }
+
     .ls-language-changer-item {
         display: none;
     }
 }
 
-.top-content .form-change-lang {float : right}
+.top-content .form-change-lang {
+    float: right
+}

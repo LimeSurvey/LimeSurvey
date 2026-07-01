@@ -34,7 +34,7 @@ echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() 
 . 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12 pb-6" '
 . '>';
     //Rendered through /admin/super/sidemenu
-    $this->surveysidemenu($aData);
+    $layoutHelper->renderSurveySidemenu($aData);
     echo '<div '
     . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';

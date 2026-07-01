@@ -1,4 +1,4 @@
-<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<div class='side-body'>
     <?php echo CHtml::form(["admin/export/sa/quexml/surveyid/{$surveyid}/"], 'post'); ?>
     <h3 class="col-12">
         <?php eT("queXML PDF export"); ?>
@@ -180,9 +180,9 @@
                         'name'          => 'queXMLPageFormat',
                         'checkedOption' => $queXMLPageFormat,
                         'selectOptions' => [
-                            "A4"       => gT("A4", 'unescaped'),
-                            "A3"       => gT("A3", 'unescaped'),
-                            "USLETTER" => gT("US Letter", 'unescaped')
+                            "A4"       => "A4",
+                            "A3"       => "A3",
+                            "USLETTER" => "US Letter"
                         ]
                     ]); ?>
                 </div>

@@ -2,13 +2,29 @@
 
 namespace LimeSurvey\Menu;
 
-class Menu implements MenuInterface
+class Menu implements ExtendedMenuInterface
 {
+    /**
+     * @var string
+     */
+    protected $id = "";
+
     /**
      * If true, render this menu as a dropdown.
      * @var bool
      */
     protected $isDropDown = false;
+
+    /**
+     * If true, render this menu as a dropdown button.
+     * @var bool
+     */
+    protected $isDropDownButton = false;
+
+    /**
+     * @var string
+     */
+    protected $dropDownButtonClass = "btn btn-primary";
 
     /**
      * @var string
@@ -60,8 +76,20 @@ class Menu implements MenuInterface
      */
     public function __construct($options)
     {
+        if (isset($options['id'])) {
+            $this->id = $options['id'];
+        }
+
         if (isset($options['isDropDown'])) {
             $this->isDropDown = $options['isDropDown'];
+        }
+
+        if (isset($options['isDropDownButton'])) {
+            $this->isDropDownButton = $options['isDropDownButton'];
+        }
+
+        if (isset($options['dropDownButtonClass'])) {
+            $this->dropDownButtonClass = $options['dropDownButtonClass'];
         }
 
         if (isset($options['label'])) {
@@ -98,11 +126,35 @@ class Menu implements MenuInterface
     }
 
     /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return bool
      */
     public function isDropDown()
     {
         return $this->isDropDown;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDropDownButton()
+    {
+        return $this->isDropDownButton;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDropDownButtonClass()
+    {
+        return $this->dropDownButtonClass;
     }
 
     /**

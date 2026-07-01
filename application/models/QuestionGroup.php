@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -14,6 +14,11 @@
 *    Files Purpose: lots of common functions
 */
 
+use LimeSurvey\Models\Services\Exception\{
+    NotFoundException,
+    BadRequestException
+};
+
 /**
  * Class QuestionGroup
  *
@@ -21,7 +26,7 @@
  * @property integer $sid Survey ID
  * @property integer $group_order Group order number (max 100 chars)
  * @property string $randomization_group  Randomization group
- * @property string $grelevance Group's relevane equation
+ * @property string $grelevance Group's relevance equation
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions
@@ -30,8 +35,11 @@
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
+
     public $group_name;
+
     public $language;
+
     public $description;
 
     /**
@@ -138,43 +146,27 @@ class QuestionGroup extends LSActiveRecord
             }
         }
     }
-    /**
-     * Insert an array into the groups table
-     * Returns false if insertion fails, otherwise the new GID
-     *
-     * @param array $data
-     * @return bool|int
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $group = new self();
-        foreach ($data as $k => $v) {
-            $group->$k = $v;
-        }
-        if (!$group->save()) {
-            return false;
-        } else {
-            return $group->gid;
-        }
-    }
 
     /**
      * Deletes a question group and all its dependencies.
      * Returns affected rows of question group table (should be 1 or null)
      * @param integer $groupId
-     * @param integer $surveyId
+     * @param integer|null $surveyId deprecated
+     * @throw Exception
      * @return int|null
      */
-    public static function deleteWithDependency($groupId, $surveyId)
+    public static function deleteWithDependency($groupId, $surveyId = null)
     {
-        // Abort if the survey is active
-        $surveyIsActive = Survey::model()->findByPk($surveyId)->active !== 'N';
-        if ($surveyIsActive) {
-            Yii::app()->user->setFlash('error', gT("Can't delete question group when the survey is active"));
-            return null;
+        $QuestionGroup = self::model()->findByPk($groupId);
+        if (empty($QuestionGroup)) {
+            throw new NotFoundException(gT('Group not found'));
         }
-
+        // Abort if the survey is active
+        $surveyIsActive = Survey::model()->findByPk($QuestionGroup->sid)->active !== 'N';
+        if ($surveyIsActive) {
+            throw new BadRequestException(gT("Can't delete question group when the survey is active"));
+        }
+        $surveyId = $QuestionGroup->sid;
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
@@ -334,13 +326,15 @@ class QuestionGroup extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => '#confirmation-modal',
                 'data-message'   => gT(
-                    "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?",
-                    "js"
+                    "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
                 ),
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
+                'data-btntext'   => gT('Delete'),
                 'data-onclick'  => '(function() { ' . CHtml::encode(convertGETtoPOST(
-                    Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid])
+                    App()->createUrl(
+                        "questionGroupsAdministration/delete/",
+                        ["gid" => $this->gid, "surveyid" => $this->sid]
+                    )
                 )) . '})'
             ]
         ];
@@ -376,7 +370,7 @@ class QuestionGroup extends LSActiveRecord
             ),
         );
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
         $criteria->with = array('questiongroupl10ns' => array("select" => "group_name, description"));
         $criteria->together = true;
         $criteria->condition = 'sid=:surveyid AND language=:language';

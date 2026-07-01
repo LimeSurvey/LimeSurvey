@@ -24,8 +24,8 @@ App()->getClientScript()->registerScriptFile(
                 <div id="question-summary-topbar"
                      class='row' <?= empty($tabOverviewEditor) || $tabOverviewEditor === 'editor' ? 'style="display: none;"' : "" ?>>
                     <!-- Title or breadcrumb -->
-                    <div class="ls-breadcrumb col-xl-4 col-xxl-3">
-                        <h1><?= $breadcrumb ?></h1>
+                    <div class="ls-breadcrumb col-12">
+                        <h1 role="presentation"><?= $breadcrumb ?></h1>
                     </div>
                     <!-- Left Side -->
                     <div class="ls-topbar-buttons col">
@@ -40,8 +40,8 @@ App()->getClientScript()->registerScriptFile(
             <div id="question-create-edit-topbar"
                  class='row' <?= !empty($tabOverviewEditor) && $tabOverviewEditor !== 'editor' ? 'style="display: none;"' : "" ?>>
                 <!-- Title or breadcrumb -->
-                <div class="ls-breadcrumb col-xl-4 col-xxl-3">
-                    <h1><?= $breadcrumb ?></h1>
+                <div class="ls-breadcrumb col-12">
+                    <h1 role="presentation"><?= $breadcrumb ?></h1>
                 </div>
                 <!-- Left Side -->
                 <div class="ls-topbar-buttons col">

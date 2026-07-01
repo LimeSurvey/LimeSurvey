@@ -12,6 +12,9 @@ if (!file_exists(__DIR__ . '/../enabletests')) {
     exit(9);
 }
 
+// When running locally, you can get a "session already started" error from Yii. This line prevents this.
+ob_start();
+
 /*
  *---------------------------------------------------------------
  * SYSTEM FOLDER NAME
@@ -154,21 +157,29 @@ if (file_exists(APPPATH . 'config' . DIRECTORY_SEPARATOR . 'config.php')) {
 } else {
     $aSettings = array();
 }
-// Set debug : if not set : set to default from PHP 5.3
-if (isset($aSettings['config']['debug'])) {
-    if ($aSettings['config']['debug'] > 0) {
-        define('YII_DEBUG', true);
-        if ($aSettings['config']['debug'] > 1) {
-            error_reporting(E_ALL);
-        } else {
-            error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
-        }
-    } else {
-        define('YII_DEBUG', false);
-        error_reporting(0);
-    }
+// Set debug: env var LIMESURVEY_DEBUG overrides config.php when set.
+// Use LIMESURVEY_DEBUG=2 in CI to surface warnings hidden by debug=0.
+$envDebug = getenv('LIMESURVEY_DEBUG');
+if ($envDebug !== false) {
+    $debugLevel = (int) $envDebug;
+} elseif (isset($aSettings['config']['debug'])) {
+    $debugLevel = (int) $aSettings['config']['debug'];
 } else {
-    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user doesn't remove their 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
+    $debugLevel = -1; // no setting
+}
+
+if ($debugLevel > 0) {
+    define('YII_DEBUG', true);
+    if ($debugLevel > 1) {
+        error_reporting(E_ALL);
+    } else {
+        error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+    }
+} elseif ($debugLevel === 0) {
+    define('YII_DEBUG', false);
+    error_reporting(0);
+} else {
+    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 }
 
 if (version_compare(PHP_VERSION, '5.3.3', '<')) {
@@ -224,6 +235,7 @@ if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tests/tmp/')), -4) !=
 $_SERVER['SCRIPT_FILENAME'] = 'index-test.php';
 $_SERVER['SCRIPT_NAME'] =  '/index-test.php';
 $_SERVER['REQUEST_URI'] = 'index-test.php';
+$_SERVER['SERVER_NAME'] = 'localhost';
 
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
@@ -250,23 +262,26 @@ if ($forceDebug) {
     // Set env variable as to have test cases to enable error reporting.
     // Seems setting it globally here is not enough
     putenv('RUNNER_DEBUG=1');
-    fwrite(STDERR, 'Set $forceDebug=false in tests/bootstrap.php to reduce the logging.' . "\n"); 
+    fwrite(STDERR, 'Set $forceDebug=false in tests/bootstrap.php to reduce the logging.' . "\n");
 }
 $isDebug = getenv('RUNNER_DEBUG', false);
 fwrite(STDERR, 'Error Reporting and Debug: ' . ($isDebug ? 'Yes' : 'No') . "\n");
-if ($isDebug) {    
+if ($isDebug) {
     define('YII_DEBUG', true);
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');        
+    ini_set('display_startup_errors', '1');
 } else {
-   fwrite(STDERR, 'Set $forceDebug=true in tests/bootstrap.php to enable more logging.' . "\n"); 
+   fwrite(STDERR, 'Set $forceDebug=true in tests/bootstrap.php to enable more logging.' . "\n");
 }
 fwrite(STDERR, "\n");
 
 if (file_exists($configFile)) {
     copy($configFile, $configBackupFile);
 }
+
+// Dont use customer error handler in unit-tests
+restore_error_handler();
 
 register_shutdown_function(
     function () {

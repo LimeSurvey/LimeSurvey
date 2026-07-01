@@ -11,7 +11,7 @@
 echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 ?>
-<div class='side-body survey-response-page <?php echo getSideBodyClass(true); ?>'>
+<div class='side-body survey-response-page'>
     <h1> <?= gT("Survey responses") ?> </h1>
     <div class="mt-4">
         <?php echo $this->renderPartial(
@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
             ],
             true
         );
-        ?>
+            ?>
     </div>
 
     <h2 class="summary-title mt-4 pb-2 mb-3"><?php eT("Response summary"); ?></h2>
@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 ],
                 true
             );
-            ?>
+                                                                                                                                                        ?>
         </div>
         <div id="notSubmittedResponses" class="tab-pane row">
             <?php echo $this->renderPartial(
@@ -59,7 +59,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 ],
                 true
             );
-            ?>
+?>
         </div>
     </div>
 

@@ -62,7 +62,7 @@ class RendererBasic implements RendererInterface
     protected function renderJSON($data, $responseCode = 200)
     {
         header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Headers: *');
+        header('Access-Control-Allow-Headers: Authorization, *');
         header('Access-Control-Allow-Methods: *');
         http_response_code($responseCode);
 
@@ -111,6 +111,9 @@ class RendererBasic implements RendererInterface
                 break;
             case 'error_not_found':
                 $httpCode = 404;
+                break;
+            case 'error_forbidden':
+                $httpCode = 403;
                 break;
         }
         return $httpCode;

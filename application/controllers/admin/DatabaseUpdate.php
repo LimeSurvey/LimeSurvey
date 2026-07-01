@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -29,7 +29,7 @@ class DatabaseUpdate extends SurveyCommonAction
      */
     public function db($continue = null)
     {
-        Yii::app()->loadHelper("update/update");
+        Yii::app()->loadHelper("update.update");
         $aData = $aViewUrls = [];
         if (isset($continue) && $continue == "yes") {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);

@@ -1,7 +1,7 @@
 /*
     LimeSurvey: some vanilla basic css, needed for childs template
     Adding css here is a good idea for template new feature
-    Copyright (C) 2018 The LimeSurvey Project Team
+    Copyright (C) 2018-2026 The LimeSurvey Project Team
     All rights reserved.
 */
 
@@ -37,6 +37,10 @@
 tbody, td, tfoot, th, thead, tr {
     border: 1px solid;
     border-color: inherit;
+}
+
+.video-ipad {
+    height: 50px;
 }
 
 /** On smaller screens - handle input on demand label alignment **/

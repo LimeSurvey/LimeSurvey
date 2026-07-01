@@ -120,7 +120,7 @@ class PreviewModalWidget extends CWidget
     public function run()
     {
         //clean up the widgets name to be js friendly
-        $this->widgetsJsName = preg_replace('/[^a-zA-Z0-9_-]/','',$this->widgetsJsName);
+        $this->widgetsJsName = preg_replace('/[^a-zA-Z0-9_-]/', '', $this->widgetsJsName);
         $this->registerScripts();
     }
 
@@ -131,7 +131,7 @@ class PreviewModalWidget extends CWidget
      */
     public function getModal($return = false)
     {
-        if(preg_match("/modal/",$this->renderType)) {
+        if (preg_match("/modal/", $this->renderType)) {
             return $this->render($this->getView(), null, $return);
         }
     }
@@ -142,7 +142,7 @@ class PreviewModalWidget extends CWidget
      */
     public function getButtonOrSelect($return = false)
     {
-        if(preg_match("/modal/",$this->renderType)) {
+        if (preg_match("/modal/", $this->renderType)) {
             return $this->render("open_modal_button", null, $return);
         }
 
@@ -154,12 +154,16 @@ class PreviewModalWidget extends CWidget
      */
     public function getView()
     {
-        switch($this->renderType) {
-            case 'simple' : return 'simple_select';
-            case 'group-simple' : return 'simple_grouped_select';
-            case 'group-modal' : return 'grouped_select_modal';
-            case 'modal' : //fallthrough
-            default: return 'select_modal';
+        switch ($this->renderType) {
+            case 'simple':
+                return 'simple_select';
+            case 'group-simple':
+                return 'simple_grouped_select';
+            case 'group-modal':
+                return 'grouped_select_modal';
+            case 'modal': //fallthrough
+            default:
+                return 'select_modal';
         }
     }
 
@@ -171,12 +175,12 @@ class PreviewModalWidget extends CWidget
         $oClientScript = App()->getClientScript();
         $basePath = dirname(__FILE__) . '/assets/';
 
-        //publish Assets
-        $sStyleFile = App()->getAssetManager()->publish($basePath.'previewModalWidget.css');
-        $sScriptFile = App()->getAssetManager()->publish($basePath.'previewModalWidget.js');
-        //register Assets
-        $oClientScript->registerCssFile($sStyleFile);
-        $oClientScript->registerScriptFile($sScriptFile, CClientScript::POS_BEGIN);
+        // Publish assets once so the directory always exists in the public temp path.
+        $sAssetsBaseUrl = App()->getAssetManager()->publish($basePath);
+
+        // register Assets
+        $oClientScript->registerCssFile($sAssetsBaseUrl . '/previewModalWidget.css');
+        $oClientScript->registerScriptFile($sAssetsBaseUrl . '/previewModalWidget.js', CClientScript::POS_BEGIN);
         $oClientScript->registerScript(
             'WIDGETSCRIPT--' . $this->widgetsJsName,
             'var runner_' . $this->widgetsJsName . ' = new PreviewModalScript("' . $this->widgetsJsName . '",'
@@ -192,7 +196,7 @@ class PreviewModalWidget extends CWidget
                     ]
                 )
             )
-            . '); runner_'.$this->widgetsJsName.'.bind();',
+            . '); runner_' . $this->widgetsJsName . '.bind();',
             LSYii_ClientScript::POS_POSTSCRIPT
         );
     }

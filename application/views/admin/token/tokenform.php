@@ -1,13 +1,14 @@
 <?php
+
 /**
  * Add token entry
  */
 
 $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 ?>
-<div class='<?php if (!isset($ajax) || $ajax = false): ?>col-12 side-body <?php echo getSideBodyClass(false); ?> <?php endif; ?>'>
+<div class='<?= (!isset($ajax) || $ajax = false) ? 'col-12 side-body' : ''?>'>
     <?php if (!isset($ajax) || $ajax = false) { ?>
-        <h3>
+        <h1 class="h3">
             <?php
 
             if ($token_subaction == "edit") {
@@ -15,9 +16,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
             } else {
                 eT("Add survey participant");
             }
-
             ?>
-        </h3>
+        </h1>
     <?php } ?>
     <?php
     foreach ($tokendata as $Key => $Value) {
@@ -34,7 +34,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
     </div>
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/{$token_subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"),
+            <?php echo CHtml::form(
+                array("admin/tokens/sa/{$token_subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"),
                 'post',
                 array(
                     'id' => 'edittoken',
@@ -44,7 +45,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 )
             ); ?>
             <!-- Tabs -->
-            <?php if( count($attrfieldnames) > 0 ):?>
+            <?php if (count($attrfieldnames) > 0) :?>
                 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
                     <!-- Common  -->
                     <li role="presentation" class="nav-item">
@@ -53,7 +54,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         </a>
                     </li>
 
-                    <!-- Custom attibutes -->
+                    <!-- Custom attributes -->
                     <li role="presentation" class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#custom" aria-expanded="false">
                             <?php eT('Additional attributes'); ?>
@@ -99,7 +100,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                      id="completed-yes-no-date-container"
                                      data-locale="<?php echo $locale ?>">
                                     <div class="row">
-                                        <?php if ($oSurvey->anonymized != 'Y'): ?>
+                                        <?php if ($oSurvey->anonymized != 'Y') : ?>
                                             <?php $bCompletedValue = "0";
                                             if (isset($completed) && $completed != 'N') {
                                                 $completedDBFormat = $completed;
@@ -110,6 +111,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                     'name'          => "completed-switch",
                                                     'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
+                                                    'ariaLabel'    => gT('Completed?'),
                                                     'checkedOption' => $bCompletedValue,
                                                     'selectOptions' => [
                                                         '1' => gT('Yes'),
@@ -117,9 +119,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                     ],
                                                 ]); ?>
                                             </div>
-                                        <?php else: ?>
+                                        <?php else : ?>
                                             <div>
-                                                <?php $completedDBFormat = $completed;
+                                                <?php $completedDBFormat = $completed ?? 'N';
                                                 $bCompletedValue = (isset($completed) && $completed != 'N') ? "1" : "0";
                                                 $completed = (isset($completed) && $completed != 'N') ? 'Y' : 'N'; ?>
                                                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
@@ -134,7 +136,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                             </div>
                                         <?php endif; ?>
 
-                                        <?php if ($oSurvey->anonymized !== 'Y'): ?>
+                                        <?php if ($oSurvey->anonymized !== 'Y') : ?>
                                             <div class="">
                                                 <div id="sent-date-container" class="date-container <?= !$bCompletedValue ? "d-none" : "" ?>">
                                                     <div id="completed-date_datetimepicker" class="input-group date">
@@ -143,14 +145,20 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                                value="<?php echo isset($completed) ? $completed : '' ?>"
                                                                name="completed-date"
                                                                data-locale="<?php echo $locale ?>"
-                                                               data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                               data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                               data-allowinputtoggle="1"
+                                                               data-theme="light">
                                                         <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                                     </div>
                                                 </div>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)) {echo $completed; } else {echo "N"; }?>" />
+                                    <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)) {
+                                        echo $completed;
+                                                                                                                                                    } else {
+                                                                                                                                                        echo "N";
+                                                                                                                                                    }?>" />
                                 </div>
                             </div>
                         </div>
@@ -161,7 +169,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <?php eT("First name:"); ?>
                             </label>
                             <div class="">
-                                <?= TbHtml::textField('firstname',
+                                <?= TbHtml::textField(
+                                    'firstname',
                                     $firstname,
                                     [
                                         'class' => 'form-control',
@@ -175,7 +184,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <?php eT("Last name:"); ?>
                             </label>
                             <div class="">
-                                <?= TbHtml::textField('lastname',
+                                <?= TbHtml::textField(
+                                    'lastname',
                                     $lastname,
                                     [
                                         'class' => 'form-control',
@@ -191,24 +201,25 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <?php eT("Access code:"); ?>
                             </label>
                             <div class="">
-                                <?= TbHtml::textField('token',
+                                <?= TbHtml::textField(
+                                    'token',
                                     (isset($token) ? $token : ""),
                                     [
                                         'class' => 'form-control',
                                         'size' => '20',
+                                        'aria-describedby' => 'generate-token-info-desc',
                                         'maxlength' => $iTokenLength
                                     ]
                                 ); ?>
                                 <?php if ($token_subaction == "addnew") : ?>
-                                    <?php
-                                    $this->widget('ext.AlertWidget.AlertWidget', [
+                                    <?php $this->widget('ext.AlertWidget.AlertWidget', [
                                         'text'        => gT(
                                             "You can leave this blank, and automatically generate access codes using 'Generate access codes'"
                                         ),
                                         'type'        => 'info',
-                                        'htmlOptions' => ['class' => 'mt-1'],
-                                    ]);
-                                    ?>
+                                        'htmlOptions' => ['class' => 'mt-1'
+                                    ,'id' => 'generate-token-info-desc'],
+                                    ]); ?>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -233,7 +244,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <?php eT("Email:"); ?>
                             </label>
                             <div class="">
-                                <?= TbHtml::emailField('email',
+                                <?= TbHtml::emailField(
+                                    'email',
                                     $email,
                                     [
                                         'class' => 'form-control',
@@ -251,7 +263,8 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 <?php eT("Email status:"); ?>
                             </label>
                             <div class="">
-                                <?= TbHtml::textField('emailstatus',
+                                <?= TbHtml::textField(
+                                    'emailstatus',
                                     $emailstatus,
                                     [
                                         'class' => 'form-control',
@@ -273,7 +286,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                  data-locale="<?php echo $locale ?>">
                                 <div class="row">
                                     <div class="">
-                                        <?php if ($oSurvey->anonymized != 'Y'): ?>
+                                        <?php if ($oSurvey->anonymized != 'Y') : ?>
                                             <?php
                                             // TODO: move to controller
                                             $bSwitchValue       = (isset($sent) && $sent != 'N') ? "1" : "0";
@@ -296,15 +309,16 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                 'name'          => "sent-switch",
                                                 'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bSwitchValue,
+                                                'ariaLabel'    => gT('Invitation sent?'),
                                                 'selectOptions' => [
                                                     '1' => gT('Yes'),
                                                     '0' => gT('No'),
                                                 ],
                                             ]); ?>
-                                        <?php else: ?>
+                                        <?php else : ?>
                                             <?php
-                                            $sentDBValue         = $sent;
-                                            $remindersentDBValue = $remindersent;
+                                            $sentDBValue         = $sent ?? 'N';
+                                            $remindersentDBValue = $remindersent ?? 'N';
                                             $bSwitchValue        = (isset($sent) && $sent != 'N') ? "1" : "0";
                                             $bRemindSwitchValue  = (isset($remindersent) && $remindersent != 'N') ? "1" : "0";
                                             ?>
@@ -330,13 +344,19 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        value="<?php echo isset($sent) && $sent != 'N' ? $sent : '' ?>"
                                                        name="sent-date"
                                                        data-locale="<?php echo $locale ?>"
-                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                       data-allowinputtoggle="1"
+                                                       data-theme="light">
                                                 <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo "N"; }?>" />
+                                <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {
+                                    echo $sent;
+                                                                                                                                      } else {
+                                                                                                                                          echo "N";
+                                                                                                                                      }?>" />
                             </div>
                         </div>
 
@@ -350,9 +370,10 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
 
                                 <div class="row">
                                     <div>
-                                        <?php if ($oSurvey->anonymized !== 'Y'): ?>
+                                        <?php if ($oSurvey->anonymized !== 'Y') : ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "remind-switch",
+                                                'ariaLabel'    => gT('Reminder sent?'),
                                                 'htmlOptions'   => ['class' => "YesNoDateSwitch action_toggle_bootstrap_switch mb-1"],
                                                 'checkedOption' => $bRemindSwitchValue,
                                                 'selectOptions' => [
@@ -360,7 +381,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                     '0' => gT('No'),
                                                 ],
                                             ]); ?>
-                                        <?php else: ?>
+                                        <?php else : ?>
                                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                                                 'name'          => "remind-switch",
                                                 'htmlOptions'   => ['class' => "YesNoSwitch action_toggle_bootstrap_switch mb-1"],
@@ -382,18 +403,24 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                                        value="<?php echo isset($remindersent) && $remindersent != 'N' ? $remindersent : '' ?>"
                                                        name="remind-date"
                                                        data-locale="<?php echo $locale ?>"
-                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                                                       data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
+                                                       data-allowinputtoggle="1"
+                                                       data-theme="light">
                                                 <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent!='N') {echo $remindersent; } else {echo "N"; }?>" />
+                                <input class='form-control d-none YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent != 'N') {
+                                    echo $remindersent;
+                                                                                                                                                      } else {
+                                                                                                                                                          echo "N";
+                                                                                                                                                      }?>" />
                             </div>
                         </div>
 
                             <!-- Reminder count -->
-                            <?php if ($token_subaction == "edit"): ?>
+                            <?php if ($token_subaction == "edit") : ?>
                                 <!-- Reminder count, Uses left -->
                                 <div class="ex-form-group mb-3 col-6">
                                         <label class="form-label" for='remindercount'>
@@ -410,9 +437,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                 </label>
                                 <input class='form-control' type='number' size='20' id='usesleft' name='usesleft' value="<?php if (isset($usesleft)) {
                                     echo $usesleft;
-                                } else {
-                                    echo " 1 ";
-                                } ?>"/>
+                                                                                                                         } else {
+                                                                                                                             echo " 1 ";
+                                                                                                                         } ?>"/>
                             </div>
                         </div>
 
@@ -437,7 +464,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <div id="validfrom_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validfrom" type="text" value="<?php echo isset($validfrom) ? $validfrom : '' ?>" name="validfrom"
                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>"
+                                           data-allowinputtoggle="1"
+                                           data-theme="light">
                                     <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
@@ -453,7 +482,9 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                                     <div id="validuntil_datetimepicker" class="input-group date">
                                     <input class="YesNoDatePicker form-control" id="validuntil" type="text" value="<?php echo isset($validuntil) ? $validuntil : '' ?>" name="validuntil"
                                            data-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm"
-                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>">
+                                           data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']); ?>"
+                                           data-allowinputtoggle="1"
+                                           data-theme="light">
                                     <span class="input-group-text datepicker-icon"><span class="ri-calendar-2-fill"></span></span>
                                     </div>
                                 </div>
@@ -462,27 +493,23 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                     </div>
                 </div>
 
-                <!-- Custom attibutes -->
+                <!-- Custom attributes  -->
                 <div id="custom" class="tab-pane fade">
                     <!-- Attributes -->
-                    <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
-                        <div class="ex-form-group mb-3 col-6">
-                            <label class="form-label" for='<?php echo $attr_name; ?>'>
-                                <?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:
-                            </label>
-                            <div class="">
-                                <input
-                                    class='form-control<?= $attr_description['mandatory'] == 'Y' ? ' mandatory-attribute' : '' ?>'
-                                    type='text'
-                                    size='55'
-                                    id='<?php echo $attr_name; ?>'
-                                    name='<?php echo $attr_name; ?>'
-                                    value='<?php if (isset($$attr_name)) {
-                                        echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'utf-8');
-                                    } ?>'
-                                />
-                            </div>
-                        </div>
+                    <?php foreach ($attrfieldnames as $attrName => $attrDescription) : ?>
+                        <?php $inputValue = isset($$attrName) ? $$attrName : null ?>
+                        <?php
+                        $this->renderPartial(
+                            '/admin/token/attribute_subviews/tokenformAttributesWrapper',
+                            [
+                                        'attrDescription' => $attrDescription,
+                                        'attrName' => $attrName,
+                                        'inputValue' => $inputValue,
+                                        'jsDate' => $dateformatdetails['jsdate'],
+                                        'addClass' => 'col-6',
+                                ]
+                        );
+                        ?>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -496,11 +523,14 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                         <input type='submit' class="d-none" value='<?php eT("Update participant entry"); ?>'/>
                         <input type='hidden' name='subaction' value='updatetoken'/>
                         <input type='hidden' name='tid' value='<?php echo $tokenid; ?>'/>
-                        <?php break;
-                    case "addnew": ?>
+                        <?php
+                        break;
+                    case "addnew":
+                        ?>
                         <input type='submit' class="d-none" value='<?php eT("Add participant entry"); ?>'/>
                         <input type='hidden' name='subaction' value='inserttoken'/>
-                        <?php break;
+                        <?php
+                        break;
                 } ?>
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>'/>
             </p>
@@ -509,7 +539,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
     </div>
 </div>
 
-<?php if ($token_subaction == "addnew"): ?>
+<?php if ($token_subaction == "addnew") : ?>
     <!-- Empty Token Confirmation Modal -->
     <div class="modal fade" tabindex="-1" role="dialog" id="emptyTokenConfirmationModal">
         <div class="modal-dialog">
@@ -523,7 +553,7 @@ $locale = convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
-                    	<?php eT("Cancel");?>
+                        <?php eT("Cancel");?>
                     </button>
                     <button role="button" type="button" class="btn btn-primary" id="save-empty-token">
                         <?php eT("Save");?>

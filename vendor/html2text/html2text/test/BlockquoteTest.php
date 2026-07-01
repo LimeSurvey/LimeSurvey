@@ -2,7 +2,9 @@
 
 namespace Html2Text;
 
-class BlockquoteTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class BlockquoteTest extends TestCase
 {
     public function blockquoteDataProvider()
     {

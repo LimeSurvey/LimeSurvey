@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -18,6 +18,9 @@ if (!defined('BASEPATH')) {
 
 /**
 * This function replaces keywords in a text and is mainly intended for templates
+* Replacement done on this function can not be used in Expression for condition or equation
+* If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
+* Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
 * If you use this functions put your replacement strings into the $replacements variable
 * instead of using global variables
 * NOTE - Don't do any embedded replacements in this function.  Create the array of replacement values and
@@ -29,7 +32,7 @@ if (!defined('BASEPATH')) {
 * @param null $debugSrc unused
 * @param null $anonymized unused (all done in EM now)
 * @param integer|null $questionNum - needed to support dynamic JavaScript-based tailoring within questions
-* @param void $registerdata - deprecated
+* @param null|void $registerdata - deprecated
 * @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
 * @param object|string - the template object to be used
 * @return string Text with replaced strings
@@ -68,7 +71,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         'totalquestions',
         'flashmessage'
     );
-
     $varsPassed = array();
 
     foreach ($allowedvars as $var) {
@@ -93,7 +95,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $showxquestions = Yii::app()->getConfig('showxquestions');
     }
     if (!isset($s_lang)) {
-        $s_lang = (Yii::app()->session['survey_' . $_surveyid]['s_lang'] ?? 'en');
+        $s_lang = (Yii::app()->session['responses_' . $_surveyid]['s_lang'] ?? 'en');
     }
     if ($_surveyid && !isset($thissurvey)) {
         $thissurvey = getSurveyInfo($_surveyid, $s_lang);
@@ -163,7 +165,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     // If there are non-bracketed replacements to be made do so above this line.
     // Only continue in this routine if there are bracketed items to replace {}
-    if (strpos($line, "{") === false) {
+    if (empty($line) || strpos($line, "{") === false) {
         // process string anyway so that it can be pretty-printed
         return LimeExpressionManager::ProcessString($line, $questionNum, null, 1, 1, true);
     }
@@ -201,16 +203,16 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y')
     ) {
         if ($_totalquestionsAsked < 1) {
-            $_therearexquestions = gT("There are no questions in this survey"); // Singular
+            $_therearexquestions = gT("There are no questions in this survey."); // Singular
         } elseif ($_totalquestionsAsked == 1) {
-            $_therearexquestions = gT("There is 1 question in this survey"); //Singular
+            $_therearexquestions = gT("There is 1 question in this survey."); //Singular
         } else {
             $_therearexquestions = gT("There are {NUMBEROFQUESTIONS} questions in this survey."); //Note this line MUST be before {NUMBEROFQUESTIONS}
         };
         $_therearexquestions = "<div class='question-count-text'>" . $_therearexquestions . "</div>";
     } else {
         $_therearexquestions = '';
-    };
+    }
 
     if (isset($token)) {
         $_token = $token;
@@ -232,13 +234,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $_linkreplace = '';
 
-    if (isset($thissurvey['sid']) && isset($_SESSION['survey_' . $thissurvey['sid']]['srid']) && $thissurvey['active'] == 'Y') {
-        $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_' . $thissurvey['sid']]['srid']);
+    if (isset($thissurvey['sid']) && isset($_SESSION['responses_' . $thissurvey['sid']]['srid']) && $thissurvey['active'] == 'Y') {
+        $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['responses_' . $thissurvey['sid']]['srid']);
     } else {
         $iscompleted = $thissurvey['iscompleted'] = false;
     }
 
-    if (isset($surveyid) && isset($_SESSION['survey_' . $surveyid]['srid'])) {
+    if (isset($surveyid) && isset($_SESSION['responses_' . $surveyid]['srid'])) {
         $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-bs-toggle' => 'tooltip', 'data-bs-placement' => 'right', 'title' => gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
@@ -273,7 +275,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
-    if (isset($thissurvey['sid']) && !empty($_SESSION['survey_' . $thissurvey['sid']])) {
+    if (isset($thissurvey['sid']) && !empty($_SESSION['responses_' . $thissurvey['sid']])) {
         $coreReplacements = getStandardsReplacementFields($thissurvey);
     }
 
@@ -294,7 +296,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
     $coreReplacements['GROUPNAME'] = $_groupname;
-    $coreReplacements['LANG'] = App()->language;
     $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
     $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
     $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global
@@ -337,6 +338,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 }
 
 /**
+ * This function replaces keywords in a text
+ * Replacement done on this function can not be used in Expression for condition or equation
+ * If you want keywords available on both replacement and condition, use LimeExpressionManager::setValueToKnowVar
+ * Or add it in LimeExpressionManager->setVariableAndTokenMappingsForExpressionManager
  * @psalm-suppress UndefinedVariable TODO
  */
 function getStandardsReplacementFields($thissurvey)
@@ -417,8 +422,6 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['ADMINNAME'] = $thissurvey['admin'] ?? '';
     $coreReplacements['ADMINEMAIL'] = $thissurvey['adminemail'] ?? '';
     $coreReplacements['GID'] = Yii::app()->getConfig('gid', ''); // Use the gid of the question, except if we are not in question (Randomization group name)
-
-    $coreReplacements['LANG'] = App()->language;
     $coreReplacements['NAVIGATOR'] = $navigator ?? ''; // global
     $coreReplacements['MOVEPREVBUTTON'] = $moveprevbutton ?? ''; // global
     $coreReplacements['MOVENEXTBUTTON'] = $movenextbutton ?? ''; // global
@@ -488,8 +491,8 @@ function PassthruReplace($line, $thissurvey)
 
         // lookup for the fitting arg
         $sValue = '';
-        if (isset($_SESSION['survey_' . $thissurvey['sid']]['urlparams'][$arg])) {
-            $sValue = urlencode((string) $_SESSION['survey_' . $thissurvey['sid']]['urlparams'][$arg]);
+        if (isset($_SESSION['responses_' . $thissurvey['sid']]['urlparams'][$arg])) {
+            $sValue = urlencode((string) $_SESSION['responses_' . $thissurvey['sid']]['urlparams'][$arg]);
         }
         $line = str_replace($cmd, $sValue, (string) $line); // replace
     }

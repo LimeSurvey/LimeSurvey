@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -116,7 +116,7 @@ function nice_addslashes($string)
  *     $force_lowercase - Force the string to lowercase?
  *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
-function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true, $directory=false)
+function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = false, $beautify = true, $directory = false)
 {
     // sanitize filename
     $filename = mb_ereg_replace(
@@ -228,7 +228,7 @@ function sanitize_system_string($string, $min = '', $max = '')
         // background processing, special commands (backspace, etc.), quotes
         // newlines, or some other special characters
         $string = preg_replace($pattern, '', (string) $string);
-        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpretted as ONE argument
+        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpreted as ONE argument
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
             return false;
@@ -266,7 +266,7 @@ function sanitize_ldap_string($string, $min = '', $max = '')
 }
 
 
-// sanitize a string for HTML (make sure nothing gets interpretted!)
+// sanitize a string for HTML (make sure nothing gets interpreted!)
 function sanitize_html_string($string)
 {
     $pattern[0] = '/\&/';
@@ -316,7 +316,7 @@ function sanitize_int($integer, $min = '', $max = '')
 function sanitize_user($string)
 {
     $username_length = 64;
-    $string = mb_substr($string, 0, $username_length);
+    $string = mb_substr((string) $string, 0, $username_length);
     return $string;
 }
 
@@ -465,13 +465,32 @@ function check($input, $flags, $min = '', $max = '')
     return true;
 }
 
+/**
+ * Sanitizes a language code by removing all non-alphanumeric and non-dash characters.
+ *
+ * This function removes any characters that are not letters (a-z), numbers (0-9),
+ * or hyphens (-) from the input string. It is case-insensitive in its matching.
+ * @deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
+ *
+ * @param string $codetosanitize The language code string to sanitize.
+ * @return string The sanitized language code containing only letters and hyphens.
+ */
 function sanitize_languagecode($codetosanitize)
 {
-    return preg_replace('/[^a-z0-9-]/i', '', (string) $codetosanitize);
+    return preg_replace('/[^a-z-]/i', '', (string) $codetosanitize);
 }
 
+
 /**
- * @param string $codestringtosanitize
+ * Sanitizes a space-separated string of language codes.
+ *
+ * This function takes a space-separated string of language codes, splits them into an array,
+ * sanitizes each individual language code by removing all non-alphanumeric and non-dash characters,
+ * and then rejoins them back into a space-separated string.
+ * @deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter
+ *
+ * @param string $codestringtosanitize A space-separated string of language codes to sanitize.
+ * @return string A space-separated string of sanitized language codes containing only alphanumeric characters and hyphens.
  */
 function sanitize_languagecodeS($codestringtosanitize)
 {
@@ -480,6 +499,16 @@ function sanitize_languagecodeS($codestringtosanitize)
     return implode(" ", $codearray);
 }
 
+/**
+/* Sanitize a google api key
+ * @see https://docs.cloud.google.com/docs/authentication/api-keys#components
+ * @param string|null
+ * @return string
+ **/
+function sanitize_googleapikey($string)
+{
+    return preg_replace('/[^A-Za-z0-9_-]/', '', trim(strval($string)));
+}
 
 function sanitize_signedint($integer, $min = '', $max = '')
 {
@@ -553,4 +582,28 @@ function check_absolute_url($string)
 function sanitize_alphanumeric($value)
 {
     return preg_replace("/[^a-zA-Z0-9\-\_]/", "", $value);
+}
+
+/**
+ * Validate that a value is safe to use as a single filesystem path component.
+ *
+ * This rejects empty values, leading-dot names, path separators and ASCII
+ * control characters so callers can safely append the value to a trusted
+ * base path without worrying about directory traversal or hidden directories.
+ *
+ * @param string $string
+ * @return bool
+ */
+function validate_path_component($string)
+{
+    if (!is_string($string)) {
+        return false;
+    }
+
+    return !(
+        $string === ''
+        || strpos($string, '.') === 0
+        || preg_match('/[\\\\\/]/', $string) === 1
+        || preg_match('/[\x00-\x1F\x7F]/', $string) === 1
+    );
 }

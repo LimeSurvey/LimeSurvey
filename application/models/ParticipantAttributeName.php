@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -123,8 +123,8 @@ class ParticipantAttributeName extends LSActiveRecord
                 'data-bs-target' => "#confirmation-modal",
                 'data-title'     => gT("Delete this attribute"),
                 'data-btnclass'  => "btn-danger",
-                'data-btntext'   => gt("Delete"),
-                'data-message'   => gt('Do you really want to delete this attribute') . "?",
+                'data-btntext'   => gT("Delete"),
+                'data-message'   => gT('Do you really want to delete this attribute') . "?",
                 'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
             ]
         ];
@@ -139,7 +139,7 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         // don't show checkbox for core attributes
         if ($this->core_attribute == 'Y') {
-            // BugFix: 317(op), whithout this hidden inputfields, massive action 'delete' is not working correctly
+            // BugFix: 317(op), without this hidden inputfields, massive action 'delete' is not working correctly
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
             return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }
@@ -302,7 +302,7 @@ class ParticipantAttributeName extends LSActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria = new CDbCriteria();
+        $criteria = new LSDbCriteria();
 
         $criteria->compare('defaultname', $this->defaultname, true, 'AND', true);
         $criteria->compare('attribute_id', $this->attribute_id);
@@ -629,9 +629,8 @@ class ParticipantAttributeName extends LSActiveRecord
                     ':attribute_id' => $data['attribute_id'])
             );
 
-        if (count($query) == 0) {
-            Yii::app()->db->createCommand()
-                        ->insert('{{participant_attribute}}', $data);
+        if (is_null($query)) {
+            Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
         } else {
             Yii::app()->db->createCommand()
                 ->update(
@@ -904,5 +903,23 @@ class ParticipantAttributeName extends LSActiveRecord
     public function saveParticipantAttributeValue($data)
     {
         Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
+    }
+
+    /**
+     * Returns true if the attribute is encrypted
+     * @return bool
+     */
+    public function isEncrypted()
+    {
+        return $this->encrypted == 'Y';
+    }
+
+    /**
+     * Returns true if the attribute is a core attribute
+     * @return bool
+     */
+    public function isCoreAttribute()
+    {
+        return $this->core_attribute == 'Y';
     }
 }

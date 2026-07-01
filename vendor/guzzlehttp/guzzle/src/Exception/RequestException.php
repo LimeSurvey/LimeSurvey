@@ -7,7 +7,6 @@ use GuzzleHttp\BodySummarizerInterface;
 use Psr\Http\Client\RequestExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UriInterface;
 
 /**
  * HTTP Request exception
@@ -32,8 +31,8 @@ class RequestException extends TransferException implements RequestExceptionInte
     public function __construct(
         string $message,
         RequestInterface $request,
-        ResponseInterface $response = null,
-        \Throwable $previous = null,
+        ?ResponseInterface $response = null,
+        ?\Throwable $previous = null,
         array $handlerContext = []
     ) {
         // Set the code of the exception if the response is set and not future.
@@ -46,9 +45,13 @@ class RequestException extends TransferException implements RequestExceptionInte
 
     /**
      * Wrap non-RequestExceptions with a RequestException
+     *
+     * @deprecated since 7.11. Create a RequestException directly instead.
      */
     public static function wrapException(RequestInterface $request, \Throwable $e): RequestException
     {
+        \trigger_deprecation('guzzlehttp/guzzle', '7.11', '%s::wrapException() is deprecated and will be removed in 8.0. Create a %s directly instead.', self::class, self::class);
+
         return $e instanceof RequestException ? $e : new RequestException($e->getMessage(), $request, null, $e);
     }
 
@@ -63,10 +66,10 @@ class RequestException extends TransferException implements RequestExceptionInte
      */
     public static function create(
         RequestInterface $request,
-        ResponseInterface $response = null,
-        \Throwable $previous = null,
+        ?ResponseInterface $response = null,
+        ?\Throwable $previous = null,
         array $handlerContext = [],
-        BodySummarizerInterface $bodySummarizer = null
+        ?BodySummarizerInterface $bodySummarizer = null
     ): self {
         if (!$response) {
             return new self(
@@ -90,8 +93,7 @@ class RequestException extends TransferException implements RequestExceptionInte
             $className = __CLASS__;
         }
 
-        $uri = $request->getUri();
-        $uri = static::obfuscateUri($uri);
+        $uri = \GuzzleHttp\Psr7\Utils::redactUserInfo($request->getUri());
 
         // Client Error: `GET /` resulted in a `404 Not Found` response:
         // <html> ... (truncated)
@@ -111,20 +113,6 @@ class RequestException extends TransferException implements RequestExceptionInte
         }
 
         return new $className($message, $request, $response, $previous, $handlerContext);
-    }
-
-    /**
-     * Obfuscates URI if there is a username and a password present
-     */
-    private static function obfuscateUri(UriInterface $uri): UriInterface
-    {
-        $userInfo = $uri->getUserInfo();
-
-        if (false !== ($pos = \strpos($userInfo, ':'))) {
-            return $uri->withUserInfo(\substr($userInfo, 0, $pos), '***');
-        }
-
-        return $uri;
     }
 
     /**

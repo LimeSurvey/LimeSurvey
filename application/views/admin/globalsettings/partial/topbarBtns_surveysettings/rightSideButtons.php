@@ -1,6 +1,5 @@
 <?php
 
-
 //close
 $this->widget(
     'ext.ButtonWidget.ButtonWidget',
@@ -9,7 +8,7 @@ $this->widget(
         'id' => 'boxes-close-button',
         'text' => gT('Close'),
         'icon' => 'ri-close-fill',
-        'link' => Yii::app()->createUrl('admin/index'),
+        'link' => Yii::app()->createUrl('dashboard/view'),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
         ],

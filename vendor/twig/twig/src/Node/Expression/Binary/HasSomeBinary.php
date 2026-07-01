@@ -12,17 +12,18 @@
 namespace Twig\Node\Expression\Binary;
 
 use Twig\Compiler;
+use Twig\Node\Expression\ReturnBoolInterface;
 
-class HasSomeBinary extends AbstractBinary
+class HasSomeBinary extends AbstractBinary implements ReturnBoolInterface
 {
     public function compile(Compiler $compiler): void
     {
         $compiler
-            ->raw('twig_array_some($this->env, ')
+            ->raw('CoreExtension::arraySome($this->env, ')
             ->subcompile($this->getNode('left'))
             ->raw(', ')
             ->subcompile($this->getNode('right'))
-            ->raw(')')
+            ->raw(', $this->env->hasExtension(\Twig\Extension\SandboxExtension::class) && $this->env->getExtension(\Twig\Extension\SandboxExtension::class)->isSandboxed($this->source))')
         ;
     }
 

@@ -51,6 +51,22 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
+     * @inheritdoc
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'ptid' => 'ID',
+            'name' => gT('Name'),
+            'description' => gT('Description'),
+            'renewed_last' => gT('Last renewed'),
+            'created_at' => gT('Created at'),
+            'created_by' => gT('Created by'),
+        ];
+    }
+
+    /**
      * Collects and maps the connected userids to userobjects
      *
      * @return array filled with usermodels
@@ -76,7 +92,7 @@ class Permissiontemplates extends CActiveRecord
      * @param int $ptid Permissiontemplates id
      * @return boolean
      */
-    public function applyToUser(int $iUserId, int $ptid = null): bool
+    public function applyToUser(int $iUserId, ?int $ptid = null): bool
     {
         if ($ptid == null) {
             $ptid = $this->ptid;
@@ -125,7 +141,7 @@ class Permissiontemplates extends CActiveRecord
         return $dateFormat['phpdate'];
     }
 
-    /**s
+    /**
      * Returns formatted 'created at' date.
      * @return string
      */
@@ -214,11 +230,11 @@ class Permissiontemplates extends CActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-post-url'  => $deleteUrl,
                 'data-post-datas' => $deletePostData,
-                'data-message'   => sprintf(gt("Are you sure you want to delete user role '%s'?"), CHtml::encode($this->name)),
+                'data-message'   => sprintf(gT("Are you sure you want to delete user role '%s'?"), CHtml::encode($this->name)),
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
-                'data-title'     => gt('Delete user role')
+                'data-btntext'   => gT('Delete'),
+                'data-title'     => gT('Delete user role')
             ]
         ];
 
@@ -312,7 +328,7 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
-     * @param ??? $xmlEntitiy
+     * @param SimpleXMLElement $xmlEntitiy
      * @param boolean $includeRootData
      * @return Permissiontemplates|boolean
      */

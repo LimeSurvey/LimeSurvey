@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Core plugin for LimeSurvey : password requirement settings
  * @version 1.1.0
@@ -12,7 +13,17 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
      */
     protected $storage = 'DbStorage';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    const DEFAULT_NEEDS_NUMBER = true;
+    const DEFAULT_NEEDS_UPPERCASE = true;
+    const DEFAULT_NEEDS_NON_ALPHANUMERIC = false;
+    const DEFAULT_MINIMUM_SIZE = 12;
+    const DEFAULT_SURVEY_SAVE_ACTIVE = false;
+    const DEFAULT_SURVEY_SAVE_NEEDS_NUMBER = false;
+    const DEFAULT_SURVEY_SAVE_NEEDS_UPPERCASE = false;
+    const DEFAULT_SURVEY_SAVE_NEEDS_NON_ALPHANUMERIC = false;
+    const DEFAULT_SURVEY_SAVE_MINIMUM_SIZE = 8;
+
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     protected $settings = [
@@ -27,22 +38,21 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         'needsNumber' => array(
             'label' => 'Require at least one digit',
             'type' => 'checkbox',
-            'default' => true,
+            'default' => self::DEFAULT_NEEDS_NUMBER,
         ),
         'needsUppercase' => array(
             'label' => 'Require at least one uppercase character',
             'type' => 'checkbox',
-            'default' => true,
+            'default' => self::DEFAULT_NEEDS_UPPERCASE,
         ),
         'needsNonAlphanumeric' => array(
             'label' => 'Require at least one special character',
             'type' => 'checkbox',
-            'default' => false,
+            'default' => self::DEFAULT_NEEDS_NON_ALPHANUMERIC,
         ),
         'minimumSize' => array(
             'label' => 'Minimum password length',
             'type' => 'int',
-            'default' => 12,
         ),
         'surveyPart' => array(
             'content' => 'Password requirements for “Save and return later” feature',
@@ -55,27 +65,26 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         'surveySaveActive' => array(
             'type' => 'boolean',
             'label' => 'Check password when saving survey',
-            'default' => false,
+            'default' => self::DEFAULT_SURVEY_SAVE_ACTIVE,
         ),
         'surveySaveNeedsNumber' => array(
             'label' => 'Require at least one digit',
             'type' => 'checkbox',
-            'default' => false,
+            'default' => self::DEFAULT_SURVEY_SAVE_NEEDS_NUMBER,
         ),
         'surveySaveNeedsUppercase' => array(
             'label' => 'Require at least one uppercase character',
             'type' => 'checkbox',
-            'default' => false,
+            'default' => self::DEFAULT_SURVEY_SAVE_NEEDS_UPPERCASE,
         ),
         'surveySaveNeedsNonAlphanumeric' => array(
             'label' => 'Require at least one special character',
             'type' => 'checkbox',
-            'default' => false,
+            'default' => self::DEFAULT_SURVEY_SAVE_NEEDS_NON_ALPHANUMERIC,
         ),
         'surveySaveMinimumSize' => array(
             'label' => 'Minimum password length',
             'type' => 'int',
-            'default' => 8,
         ),
     ];
     /**
@@ -95,10 +104,10 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $password = $oEvent->get('password');
         $errors = $this->checkValidityOfPassword(
             $password,
-            $this->get('needsNumber', null, null, true),
-            $this->get('needsUppercase', null, null, true),
-            $this->get('needsNonAlphanumeric', null, null, false),
-            $this->get('minimumSize', null, null, 8)
+            $this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER),
+            $this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE),
+            $this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC),
+            $this->get('minimumSize', null, null, self::DEFAULT_MINIMUM_SIZE)
         );
         if ($errors) {
             $oEvent->set('passwordOk', false);
@@ -107,13 +116,13 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         }
     }
 
-    /** @see event 
+    /** @see event
      * get the current save action password and add errors if needed
      * @return void
      * */
     public function validateSaveSurveyForm()
     {
-        if (!$this->get('surveySaveActive', null, null, false)) {
+        if (!$this->get('surveySaveActive', null, null, self::DEFAULT_SURVEY_SAVE_ACTIVE)) {
             return;
         }
         $event = $this->getEvent();
@@ -131,10 +140,10 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $password = $saveData['clearpassword'];
         $errors = $this->checkValidityOfPassword(
             $password,
-            $this->get('surveySaveNeedsNumber', null, null, false),
-            $this->get('surveySaveNeedsUppercase', null, null, false),
-            $this->get('surveySaveNeedsNonAlphanumeric', null, null, false),
-            $this->get('surveySaveMinimumSize', null, null, 8)
+            $this->get('surveySaveNeedsNumber', null, null, self::DEFAULT_SURVEY_SAVE_NEEDS_NUMBER),
+            $this->get('surveySaveNeedsUppercase', null, null, self::DEFAULT_SURVEY_SAVE_NEEDS_UPPERCASE),
+            $this->get('surveySaveNeedsNonAlphanumeric', null, null, self::DEFAULT_SURVEY_SAVE_NEEDS_NON_ALPHANUMERIC),
+            $this->get('surveySaveMinimumSize', null, null, self::DEFAULT_SURVEY_SAVE_MINIMUM_SIZE)
         );
         if (empty($errors)) {
             return;
@@ -143,12 +152,12 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-     * Chek the validity of a pasword according to option
+     * Check the validity of a password according to option
      * @param string $password
      * @param boolean $needsNumber
      * @param boolean $needsUppercase
      * @param boolean $needsNonAlphanumeric
-     * @return null|array, null mean no issue.
+     * @return null|array, null means no issue.
      */
     private function checkValidityOfPassword($password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize = 8)
     {
@@ -176,13 +185,14 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $oEvent = $this->getEvent();
         $targetSize = $oEvent->get('targetSize', 8);
 
-        $targetSize = $targetSize < $this->get('minimumSize', null, null, 12) ? $this->get('minimumSize', null, null, 12) : $targetSize;
-        $uppercase = $this->get('needsUppercase', null, null, true);
-        $numeric = $this->get('needsNumber', null, null, true);
-        $nonAlpha = $this->get('needsNonAlphanumeric', null, null, false);
+        $minimumSize = $this->get('minimumSize', null, null, self::DEFAULT_MINIMUM_SIZE);
+        $targetSize = $targetSize < $minimumSize ? $minimumSize : $targetSize;
+        $uppercase = $this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE);
+        $numeric = $this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER);
+        $nonAlpha = $this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC);
 
         $randomPassword = $this->getRandomString($targetSize, $uppercase, $numeric, $nonAlpha);
-        
+
         $oEvent->set('password', $randomPassword);
     }
 
@@ -199,12 +209,14 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $settings['needsUppercase']['label'] = $this->gT("Require at least one uppercase character");
         $settings['needsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
         $settings['minimumSize']['label'] = $this->gT("Minimum password length");
+        $settings['minimumSize']['help'] = sprintf(gT('Default value will be %d if left blank'), self::DEFAULT_MINIMUM_SIZE);
         $settings['surveyPart']['content'] = $this->gT("Password requirements for “Save and return later” feature");
         $settings['surveySaveActive']['label'] = $this->gT("Check password when use “Save and return later” feature");
         $settings['surveySaveNeedsNumber']['label'] = $this->gT("Require at least one digit");
         $settings['surveySaveNeedsUppercase']['label'] = $this->gT("Require at least one uppercase character");
         $settings['surveySaveNeedsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
         $settings['surveySaveMinimumSize']['label'] = $this->gT("Minimum password length");
+        $settings['surveySaveMinimumSize']['help'] = sprintf(gT('Default value will be %d if left blank'), self::DEFAULT_SURVEY_SAVE_MINIMUM_SIZE);
         return $settings;
     }
 
@@ -264,7 +276,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         /**
          * Wrap up
          */
-        
+
         // Shuffle, as to not have always to start with the loweracse, then uppercase, ...
         $str = str_shuffle($str);
 
@@ -272,7 +284,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
-     * Returns a random number using random_int if available or mt_rand f not.
+     * Returns a random number using random_int if available or mt_rand if not.
      * @param int $max The highest value to be returned
      * @param int $min The lowest value to be returned
      * @return int
@@ -287,7 +299,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     /**
      * Returns a random character from a string
-     * @param string $chars Pool fo character from where to pick
+     * @param string $chars Pool of characters from which to pick
      * @return string Picked character
      */
     private static function pickRandomChar($chars)

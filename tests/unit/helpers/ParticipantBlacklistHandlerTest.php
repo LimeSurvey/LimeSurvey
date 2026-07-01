@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\TestBaseClass;
 
 use Participant;
 use LimeSurvey\Models\Services\ParticipantBlacklistHandler;
@@ -12,7 +14,7 @@ use Survey;
 class ParticipantBlacklistHandlerTest extends TestBaseClass
 {
     /**
-     * Test adding participant to blacklist
+     * Test adding participant to blocklist
      *
      * @return void
      */
@@ -23,7 +25,7 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         self::importSurvey($filename);
 
         // Create participant in CPDB
-        \Yii::app()->session['participantid'] = 1;
+        \Yii::app()->session['participantid'] = '["1"]';
         $copyResult = Participant::model()->copyToCentral(self::$surveyId, [], []);
         if (empty($copyResult['success'])) {
             throw new \Exception('Failed to copy participants to the CPDB.');
@@ -31,20 +33,25 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $token = \Token::model(self::$surveyId)->findByPk(1);
 
-        // Add participant to blacklist
+        // Add participant to blocklist
         $blacklistHandler = new ParticipantBlacklistHandler();
         $blacklistResult = $blacklistHandler->addToBlacklist($token);
 
         $this->assertTrue($blacklistResult->isBlacklisted());
 
-        // Cleanup
+        // Cleanup: Delete the participant from CPDB so it can be re-added in other tests
+        $token->decrypt();
+        if (!empty($token->participant_id)) {
+            Participant::model()->deleteByPk($token->participant_id);
+        }
+
         self::$testSurvey->delete();
         self::$testSurvey = null;
         Survey::model()->resetCache();
     }
 
     /**
-     * Test removing participant from blacklist
+     * Test removing participant from blocklist
      *
      * @return void
      */
@@ -55,7 +62,7 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
         self::importSurvey($filename);
 
         // Create participant in CPDB
-        \Yii::app()->session['participantid'] = 1;
+        \Yii::app()->session['participantid'] = '["1"]';
         $copyResult = Participant::model()->copyToCentral(self::$surveyId, [], []);
         if (empty($copyResult['success'])) {
             throw new \Exception('Failed to copy participants to the CPDB.');
@@ -63,16 +70,21 @@ class ParticipantBlacklistHandlerTest extends TestBaseClass
 
         $token = \Token::model(self::$surveyId)->findByPk(1);
 
-        // Add participant to blacklist
+        // Add participant to blocklist
         $blacklistHandler = new ParticipantBlacklistHandler();
         $blacklistResult = $blacklistHandler->addToBlacklist($token);
 
-        // Remove from blacklist
+        // Remove from blocklist
         $blacklistResult = $blacklistHandler->removeFromBlacklist($token);
 
         $this->assertFalse($blacklistResult->isBlacklisted());
 
-        // Cleanup
+        // Cleanup: Delete the participant from CPDB so it can be re-added in other tests
+        $token->decrypt();
+        if (!empty($token->participant_id)) {
+            Participant::model()->deleteByPk($token->participant_id);
+        }
+
         self::$testSurvey->delete();
         self::$testSurvey = null;
         Survey::model()->resetCache();

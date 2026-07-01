@@ -141,7 +141,7 @@ abstract class PSS extends Progenitor
         $result['hash'] = str_replace('id-', '', $params['hashAlgorithm']['algorithm']);
         $result['MGFHash'] = str_replace('id-', '', $params['maskGenAlgorithm']['parameters']['algorithm']);
         if (isset($params['saltLength'])) {
-            $result['saltLength'] = (int) $params['saltLength']->toString();
+            $result['saltLength'] = (int) "$params[saltLength]";
         }
 
         if (isset($key['meta'])) {
@@ -154,9 +154,9 @@ abstract class PSS extends Progenitor
     /**
      * Convert a private key to the appropriate format.
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
-     * @param \phpseclib3\Math\BigInteger $d
+     * @param BigInteger $n
+     * @param BigInteger $e
+     * @param BigInteger $d
      * @param array $primes
      * @param array $exponents
      * @param array $coefficients
@@ -177,8 +177,8 @@ abstract class PSS extends Progenitor
     /**
      * Convert a public key to the appropriate format
      *
-     * @param \phpseclib3\Math\BigInteger $n
-     * @param \phpseclib3\Math\BigInteger $e
+     * @param BigInteger $n
+     * @param BigInteger $e
      * @param array $options optional
      * @return string
      */

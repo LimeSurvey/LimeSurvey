@@ -21,8 +21,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     private $sCoreClasses = 'ls-answers checkbox-list answers-list';
     private $inputnames = [];
 
-    private $iColumnWidth;
-    private $iMaxRowsByColumn;
+    /* Number of columns */
     private $iNbCols;
 
     /** @var boolean indicates if the question has the 'Other' option enabled */
@@ -46,14 +45,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->setSubquestions();
 
-        $this->iNbCols = $this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1);
+        $this->iNbCols = intval($this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), ""));
 
-        $this->iColumnWidth = round(12 / $this->iNbCols);
-        $this->iColumnWidth = ($this->iColumnWidth >= 1) ? $this->iColumnWidth : 1;
-        $this->iColumnWidth = ($this->iColumnWidth <= 12) ? $this->iColumnWidth : 12;
-        $this->iMaxRowsByColumn = ceil($this->getQuestionCount() / $this->iNbCols);
-    
-        if ($this->iNbCols > 1) {
+        if ($this->iNbCols) {
             $this->sCoreClasses .= " multiple-list nbcol-{$this->iNbCols}";
         }
 
@@ -70,7 +64,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/multiplechoice';
     }
-    
+
     public function getRows()
     {
         $otherAdded = false;
@@ -89,7 +83,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $checkconditionFunction = "checkconditions";
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
-            $myfname = $this->sSGQA . $oQuestion->title;
+            $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
             $this->inputnames[] = $myfname;
             ////
             // Insert row
@@ -103,7 +97,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
                 'checkedState'            => ($this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], '') == 'Y' ? CHECKED : ''),
                 'sCheckconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
                 'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], ''),
-                'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname)
+                'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname),
+                'anscount'                => $this->getQuestionCount(),
+                'iNbCols'                 => $this->iNbCols
             );
             if ($this->hasOther && $this->otherPosition == self::OTHER_POS_AFTER_SUBQUESTION && $this->subquestionBeforeOther == $oQuestion->title) {
                 $aRows[] = $this->getOtherRow();
@@ -123,8 +119,8 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
-        $myfname = $this->sSGQA . 'other';
-        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname], '');
+        $myfname = $this->sSGQA . '_Cother';
+        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
         $this->inputnames[] = $myfname;
 
         $sValue = '';
@@ -158,7 +154,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'sValueHidden'               => $sValueHidden,
             'checkedState'               => ($mSessionValue != '' ? CHECKED : ''),
             'relevanceClass'             => $this->getCurrentRelevecanceClass($myfname),
-            'other'                      => true
+            'other'                      => true,
+            'anscount'                   => $this->getQuestionCount(),
+            'iNbCols'                    => $this->iNbCols
         );
     }
 
@@ -174,9 +172,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'name'             => $this->sSGQA,
             'basename'         => $this->sSGQA,
             'anscount'         => $this->getQuestionCount(),
-            'iColumnWidth'     => $this->iColumnWidth,
-            'iMaxRowsByColumn' => $this->iMaxRowsByColumn,
             'iNbCols'          => $this->iNbCols,
+            /* @deprecated since 6.3.3 : Leave it for old question theme compatibility, be sure to don't add columns */
+            'iMaxRowsByColumn' => $this->getQuestionCount() + 3,
             'coreClass'        => $this->sCoreClasses,
             'othertext'        => $this->otherText,
         ), true);

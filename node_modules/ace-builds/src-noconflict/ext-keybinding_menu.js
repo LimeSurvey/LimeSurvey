@@ -2,7 +2,26 @@ ace.define("ace/ext/menu_tools/settings_menu.css",["require","exports","module"]
 
 });
 
-ace.define("ace/ext/menu_tools/overlay_page",["require","exports","module","ace/lib/dom","ace/ext/menu_tools/settings_menu.css"], function(require, exports, module){/*jslint indent: 4, maxerr: 50, white: true, browser: true, vars: true*/
+ace.define("ace/ext/menu_tools/overlay_page",["require","exports","module","ace/ext/menu_tools/overlay_page","ace/lib/dom","ace/ext/menu_tools/settings_menu.css"], function(require, exports, module){/**
+ * ## Overlay Page utility
+ *
+ * Provides modal overlay functionality for displaying editor extension interfaces. Creates a full-screen overlay with
+ * configurable backdrop behavior, keyboard navigation (ESC to close), and focus management. Used by various extensions
+ * to display menus, settings panels, and other interactive content over the editor interface.
+ *
+ * **Usage:**
+ * ```javascript
+ * var overlayPage = require('./overlay_page').overlayPage;
+ * var contentElement = document.createElement('div');
+ * contentElement.innerHTML = '<h1>Settings</h1>';
+ *
+ * var overlay = overlayPage(editor, contentElement, function() {
+ *   console.log('Overlay closed');
+ * });
+ * ```
+ *
+ * @module
+ */
 'use strict';
 var dom = require("../../lib/dom");
 var cssText = require("./settings_menu.css");
@@ -59,15 +78,34 @@ module.exports.overlayPage = function overlayPage(editor, contentElement, callba
 
 });
 
-ace.define("ace/ext/menu_tools/get_editor_keyboard_shortcuts",["require","exports","module","ace/lib/keys"], function(require, exports, module){/*jslint indent: 4, maxerr: 50, white: true, browser: true, vars: true*/
-"use strict";
-var keys = require("../../lib/keys");
+ace.define("ace/ext/menu_tools/get_editor_keyboard_shortcuts",["require","exports","module","ace/ext/menu_tools/get_editor_keyboard_shortcuts","ace/lib/keys"], function(require, exports, module){/**
+ * ## Editor Keyboard Shortcuts Utility
+ *
+ * Provides functionality to extract and format keyboard shortcuts from an Ace editor instance. Analyzes all registered
+ * command handlers and their key bindings to generate a list of available keyboard shortcuts for the
+ * current platform. Returns formatted key combinations with proper modifier key representations and handles multiple
+ * bindings per command with pipe-separated notation.
+ *
+ * **Usage:**
+ * ```javascript
+ * var getKbShortcuts = require('ace/ext/menu_tools/get_editor_keyboard_shortcuts');
+ * var shortcuts = getKbShortcuts.getEditorKeybordShortcuts(editor);
+ * console.log(shortcuts);
+ * // [
+ * //     {'command': 'selectall', 'key': 'Ctrl-A'},
+ * //     {'command': 'copy', 'key': 'Ctrl-C|Ctrl-Insert'}
+ * // ]
+ * ```
+ *
+ * @module
+ */
+"use strict"; var keys = require("../../lib/keys");
 module.exports.getEditorKeybordShortcuts = function (editor) {
     var KEY_MODS = keys.KEY_MODS;
     var keybindings = [];
     var commandMap = {};
     editor.keyBinding.$handlers.forEach(function (handler) {
-        var ckb = handler.commandKeyBinding;
+        var ckb = handler["commandKeyBinding"];
         for (var i in ckb) {
             var key = i.replace(/(^|-)\w/g, function (x) { return x.toUpperCase(); });
             var commands = ckb[i];
@@ -91,7 +129,17 @@ module.exports.getEditorKeybordShortcuts = function (editor) {
 
 });
 
-ace.define("ace/ext/keybinding_menu",["require","exports","module","ace/editor","ace/ext/menu_tools/overlay_page","ace/ext/menu_tools/get_editor_keyboard_shortcuts"], function(require, exports, module){/*jslint indent: 4, maxerr: 50, white: true, browser: true, vars: true*/
+ace.define("ace/ext/keybinding_menu",["require","exports","module","ace/editor","ace/ext/menu_tools/overlay_page","ace/ext/menu_tools/get_editor_keyboard_shortcuts"], function(require, exports, module){/**
+ * ## Show Keyboard Shortcuts extension
+ *
+ * Provides a keyboard shortcuts display overlay for the Ace editor. Creates an interactive menu that shows all available
+ * keyboard shortcuts with their corresponding commands, organized in a searchable and navigable format. The menu
+ * appears as an overlay page and can be triggered via keyboard shortcut (Ctrl-Alt-H/Cmd-Alt-H) or programmatically.
+ *
+ * @author <a href="mailto:matthewkastor@gmail.com">
+ *  Matthew Christopher Kastor-Inare III </a><br />
+ * @module
+ */
 "use strict";
 var Editor = require("../editor").Editor;
 function showKeyboardShortcuts(editor) {
@@ -116,8 +164,12 @@ module.exports.init = function (editor) {
     };
     editor.commands.addCommands([{
             name: "showKeyboardShortcuts",
-            bindKey: { win: "Ctrl-Alt-h", mac: "Command-Alt-h" },
-            exec: function (editor, line) {
+            bindKey: {
+                win: "Ctrl-Alt-h",
+                mac: "Command-Alt-h"
+            },
+            exec: 
+            function (editor, line) {
                 editor.showKeyboardShortcuts();
             }
         }]);

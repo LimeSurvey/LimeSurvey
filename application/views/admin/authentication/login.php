@@ -34,11 +34,11 @@ echo viewHelper::getViewTestTag('login');
                             if (!in_array($selectedAuth, $pluginNames)) {
                                 $selectedAuth = $defaultAuth;
                             }
-                        ?>
+                            ?>
 
                             <label for='authMethod'><?php
                                                     eT("Authentication method"); ?></label>
-                        <?php
+                            <?php
                             $possibleAuthMethods = [];
                             foreach ($pluginNames as $plugin) {
                                 $info = App()->getPluginManager()->getPluginInfo($plugin);
@@ -70,8 +70,8 @@ echo viewHelper::getViewTestTag('login');
                         $aLangList = getLanguageDataRestricted(true);
                         $languageData = [];
 
-                        $reqLang = App()->request->getParam('lang');
-                        if ($reqLang === null) {
+                        $reqLang = \LSYii_Validators::languageCodeFilter(App()->request->getParam('lang'));
+                        if (!isset($aLangList[$reqLang]) || $reqLang === '') {
                             $languageData['default'] = gT('Default');
                         } else {
                             $languageData[$reqLang] = html_entity_decode(
@@ -91,7 +91,7 @@ echo viewHelper::getViewTestTag('login');
                             ) . " - " . $aLanguage['description'];
                         }
 
-
+                        echo '<div id="language-selector">';
                         echo CHtml::label(gT('Language'), 'loginlang');
 
                         $this->widget('yiiwheels.widgets.select2.WhSelect2', [
@@ -105,12 +105,12 @@ echo viewHelper::getViewTestTag('login');
                             ]
                         ]);
                         ?>
-
+                        </div>
                         <?php
                         if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true) { ?>
                             <p><?php
                                 eT("Demo mode: Login credentials are prefilled - just click the Login button."); ?></p>
-                        <?php
+                            <?php
                         } ?>
                     </div>
                 </div>
@@ -125,11 +125,11 @@ echo viewHelper::getViewTestTag('login');
                         </p>
                         <?php
                         if (Yii::app()->getConfig("display_user_password_in_email") === true) {
-                        ?>
+                            ?>
                             <a href='<?php
                                         echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php
                                                                                                                 eT("Forgot your password?"); ?></a><br />
-                        <?php
+                            <?php
                         }
                         ?>
                     </div>

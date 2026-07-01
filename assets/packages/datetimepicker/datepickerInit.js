@@ -18,6 +18,7 @@ function getConfig(options, locale, dateFormat) {
     let stepping = getValueFromConfigObject(options, 'stepping', 1);
     let mindate = getValueFromConfigObject(options, 'mindate', undefined);
     let maxdate = getValueFromConfigObject(options, 'maxdate', undefined);
+    let theme = getValueFromConfigObject(options, 'theme', 'auto');
 
     return {
         allowInputToggle: allowinputtoggle,
@@ -51,6 +52,7 @@ function getConfig(options, locale, dateFormat) {
                 clock: clock,
             },
             sideBySide: sidebyside,
+            theme: theme,
         },
     };
 }
@@ -105,9 +107,9 @@ function initDatePicker(element, locale, dateFormat) {
     locale = getValueFromConfigObject(options, 'locale', locale);
     let config = getConfig(options, locale,dateFormat);
     let constName = 'picker_' + element.id;
-
+    let elementDate = element.value;
     pickers[constName] = new tempusDominus.TempusDominus(element, config);
-    setDatePickerFormat(pickers[constName], dateFormat, element.value);
+    setDatePickerFormat(pickers[constName], dateFormat, elementDate);
     attachCalendarIconToDatepicker(options);
     if(getValueFromConfigObject(options, 'allowinputtoggle', false)) {
         fixAllowInputToggle(element.id);
@@ -156,7 +158,7 @@ function fixAllowInputToggle(id) {
  */
 function getOptionsFromElement(element) {
     const availableOptions = [
-        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate'
+        'format', 'locale', 'allowinputtoggle', 'showclear', 'showtoday', 'showclose', 'sidebyside', 'stepping', 'mindate', 'maxdate', 'theme',
         ];
     const options = {};
 

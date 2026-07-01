@@ -30,7 +30,7 @@ class AdvancedSettingWidget extends CWidget
 
         // The 'expression' property comes from the question attribute definition (either from the theme's config.xml
         // or from newQuestionAttributes() plugin event).
-        // The value 2 indicates that the attribute must be treated as an EM expression (survey logic file and question
+        // The value 2 indicates that the attribute must be treated as an EM expression (survey logic overview and question
         // summary automatically add the brackets before evaluation).
         if (isset($this->setting['expression']) && $this->setting['expression'] == 2) {
             $this->setting['aFormElementOptions']['inputGroup'] = ['prefix' => '{', 'suffix' => '}'];
@@ -46,19 +46,28 @@ class AdvancedSettingWidget extends CWidget
         // Translate options
         if (!empty($this->setting['options'])) {
             foreach ($this->setting['options'] as $optionValue => $optionText) {
-                $this->setting['options'][$optionValue] = is_string($optionText) ? gT($optionText) : $optionText;
+                $this->setting['options'][$optionValue] = is_string($optionText) ? gT($optionText, 'unescaped') : $optionText;
             }
         }
 
-        $inputBaseName = "advancedSettings[" . strtolower((string) $this->setting['category']) . "][" . $this->setting['name'] ."]";
-        $content = $this->render($this->setting['inputtype'],
-            ['inputBaseName' => $inputBaseName]
-            , true
+        // The setting must be disabled if it is always read-only, or if it is read-only
+        // while the survey is active and the survey is currently active.
+        $surveyIsActive = !empty($this->survey) && $this->survey->active === 'Y';
+        $disabled = !empty($this->setting['readonly'])
+            || ($surveyIsActive && !empty($this->setting['readonly_when_active']));
+
+        $inputBaseName = "advancedSettings[" . strtolower((string) $this->setting['category']) . "][" . $this->setting['name'] . "]";
+        $content = $this->render(
+            $this->setting['inputtype'],
+            ['inputBaseName' => $inputBaseName],
+            true
         );
-        $this->render('layout',
+        $this->render(
+            'layout',
             [
                 'content' => $content,
-                'inputBaseName' => $inputBaseName
+                'inputBaseName' => $inputBaseName,
+                'disabled' => $disabled
             ]
         );
     }

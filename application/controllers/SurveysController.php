@@ -23,15 +23,15 @@ class SurveysController extends LSYii_Controller
             // Validate if languages exists and fall back to default lang if needed
             $aLanguages = getLanguageDataRestricted(false, 'short');
             if (!isset($aLanguages[ $lang ])) {
-                $lang = App()->getConfig('defaultlang');
+                $lang = Yii::app()->getConfig('defaultlang');
             }
         } else {
-            $lang = App()->getConfig('defaultlang');
+            $lang = Yii::app()->getConfig('defaultlang');
         }
             App()->setLanguage($lang);
 
 
-        $oTemplate       = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
+        $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
         $this->sTemplate = $oTemplate->sTemplateName;
 
         $aData = array(
@@ -56,7 +56,7 @@ class SurveysController extends LSYii_Controller
         Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
 
         // maintenance mode
-        $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
         if ($sMaintenanceMode == 'hard' || $sMaintenanceMode == 'soft') {
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('aSurveyInfo' => $aData), false);
         } else {
@@ -86,7 +86,7 @@ class SurveysController extends LSYii_Controller
             // TODO: Remove? It seems this can never happen because it's already caught by LSYii_Application::onException() (see commit c792c2e).
             $this->spitOutJsonError($error, $oException);
         } elseif ($error) {
-            $this->spitOutHtmlError($error, $request->getParam('sid', $request->getParam('surveyid')));
+            $this->spitOutHtmlError($error);
         } else {
             throw new CHttpException(404, 'Page not found.');
         }
@@ -96,7 +96,6 @@ class SurveysController extends LSYii_Controller
      * Echo $error as HTML and end execution.
      *
      * @param array $error
-     * @param string|null $surveyId
      *
      * @return void
      *
@@ -106,19 +105,20 @@ class SurveysController extends LSYii_Controller
      * @throws Twig_Error_Syntax
      * @throws WrongTemplateVersionException
      */
-    public function spitOutHtmlError(array $error, $surveyId)
+    public function spitOutHtmlError(array $error)
     {
+        $surveyId = LSYii_Application::getSurveyId(false);
         if ($surveyId) {
-            $oTemplate = Template::model()->getInstance('', $surveyId);
+            $oTemplate = Template::model()->getInstance(null, $surveyId);
         } else {
-            $oTemplate = Template::getLastInstance();
+            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
         }
         $this->sTemplate = $oTemplate->sTemplateName;
 
-        $admin = App()->getConfig('siteadminname');
-        if (App()->getConfig('showEmailInError')) {
+        $admin = Yii::app()->getConfig('siteadminname');
+        if (Yii::app()->getConfig('showEmailInError')) {
             // Never show email by default
-            $admin = CHtml::mailto(App()->getConfig('siteadminname'), App()->getConfig('siteadminemail'));
+            $admin = CHtml::mailto(Yii::app()->getConfig('siteadminname'), Yii::app()->getConfig('siteadminemail'));
         }
         $contact = sprintf(gT('If you think this is a server error, please contact %s.'), $admin);
         switch ($error['code']) {
@@ -126,7 +126,7 @@ class SurveysController extends LSYii_Controller
                 /* CRSF issue */
                 $title = gT('400: Bad Request');
                 $message = gT('The request could not be understood by the server due to malformed syntax.')
-                    . gT('Please do not repeat the request without modifications.');
+                    . ' ' . gT('Please do not repeat the request without modifications.');
                 break;
             case '401':
                 $title = gT('401: Unauthorized');
@@ -154,13 +154,23 @@ class SurveysController extends LSYii_Controller
                 $message = gT('The above error occurred when the Web server was processing your request.');
                 break;
         }
+
+        // For CDbException, we clear the message in order to avoid showing sensitive information to the user.
+        // This method is not usually executed when debug is enabled, but check anyway to be sure to only
+        // suppress the error if debug is disabled.
+        if (!YII_DEBUG && isset($error['type']) && $error['type'] == 'CDbException') {
+            $error['message'] = gT('Database error!');
+        }
+
         $aError['type'] = $error['code'];
         $aError['error'] = $title;
-        $aError['title'] = nl2br(CHtml::encode($error['message']) ?? '');
+        if (!empty($error['message'])) {
+            $aError['title'] = ' - ' . nl2br(CHtml::encode($error['message']) ?? '');
+        }
         $aError['message'] = $message;
         $aError['contact'] = $contact;
 
-        if (App()->getConfig('debug') != 0) {
+        if (Yii::app()->getConfig('debug') != 0) {
             $aError['trace'] = $error['trace'];
         }
 

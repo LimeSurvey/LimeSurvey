@@ -5,6 +5,26 @@
  */
 
 /**
+ * When the modal body contains a results table from _action_results.php, copy the
+ * modal heading into an empty caption so the table has an accessible name that matches the dialog.
+ *
+ * @param {jQuery} $modal
+ * @param {jQuery} $container  Element that received the injected HTML (e.g. .modal-body-text)
+ */
+function syncMassiveActionResultsTableCaption($modal, $container) {
+    var titleText = $modal.find('.modal-header .modal-title').first().text().trim();
+    if (!titleText) {
+        return;
+    }
+    $container.find('table.table caption.massive-action-results-caption').each(function () {
+        var $cap = $(this);
+        if (!$cap.text().trim()) {
+            $cap.text(titleText);
+        }
+    });
+}
+
+/**
  * Define what happen when an action is clicked:
  *
  * - redirection:
@@ -15,7 +35,8 @@
  *      perform an ajax request and close
  *      perform an ajax request and show the result in the modal
  */
-var onClickListAction =  function () {
+var onClickListAction =  function (e) {
+    e.preventDefault();
     console.log('onClickListAction');
     if($(this).data('disabled')) {
         console.log('disabled');
@@ -35,8 +56,15 @@ var onClickListAction =  function () {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
         console.log('error first');
-        const modal = new bootstrap.Modal(document.getElementById('error-first-select' + $grididvalue), {})
-        modal.show();
+        const errModalEl = document.getElementById('error-first-select' + $grididvalue);
+        if (errModalEl) {
+            errModalEl.setAttribute('tabindex', '-1');
+            const errBsModal = bootstrap.Modal.getOrCreateInstance(errModalEl, {});
+            errModalEl.addEventListener('shown.bs.modal', function focusErrModal() {
+                errModalEl.focus({ preventScroll: true });
+            }, { once: true });
+            errBsModal.show();
+        }
         return;
     }
     
@@ -193,7 +221,7 @@ var onClickListAction =  function () {
         var aAttributesToUpdate = [];
         $modal.find('.attributes-to-update').each(function(i, el)
         {
-            aAttributesToUpdate.push($(this).attr('name'));
+            aAttributesToUpdate.push($(this).attr('name') || $(this).attr('id'));
         });
         $postDatas['aAttributesToUpdate'] = JSON.stringify(aAttributesToUpdate);
         $postDatas['grididvalue'] = $grididvalue;
@@ -228,6 +256,7 @@ var onClickListAction =  function () {
                 {
                     // This depend on keepopen
                     $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
+                    syncMassiveActionResultsTableCaption($modal, $modalBody);
                 }
 
                 if (html.ajaxHelper) {
@@ -241,71 +270,37 @@ var onClickListAction =  function () {
                     return;
                 }
             },
-            error :  function(html, statut){
+            error: function(data, textStatus, jqXHR) {
                 $ajaxLoader.hide();
-                $modal.find('.modal-body-text').empty().html(html.responseText);
-                console.log(html);
+                if (data
+                    && data.responseJSON
+                    && data.responseJSON.success === false
+                    && data.responseJSON.message)
+                {
+                    $modal.modal('hide');
+                    LS.LsGlobalNotifier.createAlert(data.responseJSON.message,  "danger", {showCloseButton: true});
+                } else {
+                    $modal.find('.modal-body-text').empty().html(data.responseText);
+                }
             }
         });
     });
 
-    // Open the modal
+    // Open the modal (focus moves into dialog for screen readers / keyboard)
     const modalId = $that.data('modal-id');
     console.log('modalId = ', modalId);
-    var modal = new bootstrap.Modal(document.getElementById(modalId), {})
-    modal.show();
+    const modalEl = document.getElementById(modalId);
+    if (!modalEl) {
+        return;
+    }
+    modalEl.setAttribute('tabindex', '-1');
+    const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl, {});
+    const focusModal = function () {
+        modalEl.focus({ preventScroll: true });
+    };
+    modalEl.addEventListener('shown.bs.modal', focusModal, { once: true });
+    bsModal.show();
 };
-
-/**
- * Bootstrap switch extension
- *
- * 1. Setting the value
- * By default, bootstrap switch use the val() jQuery function, which works well for form submission.
- * But, for the ajax request, we need to collect the value in a array for the post using $postDatas[$(this).attr('name')]=$(this).val();
- * So we need to change the value using $(this).attr('value', state);.
- * The difference can be seen visually in the browser code explorer : by default, the bootstrap switch extension change in an invisble way.
- * With the method here, the input value change will be visible.
- *
- * 2. Defining value Type
- * By default, bootstrap switch use boolean values {true,false} for its states.
- * In the PHP code (like in controller questionEditor::changeMultipleQuestionAttributes()), we want to keep the code as dry as possible.
- * To avoid to create a single method for each action using bootstrap-switch, just to change the boolean value to something else ({1,0} or {Y,N}, etc), we perform it here.
- * e.g: a bootstrap-switch with the class bootstrap-switch-integer will have its value converted to integer.
- *
- * 3. Managing grid refresh
- * For now, the modals are injected on the bottom of the selector, which is in the grid footer, which is reload on grid refresh
- * So, when refreshing the grid, the bootstrap-switch must be re-applyed to the elements
- *
- */
-// TODO: It seems below two functions are not used and can be deleted. Please confirm.
- function prepareBsSwitchBoolean($gridid){
-     // Bootstrap switch with class "bootstrap-switch-boolean" will use the default boolean values.
-     // e.g: question mandatory, question other, etc
-     $('.bootstrap-switch-boolean').each(function(){
-         $(this).attr('value', false);                                           // we specify its value in a "visible" way (see point 1)
-
-         // Switch change
-         $(this).on('switchChange.bootstrapSwitch', function(event, state) {
-             $(this).attr('value', state);                                       // When the switch change,we specify its value in a "visible" way (see point 1)
-         });
-     });
-}
-
-function prepareBsSwitchInteger($gridid){
-    // Bootstrap switch with class "bootstrap-switch-integer" will use integer values
-    // e.g: question statistics_showgraph, question public_statistics, etc
-    $('.bootstrap-switch-integer').each(function(){
-        $(this).attr('value', 0);                                               // we specify its value in a "visible" way (see point 1)
-
-        // Switch change
-        $(this).on('switchChange.bootstrapSwitch', function(event, state) {
-            var intValue = (state==true)?'1':'0';                               // Convertion of the boolean to integer (see point 2)
-            $(this).attr('value', intValue)
-        });
-    });
-}
-// =================================================================================
-
 
 function prepareBsDateTimePicker($gridid){
     var dateTimeSettings = getDefaultDateTimePickerSettings();
@@ -354,13 +349,8 @@ function bindListItemclick() {
 
 
 $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listActions, ready ', function() {
-    prepareBsSwitchBoolean(gridId);
-    prepareBsSwitchInteger(gridId);
-
     // Grid refresh: see point 3
     $(document).on('actions-updated', function(){
-        prepareBsSwitchBoolean(gridId);
-        prepareBsSwitchInteger(gridId);
         prepareBsDateTimePicker(gridId);
         bindListItemclick();
     });
@@ -380,8 +370,10 @@ function switchStatusOfListActions(e) {
         var actionButton = $('.massiveAction');
         if (isAnyCheckboxChecked()) {
             actionButton.removeClass('disabled');
+            actionButton.removeAttr('disabled');
         } else {
             actionButton.addClass('disabled');
+            actionButton.attr('disabled', 'disabled');
         }
     });
 }

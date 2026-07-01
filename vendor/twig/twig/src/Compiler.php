@@ -22,15 +22,16 @@ class Compiler
     private $lastLine;
     private $source;
     private $indentation;
-    private $env;
     private $debugInfo = [];
     private $sourceOffset;
     private $sourceLine;
     private $varNameSalt = 0;
+    private $didUseEcho = false;
+    private $didUseEchoStack = [];
 
-    public function __construct(Environment $env)
-    {
-        $this->env = $env;
+    public function __construct(
+        private Environment $env,
+    ) {
     }
 
     public function getEnvironment(): Environment
@@ -66,9 +67,20 @@ class Compiler
     public function compile(Node $node, int $indentation = 0)
     {
         $this->reset($indentation);
-        $node->compile($this);
+        $this->didUseEchoStack[] = $this->didUseEcho;
 
-        return $this;
+        try {
+            $this->didUseEcho = false;
+            $node->compile($this);
+
+            if ($this->didUseEcho) {
+                trigger_deprecation('twig/twig', '3.9', 'Using "%s" is deprecated, use "yield" instead in "%s", then flag the class with #[\Twig\Attribute\YieldReady].', $this->didUseEcho, $node::class);
+            }
+
+            return $this;
+        } finally {
+            $this->didUseEcho = array_pop($this->didUseEchoStack);
+        }
     }
 
     /**
@@ -76,13 +88,24 @@ class Compiler
      */
     public function subcompile(Node $node, bool $raw = true)
     {
-        if (false === $raw) {
+        if (!$raw) {
             $this->source .= str_repeat(' ', $this->indentation * 4);
         }
 
-        $node->compile($this);
+        $this->didUseEchoStack[] = $this->didUseEcho;
 
-        return $this;
+        try {
+            $this->didUseEcho = false;
+            $node->compile($this);
+
+            if ($this->didUseEcho) {
+                trigger_deprecation('twig/twig', '3.9', 'Using "%s" is deprecated, use "yield" instead in "%s", then flag the class with #[\Twig\Attribute\YieldReady].', $this->didUseEcho, $node::class);
+            }
+
+            return $this;
+        } finally {
+            $this->didUseEcho = array_pop($this->didUseEchoStack);
+        }
     }
 
     /**
@@ -92,6 +115,7 @@ class Compiler
      */
     public function raw(string $string)
     {
+        $this->checkForEcho($string);
         $this->source .= $string;
 
         return $this;
@@ -105,6 +129,7 @@ class Compiler
     public function write(...$strings)
     {
         foreach ($strings as $string) {
+            $this->checkForEcho($string);
             $this->source .= str_repeat(' ', $this->indentation * 4).$string;
         }
 
@@ -118,7 +143,13 @@ class Compiler
      */
     public function string(string $value)
     {
-        $this->source .= sprintf('"%s"', addcslashes($value, "\0\t\"\$\\"));
+        // Single quotes are encoded as \x27 (not \') as a defense-in-depth measure:
+        // it guarantees that the compiled output never contains a literal "'" derived
+        // from user input, which prevents breaking out of a surrounding single-quoted
+        // PHP context if a caller mistakenly concatenates the result into one.
+        // \' is not a recognized escape sequence in PHP double-quoted strings (the
+        // backslash would be kept literally), so \x27 is used instead.
+        $this->source .= \sprintf('"%s"', str_replace("'", '\\x27', addcslashes($value, "\0\t\"\$\\")));
 
         return $this;
     }
@@ -145,7 +176,7 @@ class Compiler
         } elseif (\is_bool($value)) {
             $this->raw($value ? 'true' : 'false');
         } elseif (\is_array($value)) {
-            $this->raw('array(');
+            $this->raw('[');
             $first = true;
             foreach ($value as $key => $v) {
                 if (!$first) {
@@ -156,7 +187,7 @@ class Compiler
                 $this->raw(' => ');
                 $this->repr($v);
             }
-            $this->raw(')');
+            $this->raw(']');
         } else {
             $this->string($value);
         }
@@ -170,7 +201,7 @@ class Compiler
     public function addDebugInfo(Node $node)
     {
         if ($node->getTemplateLine() != $this->lastLine) {
-            $this->write(sprintf("// line %d\n", $node->getTemplateLine()));
+            $this->write(\sprintf("// line %d\n", $node->getTemplateLine()));
 
             $this->sourceLine += substr_count($this->source, "\n", $this->sourceOffset);
             $this->sourceOffset = \strlen($this->source);
@@ -218,6 +249,15 @@ class Compiler
 
     public function getVarName(): string
     {
-        return sprintf('__internal_compile_%d', $this->varNameSalt++);
+        return \sprintf('_v%d', $this->varNameSalt++);
+    }
+
+    private function checkForEcho(string $string): void
+    {
+        if ($this->didUseEcho) {
+            return;
+        }
+
+        $this->didUseEcho = preg_match('/^\s*+(echo|print)\b/', $string, $m) ? $m[1] : false;
     }
 }

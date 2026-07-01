@@ -4,6 +4,7 @@ namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
 use InvalidArgumentException;
+use LimeSurvey\PluginManager\PluginManager;
 
 /**
  * @since 2018-09-24
@@ -30,15 +31,16 @@ class PluginInstaller extends ExtensionInstaller
         }
 
         if (!$this->isWhitelisted()) {
-            throw new Exception('The plugin is not in the plugin whitelist.');
+            throw new Exception('The plugin is not in the plugin allowlist.');
         }
 
         $config = $this->getConfig();
+        /** @var PluginManager $pluginManager */
         $pluginManager = App()->getPluginManager();
         $destdir = $pluginManager->getPluginFolder($config, $this->pluginType);
 
         if ($this->fileFetcher->move($destdir)) {
-            list($result, $errorMessage) = $pluginManager->installUploadedPlugin($destdir);
+            [$result, $errorMessage] = $pluginManager->installUploadedPlugin($destdir);
             if ($result) {
                 // Do nothing.
             } else {
@@ -62,7 +64,7 @@ class PluginInstaller extends ExtensionInstaller
         }
 
         if (!$this->isWhitelisted()) {
-            throw new Exception('The plugin is not in the plugin whitelist.');
+            throw new Exception('The plugin is not in the plugin allowlist.');
         }
 
         $config = $this->getConfig();
@@ -101,7 +103,7 @@ class PluginInstaller extends ExtensionInstaller
     }
 
     /**
-     * Returns true if the plugin name is whitelisted or the whitelist is disabled.
+     * Returns true if the plugin name is allowlisted or the allowlist is disabled.
      * @return boolean
      */
     public function isWhitelisted()

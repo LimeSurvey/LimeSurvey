@@ -9,7 +9,7 @@
  */
 ?>
 
-<div class='side-body <?php echo getSideBodyClass(true); ?>'>
+<div class='side-body'>
     <h3><?php eT('Time statistics'); ?></h3>
     <script type='text/javascript'>
         var strdeleteconfirm = '<?php eT('Do you really want to delete this response?', 'js'); ?>';

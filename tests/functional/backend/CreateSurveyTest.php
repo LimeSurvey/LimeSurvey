@@ -7,7 +7,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
-use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\TimeoutException;
 use Facebook\WebDriver\Exception\ElementNotVisibleException;
 
 /**
@@ -60,7 +60,7 @@ class CreateSurveyTest extends TestBaseClassWeb
                 $button->click();
             } catch (NoSuchElementException $ex) {
                 // Do nothing.
-            } catch (TimeOutException $ex) {
+            } catch (TimeoutException $ex) {
                 // Do nothing.
             }
 
@@ -74,7 +74,7 @@ class CreateSurveyTest extends TestBaseClassWeb
                     )
                 );
                 $button->click();
-            } catch (TimeOutException $ex) {
+            } catch (TimeoutException $ex) {
                 // Do nothing.
             } catch (NoSuchElementException $ex) {
                 // Do nothing.
@@ -82,10 +82,18 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
-            // Click on big "Create survey" button.
+            // Open menu by clicking the "+" sign in top bar
             $link = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#card-1[data-url]')
+                    WebDriverBy::className('btn-create')
+                )
+            );
+            $link->click();
+
+            //click on "Survey" to create a new survey
+            $link = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('create-survey-link')
                 )
             );
             $link->click();

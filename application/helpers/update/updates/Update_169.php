@@ -7,7 +7,7 @@ class Update_169 extends DatabaseUpdateBase
     public function up()
     {
             // Add new column for question index options.
-            addColumn('{{surveys}}', 'questionindex', 'integer not null default 0');
+            addColumn('{{surveys}}', 'questionindex', 'integer NOT NULL DEFAULT 0');
             // Set values for existing surveys.
             $this->db->createCommand("update {{surveys}} set questionindex = 0 where allowjumps <> 'Y'")->query();
             $this->db->createCommand("update {{surveys}} set questionindex = 1 where allowjumps = 'Y'")->query();

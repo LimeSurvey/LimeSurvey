@@ -2,12 +2,11 @@
 
 class customToken extends PluginBase
 {
-
     protected $storage = 'DbStorage';
     protected static $name = 'customToken';
     protected static $description = 'At token generation this plugin enforces certain token formats like Numeric, non-ambiguous or uppercase tokens';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
@@ -117,7 +116,7 @@ class customToken extends PluginBase
             $this->set($name, $value, 'Survey', $event->get('survey'));
         }
     }
-    
+
     /**
      * Clean up the plugin settings table
      */

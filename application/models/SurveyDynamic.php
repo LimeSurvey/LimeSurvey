@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -43,10 +43,13 @@ class SurveyDynamic extends LSActiveRecord
     public static function model($sid = null)
     {
         $refresh = false;
-        $survey = Survey::model()->findByPk($sid);
+        $survey = Yii::app()->db->createCommand()
+            ->select('{{surveys.sid}}')
+            ->from('{{surveys}}')
+            ->where('{{surveys.sid}} = :sid', array(':sid' => $sid))
+            ->queryRow();
         if ($survey) {
-            self::sid($survey->sid);
-            self::$survey = $survey;
+            self::sid($survey['sid']);
             $refresh = true;
         }
 
@@ -77,7 +80,7 @@ class SurveyDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . self::$sid . '}}';
+        return '{{responses_' . self::$sid . '}}';
     }
 
     /** @inheritdoc */
@@ -109,6 +112,7 @@ class SurveyDynamic extends LSActiveRecord
      * @access public
      * @param array $data
      * @return boolean
+     * @deprecated Use setAttributes() and encryptSave()
      */
     public function insertRecords($data)
     {
@@ -163,15 +167,15 @@ class SurveyDynamic extends LSActiveRecord
         }
         $alias = $this->getTableAlias();
 
-        $newCriteria->join = "LEFT JOIN " . self::$survey->tokensTableName . " survey_timings ON $alias.id = survey_timings.id";
-        $newCriteria->select = 'survey_timings.*'; // Otherwise we don't get records from the survey participants table
+        $newCriteria->join = "LEFT JOIN " . $this->survey->tokensTableName . " timings ON $alias.id = timings.id";
+        $newCriteria->select = 'timings.*'; // Otherwise we don't get records from the survey participants list
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
     }
 
     /**
-     * Return criteria updated with the ones needed for including results from the survey participants table
+     * Return criteria updated with the ones needed for including results from the survey participant list
      *
      * @param string $condition
      * @return CDbCriteria
@@ -180,7 +184,7 @@ class SurveyDynamic extends LSActiveRecord
     {
         $newCriteria = new CDbCriteria();
         $criteria = $this->getCommandBuilder()->createCriteria($condition);
-        $aSelectFields = Yii::app()->db->schema->getTable(self::$survey->responsesTableName)->getColumnNames();
+        $aSelectFields = Yii::app()->db->schema->getTable($this->survey->responsesTableName)->getColumnNames();
         $aSelectFields = array_diff($aSelectFields, array('token'));
         $aSelect = array();
         $alias = $this->getTableAlias();
@@ -196,10 +200,10 @@ class SurveyDynamic extends LSActiveRecord
 
         $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON $alias.token = tokens.token";
 
-        $aTokenFields = Yii::app()->db->schema->getTable(self::$survey->tokensTableName)->getColumnNames();
+        $aTokenFields = Yii::app()->db->schema->getTable($this->survey->tokensTableName)->getColumnNames();
         $aTokenFields = array_diff($aTokenFields, array('token'));
 
-        $newCriteria->select = $aTokenFields; // Otherwise we don't get records from the survey participants table
+        $newCriteria->select = $aTokenFields; // Otherwise we don't get records from the survey participant list
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
@@ -218,14 +222,14 @@ class SurveyDynamic extends LSActiveRecord
                           ELSE 0
                  END) AS cntpartial',
             );
-        $result = Yii::app()->db->createCommand()->select($select)->from('{{survey_' . $sid . '}}')->queryRow();
+        $result = Yii::app()->db->createCommand()->select($select)->from('{{responses_' . $sid . '}}')->queryRow();
         return $result;
     }
 
     /**
      * Return true if actual survey is completed
      *
-     * @param integer $srid : actual save survey id
+     * @param integer $srid : actual save survey ID
      *
      * @return boolean
      */
@@ -273,7 +277,7 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getGridButtons()
     {
-        $sBrowseLanguage = sanitize_languagecode(Yii::app()->request->getParam('browseLang', ''));
+        $sBrowseLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getParam('browseLang', ''));
 
         $permissionReponseUpdate = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update');
         $permissionReponseDelete = Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete');
@@ -334,11 +338,11 @@ class SurveyDynamic extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-title'     => gt('Delete all response files'),
-                'data-btntext'   => gt('Delete'),
+                'data-title'     => gT('Delete all response files'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-url'  => App()->createUrl("responses/deleteAttachments"),
                 'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
-                'data-message'   => gt("Do you want to delete all files of this response?"),
+                'data-message'   => gT("Do you want to delete all files of this response?"),
             ]
         ];
 
@@ -350,11 +354,11 @@ class SurveyDynamic extends LSActiveRecord
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-title'     => gt('Delete this response'),
-                'data-btntext'   => gt('Delete'),
+                'data-title'     => gT('Delete this response'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-url'  => App()->createUrl("responses/deleteSingle"),
                 'data-post-datas' => json_encode(['surveyId' => self::$sid, 'responseId' => $this->id]),
-                'data-message'   => gt("Do you want to delete this response?") . '<br/>' .
+                'data-message'   => gT("Do you want to delete this response?") . '<br/>' .
                     gT("Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it."),
             ]
         ];
@@ -402,32 +406,35 @@ class SurveyDynamic extends LSActiveRecord
             $sSurveyEntry = "<table class='table table-condensed upload-question'>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
-            for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
-                $sSurveyEntry .= '<tr>';
-                if (isset($aFilesInfo[$iFileIndex])) {
+            if (!empty($aFilesInfo)) {
+                foreach ($aFilesInfo as $iFileIndex => $fileInfo) {
+                    if (empty($fileInfo)) {
+                        continue;
+                    }
+                    $sSurveyEntry .= '<tr>';
                     $url = App()->createUrl("responses/downloadfile", ["surveyId" => self::$sid, "responseId" => $this->id, "qid" => $oFieldMap->qid, "index" => $iFileIndex]);
-                    $filename = CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name']));
+                    $filename = CHtml::encode(rawurldecode($fileInfo['name']));
                     $size = "";
-                    if ($aFilesInfo[$iFileIndex]['size'] && strval(floatval($aFilesInfo[$iFileIndex]['size'])) == strval($aFilesInfo[$iFileIndex]['size'])) {
+                    if ($fileInfo['size'] && strval(floatval($fileInfo['size'])) == strval($fileInfo['size'])) {
                         // avoid to throw PHP error if size is invalid
-                        $size = sprintf('%s Mb', round($aFilesInfo[$iFileIndex]['size'] / 1000, 2));
+                        $size = sprintf('%s Mb', round($fileInfo['size'] / 1000, 2));
                     }
                     $sSurveyEntry .= '<td>' . CHtml::link($filename, $url) . '</td>';
                     $sSurveyEntry .= '<td>' . $size . '</td>';
                     if ($aQuestionAttributes['show_title']) {
-                        if (!isset($aFilesInfo[$iFileIndex]['title'])) {
-                            $aFilesInfo[$iFileIndex]['title'] = '';
+                        if (!isset($fileInfo['title'])) {
+                            $fileInfo['title'] = '';
                         }
-                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $aFilesInfo[$iFileIndex]['title'], ENT_QUOTES, 'UTF-8') . '</td>';
+                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $fileInfo['title'], ENT_QUOTES, 'UTF-8') . '</td>';
                     }
                     if ($aQuestionAttributes['show_comment']) {
-                        if (!isset($aFilesInfo[$iFileIndex]['comment'])) {
-                            $aFilesInfo[$iFileIndex]['comment'] = '';
+                        if (!isset($fileInfo['comment'])) {
+                            $fileInfo['comment'] = '';
                         }
-                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $aFilesInfo[$iFileIndex]['comment'], ENT_QUOTES, 'UTF-8') . '</td>';
+                        $sSurveyEntry .= '<td>' . htmlspecialchars((string) $fileInfo['comment'], ENT_QUOTES, 'UTF-8') . '</td>';
                     }
+                    $sSurveyEntry .= '</tr>';
                 }
-                $sSurveyEntry .= '</tr>';
             }
             $sSurveyEntry .= '</table>';
             $sValue = $sSurveyEntry;
@@ -439,7 +446,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return true if actual response exist in database
      *
-     * @param integer $srid : actual save survey id
+     * @param integer $srid : actual save survey ID
      *
      * @return boolean
      */
@@ -463,7 +470,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return next id if next response exist in database
      *
-     * @param integer $srId : actual save survey id
+     * @param integer $srId : actual save survey ID
      * @param boolean $useFilterState
      *
      * @return integer
@@ -496,7 +503,7 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Return previous id if previous response exist in database
      *
-     * @param integer $srId : actual save survey id
+     * @param integer $srId : actual save survey ID
      * @param boolean $useFilterState
      *
      * @return integer
@@ -611,6 +618,18 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @return string
      */
+    public function getEmailForGrid()
+    {
+        // decrypt token information ( if needed )
+        $tokens = $this->tokens;
+        if (is_object($tokens)) {
+            return $tokens->email;
+        }
+    }
+
+    /**
+     * @return string
+     */
     public function getTokenForGrid()
     {
         if (is_object($this->tokens) && !is_null($this->tokens->tid)) {
@@ -671,7 +690,7 @@ class SurveyDynamic extends LSActiveRecord
             '*',
         );
 
-        // Join the survey participants table and filter tokens if needed
+        // Join the survey participant list and filter tokens if needed
         if ($this->bHaveToken && $this->survey->anonymized != 'Y') {
             $this->joinWithToken($criteria, $sort);
         }
@@ -874,12 +893,12 @@ class SurveyDynamic extends LSActiveRecord
             in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
             || ($oQuestion->type == 'T' && $oQuestion->parent_qid != 0)
         ) {
-            $fieldname .= $oQuestion->title;
+            $fieldname .= "_S{$oQuestion->qid}";
         }
 
 
         if ($getCommentOnly) {
-            $fieldname .= 'comment';
+            $fieldname .= '_Ccomment';
         }
 
         $aQuestionAttributes['fieldname'] = $fieldname;
@@ -890,7 +909,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         if ($aQuestionAttributes['questionclass'] === 'date') {
-            $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge(self::$survey->attributes, $oQuestion->survey->languagesettings[$sLanguage]->attributes));
+            $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge($this->survey->attributes, $oQuestion->survey->languagesettings[$sLanguage]->attributes));
         }
 
         $aQuestionAttributes['answervalue'] = $oResponses[$fieldname] ?? null;
@@ -919,7 +938,7 @@ class SurveyDynamic extends LSActiveRecord
                 );
             } elseif ($oQuestion->other == 'Y') {
                 $aQuestionAttributes['answervalue'] = !empty($attributes['other_replace_text'][$sLanguage]) ? $attributes['other_replace_text'][$sLanguage] : gT("Other");
-                $aQuestionAttributes['answeroption']['answer'] = $oResponses[$fieldname . 'other'] ?? null;
+                $aQuestionAttributes['answeroption']['answer'] = $oResponses[$fieldname . '_Cother'] ?? null;
             }
         }
 
@@ -945,12 +964,12 @@ class SurveyDynamic extends LSActiveRecord
 
             $tempFieldname = $fieldname . '#0';
             $sAnswerCode = $oResponses[$tempFieldname] ?? null;
-            $sAnswerText = isset($aAnswerText[0][$oResponses[$tempFieldname]]) ? $aAnswerText[0][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[0][$sAnswerCode]) ? $aAnswerText[0][$sAnswerCode] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][0] = $sAnswerText;
 
             $tempFieldname = $fieldname . '#1';
             $sAnswerCode = $oResponses[$tempFieldname] ?? null;
-            $sAnswerText = isset($aAnswerText[1][$oResponses[$tempFieldname]]) ? $aAnswerText[1][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[1][$sAnswerCode]) ? $aAnswerText[1][$sAnswerCode] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
 
@@ -964,25 +983,35 @@ class SurveyDynamic extends LSActiveRecord
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
             $aQuestionAttributes['answervalues'] = array();
-            $iterator = 1;
-            do {
-                $currentResponse = $oResponses[$fieldname . $iterator];
-
-                $oSelectedAnswerOption = array_reduce($oQuestion->answers, function ($carry, $oAnswer) use ($currentResponse) {
-                    return $currentResponse == $oAnswer->code ? $oAnswer : $carry;
-                });
-
-                $option = '';
-                if ($oSelectedAnswerOption !== null) {
-                    $option = array_merge(
-                        $oSelectedAnswerOption->attributes,
-                        $oSelectedAnswerOption->answerl10ns[$sLanguage]->attributes
-                    );
+            // Ranking now uses subquestions instead of answers
+            $subQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(
+                array('parent_qid' => $oQuestion->qid),
+                array('order' => 'question_order')
+            );
+            foreach ($subQuestions as $oSubQuestion) {
+                $subFieldname = $fieldname . '_S' . $oSubQuestion->qid;
+                if (!isset($oResponses[$subFieldname]) || $oResponses[$subFieldname] === '') {
+                    continue;
                 }
-                $aQuestionAttributes['answervalues'][] = ['value' => $currentResponse, 'option' => $option];
+                $currentResponse = $oResponses[$subFieldname];
 
-                $iterator++;
-            } while (isset($oResponses[$fieldname . $iterator]));
+                // Get the answer text for the selected rank value
+                $answerText = '';
+                if (isset($oQuestion->subquestions)) {
+                    $oSelectedAnswer = array_reduce($subQuestions, function ($carry, $oAns) use ($currentResponse) {
+                        return $currentResponse == $oAns->title ? $oAns : $carry;
+                    });
+                    if ($oSelectedAnswer !== null) {
+                        $answerText = $oSelectedAnswer->questionl10ns[$sLanguage]->question ?? '';
+                    }
+                }
+
+                $aQuestionAttributes['answervalues'][] = [
+                    'value' => $currentResponse,
+                    'subquestion' => $oSubQuestion->questionl10ns[$sLanguage]->question ?? $oSubQuestion->title,
+                    'answertext' => $answerText
+                ];
+            }
         }
 
         /* Second (X) scale for array text and array number */
@@ -993,7 +1022,7 @@ class SurveyDynamic extends LSActiveRecord
                 'params' => array(':parent_qid' => $aQuestionAttributes['parent_qid'], ':scale_id' => 1),
             ));
             foreach ($oScaleXSubquestions as $oScaleSubquestion) {
-                $tempFieldname = $fieldname . '_' . $oScaleSubquestion->title;
+                $tempFieldname = $fieldname . '_S' . $oScaleSubquestion->qid;
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = $oResponses[$tempFieldname] ?? null;
                 /* Isue with language, need #15907 fixed */
                 $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = $oScaleSubquestion->questionl10ns[$sLanguage]->question ?? null;
@@ -1034,7 +1063,7 @@ class SurveyDynamic extends LSActiveRecord
     public function getPrintAnswersArray($sSRID, $sLanguage, $bHonorConditions = false)
     {
 
-        $oSurvey = self::$survey;
+        $oSurvey = $this->survey;
         $aGroupArray = array();
 
         $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id' => $sSRID));
@@ -1078,5 +1107,18 @@ class SurveyDynamic extends LSActiveRecord
     public function getSurveyId()
     {
         return self::$sid;
+    }
+
+    /**
+     * Get current survey for other model/function
+     * Using a getter to avoid query during model creation
+     * @return Survey
+     */
+    public function getSurvey()
+    {
+        if (self::$sid && self::$survey === null) {
+            self::$survey = Survey::model()->findByPk(self::$sid);
+        }
+        return self::$survey;
     }
 }

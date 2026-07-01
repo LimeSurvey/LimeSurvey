@@ -19,15 +19,15 @@ final class Each
      * index, and the aggregate promise. The callback can invoke any necessary
      * side effects and choose to resolve or reject the aggregate if needed.
      *
-     * @param mixed    $iterable    Iterator or array to iterate over.
-     * @param callable $onFulfilled
-     * @param callable $onRejected
+     * @param mixed $iterable Iterator or array to iterate over.
      */
     public static function of(
         $iterable,
-        callable $onFulfilled = null,
-        callable $onRejected = null
+        ?callable $onFulfilled = null,
+        ?callable $onRejected = null
     ): PromiseInterface {
+        $iterable = self::prepareIterable($iterable, __FUNCTION__);
+
         return (new EachPromise($iterable, [
             'fulfilled' => $onFulfilled,
             'rejected' => $onRejected,
@@ -44,15 +44,15 @@ final class Each
      *
      * @param mixed        $iterable
      * @param int|callable $concurrency
-     * @param callable     $onFulfilled
-     * @param callable     $onRejected
      */
     public static function ofLimit(
         $iterable,
         $concurrency,
-        callable $onFulfilled = null,
-        callable $onRejected = null
+        ?callable $onFulfilled = null,
+        ?callable $onRejected = null
     ): PromiseInterface {
+        $iterable = self::prepareIterable($iterable, __FUNCTION__);
+
         return (new EachPromise($iterable, [
             'fulfilled' => $onFulfilled,
             'rejected' => $onRejected,
@@ -67,13 +67,14 @@ final class Each
      *
      * @param mixed        $iterable
      * @param int|callable $concurrency
-     * @param callable     $onFulfilled
      */
     public static function ofLimitAll(
         $iterable,
         $concurrency,
-        callable $onFulfilled = null
+        ?callable $onFulfilled = null
     ): PromiseInterface {
+        $iterable = self::prepareIterable($iterable, __FUNCTION__);
+
         return self::ofLimit(
             $iterable,
             $concurrency,
@@ -82,5 +83,22 @@ final class Each
                 $aggregate->reject($reason);
             }
         );
+    }
+
+    private static function prepareIterable($iterable, string $method): iterable
+    {
+        if (is_iterable($iterable)) {
+            return $iterable;
+        }
+
+        \trigger_deprecation(
+            'guzzlehttp/promises',
+            '2.5',
+            'Passing a non-iterable to %s::%s() is deprecated; guzzlehttp/promises 3.0 will require an iterable.',
+            self::class,
+            $method
+        );
+
+        return [$iterable];
     }
 }

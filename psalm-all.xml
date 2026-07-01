@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <psalm
     errorLevel="8"
-    resolveFromConfigFile="true"
     reportMixedIssues="false"
     useDocblockTypes="false"
-    useDocblockPropertyTypes="false"
+    findUnusedBaselineEntry="false"
+    findUnusedCode="false"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -12,20 +12,23 @@
 >
     <issueHandlers>
         <UndefinedDocblockClass errorLevel="suppress" />
+        <UndefinedClass errorLevel="suppress" />
         <EmptyArrayAccess errorLevel="suppress" />
         <UndefinedConstant errorLevel="suppress" />
         <ParadoxicalCondition errorLevel="suppress" />
         <InvalidStaticInvocation errorLevel="suppress" />
         <UndefinedGlobalVariable errorLevel="suppress" />
         <NoValue errorLevel="suppress" />
+        <UnusedClass errorLevel="suppress" />
+        <UnsupportedPropertyReferenceUsage errorLevel="suppress" />
     </issueHandlers>
     <projectFiles>
         <directory name="application/" />
         <ignoreFiles>
             <directory name="vendor" />
+            <directory name="assets/packages/pchart" />
             <directory name="application/views" />
             <directory name="application/tests" />
-            <directory name="application/helpers/Zend" />
             <directory name="application/libraries/*/views" />
             <directory name="application/core/plugins/*/views" />
             <directory name="application/core/plugins/*/vendor" />

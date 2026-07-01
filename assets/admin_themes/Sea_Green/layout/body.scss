@@ -1,0 +1,8 @@
+body {
+    background-color : $g-200;
+    margin           : 0;
+    padding          : 0;
+    display          : flex;
+    min-height       : 100vh;
+    flex-direction   : column;
+}

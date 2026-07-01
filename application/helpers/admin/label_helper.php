@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -47,7 +47,7 @@ function updateset($lid)
     if (isset($oldcodesarray) && count($oldcodesarray) > 0) {
         foreach ($addlangidsarray as $addedlangid) {
             foreach ($oldcodesarray as $oldcode => $olddata) {
-                        $sqlvalues[] = array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
+                        $sqlvalues[] = array('lid' => $lid, 'code' => (string) $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
             }
         }
     }
@@ -97,7 +97,7 @@ function insertlabelset()
     $labelSet = new LabelSet();
     $labelSet->label_name = $postlabel_name;
     $labelSet->owner_id = App()->user->getId();
-    $labelSet->languages = sanitize_languagecodeS(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))));
+    $labelSet->languages = LSYii_Validators::multiLanguageCodeFilter(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))));
     if (!$labelSet->save()) {
         Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
     } else {

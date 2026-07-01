@@ -39,16 +39,16 @@
 	},
 	"require": {
         "paragonie/sodium_compat": "^1.14",
-		"twig/twig": "^3.0",
+		"twig/twig": "^3.27.1",
 		"phpseclib/bcmath_compat": "^2.0",
 		"phpseclib/phpseclib": "^3.0",
-		"tiamo/spss": "^2.2",
+		"tiamo/spss": "dev-master",
 		"symfony/polyfill-mbstring": "^1.26",
 		"yiisoft/yii": "^1.1.26",
-		"phpmailer/phpmailer": "^6.6",
+		"phpmailer/phpmailer": "6.12.0",
 		"khaled.alshamaa/ar-php": "^6.3",
 		"tecnickcom/tcpdf": "^6.5",
-		"mk-j/php_xlsxwriter": "^0.38.0",
+		"mk-j/php_xlsxwriter": "0.39",
 		"html2text/html2text": "^4.3",
 		"pear/ole": "1.*@dev",
 		"pear/spreadsheet_excel_writer": "^0.9.7",
@@ -56,26 +56,32 @@
 		"league/oauth2-client": "^2.0",
 		"league/oauth2-google": "^3.0",
 		"goldspecdigital/oooas": "^2.10",
-		"php-di/php-di": "6.4.0"
+		"php-di/php-di": "6.4.0",
+		"doctrine/annotations": "~1.10",
+		"anper/iuliia": "^1.2",
+		"shardj/zf1-future": "^1.24",
+		"viniciusgava/google-translate-api": "^3.1",
+		"greew/oauth2-azure-provider": "^1.0"
 	},
     "config": {
         "vendor-dir": "vendor",
         "bin-dir": "vendor/bin",
 		"platform": {
-			"php": "7.4.0"
+			"php": "8.1.29"
 		}
     },
     "require-dev": {
         "php-webdriver/webdriver": "^1.4",
         "squizlabs/php_codesniffer": "^3.5",
         "phpmd/phpmd" : "^2.8",
-        "phpunit/phpunit": "^8.0",
-        "vimeo/psalm": "^4.29",
-		"misantron/dbunit": "^5.1",
+        "phpunit/phpunit": "^9.6",
+        "vimeo/psalm": "^5.0",
+		"misantron/dbunit": "^5.4",
 		"tebazil/yii1-db-seeder": "^0.0.0",
 		"mockery/mockery": "^1.5"
     },
     "scripts": {
+		"phpcs": "phpcs --standard=phpcs.ruleset.xml",
 		"openapi": [
 			"php ./open-api-gen.php v1"
 		],
@@ -89,15 +95,6 @@
         "test": [
             "./tests/bin/lint-tests",
             "./tests/bin/lint-application",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/controllers",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/FormExtension",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/Api",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updates",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php",
-            "./vendor/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/AnswerOptionsFunctions.php",
             "./vendor/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset_strict.xml",
             "./vendor/bin/phpmd application/helpers/update/updates/ text tests/rulesets/phpmd_ruleset_strict.xml",
             "./vendor/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",

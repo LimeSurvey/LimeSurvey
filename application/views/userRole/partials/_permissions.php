@@ -25,7 +25,7 @@ Yii::app()->getController()->renderPartial(
                 <th><?php
                     eT("Permission"); ?></th>
                 <th><?php
-                    eT("General"); ?></th>
+                    eT("All"); ?></th>
                 <th><?php
                     eT("Create"); ?></th>
                 <th><?php
@@ -47,20 +47,26 @@ Yii::app()->getController()->renderPartial(
             <tr>
                 <!-- Icon -->
                 <td>
-                    <i class="<?php
+                    <div><i class="<?php
                                 echo $aCRUDPermissions['img']; ?> text-success"></i>
                     <?php
-                    echo $aCRUDPermissions['description']; ?>
+                    echo $aCRUDPermissions['description']; ?></div>
+                    <?php if (!empty($aCRUDPermissions['warning'])) : ?>
+                        <div class="text-danger"><i class="ri-error-warning-fill" aria-hidden="true"></i>
+                        <?php echo $aCRUDPermissions['warning']; ?></div>
+                    <?php endif; ?>
                 </td>
 
                 <!-- Warning super admin -->
                 <td>
                     <?php
-                    if ($sPermissionKey == 'superadmin') { ?> <span class='warning'> <?php
-                                                                                    };
+                    if ($sPermissionKey == 'superadmin') {
+                        ?> <span class='warning'> <?php
+                    };
                                                                                     echo $aCRUDPermissions['title'];
-                                                                                    if ($sPermissionKey == 'superadmin') { ?> </span> <?php
-                                                                                                                                    }; ?>
+                    if ($sPermissionKey == 'superadmin') {
+                        ?> </span> <?php
+                    }; ?>
                 </td>
 
                 <!-- checkbox  -->
@@ -84,28 +90,31 @@ Yii::app()->getController()->renderPartial(
                         if ($CRUDValue) : ?>
                             <?php
                             if (!($sPermissionKey == 'survey' && $sCRUDKey == 'read')) : ?>
-
                                 <!-- checkbox -->
                                 <input type="checkbox" class="specific-permission-selector" name='Permission[<?php
                                                                                                                 echo $sPermissionKey . '][' . $sCRUDKey; ?>]' id='perm_<?php
                                                                                                                                                                         echo $sPermissionKey . '_' . $sCRUDKey; ?>' <?php
-                                                                                                                                                                                                                    if (Permission::model()->roleHasPermission(
-                                                                                                                                                                                                                        $oModel->ptid,
-                                                                                                                                                                                                                        $sPermissionKey,
-                                                                                                                                                                                                                        $sCRUDKey
-                                                                                                                                                                                                                    )) : ?> checked="checked" <?php
-                                                                                                                                                                                                                    endif; ?> <?php
-                                                                                                                                                    if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') : ?> style="visibility:hidden" <?php
-                                                                                                                                                                                                endif; ?> />
-                            <?php
+if (
+    Permission::model()->roleHasPermission(
+        $oModel->ptid,
+        $sPermissionKey,
+        $sCRUDKey
+    )
+) :
+    ?> checked="checked" <?php
+endif; ?> <?php
+if (substr((string) $sPermissionKey, 0, 5) === 'auth_' && $sCRUDKey === 'read') :
+    ?> style="visibility:hidden" <?php
+endif; ?> />
+                                <?php
                             endif; ?>
-                        <?php
+                            <?php
                         endif; ?>
                     </td>
-                <?php
+                    <?php
                 endforeach; ?>
             </tr>
-        <?php
+            <?php
         endforeach; ?>
 
     </table>

@@ -2,6 +2,35 @@
  * Function to check conditions in date question
  */
 function doPopupDate(qId) {
+    $("#question" + qId).find('.date-timepicker-group').on('show.td', function () {
+        var minDate = $("#datemin" + $(this).data("basename")).text().trim();
+        var maxDate = $("#datemax" + $(this).data("basename")).text().trim();
+
+        let picker = window["picker_answer" + $(this).data("basename")];
+        let locale = picker.optionsStore.options.localization.locale;
+
+        // Setting minDate and maxDate on the Tempus Dominus instance
+        if (minDate) {
+            let min = moment(minDate.substr(0,10));
+            min.set({h: 0, m: 0, s: 0});
+            picker.optionsStore.options.restrictions.minDate = tempusDominus.DateTime.convert(min.toDate(), locale);
+        }
+        if (maxDate) {
+            let max = moment(maxDate.substr(0,10));
+            max.set({h: 23, m: 59, s: 59});
+            picker.optionsStore.options.restrictions.maxDate = tempusDominus.DateTime.convert(max.toDate(), locale);
+        }
+
+        // Check current date is within the valid range
+        if (minDate && picker.viewDate.isBefore(picker.optionsStore.options.restrictions.minDate)) {
+            picker.dates.setValue(picker.optionsStore.options.restrictions.minDate);
+        }
+        if (maxDate && picker.viewDate.isAfter(picker.optionsStore.options.restrictions.maxDate)) {
+            picker.dates.setValue(picker.optionsStore.options.restrictions.maxDate);
+        }
+
+        picker.display._update('all');
+    });
 
     /* need to launch EM each time is updated */
     $("#question"+qId).find('.date-timepicker-group').on('change.td', function(){

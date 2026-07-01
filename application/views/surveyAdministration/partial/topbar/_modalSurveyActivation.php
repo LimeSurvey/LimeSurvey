@@ -14,7 +14,7 @@
             //modal header
             App()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gt('Activate survey')]
+                ['modalTitle' => gT('Activate survey')]
             );
             ?>
 
@@ -23,11 +23,12 @@
 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"><?php eT("Cancel"); ?></button>
-
-                <button id="saveactivateBtn" type="button" class="btn btn-primary" onclick="activateWithOptions()">
-                    <?php eT("Save and activate"); ?>
-                </button>
+                <?php
+                App()->getController()->renderPartial(
+                    '/surveyAdministration/surveyActivation/_activateFooterBtns',
+                    []
+                );
+                ?>
             </div>
 
         </div>

@@ -20,7 +20,7 @@ class LSSodiumOld
 
         if ($this->bLibraryExists === false) {
             /*throw new SodiumException(sprintf(gT("This operation uses data encryption functions which require Sodium library to be installed, but library was not found. If you don't want to use data encryption, you have to disable encryption in attribute settings. Here is a link to the manual page:
-            %s", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));*/
+            %s", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));*/
         } else {
             $this->checkIfKeyExists();
         }
@@ -114,17 +114,16 @@ class LSSodiumOld
      *
      * Decrypt encrypted string.
      * @param string $sEncryptedString Encrypted string to decrypt
-     * @param bool $bReturnFalseIfError false by default. If TRUE, return false in case of error (bad decryption). Else, return given $encryptedInput value
-     * @return string Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or inpyt encryptedString
-     * @throws SodiumException
+     * @return string Return decrypted value (string or unserialized object) if succeeded, or empty string if library is missing, or the input string itself if empty/null.
+     * @throws SodiumException If decryption fails (e.g. wrong key)
      */
-    public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string
+    public function decrypt($sEncryptedString): string
     {
         if ($this->bLibraryExists === true) {
             if ($sEncryptedString && $sEncryptedString !== 'null') {
                 $plaintext = ParagonIE_Sodium_Compat::crypto_sign_open(base64_decode($sEncryptedString), $this->sEncryptionPublicKey);
                 if ($plaintext === false) {
-                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
+                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));
                 } else {
                     return $plaintext;
                 }
@@ -158,7 +157,7 @@ class LSSodiumOld
         $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             . "/*" . "\n"
             . " * LimeSurvey" . "\n"
-            . " * Copyright (C) 2007-2019 The LimeSurvey Project Team / Carsten Schmitz" . "\n"
+            . " * Copyright (C) 2007-2026 The LimeSurvey Project Team" . "\n"
             . " * All rights reserved." . "\n"
             . " * License: GNU/GPL License v3 or later, see LICENSE.php" . "\n"
             . " * LimeSurvey is free software. This version may have been modified pursuant" . "\n"

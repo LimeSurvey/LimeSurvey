@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [{
-                token: "comment.doc.tag",
-                regex: "@[\\w\\d_]+" // TODO: fix email addresses
-            },
-            DocCommentHighlightRules.getTagRule(),
+        "start": [
             {
-                defaultToken: "comment.doc",
+                token: "comment.doc.tag",
+                regex: "@\\w+(?=\\s|$)"
+            }, DocCommentHighlightRules.getTagRule(), {
+                defaultToken: "comment.doc.body",
                 caseInsensitive: true
-            }]
+            }
+        ]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc",
-        regex: "\\/\\*(?=\\*)",
+        token: "comment.doc", // doc comment
+        regex: /\/\*\*(?!\/)/,
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc",
+        token: "comment.doc", // closing comment
         regex: "\\*\\/",
         next: start
     };
@@ -44,6 +44,7 @@ var oop = require("../lib/oop");
 var DocCommentHighlightRules = require("./doc_comment_highlight_rules").DocCommentHighlightRules;
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var JavaHighlightRules = function () {
+    var identifierRe = "[a-zA-Z_$][a-zA-Z0-9_$]*";
     var keywords = ("abstract|continue|for|new|switch|" +
         "assert|default|goto|package|synchronized|" +
         "boolean|do|if|private|this|" +
@@ -54,7 +55,8 @@ var JavaHighlightRules = function () {
         "char|final|interface|static|void|" +
         "class|finally|long|strictfp|volatile|" +
         "const|float|native|super|while|" +
-        "var");
+        "yield|when|record|var|" +
+        "permits|(?:non\\-)?sealed");
     var buildinConstants = ("null|Infinity|NaN|undefined");
     var langClasses = ("AbstractMethodError|AssertionError|ClassCircularityError|" +
         "ClassFormatError|Deprecated|EnumConstantNotPresentException|" +
@@ -82,50 +84,33 @@ var JavaHighlightRules = function () {
         "Cloneable|Class|CharSequence|Comparable|String|Object");
     var keywordMapper = this.createKeywordMapper({
         "variable.language": "this",
-        "keyword": keywords,
         "constant.language": buildinConstants,
         "support.function": langClasses
     }, "identifier");
     this.$rules = {
         "start": [
+            { include: "comments" },
+            { include: "multiline-strings" },
+            { include: "strings" },
+            { include: "constants" },
             {
-                token: "comment",
-                regex: "\\/\\/.*$"
-            },
-            DocCommentHighlightRules.getStartRule("doc-start"),
-            {
-                token: "comment",
-                regex: "\\/\\*",
-                next: "comment"
-            }, {
-                token: "string",
-                regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
-            }, {
-                token: "string",
-                regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
-            }, {
-                token: "constant.numeric",
-                regex: /0(?:[xX][0-9a-fA-F][0-9a-fA-F_]*|[bB][01][01_]*)[LlSsDdFfYy]?\b/
-            }, {
-                token: "constant.numeric",
-                regex: /[+-]?\d[\d_]*(?:(?:\.[\d_]*)?(?:[eE][+-]?[\d_]+)?)?[LlSsDdFfYy]?\b/
-            }, {
-                token: "constant.language.boolean",
-                regex: "(?:true|false)\\b"
-            }, {
                 regex: "(open(?:\\s+))?module(?=\\s*\\w)",
                 token: "keyword",
                 next: [{
                         regex: "{",
                         token: "paren.lparen",
-                        next: [{
+                        push: [
+                            {
                                 regex: "}",
                                 token: "paren.rparen",
-                                next: "start"
-                            }, {
+                                next: "pop"
+                            },
+                            { include: "comments" },
+                            {
                                 regex: "\\b(requires|transitive|exports|opens|to|uses|provides|with)\\b",
                                 token: "keyword"
-                            }]
+                            }
+                        ]
                     }, {
                         token: "text",
                         regex: "\\s+"
@@ -139,12 +124,162 @@ var JavaHighlightRules = function () {
                         token: "text",
                         regex: "\\s+"
                     }, {
-                        regex: "",
+                        regex: "", // exit if there is anything else
                         next: "start"
                     }]
+            },
+            { include: "statements" }
+        ],
+        "comments": [
+            {
+                token: "comment",
+                regex: "\\/\\/.*$"
+            },
+            {
+                token: "comment.doc", // doc comment
+                regex: /\/\*\*(?!\/)/,
+                push: "doc-start"
+            },
+            {
+                token: "comment", // multi line comment
+                regex: "\\/\\*",
+                push: [
+                    {
+                        token: "comment", // closing comment
+                        regex: "\\*\\/",
+                        next: "pop"
+                    }, {
+                        defaultToken: "comment"
+                    }
+                ]
+            },
+        ],
+        "strings": [
+            {
+                token: ["punctuation", "string"],
+                regex: /(\.)(")/,
+                push: [
+                    {
+                        token: "lparen",
+                        regex: /\\\{/,
+                        push: [
+                            {
+                                token: "text",
+                                regex: /$/,
+                                next: "start"
+                            }, {
+                                token: "rparen",
+                                regex: /}/,
+                                next: "pop"
+                            }, {
+                                include: "strings"
+                            }, {
+                                include: "constants"
+                            }, {
+                                include: "statements"
+                            }
+                        ]
+                    }, {
+                        token: "string",
+                        regex: /"/,
+                        next: "pop"
+                    }, {
+                        defaultToken: "string"
+                    }
+                ]
             }, {
-                token: keywordMapper,
-                regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+                token: "string", // single line
+                regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
+            }, {
+                token: "string", // single line
+                regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
+            }
+        ],
+        "multiline-strings": [
+            {
+                token: ["punctuation", "string"],
+                regex: /(\.)(""")/,
+                push: [
+                    {
+                        token: "string",
+                        regex: '"""',
+                        next: "pop"
+                    }, {
+                        token: "lparen",
+                        regex: /\\\{/,
+                        push: [
+                            {
+                                token: "text",
+                                regex: /$/,
+                                next: "start"
+                            }, {
+                                token: "rparen",
+                                regex: /}/,
+                                next: "pop"
+                            }, {
+                                include: "multiline-strings"
+                            }, {
+                                include: "strings"
+                            }, {
+                                include: "constants"
+                            }, {
+                                include: "statements"
+                            }
+                        ]
+                    }, {
+                        token: "constant.language.escape",
+                        regex: /\\./
+                    }, {
+                        defaultToken: "string"
+                    }
+                ]
+            },
+            {
+                token: "string",
+                regex: '"""',
+                push: [
+                    {
+                        token: "string",
+                        regex: '"""',
+                        next: "pop"
+                    }, {
+                        token: "constant.language.escape",
+                        regex: /\\./
+                    }, {
+                        defaultToken: "string"
+                    }
+                ]
+            }
+        ],
+        "constants": [
+            {
+                token: "constant.numeric", // hex
+                regex: /0(?:[xX][0-9a-fA-F][0-9a-fA-F_]*|[bB][01][01_]*)[LlSsDdFfYy]?\b/
+            }, {
+                token: "constant.numeric", // float
+                regex: /[+-]?\d[\d_]*(?:(?:\.[\d_]*)?(?:[eE][+-]?[\d_]+)?)?[LlSsDdFfYy]?\b/
+            }, {
+                token: "constant.language.boolean",
+                regex: "(?:true|false)\\b"
+            }
+        ],
+        "statements": [
+            {
+                token: ["keyword", "text", "identifier"],
+                regex: "(record)(\\s+)(" + identifierRe + ")\\b"
+            },
+            {
+                token: "keyword",
+                regex: "(?:" + keywords + ")\\b"
+            }, {
+                token: "storage.type.annotation",
+                regex: "@" + identifierRe + "\\b"
+            }, {
+                token: "entity.name.function",
+                regex: identifierRe + "(?=\\()"
+            }, {
+                token: keywordMapper, // TODO: Unicode escape sequences
+                regex: identifierRe + "\\b"
             }, {
                 token: "keyword.operator",
                 regex: "!|\\$|%|&|\\||\\^|\\*|\\/|\\-\\-|\\-|\\+\\+|\\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?|\\:|\\*=|\\/=|%=|\\+=|\\-=|&=|\\|=|\\^=|\\b(?:in|instanceof|new|delete|typeof|void)"
@@ -158,18 +293,9 @@ var JavaHighlightRules = function () {
                 token: "text",
                 regex: "\\s+"
             }
-        ],
-        "comment": [
-            {
-                token: "comment",
-                regex: "\\*\\/",
-                next: "start"
-            }, {
-                defaultToken: "comment"
-            }
         ]
     };
-    this.embedRules(DocCommentHighlightRules, "doc-", [DocCommentHighlightRules.getEndRule("start")]);
+    this.embedRules(DocCommentHighlightRules, "doc-", [DocCommentHighlightRules.getEndRule("pop")]);
     this.normalizeRules();
 };
 oop.inherits(JavaHighlightRules, TextHighlightRules);
@@ -228,10 +354,10 @@ var DroolsHighlightRules = function () {
     }, "identifier");
     var stringRules = function () {
         return [{
-                token: "string",
+                token: "string", // single line
                 regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
             }, {
-                token: "string",
+                token: "string", // single line
                 regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
             }];
     };
@@ -242,14 +368,14 @@ var DroolsHighlightRules = function () {
             },
             DocCommentHighlightRules.getStartRule("doc-start"),
             {
-                token: "comment",
+                token: "comment", // multi line comment
                 regex: "\\/\\*",
                 next: blockCommentRules
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // hex
                 regex: "0[xX][0-9a-fA-F]+\\b"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: "constant.language.boolean",
@@ -259,7 +385,7 @@ var DroolsHighlightRules = function () {
     var blockCommentRules = function (returnRule) {
         return [
             {
-                token: "comment.block",
+                token: "comment.block", // closing comment
                 regex: "\\*\\/",
                 next: returnRule
             }, {
@@ -382,11 +508,27 @@ oop.inherits(FoldMode, BaseFoldMode);
 (function () {
     this.foldingStartMarker = /\b(rule|declare|query|when|then)\b/;
     this.foldingStopMarker = /\bend\b/;
+    this.importRegex = /^import /;
+    this.globalRegex = /^global /;
+    this.getBaseFoldWidget = this.getFoldWidget;
+    this.getFoldWidget = function (session, foldStyle, row) {
+        if (foldStyle === "markbegin") {
+            var line = session.getLine(row);
+            if (this.importRegex.test(line)) {
+                if (row === 0 || !this.importRegex.test(session.getLine(row - 1)))
+                    return "start";
+            }
+            if (this.globalRegex.test(line)) {
+                if (row === 0 || !this.globalRegex.test(session.getLine(row - 1)))
+                    return "start";
+            }
+        }
+        return this.getBaseFoldWidget(session, foldStyle, row);
+    };
     this.getFoldWidgetRange = function (session, foldStyle, row) {
         var line = session.getLine(row);
         var match = line.match(this.foldingStartMarker);
         if (match) {
-            var i = match.index;
             if (match[1]) {
                 var position = { row: row, column: line.length };
                 var iterator = new TokenIterator(session, position.row, position.column);
@@ -406,8 +548,34 @@ oop.inherits(FoldMode, BaseFoldMode);
                 }
             }
         }
+        match = line.match(this.importRegex);
+        if (match) {
+            return getMatchedFoldRange(session, this.importRegex, match, row);
+        }
+        match = line.match(this.globalRegex);
+        if (match) {
+            return getMatchedFoldRange(session, this.globalRegex, match, row);
+        }
     };
 }).call(FoldMode.prototype);
+function getMatchedFoldRange(session, regex, match, row) {
+    var startColumn = match[0].length;
+    var maxRow = session.getLength();
+    var startRow = row;
+    var endRow = row;
+    while (++row < maxRow) {
+        var line = session.getLine(row);
+        if (line.match(/^\s*$/))
+            continue;
+        if (!line.match(regex))
+            break;
+        endRow = row;
+    }
+    if (endRow > startRow) {
+        var endColumn = session.getLine(endRow).length;
+        return new Range(startRow, startColumn, endRow, endColumn);
+    }
+}
 
 });
 

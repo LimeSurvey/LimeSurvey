@@ -7,14 +7,15 @@ Yii::app()->getController()->renderPartial(
 
 <div class="modal-body">
     <table class="table table-striped">
+        <caption class="visually-hidden"><?=gT('User details')?></caption>
         <tr>
             <td><?=gT('User groups:')?></td>
-            <td><?=join(', ',$usergroups)?></td>
+            <td><?=CHTml::encode(join(', ', $usergroups))?></td>
         </tr>
-        <?php if ($oUser->parentUser): ?>
+        <?php if ($oUser->parentUser) : ?>
             <tr>
                 <td><?=gT('Created by:')?></td>
-                <td><?=$oUser->parentUser['full_name']?></td>
+                <td><?=CHTml::encode($oUser->parentUser['full_name'])?></td>
             </tr>
         <?php endif; ?>
         <tr>

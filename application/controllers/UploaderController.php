@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2014 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2014 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -32,7 +32,7 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = Yii::app()->session['survey_' . $surveyid]['s_lang'] ?? "";
+        $sLanguage = Yii::app()->session['responses_' . $surveyid]['s_lang'] ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -51,7 +51,7 @@ class UploaderController extends SurveyController
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
         $sFileGetContentFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileGetContent);
         $sFileNameFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileName);
-        $sFieldNameFiltered = preg_replace('/[^X0-9]/', '', (string) $sFieldName);
+        $sFieldNameFiltered = preg_replace('/[^Q0-9]/', '', (string) $sFieldName);
         if ($sFileGetContent != $sFileGetContentFiltered || $sFileName != $sFileNameFiltered || $sFieldName != $sFieldNameFiltered) {
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
@@ -112,7 +112,7 @@ class UploaderController extends SurveyController
             if (@unlink($sFileDir . $sFileNameFiltered)) {
                 echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName));
             } else {
-                echo gT('Oops, There was an error deleting the file');
+                echo gT('There was an error deleting the file.');
             }
             Yii::app()->end();
         }
@@ -123,7 +123,7 @@ class UploaderController extends SurveyController
             // That probably indicates post_max_size has been exceeded.
             // https://www.php.net/manual/en/ini.core.php#ini.post-max-size
             if (empty($_POST) && empty($_FILES)) {
-                if (YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId())) {
+                if (YII_DEBUG || Permission::isForcedSuperAdmin(Permission::model()->getUserId())) {
                     throw new CHttpException(500, "Empty \$_POST and \$_FILES. Probably post_max_size was exceeded.");
                 }
                 $return = array(
@@ -143,11 +143,13 @@ class UploaderController extends SurveyController
             $filename = sanitize_filename($_FILES['uploadfile']['name'], false, false, true);
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
-            $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
-            if (!isset($aFieldMap[$sFieldName])) {
-                throw new CHttpException(400); // See for debug > 1
+            /* Find the question by sFieldName : must be a upload question type, and id is end of sFieldName in $surveyid*/
+            $qid = substr(explode("_", $sFieldName)[0], 1);
+            if (empty($qid) || !ctype_digit($qid)) {
+                throw new CHttpException(400);
             }
-            $aAttributes = QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
+            $oQuestion = self::getQuestion($surveyid, $qid);
+            $aAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
             if ($maxfilesize <= 0) {
                 $maxfilesize = getMaximumFileUploadSize() / 1024;
@@ -167,40 +169,105 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
             /* Upload error due file size */
-            /* and check too $aAttributes['max_filesize'] */
-            if ($size > $maxfilesize || $_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2) {
+            if ($_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2) {
                 $return = array(
                     "success" => false,
-                    "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                    "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed."), $maxfilesize)
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
 
+            /* Some information for plugin */
             $valid_extensions_array = explode(",", (string) $aAttributes['allowed_filetypes']);
             $valid_extensions_array = array_map('trim', $valid_extensions_array);
             $pathinfo = pathinfo((string) $_FILES['uploadfile']['name']);
             $ext = strtolower($pathinfo['extension']);
-            $cleanExt = CHtml::encode($ext);
-            $randfilename = 'futmp_' . randomChars(15) . '_' . $pathinfo['extension'];
+            $randfilename = 'futmp_' . randomChars(15) . '_' . $ext;
             $randfileloc = $sTempUploadDir . $randfilename;
+            // event to allow updating some part
+            $event = new PluginEvent('beforeProcessFileUpload');
+            /* Current state */
+            $event->set('surveyId', $surveyid);
+            $event->set('responseId', Yii::app()->session['responses_' . $surveyid]['srid'] ?? null); // NULL if not exist
+            $event->set('qid', $oQuestion->qid);
+            $event->set('preview', $preview);
+            $event->set('fieldname', $sFieldName);
+            $event->set('maxfilesize', $maxfilesize);
+            $event->set('valid_extensions_array', $valid_extensions_array);
+            $event->set('success', true);
+
+            /* The file */
+            $event->set('filename', $filename);
+            $event->set('size', $size);
+            $event->set('tmp_name', $_FILES['uploadfile']['tmp_name']);
+            $event->set('ext', $ext);
+            $event->set('randfilename', $randfilename);
+            $event->set('randfileloc', $randfileloc);
+
+            App()->getPluginManager()->dispatchEvent($event);
+            /* New state */
+            $success = $event->get('success', true);
+            $message = $event->get('msg', '');
+            $disableCheck = $event->get('disableCheck', false);
+            $moveFile = $event->get('movefile', true);
+            /* New file */
+            $filename = $event->get('filename');
+            $ext = $event->get('ext');
+            $size = $event->get('size');
+            $uploadfile_tmp_name = $event->get('tmp_name');
+            $randfilename = $event->get('randfilename');
+            $randfileloc = $event->get('randfileloc');
+
+            /* @var string used to show error on extension */
+            $cleanExt = CHtml::encode($ext);
+
+            if ($uploadfile_tmp_name !== $_FILES['uploadfile']['tmp_name']) {
+                @unlink($_FILES['uploadfile']['tmp_name']);
+            }
+            if (!$success) {
+                $return = array(
+                    "success" => false,
+                    "msg" => !empty($message) ? $message : gT("An unknown error occurred")
+                );
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
+            if (!is_file($uploadfile_tmp_name)) {
+                $return = array(
+                    "success" => false,
+                    "msg" => !empty($message) ? $message : gT("An unknown error occurred")
+                );
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
+
+            /* Check size against $aAttributes['max_filesize'] */
+            if (!$disableCheck && $size > $maxfilesize) {
+                $return = array(
+                    "success" => false,
+                    "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed."), $maxfilesize)
+                );
+                //header('Content-Type: application/json');
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
 
             // check to see that this file type is allowed
             // it is also  checked at the client side, but jst double checking
-            if (!in_array($ext, $valid_extensions_array)) {
+            if (!$disableCheck && !in_array($ext, $valid_extensions_array)) {
                 $return = array(
-                                "success" => false,
-                                "msg" => sprintf(gT("Sorry, this file extension (%s) is not allowed!"), $cleanExt)
-                            );
+                    "success" => false,
+                    "msg" => sprintf(gT("Sorry, this file extension (%s) is not allowed!"), $cleanExt)
+                );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
             /* extension checked : check mimeType */
             $extByMimeType = LSFileHelper::getExtensionByMimeType($_FILES['uploadfile']['tmp_name'], null);
-            $disableCheck = false;
-            if (is_null($extByMimeType)) {
+            if (!$disableCheck && is_null($extByMimeType)) {
                 /* Lack of finfo_open or mime_content_type ? But can be a not found extension too.*/
                 /* Check if can find mime type of favicon.ico , without extension */
                 /* Use CFileHelper because sure it work with included */
@@ -221,25 +288,44 @@ class UploaderController extends SurveyController
                     "success" => false,
                     "msg" => sprintf(gT("Sorry, unable to check extension of this file type %s."), $realMimeType),
                 );
-                //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
             if (!$disableCheck && !in_array($extByMimeType, $valid_extensions_array)) {
                 $realMimeType = LSFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null, false);
+                /* text/plain is a generic MIME type covering many plain-text formats (csv, tsv, etc.).
+                 * PHP's finfo frequently returns text/plain for CSV files instead of text/csv.
+                 * If the file extension was already validated as allowed, permit it through.
+                 * Execution is not a risk: files are stored as futmp_<random>_<ext> (no dot before
+                 * extension) so the web server will never treat them as executable scripts.
+                 * @see https://bugs.limesurvey.org/view.php?id=15946 */
+                $isPlainTextMime = ($extByMimeType === 'txt' && in_array($ext, $valid_extensions_array));
+                if (!$isPlainTextMime) {
+                    $return = array(
+                        "success" => false,
+                        "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType, $extByMimeType)
+                    );
+                    echo ls_json_encode($return);
+                    Yii::app()->end();
+                }
+            }
+            /* Plugin already move file : return status */
+            if (!$moveFile) {
                 $return = array(
-                    "success" => false,
-                    "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType, $extByMimeType)
+                    "success"  => true,
+                    "size"     => $size,
+                    "name"     => $filename,
+                    "ext"      => $cleanExt,
+                    "filename" => $randfilename,
+                    "msg"      =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
                 );
-                //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
-
             // if everything went fine and the file was uploaded successfully,
             // If this is just a preview, don't save the file
             if ($preview) {
-                if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
+                if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
                     /** @psalm-suppress UndefinedVariable TODO: Dead code? */
                     $return = array(
                                 "success"       => true,
@@ -248,12 +334,11 @@ class UploaderController extends SurveyController
                                 "name"          => rawurlencode(basename((string) $filename)),
                                 "ext"           => $cleanExt,
                                 "filename"      => $randfilename,
-                                "msg"           => gT("The file has been successfully uploaded.")
+                                "msg"           =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
                             );
                     // TODO : unlink this file since this is just a preview. But we can do it only if it's not needed, and still needed to have the file content
                     // Maybe use a javascript 'onunload' on preview question/group
                     // unlink($randfileloc)
-                    //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
                 }
@@ -269,28 +354,28 @@ class UploaderController extends SurveyController
                     echo ls_json_encode($return);
                     Yii::app()->end();
                 }
-                if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
+                if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
                     $return = array(
                         "success"  => true,
                         "size"     => $size,
                         "name"     => $filename,
                         "ext"      => $cleanExt,
                         "filename" => $randfilename,
-                        "msg"      => gT("The file has been successfully uploaded.")
+                        "msg"      =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
                 }
             }
-            /* We get there : an unknow error happen … maybe a move_uploaded_file error (with debug=0) */
+            /* We get there : an unknown error happened … maybe a move_uploaded_file error (with debug=0) */
             $return = array(
                 "success" => false,
                 "msg" => gT("An unknown error occurred")
             );
             /* Add information for for user forcedSuperAdmin right */
             if (Permission::isForcedSuperAdmin(Permission::model()->getUserId())) {
-                $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."), $_FILES['uploadfile']['tmp_name'], $randfileloc);
+                $return['msg'] = sprintf(gT("An unknown error occurred when moving file %s to %s."), $uploadfile_tmp_name, $randfileloc);
             }
             //header('Content-Type: application/json');
             echo ls_json_encode($return);
@@ -347,7 +432,8 @@ class UploaderController extends SurveyController
 
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
-        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qid);
+        $oQuestion = self::getQuestion($surveyid, $qid);
+        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
         $qidattributes['max_filesize'] = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize() / 1024));
         if ($qidattributes['max_filesize'] <= 0) {
             $qidattributes['max_filesize'] = getMaximumFileUploadSize() / 1024;
@@ -393,5 +479,27 @@ class UploaderController extends SurveyController
         </html>';
         App()->getClientScript()->render($body);
         echo $body;
+    }
+
+    /**
+     * Helper function to get question
+     * @param integer $surveyid the survey id
+     * @param integer $qid the question id
+     * @throw CHttpException if question is invalid
+     * @return \Question
+     */
+    private static function getQuestion($surveyid, $qid)
+    {
+        $oQuestion = Question::model()->find("sid = :sid and qid = :qid and type = :type", [":sid" => $surveyid, ":qid" => $qid, ":type" =>  Question::QT_VERTICAL_FILE_UPLOAD]);
+        if ($oQuestion) {
+            return $oQuestion;
+        }
+        /* Log as warning */
+        \Yii::log(sprintf("Invalid upload question %s in survey %s", $qid, $surveyid), 'warning', 'application.UploaderController');
+        /* Show information if user have surveycontent/update (can set question type) */
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+            throw new CHttpException(400, sprintf(gT("Invalid upload question %s in survey %s"), $qid, $surveyid));
+        }
+        throw new CHttpException(400);
     }
 }

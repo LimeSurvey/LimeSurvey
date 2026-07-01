@@ -38,8 +38,12 @@ class PdfWriter extends Writer
         $this->aGroupMap = $this->setGroupMap($survey, $oOptions);
     }
 
-    public function outputRecord($headers, $values, FormattingOptions $oOptions)
-    {
+    public function outputRecord(
+        $headers,
+        $values,
+        FormattingOptions $oOptions,
+        $fieldNames = []
+    ) {
         $this->rowCounter++;
         if ($oOptions->answerFormat == 'short') {
             $pdfstring = '';

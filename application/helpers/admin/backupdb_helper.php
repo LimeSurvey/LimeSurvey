@@ -2,7 +2,7 @@
 
     /*
     * LimeSurvey
-    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2007-2026 The LimeSurvey Project Team
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant
@@ -53,7 +53,7 @@ function _outputDBDescription($sDbName, $bAllowExportAllDb)
     if (!$bAllowExportAllDb) {
         $sOutput = '-- Only prefixed tables with: ' . Yii::app()->db->tablePrefix . "\n";
     }
-    $sOutput .= '-- Date of Dump: ' . dateShift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust')) . "\n";
+    $sOutput .= '-- Date of Dump: ' . dateShift(gmdate('d-M-Y'), 'd-M-Y') . "\n";
     $sOutput .= '--' . "\n";
     return $sOutput;
 }
@@ -174,8 +174,8 @@ function _outputRecords($sTableName, $aFieldNames, $aRecords)
 
 function _countNumberOfEntries($sTableName)
 {
-    $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM ' . Yii::app()->db->quoteTableName($sTableName))->queryRow();
-    $iNumRows = $aNumRows['COUNT(*)'];
+    $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) AS cnt FROM ' . Yii::app()->db->quoteTableName($sTableName))->queryRow();
+    $iNumRows = $aNumRows['cnt'];
     return $iNumRows;
 }
 
@@ -200,4 +200,32 @@ function _getDbName()
     $sDbName = $aMatches[1];
 
     return $sDbName;
+}
+
+/**
+ * Get database size in MB
+ */
+function getDatabaseSize()
+{
+    $dbName = _getDbName();
+
+    // Run the query using Yii's DB component
+    $result = Yii::app()->db->createCommand("
+        SELECT 
+            table_schema AS `Database`, 
+            ROUND(SUM(data_length) / 1024 / 1024, 2) AS `Size (MB)`
+        FROM 
+            information_schema.tables 
+        WHERE 
+            table_schema = :dbName
+        GROUP BY 
+            table_schema;
+    ")->bindValue(':dbName', $dbName)->queryRow();
+
+    if ($result) {
+        // echo "Database: " . $result['Database'] . "<br>";
+        return $result['Size (MB)']; // Size in MB
+    } else {
+        return null;
+    }
 }

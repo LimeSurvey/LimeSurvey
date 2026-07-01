@@ -13,15 +13,34 @@ class CLSGridView extends TbGridView
      * An array of Javascript functions that will be passed to afterAjaxUpdate
      * @var array
      */
-    public $lsAfterAjaxUpdate;
+    public array $lsAfterAjaxUpdate;
+
+    /**
+     * An array of columns that should be selectable for display
+     * @var array
+     */
+    public array $lsAdditionalColumns = [];
+
+    /**
+     * An array of columns that is selected for display
+     * @var array
+     */
+    public array $lsAdditionalColumnsSelected = [];
 
     /**
      * string for a link that is on every row
      * @var string
      */
-    public $rowLink;
+    public string $rowLink;
 
     /**
+     * Optional table caption. When set, a <caption> element is rendered inside the grid table.
+     * @var string|null
+     */
+    public $caption;
+
+    /**
+     *
      * Initializes the widget.
      * @throws CException
      */
@@ -31,6 +50,7 @@ class CLSGridView extends TbGridView
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = 'grid-view-ls';
+        $this->htmlOptions['data-select-all-label'] = gT('Select all');
         $classes = ['table', 'table-hover'];
         $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
         $this->rowLink();
@@ -47,10 +67,34 @@ class CLSGridView extends TbGridView
     }
 
     /**
+     * Renders the data items for the grid view.
+     * Overrides parent to output an optional table caption after the opening <table> tag.
+     */
+    public function renderItems()
+    {
+        if ($this->dataProvider->getItemCount() > 0 || $this->showTableOnEmpty) {
+            echo "<table class=\"{$this->itemsCssClass}\">\n";
+            if (!empty($this->caption)) {
+                echo CHtml::tag('caption', ['class' => 'visually-hidden'], CHtml::encode($this->caption)) . "\n";
+            }
+            $this->renderTableHeader();
+            ob_start();
+            $this->renderTableBody();
+            $body = ob_get_clean();
+            $this->renderTableFooter();
+            echo $body; // TFOOT must appear before TBODY according to the standard.
+            echo "</table>";
+        } else {
+            $this->renderEmptyText();
+        }
+    }
+
+    /**
      * Creates column objects and initializes them.
      */
     protected function initColumns()
     {
+        $this->appendAdditionalColumns();
         foreach ($this->columns as $i => $column) {
             if (is_array($column) && !isset($column['class'])) {
                 $this->columns[$i]['class'] = '\TbDataColumn';
@@ -65,17 +109,33 @@ class CLSGridView extends TbGridView
      */
     protected function lsAfterAjaxUpdate(): void
     {
-        // this will override afterAjaxUpdate if lsAfterAjaxUpdate is defined
-        // please do not override afterAjaxUpdate by default to keep compatibility with base functionality of yii
-        if (isset($this->lsAfterAjaxUpdate)) {
-            $this->afterAjaxUpdate = 'function(id, data){';
-            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
-                $this->afterAjaxUpdate .= $jsCode;
-            }
-            $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
-            $this->afterAjaxUpdate .= 'LS.rowlink.create();';
-            $this->afterAjaxUpdate .= '}';
+        // Non-AJAX grids have no afterAjaxUpdate callback to build
+        if ($this->ajaxUpdate === false) {
+            return;
         }
+
+        $parts = [];
+
+        // Preserve any existing afterAjaxUpdate set by the caller
+        if ($this->afterAjaxUpdate !== null) {
+            $definedFunction = ($this->afterAjaxUpdate instanceof CJavaScriptExpression)
+                ? (string) $this->afterAjaxUpdate // has a __toString magic function which returns the code
+                : $this->afterAjaxUpdate;
+            // execute the defined function preserving `this` context from the grid settings object
+            $parts[] = '(' . $definedFunction . ').call(this, id, data);';
+        }
+
+        // Add per-grid custom snippets from lsAfterAjaxUpdate
+        if (isset($this->lsAfterAjaxUpdate)) {
+            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
+                $parts[] = $jsCode;
+            }
+        }
+
+        // Always run the standard LS post-update handler
+        $parts[] = 'LS.gridView.afterAjaxUpdate(id, data);';
+
+        $this->afterAjaxUpdate = 'function(id, data){' . implode('', $parts) . '}';
     }
 
     /**
@@ -96,24 +156,43 @@ class CLSGridView extends TbGridView
 
     private function registerGridviewScripts()
     {
+        $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
+
         // Scrollbar
         App()->clientScript->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
+            $extensionsUrl . 'gridScrollbar.js',
             CClientScript::POS_BEGIN
         );
-        // changePageSize
-        $script = '
-			jQuery(document).on("change", "#' . $this->id . ' .changePageSize", function(){
-				var pageSizeName = $(this).attr("name");
-				if (!pageSizeName) {
-					pageSizeName = "pageSize";
-				}
-				var data = $("#' . $this->id . ' .filters input, #' . $this->id . ' .filters select").serialize();
-				data += (data ? "&" : "") + pageSizeName + "=" + $(this).val();
-				$.fn.yiiGridView.update("' . $this->id . '", {data: data});
-			});
-		';
-        App()->getClientScript()->registerScript('pageChanger#' . $this->id, $script, LSYii_ClientScript::POS_POSTSCRIPT);
+        // Accessibility: restore focus to sort column after AJAX grid update
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'restoreFocusAfterSort.js',
+            CClientScript::POS_BEGIN
+        );
+        // Row link: make entire table rows clickable via data-rowlink attribute
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'rowLink.js',
+            CClientScript::POS_END
+        );
+        // Page size selector
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'changePageSize.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: aria-label for "Select all" checkboxes
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'ariaSelectAll.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: keyboard navigation and focus management for sort links
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'sortAccessibility.js',
+            CClientScript::POS_END
+        );
+        // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'afterAjaxUpdate.js',
+            CClientScript::POS_END
+        );
     }
 
     /**
@@ -180,5 +259,66 @@ class CLSGridView extends TbGridView
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
+    }
+
+    /**
+     * Appends columns to the gridview based on the selected columns of the columnFilter param.
+     * If available loads saved column filter from user settings.
+     * @return void
+     */
+    protected function appendAdditionalColumns(): void
+    {
+        if (empty($this->lsAdditionalColumns)) {
+            return;
+        }
+        $ajaxUpdate = (string) App()->request->getQuery('ajax');
+        if (!$this->dataProvider instanceof CActiveDataProvider) {
+            return;
+        }
+        $columns_filter_button = '<button role="button" type="button" aria-label="' . gT('Select columns') . '" class="btn b-0" data-bs-toggle="modal" data-bs-target="#column-filter-modal">
+                <i class="ri-layout-column-fill"></i>
+            </button>';
+        $this->columns[]  = [
+            'header'            => $columns_filter_button,
+            'name'              => 'dropdown_actions',
+            'value'             => '$data->buttons',
+            'type'              => 'raw',
+            'headerHtmlOptions' => ['class' => 'text-center ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
+            'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+            'filter'            => false
+        ];
+        /* Updating the columns to be added */
+        if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
+            $columnsSelected = (array) App()->request->getQuery('columnsSelected');
+            // If there are no columns selected, we delete the user setting.
+            if (empty($columnsSelected)) {
+                SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
+            } else {
+                SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
+            }
+        }
+        /* get the columns to be added */
+        $userColumns = SettingsUser::getUserSettingValue('gridview_columns_' . $this->ajaxUpdate);
+        if (!empty($userColumns)) {
+            $columnsSelected = json_decode($userColumns, false);
+            if ($columnsSelected !== null) {
+                $this->addColumns($columnsSelected);
+            }
+        }
+    }
+
+    protected function addColumns(array $selectedColumns): void
+    {
+        $additionalColumns = $this->lsAdditionalColumns;
+        foreach ($selectedColumns as $selectedColumn) {
+            $column_data = null;
+            if (isset($additionalColumns[$selectedColumn])) {
+                $column_data = $additionalColumns[$selectedColumn];
+            }
+            if (is_array($column_data)) {
+                $this->lsAdditionalColumnsSelected[] = $selectedColumn;
+                array_splice($this->columns, count($this->columns) - 2, 0, [$column_data]);
+            }
+        }
     }
 }

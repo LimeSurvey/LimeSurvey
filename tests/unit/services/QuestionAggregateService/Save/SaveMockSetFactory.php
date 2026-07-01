@@ -2,6 +2,7 @@
 
 namespace ls\tests\unit\services\QuestionAggregateService\Save;
 
+use LimeSurvey\Models\Services\QuestionAttributeHelper;
 use ls\tests\unit\services\QuestionAggregateService\Question\QuestionFactory;
 
 use QuestionAttribute;
@@ -24,7 +25,7 @@ class SaveMockSetFactory
     /**
      * @param ?SaveMockSet $init
      */
-    public function make(SaveMockSet $init = null): SaveMockSet
+    public function make(?SaveMockSet $init = null): SaveMockSet
     {
         $mockSet = new SaveMockSet;
 
@@ -66,7 +67,9 @@ class SaveMockSetFactory
         return Mockery::mock(
             AttributesService::class,
             [
-                $this->getMockModelQuestionAttribute()
+                $this->getMockModelQuestionAttribute(),
+                $this->getQuestionAttributeHelper(),
+                $this->getMockSurveyModel()
             ]
         )->makePartial();
     }
@@ -93,6 +96,18 @@ class SaveMockSetFactory
     private function getMockProxyExpressionManager(): ProxyExpressionManager
     {
         return Mockery::mock(ProxyExpressionManager::class)
+            ->makePartial();
+    }
+
+    private function getQuestionAttributeHelper()
+    {
+        return Mockery::mock(QuestionAttributeHelper::class)
+            ->makePartial();
+    }
+
+    private function getMockSurveyModel()
+    {
+        return Mockery::mock(\Survey::class)
             ->makePartial();
     }
 }

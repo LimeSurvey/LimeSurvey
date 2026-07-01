@@ -8,7 +8,7 @@
 "use strict";
 var CreatePDF = function(){
 
-    var doc = new jsPDF()
+    var doc = new jspdf.jsPDF()
     ,  promiseObjects = []
     ,  sizes = []
     ,  preparedPages = 0
@@ -16,22 +16,22 @@ var CreatePDF = function(){
     ,  responseMethod = ""
     //compile the image to pages of the pdf
     ,  compileCanvas = function(i, imgData){
-            //Calculate width and height in scale to DIN A4 relation
+            // Calculate width and height in scale to DIN A4 relation.
+            // We need to get the measures in mm, taking into account that
+            // the source image might not be in the same ratio as the DIN A4 page.
             var width, height,
                 h_max = 247, w_max = 180,
                 w_relative = ((w_max/imgData.sizes.w)),
                 h_relative = ((h_max/imgData.sizes.h));
 
-            if(imgData.sizes.h < imgData.sizes.w){
-                width = w_max;
-                height = Math.floor((imgData.sizes.h*w_relative));
-            } else {
+            // First we try to adjust the width to the DIN A4 page. If the height of the
+            // adjusted image is bigger than the DIN A4 page, we adjust the height.
+            width = w_max;
+            height = Math.floor((imgData.sizes.h*w_relative));
+            if (height > h_max) {
                 width = Math.floor((imgData.sizes.w*h_relative));
                 height = h_max;
             }
-
-            width = width>180 ? 180 : width;
-            height = height>247 ? 247 : height;
 
             doc.addImage(imgData.image, 'PNG', 15,25, width, height, null, 'FAST');
         }

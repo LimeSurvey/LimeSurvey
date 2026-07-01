@@ -64,10 +64,10 @@ class LSYiiApplicationTest extends TestBaseClass
     {
         $tmpPublicUrl = Yii::app()->getRequest()->getBaseUrl();
 
-        Yii::app()->getRequest()->baseUrl = 'absoluteRequest.example.com/';
+        Yii::app()->getRequest()->baseUrl = '/absoluteRequest';
         $url = Yii::app()->getPublicBaseUrl(true);
 
-        $this->assertSame($url, 'http://absoluteRequest.example.com/', 'Unexpected url. The url does not correspond to the one previously set.');
+        $this->assertSame('http://localhost/absoluteRequest', $url, 'Unexpected url. The url does not correspond to the one previously set.');
 
         // Reset original value.
         Yii::app()->getRequest()->baseUrl = $tmpPublicUrl;
@@ -158,7 +158,6 @@ class LSYiiApplicationTest extends TestBaseClass
     {
         $tmpConfigPublicUrl = Yii::app()->getConfig('publicurl');
         $tmpRequestPublicUrl = Yii::app()->getRequest()->getBaseUrl();
-        $tmpHostInfo = Yii::app()->getRequest()->getHostInfo();
 
         Yii::app()->setConfig('publicurl', 'http://www.example.com');
         Yii::app()->getRequest()->baseUrl = 'www.example.com';
@@ -173,6 +172,6 @@ class LSYiiApplicationTest extends TestBaseClass
         // Restore original values.
         Yii::app()->setConfig('publicurl', $tmpConfigPublicUrl);
         Yii::app()->getRequest()->baseUrl = $tmpRequestPublicUrl;
-        Yii::app()->getRequest()->hostInfo = $tmpHostInfo;
+        self::$testHelper->resetHostInfo();
     }
 }

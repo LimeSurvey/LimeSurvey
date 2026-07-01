@@ -10,7 +10,7 @@ trait OpHandlerExceptionTrait
     /**
      * @param OpInterface $op
      * @param string $name
-     * @return void
+     * @return never
      * @throws OpHandlerException
      */
     private function throwNoValuesException(OpInterface $op, string $name = '')
@@ -29,24 +29,5 @@ trait OpHandlerExceptionTrait
         }
 
         throw new OpHandlerException($msg);
-    }
-
-    /**
-     * @param OpInterface $op
-     * @param string $param
-     * @return void
-     * @throws OpHandlerException
-     */
-    private function throwRequiredParamException(
-        OpInterface $op,
-        string $param
-    ) {
-        throw new OpHandlerException(
-            sprintf(
-                'Required parameter "%s" is missing. Entity "%s"',
-                $param,
-                $op->getEntityType()
-            )
-        );
     }
 }

@@ -127,6 +127,32 @@
     events.forEach(function (e) {
       forEachEls(els, function (el) {
         el.addEventListener(e, listener, useCapture);
+
+        // Store the event handler so we can unbind it later
+        if (!el.eventHandlers) {
+          el.eventHandlers = {};
+        }
+        if (!el.eventHandlers[e]) {
+          el.eventHandlers[e] = [];
+        }
+        el.eventHandlers[e].push(listener);
+      });
+    });
+  }
+
+  // Function to remove event listeners
+  function off(els, events, useCapture) {
+    events = typeof events === "string" ? events.split(" ") : events;
+    events.forEach(function (e) {
+      forEachEls(els, function (el) {
+        // Retrieve and remove the event listener
+        if (el.eventHandlers && el.eventHandlers[e]) {
+          el.eventHandlers[e].forEach(function (handler) {
+            el.removeEventListener(e, handler, useCapture);
+          });
+          // Clear the stored event handlers for this event type
+          el.eventHandlers[e] = [];
+        }
       });
     });
   }
@@ -660,6 +686,7 @@
     var _this = this;
 
     return function (el) {
+      off(el, "click");
       on(el, "click", function (event) {
         if (isDefaultPrevented(event)) {
           return;
@@ -667,6 +694,7 @@
 
         linkAction.call(_this, el, event);
       });
+      off(el, "keyup");
       on(el, "keyup", function (event) {
         if (isDefaultPrevented(event)) {
           return;
@@ -1096,15 +1124,6 @@
     };
   }
 
-  function off (els, events, listener, useCapture) {
-    events = typeof events === "string" ? events.split(" ") : events;
-    events.forEach(function (e) {
-      forEachEls(els, function (el) {
-        el.removeEventListener(e, listener, useCapture);
-      });
-    });
-  }
-
   var attrClick$2 = "data-pjax-click-state";
   var attrKey$1 = "data-pjax-keyup-state";
 
@@ -1154,36 +1173,12 @@
     this.loadUrl(el.href, clone(this.options));
   };
 
-  var isDefaultPrevented$2 = function isDefaultPrevented(event) {
-    return event.defaultPrevented || event.returnValue === false;
-  };
-
   function getUnattachLink () {
     var _this = this;
 
     return function (el) {
-      off(el, "click", function (event) {
-        if (isDefaultPrevented$2(event)) {
-          return;
-        }
-
-        linkAction$1.call(_this, el, event);
-      });
-      off(el, "keyup", function (event) {
-        if (isDefaultPrevented$2(event)) {
-          return;
-        } // Don’t break browser special behavior on links (like page in new window)
-
-
-        if (event.which > 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-          el.setAttribute(attrKey$1, "modifier");
-          return;
-        }
-
-        if (event.keyCode == 13) {
-          linkAction$1.call(_this, el, event);
-        }
-      });
+      off(el, "click");
+      off(el, "keyup");
     };
   }
 
@@ -1251,33 +1246,24 @@
     this.loadUrl(virtLinkElement.href, clone(this.options));
   };
 
-  var isDefaultPrevented$3 = function isDefaultPrevented(event) {
-    return event.defaultPrevented || event.returnValue === false;
-  };
-
   function getUnattachForm () {
     var _this = this;
 
     return function (el) {
-      off(el, "submit", function (event) {
-        if (isDefaultPrevented$3(event)) {
-          return;
-        }
-
-        formAction$1.call(this, el, event);
-      });
-      off(el, "keyup", function (event) {
-        if (isDefaultPrevented$3(event)) {
-          return;
-        }
-
-        if (event.keyCode == 13) {
-          formAction$1.call(_this, el, event);
-        }
-      });
+      off(el, "submit");
+      off(el, "keyup");
     };
   }
 
+  /**
+   * Create a stylesheet updater that ensures new stylesheet links present in a document are added to the document head if not already present.
+   *
+   * The returned function iterates over `elements` (new <link> elements) and, for each one, checks `oldElements` for a stylesheet with a matching `href` (preferring the element's `href` attribute and falling back to the DOM `href` property). If no match is found, it creates and appends a `<link rel="stylesheet" type="text/css">` with the new stylesheet's `href` to the document head.
+   *
+   * @return {Function} A function that accepts `(elements, oldElements)` and updates the document's stylesheets.
+   * @param {Array|NodeList|HTMLCollection} elements - New stylesheet link elements to consider for insertion.
+   * @param {Array|NodeList|HTMLCollection} oldElements - Existing stylesheet link elements to compare against.
+   */
   function getUpdateStylesheets () {
     var _this = this;
 
@@ -1288,7 +1274,9 @@
 
       forEachEls(elements, function (newEl) {
         var resemblingOld = ArrayFrom(oldElements).reduce(function (acc, oldEl) {
-          acc = oldEl.href === newEl.href ? oldEl : acc;
+          var oldHref = oldEl.getAttribute("href") || oldEl.href;
+          var nHref = newEl.getAttribute("href") || newEl.href;
+          acc = (oldHref === nHref || oldEl.href === newEl.href) ? oldEl : acc;
           return acc;
         }, null);
 
@@ -1303,7 +1291,7 @@
 
           var head = document.getElementsByTagName('head')[0];
           var link = document.createElement('link');
-          link.setAttribute('href', newEl.href);
+          link.setAttribute('href', newEl.getAttribute('href') || newEl.href);
           link.setAttribute('rel', 'stylesheet');
           link.setAttribute('type', 'text/css');
           head.appendChild(link);

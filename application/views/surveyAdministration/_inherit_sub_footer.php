@@ -9,11 +9,11 @@
         <div>
             <?= sprintf(
                 gT("Inherited settings come from your %sglobal settings%s or %ssurvey group%s. Click %shere%s for more information about inherited settings."),
-                '<a href="' . $this->createUrl('/admin/globalsettings') . '" target="_blank">',
+                '<a class="ls-link" href="' . $this->createUrl('/admin/globalsettings') . '" target="_blank">',
                 '</a>',
-                '<a href="' . $this->createUrl('/surveyAdministration/listsurveys') . '" target="_blank">',
+                '<a class="ls-link" href="' . $this->createUrl('/surveyAdministration/listsurveys') . '" target="_blank">',
                 '</a>',
-                '<a href="https://manual.limesurvey.org/Survey_settings_inheritance" target="_blank">',
+                '<a class="ls-link" href="https://www.limesurvey.org/manual/Survey_settings_inheritance" target="_blank">',
                 '</a>'
             ); ?>
         </div>

@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -71,14 +71,52 @@ class Plugin extends LSActiveRecord
      */
     public function setLoadError(array $error)
     {
+        if (!function_exists('gT')) {
+            \Yii::app()->loadHelper('common');
+        }
         // NB: Don't use ActiveRecord here, since it will trigger events and
         // load the plugin system all over again.
         // TODO: Works on all SQL systems?
-        $sql = sprintf(
-            "UPDATE {{plugins}} SET load_error = 1, load_error_message = '%s' WHERE id = " . $this->id,
-            addslashes($error['message'] . ' ' . $error['file'])
+        $sql = "UPDATE {{plugins}} SET load_error = 1, load_error_message = :error_message WHERE id = :id";
+        $params = [
+            ':error_message' => $error['message'] . ' ' . $error['file'],
+            ':id' => $this->id
+        ];
+        $rowNumber = \Yii::app()->db->createCommand($sql)->bindValues($params)->execute();
+
+        $message = sprintf(
+            "Plugin %s (%s) deactivated with error “%s” at file %s",
+            $this->name,
+            $this->id,
+            $error['message'],
+            $error['file']
         );
-        return \Yii::app()->db->createCommand($sql)->execute();
+        Yii::log(
+            $message,
+            CLogger::LEVEL_ERROR,
+            'application.model.plugin.setLoadError'
+        );
+
+        $body = sprintf(gT("Plugin error on %s"), App()->getConfig('sitename')) . "\n";
+        $body .= sprintf(
+            gT("Plugin %s (%s) deactivated with error “%s” at file %s"),
+            $this->name,
+            $this->id,
+            $error['message'],
+            $error['file']
+        );
+        $mailer = new \LimeMailer();
+        $mailer->emailType = "pluginsetloaderror";
+        $mailer->isHtml(false);
+        $mailer->Subject = gT("[Error] Plugin deactivated in LimeSurvey", "unescaped");
+        $mailer->Body = $body;
+        $mailer->addAddress(App()->getConfig('siteadminemail'), App()->getConfig('siteadminname'));
+        try {
+            $mailer->sendMessage();
+        } catch (\Exception $e) {
+            // Must be loggued by LimeMailer : it's an issue from LimeMailer
+        }
+        return $rowNumber;
     }
 
     /**
@@ -125,10 +163,10 @@ class Plugin extends LSActiveRecord
      */
     public function getStatus()
     {
-        if ($this->load_error == 1) {
+        if ($this->getLoadError()) {
             return sprintf(
                 "<span data-bs-toggle='tooltip' title='%s' class='btntooltip ri-close-fill text-danger'></span>",
-                gT('Plugin load error')
+                CHtml::encode(sprintf(gT('Plugin load error: %s'), $this->load_error_message))
             );
         } elseif ($this->active == 1) {
             return "<span class='ri-checkbox-blank-circle-fill'></span>";
@@ -150,9 +188,9 @@ class Plugin extends LSActiveRecord
                 'id' => $this->id
             ]
         );
-        if ($this->load_error == 0) {
+        if (!$this->getLoadError()) {
             return sprintf(
-                '<a href="%s">%s</a>',
+                '<a class="ls-link" href="%s">%s</a>',
                 $url,
                 $this->name
             );
@@ -188,41 +226,8 @@ class Plugin extends LSActiveRecord
         }
     }
 
-
     /**
-     * Action buttons in plugin list.
-     * @return string HTML
-     */
-    public function getActionButtons()
-    {
-        $output = '';
-        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            $output .= "<div class='icon-btn-row'>";
-            if ($this->load_error == 1) {
-                $reloadUrl = Yii::app()->createUrl(
-                    'admin/pluginmanager',
-                    [
-                        'sa' => 'resetLoadError',
-                        'pluginId' => $this->id
-                    ]
-                );
-                $output .= "<a href='" . $reloadUrl . "' data-bs-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-outline-secondary btn-sm btntooltip'><span class='ri-refresh-line'></span></a>";
-            } elseif ($this->active == 0) {
-                $output .= $this->getActivateButton();
-            } else {
-                $output .= $this->getDeactivateButton();
-            }
-
-            if ($this->active == 0) {
-                $output .= $this->getUninstallButton();
-            }
-            $output .= "</div>";
-        }
-
-        return $output;
-    }
-
-    /**
+     * @deprecated 6.0
      * @return string HTML
      */
     public function getActivateButton()
@@ -252,6 +257,7 @@ class Plugin extends LSActiveRecord
 
 
     /**
+     * @deprecated 6.0
      * @return string HTML
      */
     public function getDeactivateButton()
@@ -279,37 +285,17 @@ class Plugin extends LSActiveRecord
         return $output;
     }
 
-    /**
-     * @todo: Don't use JS native confirm.
-     * @return string HTML
-     */
-    protected function getUninstallButton()
-    {
-        $uninstallUrl = App()->getController()->createUrl(
-            '/admin/pluginmanager',
-            [
-                'sa' => 'uninstallPlugin'
-            ]
-        );
-        $output = CHtml::beginForm(
-            $uninstallUrl,
-            'post',
-            [
-                'style' => 'display: inline-block'
-            ]
-        );
-        $output .= "
-                <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-bs-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-sm'>
-                    <i class='ri-close-circle-fill'></i>
-                </button>
-            </form>
-        ";
-        return $output;
-    }
-
     public function getButtons(): string
     {
+
+        $reloadUrl = Yii::app()->createUrl(
+            'admin/pluginmanager',
+            [
+                'sa' => 'resetLoadError',
+                'pluginId' => $this->id
+            ]
+        );
+
         $activateUrl = App()->getController()->createUrl(
             '/admin/pluginmanager',
             [
@@ -329,62 +315,88 @@ class Plugin extends LSActiveRecord
             ]
         );
         $dropdownItems = [];
+        if ($this->load_error) {
+            $dropdownItems[] = [
+                'title'            => gT('Attempt plugin reload'),
+                'url'              => $reloadUrl,
+                'iconClass'        => "ri-refresh-line text-warning",
+                'enabledCondition' => $this->load_error == 1,
+                'linkAttributes'   => [
+                    'data-post-url'   => $reloadUrl,
+                    'data-post-datas' => json_encode(['pluginId' => $this->id]),
+                ],
 
-        $dropdownItems[] = [
-            'title'            => gT('Activate'),
-            'url'              => $activateUrl,
-            'iconClass'        => "ri-play-fill text-success",
-            'enabledCondition' => $this->active == 0,
-            'linkAttributes'   => [
-                'data-bs-toggle'  => 'modal',
-                'data-bs-target'  => '#confirmation-modal',
-                'data-btnclass'   => 'btn-success',
-                'type'            => 'submit',
-                'data-btntext'    => gt("Activate"),
-                'data-title'      => gt('Activate plugin'),
-                'data-message'    => gT("Are you sure you want to activate this plugin?"),
-                'data-post-url'   => $activateUrl,
-                'data-post-datas' => json_encode(['pluginId' => $this->id]),
-            ],
+            ];
+        } else {
+            $dropdownItems[] = [
+                'title'            => gT('Activate'),
+                'url'              => $activateUrl,
+                'iconClass'        => "ri-play-fill text-success",
+                'enabledCondition' => $this->active == 0,
+                'linkAttributes'   => [
+                    'data-bs-toggle'  => 'modal',
+                    'data-bs-target'  => '#confirmation-modal',
+                    'data-btnclass'   => 'btn-success',
+                    'type'            => 'submit',
+                    'data-btntext'    => gT("Activate"),
+                    'data-title'      => gT('Activate plugin'),
+                    'data-message'    => gT("Are you sure you want to activate this plugin?"),
+                    'data-post-url'   => $activateUrl,
+                    'data-post-datas' => json_encode(['pluginId' => $this->id]),
+                ],
 
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Deactivate'),
-            'url'              => $deactivateUrl,
-            'iconClass'        => 'ri-stop-fill text-danger',
-            'enabledCondition' => $this->active == 1,
-            'linkAttributes'   => [
-                'data-bs-toggle'  => 'modal',
-                'data-bs-target'  => '#confirmation-modal',
-                'data-btnclass'   => 'btn-danger',
-                'type'            => 'submit',
-                'data-btntext'    => gt("Deactivate"),
-                'data-title'      => gt('Deactivate plugin'),
-                'data-message'    => gT("Are you sure you want to deactivate this plugin?"),
-                'data-post-url'   => $deactivateUrl,
-                'data-post-datas' => json_encode(['pluginId' => $this->id]),
-            ],
+            ];
+            $dropdownItems[] = [
+                'title'            => gT('Deactivate'),
+                'url'              => $deactivateUrl,
+                'iconClass'        => 'ri-stop-fill text-danger',
+                'enabledCondition' => $this->active == 1,
+                'linkAttributes'   => [
+                    'data-bs-toggle'  => 'modal',
+                    'data-bs-target'  => '#confirmation-modal',
+                    'data-btnclass'   => 'btn-danger',
+                    'type'            => 'submit',
+                    'data-btntext'    => gT("Deactivate"),
+                    'data-title'      => gT('Deactivate plugin'),
+                    'data-message'    => gT("Are you sure you want to deactivate this plugin?"),
+                    'data-post-url'   => $deactivateUrl,
+                    'data-post-datas' => json_encode(['pluginId' => $this->id]),
+                ],
 
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Uninstall'),
-            'url'              => $uninstallUrl,
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $this->active == 0,
-            'linkAttributes'   => [
-                'data-bs-toggle'  => 'modal',
-                'data-bs-target'  => '#confirmation-modal',
-                'data-btnclass'   => 'btn-danger',
-                'type'            => 'submit',
-                'data-btntext'    => gt("Uninstall"),
-                'data-title'      => gt('Uninstall plugin'),
-                'data-message'    => gT("Are you sure you want to uninstall this plugin?"),
-                'data-post-url'   => $uninstallUrl,
-                'data-post-datas' => json_encode(['pluginId' => $this->id]),
-            ],
-        ];
-
+            ];
+            $dropdownItems[] = [
+                'title'            => gT('Uninstall'),
+                'url'              => $uninstallUrl,
+                'iconClass'        => 'ri-delete-bin-fill text-danger',
+                'enabledCondition' => $this->active == 0,
+                'linkAttributes'   => [
+                    'data-bs-toggle'  => 'modal',
+                    'data-bs-target'  => '#confirmation-modal',
+                    'data-btnclass'   => 'btn-danger',
+                    'type'            => 'submit',
+                    'data-btntext'    => gT("Uninstall"),
+                    'data-title'      => gT('Uninstall plugin'),
+                    'data-message'    => gT("Are you sure you want to uninstall this plugin?"),
+                    'data-post-url'   => $uninstallUrl,
+                    'data-post-datas' => json_encode(['pluginId' => $this->id]),
+                ],
+            ];
+        }
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
+
+    /**
+     * @param Plugin|null $plugin
+     * @param string $pluginName
+     * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
+     * @return int Rows affected, always 0 for debug >=2
+     */
+    public static function handlePluginLoadError($plugin, $pluginName, array $error)
+    {
+        if (App()->getConfig('debug') >= 2) {
+            return 0;
+        }
+        return self::setPluginLoadError($plugin, $pluginName, $error);
     }
 
     /**
@@ -410,6 +422,18 @@ class Plugin extends LSActiveRecord
                 );
         }
         return $result;
+    }
+
+    /**
+     * Get load error as boolean
+     * @return boolean
+     */
+    public function getLoadError()
+    {
+        if (App()->getConfig('debug') >= 2) {
+            return false;
+        }
+        return isset($this->load_error) && boolval($this->load_error);
     }
 
     /**

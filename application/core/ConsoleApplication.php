@@ -26,6 +26,13 @@ class ConsoleApplication extends CConsoleApplication
         return $this->getComponent('session');
     }
 
+    /**
+     * Initialize the console application, assemble and store the merged configuration, and prepare runtime helpers.
+     *
+     * Loads default, console-specific, email, version, updater, security, and optional user configuration files, merges them (and any available global settings from the database) into the application's config, ensures a runtimePath is set when absent, sets the `webroot` path alias, encrypts the `emailsmtppassword` config value, and loads the common helper.
+     *
+     * @param array|null $aApplicationConfig Application configuration overrides; if `runtimePath` is not provided it will be set to `<tempdir>/runtime` based on the loaded defaults.
+     */
     public function __construct($aApplicationConfig = null)
     {
 
@@ -42,6 +49,11 @@ class ConsoleApplication extends CConsoleApplication
         if (!isset($aApplicationConfig['runtimePath'])) {
             $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'] . DIRECTORY_SEPARATOR . 'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
+
+        /* Make sure the runtime path exists, e.g. after the tempdir content was cleared */
+        if (!is_dir($aApplicationConfig['runtimePath'])) {
+            @mkdir($aApplicationConfig['runtimePath'], 0775, true);
+        }
 
         /* Construct CWebApplication */
         parent::__construct($aApplicationConfig);
@@ -69,12 +81,25 @@ class ConsoleApplication extends CConsoleApplication
                 $lsConfig = array_merge($lsConfig, $securityConfig);
             }
         }
+        if (file_exists(__DIR__ . '/../config/allowed_hosts.php')) {
+            /** @psalm-suppress MissingFile file is auto-generated and may not exist in CI */
+            $allowedHostsConfig = require(__DIR__ . '/../config/allowed_hosts.php');
+            if (is_array($allowedHostsConfig)) {
+                $lsConfig = array_merge($lsConfig, $allowedHostsConfig);
+            }
+        }
         /* Custom config file */
         $configdir = $coreConfig['configdir'];
         if (file_exists($configdir .  '/security.php')) {
             $securityConfig = require($configdir . '/security.php');
             if (is_array($securityConfig)) {
                 $lsConfig = array_merge($lsConfig, $securityConfig);
+            }
+        }
+        if (file_exists($configdir . '/allowed_hosts.php')) {
+            $allowedHostsConfig = require($configdir . '/allowed_hosts.php');
+            if (is_array($allowedHostsConfig)) {
+                $lsConfig = array_merge($lsConfig, $allowedHostsConfig);
             }
         }
 
@@ -85,10 +110,10 @@ class ConsoleApplication extends CConsoleApplication
             }
         }
         $this->config = array_merge($this->config, $lsConfig);
-        
+
         /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
            it would be decrypted in LimeMailer when needed */
-           $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+       $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
 
         /* Load the database settings : if available */
         try {
@@ -100,6 +125,8 @@ class ConsoleApplication extends CConsoleApplication
         } catch (Exception $exception) {
             // Allow exception (install for example)
         }
+        /* Always need common helper */
+        $this->loadHelper("common");
     }
 
     /**
@@ -122,22 +149,27 @@ class ConsoleApplication extends CConsoleApplication
         return $this;
     }
 
-
     /**
-     * Returns a config variable from the config
+     * Returns a configuration variable from the config array or object properties.
+     *
+     * This method searches for the requested configuration value in the following order:
+     * 1. As a property of the current object
+     * 2. In the config array
+     * 3. If not found, returns the provided default value, otherwise false.
      *
      * @access public
-     * @param string $name
-     * @return mixed
+     * @param string|null $name The name of the configuration variable to retrieve. If null, the default value will be returned.
+     * @param mixed $default The default value to return if the configuration variable is not found. Defaults to false.
+     * @return mixed The value of the configuration variable if found, otherwise the default value or false if no default value was provided
      */
-    public function getConfig($name = null)
+    public function getConfig($name = null, $default = false)
     {
         if (isset($this->$name)) {
             return $this->name;
         } elseif (isset($this->config[$name])) {
             return $this->config[$name];
         } else {
-            return false;
+            return $default;
         }
     }
 

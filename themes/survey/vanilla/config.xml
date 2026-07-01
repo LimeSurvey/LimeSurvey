@@ -25,6 +25,7 @@
     </metadata>
 
     <compatibility>
+        <version>7.0</version>
         <version>6.0</version>
     </compatibility>
 
@@ -65,7 +66,7 @@
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
         <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">on</container>
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
-        <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
+        <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off" optionlabels="Yes|No">off</showclearall>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">enable</fixnumauto>
         <!-- images -->
@@ -73,7 +74,7 @@
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">./files/logo.png</brandlogofile>
         <!-- fonts -->
         <!--  When adding new items, please keep fonts ordered alphabetically -->
-        <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
+        <font type="dropdown" category="Fonts" width="12" title="Fonts">noto
             <dropdownoptions>
             <optgroup  label="User browser">
                 <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
@@ -337,7 +338,7 @@
                 <name type="data" twig="on"><![CDATA[ {{ gT("Template Sample") }} ]]></name>
                 <description type="data" twig="on"><![CDATA[<p>{{ gT('This is a sample survey description. It could be quite long.') }}</p><p>{{ gT("But this one isn't.") }}<p>]]></description>
                 <welcome  type="data" twig="on"><![CDATA[<p>{{ gT('Welcome to this sample survey')}} <p> <p> {{ gT('You should have a great time doing this') }} <p> ]]></welcome>
-                <therearexquestions  type="data" twig="on"><![CDATA[gT('There is 2 question in this survey'])]]></therearexquestions>
+                <therearexquestions  type="data" twig="on"><![CDATA[gT('There are 2 questions in this survey.'])]]></therearexquestions>
                 <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
                 <showsurveypolicynotice>2</showsurveypolicynotice>
@@ -363,7 +364,7 @@
                 <message type="data" twig="on"><![CDATA[ {{ gT("You got {TOTAL} points out of 3 possible points.") }} ]]></message>
               </assessments>
 
-              <!-- This is an exemple to show you how to add your custom screen in the theme editor with custom values -->
+              <!-- This is an example to show you how to add your custom screen in the theme editor with custom values -->
               <!-- The name of the array inside aSurveyInfo that feed your twig view is specified as "array-name". If you check quotas.twig, you'll notice the main variable is aSurveyInfo.aQuotas -->
               <!-- Notice that the data you pass here are simple. You can't pass complex arrays inside the array, only key => value pairs.-->
               <quotas type="custom" arrayName="aQuotas">

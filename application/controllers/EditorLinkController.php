@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -13,35 +13,12 @@
  *
  */
 
-use LimeSurvey\Api\Auth\AuthSession;
+use LimeSurvey\DI;
+use LimeSurvey\Api\Authentication\AuthenticationTokenSimple;
 
 class EditorLinkController extends LSYii_Controller
 {
     const REACT_APP_BASE_PATH = '/editor/#/';
-
-    /**
-     * Access Rules
-     *
-     * @return array
-     */
-    public function accessRules()
-    {
-        return [
-            [
-                'allow',
-                'actions' => [],
-                'users' => ['*'], //everybody
-            ],
-            [
-                'allow',
-                'actions' => [
-                    'goto',
-                ],
-                'users' => ['@'], //only login users
-            ],
-            ['deny'], //always deny all actions not mentioned above
-        ];
-    }
 
     /**
      * Create react auth key cookie and redirect.
@@ -50,10 +27,20 @@ class EditorLinkController extends LSYii_Controller
      */
     public function run($action)
     {
-        $this->setAuthInitCookie();
-        $route = Yii::app()->request->getQuery('route');
-        $path = static::REACT_APP_BASE_PATH . $route;
-        $url = Yii::app()->request->baseUrl . $path;
+        if (App()->user->isGuest) {
+            throw new CHttpException(403, 'Access denied');
+        }
+
+        $this->setAuthenticationInitCookie();
+
+        $editorUrl = rtrim(
+            App()->request->baseUrl
+            . static::REACT_APP_BASE_PATH,
+            '/'
+        );
+
+        $editorRoute = App()->request->getQuery('route');
+        $url = $editorUrl . '/' . $editorRoute;
         $this->redirect($url);
     }
 
@@ -62,27 +49,32 @@ class EditorLinkController extends LSYii_Controller
      *
      * @return void
      */
-    private function setAuthInitCookie()
+    private function setAuthenticationInitCookie()
     {
+        $diContainer = DI::getContainer();
+
         $cookieName = 'LS_AUTH_INIT';
 
-        $authSession = new AuthSession();
-        $session = $authSession->createSession(
-            Yii::app()->session['user']
+        $authTokenSimple = $diContainer->get(
+            AuthenticationTokenSimple::class
+        );
+        $session = $authTokenSimple->createSession(
+            App()->session['user']
         );
 
-        $sessionExpires = new \DateTime(
-            date('c', $session->expire)
-        );
+        /** @var \LSYii_Application */
+        $app = \App();
 
-        $cookieDataJson = json_encode([
-            'token' => $session->id,
-            'expires' => $sessionExpires->format('Y-m-d\TH:i:s.000\Z')
-        ]);
+        $cookieDataJson = json_encode(
+            $authTokenSimple->getTokenData(
+                $session,
+                $app->user->getId()
+            )
+        );
 
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);
-        $cookie->expire = time() + (60 * 2); // 2 minutes
+        $cookie->expire = time() + 10;
 
-        Yii::app()->request->cookies[$cookieName] = $cookie;
+        App()->request->cookies[$cookieName] = $cookie;
     }
 }

@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -35,12 +35,14 @@
  */
 class Quota extends LSActiveRecord
 {
-    public const ACTION_TERMINATE = 1;
-    public const ACTION_CONFIRM_TERMINATE = 2;
+    public const TERMINATE_VISIBLE_QUOTA_QUESTIONS = 1;
+    public const SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS = 2;
+    public const TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS = 3;
+    public const TERMINATE_ALL_PAGES = 4;
 
     /* Default attributes */
     public $active = 1;
-    public $action = self::ACTION_TERMINATE;
+    public $action = self::TERMINATE_VISIBLE_QUOTA_QUESTIONS;
 
     /**
      * Returns the static model of Settings table
@@ -81,8 +83,9 @@ class Quota extends LSActiveRecord
         return array(
             array('name,qlimit,action', 'required'),
             array('name', 'LSYii_Validators'), // Maybe more restrictive
+            array('name', 'LSYii_NonFormulaValidator'), // Avoid CSV injection
             array('qlimit', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => 2147483647, 'allowEmpty' => true),
-            array('action', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '2', 'allowEmpty' => true), // Default is null ?
+            array('action', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '4', 'allowEmpty' => true), // Default is null ?
             array('active', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
             array('autoload_url', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
             array('name', 'length', 'min' => 0, 'max' => 255),
@@ -98,25 +101,6 @@ class Quota extends LSActiveRecord
             'autoload_url' => gT("Autoload URL"),
             'action' => gT("Quota action"),
         );
-    }
-
-    /**
-     * @param $data
-     * @return bool|int
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $quota = new self();
-        foreach ($data as $k => $v) {
-            $quota->$k = $v;
-        }
-        try {
-            $quota->save();
-            return $quota->id;
-        } catch (Exception $e) {
-            return false;
-        }
     }
 
     /**
@@ -146,7 +130,7 @@ class Quota extends LSActiveRecord
 
     public function getCompleteCount()
     {
-        if (!tableExists("survey_{$this->sid}")) {
+        if (!tableExists("responses_{$this->sid}")) {
             return null;
         }
         /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/
@@ -192,9 +176,21 @@ class Quota extends LSActiveRecord
         foreach ($this->quotaMembers as $quotaMember) {
             $members[] = $quotaMember->memberInfo;
         }
-        $attributes = $this->attributes;
+        $attributes = $this->attributes ?? [];
 
-        return array_merge(array(), $languageSettings->attributes, array('members' => $members), $attributes);
+        $defaultLanguageAttributes = [
+            'quotals_message'     => gT("Sorry your responses have exceeded a quota on this survey."),
+            'quotals_url'         => '',
+            'quotals_urldescrip'  => '',
+        ];
+
+        $quotaLanguageAttributes = ($languageSettings && $languageSettings->attributes) ? $languageSettings->attributes : $defaultLanguageAttributes;
+
+        return array_merge(
+            $quotaLanguageAttributes,
+            array('members' => $members),
+            $attributes
+        );
     }
 
     /**
@@ -211,7 +207,7 @@ class Quota extends LSActiveRecord
         if ($oQuotaLanguageSettings) {
             return $oQuotaLanguageSettings;
         }
-        /* If not exist or found, return the one from survey base languague */
+        /* If not exist or found, return the one from survey base language */
         return $this->getMainLanguagesetting();
     }
 
@@ -243,7 +239,7 @@ class Quota extends LSActiveRecord
                 'data-message'   => gT("Are you sure you want to delete the selected quotas?"),
                 'data-bs-target' => "#confirmation-modal",
                 'data-btnclass'  => 'btn-danger',
-                'data-btntext'   => gt('Delete'),
+                'data-btntext'   => gT('Delete'),
                 'data-post-datas' => $deletePostData
             ]
         ];

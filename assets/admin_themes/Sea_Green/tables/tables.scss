@@ -148,9 +148,271 @@ table {
 
 /** For all grid view table */
 .scrolling-wrapper {
-    overflow-x: scroll;
-    overflow-y: hidden;
-
-    // if go to last page of table, the action dropdown is hidden.
+    overflow-x: auto;
     min-height: 300px;
+}
+
+.grid-view, .grid-view-ls {
+    .table {
+        padding       : 20px;
+        border-radius : 4px;
+        border        : $table-border-color;
+
+        td.button-column, th.button-column {
+            white-space: nowrap;
+            text-align: initial;
+            min-width: 50px;
+        }
+        th > .sort-link .caret {
+            right: -10px;
+        }
+        .filters > td .filter-container {
+            padding: 0;
+        }
+
+        .ls-sticky-column, .checkbox-column {
+            //text-align : center;
+            padding    : 7px 20px;
+            box-shadow : none;
+            z-index: 1;
+        }
+        thead {
+            tr {
+                border           : 0 none $white;
+
+                th {
+                    padding-bottom : 9px;
+                    font-weight    : 600;
+                    vertical-align : middle;
+                    border-bottom  : solid 1px $g-600;
+
+                    .sort-link {
+                        color       : $black;
+                        font-weight : 600;
+
+                        ::before {
+                            font-weight : 500;
+                            color       : $active-green;
+                        }
+                    }
+                }
+
+                th:hover .sort-link,
+                th button:hover {
+                    background-color : $g-200;
+                    border-color: transparent;
+                    border-radius: 2px;
+                    box-shadow: none;
+
+                    &:before {
+                        visibility : visible;
+                    }
+                }
+            }
+        }
+        tbody {
+            td input[type=checkbox]:after {
+                margin-right : 0;
+            }
+            tr {
+                border : solid 1px $g-100;
+            }
+        }
+        button {
+            @include state-border(1px, transparent);
+            background-color: inherit;
+        }
+        button:hover {
+            @include state-border(1px, $grape75);
+            color: currentColor;
+        }
+        button.btn .ri-more-fill:before {
+            font-size : 1.1em;
+        }
+    }
+    .survey-state.disabled {
+        opacity : 0.5;
+    }
+
+    // links in gridview:
+    .has-link {
+        cursor : pointer;
+    }
+
+    .has-link a:hover {
+        text-decoration : none;
+    }
+
+    .has-link a {
+        color       : $g-900;
+        font-weight : $font-weight-normal;
+    }
+
+    // Row states for clickable rows
+    .table tbody tr[data-rowlink] {
+        cursor: pointer;
+    }
+
+    // Row states for all rows
+    .table tbody tr {
+        &:hover {
+            background-color: $g-200;
+        }
+
+        &:active, &:active:hover {
+           background-color: $g-300;
+
+           > .ls-sticky-column {
+               background-color: $g-300;
+           }
+
+           > td {
+               background-color: $g-300;
+           }
+        }
+
+        // Selected row (checkbox checked)
+        &.selected, &:has(input[type="checkbox"]:checked) {
+            > td, > th, > .ls-sticky-column {
+                background-color: $g-100;
+            }
+        }
+    }
+
+    .table {
+        td a:focus-visible:not(:active), td button:focus-visible:not(:active), th a:focus-visible:not(:active), th button:focus-visible:not(:active),
+        td:focus-visible:not(:active), th:focus-visible:not(:active),
+        [tabindex]:focus-visible:not(tr):not(:active) {
+            @include state-border(1px, $grape90, 0px);
+            @include inset-border(1px, $grape90);
+        }
+
+        // Focused row: outline around the whole tr
+        tr[tabindex]:focus-visible:not(:active) {
+            outline        : 2px solid $grape90;
+            outline-offset : -2px;
+
+            // Sticky columns paint over the tr outline due to z-index, so replicate the border on them.
+            > .ls-sticky-column {
+                border-top    : 2px solid $grape90;
+                border-bottom : 2px solid $grape90;
+
+                &:first-child {
+                    border-left : 2px solid $grape90;
+                }
+                &:last-child {
+                    border-right : 2px solid $grape90;
+                }
+            }
+        }
+
+        button:focus {
+            color        : $black;
+            box-shadow   : none;
+            border-color : $white;
+        }
+    }
+    .action-list {
+        display : flex;
+        color   : $black;
+        a:not(:first-child) {
+            margin-left: 12px;
+        }
+        a i::before {
+          color: $grape;
+        }
+        .disabled i::before {
+          opacity: 0.5;
+          color: $g-700;
+        }
+        i::before {
+            font-size : $font-size-base * 1.5;
+        }
+
+        a {
+            @include state-border(1px, transparent);
+        }
+        a:hover {
+            @include state-border(1px, $grape75);
+        }
+    }
+    .grid-view-ls-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: $grid-gutter-width;
+        flex-flow: wrap;
+        .massive-action-container,
+        .pagination-container,
+        .summary-container {
+            flex: 1 1 0
+
+        }
+
+    }
+    .listActions,
+    #responses-column-filter-button,
+    .pager,
+    .summary {
+        margin: 4px 0;
+    }
+    #responses-column-filter-modal .checkbox label {
+        vertical-align: text-bottom;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    .responses-multiselect-checkboxes {
+        overflow-y: scroll;
+        height: 60vh;
+    }
+
+    .responses-column-filter-modal-checkbox-buttons {
+        text-align: left;
+        padding-bottom: 15px;
+    }
+}
+
+.grid-view-ls {
+    .table td {
+        vertical-align: middle;
+        input[type="checkbox"]:after {
+            margin-top: -3px;
+            margin-right: -3px;
+        }
+    }
+
+    .table td .longtext-content {
+        min-width: 8em;
+        max-width: 16em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        height: 1.5em;
+        display: inline-block;
+    }
+
+    .summary {
+        color: #999999;
+        font-size: 12px;
+        text-align: right;
+    }
+
+    &.grid-view-loading {
+        background: url(../img/loader.gif) no-repeat 100% 10px;
+
+        .table {
+            opacity: 0.3;
+        }
+
+        .table th > .sort-link .caret {
+            display: none;
+        }
+    }
+}
+@media (max-width: 768px) {
+  .grid-view-ls-footer {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center;
+  }
 }

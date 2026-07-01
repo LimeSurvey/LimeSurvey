@@ -3,15 +3,15 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var DocCommentHighlightRules = function () {
     this.$rules = {
-        "start": [{
-                token: "comment.doc.tag",
-                regex: "@[\\w\\d_]+" // TODO: fix email addresses
-            },
-            DocCommentHighlightRules.getTagRule(),
+        "start": [
             {
-                defaultToken: "comment.doc",
+                token: "comment.doc.tag",
+                regex: "@\\w+(?=\\s|$)"
+            }, DocCommentHighlightRules.getTagRule(), {
+                defaultToken: "comment.doc.body",
                 caseInsensitive: true
-            }]
+            }
+        ]
     };
 };
 oop.inherits(DocCommentHighlightRules, TextHighlightRules);
@@ -23,14 +23,14 @@ DocCommentHighlightRules.getTagRule = function (start) {
 };
 DocCommentHighlightRules.getStartRule = function (start) {
     return {
-        token: "comment.doc",
-        regex: "\\/\\*(?=\\*)",
+        token: "comment.doc", // doc comment
+        regex: /\/\*\*(?!\/)/,
         next: start
     };
 };
 DocCommentHighlightRules.getEndRule = function (start) {
     return {
-        token: "comment.doc",
+        token: "comment.doc", // closing comment
         regex: "\\*\\/",
         next: start
     };
@@ -114,7 +114,7 @@ var SqlServerHighlightRules = function () {
                 start: "/\\*",
                 end: "\\*/"
             }, {
-                token: "constant.numeric",
+                token: "constant.numeric", // float
                 regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token: keywordMapper,
@@ -142,7 +142,7 @@ var SqlServerHighlightRules = function () {
             DocCommentHighlightRules.getTagRule(), {
                 token: "comment",
                 regex: "\\*\\/",
-                next: "no_regex"
+                next: "start"
             }, {
                 defaultToken: "comment",
                 caseInsensitive: true

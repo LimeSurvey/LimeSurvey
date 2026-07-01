@@ -2,12 +2,12 @@
 
 /* @var $viewData array */
 
-extract($viewData);
+extract($viewData ?? []);
 
 ?>
 <div id="translationloading" style="width: 100%; font-weight: bold; color: #000; text-align: center;">
     <br/>
-    <?php eT("Loading translations"); ?><br/><br/>
+    <?php eT("Loading translations..."); ?><br/><br/>
 </div>
 
 <?php echo CHtml::form(array("quickTranslation/index/surveyid/{$surveyid}/lang/{$tolang}"), 'post', array('name' => 'translateform', 'id' => 'translateform')); ?>
@@ -19,13 +19,13 @@ extract($viewData);
 
 <script type="text/javascript">
     sGoogleApiError = "<?php eT("There was an error using the Google API.");?>";
-    sDetailedError = "<?php eT("Detailed Error");?>";
+    sDetailedError = "<?php eT("Error message: %s");?>";
     translateJsonUrl = "<?php echo $this->createUrl("quickTranslation/ajaxtranslategoogleapi", ['surveyid' => $surveyid]); ?>";
 </script>
 
 <div id="translationtabs">
     <ul class="nav nav-tabs">
-        <?php for ($i = 0, $len = count($tab_names); $i < $len; $i++) { ?>
+        <?php for ($i = 0, $len = count($tab_names ?? []); $i < $len; $i++) { ?>
             <li class="nav-item" >
                 <a class="nav-link <?php echo ($i == 0) ? 'active' : '' ?>" data-bs-toggle="tab" href="#tab-<?php echo $tab_names[$i]; ?>">
                 <span>
@@ -53,7 +53,9 @@ extract($viewData);
         ?>
     </div>
     <p>
-        <input type='submit' class='standardbtn d-none' value='<?php eT("Save");?>' <?php if ($bReadOnly){?>disabled='disabled'<?php }?>/>
+        <input type='submit' class='standardbtn d-none' value='<?php eT("Save");?>' <?php if ($bReadOnly) {
+            ?>disabled='disabled'<?php
+                                                               }?>/>
     </p>
 </div>
 <?php

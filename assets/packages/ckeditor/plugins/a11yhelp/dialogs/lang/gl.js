@@ -1,6 +1,6 @@
 ﻿/*
  Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
- For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ CKEditor 4 LTS ("Long Term Support") is available under the terms of the Extended Support Model.
 */
 CKEDITOR.plugins.setLang("a11yhelp","gl",{title:"Instrucións de accesibilidade",contents:"Axuda. Para pechar este diálogo prema ESC.",legend:[{name:"Xeral",items:[{name:"Barra de ferramentas do editor",legend:"Prema ${toolbarFocus} para navegar ata a barra de ferramentas. Movase ao grupo de barras de ferramentas seguinte e anterior con TAB e MAYÚS+TAB. Movase ao botón da barra de ferramentas seguinte e anterior coa frecha cara á dereita ou á esquerda. Prema ESPAZO ou INTRO para activar o botón da barra de ferramentas. O foco moverase de novo á área de edición ao activar o botón da barra de ferramentas."},
 {name:"Editor de diálogo",legend:"Dentro do diálogo, prema TAB para navegar cara os seguintes elementos de diálogo, prema MAIÚS+TAB para moverse cara os anteriores elementos de diálogo, prema INTRO para enviar o diálogo, prema ESC para cancelar o diálogo. Cando o diálogo ten múltiples lapelas, a lista de lapelas pode cinguirse con ALT+F10 ou con TAB como parte da orde de lapelas do diálogo. Coa lapela en foco, pode moverse cara a seguinte ou a anterior lapela coas FRECHAS ESQUERDA e DEREICHA respectivamente. Prema ESC para descartar os cambios e pechar o diálogo. O foco moverase de novo á área de edición ao saír do diálogo."},

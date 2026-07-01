@@ -65,8 +65,15 @@ class SurveyPermissionsController extends LSBaseController
         App()->getClientScript()->registerPackage('usermanagement');
         App()->getClientScript()->registerPackage('select2-bootstrap');
 
-
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js');
+        // Register client scripts for grid action dropdown
+        // This is usually done inside the grid widget.
+        // Still, in case no users are added yet, the grid widget doesn't render any row
+        // and doesn't include this widget.
+        // As this page reloads through ajax when adding a new row, we need the GridActionsWidget to be already loaded
+        // In the future, the Grid widget could have a callback to allow to register widgets, even when no rows.
+        // But for now, this workaround is ok
+        App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', [], true);
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js', CClientScript::POS_END);
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid;
         $aData['sidemenu']['state'] = false;
@@ -144,8 +151,12 @@ class SurveyPermissionsController extends LSBaseController
     {
         $surveyid = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
-            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
-            $this->redirect(Yii::app()->request->urlReferrer);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => gT("No permission or survey does not exist."),
+                ]
+            ]);
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
         $userGroupId = (int)Yii::app()->request->getPost('ugid');
@@ -155,16 +166,26 @@ class SurveyPermissionsController extends LSBaseController
         );
         $amountUsersAdded = $surveyPermissions->addUserGroupToSurveyPermissions($userGroupId);
         if ($amountUsersAdded == 0) {
-            Yii::app()->user->setFlash('error', gT("No users from group could be added."));
-            $this->redirect(['surveyPermissions/index', 'surveyid' => $surveyid]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors' => gT("No users from group could be added."),
+                ]
+            ]);
         } else {
-            Yii::app()->user->setFlash('success', sprintf(gT("%s users from group were added."), $amountUsersAdded));
-            $this->redirect(array(
-                'surveyPermissions/settingsPermissions',
-                'surveyid' => $surveyid,
-                'action' => 'usergroup',
-                'id' => $userGroupId
-            ));
+            $data = [
+                'success' => true,
+                'message' => sprintf(gT("%s users from group were added."), $amountUsersAdded),
+                'href' => Yii::app()->getController()->createUrl('surveyPermissions/settingsPermissions', [
+                    'surveyid' => $surveyid,
+                    'action' => 'usergroup',
+                    'id' => $userGroupId
+                ]),
+                'modalsize' => 'modal-lg',
+            ];
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => $data
+            ]);
         }
     }
 

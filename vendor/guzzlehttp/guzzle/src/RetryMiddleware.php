@@ -40,20 +40,26 @@ class RetryMiddleware
      *                                                                         and returns the number of
      *                                                                         milliseconds to delay.
      */
-    public function __construct(callable $decider, callable $nextHandler, callable $delay = null)
+    public function __construct(callable $decider, callable $nextHandler, ?callable $delay = null)
     {
         $this->decider = $decider;
         $this->nextHandler = $nextHandler;
-        $this->delay = $delay ?: __CLASS__.'::exponentialDelay';
+        $this->delay = $delay ?: static function (int $retries): int {
+            return (int) 2 ** ($retries - 1) * 1000;
+        };
     }
 
     /**
      * Default exponential backoff delay function.
      *
      * @return int milliseconds.
+     *
+     * @deprecated since 7.11, will be removed in 8.0.
      */
     public static function exponentialDelay(int $retries): int
     {
+        \trigger_deprecation('guzzlehttp/guzzle', '7.11', '%s::%s() is deprecated and will be removed in 8.0.', __CLASS__, __FUNCTION__);
+
         return (int) 2 ** ($retries - 1) * 1000;
     }
 
@@ -110,7 +116,7 @@ class RetryMiddleware
         };
     }
 
-    private function doRetry(RequestInterface $request, array $options, ResponseInterface $response = null): PromiseInterface
+    private function doRetry(RequestInterface $request, array $options, ?ResponseInterface $response = null): PromiseInterface
     {
         $options['delay'] = ($this->delay)(++$options['retries'], $response, $request);
 

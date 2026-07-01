@@ -2,7 +2,7 @@
 
 /**
 * LimeSurvey
-* Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v3 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -27,14 +27,12 @@ class questionHelper
 {
     /* @var array[]|null The question attribute definition for this LimeSurvey installation */
     protected static $attributes;
-    /* @var array[] The question attribute (settings) by question type*/
-    protected static $questionAttributesSettings = array();
 
     /**
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
      *
-     *@deprecated  used only as fall back method
+     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic overview
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
     public static function getAttributesDefinitions()
@@ -216,7 +214,7 @@ class questionHelper
             'sortorder' => 110,
             'inputtype' => 'text',
             'expression' => 2, /* What for "tomorrow" etc ....*/
-            "help" => gT('Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.'),
+            "help" => gT('Minimum allowed date. Enter a date in YYYY-MM-DD format or a textual description (e.g. "now", "tomorrow", "+1 month"). Expressions are supported but must use YYYY-MM-DD format. For dropdown display: only the year is restricted when the date variable is on a different page.'),
             "caption" => gT('Minimum date')
         );
 
@@ -226,7 +224,7 @@ class questionHelper
             'sortorder' => 111,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('Maximum date, valide date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.'),
+            "help" => gT('Maximum allowed date. Enter a date in YYYY-MM-DD format or a textual description (e.g. "now", "tomorrow", "+1 month"). Expressions are supported but must use YYYY-MM-DD format. For dropdown display: only the year is restricted when the date variable is on a different page.'),
             "caption" => gT('Maximum date')
         );
 
@@ -433,10 +431,10 @@ class questionHelper
             'options' => array(
                 0 => gT('Bar chart'),
                 1 => gT('Pie chart'),
-                2 => gT('Radar'),
-                3 => gT('Line'),
-                4 => gT('PolarArea'),
-                5 => gT('Doughnut'),
+                2 => gT('Radar chart'),
+                3 => gT('Line chart'),
+                4 => gT('Polar chart'),
+                5 => gT('Doughnut chart'),
             ),
             'help' => gT("Select the type of chart to be displayed"),
             'caption' => gT("Chart type"),
@@ -495,7 +493,7 @@ class questionHelper
             'sortorder' => 101,
             'inputtype' => 'text',
             'expression' => 1,/* As static */
-            "help" => gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude. Latitude and longtitude should be in decimal dot notation (for example "-3.1234 5.1424").'),
+            "help" => gT('Default coordinates of the map when the page first loads. Format: latitude [space] longitude. Latitude and longitude should be in decimal dot notation (for example "-3.1234 5.1424").'),
             "caption" => gT('Default position')
         );
 
@@ -574,14 +572,14 @@ class questionHelper
         );
 
         /* Ranking specific : max DB answer */
-        self::$attributes["max_subquestions"] = array(
+         self::$attributes["max_subquestions"] = array(
         "types" => Question::QT_R_RANKING,
             'readonly_when_active' => true,
             'category' => gT('Logic'),
             'sortorder' => 12,
             'inputtype' => 'integer',
             'default' => '',
-            "help" => gT('Limit the number of possible answers fixed by number of columns in database'),
+            "help" => gT('Limit the number of possible answers fixed by number of columns in database - this setting can only be edited when the survey is inactive.'),
             "caption" => gT('Maximum columns for answers')
         );
 
@@ -836,7 +834,7 @@ class questionHelper
         );
 
         self::$attributes["random_order"] = array(
-        "types" => Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_A_ARRAY_5_POINT . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_INC_SAME_DEC . Question::QT_F_ARRAY . Question::QT_H_ARRAY_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING . Question::QT_1_ARRAY_DUAL . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT,
+        "types" => Question::QT_A_ARRAY_5_POINT . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_INC_SAME_DEC . Question::QT_F_ARRAY . Question::QT_H_ARRAY_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL . Question::QT_M_MULTIPLE_CHOICE . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_1_ARRAY_DUAL . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'singleselect',
@@ -846,6 +844,64 @@ class questionHelper
             'default' => 0,
             "help" => gT('Present subquestions/answer options in random order'),
             "caption" => gT('Random order')
+        );
+        self::$attributes["answer_order"] = array(
+            "types" => Question::QT_L_LIST . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_O_LIST_WITH_COMMENT,
+            'category' => gT('Display'),
+            'sortorder' => 100,
+            'inputtype' => 'singleselect',
+            'options' => array(
+                'normal' => gT('Normal'),
+                'random' => gT("Random"),
+                'alphabetical' => gT("Alphabetical"),
+                'random_alphabetical' => gT("Random A-Z/Z-A")
+            ),
+            //1=>gT('Randomize on each page load')  // Shnoulle : replace by yes till we have only one solution
+            //2=>gT('Randomize once on survey start')  //Mdekker: commented out as code to handle this was removed in refactoring
+            'default' => 0,
+            "help" => gT('Present answer options in normal, random or alphabetical order'),
+            "caption" => gT('Answer options order')
+        );
+
+        self::$attributes["keep_codes_order"] = array(
+            "types" => Question::QT_L_LIST
+                . Question::QT_R_RANKING
+                . Question::QT_EXCLAMATION_LIST_DROPDOWN
+                . Question::QT_O_LIST_WITH_COMMENT
+                . Question::QT_A_ARRAY_5_POINT
+                . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS
+                . Question::QT_C_ARRAY_YES_UNCERTAIN_NO
+                . Question::QT_E_ARRAY_INC_SAME_DEC
+                . Question::QT_F_ARRAY
+                . Question::QT_H_ARRAY_COLUMN
+                . Question::QT_K_MULTIPLE_NUMERICAL
+                . Question::QT_M_MULTIPLE_CHOICE
+                . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+                . Question::QT_Q_MULTIPLE_SHORT_TEXT
+                . Question::QT_1_ARRAY_DUAL
+                . Question::QT_COLON_ARRAY_NUMBERS
+                . Question::QT_SEMICOLON_ARRAY_TEXT,
+            'category' => gT('Display'),
+            'sortorder' => 101,
+            'inputtype' => 'text',
+            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized.'),
+            "caption" => gT('Keep codes at original positions')
+        );
+
+        self::$attributes["subquestion_order"] = array(
+            "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_R_RANKING . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+            'category' => gT('Display'),
+            'sortorder' => 100,
+            'inputtype' => 'singleselect',
+            'options' => array(
+                'normal' => gT('Normal'),
+                'random' => gT("Random"),
+                'alphabetical' => gT("Alphabetical"),
+                'random_alphabetical' => gT("Random A-Z/Z-A")
+            ),
+            'default' => 'normal',
+            "help" => gT('Present subquestions in normal, random or alphabetical order'),
+            "caption" => gT('Subquestions order')
         );
 
         self::$attributes["showpopups"] = array(
@@ -907,7 +963,7 @@ class questionHelper
             'sortorder' => 110,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
             "caption" => gT('Slider minimum value')
         );
 
@@ -917,7 +973,7 @@ class questionHelper
             'sortorder' => 120,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
             "caption" => gT('Slider maximum value')
         );
 
@@ -927,7 +983,7 @@ class questionHelper
             'sortorder' => 130,
             'inputtype' => 'text',
             'expression' => 2,
-            "help" => gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
+            "help" => gT('You can use ExpressionScript, but this must be a number before showing the page else set to 1.'),
             "caption" => gT('Slider accuracy')
         );
 
@@ -937,7 +993,7 @@ class questionHelper
             'sortorder' => 210,
             'inputtype' => 'text',
             'expression' => 2, // must be controlled : unsure
-            "help" => gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
+            "help" => gT('The slider will initially use this value. You may use ExpressionScript, but the result must be a number before the page is displayed. This setting overrides the default behavior of starting the slider at the middle position.'),
             "caption" => gT('Slider initial value')
         );
         self::$attributes["slider_default_set"] = array(
@@ -1199,7 +1255,7 @@ class questionHelper
             'inputtype' => 'buttongroup',
             'options' => array(
                 0 => gT('None', 'unescaped'),
-                1 => gT('Order - like 3)', 'unescaped'),
+                1 => gT('Numbered: 1).. 2).. 3)..', 'unescaped'),
                 // 2=>gT('Code - like A1','unescaped'), // Just an idea ;)
             ),
             'default' => 0,
@@ -1493,7 +1549,7 @@ class questionHelper
             'min' => 1,
             'default' => '1',
             "help" => gT("Maximum number of files that the participant can upload for this question"),
-            "caption" => gT("Max number of files")
+            "caption" => gT("Maximum number of files")
         );
 
         self::$attributes["min_num_of_files"] = array(
@@ -1504,7 +1560,7 @@ class questionHelper
             'default' => '0',
             'min' => 0,
             "help" => gT("Minimum number of files that the participant must upload for this question"),
-            "caption" => gT("Min number of files")
+            "caption" => gT("Minimum number of files")
         );
 
         self::$attributes["allowed_filetypes"] = array(
@@ -1583,28 +1639,5 @@ class questionHelper
         // );
 
         return self::$attributes;
-    }
-
-    /**
-     * Return the question Theme preview URL
-     * @param $sType: type pof question
-     * @return string : question theme preview URL
-     * @deprecated use QuestionTheme::getQuestionThemePreviewUrl
-     */
-    public static function getQuestionThemePreviewUrl($sType = null)
-    {
-        if ($sType == '*') {
-            $preview_filename = 'EQUATION.png';
-        } elseif ($sType == ':') {
-            $preview_filename = 'COLON.png';
-        } elseif ($sType == '|') {
-            $preview_filename = 'PIPE.png';
-        } elseif (!empty($sType)) {
-            $preview_filename = $sType . '.png';
-        } else {
-            $preview_filename = '.png';
-        }
-
-        return App()->getConfig("imageurl") . '/screenshots/' . $preview_filename;
     }
 }

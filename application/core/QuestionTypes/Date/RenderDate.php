@@ -18,7 +18,6 @@
  */
 class RenderDate extends QuestionBaseRenderer
 {
-
     protected $aDateformatDetails;
     protected $minDate;
     protected $maxDate;
@@ -27,7 +26,7 @@ class RenderDate extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/date/';
     }
-    
+
     public function getRows()
     {
         return;
@@ -82,7 +81,7 @@ class RenderDate extends QuestionBaseRenderer
         if (trim((string) $this->getQuestionAttribute('date_min')) != '') {
             $date_min      = trim((string) $this->getQuestionAttribute('date_min'));
             $date_time_em  = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_min . "}", $this->oQuestion->qid));
-        
+
             if (ctype_digit($date_min) && (strlen($date_min) == 4)) {
                 $this->minDate = $date_min . '-01-01'; // backward compatibility: if only a year is given, add month and day
             } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_min)) {
@@ -94,7 +93,7 @@ class RenderDate extends QuestionBaseRenderer
                 $this->minDate = '{' . $this->getQuestionAttribute('date_min') . '}';
             }
         } else {
-            $this->minDate = '1900-01-01'; // Why 1900 ?
+            $this->minDate = '1900-01-01'; // We need some default value
         }
     }
 
@@ -104,7 +103,7 @@ class RenderDate extends QuestionBaseRenderer
         if (trim((string) $this->getQuestionAttribute('date_max')) != '') {
             $date_max     = trim((string) $this->getQuestionAttribute('date_max'));
             $date_time_em = strtotime((string) LimeExpressionManager::ProcessString("{" . $date_max . "}", $this->oQuestion->qid));
-        
+
             if (ctype_digit($date_max) && (strlen($date_max) == 4)) {
                 $this->maxDate = $date_max . '-12-31'; // backward compatibility: if only a year is given, add month and day
             } elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/", $date_max)) {
@@ -128,17 +127,30 @@ class RenderDate extends QuestionBaseRenderer
     {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/day',
-            array('dayId' => $this->sSGQA, 'currentday' => $iCurrent),
+            array(
+                'dayId' => $this->sSGQA,
+                'currentday' => $iCurrent,
+                'lang' => [
+                   'Day' => gT("Day")
+                ]
+            ),
             true
         );
     }
 
     private function getMonthSelect($iCurrent)
     {
-        
+
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/month',
-            array('monthId' => $this->sSGQA, 'currentmonth' => $iCurrent, 'montharray' => $this->getTranslatorData()['montharray']),
+            array(
+                'monthId' => $this->sSGQA,
+                'currentmonth' => $iCurrent,
+                'montharray' => $this->getTranslatorData()['montharray'],
+                'lang' => [
+                   'Month' => gT("Month")
+                ]
+            ),
             true
         );
     }
@@ -176,7 +188,7 @@ class RenderDate extends QuestionBaseRenderer
             $step = -1;
             $reverse = false;
         }
-                   
+
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/year',
             array(
@@ -185,17 +197,27 @@ class RenderDate extends QuestionBaseRenderer
                 'yearmax' => $yearmax,
                 'reverse' => $reverse,
                 'yearmin' => $yearmin,
-                'step' => $step
+                'step' => $step,
+                'lang' => [
+                   'Year' => gT("Year")
+                ]
             ),
             true
         );
     }
-    
+
     private function getHourSelect($iCurrent, $datepart)
     {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/rows/hour',
-            array('hourId' => $this->sSGQA, 'currenthour' => $iCurrent, 'datepart' => $datepart),
+            array(
+                'hourId' => $this->sSGQA,
+                'currenthour' => $iCurrent,
+                'datepart' => $datepart,
+                'lang' => [
+                   'Hour' => gT("Hour")
+                ]
+            ),
             true
         );
     }
@@ -208,7 +230,10 @@ class RenderDate extends QuestionBaseRenderer
                 'minuteId' => $this->sSGQA,
                 'currentminute' => $iCurrent,
                 'dropdown_dates_minute_step' => $this->getQuestionAttribute('dropdown_dates_minute_step'),
-                'datepart' => $datepart
+                'datepart' => $datepart,
+                'lang' => [
+                   'Minute' => gT("Minute")
+                ]
             ),
             true
         );
@@ -249,10 +274,10 @@ class RenderDate extends QuestionBaseRenderer
                         'allowInputToggle' => true,
                         'showClear' => true,
                         'sideBySide' => true,
-                        'minDate' => $this->minDate,
-                        'maxDate' => $this->maxDate,
-                        'stepping' => $this->getQuestionAttribute('dropdown_dates_minute_step'),
-                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
+                        'minDate' => strpos($this->minDate, '{') === false ? $this->minDate : '1900-01-01',
+                        'maxDate' => strpos($this->maxDate, '{') === false ? $this->maxDate : '2187-12-31',
+                        'stepping' => intval($this->getQuestionAttribute('dropdown_dates_minute_step')),
+                        'locale' => convertLStoDateTimePickerLocale(App()->getLanguage()),
                     )
                 ),
                 true
@@ -282,7 +307,7 @@ class RenderDate extends QuestionBaseRenderer
             $currentminute = App()->request->getPost("minute{$this->sSGQA}", '');
         }
         $dateorder = preg_split('/([-\.\/ :])/', (string) $this->aDateformatDetails['phpdate'], -1, PREG_SPLIT_DELIM_CAPTURE);
-    
+
         $sRows = '';
         foreach ($dateorder as $datepart) {
             switch ($datepart) {
@@ -325,8 +350,7 @@ class RenderDate extends QuestionBaseRenderer
             LSYii_ClientScript::POS_POSTSCRIPT,
             true
         );
-        
-        
+
         // ==> answer
         $answer = Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView() . '/dropdown/answer',
@@ -339,10 +363,18 @@ class RenderDate extends QuestionBaseRenderer
             'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
             'dateformatdetails'      => $this->aDateformatDetails['jsdate'],
             'dateformat'             => $this->aDateformatDetails['jsdate'],
+            /* language part, to be translated (see issue #19294) */
+            'lang'                   => [
+                                        'Day' => gT("Day"),
+                                        'Month' => gT("Month"),
+                                        'Year' => gT("Year"),
+                                        'Hour' => gT("Hour"),
+                                        'Minute' => gT("Minute"),
+                                    ]
             ),
             true
         );
-        
+
         return $answer;
     }
 
@@ -365,7 +397,7 @@ class RenderDate extends QuestionBaseRenderer
                 $dateoutput = ''; // Imported value and some old survey can have 0000-00-00 00:00:00
             }
         }
-        
+
         //throw new Error("<pre>HALT!".print_r($this->oQuestion,true)."</pre>");
         if (trim((string) $this->getQuestionAttribute('dropdown_dates')) == 1) {
             $answer = $this->renderDropdownDates($dateoutput, $coreClass);
@@ -375,7 +407,7 @@ class RenderDate extends QuestionBaseRenderer
 
         $this->registerAssets();
         $inputnames[] = $this->sSGQA;
-        
+
         return array($answer, $inputnames);
     }
 }

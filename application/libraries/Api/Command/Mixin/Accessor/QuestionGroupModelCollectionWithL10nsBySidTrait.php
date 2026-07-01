@@ -9,7 +9,7 @@ trait QuestionGroupModelCollectionWithL10nsBySidTrait
     private $questionGroupListWithL10nsBySid = null;
 
     /**
-     * Get question group with L10ns by survey id
+     * Get question group with L10ns by survey ID
      *
      * Used as a proxy for providing a mock record during testing.
      *

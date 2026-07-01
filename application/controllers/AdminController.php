@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -33,7 +33,6 @@ class AdminController extends LSYii_Controller
     protected function customInit()
     {
         parent::customInit();
-        App()->getComponent('bootstrap');
         $this->sessioncontrol();
 
         $this->user_id = Yii::app()->user->getId();
@@ -107,7 +106,7 @@ class AdminController extends LSYii_Controller
             }
             $sURL = $sURL['url'];
         } else {
-            $sTitle = gT('Main Admin Screen');
+            $sTitle = gT('Main admin screen');
             $sURL = $this->createUrl('/admin');
         }
         $sOutput .= '<input type="submit" value="' . $sTitle . '" onclick=\'window.open("' . $sURL . '", "_top")\' /><br /><br />' . "\n";
@@ -135,7 +134,7 @@ class AdminController extends LSYii_Controller
             if (Yii::app()->request->getPost('lang') == 'auto') {
                 $sLanguage = getBrowserLanguage();
             } else {
-                $sLanguage = sanitize_languagecode(Yii::app()->request->getPost('lang'));
+                $sLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
@@ -158,11 +157,11 @@ class AdminController extends LSYii_Controller
     {
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
-            $sDBVersion = getGlobalSetting('DBVersion');
+            $sDBVersion = Yii::app()->getConfig('DBVersion');
         }
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
-            Yii::app()->loadHelper('update/updatedb');
+            Yii::app()->loadHelper('update.updatedb');
             if (!db_upgrade_all(intval($sDBVersion), true)) {
                 $this->redirect(array('/admin/databaseupdate/sa/db'));
             }
@@ -188,7 +187,7 @@ class AdminController extends LSYii_Controller
 
                 $this->redirect(array('/admin/authentication/sa/login'));
             } elseif (!empty($this->user_id) && $action != "remotecontrol") {
-                if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
+                if (Yii::app()->session['session_hash'] != hash('sha256', Yii::app()->getConfig('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
                     $this->redirect(array('/admin/authentication/sa/login'));
@@ -197,8 +196,10 @@ class AdminController extends LSYii_Controller
         }
 
         $this->runModuleController($action);
-
-
+        // this will redirect the default action to the new controller previously "admin/index" or "admin" to "dashboard/view"
+        if (empty($action) || $action === 'index') {
+            $this->redirect($this->createUrl('dashboard/view'));
+        }
         return parent::run($action);
     }
 
@@ -226,7 +227,7 @@ class AdminController extends LSYii_Controller
 
     /**
      * If a module override the views of a controller, renderPartial needs to check module view directories.
-     * This work recusively with infinite depth of subdirectories.
+     * This work recursively with infinite depth of subdirectories.
      *
      * @param string $view name of the view to be rendered. See {@link getViewFile} for details
      * about how the view script is resolved.
@@ -242,7 +243,7 @@ class AdminController extends LSYii_Controller
     public function renderPartial($view, $data = null, $return = false, $processOutput = false)
     {
         if (!empty($this->currentModuleAction)) {
-          // Standard: the views are stored in a folder that has the same name as the controler file.
+          // Standard: the views are stored in a folder that has the same name as the controller file.
           // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easily extend any LS Core controller/action/view.
             $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
             $sAction = (empty($sParsedView[1])) ? '' : $sParsedView[1];
@@ -295,7 +296,7 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-     * This function is very similiar to AdminController::actions()
+     * This function is very similar to AdminController::actions()
      * Routes all the modules actions to their respective places
      *
      * todo REFACTORING we don't have to refactore this method ...
@@ -351,7 +352,6 @@ class AdminController extends LSYii_Controller
             'htmleditorpop'    => 'HtmlEditorPop',
             'surveysgroups'    => 'SurveysGroupsController',
             'limereplacementfields' => 'limereplacementfields',
-            'index'            => 'index',
             'labels'           => 'Labels',
             'participants'     => 'ParticipantsAction',
             'pluginmanager'    => 'PluginManagerController',
@@ -412,9 +412,10 @@ class AdminController extends LSYii_Controller
      * @access protected
      * @param bool $meta
      * @param bool $return
+     * @param array $pageData Optional page data (e.g. topbar, title_bar) to set document title for screen readers
      * @return string|null
      */
-    public function getAdminHeader($meta = false, $return = false)
+    public function getAdminHeader($meta = false, $return = false, $pageData = [])
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -443,10 +444,9 @@ class AdminController extends LSYii_Controller
         $aData['datepickerlang'] = "";
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
-        $aData['firebug'] = useFirebug();
 
         if (!empty(Yii::app()->session['dateformat'])) {
-                    $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
         }
 
         // Register admin theme package with asset manager
@@ -454,6 +454,13 @@ class AdminController extends LSYii_Controller
 
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
+
+        $aData['pageTitle'] = null;
+        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
+            $aData['pageTitle'] = strip_tags((string) $pageData['topbar']['title']);
+        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
+            $aData['pageTitle'] = strip_tags((string) $pageData['title_bar']['title']);
+        }
 
             //foreach ($aData['aPackageStyles'] as &$filename)
             //{

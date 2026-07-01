@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -21,8 +21,10 @@
 {% if aGroup.showgroupinfo == 'D' or aGroup.showgroupinfo == 'B' %}
     {% if aGroup.description != '' %}
         <!-- Group description -->
-        <div class="{{ aSurveyInfo.class.groupdesc }} row well space-col" {{ aSurveyInfo.attr.groupdesc }}>
+        <div class="{{ aSurveyInfo.class.groupdesc }} row space-col" {{ aSurveyInfo.attr.groupdesc }}>
+            <div class="col-12 well">
             {{ processString(aGroup.description) }}
+            </div>
         </div>
     {% endif %}
 {% endif %}

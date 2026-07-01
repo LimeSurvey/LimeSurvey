@@ -142,7 +142,8 @@ class LSYiiValidatorsTest extends TestBaseClass
         $userData = array(
             'full_name'  => $userName,
             'users_name' => $userName,
-            'email'      => $userName . '@example.org'
+            'email'      => $userName . '@example.org',
+            'password'   => 'testpassword123'
         );
 
         $permissions = array(
@@ -193,6 +194,8 @@ class LSYiiValidatorsTest extends TestBaseClass
         $newPassword = createPassword();
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@example.org');
+        $this->assertFalse($userId instanceof \User, 'Failed to create user: ' . ($userId instanceof \User ? json_encode($userId->getErrors()) : ''));
+        $userId = (int) $userId;
 
         //Mocking regular user login.
         \Yii::app()->session['loginID'] = $userId;
@@ -292,7 +295,9 @@ class LSYiiValidatorsTest extends TestBaseClass
      */
     public function testLanguageFilters()
     {
-        // Testing languageFilter.
+        \Yii::app()->session['loginID'] = 1;
+
+        // Testing languageCodeFilter.
         $survey = \Survey::model()->insertNewSurvey(array('language' => 'ko')); // Set language to Korean.
 
         $this->assertSame('ko', $survey->language, 'The language filter did not return a correctly filtered language string.');
@@ -307,7 +312,7 @@ class LSYiiValidatorsTest extends TestBaseClass
 
         $this->assertSame('en', $survey->language, 'The language filter did not return a correctly filtered language string.');
 
-        // Testing multiLanguageFilter.
+        // Testing multiLanguageCodeFilter.
         $survey->additional_languages = 'es';
         $survey->save();
 

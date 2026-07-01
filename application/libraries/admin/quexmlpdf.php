@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -33,7 +33,6 @@ require('pdf.php');
 */
 class quexmlpdf extends pdf
 {
-
     /**
      * Define an inch in MM
      *
@@ -101,16 +100,6 @@ class quexmlpdf extends pdf
      * @see write1DBarcode
      */
     protected $barcodeType = 'I25';
-
-    /**
-     * The x position in MM of the barcode
-     *
-     * @var bool  Defaults to 138.
-     * @since 2010-09-20
-     * @deprecated
-     * @see $barcodeMarginX
-     */
-    //protected $barcodeX = 138;
 
     /**
      * The distance between the right hand page border and
@@ -186,15 +175,6 @@ class quexmlpdf extends pdf
      * @since 2012-01-31
      */
     protected $questionTitleSuffix = ".";
-
-    /**
-     * Width of question text in MM
-     *
-     * @var mixed  Defaults to 120.
-     * @since 2010-09-20
-     * @deprecated
-     */
-    //protected $questionTextWidth = 120;
 
     /**
      * Right margin of question text in MM
@@ -441,16 +421,6 @@ class quexmlpdf extends pdf
     protected $barcodeResponseHeight = 6;
 
     /**
-     * The maximum number of text responses per line
-     *
-     * @var mixed  Defaults to 24.
-     * @since 2010-09-20
-     * @deprecated
-     * @see $textResponseMarginX
-     */
-    //protected $textResponsesPerLine = 24;
-
-    /**
      * The left hand margin of text responses to auto calculate responses
      * per line (mm)
      *
@@ -458,16 +428,6 @@ class quexmlpdf extends pdf
      * @since 2011-10-25
      */
     protected $textResponseMarginX = 13;
-
-    /**
-     * Maximum number of text responses boxes where the label should appear on the same line
-     *
-     * @var mixed  Defaults to 16.
-     * @since 2010-09-20
-     * @deprecated
-     * @see $labelTextResponsesSameLineMarginX
-     */
-    //protected $labelTextResponsesSameLine = 16;
 
     /**
      * The left hand margin of text responses to auto calculated responses
@@ -501,16 +461,6 @@ class quexmlpdf extends pdf
      * @since 2010-09-20
      */
     protected $longTextResponseHeightMultiplier = 1;
-
-    /**
-     * Width of a long text response box
-     *
-     * @var mixed  Defaults to 145.
-     * @since 2010-09-20
-     * @deprecated
-     * @see drawLongText() for the new calculation of long text box width
-     */
-    //protected $longTextResponseWidth = 145;
 
     /**
      * Default number of characters to store in a long text field
@@ -1349,6 +1299,7 @@ class quexmlpdf extends pdf
      */
     public function setStyle($style)
     {
+        $style = htmlspecialchars($style, ENT_NOQUOTES); // Allow  background url src
         $this->style = "<style>" . $style . "</style>";
     }
 
@@ -1605,7 +1556,6 @@ class quexmlpdf extends pdf
 
         // set document information
         $this->SetCreator('queXMLPDF (http://quexml.sourceforge.net)');
-        $this->SetAuthor('Adam Zammit <adam.zammit@acspri.org.au>');
         $this->SetTitle('queXML Document');
         $this->SetSubject('queXML');
         $this->SetKeywords('queXML queXF');
@@ -1866,14 +1816,14 @@ class quexmlpdf extends pdf
      */
     public function numberToLetter($number)
     {
-        if ($number < 1) {
-            $number = 1;
+        if (empty($number)) {
+            return "A";
         }
 
         if ($number > 26) {
-            return chr((($number - 1) / 26) + 64) . chr((($number - 1) % 26) + 65);
+            return chr((int) (($number - 1) / 26) + 64) . chr((int) (($number - 1) % 26) + 65);
         } else {
-            return chr($number + 64);
+            return chr((int) ($number + 64));
         }
     }
 
@@ -1968,7 +1918,7 @@ class quexmlpdf extends pdf
                 $qtmp['split'] = 'notset';
 
                 if (isset($qu['split'])) {
-                    if (current($qu['split']) == "true") {
+                    if ((string) $qu['split'] == "true") {
                         $qtmp['split'] = true;
                     } else {
                         $qtmp['split'] = false;
@@ -1987,12 +1937,14 @@ class quexmlpdf extends pdf
 
                 $qtmp['text'] = "";
 
+                $qucount = count($qu->text);
+                $quiterate = 0;
                 foreach ($qu->text as $ttmp) {
                     //Add a new line if we aren't at the end
-                    if ($ttmp != end($qu->text)) {
+                    if ($quiterate == $qucount - 1) {
                         $qtmp['text'] .= "<br/>";
                     }
-
+                    $quiterate++;
                     $qtmp['text'] .= $ttmp;
                 }
 
@@ -2037,23 +1989,23 @@ class quexmlpdf extends pdf
                     $sqtmp['varname'] = $sq['varName'];
 
                     if (isset($sq['defaultValue'])) {
-                        $sqtmp['defaultvalue'] = current($sq['defaultValue']);
+                        $sqtmp['defaultvalue'] = (string) $sq['defaultValue'];
                     }
 
                     if (isset($sq->contingentQuestion)) {
                         //Need to handle contingent questions
                         $oarr = array();
-                        $oarr['width'] = current($sq->contingentQuestion->length);
-                        $oarr['text'] = current($sq->contingentQuestion->text);
+                        $oarr['width'] = (string) $sq->contingentQuestion->length;
+                        $oarr['text'] = (string) $sq->contingentQuestion->text;
 
                         $oarr['format'] = 'text';
 
                         if (isset($sq->contingentQuestion->format)) {
-                            $oarr['format'] = current($sq->contingentQuestion->format);
+                            $oarr['format'] = (string) $sq->contingentQuestion->format;
                         }
 
                         if (isset($sq->contingentQuestion['defaultValue'])) {
-                            $oarr['defaultvalue'] = current($sq->contingentQuestion['defaultValue']);
+                            $oarr['defaultvalue'] = (string) $sq->contingentQuestion['defaultValue'];
                         }
 
                         $oarr['varname'] = $sq->contingentQuestion['varName'];
@@ -2070,7 +2022,7 @@ class quexmlpdf extends pdf
                     $rtmp['split'] = 'notset';
 
                     if (isset($r['split'])) {
-                        if (current($r['split']) == "true") {
+                        if ((string) $r['split'] == "true") {
                             $rtmp['split'] = true;
                         } else {
                             $rtmp['split'] = false;
@@ -2078,7 +2030,7 @@ class quexmlpdf extends pdf
                     }
 
                     if (isset($r['defaultValue'])) {
-                        $rstmp['defaultvalue'] = current($r['defaultValue']);
+                        $rstmp['defaultvalue'] = (string) $r['defaultValue'];
                     }
 
                     if (isset($r->fixed)) {
@@ -2096,27 +2048,27 @@ class quexmlpdf extends pdf
                         $ctmp = array();
                         foreach ($r->fixed->category as $c) {
                             $cat = array();
-                            $cat['text'] = current($c->label) !== false ? current($c->label) : '';
-                            $cat['value'] = current($c->value);
+                            $cat['text'] = (string) $c->label !== false ? (string) $c->label : '';
+                            $cat['value'] = (string) $c->value;
                             if (isset($c->skipTo)) {
-                                $cat['skipto'] = current($c->skipTo);
+                                $cat['skipto'] = (string) $c->skipTo;
                                 //save a skip
-                                $this->skipToRegistry[current($c->skipTo) . $this->questionTitleSuffix] = $qtmp['title'];
+                                $this->skipToRegistry[(string) $c->skipTo . $this->questionTitleSuffix] = $qtmp['title'];
                             }
                             if (isset($c->contingentQuestion)) {
                                 //Need to handle contingent questions
                                 $oarr = array();
-                                $oarr['width'] = current($c->contingentQuestion->length);
-                                $oarr['text'] = current($c->contingentQuestion->text);
+                                $oarr['width'] = (string) $c->contingentQuestion->length;
+                                $oarr['text'] = (string) $c->contingentQuestion->text;
 
                                 $oarr['format'] = 'text';
 
                                 if (isset($c->contingentQuestion->format)) {
-                                    $oarr['format'] = current($c->contingentQuestion->format);
+                                    $oarr['format'] = (string) $c->contingentQuestion->format;
                                 }
 
                                 if (isset($c->contingentQuestion['defaultValue'])) {
-                                    $oarr['defaultvalue'] = current($c->contingentQuestion['defaultValue']);
+                                    $oarr['defaultvalue'] = (string) $c->contingentQuestion['defaultValue'];
                                 }
 
                                 $oarr['varname'] = $c->contingentQuestion['varName'];
@@ -2126,7 +2078,7 @@ class quexmlpdf extends pdf
                         }
                         $rtmp['categories'] = $ctmp;
                     } elseif (isset($r->free)) {
-                        $format = strtolower(trim(current($r->free->format)));
+                        $format = strtolower(trim((string) $r->free->format));
                         if ($format == 'longtext') {
                             $rtmp['type'] = 'longtext';
                         } elseif ($format == 'number' || $format == 'numeric' || $format == 'integer') {
@@ -2138,13 +2090,13 @@ class quexmlpdf extends pdf
                         } else {
                             $rtmp['type'] = 'text';
                         }
-                        $rtmp['width'] = current($r->free->length);
-                        $rtmp['text'] = current($r->free->label);
+                        $rtmp['width'] = (string) $r->free->length;
+                        $rtmp['text'] = (string) $r->free->label;
                     } elseif (isset($r->vas)) {
                         $rtmp['type'] = 'vas';
                         $rtmp['width'] = 100;
-                        $rtmp['labelleft'] = current($r->vas->labelleft);
-                        $rtmp['labelright'] = current($r->vas->labelright);
+                        $rtmp['labelleft'] = (string) $r->vas->labelleft;
+                        $rtmp['labelright'] = (string) $r->vas->labelright;
                     }
                     $rstmp['response'] = $rtmp;
                     $qtmp['responses'][] = $rstmp;
@@ -2334,7 +2286,7 @@ class quexmlpdf extends pdf
                 $iv = $this->$m(); // get the current data
 
                 if (isset($xml->$itemname)) {
-//if setting exists in xml then set it
+                    //if setting exists in xml then set it
                     if (is_bool($iv)) {
                         if ($xml->$itemname == "true") {
                             $this->$setname(true);
