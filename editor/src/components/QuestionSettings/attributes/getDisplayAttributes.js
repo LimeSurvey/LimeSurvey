@@ -9,6 +9,7 @@ import {
   YESNO_LONGSTRING,
   getOnOffOptions,
 } from 'helpers/options'
+import { L10ns } from 'helpers'
 import { Input, Select, ToggleButtons } from 'components/UIComponents'
 
 import { ImageAttributes } from '../attributes'
@@ -393,19 +394,29 @@ export const getDisplayAttributes = () => ({
   OTHER_POSITION_CODE: {
     component: Select,
     attributePath: 'attributes.other_position_code',
-    getOptions: ({ question }) => {
+    getOptions: ({ question, language }) => {
       const answers = question?.answers || []
       const subquestions = question?.subquestions || []
 
       if (answers.length) {
         return answers.map((answer = {}) => ({
-          label: answer.code,
+          label:
+            L10ns({
+              prop: 'answer',
+              language,
+              l10ns: answer.l10ns,
+            }) || answer.code,
           value: answer.code,
         }))
       }
 
       return subquestions.map((subquestion = {}) => ({
-        label: subquestion.title,
+        label:
+          L10ns({
+            prop: 'question',
+            language,
+            l10ns: subquestion.l10ns,
+          }) || subquestion.title,
         value: subquestion.title,
       }))
     },
