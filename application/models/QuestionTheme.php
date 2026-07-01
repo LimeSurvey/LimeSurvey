@@ -883,8 +883,14 @@ class QuestionTheme extends LSActiveRecord
 
         // replace custom_attributes with attributes
         if (preg_match('/<custom_attributes>/', $sQuestionConfigFile)) {
-            $sQuestionConfigFile = preg_replace('/<custom_attributes>/', '<attributes>', $sQuestionConfigFile);
-            $sQuestionConfigFile = preg_replace('/<\/custom_attributes>/', '</attributes>', $sQuestionConfigFile);
+            if (preg_match('/<attributes>/', $sQuestionConfigFile)) {
+                // Both sections exist: remove the (old) custom_attributes block entirely
+                // to avoid creating a duplicate <attributes> block after the rename.
+                $sQuestionConfigFile = preg_replace('/<custom_attributes>.*?<\/custom_attributes>/s', '', $sQuestionConfigFile);
+            } else {
+                $sQuestionConfigFile = preg_replace('/<custom_attributes>/', '<attributes>', $sQuestionConfigFile);
+                $sQuestionConfigFile = preg_replace('/<\/custom_attributes>/', '</attributes>', $sQuestionConfigFile);
+            }
         };
         $oThemeConfig = simplexml_load_string($sQuestionConfigFile);
         if (\PHP_VERSION_ID < 80000) {
@@ -896,34 +902,20 @@ class QuestionTheme extends LSActiveRecord
             $oThemeConfig->metadata->type = 'question_theme';
         } else {
             $oThemeConfig->metadata->addChild('type', 'question_theme');
-        }
+        };
 
-        // set compatibility version only if missing or below 5.0
-        $shouldUpdateCompatibility = false;
-        if (isset($oThemeConfig->compatibility)) {
-            $existingVersions = [];
-            foreach ($oThemeConfig->compatibility->version as $ver) {
-                $existingVersions[] = (string)$ver;
-            }
-            // If no version or any version < 5.0, update
-            if (empty($existingVersions)) {
-                $shouldUpdateCompatibility = true;
+        // Ensure '5.0' is listed in <compatibility>, adding it if absent.
+        // Never create a duplicate <compatibility> element.
+        $aExistingVersions = [];
+        foreach ($oThemeConfig->compatibility->version as $oVersion) {
+            $aExistingVersions[] = (string) $oVersion;
+        }
+        if (!in_array('5.0', $aExistingVersions, true)) {
+            if (!isset($oThemeConfig->compatibility)) {
+                $oThemeConfig->addChild('compatibility')->addChild('version', '5.0');
             } else {
-                foreach ($existingVersions as $ver) {
-                    if (version_compare($ver, '5.0', '<')) {
-                        $shouldUpdateCompatibility = true;
-                        break;
-                    }
-                }
-            }
-            if ($shouldUpdateCompatibility) {
-                // Remove all <version> children
-                unset($oThemeConfig->compatibility->version);
                 $oThemeConfig->compatibility->addChild('version', '5.0');
             }
-        } else {
-            $compatibility = $oThemeConfig->addChild('compatibility');
-            $compatibility->addChild('version', '5.0');
         }
 
         $sThemeDirectoryName = self::getThemeDirectoryPath($sQuestionConfigFilePath);
@@ -950,9 +942,9 @@ class QuestionTheme extends LSActiveRecord
         // get questiontype from core if it is missing
         if (!isset($oThemeConfig->metadata->questionType)) {
             $oThemeConfig->metadata->addChild('questionType', $oThemeCoreConfig->metadata->questionType);
-        }
+        };
 
-        // search missing new tags and copy theme from the core theme, avoid duplicates
+        // search missing new tags and copy theme from the core theme
         $aNewMetadataTagsToRecoverFromCoreType = ['group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
         foreach ($aNewMetadataTagsToRecoverFromCoreType as $sMetaTag) {
             if (!isset($oThemeConfig->metadata->$sMetaTag)) {
