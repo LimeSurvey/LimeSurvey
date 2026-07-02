@@ -1,7 +1,7 @@
-﻿/**
+/**
  * Always set an empty LSvar
 */
-var LSvar = LSvar || { };
+window.LSvar = window.LSvar || {};
 
 /**
  * Global code for both legacy and new survey themes
