@@ -64,14 +64,17 @@ class Update_709 extends DatabaseUpdateBase
      */
     protected function alterPostgreSQL(int $sid, int $parent_qid, array $cols)
     {
-        $this->db->createCommand("alter table {{responses_" . $sid . "}} add column Q{$parent_qid} json")->execute();
+        $newColumn = $this->db->quoteColumnName("Q{$parent_qid}");
+        $this->db->createCommand("alter table {{responses_" . $sid . "}} add column {$newColumn} json")->execute();
+
         $alterElements = [];
         foreach ($cols as $col) {
             $alterElements[] = (!count($alterElements) ?
             "CASE WHEN LENGTH(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT('\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END," :
             "CASE WHEN LENGTH(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT(',\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END,");
         }
-        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = to_json(CONCAT('[', " . implode($alterElements) . " ']'))";
+
+        $updateCommand = "UPDATE {{responses_{$sid}}} SET {$newColumn} = to_json(CONCAT('[', " . implode($alterElements) . " ']'))";
         $this->db->createCommand($updateCommand)->execute();
         foreach ($cols as $col) {
             dropColumn("{{responses_" . $sid . "}}", $col);
