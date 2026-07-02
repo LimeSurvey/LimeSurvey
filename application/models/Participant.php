@@ -182,7 +182,7 @@ class Participant extends LSActiveRecord
      */
     public function getCheckbox()
     {
-        return "<input type='checkbox' class='selector_participantCheckbox' name='selectedParticipant[]' value='" . $this->id . "' >";
+        return "<input type='checkbox' class='selector_participantCheckbox massiveActionsCheckbox' name='selectedParticipant[]' value='" . $this->id . "' >";
     }
 
     /**
