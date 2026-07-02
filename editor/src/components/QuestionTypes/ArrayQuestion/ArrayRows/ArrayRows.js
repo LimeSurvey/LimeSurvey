@@ -215,7 +215,11 @@ export const ArrayRows = ({
                       entityTitleKey: entitiesInfo.titleKey,
                     })
                   }
-                  focusContentEditor={hasTempId(entity[entitiesInfo.idKey]) && !hasTempId(qid) && !isTitleFocused}
+                  focusContentEditor={
+                    hasTempId(entity[entitiesInfo.idKey]) &&
+                    !hasTempId(qid) &&
+                    !isTitleFocused
+                  }
                 />
               </div>
             )}

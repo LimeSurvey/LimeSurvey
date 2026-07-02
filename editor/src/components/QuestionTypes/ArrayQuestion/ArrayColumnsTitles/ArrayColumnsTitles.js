@@ -277,7 +277,11 @@ export const ArrayColumnsTitles = ({
                         handleUpdateL10ns={(value, index) =>
                           handleUpdateL10ns(value, entitiesInfo, index)
                         }
-                        focusContentEditor={hasTempId(entity[entitiesInfo.idKey]) && !hasTempId(qid) && !isTitleFocused}
+                        focusContentEditor={
+                          hasTempId(entity[entitiesInfo.idKey]) &&
+                          !hasTempId(qid) &&
+                          !isTitleFocused
+                        }
                         placeholder={entitiesInfo.placeholder}
                         itemsKey={entitiesInfo.itemsKey}
                         entity={entity}
