@@ -26,6 +26,7 @@ LS.floatingActions = (function () {
      * @type {Object.<string, jQuery>}
      */
     var _barRefs = {};
+    var _afterAjaxHooked = false; // set to true the first time init() runs
 
     // -------------------------------------------------------------------------
     // Helpers
@@ -53,6 +54,9 @@ LS.floatingActions = (function () {
 
         if (count > 0) {
             $bar.addClass('floating-actions-bar--visible');
+            // Sync position every time the bar becomes visible so it is always
+            // rendered at the correct location regardless of scroll state.
+            _syncBarPosition(gridId);
         } else {
             $bar.removeClass('floating-actions-bar--visible');
         }
@@ -63,6 +67,45 @@ LS.floatingActions = (function () {
             $massive.removeClass('disabled').removeAttr('disabled');
         } else {
             $massive.addClass('disabled').attr('disabled', 'disabled');
+        }
+    }
+
+    /**
+     * Keeps the bar's position:fixed 'bottom' offset in sync with the scroll
+     * position so the bar visually sticks to the table's lower edge when the
+     * table bottom is in the viewport, and floats at the default offset otherwise.
+     *
+     * Called on init, after every grid AJAX update, and on window scroll.
+     *
+     * @param {string} gridId
+     */
+    function _syncBarPosition(gridId) {
+        var $bar     = _bar(gridId);
+        var $grid    = $('#' + gridId);
+        var $wrapper = $grid.find('.scrolling-wrapper');
+
+        if (!$bar.length || !$wrapper.length) { return; }
+
+        var fixedBottom   = 16;   // keep in sync with CSS bottom: 16px
+        var viewportH     = window.innerHeight || document.documentElement.clientHeight;
+        var wrapperBottom = $wrapper[0].getBoundingClientRect().bottom;
+
+        // The bar always uses position:fixed (viewport-relative), which avoids
+        // any dependency on the grid container as a CSS containing block.
+        // When the table bottom is visible we adjust 'bottom' dynamically so
+        // the bar pins to the table's lower edge; otherwise we use the fixed offset.
+        if (wrapperBottom > 0 && wrapperBottom <= (viewportH - fixedBottom)) {
+            // Table bottom visible: pin bar flush to the table's lower edge.
+            $bar.css({
+                position : 'fixed',
+                bottom   : (viewportH - wrapperBottom) + 'px'
+            });
+        } else {
+            // Table bottom off-screen (above or below): float at viewport bottom.
+            $bar.css({
+                position : 'fixed',
+                bottom   : fixedBottom + 'px'
+            });
         }
     }
 
@@ -78,6 +121,7 @@ LS.floatingActions = (function () {
         var $footer = $('#' + gridId).find('.grid-view-ls-footer');
         if ($bar.length && $footer.length) {
             $footer.before($bar);
+            _syncBarPosition(gridId);
         }
     }
 
@@ -264,25 +308,6 @@ LS.floatingActions = (function () {
     }
 
     // -------------------------------------------------------------------------
-    // Extend LS.gridView.afterAjaxUpdate
-    // Re-inject the bar and refresh its state after each AJAX grid update.
-    // -------------------------------------------------------------------------
-    (function () {
-        var _orig = LS.gridView.afterAjaxUpdate;
-        LS.gridView.afterAjaxUpdate = function (id, data) {
-            if (_orig) { _orig.call(this, id, data); }
-
-            if (!_barRefs[id]) { return; }
-
-            // The grid's innerHTML was just replaced; re-inject bar above pager
-            _injectBar(id);
-
-            // Refresh visibility / count from the freshly rendered checkboxes
-            _updateBar(id, _barRefs[id].data('pk'));
-        };
-    }());
-
-    // -------------------------------------------------------------------------
     // Public API
     // -------------------------------------------------------------------------
     return {
@@ -298,59 +323,82 @@ LS.floatingActions = (function () {
 
             if (!$bar.length || !$grid.length) { return; }
 
+            // Hook LS.gridView.afterAjaxUpdate once (here, not at load time, so
+            // that afterAjaxUpdate.js has already defined its base implementation).
+            if (!_afterAjaxHooked) {
+                _afterAjaxHooked = true;
+                var _orig = LS.gridView.afterAjaxUpdate;
+                LS.gridView.afterAjaxUpdate = function (id, data) {
+                    if (_orig) { _orig.call(this, id, data); }
+                    if (!_barRefs[id]) { return; }
+                    // Grid innerHTML was replaced; re-inject bar and refresh count
+                    _injectBar(id);
+                    _updateBar(id, _barRefs[id].data('pk'));
+                };
+            }
+
             // Store reference so it survives the grid's AJAX innerHTML replacement
             _barRefs[gridId] = $bar;
 
             // Place bar directly above the pagination/summary row
             _injectBar(gridId);
 
-            var pkCol = pk + '[]';
+            // yiiGridView uses replaceWith() on AJAX updates, so the original
+            // $grid element becomes detached after every page change. We therefore
+            // delegate ALL events from document, using the grid-id and bar-id as
+            // part of the selector so they remain scoped to the right widgets.
+            var pkCol      = pk + '[]';
             var barSelector = '#floating-actions-bar-' + gridId;
+            var gridSelector = '#' + gridId;
+            // Unique per-grid event namespace so multiple grids don't interfere.
+            var ns = '.floatingActions.' + gridId.replace(/-/g, '_');
 
-            // ---- Checkbox changes (delegate from stable grid element) -------
+            // ---- Checkbox changes (delegated from document) -----------------
 
             // Row checkboxes
-            $grid.on('change.floatingActions', 'input[name="' + pkCol + '"]', function () {
+            $(document).on('change' + ns, gridSelector + ' input[name="' + pkCol + '"]', function () {
                 _updateBar(gridId, pk);
             });
 
-            // Header "select all" checkbox – rows are set programmatically,
-            // so we sync after a small timeout
-            $grid.on('change.floatingActions', 'input[type="checkbox"][id$="_all"]', function () {
+            // Header "select all" checkbox - rows are toggled programmatically,
+            // so we sync after a short timeout.
+            $(document).on('change' + ns, gridSelector + ' input[type="checkbox"][id$="_all"]', function () {
                 setTimeout(function () { _updateBar(gridId, pk); }, 50);
             });
 
-            // ---- Bar controls (delegate from stable grid element) -----------
+            // ---- Bar controls (delegated from document) ---------------------
 
             // Close / deselect-all
-            $grid.on('click.floatingActions', barSelector + ' .floating-actions-close',
-                function () {
-                    // Uncheck all visible row checkboxes
-                    $('#' + gridId)
-                        .find('.table tbody input[name="' + pkCol + '"]:checked')
-                        .prop('checked', false);
-                    // Also uncheck the header "select all" if present
-                    $('#' + gridId)
-                        .find('input[type="checkbox"][id$="_all"]')
-                        .prop('checked', false);
-                    _updateBar(gridId, pk);
-                }
-            );
+            $(document).on('click' + ns, barSelector + ' .floating-actions-close', function () {
+                $(gridSelector)
+                    .find('.table tbody input[name="' + pkCol + '"]:checked')
+                    .prop('checked', false);
+                $(gridSelector)
+                    .find('input[type="checkbox"][id$="_all"]')
+                    .prop('checked', false);
+                _updateBar(gridId, pk);
+            });
 
             // Direct action buttons
-            $grid.on('click.floatingActions',
+            $(document).on('click' + ns,
                 barSelector + ' .floating-actions-btn:not(.dropdown-toggle)',
                 function (e) { _onClick.call(this, e, gridId, pk); }
             );
 
             // Dropdown sub-items
-            $grid.on('click.floatingActions',
+            $(document).on('click' + ns,
                 barSelector + ' .floating-actions-item',
                 function (e) { _onClick.call(this, e, gridId, pk); }
             );
 
+            // ---- Scroll: keep bar position in sync with table position ---------
+            $(window).on('scroll' + ns, function () {
+                _syncBarPosition(gridId);
+            });
+
             // ---- Initial state ---------------------------------------------
             _updateBar(gridId, pk);
+            _syncBarPosition(gridId);
         },
 
         /** Manually refresh the bar state (e.g. after an external grid update). */

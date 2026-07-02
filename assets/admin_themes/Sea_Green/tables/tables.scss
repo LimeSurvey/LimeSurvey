@@ -157,7 +157,12 @@ table {
 // =============================================================================
 .floating-actions-bar {
     display       : none;
-    width         : 100%;
+    position      : fixed;
+    bottom        : 16px;
+    left          : 50%;
+    transform     : translateX(-50%);
+    width         : auto;
+    z-index       : 1040;
     align-items   : center;
     gap           : 2px;
     padding       : 4px 8px;
@@ -167,7 +172,6 @@ table {
     border-radius : 4px;
     box-shadow    : 0 2px 8px 0 $elevation-shadow-soft;
     white-space   : nowrap;
-    margin-bottom : 8px;
 
     &.floating-actions-bar--visible {
         display : flex;
@@ -265,6 +269,8 @@ table {
 }
 
 .grid-view, .grid-view-ls {
+    position: relative; // positioning context for the absolute floating-actions-bar
+
     .table {
         padding       : 20px;
         border-radius : 4px;

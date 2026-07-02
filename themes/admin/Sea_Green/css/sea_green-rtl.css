@@ -19729,7 +19729,12 @@ table [class^=ri-], table [class*=" ri-"] {
 
 .floating-actions-bar {
   display: none;
-  width: 100%;
+  position: fixed;
+  bottom: 16px;
+  right: 50%;
+  transform: translateX(50%);
+  width: auto;
+  z-index: 1040;
   align-items: center;
   gap: 2px;
   padding: 4px 8px;
@@ -19739,7 +19744,6 @@ table [class^=ri-], table [class*=" ri-"] {
   border-radius: 4px;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
   white-space: nowrap;
-  margin-bottom: 8px;
 }
 .floating-actions-bar.floating-actions-bar--visible {
   display: flex;
@@ -19820,6 +19824,9 @@ table [class^=ri-], table [class*=" ri-"] {
   font-size: 13px;
 }
 
+.grid-view, .grid-view-ls {
+  position: relative;
+}
 .grid-view .table, .grid-view-ls .table {
   padding: 20px;
   border-radius: 4px;
