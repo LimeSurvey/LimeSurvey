@@ -79,8 +79,11 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
                                         </div>
                                             <br>
                                     </div>
+                                    <!-- Custom per-slide info (injected by JS) -->
+                                    <div class="editor-info-custom d-none"></div>
                                     <?php if ($hasPathUrlFormat) : ?>
-                                    <div class="hint-text-box p-3">
+                                    <!-- Default info shown for slides without their own info section -->
+                                    <div class="editor-info-default hint-text-box p-3">
                                         <p class="hint-text med-14-c mb-1">
                                             <?= gT('Good to know...') ?>
                                         </p>

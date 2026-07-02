@@ -13,12 +13,23 @@ $(document).ready(function () {
             const $image = $modal.find(".editor-slider-image");
             const $desc = $modal.find(".editor-slider-description");
             const $dots = $modal.find(".editor-slider-dot");
+            const $infoDefault = $modal.find(".editor-info-default");
+            const $infoCustom = $modal.find(".editor-info-custom");
             const FADE_MS = 250;
 
             const updateContent = () => {
                 $title.html(slide.title);
                 $image.attr("src", slide.image).attr("alt", "slider image " + (index + 1));
                 $desc.html(slide.description);
+
+                // Swap the info panel if custom info is provided for this slide
+                if (slide.info) {
+                    $infoCustom.html(slide.info).removeClass("d-none");
+                    $infoDefault.addClass("d-none");
+                } else {
+                    $infoCustom.empty().addClass("d-none");
+                    $infoDefault.removeClass("d-none");
+                }
 
                 $dots
                     .removeClass("editor-slider-dot--active")

@@ -4,12 +4,12 @@ namespace ReactEditor;
 
 /**
  * Provides the slide definitions for the editor version modal slider.
- * Each slide contains: image, title and description.
+ * Each slide contains: image, title, description and info.
  */
 class EditorSlides
 {
     /**
-     * @return array<int, array{image: string, title: string, description: string}>
+     * @return array<int, array{image: string, title: string, description: string, info?: string}>
      */
     public static function getSlides(): array
     {
