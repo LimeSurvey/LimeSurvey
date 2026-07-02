@@ -100,7 +100,7 @@ echo $oQuestionSelector->getModal();
 
                 <!-- TAB: My profile settings -->
                 <div role="tabpanel" class="tab-pane fade show active" id="your-profile" aria-labelledby="tab-your-profile" tabindex="0">
-                    <div class="pagetitle h3"><?php eT("Profile"); ?></div>
+                    <h2 class="pagetitle h3"><?php eT("Profile"); ?></h2>
                     <div class="row">
                         <div class="col-12">
                             <div class="mb-3">
@@ -260,7 +260,7 @@ echo $oQuestionSelector->getModal();
 
                 <!-- TAB: My personal settings -->
                 <div role="tabpanel" class="tab-pane fade" id="your-personal-settings" aria-labelledby="tab-your-personal-settings" tabindex="0">
-                    <div class="pagetitle h3"><?php eT("My personal settings"); ?></div>
+                    <h2 class="pagetitle h3"><?php eT("My personal settings"); ?></h2>
                     <div class="row">
                         <div class="col-12 col-lg-6">
                             <!-- Interface language -->

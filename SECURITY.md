@@ -5,3 +5,7 @@
 Please report (suspected) security vulnerabilities by creating a bug report on https://bugs.limesurvey.org and mark it as private. Marking it as private will make the bug report visible to only users who have access. Another option would be to send the information to support@limesurvey.org, directly.
 
 You will receive a response from us within 48 hours. If the issue is confirmed, we will release a patch as soon as possible depending on complexity but historically within a few days.
+
+Please note that we do not assign CVEs. After we confirmed the issue you are free to register a CVE for the issue on your own.
+
+Thank you for your responsible disclosure!

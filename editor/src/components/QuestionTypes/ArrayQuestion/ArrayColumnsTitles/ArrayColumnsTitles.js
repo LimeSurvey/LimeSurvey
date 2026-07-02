@@ -47,6 +47,7 @@ export const ArrayColumnsTitles = ({
   headersHeight,
   showNoAnswer = false,
   handleChildCodeUpdate = () => {},
+  isTitleFocused,
 }) => {
   const [isReorderingAnswers, setIsReorderingAnswers] = useState(false)
   const [headerValue, setHeaderValue] = useState('')
@@ -243,12 +244,8 @@ export const ArrayColumnsTitles = ({
             {entitiesInfo?.items?.map((entity, index) => {
               return (
                 <Draggable
-                  key={`${
-                    entity[entitiesInfo.idKey]
-                  }-${qid}-${index}-subQuestionAnswerTitle`}
-                  draggableId={`${
-                    entity[entitiesInfo.idKey]
-                  }-${qid}-${index}-subQuestionAnswerTitle`}
+                  key={`${entity.appKey || entity[entitiesInfo.idKey]}}-subQuestionAnswerTitle`}
+                  draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}}-subQuestionAnswerTitle`}
                   index={index}
                 >
                   {(provided, snapshot) => (
@@ -279,6 +276,9 @@ export const ArrayColumnsTitles = ({
                         handleUpdateL10ns={(value, index) =>
                           handleUpdateL10ns(value, entitiesInfo, index)
                         }
+                        isTitleFocused={isTitleFocused}
+                        id={entity[entitiesInfo.idKey]}
+                        qid={qid}
                         placeholder={entitiesInfo.placeholder}
                         itemsKey={entitiesInfo.itemsKey}
                         entity={entity}
