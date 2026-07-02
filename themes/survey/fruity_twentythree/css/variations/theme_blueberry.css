@@ -15804,3 +15804,7 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   background-color: #333641;
   color: white;
 }
+
+/**
+ * Global CSS for both legacy and new survey themes
+ */

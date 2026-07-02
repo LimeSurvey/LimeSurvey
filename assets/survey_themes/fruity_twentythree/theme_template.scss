@@ -1,4 +1,4 @@
-/*
+﻿/*
     LimeSurvey
 
     Copyright (C) 2007-2026 The LimeSurvey Project Team
@@ -169,3 +169,6 @@ $base-color: #ffffff;
 
 // TODO: placeholder, will probbably be removed
 @import "darkmode/darkmode_colors.scss";
+
+// Global survey theme styles (shared across all survey themes)
+@import "../../packages/survey-theme-global/src/main";
