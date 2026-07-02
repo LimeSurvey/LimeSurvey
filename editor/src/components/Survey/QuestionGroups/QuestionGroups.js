@@ -13,12 +13,11 @@ import {
   DuplicateQuestionGroup,
   getReorganizedQuestionGroups,
   InsertElementAndIncrementProperty,
-  RandomNumber,
   STATES,
 } from 'helpers'
 import { ConfirmModal } from 'components/Modals'
 
-import QuestionGroup from './QuestionGroup'
+import { QuestionGroup } from './QuestionGroup'
 
 export const QuestionGroups = ({
   language,
@@ -34,9 +33,6 @@ export const QuestionGroups = ({
   const [, setSurveyRefreshRequired] = useAppState(
     STATES.SURVEY_REFRESH_REQUIRED
   )
-  const [keys, setKeys] = useState(
-    [...Array(questionGroups.length)].map(() => `Q${RandomNumber()}`)
-  )
 
   const handleUpdate = (index, questionGroup) => {
     update([
@@ -44,23 +40,6 @@ export const QuestionGroups = ({
       questionGroup,
       ...questionGroups.slice(index + 1),
     ])
-  }
-
-  const addQuestionGroup = (index, newQuestionGroup) => {
-    const newQuestionGroupIndex = index + 1
-
-    const updatedQuestionGroups = [
-      ...questionGroups.slice(0, newQuestionGroupIndex),
-      newQuestionGroup,
-      ...questionGroups.slice(newQuestionGroupIndex),
-    ].map((questionGroup, index) => {
-      questionGroup.sortOrder = index + 1
-      return questionGroup
-    })
-
-    setKeys([...keys, `Q${RandomNumber()}`])
-    update(updatedQuestionGroups)
-    setFocused(newQuestionGroup, newQuestionGroupIndex)
   }
 
   const handleGroupDeletion = (index) => {
@@ -83,7 +62,6 @@ export const QuestionGroups = ({
       unFocus()
     }
 
-    setKeys([...keys.slice(0, index)])
     setDeleteState({ show: false, index: null })
   }
 
@@ -153,13 +131,12 @@ export const QuestionGroups = ({
       {questionGroups.map((questionGroup, index) => {
         previousQuestionsTotal += questionGroup.questions.length
         return (
-          <div key={`questionGroup-${keys[index]}`}>
+          <div
+            key={`questionGroup-${questionGroup.appKey || questionGroup.gid}`}
+          >
             <QuestionGroup
               language={language}
               questionGroup={questionGroup}
-              addQuestionGroup={(questionGroup) =>
-                addQuestionGroup(index, questionGroup)
-              }
               update={(questionGroup) => handleUpdate(index, questionGroup)}
               duplicateGroup={() =>
                 handleQuestionGroupDuplication(questionGroup, index)
