@@ -70,6 +70,27 @@
       margin-top: 20px;
     }
 
+    .overview-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+
+      .overview-stat-card {
+        width: calc(33.33% - 14px);
+      }
+
+      &.is-wide .overview-stat-card {
+        width: calc(50% - 10px);
+      }
+
+      @media (max-width: 767px) {
+        .overview-stat-card,
+        &.is-wide .overview-stat-card {
+          width: 100%;
+        }
+      }
+    }
+
     .card {
       padding: 16px 20px;
 
