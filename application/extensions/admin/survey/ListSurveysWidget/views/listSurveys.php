@@ -21,6 +21,15 @@
 <div class="row">
     <div class="col-12">
         <?php
+        // Render the floating action bar (cross-page selection, fixed at bottom)
+        $floatingActions = require(__DIR__ . '/floating_actions/_actions.php');
+        $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+            'pk'       => 'sid',
+            'gridId'   => 'survey-grid',
+            'aActions' => $floatingActions,
+        ]);
+        ?>
+        <?php
 
         $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider'          => $this->model->search(),

@@ -152,6 +152,118 @@ table {
     min-height: 300px;
 }
 
+// =============================================================================
+// Floating actions bar (FloatingActionsWidget)
+// =============================================================================
+.floating-actions-bar {
+    display       : none;
+    width         : 100%;
+    align-items   : center;
+    gap           : 2px;
+    padding       : 4px 8px;
+    height        : 42px;
+    background    : $white;
+    border        : 1px solid $g-400;
+    border-radius : 4px;
+    box-shadow    : 0 2px 8px 0 $elevation-shadow-soft;
+    white-space   : nowrap;
+    margin-bottom : 8px;
+
+    &.floating-actions-bar--visible {
+        display : flex;
+    }
+
+    .floating-actions-count {
+        display     : flex;
+        align-items : center;
+        gap         : 6px;
+        font-size   : 12px;
+        font-weight : 400;
+        color       : $g-900;
+        padding     : 0 8px;
+    }
+
+    .floating-actions-count-number {
+        background    : $g-200;
+        border-radius : 2px;
+        padding       : 2px 6px;
+        font-size     : 12px;
+        font-weight   : 600;
+    }
+
+    .floating-actions-separator {
+        width      : 1px;
+        height     : 22px;
+        background : $g-400;
+        margin     : 0 4px;
+        flex-shrink: 0;
+    }
+
+    .floating-actions-btn {
+        display     : inline-flex;
+        align-items : center;
+        gap         : 4px;
+        padding     : 4px 8px;
+        font-size   : 12px;
+        font-weight : 500;
+        color       : $g-900;
+        background  : transparent;
+        border      : 1px solid transparent;
+        border-radius : 4px;
+        cursor      : pointer;
+        line-height : 1.4;
+
+        i::before {
+            font-size : 14px;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background : $g-200;
+            outline    : none;
+        }
+
+        &.text-danger {
+            color : $error;
+
+            i::before {
+                color : $error;
+            }
+        }
+    }
+
+    .floating-actions-close {
+        display         : inline-flex;
+        align-items     : center;
+        justify-content : center;
+        width           : 28px;
+        height          : 28px;
+        padding         : 0;
+        background      : transparent;
+        border          : 1px solid transparent;
+        border-radius   : 4px;
+        cursor          : pointer;
+        color           : $g-900;
+        margin-left     : 4px;
+        flex-shrink     : 0;
+
+        i::before {
+            font-size : 16px;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background : $g-200;
+            outline    : none;
+        }
+    }
+
+    // Dropdown inside the bar
+    .dropdown-menu {
+        font-size : 13px;
+    }
+}
+
 .grid-view, .grid-view-ls {
     .table {
         padding       : 20px;
