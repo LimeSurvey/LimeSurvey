@@ -109,13 +109,12 @@ class Update_709 extends DatabaseUpdateBase
     /**
      * Updates MySQL sub-questions of ranking questions from type 'T' to type 'R'
      *
+     * @param string $typeCol
+     * @param string $rankingKey
      * @return void
      */
-    protected function updateRankingSubQuestionTypesMySQL()
+    protected function updateRankingSubQuestionTypesMySQL(string $typeCol, string $rankingKey)
     {
-        $typeCol = $this->db->quoteColumnName('type');
-        $rankingKey = Question::QT_R_RANKING;
-
         $this->db->createCommand("
             UPDATE {{questions}} sub
             JOIN {{questions}} parent ON sub.parent_qid = parent.qid
@@ -129,12 +128,12 @@ class Update_709 extends DatabaseUpdateBase
     /**
      * Updates PostgreSQL sub-questions of ranking questions from type 'T' to type 'R'
      *
+     * @param string $typeCol
+     * @param string $rankingKey
      * @return void
      */
-    protected function updateRankingSubQuestionTypesPostgreSQL()
+    protected function updateRankingSubQuestionTypesPostgreSQL(string $typeCol, string $rankingKey)
     {
-        $typeCol = $this->db->quoteColumnName('type');
-        $rankingKey = Question::QT_R_RANKING;
         $table = $this->db->quoteTableName('{{questions}}');
 
         $this->db->createCommand("
@@ -151,12 +150,12 @@ class Update_709 extends DatabaseUpdateBase
     /**
      * Updates SQLServer sub-questions of ranking questions from type 'T' to type 'R'
      *
+     * @param string $typeCol
+     * @param string $rankingKey
      * @return void
      */
-    protected function updateRankingSubQuestionTypesSQLServer()
+    protected function updateRankingSubQuestionTypesSQLServer(string $typeCol, string $rankingKey)
     {
-        $typeCol = $this->db->quoteColumnName('type');
-        $rankingKey = Question::QT_R_RANKING;
         $table = $this->db->quoteTableName('{{questions}}');
 
         $this->db->createCommand("
@@ -177,18 +176,21 @@ class Update_709 extends DatabaseUpdateBase
      */
     protected function updateRankingSubQuestionTypes()
     {
+        $typeCol = $this->db->quoteColumnName('type');
+        $rankingKey = Question::QT_R_RANKING;
+
         switch (Yii::app()->db->getDriverName()) {
             case 'mysqli':
             case 'mysql':
-                $this->updateRankingSubQuestionTypesMySQL();
+                $this->updateRankingSubQuestionTypesMySQL($typeCol, $rankingKey);
                 break;
             case 'pgsql':
-                $this->updateRankingSubQuestionTypesPostgreSQL();
+                $this->updateRankingSubQuestionTypesPostgreSQL($typeCol, $rankingKey);
                 break;
             case 'mssql':
             case 'sqlsrv':
             case 'dblib':
-                $this->updateRankingSubQuestionTypesSQLServer();
+                $this->updateRankingSubQuestionTypesSQLServer($typeCol, $rankingKey);
                 break;
         }
     }
