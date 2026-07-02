@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { DragAndDrop } from 'components/UIComponents/DragAndDrop/DragAndDrop'
 import { getQuestionTypeInfo } from 'components/QuestionTypes/getQuestionTypeInfo'
-import { Entities, L10ns, getNoAnswerLabel } from 'helpers'
+import { Entities, L10ns, getNoAnswerLabel, hasTempId } from 'helpers'
 
 import { ArrayRow } from './ArrayRow'
 
@@ -201,7 +201,6 @@ export const ArrayRows = ({
                   itemsKey={entitiesInfo.itemsKey}
                   entity={entity}
                   scaleId={scaleId}
-                  id={entity[entitiesInfo.idKey]}
                   code={entity[entitiesInfo.codeKey]}
                   showQuestionCode={showQuestionCode}
                   handleCodeUpdate={(value, index) =>
@@ -216,7 +215,7 @@ export const ArrayRows = ({
                       entityTitleKey: entitiesInfo.titleKey,
                     })
                   }
-                  istitleFocused={isTitleFocused}
+                  focusContentEditor={hasTempId(entity[entitiesInfo.idKey]) && !hasTempId(qid) && !isTitleFocused}
                 />
               </div>
             )}
