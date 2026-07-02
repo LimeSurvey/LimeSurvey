@@ -172,48 +172,6 @@
   border-top: 1px solid #e8e9ef;
 }
 
-.editor-slider-beta-badge {
-  background-color: #8146f6;
-  color: #fff;
-  padding: 0px 12px;
-  border-radius: 24px;
-  font-size: 16px;
-  margin-left: 8px;
-}
-
-.ai-helper-hint-wrapper {
-  background-color: #4a8fbf1f;
-  border: 1px solid #4a8fbf;
-  border-radius: 4px;
-  color: #4a8fbf;
-  display: flex;
-  align-items: center;
-  padding: 4px;
-  position: relative;
-}
-
-.ai-helper-hint-wrapper .icon {
-  margin-left: 12px;
-  margin-right: 10px;
-}
-
-.ai-helper-hint-wrapper .text {
-  font-size: 1rem;
-}
-
-.ai-helper-hint-wrapper::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 8px;
-  height: 100%;
-  background-color: #4a8fbf;
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  border-left: 1px #4a8fbf solid;
-}
-
 #switch-new-editor-btn {
   display: flex;
   padding: 4px 12px;

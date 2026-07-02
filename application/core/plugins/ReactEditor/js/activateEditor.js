@@ -55,6 +55,9 @@ $(document).ready(function () {
         }
 
         function buildDots() {
+            if (!slides.length || slides.length === 1) {
+                return;
+            }
             const $dotsContainer = $modal.find(".editor-slider-dots");
             $dotsContainer.empty();
             slides.forEach(function (_, i) {
