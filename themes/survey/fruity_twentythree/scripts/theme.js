@@ -40,47 +40,18 @@ window.bootstrap = Bootstrap;
 },{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":13}],2:[function(require,module,exports){
 "use strict";
 
-(function () {
-  function r(e, n, t) {
-    function o(i, f) {
-      if (!n[i]) {
-        if (!e[i]) {
-          var c = "function" == typeof require && require;
-          if (!f && c) return c(i, !0);
-          if (u) return u(i, !0);
-          var a = new Error("Cannot find module '" + i + "'");
-          throw a.code = "MODULE_NOT_FOUND", a;
-        }
-        var p = n[i] = {
-          exports: {}
-        };
-        e[i][0].call(p.exports, function (r) {
-          var n = e[i][1][r];
-          return o(n || r);
-        }, p, p.exports, r, e, n, t);
-      }
-      return n[i].exports;
-    }
-    for (var u = "function" == typeof require && require, i = 0; i < t.length; i++) o(t[i]);
-    return o;
-  }
-  return r;
-})()({
-  1: [function (require, module, exports) {
-    "use strict";
+/**
+* Always set an empty LSvar
+*/
+var LSvar = LSvar || {};
 
-    /**
-     * Always set an empty LSvar
-    */
-    var LSvar = LSvar || {};
+/**
+ * Global code for both legacy and new survey themes
+ */
 
-    /**
-     * Global code for both legacy and new survey themes
-     */
-
-    console.log("Survey theme global JS loaded");
-  }, {}]
-}, {}, [1]);
+/**
+ * Global code end
+ */
 
 },{}],3:[function(require,module,exports){
 "use strict";
@@ -1163,7 +1134,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 var Disclaimer = _interopRequireWildcard(require("./theme_js_disclaimer.js"));
 var Bootstrap = _interopRequireWildcard(require("../../../assets/bootstrap_5/js/bootstrap_5.js"));
 var _old_core_theme = _interopRequireDefault(require("./core/old_core_theme.js"));
-var GlobalThemeScripts = _interopRequireWildcard(require("../../../assets/packages/survey-theme-global/build/survey-theme-global.js"));
+var GlobalThemeScripts = _interopRequireWildcard(require("../../../assets/packages/survey-theme-global/src/survey-theme-global.js"));
 var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 var _video = _interopRequireDefault(require("./video/video.js"));
@@ -1172,7 +1143,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"../../../assets/packages/survey-theme-global/build/survey-theme-global.js":2,"./a11y-handles/a11y-handles.js":3,"./core/old_core_theme.js":4,"./navbar/navbar.js":7,"./questiontypes/array/array.js":8,"./theme_js_disclaimer.js":9,"./video/video.js":11}],11:[function(require,module,exports){
+},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"../../../assets/packages/survey-theme-global/src/survey-theme-global.js":2,"./a11y-handles/a11y-handles.js":3,"./core/old_core_theme.js":4,"./navbar/navbar.js":7,"./questiontypes/array/array.js":8,"./theme_js_disclaimer.js":9,"./video/video.js":11}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

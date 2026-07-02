@@ -265,10 +265,9 @@ exports.build_survey_theme_global = build_survey_theme_global;
 exports.watch_survey_theme_global = function () {
     watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_global);
     watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_global_rtl);
-    watch('assets/packages/survey-theme-global/src/*.js', survey_theme_global_js);
     watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_ls6);
     watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_ls6_rtl);
-    watch('assets/packages/survey-theme-global/src/*.js', series(survey_theme_global_js, survey_theme_ls6_js));
+    watch('assets/packages/survey-theme-global/src/*.js', parallel(survey_theme_global_js, survey_theme_ls6_js));
 };
 
 function survey_theme_ls6() {
@@ -368,13 +367,10 @@ function survey_theme_ls6_js() {
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }
 
-exports.build_survey_theme_ls6 = series(
-    survey_theme_global_js,
-    parallel(
-        survey_theme_ls6,
-        survey_theme_ls6_rtl,
-        survey_theme_ls6_js
-    )
+exports.build_survey_theme_ls6 = parallel(
+    survey_theme_ls6,
+    survey_theme_ls6_rtl,
+    survey_theme_ls6_js
 );
 
 exports.watch_survey_theme_ls6 = function () {
@@ -383,5 +379,5 @@ exports.watch_survey_theme_ls6 = function () {
     watch('assets/survey_themes/fruity_twentythree/**/*.js', survey_theme_ls6_js);
     watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_ls6);
     watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_ls6_rtl);
-    watch('assets/packages/survey-theme-global/src/*.js', series(survey_theme_global_js, survey_theme_ls6_js));
+    watch('assets/packages/survey-theme-global/src/*.js', survey_theme_ls6_js);
 };
