@@ -420,7 +420,7 @@ export const OptionQuestionViewMode = ({
                 placeholder={st('Enter your answer here.')}
                 rows={1}
                 maxLength={Infinity}
-                className={`w-100 d-block ${!participantMode ? 'comment-input' : ''}`}
+                className="w-100 d-block comment-input"
                 dataTestId="multiple-choice-comment-input"
                 type="textarea"
                 update={(newValue) =>
@@ -436,7 +436,7 @@ export const OptionQuestionViewMode = ({
                 value={value?.value}
                 placeholder={st('Enter your answer here.')}
                 maxLength={Infinity}
-                className={`w-100 d-block ${!participantMode ? 'comment-input' : ''}`}
+                className="w-100 d-block comment-input"
                 dataTestId="multiple-choice-comment-input"
                 update={(newValue) => onValueChange(newValue, value?.key)}
               />
@@ -463,7 +463,7 @@ export const OptionQuestionViewMode = ({
                 placeholder={st('Enter your answer here.')}
                 rows={1}
                 maxLength={Infinity}
-                className={`w-100 d-block ${!participantMode ? 'comment-input' : ''}`}
+                className="w-100 d-block comment-input"
                 dataTestId="other-option-input"
                 type="textarea"
               />
