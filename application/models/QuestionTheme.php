@@ -848,11 +848,17 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Converts LS3 Question Theme to LS5
+     * Upgrades a legacy question theme config.xml to the current LimeSurvey format.
      *
-     * @param string $sXMLDirectoryPath
+     * Handles themes from any older version: renames <custom_attributes> to
+     * <attributes> (or removes it when <attributes> already exists), ensures a
+     * <compatibility> block is present, and backfills metadata tags that are
+     * missing from the uploaded theme by copying them from the matching core theme.
+     * Used by importManifest() and Update_425.
      *
-     * @return array $success Returns an array with the conversion status
+     * @param string $sXMLDirectoryPath Absolute path to the directory containing config.xml
+     *
+     * @return array{success: bool, message: string} Conversion result
      */
     public static function convertLegacyQuestionTheme($sXMLDirectoryPath)
     {
