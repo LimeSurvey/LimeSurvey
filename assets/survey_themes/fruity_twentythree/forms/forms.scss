@@ -59,6 +59,7 @@ $dropdown-font-size: $font-size-sm;
 
     .control-label {
         padding: 0;
+        min-height: 19px; // ensures label::before (radio circle) has reference height when label text is empty
     }
 
     .other-text-item {

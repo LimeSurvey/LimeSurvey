@@ -13016,6 +13016,7 @@ a:hover {
 }
 .no-prefix-othertext .control-label {
   padding: 0;
+  min-height: 19px;
 }
 .no-prefix-othertext .other-text-item {
   padding-left: calc(var(--bs-gutter-x) * 0.2);
