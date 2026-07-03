@@ -12997,16 +12997,16 @@ a:hover {
   border-bottom-right-radius: 0;
 }
 
-.ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-right-label {
+.ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-suffix-label {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
 }
-.ls-answers label .radio-label, .answer-item label .radio-label, .control-label .radio-label, .ls-answers .othertext-right-label .radio-label {
+.ls-answers label .radio-label, .answer-item label .radio-label, .control-label .radio-label, .ls-answers .othertext-suffix-label .radio-label {
   padding-left: 12px;
 }
 
-.ls-answers.answers-list .answer-item .othertext-right-label {
+.ls-answers.answers-list .answer-item .othertext-suffix-label {
   align-self: center;
   color: #6E748C;
 }
