@@ -29,5 +29,3 @@ jobs:
 
       - name: Run codespell
         uses: codespell-project/actions-codespell@master
-        with:
-          config_file: .github/.codespellrc
