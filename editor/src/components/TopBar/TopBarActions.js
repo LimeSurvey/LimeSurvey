@@ -245,7 +245,7 @@ export const TopBarActions = ({
         menuItems={dropdownMenuItems}
         toggleSettings={dropdownToggleSettings}
       />
-      {showPreviewButton && <PreviewButton survey={survey} />}
+      {showPreviewButton && survey.sid && <PreviewButton survey={survey} />}
       {isSurveyActive && showShareButton && (
         <div
           onClick={() => setShowOverviewModalRef.current(true)}
