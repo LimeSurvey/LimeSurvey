@@ -533,7 +533,7 @@ class userstatistics_helper
     /**
      * The Excel worksheet we are working on
      *
-     * @var Spreadsheet_Excel_Writer_Worksheet
+     * @var \LimeSurvey\Libraries\Spreadsheet\ExcelWorksheetWriter
      */
     protected $sheet;
 
@@ -543,7 +543,7 @@ class userstatistics_helper
     /**
      * The current Excel workbook we are working on
      *
-     * @var Writer
+     * @var \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter
      */
     protected $workbook;
 
@@ -2657,35 +2657,24 @@ class userstatistics_helper
         }
         if ($outputType == 'xls') {
             /**
-             * Initiate the Spreadsheet_Excel_Writer
+             * Initiate the Excel workbook writer
              */
             if ($pdfOutput == 'F') {
-                $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xls';
-                $this->workbook = new Spreadsheet_Excel_Writer($sFileName);
+                $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xlsx';
+                $this->workbook = new \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter($sFileName);
             } else {
-                $this->workbook = new Spreadsheet_Excel_Writer();
+                $this->workbook = new \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter();
             }
 
-            $this->workbook->setVersion(8);
-            // Inform the module that our data will arrive as UTF-8.
-            // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            $this->workbook->setTempDir($sTempDir);
-
-            // Inform the module that our data will arrive as UTF-8.
-            // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            if (!empty($sTempDir)) {
-                $this->workbook->setTempDir($sTempDir);
-            }
             if ($pdfOutput != 'F') {
-                $this->workbook->send('statistic-survey' . $surveyid . '.xls');
+                $this->workbook->send('statistic-survey' . $surveyid . '.xlsx');
             }
 
             // Creating the first worksheet
             $this->sheet = $this->workbook->addWorksheet(mb_convert_encoding('results-survey' . $surveyid, 'ISO-8859-1', 'UTF-8'));
-            $this->xlsPercents = &$this->workbook->addFormat();
+            $this->xlsPercents = $this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
-            $this->formatBold = &$this->workbook->addFormat(array('Bold' => 1));
-            $this->sheet->setInputEncoding('utf-8');
+            $this->formatBold = $this->workbook->addFormat(array('Bold' => 1));
             $this->sheet->setColumn(0, 20, 20);
             /**XXX*/
         }

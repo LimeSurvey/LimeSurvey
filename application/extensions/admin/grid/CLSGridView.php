@@ -101,6 +101,13 @@ class CLSGridView extends TbGridView
             }
         }
         parent::initColumns();
+
+        // Add massiveActionsCheckbox class to the first column if it is a CCheckBoxColumn
+        $firstColumn = reset($this->columns);
+        if ($firstColumn instanceof CCheckBoxColumn) {
+            $existing = isset($firstColumn->checkBoxHtmlOptions['class']) ? $firstColumn->checkBoxHtmlOptions['class'] . ' ' : '';
+            $firstColumn->checkBoxHtmlOptions['class'] = $existing . 'massiveActionsCheckbox';
+        }
     }
 
     /**
@@ -109,6 +116,12 @@ class CLSGridView extends TbGridView
      */
     protected function lsAfterAjaxUpdate(): void
     {
+        $gridId = CJavaScript::encode($this->id);
+
+        // Always restore persisted checkbox selection after an AJAX page update.
+        // LS.gridSelection is registered for every CLSGridView via registerGridviewScripts().
+        $alwaysJs  = 'LS.gridSelection.restoreCheckboxes(' . $gridId . ');';
+
         // Non-AJAX grids have no afterAjaxUpdate callback to build
         if ($this->ajaxUpdate === false) {
             return;
@@ -132,8 +145,13 @@ class CLSGridView extends TbGridView
             }
         }
 
-        // Always run the standard LS post-update handler
+        // Always include selection restore and standard handlers
+        $parts[] = $alwaysJs;
         $parts[] = 'LS.gridView.afterAjaxUpdate(id, data);';
+
+        if (!empty($this->lsAdditionalColumns)) {
+            $parts[] = 'initColumnFilter();';
+        }
 
         $this->afterAjaxUpdate = 'function(id, data){' . implode('', $parts) . '}';
     }
@@ -157,6 +175,12 @@ class CLSGridView extends TbGridView
     private function registerGridviewScripts()
     {
         $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
+
+        // Grid selection // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'gridSelection.js',
+            CClientScript::POS_BEGIN
+        );
 
         // Scrollbar
         App()->clientScript->registerScriptFile(
