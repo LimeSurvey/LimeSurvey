@@ -143,12 +143,18 @@ class QuestionStatistics implements StatisticsChartInterface
         $command = Yii::app()->db->createCommand()
             ->select($select)
             ->from('{{questions}} q')
-            ->leftJoin('{{question_l10ns}} ql', "q.qid = ql.qid AND ql.language = " . Yii::app()->db->quoteValue($this->language))
+            ->leftJoin('{{question_l10ns}} ql', "q.qid = ql.qid AND ql.language = :language1")
             ->leftJoin('{{answers}} a', 'q.qid = a.qid')
-            ->leftJoin('{{answer_l10ns}} al', "a.aid = al.aid AND al.language = " . Yii::app()->db->quoteValue($this->language))
+            ->leftJoin('{{answer_l10ns}} al', "a.aid = al.aid AND al.language = :language2")
             ->leftJoin('{{question_attributes}} qa', 'q.qid = qa.qid')
-            ->where("q.sid = {$this->surveyId}")
+            ->where("q.sid = :sid")
             ->order('q.parent_qid ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
+
+        $command->params = [
+            ':language1' => $this->language,
+            ':language2' => $this->language,
+            ':sid' => $this->surveyId
+        ];
 
         return $command;
     }
