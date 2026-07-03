@@ -50,15 +50,12 @@
             'ajaxUpdate'            => 'survey-grid',
             'lsAfterAjaxUpdate'     => [
                 'window.LS.doToolTip();',
-                'bindListItemclick();',
-                'switchStatusOfListActions();',
                 'LS.restoreFocusAfterSort("survey-grid");',
             ],
             'rowLink'               =>
                 'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
             // 'template'  => $this->template,
             'showSelectionBar'      => false,
-            'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
             'columns'               => $this->model->getColumns(),
             'lsAdditionalColumns' => $this->model->getAdditionalColumns(),
 

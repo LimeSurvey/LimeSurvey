@@ -252,9 +252,8 @@ LS.floatingActions = (function () {
                         }
                     }
                     if (onSuccess) {
-                        /* eslint-disable-next-line no-eval */
-                        var func = eval(onSuccess);
-                        func(html);
+                        var func = typeof window[onSuccess] === 'function' ? window[onSuccess] : null;
+                        if (func) { func(html); }
                     }
                 },
                 error: function (data) {
