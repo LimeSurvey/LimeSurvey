@@ -1,6 +1,6 @@
 [codespell]
 # Paths to skip during checking
-skip = vendor/,node_modules/,.git/,*.min.js,*.min.css,build/,dist/,upload/,.git/,.gitignore,.DS_Store,yarn.lock,package-lock.json
+skip = vendor/,node_modules/,.git/,*.min.js,*.min.css,build/,dist/,upload/,.git/,.gitignore,.DS_Store,*.lock,*.lss
 
 # File types to check
 check_filenames = true
