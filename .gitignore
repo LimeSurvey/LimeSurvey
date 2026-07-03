@@ -24,8 +24,8 @@
 !.eslintignore
 !.npmrc
 !/.github
-!.github/.codespellignore
-!.github/.codespellrc
+!.codespellignore
+!.codespellrc
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*.*

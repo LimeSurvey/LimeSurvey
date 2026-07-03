@@ -1,0 +1,6 @@
+[codespell]
+skip = vendor/,node_modules/,.git/,*.min.js,*.min.css,build/,dist/,upload/,.gitignore,.DS_Store,*.lock,*.lss,assets/packages/
+check-filenames = true
+builtin = clear,rare
+ignore-words-list = clas,nd,ser,sav,nax,bu,fo,datas,rollin,optin,ded
+ignore-words = .codespellignore
