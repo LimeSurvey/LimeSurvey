@@ -168,7 +168,7 @@ class RenderListRadio extends QuestionBaseRenderer
 
         $otherItemExtraClass = "";
         if (empty($otherTextLeft)) {
-            $otherItemExtraClass = "no-left-othertext";
+            $otherItemExtraClass = "no-prefix-othertext";
         }
 
         // Get other_input_size and other_maximum_chars attributes

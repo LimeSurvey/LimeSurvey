@@ -12988,13 +12988,13 @@ a:hover {
   color: #6E748C;
 }
 
-.no-left-othertext .othertext-label-checkox-container {
+.no-prefix-othertext .othertext-label-checkox-container {
   margin-left: 0;
 }
 .no-right-othertext .control-label {
   padding: 0;
 }
-.no-left-othertext .other-text-item {
+.no-prefix-othertext .other-text-item {
   padding-right: calc(var(--bs-gutter-x) * 0.2);
 }
 

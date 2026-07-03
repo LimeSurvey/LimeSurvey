@@ -13011,13 +13011,13 @@ a:hover {
   color: #6E748C;
 }
 
-.no-left-othertext .othertext-label-checkox-container {
+.no-prefix-othertext .othertext-label-checkox-container {
   margin-right: 0;
 }
-.no-left-othertext .control-label {
+.no-prefix-othertext .control-label {
   padding: 0;
 }
-.no-left-othertext .other-text-item {
+.no-prefix-othertext .other-text-item {
   padding-left: calc(var(--bs-gutter-x) * 0.2);
 }
 

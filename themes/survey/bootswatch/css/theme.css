@@ -626,16 +626,16 @@ only screen and (max-width: 767px) {
     padding-top: 6px;
 }
 
-.no-left-othertext .othertext-label-checkox-container {
+.no-prefix-othertext .othertext-label-checkox-container {
     padding-right: 0;
 }
 
-.no-left-othertext .control-label {
+.no-prefix-othertext .control-label {
     padding: 0;
     min-height: 1.5em;
 }
 
-.no-left-othertext .other-text-item {
+.no-prefix-othertext .other-text-item {
     padding-left: 0;
 }
 
