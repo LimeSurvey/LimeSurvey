@@ -1,0 +1,36 @@
+name: Codespell - Spelling Check
+
+# Run on PRs against the long-lived branches and on direct pushes to them.
+on:
+  pull_request:
+    branches:
+      - master
+      - develop-major
+      - develop-minor
+  push:
+    branches:
+      - master
+      - develop-major
+      - develop-minor
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  codespell:
+    runs-on: ubuntu-22.04
+    name: Check for spelling errors
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run codespell
+        uses: codespell-project/actions-codespell@master
+        with:
+          check_filenames: true
+          check_hidden: false
+          skip: ./vendor,./node_modules,.git,*.min.js,*.min.css
+          ignore_words_file: .codespellignore
