@@ -30,7 +30,4 @@ jobs:
       - name: Run codespell
         uses: codespell-project/actions-codespell@master
         with:
-          check_filenames: true
-          check_hidden: false
-          skip: ./vendor,./node_modules,.git,*.min.js,*.min.css
-          ignore_words_file: .github/.codespellignore
+          config_file: .github/.codespellrc
