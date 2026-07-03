@@ -1,4 +1,4 @@
-<div class="h4">
+<div role=""heading class="h4">
     <?php eT("Preview:"); ?>
 </div>
 <div class="jumbotron message-box">
