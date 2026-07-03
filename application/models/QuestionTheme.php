@@ -264,7 +264,7 @@ class QuestionTheme extends LSActiveRecord
 
         // convert Question Theme
         if ($bSkipConversion === false) {
-            $aConvertSuccess = self::convertLS3toLS5($sXMLDirectoryPath);
+            $aConvertSuccess = self::convertLegacyQuestionTheme($sXMLDirectoryPath);
             if (!$aConvertSuccess['success']) {
                 if ($bThrowConversionException) {
                     throw new Exception($aConvertSuccess['message']);
@@ -854,7 +854,7 @@ class QuestionTheme extends LSActiveRecord
      *
      * @return array $success Returns an array with the conversion status
      */
-    public static function convertLS3toLS5($sXMLDirectoryPath)
+    public static function convertLegacyQuestionTheme($sXMLDirectoryPath)
     {
         $sXMLDirectoryPath = str_replace('\\', '/', $sXMLDirectoryPath);
         $sConfigPath = $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
@@ -904,18 +904,9 @@ class QuestionTheme extends LSActiveRecord
             $oThemeConfig->metadata->addChild('type', 'question_theme');
         };
 
-        // Ensure '5.0' is listed in <compatibility>, adding it if absent.
-        // Never create a duplicate <compatibility> element.
-        $aExistingVersions = [];
-        foreach ($oThemeConfig->compatibility->version as $oVersion) {
-            $aExistingVersions[] = (string) $oVersion;
-        }
-        if (!in_array('5.0', $aExistingVersions, true)) {
-            if (!isset($oThemeConfig->compatibility)) {
-                $oThemeConfig->addChild('compatibility')->addChild('version', '5.0');
-            } else {
-                $oThemeConfig->compatibility->addChild('version', '5.0');
-            }
+        // Only add a <compatibility> block if none exists at all.
+        if (!isset($oThemeConfig->compatibility)) {
+            $oThemeConfig->addChild('compatibility')->addChild('version', '5.0');
         }
 
         $sThemeDirectoryName = self::getThemeDirectoryPath($sQuestionConfigFilePath);
