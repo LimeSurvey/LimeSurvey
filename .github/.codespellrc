@@ -1,6 +1,6 @@
 [codespell]
 # Paths to skip during checking
-skip = vendor/,node_modules/,.git/,*.min.js,*.min.css,build/,dist/,upload/,.git/,.gitignore,.DS_Store
+skip = vendor/,node_modules/,.git/,*.min.js,*.min.css,build/,dist/,upload/,.git/,.gitignore,.DS_Store,yarn.lock,package-lock.json
 
 # File types to check
 check_filenames = true
@@ -10,7 +10,7 @@ check_hidden = false
 dictionaries = clear,rare
 
 # Ignore words that are commonly false positives
-ignore_words_list = clas,nd,ser,sav
+ignore_words_list = clas,nd,ser,sav,nax,bu,fo,datas,rollin,optin,ded
 
 # Exclude specific patterns
 # Common false positives for LimeSurvey:

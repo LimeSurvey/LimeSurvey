@@ -49,7 +49,7 @@ function js_minify() {
         .pipe(rename('bootstrap_5.js'))
         // buffer
         .pipe(buffer())
-        // distination
+        // destination
         .pipe(dest('assets/bootstrap_5/build/js/'))
         .pipe(uglify())
         .pipe(rename({extname: '.min.js'}))
@@ -271,7 +271,7 @@ function survey_theme_ls6_js() {
         .pipe(rename('theme.js'))
         // buffer
         .pipe(buffer())
-        // distination
+        // destination
         .pipe(replace(/^/, fs.readFileSync('assets/survey_themes/fruity_twentythree/theme_js_disclaimer.js')))
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }
