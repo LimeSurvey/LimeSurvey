@@ -3085,7 +3085,12 @@ class LimeExpressionManager
                 } else {
                     $othertext = $this->gT('Other:');
                 }
-                $qtips['other_comment_mandatory'] = sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."), $othertext);
+                $otherDisplayLabel = $this->getOtherDisplayLabel($othertext);
+                if ($otherDisplayLabel !== '') {
+                    $qtips['other_comment_mandatory'] = sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."), $otherDisplayLabel);
+                } else {
+                    $qtips['other_comment_mandatory'] = $this->gT("Please also specify your choice in the accompanying text field.");
+                }
             }
 
             // other comment mandatory
@@ -3095,7 +3100,12 @@ class LimeExpressionManager
                 } else {
                     $othertext = $this->gT('Other:');
                 }
-                $qtips['other_numbers_only'] = sprintf($this->gT("Only numbers may be entered in '%s' accompanying text field."), $othertext);
+                $otherDisplayLabel = $this->getOtherDisplayLabel($othertext);
+                if ($otherDisplayLabel !== '') {
+                    $qtips['other_numbers_only'] = sprintf($this->gT("Only numbers may be entered in '%s' accompanying text field."), $otherDisplayLabel);
+                } else {
+                    $qtips['other_numbers_only'] = $this->gT("Only numbers may be entered in the accompanying text field.");
+                }
             }
 
             // regular expression validation
@@ -8358,6 +8368,26 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     private function gT($string, $escapemode = 'html')
     {
         return gT($string, $escapemode);
+    }
+
+    /**
+     * Extracts a display label from an "other" text string that may contain a pipe separator.
+     * When other_replace_text uses "|" as separator (e.g. "hot|cold"), the left part is the
+     * label shown next to the checkbox and the right part is a suffix shown after the input.
+     * Returns the left part if non-empty, then the right part, or empty string if neither exists.
+     *
+     * @param string $othertext
+     * @return string
+     */
+    private function getOtherDisplayLabel(string $othertext): string
+    {
+        if (strpos($othertext, '|') !== false) {
+            [$left, $right] = explode('|', $othertext, 2);
+            $left = trim($left);
+            $right = trim($right);
+            return $left !== '' ? $left : $right;
+        }
+        return trim($othertext);
     }
 
 
