@@ -30,7 +30,7 @@ function populateDatabase($oDB)
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('update.updatedb');
     $options = '';
-    // The engine has to be explicitely set because MYSQL 8 switches the default engine to INNODB
+    // The engine has to be explicitly set because MYSQL 8 switches the default engine to INNODB
     if ($oDB->driverName == 'mysql') {
         $options = 'ENGINE=' . Yii::app()->getConfig('mysqlEngine') . ' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
         if (Yii::app()->getConfig('mysqlEngine') == 'INNODB') {
