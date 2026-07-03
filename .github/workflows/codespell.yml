@@ -33,4 +33,4 @@ jobs:
           check_filenames: true
           check_hidden: false
           skip: ./vendor,./node_modules,.git,*.min.js,*.min.css
-          ignore_words_file: .codespellignore
+          ignore_words_file: .github/.codespellignore

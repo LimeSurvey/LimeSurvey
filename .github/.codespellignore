@@ -1,0 +1,22 @@
+# Ignore third-party dependencies
+vendor/
+node_modules/
+
+# Ignore minified files
+*.min.js
+*.min.css
+
+# Ignore build outputs
+build/
+dist/
+
+# Ignore specific vendor packages that have their own spelling quirks
+upload/
+
+# Ignore known vendor-specific terminology
+# (These are typically in vendor packages and shouldn't be modified)
+
+# Git and system files
+.git
+.gitignore
+.DS_Store
