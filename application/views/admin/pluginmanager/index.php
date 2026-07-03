@@ -85,7 +85,8 @@ $gridColumns = [
         'header' => gT('Description'),
         'name' => 'description',
         'type' => 'html',
-        'value' => '$data->getPossibleDescription()'
+        'value' => '$data->getPossibleDescription()',
+        'htmlOptions' => ['class' => 'can-contain-link'],
     ],
     [
         'header' => gT('Status'),
