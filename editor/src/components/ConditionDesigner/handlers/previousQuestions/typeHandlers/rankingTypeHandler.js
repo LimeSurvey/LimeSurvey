@@ -2,7 +2,7 @@ import {
   addNoAnswerIfAllowed,
   createAnswer,
   createQuestion,
-  getAnswerText,
+  getQuestionText,
 } from '../helpers'
 import { findFieldname } from '../utils'
 
@@ -12,34 +12,26 @@ export const rankingTypeHandler = (
   cQuestions,
   cAnswers
 ) => {
-  const answers = question.answers
+  const subquestions = question.subquestions
 
-  const rankingAnswers = answers.map((answer) => ({
-    value: answer.code,
-    label: `${answer.code} (${getAnswerText(answer, language)})`,
+  const rankingAnswers = subquestions.map((subquestion) => ({
+    value: subquestion.title,
+    label: `${subquestion.title} (${getQuestionText(subquestion, language)})`,
   }))
 
-  answers.forEach((answer, index) => {
-    const rankPos = index + 1
-
+  for (let j = 0; j < subquestions.length; j++) {
     const fieldname = findFieldname({
       qid: question.qid,
-      aid: answer.aid,
+      sqid: subquestions[j].qid,
+      aid: subquestions[j].title,
     })
 
-    createQuestion(
-      cQuestions,
-      question,
-      null,
-      fieldname,
-      language,
-      `${t('RANK')} ${rankPos}`
-    )
+    createQuestion(cQuestions, question, subquestions[j], fieldname, language)
 
     rankingAnswers.forEach(({ value, label }) => {
       createAnswer(cAnswers, value, label, fieldname)
     })
 
     addNoAnswerIfAllowed(cAnswers, question, fieldname)
-  })
+  }
 }

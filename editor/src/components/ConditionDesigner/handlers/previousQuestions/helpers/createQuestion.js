@@ -1,3 +1,5 @@
+import { getQuestionTypeInfo } from 'components/QuestionTypes'
+
 import { getQuestionText } from '../helpers'
 
 export const createQuestion = (
@@ -12,8 +14,14 @@ export const createQuestion = (
   let title = baseTitle
 
   if (subquestion) {
+    const isRankingType = question.type === getQuestionTypeInfo().RANKING.type
     const subquestionText = getQuestionText(subquestion, language)
-    title = `[${subquestionText}]${extraTitle ? `[${extraTitle}]` : ''} ${baseTitle}`
+    const prefix = isRankingType
+      ? `${t('RANK')} ${subquestion.sortOrder + 1}`
+      : subquestionText
+    const extra = extraTitle ? `[${extraTitle}]` : ''
+
+    title = `[${prefix}]${extra} ${baseTitle}`
   } else if (extraTitle) {
     title = `[${extraTitle}] ${baseTitle}`
   }
