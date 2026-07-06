@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 import { ContentEditor } from 'components'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
-import { hasTempId, STATES } from 'helpers'
+import { STATES } from 'helpers'
 import { useAppState, useSurvey } from 'hooks'
 import { SubquestionCodeInput } from '../../subquestionCodeComponents'
 
@@ -21,9 +21,7 @@ export const ArrayColumnTitle = ({
   isNoAnswer = false,
   code,
   handleChildCodeUpdate,
-  qid = '',
-  isTitleFocused,
-  id,
+  focusContentEditor,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const { surveyId } = useParams()
@@ -89,7 +87,7 @@ export const ArrayColumnTitle = ({
             value={title}
             update={(value) => handleUpdateL10ns(value, index)}
             disabled={isNoAnswer}
-            focus={hasTempId(id) && !hasTempId(qid) && !isTitleFocused}
+            focus={focusContentEditor}
           />
         </div>
       </div>

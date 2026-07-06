@@ -12,6 +12,7 @@ import {
   SCALE_1,
   SCALE_2,
   STATES,
+  hasTempId,
 } from 'helpers'
 import { useAppState, useSurvey } from 'hooks'
 import { ContentEditor, DragAndDrop } from 'components'
@@ -276,9 +277,11 @@ export const ArrayColumnsTitles = ({
                         handleUpdateL10ns={(value, index) =>
                           handleUpdateL10ns(value, entitiesInfo, index)
                         }
-                        isTitleFocused={isTitleFocused}
-                        id={entity[entitiesInfo.idKey]}
-                        qid={qid}
+                        focusContentEditor={
+                          hasTempId(entity[entitiesInfo.idKey]) &&
+                          !hasTempId(qid) &&
+                          !isTitleFocused
+                        }
                         placeholder={entitiesInfo.placeholder}
                         itemsKey={entitiesInfo.itemsKey}
                         entity={entity}
