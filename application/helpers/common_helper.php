@@ -2007,7 +2007,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
                     "sqid" => $abrow['qid'],
-                    "aid" => $abrow['title'],
+                    "aid" => $i,
                     "suffix" => '_S' . ($aQIDReplacements[$abrow['qid']] ?? $abrow['qid']),
                 );
                 if (isset($answerColumnDefinition)) {

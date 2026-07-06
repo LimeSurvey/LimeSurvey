@@ -24,7 +24,7 @@ export const rankingTypeHandler = (
     const fieldname = findFieldname({
       qid: question.qid,
       sqid: subquestions[j].qid,
-      aid: subquestions[j].title,
+      aid: rankingPos,
     })
 
     createQuestion(
