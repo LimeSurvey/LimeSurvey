@@ -477,7 +477,7 @@ abstract class PluginBase implements iPlugin
                         throw new \Exception('Internal error: Found no database entry for plugin id ' . $this->id);
                     }
                     $this->checkActive($pluginModel);
-                    $this->saveNewVersion($pluginModel);
+                    $this->saveNewVersion();
                 }
             }
             return true;

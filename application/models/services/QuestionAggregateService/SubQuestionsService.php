@@ -192,7 +192,7 @@ class SubQuestionsService
         $subquestion->scale_id = $scaleId;
         $subquestion->setScenario('saveall');
         if (!$subquestion->save()) {
-            throw new PersistErrorException('Could not save subquestion');
+            throw new PersistErrorException('Could not save subquestion: ' . print_r($subquestion->getErrors()));
         }
         $subquestion->refresh();
         $this->updateSubquestionL10nService(

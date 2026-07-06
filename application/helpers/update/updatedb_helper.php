@@ -2547,8 +2547,14 @@ function upgradeTokens148()
 {
     $aTables = dbGetTablesLike("tokens%");
     foreach ($aTables as $sTable) {
-        addColumn($sTable, 'participant_id', "string(50)");
-        addColumn($sTable, 'blacklisted', "string(17)");
+        try {
+            addColumn($sTable, 'participant_id', "string(50)");
+        } catch (Exception $e) {
+        };
+        try {
+            addColumn($sTable, 'blacklisted', "string(17)");
+        } catch (Exception $e) {
+        };
     }
 }
 
