@@ -3886,6 +3886,20 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         $CSVImportResult['errors'][] = gT("File seems empty or has only one line");
         return $CSVImportResult;
     }
+    $survey = Survey::model()->findByPk($iSurveyId);
+    $rankings = [];
+    foreach ($survey->questions as $q) {
+        if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
+            $index = 1;
+            $rankings["Q{$q->qid}"] = [];
+            do {
+                if (in_array("{$q->title}_{$index}", $aCsvHeader)) {
+                    $rankings["Q{$q->qid}"][] = array_search("{$q->title}_{$index}", $aCsvHeader);
+                    $index++;
+                }
+            } while (in_array("{$q->title}_{$index}", $aCsvHeader));
+        }
+    }
     // Assign fieldname with $aFileResponses[] key
     foreach ($aRealFieldNames as $sFieldName) {
         if (in_array($sFieldName, $aCsvHeader)) {
@@ -4033,6 +4047,16 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                 } else {
                     $sResponse = str_replace(array("{quote}", "{tab}", "{cr}", "{newline}", "{lbrace}"), array("\"", "\t", "\r", "\n", "{"), (string) $aResponses[$iFieldKey]);
                     $oSurvey->$sFieldName = $sResponse;
+                }
+            }
+
+            foreach ($rankings as $key => $json) {
+                if (count($json)) {
+                    $result = [];
+                    foreach ($json as $value) {
+                        $result[] = $aResponses[$value];
+                    }
+                    $oSurvey->$key = json_encode($result);
                 }
             }
 
