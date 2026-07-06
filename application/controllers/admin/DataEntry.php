@@ -385,7 +385,7 @@ class DataEntry extends SurveyCommonAction
                 $rankingJSONs = [];
 
                 foreach ($rankingMap as $oldFieldName => $newFieldName) {
-                    if (!empty($sourceResponse[$oldFieldName])) {
+                    if ((!empty($sourceResponse[$oldFieldName])) || ($sourceResponse[$oldFieldName] == "0")) {
                         if (!isset($rankingJSONs[$newFieldName])) {
                             $rankingJSONs[$newFieldName] = [];
                         }

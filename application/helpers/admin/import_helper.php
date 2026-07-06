@@ -2063,7 +2063,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         $rankingJSONs = [];
 
         foreach ($rankingMap as $oldFieldName => $newFieldName) {
-            if (!empty($archivedResponse[$oldFieldName])) {
+            if ((!empty($archivedResponse[$oldFieldName])) || ($archivedResponse[$oldFieldName] == "0")) {
                 if (!isset($rankingJSONs[$newFieldName])) {
                     $rankingJSONs[$newFieldName] = [];
                 }
@@ -3772,7 +3772,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                     }
                                 }
                                 $root = explode("_", $sFieldname)[0];
-                                if (in_array($root, $rankings)) {
+                                if ((in_array($root, $rankings)) && ($root !== $sFieldname)) {
                                     if (!isset($aInsertData[$root])) {
                                         $aInsertData[$root] = [];
                                     }
