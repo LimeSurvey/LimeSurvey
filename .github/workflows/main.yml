@@ -31,13 +31,15 @@ jobs:
       - uses: actions/checkout@v5
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ldap, gd, intl, dom, zip, mysqli, pdo_mysql, xml, curl, mbstring, sqlite3
+
+      - name: Install libapache2-mod-php (needed for Apache integration)
         run: |
-          sudo add-apt-repository ppa:ondrej/php
-          sudo apt update
-          sudo apt -y install php${{ matrix.php-versions }}
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php${{ matrix.php-versions }}-ldap php${{ matrix.php-versions }}-gd php${{ matrix.php-versions }}-intl php${{ matrix.php-versions }}-dom php${{ matrix.php-versions }}-zip php${{ matrix.php-versions }}-mysql php${{ matrix.php-versions }}-xml php${{ matrix.php-versions }}-curl php${{ matrix.php-versions }}-mbstring php${{ matrix.php-versions }}-sqlite3 libapache2-mod-php${{ matrix.php-versions }} -y
-          sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
+          sudo apt-get install -y libapache2-mod-php${{ matrix.php-versions }}
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
