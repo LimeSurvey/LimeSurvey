@@ -38,11 +38,9 @@ jobs:
 
       - name: Install libapache2-mod-php (needed for Apache integration)
         run: |
-          # the pre-installed Ondrej PPA changed its repo Label, which breaks apt-get update, so first
-          # clear APT's cached release metadata (with no previous Release to compare against, the changed
-          # label is accepted on a fresh fetch), then (re)add the PPA (stock Ubuntu 22.04 only ships PHP 8.1, not 8.3).
-          sudo rm -rf /var/lib/apt/lists/*
-          sudo add-apt-repository -y ppa:ondrej/php
+          # The Ondrej PHP PPA changed its repo Label, causing apt-get update to fail.
+          # --allow-releaseinfo-change is safe in this trusted CI context (HTTPS + signed repo).
+          sudo apt-get update --allow-releaseinfo-change > /dev/null
           sudo apt-get install -y libapache2-mod-php${{ matrix.php-versions }}
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
@@ -204,8 +202,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          sudo rm -rf /var/lib/apt/lists/*
-          sudo apt-get update > /dev/null
+          sudo apt-get update --allow-releaseinfo-change > /dev/null
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
@@ -236,7 +233,7 @@ jobs:
           sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
           # Install PostgreSQL
-          sudo apt-get update
+          sudo apt-get update --allow-releaseinfo-change
           sudo apt-get install -y postgresql-${{ matrix.db-version }} postgresql-client-${{ matrix.db-version }}
           # Start PostgreSQL service
           sudo systemctl start postgresql
@@ -263,7 +260,7 @@ jobs:
           echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/mssql-server-${{ matrix.db-version }} jammy main" \
           | sudo tee /etc/apt/sources.list.d/mssql-server.list
           # Install MSSQL Server
-          sudo apt-get update
+          sudo apt-get update --allow-releaseinfo-change
           sudo apt-get install -y mssql-server
           # Configure MSSQL Server (non-interactive setup)
           sudo MSSQL_SA_PASSWORD='LimeSurvey123!' MSSQL_PID='Developer' /opt/mssql/bin/mssql-conf -n setup accept-eula
@@ -272,7 +269,7 @@ jobs:
           # Install Command-Line Tools
           # Create msprod.list manually with signed-by to avoid conflicts with any pre-existing unsigned entries
           echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main" | sudo tee /etc/apt/sources.list.d/msprod.list
-          sudo apt-get update
+          sudo apt-get update --allow-releaseinfo-change
           sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev
           # Wait for MSSQL to be fully ready
           sleep 10
@@ -368,8 +365,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          sudo rm -rf /var/lib/apt/lists/*
-          sudo apt-get update > /dev/null
+          sudo apt-get update --allow-releaseinfo-change > /dev/null
           sudo apt --fix-broken install php php-mysql -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
