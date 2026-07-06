@@ -32,15 +32,13 @@ jobs:
       # This will change the php version for every version specified in matrix
       - name: Install specified PHP and libapache2-mod-php
         run: |
-          # Use packages.sury.org directly (the canonical PHP repo that ppa:ondrej/php is migrating to).
-          # This avoids the Ondrej PPA label-change issue on ubuntu-22.04 runners, the Signed-By keyring
-          # conflict with shivammathur/setup-php, and means PHP + libapache2-mod-php come from one
-          # consistent source with matching versions.
-          sudo rm -f /etc/apt/sources.list.d/*ondrej*.list /etc/apt/sources.list.d/*ondrej*.sources
-          sudo rm -f /etc/apt/trusted.gpg.d/*ondrej*.gpg /usr/share/keyrings/ondrej-php-keyring.gpg
-          sudo curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
-          echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" \
-            | sudo tee /etc/apt/sources.list.d/sury-php.list
+          # "Use packages.sury.org/php instead", which breaks plain apt-get update.
+          # Add packages.sury.org using the official installation method from packages.sury.org
+          sudo apt-get update > /dev/null
+          sudo apt-get -y install lsb-release ca-certificates curl
+          sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+          sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+          sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
           sudo apt-get update > /dev/null
           sudo apt-get install -y \
             php${{ matrix.php-versions }} \
@@ -216,7 +214,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          sudo apt-get update --allow-releaseinfo-change > /dev/null
+          sudo apt-get update > /dev/null
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
@@ -247,7 +245,7 @@ jobs:
           sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
           # Install PostgreSQL
-          sudo apt-get update --allow-releaseinfo-change
+          sudo apt-get update
           sudo apt-get install -y postgresql-${{ matrix.db-version }} postgresql-client-${{ matrix.db-version }}
           # Start PostgreSQL service
           sudo systemctl start postgresql
@@ -274,7 +272,7 @@ jobs:
           echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/mssql-server-${{ matrix.db-version }} jammy main" \
           | sudo tee /etc/apt/sources.list.d/mssql-server.list
           # Install MSSQL Server
-          sudo apt-get update --allow-releaseinfo-change
+          sudo apt-get update
           sudo apt-get install -y mssql-server
           # Configure MSSQL Server (non-interactive setup)
           sudo MSSQL_SA_PASSWORD='LimeSurvey123!' MSSQL_PID='Developer' /opt/mssql/bin/mssql-conf -n setup accept-eula
@@ -283,7 +281,7 @@ jobs:
           # Install Command-Line Tools
           # Create msprod.list manually with signed-by to avoid conflicts with any pre-existing unsigned entries
           echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main" | sudo tee /etc/apt/sources.list.d/msprod.list
-          sudo apt-get update --allow-releaseinfo-change
+          sudo apt-get update
           sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev
           # Wait for MSSQL to be fully ready
           sleep 10
@@ -379,7 +377,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          sudo apt-get update --allow-releaseinfo-change > /dev/null
+          sudo apt-get update > /dev/null
           sudo apt --fix-broken install php php-mysql -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
