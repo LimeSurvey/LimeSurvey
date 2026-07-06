@@ -30,20 +30,30 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
       # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: ldap, gd, intl, dom, zip, mysqli, pdo_mysql, xml, curl, mbstring, sqlite3
-
-      - name: Install libapache2-mod-php (needed for Apache integration)
+      - name: Install specified PHP and libapache2-mod-php
         run: |
-          # The pre-installed Ondrej PHP PPA changed its repo Label, which breaks apt-get update.
-          # PHP itself is provided by shivammathur/setup-php, so remove the PPA to avoid the conflict.
-          sudo add-apt-repository --remove -y ppa:ondrej/php || true
-          sudo rm -f /etc/apt/sources.list.d/*ondrej*.list /etc/apt/sources.list.d/*ondrej*.sources
+          sudo apt update
+          # Add packages.sury.org, replacement for ppa:ondrej/php 
           sudo apt-get update > /dev/null
-          sudo apt-get install -y libapache2-mod-php${{ matrix.php-versions }}
+          sudo apt-get -y install lsb-release ca-certificates curl
+          sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+          sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+          sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+          sudo apt-get update > /dev/null
+          sudo apt-get install -y \
+            php${{ matrix.php-versions }} \
+            php${{ matrix.php-versions }}-ldap \
+            php${{ matrix.php-versions }}-gd \
+            php${{ matrix.php-versions }}-intl \
+            php${{ matrix.php-versions }}-dom \
+            php${{ matrix.php-versions }}-zip \
+            php${{ matrix.php-versions }}-mysql \
+            php${{ matrix.php-versions }}-xml \
+            php${{ matrix.php-versions }}-curl \
+            php${{ matrix.php-versions }}-mbstring \
+            php${{ matrix.php-versions }}-sqlite3 \
+            libapache2-mod-php${{ matrix.php-versions }}
+          sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
@@ -204,11 +214,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          # Remove the pre-installed Ondrej PHP PPA (its repo Label changed and breaks apt-get update).
-          # PHP is provided by shivammathur/setup-php, so the PPA is not needed.
-          sudo add-apt-repository --remove -y ppa:ondrej/php || true
-          sudo rm -f /etc/apt/sources.list.d/*ondrej*.list /etc/apt/sources.list.d/*ondrej*.sources
-          sudo apt-get update > /dev/null
+          sudo apt-get update --allow-releaseinfo-change > /dev/null
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
@@ -238,7 +244,7 @@ jobs:
           # Add PostgreSQL official repository (PGDG)
           sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-          # Install PostgreSQL (Ondrej PHP PPA already removed in the Setup step)
+          # Install PostgreSQL
           sudo apt-get update
           sudo apt-get install -y postgresql-${{ matrix.db-version }} postgresql-client-${{ matrix.db-version }}
           # Start PostgreSQL service
@@ -265,7 +271,7 @@ jobs:
           # so don't curl it; write it manually like msprod.list below.
           echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/mssql-server-${{ matrix.db-version }} jammy main" \
           | sudo tee /etc/apt/sources.list.d/mssql-server.list
-          # Install MSSQL Server (Ondrej PHP PPA already removed in the Setup step)
+          # Install MSSQL Server
           sudo apt-get update
           sudo apt-get install -y mssql-server
           # Configure MSSQL Server (non-interactive setup)
@@ -371,10 +377,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          # Remove the pre-installed Ondrej PHP PPA (its repo Label changed and breaks apt-get update).
-          sudo add-apt-repository --remove -y ppa:ondrej/php || true
-          sudo rm -f /etc/apt/sources.list.d/*ondrej*.list /etc/apt/sources.list.d/*ondrej*.sources
-          sudo apt-get update > /dev/null
+          sudo apt-get update --allow-releaseinfo-change > /dev/null
           sudo apt --fix-broken install php php-mysql -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
