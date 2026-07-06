@@ -10,13 +10,13 @@ use LimeSurvey\Libraries\FormExtension\Inputs\GlobalSettingsRenderer;
 
 ?>
 <?php
-$thisdefaulttheme                = getGlobalSetting('defaulttheme');
+$thisdefaulttheme                = Yii::app()->getConfig('defaulttheme');
 $templatenames                   = array_keys(Template::getTemplateList());
-$thisadmintheme                  = getGlobalSetting('admintheme');
-$thisdefaulthtmleditormode       = getGlobalSetting('defaulthtmleditormode');
-$thismaintenancemode             = !empty(getGlobalSetting('maintenancemode')) ? getGlobalSetting('maintenancemode') : 'off';
-$thisdefaultquestionselectormode = getGlobalSetting('defaultquestionselectormode');
-$thisdefaultthemeteeditormode    = getGlobalSetting('defaultthemeteeditormode');
+$thisadmintheme                  = Yii::app()->getConfig('admintheme');
+$thisdefaulthtmleditormode       = Yii::app()->getConfig('defaulthtmleditormode');
+$thismaintenancemode             = !empty(Yii::app()->getConfig('maintenancemode')) ? Yii::app()->getConfig('maintenancemode') : 'off';
+$thisdefaultquestionselectormode = Yii::app()->getConfig('defaultquestionselectormode');
+$thisdefaultthemeteeditormode    = Yii::app()->getConfig('defaultthemeteeditormode');
 $dateformatdata                  = getDateFormatData(Yii::app()->session['dateformat']);
 $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode');
 ?>
@@ -31,7 +31,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
                 echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
             </label>
             <div class="col-12">
-                <input class="form-control" type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars((string) getGlobalSetting('sitename')); ?>"/>
+                <input class="form-control" type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('sitename')); ?>"/>
             </div>
         </div>
 
@@ -60,8 +60,8 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <div class="col-12">
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'createsample',
-                    'ariaLabel' => gT('Create example question group and question'),
-                    'checkedOption' => App()->getConfig('createsample'),
+                    'ariaLabel' => gT('Create example question group and question:'),
+                    'checkedOption' => Yii::app()->getConfig('createsample'),
                     'selectOptions' => [
                         '1' => gT('On'),
                         '0' => gT('Off'),
@@ -76,7 +76,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
                 <?php eT("Administration theme:"); ?>
             </label>
             <div class="col-12">
-                <select class="form-select" name="admintheme" id="admintheme">
+                <select class="form-select" name="admintheme" id="admintheme" aria-describedby="admintheme-hint">
                     <?php foreach ($aListOfThemeObjects as $templatename => $templateconfig) : ?>
                         <option value='<?php echo CHtml::encode($templatename); ?>' <?php echo ($thisadmintheme == $templatename) ? "selected='selected'" : "" ?> >
                             <?php echo CHtml::encode($templateconfig->metadata->name); ?>
@@ -86,29 +86,39 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </div>
             <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                 <div class="col-12 form-label ">
-                    <span class="hint">
+                    <span class="hint" id="admintheme-hint">
                     <?php eT("You can add your custom themes in upload/admintheme"); ?>
                     </span>
                 </div>
             <?php endif; ?>
         </div>
 
-        <!-- Time difference -->
+        <!-- Time zone selector -->
         <div class="mb-3">
-            <label class="col-12 form-label" for='timeadjust'>
-                <?php eT("Time difference (in hours):"); ?>
+            <label class="col-12 form-label" for='displayTimezone'>
+                <?php eT("Default time zone:"); ?>
             </label>
             <div class="col-md-4">
-                    <span>
-                        <input class="form-control" type='text' id='timeadjust' name='timeadjust'
-                               value="<?php echo htmlspecialchars((string) (str_replace(array('+', ' hours', ' minutes'), array('', '', ''), (string) getGlobalSetting('timeadjust')) / 60)); ?>"/>
-                    </span>
-            </div>
-            <div class="col-md-8">
-                <?php echo gT("Server time:") . ' ' . convertDateTimeFormat(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', $dateformatdata['phpdate'] . ' H:i')
-                    . "<br>"
-                    . gT("Corrected time:") . ' '
-                    . convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s', $dateformatdata['phpdate'] . ' H:i'); ?>
+                <span>
+                    <select class="form-select" name="displayTimezone" id="displayTimezone" aria-describedby="displayTimezone-hint">
+                    <?php // show a select box with all available time zones
+                    $displayTimezone = App()->getConfig('displayTimezone');
+                    ?>
+                    <option value=""<?php if (empty($displayTimezone)) { echo " selected='selected'"; } ?>><?php eT("UTC (default)"); ?></option>
+                    <?php foreach (DateTimeZone::listIdentifiers() as $timezone) {
+                        echo "<option value='" . $timezone . "'";
+                        if ($displayTimezone == $timezone) {
+                            echo " selected='selected'";
+                        }
+                        echo ">" . $timezone . "</option>";
+                    } ?>
+                    </select>                  
+                </span>
+            </div>                
+            <div class="col-12 form-label ">
+                <span class="hint" id="displayTimezone-hint">
+                <?php eT("Determines what time zone is used for displaying dates and times in surveys."); ?>  
+                </span>
             </div>
         </div>
 
@@ -119,7 +129,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
                 </label>
                 <div class="col-12">
                     <input class="form-control" type='text' size='10' id='iSessionExpirationTime' name='iSessionExpirationTime'
-                           value="<?php echo htmlspecialchars((string) getGlobalSetting('iSessionExpirationTime')); ?>"/>
+                           value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('iSessionExpirationTime')); ?>"/>
                 </div>
             </div>
         <?php endif; ?>
@@ -129,7 +139,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
                 <?php eT("IP Info DB API Key:"); ?>
             </label>
             <div class="col-12">
-                <input class="form-control" type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars((string) getGlobalSetting('ipInfoDbAPIKey')); ?>"/>
+                <input class="form-control" type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('ipInfoDbAPIKey')); ?>"/>
             </div>
         </div>
 
@@ -138,7 +148,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
                 <?php eT("Google Maps API key:"); ?>
             </label>
             <div class="col-12">
-                <input class="form-control" type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value="<?php echo htmlspecialchars((string) getGlobalSetting('googleMapsAPIKey')); ?>"/>
+                <input class="form-control" type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('googleMapsAPIKey')); ?>"/>
             </div>
         </div>
 
@@ -148,7 +158,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </label>
             <div class="col-12">
                 <input class="form-control" type='text' size='35' id='googleanalyticsapikey' name='googleanalyticsapikey'
-                       value="<?php echo htmlspecialchars((string) getGlobalSetting('googleanalyticsapikey')); ?>"/>
+                       value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('googleanalyticsapikey')); ?>"/>
             </div>
         </div>
 
@@ -158,7 +168,7 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </label>
             <div class="col-12">
                 <input class="form-control" type='text' size='35' id='googletranslateapikey' name='googletranslateapikey'
-                       value="<?php echo htmlspecialchars((string) getGlobalSetting('googletranslateapikey')); ?>"/>
+                       value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('googletranslateapikey')); ?>"/>
             </div>
         </div>
 
@@ -211,7 +221,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Refresh assets -->
         <div class="mb-3">
             <label class="col-12 form-label" for='clearcache'>
-                <?php eT("Clear frontend cache"); ?> <small>(<?php echo getGlobalSetting('customassetversionnumber'); ?>)</small>
+                <?php eT("Clear frontend cache"); ?> <small>(<?php echo Yii::app()->getConfig('customassetversionnumber'); ?>)</small>
             </label>
             <div class="col-12">
                 <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "clearAssetsAndCache")); ?>"
@@ -236,7 +246,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                         'checkedOption' => $thisdefaulthtmleditormode,
                         'selectOptions' => [
                             "inline" => gT("Inline", 'unescaped'),
-                            "popup"  => gT("Popup", 'unescaped'),
+                            "popup"  => gT("Pop-up", 'unescaped'),
                             "none"   => gT("HTML source", 'unescaped')
                         ]
                     ]
@@ -331,7 +341,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'javascriptdebugbcknd',
                     'ariaLabel' => gT('JS-Debug mode [Backend]'),
-                    'checkedOption' => App()->getConfig('javascriptdebugbcknd'),
+                    'checkedOption' => Yii::app()->getConfig('javascriptdebugbcknd'),
                     'selectOptions' => [
                         '1' => gT('On'),
                         '0' => gT('Off'),
@@ -350,7 +360,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'javascriptdebugfrntnd',
                     'ariaLabel' => gT('JS-Debug mode [Frontend]'),
-                    'checkedOption' => App()->getConfig('javascriptdebugfrntnd'),
+                    'checkedOption' => Yii::app()->getConfig('javascriptdebugfrntnd'),
                     'selectOptions' => [
                         '1' => gT('On'),
                         '0' => gT('Off'),
@@ -369,7 +379,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name' => 'allow_unstable_extension_update',
                         'ariaLabel' => gT('Allow unstable extension updates'),
-                        'checkedOption' => App()->getConfig('allow_unstable_extension_update'),
+                        'checkedOption' => Yii::app()->getConfig('allow_unstable_extension_update'),
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),

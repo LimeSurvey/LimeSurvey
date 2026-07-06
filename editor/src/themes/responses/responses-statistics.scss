@@ -1,0 +1,76 @@
+.responses-statistics-body {
+  .responses-charts {
+    .recharts-pie-label-line {
+      display: none;
+    }
+
+    .active-shape-value {
+      fill: $g-900;
+    }
+
+    .active-shape-percent-value {
+      fill: $g-700;
+    }
+
+    .recharts-square-value {
+      color: $g-900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    .chart-wrapper {
+      width: 100%;
+      min-height: 400px;
+    }
+
+    .responses-chart-card {
+      border-radius: $border-radius;
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      height: 100%;
+      min-height: 400px;
+    }
+
+    .question-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e7eb;
+      position: relative;
+      min-height: 350px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .question-title {
+      font-size: $font-size-base;
+      font-weight: $font-weight-600;
+      color: $g-900;
+    }
+
+    .menu-dots {
+      color: $g-700;
+      font-size: $font-size-md;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .menu-dots:hover {
+      color: $g-700;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 280px;
+      width: 100%;
+    }
+  }
+}

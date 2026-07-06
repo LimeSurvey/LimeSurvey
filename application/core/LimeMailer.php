@@ -62,13 +62,13 @@ class LimeMailer extends PHPMailer
      * for survey (admin or not) : admin_notification, admin_responses, savesurveydetails, errorsavingresults
      * other : addadminuser, passwordreminderadminuser, mailsendusergroup …
      **/
-    public $emailType = 'unknow';
+    public $emailType = 'unknown';
 
     /**
-     * Attachements by type : using different key for all this part …
+     * Attachments by type : using different key for all this part …
      * @var string[]
      */
-    private $_aAttachementByType = array(
+    private $_aAttachmentByType = array(
         'invite' => 'invitation',
         'remind' => 'reminder',
         'register' => 'registration',
@@ -83,13 +83,13 @@ class LimeMailer extends PHPMailer
     public $replaceTokenAttributes = false;
 
     /**
-     * @var array $aAttachements Current attachements (as string or array)
+     * @var array $aAttachments Current Attachments (as string or array)
      * @see parent::addAttachment
      **/
-    public $aAttachements = array();
+    public $aAttachments = array();
 
     /**
-     * @var boolean $aAttachements Current attachements (as string or array)
+     * @var boolean $aAttachments Current Attachments (as string or array)
      **/
     private $_bAttachementTypeDone = false;
 
@@ -510,7 +510,7 @@ class LimeMailer extends PHPMailer
      * Launch the needed event : beforeTokenEmail, beforeSurveyEmail, beforeEmail
      * and update this according to action
      * @var array $eventParams specific event parameters to add
-     * return boolean|null : sended of not, if null : no action are done by event, can use default action.
+     * return boolean|null : sent of not, if null : no action are done by event, can use default action.
      */
     private function manageEvent($eventParams = array())
     {
@@ -545,7 +545,7 @@ class LimeMailer extends PHPMailer
         $event = new PluginEvent($this->eventName);
         /**
          * plugin can get this mailer with $oEvent->get('mailer')
-         * This allow udpate of anythings : $this->getEvent()->get('mailer')->addCC or $this->getEvent()->get('mailer')->addCustomHeader etc …
+         * This allow update of anythings : $this->getEvent()->get('mailer')->addCC or $this->getEvent()->get('mailer')->addCustomHeader etc …
          * Usage of this solution can disable all other event get param …
          **/
         $event->set('mailer', $this);
@@ -554,7 +554,7 @@ class LimeMailer extends PHPMailer
             $event->set($param, $value);
         }
         /* A plugin can update any part : here true, but i really think it's best if it false */
-        /* Maybe part by part ? $event->get('updated') as arry : update only what is updated */
+        /* Maybe part by part ? $event->get('updated') as array : update only what is updated */
         $event->set('updateDisable', array());
         App()->getPluginManager()->dispatchEvent($event);
         /* Manage what can be updated */
@@ -616,7 +616,7 @@ class LimeMailer extends PHPMailer
             $this->Subject = mb_convert_encoding($this->Subject, $this->CharSet, $this->BodySubjectCharset);
             $this->Body = mb_convert_encoding($this->Body, $this->CharSet, $this->BodySubjectCharset);
         }
-        if (!$this->addAttachementsByType() && !$this->ignoremissingattachement ) {
+        if (!$this->addAttachmentsByType() && !$this->ignoremissingattachement) {
             $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
             return false;
         }
@@ -702,7 +702,7 @@ class LimeMailer extends PHPMailer
     {
         if (
             'smtp' === $this->Mailer
-            || ('mail' === $this->Mailer && (\PHP_VERSION_ID >= 80000 || stripos(PHP_OS, 'WIN') === 0))
+            || ('mail' === $this->Mailer && stripos(PHP_OS, 'WIN') === 0)
         ) {
             //SMTP mandates RFC-compliant line endings
             //and it's also used with mail() on Windows
@@ -710,16 +710,6 @@ class LimeMailer extends PHPMailer
         } else {
             //Maintain backward compatibility with legacy Linux command line mailers
             static::setLE(PHP_EOL);
-        }
-        //Check for buggy PHP versions that add a header with an incorrect line break
-        if (
-            'mail' === $this->Mailer
-            && ((\PHP_VERSION_ID >= 70000 && \PHP_VERSION_ID < 70017)
-                || (\PHP_VERSION_ID >= 70100 && \PHP_VERSION_ID < 70103))
-            && ini_get('mail.add_x_header') === '1'
-            && stripos(PHP_OS, 'WIN') === 0
-        ) {
-            trigger_error($this->lang('buggy_php'), E_USER_WARNING);
         }
 
         try {
@@ -866,29 +856,54 @@ class LimeMailer extends PHPMailer
                 $aTokenReplacements[strtoupper((string) $attribute)] = $value;
             }
         }
-        /* Set the minimal url and add it to Placeholders */
-        $aTokenReplacements["OPTOUTURL"] = App()->getController()
-            ->createAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        /* Set the minimal url and add it to Placeholders - use validated URLs to prevent host header injection */
+        $aTokenReplacements["OPTOUTURL"] = App()
+            ->createValidatedAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["OPTOUTURL"] === false) {
+            $aTokenReplacements["OPTOUTURL"] = App()->getController()
+                ->createAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("OPTOUT");
-        $aTokenReplacements["GLOBALOPTOUTURL"] = App()->getController()
-            ->createAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $aTokenReplacements["GLOBALOPTOUTURL"] = App()
+            ->createValidatedAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["GLOBALOPTOUTURL"] === false) {
+            $aTokenReplacements["GLOBALOPTOUTURL"] = App()->getController()
+                ->createAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("GLOBALOPTOUT");
-        $aTokenReplacements["OPTINURL"] = App()->getController()
-            ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $aTokenReplacements["OPTINURL"] = App()
+            ->createValidatedAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["OPTINURL"] === false) {
+            $aTokenReplacements["OPTINURL"] = App()->getController()
+                ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("OPTIN");
-        $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
-            ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $aTokenReplacements["GLOBALOPTINURL"] = App()
+            ->createValidatedAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["GLOBALOPTINURL"] === false) {
+            $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
+                ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("GLOBALOPTINURL");
         $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
+        // Validate the survey URL host against allowed hosts to prevent host header injection
+        $parsedSurveyUrl = parse_url($aTokenReplacements["SURVEYURL"]);
+        if (isset($parsedSurveyUrl['host']) && !App()->isHostAllowed($parsedSurveyUrl['host'])) {
+            $aTokenReplacements["SURVEYURL"] = '';
+        }
         $this->addUrlsPlaceholders("SURVEY");
         $aTokenReplacements["SURVEYIDURL"] = $survey->getSurveyUrl($language, ["token" => $token], false);
+        $parsedSurveyIdUrl = parse_url($aTokenReplacements["SURVEYIDURL"]);
+        if (isset($parsedSurveyIdUrl['host']) && !App()->isHostAllowed($parsedSurveyIdUrl['host'])) {
+            $aTokenReplacements["SURVEYIDURL"] = '';
+        }
         $this->addUrlsPlaceholders("SURVEYID");
         return $aTokenReplacements;
     }
 
     /**
      * Do the replacements : if current replacement jey is set and LimeSurvey core have it too : it reset to the needed one.
-     * @param string $string wher need to replace
+     * @param string $string where need to replace
      * @return string
      */
     public function doReplacements($string)
@@ -903,7 +918,7 @@ class LimeMailer extends PHPMailer
             if (!in_array($this->mailLanguage, $oSurvey->getAllLanguages())) {
                 $this->mailLanguage = $oSurvey->language;
             }
-            /* Get it separatly since (not Survey::model()->with('languagesetting')) since need to be sure to get current language ? */
+            /* Get it separately since (not Survey::model()->with('languagesetting')) since need to be sure to get current language ? */
             $oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
             $aReplacements["SURVEYNAME"] = $oSurveyLanguageSettings->surveyls_title;
             $aReplacements["SURVEYDESCRIPTION"] = $oSurveyLanguageSettings->surveyls_description;
@@ -930,7 +945,7 @@ class LimeMailer extends PHPMailer
      * Set the attachments according to current survey,language and emailtype
      * @return boolean attachments added with success
      */
-    public function addAttachementsByType()
+    public function addAttachmentsByType()
     {
         if ($this->_bAttachementTypeDone) {
             return true;
@@ -941,11 +956,11 @@ class LimeMailer extends PHPMailer
             return true;
         }
         // No attachement template : no attachments
-        if (!array_key_exists($this->emailType, $this->_aAttachementByType)) {
+        if (!array_key_exists($this->emailType, $this->_aAttachmentByType)) {
             return true;
         }
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
-        $attachementType = $this->_aAttachementByType[$this->emailType];
+        $attachementType = $this->_aAttachmentByType[$this->emailType];
         if (!empty($oSurveyLanguageSetting->attachments)) {
             $aAttachments = $oSurveyLanguageSetting->getValidAttachments(true);
             if (!empty($aAttachments[$attachementType])) {

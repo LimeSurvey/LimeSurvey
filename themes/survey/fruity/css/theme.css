@@ -1,7 +1,7 @@
 /*
     LimeSurvey
 
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
 
     License: GNU/GPL License v2 or later, see LICENSE.php
@@ -291,7 +291,7 @@ element.style {
 .radio-item label,.checkbox-item label {
     cursor: pointer;
 }
-.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+.radio-item [type='radio'],.checkbox-item [type='checkbox'] { /* Why we must positioning at same place */
     cursor: pointer;
 }
 .js td.radio-item,.js td.checkbox-item{

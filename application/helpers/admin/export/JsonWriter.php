@@ -22,6 +22,7 @@ class JsonWriter extends Writer
         parent::init($survey, $sLanguageCode, $oOptions);
         $sStartOutput = '{' . json_encode("responses") . ': [';
         if ($oOptions->output == 'display') {
+            header("Content-Disposition: attachment; filename=results-survey" . $survey->id . ".json");
             header("Content-type: application/json");
             echo $sStartOutput;
         } elseif ($oOptions->output == 'file') {
@@ -44,7 +45,7 @@ class JsonWriter extends Writer
         foreach ($headers as $key => $header) {
             if (!in_array($header, $uniqueHeaders)) {
                 $uniqueHeaders[$key] = $header;
-            }else{
+            } else {
                 $fieldName = array_key_exists($key, $fieldNames) ? $fieldNames[$key] : $key;
                 $uniqueHeaders[$key] = $header . ' (' . $fieldName . ')';
             }

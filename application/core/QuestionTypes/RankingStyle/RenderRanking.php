@@ -29,19 +29,22 @@ class RenderRanking extends QuestionBaseRenderer
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
-        $this->setAnsweroptions();
-        $this->iMaxSubquestions = ((int) $this->getQuestionAttribute('max_subquestions')) > 0
-            ? ((int) $this->getQuestionAttribute('max_subquestions'))
-            : $this->getAnswerCount();
+        $this->setSubquestions();  // Get ranking items as subquestions
 
-        $this->mMaxAnswers = trim((string) $this->getQuestionAttribute('max_answers')) != ''
+        $maxSubquestionsAttribute = (int) $this->getQuestionAttribute('max_subquestions');
+        $this->iMaxSubquestions = $maxSubquestionsAttribute > 0
+            ? $maxSubquestionsAttribute
+            : $this->getQuestionCount();
+
+        $maxAnswersAttribute = trim((string) $this->getQuestionAttribute('max_answers'));
+        $this->mMaxAnswers = $maxAnswersAttribute != ''
             ? (
-                ($this->iMaxSubquestions < $this->getAnswerCount())
-                ? "min(" . trim((string) $this->getQuestionAttribute('max_answers')) . "," . $this->iMaxSubquestions . ")"
-                : trim((string) $this->getQuestionAttribute('max_answers'))
+                ($this->iMaxSubquestions < $this->getQuestionCount())
+                ? min($this->iMaxSubquestions, (int) $maxAnswersAttribute)
+                : (int) $maxAnswersAttribute
               )
             : $this->iMaxSubquestions;
-        
+
         $this->mMinAnswers = $this->setDefaultIfEmpty($this->getQuestionAttribute('min_answers'), 0);
     }
 
@@ -49,7 +52,7 @@ class RenderRanking extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/ranking';
     }
-    
+
     public function getRows()
     {
         // Get the max number of line needed
@@ -58,16 +61,39 @@ class RenderRanking extends QuestionBaseRenderer
                 ? $this->mMaxAnswers
                 : $this->iMaxSubquestions
         );
-        
-        $sSelects = '';
-        $curValue = '';
+        $iMaxLine = min($iMaxLine, $this->getQuestionCount());
 
+        $subQuestions = $this->aSubQuestions[0];
+
+        // Prepare display subquestions for ranking interface
+        $this->aDisplayAnswers = [];
+        foreach ($subQuestions as $oSubQuestion) {
+            $this->aDisplayAnswers[$oSubQuestion->qid] = array(
+                'title' => (string)$oSubQuestion->title,
+                //The renderer still believes it is an answer
+                'answer' => $oSubQuestion->questionl10ns[$this->sLanguage]->question,
+                'sqid' => $oSubQuestion->qid
+            );
+        }
+
+        // Sort subquestions by question_order if available
+        usort($subQuestions, function ($a, $b) {
+            return ($a->question_order ?? 0) <=> ($b->question_order ?? 0);
+        });
+
+        $sSelects = '';
+        $inputnames = [];
+
+        // Iterate through subquestions instead of answer options
         for ($i = 1; $i <= $iMaxLine; $i++) {
-            $myfname = $this->sSGQA . $i;
-            $this->sLabeltext = ($i == 1) ? gT('First choice') : sprintf(gT('Choice of rank %s'), $i);
+            $oSubQuestion = $subQuestions[$i - 1];
+            $myfname = $this->sSGQA . '_S' . $oSubQuestion->qid;
+            $this->sLabeltext = $oSubQuestion->questionl10ns[$this->sLanguage]->question;
             $aItemData = [];
-    
-            if (!$_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname]) {
+
+            $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], false);
+
+            if (!$mSessionValue) {
                 $aItemData[] = array(
                     'value'      => '',
                     'selected'   => 'SELECTED',
@@ -76,40 +102,37 @@ class RenderRanking extends QuestionBaseRenderer
                     'optiontext' => gT('Please choose...'),
                 );
             }
-    
-            foreach ($this->aAnswerOptions[0] as $oAnswer) {
-                $this->aDisplayAnswers[$oAnswer->aid] = array_merge($oAnswer->attributes, $oAnswer->answerl10ns[$this->sLanguage]->attributes);
-                $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname], false);
 
-                if ($mSessionValue == $oAnswer->code) {
+            // Show ranking positions (1, 2, 3, ...)
+            foreach ($subQuestions as $oSubQuestion) {
+                if ($mSessionValue == $oSubQuestion->title) {
                     $selected = SELECTED;
-                    $curValue = $mSessionValue;
                 } else {
                     $selected = '';
                 }
-    
+
                 $aItemData[] = array(
-                    'value' => $oAnswer->code,
+                    'value' => $oSubQuestion->title,
                     'selected' => $selected,
                     'classes' => '',
-                    'optiontext' => $oAnswer->answerl10ns[$this->sLanguage]->answer
+                    'optiontext' => sprintf(gT('Rank %s'), $oSubQuestion->questionl10ns[$this->sLanguage]->question)
                 );
             }
-    
+
             $sSelects .= Yii::app()->twigRenderer->renderQuestion(
                 $this->getMainView() . '/rows/answer_row',
                 array(
                     'myfname' => $myfname,
                     'labeltext' => $this->sLabeltext,
                     'options' => $aItemData,
-                    'thisvalue' => $curValue
+                    'thisvalue' => $mSessionValue ?? '',
                 ),
                 true
             );
-    
+
             $inputnames[] = $myfname;
         }
-            
+
         return $sSelects;
     }
 
@@ -121,12 +144,12 @@ class RenderRanking extends QuestionBaseRenderer
         if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
-        
+
         $rankingTranslation = 'LSvar.lang.rankhelp="' . gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.", 'js') . '";';
         $rankingTranslation .= 'LSvar.lang.rankadvancedhelp="' . gT("Drag or double-click images into order.", 'js') . '";';
         $this->addScript("rankingTranslation", $rankingTranslation, CClientScript::POS_BEGIN);
         //$this->applyScripts();
-        
+
         if (trim((string) $this->getQuestionAttribute('choice_title', App()->language)) != '') {
             $choice_title = htmlspecialchars(trim((string) $this->getQuestionAttribute('choice_title', App()->language)), ENT_QUOTES);
         } else {
@@ -138,7 +161,6 @@ class RenderRanking extends QuestionBaseRenderer
         } else {
             $rank_title = gT("Your ranking", 'html');
         }
-
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'coreClass'         => $sCoreClasses,
             'sSelects'          => $this->getRows(),

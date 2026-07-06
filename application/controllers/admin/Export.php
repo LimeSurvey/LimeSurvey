@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -77,7 +77,7 @@ class Export extends SurveyCommonAction
         $qid = sanitize_int(Yii::app()->request->getParam('qid'));
         $question = Question::model()->findByPk($qid);
         if (empty($question)) {
-            throw new CHttpException(404, gT("Invalid question id"));
+            throw new CHttpException(404, gT("Invalid question ID"));
         }
         if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'export')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -108,7 +108,7 @@ class Export extends SurveyCommonAction
 
         Yii::app()->loadHelper("admin.exportresults");
 
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . '/exportresults.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
         $sHeadingFormat = Yii::app()->request->getPost('headstyle');
@@ -225,12 +225,21 @@ class Export extends SurveyCommonAction
             $data['topBar']['showExportButton'] = true;
             $data['topBar']['showCloseButton'] = true;
 
+            // If editor is enabled, redirect to editor results list
+            $editorEnabled = Yii::app()->getConfig('editorEnabled');
+            if ($editorEnabled) {
+                $closeUrl = Yii::app()->createUrl('editorLink/index', ['route' => 'responses/' . $survey->sid . '/results/list']);
+            } else {
+                // Default redirect to responses browse
+                $closeUrl = Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid]);
+            }
+
             $data['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
                 [
                     'showExportButton' => true,
                     'showCloseButton' => true,
-                    'closeUrl' => Yii::app()->createUrl('responses/browse', ['surveyId' => $survey->sid])
+                    'closeUrl' => $closeUrl
                 ],
                 true
             );
@@ -295,7 +304,7 @@ class Export extends SurveyCommonAction
         }
 
         if (Yii::app()->request->getPost('response_id')) {
-                    $sFilter = "{{survey_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
+                    $sFilter = "{{responses_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
         } elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_' . $iSurveyID])) {
             $sFilter = Yii::app()->session['statistics_selects_' . $iSurveyID];
         } else {
@@ -550,7 +559,7 @@ class Export extends SurveyCommonAction
 
             // Add instructions to change variable type and recode 'Other' option.
             // This is needed when all answer option codes are numeric but the question has 'Other' enabled,
-            // because the variable is initialy set as alphanumeric in order to hold the '-oth-' value. See issue #16939
+            // because the variable is initially set as alphanumeric in order to hold the '-oth-' value. See issue #16939
             foreach ($fields as $field) {
                 if (isset($field['needsAlterType'])) {
                     echo "RECODE {$field['id']} (\"-oth-\" = \"666666\").\n";
@@ -619,7 +628,7 @@ class Export extends SurveyCommonAction
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
 
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
             // Control if fieldcode are unique
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
             foreach ($fieldnames as $field) {
@@ -675,7 +684,7 @@ class Export extends SurveyCommonAction
             $this->addHeaders($fileName, "text/tab-separated-values", 0);
 
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
-            $surveytable = "{{survey_$iSurveyId}}";
+            $surveytable = "{{responses_$iSurveyId}}";
 
             $fieldnames = App()->db->schema->getTable($surveytable)->getColumnNames();
 
@@ -704,8 +713,18 @@ class Export extends SurveyCommonAction
                 }
                 $secondline[] = $fieldcode;
             }
-            fputcsv($vvOutput, $firstline, "\t");
-            fputcsv($vvOutput, $secondline, "\t");
+            fputcsv(
+                stream: $vvOutput,
+                fields: $firstline,
+                separator: "\t",
+                escape: "\\"
+            );
+            fputcsv(
+                stream: $vvOutput,
+                fields: $secondline,
+                separator: "\t",
+                escape: "\\"
+            );
             $query = "SELECT * FROM " . Yii::app()->db->quoteTableName($surveytable);
 
             if (incompleteAnsFilterState() == "incomplete") {
@@ -764,7 +783,12 @@ class Export extends SurveyCommonAction
                 /* it is important here to stream output data, line by line
                  * in order to avoid huge memory consumption when exporting large
                  * quantities of answers */
-                fputcsv($vvOutput, $responseLine, "\t");
+                fputcsv(
+                    stream: $vvOutput,
+                    fields: $responseLine,
+                    separator: "\t",
+                    escape: "\\"
+                );
                 unset($responseLine);
             }
             fclose($vvOutput);
@@ -872,7 +896,7 @@ class Export extends SurveyCommonAction
         $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('document');
         $xml->writeElement('LimeSurveyDocType', 'Label set');
-        $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+        $xml->writeElement('DBVersion', Yii::app()->getConfig("DBVersion"));
 
         // Label sets table
         $lsquery = "SELECT * FROM {{labelsets}} WHERE lid=" . implode(' or lid=', $lids);
@@ -1088,7 +1112,7 @@ class Export extends SurveyCommonAction
         unlink($sLSSFileName);
 
         if ($survey->isActive) {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
+            getXMLDataSingleTable($iSurveyID, 'responses_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
             $zip->addFromString('survey_' . $iSurveyID . '_responses.lsr', file_get_contents($sLSRFileName));
             unlink($sLSRFileName);
         }
@@ -1100,7 +1124,7 @@ class Export extends SurveyCommonAction
         }
 
         if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
-            getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
+            getXMLDataSingleTable($iSurveyID, 'timings_' . $iSurveyID, 'Timings', 'timings', $sLSIFileName);
             $zip->addFromString('survey_' . $iSurveyID . '_timings.lsi', file_get_contents($sLSIFileName));
             unlink($sLSIFileName);
         }
@@ -1211,7 +1235,7 @@ class Export extends SurveyCommonAction
         $queXMLSettings = $defaultquexmlpdf->_quexmlsettings();
 
         foreach ($queXMLSettings as $s) {
-            $aData[$s] = getGlobalSetting($s);
+            $aData[$s] = Yii::app()->getConfig($s);
 
             if ($aData[$s] === null || trim((string) $aData[$s]) === '') {
                 $method = str_replace("queXML", "get", $s);
@@ -1231,7 +1255,7 @@ class Export extends SurveyCommonAction
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
 
-            $lang = sanitize_languagecode(
+            $lang = \LSYii_Validators::languageCodeFilter(
                 Yii::app()->request->getPost('save_language')
             );
 
@@ -1392,18 +1416,10 @@ class Export extends SurveyCommonAction
      */
     private function xmlToJson(string $fileContents): string
     {
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        }
-
         $fileContents          = str_replace(array("\n", "\r", "\t"), '', $fileContents);
         $fileContents          = trim(str_replace('"', "'", $fileContents));
         $simpleXml             = simplexml_load_string($fileContents, 'SimpleXMLElement', LIBXML_NOCDATA);
         $json                  = json_encode($simpleXml);
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-        }
         return $json;
     }
 

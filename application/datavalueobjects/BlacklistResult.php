@@ -21,7 +21,8 @@ class BlacklistResult
      * @param bool $blacklisted
      * @param string[]|string $messages
      */
-    public function __construct($blacklisted = false, $messages = ['']) {
+    public function __construct($blacklisted = false, $messages = [''])
+    {
         $this->blacklisted = $blacklisted;
         if (!is_array($messages)) {
             $messages = [$messages];

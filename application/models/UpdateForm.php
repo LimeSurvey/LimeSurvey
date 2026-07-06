@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -72,7 +72,7 @@ class UpdateForm extends CFormModel
         if (Yii::app()->getConfig("updatable")) {
             if ($this->build != '') {
                 $crosscheck = (int) $crosscheck;
-                $getters = '/index.php?r=updates/updateinfo&currentbuild=' . $this->build . '&id=' . md5((string) getGlobalSetting('SessionName')) . '&crosscheck=' . $crosscheck;
+                $getters = '/index.php?r=updates/updateinfo&currentbuild=' . $this->build . '&id=' . md5((string) Yii::app()->getConfig('SessionName')) . '&crosscheck=' . $crosscheck;
                 $content = $this->performRequest($getters);
             } else {
                 $content = new stdClass();
@@ -88,7 +88,7 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * The server will do some checks and will ask for the correct view to be diplayed.
+     * The server will do some checks and will ask for the correct view to be displayed.
      *
      * @param string $updateKey the update key -
      * @param string $destinationBuild
@@ -191,11 +191,16 @@ class UpdateForm extends CFormModel
         $toCheck = $content->list;
         $readOnly = array();
 
-        // We check the write permission of files
+        // We check the write permission of files and ability to modify timestamps
         $lsRootPath = dirname((string) Yii::app()->request->scriptFile) . '/';
         foreach ($toCheck as $check) {
             if (file_exists($lsRootPath . $check)) {
                 if (!is_writable($lsRootPath . $check)) {
+                    $readOnly[] = $lsRootPath . $check;
+                } elseif (!$this->isFileModifiable($lsRootPath . $check)) {
+                    // File is writable but not owned by current process
+                    // This prevents updates from failing mid-process due to ownership issues
+                    // Fixes: Bug #20138
                     $readOnly[] = $lsRootPath . $check;
                 }
             }
@@ -210,7 +215,7 @@ class UpdateForm extends CFormModel
 
 
     /**
-     * This function requests the change log between the curent build and the destination build
+     * This function requests the change log between the current build and the destination build
      *
      * @param int $destinationBuild
      * @return mixed|stdClass
@@ -274,7 +279,7 @@ class UpdateForm extends CFormModel
             $archive = new LimeSurvey\Zip();
             $archive->open($this->tempdir . DIRECTORY_SEPARATOR . $file_to_unzip);
 
-            if ($archive->extractTo($this->rootdir . DIRECTORY_SEPARATOR) == 0) {
+            if (@$archive->extractTo($this->rootdir . DIRECTORY_SEPARATOR) == 0) {
                 $return = array('result' => false, 'error' => 'unzip_error', 'message' => $archive->getStatusString());
                 $archive->close();
                 return (object) $return;
@@ -393,7 +398,7 @@ class UpdateForm extends CFormModel
     }
 
     /**
-     * This function provide status information about files presents on the system that will be afected by the update : do they exist ? are they writable ? modified ?
+     * This function provides status information about files present on the system that will be affected by the update: do they exist? are they writable? modified?
      *
      * @param array $updateinfo Array of updated files
      * @return array
@@ -459,7 +464,7 @@ class UpdateForm extends CFormModel
             }
         }
 
-        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
+        $basefilename = dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d") . '_' . md5(uniqid(rand(), true));
         $archive = new LimeSurvey\Zip();
         $archive->open($this->tempdir . DIRECTORY_SEPARATOR . 'LimeSurvey_files_backup_' . $basefilename . '.zip', ZipArchive::CREATE);
         $success = false;
@@ -543,7 +548,7 @@ class UpdateForm extends CFormModel
     private function checkAssets()
     {
         $iAssetVersionNumber  = Yii::app()->getConfig('assetsversionnumber'); // From version.php
-        $iCurrentAssetVersion = GetGlobalSetting('AssetsVersion'); // From setting_global table
+        $iCurrentAssetVersion = Yii::app()->getConfig('AssetsVersion'); // From setting_global table
 
         if ($iAssetVersionNumber != $iCurrentAssetVersion) {
             self::republishAssets();
@@ -730,8 +735,8 @@ class UpdateForm extends CFormModel
     {
         Yii::app()->loadHelper("admin.backupdb");
         $backupDb = new stdClass();
-        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . '_' . md5(uniqid(rand(), true));
-        $baseSqlFileName = "backup_db_" . randomChars(20) . "_" . dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')) . ".sql";
+        $basefilename = dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d") . '_' . md5(uniqid(rand(), true));
+        $baseSqlFileName = "backup_db_" . randomChars(20) . "_" . dateShift(gmdate("Y-m-d H:i:s"), "Y-m-d") . ".sql";
         $sfilename = $this->tempdir . DIRECTORY_SEPARATOR . $baseSqlFileName;
         $dfilename = $this->tempdir . DIRECTORY_SEPARATOR . "LimeSurvey_database_backup_" . $basefilename . ".zip";
         outputDatabase('', false, $sfilename);
@@ -787,6 +792,16 @@ class UpdateForm extends CFormModel
                 }
             }
 
+            // Check not only if directory is writable, but also if it can be modified
+            // This ensures the current process can modify files (by ownership, root, or permissions)
+            // Fixes: Bug #20138 - ComfortUpdate fails when files owned by different user
+            if ($is_writable && file_exists($searchpath)) {
+                $is_modifiable = $this->isFileModifiable($searchpath);
+                if (!$is_modifiable) {
+                    $is_writable = false;
+                }
+            }
+
             if (!$is_writable) {
                 $checkedfile->type = 'readonlyfile';
                 $checkedfile->file = $searchpath;
@@ -797,9 +812,60 @@ class UpdateForm extends CFormModel
         ) {
             $checkedfile->type = 'readonlyfile';
             $checkedfile->file = $this->rootdir . $file['file'];
+        } elseif (
+            file_exists($this->rootdir . $file['file'])
+            && is_writable($this->rootdir . $file['file'])
+        ) {
+            // Check if file can be modified (ownership, root, or permissions)
+            // This is necessary even if file is writable, as file ownership may prevent updates
+            // Fixes: Bug #20138 - ComfortUpdate fails when files owned by different user
+            $is_modifiable = $this->isFileModifiable($this->rootdir . $file['file']);
+            if (!$is_modifiable) {
+                $checkedfile->type = 'readonlyfile';
+                $checkedfile->file = $this->rootdir . $file['file'];
+            }
         }
 
         return $checkedfile;
+    }
+
+    /**
+     * Check if the current process can modify a file or directory
+     * This is essential before updating files, as file operations require proper permissions
+     *
+     * On Linux/Unix systems, uses POSIX functions to check:
+     * 1. If current process is root (UID 0) - can always modify, OR
+     * 2. If current process owns the file (UID match) - can modify, OR
+     * 3. If the file/directory has write permissions set - can modify via permissions
+     *
+     * This prevents failures when permission bits alone don't allow expected modifications (Bug #20138).
+     *
+     * @param string $path Path to file or directory to test
+     * @return bool True if current process can modify the file, false otherwise
+     */
+    private function isFileModifiable($path)
+    {
+        if (!file_exists($path)) {
+            return false;
+        }
+
+        // Check if POSIX functions are available (available on Linux/Unix, not on Windows)
+        if (function_exists('posix_geteuid') && function_exists('fileowner')) {
+            $currentUid = @posix_geteuid();
+            $fileUid = @fileowner($path);
+
+            // If we successfully got both UIDs, check if we can modify:
+            // 1. We own the file (UID match), OR
+            // 2. We're root (UID 0) - root can modify any file, OR
+            // 3. File is writable (permissions allow modification)
+            if ($currentUid !== false && $fileUid !== false) {
+                return ($currentUid === $fileUid) || ($currentUid === 0);
+            }
+        }
+
+        // POSIX not available or unable to determine ownership
+        // but is_writable() should handle basic permission checks
+        return is_writable($path);
     }
 
 
@@ -807,7 +873,7 @@ class UpdateForm extends CFormModel
     /**
      * Check if a file (added/deleted/) on the update yet exists on the server, or has been modified
      *
-     * @param array $file  array of files to update (must contain file, type and chekcsum indexes)
+     * @param array $file  array of files to update (must contain file, type and checksum indexes)
      * @return stdClass containing a list of read only files
      */
     private function getCheckedFile($file)
@@ -846,7 +912,7 @@ class UpdateForm extends CFormModel
         $content = $this->performRequest($getters);
         $fileSystemCheck = $content->list;
 
-        // Strategy Pattern : different way to buil the path of the file
+        // Strategy Pattern : different way to build the path of the file
         // Right now, calling fileSystemCheckAppath() or fileSystemCheckConfig()
         // Could also use params in the futur : YAGNI !!!!!
         $files = array();
@@ -1069,7 +1135,7 @@ class UpdateForm extends CFormModel
             }
             return $content_decoded;
         } else {
-            // Should happen only on first step (get buttons), diplayed in check_updates/update_buttons/_updatesavailable_error.php
+            // Should happen only on first step (get buttons), displayed in check_updates/update_buttons/_updatesavailable_error.php
             // Could rather define a call to httprequest2 functions.
             return (object) array('result' => false, 'error' => "php_curl_not_loaded");
         }

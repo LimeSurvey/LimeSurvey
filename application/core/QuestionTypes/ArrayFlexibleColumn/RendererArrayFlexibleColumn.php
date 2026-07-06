@@ -22,7 +22,7 @@ class RendererArrayFlexibleColumn extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/dummy/answer';
     }
-    
+
     public function getRows()
     {
         return;
@@ -32,7 +32,7 @@ class RendererArrayFlexibleColumn extends QuestionBaseRenderer
     {
         $this->registerAssets();
         return do_arraycolumns($this->aFieldArray);
-        
+
         $answer = '';
         $inputnames = [];
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbDataColumn class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
@@ -41,17 +42,19 @@ class TbDataColumn extends CDataColumn
                 }
             }
 
-            echo $sort->link($this->name, $label, array('class' => 'sort-link'));
-        } else {
-            if ($this->name !== null && $this->header === null) {
-                if ($this->grid->dataProvider instanceof CActiveDataProvider) {
-                    echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
-                } else {
-                    echo CHtml::encode($this->name);
-                }
+            echo $sort->link($this->name, $label, [
+                'class'               => 'sort-link',
+                'role'                => 'button',
+                'data-sort-attribute' => $this->name,
+            ]);
+        } elseif ($this->name !== null && $this->header === null) {
+            if ($this->grid->dataProvider instanceof CActiveDataProvider) {
+                echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
             } else {
-                parent::renderHeaderCellContent();
+                echo CHtml::encode($this->name);
             }
+        } else {
+            parent::renderHeaderCellContent();
         }
     }
 
@@ -75,7 +78,8 @@ class TbDataColumn extends CDataColumn
         if (is_string($this->filter)) {
             echo $this->filter;
         } else {
-            if ($this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
+            if (
+                $this->filter !== false && $this->grid->filter !== null && $this->name !== null && strpos(
                     (string) $this->name,
                     '.'
                 ) === false
@@ -88,6 +92,7 @@ class TbDataColumn extends CDataColumn
                 } else {
                     $filterInputOptions = array();
                 }
+                $this->applyDefaultFilterAriaLabel($filterInputOptions);
                 if (is_array($this->filter)) {
                     $filterInputOptions['class'] = ' form-select ';
                     $filterInputOptions['prompt'] = '';
@@ -106,5 +111,22 @@ class TbDataColumn extends CDataColumn
                 parent::renderFilterCellContent();
             }
         }
+    }
+
+    /**
+     * Adds an aria-label to filter controls when none is provided, for accessibility (e.g. WCAG / axe).
+     *
+     * @param array $filterInputOptions
+     * @return void
+     */
+    protected function applyDefaultFilterAriaLabel(array &$filterInputOptions)
+    {
+        if (!empty($filterInputOptions['aria-label']) || !empty($filterInputOptions['aria-labelledby'])) {
+            return;
+        }
+        if (!($this->grid->filter instanceof CModel) || $this->name === null) {
+            return;
+        }
+        $filterInputOptions['aria-label'] = $this->grid->filter->getAttributeLabel($this->name);
     }
 }

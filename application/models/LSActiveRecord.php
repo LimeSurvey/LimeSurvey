@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -266,7 +266,7 @@ class LSActiveRecord extends CActiveRecord
      * @param int $iSurveyId
      * @param string $sClassName
      * @return array
-     * TODO: Should be split into seperate functions in the appropiate model or helper class
+     * TODO: Should be split into separate functions in the appropriate model or helper class
      * TODO: Make an interface for records that support encryption.
      */
     public function getAllEncryptedAttributes($iSurveyId, $sClassName)
@@ -303,7 +303,7 @@ class LSActiveRecord extends CActiveRecord
                     $aAttributes[] = $attribute;
                 }
             }
-        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_' . $iSurveyId) {
+        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_' . $iSurveyId || $sClassName == 'Survey_' . $iSurveyId) {
             // response attributes
             $aAttributes = Response::getEncryptedAttributes($iSurveyId);
         }
@@ -315,7 +315,7 @@ class LSActiveRecord extends CActiveRecord
      * Attribute values are encrypted ( if needed ) to be used for searching purposes
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
      * An attribute value can be an array which will be used to generate an IN condition.
-     * @return array attributes array with encrypted atrribute values is returned
+     * @return array attributes array with encrypted attribute values is returned
      */
     public function encryptAttributeValues($attributes = null, $bEncryptedOnly = false, $bReplaceValues = true)
     {
@@ -412,7 +412,7 @@ class LSActiveRecord extends CActiveRecord
 
 
     /**
-     * Enrypt single value
+     * Encrypt single value
      * @param string $value String value which needs to be encrypted
      */
     public static function encryptSingle($value = '')
