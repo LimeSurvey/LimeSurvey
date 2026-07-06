@@ -214,7 +214,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          sudo apt-get update > /dev/null
+          sudo apt-get update --allow-releaseinfo-change > /dev/null
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
           chmod -R 777 ./themes
@@ -377,7 +377,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          sudo apt-get update > /dev/null
+          sudo apt-get update --allow-releaseinfo-change > /dev/null
           sudo apt --fix-broken install php php-mysql -y
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
