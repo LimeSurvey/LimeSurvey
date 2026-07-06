@@ -29,11 +29,11 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
-      # This will change the php version for every version specified in matrix
+      # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
       - name: Install specified PHP and libapache2-mod-php
         run: |
-          # "Use packages.sury.org/php instead", which breaks plain apt-get update.
-          # Add packages.sury.org using the official installation method from packages.sury.org
+          sudo apt update
+          # Add packages.sury.org, replacement for ppa:ondrej/php 
           sudo apt-get update > /dev/null
           sudo apt-get -y install lsb-release ca-certificates curl
           sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
