@@ -38,12 +38,11 @@ jobs:
 
       - name: Install libapache2-mod-php (needed for Apache integration)
         run: |
-          # The pre-installed Ondrej PHP PPA changed its repo Label, which breaks apt-get update.
-          # We must KEEP the repo (setup-php installs PHP from it, so libapache2-mod-php must match),
-          # so instead clear APT's cached release metadata: with no previous Release to compare
-          # against, the changed Label is accepted on a fresh fetch without --allow-releaseinfo-change.
+          # the pre-installed Ondrej PPA changed its repo Label, which breaks apt-get update, so first
+          # clear APT's cached release metadata (with no previous Release to compare against, the changed
+          # label is accepted on a fresh fetch), then (re)add the PPA (stock Ubuntu 22.04 only ships PHP 8.1, not 8.3).
           sudo rm -rf /var/lib/apt/lists/*
-          sudo apt-get update > /dev/null
+          sudo add-apt-repository -y ppa:ondrej/php
           sudo apt-get install -y libapache2-mod-php${{ matrix.php-versions }}
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
