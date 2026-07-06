@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-06-18 11:18:15+00:00\n"
+"POT-Creation-Date: 2026-07-06 14:34:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -432,7 +432,7 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:166
 #: application/controllers/QuestionAdministrationController.php:740
 #: application/controllers/QuestionAdministrationController.php:812
-#: application/controllers/QuestionAdministrationController.php:2642
+#: application/controllers/QuestionAdministrationController.php:2644
 #: application/controllers/ResponsesController.php:122
 #: application/controllers/ResponsesController.php:415
 #: application/controllers/ResponsesController.php:571
@@ -1073,10 +1073,10 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:164
 #: application/controllers/QuestionAdministrationController.php:309
 #: application/controllers/QuestionAdministrationController.php:1444
-#: application/controllers/QuestionAdministrationController.php:2647
-#: application/controllers/QuestionAdministrationController.php:2650
-#: application/controllers/QuestionAdministrationController.php:2653
-#: application/controllers/QuestionAdministrationController.php:2680
+#: application/controllers/QuestionAdministrationController.php:2649
+#: application/controllers/QuestionAdministrationController.php:2652
+#: application/controllers/QuestionAdministrationController.php:2655
+#: application/controllers/QuestionAdministrationController.php:2682
 #: application/controllers/admin/Export.php:80
 #: application/core/SurveyCommonAction.php:154
 #: application/helpers/export_helper.php:2237
@@ -1140,8 +1140,8 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:1874
 #: application/controllers/QuestionAdministrationController.php:1908
 #: application/controllers/QuestionAdministrationController.php:1916
-#: application/controllers/QuestionAdministrationController.php:2637
-#: application/controllers/QuestionAdministrationController.php:2683
+#: application/controllers/QuestionAdministrationController.php:2639
+#: application/controllers/QuestionAdministrationController.php:2685
 #: application/controllers/SurveyAdministrationController.php:751
 #: application/controllers/SurveyAdministrationController.php:1307
 #: application/controllers/SurveyAdministrationController.php:1378
@@ -1364,17 +1364,17 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2255
+#: application/controllers/QuestionAdministrationController.php:2257
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:67
 #: application/views/questionAdministration/editdefaultvalues.php:42
 msgid "(No default value)"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2255
+#: application/controllers/QuestionAdministrationController.php:2257
 msgid "Checked"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2469
+#: application/controllers/QuestionAdministrationController.php:2471
 #: application/models/ParticipantAttributeName.php:89
 #: application/models/QuestionAttribute.php:387
 #: application/models/services/QuestionAttributeProvider.php:31
@@ -1828,9 +1828,9 @@ msgstr ""
 #: application/models/Participant.php:413
 #: application/models/ParticipantAttributeName.php:286
 #: application/models/ParticipantShare.php:272
-#: application/models/Permissiontemplates.php:271
+#: application/models/Permissiontemplates.php:272
 #: application/models/Question.php:956 application/models/SavedControl.php:176
-#: application/models/Survey.php:1674 application/models/Surveymenu.php:427
+#: application/models/Survey.php:1674 application/models/Surveymenu.php:429
 #: application/models/SurveymenuEntries.php:196
 #: application/models/SurveymenuEntries.php:209
 #: application/models/SurveysGroups.php:181
@@ -2988,7 +2988,7 @@ msgid "URL description (link text)"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:3295
-#: application/models/Permissiontemplates.php:252
+#: application/models/Permissiontemplates.php:253
 #: application/models/QuestionType.php:122
 #: application/models/Surveymenu.php:347
 #: application/models/SurveysGroups.php:99
@@ -3608,7 +3608,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:320
 #: application/controllers/UploaderController.php:337
 #: application/controllers/UploaderController.php:364
-#: application/helpers/remotecontrol/remotecontrol_handle.php:3557
+#: application/helpers/remotecontrol/remotecontrol_handle.php:3558
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -4101,7 +4101,7 @@ msgstr ""
 #: application/controllers/admin/DataEntry.php:1985
 #: application/libraries/Save.php:217 application/models/Assessment.php:83
 #: application/models/ParticipantAttributeName.php:257
-#: application/models/Permissiontemplates.php:248
+#: application/models/Permissiontemplates.php:249
 #: application/models/Surveymenu.php:344
 #: application/models/SurveymenuEntries.php:189
 #: application/models/UserGroup.php:293 application/models/UserGroup.php:401
@@ -6238,7 +6238,7 @@ msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:90
 #: application/extensions/admin/BoxesWidget/BoxesWidget.php:160
-#: application/views/surveyAdministration/partial/topbarBtns/leftSideButtons.php:9
+#: application/views/surveyAdministration/partial/topbarBtns/leftSideButtons.php:8
 msgid "Create survey group"
 msgstr ""
 
@@ -10163,7 +10163,8 @@ msgstr ""
 msgid "Show less"
 msgstr ""
 
-#: application/extensions/admin/grid/CLSGridView.php:170
+#: application/extensions/admin/grid/CLSGridView.php:53
+#: application/extensions/admin/grid/CLSGridView.php:210
 #: application/extensions/admin/grid/ColumnFilterWidget/views/columns_filter.php:30
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:15
 #: application/views/responses/modal_subviews/filterColumns.php:30
@@ -10172,7 +10173,7 @@ msgstr ""
 msgid "Select all"
 msgstr ""
 
-#: application/extensions/admin/grid/CLSGridView.php:259
+#: application/extensions/admin/grid/CLSGridView.php:299
 #: application/extensions/admin/grid/ColumnFilterWidget/views/columns_filter.php:22
 #: application/views/responses/modal_subviews/filterColumns.php:22
 msgid "Select columns"
@@ -10190,6 +10191,15 @@ msgstr ""
 
 #: application/extensions/admin/grid/GridActionsWidget/views/action_dropdown.php:9
 msgid "Action Menu"
+msgstr ""
+
+#: application/extensions/admin/grid/views/template.php:17
+msgid "%s selected"
+msgstr ""
+
+#: application/extensions/admin/grid/views/template.php:21
+#: application/extensions/admin/grid/views/template.php:23
+msgid "Deselect all"
 msgstr ""
 
 #: application/extensions/admin/survey/LanguagesWidget/LanguagesWidget.php:19
@@ -15093,7 +15103,7 @@ msgstr ""
 
 #: application/models/FailedEmail.php:157
 #: application/models/Notification.php:163
-#: application/models/Permissiontemplates.php:264
+#: application/models/Permissiontemplates.php:265
 #: application/models/Survey.php:1660
 msgid "Created"
 msgstr ""
@@ -15531,7 +15541,7 @@ msgstr ""
 msgid "Are you sure you want to delete user role '%s'?"
 msgstr ""
 
-#: application/models/Permissiontemplates.php:259
+#: application/models/Permissiontemplates.php:260
 msgid "Modified"
 msgstr ""
 
@@ -16298,7 +16308,7 @@ msgid "Delete this survey menu"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:185
-#: application/models/SurveymenuEntries.php:451
+#: application/models/SurveymenuEntries.php:452
 msgid "Menu"
 msgstr ""
 
