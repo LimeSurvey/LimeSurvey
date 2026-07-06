@@ -29,19 +29,33 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
-      # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: ldap, gd, intl, dom, zip, mysqli, pdo_mysql, xml, curl, mbstring, sqlite3
-
-      - name: Install libapache2-mod-php (needed for Apache integration)
+      # This will change the php version for every version specified in matrix
+      - name: Install specified PHP and libapache2-mod-php
         run: |
-          # The Ondrej PHP PPA changed its repo Label, causing apt-get update to fail.
-          # --allow-releaseinfo-change is safe in this trusted CI context (HTTPS + signed repo).
-          sudo apt-get update --allow-releaseinfo-change > /dev/null
-          sudo apt-get install -y libapache2-mod-php${{ matrix.php-versions }}
+          # Use packages.sury.org directly (the canonical PHP repo that ppa:ondrej/php is migrating to).
+          # This avoids the Ondrej PPA label-change issue on ubuntu-22.04 runners, the Signed-By keyring
+          # conflict with shivammathur/setup-php, and means PHP + libapache2-mod-php come from one
+          # consistent source with matching versions.
+          sudo rm -f /etc/apt/sources.list.d/*ondrej*.list /etc/apt/sources.list.d/*ondrej*.sources
+          sudo rm -f /etc/apt/trusted.gpg.d/*ondrej*.gpg /usr/share/keyrings/ondrej-php-keyring.gpg
+          sudo curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
+          echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" \
+            | sudo tee /etc/apt/sources.list.d/sury-php.list
+          sudo apt-get update > /dev/null
+          sudo apt-get install -y \
+            php${{ matrix.php-versions }} \
+            php${{ matrix.php-versions }}-ldap \
+            php${{ matrix.php-versions }}-gd \
+            php${{ matrix.php-versions }}-intl \
+            php${{ matrix.php-versions }}-dom \
+            php${{ matrix.php-versions }}-zip \
+            php${{ matrix.php-versions }}-mysql \
+            php${{ matrix.php-versions }}-xml \
+            php${{ matrix.php-versions }}-curl \
+            php${{ matrix.php-versions }}-mbstring \
+            php${{ matrix.php-versions }}-sqlite3 \
+            libapache2-mod-php${{ matrix.php-versions }}
+          sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
