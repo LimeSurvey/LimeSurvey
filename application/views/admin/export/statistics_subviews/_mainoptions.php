@@ -60,7 +60,7 @@
                 echo CHtml::tag(
                     'div',
                     ['class' => 'form-text', 'id' => 'viewsummaryall-extrahelp'],
-                    gT('Encrypted question are not shown in statistics.')
+                    gT('Encrypted questions are not shown in statistics.')
                 );
             } ?>
         </div>

@@ -688,9 +688,9 @@ class remotecontrol_handle
             return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
         }
 
-        usort($oAllQuestions, 'groupOrderThenQuestionOrder');
+        usort($oValidQuestions, 'groupOrderThenQuestionOrder');
 
-        $aSummary = createCompleteSGQA($iSurveyID, $oAllQuestions, $sLanguage);
+        $aSummary = createCompleteSGQA($iSurveyID, $oValidQuestions, $sLanguage);
 
         $helper = new statistics_helper();
         switch ($docType) {

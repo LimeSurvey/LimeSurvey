@@ -4,7 +4,7 @@
     <?php
         if ($warningCryptedQuestionHidden) {
             $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => "Crypted question can not be filtered or choose in statistics with hardened crypt.",
+                'text' => gT('Encrypted questions cannot be filtered or selected in statistics when hardened encryption is enabled.'),
                 'type' => 'warning',
             ]);
         }
