@@ -629,6 +629,12 @@ only screen and (max-width: 767px) {
 .no-prefix-othertext .othertext-label-checkox-container {
     padding-right: 0;
 }
+.no-prefix-othertext.checkbox-text-item .col-auto.d-flex {
+    padding-right: 0;
+}
+.no-prefix-othertext.checkbox-text-item .col-auto:not(.d-flex) {
+    padding-left: 0;
+}
 
 .no-prefix-othertext .control-label {
     padding: 0;

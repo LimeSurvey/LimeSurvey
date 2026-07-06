@@ -52,9 +52,11 @@ $dropdown-font-size: $font-size-sm;
     color : $g-700;
 }
 
+// special rules for other input field positioning when no prefix text is present
 .no-prefix-othertext {
     .othertext-label-checkox-container {
         margin-right: 0;
+        padding-right: 8px;
     }
 
     .control-label {
@@ -63,7 +65,13 @@ $dropdown-font-size: $font-size-sm;
     }
 
     .other-text-item {
-        padding-left: calc(var(--bs-gutter-x) * 0.2);
+        padding-left: 0;
+    }
+    &.checkbox-text-item .col-auto.d-flex {
+        padding-right: 0;
+    }
+    &.checkbox-text-item .col-auto:not(.d-flex) {
+        padding-left: 12px;
     }
 }
 
