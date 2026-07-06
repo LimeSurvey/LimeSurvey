@@ -328,6 +328,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $sScenario = 'import';
             }
 
+            convertRankingSubquestionType($insertdata, $importedQuestions);
+
             $oQuestion = new Question($sScenario);
             $oQuestion->setAttributes($insertdata, false);
 
@@ -888,6 +890,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             } else {
                 $sScenario = 'import';
             }
+
+            convertRankingSubquestionType($insertdata, $importedQuestions);
 
             $oQuestion = new Question($sScenario);
             $oQuestion->setAttributes($insertdata, false);
@@ -2766,6 +2770,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 $sScenario = 'import';
             }
+
+            convertRankingSubquestionType($insertdata, $importedQuestions);
 
             $oQuestion = new Question($sScenario);
             $oQuestion->setAttributes($insertdata, false);
@@ -5253,5 +5259,21 @@ function handleLegacyRankingAnswers(
                 $newL10nRow->addChild('script', '');
             }
         }
+    }
+}
+
+/**
+ * Convert subquestion type to 'R' when its parent is a ranking question.
+ *
+ * @param array      $insertdata        Subquestion data row (by reference)
+ * @param Question[] $importedQuestions Already-imported parent questions keyed by new qid
+ */
+function convertRankingSubquestionType(array &$insertdata, array $importedQuestions): void
+{
+    if (
+        isset($importedQuestions[$insertdata['parent_qid']])
+        && $importedQuestions[$insertdata['parent_qid']]->type === Question::QT_R_RANKING
+    ) {
+        $insertdata['type'] = Question::QT_R_RANKING;
     }
 }
