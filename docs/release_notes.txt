@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.10 (build 260622) to 6.17.11 (build 260706) July 6, 2026
+-Fixed issue #AT-2010: LS6 added capability to check items across multiple pages (#5067) (Patricia Stell)
+-Fixed issue #20561: Editing the default answers for a multiple-choice question results in a database error (#5076) (twilligls)
+#Updated translation: Valencian by vbraque
+#Updated translation: Turkish by bulent, c_schmitz, kayazeren
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by c_schmitz, jmontane, qualitatuvic, valdomir
+
+
 Changes from 6.17.9 (build 260619) to 6.17.10 (build 260622) June 22, 2026
 +New feature #12393: 'Check all' boxes in data integrity check (Carsten Schmitz)
 -Fixed issue: navbar hover and focus styles not fitting with light buttons (#5069) (Tim Willig)
