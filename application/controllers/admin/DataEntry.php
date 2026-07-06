@@ -381,6 +381,12 @@ class DataEntry extends SurveyCommonAction
 
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
+                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($sourceField, $encryptedAttributes, false)) {
+                        $targetResponse[$targetField] = $sourceResponse->decryptSingle($sourceResponse[$sourceField]);
+                    }
+                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
+                        $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
+                    }
                 }
                 $rankingJSONs = [];
 
@@ -389,8 +395,16 @@ class DataEntry extends SurveyCommonAction
                         if (!isset($rankingJSONs[$newFieldName])) {
                             $rankingJSONs[$newFieldName] = [];
                         }
+
+                        $value = $sourceResponse[$oldFieldName];
+                        if (in_array($oldFieldName, $archivedEncryptedAttributes, false) && !in_array($oldFieldName, $encryptedAttributes, false)) {
+                            $value = $sourceResponse->decryptSingle($sourceResponse[$oldFieldName]);
+                        }
+                        if (!in_array($oldFieldName, $archivedEncryptedAttributes, false) && in_array($oldFieldName, $encryptedAttributes, false)) {
+                            $value = $sourceResponse->encryptSingle($sourceResponse[$oldFieldName]);
+                        }
                         
-                        $rankingJSONs[$newFieldName][] = $sourceResponse[$oldFieldName];
+                        $rankingJSONs[$newFieldName][] = $value;
                     }
                 }
 
