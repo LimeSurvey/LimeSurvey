@@ -1298,7 +1298,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
  *
  * @return string the field's name
  */
-function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid, bool $cd = false)
+function getFieldName(string $tableName, string $fieldName, array $rawQuestions, int $sid, int $gid)
 {
     $newFieldName = "";
     if (strpos($tableName, "timings") !== false) {
@@ -1474,7 +1474,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                             'order' => 'question_order'
                         ]);
                         if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
-                            $qid = $cd ? $index : $subQuestions[($iRankingSuffix - 1)]->qid;
+                            $qid = $subQuestions[($iRankingSuffix - 1)]->qid;
                             $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
                         } else if (count($subQuestions)) {
                             $minSortOrder = $subQuestions[0]->question_order;
@@ -1485,7 +1485,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                                 $diff = $minSortOrder;
                             }
                             foreach ($subQuestions as $question) {
-                                if (($rankingSuffix == $question->title) || ((intval($iRankingSuffix) > 0) && ($rankingSuffix + $diff == $question->question_order))) {
+                                if (($rankingSuffix == $question->title) || (($iRankingSuffix > 0) && ($iRankingSuffix + $diff == $question->question_order))) {
                                     return "Q{$rootQuestion->qid}_{$prefix}{$question->qid}";
                                 }
                             }
@@ -1959,6 +1959,12 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         } elseif ($arow['type'] == Question::QT_R_RANKING) {
             // Ranking questions now use subquestions instead of answer options
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
+            // If max_subquestions is set and lower than the number of ranking items,
+            // cap the number of response columns (rank slots) to that value.
+            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qs[$arow['qid']] ?? $arow['qid']);
+            if (isset($qidattributes['max_subquestions']) && intval($qidattributes['max_subquestions']) > 0 && intval($qidattributes['max_subquestions']) < count($abrows)) {
+                $abrows = array_slice($abrows, 0, intval($qidattributes['max_subquestions']));
+            }
             $i = 0;
             foreach ($abrows as $abrow) {
                 $i++;

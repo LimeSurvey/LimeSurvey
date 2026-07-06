@@ -72,7 +72,7 @@ $this->widget(
                 'header' => gT('Description'),
                 'name' => 'template_description',
                 'value' => '$data->description',
-                'htmlOptions' => ['class' => 'col-lg-3'],
+                'htmlOptions' => ['class' => 'col-lg-3 can-contain-link'],
                 'type' => 'raw',
             ],
 
