@@ -2063,7 +2063,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         $rankingJSONs = [];
 
         foreach ($rankingMap as $oldFieldName => $newFieldName) {
-            if ((!empty($archivedResponse[$oldFieldName])) || ($archivedResponse[$oldFieldName] == "0")) {
+            if (!empty($archivedResponse[$oldFieldName])) {
                 if (!isset($rankingJSONs[$newFieldName])) {
                     $rankingJSONs[$newFieldName] = [];
                 }
@@ -3772,11 +3772,13 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                     }
                                 }
                                 $root = explode("_", $sFieldname)[0];
-                                if ((in_array($root, $rankings)) && ($root !== $sFieldname)) {
+                                if (in_array($root, $rankings)) {
                                     if (!isset($aInsertData[$root])) {
                                         $aInsertData[$root] = [];
                                     }
-                                    $aInsertData[$root][] = $oXMLReader->value;
+                                    if (!is_string($aInsertData[$root])) {
+                                        $aInsertData[$root][] = $oXMLReader->value;
+                                    }
                                 }
                                 $oXMLReader->read();
                             } else {
@@ -3786,7 +3788,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             }
                         }
                         foreach ($rankings as $ranking) {
-                            if (isset($aInsertData[$ranking])) {
+                            if (isset($aInsertData[$ranking]) && (!is_string($aInsertData[$ranking]))) {
                                 $aInsertData[$ranking] = json_encode($aInsertData[$ranking]);
                             }
                         }
