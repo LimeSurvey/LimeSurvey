@@ -366,7 +366,6 @@ class DataEntry extends SurveyCommonAction
             $rankingMap = [];
             foreach ($survey->questions as $q) {
                 if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
-                    $JSON["keys"][$q->qid] = [];
                     foreach ($q->subquestions as $s) {
                         $rankingMap["Q{$s->parent_qid}_S{$s->qid}"] = "Q{$s->parent_qid}";
                     }
@@ -382,12 +381,6 @@ class DataEntry extends SurveyCommonAction
 
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
-                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($sourceField, $encryptedAttributes, false)) {
-                        $targetResponse[$targetField] = $sourceResponse->decryptSingle($sourceResponse[$sourceField]);
-                    }
-                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
-                        $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
-                    }
                 }
                 $rankingJSONs = [];
 
@@ -396,6 +389,7 @@ class DataEntry extends SurveyCommonAction
                         if (!isset($rankingJSONs[$newFieldName])) {
                             $rankingJSONs[$newFieldName] = [];
                         }
+                        
                         $rankingJSONs[$newFieldName][] = $sourceResponse[$oldFieldName];
                     }
                 }

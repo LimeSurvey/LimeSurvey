@@ -2026,6 +2026,15 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $tableName = "{{responses_$surveyId}}";
     $importedResponses = 0;
     $batchData = [];
+    $survey = Survey::model()->findByPk($surveyId);
+    $rankingMap = [];
+    foreach ($survey->questions as $q) {
+        if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
+            foreach ($q->subquestions as $s) {
+                $rankingMap["Q{$s->parent_qid}_S{$s->qid}"] = "Q{$s->parent_qid}";
+            }
+        }
+    }
     foreach ($archivedResponses as $archivedResponse) {
         $dataRow = [];
         // Using plugindynamic model because I dont trust surveydynamic.
@@ -2051,6 +2060,21 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             $dataRow[$target] = $targetResponse->{$target};
         }
 
+        $rankingJSONs = [];
+
+        foreach ($rankingMap as $oldFieldName => $newFieldName) {
+            if (!empty($archivedResponse[$oldFieldName])) {
+                if (!isset($rankingJSONs[$newFieldName])) {
+                    $rankingJSONs[$newFieldName] = [];
+                }
+                
+                $rankingJSONs[$newFieldName][] = $archivedResponse[$oldFieldName];
+            }
+        }
+
+        foreach ($rankingJSONs as $newFieldName => $value) {
+            $dataRow[$newFieldName] = json_encode($value);
+        }
         $additionalFields = [
             'token',
             'submitdate',
