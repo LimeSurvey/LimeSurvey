@@ -39,9 +39,10 @@ jobs:
       - name: Install libapache2-mod-php (needed for Apache integration)
         run: |
           # The pre-installed Ondrej PHP PPA changed its repo Label, which breaks apt-get update.
-          # PHP itself is provided by shivammathur/setup-php, so remove the PPA to avoid the conflict.
-          sudo add-apt-repository --remove -y ppa:ondrej/php || true
-          sudo rm -f /etc/apt/sources.list.d/*ondrej*.list /etc/apt/sources.list.d/*ondrej*.sources
+          # We must KEEP the repo (setup-php installs PHP from it, so libapache2-mod-php must match),
+          # so instead clear APT's cached release metadata: with no previous Release to compare
+          # against, the changed Label is accepted on a fresh fetch without --allow-releaseinfo-change.
+          sudo rm -rf /var/lib/apt/lists/*
           sudo apt-get update > /dev/null
           sudo apt-get install -y libapache2-mod-php${{ matrix.php-versions }}
 
@@ -204,10 +205,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          # Remove the pre-installed Ondrej PHP PPA (its repo Label changed and breaks apt-get update).
-          # PHP is provided by shivammathur/setup-php, so the PPA is not needed.
-          sudo add-apt-repository --remove -y ppa:ondrej/php || true
-          sudo rm -f /etc/apt/sources.list.d/*ondrej*.list /etc/apt/sources.list.d/*ondrej*.sources
+          sudo rm -rf /var/lib/apt/lists/*
           sudo apt-get update > /dev/null
           chmod -R 777 ./tmp
           chmod -R 777 ./upload
@@ -238,7 +236,7 @@ jobs:
           # Add PostgreSQL official repository (PGDG)
           sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-          # Install PostgreSQL (Ondrej PHP PPA already removed in the Setup step)
+          # Install PostgreSQL
           sudo apt-get update
           sudo apt-get install -y postgresql-${{ matrix.db-version }} postgresql-client-${{ matrix.db-version }}
           # Start PostgreSQL service
@@ -265,7 +263,7 @@ jobs:
           # so don't curl it; write it manually like msprod.list below.
           echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/mssql-server-${{ matrix.db-version }} jammy main" \
           | sudo tee /etc/apt/sources.list.d/mssql-server.list
-          # Install MSSQL Server (Ondrej PHP PPA already removed in the Setup step)
+          # Install MSSQL Server
           sudo apt-get update
           sudo apt-get install -y mssql-server
           # Configure MSSQL Server (non-interactive setup)
@@ -371,9 +369,7 @@ jobs:
         run: |
           touch enabletests
           composer install -vvv
-          # Remove the pre-installed Ondrej PHP PPA (its repo Label changed and breaks apt-get update).
-          sudo add-apt-repository --remove -y ppa:ondrej/php || true
-          sudo rm -f /etc/apt/sources.list.d/*ondrej*.list /etc/apt/sources.list.d/*ondrej*.sources
+          sudo rm -rf /var/lib/apt/lists/*
           sudo apt-get update > /dev/null
           sudo apt --fix-broken install php php-mysql -y
           chmod -R 777 ./tmp
