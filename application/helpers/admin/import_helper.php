@@ -3671,6 +3671,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
 function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 {
     $qidMetadata = null;
+    $survey = Survey::model()->findByPk($iSurveyID);
     Yii::app()->loadHelper('database');
     $survey = Survey::model()->findByPk($iSurveyID);
 
@@ -3685,6 +3686,12 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     $oXMLReader->open($sFullFilePath);
     if (\PHP_VERSION_ID < 80000) {
         libxml_disable_entity_loader(true);
+    }
+    $rankings = [];
+    foreach ($survey->questions as $q) {
+        if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
+            $rankings[] = "Q{$q->qid}";
+        }
     }
     if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
         // Refresh metadata to make sure it reflects the current survey
@@ -3764,11 +3771,23 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                         }
                                     }
                                 }
+                                $root = explode("_", $sFieldname)[0];
+                                if (in_array($root, $rankings)) {
+                                    if (!isset($aInsertData[$root])) {
+                                        $aInsertData[$root] = [];
+                                    }
+                                    $aInsertData[$root][] = $oXMLReader->value;
+                                }
                                 $oXMLReader->read();
                             } else {
                                 if (in_array($sFieldname, $DestinationFields)) {
                                     $aInsertData[$sFieldname] = '';
                                 }
+                            }
+                        }
+                        foreach ($rankings as $ranking) {
+                            if (isset($aInsertData[$ranking])) {
+                                $aInsertData[$ranking] = json_encode($aInsertData[$ranking]);
                             }
                         }
                         try {
