@@ -863,7 +863,7 @@ class TemplateConfig extends CActiveRecord
     /**
      * Uninstalls the selected surveytheme and deletes database entry and configuration
      * @param string $templatename Name of Template
-     * @return bool|int
+     * @return bool|int, if false Template are not uninstalled, integr mean the number of TemplateConfiguration uninstalled
      * @throws CDbException
      */
     public static function uninstall($templatename)
@@ -876,9 +876,12 @@ class TemplateConfig extends CActiveRecord
                         'template_name=:templateName',
                         [':templateName' => $templatename]
                     );
-                    /* Add the already deleted by findByAttributes */
-                    $count++;
-                    return $count;
+                    if ($count) {
+                        /* Number of TemplateConfiguration uninstalled */
+                        return $count;
+                    }
+                    /* No TemplateConfiguration, only Template */
+                    return true;
                 }
             }
         }
