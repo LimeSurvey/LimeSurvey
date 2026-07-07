@@ -64,6 +64,9 @@
             </h2>
             <hr>
             <div class="card-text">{{ aError.message }}</div>
+            {% if aError.URL %}
+                <div class="card-text">{{ aError.URL }}</div>
+            {% endif %}
             {% if aError.contact %}
                 {{ aError.contact }}
             {% else %}
