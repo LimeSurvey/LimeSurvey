@@ -956,14 +956,13 @@ class TemplateConfig extends CActiveRecord
         }
         // add more tests here
 
-        // all checks succeeded, continue loading the theme
-        return $isCompatible;
+        // all checks succeeded, continue loading the theme if it compatible
+        return boolval($isCompatible);
     }
 
     /**
      * Checks if theme is compatible with the current limesurvey version
      * @param $themePath
-     * @param bool $redirect
      * @return bool|null
      */
     public static function isCompatible($themePath)
