@@ -69,7 +69,7 @@
             <inputtype>text</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>Replaces the label of the &#039;Other:&#039; answer option with a custom text</help>
+            <help>Replaces the label of the &#039;Other:&#039; answer option with a custom text. To also show a suffix label after the text input, separate prefix and suffix with a pipe (|), e.g. &#039;From|to 100&#039;. To show only a suffix with no prefix label, use a leading pipe: &#039;|°C&#039;. To show no label at all, use a single pipe: &#039;|&#039;.</help>
             <caption>Label for &#039;Other:&#039; option</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
