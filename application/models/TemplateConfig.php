@@ -951,7 +951,7 @@ class TemplateConfig extends CActiveRecord
         // add more tests here
 
         // all checks succeeded, continue loading the theme
-        return true;
+        return $isCompatible;
     }
 
     /**

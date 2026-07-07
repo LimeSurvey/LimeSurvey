@@ -1225,8 +1225,6 @@ class TemplateConfiguration extends TemplateConfig
                 ),
                 'error'
             );
-            App()->getController()->redirect(array("themeOptions/index", "#" => "surveythemes"));
-            App()->end();
         } else {
             App()->setFlashMessage(
                 sprintf(
@@ -1237,6 +1235,8 @@ class TemplateConfiguration extends TemplateConfig
                 'error'
             );
         }
+        App()->getController()->redirect(array("themeOptions/index", "#" => "surveythemes"));
+        App()->end();
     }
 
     /**
