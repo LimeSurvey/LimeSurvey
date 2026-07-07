@@ -78,6 +78,44 @@ $dropdown-font-size: $font-size-sm;
 .ls-input-sized .other-text-item.col {
     flex-grow: 0;
 }
+.other-text-item input.multipleco-other-topic {
+    min-width: 0;
+    max-width: 100%;
+}
+// MP-with-comments other row: label col grows to fit content; comment wraps to next line when label content overflows
+.multipleco-other-row > .multipleco-other-label-col {
+    flex: 1 0 auto;
+    width: fit-content;
+    min-width: 33.33%;
+    max-width: 100%;
+}
+.multipleco-other-row > .multipleco-other-comment-col {
+    margin-left: auto;
+}
+// Inner flex row: prefix, input, suffix wrap in source order within the label column
+.multipleco-other-inner {
+    gap: 0.25rem 0.5rem;
+}
+.multipleco-other-inner .label-text.control-label {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
+    margin-bottom: 0;
+}
+.multipleco-other-inner .multipleco-other-topic {
+    flex: 1 1 6rem;
+    min-width: 6rem;
+    max-width: 100%;
+}
+.ls-input-sized .multipleco-other-inner .multipleco-other-topic {
+    flex: 0 0 auto;
+    max-width: 100%;
+}
+.multipleco-other-inner .othertext-suffix-label {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
+}
 
 textarea {
     resize: both;

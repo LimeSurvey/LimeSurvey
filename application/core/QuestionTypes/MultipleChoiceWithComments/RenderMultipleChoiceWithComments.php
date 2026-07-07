@@ -188,6 +188,22 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
         }
 
+        // Split other_replace_text on '|' for prefix/suffix label support (e.g. "hot|cold")
+        $rawOtherText = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:'));
+        $otherTextLeft = $rawOtherText;
+        $otherTextRight = '';
+        if (strpos($rawOtherText, '|') !== false) {
+            [$otherTextLeft, $otherTextRight] = explode('|', $rawOtherText, 2);
+        }
+        $otherItemExtraClass = '';
+        if (empty(trim($otherTextLeft))) {
+            $otherItemExtraClass .= ' no-prefix-othertext';
+        }
+        if ($otherInputSize !== null) {
+            $otherItemExtraClass .= ' ls-input-sized';
+        }
+        $otherItemExtraClass = trim($otherItemExtraClass);
+
         $otherMaxLength = null;
         if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
             $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
@@ -207,7 +223,9 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             'otherInputSize'       => $otherInputSize,
             'otherMaxLength'       => $otherMaxLength,
             'otherNumber'          => $this->getQuestionAttribute('other_numbers_only'),
-            'labeltext'            => $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')),
+            'labeltext'            => $otherTextLeft,
+            'otherTextRight'       => $otherTextRight,
+            'otherItemExtraClass'  => $otherItemExtraClass,
             'inputCommentId'       => 'answer' . $myfname2,
             'commentLabelText'     => gT('Make a comment on your choice here:'),
             'inputCommentName'     => $myfname2,
