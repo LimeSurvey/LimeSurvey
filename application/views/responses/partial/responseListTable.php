@@ -14,6 +14,8 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
+/* @var boolean hide crypted filter columns */
+$hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->crypt_method == 'H';
 ?>
 <!-- for filter columns with datepicker-->
 <div style="display: none;">
@@ -86,7 +88,13 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         <?php
         // the massive actions dropup button
         $massiveAction = App()->getController()->renderPartial('/responses/massive_actions/_selector', [], true);
-
+        /* @var string notice text for encryption */
+        $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
+        if ($hideCryptedFilter) {
+            $encryptionNotice = gT("This field is encrypted and can not be searched or ordered.");
+        }
+        /* @var string notice HTML for encryption */
+        $encryptionHtmlNotice = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
 
         // The first few columns are fixed.
         // Specific columns at start
@@ -140,6 +148,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
         //add token to top of list if survey is not private
         if ($bHaveToken) {
+            $encryptedTokenColumns =  TokenDynamic::model($surveyid)->getAllEncryptedAttributes($surveyid, 'Token');
             if (!isset($filteredColumns) || in_array('token', $filteredColumns)) {
                 $aColumns[] = [
                     'header' => 'token',
@@ -151,42 +160,51 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
             $filterableColumns['token'] = 'token';
 
             if (!isset($filteredColumns) || in_array('firstname', $filteredColumns)) {
+                $encryptedColumn = in_array('firstname', $encryptedTokenColumns);
+                $encryptionSymbol = $encryptedColumn ? $encryptionHtmlNotice : "";
                 $aColumns[] = [
-                    'header' => gT("First name"),
+                    'header' => gT("First name") . $encryptionSymbol,
                     'name'   => 'tokens.firstname',
                     'id'     => 'firstname',
                     'value'  => '$data->firstNameForGrid',
-                    'filter' => TbHtml::textField(
+                    'filter' => $encryptedColumn && $hideCryptedFilter ? false : TbHtml::textField(
                         'SurveyDynamic[firstname_filter]',
                         $model->firstname_filter
-                    )
+                    ),
+                    'sortable' => !($encryptedColumn && $hideCryptedFilter)
                 ];
             }
             $filterableColumns['firstname'] = gT("First name");
 
             if (!isset($filteredColumns) || in_array('lastname', $filteredColumns)) {
+                $encryptedColumn = in_array('lastname', $encryptedTokenColumns);
+                $encryptionSymbol = $encryptedColumn ? $encryptionHtmlNotice : "";
                 $aColumns[] = [
-                    'header' => gT("Last name"),
+                    'header' => gT("Last name") . $encryptionSymbol,
                     'name'   => 'tokens.lastname',
                     'id'     => 'lastname',
                     'value'  => '$data->lastNameForGrid',
-                    'filter' => TbHtml::textField(
+                    'filter' => $encryptedColumn && $hideCryptedFilter ? false : TbHtml::textField(
                         'SurveyDynamic[lastname_filter]',
                         $model->lastname_filter
-                    )
+                    ),
+                    'sortable' => !($encryptedColumn && $hideCryptedFilter)
                 ];
             }
             $filterableColumns['lastname'] = gT("Last name");
 
             if (!isset($filteredColumns) || in_array('email', $filteredColumns)) {
+                $encryptedColumn = in_array('email', $encryptedTokenColumns);
+                $encryptionSymbol = $encryptedColumn ? $encryptionHtmlNotice : "";
                 $aColumns[] = [
-                    'header' => gT("Email"),
+                    'header' => gT("Email") . $encryptionSymbol,
                     'name'   => 'tokens.email',
                     'id'     => 'email',
-                    'filter' => TbHtml::textField(
+                    'filter' => $encryptedColumn && $hideCryptedFilter ? false : TbHtml::textField(
                         'SurveyDynamic[email_filter]',
                         $model->email_filter
-                    )
+                    ),
+                    'sortable' => !($encryptedColumn && $hideCryptedFilter)
                 ];
             }
             $filterableColumns['email'] = gT("Email");
@@ -199,7 +217,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
             ];
         }
         $filterableColumns['startlanguage'] = 'startlanguage';
-        $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
 
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
         // All other columns are based on the questions.
@@ -207,10 +224,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         foreach ($model->metaData->columns as $column) {
             if (!in_array($column->name, $model->defaultColumns)) {
                 /* Add encryption symbole to question title for table header (if question is encrypted) */
-                $encryptionSymbol = '';
-                if (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y') {
-                    $encryptionSymbol = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
-                }
+                $encryptedColumn = (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] === 'Y');
+                $encryptionSymbol = $encryptedColumn ? $encryptionHtmlNotice : "";
 
                 $xPos = strpos($column->name, 'X');
                 if ($xPos !== false) {
@@ -246,10 +261,11 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'headerHtmlOptions' => ['style' => 'min-width: 350px;'],
                         'name'              => $column->name,
                         'type'              => 'raw',
-                        'filter'            => TbHtml::textField(
+                        'filter'            => $encryptedColumn && $hideCryptedFilter ? false : TbHtml::textField(
                             'SurveyDynamic[' . $column->name . ']',
                             $model->{$column->name}
                         ),
+                        'sortable'          => !($encryptedColumn && $hideCryptedFilter),
                         'value'             => $columnValueExpression,
                     ];
                 }

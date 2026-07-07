@@ -118,7 +118,9 @@ class Statistics extends SurveyCommonAction
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$surveyid}"));
         }
-
+        /* Crypt method allow statitics here */
+        $hardenedCryptMethod = $oSurvey->oOptions->crypt_method == 'H';
+        $aData['warningCryptedQuestionHidden'] = false;
         // Set language for questions and answers to base language of this survey
         $aData['language'] = $oSurvey->language;
         $language = $oSurvey->language;
@@ -169,7 +171,12 @@ class Statistics extends SurveyCommonAction
         $filters = array();
         $aGroups = array();
         $keyone = 0;
+
         foreach ($rows as $row) {
+            if ($hardenedCryptMethod && $row['encrypted'] == 'Y') {
+                $aData['warningCryptedQuestionHidden'] = true;
+                continue;
+            }
             $sGroupName = $row->group->questiongroupl10ns[$language]->group_name;
 
             //store some column names in $filters array
@@ -264,12 +271,11 @@ class Statistics extends SurveyCommonAction
          ['title'],
          ['group_name'],
          ['question'],
-         ['lid'],
-         ['lid1']);
          */
 
         $currentgroup = '';
         $counter = 0;
+
         foreach ($filters as $key1 => $flt) {
             //is there a previous question type set?
 
@@ -282,8 +288,6 @@ class Statistics extends SurveyCommonAction
              ['title'],
              ['group_name'],
              ['question'],
-             ['lid'],
-             ['lid1']);
              */
 
             //SGQ identifier
@@ -673,7 +677,7 @@ class Statistics extends SurveyCommonAction
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
-
+        
         if (!$oSurvey) {
             Yii::app()->setFlashMessage(gT("Invalid survey ID"), 'error');
             $this->getController()->redirect($this->getController()->createUrl("dashboard/view"));
@@ -683,6 +687,8 @@ class Statistics extends SurveyCommonAction
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
+        /* Crypt method allow statitics here */
+        $hardenedCryptMethod = $oSurvey->oOptions->crypt_method == 'H';
 
         // Set language for questions and answers to base language of this survey
         $language = $oSurvey->language;
@@ -708,8 +714,11 @@ class Statistics extends SurveyCommonAction
             $questions[$rawQuestion->qid] = $rawQuestion;
         }
 
-        // The questions to display (all question)
+        // The questions to display (all question, exceot crypted if hardened */
         foreach ($rows as $row) {
+            if ($hardenedCryptMethod && $row['encrypted'] == 'Y') {
+                continue;
+            }
             $type = $row['type'];
             switch ($type) {
                 // Double scale cases

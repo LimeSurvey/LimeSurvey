@@ -40,6 +40,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     'surveyid' => $surveyid,
                     'dateformatdetails' => $dateformatdetails,
                     'model' => $model,
+                    'survey' => $survey,
                     'bHaveToken' => $bHaveToken,
                     'language' => $language,
                     'pageSize' => $pageSize,

@@ -9,11 +9,15 @@
     var cannotAcceptTokenAttributesText="<?php eT("This list cannot accept survey participant attributes.") ?>";
 
 </script>
-
 <div class='header'>
     <h1 class="pagetitle h3" ><?php eT("Map your survey participant attributes to an existing participant attribute or create a new one"); ?></h1>
 </div>
-
+<?php if ($duplicateControlDisable) {
+    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+        'text' => gT("Duplicate control by first name, last name, and email is disabled because the central participant database uses a hardened encryption method."),
+        'type' => 'warning',
+    ]);
+} ?>
 <div class="draggable-container">
     <div class='row'>
         <div class='col-md-4'>

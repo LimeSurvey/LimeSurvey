@@ -681,6 +681,9 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getStandardColsForGrid()
     {
+        $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
+        $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->crypt_method == 'H';
+        $encryptedAttributes = $this->getAllEncryptedAttributes(self::$sid, 'Token');
         return [
             [
                 'id'                => 'tid',
@@ -703,6 +706,8 @@ class TokenDynamic extends LSActiveRecord
                 'value'             => '$data->firstname',
                 'headerHtmlOptions' => ['class' => ''],
                 'htmlOptions'       => ['class' => ' name'],
+                'filter'            => ($hardenedCrypt && in_array('firstname', $encryptedAttributes)) ? false : null,
+                'sortable'          => !($hardenedCrypt && in_array('firstname', $encryptedAttributes)),
             ],
             [
                 'header'            => gT('Last name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'lastname'),
@@ -710,6 +715,8 @@ class TokenDynamic extends LSActiveRecord
                 'value'             => '$data->lastname',
                 'headerHtmlOptions' => ['class' => ''],
                 'htmlOptions'       => ['class' => ' name'],
+                'filter'            => ($hardenedCrypt && in_array('lastname', $encryptedAttributes)) ? false : null,
+                'sortable'          => !($hardenedCrypt && in_array('lastname', $encryptedAttributes)),
             ],
             [
                 'header'            => gT('Email address') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'email'),
@@ -718,6 +725,8 @@ class TokenDynamic extends LSActiveRecord
                 'value'             => '$data->emailFormated',
                 'headerHtmlOptions' => ['class' => ''],
                 'htmlOptions'       => ['class' => ' name'],
+                'filter'            => ($hardenedCrypt && in_array('email', $encryptedAttributes)) ? false : null,
+                'sortable'          => !($hardenedCrypt && in_array('email', $encryptedAttributes)),
             ],
             [
                 'header'            => gT('Email status') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'emailstatus'),
@@ -807,7 +816,8 @@ class TokenDynamic extends LSActiveRecord
 
         $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
         $aCustomAttributes = $oSurvey->tokenAttributes;
-
+        $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->crypt_method == 'H';
+        $encryptedAttributes = $this->getAllEncryptedAttributes(self::$sid, 'Token');
         // Custom attributes
         foreach ($aCustomAttributes as $sColName => $oColumn) {
             $desc = ($oColumn['description'] != '') ? $oColumn['description'] : $sColName;
@@ -826,6 +836,8 @@ class TokenDynamic extends LSActiveRecord
                 'value' => $value,
                 'headerHtmlOptions' => array('class' => ''),
                 'htmlOptions' => array('class' => ''),
+                'filter' => ($hardenedCrypt && in_array($sColName, $encryptedAttributes)) ? false : null,
+                'sortable' => !($hardenedCrypt && in_array($sColName, $encryptedAttributes)),
             );
         }
 

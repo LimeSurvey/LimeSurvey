@@ -869,13 +869,25 @@ class ParticipantsAction extends SurveyCommonAction
             $iLineCount = count(array_filter(array_filter((array) file($sFilePath), 'trim')));
 
             $attributes = ParticipantAttributeName::model()->model()->getCPDBAttributes();
+                /* Warning for duplicate control */
+                $duplicateControlDisable = false;
+                if (App()->getConfig('CPDB_crypt_method', 'B') == 'H') {
+                    $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
+                    $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
+                        return $attribute->encrypted == "Y";
+                    });
+                    if (count($cpdbCoreCryptedAttributes) > 0 ) {
+                        $duplicateControlDisable = true;
+                    }
+                }
             $aData = array(
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,
                 'fullfilepath' => $sRandomFileName,
                 'linecount' => $iLineCount - 1,
                 'filterbea' => $filterblankemails,
-                'participant_id_exists' => in_array('participant_id', $fieldlist)
+                'participant_id_exists' => in_array('participant_id', $fieldlist),
+                'duplicateControlDisable' => $duplicateControlDisable
             );
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'attributeMapCSV.js');
@@ -1460,6 +1472,7 @@ class ParticipantsAction extends SurveyCommonAction
         $attributeName->encrypted = $encrypted_value;
         $encryptedAfterChange = $attributeName->isEncrypted();
         $sDefaultname = $attributeName->defaultname;
+        $cryptMedthod = App()->getConfig('CPDB_crypt_method', 'B');
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeeded or none
         $oDB = Yii::app()->db;
@@ -1471,12 +1484,17 @@ class ParticipantsAction extends SurveyCommonAction
                 foreach ($oParticipants as $participant) {
                     $aUpdateData = array();
                     if ($encryptedBeforeChange && !$encryptedAfterChange) {
-                        $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname);
+                        $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname, $cryptMedthod);
                     } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
-                        $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname);
+                        $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname, $cryptMedthod);
                     }
                     if (!empty($aUpdateData)) {
-                        $oDB->createCommand()->update('{{participants}}', $aUpdateData, "participant_id='" . $participant->participant_id . "'");
+                        $oDB->createCommand()->update(
+                            '{{participants}}',
+                            $aUpdateData,
+                            'participant_id = :participant_id',
+                            [':participant_id' => $participant->participant_id]
+                        );
                     }
                 }
             } else {
@@ -1488,9 +1506,9 @@ class ParticipantsAction extends SurveyCommonAction
                 foreach ($oAttributes as $attribute) {
                     $aUpdateData = array();
                     if ($encryptedBeforeChange && !$encryptedAfterChange) {
-                        $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value);
+                        $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMedthod);
                     } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
-                        $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
+                        $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMedthod);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {
                         $oDB->createCommand()->update(
@@ -1616,6 +1634,7 @@ class ParticipantsAction extends SurveyCommonAction
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
         $operation = Yii::app()->request->getPost('oper');
+        $cryptMedthod = App()->getConfig('CPDB_crypt_method', 'B');
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
@@ -1640,9 +1659,9 @@ class ParticipantsAction extends SurveyCommonAction
             foreach ($oAttributes as $attribute) {
                 $aUpdateData = array();
                 if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
-                    $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value);
+                    $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMedthod);
                 } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y') {
-                    $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
+                    $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMedthod);
                 }
                 if (!empty($aUpdateData)) {
                     $oDB->createCommand()->update(
@@ -2685,6 +2704,7 @@ class ParticipantsAction extends SurveyCommonAction
         $iSurveyID = (int) Yii::app()->request->getQuery('sid');
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
         $aTokenAttributes = getTokenFieldsAndNames($iSurveyID, true);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         //string of participant IDs which should be added to CPDB, if not set to sessionvar those will not be added!!
         $participants = Yii::app()->request->getPost('itemsid');
@@ -2698,7 +2718,6 @@ class ParticipantsAction extends SurveyCommonAction
         $alreadymappedattid = array();
         $alreadymappedattdisplay = array();
         $alreadymappedattnames = array();
-
         foreach ($aTokenAttributes as $key => $value) {
             if ($value['cpdbmap'] == '') {
                 $selectedattribute[$value['description']] = $key;
@@ -2728,15 +2747,27 @@ class ParticipantsAction extends SurveyCommonAction
         if (count($selectedattribute) === 0) {
             Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'warning');
         }
+        /* Warning for duplicate control */
+        $duplicateControlDisable = false;
+        if (App()->getConfig('CPDB_crypt_method', 'B') == 'H') {
+            $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
+            $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
+                return $attribute->encrypted == "Y";
+            });
+            if (count($cpdbCoreCryptedAttributes) > 0 ) {
+                $duplicateControlDisable = true;
+            }
+        }
 
         $aData = array(
             'attribute' => $selectedcentralattribute,
             'tokenattribute' => $selectedattribute,
             'alreadymappedattributename' => $alreadymappedattdisplay,
-            'alreadymappedattdescription' => $alreadymappedattnames
+            'alreadymappedattdescription' => $alreadymappedattnames,
+            'duplicateControlDisable' => $duplicateControlDisable
         );
 
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        
         $aData['subaction'] = gT('Add participants to central database');
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);

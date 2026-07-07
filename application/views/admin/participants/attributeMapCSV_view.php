@@ -62,21 +62,28 @@
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <div class='explanation'>
-                    <div class="explanation-row">
-                        <input type='checkbox' id='overwrite' name='overwrite' />
-                        <label for='overwrite'><?php eT("Overwrite existing participant attribute values if a duplicate participant is found?") ?>
-                        <br />
-                        <?php
-                        if ($participant_id_exists) {
-                            eT("Duplicates will be detected using the participant_id field in this CSV file.");
-                        } else {
-                            eT("Duplicates will be detected by a combination of firstname, lastname and email addresses.");
-                        }
-                        ?>
-                        </label>
+                <?php if ($participant_id_exists || !$duplicateControlDisable) { ?>
+                    <div class='explanation'>
+                        <div class="explanation-row">
+                            <input type='checkbox' id='overwrite' name='overwrite' />
+                            <label for='overwrite'><?php eT("Overwrite existing participant attribute values if a duplicate participant is found?") ?>
+                            <br />
+                            <?php
+                            if ($participant_id_exists) {
+                                eT("Duplicates will be detected using the participant_id field in this CSV file.");
+                            } else {
+                                eT("Duplicates will be detected by a combination of firstname, lastname and email addresses.");
+                            }
+                            ?>
+                            </label>
+                        </div>
                     </div>
-                </div>
+                <?php } else {
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("Duplicate control by first name, last name, and email is disabled because the central participant database uses a hardened encryption method."),
+                        'type' => 'warning',
+                    ]);
+                } ?>
             </div>
         </div>
     </div>
