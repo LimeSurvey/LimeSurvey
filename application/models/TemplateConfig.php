@@ -872,10 +872,13 @@ class TemplateConfig extends CActiveRecord
             $oTemplate = Template::model()->findByAttributes(['name' => $templatename]);
             if ($oTemplate) {
                 if ($oTemplate->delete()) {
-                    return TemplateConfiguration::model()->deleteAll(
+                    $count = TemplateConfiguration::model()->deleteAll(
                         'template_name=:templateName',
                         [':templateName' => $templatename]
                     );
+                    /* Add the already deleted by findByAttributes */
+                    $count++;
+                    return $count;
                 }
             }
         }
