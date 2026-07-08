@@ -111,7 +111,7 @@ export const QuestionGroupHeader = ({
         </div>
         <div
           className={classNames('cursor-pointer me-2', {})}
-          data-testid="question-footer-copy-icon"
+          data-testid="question-footer-preview-icon"
           onClick={openQuestionGroupPreview}
         >
           <EyeIcon

@@ -36,7 +36,9 @@ describe('QuestionGroupHeader', () => {
   })
 
   test('Opens the group preview URL in a new tab when the preview icon is clicked', async () => {
-    const previewIcon = await screen.findByTestId('question-footer-copy-icon')
+    const previewIcon = await screen.findByTestId(
+      'question-footer-preview-icon'
+    )
     fireEvent.click(previewIcon)
 
     expect(openSpy).toHaveBeenCalledTimes(1)

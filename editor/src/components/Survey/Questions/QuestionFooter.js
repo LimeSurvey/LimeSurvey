@@ -60,7 +60,7 @@ export const QuestionFooter = ({
             'disabled': !isFocused,
             'pointer-events-none': !isFocused,
           })}
-          data-testid="question-footer-copy-icon"
+          data-testid="question-footer-preview-icon"
           onClick={openQuestionPreview}
         >
           <EyeIcon

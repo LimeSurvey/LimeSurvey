@@ -30,9 +30,10 @@ describe('QuestionFooter', () => {
   })
 
   test('Opens the question preview URL in a new tab when the preview icon is clicked', async () => {
-    const previewIcon = (
-      await screen.findAllByTestId('question-footer-copy-icon')
-    )[0]
+    const previewIcon = await screen.findByTestId(
+      'question-footer-preview-icon'
+    )
+
     fireEvent.click(previewIcon)
 
     expect(openSpy).toHaveBeenCalledTimes(1)
