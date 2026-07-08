@@ -367,6 +367,24 @@ export const getDisplayAttributes = () => ({
       dataTestId: 'label-for-other-option',
     },
   },
+  OTHER_INPUT_SIZE: {
+    component: Input,
+    attributePath: 'attributes.other_input_size',
+    props: {
+      labelText: t("'Other:' text input box size"),
+      type: 'number',
+      dataTestId: 'other-input-size',
+    },
+  },
+  OTHER_MAXIMUM_CHARS: {
+    component: Input,
+    attributePath: 'attributes.other_maximum_chars',
+    props: {
+      labelText: t("'Other:' option maximum characters"),
+      type: 'number',
+      dataTestId: 'other-maximum-chars',
+    },
+  },
   POSITION_FOR_OTHER_OPTION: {
     component: Select,
     attributePath: 'attributes.other_position',

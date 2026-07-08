@@ -39,6 +39,8 @@ const displaySettings = () => {
   return [
     displayAttributes.IMAGE_SETTINGS,
     displayAttributes.LABEL_FOR_OTHER_OPTIONS,
+    displayAttributes.OTHER_INPUT_SIZE,
+    displayAttributes.OTHER_MAXIMUM_CHARS,
     displayAttributes.POSITION_FOR_OTHER_OPTION,
     displayAttributes.SUBQUESTION_TITLE,
     displayAttributes.SUBQUESTION_OPTIONS_ORDER,
@@ -68,6 +70,7 @@ const logicSettings = () => {
 const otherSettings = () => {
   const otherAttributes = getOtherAttributes()
   return [
+    otherAttributes.OTHER_NUMBERS_ONLY,
     otherAttributes.INSERT_PAGE_BREAK_IN_PRINTABLE_VIEW,
     otherAttributes.SPSS_EXPORT_SCALE_TYPE,
   ]
