@@ -28,9 +28,6 @@ use LimeSurvey\Models\Services\SurveyAccessModeService;
 function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $supportArchivedFields = true)
 {
     $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
-    if (\PHP_VERSION_ID < 80000) {
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-    }
 
     $sXMLdata              = file_get_contents($sFullFilePath);
     $xml                   = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
@@ -657,9 +654,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
     $results['labelsets'] = 0;
     $results['labels'] = 0;
 
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-    }
     return $results;
 }
 
@@ -3654,14 +3648,8 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     $results = [];
     $results['responses'] = 0;
 
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader(false);
-    }
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader(true);
-    }
     if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
         // Refresh metadata to make sure it reflects the current survey
         SurveyDynamic::model($iSurveyID)->refreshMetadata();

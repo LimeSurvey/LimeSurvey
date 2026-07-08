@@ -264,7 +264,7 @@ class QuestionTheme extends LSActiveRecord
 
         // convert Question Theme
         if ($bSkipConversion === false) {
-            $aConvertSuccess = self::convertLS3toLS5($sXMLDirectoryPath);
+            $aConvertSuccess = self::convertLegacyQuestionTheme($sXMLDirectoryPath);
             if (!$aConvertSuccess['success']) {
                 if ($bThrowConversionException) {
                     throw new Exception($aConvertSuccess['message']);
@@ -379,19 +379,12 @@ class QuestionTheme extends LSActiveRecord
         }
 
         $pathToXmlFolder = str_replace('\\', '/', $pathToXmlFolder);
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }
         $sQuestionConfigFilePath = $pathToXmlFolder . DIRECTORY_SEPARATOR . 'config.xml';
         if (!file_exists($sQuestionConfigFilePath)) {
             throw new Exception(sprintf(gT('Extension configuration file is missing at %s.'), $sQuestionConfigFilePath));
         }
         $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);
-        }
 
         // read all metadata from the provided $pathToXmlFolder
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
@@ -661,10 +654,6 @@ class QuestionTheme extends LSActiveRecord
         /** @var QuestionTheme[] */
         $baseQuestions = self::model()->query($criteria, true);
 
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }
-
         $baseQuestionsModified = [];
         foreach ($baseQuestions as $baseQuestion) {
             //TODO: should be moved into DB column (question_theme_settings table)
@@ -696,12 +685,7 @@ class QuestionTheme extends LSActiveRecord
             );
             $baseQuestionsModified[] = $baseQuestion;
         }
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);
-        }
-
         $baseQuestions = $baseQuestionsModified;
-
         return $baseQuestions;
     }
 
@@ -806,9 +790,6 @@ class QuestionTheme extends LSActiveRecord
         $answerColumnDefinition = '';
         $xmlPath = $questionTheme->getXmlPath();
         if (isset($xmlPath)) {
-            if (\PHP_VERSION_ID < 80000) {
-                $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-            }
             // If xml_path is relative, cwd is assumed to be ROOTDIR.
             // TODO: Make it always relative depending on question theme type (core, custom, user).
             $sQuestionConfigFile = file_get_contents($xmlPath . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
@@ -816,10 +797,6 @@ class QuestionTheme extends LSActiveRecord
             if (isset($oQuestionConfig->metadata->answercolumndefinition)) {
                 // TODO: Check json_last_error.
                 $answerColumnDefinition = json_decode(json_encode($oQuestionConfig->metadata->answercolumndefinition), true)[0];
-            }
-
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState);
             }
         }
 
@@ -848,19 +825,22 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Converts LS3 Question Theme to LS5
+     * Upgrades a legacy question theme config.xml to the current LimeSurvey format.
      *
-     * @param string $sXMLDirectoryPath
+     * Handles themes from any older version: renames <custom_attributes> to
+     * <attributes> (or removes it when <attributes> already exists), ensures a
+     * <compatibility> block is present, and backfills metadata tags that are
+     * missing from the uploaded theme by copying them from the matching core theme.
+     * Used by importManifest() and Update_425.
      *
-     * @return array $success Returns an array with the conversion status
+     * @param string $sXMLDirectoryPath Absolute path to the directory containing config.xml
+     *
+     * @return array{success: bool, message: string} Conversion result
      */
-    public static function convertLS3toLS5($sXMLDirectoryPath)
+    public static function convertLegacyQuestionTheme($sXMLDirectoryPath)
     {
         $sXMLDirectoryPath = str_replace('\\', '/', $sXMLDirectoryPath);
         $sConfigPath = $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }
 
         $sQuestionConfigFilePath = $sConfigPath;
         if (!file_exists($sQuestionConfigFilePath)) {
@@ -869,9 +849,6 @@ class QuestionTheme extends LSActiveRecord
         $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
         if (!$sQuestionConfigFile) {
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState);
-            }
             return $aSuccess = [
                 'message' => sprintf(
                     gT('Configuration file %s could not be found or read.'),
@@ -883,13 +860,16 @@ class QuestionTheme extends LSActiveRecord
 
         // replace custom_attributes with attributes
         if (preg_match('/<custom_attributes>/', $sQuestionConfigFile)) {
-            $sQuestionConfigFile = preg_replace('/<custom_attributes>/', '<attributes>', $sQuestionConfigFile);
-            $sQuestionConfigFile = preg_replace('/<\/custom_attributes>/', '</attributes>', $sQuestionConfigFile);
+            if (preg_match('/<attributes>/', $sQuestionConfigFile)) {
+                // Both sections exist: remove the (old) custom_attributes block entirely
+                // to avoid creating a duplicate <attributes> block after the rename.
+                $sQuestionConfigFile = preg_replace('/<custom_attributes>.*?<\/custom_attributes>/s', '', $sQuestionConfigFile);
+            } else {
+                $sQuestionConfigFile = preg_replace('/<custom_attributes>/', '<attributes>', $sQuestionConfigFile);
+                $sQuestionConfigFile = preg_replace('/<\/custom_attributes>/', '</attributes>', $sQuestionConfigFile);
+            }
         };
         $oThemeConfig = simplexml_load_string($sQuestionConfigFile);
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);
-        }
 
         // get type from core theme
         if (isset($oThemeConfig->metadata->type)) {
@@ -898,24 +878,9 @@ class QuestionTheme extends LSActiveRecord
             $oThemeConfig->metadata->addChild('type', 'question_theme');
         };
 
-        // set compatibility version
-        if (
-            $oThemeConfig->compatibility->version
-            && count($oThemeConfig->compatibility->version) > 1
-        ) {
-            $length = count($oThemeConfig->compatibility->version);
-            $compatibility = $oThemeConfig->addChild('compatibility');
-            $compatibility->addChild('version');
-            $oThemeConfig->compatibility->version[$length] = '5.0';
-        } elseif (
-            $oThemeConfig->compatibility->version
-            && count($oThemeConfig->compatibility->version) === 1
-        ) {
-            $oThemeConfig->compatibility->version = '5.0';
-        } else {
-            $compatibility = $oThemeConfig->addChild('compatibility');
-            $compatibility->addChild('version');
-            $oThemeConfig->compatibility->version = '5.0';
+        // Only add a <compatibility> block if none exists at all.
+        if (!isset($oThemeConfig->compatibility)) {
+            $oThemeConfig->addChild('compatibility')->addChild('version', '5.0');
         }
 
         $sThemeDirectoryName = self::getThemeDirectoryPath($sQuestionConfigFilePath);
@@ -930,14 +895,8 @@ class QuestionTheme extends LSActiveRecord
                 'success' => false
             ];
         }
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }
         $sThemeCoreConfigFile = file_get_contents($sPathToCoreConfigFile);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         $oThemeCoreConfig = simplexml_load_string($sThemeCoreConfigFile);
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);
-        }
 
         // get questiontype from core if it is missing
         if (!isset($oThemeConfig->metadata->questionType)) {
@@ -978,14 +937,8 @@ class QuestionTheme extends LSActiveRecord
         $aQuestionAttributes = array();
         $xmlConfigPath = self::getQuestionXMLPathForBaseType($type);
 
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $oCoreConfig = simplexml_load_file($xmlConfigPath);
         $aCoreAttributes = json_decode(json_encode((array)$oCoreConfig), true);
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
         if (!isset($aCoreAttributes['attributes']['attribute'])) {
             throw new Exception("Question type attributes not available!");
         }
@@ -1016,18 +969,11 @@ class QuestionTheme extends LSActiveRecord
     public static function getAdditionalAttrFromExtendedTheme($sQuestionThemeName, $type)
     {
         $additionalAttributes = array();
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
         if ($questionTheme !== null) {
             $xml_config = simplexml_load_file($questionTheme->getXmlPath() . '/config.xml');
             $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
         }
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
-
         if (!empty($attributes)) {
             if (!empty($attributes['attribute']['name'])) {
                 // Only one attribute set in config: need an array of attributes

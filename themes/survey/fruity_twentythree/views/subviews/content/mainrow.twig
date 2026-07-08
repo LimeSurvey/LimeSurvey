@@ -24,7 +24,7 @@
             {# Include the just saved success #}
             {{ include('./subviews/messages/justsaved.twig') }}
 
-            {# Wich file to include for content is decided inside the layout #}
+            {# Which file to include for content is decided inside the layout #}
             {% if(include_content) != "./subviews/content/" %}
                 {{ include(include_content) }}
             {% endif %}
