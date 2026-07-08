@@ -194,6 +194,14 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $inputnames = [];
         $this->sCoreClasses .= " " . $sCoreClasses;
 
+        $otherTextLeft  = $this->otherText;
+        $otherTextRight = '';
+        if (!empty($this->otherText) && strpos($this->otherText, '|') !== false) {
+            [$otherTextLeft, $otherTextRight] = explode('|', $this->otherText, 2);
+        }
+        $otherInputSize = strlen($otherTextLeft) > 0 ? strlen($otherTextLeft) + 1 : null;
+        $otherMaxLength = strlen($otherTextLeft) > 0 ? strlen($otherTextLeft) : null;
+
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'aRows'            => $this->getRows(),
             'name'             => $this->sSGQA,
@@ -203,7 +211,10 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             /* @deprecated since 6.3.3 : Leave it for old question theme compatibility, be sure to don't add columns */
             'iMaxRowsByColumn' => $this->getQuestionCount() + 3,
             'coreClass'        => $this->sCoreClasses,
-            'othertext'        => $this->otherText,
+            'othertext'        => $otherTextLeft,
+            'otherTextRight'   => $otherTextRight,
+            'otherInputSize'   => $otherInputSize,
+            'otherMaxLength'   => $otherMaxLength,
         ), true);
 
         $this->registerAssets();

@@ -7,6 +7,9 @@
  * @var $name
  * @var $anscount
  * @var $othertext
+ * @var $otherTextRight
+ * @var $otherInputSize
+ * @var $otherMaxLength
  */
  #}
 <!-- Multiple Choice -->
@@ -26,19 +29,29 @@
     </div>
     <!-- other -->
     {% if other in aRows|keys %}
-    <div class="d-none col-12" id="{{ name }}other-div">
-            <div class="mb-3 text-item other-text-item form-check">
-                {{ processString(othertext) }}
+    <div class="d-none col-12 answer-item" id="{{ name }}other-div">
+        <div class="row align-items-center mb-3">
+            <div class="col-auto">
+                <label for="answer{{ name }}other" class="col-form-label" id="label-id-{{ name }}">{{ processString(othertext) }}</label>
+            </div>
+            <div class="col-auto">
                 <input
                     class="form-control input-sm bootstrap-other-input"
                     type="text"
-                    name="{{name}}_Cother"
-                    id="answer{{name}}other"
-                    value="{{sValue}}"
-                    aria-labelledby="label-{{myfname}}-other"
+                    id="answer{{ name }}other"
+                    name="{{ name }}_Cother"
+                    aria-labelledby="label-id-{{ name }}"
                     data-name="{{ name }}other"
+                    {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
+                    {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
                 />
             </div>
+            {% if otherTextRight is defined and otherTextRight|length > 0 %}
+            <div class="othertext-suffix-label button-suffix col-auto">
+                {{ processString(otherTextRight) }}
+            </div>
+            {% endif %}
+        </div>
     </div>
     {% endif %}
 </div>
