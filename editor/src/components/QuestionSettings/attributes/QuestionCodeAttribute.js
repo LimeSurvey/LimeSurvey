@@ -90,7 +90,6 @@ export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
             inputClass="d-block w-100"
             className="d-flex justify-content-between align-items-center w-100"
             noPermissionDisabled={true}
-            update={update}
             disabled={disabled}
           />
         </div>
