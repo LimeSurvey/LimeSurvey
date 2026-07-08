@@ -3711,7 +3711,6 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                         $aInsertData = array();
                         while ($oXMLReader->read() && $oXMLReader->name != 'row') {
                             $sFieldname = $oXMLReader->name;
-                            $resolvedFieldname = $sFieldname;
                             if ($sFieldname[0] == '_') {
                                 $sFieldname = substr($sFieldname, 1);
                             }
@@ -3719,6 +3718,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             if (isset($aFieldReMap[$sFieldname])) {
                                 $sFieldname = $aFieldReMap[$sFieldname];
                             }
+                            $resolvedFieldname = $sFieldname;
                             if (!$oXMLReader->isEmptyElement) {
                                 $oXMLReader->read();
                                 if (in_array($sFieldname, $DestinationFields)) {
