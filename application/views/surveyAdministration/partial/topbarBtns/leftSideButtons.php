@@ -1,5 +1,4 @@
 <?php
-
 if (Permission::model()->hasGlobalPermission('surveysgroups', 'create')) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',

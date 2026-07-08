@@ -389,11 +389,13 @@ class Surveymenu extends LSActiveRecord
     {
         $cols = [
             [
-                'value'             => '\'<input type="checkbox" name="id[]" class="action_selectthismenu" value="\'.$data->id.\'" />\'',
-                'type'              => 'raw',
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
+                'class'               => 'CCheckBoxColumn',
+                'selectableRows'      => 2,
+                'name'                => 'id',
+                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'action_selectthismenu'],
+                'headerHtmlOptions'   => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions'   => ['class' => 'ls-sticky-column'],
+                'htmlOptions'         => ['class' => 'ls-sticky-column'],
             ],
             [
                 'name' => 'name',

@@ -293,7 +293,7 @@ kbd {
   font-size: 0.875em;
   color: #fff;
   background-color: #212529;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 kbd kbd {
   padding: 0;
@@ -624,7 +624,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -2208,7 +2208,7 @@ progress {
   min-height: calc(1.5em + 0.5rem + 2px);
   padding: 0.25rem 0.5rem;
   font-size: 0.9975rem;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 .form-control-sm::file-selector-button {
   padding: 0.25rem 0.5rem;
@@ -2320,7 +2320,7 @@ textarea.form-control-lg {
   padding-bottom: 0.25rem;
   padding-right: 0.5rem;
   font-size: 0.9975rem;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 
 .form-select-lg {
@@ -2648,7 +2648,7 @@ textarea.form-control-lg {
 .input-group-sm > .btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.9975rem;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 
 .input-group-lg > .form-select,
@@ -3626,7 +3626,7 @@ textarea.form-control-lg {
 .btn-sm, .btn-group-sm > .btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.855rem;
-  border-radius: 0.2rem;
+  border-radius: 2px;
 }
 
 .fade {
@@ -5023,12 +5023,12 @@ textarea.form-control-lg {
   font-size: 0.9975rem;
 }
 .pagination-sm .page-item:first-child .page-link {
-  border-top-right-radius: 0.2rem;
-  border-bottom-right-radius: 0.2rem;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 .pagination-sm .page-item:last-child .page-link {
-  border-top-left-radius: 0.2rem;
-  border-bottom-left-radius: 0.2rem;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
 }
 
 .badge {
@@ -8333,7 +8333,7 @@ textarea.form-control-lg {
 }
 
 .rounded-1 {
-  border-radius: 0.2rem !important;
+  border-radius: 2px !important;
 }
 
 .rounded-2 {
@@ -13108,8 +13108,8 @@ iframe#dialog {
 }
 
 /** Fixed pager width */
-/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
-/* Myabe use a pseudo fixd-y solution is a good idea */
+/* jqgrid table must take all place if available, but header and footer must not be outside the screen */
+/* Maybe use a pseudo fixd-y solution is a good idea */
 .ui-jqgrid,
 .ui-jqgrid-view,
 .ui-jqgrid-titlebar,
@@ -13185,7 +13185,7 @@ td.subquestion-actions span:hover {
   display: none;
 }
 
-/* Box in resopnses list need a little more space */
+/* Box in responses list need a little more space */
 div#gview_displayresponses th#displayresponses_cb {
   width: 35px;
   /* Override jQgrid stuff */
@@ -13312,7 +13312,7 @@ a.explorer-group:focus {
 }
 
 #token-grid table tr.odd .blank_button {
-  /*For older Browsers with compatibilty issues*/
+  /*For older Browsers with compatibility issues*/
   border-color: #f9f9f9;
   background-color: #f9f9f9;
   /*New CSS3 Style of doing it*/
@@ -13422,7 +13422,7 @@ table#responsedetail tr td {
 
 #responses-grid .filter-container {
   min-width: 6em;
-  /* defaut em is 13px : 75/13 = 5.76… */
+  /* default em is 13px : 75/13 = 5.76… */
 }
 
 .edit-participant-modal-body {
@@ -20014,6 +20014,65 @@ table [class^=ri-], table [class*=" ri-"] {
     align-items: center;
   }
 }
+.grid-selection-bar {
+  display: flex;
+  width: fit-content;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+  padding: 4px 12px;
+  font-size: 0.855rem;
+  line-height: 16px;
+  border-radius: 2px;
+  border: 1px solid #1E1E1E;
+  background: #fff;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+}
+.grid-selection-bar .grid-selection-count-text {
+  white-space: nowrap;
+}
+.grid-selection-bar .grid-selection-count {
+  border-radius: 2px;
+  background-color: #EEEFF7;
+  padding: 0 4px;
+}
+.grid-selection-bar .grid-selection-bar__divider {
+  display: inline-block;
+  width: 1px;
+  height: 16px;
+  background-color: #9094A7;
+  flex-shrink: 0;
+}
+.grid-selection-bar .grid-selection-bar__deselect {
+  padding: 4px 8px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.grid-selection-bar .grid-selection-bar__close {
+  padding: 0;
+  display: flex;
+  box-shadow: none;
+}
+.grid-selection-bar .grid-selection-bar__close i {
+  font-size: 1.14rem;
+}
+.grid-selection-bar .grid-selection-action {
+  background: none;
+  border: none;
+  border-radius: 2px;
+  margin: 4px 0;
+}
+.grid-selection-bar .grid-selection-action:hover {
+  background-color: #EEEFF7;
+}
+.grid-selection-bar .grid-selection-action:active, .grid-selection-bar .grid-selection-action:focus-visible {
+  outline: none;
+  box-shadow: inset -1px 0 0 #8146F6, inset 1px 0 0 #8146F6, inset 0 -1px 0 #8146F6, inset 0 1px 0 #8146F6;
+}
+.grid-selection-bar .grid-selection-action:focus-visible {
+  border-radius: 0;
+}
+
 .pagination {
   margin: 0;
 }

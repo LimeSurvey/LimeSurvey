@@ -11748,7 +11748,7 @@ body .answer-item label::after {
 
 /**
  * Except for really little screen : show ls-input-group in same line
- * ls-input-group used for suffix/preffix (a lot of time : very little and reset button
+ * ls-input-group used for suffix/prefix (a lot of time : very little and reset button
  */
 @media (min-width: 481px) {
   .ls-input-group {

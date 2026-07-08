@@ -148,7 +148,6 @@ export const Setting = ({
           attribute.attributePath,
           attribute.languageBased
         )
-
         const isDisabled =
           ([
             'questionThemeName',
@@ -158,6 +157,8 @@ export const Setting = ({
           ].includes(attribute.attributePath) ||
             attribute.disableWhenActive) &&
           isSurveyActive
+            ? true
+            : false
 
         return (
           <div
