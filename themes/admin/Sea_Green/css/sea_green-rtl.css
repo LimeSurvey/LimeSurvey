@@ -19805,17 +19805,12 @@ table [class^=ri-], table [class*=" ri-"] {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
-  font-weight: 400;
-  color: #1E1E1E;
   padding: 0 8px;
 }
 .floating-actions-bar .floating-actions-count-number {
   background: #EEEFF7;
   border-radius: 2px;
   padding: 2px 6px;
-  font-size: 12px;
-  font-weight: 600;
 }
 .floating-actions-bar .floating-actions-separator {
   width: 1px;
@@ -19829,7 +19824,7 @@ table [class^=ri-], table [class*=" ri-"] {
   align-items: center;
   gap: 4px;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 0.855rem;
   font-weight: 500;
   color: #1E1E1E;
   background: transparent;
@@ -19844,6 +19839,11 @@ table [class^=ri-], table [class*=" ri-"] {
 .floating-actions-bar .floating-actions-btn:hover, .floating-actions-bar .floating-actions-btn:focus-visible {
   background: #EEEFF7;
   outline: none;
+}
+.floating-actions-bar .floating-actions-btn:focus {
+  background-color: unset;
+  border: solid 1px #8146F6;
+  color: #1E1E1E;
 }
 .floating-actions-bar .floating-actions-btn.text-danger {
   color: #FF515F;

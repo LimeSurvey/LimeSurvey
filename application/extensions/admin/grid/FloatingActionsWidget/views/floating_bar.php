@@ -17,7 +17,7 @@ $pk     = CHtml::encode($this->pk);
     aria-label="<?= gT('Actions for selected items') ?>"
 >
     <!-- Selected-item counter -->
-    <span class="floating-actions-count" aria-live="polite" aria-atomic="true">
+    <span class="reg-12" aria-live="polite" aria-atomic="true">
         <span class="floating-actions-count-number">0</span>&nbsp;<?= gT('selected') ?>
     </span>
 

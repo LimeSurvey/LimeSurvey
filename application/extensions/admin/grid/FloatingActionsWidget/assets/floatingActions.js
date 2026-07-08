@@ -199,7 +199,14 @@ LS.floatingActions = (function () {
             $modalClose.hide();
             $oldModalButtons.show();
             if (gridReload === 'yes') {
-                $grid.yiiGridView('update');
+                // Clear cross-page selection: deleted (or modified) rows no longer exist.
+                if (window.LS && LS.gridSelection && typeof LS.gridSelection.clear === 'function') {
+                    LS.gridSelection.clear(gridId);
+                }
+                // Uncheck all visible checkboxes on the current page
+                $('#' + gridId + ' tbody .massiveActionsCheckbox').prop('checked', false);
+                $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', false);
+                $('#' + gridId).yiiGridView('update');
                 setTimeout(function () { $(document).trigger('actions-updated'); }, 500);
             }
         });

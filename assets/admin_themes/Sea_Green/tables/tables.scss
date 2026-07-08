@@ -169,7 +169,7 @@ table {
     height        : 42px;
     background    : $white;
     border        : 1px solid $g-400;
-    border-radius : 4px;
+    border-radius : $border-radius;
     box-shadow    : 0 2px 8px 0 $elevation-shadow-soft;
     white-space   : nowrap;
 
@@ -181,18 +181,13 @@ table {
         display     : flex;
         align-items : center;
         gap         : 6px;
-        font-size   : 12px;
-        font-weight : 400;
-        color       : $g-900;
         padding     : 0 8px;
     }
 
     .floating-actions-count-number {
         background    : $g-200;
-        border-radius : 2px;
+        border-radius : $border-radius-sm;
         padding       : 2px 6px;
-        font-size     : 12px;
-        font-weight   : 600;
     }
 
     .floating-actions-separator {
@@ -208,12 +203,12 @@ table {
         align-items : center;
         gap         : 4px;
         padding     : 4px 8px;
-        font-size   : 12px;
-        font-weight : 500;
+        font-size   : $font-size-xs;
+        font-weight : $font-weight-500;
         color       : $g-900;
         background  : transparent;
         border      : 1px solid transparent;
-        border-radius : 4px;
+        border-radius : $border-radius;
         cursor      : pointer;
         line-height : 1.4;
 
@@ -226,6 +221,12 @@ table {
             background : $g-200;
             outline    : none;
         }
+
+      &:focus {
+        background-color: unset;
+        border: solid 1px $grape;
+        color: $g-900;
+      }
 
         &.text-danger {
             color : $error;
@@ -245,7 +246,7 @@ table {
         padding         : 0;
         background      : transparent;
         border          : 1px solid transparent;
-        border-radius   : 4px;
+        border-radius   : $border-radius;
         cursor          : pointer;
         color           : $g-900;
         margin-left     : 4px;
