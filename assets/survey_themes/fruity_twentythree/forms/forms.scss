@@ -39,7 +39,7 @@ $dropdown-font-size: $font-size-sm;
     border-bottom-right-radius: 0;
 }
 
-.ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-suffix-label {
+.ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-suffix-label, .answer-item .othertext-suffix-label {
     @include h2;
 
     .radio-label {
@@ -47,7 +47,7 @@ $dropdown-font-size: $font-size-sm;
     }
 }
 
-.ls-answers.answers-list .answer-item .othertext-suffix-label {
+.ls-answers.answers-list .answer-item .othertext-suffix-label, .answer-item .othertext-suffix-label {
     align-self: center;
     color : $g-700;
 }

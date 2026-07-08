@@ -485,6 +485,10 @@ table > tbody > tr > td.ddprefix {
     padding-top: 6px;
 }
 
+.othertext-suffix-label.button-suffix {
+    font-weight: bold;
+}
+
 .no-prefix-othertext .othertext-label-checkox-container {
     padding-right: 0;
 }

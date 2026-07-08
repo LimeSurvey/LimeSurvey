@@ -214,13 +214,32 @@ class RenderListRadio extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
+        $otherTextLeft = $this->sOthertext;
+        $otherTextRight = "";
+        if (!empty($this->sOthertext) && strpos($this->sOthertext, '|') !== false) {
+            [$otherTextLeft, $otherTextRight] = explode('|', $this->sOthertext, 2);
+        }
+
+        $otherInputSize = null;
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
+            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
+        }
+
+        $otherMaxLength = null;
+        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
+            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
+        }
+
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'sRows'     => $this->getRows(),
             'name'      => $this->sSGQA,
             'basename'  => $this->sSGQA,
             'value'     => $this->mSessionValue,
             'coreClass' => $this->sCoreClass,
-            'othertext' => $this->sOthertext,
+            'othertext' => $otherTextLeft,
+            'otherTextRight' => $otherTextRight,
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
             'iNbCols' => $this->iNbCols,
             /* @deprecated since 6.3.3 : Leave it for old question theme compatibility, be sure to don't add columns */
             'iMaxRowsByColumn' => $this->getAnswerCount() + 3,
