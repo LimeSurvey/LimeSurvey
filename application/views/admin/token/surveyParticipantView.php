@@ -86,13 +86,13 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             </div>
         </div>
     </div>
-    <h2 class="summary-title mt-4 pb-2 mb-3"><?php $model && eT("All participants"); ?></h2>
+    <h2 class="summary-title mt-4 pb-2 mb-3"><?php ($model || !empty($emptyGridDataProvider)) && eT("All participants"); ?></h2>
     <div class='side-body'>
         <input type='hidden' id="dateFormatDetails" name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
         <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>" />
         <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
         <?php
-        $model && $this->widget('ext.AlertWidget.AlertWidget', [
+        ($model || !empty($emptyGridDataProvider)) && $this->widget('ext.AlertWidget.AlertWidget', [
             'tag'  => 'p',
             'text' => gT(
                 "You can use operators in the search filters (eg: >, <, >=, <=, = )"
@@ -113,42 +113,51 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
         <div class="row">
             <div class="content-right">
                 <?php
-                $model && $this->widget('application.extensions.admin.grid.CLSGridView', [
-                    'dataProvider'          => $model->search(),
-                    'filter'                => $model,
-                    'id'                    => 'token-grid',
-                    'emptyText'             => gT('No survey participants found.'),
-                    'massiveActionTemplate' => $massiveAction,
-                    'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSizeTokenView',
-                            $pageSizeTokenView,
-                            Yii::app()->params['pageSizeOptionsTokens'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                        )
-                    ),
-                    'columns'               => $model->getAttributesForGrid(),
-                    'ajaxUpdate'            => 'token-grid',
-                    'ajaxType'              => 'POST',
-                    'lsAfterAjaxUpdate'     => ['onUpdateTokenGrid();', 'switchStatusOfListActions();', 'LS.restoreFocusAfterSort("token-grid");']
-                ]);
+                if ($model) {
+                    $this->widget('application.extensions.admin.grid.CLSGridView', [
+                        'dataProvider'          => $model->search(),
+                        'filter'                => $model,
+                        'id'                    => 'token-grid',
+                        'emptyText'             => gT('No survey participants found.'),
+                        'massiveActionTemplate' => $massiveAction,
+                        'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                            gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSizeTokenView',
+                                $pageSizeTokenView,
+                                Yii::app()->params['pageSizeOptionsTokens'],
+                                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                            )
+                        ),
+                        'columns'               => $model->getAttributesForGrid(),
+                        'ajaxUpdate'            => 'token-grid',
+                        'ajaxType'              => 'POST',
+                        'lsAfterAjaxUpdate'     => ['onUpdateTokenGrid();', 'switchStatusOfListActions();', 'LS.restoreFocusAfterSort("token-grid");']
+                    ]);
+                } elseif (!empty($emptyGridDataProvider)) {
+                    $this->widget('application.extensions.admin.grid.CLSGridView', [
+                        'dataProvider'          => $emptyGridDataProvider,
+                        'filter'                => $emptyGridFilter,
+                        'id'                    => 'token-grid',
+                        'emptyText'             => gT('No survey participants found.'),
+                        'massiveActionTemplate' => $massiveAction,
+                        'columns'               => $emptyGridColumns,
+                        'showTableOnEmpty'      => true,
+                        'ajaxUpdate'            => 'token-grid',
+                        'ajaxType'              => 'POST',
+                        'lsAfterAjaxUpdate'     => [],
+                    ]);
+                }
                 ?>
             </div>
         </div>
 
         <?php
         if ((!$oSurvey->hasTokens()) && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'create'))) :
-            echo eT("No survey participants found.");
             ?>
                 <a href="<?php echo $this->createUrl('admin/tokens/sa/addnew', ['surveyid' => $surveyid]); ?>" class="btn btn-large btn-block btn-outline-secondary" target="_top">
                     <?php eT("Add participants"); ?>
                 </a>
-                <?php if (!$oSurvey->hasTokensTable) : ?>
-                    <a href="<?php echo $this->createUrl('admin/tokens/sa/startfromscratch', ['surveyid' => $surveyid]); ?>" class="btn btn-large btn-block btn-outline-secondary" target="_top">
-                        <?php eT("Create empty table"); ?>
-                    </a>
-                <?php endif; ?>
                 <?php
                 if (isset($oldlist)) {
                     ?>
