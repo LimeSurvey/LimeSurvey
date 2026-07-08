@@ -473,7 +473,9 @@ class DataEntry extends SurveyCommonAction
                     } else {
                         continue;
                     }
+                    switchMSSQLIdentityInsert($sNewTimingsTable, true);
                     Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
+                    switchMSSQLIdentityInsert($sNewTimingsTable, false);
                     $iRecordCountT++;
                 }
                 if (empty($responseErrors)) {

@@ -1932,6 +1932,7 @@ function getDeactivatedArchives($sid)
  */
 function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
 {
+    $prefixLength = strlen(App()->db->tablePrefix ?? '');
     $customFilter = [
         'mysql' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
         'mysqli' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
@@ -1957,7 +1958,9 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
     foreach ($rawResults as $rawResult) {
         $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
     }
+    switchMSSQLIdentityInsert(substr($destination, $prefixLength), true);
     $timings = count($columns) ? Yii::app()->db->createCommand("INSERT INTO " . Yii::app()->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($source))->execute() : 0;
+    switchMSSQLIdentityInsert(substr($destination, $prefixLength), false);
     if ((!$preserveIDs) && (strpos($destination, 'timings') !== false)) {
         $oldResponsesTable = str_replace('_timings', '_responses', $source);
         $command = "
