@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
 
 import { createBufferOperation, hasTempId, L10ns } from 'helpers'
+import getSiteUrl from 'helpers/getSiteUrl'
 import { useBuffer } from 'hooks'
 import { ContentEditor } from 'components/UIComponents'
 import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
 import { ReactComponent as DownArrow } from 'assets/icons/down-arrow.svg'
+import { EyeIcon } from 'components/icons'
 
 import { TestValidation } from './QuestionGroupSchema'
 
@@ -24,6 +27,7 @@ export const QuestionGroupHeader = ({
   isFocused,
 }) => {
   const [errors, setErrors] = useState('')
+  const { surveyId } = useParams()
   const { addToBuffer } = useBuffer()
 
   const handleDuplicate = () => {
@@ -32,6 +36,13 @@ export const QuestionGroupHeader = ({
 
   const handleDelete = () => {
     deleteGroup()
+  }
+
+  const openQuestionGroupPreview = () => {
+    const previewUrl = getSiteUrl(
+      `/index.php/survey/index/action/previewgroup/sid/${surveyId}/gid/${questionGroup.gid}/lang/${language}`
+    )
+    window.open(previewUrl, '_blank')
   }
 
   const focusTitle = useMemo(
@@ -98,6 +109,19 @@ export const QuestionGroupHeader = ({
           ) : (
             <></>
           )}
+        </div>
+        <div
+          className={classNames('cursor-pointer me-2', {})}
+          data-testid="question-footer-copy-icon"
+          onClick={openQuestionGroupPreview}
+        >
+          <EyeIcon
+            className={classNames('footer-icon ', {
+              'active-icon fill-current': isFocused,
+            })}
+            width={20}
+            height={20}
+          />
         </div>
         <MeatballMenu
           deleteText={'Delete group'}
