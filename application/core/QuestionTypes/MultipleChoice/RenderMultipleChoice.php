@@ -142,11 +142,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             $sValueHidden = htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
-        $otherTextLeft = $this->otherText;
-        $otherTextRight = "";
-        if (!empty($this->otherText) && strpos($this->otherText, '|') !== false) {
-            [$otherTextLeft, $otherTextRight] = explode('|', $this->otherText, 2);
-        }
+        $otherParts     = $this->splitOtherText($this->otherText);
+        $otherTextLeft  = $otherParts['left'];
+        $otherTextRight = $otherParts['right'];
 
         $otherItemExtraClass = "";
         if (empty($otherTextLeft)) {
@@ -194,13 +192,19 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $inputnames = [];
         $this->sCoreClasses .= " " . $sCoreClasses;
 
-        $otherTextLeft  = $this->otherText;
-        $otherTextRight = '';
-        if (!empty($this->otherText) && strpos($this->otherText, '|') !== false) {
-            [$otherTextLeft, $otherTextRight] = explode('|', $this->otherText, 2);
+        $otherParts     = $this->splitOtherText($this->otherText);
+        $otherTextLeft  = $otherParts['left'];
+        $otherTextRight = $otherParts['right'];
+
+        $otherInputSize = null;
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
+            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
         }
-        $otherInputSize = strlen($otherTextLeft) > 0 ? strlen($otherTextLeft) + 1 : null;
-        $otherMaxLength = strlen($otherTextLeft) > 0 ? strlen($otherTextLeft) : null;
+
+        $otherMaxLength = null;
+        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
+            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
+        }
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'aRows'            => $this->getRows(),

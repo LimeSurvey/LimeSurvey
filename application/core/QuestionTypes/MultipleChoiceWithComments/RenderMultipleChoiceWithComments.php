@@ -188,13 +188,10 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
         }
 
-        // Split other_replace_text on '|' for prefix/suffix label support (e.g. "hot|cold")
-        $rawOtherText = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:'));
-        $otherTextLeft = $rawOtherText;
-        $otherTextRight = '';
-        if (strpos($rawOtherText, '|') !== false) {
-            [$otherTextLeft, $otherTextRight] = explode('|', $rawOtherText, 2);
-        }
+        $rawOtherText   = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:'));
+        $otherParts     = $this->splitOtherText($rawOtherText);
+        $otherTextLeft  = $otherParts['left'];
+        $otherTextRight = $otherParts['right'];
         $otherItemExtraClass = '';
         if (empty(trim($otherTextLeft))) {
             $otherItemExtraClass .= ' no-prefix-othertext';

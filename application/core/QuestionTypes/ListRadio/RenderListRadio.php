@@ -160,11 +160,9 @@ class RenderListRadio extends QuestionBaseRenderer
 
         $this->inputnames[] = $thisfieldname;
 
-        $otherTextLeft = $this->sOthertext;
-        $otherTextRight = "";
-        if (!empty($this->sOthertext) && strpos($this->sOthertext, '|') !== false) {
-            [$otherTextLeft, $otherTextRight] = explode('|', $this->sOthertext, 2);
-        }
+        $otherParts     = $this->splitOtherText($this->sOthertext);
+        $otherTextLeft  = $otherParts['left'];
+        $otherTextRight = $otherParts['right'];
 
         $otherItemExtraClass = "";
         if (empty($otherTextLeft)) {
@@ -214,11 +212,9 @@ class RenderListRadio extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
-        $otherTextLeft = $this->sOthertext;
-        $otherTextRight = "";
-        if (!empty($this->sOthertext) && strpos($this->sOthertext, '|') !== false) {
-            [$otherTextLeft, $otherTextRight] = explode('|', $this->sOthertext, 2);
-        }
+        $otherParts     = $this->splitOtherText($this->sOthertext);
+        $otherTextLeft  = $otherParts['left'];
+        $otherTextRight = $otherParts['right'];
 
         $otherInputSize = null;
         if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
