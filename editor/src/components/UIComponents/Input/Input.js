@@ -10,7 +10,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 export const Input = ({
   value = '',
-  defaultValue,
+  defaultValue = '',
   dataTestId,
   onChange = () => {},
   onBlur = () => {},
