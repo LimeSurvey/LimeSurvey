@@ -167,7 +167,10 @@ export const OptionQuestionViewMode = ({
   }, [other_replace_text, language])
 
   const otherPosition = useMemo(() => {
-    const position = (getAttributeValue(other_position) || '').toLowerCase()
+    const rawPosition = getAttributeValue(other_position)
+    const position = (
+      typeof rawPosition === 'string' ? rawPosition : ''
+    ).toLowerCase()
 
     if (Object.values(OTHER_POSITIONS).includes(position)) {
       return position
