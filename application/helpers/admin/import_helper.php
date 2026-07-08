@@ -3711,6 +3711,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                         $aInsertData = array();
                         while ($oXMLReader->read() && $oXMLReader->name != 'row') {
                             $sFieldname = $oXMLReader->name;
+                            $resolvedFieldname = $sFieldname;
                             if ($sFieldname[0] == '_') {
                                 $sFieldname = substr($sFieldname, 1);
                             }
@@ -3766,12 +3767,13 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                                 $endIndex++;
                                                 continue;
                                             }
-                                            $aInsertData[getFieldName("{{responses_" . $newSid . "}}", $oldFieldName, $qidMetadata[$newGid][$qidCandidate], $newSid, $newGid)] = $oXMLReader->value;
+                                            $resolvedFieldname = getFieldName("{{responses_" . $newSid . "}}", $oldFieldName, $qidMetadata[$newGid][$qidCandidate], $newSid, $newGid);
+                                            $aInsertData[$resolvedFieldname] = $oXMLReader->value;
                                             $endIndex++;
                                         }
                                     }
                                 }
-                                $root = explode("_", $sFieldname)[0];
+                                $root = explode("_", $resolvedFieldname)[0];
                                 if (in_array($root, $rankings)) {
                                     if (!isset($aInsertData[$root])) {
                                         $aInsertData[$root] = [];
