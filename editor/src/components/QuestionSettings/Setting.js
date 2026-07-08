@@ -16,6 +16,24 @@ export const Setting = ({
   simpleSettings = false,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const isDependsOnSatisfied = (dependsOn, dependsOnValue) => {
+    if (!dependsOn) {
+      return true
+    }
+
+    if (Object.prototype.hasOwnProperty.call(dependsOn, 'value')) {
+      return String(dependsOnValue) === String(dependsOn.value)
+    }
+
+    if (Array.isArray(dependsOn.values)) {
+      return dependsOn.values
+        .map((value) => String(value))
+        .includes(String(dependsOnValue))
+    }
+
+    return isTrue(dependsOnValue)
+  }
+
   const getAttributeValueFromPath = (attributePath, languageBased) => {
     const path = attributePath.split('.')
     const attribute = path.reduce((acc, key) => acc[key], question)
@@ -94,7 +112,7 @@ export const Setting = ({
         dependsOnAttribute.dependsOn &&
         dependsOnAttribute.dependsOn.attributePath === attribute.attributePath
       ) {
-        if (typeof value !== 'object' && !isTrue(value)) {
+        if (!isDependsOnSatisfied(dependsOnAttribute.dependsOn, value)) {
           const isAdvancedAttribute =
             dependsOnAttribute.attributePath.includes('attributes.')
 
@@ -135,7 +153,7 @@ export const Setting = ({
             dependsOn.languageBased
           )
 
-          if (!isTrue(dependsOnValue)) {
+          if (!isDependsOnSatisfied(dependsOn, dependsOnValue)) {
             return (
               <React.Fragment
                 key={`${title}-settings-${attribute.attributePath}`}
@@ -160,6 +178,16 @@ export const Setting = ({
             ? true
             : false
 
+        const options =
+          typeof attribute.getOptions === 'function'
+            ? attribute.getOptions({ question, language })
+            : undefined
+
+        const attributeProps = {
+          ...attribute.props,
+          ...(options ? { options } : {}),
+        }
+
         return (
           <div
             className="right-side-bar-settings"
@@ -170,14 +198,14 @@ export const Setting = ({
               showTip={isDisabled}
             >
               <attribute.component
-                {...attribute.props}
+                {...attributeProps}
                 activeDisabled={isDisabled}
                 noPermissionDisabled={true}
                 value={
                   value
                     ? value
-                    : attribute.props.value
-                      ? attribute.props.value
+                    : attributeProps.value
+                      ? attributeProps.value
                       : ''
                 }
                 name={attribute.attributePath}
