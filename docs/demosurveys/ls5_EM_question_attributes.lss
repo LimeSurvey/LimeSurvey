@@ -9088,17 +9088,17 @@
 		</tr>
 		<tr>
 			<td>qRankingAdv_1</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_1.shown}</td>
 		</tr>
 		<tr>
 			<td>qRankingAdv_2</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_2.shown}</td>
 		</tr>
 		<tr>
 			<td>qRankingAdv_3</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_3.shown}</td>
 		</tr>
 	</tbody>
@@ -9675,17 +9675,17 @@
 		</tr>
 		<tr>
 			<td>qRankingAdv_1</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_1.shown}</td>
 		</tr>
 		<tr>
 			<td>qRankingAdv_2</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_2.shown}</td>
 		</tr>
 		<tr>
 			<td>qRankingAdv_3</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_3.shown}</td>
 		</tr>
 	</tbody>
@@ -9733,7 +9733,7 @@
    <row>
     <id><![CDATA[1154]]></id>
     <qid><![CDATA[1132]]></qid>
-    <question><![CDATA[Excercise]]></question>
+    <question><![CDATA[Exercise]]></question>
     <help/>
     <language><![CDATA[en]]></language>
    </row>
