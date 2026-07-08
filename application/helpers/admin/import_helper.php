@@ -1547,7 +1547,7 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 break;
         }
     } else {
-        $command = "";
+        $command = $command2 = "";
         switch (Yii::app()->db->getDriverName()) {
             case 'mysqli':
             case 'mysql':
