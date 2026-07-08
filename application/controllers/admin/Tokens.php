@@ -1487,9 +1487,12 @@ class Tokens extends SurveyCommonAction
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
-            // Encryption only applies to physical columns
             if ($oSurvey->hasTokensTable) {
                 $this->updateEncryption($iSurveyId, $aOptionsAfterChange);
+            } else {
+                // No table yet: there are no rows to encrypt, but still persist the encryption
+                // preference for the mandatory columns so it is applied when the table is created.
+                Survey::model()->updateByPk($iSurveyId, ['tokenencryptionoptions' => json_encode($aTokenencryptionoptions)]);
             }
 
             // save token encryption options if everything was ok
