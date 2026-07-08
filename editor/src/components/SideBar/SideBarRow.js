@@ -132,7 +132,6 @@ export const SideBarRow = ({
                 'rotate-270': !isOpen,
                 'd-none': !isQuestionGroup,
               })}
-              data-isOpen={isOpen}
             >
               <ArrowDownIcon />
             </Button>
