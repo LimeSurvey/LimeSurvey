@@ -80,7 +80,7 @@ export const Input = ({
       return
     }
 
-    inputRef.current.value = defaultValue || value
+    inputRef.current.value = value || defaultValue
   }, [inputRef, value])
 
   const handleOnChange = (event) => {
