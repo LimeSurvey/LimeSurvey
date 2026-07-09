@@ -108,6 +108,9 @@ class SurveyActivate
      */
     public function restoreData(int $surveyId, $timestamp = null, $preserveIDs = false): bool
     {
+        if (in_array(\Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
+            $preserveIDs = true;
+        }
         require_once "application/helpers/admin/import_helper.php";
         $deactivatedArchives = getDeactivatedArchives($surveyId);
         $archives = [];

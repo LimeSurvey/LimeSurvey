@@ -74,7 +74,7 @@ class Update_709 extends DatabaseUpdateBase
             "CASE WHEN LENGTH(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT(',\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END,");
         }
 
-        $updateCommand = "UPDATE {{responses_{$sid}}} SET {$newColumn} = to_json(CONCAT('[', " . implode($alterElements) . " ']'))";
+        $updateCommand = "UPDATE {{responses_{$sid}}} SET {$newColumn} = (CONCAT('[', " . implode($alterElements) . " ']')::json)";
         $this->db->createCommand($updateCommand)->execute();
         foreach ($cols as $col) {
             dropColumn("{{responses_" . $sid . "}}", $col);

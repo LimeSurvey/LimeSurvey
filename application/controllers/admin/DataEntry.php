@@ -259,6 +259,8 @@ class DataEntry extends SurveyCommonAction
             return;
         }
 
+        $survey = Survey::model()->findByPk($iSurveyId);
+
         if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none') {
             // Schema that serves as the base for compatibility checks.
             $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
@@ -299,7 +301,6 @@ class DataEntry extends SurveyCommonAction
 
             //Get the menubar
             $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
-            $survey = Survey::model()->findByPk($iSurveyId);
 
             $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $aData['sidemenu']['state'] = false;
@@ -362,6 +363,14 @@ class DataEntry extends SurveyCommonAction
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
             /* @var boolean preserveIDs */
             $preserveIDs = (bool)App()->getRequest()->getPost('preserveIDs');
+            $rankingMap = [];
+            foreach ($survey->questions as $q) {
+                if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
+                    foreach ($q->subquestions as $s) {
+                        $rankingMap["Q{$s->parent_qid}_S{$s->qid}"] = "Q{$s->parent_qid}";
+                    }
+                }
+            }
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
@@ -378,6 +387,29 @@ class DataEntry extends SurveyCommonAction
                     if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
                     }
+                }
+                $rankingJSONs = [];
+
+                foreach ($rankingMap as $oldFieldName => $newFieldName) {
+                    if (!empty($sourceResponse[$oldFieldName])) {
+                        if (!isset($rankingJSONs[$newFieldName])) {
+                            $rankingJSONs[$newFieldName] = [];
+                        }
+
+                        $value = $sourceResponse[$oldFieldName];
+                        if (in_array($oldFieldName, $archivedEncryptedAttributes, false) && !in_array($oldFieldName, $encryptedAttributes, false)) {
+                            $value = $sourceResponse->decryptSingle($sourceResponse[$oldFieldName]);
+                        }
+                        if (!in_array($oldFieldName, $archivedEncryptedAttributes, false) && in_array($oldFieldName, $encryptedAttributes, false)) {
+                            $value = $sourceResponse->encryptSingle($sourceResponse[$oldFieldName]);
+                        }
+                        
+                        $rankingJSONs[$newFieldName][] = $value;
+                    }
+                }
+
+                foreach ($rankingJSONs as $newFieldName => $value) {
+                    $targetResponse[$newFieldName] = json_encode($value);
                 }
 
                 if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
@@ -441,7 +473,9 @@ class DataEntry extends SurveyCommonAction
                     } else {
                         continue;
                     }
+                    switchMSSQLIdentityInsert($sNewTimingsTable, true);
                     Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
+                    switchMSSQLIdentityInsert($sNewTimingsTable, false);
                     $iRecordCountT++;
                 }
                 if (empty($responseErrors)) {
