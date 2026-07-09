@@ -119,8 +119,7 @@ class Update_709 extends DatabaseUpdateBase
             UPDATE {{questions}} sub
             JOIN {{questions}} parent ON sub.parent_qid = parent.qid
             SET sub.{$typeCol} = 'R'
-            WHERE sub.{$typeCol} = 'T'
-              AND parent.{$typeCol} = '{$rankingKey}'
+            WHERE parent.{$typeCol} = '{$rankingKey}'
               AND parent.parent_qid = 0
         ")->execute();
     }
@@ -141,7 +140,6 @@ class Update_709 extends DatabaseUpdateBase
             SET {$typeCol} = 'R'
             FROM {$table} parent
             WHERE sub.parent_qid = parent.qid
-              AND sub.{$typeCol} = 'T'
               AND parent.{$typeCol} = '{$rankingKey}'
               AND parent.parent_qid = 0
         ")->execute();
@@ -163,8 +161,7 @@ class Update_709 extends DatabaseUpdateBase
             SET sub.{$typeCol} = 'R'
             FROM {$table} sub
             JOIN {$table} parent ON sub.parent_qid = parent.qid
-            WHERE sub.{$typeCol} = 'T'
-              AND parent.{$typeCol} = '{$rankingKey}'
+            WHERE parent.{$typeCol} = '{$rankingKey}'
               AND parent.parent_qid = 0
         ")->execute();
     }
