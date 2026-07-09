@@ -334,14 +334,7 @@ class UserRoleController extends LSBaseController
             return;
         }
 
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
-
         $oRoleDefinition = simplexml_load_file(realpath($sFilePath));
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
 
         $oNewRole = Permissiontemplates::model()->createFromXML($oRoleDefinition);
         if ($oNewRole == false) {

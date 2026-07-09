@@ -17,6 +17,8 @@ import ThemeOptionsPreview from 'components/ThemeOptions/ThemeOptionsPreview'
 import Layout from './Layout'
 import { EditorTutorial } from './EditorTutorial'
 import { LoadingIndicator } from './LoadingIndicator'
+import { PluginSlot } from 'plugins/PluginSlot'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 export const Editor = () => {
   const { surveyId, menu } = useParams()
@@ -94,24 +96,27 @@ export const Editor = () => {
     !ready || (!allLanguages && !process.env.STORYBOOK_DEV)
 
   return (
-    <div id="editor" key={activeLanguage}>
-      <EditorTutorial survey={survey} isSurveyActive={survey.active} />
-      {isLoadingSurvey || isLoadingTranslations ? (
-        <LoadingIndicator isLoadingSurvey={isLoadingSurvey} />
-      ) : (
-        <Container className="p-0" fluid>
-          <div
-            id="content"
-            data-testid="editor"
-            className="d-flex position-relative"
-          >
-            <Layout />
-            <ThemeOptionsPreview
-              shouldBeVisible={menu === SURVEY_MENU_TITLES.themeOptions}
-            />
-          </div>
-        </Container>
-      )}
-    </div>
+    <>
+      <PluginSlot slotName={PLUGIN_SLOTS.EDITOR_TOP} />
+      <div id="editor" key={activeLanguage}>
+        <EditorTutorial survey={survey} isSurveyActive={survey.active} />
+        {isLoadingSurvey || isLoadingTranslations ? (
+          <LoadingIndicator isLoadingSurvey={isLoadingSurvey} />
+        ) : (
+          <Container className="p-0" fluid>
+            <div
+              id="content"
+              data-testid="editor"
+              className="d-flex position-relative"
+            >
+              <Layout />
+              <ThemeOptionsPreview
+                shouldBeVisible={menu === SURVEY_MENU_TITLES.themeOptions}
+              />
+            </div>
+          </Container>
+        )}
+      </div>
+    </>
   )
 }
