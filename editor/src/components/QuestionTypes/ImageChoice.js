@@ -9,7 +9,7 @@ import {
   docUrls,
 } from 'helpers'
 import NoImageFound from 'assets/images/no-image-found.jpg'
-import { DropZone, FormCheck } from 'components/UIComponents'
+import { ContentEditor, DropZone, FormCheck } from 'components/UIComponents'
 import { useFileService } from 'hooks'
 
 export const ImageChoice = ({
@@ -79,7 +79,13 @@ export const ImageChoice = ({
             className="pointer-events-none"
             name={'image-choice-' + idSuffix}
             data-testid={'image-choice-' + idSuffix}
-            label={isNoAnswer ? getNoAnswerLabel(true) : ''}
+            label={
+              <ContentEditor
+                className="choice"
+                value={isNoAnswer ? getNoAnswerLabel(true) : ''}
+                disabled={true}
+              />
+            }
           />
         )}
         {isFocused && <div>&nbsp;</div>}
