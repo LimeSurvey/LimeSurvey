@@ -10,6 +10,7 @@ import {
   getSubquestionById,
   getSubquestionByProperty,
   isRankingQuestion,
+  OTHER_CODE,
   RemoveHTMLTagsInString,
 } from 'helpers'
 import { cloneDeep } from 'lodash'
@@ -47,7 +48,6 @@ export const generateData = (responses, language, generatedColumns) => {
     Object.entries(response.answers).forEach(([, _answer]) => {
       const answer = cloneDeep(_answer)
       let { value, qid, sqid, actual_aid } = answer
-
       let question =
         questions[qid] ||
         generatedColumns?.find(
@@ -89,8 +89,14 @@ export const generateData = (responses, language, generatedColumns) => {
         isQuestionWithSubquestions(question.questionThemeName)
       const maybeComment =
         !answer.actual_aid && !answer.sqid && answer.key?.includes('comment')
+      const maybeOther =
+        !answer.actual_aid && !answer.sqid && answer.key?.endsWith('other')
 
       answer.aid = actual_aid
+      // When "Other" is selected in single-choice, value is '-oth-' but has no real aid
+      if (!answer.aid && answer.value === OTHER_CODE) {
+        answer.aid = OTHER_CODE
+      }
       const idName = isQuestionWithAnswers(question.questionThemeName)
         ? 'aid'
         : 'sqid'
@@ -102,7 +108,6 @@ export const generateData = (responses, language, generatedColumns) => {
           question
         ).subquestion
       }
-
       if (
         !questionAnswer &&
         !questionSubquestion &&
@@ -116,7 +121,36 @@ export const generateData = (responses, language, generatedColumns) => {
           responseId: response.id,
         })
       } else {
-        if (maybeComment) {
+        if (maybeOther) {
+          if (isQuestionWithAnswers(question.questionThemeName)) {
+            // Single-choice: this is the Other text field ? attach to the '-oth-' cell item.
+            // If no such item exists (e.g. dropdown where main field is blank), promote it.
+            let otherItem = cell.find((c) => c.aid === OTHER_CODE)
+            if (!otherItem) {
+              const candidate = cell.find((c) => !c.aid)
+              if (candidate) {
+                candidate.aid = OTHER_CODE
+                otherItem = candidate
+              }
+            }
+            if (otherItem) {
+              otherItem.otherText = { value, key: answer.key }
+            }
+          } else {
+            // Multiple-choice: value IS the text the respondent typed; non-empty means checked
+            cell.push({
+              value: value,
+              key: answer.key,
+              aid: null,
+              [idName]: OTHER_CODE,
+              qid: OTHER_CODE,
+              checked: !!value,
+              otherText: { value, key: answer.key },
+              responseId: response.id,
+              questionThemeName: question.questionThemeName,
+            })
+          }
+        } else if (maybeComment) {
           value = !questionAnswer
             ? RemoveHTMLTagsInString(value)
             : RemoveHTMLTagsInString(questionAnswer?.l10ns[language]?.answer)

@@ -300,7 +300,7 @@ export const OptionQuestionViewMode = ({
         }
       })
     }
-  }, [children])
+  }, [children, valueInfo?.aid])
 
   const shouldShowInput =
     (isMultipleChoiceWithComments &&
@@ -364,12 +364,12 @@ export const OptionQuestionViewMode = ({
             <ChildUiComponentToRender
               value={
                 ChildUiComponentToRender.name === selectName
-                  ? child.options[selectedIndex]
+                  ? child.options[selectedIndex]?.value
                   : getChildTitle(child.l10ns)
               }
               defaultValue={
                 ChildUiComponentToRender.name === selectName
-                  ? child.options[selectedIndex]
+                  ? child.options[selectedIndex]?.value
                   : getChildTitle(child.l10ns)
               }
               text={getChildTitle(child.l10ns)}
@@ -471,11 +471,43 @@ export const OptionQuestionViewMode = ({
                 className="comment-input"
                 dataTestId="other-option-input"
                 type="textarea"
+                value={
+                  isSingleChoiceTheme
+                    ? valueInfo?.otherText?.value
+                    : value?.otherText?.value
+                }
+                update={(newValue) =>
+                  onValueChange(
+                    newValue,
+                    isSingleChoiceTheme
+                      ? valueInfo?.otherText?.key
+                      : value?.otherText?.key
+                  )
+                }
               />
             )}
             {child.isOther && otherSuffix && (
               <span className="other-suffix">{otherSuffix}</span>
             )}
+            {isDropdownTheme &&
+              supportsOther &&
+              child.options?.[selectedIndex]?.value === OTHER_CODE && (
+                <Input
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                  placeholder={st('Enter your answer here.')}
+                  rows={1}
+                  maxLength={Infinity}
+                  className="comment-input"
+                  dataTestId="other-option-input"
+                  type="textarea"
+                  value={valueInfo?.otherText?.value}
+                  update={(newValue) =>
+                    onValueChange(newValue, valueInfo?.otherText?.key)
+                  }
+                />
+              )}
             {shouldShowInput && (
               <Input
                 onClick={(e) => {
