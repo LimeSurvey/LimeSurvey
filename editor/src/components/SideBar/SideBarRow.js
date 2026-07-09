@@ -5,7 +5,8 @@ import Button from 'react-bootstrap/Button'
 
 import { useSurvey } from 'hooks'
 import { ArrowDownIcon } from 'components/icons'
-import { TooltipContainer } from 'components'
+import { ContentEditor, TooltipContainer } from 'components'
+import { RemoveHTMLTagsInString } from 'helpers'
 
 import { QuestionContextMenu } from './QuestionContextMenu'
 
@@ -146,16 +147,16 @@ export const SideBarRow = ({
             ) : (
               icon
             )}
-            <span
+            <ContentEditor
               className={classNames('sidebar-row-title', {
                 'question-group': !code,
                 'question-code': showQNumCode?.showCode,
               })}
               onClick={onTitleClick}
               data-placeholder={titlePlaceholder}
-            >
-              {title}
-            </span>
+              value={RemoveHTMLTagsInString(title)}
+              disabled={true}
+            />
           </div>
           <div
             className={classNames(
