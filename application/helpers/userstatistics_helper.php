@@ -447,11 +447,13 @@ function buildSelects($allfields, $surveyid, $language)
                 //Q - Multiple short text
             elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                 $selectSubs = array();
+                $postValue = is_array($_POST[$pv]) ? implode(' OR ', $_POST[$pv]) : (string) $_POST[$pv];
                 //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
-                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', (string) $_POST[$pv])));
+                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $postValue)));
+                $columnName = ($pv[1] === 'Q') ? substr($pv, 1) : $pv;
                 if (is_array($pvParts) and count($pvParts)) {
                     foreach ($pvParts as $pvPart) {
-                        $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv))) . " LIKE " . App()->db->quoteValue($pvPart);
+                        $selectSubs[] = Yii::app()->db->quoteColumnName($columnName) . " LIKE " . App()->db->quoteValue($pvPart);
                     }
                     if (count($selectSubs)) {
                         $selects[] = ' (' . implode(' OR ', $selectSubs) . ') ';
