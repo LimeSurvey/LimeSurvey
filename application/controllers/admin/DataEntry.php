@@ -692,7 +692,6 @@ class DataEntry extends SurveyCommonAction
         $qidattributes = [];
         $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
         $qs = [];
-        $totalTime = 0;
         foreach ($rawQuestions as $rawQuestion) {
             $qs[$rawQuestion->qid] = $rawQuestion;
         }
@@ -937,7 +936,7 @@ class DataEntry extends SurveyCommonAction
                             $isParent = isRankingQuestionParent($fname['aid'] ?? null);
                             //Let's get all the existing values into an array
                             if (isset($idrow[$fname['fieldname']]) && $isParent) {
-                                $currentvalues = json_decode($idrow[$fname['fieldname']], true);;
+                                $currentvalues = json_decode($idrow[$fname['fieldname']], true);
                             }
                             // If any ranking field is not null, we mark the question as seen.
                             if (isset($idrow[$fname['fieldname']])) {
@@ -1621,6 +1620,9 @@ class DataEntry extends SurveyCommonAction
         foreach ($rawQuestions as $rawQuestion) {
             $questions[$rawQuestion->qid] = $rawQuestion;
             if ($rawQuestion->parent_qid) {
+                if (!isset($subquestions[$rawQuestion->parent_qid])) {
+                    $subquestions[$rawQuestion->parent_qid] = [];
+                }
                 $subquestions[$rawQuestion->parent_qid][] = $rawQuestion;
             }
         }
@@ -1809,11 +1811,12 @@ class DataEntry extends SurveyCommonAction
         $questions = [];
         $subquestions = [];
 
-        $totalTime = 0;
-
         foreach ($rawQuestions as $rawQuestion) {
             $questions[$rawQuestion->qid] = $rawQuestion;
             if ($rawQuestion->parent_qid) {
+                if (!isset($subquestions[$rawQuestion->parent_qid])) {
+                    $subquestions[$rawQuestion->parent_qid] = [];
+                }
                 $subquestions[$rawQuestion->parent_qid][] = $rawQuestion;
             }
         }
