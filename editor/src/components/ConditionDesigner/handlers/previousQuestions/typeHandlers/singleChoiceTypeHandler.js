@@ -1,6 +1,5 @@
 import {
   addNoAnswerIfAllowed,
-  createAnswer,
   createQuestion,
   createStandardAnswers,
 } from '../helpers'
@@ -17,10 +16,6 @@ export const singleChoiceTypeHandler = (
   })
 
   createQuestion(cQuestions, question, null, fieldname, language)
-
-  if (question.other === 'Y') {
-    createAnswer(cAnswers, '-oth-', t('Other'), fieldname)
-  }
 
   createStandardAnswers(
     cAnswers,

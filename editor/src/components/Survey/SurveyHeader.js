@@ -190,13 +190,34 @@ export const SurveyHeader = ({
                   />
                 </TooltipContainer>
               </div>
+              <ContentEditor
+                id="survey-header-welcome-description"
+                className="welcome-description"
+                value={L10ns({
+                  prop: 'description',
+                  language: activeLanguage,
+                  l10ns: languageSettings,
+                  disabled: !hasSurveyUpdatePermission,
+                })}
+                update={(value) => handleUpdate({ description: value })}
+                placeholder={t('Description')}
+                language={language}
+                useRichTextEditor={true}
+                noPermissionDisabled={true}
+                showToolTip={false}
+                testId="survey-header-welcome-description"
+                showToolbar={true}
+                disabled={false}
+                surveyHeader={true}
+                attributeDescriptions={attributeDescriptions}
+              />
               <div ref={titleRef}>
                 <ContentEditor
                   value={welcomeTitle}
                   id="survey-header-welcome-title"
                   className="welcome-title"
                   update={(value) => handleUpdate({ welcomeText: value })}
-                  placeholder={t('Welcome title')}
+                  placeholder={t('Welcome message')}
                   language={activeLanguage}
                   useRichTextEditor={true}
                   noPermissionDisabled={true}
@@ -208,27 +229,6 @@ export const SurveyHeader = ({
                   attributeDescriptions={attributeDescriptions}
                 />
               </div>
-              <ContentEditor
-                id="survey-header-welcome-description"
-                className="welcome-description"
-                value={L10ns({
-                  prop: 'description',
-                  language: activeLanguage,
-                  l10ns: languageSettings,
-                  disabled: !hasSurveyUpdatePermission,
-                })}
-                update={(value) => handleUpdate({ description: value })}
-                placeholder={t('Welcome description')}
-                language={language}
-                useRichTextEditor={true}
-                noPermissionDisabled={true}
-                showToolTip={false}
-                testId="survey-header-welcome-description"
-                showToolbar={true}
-                disabled={false}
-                surveyHeader={true}
-                attributeDescriptions={attributeDescriptions}
-              />
               <div className={classNames('ms-1 transition-all')}>
                 {showXQuestions && (
                   <p className="text-secondary mt-3 show-x-questions">

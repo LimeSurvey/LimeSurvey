@@ -9,6 +9,8 @@ export const APP_KEY_PREFIX = 'ls_ce_editor'
 
 export const SOFT_MANDATORY = 'S'
 
+export const OTHER_CODE = '-oth-'
+
 export const ignoreUpdate = '_________________________ignore_update________'
 
 export const STATES = {

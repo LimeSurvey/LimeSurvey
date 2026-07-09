@@ -29,17 +29,23 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
     flex-wrap: wrap;
+    gap: 12px;
+
+    .child-ui-component {
+      flex: 0 0 auto;
+    }
 
     .comment-input {
-      flex: 0 0 auto;
-      width: 45% !important; /* Fixed width */
+      flex: 1 1 0;
+      width: auto !important;
       min-width: 175px;
 
-      @media screen and (max-width: 1500px) {
+      @media screen and (max-width: 992px) {
         width: 100% !important;
+        margin-left: 0;
         margin-top: 8px;
       }
     }
