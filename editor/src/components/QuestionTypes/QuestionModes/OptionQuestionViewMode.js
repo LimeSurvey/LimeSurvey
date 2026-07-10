@@ -163,14 +163,15 @@ export const OptionQuestionViewMode = ({
 
   const { otherPrefix, otherSuffix } = useMemo(() => {
     const replaceText = getAttributeValue(other_replace_text, language)
-    if (replaceText && replaceText.includes('|')) {
-      const pipeIndex = replaceText.indexOf('|')
+    const replaceTextStr = typeof replaceText === 'string' ? replaceText : ''
+    if (replaceTextStr.includes('|')) {
+      const pipeIndex = replaceTextStr.indexOf('|')
       return {
-        otherPrefix: replaceText.substring(0, pipeIndex),
-        otherSuffix: replaceText.substring(pipeIndex + 1),
+        otherPrefix: replaceTextStr.substring(0, pipeIndex),
+        otherSuffix: replaceTextStr.substring(pipeIndex + 1),
       }
     }
-    return { otherPrefix: replaceText || t('Other'), otherSuffix: '' }
+    return { otherPrefix: replaceTextStr || t('Other'), otherSuffix: '' }
   }, [other_replace_text, language])
   const otherLabel = otherPrefix
 
