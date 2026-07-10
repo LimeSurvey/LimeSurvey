@@ -11,6 +11,7 @@ use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
     ArrayTextProcessor,
     MultipleChoiceProcessor,
+    NumericalProcessor,
     ResponseAggregateBatch,
     SingleOptionMultipleChartsProcessor,
     TextProcessor,
@@ -46,15 +47,20 @@ class QuestionStatistics implements StatisticsChartInterface
     /** @var array<int, string[]> Question id -> its response-table column fieldnames */
     private array $questionFields = [];
 
+    /** @var \Survey|null Survey model injected by the service to avoid a second fetch */
+    private ?\Survey $survey = null;
+
     public function __construct()
     {
         $this->factories = [
             Question::QT_M_MULTIPLE_CHOICE => fn() => new MultipleChoiceProcessor(),
-//            Question::QT_N_NUMERICAL => fn() => new MultipleChoiceProcessor(),
+            Question::QT_N_NUMERICAL => fn() => new NumericalProcessor(),
             Question::QT_COLON_ARRAY_NUMBERS => fn() => new ArrayNumbersProcessor(),
             Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => fn() => new MultipleChoiceProcessor(),
             Question::QT_T_LONG_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_S_SHORT_FREE_TEXT => fn() => new TextProcessor(),
+            Question::QT_U_HUGE_FREE_TEXT => fn() => new TextProcessor(),
+            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new MultipleChoiceProcessor(),
             Question::QT_R_RANKING => fn() => new RankingProcessor(),
             Question::QT_1_ARRAY_DUAL => fn() => new DualScaleProcessor(),
 
@@ -63,8 +69,6 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_ASTERISK_EQUATION => fn() => null,
             Question::QT_D_DATE => fn() => null,
             Question::QT_VERTICAL_FILE_UPLOAD => fn() => null,
-            Question::QT_U_HUGE_FREE_TEXT => fn() => null,
-            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => null,
             Question::QT_SEMICOLON_ARRAY_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_X_TEXT_DISPLAY => fn() => null,
 
@@ -139,6 +143,11 @@ class QuestionStatistics implements StatisticsChartInterface
     public function setFilters(StatisticsResponseFilters $filters): void
     {
         $this->filters = $filters;
+    }
+
+    public function setSurveyModel(\Survey $survey): void
+    {
+        $this->survey = $survey;
     }
 
     /**
@@ -252,6 +261,15 @@ class QuestionStatistics implements StatisticsChartInterface
                     }
                 }
             }
+            // Deferred stats block (numerical input); dropped when null.
+            if (isset($item['stats']) && is_callable($item['stats'])) {
+                $stats = $item['stats']();
+                if ($stats === null) {
+                    unset($item['stats']);
+                } else {
+                    $item['stats'] = $stats;
+                }
+            }
             // Resolve a deferred stacked breakdown (array-type segments); when
             // the row has no own value, its total is the sum of its segments.
             if (!empty($item['segments']) && is_array($item['segments'])) {
@@ -260,7 +278,26 @@ class QuestionStatistics implements StatisticsChartInterface
                     if (isset($segment['value']) && is_callable($segment['value'])) {
                         $item['segments'][$i]['value'] = $this->toNumber($segment['value']());
                     }
+                    // Optional deferred per-segment stats (array numbers:
+                    // mean/median/min/max for the tooltip); dropped when the
+                    // segment has no answers.
+                    if (isset($segment['stats']) && is_callable($segment['stats'])) {
+                        $stats = $segment['stats']();
+                        if ($stats === null) {
+                            unset($item['segments'][$i]['stats']);
+                        } else {
+                            $item['segments'][$i]['stats'] = $stats;
+                        }
+                    }
                     $segmentsTotal += $this->toNumber($item['segments'][$i]['value']);
+                }
+                // Segment share of its row; the client renders these as-is and
+                // never re-derives sums or percentages.
+                foreach (array_keys($item['segments']) as $i) {
+                    $value = $this->toNumber($item['segments'][$i]['value']);
+                    $item['segments'][$i]['percentage'] = $segmentsTotal > 0
+                        ? round($value / $segmentsTotal * 100, 1)
+                        : 0;
                 }
                 if (!isset($item['value']) || !is_numeric($item['value'])) {
                     $item['value'] = $segmentsTotal;
@@ -268,6 +305,10 @@ class QuestionStatistics implements StatisticsChartInterface
             }
             $total += is_numeric($item['value'] ?? null) ? $item['value'] : 0;
             $data[] = $item;
+        }
+
+        if (array_key_exists('total', $plan)) {
+            $total = is_callable($plan['total']) ? (int)($plan['total'])() : (int)$plan['total'];
         }
 
         return new StatisticsChartDTO(
@@ -318,7 +359,6 @@ class QuestionStatistics implements StatisticsChartInterface
                 // specific theme display name and image handling on the client.
                 'themeName' => $question['question_theme_name'] ?? null,
                 'help' => $question['help'] ?? null,
-                'attributes' => $question['attributes'] ?? [],
                 // Response-table columns of this question; the client passes
                 // them as `fields` to survey-responses so the comments/answers
                 // views fetch only this question's columns.
@@ -378,8 +418,8 @@ class QuestionStatistics implements StatisticsChartInterface
                     $questions[$qid] = [
                         'qid' => $qid, 'sid' => $row['sid'], 'gid' => $row['gid'],
                         'type' => $row['type'], 'title' => $row['title'],
-                        'question' => flattenText($row['question_text']),
-                        'help' => flattenText($row['help_text']), 'other' => $row['other'],
+                        'question' => flattenText($row['question_text'], false, true),
+                        'help' => flattenText($row['help_text'], false, true), 'other' => $row['other'],
                         'question_theme_name' => $row['question_theme_name'],
                         'subQuestions' => [], 'attributes' => [],
                     ];
@@ -388,14 +428,14 @@ class QuestionStatistics implements StatisticsChartInterface
                 if (empty($questions[$row['parent_qid']]['subQuestions'][$qid])) {
                     $questions[$row['parent_qid']]['subQuestions'][$qid] = [
                         'qid' => $qid, 'gid' => $row['gid'],
-                        'title' => $row['title'], 'question' => flattenText($row['question_text']),
+                        'title' => $row['title'], 'question' => flattenText($row['question_text'], false, true),
                         'scale_id' => $row['scale_id'] ?? 0, 'question_order' => $row['question_order']
                     ];
                 }
             }
             if (!empty($row['aid'])) {
                 $answers[$row['answer_qid']][$row['code']] = [
-                    'aid' => $row['aid'], 'code' => $row['code'], 'answer' => flattenText($row['answer']),
+                    'aid' => $row['aid'], 'code' => $row['code'], 'answer' => flattenText($row['answer'], false, true),
                     'sortorder' => $row['sortorder'], 'scale_id' => $row['answer_scale_id']
                 ];
             }
@@ -417,7 +457,7 @@ class QuestionStatistics implements StatisticsChartInterface
      */
     private function buildQuestionFields(): array
     {
-        $survey = \Survey::model()->findByPk($this->surveyId);
+        $survey = $this->survey ?? \Survey::model()->findByPk($this->surveyId);
         if ($survey === null) {
             return [];
         }

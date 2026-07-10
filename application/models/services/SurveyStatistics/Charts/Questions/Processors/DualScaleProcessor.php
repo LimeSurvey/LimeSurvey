@@ -14,8 +14,8 @@ class DualScaleProcessor extends AbstractQuestionProcessor
         $this->rt();
 
         $scaleName = [
-            0 => $this->question['attributes']['dualscale_headerA'] ?? 'Scale A',
-            1 => $this->question['attributes']['dualscale_headerB'] ?? 'Scale B',
+            0 => flattenText($this->question['attributes']['dualscale_headerA'] ?? 'Scale A', false, true),
+            1 => flattenText($this->question['attributes']['dualscale_headerB'] ?? 'Scale B', false, true),
         ];
 
         $answersByScale = [0 => [], 1 => []];
@@ -23,42 +23,59 @@ class DualScaleProcessor extends AbstractQuestionProcessor
             $answersByScale[(int)$ans['scale_id']][] = $ans;
         }
 
-        $qTitleBase = flattenText($this->question['question']);
-        $charts = [];
-
+        $data = [];
         foreach ($this->question['subQuestions'] as $subQuestion) {
-            $subCode = $subQuestion['title'];
-            $subLabel = $subQuestion['question'] ?? $subCode;
-
             foreach ([0, 1] as $scaleId) {
                 $field = $this->rt . "_S" . $subQuestion['qid'] . '#' . $scaleId;
-                $legend = [];
-                $dataItems = [];
 
+                $segments = [];
                 foreach ($answersByScale[$scaleId] as $ans) {
-                    $code  = (string)$ans['code'];
-                    $label = (string)$ans['answer'];
-
-                    $legend[]    = $label;
-                    $dataItems[] = [
+                    $code = (string)$ans['code'];
+                    $segments[] = [
                         'key' => $code,
+                        'title' => (string)$ans['answer'],
                         'value' => $this->read($this->batch->countValue($field, $code)),
-                        'title' => $label
                     ];
                 }
-
-                $legend[]    = 'NoAnswer';
-                $dataItems[] = [
+                $segments[] = [
                     'key' => 'NoAnswer',
+                    'title' => 'No answer',
                     'value' => $this->read($this->batch->countBlank($field)),
-                    'title' => 'No answer'
                 ];
 
-                $title = "{$qTitleBase} [{$scaleName[$scaleId]}] [{$subLabel}]";
-                $charts[] = ['title' => $title, 'legend' => $legend, 'data' => $dataItems];
+                $data[] = [
+                    'key' => $subQuestion['title'] . '#' . $scaleId,
+                    'title' => $subQuestion['question'] ?? $subQuestion['title'],
+                    'scaleTitle' => (string)$scaleName[$scaleId],
+                    'segments' => $segments,
+                ];
             }
         }
 
-        return $charts;
+        return [
+            'title' => $this->question['question'],
+            'legend' => $this->buildLegend($answersByScale),
+            'data' => $data,
+        ];
+    }
+
+    /**
+     * @param array<int, array[]> $answersByScale
+     * @return string[]
+     */
+    private function buildLegend(array $answersByScale): array
+    {
+        $legend = [];
+        foreach ([0, 1] as $scaleId) {
+            foreach ($answersByScale[$scaleId] as $ans) {
+                $label = (string)$ans['answer'];
+                if (!in_array($label, $legend, true)) {
+                    $legend[] = $label;
+                }
+            }
+        }
+        $legend[] = 'NoAnswer';
+
+        return $legend;
     }
 }

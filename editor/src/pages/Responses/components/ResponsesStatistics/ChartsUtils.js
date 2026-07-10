@@ -1,4 +1,19 @@
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
+import {
+  QT_5_POINT_CHOICE,
+  QT_EXCLAMATION_LIST_DROPDOWN,
+  QT_G_GENDER,
+  QT_I_LANGUAGE,
+  QT_L_LIST,
+  QT_M_MULTIPLE_CHOICE,
+  QT_O_LIST_WITH_COMMENT,
+  QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_S_SHORT_FREE_TEXT,
+  QT_T_LONG_FREE_TEXT,
+  QT_U_HUGE_FREE_TEXT,
+  QT_Y_YES_NO_RADIO,
+} from 'helpers'
 
 export const COLORS = [
   '#FFBA68',
@@ -16,9 +31,24 @@ export const MAX_LABEL_LENGTH = 18
 
 export const NON_ANSWER_KEYS = ['comment', 'other']
 
-// Single-option ('L','!','O','5','G','Y','I') and multiple-choice ('M','P')
-// question types that support the alternative chart renderings.
-const CHOICE_QUESTION_TYPES = ['L', '!', 'O', '5', 'G', 'Y', 'I', 'M', 'P']
+export const CHOICE_QUESTION_TYPES = [
+  QT_L_LIST,
+  QT_EXCLAMATION_LIST_DROPDOWN,
+  QT_O_LIST_WITH_COMMENT,
+  QT_5_POINT_CHOICE,
+  QT_G_GENDER,
+  QT_Y_YES_NO_RADIO,
+  QT_I_LANGUAGE,
+  QT_M_MULTIPLE_CHOICE,
+  QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+]
+
+export const TEXT_QUESTION_TYPES = [
+  QT_S_SHORT_FREE_TEXT,
+  QT_T_LONG_FREE_TEXT,
+  QT_U_HUGE_FREE_TEXT,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+]
 
 // Whether charts display raw response counts or percentages.
 export const VALUE_TYPE = {
@@ -68,13 +98,29 @@ export const isCommentQuestionType = (type) => {
   return commentTypes.has(type)
 }
 
-export const isChoiceQuestion = (type) => CHOICE_QUESTION_TYPES.includes(type)
+export const getUnionSegments = (data = []) => {
+  const titles = []
+  let noAnswerTitle = null
+  data.forEach((row) =>
+    (row.segments ?? []).forEach((segment) => {
+      if (segment.key === 'NoAnswer') {
+        noAnswerTitle = noAnswerTitle ?? segment.title
+        return
+      }
+      if (!titles.includes(segment.title)) {
+        titles.push(segment.title)
+      }
+    })
+  )
+  if (noAnswerTitle !== null) {
+    titles.push(noAnswerTitle)
+  }
 
-export const isArrayPointChoice = (type) => type === 'A'
-
-export const isArrayTextQuestion = (type) => type === ';'
-
-export const isArrayNumbersQuestion = (type) => type === ':'
+  return titles.map((title, index) => ({
+    title,
+    color: COLORS[index % COLORS.length],
+  }))
+}
 
 export const shouldRenderImage = (isImage, item) =>
   isImage && item?.key !== 'NoAnswer' && !NON_ANSWER_KEYS.includes(item?.key)
@@ -152,23 +198,19 @@ export const getDataWithPercentages = (statisticsData) => {
 }
 
 export const getSegmentedCategories = (data = []) =>
-  data.map((row) => {
-    const segments = row.segments ?? []
-    const total = segments.reduce((sum, s) => sum + (s.value || 0), 0) || 1
-    return {
-      key: row.key ?? row.title,
-      title: row.title,
-      options: segments.map((segment, index) => {
-        const percentageValue = (segment.value / total) * 100
-        return {
-          ...segment,
-          percentage: percentageValue.toFixed(1),
-          percentageValue,
-          fill: COLORS[index % COLORS.length],
-        }
-      }),
-    }
-  })
+  data.map((row) => ({
+    key: row.key ?? row.title,
+    title: row.title,
+    options: (row.segments ?? []).map((segment, index) => {
+      const percentageValue = segment.percentage ?? 0
+      return {
+        ...segment,
+        percentage: percentageValue.toFixed(1),
+        percentageValue,
+        fill: COLORS[index % COLORS.length],
+      }
+    }),
+  }))
 
 export const TruncatedTick = ({
   x,
@@ -182,14 +224,7 @@ export const TruncatedTick = ({
 }) => {
   const value = payload?.value ?? ''
 
-  // Guard with the backing data row, not just `value`: synthetic rows
-  // (NoAnswer / other / comment) keep text titles even on image themes, so
-  // rendering them as <img> would 404 to a broken-image icon.
   if (shouldRenderImage(isImage, item) && value) {
-    // Render the image as HTML inside the SVG so it can keep its natural
-    // aspect ratio (width = bar width, height auto) and carry the same bordered
-    // look as the legend/table image labels. `overflow: visible` keeps tall
-    // (portrait) images from being clipped by the foreignObject box.
     return (
       <g transform={`translate(${x},${y})`}>
         <foreignObject
@@ -240,20 +275,7 @@ export const TooltipShell = ({ children }) => (
       whiteSpace: 'nowrap',
     }}
   >
-    {/* Left-pointing tail */}
-    <div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        right: '100%',
-        transform: 'translateY(-50%)',
-        width: 0,
-        height: 0,
-        borderTop: '7px solid transparent',
-        borderBottom: '7px solid transparent',
-        borderRight: '7px solid #1F1F1F',
-      }}
-    />
+    <div className="responses-statistics-tooltip-tail" />
     {children}
   </div>
 )

@@ -7,7 +7,13 @@ import { PAGE_SIZE, useQuestionAnswers } from './useQuestionAnswers'
 export function useQuestionComments(
   surveyId,
   questionCode,
-  { enabled = true, selectedAnswer = '', fields = [] } = {}
+  {
+    enabled = true,
+    selectedAnswer = '',
+    selectedField = '',
+    fields = [],
+    questionType,
+  } = {}
 ) {
   const { data, ...rest } = useQuestionAnswers(
     surveyId,
@@ -30,7 +36,9 @@ export function useQuestionComments(
           PAGE_SIZE,
           activeLanguage,
           selectedAnswer,
-          fields
+          fields,
+          questionType,
+          selectedField
         ),
     }),
     { enabled, fields }

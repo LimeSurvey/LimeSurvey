@@ -16,6 +16,7 @@ export const CommentsModal = ({
   onHide,
   surveyId,
   questionCode,
+  questionType,
   questionTitle = '',
   fields,
   answerOptions = [],
@@ -28,6 +29,14 @@ export const CommentsModal = ({
     setSelectedAnswer(initialAnswer)
   }, [initialAnswer])
 
+  const selectedField = useMemo(
+    () =>
+      answerOptions.find(
+        (option) => String(option.key) === String(selectedAnswer)
+      )?.field ?? '',
+    [answerOptions, selectedAnswer]
+  )
+
   const {
     comments: visibleComments,
     fetchNextPage,
@@ -36,7 +45,9 @@ export const CommentsModal = ({
   } = useQuestionComments(surveyId, questionCode, {
     enabled: show,
     selectedAnswer,
+    selectedField,
     fields,
+    questionType,
   })
 
   const options = useMemo(

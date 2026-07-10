@@ -16,6 +16,7 @@ import {
   TruncatedTick,
   VALUE_TYPE,
 } from '../ChartsUtils'
+import { StackedLegend } from './StackedLegend'
 
 // Each row band is BAR_SIZE + ROW_GAP tall, so adjacent bars sit ROW_GAP apart
 // and the first/last bars keep a ROW_GAP/2 padding inside the chart.
@@ -95,15 +96,13 @@ export const StackedBarChart = ({
   }, {})
 
   // Flatten each row to { statement, <segmentKey>: value } for recharts, where
-  // the value is either the raw count or the within-row percentage.
+  // the value is either the raw count or the DTO's within-row percentage.
   const rows = data.map((row) => {
-    const rowSegments = row.segments ?? []
-    const total = rowSegments.reduce((sum, s) => sum + (s.value || 0), 0) || 1
     // `__meta` carries the raw count + percentage per segment so the tooltip can
     // show both regardless of which metric drives the bar widths.
     const flat = { statement: row.title, __meta: {} }
-    rowSegments.forEach((segment) => {
-      const percentage = (segment.value / total) * 100
+    ;(row.segments ?? []).forEach((segment) => {
+      const percentage = segment.percentage ?? 0
       flat[segment.key] = isPercentage ? percentage : segment.value
       flat.__meta[segment.key] = { count: segment.value, percentage }
     })
@@ -114,25 +113,7 @@ export const StackedBarChart = ({
 
   return (
     <div className="responses-statistics-stacked">
-      <div className="responses-statistics-stacked-legend">
-        <span className="responses-statistics-stacked-legend-title">
-          {t('Distribution by choice')}:
-        </span>
-        <div className="responses-statistics-stacked-legend-items">
-          {segments.map((segment) => (
-            <span
-              key={segment.key}
-              className="responses-statistics-stacked-legend-item"
-            >
-              <span
-                className="responses-statistics-stacked-legend-swatch"
-                style={{ backgroundColor: segment.color }}
-              />
-              {segment.title}
-            </span>
-          ))}
-        </div>
-      </div>
+      <StackedLegend segments={segments} />
       <ResponsiveContainer width="100%" height={chartHeight}>
         <RechartsBarChart
           data={rows}

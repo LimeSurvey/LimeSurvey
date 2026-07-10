@@ -7,8 +7,62 @@
 // body`; everything else is nested under that root.
 //
 // recharts' own classes (`.recharts-*`) and `.recharts-square` (styled in
-// responses.scss) are intentionally left untouched.
+// responses.scss) are intentionally left untouched — except the tooltip
+// wrapper, styled below so tooltips paint above labels and their tail flips
+// with recharts' placement classes.
 // =============================================================================
+
+// Dark tooltip bubble and its arrow tail must stay the same color.
+$statistics-tooltip-bg: #1f1f1f;
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin swatch($size: 10px, $radius: $border-radius-xs) {
+  display: inline-block;
+  flex-shrink: 0;
+  width: $size;
+  height: $size;
+  border-radius: $radius;
+  vertical-align: middle;
+}
+
+@mixin chart-image {
+  object-fit: contain;
+  border: 1px solid $g-400;
+}
+
+@mixin loader-size($size) {
+  position: relative;
+  width: $size;
+  height: $size;
+}
+
+.recharts-tooltip-wrapper {
+  z-index: 2;
+}
+
+.responses-statistics-tooltip-tail {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 7px solid $statistics-tooltip-bg;
+}
+
+.recharts-tooltip-wrapper-left .responses-statistics-tooltip-tail {
+  right: auto;
+  left: 100%;
+  border-right: 0;
+  border-left: 7px solid $statistics-tooltip-bg;
+}
 
 // Empty state shown in a chart card when a question has no responses yet.
 .responses-statistics-empty {
@@ -29,12 +83,8 @@
   gap: 16px;
 
   &-swatch {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
+    @include swatch;
     margin-right: 8px;
-    vertical-align: middle;
   }
 
   &-status {
@@ -46,9 +96,7 @@
     font-size: $font-size-sm;
 
     .loader {
-      position: relative;
-      width: 32px;
-      height: 32px;
+      @include loader-size(32px);
     }
   }
 
@@ -181,18 +229,11 @@
 
   // Long answer labels truncate instead of stretching the select.
   &-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    @include truncate;
   }
 
   &-swatch {
-    display: inline-block;
-    flex-shrink: 0;
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-    vertical-align: middle;
+    @include swatch;
   }
 
   .dropdown-menu {
@@ -224,9 +265,7 @@
   min-height: 60vh;
 
   .loader {
-    position: relative;
-    width: 48px;
-    height: 48px;
+    @include loader-size(48px);
     margin-bottom: 24px;
   }
 }
@@ -238,9 +277,7 @@
   padding: 16px 0;
 
   .loader {
-    position: relative;
-    width: 32px;
-    height: 32px;
+    @include loader-size(32px);
   }
 }
 
@@ -259,7 +296,7 @@
   &-badge {
     width: 36px;
     height: 36px;
-    border-radius: 2px;
+    border-radius: $border-radius-xs;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -284,19 +321,19 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    background: #1f1f1f;
-    color: #ffffff;
+    background: $statistics-tooltip-bg;
+    color: $white;
     font-size: $font-size-sm;
     padding: 8px 12px;
     border-radius: 8px;
     white-space: nowrap;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 4px 14px $elevation-shadow-soft;
   }
 }
 
 .responses-statistics-chart-menu {
   min-width: 260px;
-  border-radius: 2px;
+  border-radius: $border-radius-xs;
   border: 1px solid $g-400;
   background: $white;
   padding: 8px 4px !important;
@@ -315,7 +352,7 @@
     margin-left: 4px;
 
     &:hover {
-      border-radius: 2px;
+      border-radius: $border-radius-xs;
       outline: 1px solid $grape;
       color: $g-900;
     }
@@ -340,7 +377,7 @@
     padding: 8px 4px;
     background: $white;
     border: 1px solid $g-400;
-    border-radius: 2px;
+    border-radius: $border-radius-xs;
     box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
     z-index: 11;
 
@@ -422,11 +459,68 @@
         color: $g-700;
         font-size: $font-size-xs;
         line-height: $line-height-16;
-        // Reserve one line so cards without help text keep the same spacing.
         min-height: $line-height-16;
         margin: 0;
       }
     }
+  }
+
+  .responses-statistics-chart-subtitle {
+    color: $g-700;
+    font-size: $font-size-sm;
+
+    .responses-statistics-chart-subtitle-term {
+      font-weight: $font-weight-500;
+      cursor: help;
+
+      i {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .responses-statistics-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+
+    &--two-col {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 48px;
+    }
+
+    &-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      align-self: stretch;
+      gap: 16px;
+      padding: 12px;
+      border-radius: $border-radius-xs;
+      border: 1px solid $g-400;
+      background: $g-100;
+    }
+
+    &-answer {
+      color: $g-900;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    &-date {
+      flex-shrink: 0;
+      color: $g-700;
+      font-size: $font-size-xs;
+      white-space: nowrap;
+    }
+  }
+
+  .responses-statistics-stat-term i {
+    color: $g-700;
+    cursor: help;
+    vertical-align: middle;
   }
 
   .responses-statistics-chart-labels {
@@ -437,71 +531,11 @@
     font-weight: $font-weight-500;
   }
 
-  .responses-statistics-table {
-    font-size: $font-size-sm;
-
-    // Metric columns (Responses / Percentage) are right-aligned.
-    th:not(:first-child),
-    td:not(:first-child) {
-      text-align: end;
-    }
-
-    th {
-      color: $g-700;
-      font-weight: $font-weight-500;
-    }
-
-    tbody td {
-      color: $g-900;
-      vertical-align: middle;
-      padding: 12px 0;
-    }
-
-    tfoot td {
-      color: $g-900;
-      font-weight: $font-weight-600;
-      border-top: 2px solid $g-300;
-    }
-
-    &-swatch {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 2px;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-
-    &-image {
-      max-width: 100px;
-      vertical-align: middle;
-      object-fit: contain;
-      border: 1px solid $g-400;
-      padding: 12px 18px;
-    }
-
-    &-wrap {
-      overflow-x: auto;
-    }
-
-    &-answer {
-      text-align: start;
-    }
-
-    &--matrix {
-      tbody td,
-      thead th {
-        padding: 12px 16px;
-        white-space: nowrap;
-      }
-
-      .responses-statistics-table-answer {
-        position: sticky;
-        left: 0;
-        z-index: 1;
-        background: $white;
-      }
-    }
+  .responses-statistics-table-image {
+    @include chart-image;
+    max-width: 100px;
+    vertical-align: middle;
+    padding: 12px 18px;
   }
 
   .responses-statistics-array-text-col-primary {
@@ -512,6 +546,105 @@
   .responses-statistics-array-text-col-secondary {
     font-weight: 500;
     color: $g-700;
+  }
+
+  .responses-statistics-array-text-search {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .responses-statistics-array-text-cell {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    max-width: 480px;
+  }
+
+  // "X results found" counter beside the search input.
+  .responses-statistics-search-results {
+    color: $g-700;
+    font-size: $font-size-sm;
+    white-space: nowrap;
+  }
+
+  .responses-statistics-dual-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    &-group-label {
+      flex: 0 0 120px;
+      text-align: start;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      color: $g-900;
+      overflow-wrap: anywhere;
+    }
+
+    &-group-bars {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    &-row-caption {
+      margin-bottom: 2px;
+      font-size: $font-size-xs;
+      color: $g-700;
+    }
+
+    &-doughnut-grid {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      justify-content: center;
+      column-gap: 56px;
+      row-gap: 32px;
+    }
+
+    &-doughnut-chart {
+      position: relative;
+    }
+
+    &-doughnut-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      text-align: center;
+      pointer-events: none;
+      padding: 44px;
+    }
+
+    &-doughnut-title {
+      @include truncate;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      color: $g-900;
+      max-width: 100%;
+    }
+
+    &-doughnut-scale {
+      @include truncate;
+      font-size: $font-size-xs;
+      color: $g-700;
+      max-width: 100%;
+    }
   }
 
   .responses-statistics-stacked-legend {
@@ -555,10 +688,7 @@
     }
 
     &-swatch {
-      width: 14px;
-      height: 14px;
-      border-radius: 3px;
-      flex-shrink: 0;
+      @include swatch(14px, 3px);
     }
   }
 
@@ -568,17 +698,20 @@
     .responses-statistics-chart-toggle {
       display: flex;
       justify-content: flex-end;
+
+      .lime-toggle-btn-group .btn-group {
+        background: $g-200;
+      }
     }
 
     // X-axis image labels: rendered at the bar width with auto height, bordered
     // to match the legend/table image labels.
     .responses-statistics-bar-image {
+      @include chart-image;
       display: block;
       box-sizing: border-box;
       width: 100%;
       height: auto;
-      object-fit: contain;
-      border: 1px solid $g-400;
     }
 
     // Comment question types: bars open the comments for that option on click.
@@ -625,18 +758,15 @@
       }
 
       &-value {
+        @include truncate;
         color: $g-900;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         max-width: 200px;
       }
 
       &-image {
+        @include chart-image;
         max-width: 60px;
         max-height: 32px;
-        object-fit: contain;
-        border: 1px solid $g-400;
         padding: 12px 30px;
       }
     }
@@ -660,20 +790,18 @@
     }
 
     .responses-statistics-pie-label-name {
+      @include truncate;
       min-width: 0;
       max-width: 100%;
       color: $g-900;
       font-size: $font-size-xl;
       font-weight: $font-weight-500;
       text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .responses-statistics-card {
       border-radius: $border-radius;
-      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
       padding: 20px;
       height: 100%;
       gap: 24px;
@@ -695,7 +823,38 @@
   }
 }
 
-
 #statistics-value-type label {
   padding: 3px 16px;
+}
+
+.responses-statistics-search-terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+
+  .responses-statistics-search-term {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    border-radius: $border-radius;
+
+    &-label {
+      @include truncate;
+    }
+
+    button {
+      display: inline-flex;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: inherit;
+      line-height: 1;
+      cursor: pointer;
+
+      &:hover {
+        color: $g-700;
+      }
+    }
+  }
 }

@@ -77,6 +77,10 @@ $rest['v1/statistics/$id'] = [
             'minId' => ['type' => 'integer'],
             'maxId' => ['type' => 'integer'],
             'completed' => ['type' => 'bool'],
+            'search' => ['type' => 'array'],
+            'language' => ['type' => 'string'],
+            'page' => ['type' => 'integer'],
+            'pageSize' => ['type' => 'integer'],
         ],
         'responses' => [
             'success' => [

@@ -1,9 +1,69 @@
+import {
+  QT_O_LIST_WITH_COMMENT,
+  QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+} from 'helpers'
+
 import { RestClient } from './restClient.service'
 
 // An answer belongs to a question when its field-map `title` is the question
 // code (every column of a question shares that title).
 const belongsToQuestion = (answer, questionCode) =>
   String(answer?.title) === String(questionCode)
+
+const buildResponseFilters = ({ completed, minId, maxId } = {}) => {
+  const filters = []
+  if (typeof completed === 'boolean') {
+    filters.push({
+      key: 'completed',
+      filterMethod: 'equal',
+      value: String(completed),
+    })
+  }
+
+  let min = typeof minId === 'number' ? minId : ''
+  const max = typeof maxId === 'number' ? maxId : ''
+  if (min !== '' && max !== '' && min > max) {
+    min = max
+  }
+  if (min !== '' || max !== '') {
+    filters.push({ key: 'id', filterMethod: 'range', value: [min, max] })
+  }
+
+  return filters
+}
+
+const buildAnswerFilters = (selectedAnswer, fields, questionType, selectedField) => {
+  if (!selectedAnswer || !fields?.length) {
+    return []
+  }
+
+  if (questionType === QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+    if (selectedField && fields.includes(selectedField)) {
+      return [{ key: selectedField, filterMethod: 'equal', value: 'Y' }]
+    }
+    return []
+  }
+
+  if (questionType === QT_O_LIST_WITH_COMMENT) {
+    const baseField = fields.find((field) => !field.endsWith('comment'))
+    if (baseField) {
+      return [{ key: baseField, filterMethod: 'equal', value: selectedAnswer }]
+    }
+  }
+
+  return []
+}
+
+const buildSearchFilters = (search, fields) => {
+  if (!Array.isArray(search) || !search.length || !fields?.length) {
+    return []
+  }
+  return search.map((term) => ({
+    key: fields,
+    filterMethod: 'contain',
+    value: term,
+  }))
+}
 
 // Flatten the per-response answers into a single list, tagging each answer with
 // the response it belongs to and a single date (mirrors the server's flattening
@@ -31,8 +91,8 @@ export class StatisticsService {
     this.restClient = new RestClient(baseUrl, auth.restHeaders)
   }
 
-  getSurveyStatistics = async (sid, filters, page = 0, pageSize = 15) => {
-    let { completed, minId, maxId } = filters
+  getSurveyStatistics = async (sid, filters, page = 0, pageSize = 15, language) => {
+    let { completed, minId, maxId, search } = filters
 
     // Ensure minId is not greater than maxId, if provided.
     if (Number(minId) > Number(maxId) && maxId) {
@@ -42,7 +102,15 @@ export class StatisticsService {
     const minIdIsNumber = typeof minId === 'number'
     const maxIdIsNumber = typeof maxId === 'number'
 
-    const queryFilters = `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}&page=${page}&pageSize=${pageSize}`
+    const searchParams = (Array.isArray(search) ? search : [])
+      .map((term) => `&search[]=${encodeURIComponent(term)}`)
+      .join('')
+
+    const languageParam = language
+      ? `&language=${encodeURIComponent(language)}`
+      : ''
+
+    const queryFilters = `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}${searchParams}${languageParam}&page=${page}&pageSize=${pageSize}`
     return await this.restClient.get(`statistics/${sid}?${queryFilters}`)
   }
 
@@ -50,14 +118,6 @@ export class StatisticsService {
     return await this.restClient.get(`statistics-glance/${sid}`)
   }
 
-  /**
-   * POST the survey-responses endpoint and flatten the per-response answers
-   * into a single list plus the pagination envelope. Shared prologue of
-   * getQuestionComments and getQuestionResponses. `fields` restricts the query
-   * to the question's own columns so other questions' answers are not returned
-   * or transferred; the answers are still scoped client-side via
-   * `belongsToQuestion` as a safety net.
-   */
   fetchQuestionAnswers = async (
     sid,
     questionCode,
@@ -65,7 +125,8 @@ export class StatisticsService {
     pageSize,
     language,
     fields,
-    sort
+    sort,
+    filters
   ) => {
     const body = { page: { currentPage, pageSize } }
     if (language) {
@@ -76,6 +137,9 @@ export class StatisticsService {
     }
     if (sort) {
       body.sort = sort
+    }
+    if (Array.isArray(filters) && filters.length) {
+      body.filters = filters
     }
 
     const data = await this.restClient.post(`survey-responses/${sid}`, body)
@@ -101,7 +165,9 @@ export class StatisticsService {
     pageSize = 15,
     language,
     selectedAnswer = '',
-    fields
+    fields,
+    questionType,
+    selectedField = ''
   ) => {
     const { answers, pagination } = await this.fetchQuestionAnswers(
       sid,
@@ -110,10 +176,8 @@ export class StatisticsService {
       pageSize,
       language,
       fields,
-      // Page through responses newest-first by submit date so comments load
-      // chronologically; response id order doesn't track date (imported/resumed
-      // responses), which is why pages otherwise mix recent and old comments.
-      { submitDate: 'desc' }
+      { submitDate: 'desc' },
+      buildAnswerFilters(selectedAnswer, fields, questionType, selectedField)
     )
 
     const hasValue = (answer) =>
@@ -143,17 +207,18 @@ export class StatisticsService {
           hasValue(answer)
       )
       .map((answer) => {
-        // A bare "comment" aid is a question-wide comment (e.g. 'O'
-        // list-with-comment); its sub-question is just a generic "Comment"
-        // label, so group it by the response's selected option instead. Other
-        // comment fields ("<subquestion>comment") keep their real sub-question.
         const isQuestionWide = String(answer?.aid || '') === 'comment'
+        const subQuestionCode = String(answer?.aid || '').replace(
+          /comment$/,
+          ''
+        )
         return {
           responseId: answer.responseId,
           comment: answer.value,
           subQuestion: isQuestionWide
             ? (selectedByResponse[answer.responseId] ?? null)
-            : answer.subquestion ||
+            : subQuestionCode ||
+              answer.subquestion ||
               selectedByResponse[answer.responseId] ||
               null,
           date: answer.date || null,
@@ -186,7 +251,9 @@ export class StatisticsService {
     currentPage = 0,
     pageSize = 15,
     language,
-    fields
+    fields,
+    statisticsFilters,
+    search
   ) => {
     const { answers, pagination } = await this.fetchQuestionAnswers(
       sid,
@@ -194,7 +261,20 @@ export class StatisticsService {
       currentPage,
       pageSize,
       language,
-      fields
+      fields,
+      { submitDate: 'desc' },
+      [
+        ...buildResponseFilters(statisticsFilters),
+        ...buildSearchFilters(
+          [
+            ...new Set([
+              ...(statisticsFilters?.search ?? []),
+              ...(search ?? []),
+            ]),
+          ],
+          fields
+        ),
+      ]
     )
 
     // Columns in first-seen (field map) order; rows grouped by response.
@@ -216,7 +296,11 @@ export class StatisticsService {
 
         const responseId = answer.responseId
         if (responseId != null && !rowByResponse[responseId]) {
-          rowByResponse[responseId] = { responseId, cells: {} }
+          rowByResponse[responseId] = {
+            responseId,
+            date: answer.date ?? null,
+            cells: {},
+          }
           rowOrder.push(responseId)
         }
         if (responseId != null && columnKey) {

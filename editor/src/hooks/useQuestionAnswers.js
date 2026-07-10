@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
 import { getApiUrl, STATES } from 'helpers'
@@ -65,6 +65,7 @@ export function useQuestionAnswers(
     // Require the question's columns so we never fetch the full (un-narrowed)
     // response set; a chart-producing question always has at least one column.
     enabled: enabled && !!questionCode && fields.length > 0,
+    placeholderData: keepPreviousData,
   })
 
   return {

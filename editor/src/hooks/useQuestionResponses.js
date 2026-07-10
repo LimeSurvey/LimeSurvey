@@ -2,15 +2,10 @@ import { useMemo } from 'react'
 
 import { PAGE_SIZE, useQuestionAnswers } from './useQuestionAnswers'
 
-/**
- * Per-response answers of an Array (Texts) question, pivoted into table rows
- * (one per participant) and columns (one per subquestion cell). Mirrors
- * useQuestionComments but keeps the full answer grid instead of comments.
- */
 export function useQuestionResponses(
   surveyId,
   questionCode,
-  { enabled = true, fields = [] } = {}
+  { enabled = true, fields = [], filters = {}, search = [] } = {}
 ) {
   const { data, ...rest } = useQuestionAnswers(
     surveyId,
@@ -21,6 +16,8 @@ export function useQuestionResponses(
         surveyId,
         questionCode,
         activeLanguage,
+        filters,
+        search,
       ],
       queryFn: ({ pageParam = 0 }) =>
         statisticsService.getQuestionResponses(
@@ -29,7 +26,9 @@ export function useQuestionResponses(
           pageParam,
           PAGE_SIZE,
           activeLanguage,
-          fields
+          fields,
+          filters,
+          search
         ),
     }),
     { enabled, fields }
@@ -41,6 +40,8 @@ export function useQuestionResponses(
     () => (data?.pages || []).flatMap((page) => page.rows || []),
     [data]
   )
+  // Total matching responses reported by the backend's pagination meta.
+  const totalResults = data?.pages?.[0]?.pagination?.totalItems ?? null
 
-  return { columns, rows, ...rest }
+  return { columns, rows, totalResults, ...rest }
 }

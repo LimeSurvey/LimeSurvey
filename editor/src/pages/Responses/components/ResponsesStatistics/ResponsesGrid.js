@@ -1,43 +1,37 @@
 import { useEffect, useMemo, useState } from 'react'
 import { format } from 'util'
+import classNames from 'classnames'
 
-import {
-  HighlightedText,
-  LSTable,
-  SearchInput,
-  useSearchTerms,
-} from 'components'
+import { HighlightedText, SearchInput, useSearchTerms } from 'components'
 import { useQuestionResponses } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
+import { dayJsHelper } from 'helpers'
 
-// Participants are shown as zero-padded sequence ids (001, 002, ...).
-const formatParticipant = (responseId) =>
-  String(responseId ?? '').padStart(3, '0')
+const formatAnswerDate = (date) => {
+  if (!date) {
+    return ''
+  }
+  const day = dayJsHelper(date)
+  if (day.isSame(dayJsHelper(), 'day')) {
+    return day.fromNow()
+  }
+  if (day.isSame(dayJsHelper().subtract(1, 'day'), 'day')) {
+    return t('Yesterday')
+  }
+  return day.format('D MMM YYYY')
+}
 
-// Two-tone subquestion header: "<Y subquestion> - <X subquestion>" with the X
-// part styled as secondary, matching the responses grid.
-const ColumnHeader = ({ primary, secondary }) => (
-  <>
-    <span className="responses-statistics-array-text-col-primary">
-      {primary}
-    </span>
-    {secondary && (
-      <span className="responses-statistics-array-text-col-secondary">
-        {' - '}
-        {secondary}
-      </span>
-    )}
-  </>
-)
-
-export const ArrayTextTable = ({
+/**
+ * Per-response answers of a single-field question (short/long/huge text,
+ * numerical) as a list of "answer — when" rows; numerical uses two columns.
+ */
+export const ResponsesGrid = ({
   surveyId,
   questionCode,
   fields,
   filters,
-  searchable = false,
+  twoColumns = false,
 }) => {
-  // Defer the fetch until the card scrolls into view, then keep it loaded.
   const [containerRef, isInView] = useIsInViewport(null, {
     initialInView: false,
   })
@@ -50,6 +44,7 @@ export const ArrayTextTable = ({
 
   const { terms, setTerms, setTyped, search } = useSearchTerms()
 
+  // The backend matches the global panel terms too, so highlight both.
   const highlightTerms = useMemo(
     () => [...new Set([...(filters?.search ?? []), ...search])],
     [filters, search]
@@ -70,46 +65,20 @@ export const ArrayTextTable = ({
     search,
   })
 
-  const tableColumns = useMemo(
-    () => [
-      {
-        key: 'participant',
-        title: t('Participant'),
-        sortable: true,
-        render: (row) => formatParticipant(row.responseId),
-      },
-      ...columns.map((column) => ({
-        key: column.key,
-        title: column.primary ? (
-          <ColumnHeader primary={column.primary} secondary={column.secondary} />
-        ) : (
-          t('Answer')
-        ),
-        render: (row) => (
-          <div className="responses-statistics-array-text-cell">
-            <HighlightedText text={row[column.key]} terms={highlightTerms} />
-          </div>
-        ),
-      })),
-    ],
-    [columns, highlightTerms]
-  )
-
-  // Flatten each row's cells onto the row so LSTable can render columns by key;
-  // `participant` mirrors the response id so the first column can be sorted.
-  const tableRows = useMemo(
+  const answerKey = columns[0]?.key
+  const answers = useMemo(
     () =>
-      rows.map((row) => ({
-        id: row.responseId,
-        responseId: row.responseId,
-        participant: row.responseId,
-        ...row.cells,
-      })),
-    [rows]
+      rows
+        .map((row) => ({
+          id: row.responseId,
+          value: row.cells?.[answerKey] ?? '',
+          date: row.date,
+        }))
+        .filter((row) => row.value !== '' && row.value != null),
+    [rows, answerKey]
   )
 
   const renderContent = () => {
-    // Loader while waiting to come into view or while the first page loads.
     if (!shouldLoad || isLoading) {
       return (
         <div className="responses-statistics-comments-status">
@@ -118,7 +87,7 @@ export const ArrayTextTable = ({
       )
     }
 
-    if (!tableRows.length) {
+    if (!answers.length) {
       return (
         <div className="responses-statistics-empty">
           {search.length
@@ -130,13 +99,22 @@ export const ArrayTextTable = ({
 
     return (
       <>
-        <LSTable
-          columns={tableColumns}
-          data={tableRows}
-          rowId="id"
-          resizable
-          maxHeight="400px"
-        />
+        <div
+          className={classNames('responses-statistics-grid', {
+            'responses-statistics-grid--two-col': twoColumns,
+          })}
+        >
+          {answers.map((answer) => (
+            <div className="responses-statistics-grid-row" key={answer.id}>
+              <span className="responses-statistics-grid-answer">
+                <HighlightedText text={answer.value} terms={highlightTerms} />
+              </span>
+              <span className="responses-statistics-grid-date">
+                {formatAnswerDate(answer.date)}
+              </span>
+            </div>
+          ))}
+        </div>
         {hasNextPage && (
           <div className="responses-statistics-comments-more">
             <button
@@ -155,7 +133,7 @@ export const ArrayTextTable = ({
 
   return (
     <div ref={containerRef}>
-      {searchable && shouldLoad && (
+      {shouldLoad && (
         <div className="responses-statistics-array-text-search">
           <SearchInput
             terms={terms}

@@ -1,0 +1,81 @@
+// SearchInput: chips-in-input search field plus the HighlightedText mark
+// wrapping matched search terms.
+.search-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  width: 220px;
+  min-height: 34px;
+  height: auto;
+  padding: 4px 12px;
+  border-radius: $border-radius-xs;
+  border: 1px solid $g-700;
+  cursor: text;
+  color: $g-700;
+  font-family: $ibm-font-family;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-16;
+  letter-spacing: -0.5px;
+
+  &-icon {
+    flex-shrink: 0;
+    color: $g-700;
+  }
+
+  input {
+    flex: 1;
+    min-width: 80px;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+
+    &::placeholder {
+      color: $g-700;
+    }
+  }
+
+  &-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: $font-weight-500;
+
+    // Scale Bootstrap's close button down to badge size.
+    .btn-close {
+      font-size: 8px;
+      padding: 2px;
+    }
+  }
+}
+
+// Matched search terms inside result texts (overrides <mark>'s defaults).
+.search-highlight {
+  padding: 0;
+  border-radius: $border-radius-xs;
+  background: $grape;
+  color: $white;
+}
+
+// Highlights fade from a soft tint to the full pill instead of popping.
+@keyframes search-highlight-in {
+  from {
+    background-color: rgba($grape, 0.15);
+    color: $g-900;
+  }
+  to {
+    background-color: $grape;
+    color: $white;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .search-highlight {
+    animation: search-highlight-in 0.3s ease-out;
+  }
+}
