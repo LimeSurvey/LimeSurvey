@@ -3,6 +3,7 @@
 /**
  * @var $this CLSGridView
  * @var $massiveActionTemplate string
+ * @var $showSelectionBar bool
  */
 $countSpan = "<span class='grid-selection-count'>0</span>";
 ?>
@@ -10,6 +11,7 @@ $countSpan = "<span class='grid-selection-count'>0</span>";
 <div id="bottom-scroller" class="content-right scrolling-wrapper">
     {items}
 </div>
+<?php if ($showSelectionBar ?? true): ?>
 <div class="grid-selection-bar"
      data-grid-id="<?= CHtml::encode($this->id) ?>"
      style="display:none;">
@@ -24,6 +26,7 @@ $countSpan = "<span class='grid-selection-count'>0</span>";
         <i class="ri-close-line"></i>
     </button>
 </div>
+<?php endif; ?>
     <div class="grid-view-ls-footer">
             <div class="massive-action-container" id="massive-action-container">
                 <?= $massiveActionTemplate ?>

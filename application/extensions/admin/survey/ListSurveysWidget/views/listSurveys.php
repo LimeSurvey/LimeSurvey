@@ -15,11 +15,22 @@
 /**
  * @var $this ListSurveysWidget
  */
+
+require_once __DIR__ . '/../../../grid/FloatingActionsWidget/actions/SurveyListMassiveActions.php';
 ?>
 
 <!-- Grid -->
 <div class="row">
     <div class="col-12">
+        <?php
+        // Render the floating action bar (cross-page selection, fixed at bottom)
+        $floatingActions = \actions\SurveyListMassiveActions::getActions();
+        $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+            'pk'       => 'sid',
+            'gridId'   => 'survey-grid',
+            'aActions' => $floatingActions,
+        ]);
+        ?>
         <?php
 
         $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [
@@ -41,15 +52,12 @@
             'ajaxUpdate'            => 'survey-grid',
             'lsAfterAjaxUpdate'     => [
                 'window.LS.doToolTip();',
-                'bindListItemclick();',
-                'switchStatusOfListActions();',
             ],
             'rowLink'               =>
                 '$data->hasNewEditor'
                 . ' ? App()->createUrl("editorLink/index", ["route" => "survey/" . $data->sid]) '
                 . ' : Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
-            // 'template'  => $this->template,
-            'massiveActionTemplate' => $this->render('massive_actions/_selector', [], true, false),
+            'showSelectionBar'      => false,
             'columns'               => $this->model->getColumns(),
             'lsAdditionalColumns' => $this->model->getAdditionalColumns(),
 

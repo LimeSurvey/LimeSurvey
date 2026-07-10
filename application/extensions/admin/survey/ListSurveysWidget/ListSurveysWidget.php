@@ -62,7 +62,6 @@ class ListSurveysWidget extends CWidget
 
         App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
 
-        $this->massiveAction = $this->render('massive_actions/_selector', array(), true, false);
 
         $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
             'model' => new Survey('search'),

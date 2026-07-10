@@ -40,6 +40,13 @@ class CLSGridView extends TbGridView
     public $caption;
 
     /**
+     * Whether to render the cross-pagination selection bar below the grid.
+     * Set to false for grids that use the FloatingActionsWidget to show the count in the floating bar.
+     * @var bool
+     */
+    public $showSelectionBar = true;
+
+    /**
      *
      * Initializes the widget.
      * @throws CException
@@ -52,7 +59,10 @@ class CLSGridView extends TbGridView
         $this->htmlOptions['class'] = 'grid-view-ls';
         $this->htmlOptions['data-select-all-label'] = gT('Select all');
         $classes = ['table', 'table-hover'];
-        $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
+        $this->template = $this->render('template', [
+            'massiveActionTemplate' => $this->massiveActionTemplate,
+            'showSelectionBar'      => $this->showSelectionBar,
+        ], true);
         $this->rowLink();
         $this->lsAfterAjaxUpdate();
         if (!empty($classes)) {
@@ -149,6 +159,10 @@ class CLSGridView extends TbGridView
 
         // Always restore persisted checkbox selection
         $parts[] = $alwaysJs;
+
+        // Allow external modules (e.g. FloatingActionsWidget) to hook into afterAjaxUpdate
+        // by wrapping calls through LS.gridView.afterAjaxUpdate.
+        $parts[] = 'if(window.LS && LS.gridView && typeof LS.gridView.afterAjaxUpdate === "function"){LS.gridView.afterAjaxUpdate(id, data);}';
 
         if (!empty($this->lsAdditionalColumns)) {
             $parts[] = 'initColumnFilter();';

@@ -372,49 +372,129 @@ table {
     }
 }
 
-.grid-view-ls {
-    .table td {
-        vertical-align: middle;
-        input[type="checkbox"]:after {
-            margin-top: -3px;
-            margin-right: -3px;
+// =============================================================================
+// Floating actions bar (FloatingActionsWidget)
+// =============================================================================
+.floating-actions-bar {
+    display       : none;
+    position      : fixed;
+    bottom        : 16px;
+    left          : 50%;
+    transform     : translateX(-50%);
+    width         : auto;
+    z-index       : 1040;
+    align-items   : center;
+    gap           : 2px;
+    padding       : 4px 8px;
+    height        : 42px;
+    background    : $white;
+    border        : 1px solid $g-400;
+    border-radius : $border-radius;
+    box-shadow    : 0 2px 8px 0 $elevation-shadow-soft;
+    white-space   : nowrap;
+
+    &.floating-actions-bar--visible {
+        display : flex;
+    }
+
+    .floating-actions-count {
+        display     : flex;
+        align-items : center;
+        gap         : 6px;
+        padding     : 4px 8px;
+    }
+
+    // "x selected" counter – same typography as the action buttons
+    > span:first-child,
+    .floating-actions-count-number {
+        font-size   : $font-size-xs;
+        font-weight : $font-weight-500;
+        line-height : 1.4;
+    }
+
+    .floating-actions-count-number {
+        background    : $g-200;
+        border-radius : $border-radius-sm;
+        padding       : 2px 6px;
+    }
+
+    .floating-actions-separator {
+        width      : 1px;
+        height     : 22px;
+        background : $g-400;
+        margin     : 0 4px;
+        flex-shrink: 0;
+    }
+
+    .floating-actions-btn {
+        display     : inline-flex;
+        align-items : center;
+        gap         : 4px;
+        padding     : 4px 8px;
+        font-size   : $font-size-xs;
+        font-weight : $font-weight-500;
+        color       : $g-900;
+        background  : transparent;
+        border      : 1px solid transparent;
+        border-radius : $border-radius;
+        cursor      : pointer;
+        line-height : 1.4;
+
+        i::before {
+            font-size : 14px;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background : $g-200;
+            outline    : none;
+        }
+
+        &:focus {
+            background-color: unset;
+            border: solid 1px $grape;
+            color: $g-900;
+        }
+
+        &.text-danger {
+            color : $error;
+
+            i::before {
+                color : $error;
+            }
         }
     }
 
-    .table td .longtext-content {
-        min-width: 8em;
-        max-width: 16em;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        height: 1.5em;
-        display: inline-block;
-    }
+    .floating-actions-close {
+        display         : inline-flex;
+        align-items     : center;
+        justify-content : center;
+        width           : 28px;
+        height          : 28px;
+        padding         : 0;
+        background      : transparent;
+        border          : 1px solid transparent;
+        border-radius   : $border-radius;
+        cursor          : pointer;
+        color           : $g-900;
+        margin-left     : 4px;
+        flex-shrink     : 0;
 
-    .summary {
-        color: #999999;
-        font-size: 12px;
-        text-align: right;
-    }
-
-    &.grid-view-loading {
-        background: url(../img/loader.gif) no-repeat 100% 10px;
-
-        .table {
-            opacity: 0.3;
+        i::before {
+            font-size : 16px;
         }
 
-        .table th > .sort-link .caret {
-            display: none;
+        &:hover,
+        &:focus-visible {
+            background : $g-200;
+            outline    : none;
         }
     }
-}
-@media (max-width: 768px) {
-  .grid-view-ls-footer {
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center;
-  }
+
+    // Dropdown inside the bar
+    .dropdown-menu {
+        font-size : 13px;
+    }
 }
 
 .grid-selection-bar {
