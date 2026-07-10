@@ -42,7 +42,11 @@
             name="{{ name }}_Cother"
             title="{{ flatString(processString(othertext,1),1) }}"
             {{ answer_other }}
-            aria-labelledby="label-id-{{ name }}"
+            {% if othertext is empty and otherTextRight is defined and otherTextRight|length > 0 %}
+                aria-labelledby="suffix-id-{{ name }}"
+            {% else %}
+                aria-labelledby="label-id-{{ name }}"
+            {% endif %}
             {% if numbers_only %} data-number="1" {% endif %}
             {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
             {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
@@ -50,7 +54,7 @@
         </div>
 
         {% if otherTextRight is defined and otherTextRight|length >0 %}
-            <div class="othertext-suffix-label col-auto">
+            <div class="othertext-suffix-label col-auto" id="suffix-id-{{ name }}">
                 {{ processString(otherTextRight) }}
             </div>
         {% endif %}

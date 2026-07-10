@@ -39,11 +39,18 @@
                    id="{{ id }}"
                    value="{{ value }}"
                    data-number={{ otherNumber }}
+                   {% if labeltext is empty %}
+                       {% if otherTextRight is defined and otherTextRight|length > 0 %}
+                           aria-labelledby="suffix-{{ id }}"
+                       {% else %}
+                           aria-label="Other"
+                       {% endif %}
+                   {% endif %}
                    {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
                    {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
                 />
                 {% if otherTextRight is defined and otherTextRight|length > 0 %}
-                    <label class="othertext-suffix-label">{{ processString(otherTextRight) }}</label>
+                    <label class="othertext-suffix-label" id="suffix-{{ id }}">{{ processString(otherTextRight) }}</label>
                 {% endif %}
             </div>
         </div>

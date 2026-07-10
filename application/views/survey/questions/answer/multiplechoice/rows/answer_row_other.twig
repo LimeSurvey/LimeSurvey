@@ -45,7 +45,11 @@
                     name="{{ myfname }}"
                     id="answer{{ myfname }}"
                     value="{{ sValue }}"
-                    aria-labelledby="label-{{ myfname }}-other"
+                    {% if othertext is empty and othertextRight is defined and othertextRight|length > 0 %}
+                        aria-labelledby="suffix-{{ myfname }}-other"
+                    {% else %}
+                        aria-labelledby="label-{{ myfname }}-other"
+                    {% endif %}
                     {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
                     {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
                 />
@@ -53,7 +57,7 @@
         </div>
 
         {% if othertextRight is defined and othertextRight|length >0 %}
-            <div class="othertext-suffix-label col-auto">
+            <div class="othertext-suffix-label col-auto" id="suffix-{{ myfname }}-other">
                 {{ processString(othertextRight) }}
             </div>
         {% endif %}
