@@ -10,7 +10,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 export const Input = ({
   value = '',
-  defaultValue,
+  defaultValue = '',
   dataTestId,
   onChange = () => {},
   onBlur = () => {},
@@ -80,7 +80,7 @@ export const Input = ({
       return
     }
 
-    inputRef.current.value = defaultValue || value
+    inputRef.current.value = value || defaultValue
   }, [inputRef, value])
 
   const handleOnChange = (event) => {

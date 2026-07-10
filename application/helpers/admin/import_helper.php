@@ -28,9 +28,6 @@ use LimeSurvey\Models\Services\SurveyAccessModeService;
 function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $supportArchivedFields = true)
 {
     $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
-    if (\PHP_VERSION_ID < 80000) {
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-    }
 
     $sXMLdata              = file_get_contents($sFullFilePath);
     $xml                   = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
@@ -659,9 +656,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
     $results['labelsets'] = 0;
     $results['labels'] = 0;
 
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-    }
     return $results;
 }
 
@@ -1551,7 +1545,7 @@ function createTableFromPattern($table, $pattern, $columns = [], $where = [])
                 break;
         }
     } else {
-        $command = "";
+        $command = $command2 = "";
         switch (Yii::app()->db->getDriverName()) {
             case 'mysqli':
             case 'mysql':
@@ -1936,6 +1930,7 @@ function getDeactivatedArchives($sid)
  */
 function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
 {
+    $prefixLength = strlen(App()->db->tablePrefix ?? '');
     $customFilter = [
         'mysql' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
         'mysqli' => 'a.TABLE_SCHEMA = b.TABLE_SCHEMA and a.TABLE_SCHEMA = DATABASE()',
@@ -1961,7 +1956,9 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
     foreach ($rawResults as $rawResult) {
         $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
     }
+    switchMSSQLIdentityInsert(substr($destination, $prefixLength), true);
     $timings = count($columns) ? Yii::app()->db->createCommand("INSERT INTO " . Yii::app()->db->quoteTableName($destination) . "(" . implode(",", $columns) . ") SELECT " . implode(",", $columns) . " FROM " . Yii::app()->db->quoteTableName($source))->execute() : 0;
+    switchMSSQLIdentityInsert(substr($destination, $prefixLength), false);
     if ((!$preserveIDs) && (strpos($destination, 'timings') !== false)) {
         $oldResponsesTable = str_replace('_timings', '_responses', $source);
         $command = "
@@ -2030,6 +2027,15 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $tableName = "{{responses_$surveyId}}";
     $importedResponses = 0;
     $batchData = [];
+    $survey = Survey::model()->findByPk($surveyId);
+    $rankingMap = [];
+    foreach ($survey->questions as $q) {
+        if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
+            foreach ($q->subquestions as $s) {
+                $rankingMap["Q{$s->parent_qid}_S{$s->qid}"] = "Q{$s->parent_qid}";
+            }
+        }
+    }
     foreach ($archivedResponses as $archivedResponse) {
         $dataRow = [];
         // Using plugindynamic model because I dont trust surveydynamic.
@@ -2055,6 +2061,21 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             $dataRow[$target] = $targetResponse->{$target};
         }
 
+        $rankingJSONs = [];
+
+        foreach ($rankingMap as $oldFieldName => $newFieldName) {
+            if (!empty($archivedResponse[$oldFieldName])) {
+                if (!isset($rankingJSONs[$newFieldName])) {
+                    $rankingJSONs[$newFieldName] = [];
+                }
+                
+                $rankingJSONs[$newFieldName][] = $archivedResponse[$oldFieldName];
+            }
+        }
+
+        foreach ($rankingJSONs as $newFieldName => $value) {
+            $dataRow[$newFieldName] = json_encode($value);
+        }
         $additionalFields = [
             'token',
             'submitdate',
@@ -3653,6 +3674,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
 function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
 {
     $qidMetadata = null;
+    $survey = Survey::model()->findByPk($iSurveyID);
     Yii::app()->loadHelper('database');
     $survey = Survey::model()->findByPk($iSurveyID);
 
@@ -3660,13 +3682,16 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     $results = [];
     $results['responses'] = 0;
 
-    if (\PHP_VERSION_ID < 80000) {
-        libxml_disable_entity_loader(false);
-    }
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
     if (\PHP_VERSION_ID < 80000) {
         libxml_disable_entity_loader(true);
+    }
+    $rankings = [];
+    foreach ($survey->questions as $q) {
+        if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
+            $rankings[] = "Q{$q->qid}";
+        }
     }
     if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
         // Refresh metadata to make sure it reflects the current survey
@@ -3693,6 +3718,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             if (isset($aFieldReMap[$sFieldname])) {
                                 $sFieldname = $aFieldReMap[$sFieldname];
                             }
+                            $resolvedFieldname = $sFieldname;
                             if (!$oXMLReader->isEmptyElement) {
                                 $oXMLReader->read();
                                 if (in_array($sFieldname, $DestinationFields)) {
@@ -3741,9 +3767,19 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                                 $endIndex++;
                                                 continue;
                                             }
-                                            $aInsertData[getFieldName("{{responses_" . $newSid . "}}", $oldFieldName, $qidMetadata[$newGid][$qidCandidate], $newSid, $newGid, false)] = $oXMLReader->value;
+                                            $resolvedFieldname = getFieldName("{{responses_" . $newSid . "}}", $oldFieldName, $qidMetadata[$newGid][$qidCandidate], $newSid, $newGid);
+                                            $aInsertData[$resolvedFieldname] = $oXMLReader->value;
                                             $endIndex++;
                                         }
+                                    }
+                                }
+                                $root = explode("_", $resolvedFieldname)[0];
+                                if (in_array($root, $rankings)) {
+                                    if (!isset($aInsertData[$root])) {
+                                        $aInsertData[$root] = [];
+                                    }
+                                    if (!is_string($aInsertData[$root])) {
+                                        $aInsertData[$root][] = $oXMLReader->value;
                                     }
                                 }
                                 $oXMLReader->read();
@@ -3751,6 +3787,11 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                                 if (in_array($sFieldname, $DestinationFields)) {
                                     $aInsertData[$sFieldname] = '';
                                 }
+                            }
+                        }
+                        foreach ($rankings as $ranking) {
+                            if (isset($aInsertData[$ranking]) && (!is_string($aInsertData[$ranking]))) {
+                                $aInsertData[$ranking] = json_encode($aInsertData[$ranking]);
                             }
                         }
                         try {
@@ -3848,6 +3889,20 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     if (empty($aCsvHeader)) {
         $CSVImportResult['errors'][] = gT("File seems empty or has only one line");
         return $CSVImportResult;
+    }
+    $survey = Survey::model()->findByPk($iSurveyId);
+    $rankings = [];
+    foreach ($survey->questions as $q) {
+        if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
+            $index = 1;
+            $rankings["Q{$q->qid}"] = [];
+            do {
+                if (in_array("{$q->title}_{$index}", $aCsvHeader)) {
+                    $rankings["Q{$q->qid}"][] = array_search("{$q->title}_{$index}", $aCsvHeader);
+                    $index++;
+                }
+            } while (in_array("{$q->title}_{$index}", $aCsvHeader));
+        }
     }
     // Assign fieldname with $aFileResponses[] key
     foreach ($aRealFieldNames as $sFieldName) {
@@ -3996,6 +4051,16 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                 } else {
                     $sResponse = str_replace(array("{quote}", "{tab}", "{cr}", "{newline}", "{lbrace}"), array("\"", "\t", "\r", "\n", "{"), (string) $aResponses[$iFieldKey]);
                     $oSurvey->$sFieldName = $sResponse;
+                }
+            }
+
+            foreach ($rankings as $key => $json) {
+                if (count($json)) {
+                    $result = [];
+                    foreach ($json as $value) {
+                        $result[] = $aResponses[$value];
+                    }
+                    $oSurvey->$key = json_encode($result);
                 }
             }
 

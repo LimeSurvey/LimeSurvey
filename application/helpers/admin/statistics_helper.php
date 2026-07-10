@@ -550,7 +550,7 @@ class statistics_helper
     /**
      * The Excel worksheet we are working on
      *
-     * @var Spreadsheet_Excel_Writer_Worksheet
+     * @var \LimeSurvey\Libraries\Spreadsheet\ExcelWorksheetWriter
      */
     protected $sheet;
 
@@ -560,7 +560,7 @@ class statistics_helper
     /**
      * The current Excel workbook we are working on
      *
-     * @var Writer
+     * @var \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter
      */
     protected $workbook;
 
@@ -664,7 +664,10 @@ class statistics_helper
                 $qtype = $nresult->type;
                 $qquestion = flattenText($nresult->questionl10ns[$language]->question);
 
-                $mfield = $rt;
+                // Use the validated fieldmap key ($fld) as the actual response-table column name.
+                // $rt may carry a leading question-type letter (e.g. "TQ29460"), while the real
+                // column is "Q29460", so using $rt directly would reference a non-existent column.
+                $mfield = $fld;
 
                 //Text questions either have an answer, or they don't. There's no other way of quantising the results.
                 // So, instead of building an array of predefined answers like we do with lists & other types,
@@ -3959,27 +3962,17 @@ class statistics_helper
         }
         if ($outputType == 'xls') {
             /**
-             * Initiate the Spreadsheet_Excel_Writer
+             * Initiate the Excel workbook writer
              */
             if ($outputTarget == 'F') {
-                $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xls';
-                $this->workbook = new Spreadsheet_Excel_Writer($sFileName);
+                $sFileName = $sTempDir . '/statistic-survey' . $surveyid . '.xlsx';
+                $this->workbook = new \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter($sFileName);
             } else {
-                $this->workbook = new Spreadsheet_Excel_Writer();
-            }
-            $this->workbook->setVersion(8);
-            // Inform the module that our data will arrive as UTF-8.
-            // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            $this->workbook->setTempDir($sTempDir);
-
-            // Inform the module that our data will arrive as UTF-8.
-            // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            if (!empty($sTempDir)) {
-                $this->workbook->setTempDir($sTempDir);
+                $this->workbook = new \LimeSurvey\Libraries\Spreadsheet\ExcelWorkbookWriter();
             }
 
             if ($outputTarget != 'F') {
-                $this->workbook->send('statistic-survey' . $surveyid . '.xls');
+                $this->workbook->send('statistic-survey' . $surveyid . '.xlsx');
             }
 
             // Creating the first worksheet
@@ -3987,7 +3980,6 @@ class statistics_helper
             $this->xlsPercents = $this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
             $this->formatBold = $this->workbook->addFormat(array('Bold' => 1));
-            $this->sheet->setInputEncoding('utf-8');
             $this->sheet->setColumn(0, 20, 20);
         }
         /**

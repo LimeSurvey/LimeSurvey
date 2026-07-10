@@ -134,7 +134,7 @@ This will generate a dropup button of this kind :
 You can also add some data attributes in the link, if you need it for custom JavaScript. Just add an array 'aLinkSpecificDatas' to your action. In LS, it's used only for the token grid, for the redirect action type.
 
 ```php
-// Exemple of action with some custom data attribute in the link
+// Example of action with some custom data attribute in the link
 array(
     // li element
     'type'        => 'action',                                                        

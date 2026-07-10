@@ -66,7 +66,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'grid-reload' => 'no',
 
                 'actionType' => 'custom',
-                'custom-js' => '(function() { LS.CPDB.onClickExport(); })'
+                'custom-js' => '(function(itemIds) { LS.CPDB.onClickExport(itemIds); })'
             ],
             [
                 'type' => 'action',
