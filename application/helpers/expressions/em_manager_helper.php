@@ -5338,7 +5338,7 @@ class LimeExpressionManager
                                 foreach ($question->subquestions as $subquestion) {
                                     $key = "Q{$question->qid}_S{$subquestion->qid}";
                                     if (isset($aResponseAttributes[$key])) {
-                                        if (!in_array($aResponseAttributes[$key], $empty)) {
+                                        if (!in_array($aResponseAttributes[$key], $empty, true)) {
                                             $rankingToStore[] = $aResponseAttributes[$key];
                                         }
                                         unset($aResponseAttributes[$key]);
