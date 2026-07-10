@@ -1,5 +1,6 @@
+import { getQuestionTypeInfo } from 'components/QuestionTypes/index.js'
+
 import { getQuestionText } from '../helpers'
-import { getQuestionTypeInfo } from '../../../../QuestionTypes/index.js'
 
 export const createQuestion = (
   cQuestions,
