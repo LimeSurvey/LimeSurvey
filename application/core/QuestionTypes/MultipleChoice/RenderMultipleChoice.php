@@ -114,6 +114,34 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         return $aRows;
     }
 
+    /**
+     * Returns shared "Other" text parts and input constraints used by both
+     * getOtherRow() and render().
+     *
+     * @return array{otherTextLeft: string, otherTextRight: string, otherInputSize: string|null, otherMaxLength: int|null}
+     */
+    private function getOtherSizeConstraints(): array
+    {
+        $otherParts = $this->splitOtherText($this->otherText);
+
+        $otherInputSize = null;
+        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
+            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
+        }
+
+        $otherMaxLength = null;
+        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
+            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
+        }
+
+        return [
+            'otherTextLeft'  => $otherParts['left'],
+            'otherTextRight' => $otherParts['right'],
+            'otherInputSize' => $otherInputSize,
+            'otherMaxLength' => $otherMaxLength,
+        ];
+    }
+
     public function getOtherRow()
     {
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
@@ -142,25 +170,18 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             $sValueHidden = htmlspecialchars((string) $dispVal, ENT_QUOTES);
         }
 
-        $otherParts     = $this->splitOtherText($this->otherText);
-        $otherTextLeft  = $otherParts['left'];
-        $otherTextRight = $otherParts['right'];
+        $otherConstraints = $this->getOtherSizeConstraints();
+        $otherTextLeft    = $otherConstraints['otherTextLeft'];
+        $otherTextRight   = $otherConstraints['otherTextRight'];
+        $otherInputSize   = $otherConstraints['otherInputSize'];
+        $otherMaxLength   = $otherConstraints['otherMaxLength'];
 
         $otherItemExtraClass = "";
         if (empty($otherTextLeft)) {
             $otherItemExtraClass = "no-prefix-othertext";
         }
-
-        // Get other_input_size and other_maximum_chars attributes
-        $otherInputSize = null;
-        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
-            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
+        if ($otherInputSize !== null) {
             $otherItemExtraClass .= " ls-input-sized";
-        }
-
-        $otherMaxLength = null;
-        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
-            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
         }
 
         ////
@@ -192,19 +213,11 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $inputnames = [];
         $this->sCoreClasses .= " " . $sCoreClasses;
 
-        $otherParts     = $this->splitOtherText($this->otherText);
-        $otherTextLeft  = $otherParts['left'];
-        $otherTextRight = $otherParts['right'];
-
-        $otherInputSize = null;
-        if (ctype_digit(trim((string) $this->getQuestionAttribute('other_input_size')))) {
-            $otherInputSize = trim((string) $this->getQuestionAttribute('other_input_size'));
-        }
-
-        $otherMaxLength = null;
-        if (intval(trim((string) $this->getQuestionAttribute('other_maximum_chars'))) > 0) {
-            $otherMaxLength = intval(trim((string) $this->getQuestionAttribute('other_maximum_chars')));
-        }
+        $otherConstraints = $this->getOtherSizeConstraints();
+        $otherTextLeft    = $otherConstraints['otherTextLeft'];
+        $otherTextRight   = $otherConstraints['otherTextRight'];
+        $otherInputSize   = $otherConstraints['otherInputSize'];
+        $otherMaxLength   = $otherConstraints['otherMaxLength'];
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'aRows'            => $this->getRows(),
