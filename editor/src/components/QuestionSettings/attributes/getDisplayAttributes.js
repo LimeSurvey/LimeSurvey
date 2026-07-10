@@ -372,6 +372,7 @@ export const getDisplayAttributes = () => ({
       id: 'category-separator',
       labelText: t("Label for 'Other:' option"),
       dataTestId: 'label-for-other-option',
+      labelTooltip: t("Replaces the label of the 'Other:' answer option with a custom text. To also show a suffix label after the text input, separate prefix and suffix with a pipe (|), e.g. 'From|to 100'. To show only a suffix with no prefix label, use a leading pipe: '|°C'. To show no label at all, use a single pipe: '|'."),
     },
   },
   OTHER_INPUT_SIZE: {
