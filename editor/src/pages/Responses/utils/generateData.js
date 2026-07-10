@@ -135,6 +135,10 @@ export const generateData = (responses, language, generatedColumns) => {
             }
             if (otherItem) {
               otherItem.otherText = { value, key: answer.key }
+              if (value) {
+                otherItem.answerTitle = value
+                otherItem.value = value
+              }
             }
           } else {
             // Multiple-choice: value IS the text the respondent typed; non-empty means checked
