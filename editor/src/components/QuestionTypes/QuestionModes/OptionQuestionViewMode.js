@@ -430,7 +430,7 @@ export const OptionQuestionViewMode = ({
                   : value?.checked
               }
               groupName={`${gid}X${qid}`}
-              active={selectedIndex === index}
+              active={isSingleChoiceTheme ? selectedIndex === index : value?.checked ?? false}
               disabled={ChildUiComponentToRender.name === contentEditorName}
               isNoAnswer={child.isNoAnswer}
             />
