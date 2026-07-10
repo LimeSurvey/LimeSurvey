@@ -1048,7 +1048,11 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             case Question::QT_L_LIST:
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
             case Question::QT_O_LIST_WITH_COMMENT:
-            case Question::QT_I_LANGUAGE:
+                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
+                if ($sValue == "-oth-") {
+                    $this_answer = gT("Other", null, $sLanguage);
+                }
+                break;
             case Question::QT_R_RANKING:
                 $items = json_decode($sValue, true);
                 if (is_array($items)) {
@@ -1163,8 +1167,13 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
                     }
                 }
                 break;
+            case Question::QT_I_LANGUAGE:
+                if (!empty($sValue)) {
+                    $this_answer = getLanguageNameFromCode($sValue, false);
+                }
+                break;
             default:
-                ;
+                break;
         } // switch
     }
     switch ($sFieldCode) {
