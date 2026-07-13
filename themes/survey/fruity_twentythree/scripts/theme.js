@@ -37,7 +37,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 // register to global scope
 window.bootstrap = Bootstrap;
 
-},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":12}],2:[function(require,module,exports){
+},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":14}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1080,6 +1080,149 @@ exports.ArrayScripts = ArrayScripts;
 window.ArrayScripts = ArrayScripts;
 
 },{}],8:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+/**
+ * LimeSurvey
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ *
+ * ListRadio - Deselectable single-choice radio buttons
+ *
+ * Enables deselection of an already-selected radio button by clicking it again.
+ * Applies to list-radio question containers that also carry the CSS class
+ * "deselect-singlechoice", added by the fruity_twentythree theme when the
+ * "deselectsinglechoice" theme option is enabled.
+ *
+ * When a radio is deselected, a custom "ls:singlechoiceDeselected" event is
+ * dispatched on the question container with detail { name, value }, allowing
+ * other modules to react (e.g. clearing the "other" text field).
+ */
+
+var ListRadioScripts = function () {
+  var initialized = false;
+  var previouslyCheckedRadio = null;
+  var recordCheckedState = function recordCheckedState(radio) {
+    previouslyCheckedRadio = radio && radio.checked ? radio : null;
+  };
+  var init = function init() {
+    if (initialized) {
+      return;
+    }
+    initialized = true;
+
+    // Direct click on the radio input circle
+    $(document).on('mousedown', '.deselect-singlechoice.list-radio input[type="radio"]', function () {
+      recordCheckedState(this);
+    });
+
+    // Click via an associated label (label is a sibling, not a parent)
+    // mousedown fires on the label; the browser then synthesises a click on the input
+    $(document).on('mousedown', '.deselect-singlechoice.list-radio label', function () {
+      var forId = this.getAttribute('for');
+      recordCheckedState(forId ? document.getElementById(forId) : null);
+    });
+    $(document).on('click', '.deselect-singlechoice.list-radio input[type="radio"]', function () {
+      if (this !== previouslyCheckedRadio) {
+        previouslyCheckedRadio = null;
+        return;
+      }
+      this.checked = false;
+      previouslyCheckedRadio = null;
+      var name = this.name;
+      var value = this.value;
+
+      // Update the hidden java field used by the expression manager
+      var javaField = document.getElementById('java' + name);
+      if (javaField) {
+        javaField.value = '';
+      }
+
+      // Notify other modules that a radio was deselected
+      var container = this.closest('.deselect-singlechoice');
+      if (container) {
+        container.dispatchEvent(new CustomEvent('ls:singlechoiceDeselected', {
+          bubbles: true,
+          detail: {
+            name: name,
+            value: value
+          }
+        }));
+      }
+
+      // Notify the expression manager about the cleared value
+      if (typeof checkconditions === 'function') {
+        checkconditions('', name, 'radio');
+      }
+    });
+  };
+  return {
+    init: init
+  };
+}();
+$(document).on('ready pjax:scriptcomplete', function () {
+  ListRadioScripts.init();
+});
+var _default = ListRadioScripts;
+exports["default"] = _default;
+
+},{}],9:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+/**
+ * LimeSurvey
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ *
+ * ListRadio - Clear "other" text field on deselect
+ *
+ * Listens for the "ls:singlechoiceDeselected" custom event dispatched by
+ * listradio.js. When the deselected radio was the "other" option ("-oth-"),
+ * the accompanying text input is cleared so LimeSurvey core does not
+ * immediately re-select it via its keyup handler.
+ */
+
+var ListRadioOtherScripts = function () {
+  var initialized = false;
+  var init = function init() {
+    if (initialized) {
+      return;
+    }
+    initialized = true;
+    $(document).on('ls:singlechoiceDeselected', '.deselect-singlechoice.list-radio', function (e) {
+      var _e$originalEvent$deta = e.originalEvent.detail,
+        name = _e$originalEvent$deta.name,
+        value = _e$originalEvent$deta.value;
+      if (value !== '-oth-') {
+        return;
+      }
+      var otherTextField = document.getElementById('answer' + name + 'othertext');
+      if (otherTextField) {
+        otherTextField.value = '';
+      }
+    });
+  };
+  return {
+    init: init
+  };
+}();
+$(document).on('ready pjax:scriptcomplete', function () {
+  ListRadioOtherScripts.init();
+});
+var _default = ListRadioOtherScripts;
+exports["default"] = _default;
+
+},{}],10:[function(require,module,exports){
 /*
     LimeSurvey
     Copyright (C) 2007-2023
@@ -1111,7 +1254,7 @@ window.ArrayScripts = ArrayScripts;
 */
 "use strict";
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -1122,11 +1265,13 @@ var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 var _video = _interopRequireDefault(require("./video/video.js"));
 var _a11yHandles = require("./a11y-handles/a11y-handles.js");
+var _listradio = _interopRequireDefault(require("./questiontypes/listradio/listradio.js"));
+var _listradio_other = _interopRequireDefault(require("./questiontypes/listradio/listradio_other.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./theme_js_disclaimer.js":8,"./video/video.js":10}],10:[function(require,module,exports){
+},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./questiontypes/listradio/listradio.js":8,"./questiontypes/listradio/listradio_other.js":9,"./theme_js_disclaimer.js":10,"./video/video.js":12}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1164,7 +1309,7 @@ exports.Video = Video;
 window.video = new Video();
 video.fixVideoHeight();
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @popperjs/core v2.11.7 - MIT License
@@ -2911,7 +3056,7 @@ exports.popperOffsets = popperOffsets$1;
 exports.preventOverflow = preventOverflow$1;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":13}],12:[function(require,module,exports){
+},{"_process":15}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7659,7 +7804,7 @@ enableDismissTrigger(Toast);
 
 defineJQueryPlugin(Toast);
 
-},{"@popperjs/core":11}],13:[function(require,module,exports){
+},{"@popperjs/core":13}],15:[function(require,module,exports){
 "use strict";
 
 // shim for using process in browser
@@ -7838,4 +7983,4 @@ process.umask = function () {
   return 0;
 };
 
-},{}]},{},[9]);
+},{}]},{},[11]);

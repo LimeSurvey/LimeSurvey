@@ -8,3 +8,5 @@ import ArrayScripts from './questiontypes/array/array.js';
 import NavbarScripts from './navbar/navbar.js';
 import Video from './video/video.js';
 import { A11yHandles } from './a11y-handles/a11y-handles.js';
+import ListRadioScripts from './questiontypes/listradio/listradio.js';
+import ListRadioOtherScripts from './questiontypes/listradio/listradio_other.js';
