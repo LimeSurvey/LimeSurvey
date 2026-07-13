@@ -5,17 +5,21 @@
  * @var $sDisable
  * @var $myfname
  * @var $othertext
+ * @var $othertextRight
+ * @var $otherItemExtraClass
  * @var $checkedState
  * @var $sValue
  * @var $oth_checkconditionFunction
  * @var $checkconditionFunction
  * @var $sValueHidden
  * @var $wrapper
+ * @var $otherInputSize
+ * @var $otherMaxLength
  */
 #}
 
 <!-- answer_row_other -->
-<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-text-item {{ relevanceClass }}'>
+<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-text-item {{ relevanceClass }} {{ otherItemExtraClass }}'>
     <div class="row">
         <div class="col-auto d-flex">
             <!-- Checkbox + label -->
@@ -33,18 +37,30 @@
                        id="label-{{ myfname }}-other">{{ processString(othertext) }}</label>
             </div>
         </div>
-        <div class="col">
+        <div class="col-auto">
             <div class="text-item other-text-item">
                 <input
-                    class="form-control input-sm"
+                    class="form-control input-sm mt-1"
                     type="text"
                     name="{{ myfname }}"
                     id="answer{{ myfname }}"
                     value="{{ sValue }}"
-                    aria-labelledby="label-{{ myfname }}-other"
+                    {% if othertext is empty and othertextRight is defined and othertextRight|length > 0 %}
+                        aria-labelledby="suffix-{{ myfname }}-other"
+                    {% else %}
+                        aria-labelledby="label-{{ myfname }}-other"
+                    {% endif %}
+                    {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
+                    {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
                 />
             </div>
         </div>
+
+        {% if othertextRight is defined and othertextRight|length >0 %}
+            <div class="othertext-suffix-label col-auto" id="suffix-{{ myfname }}-other">
+                {{ processString(othertextRight) }}
+            </div>
+        {% endif %}
 
         <!-- hidden input -->
         <input

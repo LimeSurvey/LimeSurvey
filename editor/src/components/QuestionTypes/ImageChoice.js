@@ -21,6 +21,7 @@ export const ImageChoice = ({
   update,
   value,
   isNoAnswer,
+  defaultChecked = false,
   errors,
   setErrors = () => {},
 }) => {
@@ -79,6 +80,7 @@ export const ImageChoice = ({
             className="pointer-events-none"
             name={'image-choice-' + idSuffix}
             data-testid={'image-choice-' + idSuffix}
+            defaultChecked={defaultChecked}
             label={
               <ContentEditor
                 className="choice"

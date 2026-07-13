@@ -1,9 +1,13 @@
 {#
 /**
- * Multiple Choice Html Html
+ * List Radio Html
  *
  * @var $name
  * @var $value
+ * @var $othertext
+ * @var $otherTextRight
+ * @var $otherInputSize
+ * @var $otherMaxLength
  */
 #}
 
@@ -22,17 +26,27 @@
     }))
     }}
     </div>
-    {# Must add it only of other is set ! #}
-    <div class="row row-cols-lg-auto align-items-center mb-3 ls-js-hidden answer-item" id="div{{ name }}other">
-        <label for="answer{{ name }}othertext" class="col-form-label" id="label-id-{{ name }}">{{ othertext }}</label>
-        <div class="col-12">
+    {# Must add it only if other is set ! #}
+    <div class="row align-items-center mb-3 ls-js-hidden answer-item" id="div{{ name }}other">
+        <div class="col-auto">
+            <label for="answer{{ name }}othertext" class="col-form-label" id="label-id-{{ name }}">{{ processString(othertext) }}</label>
+        </div>
+        <div class="col-auto">
             <input
-            type="text"
-            class="form-control input-sm"
-            id="answer{{ name }}othertext"
-            name="{{ name }}_Cother"
+                type="text"
+                class="form-control input-sm"
+                id="answer{{ name }}othertext"
+                name="{{ name }}_Cother"
+                aria-labelledby="label-id-{{ name }}"
+                {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
+                {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
             >
         </div>
+        {% if otherTextRight is defined and otherTextRight|length > 0 %}
+            <div class="othertext-suffix-label button-suffix col-auto">
+                {{ processString(otherTextRight) }}
+            </div>
+        {% endif %}
     </div>
 </div>
 <script>doBootstrapRadioOther();</script>
