@@ -126,6 +126,207 @@
   }
 }
 
+// Filters modal: anchored to the top-left under the toolbar (like a dropdown)
+// instead of centered, per the Figma design. Overrides ComponentModal's
+// `centered` flex layout for this modal only.
+.responses-statistics-filters-modal {
+  .modal-dialog {
+    align-items: flex-start;
+    min-height: auto;
+    max-width: 448px;
+    // top / right(auto) / bottom / left — clears the topbar + filter toolbar
+    // and sits in from the left edge.
+    margin: 88px auto;
+
+    .modal-content {
+      background: $g-100 !important;
+    }
+    .modal-header {
+      margin: 4px;
+      background: $white;
+    }
+
+    .responses-statistics-modal-title {
+      font-size: 14px !important;
+    }
+    .responses-statistics-modal-body {
+      padding: 12px 14px;
+      .responses-statistics-filters-add {
+        text-decoration: none;
+      }
+    }
+    .responses-statistics-filters-row {
+      background: $g-100;
+      padding: 0;
+      .fill-current {
+        fill: $grape;
+      }
+    }
+    .modal-close-button {
+      margin: 0;
+    }
+  }
+}
+
+// Filter builder inside the Filters modal (condition-designer style): a stack of
+// filter rows joined by AND/OR, with an add link and a reset/apply footer.
+.responses-statistics-filters {
+  &-builder {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  // AND/OR select shown between rows.
+  &-join {
+    align-self: flex-start;
+    min-width: 96px;
+  }
+
+  &-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border-radius: $border-radius;
+    background: $white;
+
+    // "Filter selection #N" caption above the source tabs.
+    &-label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      color: $g-700;
+    }
+
+    // Source body + delete share one row; delete aligns with the first select.
+    &-main {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    &-source {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &-delete {
+      flex-shrink: 0;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      color: $g-700;
+
+      &:hover {
+        color: $grape;
+      }
+    }
+
+    // Source body (the selected tab's fields) and a single labelled control.
+    &-body,
+    &-field {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    // Min/Max and Start/End date pairs sit side by side.
+    &-range {
+      display: flex;
+      gap: 12px;
+
+      > * {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+  }
+
+  // Date range: Start/End inputs stacked vertically.
+  &-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  // Custom date field: a plain input + calendar icon that opens a calendar
+  // popover (instead of MUI's masked text field).
+  &-date {
+    position: relative;
+
+    &-input {
+      cursor: pointer;
+      padding-right: 40px;
+    }
+
+    &-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      svg {
+        fill: $g-700;
+      }
+    }
+
+  }
+
+  // Calendar popover is portaled to <body>, so it lives at top level (not nested
+  // under -date) and sits above the modal. Position is set inline (fixed coords).
+  &-date-popover {
+    position: fixed;
+    z-index: 9999;
+    background: $white;
+    border: 1px solid $g-400;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  // "+ Add filter" link button.
+  &-add {
+    align-self: flex-start;
+    color: $grape;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-500;
+  }
+
+  // "Reset filter" link button (icon + label), shown once a row has a selection.
+  &-reset {
+    display: flex;
+    align-items: center;
+    color: $g-700;
+    text-decoration: none;
+
+    &:hover {
+      color: $g-900;
+      text-decoration: none;
+    }
+  }
+
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid $g-300;
+
+    // Disabled "Apply filter" reads as a flat grey button (not faded purple).
+    .btn-primary:disabled {
+      background: $g-400;
+      border-color: $g-400;
+      opacity: 1;
+    }
+  }
+}
+
 // Ranking modal content (filter → title → list) lacks the comments wrapper, so
 // match the comment modal's 16px vertical rhythm here.
 .responses-statistics-ranking-modal .responses-statistics-modal-body {
