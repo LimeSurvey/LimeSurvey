@@ -1,76 +1,613 @@
+// =============================================================================
+// Responses statistics
+//
+// Every class is namespaced `responses-statistics-*`. Pieces rendered through a
+// portal (detail modal, filter dropdown, ranking tooltip, chart meatball menu)
+// are declared at top level because they mount outside `.responses-statistics-
+// body`; everything else is nested under that root.
+//
+// recharts' own classes (`.recharts-*`) and `.recharts-square` (styled in
+// responses.scss) are intentionally left untouched.
+// =============================================================================
+
+// Empty state shown in a chart card when a question has no responses yet.
+.responses-statistics-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: $g-700;
+  font-family: $ibm-font-family;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-sm;
+}
+
+// --- Comments (inline table preview + modal block list) ---------------------
+.responses-statistics-comments {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  &-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    color: $g-700;
+    font-size: $font-size-sm;
+
+    .loader {
+      position: relative;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &-more {
+    display: flex;
+    justify-content: flex-start;
+
+    &-btn {
+      background: none;
+      border: none;
+      color: $grape;
+      font-family: $ibm-font-family;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-500;
+      text-align: left;
+      cursor: pointer;
+      padding: 8px 0;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+    }
+  }
+}
+
+// --- Detail modal (shared by comments + ranking drill-downs) -----------------
+.responses-statistics-modal {
+  &-body {
+    padding: 0 24px 24px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  &-title {
+    font-size: $font-size-md;
+    font-weight: $font-weight-normal;
+    color: $g-900;
+    // Sits inline with the close button in the modal header.
+    margin: 0;
+  }
+
+  // Drill-down list shared by the comments and ranking modals.
+  &-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid $g-400;
+    color: $g-900;
+    font-size: $font-size-sm;
+
+    // Comment rows: long text on the left, timestamp pinned to the right.
+    &--spread {
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    &-main {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    &-meta {
+      flex-shrink: 0;
+      color: $g-700;
+      font-size: $font-size-xs;
+      white-space: nowrap;
+    }
+  }
+}
+
+// Ranking modal content (filter → title → list) lacks the comments wrapper, so
+// match the comment modal's 16px vertical rhythm here.
+.responses-statistics-ranking-modal .responses-statistics-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+// --- Filter dropdown (label + bootstrap select inside the modals) ------------
+.responses-statistics-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+
+  &-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-normal;
+    color: $g-900;
+  }
+
+  // Style the bootstrap dropdown toggle like a select control.
+  &-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 220px;
+    padding: 6px 12px;
+    border: 1px solid $g-400;
+    border-radius: $border-radius;
+    color: $g-900;
+    font-size: $font-size-sm;
+    background: $white;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: $g-900 !important;
+      background: $white !important;
+      border-color: $g-400 !important;
+      box-shadow: none !important;
+    }
+  }
+
+  &-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: $font-size-sm;
+  }
+}
+
+// --- Toolbar / loading / load-more sentinel ----------------------------------
+.responses-statistics-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.responses-statistics-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+
+  .loader {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 24px;
+  }
+}
+
+.responses-statistics-load-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0;
+
+  .loader {
+    position: relative;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+// --- Ranking leaderboard chart + tooltip + modal breakdown -------------------
+.responses-statistics-ranking {
+  display: flex;
+  background: $white;
+
+  // Wraps the rank badge inside the YAxis tick's foreignObject; centers the
+  // badge vertically on its bar and tucks it against the bars.
+  &-badge-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    padding-right: 8px;
+  }
+
+  &-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-500;
+    color: $g-900;
+    background: $g-200;
+  }
+
+  &-chart {
+    flex: 1;
+    min-width: 0;
+
+    // Bars are clickable (open the per-option rank breakdown).
+    .recharts-bar-rectangle {
+      cursor: pointer;
+    }
+  }
+
+  // Hover hint shown over each bar.
+  &-tooltip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #1f1f1f;
+    color: #ffffff;
+    font-size: $font-size-sm;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+}
+
+// --- Chart header meatball menu (portal) -------------------------------------
+// Mirrors the look of .responses-meatball-menu; sized to content since the
+// chart menu has few actions.
+.responses-statistics-chart-menu {
+  min-width: 260px;
+  border-radius: 2px;
+  border: 1px solid $g-400;
+  background: $white;
+  padding: 8px 4px !important;
+  box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+  z-index: 10;
+
+  .action-title {
+    padding: 8px 12px 0 12px;
+  }
+
+  .meatball-button {
+    height: 40px;
+    width: 240px;
+    align-items: center;
+    padding: 0 8px;
+    margin-left: 4px;
+
+    &:hover {
+      border-radius: 2px;
+      outline: 1px solid $grape;
+      color: $g-900;
+    }
+  }
+
+  // "All chart options" submenu: opens as a side flyout on hover.
+  .meatball-submenu {
+    position: relative;
+  }
+
+  .meatball-submenu-caret {
+    margin-left: auto;
+    font-size: $font-size-md;
+  }
+
+  .meatball-submenu-items {
+    position: absolute;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    min-width: 240px;
+    padding: 8px 4px;
+    background: $white;
+    border: 1px solid $g-400;
+    border-radius: 2px;
+    box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+    z-index: 11;
+
+    &--left {
+      right: 100%;
+    }
+
+    &--right {
+      left: 100%;
+    }
+  }
+
+  .meatball-submenu:hover .meatball-submenu-items {
+    display: flex;
+  }
+
+  .meatball-submenu-item {
+    &.is-active {
+      color: $grape;
+      font-weight: $font-weight-600;
+    }
+  }
+}
+
+// --- Statistics body (chart list root) ---------------------------------------
 .responses-statistics-body {
-  .responses-charts {
+  font-family: $ibm-font-family;
+
+  .responses-statistics-group {
+    margin-bottom: 24px;
+
+    &-title {
+      font-size: $font-size-md;
+      font-weight: $font-weight-500;
+      color: $g-900;
+      margin-bottom: 12px;
+    }
+  }
+
+  .responses-statistics-chart-header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .responses-statistics-chart-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+
+      &-main {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+        flex: 1;
+      }
+
+      &-actions {
+        flex-shrink: 0;
+      }
+
+      &-index {
+        color: $grape;
+        font-size: $font-size-xs;
+      }
+
+      &-key {
+        color: $g-700;
+        font-size: $font-size-xs;
+      }
+
+      &-text {
+        font-size: $font-size-md;
+      }
+
+      &-help {
+        flex-basis: 100%;
+        padding: 0 26px;
+        color: $g-700;
+        font-size: $font-size-xs;
+        line-height: $line-height-16;
+        // Reserve one line so cards without help text keep the same spacing.
+        min-height: $line-height-16;
+        margin: 0;
+      }
+    }
+  }
+
+  .responses-statistics-chart-labels {
+    font-family: $ibm-font-family;
+    font-size: $font-size-xs;
+    fill: $g-900;
+    color: $g-900;
+    font-weight: $font-weight-500;
+  }
+
+  .responses-statistics-table {
+    font-size: $font-size-sm;
+
+    // Metric columns (Responses / Percentage) are right-aligned.
+    th:not(:first-child),
+    td:not(:first-child) {
+      text-align: end;
+    }
+
+    th {
+      color: $g-700;
+      font-weight: $font-weight-500;
+    }
+
+    tbody td {
+      color: $g-900;
+      vertical-align: middle;
+      padding: 12px 0;
+    }
+
+    tfoot td {
+      color: $g-900;
+      font-weight: $font-weight-600;
+      border-top: 2px solid $g-300;
+    }
+
+    &-swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    &-image {
+      max-width: 100px;
+      vertical-align: middle;
+      object-fit: contain;
+      border: 1px solid $g-400;
+      padding: 12px 18px;
+    }
+
+    &-wrap {
+      overflow-x: auto;
+    }
+
+    &-answer {
+      text-align: start;
+    }
+
+    // Ranking renders as a matrix (option × rank position). Give the cells
+    // horizontal breathing room and pin the answer column while the rank
+    // columns scroll horizontally.
+    &--ranking {
+      tbody td,
+      thead th {
+        padding: 12px 16px;
+        white-space: nowrap;
+      }
+
+      .responses-statistics-table-answer {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        background: $white;
+      }
+    }
+  }
+
+  .responses-statistics-charts {
+    gap: 12px;
+
+    .responses-statistics-chart-toggle {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    // X-axis image labels: rendered at the bar width with auto height, bordered
+    // to match the legend/table image labels.
+    .responses-statistics-bar-image {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border: 1px solid $g-400;
+    }
+
+    // Comment question types: bars open the comments for that option on click.
+    .responses-statistics-bar-chart--clickable .recharts-bar-rectangle {
+      cursor: pointer;
+    }
+
+    .responses-statistics-legend {
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+
+      &-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      &-value {
+        color: $g-900;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+      }
+
+      &-image {
+        max-width: 60px;
+        max-height: 32px;
+        object-fit: contain;
+        border: 1px solid $g-400;
+        padding: 12px 30px;
+      }
+    }
+
+    // recharts library class.
     .recharts-pie-label-line {
       display: none;
     }
 
-    .active-shape-value {
-      fill: $g-900;
-    }
-
-    .active-shape-percent-value {
+    // Pie slice label rows (code / name / metric).
+    .responses-statistics-pie-label-id,
+    .responses-statistics-pie-label-metric {
       fill: $g-700;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-500;
     }
 
-    .recharts-square-value {
+    // Answer-name row inside the pie label's foreignObject (HTML, so it uses
+    // `color` not `fill`). The box hugs its content and caps at the region
+    // width with a single-line ellipsis.
+    .responses-statistics-pie-label-name-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100%;
+    }
+
+    .responses-statistics-pie-label-name {
+      min-width: 0;
+      max-width: 100%;
       color: $g-900;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-500;
+      text-align: left;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 200px;
     }
 
-    .chart-wrapper {
-      width: 100%;
-      min-height: 400px;
-    }
-
-    .responses-chart-card {
+    .responses-statistics-card {
       border-radius: $border-radius;
       box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
       padding: 20px;
       height: 100%;
-      min-height: 400px;
-    }
+      gap: 24px;
 
-    .question-card {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e5e7eb;
-      position: relative;
-      min-height: 350px;
-    }
+      &--hidden {
+        gap: 0;
+      }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .question-title {
-      font-size: $font-size-base;
-      font-weight: $font-weight-600;
-      color: $g-900;
-    }
-
-    .menu-dots {
-      color: $g-700;
-      font-size: $font-size-md;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .menu-dots:hover {
-      color: $g-700;
-    }
-
-    .chart-container {
-      position: relative;
-      height: 280px;
-      width: 100%;
+      // Only style the open state: an unscoped `display` here would override
+      // Bootstrap's `.collapse:not(.show) { display: none }` (equal specificity,
+      // later in the cascade) and keep the body visible when hidden.
+      .collapsible-body.show {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
     }
   }
 }

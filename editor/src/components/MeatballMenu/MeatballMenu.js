@@ -29,6 +29,7 @@ export const MeatballMenu = ({
   meatballClassName = 'meatball-menu ',
   actionsTitle = '',
   placement = 'right',
+  submenuPlacement = 'left',
   TogglerIcon = SmallThreeDotIcon,
 }) => {
   const [showMeatballMenu, setShowMeatballMenu] = useState(false)
@@ -125,33 +126,73 @@ export const MeatballMenu = ({
         data-testid="meatball-menu-overlay"
       >
         <p className="label-s-med mb-2 action-title">{actionsTitle}</p>
-        {items.map((item, index) => (
-          <TooltipContainer
-            key={index}
-            tip={item.tooltip}
-            showTip={
-              (isSurveyActive || !hasSurveyUpdatePermission) &&
-              shouldDisableIfSurveyActive
-            }
-          >
-            <Button
-              data-testid={`${item.label.toLowerCase()}-button`}
-              disabled={
+        {items.map((item, index) => {
+          if (item.subItems?.length) {
+            return (
+              <div key={index} className="meatball-submenu">
+                <Button
+                  data-testid={`${item.label.toLowerCase()}-button`}
+                  variant="layout"
+                  className="d-flex gap-2 meatball-button meatball-submenu-toggle"
+                  aria-haspopup="true"
+                >
+                  {item.icon}
+                  <span className="label-m">{item.label}</span>
+                  <i className="meatball-submenu-caret ri-arrow-right-s-line" />
+                </Button>
+                <div
+                  className={`meatball-submenu-items meatball-submenu-items--${submenuPlacement}`}
+                >
+                  {item.subItems.map((subItem, subIndex) => (
+                    <Button
+                      key={subIndex}
+                      data-testid={`${subItem.label.toLowerCase()}-button`}
+                      variant="layout"
+                      onClick={() => {
+                        subItem.onClick()
+                        setShowMeatballMenu(false)
+                      }}
+                      className={`d-flex gap-2 meatball-button meatball-submenu-item ${
+                        subItem.active ? 'is-active' : ''
+                      }`}
+                    >
+                      {subItem.icon}
+                      <span className="label-m">{subItem.label}</span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )
+          }
+
+          return (
+            <TooltipContainer
+              key={index}
+              tip={item.tooltip}
+              showTip={
                 (isSurveyActive || !hasSurveyUpdatePermission) &&
                 shouldDisableIfSurveyActive
               }
-              variant="layout"
-              onClick={() => {
-                item.onClick()
-                setShowMeatballMenu(false)
-              }}
-              className={`d-flex gap-2 meatball-button ${item.className}`}
             >
-              {item.icon}
-              <span className="label-m">{item.label}</span>
-            </Button>
-          </TooltipContainer>
-        ))}
+              <Button
+                data-testid={`${item.label.toLowerCase()}-button`}
+                disabled={
+                  (isSurveyActive || !hasSurveyUpdatePermission) &&
+                  shouldDisableIfSurveyActive
+                }
+                variant="layout"
+                onClick={() => {
+                  item.onClick()
+                  setShowMeatballMenu(false)
+                }}
+                className={`d-flex gap-2 meatball-button ${item.className}`}
+              >
+                {item.icon}
+                <span className="label-m">{item.label}</span>
+              </Button>
+            </TooltipContainer>
+          )
+        })}
       </Popover>
     )
   })
@@ -163,9 +204,7 @@ export const MeatballMenu = ({
         trigger="click"
         placement={placement}
         show={showMeatballMenu}
-        onToggle={(show) => {
-          setShowMeatballMenu(show)
-        }}
+        onToggle={(show) => setShowMeatballMenu(show)}
         offset={[6, 22]}
         rootClose={true}
         transition={true}

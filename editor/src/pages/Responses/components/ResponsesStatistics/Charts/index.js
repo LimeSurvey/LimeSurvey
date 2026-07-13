@@ -1,4 +1,5 @@
 export * from './BarChart'
+export * from './RankingBarChart'
 export * from './PieChart'
 export * from './RadarChart'
 export * from './LineChart'

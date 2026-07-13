@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Button, ToggleButtons } from 'components'
+import { Button } from 'components'
 import { TAB_KEYS } from './utils'
 import { useParams } from 'react-router-dom'
 import { panelItemsKeys } from './Sidebars'
@@ -9,20 +9,9 @@ export const ResponsesHeader = ({
   setShowFilters = () => {},
   showFilters,
   setFilters = () => {},
-  setTabKey = () => {},
   tabKey,
 }) => {
   const { menu } = useParams()
-  const options = [
-    {
-      icon: () => <i className="ri-table-line"></i>,
-      value: TAB_KEYS.RESPONSES,
-    },
-    {
-      icon: () => <i className="ri-bar-chart-2-line"></i>,
-      value: TAB_KEYS.STATISTICS,
-    },
-  ]
 
   if (menu === panelItemsKeys.overview) {
     return null
@@ -62,14 +51,6 @@ export const ResponsesHeader = ({
             {t('Clear filters')}
           </Button>
         </div>
-      </div>
-      <div>
-        <ToggleButtons
-          value={tabKey}
-          update={(value) => setTabKey(value)}
-          toggleOptions={options}
-          theme="lime"
-        />
       </div>
     </div>
   )

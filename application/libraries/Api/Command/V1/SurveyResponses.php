@@ -6,6 +6,7 @@ use CDbException;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyRequestTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\SurveyAnswerCache;
 use Permission;
@@ -22,6 +23,7 @@ class SurveyResponses implements CommandInterface
 {
     use AuthPermissionTrait;
     use ResponseMappingTrait;
+    use SurveyRequestTrait;
 
     protected Survey $survey;
     protected Permission $permission;
@@ -140,30 +142,6 @@ class SurveyResponses implements CommandInterface
         return $data;
     }
 
-    protected function getSurvey(Request $request): void
-    {
-        $survey = $this->survey->findByPk($this->getSurveyId($request));
-        if ($survey === null) {
-            throw new \RuntimeException('Survey not found');
-        }
-        $this->survey = $survey;
-    }
-
-    protected function getSurveyId(Request $request): string
-    {
-        $surveyId = (string)$request->getData('_id');
-        if (!is_numeric($surveyId)) {
-            throw new \InvalidArgumentException("Invalid survey ID");
-        }
-
-        return $surveyId;
-    }
-
-    protected function getSurveyDynamicModel(Request $request): \SurveyDynamic
-    {
-        return \SurveyDynamic::model($this->getSurveyId($request));
-    }
-
     protected function buildCriteria(Request $request): array
     {
         $searchParams = [];
@@ -180,40 +158,5 @@ class SurveyResponses implements CommandInterface
         );
 
         return [$criteria, $sort];
-    }
-
-    protected function buildPagination(Request $request): array
-    {
-        $pagination = $request->getData('page');
-        $paginationDefault = [
-            'pageSize' => 15,
-            'currentPage' => 0,
-        ];
-
-        if ($pagination) {
-            $paginationRequiredKeys = ['currentPage', 'pageSize'];
-
-            if (
-                isset($pagination['pageSize'])
-                && (int)$pagination['pageSize'] == 0
-            ) {
-                $pagination['pageSize'] = $paginationDefault['pageSize'];
-            }
-
-            if (
-                !empty(
-                    array_diff_key(
-                        array_flip($paginationRequiredKeys),
-                        $pagination
-                    )
-                )
-            ) {
-                return array_merge($paginationDefault, $pagination);
-            }
-
-            return $pagination;
-        }
-
-        return $paginationDefault;
     }
 }

@@ -1,7 +1,8 @@
 .responses {
+  min-height: calc(100vh - $top-bar-height);
   background: $g-200;
   padding: 0;
-  height: 100%;
+  position: relative;
 
   .sidebar,
   .right-side-bar {
@@ -29,8 +30,6 @@
     gap: 20px;
 
     .btn-group {
-      background-color: $g-900;
-
       i {
         &::before {
           font-size: $font-size-lg;

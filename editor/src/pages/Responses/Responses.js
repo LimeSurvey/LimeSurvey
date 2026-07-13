@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
 import { Container } from 'react-bootstrap'
@@ -15,12 +15,11 @@ import {
 import { ResponsesHeader } from './ResponsesHeader'
 import { TAB_KEYS } from './utils'
 import { ResponsesOverview } from './components/Overview/ResponsesOverview'
-import { getResponsesPanels, panelItemsKeys } from './Sidebars'
+import { panelItemsKeys } from './Sidebars'
 import { RightSideBar } from './Sidebars/RightSideBar'
 
 export const Responses = () => {
-  const { surveyId, menu, panel } = useParams()
-  const navigate = useNavigate()
+  const { surveyId, menu } = useParams()
   const [filters, setFilters] = useState({})
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
   const [globalFilter, setGlobalFilter] = useState('')
@@ -60,16 +59,6 @@ export const Responses = () => {
 
   const sortedColumnId = sorting[0]?.id ?? null
 
-  const navigateToMenu = (menuKey) => {
-    const currentPanel = panel || getResponsesPanels().results.panel
-
-    if (menuKey === menu) {
-      return
-    }
-
-    navigate(`/responses/${surveyId}/${currentPanel}/${menuKey}`)
-  }
-
   const handleExport = () => {}
 
   const onExportResponsesClick = () => {
@@ -89,19 +78,6 @@ export const Responses = () => {
 
   const onSortChange = (sorting) => {
     setSorting(sorting)
-  }
-
-  const handleTabChange = (value) => {
-    setTabKey(value)
-
-    if (value === TAB_KEYS.STATISTICS) {
-      navigateToMenu(panelItemsKeys.statistics)
-      return
-    }
-
-    if (value === TAB_KEYS.RESPONSES) {
-      navigateToMenu(panelItemsKeys.list)
-    }
   }
 
   const handleResponsesUpdate = async (updateInfo) => {
@@ -183,45 +159,42 @@ export const Responses = () => {
           />
         )
       case panelItemsKeys.statistics:
-        if (tabKey === TAB_KEYS.STATISTICS) {
-          return (
-            <ResponsesStatistics
-              filters={statisticsFilters}
-              surveyId={surveyId}
-              isRightBar={showStatisticsFilters}
-            />
-          )
-        }
-        break
+        return (
+          <ResponsesStatistics
+            filters={statisticsFilters}
+            surveyId={surveyId}
+            isRightBar={showStatisticsFilters}
+            showFilters={showStatisticsFilters}
+            setShowFilters={setShowStatisticsFilters}
+            setFilters={setStatisticsFilters}
+          />
+        )
       case panelItemsKeys.list:
-        if (tabKey === TAB_KEYS.RESPONSES) {
-          return (
-            <ResponsesTable
-              responsesData={responses}
-              globalFilter={globalFilter}
-              setGlobalFilter={setGlobalFilter}
-              setShowFilters={setShowTableFilters}
-              showFilters={showTableFilters}
-              setSorting={setSorting}
-              sorting={sorting}
-              sortedColumnId={sortedColumnId}
-              survey={survey}
-              onPaginationChange={onPaginationChange}
-              onFiltersChange={onFiltersChange}
-              onSortChange={onSortChange}
-              handleResponsesDelete={handleResponsesDelete}
-              handleAttachmentsDelete={handleAttachmentsDelete}
-              handleResponsesUpdate={handleResponsesUpdate}
-              pagination={pagination}
-              setPagination={setPagination}
-              isFetching={isFetching}
-              columnsFilters={columnsFilters}
-              setColumnsFilters={setColumnsFilters}
-              disableUpdatingResponses={!hasResponsesUpdatePermission}
-            />
-          )
-        }
-        return null
+        return (
+          <ResponsesTable
+            responsesData={responses}
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+            setShowFilters={setShowTableFilters}
+            showFilters={showTableFilters}
+            setSorting={setSorting}
+            sorting={sorting}
+            sortedColumnId={sortedColumnId}
+            survey={survey}
+            onPaginationChange={onPaginationChange}
+            onFiltersChange={onFiltersChange}
+            onSortChange={onSortChange}
+            handleResponsesDelete={handleResponsesDelete}
+            handleAttachmentsDelete={handleAttachmentsDelete}
+            handleResponsesUpdate={handleResponsesUpdate}
+            pagination={pagination}
+            setPagination={setPagination}
+            isFetching={isFetching}
+            columnsFilters={columnsFilters}
+            setColumnsFilters={setColumnsFilters}
+            disableUpdatingResponses={!hasResponsesUpdatePermission}
+          />
+        )
       default:
         return (
           <ResponsesOverview
@@ -266,27 +239,16 @@ export const Responses = () => {
           surveyId={surveyId}
         />
         <div className="body-content mt-3">
-          <div className="mb-3">
-            <ResponsesHeader
-              setShowFilters={
-                tabKey === TAB_KEYS.RESPONSES
-                  ? setShowTableFilters
-                  : setShowStatisticsFilters
-              }
-              showFilters={
-                tabKey === TAB_KEYS.RESPONSES
-                  ? showTableFilters
-                  : showStatisticsFilters
-              }
-              setFilters={
-                tabKey === TAB_KEYS.RESPONSES
-                  ? setColumnsFilters
-                  : setStatisticsFilters
-              }
-              setTabKey={handleTabChange}
-              tabKey={tabKey}
-            />
-          </div>
+          {tabKey !== TAB_KEYS.STATISTICS && (
+            <div className="mb-3">
+              <ResponsesHeader
+                setShowFilters={setShowTableFilters}
+                showFilters={showTableFilters}
+                setFilters={setColumnsFilters}
+                tabKey={tabKey}
+              />
+            </div>
+          )}
           {renderCurrentMenu()}
         </div>
         <RightSideBar

@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use Question;
 
 class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
@@ -51,7 +50,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             $field = $fieldMap[$qid];
             [$legend, $items] = $batch[$field];
             $title = $this->question['question'] . '(' . $subQuestion['question'] . ')';
-            $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
+            $charts[] = ['title' => $title, 'legend' => $legend, 'data' => $items];
         }
 
         return $charts;
@@ -74,7 +73,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             $field = $fieldMap[$qid];
             [$legend, $items] = $batch[$field];
             $title = $this->question['question'] . '[' . $subQuestion['question'] . ']';
-            $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
+            $charts[] = ['title' => $title, 'legend' => $legend, 'data' => $items];
         }
 
         return $charts;
@@ -97,7 +96,7 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
             $field = $fieldMap[$qid];
             [$legend, $items] = $batch[$field];
             $title = $this->question['question'] . '[' . $subQuestion['question'] . ']';
-            $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
+            $charts[] = ['title' => $title, 'legend' => $legend, 'data' => $items];
         }
 
         return $charts;
@@ -123,12 +122,15 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
 
             if ((int)$subQuestion['scale_id'] === 0) {
                 $field = $this->rt . "_S" . $subQuestion['qid'];
-                $count = $counts[$field] ?? 0;
                 $legend[] = $subQuestion['question'];
-                $items[] = ['key' => $subQuestion['title'], 'value' => $count, 'title' => $subQuestion['question']];
+                $items[] = [
+                    'key' => $subQuestion['title'],
+                    'value' => $counts[$field],
+                    'title' => $subQuestion['question']
+                ];
             }
 
-            $stats[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
+            $stats[] = ['title' => $title, 'legend' => $legend, 'data' => $items];
         }
 
         return $stats;
