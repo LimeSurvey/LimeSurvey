@@ -124,9 +124,9 @@ var onClickListAction =  function (e) {
      */
     if (actionType == 'custom') {
         var js = $that.data('custom-js');
-        var func = eval(js);
+        var func = typeof window[js] === 'function' ? window[js] : null;
         var itemIds = LS.gridSelection.getAll($grididvalue);
-        func(itemIds);
+        if (func) { func(itemIds); }
         console.log('func itemIds');
         return;
     }
@@ -266,8 +266,8 @@ var onClickListAction =  function (e) {
                 }
 
                 if (onSuccess) {
-                    var func = eval(onSuccess);
-                    func(html);
+                    var func = typeof window[onSuccess] === 'function' ? window[onSuccess] : null;
+                    if (func) { func(html); }
                     return;
                 }
             },
