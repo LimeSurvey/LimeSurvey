@@ -83,14 +83,8 @@ export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
             key={`${focused?.qid}-question-code-attribute`}
             onChange={handleOnChange}
             value={inputValue}
-            errorMessage={errorMessage}
-            dataTestId="question-code"
-            labelText="Question code"
-            labelClass="text-nowrap d-block m-1"
-            inputClass="d-block w-100"
+            data-testid="question-code"
             className="d-flex justify-content-between align-items-center w-100"
-            noPermissionDisabled={true}
-            update={update}
             disabled={disabled}
           />
         </div>

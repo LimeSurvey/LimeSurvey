@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { useFocused } from 'hooks'
-import { RemoveHTMLTagsInString } from 'helpers'
 import { SideBarRow } from 'components/SideBar/SideBarRow'
 import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
 import { QuestionListIcon } from 'components/icons'
@@ -24,9 +23,6 @@ export const RowQuestion = ({
   const { setFocused } = useFocused()
   const { surveyId } = useParams()
   const [showLogicModal, setShowLogicModal] = useState(false)
-  const questionTitleWithoutHtmlTags = RemoveHTMLTagsInString(
-    question.l10ns[language]?.question
-  )
 
   const handleDuplicate = () => {
     duplicateQuestion()
@@ -44,7 +40,7 @@ export const RowQuestion = ({
       <SideBarRow
         titlePlaceholder={t("What's your question?")}
         provided={provided}
-        title={questionTitleWithoutHtmlTags}
+        title={question.l10ns[language]?.question}
         meatballButton={
           <MeatballMenu
             deleteText={t('Delete question')}
