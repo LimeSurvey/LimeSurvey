@@ -389,13 +389,13 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "M" || $firstletter == "P") {
                 $mselects = array();
                 //create a list out of the $pv array
-                $qid = substr(explode("_", $pv)[0], 1);
+                $qid = ($pv[1] === 'Q') ? substr($pv, 2) : $pv;
 
                 $aresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(":parent_qid" => $qid)));
                 foreach ($aresult as $arow) {
                     // only add condition if answer has been chosen
                     if (in_array($arow['title'], $_POST[$pv])) {
-                        $mselects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)) . $arow['title']) . " = 'Y'";
+                        $mselects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)) . "_S" . $arow['qid']) . " = 'Y'";
                     }
                 }
                 /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
