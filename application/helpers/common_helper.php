@@ -4266,9 +4266,6 @@ function replaceExpressionFieldnames($iSurveyID, $aQIDReplacements)
             foreach ($defaultValue->defaultvaluel10ns as $defaultValueL10n) {
                 $d = $defaultValueL10n->defaultvalue;
                 foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
-                    if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
-                        continue;
-                    }
                     $d = replaceFieldnameMatches($d, $sOldFieldname, $sNewFieldname);
                 }
                 if ($defaultValueL10n->defaultvalue !== $d) {
