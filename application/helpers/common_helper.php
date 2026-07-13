@@ -4289,7 +4289,7 @@ function replaceExpressionFieldnames($iSurveyID, $aQIDReplacements)
         foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
             $d = $arQuestionGroupLS->description;
             foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
-                $arQuestionGroupLS->description = replaceFieldnameMatches($d, $sOldFieldname, $sNewFieldname);
+                $d = replaceFieldnameMatches($d, $sOldFieldname, $sNewFieldname);
             }
             if ($arQuestionGroupLS->description !== $d) {
                 $arQuestionGroupLS->description = $d;
