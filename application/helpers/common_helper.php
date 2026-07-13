@@ -4200,6 +4200,118 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
     }
 }
 
+/**
+ * Replaces fieldnames in string with their counterparts
+ * @param string|null $haystack the string where the replace is to occur
+ * @param string|int $rawNeedle the qid of the value to be replaced
+ * @param string|int $rawReplace the qid of the value to replace the needle
+ * 
+ * @return string the changed string
+ */
+function replaceFieldnameMatches(string|null $haystack, string|int $rawNeedle, string|int $rawReplace)
+{
+    if (!$haystack) {
+        return false;
+    }
+    return preg_replace("/Q{$rawNeedle}(?!\d)/i", "Q{$rawReplace}", preg_replace("/S{$rawNeedle}(?!\d)/i", "S{$rawReplace}", $haystack));
+}
+
+/**
+* Replaces EM variable codes in a current survey with a new one
+*
+* @param integer $iSurveyID The survey ID
+* @param mixed $aQIDReplacements The fieldmap array (old_field=>new_field)
+*/
+function replaceExpressionFieldnames($iSurveyID, $aQIDReplacements)
+{
+    $arQuestions = Question::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
+    foreach ($arQuestions as $arQuestion) {
+        $relevance = $arQuestion->relevance;
+        foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+            $relevance = replaceFieldnameMatches($relevance, $sOldFieldname, $sNewFieldname);
+        }
+        if ($relevance !== $arQuestion->relevance) {
+            $arQuestion->relevance = $relevance;
+        }
+        foreach ($arQuestion->conditions as $condition) {
+            $cfieldname = $condition->cfieldname;
+            foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+                $cfieldname = replaceFieldnameMatches($cfieldname, $sOldFieldname, $sNewFieldname);
+            }
+            if ($condition->cfieldname !== $cfieldname) {
+                $condition->cfieldname = $cfieldname;
+                $condition->save();
+            }
+        }
+        foreach ($arQuestion->questionl10ns as $arQuestionLS) {
+            $bModified = false;
+            $q = $arQuestionLS->question;
+            $h = $arQuestionLS->help;
+            foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+                $q = replaceFieldnameMatches($q, $sOldFieldname, $sNewFieldname);
+                $h = replaceFieldnameMatches($h, $sOldFieldname, $sNewFieldname);
+            }
+            if (($arQuestionLS->question !== $q) || ($arQuestionLS->help !== $h)) {
+                $arQuestionLS->question = $q;
+                $arQuestionLS->help = $h;
+                $arQuestionLS->save();
+            }
+        }
+        // Also apply on question's default values
+        $defaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAllByAttributes(['qid' => $arQuestion->qid]);
+        foreach ($defaultValues as $defaultValue) {
+            if (empty($defaultValue->defaultvaluel10ns)) {
+                continue;
+            }
+            foreach ($defaultValue->defaultvaluel10ns as $defaultValueL10n) {
+                $d = $defaultValueL10n->defaultvalue;
+                foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+                    if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
+                        continue;
+                    }
+                    $d = replaceFieldnameMatches($d, $sOldFieldname, $sNewFieldname);
+                }
+                if ($defaultValueL10n->defaultvalue !== $d) {
+                    $defaultValueL10n->defaultvalue = $d;
+                    $defaultValueL10n->save();
+                }
+            }
+        }
+    }
+    $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
+    foreach ($arGroups as $arGroup) {
+        $g = $arGroup->grelevance;
+        foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+            $g = replaceFieldnameMatches($g, $sOldFieldname, $sNewFieldname);
+        }
+        if ($arGroup->grelevance !== $g) {
+            $arGroup->grelevance = $g;
+            $arGroup->save();
+        }
+        foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
+            $d = $arQuestionGroupLS->description;
+            foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+                $arQuestionGroupLS->description = replaceFieldnameMatches($d, $sOldFieldname, $sNewFieldname);
+            }
+            if ($arQuestionGroupLS->description !== $d) {
+                $arQuestionGroupLS->description = $d;
+                $arQuestionGroupLS->save();
+            }
+        }
+    }
+    // Apply the replacement on survey's end message
+    $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+    foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+        $se = $surveyLanguageSetting->surveyls_endtext;
+        foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
+            $se = replaceFieldnameMatches($se, $sOldFieldname, $sNewFieldname);
+        }
+        if ($surveyLanguageSetting->surveyls_endtext !== $se) {
+            $surveyLanguageSetting->surveyls_endtext = $se;
+            $surveyLanguageSetting->save();
+        }
+    }
+}
 
 /**
 * cleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
