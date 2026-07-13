@@ -1479,11 +1479,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
             }
         }
         $subQuestion->appendChild($text);
-        if ($use_answers) {
-            $subQuestion->setAttribute("varName", $varname . '_' . QueXMLCleanup($Row['code']));
-        } else {
-            $subQuestion->setAttribute("varName", $varname . '_' . QueXMLCleanup($Row['title']));
-        }
+        $subQuestion->setAttribute("varName", $varname . '_' . QueXMLCleanup($use_answers ? $Row['code'] : $Row['title']));
 
         if ($isRanking) {
             quexml_set_default_value_rank($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, $Row->title);

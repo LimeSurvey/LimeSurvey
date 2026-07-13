@@ -1049,14 +1049,31 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
             case Question::QT_O_LIST_WITH_COMMENT:
             case Question::QT_I_LANGUAGE:
+                $this_answer = Answer::model()->getAnswerFromCode($fields['qid'], $sValue, $sLanguage);
+                if ($sValue == "-oth-") {
+                    $this_answer = gT("Other", null, $sLanguage);
+                }
+                break;
             case Question::QT_R_RANKING:
                 $items = json_decode($sValue, true);
                 if (is_array($items)) {
+                    $subquestions = Question::model()->findAll([
+                        'condition' => 'parent_qid = :qid',
+                        'order' => 'question_order',
+                        'params' => [':qid' => $fields['qid']]
+                    ]);
+                    $titleToText = [];
+                    foreach ($subquestions as $subquestion) {
+                        if (isset($subquestion->questionl10ns[$sLanguage])) {
+                            $titleToText[$subquestion->title] = $subquestion->questionl10ns[$sLanguage]->question;
+                        }
+                    }
                     $indexedQuestions = [];
                     foreach ($items as $index => $item) {
-                        $question = Question::model()->getQuestionFromTitle($fields['qid'], $item, $sLanguage);
-                        if ($question) {
-                            $indexedQuestions[] = 'Rank ' . ($index + 1) . ': ' . $question;                        }
+                        if (isset($titleToText[$item])) {
+                            $rank = $index + 1;
+                            $indexedQuestions[] = gT('Rank', null, $sLanguage) . " {$rank}: {$titleToText[$item]}";
+                        }
                     }
                     $sValue = implode(' | ', $indexedQuestions);
                 }
@@ -1164,7 +1181,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
                 }
                 break;
             default:
-                ;
+                break;
         } // switch
     }
     switch ($sFieldCode) {
