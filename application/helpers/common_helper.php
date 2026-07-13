@@ -4219,12 +4219,12 @@ function replaceFieldnameMatches(string|null $haystack, string|int $rawNeedle, s
 /**
 * Replaces EM variable codes in a current survey with a new one
 *
-* @param integer $iSurveyID The survey ID
+* @param integer $iGroupID The group ID
 * @param mixed $aQIDReplacements The fieldmap array (old_field=>new_field)
 */
-function replaceExpressionFieldnames($iSurveyID, $aQIDReplacements)
+function replaceExpressionFieldnames($iGroupID, $aQIDReplacements)
 {
-    $arQuestions = Question::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
+    $arQuestions = Question::model()->findAll("gid=:gid", array(':gid' => $iGroupID));
     foreach ($arQuestions as $arQuestion) {
         $relevance = $arQuestion->relevance;
         foreach ($aQIDReplacements as $sOldFieldname => $sNewFieldname) {
