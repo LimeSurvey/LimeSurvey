@@ -180,14 +180,13 @@ LS.floatingActions = (function () {
         var selectedUrl  = $modal.data('selected-url');
         // Show a preview of the selected items inside the modal body
         if (showSelected === 'yes' && selectedUrl) {
-            var csrfToken    = $('meta[name="csrf-token"]').attr('content');
             var $grididvalue   = gridId;
             var $oCheckedItems = checkedItemsJson;
             $selectedList.empty();
             $.ajax({
                 url:  selectedUrl,
                 type: 'POST',
-                data: { $grididvalue: $grididvalue, $oCheckedItems: $oCheckedItems, csrfToken: csrfToken },
+                data: { $grididvalue: $grididvalue, $oCheckedItems: $oCheckedItems, [LS.data.csrfTokenName]: LS.data.csrfToken },
                 success: function (html) { $selectedList.html(html); },
                 error:   function (req, err) { console.log(err); },
             });
