@@ -1056,11 +1056,23 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
             case Question::QT_R_RANKING:
                 $items = json_decode($sValue, true);
                 if (is_array($items)) {
+                    $subquestions = Question::model()->findAll([
+                        'condition' => 'parent_qid = :qid',
+                        'order' => 'question_order',
+                        'params' => [':qid' => $fields['qid']]
+                    ]);
+                    $titleToText = [];
+                    foreach ($subquestions as $subquestion) {
+                        if (isset($subquestion->questionl10ns[$sLanguage])) {
+                            $titleToText[$subquestion->title] = $subquestion->questionl10ns[$sLanguage]->question;
+                        }
+                    }
                     $indexedQuestions = [];
                     foreach ($items as $index => $item) {
-                        $question = Question::model()->getQuestionFromTitle($fields['qid'], $item, $sLanguage);
-                        if ($question) {
-                            $indexedQuestions[] = 'Rank ' . ($index + 1) . ': ' . $question;                        }
+                        if (isset($titleToText[$item])) {
+                            $rank = $index + 1;
+                            $indexedQuestions[] = gT('Rank', null, $sLanguage) . " {$rank}: {$titleToText[$item]}";
+                        }
                     }
                     $sValue = implode(' | ', $indexedQuestions);
                 }
