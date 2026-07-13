@@ -127,7 +127,9 @@ export const generateData = (responses, language, generatedColumns) => {
             // If no such item exists (e.g. dropdown where main field is blank), promote it.
             let otherItem = cell.find((c) => c.aid === OTHER_CODE)
             if (!otherItem) {
-                const candidate = cell.find((c) => !c.aid && c.value === OTHER_CODE)
+              const candidate = cell.find(
+                (c) => !c.aid && c.value === OTHER_CODE
+              )
               if (candidate) {
                 candidate.aid = OTHER_CODE
                 otherItem = candidate
