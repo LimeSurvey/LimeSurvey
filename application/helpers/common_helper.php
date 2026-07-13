@@ -4232,6 +4232,7 @@ function replaceExpressionFieldnames($iSurveyID, $aQIDReplacements)
         }
         if ($relevance !== $arQuestion->relevance) {
             $arQuestion->relevance = $relevance;
+            $arQuestion->save();
         }
         foreach ($arQuestion->conditions as $condition) {
             $cfieldname = $condition->cfieldname;
