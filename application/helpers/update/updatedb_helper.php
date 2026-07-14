@@ -1633,6 +1633,9 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     unset($attributes['showregisterpolicy']);
     unset($attributes['showtokenpolicy']);
 
+    /* Added in 709 update */
+    unset($attributes['savequotaexit']);
+
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
     //this will fail because of using model in updatedb_helper ...

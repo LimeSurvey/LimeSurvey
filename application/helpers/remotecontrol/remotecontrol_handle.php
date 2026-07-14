@@ -466,6 +466,7 @@ class remotecontrol_handle
      *     * savetimings
      *     * ipaddr
      *     * refurl
+     *     * savequotaexit
      *
      * In case of partial success : return an array with key as properties and value as boolean , true if saved with success.
      *
@@ -508,6 +509,7 @@ class remotecontrol_handle
                     unset($aSurveyData['savetimings']);
                     unset($aSurveyData['ipaddr']);
                     unset($aSurveyData['refurl']);
+                    unset($aSurveyData['savequotaexit']);
                 }
 
                 if (empty($aSurveyData)) {
@@ -584,6 +586,7 @@ class remotecontrol_handle
             'ipanonymize',
             'refurl',
             'savetimings',
+            'savequotaexit',
         ];
         // update survey activation settings
         foreach ($activationSettingNames as $activationSettingName) {

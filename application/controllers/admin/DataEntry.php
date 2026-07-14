@@ -1816,7 +1816,7 @@ class DataEntry extends SurveyCommonAction
 
                     if ($errormsg) {
                         foreach ($_POST as $key => $val) {
-                            if (substr($key, 0, 4) != "save" && $key != "action" && $key != "sid" && $key != "datestamp" && $key != "ipaddr") {
+                            if (substr($key, 0, 4) != "save" && $key != "action" && $key != "sid" && $key != "datestamp" && $key != "ipaddr" && $key != "quota_exit") {
                                 $hiddenfields .= CHtml::hiddenField($key, $val);
                             }
                         }

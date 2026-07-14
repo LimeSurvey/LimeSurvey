@@ -36,6 +36,7 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
             'firstname'     => ['key' => 'firstName'],
             'lastname'      => ['key' => 'lastName'],
             'email'         => ['key' => 'email'],
+            'quota_exit'    => ['key' => 'quotaExit'],
         ]);
     }
 

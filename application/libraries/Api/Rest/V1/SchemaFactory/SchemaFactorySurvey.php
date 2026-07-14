@@ -41,6 +41,7 @@ class SchemaFactorySurvey
                 Schema::boolean('ipAddr')->default(null),
                 Schema::boolean('ipAnonymize')->default(null),
                 Schema::boolean('refUrl')->default(null),
+                Schema::boolean('saveQuotaExit')->default(null),
                 Schema::string('dateCreated')->default(null)->format(Schema::FORMAT_DATE_TIME),
                 Schema::boolean('publicStatistics')->default(null),
                 Schema::boolean('publicGraphs')->default(null),
