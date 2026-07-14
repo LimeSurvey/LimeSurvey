@@ -107,6 +107,9 @@ $(document).ready(function () {
                 return;
             }
 
+            // Hide footer when there's nothing to navigate
+            $modal.find(".editor-slider-footer").toggleClass("d-none", slides.length < 2);
+
             buildDots();
             renderSlide(0, false);
 

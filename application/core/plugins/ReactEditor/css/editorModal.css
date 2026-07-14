@@ -2,6 +2,10 @@
   z-index: 20001;
 }
 
+#activate_editor .modal-dialog {
+  max-width: 900px;
+}
+
 #activate_editor .card {
   padding-left: 0;
   padding-right: 0;
@@ -150,7 +154,6 @@
 
 .editor-slider-description-wrap {
   width: 100%;
-  margin-top: 32px;
 }
 
 .editor-slider-description {
