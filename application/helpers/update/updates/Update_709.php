@@ -174,7 +174,7 @@ class Update_709 extends DatabaseUpdateBase
     protected function updateRankingSubQuestionTypes()
     {
         $typeCol = $this->db->quoteColumnName('type');
-        $rankingKey = Question::QT_R_RANKING;
+        $rankingKey = 'R';
 
         switch (Yii::app()->db->getDriverName()) {
             case 'mysqli':
@@ -193,6 +193,22 @@ class Update_709 extends DatabaseUpdateBase
     }
 
     /**
+     * Collects the table column metadata.
+     * @param string $table the tablename
+     * @return [] array of columns
+     */
+    protected function findColumns(string $table)
+    {
+        $sql='SHOW FULL COLUMNS FROM '.$table;
+        $columns=$this->db->createCommand($sql)->queryAll();
+        $result = [];
+        foreach ($columns as $column) {
+            $result[] = $column['Field'];
+        }
+        return $result;
+    }
+
+    /**
      * Adjust ranking questions to be of JSON type
      *
      * @inheritDoc
@@ -202,7 +218,7 @@ class Update_709 extends DatabaseUpdateBase
     {
         $this->updateRankingSubQuestionTypes();
 
-        $rankingKey = Question::QT_R_RANKING;
+        $rankingKey = 'R';
         $rankingQuestionQuery = "
             SELECT s.sid AS sid, q1.qid AS parent_qid, q2.qid AS qid
             FROM {{surveys}} s
@@ -221,13 +237,12 @@ class Update_709 extends DatabaseUpdateBase
             if ($rqr['sid'] !== $sid) {
                 $sid = $rqr['sid'];
                 $alterMap[$sid] = [];
-                $model = SurveyDynamic::model($sid);
-                $columns = $model->metaData->columns;
+                $columns = $this->findColumns((Yii::app()->db->tablePrefix ?? "") . "responses_{$sid}");
             }
             if (!isset($alterMap[$sid][$rqr['parent_qid']])) {
                 $alterMap[$sid][$rqr['parent_qid']] = [];
             }
-            if (isset($columns["Q{$rqr["parent_qid"]}_S{$rqr["qid"]}"])) {
+            if (in_array("Q{$rqr["parent_qid"]}_S{$rqr["qid"]}", $columns)) {
                 $alterMap[$sid][$rqr['parent_qid']][] = "Q{$rqr["parent_qid"]}_S{$rqr["qid"]}";
             };
         }
