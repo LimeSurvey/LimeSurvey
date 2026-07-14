@@ -55,7 +55,10 @@ export const createEmptyFilter = () => ({
   textValue: '', // free-text questions (short/long/huge text)
   subquestion: null, // sub-question (multiple choice / multiple text / multiple numeric)
   checkState: 'Y', // multiple choice: 'Y' checked / 'N' not checked
-  // number/date questions reuse numberMin/numberMax and dateFrom/dateTo below
+  row: null, // array types: selected row (subquestion)
+  column: null, // array types: selected column (answer scale / column subquestion)
+  column2: null, // array dual scale: selected column on the second scale
+  // number/date/grid-value questions reuse numberMin/numberMax and dateFrom/dateTo below
   // SURVEY_DATA
   surveyField: null,
   included: INCLUDED.ALL,
@@ -111,6 +114,20 @@ const isQuestionComplete = (filter) => {
       return (
         filter.subquestion != null &&
         (filter.numberMin !== '' || filter.numberMax !== '')
+      )
+    case 'arrayScale': // F/H: row (subquestion) + column (answer scale)
+      return filter.row != null && filter.column != null
+    case 'arrayDual': // row + at least one of the two column scales
+      return (
+        filter.row != null && (filter.column != null || filter.column2 != null)
+      )
+    case 'arrayGrid': // row + column (both subquestions) + a value
+      return (
+        filter.row != null &&
+        filter.column != null &&
+        (filter.numberMin !== '' ||
+          filter.numberMax !== '' ||
+          filter.textValue !== '')
       )
     default: // answers / number / date / text
       return hasValue(filter)

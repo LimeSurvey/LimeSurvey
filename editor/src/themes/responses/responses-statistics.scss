@@ -230,6 +230,13 @@
       gap: 12px;
     }
 
+    // Caption above a dual-scale column select (the scale header labels).
+    &-col-label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      color: $g-700;
+    }
+
     // Min/Max and Start/End date pairs sit side by side.
     &-range {
       display: flex;

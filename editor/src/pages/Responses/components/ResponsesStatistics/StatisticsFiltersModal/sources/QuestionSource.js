@@ -3,6 +3,7 @@ import React, { useMemo } from 'react'
 import { Input } from 'components'
 
 import { FilterSelect } from '../FilterSelect'
+import { ArrayFilter } from './ArrayFilter'
 import { CheckedToggle, DateRangeField, NumberRangeField } from './fields'
 
 // Question tab: pick a question, then filter by its value
@@ -102,6 +103,16 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
             {filter.subquestion != null &&
               renderSubquestionValue(selectedQuestion.kind)}
           </>
+        )
+      case 'arrayScale':
+      case 'arrayDual':
+      case 'arrayGrid':
+        return (
+          <ArrayFilter
+            question={selectedQuestion}
+            filter={filter}
+            onUpdate={onUpdate}
+          />
         )
       default:
         return (

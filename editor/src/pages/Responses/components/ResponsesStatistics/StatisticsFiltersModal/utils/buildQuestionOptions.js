@@ -1,5 +1,5 @@
 // Turn the survey object into a clean list the dropdowns can display.
-import { RemoveHTMLTagsInString } from 'helpers'
+import { RemoveHTMLTagsInString, getAttributeValue } from 'helpers'
 
 // Pick the localized text for the active language, falling back to the first
 // available language so a question/answer never renders blank.
@@ -23,25 +23,37 @@ const SUBQUESTION_KINDS = {
   K: 'subNumber',
 }
 
+// Array types → row × column (+ optional value):
+//   arrayScale (F/H) → row (subquestion) × column (answer scale) (point choice/column)
+//   arrayDual  (1)   → row × two answer scales
+//   arrayGrid  (:/;) → row × column (both subquestions) + value (numbers/text)
+const ARRAY_KINDS = {
+  'F': 'arrayScale',
+  'H': 'arrayScale',
+  '1': 'arrayDual',
+  ':': 'arrayGrid',
+  ';': 'arrayGrid',
+}
+
 // How a question should be filtered, derived from its type code:
 //   'number' → min/max range   'date' → start/end   'text' → contains
 //   'sub*'   → pick a sub-question, then a value (see SUBQUESTION_KINDS)
+//   'array*' → pick a row + column (+ value) (see ARRAY_KINDS + `array`)
 //   'answers' → pick answer option(s)  (the default)
-// Remaining subquestion types (arrays, dual-scale, grids, ranking) fall through
-// to 'answers' with an empty option list for now — see the note below.
+// Remaining types (ranking) fall through to 'answers' for now.
 const getQuestionKind = (type) => {
   if (type === 'N') return 'number'
   if (type === 'D') return 'date'
   if (FREE_TEXT_TYPES.includes(type)) return 'text'
   if (SUBQUESTION_KINDS[type]) return SUBQUESTION_KINDS[type]
+  if (ARRAY_KINDS[type]) return ARRAY_KINDS[type]
   return 'answers'
 }
 
-// Sub-question options for the subquestion-based types. These types use a single
-// axis, so keep only scaleId 0.
-const buildSubquestions = (question, language) =>
+// Sub-question options for a given axis: scaleId 0 = rows (default), 1 = grid columns.
+const buildSubquestions = (question, language, scaleId = 0) =>
   (question.subquestions || [])
-    .filter((sq) => sq.scaleId === 0)
+    .filter((sq) => sq.scaleId === scaleId)
     .map((sq) => {
       const sqText = RemoveHTMLTagsInString(
         localized(sq.l10ns, language, 'question')
@@ -51,6 +63,18 @@ const buildSubquestions = (question, language) =>
         label: sqText ? `${sq.title} - ${sqText}` : sq.title,
       }
     })
+
+// Map answer objects → Select options ({ value: code, label: 'code (text)' }).
+const mapAnswers = (answers, language) =>
+  (answers || []).map((answer) => {
+    const answerText = RemoveHTMLTagsInString(
+      localized(answer.l10ns, language, 'answer')
+    )
+    return {
+      value: answer.code,
+      label: answerText ? `${answer.code} (${answerText})` : answer.code,
+    }
+  })
 
 // Some flat answer types keep their options built-in rather than stored in
 // `question.answers`, so we generate them here (matching the editor's
@@ -77,6 +101,52 @@ const synthesizeAnswerOptions = (type) => {
   }
 }
 
+// Build the `array` descriptor (rows / columns / value) for an array question,
+// per its kind. `rows` are always the scaleId-0 subquestions.
+const buildArray = (question, language, kind) => {
+  const rows = buildSubquestions(question, language, 0)
+
+  if (kind === 'arrayGrid') {
+    // Columns are the scaleId-1 subquestions; each cell holds a value.
+    return {
+      rows,
+      columns: buildSubquestions(question, language, 1),
+      valueKind: question.type === ':' ? 'number' : 'text',
+    }
+  }
+
+  if (kind === 'arrayDual') {
+    // Two answer scales split by scaleId; labels from the dual-scale headers.
+    const scale = (scaleId) =>
+      mapAnswers(
+        (question.answers || []).filter((a) => a.scaleId === scaleId),
+        language
+      )
+    // The dual-scale header attribute comes in two shapes depending on the
+    // source: the live editor stores `{ [lang]: 'Custom header' }` (a plain
+    // string, as the condition designer reads it), while fixtures store
+    // `{ [lang]: { value } }`. Handle both, falling back to "Scale 1/2".
+    const header = (attrKey, fallback) => {
+      const raw = getAttributeValue(question.attributes?.[attrKey], language)
+      const value = typeof raw === 'object' ? raw?.value : raw
+      return value?.trim() ? RemoveHTMLTagsInString(value) : fallback
+    }
+    return {
+      rows,
+      columns: scale(0),
+      columns2: scale(1),
+      columnLabel: header('dualscale_headerA', t('Scale 1')),
+      columnLabel2: header('dualscale_headerB', t('Scale 2')),
+    }
+  }
+
+  // arrayScale (F/H): columns are the question's answer scale.
+  return {
+    rows,
+    columns: mapAnswers(question.answers, language),
+  }
+}
+
 // Flatten the survey structure into Select-ready options for the filter builder:
 //   [{ value: qid, label: 'Q01 (question text)',
 //      answerOptions: [{ value: code, label: 'A1 (answer text)' }] }]
@@ -95,16 +165,7 @@ export const buildQuestionOptions = (survey, language) => {
       const label = text ? `${question.title} - ${text}` : question.title
       const synthesized = synthesizeAnswerOptions(question.type)
       const answerOptions =
-        synthesized ??
-        (question.answers || []).map((answer) => {
-          const answerText = RemoveHTMLTagsInString(
-            localized(answer.l10ns, language, 'answer')
-          )
-          return {
-            value: answer.code,
-            label: answerText ? `${answer.code} (${answerText})` : answer.code,
-          }
-        })
+        synthesized ?? mapAnswers(question.answers, language)
 
       // Real answer-based questions with an "other" option expose an extra
       // pseudo-answer.
@@ -116,6 +177,9 @@ export const buildQuestionOptions = (survey, language) => {
       const subquestions = SUBQUESTION_KINDS[question.type]
         ? buildSubquestions(question, language)
         : []
+      const array = ARRAY_KINDS[question.type]
+        ? buildArray(question, language, kind)
+        : undefined
 
       options.push({
         value: question.qid,
@@ -123,6 +187,7 @@ export const buildQuestionOptions = (survey, language) => {
         kind,
         answerOptions,
         subquestions,
+        array,
       })
     })
   })

@@ -54,6 +54,9 @@ export const StatisticsFiltersBuilder = ({
           next.textValue = ''
           next.subquestion = null
           next.checkState = 'Y'
+          next.row = null
+          next.column = null
+          next.column2 = null
         }
 
         // Changing the sub-question clears its previous value.
@@ -141,11 +144,7 @@ export const StatisticsFiltersBuilder = ({
               {t('Reset filter')}
             </Button>
           )}
-          <Button
-            variant="primary"
-            onClick={applyFilters}
-            disabled={!canApply}
-          >
+          <Button variant="primary" onClick={applyFilters} disabled={!canApply}>
             {t('Apply filter')}
           </Button>
         </div>
