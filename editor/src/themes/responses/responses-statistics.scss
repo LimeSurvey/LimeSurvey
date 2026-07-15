@@ -1,18 +1,3 @@
-// =============================================================================
-// Responses statistics
-//
-// Every class is namespaced `responses-statistics-*`. Pieces rendered through a
-// portal (detail modal, filter dropdown, ranking tooltip, chart meatball menu)
-// are declared at top level because they mount outside `.responses-statistics-
-// body`; everything else is nested under that root.
-//
-// recharts' own classes (`.recharts-*`) and `.recharts-square` (styled in
-// responses.scss) are intentionally left untouched — except the tooltip
-// wrapper, styled below so tooltips paint above labels and their tail flips
-// with recharts' placement classes.
-// =============================================================================
-
-// Dark tooltip bubble and its arrow tail must stay the same color.
 $statistics-tooltip-bg: #1f1f1f;
 
 @mixin truncate {
@@ -43,25 +28,6 @@ $statistics-tooltip-bg: #1f1f1f;
 
 .recharts-tooltip-wrapper {
   z-index: 2;
-}
-
-.responses-statistics-tooltip-tail {
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-  border-right: 7px solid $statistics-tooltip-bg;
-}
-
-.recharts-tooltip-wrapper-left .responses-statistics-tooltip-tail {
-  right: auto;
-  left: 100%;
-  border-right: 0;
-  border-left: 7px solid $statistics-tooltip-bg;
 }
 
 // Empty state shown in a chart card when a question has no responses yet.
@@ -172,6 +138,83 @@ $statistics-tooltip-bg: #1f1f1f;
       white-space: nowrap;
     }
   }
+}
+
+.responses-statistics-responses-modal .modal-dialog {
+  min-width: 0;
+  width: auto;
+  max-width: min(1200px, calc(100vw - 48px));
+}
+
+.responses-statistics-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+
+  &--two-col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 48px;
+  }
+
+  &-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+    gap: 16px;
+    padding: 12px;
+    border-radius: $border-radius-xs;
+    border: 1px solid $g-400;
+    background: $g-100;
+  }
+
+  &-answer {
+    color: $g-900;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-500;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  &-date {
+    flex-shrink: 0;
+    color: $g-700;
+    font-size: $font-size-xs;
+    white-space: nowrap;
+  }
+}
+
+.responses-statistics-array-text-col-primary {
+  font-weight: 600;
+  color: $g-900;
+}
+
+.responses-statistics-array-text-col-secondary {
+  font-weight: 500;
+  color: $g-700;
+}
+
+.responses-statistics-array-text-search {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.responses-statistics-array-text-cell {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  max-width: 480px;
+}
+
+.responses-statistics-search-results {
+  color: $g-700;
+  font-size: $font-size-sm;
+  white-space: nowrap;
 }
 
 .responses-statistics-ranking-modal .responses-statistics-modal-body {
@@ -479,44 +522,6 @@ $statistics-tooltip-bg: #1f1f1f;
     }
   }
 
-  .responses-statistics-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-
-    &--two-col {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 48px;
-    }
-
-    &-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      align-self: stretch;
-      gap: 16px;
-      padding: 12px;
-      border-radius: $border-radius-xs;
-      border: 1px solid $g-400;
-      background: $g-100;
-    }
-
-    &-answer {
-      color: $g-900;
-      font-size: $font-size-sm;
-      font-weight: $font-weight-500;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    &-date {
-      flex-shrink: 0;
-      color: $g-700;
-      font-size: $font-size-xs;
-      white-space: nowrap;
-    }
-  }
-
   .responses-statistics-stat-term i {
     color: $g-700;
     cursor: help;
@@ -536,40 +541,6 @@ $statistics-tooltip-bg: #1f1f1f;
     max-width: 100px;
     vertical-align: middle;
     padding: 12px 18px;
-  }
-
-  .responses-statistics-array-text-col-primary {
-    font-weight: 600;
-    color: $g-900;
-  }
-
-  .responses-statistics-array-text-col-secondary {
-    font-weight: 500;
-    color: $g-700;
-  }
-
-  .responses-statistics-array-text-search {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-
-  .responses-statistics-array-text-cell {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    overflow: hidden;
-    overflow-wrap: anywhere;
-    white-space: normal;
-    max-width: 480px;
-  }
-
-  // "X results found" counter beside the search input.
-  .responses-statistics-search-results {
-    color: $g-700;
-    font-size: $font-size-sm;
-    white-space: nowrap;
   }
 
   .responses-statistics-dual-scale {
@@ -606,6 +577,24 @@ $statistics-tooltip-bg: #1f1f1f;
       color: $g-700;
     }
 
+    &-row-chart {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &-row--labels-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .responses-statistics-dual-scale-row-caption {
+        @include truncate;
+        flex: 0 0 96px;
+        margin-bottom: 0;
+        text-align: end;
+      }
+    }
+
     &-doughnut-grid {
       display: grid;
       grid-template-columns: repeat(2, auto);
@@ -625,7 +614,7 @@ $statistics-tooltip-bg: #1f1f1f;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: 8px;
       text-align: center;
       pointer-events: none;
       padding: 44px;
@@ -633,7 +622,7 @@ $statistics-tooltip-bg: #1f1f1f;
 
     &-doughnut-title {
       @include truncate;
-      font-size: $font-size-sm;
+      font-size: $font-size-xs;
       font-weight: $font-weight-500;
       color: $g-900;
       max-width: 100%;
@@ -650,13 +639,8 @@ $statistics-tooltip-bg: #1f1f1f;
   .responses-statistics-stacked-legend {
     display: flex;
     align-items: center;
-    // 10px here + the chart's 10px top band padding = a 20px gap to the first
-    // bar, matching the 20px gap between bars.
     margin-bottom: 10px;
 
-    // Occupy the same left column as the chart's subquestion labels (chart
-    // margin-left 8 + YAxis width 180) and right-align like them, so the title
-    // lines up with the row labels and the items start where the bars do.
     &-title {
       box-sizing: border-box;
       width: 188px;
@@ -667,8 +651,6 @@ $statistics-tooltip-bg: #1f1f1f;
       font-size: $font-size-xs;
     }
 
-    // Spans the bar area; the right padding mirrors the chart's right margin so
-    // the last swatch lines up with the end of the bars.
     &-items {
       display: flex;
       flex: 1;
@@ -698,14 +680,8 @@ $statistics-tooltip-bg: #1f1f1f;
     .responses-statistics-chart-toggle {
       display: flex;
       justify-content: flex-end;
-
-      .lime-toggle-btn-group .btn-group {
-        background: $g-200;
-      }
     }
 
-    // X-axis image labels: rendered at the bar width with auto height, bordered
-    // to match the legend/table image labels.
     .responses-statistics-bar-image {
       @include chart-image;
       display: block;
@@ -714,7 +690,6 @@ $statistics-tooltip-bg: #1f1f1f;
       height: auto;
     }
 
-    // Comment question types: bars open the comments for that option on click.
     .responses-statistics-bar-chart--clickable .recharts-bar-rectangle {
       cursor: pointer;
     }
@@ -811,9 +786,6 @@ $statistics-tooltip-bg: #1f1f1f;
         gap: 0;
       }
 
-      // Only style the open state: an unscoped `display` here would override
-      // Bootstrap's `.collapse:not(.show) { display: none }` (equal specificity,
-      // later in the cascade) and keep the body visible when hidden.
       .collapsible-body.show {
         display: flex;
         flex-direction: column;

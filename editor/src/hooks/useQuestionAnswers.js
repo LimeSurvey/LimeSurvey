@@ -19,16 +19,19 @@ export const PAGE_SIZE = 15
  * `meta.question.fields`). The fetch is gated on them so each request only
  * transfers that question's columns instead of every question's.
  *
+ * `pageItems` names the page field holding that caller's list (e.g. 'rows',
+ * 'comments'); the hook flattens it across the loaded pages into `items`.
+ *
  * @param {string|number} surveyId
  * @param {string} questionCode
  * @param {(ctx: {statisticsService: StatisticsService, activeLanguage: string}) => {queryKey: any[], queryFn: Function}} buildQuery
- * @param {{ enabled?: boolean, fields?: string[] }} [options]
+ * @param {{ enabled?: boolean, fields?: string[], pageItems?: string }} [options]
  */
 export function useQuestionAnswers(
   surveyId,
   questionCode,
   buildQuery,
-  { enabled = true, fields = [] } = {}
+  { enabled = true, fields = [], pageItems } = {}
 ) {
   const auth = useAuth()
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
@@ -68,8 +71,17 @@ export function useQuestionAnswers(
     placeholderData: keepPreviousData,
   })
 
+  const items = useMemo(
+    () =>
+      pageItems
+        ? (data?.pages || []).flatMap((page) => page?.[pageItems] || [])
+        : [],
+    [data, pageItems]
+  )
+
   return {
     data,
+    items,
     fetchNextPage,
     hasNextPage: !!hasNextPage,
     isLoading,

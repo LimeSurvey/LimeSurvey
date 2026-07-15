@@ -10,9 +10,7 @@ import {
 import { useQuestionResponses } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
-// Participants are shown as zero-padded sequence ids (001, 002, ...).
-const formatParticipant = (responseId) =>
-  String(responseId ?? '').padStart(3, '0')
+import { formatAnswerDate } from './ChartsUtils.js'
 
 // Two-tone subquestion header: "<Y subquestion> - <X subquestion>" with the X
 // part styled as secondary, matching the responses grid.
@@ -73,10 +71,10 @@ export const ArrayTextTable = ({
   const tableColumns = useMemo(
     () => [
       {
-        key: 'participant',
-        title: t('Participant'),
+        key: 'date',
+        title: <ColumnHeader primary={t('Date')} />,
         sortable: true,
-        render: (row) => formatParticipant(row.responseId),
+        render: (row) => formatAnswerDate(row.date),
       },
       ...columns.map((column) => ({
         key: column.key,
@@ -95,17 +93,41 @@ export const ArrayTextTable = ({
     [columns, highlightTerms]
   )
 
-  // Flatten each row's cells onto the row so LSTable can render columns by key;
-  // `participant` mirrors the response id so the first column can be sorted.
   const tableRows = useMemo(
     () =>
       rows.map((row) => ({
         id: row.responseId,
         responseId: row.responseId,
-        participant: row.responseId,
+        date: row.date,
         ...row.cells,
       })),
     [rows]
+  )
+
+  const searchBlock = (
+    <div className="responses-statistics-array-text-search">
+      <SearchInput
+        terms={terms}
+        onChange={setTerms}
+        onTyping={setTyped}
+        placeholder={t('Search responses')}
+      />
+      {search.length > 0 && totalResults != null && (
+        <span className="responses-statistics-search-results">
+          {totalResults === 1
+            ? t('1 result found')
+            : format(t('%s results found'), totalResults)}
+        </span>
+      )}
+    </div>
+  )
+
+  const emptyState = (
+    <div className="responses-statistics-empty">
+      {search.length
+        ? t('No responses match your search.')
+        : t('There are no responses for this question yet.')}
+    </div>
   )
 
   const renderContent = () => {
@@ -119,13 +141,7 @@ export const ArrayTextTable = ({
     }
 
     if (!tableRows.length) {
-      return (
-        <div className="responses-statistics-empty">
-          {search.length
-            ? t('No responses match your search.')
-            : t('There are no responses for this question yet.')}
-        </div>
-      )
+      return emptyState
     }
 
     return (
@@ -145,7 +161,7 @@ export const ArrayTextTable = ({
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
             >
-              {t('Load more')}
+              {isFetchingNextPage ? t('Loading...') : t('Load more')}
             </button>
           </div>
         )}
@@ -155,23 +171,7 @@ export const ArrayTextTable = ({
 
   return (
     <div ref={containerRef}>
-      {searchable && shouldLoad && (
-        <div className="responses-statistics-array-text-search">
-          <SearchInput
-            terms={terms}
-            onChange={setTerms}
-            onTyping={setTyped}
-            placeholder={t('Search responses')}
-          />
-          {search.length > 0 && totalResults != null && (
-            <span className="responses-statistics-search-results">
-              {totalResults === 1
-                ? t('1 result found')
-                : format(t('%s results found'), totalResults)}
-            </span>
-          )}
-        </div>
-      )}
+      {searchable && shouldLoad && searchBlock}
       {renderContent()}
     </div>
   )

@@ -25,7 +25,6 @@ import {
   RankingBarChart,
   StackedBarChart,
   GroupedBarChart,
-  DualScaleStackedBarChart,
   DualScaleDoughnutChart,
   RadarChart,
   LineChart,
@@ -62,7 +61,7 @@ const VIEWS = [
   {
     value: VIEW.BAR_CHART,
     label: () => t('Bar chart'),
-    icon: () => <i className="ri-bar-chart-2-line"></i>,
+    icon: () => <i className="ri-bar-chart-line"></i>,
     isAvailable: ({ isArray, isArrayText, isNumerical }) =>
       !isArray && !isArrayText && !isNumerical,
     render: ({
@@ -94,17 +93,18 @@ const VIEWS = [
     icon: (props) => <StackedBarIcon width="20" height="22" {...props} />,
     // Array numbers shows means, which don't stack — grouped only.
     isAvailable: ({ isArray, isArrayNumbers }) => isArray && !isArrayNumbers,
-    render: ({ data, valueType, isDualScale }) =>
-      isDualScale ? (
-        <DualScaleStackedBarChart data={data} valueType={valueType} />
-      ) : (
-        <StackedBarChart data={data} valueType={valueType} />
-      ),
+    render: ({ data, valueType, isDualScale }) => (
+      <StackedBarChart
+        data={data}
+        valueType={valueType}
+        dualScale={isDualScale}
+      />
+    ),
   },
   {
     value: VIEW.GROUPED_BAR,
     label: () => t('Grouped bar chart'),
-    icon: () => <i className="ri-bar-chart-2-line"></i>,
+    icon: () => <i className="ri-bar-chart-horizontal-line"></i>,
     isAvailable: ({ isArray, isDualScale }) => isArray && !isDualScale,
     render: ({ data, valueType }) => (
       <GroupedBarChart
@@ -168,12 +168,13 @@ const VIEWS = [
   {
     value: VIEW.GRID,
     label: () => t('Grid'),
-    icon: () => <i className="ri-layout-grid-line"></i>,
+    icon: () => <i className="ri-list-check"></i>,
     isAvailable: ({ isGridable }) => isGridable,
     render: ({ surveyId, question, filters, isNumerical }) => (
       <ResponsesGrid
         surveyId={surveyId}
         questionCode={question?.code}
+        title={question?.title}
         fields={question?.fields}
         filters={filters}
         twoColumns={isNumerical}
@@ -259,7 +260,7 @@ export const ChartRendererV2 = ({
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
       question?.type
     )
-  const [view, setView] = useState(isGridable ? VIEW.GRID : VIEW.BAR_CHART)
+  const [view, setView] = useState(isNumerical ? VIEW.TABLE : VIEW.BAR_CHART)
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
@@ -404,6 +405,7 @@ export const ChartRendererV2 = ({
                   value={activeView?.value}
                   onChange={handleViewChange}
                   toggleOptions={toggleOptions}
+                  theme="quick-access"
                 />
               </div>
             )}

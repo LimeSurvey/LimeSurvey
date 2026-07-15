@@ -29,14 +29,41 @@ export const StatisticsTable = ({ data = [], isImage = false }) => {
 
   if (statsItem) {
     const { stats } = statsItem
-    const rows = [
-      { id: 'count', title: t('Count'), value: stats.count },
-      { id: 'sum', title: t('Sum'), value: stats.sum },
+    const statTerm = (label, tip) => (
+      <span className="responses-statistics-stat-term">
+        {label}{' '}
+        <TooltipContainer tip={tip}>
+          <i className="ri-question-line"></i>
+        </TooltipContainer>
+      </span>
+    )
+    const minTerm = statTerm(
+      t('Min'),
+      <>
+        <strong>{t('Minimum')}</strong>{' '}
+        {t(
+          'shows the lowest value given by participants in the collected data.'
+        )}
+      </>
+    )
+    const maxTerm = statTerm(
+      t('Max'),
+      <>
+        <strong>{t('Maximum')}</strong>{' '}
+        {t(
+          'shows the highest value given by participants in the collected data.'
+        )}
+      </>
+    )
+    // One column per calculation, single row with the values; min/max share
+    // a combined column.
+    const columns = [
+      { key: 'count', title: t('Count'), value: stats.count },
+      { key: 'sum', title: t('Sum'), value: stats.sum },
       {
-        id: 'standardDeviation',
-        title: t('Standard deviation'),
-        value: stats.standardDeviation,
-        tip: (
+        key: 'standardDeviation',
+        title: statTerm(
+          t('Standard deviation'),
           <>
             <strong>{t('Standard deviation')}</strong>{' '}
             {t('shows how much the values vary from the average.')}
@@ -46,12 +73,12 @@ export const StatisticsTable = ({ data = [], isImage = false }) => {
             )}
           </>
         ),
+        value: stats.standardDeviation,
       },
       {
-        id: 'mean',
-        title: t('Average'),
-        value: stats.mean,
-        tip: (
+        key: 'mean',
+        title: statTerm(
+          t('Average'),
           <>
             <strong>{t('Arithmetic mean')}</strong>{' '}
             {t('shows the average value of all responses.')}
@@ -61,38 +88,24 @@ export const StatisticsTable = ({ data = [], isImage = false }) => {
             )}
           </>
         ),
+        value: stats.mean,
       },
       {
-        id: 'min',
-        title: t('Minimum'),
-        value: stats.min,
-        tip: (
+        key: 'minMax',
+        title: (
           <>
-            <strong>{t('Minimum')}</strong>{' '}
-            {t(
-              'shows the lowest value given by participants in the collected data.'
-            )}
+            {minTerm} - {maxTerm}
           </>
         ),
+        value:
+          stats.min !== undefined && stats.max !== undefined
+            ? `${stats.min} - ${stats.max}`
+            : undefined,
       },
       {
-        id: 'max',
-        title: t('Maximum'),
-        value: stats.max,
-        tip: (
-          <>
-            <strong>{t('Maximum')}</strong>{' '}
-            {t(
-              'shows the highest value given by participants in the collected data.'
-            )}
-          </>
-        ),
-      },
-      {
-        id: 'median',
-        title: t('2nd quartile (median)'),
-        value: stats.median,
-        tip: (
+        key: 'median',
+        title: statTerm(
+          t('2nd quartile (median)'),
           <>
             <strong>{t('Median')}</strong>{' '}
             {t('shows the middle value of all responses.')}
@@ -102,27 +115,19 @@ export const StatisticsTable = ({ data = [], isImage = false }) => {
             )}
           </>
         ),
+        value: stats.median,
       },
-    ].filter((row) => row.value !== undefined)
-    const columns = [
-      {
-        key: 'calculation',
-        title: t('Calculation'),
-        render: (row) =>
-          row.tip ? (
-            <span className="responses-statistics-stat-term">
-              {row.title}{' '}
-              <TooltipContainer tip={row.tip}>
-                <i className="ri-question-line"></i>
-              </TooltipContainer>
-            </span>
-          ) : (
-            row.title
-          ),
-      },
-      { key: 'result', title: t('Result'), render: (row) => row.value },
     ]
-    return <LSTable columns={columns} data={rows} rowId="id" resizable />
+      .filter((column) => column.value !== undefined)
+      .map(({ key, title, value }) => ({ key, title, render: () => value }))
+    return (
+      <LSTable
+        columns={columns}
+        data={[{ id: 'stats' }]}
+        rowId="id"
+        resizable
+      />
+    )
   }
 
   if (isRanking) {

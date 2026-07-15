@@ -1,5 +1,6 @@
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 import {
+  dayJsHelper,
   QT_5_POINT_CHOICE,
   QT_EXCLAMATION_LIST_DROPDOWN,
   QT_G_GENDER,
@@ -14,6 +15,20 @@ import {
   QT_U_HUGE_FREE_TEXT,
   QT_Y_YES_NO_RADIO,
 } from 'helpers'
+
+export const formatAnswerDate = (date) => {
+  if (!date) {
+    return ''
+  }
+  const day = dayJsHelper(date)
+  if (day.isSame(dayJsHelper(), 'day')) {
+    return day.fromNow()
+  }
+  if (day.isSame(dayJsHelper().subtract(1, 'day'), 'day')) {
+    return t('Yesterday')
+  }
+  return day.format('D MMM YYYY')
+}
 
 export const COLORS = [
   '#FFBA68',
@@ -275,7 +290,6 @@ export const TooltipShell = ({ children }) => (
       whiteSpace: 'nowrap',
     }}
   >
-    <div className="responses-statistics-tooltip-tail" />
     {children}
   </div>
 )
