@@ -32,7 +32,12 @@ const buildResponseFilters = ({ completed, minId, maxId } = {}) => {
   return filters
 }
 
-const buildAnswerFilters = (selectedAnswer, fields, questionType, selectedField) => {
+const buildAnswerFilters = (
+  selectedAnswer,
+  fields,
+  questionType,
+  selectedField
+) => {
   if (!selectedAnswer || !fields?.length) {
     return []
   }
@@ -91,7 +96,13 @@ export class StatisticsService {
     this.restClient = new RestClient(baseUrl, auth.restHeaders)
   }
 
-  getSurveyStatistics = async (sid, filters, page = 0, pageSize = 15, language) => {
+  getSurveyStatistics = async (
+    sid,
+    filters,
+    page = 0,
+    pageSize = 15,
+    language
+  ) => {
     let { completed, minId, maxId, search } = filters
 
     // Ensure minId is not greater than maxId, if provided.

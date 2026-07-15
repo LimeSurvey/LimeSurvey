@@ -2,11 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 export const useIsInViewport = (
   externalRef = null,
-  {
-    initialInView = true,
-    rootMargin = '1000px 0px 1000px 0px',
-    onChange,
-  } = {}
+  { initialInView = true, rootMargin = '1000px 0px 1000px 0px', onChange } = {}
 ) => {
   const internalRef = useRef(null)
   // Defaults to `true` so consumers that render-until-proven-offscreen behave correctly

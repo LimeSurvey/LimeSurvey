@@ -174,7 +174,9 @@ export const LSTable = ({
         // `paddingTop: 0` removes the gap above the sticky header where rows
         // would otherwise peek through while scrolling.
         style={
-          maxHeight ? { maxHeight, overflowY: 'auto', paddingTop: 0 } : undefined
+          maxHeight
+            ? { maxHeight, overflowY: 'auto', paddingTop: 0 }
+            : undefined
         }
       >
         <Table
@@ -214,7 +216,8 @@ export const LSTable = ({
               {columns.map((column, columnIndex) => {
                 const isSorted = currentSortBy === column.key
                 // No handle on the last column — there's nothing to its right.
-                const showResizer = resizable && columnIndex < columns.length - 1
+                const showResizer =
+                  resizable && columnIndex < columns.length - 1
 
                 return (
                   <th

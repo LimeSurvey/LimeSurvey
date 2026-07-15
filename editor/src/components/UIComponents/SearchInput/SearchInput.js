@@ -101,12 +101,7 @@ export const SearchInput = ({
     >
       <i className="ri-search-line search-input-icon"></i>
       {terms.map((term) => (
-        <Badge
-          key={term}
-          bg="light"
-          text="dark"
-          className="search-input-badge"
-        >
+        <Badge key={term} bg="light" text="dark" className="search-input-badge">
           {term}
           <CloseButton
             aria-label={t('Remove search term')}
