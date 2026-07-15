@@ -39,14 +39,15 @@ const ARRAY_KINDS = {
 //   'number' → min/max range   'date' → start/end   'text' → contains
 //   'sub*'   → pick a sub-question, then a value (see SUBQUESTION_KINDS)
 //   'array*' → pick a row + column (+ value) (see ARRAY_KINDS + `array`)
+//   'ranking' (R) → pick a rank position + an item (see `ranking`)
 //   'answers' → pick answer option(s)  (the default)
-// Remaining types (ranking) fall through to 'answers' for now.
 const getQuestionKind = (type) => {
   if (type === 'N') return 'number'
   if (type === 'D') return 'date'
   if (FREE_TEXT_TYPES.includes(type)) return 'text'
   if (SUBQUESTION_KINDS[type]) return SUBQUESTION_KINDS[type]
   if (ARRAY_KINDS[type]) return ARRAY_KINDS[type]
+  if (type === 'R') return 'ranking'
   return 'answers'
 }
 
@@ -60,11 +61,12 @@ const buildSubquestions = (question, language, scaleId = 0) =>
       )
       return {
         value: sq.qid,
-        label: sqText ? `${sq.title} - ${sqText}` : sq.title,
+        label: sqText || sq.title,
       }
     })
 
-// Map answer objects → Select options ({ value: code, label: 'code (text)' }).
+// Map answer objects → Select options. Show just the answer text; fall back to
+// the code only when an answer has no text (so an option is never blank).
 const mapAnswers = (answers, language) =>
   (answers || []).map((answer) => {
     const answerText = RemoveHTMLTagsInString(
@@ -72,7 +74,7 @@ const mapAnswers = (answers, language) =>
     )
     return {
       value: answer.code,
-      label: answerText ? `${answer.code} (${answerText})` : answer.code,
+      label: answerText || answer.code,
     }
   })
 
@@ -147,6 +149,35 @@ const buildArray = (question, language, kind) => {
   }
 }
 
+// Build the `ranking` descriptor (rank positions × items) for a ranking question
+// (R, covers Ranking and Ranking advanced). Items are the subquestions (with a
+// fallback to answers for the legacy shape); the number of rank positions is
+// capped by the `max_answers` attribute when set.
+const buildRanking = (question, language) => {
+  const subItems = buildSubquestions(question, language)
+  const options = subItems.length
+    ? subItems
+    : mapAnswers(question.answers, language)
+
+  // `max_answers` is non-localized: { '': { value } } — same two-shape handling
+  // as the dual-scale header. An empty/absent value means "rank all items".
+  const rawMax = getAttributeValue(question.attributes?.max_answers, language)
+  const maxValue = typeof rawMax === 'object' ? rawMax?.value : rawMax
+  const maxAnswers = parseInt(maxValue, 10)
+  const rankCount =
+    Number.isInteger(maxAnswers) && maxAnswers > 0
+      ? Math.min(maxAnswers, options.length)
+      : options.length
+
+  return {
+    ranks: Array.from({ length: rankCount }, (_, i) => ({
+      value: String(i + 1),
+      label: `${t('Rank')} ${i + 1}`,
+    })),
+    items: options,
+  }
+}
+
 // Flatten the survey structure into Select-ready options for the filter builder:
 //   [{ value: qid, label: 'Q01 (question text)',
 //      answerOptions: [{ value: code, label: 'A1 (answer text)' }] }]
@@ -180,6 +211,8 @@ export const buildQuestionOptions = (survey, language) => {
       const array = ARRAY_KINDS[question.type]
         ? buildArray(question, language, kind)
         : undefined
+      const ranking =
+        question.type === 'R' ? buildRanking(question, language) : undefined
 
       options.push({
         value: question.qid,
@@ -188,6 +221,7 @@ export const buildQuestionOptions = (survey, language) => {
         answerOptions,
         subquestions,
         array,
+        ranking,
       })
     })
   })

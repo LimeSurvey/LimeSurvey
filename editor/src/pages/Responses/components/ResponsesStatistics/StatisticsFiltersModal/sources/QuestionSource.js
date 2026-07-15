@@ -4,6 +4,7 @@ import { Input } from 'components'
 
 import { FilterSelect } from '../FilterSelect'
 import { ArrayFilter } from './ArrayFilter'
+import { RankingFilter } from './RankingFilter'
 import { CheckedToggle, DateRangeField, NumberRangeField } from './fields'
 
 // Question tab: pick a question, then filter by its value
@@ -109,6 +110,14 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
       case 'arrayGrid':
         return (
           <ArrayFilter
+            question={selectedQuestion}
+            filter={filter}
+            onUpdate={onUpdate}
+          />
+        )
+      case 'ranking':
+        return (
+          <RankingFilter
             question={selectedQuestion}
             filter={filter}
             onUpdate={onUpdate}

@@ -55,8 +55,8 @@ export const createEmptyFilter = () => ({
   textValue: '', // free-text questions (short/long/huge text)
   subquestion: null, // sub-question (multiple choice / multiple text / multiple numeric)
   checkState: 'Y', // multiple choice: 'Y' checked / 'N' not checked
-  row: null, // array types: selected row (subquestion)
-  column: null, // array types: selected column (answer scale / column subquestion)
+  row: null, // array types: selected row (subquestion) · ranking: rank position
+  column: null, // array types: selected column (answer scale / column subquestion) · ranking: item
   column2: null, // array dual scale: selected column on the second scale
   // number/date/grid-value questions reuse numberMin/numberMax and dateFrom/dateTo below
   // SURVEY_DATA
@@ -129,6 +129,8 @@ const isQuestionComplete = (filter) => {
           filter.numberMax !== '' ||
           filter.textValue !== '')
       )
+    case 'ranking': // row (rank position) + column (item)
+      return filter.row != null && filter.column != null
     default: // answers / number / date / text
       return hasValue(filter)
   }
