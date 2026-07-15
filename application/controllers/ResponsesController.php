@@ -621,6 +621,12 @@ class ResponsesController extends LSBaseController
         }
 
         $aResponseId = (is_array($ResponseId)) ? $ResponseId : [$ResponseId];
+
+        // An empty id list posted from the grid means "Select all": act on every response
+        if (empty($aResponseId) && App()->request->getPost('sItems') != '') {
+            $aResponseId = $this->getAllResponseIds($surveyId);
+        }
+
         $errors = 0;
         $timingErrors = 0;
 
@@ -827,6 +833,11 @@ class ResponsesController extends LSBaseController
             is_array($stringItems) ? $stringItems : []
         );
         $responseIds = $responseId !== null ? [$responseId] : $items;
+
+        // An empty id list posted from the grid means "Select all": act on every response
+        if ($responseId === null && empty($responseIds) && $request->getPost('sItems') != '') {
+            $responseIds = $this->getAllResponseIds($surveyId);
+        }
 
         Yii::import('application.helpers.admin.ajax_helper', true);
         $allErrors = [];
@@ -1132,5 +1143,22 @@ class ResponsesController extends LSBaseController
         }
 
         return ['numberOfErrors' => $errors, 'numberOfTimingErrors' => $timingErrors];
+    }
+
+    /**
+     * Returns the ids of all responses of the survey.
+     * Used when a massive action posts an empty id list ("Select all" in the grid).
+     *
+     * @param int $surveyId
+     * @return array
+     */
+    private function getAllResponseIds(int $surveyId): array
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = "id";
+        $model = SurveyDynamic::model($surveyId);
+        return $model->getCommandBuilder()
+            ->createFindCommand($model->tableSchema, $criteria)
+            ->queryColumn();
     }
 }

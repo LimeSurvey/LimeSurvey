@@ -262,6 +262,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 'id'                    => 'responses-grid',
                 'ajaxUpdate'            => 'responses-grid',
                 'ajaxType'              => 'POST',
+                'lsSelectAllEnabled'    => true,
                 'lsAfterAjaxUpdate'     => [
                     "afterAjaxResponsesReload();",
                     "onUpdateTokenGrid();",
