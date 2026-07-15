@@ -197,7 +197,7 @@ class Update_709 extends DatabaseUpdateBase
      * @param string $table the tablename
      * @return [] array of columns
      */
-    protected function findColumns(string $table)
+    protected function findColumnsMySQL(string $table)
     {
         $sql='SHOW FULL COLUMNS FROM '.$table;
         $columns=$this->db->createCommand($sql)->queryAll();
@@ -208,6 +208,27 @@ class Update_709 extends DatabaseUpdateBase
         return $result;
     }
 
+    /**
+     * Collects the table column metadata.
+     * @param string $table the tablename
+     * @return [] array of columns
+     */
+    protected function findColumns(string $table)
+    {
+        switch (Yii::app()->db->getDriverName()) {
+            case 'mysqli':
+            case 'mysql':
+                return $this->findColumnsMySQL($table);
+            case 'pgsql':
+                //return $this->findColumnsPostgreSQL($table);
+                break;
+            case 'mssql':
+            case 'sqlsrv':
+            case 'dblib':
+                //return $this->findColumnsSQLServer($table);
+                break;
+        }
+    }
     /**
      * Adjust ranking questions to be of JSON type
      *
@@ -231,7 +252,6 @@ class Update_709 extends DatabaseUpdateBase
         $rankingQuestionResult = $this->db->createCommand($rankingQuestionQuery)->query();
         $sid = null;
         $alterMap = [];
-        $model = null;
         $columns = null;
         foreach ($rankingQuestionResult as $rqr) {
             if ($rqr['sid'] !== $sid) {
