@@ -100,6 +100,26 @@ class CLSGridView extends TbGridView
     }
 
     /**
+     * Renders the empty message as a focusable live region for screen reader announcement.
+     */
+    public function renderEmptyText()
+    {
+        $emptyText = $this->emptyText === null ? Yii::t('zii', 'No results found.') : $this->emptyText;
+        echo CHtml::tag(
+            $this->emptyTagName,
+            [
+                'class' => trim($this->emptyCssClass . ' grid-empty-message'),
+                'id' => $this->getId() . '-empty-message',
+                'role' => 'status',
+                'aria-live' => 'polite',
+                'aria-atomic' => 'true',
+                'tabindex' => '-1',
+            ],
+            $emptyText
+        );
+    }
+
+    /**
      * Creates column objects and initializes them.
      */
     protected function initColumns()
@@ -292,6 +312,11 @@ class CLSGridView extends TbGridView
             __CLASS__ . '#' . $id,
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
+        );
+        $cs->registerScript(
+            __CLASS__ . '-emptyAnnounce#' . $id,
+            'jQuery(function(){ LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . '); });',
+            LSYii_ClientScript::POS_READY
         );
     }
 
