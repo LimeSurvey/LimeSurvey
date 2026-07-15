@@ -22,7 +22,6 @@ class ListSurveysWidget extends CWidget
     public $bRenderFooter    = true;                                            // Should the footer be rendered?
     public $bRenderSearchBox = true;                                            // Should the search box be rendered?
 
-    public $massiveAction;                                                      // Used to render massive action in GridViews footer
     public $pageSize;                                                           // Default page size (should be set to Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']))
     public $template;
     /**
@@ -62,7 +61,7 @@ class ListSurveysWidget extends CWidget
 
         App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
 
-        $this->massiveAction = $this->render('massive_actions/_selector', array(), true, false);
+        require_once dirname(__FILE__) . '/../../grid/FloatingActionsWidget/actions/SurveyListMassiveActions.php';
 
         $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
             'model' => new Survey('search'),

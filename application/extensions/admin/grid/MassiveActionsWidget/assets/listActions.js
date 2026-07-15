@@ -47,7 +47,7 @@ var onClickListAction =  function (e) {
     var onSuccess      = $that.data('on-success');
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
     var $grididvalue   = $gridid.attr('id');
-    var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
+    var $oCheckedItems = LS.gridSelection.getAll($grididvalue); // All pages, not just current
     $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType     = $that.data('actionType');   
     var selectedList   = $(".selected-items-list");
@@ -77,7 +77,7 @@ var onClickListAction =  function (e) {
     // TODO : Switch case "redirection (with 2 type; post or fill session)"
     if(actionType == "redirect")
     {
-        $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
+        $oCheckedItems = LS.gridSelection.getAll($grididvalue); // So we can join
         var newForm = jQuery('<form>', {
             'action': $actionUrl,
             'target': $that.data('target') ?? '_blank',
@@ -112,7 +112,7 @@ var onClickListAction =  function (e) {
 
     // Set window location href. Used by download files in responses list view.
     if (actionType == 'window-location-href') {
-        var $oCheckedItems = $gridid.yiiGridView('getChecked', $('.listActions').data('pk')); // So we can join
+        var $oCheckedItems = LS.gridSelection.getAll($grididvalue); // So we can join
         console.log('href = ...');
         window.location.href = $actionUrl + $oCheckedItems.join(',');
         return;
@@ -124,9 +124,9 @@ var onClickListAction =  function (e) {
      */
     if (actionType == 'custom') {
         var js = $that.data('custom-js');
-        var func = eval(js);
-        var itemIds = $gridid.yiiGridView('getChecked', $('.listActions').data('pk'));
-        func(itemIds);
+        var func = typeof window[js] === 'function' ? window[js] : null;
+        var itemIds = LS.gridSelection.getAll($grididvalue);
+        if (func) { func(itemIds); }
         console.log('func itemIds');
         return;
     }
@@ -182,6 +182,7 @@ var onClickListAction =  function (e) {
 
         if ($that.data('grid-reload') == "yes")
         {
+            LS.gridSelection.clear($grididvalue);              // Reset persisted selection
             $gridid.yiiGridView('update');                         // Update the surveys list
             setTimeout(function(){
                 $(document).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
@@ -265,8 +266,8 @@ var onClickListAction =  function (e) {
                 }
 
                 if (onSuccess) {
-                    var func = eval(onSuccess);
-                    func(html);
+                    var func = typeof window[onSuccess] === 'function' ? window[onSuccess] : null;
+                    if (func) { func(html); }
                     return;
                 }
             },
@@ -380,11 +381,23 @@ function switchStatusOfListActions(e) {
 
 // Function to check if at least one checkbox is checked
 function isAnyCheckboxChecked() {
-    // This assumes there is only one checkbox per row
-    // - Make isAnyCheckboxChecked() to only check the first one
-    // or
-    // - Stamp on the MassiveActions widget the checkbox class for the row selector and the header
-    // - Use that class to only query selector checkboxes
+    // Use LS.gridSelection when available so that selections across all pages
+    // (not just the currently rendered ones) are taken into account.
+    // Without this, unchecking the last visible checkbox on page N would
+    // incorrectly disable the massive-action button even though rows on other
+    // pages are still selected in the LS.gridSelection store.
+    if (typeof LS !== 'undefined' && LS.gridSelection) {
+        var anySelected = false;
+        $('.grid-view-ls').each(function () {
+            var gridId = $(this).attr('id');
+            if (gridId && LS.gridSelection.count(gridId) > 0) {
+                anySelected = true;
+                return false; // break $.each
+            }
+        });
+        return anySelected;
+    }
+    // Fallback for grids that do not use LS.gridSelection
     return $('.grid-view-ls table tbody input[type="checkbox"]:checked').length > 0;
 }
 

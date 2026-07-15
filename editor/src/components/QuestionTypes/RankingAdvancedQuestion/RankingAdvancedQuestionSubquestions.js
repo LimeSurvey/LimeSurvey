@@ -93,7 +93,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                         style={{ height: 14 }}
                       />
                     </div>
-                    <div className="d-flex align-items-center gap-5">
+                    <div className="d-flex align-items-center w-100 ranking-advanced-subquestion-main gap-4">
                       {isFocused && survey.showQNumCode?.showNumber && (
                         <SubquestionCodeInput
                           isSurveyActive={isSurveyActive}

@@ -1,7 +1,17 @@
 .ranking-advanced-question {
+  min-width: 0;
+
+  .ranking-advanced-column,
+  .ranking-advanced-placeholder-column {
+    flex: 1 1 260px;
+    min-width: 0;
+  }
+
   .ranking-advanced-subquestion-content-editor,
   .placeholder-content-editor {
-    min-width: 200px;
+    min-width: min(200px, 100%);
+    width: 100%;
+    max-width: 100%;
     min-height: 36px;
     border-radius: 2px;
     line-height: normal;
@@ -10,9 +20,15 @@
   }
 
   .ranking-advanced-subquestion {
-    width: fit-content;
+    width: 100%;
+    min-width: 0;
+
+    .ranking-advanced-subquestion-main {
+      min-width: 0;
+    }
 
     .ranking-advanced-subquestion-content-editor {
+      flex-grow: 1;
       outline: 1px $g-700 solid;
       padding-left: 12px;
       padding-right: 20px;
@@ -21,6 +37,9 @@
 
   .subquestion-item-placeholder {
     background-color: $g-100;
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
   }
 
   .remove-option-button {
