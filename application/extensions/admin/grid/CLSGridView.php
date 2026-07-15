@@ -130,7 +130,6 @@ class CLSGridView extends TbGridView
 
         // Always restore persisted checkbox selection after an AJAX page update.
         // LS.gridSelection is registered for every CLSGridView via registerGridviewScripts().
-        $alwaysJs  = 'LS.gridSelection.restoreCheckboxes(' . $gridId . ');';
 
         // Non-AJAX grids have no afterAjaxUpdate callback to build
         if ($this->ajaxUpdate === false) {
@@ -139,7 +138,15 @@ class CLSGridView extends TbGridView
 
         $parts = [];
 
-        // Preserve any existing afterAjaxUpdate set by the caller
+        // 1. Restore persisted checkbox selection FIRST (reads the store into DOM).
+        $parts[] = 'LS.gridSelection.restoreCheckboxes(' . $gridId . ');';
+
+        // 2. Freeze the store so that programmatic change events fired by
+        //    lsAfterAjaxUpdate callbacks (e.g. datepicker re-init) cannot
+        //    clear the cross-page selections before the floating bar is updated.
+        $parts[] = 'if(window.LS&&LS.gridSelection&&LS.gridSelection.freeze){LS.gridSelection.freeze(' . $gridId . ');}';
+
+        // 3. Preserve any existing afterAjaxUpdate set by the caller
         if ($this->afterAjaxUpdate !== null) {
             $definedFunction = ($this->afterAjaxUpdate instanceof CJavaScriptExpression)
                 ? (string) $this->afterAjaxUpdate // has a __toString magic function which returns the code
@@ -148,16 +155,24 @@ class CLSGridView extends TbGridView
             $parts[] = '(' . $definedFunction . ').call(this, id, data);';
         }
 
-        // Add per-grid custom snippets from lsAfterAjaxUpdate
+        // 4. Per-grid custom snippets from lsAfterAjaxUpdate
         if (isset($this->lsAfterAjaxUpdate)) {
             foreach ($this->lsAfterAjaxUpdate as $jsCode) {
                 $parts[] = $jsCode;
             }
         }
 
-        // Always include selection restore and standard handlers
-        $parts[] = $alwaysJs;
+        // 5. Standard post-update handler (actionDropdown, rowlink, column filter).
+        //    Store is still frozen here.
         $parts[] = 'LS.gridView.afterAjaxUpdate(id, data);';
+
+        // 6. Explicitly re-inject and refresh the floating actions bar (if any).
+        //    This is a direct call that does not rely on the LS.gridView.afterAjaxUpdate
+        //    hook being intact, making it robust against PJAX script re-evaluation.
+        $parts[] = 'if(window.LS&&LS.floatingActions&&LS.floatingActions.refresh){LS.floatingActions.refresh(id);}';
+
+        // 7. Unfreeze so that real user-triggered filter changes clear the store normally.
+        $parts[] = 'if(window.LS&&LS.gridSelection&&LS.gridSelection.unfreeze){LS.gridSelection.unfreeze(' . $gridId . ');}';
 
         if (!empty($this->lsAdditionalColumns)) {
             $parts[] = 'initColumnFilter();';
