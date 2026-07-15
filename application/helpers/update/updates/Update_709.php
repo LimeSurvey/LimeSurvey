@@ -213,6 +213,28 @@ class Update_709 extends DatabaseUpdateBase
      * @param string $table the tablename
      * @return [] array of columns
      */
+    protected function findColumnsPostgreSQL(string $table)
+    {
+		$sql=<<<EOD
+select COLUMN_NAME
+from information_schema.columns
+where TABLE_CATALOG = current_database() and TABLE_NAME = :table
+EOD;
+		$command=$this->db->createCommand($sql);
+		$command->bindValue(':table', $table);
+        $columns=$command->queryAll();
+        $result = [];
+        foreach ($columns as $column) {
+            $result[] = $column['column_name'];
+        }
+        return $result;
+    }
+
+    /**
+     * Collects the table column metadata.
+     * @param string $table the tablename
+     * @return [] array of columns
+     */
     protected function findColumns(string $table)
     {
         switch (Yii::app()->db->getDriverName()) {
@@ -220,14 +242,14 @@ class Update_709 extends DatabaseUpdateBase
             case 'mysql':
                 return $this->findColumnsMySQL($table);
             case 'pgsql':
-                //return $this->findColumnsPostgreSQL($table);
-                break;
+                return $this->findColumnsPostgreSQL($table);
             case 'mssql':
             case 'sqlsrv':
             case 'dblib':
                 //return $this->findColumnsSQLServer($table);
                 break;
         }
+        return [];
     }
     /**
      * Adjust ranking questions to be of JSON type
