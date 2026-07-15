@@ -49,10 +49,12 @@ var onClickListAction =  function (e) {
     var $grididvalue   = $gridid.attr('id');
     var $oCheckedItems = LS.gridSelection.getAll($grididvalue); // All pages, not just current
     $oCheckedItems = JSON.stringify($oCheckedItems);
-    var actionType     = $that.data('actionType');   
+    var actionType     = $that.data('actionType');
     var selectedList   = $(".selected-items-list");
+    // In select-all mode empty ids are intentional: the backend treats them as "all rows"
+    var isSelectAllMode = LS.gridSelection.isSelectAll($grididvalue);
 
-    if ($oCheckedItems == '[]') {
+    if ($oCheckedItems == '[]' && !isSelectAllMode) {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
         console.log('error first');
