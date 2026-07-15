@@ -235,6 +235,28 @@ EOD;
      * @param string $table the tablename
      * @return [] array of columns
      */
+    protected function findColumnsSQLServer(string $table)
+    {
+		$sql="
+            SELECT TABLE_NAME, COLUMN_NAME
+            FROM information_schema.columns
+            WHERE TABLE_CATALOG = current_database() AND TABLE_NAME = :table
+        ";
+		$command=$this->db->createCommand($sql);
+		$command->bindValue(':table', $table);
+        $columns=$command->queryAll();
+        $result = [];
+        foreach ($columns as $column) {
+            $result[] = $column['column_name'];
+        }
+        return $result;
+    }
+
+    /**
+     * Collects the table column metadata.
+     * @param string $table the tablename
+     * @return [] array of columns
+     */
     protected function findColumns(string $table)
     {
         switch (Yii::app()->db->getDriverName()) {
