@@ -389,13 +389,13 @@ function buildSelects($allfields, $surveyid, $language)
             elseif ($firstletter == "M" || $firstletter == "P") {
                 $mselects = array();
                 //create a list out of the $pv array
-                $lqid = substr(explode("_", $pv)[0], 1);
+                $lqid = ($pv[1] === 'Q') ? substr($pv, 2) : $pv;
 
                 $aresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(":parent_qid" => $lqid)));
                 foreach ($aresult as $arow) {
                     // only add condition if answer has been chosen
                     if (in_array($arow['title'], $_POST[$pv])) {
-                        $fieldname = substr($pv, 1, strlen($pv)) . $arow['title'];
+                        $fieldname = substr($pv, 1, strlen($pv)) . "_S" . $arow['qid'];
                         $mselects[] = Yii::app()->db->quoteColumnName($fieldname) . " = " . Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $fieldname, 'Y'));
                     }
                 }
@@ -448,11 +448,12 @@ function buildSelects($allfields, $surveyid, $language)
                 //Q - Multiple short text
             elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                 $selectSubs = array();
+                $postValue = is_array($_POST[$pv]) ? implode(' OR ', $_POST[$pv]) : (string) $_POST[$pv];
                 //We interpret and * and % as wildcard matches, and use ' OR ' and , as the separators
-                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', (string) $_POST[$pv])));
+                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $postValue)));
                 if (is_array($pvParts) and count($pvParts)) {
                     foreach ($pvParts as $pvPart) {
-                        $columnName = substr($pv, 1, strlen($pv));
+                        $columnName = ($pv[1] === 'Q') ? substr($pv, 1) : $pv;
                         $encryptedValue = getEncryptedCondition($responseModel, $columnName, $pvPart);
                         $selectSubs[] = Yii::app()->db->quoteColumnName($columnName) . " LIKE " . App()->db->quoteValue($encryptedValue);
                     }
@@ -720,34 +721,35 @@ class statistics_helper
 
         // Ranking OPTION
         elseif ($sQuestionType == "R") {
-            //getting the needed IDs somehow
-            $qqid = explode("_", substr($rt, 2))[0];
-            $lengthofnumeral = strlen(substr($rt, strpos($rt, "_S") + 2));
-
-            $qqid = (int) $qqid;
-
-            //get question data
-            $nquery = "SELECT title, type, question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid WHERE q.parent_qid=0 AND q.qid='$qqid' AND l.language='{$language}'";
-            $nresult = Yii::app()->db->createCommand($nquery)->query();
-
-            //loop through question data
-            foreach ($nresult->readAll() as $nrow) {
-                $nrow = array_values($nrow);
-                $qtitle = flattenText($nrow[0]) . " [" . substr($rt, strpos($rt, "-") - ($lengthofnumeral), $lengthofnumeral) . "]";
-                $qtype = $nrow[1];
-                $qquestion = flattenText($nrow[2]) . "[" . gT("Ranking") . " " . substr($rt, strpos($rt, "-") - ($lengthofnumeral), $lengthofnumeral) . "]";
+            $fld = explode('-', substr($rt, 1))[0];
+            if (!isset($fieldmap[$fld])) {
+                return [];
             }
+            $fielddata    = $fieldmap[$fld];
+            $qqid         = $fielddata['qid'];
+            $rankPosition = (int) $fielddata['aid'];
+            $encrypted    = ($fielddata['encrypted'] ?? 'N') === 'Y';
+            $qtype        = $fielddata['type'];
 
-            //get answers
-            $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid WHERE a.qid='$qqid' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, l.answer";
-            $rows = Yii::app()->db->createCommand($query)->query();
-
-            //loop through answers
-            foreach ($rows->readAll() as $row) {
-                $row = array_values($row);
-                //create an array containing answer code, answer and fieldname(??)
-                $mfield = substr($rt, 1, strpos($rt, "-") - 1);
-                $mfield = $rt;
+            $rankingColumn = "Q{$qqid}";
+            $rankSubquestions = array();
+            foreach ($survey->baseQuestions as $baseQuestion) {
+                if ((int) $baseQuestion->qid === (int) $qqid) {
+                    $rankSubquestions = $baseQuestion->subquestions;
+                    break;
+                }
+            }
+            $qtitle = flattenText($fielddata['title']) . " [" . sprintf(gT('Rank %s'), $rankPosition) . "]";
+            $qquestion = flattenText($fielddata['question']) . " [" . gT("Ranking") . "]";
+            $subquestionText = $fielddata['subquestion'];
+            foreach ($rankSubquestions as $rankSubquestion) {
+                $alist[] = array(
+                    $rankSubquestion->title,
+                    flattenText($rankSubquestion->questionl10ns[$language]->question ?? ''),
+                    $rankingColumn,
+                    $rankPosition,
+                    $encrypted
+                );
             }
         } elseif ($sQuestionType == "|") {
             // File Upload
@@ -1486,6 +1488,54 @@ class statistics_helper
     }
 
     /**
+     * Tally ranking counts for a question stored as a JSON array.
+     *
+     * @param int|string $surveyid
+     * @param string $column
+     * @param int $rank The rank position
+     * @param bool $encrypted
+     * @param string|null $sql Additional SQL filter
+     * @return array<string,int> Map of item title => count at the given rank
+     */
+    protected function getRankingCounts($surveyid, $column, $rank, $encrypted, $sql)
+    {
+        $db = Yii::app()->db;
+        $query = "SELECT " . $db->quoteColumnName($column) . " AS rankvalue FROM {{responses_$surveyid}} WHERE 1=1";
+
+        if (incompleteAnsFilterState() == "incomplete") {
+            $query .= " AND submitdate is null";
+        } elseif (incompleteAnsFilterState() == "complete") {
+            $query .= " AND submitdate is not null";
+        }
+
+        if (!empty($sql)) {
+            $query .= " AND $sql";
+        }
+
+        $counts = array();
+        $rows = $db->createCommand($query)->queryAll();
+        foreach ($rows as $row) {
+            $raw = $row['rankvalue'];
+            if ($encrypted && $raw !== null && $raw !== '') {
+                $raw = LSActiveRecord::decryptSingle($raw);
+            }
+            if ($raw === null || $raw === '') {
+                continue;
+            }
+            $ranking = json_decode((string) $raw, true);
+            if (!is_array($ranking)) {
+                continue;
+            }
+            $itemTitle = $ranking[$rank - 1] ?? null;
+            if ($itemTitle === null || $itemTitle === '') {
+                continue;
+            }
+            $counts[(string) $itemTitle] = ($counts[(string) $itemTitle] ?? 0) + 1;
+        }
+        return $counts;
+    }
+
+    /**
      * Render simplified statistics for a single question: compute per-answer counts and percentages, build display rows, and prepare optional graph metadata.
      *
      * @param array $outputs Answer/list metadata and question descriptors (alist, qtype, parentqid, etc.).
@@ -1517,6 +1567,20 @@ class statistics_helper
         $ColumnName_RM = array();
 
         $responseModel = SurveyDynamic::model($surveyid);
+
+        //ranking questions store the whole ranking as a JSON array in a single column;
+        //tally the per-rank counts once
+        $bRanking = (substr((string) $rt, 0, 1) == "R");
+        $rankingCounts = array();
+        if ($bRanking) {
+            $rankingCounts = $this->getRankingCounts(
+                $surveyid,
+                "Q" . $outputs['parentqid'],
+                (int) ($outputs['alist'][0][3] ?? 0),
+                !empty($outputs['alist'][0][4]),
+                $sql
+            );
+        }
 
         foreach ($outputs['alist'] as $al) {
             if ($noncompleted > 1 && $al[0] === '') {
@@ -1565,11 +1629,8 @@ class statistics_helper
                 // all other question types
                 } else {
                     //ranking question?
-                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " =";
-                    if (substr((string) $rt, 0, 1) == "R") {
-                        $query .= " '$al[0]'";
-                    } else {
-                        $query .= " 'Y'";
+                    if (!$bRanking) {
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " = 'Y'";
                     }
                 }
             }    //end if -> alist set
@@ -1605,18 +1666,22 @@ class statistics_helper
                 }
             }
 
-            if (incompleteAnsFilterState() == "incomplete") {
-                $query .= " AND submitdate is null";
-            } elseif (incompleteAnsFilterState() == "complete") {
-                $query .= " AND submitdate is not null";
-            }
+            if ($bRanking) {
+                $row = (int) ($rankingCounts[(string) $al[0]] ?? 0);
+            } else {
+                if (incompleteAnsFilterState() == "incomplete") {
+                    $query .= " AND submitdate is null";
+                } elseif (incompleteAnsFilterState() == "complete") {
+                    $query .= " AND submitdate is not null";
+                }
 
-            //check for any "sql" that has been passed from another script
-            if (!empty($sql)) {
-                $query .= " AND $sql";
-            }
+                //check for any "sql" that has been passed from another script
+                if (!empty($sql)) {
+                    $query .= " AND $sql";
+                }
 
-            $row = (int) Yii::app()->db->createCommand($query)->queryScalar();
+                $row = (int) Yii::app()->db->createCommand($query)->queryScalar();
+            }
 
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
@@ -2251,6 +2316,18 @@ class statistics_helper
 
         $responseModel = SurveyDynamic::model($surveyid);
 
+        $bRanking = (substr((string) $rt, 0, 1) == "R");
+        $rankingCounts = array();
+        if ($bRanking) {
+            $rankingCounts = $this->getRankingCounts(
+                $surveyid,
+                "Q" . $outputs['parentqid'],
+                (int) ($outputs['alist'][0][3] ?? 0),
+                !empty($outputs['alist'][0][4]),
+                $sql
+            );
+        }
+
         foreach ($outputs['alist'] as $al) {
             if ($noncompleted > 1 && $al[0] === '') {
                 continue;
@@ -2302,9 +2379,10 @@ class statistics_helper
                     $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " <> '')" : " (" . Yii::app()->db->quoteColumnName($cn) . " NOT LIKE ''))";
                 // all other question types
                 } else {
-                    $value = (substr((string) $rt, 0, 1) == "R") ? $al[0] : 'Y';
-                    $encryptedValue = getEncryptedCondition($responseModel, $al[2], $value);
-                    $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " = '$encryptedValue'";
+                    if (!$bRanking) {
+                        $encryptedValue = getEncryptedCondition($responseModel, $al[2], 'Y');
+                        $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " = '$encryptedValue'";
+                    }
                 }
             }    //end if -> alist set
             else {
@@ -2349,22 +2427,26 @@ class statistics_helper
             }
 
             //check filter option
-            if (incompleteAnsFilterState() == "incomplete") {
-                $query .= " AND submitdate is null";
-            } elseif (incompleteAnsFilterState() == "complete") {
-                $query .= " AND submitdate is not null";
-            }
+            if ($bRanking) {
+                $row = (int) ($rankingCounts[(string) $al[0]] ?? 0);
+            } else {
+                if (incompleteAnsFilterState() == "incomplete") {
+                    $query .= " AND submitdate is null";
+                } elseif (incompleteAnsFilterState() == "complete") {
+                    $query .= " AND submitdate is not null";
+                }
 
-            //check for any "sql" that has been passed from another script
-            if (!empty($sql)) {
-                $query .= " AND $sql";
-            }
-            //get data
-            try {
-                $row = Yii::app()->db->createCommand($query)->queryScalar();
-            } catch (Exception $ex) {
-                $row = 0;
-                Yii::app()->setFlashMessage('Faulty query: ' . htmlspecialchars($query), 'error');
+                //check for any "sql" that has been passed from another script
+                if (!empty($sql)) {
+                    $query .= " AND $sql";
+                }
+                //get data
+                try {
+                    $row = Yii::app()->db->createCommand($query)->queryScalar();
+                } catch (Exception $ex) {
+                    $row = 0;
+                    Yii::app()->setFlashMessage('Faulty query: ' . htmlspecialchars($query), 'error');
+                }
             }
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
@@ -3237,6 +3319,9 @@ class statistics_helper
         //-------------------------- PCHART OUTPUT ----------------------------
         $qsid = $surveyid;
         $qqid = explode("_", substr($rt, strcspn($rt, '0123456789')))[0];
+        if ($bRanking) {
+            $qqid = substr($rt, strcspn($rt, '0123456789'));
+        }
         $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
         $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 

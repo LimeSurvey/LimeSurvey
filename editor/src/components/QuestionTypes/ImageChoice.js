@@ -21,6 +21,7 @@ export const ImageChoice = ({
   update,
   value,
   isNoAnswer,
+  groupName,
   defaultChecked = false,
   errors,
   setErrors = () => {},
@@ -36,6 +37,7 @@ export const ImageChoice = ({
   const onChange = (filePath) => {
     update(encodeURI(filePath))
   }
+
   const onChangePreview = (previewUrl) => {
     setPreviewUrl(previewUrl)
   }
@@ -77,10 +79,11 @@ export const ImageChoice = ({
         {!isFocused && (
           <FormCheck
             type={inputType}
-            className="pointer-events-none"
             name={'image-choice-' + idSuffix}
             data-testid={'image-choice-' + idSuffix}
             defaultChecked={defaultChecked}
+            groupName={groupName}
+            update={(value) => update(value)}
             label={
               <ContentEditor
                 className="choice"
