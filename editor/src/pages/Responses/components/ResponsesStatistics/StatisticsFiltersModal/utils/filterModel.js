@@ -30,6 +30,10 @@ export const INCLUDED = {
   INCOMPLETE: 'incomplete',
 }
 
+// FILE_UPLOADED.YES/NO: for File upload questions, filter respondents who did
+// (YES) or did not (NO) upload a file. Only YES exposes the optional title filter.
+export const FILE_UPLOADED = { YES: 'Y', NO: 'N' }
+
 // makes an unique ID for each filter row, so React can track them in a list. Uses crypto.randomUUID() if available, otherwise falls back to a simple counter.
 let _fallbackId = 0
 const createId = () => {
@@ -57,6 +61,7 @@ export const createEmptyFilter = () => ({
   row: null, // array types: selected row (subquestion) · ranking: rank position
   column: null, // array types: selected column (answer scale / column subquestion) · ranking: item
   column2: null, // array dual scale: selected column on the second scale
+  fileUploaded: FILE_UPLOADED.YES, // file upload: uploaded (YES) or not (NO); title reuses textValue
   // number/date/grid-value questions reuse numberMin/numberMax and dateFrom/dateTo below
   // SURVEY_DATA
   surveyField: null,
@@ -128,6 +133,8 @@ const isQuestionComplete = (filter) => {
       )
     case 'ranking': // row (rank position) + column (item)
       return filter.row != null && filter.column != null
+    case 'fileUpload': // Yes/No toggle always holds a value; title is optional
+      return filter.fileUploaded != null
     default: // answers / number / date / text
       return hasValue(filter)
   }

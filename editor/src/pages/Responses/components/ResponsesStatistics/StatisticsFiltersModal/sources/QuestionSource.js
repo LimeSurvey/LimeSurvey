@@ -2,10 +2,11 @@ import React, { useMemo } from 'react'
 
 import { Input } from 'components'
 
+import { FILE_UPLOADED } from '../utils'
 import { FilterSelect } from '../FilterSelect'
 import { ArrayFilter } from './ArrayFilter'
 import { RankingFilter } from './RankingFilter'
-import { DateRangeField, NumberRangeField } from './fields'
+import { DateRangeField, FileUploadedToggle, NumberRangeField } from './fields'
 
 // Question tab: pick a question, then filter by its value
 export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
@@ -113,6 +114,32 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
             filter={filter}
             onUpdate={onUpdate}
           />
+        )
+      case 'fileUpload':
+        // "Did they upload a file?" Yes/No. Only YES exposes the optional
+        // title filter — there's no title to match when nothing was uploaded.
+        return (
+          <>
+            <div className="responses-statistics-filters-row-field">
+              <span className="responses-statistics-filters-row-col-label">
+                {t('File uploaded')}
+              </span>
+              <FileUploadedToggle
+                id={`file-uploaded-${filter.id}`}
+                value={filter.fileUploaded}
+                onChange={(value) => onUpdate('fileUploaded', value)}
+              />
+            </div>
+            {filter.fileUploaded === FILE_UPLOADED.YES && (
+              <div className="responses-statistics-filters-row-field">
+                <Input
+                  placeholder={t('Filter by file title ...')}
+                  value={filter.textValue}
+                  update={(value) => onUpdate('textValue', value)}
+                />
+              </div>
+            )}
+          </>
         )
       default:
         return (

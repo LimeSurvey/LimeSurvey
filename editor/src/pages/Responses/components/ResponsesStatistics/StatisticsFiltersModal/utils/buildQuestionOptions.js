@@ -1,4 +1,5 @@
 // Turn the survey object into a clean list the dropdowns can display.
+import { getQuestionTypeInfo } from 'components'
 import { RemoveHTMLTagsInString, getAttributeValue } from 'helpers'
 
 // Pick the localized text for the active language, falling back to the first
@@ -11,6 +12,17 @@ const localized = (l10ns, language, key) => {
 
 // Free-text question types (short / long / huge text).
 const FREE_TEXT_TYPES = ['S', 'T', 'U']
+
+// Types that carry no filterable response data, so they're kept out of the
+// question dropdown: X Text display (no data) and * Equation (computed).
+const EXCLUDED_TYPES = ['X', '*']
+
+// A question can't be filtered on if it's an excluded type, or if it's the
+// Map/browser detection theme of Short text (S) — it stores location/browser
+// metadata, not a plain answer, so filtering it makes no sense.
+const isFilterableQuestion = (question) =>
+  !EXCLUDED_TYPES.includes(question.type) &&
+  question.questionThemeName !== getQuestionTypeInfo().BROWSER_DETECTION.theme
 
 // Subquestion-based types → how each sub-question is filtered:
 //   Q (multiple short text) → contains
@@ -42,6 +54,7 @@ const ARRAY_KINDS = {
 //   'sub*'   → pick a sub-question, then a value (see SUBQUESTION_KINDS)
 //   'array*' → pick a row + column (+ value) (see ARRAY_KINDS + `array`)
 //   'ranking' (R) → pick a rank position + an item (see `ranking`)
+//   'fileUpload' (|) → filter by uploaded-or-not (Yes/No) + optional file title
 //   'answers' → pick answer option(s)  (the default)
 const getQuestionKind = (type) => {
   if (type === 'N') return 'number'
@@ -50,6 +63,7 @@ const getQuestionKind = (type) => {
   if (SUBQUESTION_KINDS[type]) return SUBQUESTION_KINDS[type]
   if (ARRAY_KINDS[type]) return ARRAY_KINDS[type]
   if (type === 'R') return 'ranking'
+  if (type === '|') return 'fileUpload'
   return 'answers'
 }
 
@@ -190,7 +204,7 @@ export const buildQuestionOptions = (survey, language) => {
   const options = []
 
   groups.forEach((group) => {
-    const questions = group.questions || []
+    const questions = (group.questions || []).filter(isFilterableQuestion)
     questions.forEach((question) => {
       const text = RemoveHTMLTagsInString(
         localized(question.l10ns, language, 'question')

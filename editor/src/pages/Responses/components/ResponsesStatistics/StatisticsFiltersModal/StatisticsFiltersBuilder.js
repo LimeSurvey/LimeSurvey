@@ -6,6 +6,7 @@ import { Button } from 'components'
 import { FilterSelectionRow } from './FilterSelectionRow'
 import { ResetIcon } from './ResetIcon'
 import {
+  FILE_UPLOADED,
   INCLUDED,
   createEmptyFilter,
   hasPrimarySelection,
@@ -56,6 +57,13 @@ export const StatisticsFiltersBuilder = ({
           next.row = null
           next.column = null
           next.column2 = null
+          next.fileUploaded = FILE_UPLOADED.YES
+        }
+
+        // Switching "File uploaded" to No clears the title — there's no title to
+        // match when filtering for respondents who did not upload anything.
+        if (key === 'fileUploaded' && value === FILE_UPLOADED.NO) {
+          next.textValue = ''
         }
 
         // Changing the sub-question clears its previous value.
