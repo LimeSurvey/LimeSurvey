@@ -40,7 +40,7 @@ export const RankingAdvancedQuestion = ({
 
   const [subquestionsHeight, setSubquestionsHeight] = useState([])
   const [subquestionsValue, setSubquestionsValue] = useState(cloneDeep(values))
-  const fieldname = findFieldname({qid});
+  const fieldname = findFieldname({ qid })
 
   const handleOnDragEnd = (dropResult) => {
     if (participantMode) {
@@ -72,7 +72,7 @@ export const RankingAdvancedQuestion = ({
 
       return
     }
-    
+
     subquestionsValue[destinationIndex] = {
       ...subquestionsValue[destinationIndex],
       qid: newSubquestionValue.qid,

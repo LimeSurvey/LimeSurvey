@@ -34,7 +34,11 @@ export const Responses = () => {
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
   const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
-  const { survey = {}, fetchSurvey, refetchQuestionsFieldNamesMap } = useSurvey(surveyId)
+  const {
+    survey = {},
+    fetchSurvey,
+    refetchQuestionsFieldNamesMap,
+  } = useSurvey(surveyId)
   const { responses, isFetching, mutateOperations } = useResponses(
     surveyId,
     pagination,
