@@ -2771,7 +2771,9 @@ function tsvSurveyExport($surveyid)
         $qid = $attribute['qid'];
         $attributeName = $attribute['attribute'];
         $attributeValue = $attribute['value'];
-        $attributeLanguage = trim((string) ($attribute['language'] ?? ''));
+        // Empty XML nodes become empty arrays after json_decode, so guard against casting an array to string.
+        $rawLanguage = $attribute['language'] ?? '';
+        $attributeLanguage = is_array($rawLanguage) ? '' : trim((string) $rawLanguage);
 
         if (!isset($attributes[$qid])) {
             $attributes[$qid] = [
