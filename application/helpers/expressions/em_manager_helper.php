@@ -3607,8 +3607,9 @@ class LimeExpressionManager
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     // csuffix = fieldname suffix ('_S{sqid}'); sqsuffix = qcode/aid suffix ('_1', '_2', ...)
                     $csuffix = $fielddata['suffix'] ?? '';
-                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                    $question = $fielddata['subquestion'];
+                    $isParent = isRankingQuestionParent($fielddata['aid'] ?? null);
+                    $varName = $fielddata['title'] . ((!$isParent) ? '_' . $fielddata['aid'] : '');
+                    $question = $fielddata[$isParent ? 'question' :  'subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
                     if ($other == "Y") {
                         if (isset($qattr[$questionNum]['other_replace_text']) && trim((string) $qattr[$questionNum]['other_replace_text']) != '') {
@@ -3617,7 +3618,7 @@ class LimeExpressionManager
                             $question = $this->gT('Other:');
                         }
                     }
-                    $sqsuffix = '_' . $fielddata['aid'];
+                    $sqsuffix = $isParent ? '' : '_' . $fielddata['aid'];
                     $rowdivid = $sgqa;
 
                     break;
@@ -5314,13 +5315,13 @@ class LimeExpressionManager
             }
 
             if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active']) {
+                $survey = Survey::model()->findByPk($this->sid);
                 try {
                     $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                 } catch (\Exception $ex) {
                     // The response table no longer exists (survey deactivated/deleted while user had a stale session).
                     // Kill the stale session and redirect to the survey start page for a fresh start.
                     killSurveySession($this->sid);
-                    $survey = Survey::model()->findByPk($this->sid);
                     if ($survey) {
                         App()->getController()->redirect($survey->getSurveyUrl());
                     }
@@ -5329,7 +5330,6 @@ class LimeExpressionManager
                     // The response row was deleted (e.g. admin deleted incomplete response while survey was running).
                     // Kill the stale session and redirect to the survey start page for a fresh start.
                     killSurveySession($this->sid);
-                    $survey = Survey::model()->findByPk($this->sid);
                     if ($survey) {
                         App()->getController()->redirect($survey->getSurveyUrl());
                     }
@@ -5339,6 +5339,27 @@ class LimeExpressionManager
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {
+                        $questions = $survey->questions;
+                        $empty = ['', false, null];
+                        foreach ($questions as $question) {
+                            if (!$question->parent_qid && ($question->type === Question::QT_R_RANKING)) {
+                                $toUpdate = false;
+                                $rankingToStore = [];
+                                foreach ($question->subquestions as $subquestion) {
+                                    $key = "Q{$question->qid}_S{$subquestion->qid}";
+                                    if (array_key_exists($key, $aResponseAttributes)) {
+                                        if (!in_array($aResponseAttributes[$key], $empty, true)) {
+                                            $rankingToStore[] = $aResponseAttributes[$key];
+                                        }
+                                        unset($aResponseAttributes[$key]);
+                                        $toUpdate = true;
+                                    }
+                                }
+                                if ($toUpdate) {
+                                    $aResponseAttributes["Q{$question->qid}"] = json_encode($rankingToStore);
+                                }
+                            }
+                        }
                         $oResponse->setAllAttributes($aResponseAttributes, false);
                     } catch (Exception $ex) {
                         // This can happen if the table is missing fields. It should never happen, but somehow it does.

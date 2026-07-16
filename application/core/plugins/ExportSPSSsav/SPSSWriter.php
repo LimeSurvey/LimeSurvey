@@ -24,6 +24,9 @@ class SPSSWriter extends Writer
     protected $headers = array();
     protected $headersSGQA = array();
     protected $aQIDnonumericalAnswers = array();
+    protected $maxStringLength;
+
+    protected $spssfileversion = null;
 
     function __construct($pluginsettings)
     {

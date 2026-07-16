@@ -13,6 +13,7 @@ import {
 import { ContentEditor } from 'components/UIComponents'
 import { ArrowRightIcon } from 'components/icons'
 import { hasQuestionCondition } from 'components/ConditionDesigner/utils'
+import { getPlaceholdersConfig } from 'shared/getPlaceholdersConfig'
 
 import { TestValidation } from './QuestionSchema'
 
@@ -83,6 +84,8 @@ export const QuestionHeader = ({
     l10ns: question.l10ns,
   })
 
+  const { questionTitlePlaceholder } = getPlaceholdersConfig()
+
   return (
     <div
       data-testid="question-header"
@@ -106,7 +109,7 @@ export const QuestionHeader = ({
                 'question-title'
               )}
               innerRef={titleRef}
-              placeholder={t('Your question here')}
+              placeholder={questionTitlePlaceholder}
               useRichTextEditor={!process.env.STORYBOOK_DEV}
               update={(question) => updateTitle({ question })}
               value={questionTitle}

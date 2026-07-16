@@ -364,6 +364,21 @@ abstract class AbstractQuestionProcessor
     }
 
     /**
+     * Returns all values of a single column
+     * @param string $fieldName
+     * @return array<int, string|null>
+     */
+    protected function fetchColumnValues(string $fieldName): array
+    {
+        $db = $this->getDb();
+        ['table' => $table, 'where' => $where, 'params' => $params] = $this->buildFilteredQuery();
+        $col = $db->quoteColumnName($fieldName);
+
+        $sql = "SELECT $col FROM $table" . $where;
+        return $db->createCommand($sql)->queryColumn($params);
+    }
+
+    /**
      * Process a question into one or more statistics charts.
      *
      * @return StatisticsChartDTO[]|StatisticsChartDTO
