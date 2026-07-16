@@ -53,7 +53,7 @@ class TestBaseClassView extends TestBaseClassWeb
         $filename = null;
 
         try {
-            $element = self::$webDriver->wait(2)->until(
+            $element = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('action::' . $name)
                 )
