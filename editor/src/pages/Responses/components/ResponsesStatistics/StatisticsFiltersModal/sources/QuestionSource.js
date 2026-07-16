@@ -5,7 +5,7 @@ import { Input } from 'components'
 import { FilterSelect } from '../FilterSelect'
 import { ArrayFilter } from './ArrayFilter'
 import { RankingFilter } from './RankingFilter'
-import { CheckedToggle, DateRangeField, NumberRangeField } from './fields'
+import { DateRangeField, NumberRangeField } from './fields'
 
 // Question tab: pick a question, then filter by its value
 export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
@@ -25,14 +25,6 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
   // The value control shown once a sub-question is chosen.
   const renderSubquestionValue = (kind) => {
     switch (kind) {
-      case 'subCheckbox':
-        return (
-          <CheckedToggle
-            id={`checked-${filter.id}`}
-            value={filter.checkState}
-            onChange={(value) => onUpdate('checkState', value)}
-          />
-        )
       case 'subText':
         return (
           <div className="responses-statistics-filters-row-field">
@@ -87,7 +79,6 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
             />
           </div>
         )
-      case 'subCheckbox':
       case 'subText':
       case 'subNumber':
         return (

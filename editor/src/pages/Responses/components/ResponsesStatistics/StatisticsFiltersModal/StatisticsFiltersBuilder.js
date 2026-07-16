@@ -53,7 +53,6 @@ export const StatisticsFiltersBuilder = ({
           next.dateTo = null
           next.textValue = ''
           next.subquestion = null
-          next.checkState = 'Y'
           next.row = null
           next.column = null
           next.column2 = null
@@ -64,7 +63,6 @@ export const StatisticsFiltersBuilder = ({
           next.textValue = ''
           next.numberMin = ''
           next.numberMax = ''
-          next.checkState = 'Y'
         }
 
         // Changing the survey-data field clears the previous field's values.

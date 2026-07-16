@@ -13,15 +13,17 @@ const localized = (l10ns, language, key) => {
 const FREE_TEXT_TYPES = ['S', 'T', 'U']
 
 // Subquestion-based types → how each sub-question is filtered:
-//   M/P (multiple choice) → Checked / Not checked
-//   Q   (multiple short text) → contains
-//   K   (multiple numerical) → min/max
+//   Q (multiple short text) → contains
+//   K (multiple numerical)  → min/max
 const SUBQUESTION_KINDS = {
-  M: 'subCheckbox',
-  P: 'subCheckbox',
   Q: 'subText',
   K: 'subNumber',
 }
+
+// Multiple choice (plain / with comments; the button and image-select themes are
+// also type M). Filtered like an answer question — its options are the checkbox
+// subquestions rather than `question.answers`.
+const MULTIPLE_CHOICE_TYPES = ['M', 'P']
 
 // Array types → row × column (+ optional value):
 //   arrayScale (F/H) → row (subquestion) × column (answer scale) (point choice/column)
@@ -196,7 +198,10 @@ export const buildQuestionOptions = (survey, language) => {
       const label = text ? `${question.title} - ${text}` : question.title
       const synthesized = synthesizeAnswerOptions(question.type)
       const answerOptions =
-        synthesized ?? mapAnswers(question.answers, language)
+        synthesized ??
+        (MULTIPLE_CHOICE_TYPES.includes(question.type)
+          ? buildSubquestions(question, language)
+          : mapAnswers(question.answers, language))
 
       // Real answer-based questions with an "other" option expose an extra
       // pseudo-answer.

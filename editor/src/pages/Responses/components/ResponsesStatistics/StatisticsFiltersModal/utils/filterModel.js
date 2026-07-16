@@ -53,8 +53,7 @@ export const createEmptyFilter = () => ({
   questionKind: null, // set when a question is picked; drives which value UI shows
   answerCodes: [], // answer-based questions
   textValue: '', // free-text questions (short/long/huge text)
-  subquestion: null, // sub-question (multiple choice / multiple text / multiple numeric)
-  checkState: 'Y', // multiple choice: 'Y' checked / 'N' not checked
+  subquestion: null, // sub-question (multiple short text / multiple numeric)
   row: null, // array types: selected row (subquestion) · ranking: rank position
   column: null, // array types: selected column (answer scale / column subquestion) · ranking: item
   column2: null, // array dual scale: selected column on the second scale
@@ -106,8 +105,6 @@ const hasValue = (filter) =>
 const isQuestionComplete = (filter) => {
   if (filter.questionQid == null) return false
   switch (filter.questionKind) {
-    case 'subCheckbox': // sub-question chosen; checkState always has a value
-      return filter.subquestion != null
     case 'subText':
       return filter.subquestion != null && filter.textValue !== ''
     case 'subNumber':
