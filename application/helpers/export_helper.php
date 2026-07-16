@@ -2790,7 +2790,26 @@ function tsvSurveyExport($surveyid)
     }
     $attributes = array();
     foreach ($attributes_data as $key => $attribute) {
-        $attributes[$attribute['qid']][] = $attribute;
+        $qid = $attribute['qid'];
+        $attributeName = $attribute['attribute'];
+        $attributeValue = $attribute['value'];
+        $attributeLanguage = trim((string) ($attribute['language'] ?? ''));
+
+        if (!isset($attributes[$qid])) {
+            $attributes[$qid] = [
+                'common' => [],
+                'byLanguage' => [],
+            ];
+        }
+
+        if ($attributeLanguage === '') {
+            $attributes[$qid]['common'][$attributeName] = $attributeValue;
+        } else {
+            if (!isset($attributes[$qid]['byLanguage'][$attributeLanguage])) {
+                $attributes[$qid]['byLanguage'][$attributeLanguage] = [];
+            }
+            $attributes[$qid]['byLanguage'][$attributeLanguage][$attributeName] = $attributeValue;
+        }
     }
 
     // defaultvalues_data
@@ -3053,15 +3072,25 @@ function tsvSurveyExport($surveyid)
                         }
 
                         // question attributes
-                        if ($index_languages == 0 && array_key_exists($question['qid'], $attributes)) {
-                            foreach ($attributes[$question['qid']] as $key => $attribute) {
-                                if (in_array($attribute['attribute'], array_keys($fields))) {
-                                    if (is_array($attribute['value'])) {
-                                        if (safecount($attribute['attribute']) > 0) {
-                                            $tsv_output[$attribute['attribute']] = implode(' ', $attribute['value']);
+                        if (array_key_exists($question['qid'], $attributes)) {
+                            $questionAttributes = $attributes[$question['qid']];
+                            $mergedAttributes = $questionAttributes['common'];
+
+                            if (!empty($questionAttributes['byLanguage'][$language])) {
+                                $mergedAttributes = array_merge(
+                                    $mergedAttributes,
+                                    $questionAttributes['byLanguage'][$language]
+                                );
+                            }
+
+                            foreach ($mergedAttributes as $attributeName => $attributeValue) {
+                                if (array_key_exists($attributeName, $fields)) {
+                                    if (is_array($attributeValue)) {
+                                        if (safecount($attributeValue) > 0) {
+                                            $tsv_output[$attributeName] = implode(' ', $attributeValue);
                                         }
                                     } else {
-                                        $tsv_output[$attribute['attribute']] = $attribute['value'];
+                                        $tsv_output[$attributeName] = $attributeValue;
                                     }
                                 }
                             }
