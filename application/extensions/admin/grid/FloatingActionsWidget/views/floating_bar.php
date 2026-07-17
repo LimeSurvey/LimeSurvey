@@ -66,6 +66,11 @@ $pk     = CHtml::encode($this->pk);
                 </button>
                 <ul class="dropdown-menu">
                     <?php foreach ($action['items'] as $subKey => $subAction) : ?>
+                        <?php if (($subAction['type'] ?? '') === 'dropdown-header') : ?>
+                            <li><h6 class="dropdown-header"><?= CHtml::encode($subAction['text'] ?? '') ?></h6></li>
+                        <?php elseif (($subAction['type'] ?? '') === 'separator') : ?>
+                            <li><hr class="dropdown-divider"></li>
+                        <?php else : ?>
                         <li>
                             <a href="#"
                                class="dropdown-item floating-actions-item"
@@ -88,6 +93,7 @@ $pk     = CHtml::encode($this->pk);
                                 <?= CHtml::encode($subAction['text'] ?? '') ?>
                             </a>
                         </li>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
             </div>

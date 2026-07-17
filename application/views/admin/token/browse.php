@@ -41,12 +41,21 @@ $aLanguageNames = implode(";", $aLanguageNames);
     <div class="row">
         <div class="content-right">
             <?php
+            require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/TokenListMassiveActions.php';
+            $floatingActions = \actions\TokenListMassiveActions::getActions((int)$_GET['surveyid']);
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'       => 'tid',
+                'gridId'   => 'token-grid',
+                'aActions' => $floatingActions,
+            ]);
+            ?>
+            <?php
             $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'dataProvider'          => $model->search(),
                 'filter'                => $model,
                 'id'                    => 'token-grid',
                 'emptyText'             => gT('No survey participants found.'),
-                'massiveActionTemplate' => $massiveAction,
+                'showSelectionBar'      => false,
                 'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                     gT('%s rows per page'),
                     CHtml::dropDownList(
@@ -59,7 +68,7 @@ $aLanguageNames = implode(";", $aLanguageNames);
                 'columns'               => $model->getAttributesForGrid(),
                 'ajaxUpdate'            => 'token-grid',
                 'ajaxType'              => 'POST',
-                'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();']
+                'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();', 'LS.restoreFocusAfterSort("token-grid");']
             ]);
             ?>
         </div>

@@ -162,6 +162,18 @@ LS.floatingActions = (function () {
             newForm.submit();
             return;
         }
+        // ---- fill-session-and-redirect action -------------------------
+        // Posts checked IDs to a session-fill endpoint (postUrl), then redirects.
+        if (actionType === 'fill-session-and-redirect') {
+            var setSessionUrl = (typeof postUrl !== 'undefined' && postUrl) ? postUrl : actionUrl;
+            $.post(setSessionUrl, {
+                itemsid: checkedItems.join($that.data('input-separator') || ','),
+                YII_CSRF_TOKEN: LS.data.csrfToken
+            }, function () {
+                window.location.href = actionUrl;
+            });
+            return;
+        }
         // ---- modal action ---------------------------------------------
         var modalId = $that.data('modal-id');
         if (!modalId) { return; }
