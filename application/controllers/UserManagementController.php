@@ -396,6 +396,8 @@ class UserManagementController extends LSBaseController
         $action = Yii::app()->request->getParam('action');
 
         $userId = sanitize_int($userId);
+        // Only allow the two known actions
+        $action = in_array($action, ['activate', 'deactivate'], true) ? $action : 'deactivate';
 
         $aData['userId'] = $userId;
         $aData['action'] = $action;
