@@ -419,7 +419,7 @@ class UserManagementController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
-        $action = Yii::app()->request->getParam('action');
+        $action = Yii::app()->request->getParam('action', 'deactivate');
         if (!in_array($action, ['activate', 'deactivate'], true)) {
             throw new CHttpException(400, gT("Invalid action"));
         }
