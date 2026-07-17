@@ -420,6 +420,9 @@ class UserManagementController extends LSBaseController
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
         $action = Yii::app()->request->getParam('action');
+        if (!in_array($action, ['activate', 'deactivate'], true)) {
+            throw new CHttpException(400, gT("Invalid action"));
+        }
         $oUser = User::model()->findByPk($userId);
 
         if ($oUser == null) {
