@@ -39,4 +39,40 @@ class ExpressionCoreFunctionsTest extends TestBaseClass
             $this->assertEquals(0, exprmgr_int($value), "{$value} is not an integer with exprmgr_int");
         }
     }
+
+    /**
+     * exprmgr_convert_value maps a value using from/to lists. An exact match must
+     * return the mapped value in strict mode, including for decimal scale points:
+     * abs() then yields a float 0.0, and in PHP `0.0 === 0` is false, which used to
+     * make strict mode return null for exact decimal matches.
+     *
+     * @group em
+     */
+    public function testConvertValueFunction()
+    {
+        // Exact decimal match in strict mode must return the mapped value
+        // (regression: previously returned null because abs() produced float 0.0).
+        $this->assertEquals(
+            "20",
+            exprmgr_convert_value(2.5, 1, "1.5,2.5,3.5", "10,20,30"),
+            "convert_value should map an exact decimal match in strict mode"
+        );
+        // Exact integer match in strict mode (was already working).
+        $this->assertEquals(
+            "20",
+            exprmgr_convert_value(2, 1, "1,2,3", "10,20,30"),
+            "convert_value should map an exact integer match in strict mode"
+        );
+        // No exact match in strict mode returns null.
+        $this->assertNull(
+            exprmgr_convert_value(2.4, 1, "1.5,2.5,3.5", "10,20,30"),
+            "convert_value strict mode returns null when there is no exact match"
+        );
+        // Non-strict mode returns the nearest mapped value.
+        $this->assertEquals(
+            "20",
+            exprmgr_convert_value(2.4, 0, "1.5,2.5,3.5", "10,20,30"),
+            "convert_value non-strict mode returns the nearest mapped value"
+        );
+    }
 }
