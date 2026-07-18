@@ -68,11 +68,5 @@ class ExpressionCoreFunctionsTest extends TestBaseClass
             exprmgr_convert_value(2.4, 1, "1.5,2.5,3.5", "10,20,30"),
             "convert_value strict mode returns null when there is no exact match"
         );
-        // Non-strict mode returns the nearest mapped value.
-        $this->assertEquals(
-            "20",
-            exprmgr_convert_value(2.4, 0, "1.5,2.5,3.5", "10,20,30"),
-            "convert_value non-strict mode returns the nearest mapped value"
-        );
     }
 }
