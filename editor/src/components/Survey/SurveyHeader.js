@@ -232,12 +232,12 @@ export const SurveyHeader = ({
               <div className={classNames('ms-1 transition-all')}>
                 {showXQuestions && (
                   <p className="text-secondary mt-3 show-x-questions">
-                    {format(
-                      numberOfQuestions === 1
-                        ? st('There is 1 question in this survey.')
-                        : st('There are %s questions in this survey.'),
-                      numberOfQuestions
-                    )}
+                    {numberOfQuestions === 1
+                      ? st('There is 1 question in this survey.')
+                      : format(
+                          st('There are %s questions in this survey.'),
+                          numberOfQuestions
+                        )}
                   </p>
                 )}
                 {showPrivacyPolicy && (
