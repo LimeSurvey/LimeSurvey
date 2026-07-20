@@ -25,6 +25,31 @@ function syncMassiveActionResultsTableCaption($modal, $container) {
 }
 
 /**
+ * Safely resolve a dotted global path (e.g. "LS.CPDB.onClickExport") to a callable,
+ * bound to its immediate parent object so method context is preserved.
+ * Used for the 'custom-js' and 'on-success' action callbacks so we avoid eval().
+ *
+ * @param {string} path  Dotted path to a function, resolved from window (e.g. "LS.AjaxHelper.onSuccess").
+ * @return {Function|null}  The bound function, or null if the path does not resolve to a function.
+ */
+function resolveActionCallback(path) {
+    if (typeof path !== 'string' || path === '') {
+        return null;
+    }
+    var parts = path.split('.');
+    var context = null;
+    var current = window;
+    for (var i = 0; i < parts.length; i++) {
+        if (current == null || typeof current[parts[i]] === 'undefined') {
+            return null;
+        }
+        context = current;
+        current = current[parts[i]];
+    }
+    return typeof current === 'function' ? current.bind(context) : null;
+}
+
+/**
  * Define what happen when an action is clicked:
  *
  * - redirection:
@@ -124,7 +149,7 @@ var onClickListAction =  function (e) {
      */
     if (actionType == 'custom') {
         var js = $that.data('custom-js');
-        var func = typeof window[js] === 'function' ? window[js] : null;
+        var func = resolveActionCallback(js);
         var itemIds = LS.gridSelection.getAll($grididvalue);
         if (func) { func(itemIds); }
         console.log('func itemIds');
@@ -266,7 +291,7 @@ var onClickListAction =  function (e) {
                 }
 
                 if (onSuccess) {
-                    var func = typeof window[onSuccess] === 'function' ? window[onSuccess] : null;
+                    var func = resolveActionCallback(onSuccess);
                     if (func) { func(html); }
                     return;
                 }
