@@ -902,7 +902,7 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-     * Do the replacements : if current replacement jey is set and LimeSurvey core have it too : it reset to the needed one.
+     * Do the replacements : if current replacement key is set and LimeSurvey core have it too : it reset to the needed one.
      * @param string $string where need to replace
      * @return string
      */
@@ -928,6 +928,8 @@ class LimeMailer extends PHPMailer
             $string = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{" . "$1" . "}", $string);
         }
         $aReplacements = array_merge($aReplacements, $aTokenReplacements);
+        $aReplacements = array_merge($aReplacements, $this->aReplacements);
+        /* Replace URL placeholders for all replacements */
         foreach ($this->aUrlsPlaceholders as $urlPlaceholder) {
             if (!empty($aReplacements["{$urlPlaceholder}URL"])) {
                 $url = $aReplacements["{$urlPlaceholder}URL"];
@@ -937,7 +939,6 @@ class LimeMailer extends PHPMailer
                 }
             }
         }
-        $aReplacements = array_merge($aReplacements, $this->aReplacements);
         return LimeExpressionManager::ProcessString($string, null, $aReplacements, 3, 1, false, false, true);
     }
 
