@@ -1322,6 +1322,7 @@ class LimeExpressionManager
                         }
                         $af_names = array_unique($af_names);
                         $afe_names = array_unique($afe_names);
+
                         if (count($af_names) > 0 || count($afe_names) > 0) {
                             $afs_eqn = '';
                             if (count($af_names) > 0) {
@@ -1385,6 +1386,7 @@ class LimeExpressionManager
                         default:
                             break;
                     }
+
                     if (isset($this->knownVars[$rowdivid]['SQrelevance']) && $this->knownVars[$rowdivid]['SQrelevance'] != '') {
                         $subQrels[] = [
                             'qtype'    => $type,
@@ -1397,6 +1399,7 @@ class LimeExpressionManager
                     }
                 }
             }
+
             // code_filter:  WZ
             // This can be skipped, since question types 'W' (list-dropdown-flexible) and 'Z'(list-radio-flexible) are no longer supported
 
@@ -1843,6 +1846,7 @@ class LimeExpressionManager
                     }
                 }
             }
+
             // exclude_all_others_auto
             // if (count(this.relevanceStatus) == count(this)) { set exclusive option value to "Y" and call checkconditions() }
             // However, note that would need to blank the values, not use relevance, otherwise can't unclick the _auto option without having it re-enable itself
@@ -1948,6 +1952,7 @@ class LimeExpressionManager
             } else {
                 $input_boxes = "";
             }
+
             // min_answers and max_answers
             // Both use the same subquestion name list, so build it once.
             $hasMinAnswers = isset($qattr['min_answers']) && trim((string) $qattr['min_answers']) != '' && trim((string) $qattr['min_answers']) != '0';
@@ -4374,6 +4379,7 @@ class LimeExpressionManager
             $questionSeq = isset($this->questionId2questionSeq[$questionNum]) ? $this->questionId2questionSeq[$questionNum] : -1;
             $groupSeq = isset($this->questionId2groupSeq[$questionNum]) ? $this->questionId2groupSeq[$questionNum] : -1;
         }
+
         $stringToParse = htmlspecialchars_decode($eqn, ENT_QUOTES);
         $this->em->ResetWarnings();
         $result = $this->em->ProcessBooleanExpression($stringToParse, $groupSeq, $questionSeq);
