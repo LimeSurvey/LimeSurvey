@@ -626,7 +626,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -13131,8 +13131,8 @@ iframe#dialog {
 }
 
 /** Fixed pager width */
-/* jqgrid table must take all place if available, but header and footer must not be outside the screen */
-/* Maybe use a pseudo fixd-y solution is a good idea */
+/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
+/* Myabe use a pseudo fixd-y solution is a good idea */
 .ui-jqgrid,
 .ui-jqgrid-view,
 .ui-jqgrid-titlebar,
@@ -13208,7 +13208,7 @@ td.subquestion-actions span:hover {
   display: none;
 }
 
-/* Box in responses list need a little more space */
+/* Box in resopnses list need a little more space */
 div#gview_displayresponses th#displayresponses_cb {
   width: 35px;
   /* Override jQgrid stuff */
@@ -13335,7 +13335,7 @@ a.explorer-group:focus {
 }
 
 #token-grid table tr.odd .blank_button {
-  /*For older Browsers with compatibility issues*/
+  /*For older Browsers with compatibilty issues*/
   border-color: #f9f9f9;
   background-color: #f9f9f9;
   /*New CSS3 Style of doing it*/
@@ -13445,7 +13445,7 @@ table#responsedetail tr td {
 
 #responses-grid .filter-container {
   min-width: 6em;
-  /* default em is 13px : 75/13 = 5.76… */
+  /* defaut em is 13px : 75/13 = 5.76… */
 }
 
 .edit-participant-modal-body {
@@ -17437,10 +17437,25 @@ body {
   background: #F9F9FB;
 }
 .lime-toggle-btn-group.isSecondary .btn-group {
-  background: #8146F6;
+  background: #DDDEE8;
 }
 .lime-toggle-btn-group.isSecondary .btn-group .btn-check + .btn-outline-secondary {
-  border-color: #8146F6;
+  border: none;
+  color: #6E748C;
+}
+.lime-toggle-btn-group.isSecondary .btn-group .btn-check:checked + .btn-outline-secondary {
+  border: none;
+  border-left: 2px solid #8146F6;
+  color: #515567;
+}
+.lime-toggle-btn-group.isSecondary .btn-group .btn-check:not(:checked) + .btn-outline-secondary:hover {
+  background-color: #EEEFF7;
+  color: #6E748C;
+}
+.lime-toggle-btn-group.isSecondary .btn-group .btn-check:focus + .btn-outline-secondary,
+.lime-toggle-btn-group.isSecondary .btn-group .btn-outline-secondary:focus-visible {
+  outline: 2px solid #8146F6;
+  outline-offset: -2px;
 }
 .lime-toggle-btn-group.isSecondary .btn-group .btn-check:disabled + .btn-outline-secondary {
   border-color: #F9F9FB;
