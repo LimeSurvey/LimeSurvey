@@ -249,6 +249,53 @@
     }
   }
 
+  // Image-select answer options: uniform-size thumbnails in the dropdown (all
+  // cropped to the same box, click to select), with the filename revealed on
+  // hover; a small chip once selected.
+  &-image-option {
+    position: relative;
+    width: 88px;
+    height: 52px;
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    // Filename caption, hidden until the thumbnail is hovered.
+    &-name {
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      padding: 4px 6px;
+      font-size: $font-size-sm;
+      color: $white;
+      background: rgba(0, 0, 0, 0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    &:hover &-name {
+      opacity: 1;
+    }
+  }
+
+  // Selected image chip: a small fixed thumbnail (filename via native tooltip).
+  &-image-chip {
+    display: block;
+    height: 22px;
+    width: 32px;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+
   // Date range: Start/End inputs stacked vertically.
   &-dates {
     display: flex;

@@ -33,6 +33,7 @@ export const Select = ({
   placeholder = t('Please choose...'),
   menuPlacement = 'auto',
   menuPosition = 'absolute',
+  formatOptionLabel,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [canUseAppState, setCanUseAppState] = useState(false)
@@ -124,6 +125,7 @@ export const Select = ({
           menuPlacement={menuPlacement}
           menuPosition={menuPosition}
           menuPortalTarget={document.body}
+          formatOptionLabel={formatOptionLabel}
           components={{
             IndicatorSeparator: () => null,
           }}

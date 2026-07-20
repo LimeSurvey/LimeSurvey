@@ -24,6 +24,32 @@ const isFilterableQuestion = (question) =>
   !EXCLUDED_TYPES.includes(question.type) &&
   question.questionThemeName !== getQuestionTypeInfo().BROWSER_DETECTION.theme
 
+// Image-select themes: List image select (radio, L) and Multiple choice image
+// select (M). Each option's text is an image path, so we render thumbnails
+// instead of the raw URL (see toImageOptions).
+const isImageSelect = (question) => {
+  const info = getQuestionTypeInfo()
+  return [
+    info.SINGLE_CHOICE_IMAGE_SELECT.theme,
+    info.MULTIPLE_CHOICE_IMAGE_SELECT.theme,
+  ].includes(question.questionThemeName)
+}
+
+// Base URL for upload paths
+const SITE_URL = process.env.REACT_APP_SITE_URL || ''
+
+// Turn image-select options into thumbnail options
+const toImageOptions = (options) =>
+  options.map((option) => {
+    const path = option.label
+    if (!path || !path.includes('/')) return option
+    return {
+      value: option.value,
+      label: decodeURIComponent(path.split('/').pop()),
+      image: SITE_URL + path,
+    }
+  })
+
 // Subquestion-based types → how each sub-question is filtered:
 //   Q (multiple short text) → contains
 //   K (multiple numerical)  → min/max
@@ -223,6 +249,12 @@ export const buildQuestionOptions = (survey, language) => {
         answerOptions.push({ value: '-oth-', label: t('Other') })
       }
 
+      // Image-select questions render each option's image path as a thumbnail.
+      const imageSelect = isImageSelect(question)
+      const finalAnswerOptions = imageSelect
+        ? toImageOptions(answerOptions)
+        : answerOptions
+
       const kind = getQuestionKind(question.type)
       const subquestions = SUBQUESTION_KINDS[question.type]
         ? buildSubquestions(question, language)
@@ -237,7 +269,8 @@ export const buildQuestionOptions = (survey, language) => {
         value: question.qid,
         label,
         kind,
-        answerOptions,
+        answerOptions: finalAnswerOptions,
+        isImageSelect: imageSelect,
         subquestions,
         array,
         ranking,

@@ -8,6 +8,37 @@ import { ArrayFilter } from './ArrayFilter'
 import { RankingFilter } from './RankingFilter'
 import { DateRangeField, FileUploadedToggle, NumberRangeField } from './fields'
 
+// Render an image-select answer option as a thumbnail. Falls back to the text
+// label for the "Other" pseudo-answer, which carries no image.
+const formatImageOption = (option, { context }) => {
+  if (!option.image) return option.label
+
+  // Selected chip: a small fixed thumbnail; the filename shows as a tooltip.
+  if (context === 'value') {
+    return (
+      <img
+        src={option.image}
+        alt={option.label}
+        title={option.label}
+        className="responses-statistics-filters-image-chip"
+      />
+    )
+  }
+
+  // Menu: a uniform-size thumbnail with the filename revealed on hover.
+  return (
+    <div
+      className="responses-statistics-filters-image-option"
+      title={option.label}
+    >
+      <img src={option.image} alt={option.label} />
+      <span className="responses-statistics-filters-image-option-name">
+        {option.label}
+      </span>
+    </div>
+  )
+}
+
 // Question tab: pick a question, then filter by its value
 export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
   const selectedQuestion = useMemo(
@@ -150,6 +181,9 @@ export const QuestionSource = ({ filter, questionOptions = [], onUpdate }) => {
               isMultiselect
               placeholder={t('Please select answer options ...')}
               update={(values) => onUpdate('answerCodes', values)}
+              formatOptionLabel={
+                selectedQuestion.isImageSelect ? formatImageOption : undefined
+              }
             />
           </div>
         )
