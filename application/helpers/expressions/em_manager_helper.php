@@ -3770,28 +3770,29 @@ class LimeExpressionManager
                 switch ($type) {
                     case Question::QT_L_LIST:// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                        $Answers = Answer::model()->findAll([
-                            'select' => 'aid, code',
-                            'condition' => 'qid = :qid and scale_id = 0',
-                            'params' => [':qid' => $questionNum],
-                        ]);
-                        if (!is_null($Answers)) {
-                            foreach ($Answers as $Answer) {
-                                $q2subqInfo[$questionNum]['subqs'][] = [
-                                    'rowdivid' => 'Q' . $questionNum . '_S' . $Answer->aid,
-                                    'varName'  => $varName,
-                                    'sqsuffix' => '_' . $Answer->code,
-                                    'csuffix' => '_S' . $Answer->aid,
-                                ];
-                            }
-                        }
-                        if ($other) {
+                        if (str_ends_with($varName, '_other') && $other == "Y") {
                             $q2subqInfo[$questionNum]['subqs'][] = [
                                 'rowdivid' => 'Q' . $questionNum . '_Cother',
                                 'varName'  => $varName,
                                 'sqsuffix' => '_other',
                                 'csuffix' => '_Cother',
                             ];
+                        } else {
+                            $Answers = Answer::model()->findAll([
+                                'select' => 'aid, code',
+                                'condition' => 'qid = :qid and scale_id = 0',
+                                'params' => [':qid' => $questionNum],
+                            ]);
+                            if (!is_null($Answers)) {
+                                foreach ($Answers as $Answer) {
+                                    $q2subqInfo[$questionNum]['subqs'][] = [
+                                        'rowdivid' => 'Q' . $questionNum . '_S' . $Answer->aid,
+                                        'varName'  => $varName,
+                                        'sqsuffix' => '_' . $Answer->code,
+                                        'csuffix' => '_S' . $Answer->aid,
+                                    ];
+                                }
+                            }
                         }
                         break;
                     case Question::QT_O_LIST_WITH_COMMENT:
