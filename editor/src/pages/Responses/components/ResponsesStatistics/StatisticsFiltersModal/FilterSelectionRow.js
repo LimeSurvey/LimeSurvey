@@ -57,39 +57,37 @@ export const FilterSelectionRow = ({
           />
         </div>
 
-        <div className="responses-statistics-filters-row-main">
-          <div className="responses-statistics-filters-row-source">
-            {filter.source === SOURCE.QUESTION && (
-              <QuestionSource
-                filter={filter}
-                questionOptions={questionOptions}
-                onUpdate={update}
-              />
-            )}
-            {filter.source === SOURCE.SURVEY_DATA && (
-              <SurveyDataSource
-                filter={filter}
-                survey={survey}
-                onUpdate={update}
-              />
-            )}
-            {filter.source === SOURCE.PARTICIPANT && (
-              <ParticipantSource
-                filter={filter}
-                survey={survey}
-                onUpdate={update}
-              />
-            )}
-          </div>
-          <Button
-            variant="link"
-            className="responses-statistics-filters-row-delete p-0"
-            onClick={() => onRemove(filter.id)}
-            aria-label={t('Remove filter')}
-          >
-            <DeleteIcon className="fill-current" />
-          </Button>
+        <div className="responses-statistics-filters-row-source">
+          {filter.source === SOURCE.QUESTION && (
+            <QuestionSource
+              filter={filter}
+              questionOptions={questionOptions}
+              onUpdate={update}
+            />
+          )}
+          {filter.source === SOURCE.SURVEY_DATA && (
+            <SurveyDataSource
+              filter={filter}
+              survey={survey}
+              onUpdate={update}
+            />
+          )}
+          {filter.source === SOURCE.PARTICIPANT && (
+            <ParticipantSource
+              filter={filter}
+              survey={survey}
+              onUpdate={update}
+            />
+          )}
         </div>
+        <Button
+          variant="link"
+          className="responses-statistics-filters-row-delete p-0"
+          onClick={() => onRemove(filter.id)}
+          aria-label={t('Remove filter')}
+        >
+          <DeleteIcon className="fill-current" />
+        </Button>
       </div>
     </>
   )

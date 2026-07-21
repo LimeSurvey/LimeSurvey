@@ -134,6 +134,8 @@
     align-items: flex-start;
     min-height: auto;
     max-width: 448px;
+    min-width: 0;
+    width: 100%;
     // top / right(auto) / bottom / left — clears the topbar + filter toolbar
     // and sits in from the left edge.
     margin: 88px auto;
@@ -175,6 +177,18 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    .select__value-container {
+      min-width: 0;
+    }
+
+    .select__single-value,
+    .select__placeholder,
+    .select__multi-value__label {
+      white-space: normal;
+      overflow: visible;
+      overflow-wrap: anywhere;
+    }
   }
 
   // AND/OR select shown between rows.
@@ -184,8 +198,9 @@
   }
 
   &-row {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
     gap: 12px;
     padding: 16px;
     border-radius: $border-radius;
@@ -193,25 +208,25 @@
 
     // "Filter selection #N" caption above the source tabs.
     &-label {
+      grid-column: 1 / -1;
       font-size: $font-size-sm;
       font-weight: $font-weight-500;
       color: $g-700;
     }
 
-    // Source body + delete share one row; delete aligns with the first select.
-    &-main {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
+    &-tabs {
+      grid-column: 1;
+      min-width: 0;
     }
 
     &-source {
-      flex: 1;
+      grid-column: 1;
       min-width: 0;
     }
 
     &-delete {
-      flex-shrink: 0;
+      grid-column: 2;
+      grid-row: 3;
       height: 40px;
       display: flex;
       align-items: center;
@@ -329,7 +344,6 @@
         fill: $g-700;
       }
     }
-
   }
 
   // Calendar popover is portaled to <body>, so it lives at top level (not nested
@@ -378,6 +392,12 @@
       border-color: $g-400;
       opacity: 1;
     }
+  }
+}
+
+.responses-statistics-filter-menu {
+  .select__option--is-focused:not(.select__option--is-selected) {
+    background-color: $g-200;
   }
 }
 

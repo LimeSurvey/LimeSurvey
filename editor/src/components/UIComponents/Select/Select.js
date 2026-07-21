@@ -30,6 +30,7 @@ export const Select = ({
   isMultiselect = false,
   defaultValue = options[0],
   menuStyle = {},
+  menuClassName = '',
   placeholder = t('Please choose...'),
   menuPlacement = 'auto',
   menuPosition = 'absolute',
@@ -114,6 +115,7 @@ export const Select = ({
         <ReactSelect
           classNames={{
             control: () => 'select',
+            menu: () => menuClassName,
           }}
           classNamePrefix="select"
           defaultValue={defaultValue}
