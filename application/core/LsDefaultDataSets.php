@@ -2523,7 +2523,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "",
                 "group" => "Mask questions",
-                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
+                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
             ),
             array(
                 "name" => "shortfreetext",
@@ -2763,7 +2763,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "R",
                 "group" => "Mask questions",
-                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
+                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
             ),
         ];
 

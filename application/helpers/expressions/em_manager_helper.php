@@ -8047,6 +8047,17 @@ class LimeExpressionManager
     }
 
     /**
+     * Unset the specified temporary variable replacements
+     */
+    public static function unsetTempVars(array $keys)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        foreach ($keys as $key) {
+            unset($LEM->tempVars[$key]);
+        }
+    }
+
+    /**
      * Unit test strings containing expressions
      */
     public static function UnitTestProcessStringContainingExpressions()
@@ -9352,8 +9363,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
             if ($aSurveyInfo['surveyls_policy_notice_label'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
-                $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'], 0);
+                $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'], 0, ['STARTPOLICYLINK' => gT("Start of the link that opens the privacy policy popup"), 'ENDPOLICYLINK' => gT("End of the link that opens the privacy policy popup")]);
                 $sPrint = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                LimeExpressionManager::unsetTempVars(['STARTPOLICYLINK', 'ENDPOLICYLINK']);
                 $errClass = "";
                 if ($LEM->em->HasErrors()) {
                     $errClass = 'danger';
