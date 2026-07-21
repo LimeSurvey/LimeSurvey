@@ -476,6 +476,16 @@ class LimeMailer extends PHPMailer
     }
 
     /**
+     * Add replacement to current one
+     * @param string[]
+     * @return void
+     */
+    public function addOrReplaceReplacement($replacements)
+    {
+        $this->aReplacements = array_merge($this->aReplacements, $replacements);
+    }
+
+    /**
      * Hate to use global var
      * maybe add format : raw (array of errors), html : clean html etc …
      * @param string $format (currently only html or null (return array))
