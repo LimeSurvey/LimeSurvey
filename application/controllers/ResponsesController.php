@@ -5,6 +5,8 @@
  **/
 class ResponsesController extends LSBaseController
 {
+    private const SELECT_ALL_HARD_CAP = 5000;
+
     /**
      * responses constructor.
      * @param $controller
@@ -566,6 +568,7 @@ class ResponsesController extends LSBaseController
                 'pageSize' => $aData['pageSize'],
                 'fieldmap' => $aData['fieldmap'],
                 'filteredColumns' => $aData['filteredColumns'],
+                'selectAllMaxCount' => $this->getSelectAllHardCap($surveyId),
                 // saved but not submitted data
                 'savedModel' => $aData['savedModel'],
                 'savedResponsesPageSize' => $aData['savedResponsesPageSize'],
@@ -640,18 +643,29 @@ class ResponsesController extends LSBaseController
 
         $aResponseId = (is_array($ResponseId)) ? $ResponseId : [$ResponseId];
 
-        // An empty id list posted from the grid means "Select all": act on every response
-        if (empty($aResponseId) && App()->request->getPost('sItems') != '') {
+        // "Select all" posts an explicit flag: act on every response matching the grid filters
+        if (empty($aResponseId) && App()->request->getPost('selectAll')) {
             $aResponseId = $this->getAllResponseIds($surveyId);
         }
 
         $errors = 0;
         $timingErrors = 0;
 
-        foreach ($aResponseId as $iResponseId) {
-            $resultErrors = $this->deleteResponse($surveyId, $iResponseId);
-            $errors += $resultErrors['numberOfErrors'];
-            $timingErrors += $resultErrors['numberOfTimingErrors'];
+        if (!$this->hasHeavyDelete($surveyId)) {
+            $saveTimings = Survey::model()->findByPk($surveyId)->isSaveTimings;
+            foreach (array_chunk($aResponseId, 1000) as $chunk) {
+                $deleted = Response::model($surveyId)->deleteByPk($chunk);
+                if ($saveTimings) {
+                    SurveyTimingDynamic::model($surveyId)->deleteByPk($chunk);
+                }
+                $errors += count($chunk) - $deleted;
+            }
+        } else {
+            foreach ($aResponseId as $iResponseId) {
+                $resultErrors = $this->deleteResponse($surveyId, $iResponseId);
+                $errors += $resultErrors['numberOfErrors'];
+                $timingErrors += $resultErrors['numberOfTimingErrors'];
+            }
         }
 
         if ($errors || $timingErrors) {
@@ -852,8 +866,8 @@ class ResponsesController extends LSBaseController
         );
         $responseIds = $responseId !== null ? [$responseId] : $items;
 
-        // An empty id list posted from the grid means "Select all": act on every response
-        if ($responseId === null && empty($responseIds) && $request->getPost('sItems') != '') {
+        // "Select all" posts an explicit flag: act on every response matching the grid filters
+        if ($responseId === null && empty($responseIds) && $request->getPost('selectAll')) {
             $responseIds = $this->getAllResponseIds($surveyId);
         }
 
@@ -1164,19 +1178,65 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * Returns the ids of all responses of the survey.
-     * Used when a massive action posts an empty id list ("Select all" in the grid).
+     * Returns the ids of all responses matching the grid filters posted with the
+     * massive action. Used when the selectAll flag is posted ("Select all" in the grid).
      *
      * @param int $surveyId
      * @return array
      */
     private function getAllResponseIds(int $surveyId): array
     {
-        $criteria = new CDbCriteria();
-        $criteria->select = "id";
         $model = SurveyDynamic::model($surveyId);
+        $model->bEncryption = true;
+
+        parse_str((string) App()->request->getPost('filterQuery', ''), $parsedFilterQuery);
+        $filters = $parsedFilterQuery['SurveyDynamic'] ?? null;
+        if (is_array($filters) && !empty($filters)) {
+            $model->setAttributes($filters, false);
+            foreach (['completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter'] as $filterName) {
+                if (!empty($filters[$filterName])) {
+                    $model->$filterName = $filters[$filterName];
+                }
+            }
+        }
+
+        $criteria = $model->search()->criteria;
+        $criteria->select = 't.id';
+        $cap = $this->getSelectAllHardCap($surveyId);
+        if ($cap !== null) {
+            $criteria->order = 't.id ASC';
+            $criteria->limit = $cap;
+        }
+
         return $model->getCommandBuilder()
             ->createFindCommand($model->tableSchema, $criteria)
             ->queryColumn();
+    }
+
+    /**
+     * Returns the maximum number of responses a "Select all" massive action may
+     * process, or null when unlimited. Capped when responses are expensive to
+     * delete: uploaded files to remove or plugins listening to the delete event.
+     *
+     * @param int $surveyId
+     * @return int|null
+     */
+    private function getSelectAllHardCap(int $surveyId): ?int
+    {
+        return $this->hasHeavyDelete($surveyId) ? self::SELECT_ALL_HARD_CAP : null;
+    }
+
+    /**
+     * Whether deleting a response involves per-response work (uploaded files
+     * to remove or plugins listening to the delete event), which rules out
+     * bulk deletion.
+     *
+     * @param int $surveyId
+     * @return bool
+     */
+    private function hasHeavyDelete(int $surveyId): bool
+    {
+        return hasFileUploadQuestion($surveyId)
+            || App()->getPluginManager()->hasSubscribers('beforeDataEntryDelete');
     }
 }

@@ -336,7 +336,7 @@ LS.gridSelection = (function () {
          * @return {string[]}
          */
         getAll: function (gridId) {
-            // Select-all mode: empty ids mean "all rows" to the backend
+            // Select-all mode: no ids are sent, the action posts a selectAll flag instead
             if (_selectAllMode.has(gridId)) {
                 return [];
             }
@@ -351,6 +351,17 @@ LS.gridSelection = (function () {
          */
         isSelectAll: function (gridId) {
             return _selectAllMode.has(gridId);
+        },
+
+        /**
+         * Serialized filter inputs of the grid, posted along with "select all"
+         * massive actions so the backend can apply the same filters.
+         *
+         * @param  {string} gridId
+         * @return {string}
+         */
+        getFilterQuery: function (gridId) {
+            return $('#' + gridId + ' .filters :input').serialize();
         },
 
         /**
