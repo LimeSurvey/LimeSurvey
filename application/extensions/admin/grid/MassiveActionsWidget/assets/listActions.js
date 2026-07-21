@@ -31,7 +31,7 @@ var onClickListAction =  function (e) {
     $oCheckedItems = JSON.stringify($oCheckedItems);
     var actionType     = $that.data('actionType');
     var selectedList   = $(".selected-items-list");
-    // In select-all mode empty ids are intentional: the backend treats them as "all rows"
+    // In select-all mode no ids are sent; a selectAll flag is posted instead
     var isSelectAllMode = LS.gridSelection.isSelectAll($grididvalue);
 
     if ($oCheckedItems == '[]' && !isSelectAllMode) {
@@ -185,6 +185,7 @@ var onClickListAction =  function (e) {
         // Custom datas comming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};
         if (LS.gridSelection.isSelectAll($grididvalue)) {
+            $postDatas['selectAll'] = 1;
             $postDatas['filterQuery'] = LS.gridSelection.getFilterQuery($grididvalue);
         }
         $modal.find('.custom-data').each(function(i, el)

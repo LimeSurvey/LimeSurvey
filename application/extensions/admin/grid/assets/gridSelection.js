@@ -329,7 +329,7 @@ LS.gridSelection = (function () {
          * @return {string[]}
          */
         getAll: function (gridId) {
-            // Select-all mode: empty ids mean "all rows" to the backend
+            // Select-all mode: no ids are sent, the action posts a selectAll flag instead
             if (_selectAllMode.has(gridId)) {
                 return [];
             }

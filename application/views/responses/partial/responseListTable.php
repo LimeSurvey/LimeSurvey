@@ -96,7 +96,11 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
         <?php
         // the massive actions dropup button
-        $massiveAction = App()->getController()->renderPartial('/responses/massive_actions/_selector', [], true);
+        $massiveAction = App()->getController()->renderPartial(
+            '/responses/massive_actions/_selector',
+            ['selectAllMaxCount' => $selectAllMaxCount],
+            true
+        );
 
 
         // The first few columns are fixed.

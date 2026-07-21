@@ -29,7 +29,7 @@ class CLSGridView extends TbGridView
 
     /**
      * When true, the selection bar offers a "Select all" button that selects the
-     * whole result set; massive actions then post an empty id list, meaning "all".
+     * whole result set; massive actions then post a selectAll flag plus the grid filters.
      * @var bool
      */
     public bool $lsSelectAllEnabled = false;

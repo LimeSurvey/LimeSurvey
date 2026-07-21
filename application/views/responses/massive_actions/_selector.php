@@ -10,6 +10,19 @@
 <?php
     $buttons = [];
     $surveyId = intval(App()->getRequest()->getQuery('surveyId'));
+    $selectAllCapNote = '';
+if (!empty($selectAllMaxCount)) {
+    $selectAllCapNote = '<div class="select-all-cap-note" data-cap="' . (int) $selectAllMaxCount . '" style="display:none;">'
+        . $this->widget('ext.AlertWidget.AlertWidget', [
+            'tag'  => 'p',
+            'text' => sprintf(
+                gT('"Select all" is limited to the first %s responses in one action.'),
+                (int) $selectAllMaxCount
+            ),
+            'type' => 'info',
+        ], true)
+        . '</div>';
+}
 if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
     // Delete
     $buttons[] = [

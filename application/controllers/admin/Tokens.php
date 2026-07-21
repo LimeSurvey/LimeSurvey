@@ -346,7 +346,7 @@ class Tokens extends SurveyCommonAction
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
-        if (empty($aTokenIds) && Yii::app()->getRequest()->getPost('sItems') != '') {
+        if (empty($aTokenIds) && Yii::app()->getRequest()->getPost('selectAll')) {
             $deletedTokenCount = TokenDynamic::model((int) $iSid)->deleteAll($this->getFilteredTokenCriteria((int) $iSid));
         } else {
             $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords($aTokenIds);

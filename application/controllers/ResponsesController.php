@@ -625,8 +625,8 @@ class ResponsesController extends LSBaseController
 
         $aResponseId = (is_array($ResponseId)) ? $ResponseId : [$ResponseId];
 
-        // An empty id list posted from the grid means "Select all": act on every response
-        if (empty($aResponseId) && App()->request->getPost('sItems') != '') {
+        // "Select all" posts an explicit flag: act on every response matching the grid filters
+        if (empty($aResponseId) && App()->request->getPost('selectAll')) {
             $aResponseId = $this->getAllResponseIds($surveyId);
         }
 
@@ -848,8 +848,8 @@ class ResponsesController extends LSBaseController
         );
         $responseIds = $responseId !== null ? [$responseId] : $items;
 
-        // An empty id list posted from the grid means "Select all": act on every response
-        if ($responseId === null && empty($responseIds) && $request->getPost('sItems') != '') {
+        // "Select all" posts an explicit flag: act on every response matching the grid filters
+        if ($responseId === null && empty($responseIds) && $request->getPost('selectAll')) {
             $responseIds = $this->getAllResponseIds($surveyId);
         }
 
@@ -1161,7 +1161,7 @@ class ResponsesController extends LSBaseController
 
     /**
      * Returns the ids of all responses matching the grid filters posted with the
-     * massive action. Used when an empty id list is posted ("Select all" in the grid).
+     * massive action. Used when the selectAll flag is posted ("Select all" in the grid).
      *
      * @param int $surveyId
      * @return array
