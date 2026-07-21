@@ -279,6 +279,7 @@ var onClickListAction =  function (e) {
     if (!modalEl) {
         return;
     }
+    $modal.find('.select-all-cap-note').toggle(isSelectAllMode);
     modalEl.setAttribute('tabindex', '-1');
     const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl, {});
     const focusModal = function () {

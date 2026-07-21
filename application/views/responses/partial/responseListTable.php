@@ -98,7 +98,10 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         // the massive actions dropup button
         $massiveAction = App()->getController()->renderPartial(
             '/responses/massive_actions/_selector',
-            ['selectAllMaxCount' => $selectAllMaxCount],
+            [
+                'selectAllMaxCount' => $selectAllMaxCount,
+                'numTotalAnswers'   => $numTotalAnswers,
+            ],
             true
         );
 
