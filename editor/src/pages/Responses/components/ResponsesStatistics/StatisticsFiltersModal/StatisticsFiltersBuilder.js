@@ -99,7 +99,7 @@ export const StatisticsFiltersBuilder = ({
 
   const applyFilters = () => {
     // Frontend-only scope
-    console.log('Statistics filters applied:', filters)
+    // console.log('Statistics filters applied:', filters)
     onApply(filters)
   }
 

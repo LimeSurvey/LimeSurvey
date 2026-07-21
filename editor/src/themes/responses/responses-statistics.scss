@@ -126,9 +126,6 @@
   }
 }
 
-// Filters modal: anchored to the top-left under the toolbar (like a dropdown)
-// instead of centered, per the Figma design. Overrides ComponentModal's
-// `centered` flex layout for this modal only.
 .responses-statistics-filters-modal {
   .modal-dialog {
     align-items: flex-start;
@@ -136,8 +133,6 @@
     max-width: 448px;
     min-width: 0;
     width: 100%;
-    // top / right(auto) / bottom / left — clears the topbar + filter toolbar
-    // and sits in from the left edge.
     margin: 88px auto;
 
     .modal-content {
@@ -170,8 +165,6 @@
   }
 }
 
-// Filter builder inside the Filters modal (condition-designer style): a stack of
-// filter rows joined by AND/OR, with an add link and a reset/apply footer.
 .responses-statistics-filters {
   &-builder {
     display: flex;
@@ -266,7 +259,7 @@
 
   // Image-select answer options: uniform-size thumbnails in the dropdown (all
   // cropped to the same box, click to select), with the filename revealed on
-  // hover; a small chip once selected.
+  // hover.
   &-image-option {
     position: relative;
     width: 88px;
@@ -319,7 +312,7 @@
   }
 
   // Custom date field: a plain input + calendar icon that opens a calendar
-  // popover (instead of MUI's masked text field).
+  // popover
   &-date {
     position: relative;
 
