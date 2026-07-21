@@ -537,7 +537,6 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 $failedNotificationId = null;
                 $notificationRecipient = $sRecipient;
                 $mailer->addOrReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
-                $mailer->aReplacements = $aReplacementVars;
                 $mailer->setTo($notificationRecipient);
                 $mailerSuccess = $mailer->SendMessage();
             }
