@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { ToggleButtons } from 'components'
-import { useStatistics } from 'hooks'
+import { useAppState, useStatistics, useSurvey } from 'hooks'
+import { STATES } from 'helpers'
 import { useIsInViewport } from 'hooks/useInViewport'
 
 import { ResponsesHeader } from '../../ResponsesHeader'
 import { TAB_KEYS } from '../../utils'
 import { VALUE_TYPE } from './ChartsUtils'
 import { StatisticsContainer } from './StatisticsContainer.js'
+import { buildQuestionOptions } from './StatisticsFiltersModal/utils'
 
 const valueTypeOptions = [
   { name: '%', value: VALUE_TYPE.PERCENTAGE },
@@ -32,6 +34,15 @@ export const ResponsesStatistics = ({
   const [loadMoreRef, isLoadMoreInView] = useIsInViewport(null, {
     initialInView: false,
   })
+
+  // Survey data drives the filter modal's Question / Participant / language
+  // options (same source as StatisticsContainer).
+  const { survey } = useSurvey(surveyId)
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
+  const questionOptions = useMemo(
+    () => buildQuestionOptions(survey, activeLanguage),
+    [survey?.questionGroups, activeLanguage]
+  )
 
   // Auto-load the next page of charts while the sentinel below the list is in
   // view. Re-runs when fetching settles, so it chains pages as long as the
@@ -75,6 +86,8 @@ export const ResponsesStatistics = ({
           showFilters={showFilters}
           setFilters={setFilters}
           tabKey={TAB_KEYS.STATISTICS}
+          survey={survey}
+          questionOptions={questionOptions}
         />
         <ToggleButtons
           id="statistics-value-type"

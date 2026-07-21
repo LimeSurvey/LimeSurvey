@@ -126,6 +126,274 @@
   }
 }
 
+.responses-statistics-filters-modal {
+  .modal-dialog {
+    align-items: flex-start;
+    min-height: auto;
+    max-width: 448px;
+    min-width: 0;
+    width: 100%;
+    margin: 88px auto;
+
+    .modal-content {
+      background: $g-100 !important;
+    }
+    .modal-header {
+      margin: 4px;
+      background: $white;
+    }
+
+    .responses-statistics-modal-title {
+      font-size: 14px !important;
+    }
+    .responses-statistics-modal-body {
+      padding: 12px 14px;
+      .responses-statistics-filters-add {
+        text-decoration: none;
+      }
+    }
+    .responses-statistics-filters-row {
+      background: $g-100;
+      padding: 0;
+      .fill-current {
+        fill: $grape;
+      }
+    }
+    .modal-close-button {
+      margin: 0;
+    }
+  }
+}
+
+.responses-statistics-filters {
+  &-builder {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .select__value-container {
+      min-width: 0;
+    }
+
+    .select__single-value,
+    .select__placeholder,
+    .select__multi-value__label {
+      white-space: normal;
+      overflow: visible;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  // AND/OR select shown between rows.
+  &-join {
+    align-self: flex-start;
+    min-width: 96px;
+  }
+
+  &-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 12px;
+    padding: 16px;
+    border-radius: $border-radius;
+    background: $white;
+
+    // "Filter selection #N" caption above the source tabs.
+    &-label {
+      grid-column: 1 / -1;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      color: $g-700;
+    }
+
+    &-tabs {
+      grid-column: 1;
+      min-width: 0;
+    }
+
+    &-source {
+      grid-column: 1;
+      min-width: 0;
+    }
+
+    &-delete {
+      grid-column: 2;
+      grid-row: 3;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      color: $g-700;
+
+      &:hover {
+        color: $grape;
+      }
+    }
+
+    // Source body (the selected tab's fields) and a single labelled control.
+    &-body,
+    &-field {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    // Caption above a dual-scale column select (the scale header labels).
+    &-col-label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      color: $g-700;
+    }
+
+    // Min/Max and Start/End date pairs sit side by side.
+    &-range {
+      display: flex;
+      gap: 12px;
+
+      > * {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+  }
+
+  // Image-select answer options: uniform-size thumbnails in the dropdown (all
+  // cropped to the same box, click to select), with the filename revealed on
+  // hover.
+  &-image-option {
+    position: relative;
+    width: 88px;
+    height: 52px;
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    // Filename caption, hidden until the thumbnail is hovered.
+    &-name {
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      padding: 4px 6px;
+      font-size: $font-size-sm;
+      color: $white;
+      background: rgba(0, 0, 0, 0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    &:hover &-name {
+      opacity: 1;
+    }
+  }
+
+  // Selected image chip: a small fixed thumbnail (filename via native tooltip).
+  &-image-chip {
+    display: block;
+    height: 22px;
+    width: 32px;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+
+  // Date range: Start/End inputs stacked vertically.
+  &-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  // Custom date field: a plain input + calendar icon that opens a calendar
+  // popover
+  &-date {
+    position: relative;
+
+    &-input {
+      cursor: pointer;
+      padding-right: 40px;
+    }
+
+    &-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      svg {
+        fill: $g-700;
+      }
+    }
+  }
+
+  // Calendar popover is portaled to <body>, so it lives at top level (not nested
+  // under -date) and sits above the modal. Position is set inline (fixed coords).
+  &-date-popover {
+    position: fixed;
+    z-index: 9999;
+    background: $white;
+    border: 1px solid $g-400;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  // "+ Add filter" link button.
+  &-add {
+    align-self: flex-start;
+    color: $grape;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-500;
+  }
+
+  // "Reset filter" link button (icon + label), shown once a row has a selection.
+  &-reset {
+    display: flex;
+    align-items: center;
+    color: $g-700;
+    text-decoration: none;
+
+    &:hover {
+      color: $g-900;
+      text-decoration: none;
+    }
+  }
+
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid $g-300;
+
+    // Disabled "Apply filter" reads as a flat grey button (not faded purple).
+    .btn-primary:disabled {
+      background: $g-400;
+      border-color: $g-400;
+      opacity: 1;
+    }
+  }
+}
+
+.responses-statistics-filter-menu {
+  .select__option--is-focused:not(.select__option--is-selected) {
+    background-color: $g-200;
+  }
+}
+
 // Ranking modal content (filter → title → list) lacks the comments wrapper, so
 // match the comment modal's 16px vertical rhythm here.
 .responses-statistics-ranking-modal .responses-statistics-modal-body {
