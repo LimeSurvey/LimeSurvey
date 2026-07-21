@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.11 (build 260706)  to 6.17.12 (build 260721) July 21, 2026
+-Fixed issue #LE-827: Interface language auto detect inconsistency when switching editor and error in account settings (#5142) (haythem chibani)
+-Fixed issue #AT-2176: Question validation tip value is not exported for additional languages when exporting as txt (#5143) (Rami S. Zaki)
+-Fixed issue #20606: Response table schema is incorrect when activating a survey after previewing (#5147) (haythem chibani)
+#Updated translation: Swahili by FredaM
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Galician by Calidonia, Gronnd
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
 Changes from 6.17.10 (build 260622) to 6.17.11 (build 260706) July 6, 2026
 -Fixed issue #AT-2010: LS6 added capability to check items across multiple pages (#5067) (Patricia Stell)
 -Fixed issue #20561: Editing the default answers for a multiple-choice question results in a database error (#5076) (twilligls)
