@@ -184,6 +184,9 @@ var onClickListAction =  function (e) {
 
         // Custom datas comming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};
+        if (LS.gridSelection.isSelectAll($grididvalue)) {
+            $postDatas['filterQuery'] = LS.gridSelection.getFilterQuery($grididvalue);
+        }
         $modal.find('.custom-data').each(function(i, el)
         {
             if ($(this).hasClass('btn-group')){ // ext.ButtonGroupWidget.ButtonGroupWidget

@@ -346,7 +346,11 @@ class Tokens extends SurveyCommonAction
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
-        $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
+        if (empty($aTokenIds) && Yii::app()->getRequest()->getPost('sItems') != '') {
+            $deletedTokenCount = TokenDynamic::model((int) $iSid)->deleteAll($this->getFilteredTokenCriteria((int) $iSid));
+        } else {
+            $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
+        }
         if ($deletedTokenCount > 0) {
             ls\ajax\AjaxHelper::outputSuccess(ngT('Deleted {n} survey participant.|Deleted {n} survey participants.', $deletedTokenCount));
         } else {
@@ -381,6 +385,24 @@ class Tokens extends SurveyCommonAction
             Yii::app()->setFlashMessage(gT('Could not delete survey participant.'), 'error');
         }
         $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSid));
+    }
+
+    /**
+     * Criteria matching the grid filters posted with a "Select all" massive action.
+     *
+     * @param int $surveyId
+     * @return CDbCriteria
+     */
+    private function getFilteredTokenCriteria(int $surveyId): CDbCriteria
+    {
+        $model = TokenDynamic::model($surveyId);
+        $model->bEncryption = true;
+        parse_str((string) Yii::app()->request->getPost('filterQuery', ''), $parsedFilterQuery);
+        $filters = $parsedFilterQuery['TokenDynamic'] ?? null;
+        if (is_array($filters) && !empty($filters)) {
+            $model->setAttributes($filters, false);
+        }
+        return $model->search()->criteria;
     }
 
     /**

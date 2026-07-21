@@ -347,6 +347,17 @@ LS.gridSelection = (function () {
         },
 
         /**
+         * Serialized filter inputs of the grid, posted along with "select all"
+         * massive actions so the backend can apply the same filters.
+         *
+         * @param  {string} gridId
+         * @return {string}
+         */
+        getFilterQuery: function (gridId) {
+            return $('#' + gridId + ' .filters :input').serialize();
+        },
+
+        /**
          * Clears the selection for a grid.
          * Call this after a massive action has been executed.
          *

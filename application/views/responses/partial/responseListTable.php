@@ -83,6 +83,17 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
         <?php endif; ?>
 
+        <?php if ($selectAllMaxCount !== null && $numTotalAnswers > $selectAllMaxCount) {
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'tag'  => 'p',
+                'text' => sprintf(
+                    gT('Deleting responses or their uploaded files with "Select all" is limited to %s responses in one action.'),
+                    $selectAllMaxCount
+                ),
+                'type' => 'info',
+            ]);
+        } ?>
+
         <?php
         // the massive actions dropup button
         $massiveAction = App()->getController()->renderPartial('/responses/massive_actions/_selector', [], true);
