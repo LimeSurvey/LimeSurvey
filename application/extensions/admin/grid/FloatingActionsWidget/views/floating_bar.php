@@ -6,6 +6,7 @@
  */
 $gridId = CHtml::encode($this->gridId);
 $pk     = CHtml::encode($this->pk);
+$selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
 ?>
 <!-- FloatingActionsWidget: bar for grid "<?= $gridId ?>" -->
 <div
@@ -13,6 +14,7 @@ $pk     = CHtml::encode($this->pk);
     class="floating-actions-bar"
     data-grid-id="<?= $gridId ?>"
     data-pk="<?= $pk ?>"
+    <?php if ($selectAllUrl): ?>data-select-all-url="<?= $selectAllUrl ?>"<?php endif; ?>
     role="toolbar"
     aria-label="<?= gT('Actions for selected items') ?>"
 >
@@ -20,6 +22,20 @@ $pk     = CHtml::encode($this->pk);
     <span class="reg-12" aria-live="polite" aria-atomic="true">
         <span class="floating-actions-count-number">0</span>&nbsp;<?= gT('selected') ?>
     </span>
+
+    <?php if ($selectAllUrl): ?>
+        <!-- Separator before "Select all" -->
+        <div class="floating-actions-separator" role="separator" aria-hidden="true"></div>
+        <!-- Select all button -->
+        <button
+            type="button"
+            class="floating-actions-btn floating-actions-select-all"
+            title="<?= gT('Select all') ?>"
+        >
+            <i class="ri-check-line"></i>
+            <?= gT('Select all') ?>
+        </button>
+    <?php endif; ?>
 
     <?php foreach ($this->aActions as $key => $action) : ?>
         <?php if (!is_array($action) || empty($action['type'])) : ?>

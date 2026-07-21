@@ -34,6 +34,19 @@ class FloatingActionsWidget extends CWidget
     /** @var array Action definitions – see class docblock for structure */
     public $aActions = [];
 
+    /**
+     * Optional URL for the "Select all" button.
+     * When set, a "Select all" button is shown in the floating bar.
+     * Clicking it will AJAX-fetch all matching PKs from this URL and select them
+     * across pagination via LS.gridSelection.
+     *
+     * The URL should accept current filter parameters (as GET params matching the
+     * model name, e.g. ?Survey[active]=R) and return a JSON array of integer PKs.
+     *
+     * @var string|null
+     */
+    public $selectAllUrl;
+
     /** Modal view names available in MassiveActionsWidget/views/modals/ */
     private const MODAL_VIEW_NAMES = [
         'yes-no',
@@ -67,11 +80,13 @@ class FloatingActionsWidget extends CWidget
         );
 
         // 4. Initialise this bar instance after the DOM is ready
+        $selectAllUrl = $this->selectAllUrl ? addslashes($this->selectAllUrl) : '';
         Yii::app()->getClientScript()->registerScript(
             'FloatingActionsWidget-init-' . $this->gridId,
             "$(function () { LS.floatingActions.init('"
                 . $this->gridId . "', '"
-                . $this->pk . "'); });",
+                . $this->pk . "', '"
+                . $selectAllUrl . "'); });",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
     }

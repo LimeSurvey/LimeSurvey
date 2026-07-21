@@ -52,6 +52,7 @@ class SurveyAdministrationController extends LSBaseController
                     'getCurrentEditorValues',
                     'getDataSecTextSettings',
                     'getDateFormatOptions',
+                    'getAllSurveyIds',
                     'updateAccessMode',
                     ''
                 ],
@@ -313,6 +314,41 @@ class SurveyAdministrationController extends LSBaseController
                 'caption'     => gT('Selected surveys'),
             )
         );
+    }
+
+    /**
+     * Returns all survey IDs matching the current filter as a JSON array.
+     * Used by the "Select all" button in the floating actions bar to select
+     * all surveys across pagination.
+     *
+     * @return void
+     */
+    public function actionGetAllSurveyIds()
+    {
+        if (!Yii::app()->request->isAjaxRequest) {
+            throw new CHttpException(400, 'Invalid request');
+        }
+        if (!Permission::model()->hasGlobalPermission('surveys', 'read')) {
+            throw new CHttpException(403, 'Forbidden');
+        }
+
+        $model = new Survey('search');
+        $filters = Yii::app()->request->getParam('Survey', []);
+        if (is_array($filters)) {
+            $model->setAttributes($filters, false);
+        }
+
+        // Get all matching surveys without pagination limit
+        $dataProvider = $model->search(['pageSize' => 100000]);
+        $surveys = $dataProvider->getData();
+
+        $ids = array_map(static function ($survey) {
+            return (int) $survey->sid;
+        }, $surveys);
+
+        header('Content-Type: application/json');
+        echo json_encode(array_values($ids));
+        Yii::app()->end();
     }
 
     /**
@@ -3572,7 +3608,7 @@ class SurveyAdministrationController extends LSBaseController
     public function actionDeleteUrlParam()
     {
         $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
-        $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
+        $redirectUrl = ['surveyAdministration/rendersidemenulink', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
         $paramId = Yii::app()->request->getPost('urlParamId');
         if (empty($paramId)) {
             throw new CHttpException(400, gT('Invalid request'));

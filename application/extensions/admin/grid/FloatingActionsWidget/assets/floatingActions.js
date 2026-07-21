@@ -297,13 +297,15 @@ LS.floatingActions = (function () {
         /**
          * Initialise the floating bar for one grid.
          *
-         * @param {string} gridId  ID of the CLSGridView container element
-         * @param {string} pk      Primary key column name (without [])
+         * @param {string} gridId        ID of the CLSGridView container element
+         * @param {string} pk            Primary key column name (without [])
+         * @param {string} [selectAllUrl] Optional URL to fetch all matching PKs for "Select all"
          */
-        init: function (gridId, pk) {
+        init: function (gridId, pk, selectAllUrl) {
             var $bar  = $('#floating-actions-bar-' + gridId);
             var $grid = $('#' + gridId);
             if (!$bar.length || !$grid.length) { return; }
+
             // Hook LS.gridView.afterAjaxUpdate once (here, not at load time, so
             // that afterAjaxUpdate.js has already defined its base implementation).
             if (!_afterAjaxHooked) {
@@ -352,9 +354,9 @@ LS.floatingActions = (function () {
                 $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', false);
                 _updateBar(gridId, pk);
             });
-            // Direct action buttons
+            // Direct action buttons (exclude dropdown toggles and the select-all button)
             $(document).on('click' + ns,
-                barSelector + ' .floating-actions-btn:not(.dropdown-toggle)',
+                barSelector + ' .floating-actions-btn:not(.dropdown-toggle):not(.floating-actions-select-all)',
                 function (e) { _onClick.call(this, e, gridId, pk); }
             );
             // Dropdown sub-items
@@ -362,6 +364,68 @@ LS.floatingActions = (function () {
                 barSelector + ' .floating-actions-item',
                 function (e) { _onClick.call(this, e, gridId, pk); }
             );
+            // ---- "Select all" across pagination ------------------------------
+            if (selectAllUrl) {
+                $(document).on('click' + ns, barSelector + ' .floating-actions-select-all', function (e) {
+                    e.preventDefault();
+                    var $btn = $(this);
+                    $btn.prop('disabled', true);
+
+                    // Collect current grid filter params from the URL / form
+                    var filterParams = {};
+                    // yiiGridView stores filter inputs inside the grid
+                    $('#' + gridId + ' .filters input, #' + gridId + ' .filters select').each(function () {
+                        var name = $(this).attr('name');
+                        var val  = $(this).val();
+                        if (name && val !== '') {
+                            filterParams[name] = val;
+                        }
+                    });
+
+                    $.ajax({
+                        url:      selectAllUrl,
+                        type:     'GET',
+                        data:     filterParams,
+                        dataType: 'json',
+                        success: function (ids) {
+                            if (!Array.isArray(ids)) { return; }
+
+                            // Store all IDs in gridSelection
+                            if (window.LS && LS.gridSelection) {
+                                // First clear, then add all fetched IDs
+                                LS.gridSelection.clear(gridId);
+                                ids.forEach(function (id) {
+                                    LS.gridSelection.add(gridId, String(id));
+                                });
+                            }
+
+                            // Check visible checkboxes whose PK value is in the returned IDs
+                            var idSet = {};
+                            ids.forEach(function (id) { idSet[String(id)] = true; });
+                            $('#' + gridId + ' tbody input[name="' + pkCol + '"]').each(function () {
+                                if (idSet[$(this).val()]) {
+                                    $(this).prop('checked', true);
+                                }
+                            });
+
+                            // Sync header "select all" checkbox if all visible rows are now checked
+                            var total   = $('#' + gridId + ' tbody input[name="' + pkCol + '"]').length;
+                            var checked = $('#' + gridId + ' tbody input[name="' + pkCol + '"]:checked').length;
+                            if (total > 0 && total === checked) {
+                                $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', true);
+                            }
+
+                            _updateBar(gridId, pk);
+                        },
+                        error: function () {
+                            console.warn('FloatingActionsWidget: selectAllUrl request failed');
+                        },
+                        complete: function () {
+                            $btn.prop('disabled', false);
+                        }
+                    });
+                });
+            }
             // ---- Scroll: keep bar position in sync with table position ---------
             $(window).on('scroll' + ns, function () {
                 _syncBarPosition(gridId);

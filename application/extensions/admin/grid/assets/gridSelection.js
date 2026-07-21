@@ -307,6 +307,20 @@ LS.gridSelection = (function () {
          */
         count: function (gridId) {
             return _set(gridId).size;
+        },
+
+        /**
+         * Adds a single PK value to the selection store for a grid.
+         * Does NOT touch DOM checkboxes – call restoreCheckboxes() or update
+         * visible checkboxes manually after bulk-adding entries.
+         *
+         * @param {string} gridId
+         * @param {string} pkValue
+         */
+        add: function (gridId, pkValue) {
+            _set(gridId).add(String(pkValue));
+            _syncMassiveActionButton(gridId);
+            _syncSelectionBar(gridId);
         }
     };
 }());
