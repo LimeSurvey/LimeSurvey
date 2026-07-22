@@ -114,6 +114,7 @@ class CopySurvey
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
         $this->copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIdsAndQuestionIds['questionGroupIds']);
         $this->copyUrlParameters(
+            $copySurveyResult,
             $destinationSurvey,
             $mappingGroupIdsAndQuestionIds['questionIds'],
             $mappingGroupIdsAndQuestionIds['subquestionIds']
@@ -615,14 +616,16 @@ class CopySurvey
      *
      * Must be called after copyGroupsAndQuestions() so that the ID maps are available.
      *
+     * @param CopySurveyResult $copySurveyResult
      * @param Survey $destinationSurvey
      * @param array  $mappingQuestionIds    old qid  => new qid  (parent questions)
      * @param array  $mappingSubquestionIds old sqid => new sqid (subquestions)
      * @return void
      */
-    private function copyUrlParameters($destinationSurvey, array $mappingQuestionIds, array $mappingSubquestionIds)
+    private function copyUrlParameters($copySurveyResult, $destinationSurvey, array $mappingQuestionIds, array $mappingSubquestionIds)
     {
         $sourceParams = SurveyURLParameter::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
+        $cntErrors = 0;
 
         foreach ($sourceParams as $sourceParam) {
             // targetqid must resolve to a copied question; skip if it can't be mapped
@@ -649,7 +652,12 @@ class CopySurvey
             $destParam->parameter  = $sourceParam->parameter;
             $destParam->targetqid  = $newTargetQid;
             $destParam->targetsqid = $newTargetSqid;
-            $destParam->save();
+            if (!$destParam->save()) {
+                $cntErrors ++;
+            }
+        }
+        if ($cntErrors > 0) {
+            $copySurveyResult->setWarnings(gT("One or more URL parameters could not be copied."));
         }
     }
 }
