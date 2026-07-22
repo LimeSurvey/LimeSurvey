@@ -122,15 +122,23 @@ class LSYiiApplicationTest extends TestBaseClass
     public function testCreatePublicUrlWithARoute()
     {
         $tmpPublicUrl = Yii::app()->getConfig('publicurl');
+        $tmpShowScriptName = Yii::app()->getUrlManager()->showScriptName;
 
         Yii::app()->setConfig('publicurl', 'http://www.example.com/');
-        $url = Yii::app()->createPublicUrl('controller/action');
 
+        Yii::app()->getUrlManager()->showScriptName = true;
+        $url = Yii::app()->createPublicUrl('controller/action');
         $expectedRelativeUrl = Yii::app()->createUrl('controller/action');
-        $this->assertSame($url, 'http://www.example.com' . $expectedRelativeUrl, 'Unexpected url. The url does not correspond with a public url and a route.');
+        $this->assertSame($url, 'http://www.example.com' . $expectedRelativeUrl, 'Unexpected url. The url does not correspond with a public url and a route with showScriptName.');
+
+        Yii::app()->getUrlManager()->showScriptName = false;
+        $url = Yii::app()->createPublicUrl('controller/action');
+        $expectedRelativeUrl = Yii::app()->createUrl('controller/action');
+        $this->assertSame($url, 'http://www.example.com' . $expectedRelativeUrl, 'Unexpected url. The url does not correspond with a public url and a route without showScriptName.');
 
         // Restore original values.
         Yii::app()->setConfig('publicurl', $tmpPublicUrl);
+        Yii::app()->getUrlManager()->showScriptName = $tmpShowScriptName;
     }
 
     /**
