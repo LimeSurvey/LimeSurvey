@@ -22536,6 +22536,7 @@
 
 	//Define LS Namespace
 	window.LS = window.LS || {};
+	window._ = lodash;
 	const AdminCore = function () {
 	  //Singelton Pattern -> the AdminCore functions can only be nound once.
 	  if (typeof window.LS.adminCore === 'object') {
