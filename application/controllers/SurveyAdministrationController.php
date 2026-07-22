@@ -328,9 +328,6 @@ class SurveyAdministrationController extends LSBaseController
         if (!Yii::app()->request->isAjaxRequest) {
             throw new CHttpException(400, 'Invalid request');
         }
-        if (!Permission::model()->hasGlobalPermission('surveys', 'read')) {
-            throw new CHttpException(403, 'Forbidden');
-        }
 
         $model = new Survey('search');
 
