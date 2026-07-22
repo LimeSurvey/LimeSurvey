@@ -367,9 +367,11 @@ class Tokens extends SurveyCommonAction
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
         if (empty($aTokenIds) && Yii::app()->getRequest()->getPost('selectAll')) {
-            $deletedTokenCount = TokenDynamic::model((int) $iSid)->deleteAll($this->getFilteredTokenCriteria((int) $iSid));
-        } else {
-            $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
+            $aTokenIds = $this->getFilteredTokenIds((int) $iSid);
+        }
+        $deletedTokenCount = 0;
+        foreach (array_chunk($aTokenIds, 1000) as $chunk) {
+            $deletedTokenCount += TokenDynamic::model($iSid)->deleteRecords($chunk);
         }
         if ($deletedTokenCount > 0) {
             ls\ajax\AjaxHelper::outputSuccess(ngT('Deleted {n} survey participant.|Deleted {n} survey participants.', $deletedTokenCount));
@@ -408,12 +410,12 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
-     * Criteria matching the grid filters posted with a "Select all" massive action.
+     * Ids of all tokens matching the grid filters posted with a "Select all" massive action.
      *
      * @param int $surveyId
-     * @return CDbCriteria
+     * @return array
      */
-    private function getFilteredTokenCriteria(int $surveyId): CDbCriteria
+    private function getFilteredTokenIds(int $surveyId): array
     {
         $model = TokenDynamic::model($surveyId);
         $model->bEncryption = true;
@@ -422,7 +424,11 @@ class Tokens extends SurveyCommonAction
         if (is_array($filters) && !empty($filters)) {
             $model->setAttributes($filters, false);
         }
-        return $model->search()->criteria;
+        $criteria = $model->search()->criteria;
+        $criteria->select = 't.tid';
+        return $model->getCommandBuilder()
+            ->createFindCommand($model->tableSchema, $criteria)
+            ->queryColumn();
     }
 
     /**
