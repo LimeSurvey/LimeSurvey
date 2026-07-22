@@ -353,8 +353,12 @@ class SurveyAdministrationController extends LSBaseController
             $model->gsid = (int) $gsid;
         }
 
-        // Get all matching surveys without pagination limit
-        $dataProvider = $model->search(['pageSize' => 100000]);
+        // Fetch every matching ID in a single unbounded query.
+        // getData() only returns one page, so a large fixed pageSize can still miss
+        // rows on larger installations.  Disabling pagination removes the LIMIT/OFFSET
+        // entirely so all matching survey IDs are always returned.
+        $dataProvider = $model->search();
+        $dataProvider->setPagination(false);
         $surveys = $dataProvider->getData();
 
         $ids = array_map(static function ($survey) {
