@@ -151,7 +151,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                         'filter'                => $emptyGridFilter,
                         'id'                    => 'token-grid',
                         'emptyText'             => gT('No survey participants found.'),
-                        'massiveActionTemplate' => $massiveAction,
+                        'showSelectionBar'      => false,
                         'columns'               => $emptyGridColumns,
                         'showTableOnEmpty'      => true,
                         'ajaxUpdate'            => 'token-grid',
