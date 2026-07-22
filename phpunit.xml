@@ -5,7 +5,7 @@
     stderr="true"
     colors="true"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
-    stopOnFailure="false">
+    >
   <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">application/models/services</directory>
