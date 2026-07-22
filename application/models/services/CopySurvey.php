@@ -19,6 +19,7 @@ use QuestionL10n;
 use Survey;
 use Permission;
 use SurveyLanguageSetting;
+use SurveyURLParameter;
 use Template;
 use Yii;
 
@@ -112,6 +113,11 @@ class CopySurvey
         $destinationSurvey->currentLanguageSettings->save();
         $mappingGroupIdsAndQuestionIds = $this->copyGroupsAndQuestions($copySurveyResult, $destinationSurvey);
         $this->copySurveyAssessments($copySurveyResult, $destinationSurvey, $mappingGroupIdsAndQuestionIds['questionGroupIds']);
+        $this->copyUrlParameters(
+            $destinationSurvey,
+            $mappingGroupIdsAndQuestionIds['questionIds'],
+            $mappingGroupIdsAndQuestionIds['subquestionIds']
+        );
 
         if ($this->options->isQuotas()) {
             $copySurveyQuotas = new CopySurveyQuotas($this->sourceSurvey, $destinationSurvey);
@@ -391,6 +397,7 @@ class CopySurvey
         }
         $copyResults->setCntQuestions($cntCopiedQuestions);
         $mapping['questionIds'] = $mappingQuestionIds;
+        $mapping['subquestionIds'] = $mappedSubquestionIds;
         $this->copyDefaultAnswers($mappingQuestionIds, $mappedSubquestionIds);
 
         return $mapping;
@@ -600,5 +607,49 @@ class CopySurvey
         }
 
         return $cntDefaultAnswers;
+    }
+
+    /**
+     * Copies URL parameters (panel integration) from the source survey to the destination survey,
+     * remapping targetqid and targetsqid to the new question / subquestion IDs.
+     *
+     * Must be called after copyGroupsAndQuestions() so that the ID maps are available.
+     *
+     * @param Survey $destinationSurvey
+     * @param array  $mappingQuestionIds    old qid  => new qid  (parent questions)
+     * @param array  $mappingSubquestionIds old sqid => new sqid (subquestions)
+     * @return void
+     */
+    private function copyUrlParameters($destinationSurvey, array $mappingQuestionIds, array $mappingSubquestionIds)
+    {
+        $sourceParams = SurveyURLParameter::model()->findAllByAttributes(['sid' => $this->sourceSurvey->sid]);
+
+        foreach ($sourceParams as $sourceParam) {
+            // targetqid must resolve to a copied question; skip if it can't be mapped
+            // (e.g. the question was excluded or the source data is inconsistent).
+            $newTargetQid = null;
+            if (!empty($sourceParam->targetqid)) {
+                if (!isset($mappingQuestionIds[$sourceParam->targetqid])) {
+                    continue;
+                }
+                $newTargetQid = $mappingQuestionIds[$sourceParam->targetqid];
+            }
+
+            // targetsqid is optional; map it when present, skip the whole record if mapping is missing.
+            $newTargetSqid = null;
+            if (!empty($sourceParam->targetsqid)) {
+                if (!isset($mappingSubquestionIds[$sourceParam->targetsqid])) {
+                    continue;
+                }
+                $newTargetSqid = $mappingSubquestionIds[$sourceParam->targetsqid];
+            }
+
+            $destParam = new SurveyURLParameter();
+            $destParam->sid        = $destinationSurvey->sid;
+            $destParam->parameter  = $sourceParam->parameter;
+            $destParam->targetqid  = $newTargetQid;
+            $destParam->targetsqid = $newTargetSqid;
+            $destParam->save();
+        }
     }
 }
