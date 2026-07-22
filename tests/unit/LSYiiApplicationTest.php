@@ -124,6 +124,10 @@ class LSYiiApplicationTest extends TestBaseClass
         $tmpPublicUrl = Yii::app()->getConfig('publicurl');
         $tmpShowScriptName = Yii::app()->getUrlManager()->showScriptName;
         $tmpUrlFormat = Yii::app()->getUrlManager()->urlFormat;
+        $tmpScriptUrl = Yii::app()->getRequest()->getScriptUrl();
+
+        /* Url manager always use index for public url, we use index-test.php in test */
+        Yii::app()->getRequest()->setScriptUrl("index.php");
 
         Yii::app()->setConfig('publicurl', 'http://www.example.com/');
 
@@ -152,7 +156,8 @@ class LSYiiApplicationTest extends TestBaseClass
         // Restore original values.
         Yii::app()->setConfig('publicurl', $tmpPublicUrl);
         Yii::app()->getUrlManager()->showScriptName = $tmpShowScriptName;
-        Yii::app()->getUrlManager()->showScriptName = $tmpUrlFormat;
+        Yii::app()->getUrlManager()->urlFormat = $tmpUrlFormat;
+        Yii::app()->getRequest()->setScriptUrl($tmpScriptUrl);
     }
 
     /**
