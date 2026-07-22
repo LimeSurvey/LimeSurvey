@@ -397,13 +397,19 @@ LS.floatingActions = (function () {
                         success: function (ids) {
                             if (!Array.isArray(ids)) { return; }
 
-                            // Store all IDs in gridSelection
+                            // Store all IDs in gridSelection in one bulk operation (O(1) UI syncs).
+                            // replaceAll() replaces the entire Set and synchronises the UI once,
+                            // avoiding the O(n) DOM thrash caused by calling add() in a loop.
                             if (window.LS && LS.gridSelection) {
-                                // First clear, then add all fetched IDs
-                                LS.gridSelection.clear(gridId);
-                                ids.forEach(function (id) {
-                                    LS.gridSelection.add(gridId, String(id));
-                                });
+                                if (typeof LS.gridSelection.replaceAll === 'function') {
+                                    LS.gridSelection.replaceAll(gridId, ids);
+                                } else {
+                                    // Fallback for older gridSelection without replaceAll
+                                    LS.gridSelection.clear(gridId);
+                                    ids.forEach(function (id) {
+                                        LS.gridSelection.add(gridId, String(id));
+                                    });
+                                }
                             }
 
                             // Check visible checkboxes whose PK value is in the returned IDs
