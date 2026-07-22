@@ -381,6 +381,13 @@ LS.floatingActions = (function () {
                             filterParams[name] = val;
                         }
                     });
+                    // Also forward URL query-string params that are not inside the grid filter row
+                    // (e.g. ?active=R or ?gsid=3 set by the SearchBoxWidget / survey-group filter).
+                    (new URLSearchParams(window.location.search)).forEach(function (val, key) {
+                        if (val !== '' && !(key in filterParams)) {
+                            filterParams[key] = val;
+                        }
+                    });
 
                     $.ajax({
                         url:      selectAllUrl,

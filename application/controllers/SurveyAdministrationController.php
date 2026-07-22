@@ -333,9 +333,27 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         $model = new Survey('search');
+
+        // Reset active attribute to '' so search() does not filter by the DB column default ('N').
+        // This mirrors ListSurveysWidget which explicitly sets $this->model->active = "".
+        $model->active = '';
+
+        // Apply Survey[...] grid filters (e.g. searched_value)
         $filters = Yii::app()->request->getParam('Survey', []);
         if (is_array($filters)) {
             $model->setAttributes($filters, false);
+        }
+
+        // Apply the status filter that ListSurveysWidget reads from $_GET['active']
+        $activeFilter = Yii::app()->request->getParam('active', '');
+        if (!empty($activeFilter)) {
+            $model->active = $activeFilter;
+        }
+
+        // Apply survey-group filter
+        $gsid = Yii::app()->request->getParam('gsid', '');
+        if (!empty($gsid)) {
+            $model->gsid = (int) $gsid;
         }
 
         // Get all matching surveys without pagination limit
