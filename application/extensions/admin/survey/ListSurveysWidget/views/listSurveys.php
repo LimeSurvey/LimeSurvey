@@ -32,9 +32,19 @@ use actions\SurveyListMassiveActions;
         ]);
         ?>
         <?php
+        $dataProvider = $this->model->search();
+        $pagination = $dataProvider->getPagination();
+        $total = $dataProvider->getTotalItemCount();
+        $count = $dataProvider->getItemCount();
+        $start = $pagination->currentPage * $pagination->pageSize + 1;
+        $end = $start + $count - 1;
+        if ($end > $total) {
+            $end = $total;
+            $start = $end - $count + 1;
+        }
 
         $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [
-            'dataProvider'          => $this->model->search(),
+            'dataProvider'          => $dataProvider,
             // Number of row per page selection
             'id'                    => 'survey-grid',
             'caption'               => gT('List of surveys'),
@@ -46,7 +56,7 @@ use actions\SurveyListMassiveActions;
                         $this->pageSize,
                         Yii::app()->params['pageSizeOptions'],
                         ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto',
-                         'aria-label' => gT('Change page size')]
+                         'aria-label' => sprintf(gT('Displaying %s-%s of %s result(s). rows per page'), $start, $end, $total)]
                     )
                 ),
             'ajaxUpdate'            => 'survey-grid',
