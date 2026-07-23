@@ -449,7 +449,8 @@ table {
         flex-shrink      : 0;
     }
 
-    .grid-selection-bar__deselect {
+    .grid-selection-bar__deselect,
+    .grid-selection-bar__select-all {
         padding     : 4px 8px;
         font-weight : $font-weight-500;
         white-space : nowrap;
