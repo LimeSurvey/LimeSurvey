@@ -202,7 +202,6 @@ export const SurveyHeader = ({
                 update={(value) => handleUpdate({ description: value })}
                 placeholder={t('Description')}
                 language={language}
-                useRichTextEditor={true}
                 noPermissionDisabled={true}
                 showToolTip={false}
                 testId="survey-header-welcome-description"
@@ -219,7 +218,6 @@ export const SurveyHeader = ({
                   update={(value) => handleUpdate({ welcomeText: value })}
                   placeholder={t('Welcome message')}
                   language={activeLanguage}
-                  useRichTextEditor={true}
                   noPermissionDisabled={true}
                   showToolTip={false}
                   testId="survey-header-welcome-title"

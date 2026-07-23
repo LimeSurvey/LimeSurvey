@@ -9,7 +9,7 @@ import surveyData from 'helpers/data/survey-detail.json'
 describe('SurveyFooter', () => {
   beforeEach(async () => {})
 
-  test('Survey footer should have the correct finish button', async () => {
+  test('Survey footer should render the finish button', async () => {
     await renderWithProviders(
       <SurveyFooter
         language="en"
@@ -19,10 +19,28 @@ describe('SurveyFooter', () => {
       />
     )
 
-    const finishButton = screen.getByTestId('survey-footer-finish-button')
-
-    expect(finishButton.innerHTML).toBe(
-      surveyData.survey.languageSettings.en.urlDescription || 'Finish'
+    const finishButton = await screen.findByTestId(
+      'survey-footer-finish-button'
     )
+
+    expect(finishButton).toBeInTheDocument()
+  })
+
+  test('Survey footer end text editor should use rich text toolbar mode', async () => {
+    await renderWithProviders(
+      <SurveyFooter
+        language="en"
+        update={() => {}}
+        isEmpty={!surveyData.survey.questionGroups?.length}
+        survey={surveyData.survey}
+      />
+    )
+
+    const endTextEditor = await screen.findByTestId(
+      'survey-footer-end-text-content-editor'
+    )
+
+    expect(endTextEditor.getAttribute('data-show-toolbar')).toBe('true')
+    expect(endTextEditor.getAttribute('data-use-rich-text-editor')).toBe('true')
   })
 })

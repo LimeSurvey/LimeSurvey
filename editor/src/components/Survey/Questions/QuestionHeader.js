@@ -110,14 +110,13 @@ export const QuestionHeader = ({
               )}
               innerRef={titleRef}
               placeholder={questionTitlePlaceholder}
-              useRichTextEditor={!process.env.STORYBOOK_DEV}
+              showToolbar={true}
               update={(question) => updateTitle({ question })}
               value={questionTitle}
               testValidation={TestValidation}
               setErrors={setErrors}
               language={language}
               replaceVariables={true}
-              showToolbar={true}
               noPermissionDisabled={true}
               showToolTip={false}
               focus={focusTitle}
