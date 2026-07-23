@@ -20,7 +20,7 @@ LS.gridView.afterAjaxUpdate = function (id, data) {
         initColumnFilter();
     }
 
-    // acessibility features
+    // accessibility features
     if (LS.gridView.restoreSortLinkFocus) {
         LS.gridView.restoreSortLinkFocus(id);
     }

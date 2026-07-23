@@ -28,6 +28,14 @@ LS.gridSelection = (function () {
     var _store = new Map();
 
     /**
+     * Set of gridIds whose selection stores are currently frozen.
+     * While frozen, programmatic change events cannot clear the store.
+     * Used during AJAX grid updates to protect the selection across page changes.
+     * @type {Set<string>}
+     */
+    var _frozenGridIds = new Set();
+
+    /**
      * Confirmed deleted rows: gridId -> Set of PK values to remove from
      * the selection store on the next restoreCheckboxes() call.
      * Populated by markRowDeleted() on delete success; consumed and cleared in restoreCheckboxes().
@@ -97,6 +105,10 @@ LS.gridSelection = (function () {
             }
             var gridId = $(this).closest('.grid-view-ls').attr('id');
             if (!gridId) { return; }
+            // Do not clear the store while the grid is performing an AJAX update.
+            // Datepicker re-initialisation fires programmatic change events on
+            // filter inputs that must not wipe cross-page selections.
+            if (_frozenGridIds.has(gridId)) { return; }
             _store.set(gridId, new Set());
             _syncSelectionBar(gridId);
             _syncMassiveActionButton(gridId);
@@ -307,6 +319,28 @@ LS.gridSelection = (function () {
          */
         count: function (gridId) {
             return _set(gridId).size;
+        },
+
+        /**
+         * Freeze a grid's selection store.
+         * While frozen, filter-change events cannot clear the store.
+         * Call this before running callbacks that may trigger programmatic
+         * change events on filter inputs (e.g. datepicker re-initialisation).
+         *
+         * @param {string} gridId
+         */
+        freeze: function (gridId) {
+            _frozenGridIds.add(gridId);
+        },
+
+        /**
+         * Unfreeze a grid's selection store.
+         * Must be called after the AJAX update is fully complete.
+         *
+         * @param {string} gridId
+         */
+        unfreeze: function (gridId) {
+            _frozenGridIds.delete(gridId);
         }
     };
 }());

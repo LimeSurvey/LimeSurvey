@@ -84,9 +84,14 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         <?php endif; ?>
 
         <?php
-        // the massive actions dropup button
-        $massiveAction = App()->getController()->renderPartial('/responses/massive_actions/_selector', [], true);
-
+        // Render the floating action bar (cross-page selection, fixed at bottom)
+        require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/ResponseListMassiveActions.php';
+        $floatingActions = \actions\ResponseListMassiveActions::getActions($surveyid);
+        $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+            'pk'       => 'id',
+            'gridId'   => 'responses-grid',
+            'aActions' => $floatingActions,
+        ]);
 
         // The first few columns are fixed.
         // Specific columns at start
@@ -288,9 +293,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     "onUpdateTokenGrid();",
                     '$("#responses-grid [data-bs-toggle=\'popover\']").popover();',
                     'bindListItemclick();',
-                    'switchStatusOfListActions();'
                 ],
-                'massiveActionTemplate' => $massiveAction . $filterColumns,
+                'massiveActionTemplate' => $filterColumns,
+                'showSelectionBar'     => false,
                 'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
                     gT('%s rows per page'),
                     CHtml::dropDownList(
