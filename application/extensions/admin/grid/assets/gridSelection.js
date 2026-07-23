@@ -65,6 +65,33 @@ LS.gridSelection = (function () {
     }
 
     /**
+     * Checks and disables the current page's row checkboxes while select-all
+     * mode is active. Rows disabled for other reasons are left untouched.
+     * @param {string} gridId
+     */
+    function _lockCheckboxes(gridId) {
+        $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
+            if (!$(this).is(':disabled')) {
+                $(this).prop('checked', true)
+                    .prop('disabled', true)
+                    .addClass('grid-selectall-locked');
+                _set(gridId).add(String($(this).val()));
+            }
+        });
+        $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', true);
+    }
+
+    /**
+     * Re-enables only the checkboxes that _lockCheckboxes() disabled.
+     * @param {string} gridId
+     */
+    function _unlockCheckboxes(gridId) {
+        $('#' + gridId + ' tbody .massiveActionsCheckbox.grid-selectall-locked')
+            .prop('disabled', false)
+            .removeClass('grid-selectall-locked');
+    }
+
+    /**
      * Updates the selection info bar below the grid.
      * The bar shows the total number of selected PKs (across all pages) and a
      * "Deselect all" button. It is hidden when nothing is selected.
@@ -109,6 +136,7 @@ LS.gridSelection = (function () {
             if (!gridId) { return; }
             _store.set(gridId, new Set());
             _selectAllMode.delete(gridId);
+            _unlockCheckboxes(gridId);
             _syncSelectionBar(gridId);
             _syncMassiveActionButton(gridId);
         }
@@ -124,6 +152,7 @@ LS.gridSelection = (function () {
         // Clear internal store
         _store.set(gridId, new Set());
         _selectAllMode.delete(gridId);
+        _unlockCheckboxes(gridId);
 
         // Uncheck only row-selection checkboxes (tbody) via .massiveActionsCheckbox and the header checkbox.
         // Using the specific class avoids accidentally clearing unrelated controls inside the grid container.
@@ -142,16 +171,7 @@ LS.gridSelection = (function () {
         if (!gridId) { return; }
 
         _selectAllMode.add(gridId);
-
-        // Check all visible rows and keep them in the store so that leaving
-        // select-all mode (by unchecking a row) falls back to a sane selection.
-        $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
-            if (!$(this).is(':disabled')) {
-                $(this).prop('checked', true);
-                _set(gridId).add(String($(this).val()));
-            }
-        });
-        $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', true);
+        _lockCheckboxes(gridId);
 
         _syncSelectionBar(gridId);
         _syncMassiveActionButton(gridId);
@@ -168,8 +188,14 @@ LS.gridSelection = (function () {
         if (!gridId) { return; }
 
         var isChecked = $(this).is(':checked');
-        if (!isChecked) {
+        if (!isChecked && _selectAllMode.has(gridId)) {
             _selectAllMode.delete(gridId);
+            _unlockCheckboxes(gridId);
+            _store.set(gridId, new Set());
+            $('#' + gridId + ' tbody .massiveActionsCheckbox').prop('checked', false);
+            _syncMassiveActionButton(gridId);
+            _syncSelectionBar(gridId);
+            return;
         }
 
         $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
@@ -268,13 +294,7 @@ LS.gridSelection = (function () {
         restoreCheckboxes: function (gridId) {
             // In select-all mode every row of the new page is selected by definition.
             if (_selectAllMode.has(gridId)) {
-                $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
-                    if (!$(this).is(':disabled')) {
-                        $(this).prop('checked', true);
-                        _set(gridId).add(String($(this).val()));
-                    }
-                });
-                $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', true);
+                _lockCheckboxes(gridId);
                 _syncMassiveActionButton(gridId);
                 _syncSelectionBar(gridId);
                 return;
@@ -373,6 +393,7 @@ LS.gridSelection = (function () {
         clear: function (gridId) {
             _store.set(gridId, new Set());
             _selectAllMode.delete(gridId);
+            _unlockCheckboxes(gridId);
             _syncHeaderCheckbox(gridId);
             _syncMassiveActionButton(gridId);
             _syncSelectionBar(gridId);
