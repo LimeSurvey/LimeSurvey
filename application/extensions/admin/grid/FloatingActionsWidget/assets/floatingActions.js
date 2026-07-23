@@ -166,10 +166,11 @@ LS.floatingActions = (function () {
         // Posts checked IDs to a session-fill endpoint (postUrl), then redirects.
         if (actionType === 'fill-session-and-redirect') {
             var setSessionUrl = (typeof postUrl !== 'undefined' && postUrl) ? postUrl : actionUrl;
-            $.post(setSessionUrl, {
+            var postData = {
                 itemsid: checkedItems.join($that.data('input-separator') || ','),
-                YII_CSRF_TOKEN: LS.data.csrfToken
-            }, function () {
+            };
+            postData[LS.data.csrfTokenName] = LS.data.csrfToken;
+            $.post(setSessionUrl, postData, function () {
                 window.location.href = actionUrl;
             });
             return;
