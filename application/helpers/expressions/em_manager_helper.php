@@ -3143,7 +3143,6 @@ class LimeExpressionManager
                 'exclusive_options' => array_merge($oldeo, $neweo),
             ];
         }
-
         foreach ($rowdivids as $sq) {
             $sq['eqn'] = implode(' and ', array_unique(array_merge($sq['eqns'], $sq['exclusive_options'])));   // without array_unique, get duplicate of filters for question types 1, :, and ;
             $eos = array_unique($sq['exclusive_options']);
@@ -3771,17 +3770,28 @@ class LimeExpressionManager
                 switch ($type) {
                     case Question::QT_L_LIST:// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                        if (!is_null($ansArray)) {
-                            foreach (array_keys($ansArray) as $key) {
-                                $parts = explode('~', $key);
-                                if ($parts[1] == '-oth-') {
-                                    $parts[1] = 'other';
+                        if (str_ends_with($varName, '_other') && $other == "Y") {
+                            $q2subqInfo[$questionNum]['subqs'][] = [
+                                'rowdivid' => 'Q' . $questionNum . '_Cother',
+                                'varName'  => $varName,
+                                'sqsuffix' => '_other',
+                                'csuffix' => '_Cother',
+                            ];
+                        } else {
+                            $Answers = Answer::model()->findAll([
+                                'select' => 'aid, code',
+                                'condition' => 'qid = :qid and scale_id = 0',
+                                'params' => [':qid' => $questionNum],
+                            ]);
+                            if (!is_null($Answers)) {
+                                foreach ($Answers as $Answer) {
+                                    $q2subqInfo[$questionNum]['subqs'][] = [
+                                        'rowdivid' => 'Q' . $questionNum . '_S' . $Answer->aid,
+                                        'varName'  => $varName,
+                                        'sqsuffix' => '_' . $Answer->code,
+                                        'csuffix' => '_S' . $Answer->aid,
+                                    ];
                                 }
-                                $q2subqInfo[$questionNum]['subqs'][] = [
-                                    'rowdivid' => 'Q' . $questionNum . $parts[1],
-                                    'varName'  => $varName,
-                                    'sqsuffix' => '_' . $parts[1],
-                                ];
                             }
                         }
                         break;
