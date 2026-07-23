@@ -61,7 +61,9 @@ $pk     = CHtml::encode($this->pk);
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                 >
-                    <i class="<?= CHtml::encode($action['icon'] ?? '') ?>"></i>
+                    <?php if (!empty($action['iconClasses'])) : ?>
+                        <i class="<?= CHtml::encode($action['iconClasses']) ?>"></i>
+                    <?php endif; ?>
                     <?= CHtml::encode($action['text'] ?? '') ?>
                 </button>
                 <ul class="dropdown-menu">
