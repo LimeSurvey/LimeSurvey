@@ -9,16 +9,6 @@ use Yii;
  */
 class LSYiiApplicationTest extends TestBaseClass
 {
-    /* @var string keep publicurl */
-    protected static $tmpPublicUrl;
-    /* @var string keep request->baseUrl */
-    protected static $tmpBaseUrl;
-    /* @var boolean keep App()->urlmanager->showScriptName */
-    protected static $tmpShowScriptName;
-    /* @var string keep App()->urlmanager->urlFormat */
-    protected static $tmpUrlFormat;
-    /* @var string keep App()->request->hostInfo */
-    protected static $tmpHostInfo;
     /**
      * @inheritdoc
      * Set the static var for resetting after
@@ -26,24 +16,8 @@ class LSYiiApplicationTest extends TestBaseClass
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::$tmpPublicUrl = Yii::app()->getConfig('publicurl');
-        self::$tmpBaseUrl = Yii::app()->getRequest()->baseUrl;
-        self::$tmpShowScriptName = Yii::app()->getUrlManager()->showScriptName;
-        self::$tmpUrlFormat = Yii::app()->getUrlManager()->urlFormat;
-        self::$tmpHostInfo = Yii::app()->getRequest()->hostInfo;
-        self::setToExpectedDefault();
-    }
-
-    /**
-     * Set config and component to expected default
-     */
-    public static function setToExpectedDefault()
-    {
-        Yii::app()->setConfig('publicurl', null);
-        Yii::app()->getRequest()->baseUrl = '';
-        Yii::app()->getUrlManager()->showScriptName = true;
-        Yii::app()->getUrlManager()->urlFormat = 'path';
-        // TODO what is the expected hostInfo
+        self::$testHelper::saveUrlSettings();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -56,7 +30,7 @@ class LSYiiApplicationTest extends TestBaseClass
 
         $this->assertSame('http://config.example.com/', $url, 'Unexpected url. The url does not correspond to the one previously set.');
 
-        self::setToExpectedDefault();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -67,7 +41,7 @@ class LSYiiApplicationTest extends TestBaseClass
         Yii::app()->setConfig('publicurl', 'http://absoluteConfig.example.com/');
         $url = Yii::app()->getPublicBaseUrl(true);
         $this->assertSame('http://absoluteConfig.example.com/', $url, 'Unexpected url. The url does not correspond to the one previously set.');
-        self::setToExpectedDefault();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -78,7 +52,7 @@ class LSYiiApplicationTest extends TestBaseClass
         Yii::app()->getRequest()->baseUrl = 'http://request.example.com/';
         $url = Yii::app()->getPublicBaseUrl();
         $this->assertSame('http://request.example.com/', $url, 'Unexpected url. The url does not correspond to the one previously set.');
-        self::setToExpectedDefault();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -90,7 +64,7 @@ class LSYiiApplicationTest extends TestBaseClass
         $url = Yii::app()->getPublicBaseUrl(true);
 
         $this->assertSame('http://localhost/absoluteRequest', $url, 'Unexpected url. The url does not correspond to the one previously set.');
-        self::setToExpectedDefault();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -107,7 +81,7 @@ class LSYiiApplicationTest extends TestBaseClass
 
         $this->assertSame('http://request.example.com/', $url, 'Unexpected url. The url does not correspond to the one previously set.');
 
-        self::setToExpectedDefault();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -123,7 +97,7 @@ class LSYiiApplicationTest extends TestBaseClass
 
         $this->assertSame('http://request.example.com/', $url, 'Unexpected url. The url does not correspond to the one previously set.');
 
-        self::setToExpectedDefault();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -133,7 +107,7 @@ class LSYiiApplicationTest extends TestBaseClass
     {
         Yii::app()->setConfig('publicurl', 'http://www.example.com/');
 
-        Yii::app()->getUrlManager()->urlFormat = 'path';
+        Yii::app()->getUrlManager()->urlFormat = \CUrlManager::PATH_FORMAT;
         Yii::app()->getUrlManager()->showScriptName = true;
         $url = Yii::app()->createPublicUrl('controller/action');
         $this->assertSame('http://www.example.com/index.php/controller/action', $url, 'Unexpected url. The url does not correspond with a public url and a route with showScriptName and urlformat to path.');
@@ -141,8 +115,8 @@ class LSYiiApplicationTest extends TestBaseClass
         Yii::app()->getUrlManager()->showScriptName = false;
         $url = Yii::app()->createPublicUrl('controller/action');
         $this->assertSame('http://www.example.com/controller/action', $url, 'Unexpected url. The url does not correspond with a public url and a route without showScriptName and urlformat to path.');
-
-        Yii::app()->getUrlManager()->urlFormat = 'get';
+        /* Deactivate urlFormat => 'get', TODO fix it, work locally, not on github */
+        Yii::app()->getUrlManager()->urlFormat = \CUrlManager::GET_FORMAT;
         Yii::app()->getUrlManager()->showScriptName = true;
         $url = Yii::app()->createPublicUrl('controller/action');
         $this->assertSame('http://www.example.com/index.php?r=controller/action', $url, 'Unexpected url. The url does not correspond with a public url and a route with showScriptName and urlformat to get.');
@@ -151,7 +125,7 @@ class LSYiiApplicationTest extends TestBaseClass
         $url = Yii::app()->createPublicUrl('controller/action');
         $this->assertSame('http://www.example.com/?r=controller/action', $url, 'Unexpected url. The url does not correspond with a public url and a route without showScriptName and urlformat to get.');
 
-        self::setToExpectedDefault();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -165,7 +139,7 @@ class LSYiiApplicationTest extends TestBaseClass
 
         $this->assertSame('http://www.example.com/index.php/controller/action/param_one/1/param_two/2', $url, 'Unexpected url. The url does not correspond with a public url, a route and two parameters.');
 
-        self::setToExpectedDefault();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -182,7 +156,7 @@ class LSYiiApplicationTest extends TestBaseClass
 
         $this->assertSame('http://www.example.com/index.php/controller/action/param_one/1/param_two/2', $url, 'Unexpected url. The url does not correspond with a public url, a route and two parameters.');
 
-        self::setToExpectedDefault();
+        self::$testHelper::setToExpectedDefault();
     }
 
     /**
@@ -192,11 +166,7 @@ class LSYiiApplicationTest extends TestBaseClass
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
-        Yii::app()->setConfig('publicurl', self::$tmpPublicUrl);
-        Yii::app()->getRequest()->baseUrl = self::$tmpBaseUrl;
-        Yii::app()->getUrlManager()->showScriptName = self::$tmpShowScriptName;
-        Yii::app()->getUrlManager()->urlFormat = self::$tmpUrlFormat;
-        Yii::app()->getRequest()->hostInfo = self::$tmpHostInfo;
+        self::$testHelper::resetUrlSettings();
         /* This set hostinfo to null (unsure needed) */
         self::$testHelper->resetHostInfo();
     }

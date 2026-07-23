@@ -19,6 +19,17 @@ use SurveyActivator;
 
 class TestHelper extends TestCase
 {
+    /* @var string keep publicurl */
+    protected static $tmpPublicUrl;
+    /* @var string keep request->baseUrl */
+    protected static $tmpBaseUrl;
+    /* @var boolean keep App()->urlmanager->showScriptName */
+    protected static $tmpShowScriptName;
+    /* @var string keep App()->urlmanager->urlFormat */
+    protected static $tmpUrlFormat;
+    /* @var string keep App()->request->hostInfo */
+    protected static $tmpHostInfo;
+
     /**
      * Import all helpers etc.
      * @return void
@@ -532,5 +543,41 @@ class TestHelper extends TestCase
         $property = $reflection->getProperty('_hostInfo');
         $property->setAccessible(true);
         $property->setValue(Yii::app()->getRequest(), null);
+    }
+
+    /**
+     * Save url generation configuration
+     */
+    public static function saveUrlSettings()
+    {
+        self::$tmpPublicUrl = Yii::app()->getConfig('publicurl');
+        self::$tmpBaseUrl = Yii::app()->getRequest()->baseUrl;
+        self::$tmpShowScriptName = Yii::app()->getUrlManager()->showScriptName;
+        self::$tmpUrlFormat = Yii::app()->getUrlManager()->urlFormat;
+        self::$tmpHostInfo = Yii::app()->getRequest()->hostInfo;
+    }
+
+    /**
+     * Set config and component to expected default
+     */
+    public static function setToExpectedDefault()
+    {
+        Yii::app()->setConfig('publicurl', null);
+        Yii::app()->getRequest()->baseUrl = '';
+        Yii::app()->getUrlManager()->showScriptName = true;
+        Yii::app()->getUrlManager()->urlFormat = \CUrlManager::PATH_FORMAT;
+        // TODO what is the expected hostInfo
+    }
+
+    /**
+     * Reset url generation configuration
+     */
+    public static function resetUrlSettings()
+    {
+        Yii::app()->setConfig('publicurl', self::$tmpPublicUrl);
+        Yii::app()->getRequest()->baseUrl = self::$tmpBaseUrl;
+        Yii::app()->getUrlManager()->showScriptName = self::$tmpShowScriptName;
+        Yii::app()->getUrlManager()->urlFormat = self::$tmpUrlFormat;
+        Yii::app()->getRequest()->hostInfo = self::$tmpHostInfo;
     }
 }
