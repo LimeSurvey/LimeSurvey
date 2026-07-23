@@ -92,6 +92,7 @@ export const useSurvey = (id) => {
       'appState',
       STATES.IS_PATCH_SURVEY_RUNNING,
     ])
+
     // Return currentData if the buffer is not empty.
     // We are also checking if the data is defined because when the app first loads the data or the survey is not defined yet.
     if ((operationsBuffer?.length || isPatchSurveyRunning) && data) {
@@ -100,6 +101,7 @@ export const useSurvey = (id) => {
       queryClient.cancelQueries({ queryKey: [STATES.SURVEY] })
       return data
     }
+
     setSurveyRequestTimestamp(currentSurveyId)
     setSurvey({
       ...newData.survey,
