@@ -23,10 +23,8 @@ class TestHelper extends TestCase
     protected static $tmpPublicUrl;
     /* @var string keep request->baseUrl */
     protected static $tmpBaseUrl;
-    /* @var boolean keep App()->urlmanager->showScriptName */
-    protected static $tmpShowScriptName;
-    /* @var string keep App()->urlmanager->urlFormat */
-    protected static $tmpUrlFormat;
+    /* @var \CUrlManager|null keep App()->urlmanager */
+    protected static $originalUrlManager;
     /* @var string keep App()->request->hostInfo */
     protected static $tmpHostInfo;
 
@@ -552,21 +550,23 @@ class TestHelper extends TestCase
     {
         self::$tmpPublicUrl = Yii::app()->getConfig('publicurl');
         self::$tmpBaseUrl = Yii::app()->getRequest()->baseUrl;
-        self::$tmpShowScriptName = Yii::app()->getUrlManager()->showScriptName;
-        self::$tmpUrlFormat = Yii::app()->getUrlManager()->urlFormat;
         self::$tmpHostInfo = Yii::app()->getRequest()->hostInfo;
+        self::$originalUrlManager = Yii::app()->getUrlManager();
     }
 
     /**
      * Set config and component to expected default
      */
-    public static function setToExpectedDefault()
+    public static function setUrlToExpectedDefault($urlFormat = \CUrlManager::PATH_FORMAT)
     {
         Yii::app()->setConfig('publicurl', null);
-        Yii::app()->getRequest()->baseUrl = '';
-        Yii::app()->getUrlManager()->showScriptName = true;
-        Yii::app()->getUrlManager()->urlFormat = \CUrlManager::PATH_FORMAT;
-        // TODO what is the expected hostInfo
+        $urlManager = [
+            'urlFormat' => $urlFormat,
+            'rules' => require(APPPATH . 'config/routes.php'),
+            'showScriptName' => true,
+        ];
+        Yii::app()->setComponent('urlManager', null); // Be sure to reset component
+        Yii::app()->setComponent('urlManager', $urlManager);
     }
 
     /**
@@ -576,8 +576,8 @@ class TestHelper extends TestCase
     {
         Yii::app()->setConfig('publicurl', self::$tmpPublicUrl);
         Yii::app()->getRequest()->baseUrl = self::$tmpBaseUrl;
-        Yii::app()->getUrlManager()->showScriptName = self::$tmpShowScriptName;
-        Yii::app()->getUrlManager()->urlFormat = self::$tmpUrlFormat;
         Yii::app()->getRequest()->hostInfo = self::$tmpHostInfo;
+        Yii::app()->setComponent('urlManager', null); // Be sure to reset component
+        Yii::app()->setComponent('urlManager', self::$originalUrlManager);
     }
 }
