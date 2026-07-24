@@ -47,14 +47,20 @@ export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
     return newErrorMessage
   }
 
-  const updateCodeToQuestion = (oldValue, newValue) => {
+  const updateCodeToQuestion = (newValue) => {
     const newCodeToQuestion = { ...codeToQuestion }
-    if (!Object.hasOwn(newCodeToQuestion, oldValue)) {
+    // find question using focused qid
+    const keyToUpdate = Object.keys(newCodeToQuestion).find(
+      (key) => newCodeToQuestion[key].question?.qid === focused?.qid
+    )
+
+    if (!keyToUpdate) {
       return
     }
-    newCodeToQuestion[newValue] = newCodeToQuestion[oldValue]
+
+    newCodeToQuestion[newValue] = newCodeToQuestion[keyToUpdate]
     newCodeToQuestion[newValue].question.title = newValue
-    delete newCodeToQuestion[oldValue]
+    delete newCodeToQuestion[keyToUpdate]
     setCodeToQuestion(newCodeToQuestion)
   }
 
@@ -65,7 +71,7 @@ export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
     if (currentErrorMessage === '') {
       update(value)
       if (oldValue !== value) {
-        updateCodeToQuestion(oldValue, value)
+        updateCodeToQuestion(value)
       }
     } else {
       showErrorMessage(currentErrorMessage, 'top-center')
