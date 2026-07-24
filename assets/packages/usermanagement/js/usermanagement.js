@@ -123,7 +123,7 @@ var UserManagement = function () {
                         return;
                     }
                     $("#usermanagement-modal-doalog").offset({ top: 10 });
-                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger');
+                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger').attr({'tabindex':'-1','role':'alert','aria-live':'assertive','aria-atomic':'true'}).focus();
                 },
                 error: function (request, status, error) {
                     if (request && request.responseJSON && request.responseJSON.message) {
@@ -133,7 +133,7 @@ var UserManagement = function () {
                                 'danger',
                                 {showCloseButton: true, timeout: 10000}
                             )
-                        ).removeClass('d-none');
+                        ).removeClass('d-none').attr({'tabindex':'-1','role':'alert','aria-live':'assertive','aria-atomic':'true'}).focus();
                     } else {
                         alert('An error occured while trying to save, please reload the page Code:1571926261195');
                     }

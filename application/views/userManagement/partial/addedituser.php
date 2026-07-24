@@ -19,9 +19,10 @@ Yii::app()->getController()->renderPartial(
 
 <div class="modal-body">
     <?= $form->hiddenField($oUser, 'uid', ['uid' => 'User_Form_users_id']) ?>
-    <div class="mb-3" id="UserManagement--errors">
+    <div class="mb-3 d-none" id="UserManagement--errors" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1">
 
     </div>
+    <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
     <div class="mb-3">
         <?php echo $form->labelEx($oUser, 'users_name', ['for' => 'User_Form_users_name']); ?>
         <?php if ($oUser->isNewRecord) : ?>
@@ -82,12 +83,12 @@ Yii::app()->getController()->renderPartial(
                 <label id="UserManagement--set_password_grouplabel"><?= gT("Set password now?") ?></label>
             </div>
             <div class="btn-group col-6" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="UserManagement--set_password_grouplabel">
-                <input class="btn-check" type="radio" id="utility_set_password_yes" name="preset_password" value="1">
-                <label for="utility_set_password_yes" class="btn btn-outline-secondary col-xs-6">
+                <input class="btn-check" type="radio" id="utility_set_password_yes" name="preset_password" value="1" aria-labelledby="UserManagement--set_password_grouplabel utility_set_password_yes_label">
+                <label id="utility_set_password_yes_label" for="utility_set_password_yes" class="btn btn-outline-secondary col-xs-6">
                     <?= gT("Yes") ?>
                 </label>
-                <input class="btn-check" type="radio" id="utility_set_password_no" name="preset_password" value="0" checked="checked">
-                <label for="utility_set_password_no" class="btn btn-outline-secondary col-xs-6">
+                <input class="btn-check" type="radio" id="utility_set_password_no" name="preset_password" value="0" checked="checked" aria-labelledby="UserManagement--set_password_grouplabel utility_set_password_no_label">
+                <label id="utility_set_password_no_label" for="utility_set_password_no" class="btn btn-outline-secondary col-xs-6">
                     <?= gT("No") ?>
                 </label>
             </div>
