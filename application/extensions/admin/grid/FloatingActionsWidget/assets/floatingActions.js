@@ -162,6 +162,19 @@ LS.floatingActions = (function () {
             newForm.submit();
             return;
         }
+        // ---- fill-session-and-redirect action -------------------------
+        // Posts checked IDs to a session-fill endpoint (postUrl), then redirects.
+        if (actionType === 'fill-session-and-redirect') {
+            var setSessionUrl = (typeof postUrl !== 'undefined' && postUrl) ? postUrl : actionUrl;
+            var postData = {
+                itemsid: checkedItems.join($that.data('input-separator') || ','),
+            };
+            postData[LS.data.csrfTokenName] = LS.data.csrfToken;
+            $.post(setSessionUrl, postData, function () {
+                window.location.href = actionUrl;
+            });
+            return;
+        }
         // ---- modal action ---------------------------------------------
         var modalId = $that.data('modal-id');
         if (!modalId) { return; }
