@@ -159,7 +159,7 @@ export var TemplateCoreClass = function () {
          * Must be before ready (event happen before ready)
          */
         hideMultipleColumn: function () {
-            $("[id^='question']").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
+            $("[id^='question'].question-container").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
                 if (event.target != this) return;
                 data = $.extend({
                     style: 'hidden'
@@ -168,7 +168,7 @@ export var TemplateCoreClass = function () {
                     $(this).closest(".list-unstyled").removeClass("ls-hidden")
                 }
             });
-            $("[id^='question']").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
+            $("[id^='question'].question-container").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
                 if (event.target != this) return;
                 data = $.extend({
                     style: 'hidden'
