@@ -5,6 +5,26 @@
  */
 
 /**
+ * When the modal body contains a results table from _action_results.php, copy the
+ * modal heading into an empty caption so the table has an accessible name that matches the dialog.
+ *
+ * @param {jQuery} $modal
+ * @param {jQuery} $container  Element that received the injected HTML (e.g. .modal-body-text)
+ */
+function syncMassiveActionResultsTableCaption($modal, $container) {
+    var titleText = $modal.find('.modal-header .modal-title').first().text().trim();
+    if (!titleText) {
+        return;
+    }
+    $container.find('table.table caption.massive-action-results-caption').each(function () {
+        var $cap = $(this);
+        if (!$cap.text().trim()) {
+            $cap.text(titleText);
+        }
+    });
+}
+
+/**
  * Define what happen when an action is clicked:
  *
  * - redirection:
