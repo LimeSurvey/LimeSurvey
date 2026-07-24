@@ -674,6 +674,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array('autorename' => false,'translinkfields' => true), $supportArchivedFields = true)
 {
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
+    $surveyLanguages = Survey::model()->findByPk($iNewSID)->allLanguages;
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
     if ($xml->LimeSurveyDocType != 'Question') {
@@ -846,10 +847,16 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 if (!in_array($insertdata['language'] ?? null, $aLanguagesSupported)) {
                     continue;
                 }
+
+                // Avoid inserting attribute if the language of the question is not in the survey.
+                if (!in_array($insertdata['language'], $surveyLanguages)) {
+                    continue;
+                }
             }
             if ($insertdata['gid'] == 0) {
                 continue;
             }
+
             if (!isset($insertdata['mandatory']) || trim($insertdata['mandatory']) == '') {
                 $insertdata['mandatory'] = 'N';
             }
@@ -880,6 +887,12 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $oQuestionL10n->help = $insertdata['help'];
                 $oQuestionL10n->language = $insertdata['language'];
             }
+
+            // Avoid inserting attribute if the language of the question is not in the survey.
+            if (!in_array($insertdata['language'], $surveyLanguages)) {
+                unset($oQuestionL10n);
+            }
+
             if (!$options['autorename']) {
                 $sScenario = 'archiveimport';
             } else {
@@ -976,6 +989,12 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $insertdata[(string) $key] = (string) $value;
             }
             unset($insertdata['id']);
+
+            // Avoid inserting attribute if the language of the question is not in the survey.
+            if (!in_array($insertdata['language'], $surveyLanguages)) {
+                continue;
+            }
+
             // now translate any links
             // TODO: Should this depend on $options['translinkfields']?
             $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
@@ -1071,6 +1090,12 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $insertdata[(string) $key] = (string) $value;
             }
             unset($insertdata['id']);
+
+            // Avoid inserting attribute if the language of the question is not in the survey.
+            if (!in_array($insertdata['language'], $surveyLanguages)) {
+                continue;
+            }
+
             // now translate any links
             if ($options['translinkfields']) {
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
