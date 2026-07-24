@@ -5,8 +5,11 @@ export const SCALE_1 = 0
 export const SCALE_2 = 1
 
 export const NEW_OBJECT_ID_PREFIX = 'temp__'
+export const APP_KEY_PREFIX = 'ls_ce_editor'
 
 export const SOFT_MANDATORY = 'S'
+
+export const OTHER_CODE = '-oth-'
 
 export const ignoreUpdate = '_________________________ignore_update________'
 
@@ -51,6 +54,7 @@ export const STATES = {
   SURVEY_QUESTIONS_FIELDNAME: 'survey_questions_fieldname',
   START_EDITOR_TUTORIAL: 'start_editor_tutorial',
   SURVEY_RESPONSES: 'survey_responses',
+  SURVEY_RESPONSE_ANSWERS: 'survey_response_answers',
   SURVEY_RESPONSE_COMMENTS: 'survey_response_comments',
   SURVEY_STATISTICS: 'survey_statistics',
   EDITOR_HELP_APPEARED: 'editor_help_appeared',

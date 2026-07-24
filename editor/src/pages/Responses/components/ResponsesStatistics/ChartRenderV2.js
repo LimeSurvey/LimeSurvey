@@ -1,16 +1,31 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import classNames from 'classnames'
 import { Card } from 'react-bootstrap'
 
-import { Collapsible, ToggleButtons } from 'components'
-import { isRankingQuestion } from 'helpers'
+import { Collapsible, ToggleButtons, TooltipContainer } from 'components'
+import {
+  isRankingQuestion,
+  QT_1_ARRAY_DUAL,
+  QT_COLON_ARRAY_NUMBERS,
+  QT_N_NUMERICAL,
+  QT_S_SHORT_FREE_TEXT,
+  QT_SEMICOLON_ARRAY_TEXT,
+  QT_T_LONG_FREE_TEXT,
+  QT_U_HUGE_FREE_TEXT,
+} from 'helpers'
+import { ReactComponent as StackedBarIcon } from 'assets/icons/stacked-bar-icon.svg'
 
 import { ChartHeader } from './ChartHeader.js'
 import { StatisticsTable } from './StatisticsTable.js'
+import { ArrayTextTable } from './ArrayTextTable.js'
+import { ResponsesGrid } from './ResponsesGrid.js'
 import {
   BarChart,
   PieChart,
   RankingBarChart,
+  StackedBarChart,
+  GroupedBarChart,
+  DualScaleDoughnutChart,
   RadarChart,
   LineChart,
   PolarAreaChart,
@@ -19,14 +34,21 @@ import {
 import {
   isImageTheme,
   isCommentQuestionType,
-  isChoiceQuestion,
+  CHOICE_QUESTION_TYPES,
+  TEXT_QUESTION_TYPES,
+  getSegmentedCategories,
+  VALUE_TYPE,
 } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
 import { CommentsModal } from './CommentsModal.js'
 
 const VIEW = {
   BAR_CHART: 'bar-chart',
+  STACKED_BAR: 'stacked-bar',
+  GROUPED_BAR: 'grouped-bar',
+  STACKED_DOUGHNUT: 'stacked-doughnut',
   PIE_CHART: 'pie-chart',
+  GRID: 'grid',
   TABLE: 'table',
   COMMENTS: 'comments',
   RADAR: 'radar',
@@ -39,7 +61,9 @@ const VIEWS = [
   {
     value: VIEW.BAR_CHART,
     label: () => t('Bar chart'),
-    icon: () => <i className="ri-bar-chart-2-line"></i>,
+    icon: () => <i className="ri-bar-chart-line"></i>,
+    isAvailable: ({ isArray, isArrayText, isNumerical }) =>
+      !isArray && !isArrayText && !isNumerical,
     render: ({
       isRanking,
       data,
@@ -48,10 +72,11 @@ const VIEWS = [
       question,
       hasComments,
       onViewComments,
-    }) =>
-      isRanking ? (
-        <RankingBarChart data={data} title={question?.title} />
-      ) : (
+    }) => {
+      if (isRanking) {
+        return <RankingBarChart data={data} title={question?.title} />
+      }
+      return (
         <BarChart
           data={data}
           valueType={valueType}
@@ -59,13 +84,51 @@ const VIEWS = [
           hasComments={hasComments}
           onViewComments={onViewComments}
         />
-      ),
+      )
+    },
+  },
+  {
+    value: VIEW.STACKED_BAR,
+    label: () => t('Stacked bar chart'),
+    icon: (props) => <StackedBarIcon width="20" height="22" {...props} />,
+    // Array numbers shows means, which don't stack — grouped only.
+    isAvailable: ({ isArray, isArrayNumbers }) => isArray && !isArrayNumbers,
+    render: ({ data, valueType, isDualScale }) => (
+      <StackedBarChart
+        data={data}
+        valueType={valueType}
+        dualScale={isDualScale}
+      />
+    ),
+  },
+  {
+    value: VIEW.GROUPED_BAR,
+    label: () => t('Grouped bar chart'),
+    icon: () => <i className="ri-bar-chart-horizontal-line"></i>,
+    isAvailable: ({ isArray, isDualScale }) => isArray && !isDualScale,
+    render: ({ data, valueType }) => (
+      <GroupedBarChart
+        data={getSegmentedCategories(data)}
+        valueType={valueType}
+      />
+    ),
+  },
+  {
+    value: VIEW.STACKED_DOUGHNUT,
+    label: () => t('Doughnut chart'),
+    icon: () => <i className="ri-donut-chart-line"></i>,
+    isAvailable: ({ isDualScale }) => isDualScale,
+    render: ({ data }) => <DualScaleDoughnutChart data={data} />,
   },
   {
     value: VIEW.PIE_CHART,
     label: () => t('Pie chart'),
     icon: () => <i className="ri-pie-chart-line"></i>,
-    isAvailable: ({ isRanking }) => !isRanking,
+    isAvailable: ({ isRanking, isArray, isArrayText, isNumerical }) =>
+      !isRanking && !isArray && !isArrayText && !isNumerical,
+    // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
+    // to the meatball menu.
+    menuOnly: ({ hasComments }) => hasComments,
     render: ({ data, valueType, isImage }) => (
       <PieChart data={data} valueType={valueType} isImage={isImage} />
     ),
@@ -103,12 +166,46 @@ const VIEWS = [
     render: ({ data }) => <DoughnutChart data={data} />,
   },
   {
+    value: VIEW.GRID,
+    label: () => t('Grid'),
+    icon: () => <i className="ri-list-check"></i>,
+    isAvailable: ({ isGridable }) => isGridable,
+    render: ({ surveyId, question, filters, isNumerical }) => (
+      <ResponsesGrid
+        surveyId={surveyId}
+        questionCode={question?.code}
+        title={question?.title}
+        fields={question?.fields}
+        filters={filters}
+        twoColumns={isNumerical}
+      />
+    ),
+  },
+  {
     value: VIEW.TABLE,
     label: () => t('Table'),
     icon: () => <i className="ri-table-line"></i>,
-    render: ({ data, isImage }) => (
-      <StatisticsTable data={data} isImage={isImage} />
-    ),
+    isAvailable: ({ isGridable, isNumerical }) => !isGridable || isNumerical,
+    render: ({
+      data,
+      isImage,
+      isArrayText,
+      isText,
+      surveyId,
+      question,
+      filters,
+    }) =>
+      isArrayText || isText ? (
+        <ArrayTextTable
+          surveyId={surveyId}
+          questionCode={question?.code}
+          fields={question?.fields}
+          filters={filters}
+          searchable={isText}
+        />
+      ) : (
+        <StatisticsTable data={data} isImage={isImage} />
+      ),
   },
   {
     value: VIEW.COMMENTS,
@@ -119,6 +216,7 @@ const VIEWS = [
       <QuestionComments
         surveyId={surveyId}
         questionCode={question?.code}
+        fields={question?.fields}
         answerOptions={data}
         onViewComments={onViewComments}
       />
@@ -154,36 +252,74 @@ export const ChartRendererV2 = ({
   chartId,
   question = {},
   valueType,
+  filters = {},
 }) => {
-  const [view, setView] = useState(VIEW.BAR_CHART)
+  const isNumerical = question?.type === QT_N_NUMERICAL
+  const isGridable =
+    isNumerical ||
+    [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
+      question?.type
+    )
+  const [view, setView] = useState(isNumerical ? VIEW.TABLE : VIEW.BAR_CHART)
   const [commentsAnswer, setCommentsAnswer] = useState(null)
+  const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
   const isRanking = isRankingQuestion(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
-  const isChoice = isChoiceQuestion(question?.type)
+  const isChoice = CHOICE_QUESTION_TYPES.includes(question?.type)
+  const isArray = (data ?? []).some((item) => Array.isArray(item?.segments))
+  // Array (Texts) has no chart: it fetches and renders its own responses table.
+  const isArrayText = question?.type === QT_SEMICOLON_ARRAY_TEXT
+  const isText = TEXT_QUESTION_TYPES.includes(question?.type)
+  const isArrayNumbers = question?.type === QT_COLON_ARRAY_NUMBERS
+  const isDualScale = question?.type === QT_1_ARRAY_DUAL
+  const effectiveValueType = isArrayNumbers ? VALUE_TYPE.COUNT : valueType
   // No responses for this question when every answer option has a zero count.
+  // Array text bypasses this — its table loads its own per-response data.
   const hasResponses =
+    isArrayText ||
     (data ?? []).reduce((sum, item) => sum + (item?.value || 0), 0) > 0
 
+  const viewContext = {
+    isRanking,
+    hasComments,
+    isChoice,
+    isArray,
+    isArrayText,
+    isArrayNumbers,
+    isDualScale,
+    isNumerical,
+    isGridable,
+  }
+
   const availableViews = VIEWS.filter(
-    ({ isAvailable }) =>
-      isAvailable?.({ isRanking, hasComments, isChoice }) ?? true
+    ({ isAvailable }) => isAvailable?.(viewContext) ?? true
   )
+  // `menuOnly` hides a view from the quick toggle (it stays in the meatball
+  // menu); it can be a flag or a predicate of the view context.
+  const isMenuOnly = ({ menuOnly }) =>
+    typeof menuOnly === 'function' ? menuOnly(viewContext) : !!menuOnly
   const toggleOptions = availableViews
-    .filter(({ menuOnly }) => !menuOnly)
+    .filter((option) => !isMenuOnly(option))
     .map(({ value, icon }) => ({ value, icon }))
   const activeView =
     availableViews.find(({ value }) => value === view) ?? availableViews[0]
 
   const renderContext = {
     data,
-    valueType,
+    valueType: effectiveValueType,
     isImage,
     isRanking,
+    isArray,
+    isArrayText,
+    isText,
+    isDualScale,
+    isNumerical,
     surveyId,
     chartId,
     question,
     hasComments,
+    filters,
     onViewComments: setCommentsAnswer,
   }
 
@@ -203,6 +339,13 @@ export const ChartRendererV2 = ({
     setIsHidden(hidden)
   }
 
+  // Switching view can change the chart height; scroll the card back to the top
+  // so the user stays anchored to the chart they're viewing.
+  const handleViewChange = (value) => {
+    setView(value)
+    cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   const actions = [
     {
       label: t('All chart options'),
@@ -211,7 +354,7 @@ export const ChartRendererV2 = ({
         label: option.label(),
         icon: option.icon(),
         active: option.value === activeView?.value,
-        onClick: () => setView(option.value),
+        onClick: () => handleViewChange(option.value),
       })),
     },
     isHidden
@@ -229,6 +372,7 @@ export const ChartRendererV2 = ({
 
   return (
     <Card
+      ref={cardRef}
       className={classNames('responses-statistics-card', {
         'responses-statistics-card--hidden': isHidden,
       })}
@@ -237,15 +381,34 @@ export const ChartRendererV2 = ({
       <Collapsible open={!isHidden}>
         {hasResponses ? (
           <>
+            {isArrayNumbers && (
+              <div className="responses-statistics-chart-subtitle">
+                <TooltipContainer
+                  tip={t(
+                    'Each value is the mean of the numbers entered for a subquestion (row) and answer option (column): their sum divided by the number of responses that answered that cell. Unanswered cells are left out.'
+                  )}
+                >
+                  <span className="responses-statistics-chart-subtitle-term">
+                    {t('Mean')} <i className="ri-information-line"></i>
+                  </span>
+                </TooltipContainer>{' '}
+                {t(
+                  'of the subquestions (rows) in the concerning answer option (columns)'
+                )}
+              </div>
+            )}
             <div>{activeView?.render(renderContext)}</div>
-            <div className="responses-statistics-chart-toggle">
-              <ToggleButtons
-                id={`chart-view-${index}`}
-                value={activeView?.value}
-                onChange={setView}
-                toggleOptions={toggleOptions}
-              />
-            </div>
+            {toggleOptions.length > 1 && (
+              <div className="responses-statistics-chart-toggle">
+                <ToggleButtons
+                  id={`chart-view-${index}`}
+                  value={activeView?.value}
+                  onChange={handleViewChange}
+                  toggleOptions={toggleOptions}
+                  theme="quick-access"
+                />
+              </div>
+            )}
           </>
         ) : (
           <div className="responses-statistics-empty">
@@ -260,7 +423,9 @@ export const ChartRendererV2 = ({
           onHide={() => setCommentsAnswer(null)}
           surveyId={surveyId}
           questionCode={question?.code}
+          questionType={question?.type}
           questionTitle={question?.title}
+          fields={question?.fields}
           answerOptions={data}
           initialAnswer={commentsAnswer ?? ''}
         />

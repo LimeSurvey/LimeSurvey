@@ -23,6 +23,9 @@ class StatisticsService
     /** @var int|string Current survey ID */
     private $surveyId;
 
+    /** @var Survey|null Survey model loaded during setSurvey(), shared with charts so they don't re-fetch it */
+    private ?Survey $survey = null;
+
     /** @var string Active survey language */
     private string $language;
 
@@ -80,6 +83,7 @@ class StatisticsService
         }
 
         $this->surveyId = (int)$surveyId;
+        $this->survey = $survey;
         $this->language = $language;
         return $this;
     }
@@ -162,6 +166,10 @@ class StatisticsService
             $chartObj = new $chart();
             if (!($chartObj instanceof StatisticsChartInterface)) {
                 continue;
+            }
+
+            if ($this->survey !== null && method_exists($chartObj, 'setSurveyModel')) {
+                $chartObj->setSurveyModel($this->survey);
             }
 
             if (!empty($this->filters) && count($this->filters->getFilters()) > 0) {

@@ -253,13 +253,15 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                             break; // Break inside if : comment and other are string to be filtered
                         } // else do default action
                     default:
-                        $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
-                        if (trim($strTmp) != '') {
-                            echo quoteSPSS($strTmp, $q, $field);
-                        } elseif ($row[$fieldno] === '') {
-                            echo quoteSPSS($sEmptyAnswerValue, $q, $field);
-                        } else {
-                            echo quoteSPSS($na, $q, $field);
+                        if (isset($row[$fieldno])) {
+                            $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
+                            if (trim($strTmp) != '') {
+                                echo quoteSPSS($strTmp, $q, $field);
+                            } elseif ($row[$fieldno] === '') {
+                                echo quoteSPSS($sEmptyAnswerValue, $q, $field);
+                            } else {
+                                echo quoteSPSS($na, $q, $field);
+                            }
                         }
                 }
             }
@@ -1450,7 +1452,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
 /**
 * from export_structure_quexml.php
 */
-function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $fieldmap, $use_answers = false, $aid = false, $scale = false, $EMreplace = false)
+function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $fieldmap, $use_answers = false, $aid = false, $scale = false, $EMreplace = false, $isRanking = false)
 {
     global $dom;
     global $quexmllang;
@@ -1477,17 +1479,13 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
             }
         }
         $subQuestion->appendChild($text);
-        if ($use_answers) {
-            $subQuestion->setAttribute("varName", $varname . '_' . QueXMLCleanup($Row['code']));
-        } else {
-            $subQuestion->setAttribute("varName", $varname . '_' . QueXMLCleanup($Row['title']));
-        }
-        if ($use_answers == false && $aid != false) {
+        $subQuestion->setAttribute("varName", $varname . '_' . QueXMLCleanup($use_answers ? $Row['code'] : $Row['title']));
+
+        if ($isRanking) {
+            quexml_set_default_value_rank($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, $Row->title);
+        } elseif ($use_answers == false && $aid != false) {
             //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
-        } elseif ($use_answers == true) {
-            // Ranking questions
-            quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row->code);
         } else {
             quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
         }
@@ -1510,21 +1508,19 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
 function quexml_set_default_value_rank(&$element, $iResponseID, $qid, $iSurveyID, $fieldmap, $acode)
 {
     if ($iResponseID) {
-        //here is the response
         $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
+
         $oResponse->decrypt();
 
-        $search = "qid";
-        //find the rank order of this current answer (if ranked at all over all subquestions)
-        $rank = 1;
-        foreach ($fieldmap as $key => $detail) {
-            if (array_key_exists($search, $detail) && $detail[$search] == $qid) {
-                $colname = $key;
-                $value = $oResponse->$colname; //response to this
-                if ($value == $acode) {
-                    $element->setAttribute("defaultValue", $rank);
+        $jsonColName = "Q{$qid}";
+        $jsonValue = $oResponse->$jsonColName;
+        if ($jsonValue !== null && $jsonValue !== '') {
+            $rankedItems = json_decode($jsonValue, true);
+            if (is_array($rankedItems)) {
+                $rank = array_search($acode, $rankedItems);
+                if ($rank !== false) {
+                    $element->setAttribute("defaultValue", (string)($rank + 1));
                 }
-                $rank++;
             }
         }
     }
@@ -1960,10 +1956,9 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
                         $question->appendChild($response2);
                         break;
                     case "R": // Ranking STYLE
-                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true, false, false, $EMreplace);
-                        //width of a ranking style question for display purposes is the width of the number of responses available (eg 12 responses, width 2)
-                        $QueryResult = Answer::model()->findAllByAttributes(['qid' => $qid], ['order' => 'sortorder']);
-                        $response->appendChild(QueXMLCreateFree("integer", strlen(count($QueryResult)), ""));
+                        quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace, true);
+                        $rankingSubQCount = Question::model()->countByAttributes(['parent_qid' => $qid]);
+                        $response->appendChild(QueXMLCreateFree("integer", max(1, strlen((string)$rankingSubQCount)), ""));
                         $question->appendChild($response);
                         break;
                     case "M": //Multiple choice checkbox
@@ -2795,7 +2790,28 @@ function tsvSurveyExport($surveyid)
     }
     $attributes = array();
     foreach ($attributes_data as $key => $attribute) {
-        $attributes[$attribute['qid']][] = $attribute;
+        $qid = $attribute['qid'];
+        $attributeName = $attribute['attribute'];
+        $attributeValue = $attribute['value'];
+        // Empty XML nodes become empty arrays after json_decode, so guard against casting an array to string.
+        $rawLanguage = $attribute['language'] ?? '';
+        $attributeLanguage = is_array($rawLanguage) ? '' : trim((string) $rawLanguage);
+
+        if (!isset($attributes[$qid])) {
+            $attributes[$qid] = [
+                'common' => [],
+                'byLanguage' => [],
+            ];
+        }
+
+        if ($attributeLanguage === '') {
+            $attributes[$qid]['common'][$attributeName] = $attributeValue;
+        } else {
+            if (!isset($attributes[$qid]['byLanguage'][$attributeLanguage])) {
+                $attributes[$qid]['byLanguage'][$attributeLanguage] = [];
+            }
+            $attributes[$qid]['byLanguage'][$attributeLanguage][$attributeName] = $attributeValue;
+        }
     }
 
     // defaultvalues_data
@@ -3058,15 +3074,25 @@ function tsvSurveyExport($surveyid)
                         }
 
                         // question attributes
-                        if ($index_languages == 0 && array_key_exists($question['qid'], $attributes)) {
-                            foreach ($attributes[$question['qid']] as $key => $attribute) {
-                                if (in_array($attribute['attribute'], array_keys($fields))) {
-                                    if (is_array($attribute['value'])) {
-                                        if (safecount($attribute['attribute']) > 0) {
-                                            $tsv_output[$attribute['attribute']] = implode(' ', $attribute['value']);
+                        if (array_key_exists($question['qid'], $attributes)) {
+                            $questionAttributes = $attributes[$question['qid']];
+                            $mergedAttributes = $questionAttributes['common'];
+
+                            if (!empty($questionAttributes['byLanguage'][$language])) {
+                                $mergedAttributes = array_merge(
+                                    $mergedAttributes,
+                                    $questionAttributes['byLanguage'][$language]
+                                );
+                            }
+
+                            foreach ($mergedAttributes as $attributeName => $attributeValue) {
+                                if (array_key_exists($attributeName, $fields)) {
+                                    if (is_array($attributeValue)) {
+                                        if (safecount($attributeValue) > 0) {
+                                            $tsv_output[$attributeName] = implode(' ', $attributeValue);
                                         }
                                     } else {
-                                        $tsv_output[$attribute['attribute']] = $attribute['value'];
+                                        $tsv_output[$attributeName] = $attributeValue;
                                     }
                                 }
                             }

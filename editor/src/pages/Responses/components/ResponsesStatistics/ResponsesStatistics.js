@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import { ToggleButtons } from 'components'
 import { useStatistics } from 'hooks'
@@ -29,18 +29,16 @@ export const ResponsesStatistics = ({
     fetchNextPage,
   } = useStatistics(surveyId, filters)
   const [valueType, setValueType] = useState(VALUE_TYPE.PERCENTAGE)
-  const [loadMoreRef, isLoadMoreInView] = useIsInViewport(null, {
-    initialInView: false,
-  })
 
-  // Auto-load the next page of charts while the sentinel below the list is in
-  // view. Re-runs when fetching settles, so it chains pages as long as the
-  // sentinel stays visible.
-  useEffect(() => {
-    if (isLoadMoreInView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage()
-    }
-  }, [isLoadMoreInView, hasNextPage, isFetchingNextPage, fetchNextPage])
+  const [loadMoreRef] = useIsInViewport(null, {
+    initialInView: false,
+    rootMargin: '0px 0px 300px 0px',
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage()
+      }
+    },
+  })
 
   const renderContent = () => {
     if (!statistics?.length) {
@@ -63,6 +61,7 @@ export const ResponsesStatistics = ({
         statistics={statistics}
         surveyId={surveyId}
         valueType={valueType}
+        filters={filters}
       />
     )
   }
@@ -84,8 +83,6 @@ export const ResponsesStatistics = ({
         />
       </div>
       {renderContent()}
-      {/* Sentinel is always mounted so useIsInViewport's observer (set up once
-          on a stable ref) reliably tracks it once the charts render. */}
       <div ref={loadMoreRef} className="responses-statistics-load-more">
         {isFetchingNextPage && <span className="loader"></span>}
       </div>

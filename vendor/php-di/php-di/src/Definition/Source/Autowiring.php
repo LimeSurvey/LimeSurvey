@@ -18,7 +18,6 @@ interface Autowiring
      * Autowire the given definition.
      *
      * @throws InvalidDefinition An invalid definition was found.
-     * @return ObjectDefinition|null
      */
-    public function autowire(string $name, ObjectDefinition $definition = null);
+    public function autowire(string $name, ?ObjectDefinition $definition = null) : ?ObjectDefinition;
 }

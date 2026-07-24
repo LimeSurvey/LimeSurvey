@@ -1,7 +1,6 @@
 <?php
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponseAnswer;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesExport;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesPatch;
 use LimeSurvey\Libraries\Api\Rest\V1\SchemaFactory\SchemaFactorySurveyResponsesExport;
@@ -27,10 +26,9 @@ $rest['v1/survey-responses/$id'] = [
         'params' => [
             'filters' => ['type' => 'array'],
             'sort' => ['type' => 'array'],
-            'pageSize' => ['type' => 'array'],
             'page' => ['type' => 'array'],
-            'fields' => ['type' => 'array'],
-            'questionCode' => ['type' => 'string']
+            'language' => ['type' => 'string'],
+            'fields' => ['type' => 'array']
         ],
         'responses' => [
             'success' => [
@@ -63,41 +61,6 @@ $rest['v1/survey-responses/$id'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'schema' => $responsesPatchSchema,
-            ],
-            'unauthorized' => [
-                'code' => 401,
-                'description' => 'Unauthorized',
-                'schema' => $errorSchema
-            ],
-            'not-found' => [
-                'code' => 404,
-                'description' => 'Not Found',
-                'schema' => $errorSchema
-            ]
-        ]
-    ]
-];
-
-$rest['v1/survey-response-answers/$id'] = [
-    'POST' => [
-        'tag' => 'survey',
-        'description' => 'Survey response answers',
-        'commandClass' => SurveyResponseAnswer::class,
-        'auth' => true,
-        'params' => [
-            'responseId' => ['type' => 'int'],
-            'language' => ['type' => 'string'],
-            'fields' => ['type' => 'array'],
-            'page' => ['type' => 'array'],
-            'answerField' => ['type' => 'string'],
-            'answerValue' => ['type' => 'string']
-        ],
-        'responses' => [
-            'success' => [
-                'code' => 200,
-                'description' => 'Success',
-                'content' => null,
-                'schema' => $responsesSchema,
             ],
             'unauthorized' => [
                 'code' => 401,

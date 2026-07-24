@@ -10,10 +10,13 @@ const PREVIEW_LIMIT = 5
 export const QuestionComments = ({
   surveyId,
   questionCode,
+  fields,
   answerOptions = [],
   onViewComments,
 }) => {
-  const { comments, isLoading } = useQuestionComments(surveyId, questionCode)
+  const { comments, isLoading } = useQuestionComments(surveyId, questionCode, {
+    fields,
+  })
 
   const optionByAnswer = useMemo(
     () => buildOptionByAnswer(answerOptions),

@@ -16,7 +16,9 @@ export const CommentsModal = ({
   onHide,
   surveyId,
   questionCode,
+  questionType,
   questionTitle = '',
+  fields,
   answerOptions = [],
   initialAnswer = '',
 }) => {
@@ -27,8 +29,26 @@ export const CommentsModal = ({
     setSelectedAnswer(initialAnswer)
   }, [initialAnswer])
 
-  const { comments, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useQuestionComments(surveyId, questionCode, { enabled: show })
+  const selectedField = useMemo(
+    () =>
+      answerOptions.find(
+        (option) => String(option.key) === String(selectedAnswer)
+      )?.field ?? '',
+    [answerOptions, selectedAnswer]
+  )
+
+  const {
+    comments: visibleComments,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useQuestionComments(surveyId, questionCode, {
+    enabled: show,
+    selectedAnswer,
+    selectedField,
+    fields,
+    questionType,
+  })
 
   const options = useMemo(
     () => getAnswerFilterOptions(answerOptions),
@@ -38,15 +58,6 @@ export const CommentsModal = ({
     () => buildOptionByAnswer(answerOptions),
     [answerOptions]
   )
-
-  const visibleComments = useMemo(() => {
-    if (!selectedAnswer) return comments
-    const selectedOption = options.find(
-      (option) => option.key === selectedAnswer
-    )
-    const matches = [selectedAnswer, selectedOption?.title].filter(Boolean)
-    return comments.filter((comment) => matches.includes(comment.subQuestion))
-  }, [comments, selectedAnswer, options])
 
   return (
     <StatisticsDetailModal

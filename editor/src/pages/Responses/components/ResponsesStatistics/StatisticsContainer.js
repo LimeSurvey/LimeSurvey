@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 
 import { useAppState, useSurvey } from 'hooks'
 import { STATES } from 'helpers'
@@ -21,40 +21,68 @@ const getGroupTitle = (group, activeLanguage) => {
   return localized?.groupName ?? group.groupName ?? null
 }
 
+const StatisticsChartCard = memo(function StatisticsChartCard({
+  item,
+  index,
+  surveyId,
+  valueType,
+  filters,
+}) {
+  const data = useMemo(() => getDataWithPercentages(item), [item])
+  const question = useMemo(
+    () => ({
+      type: item?.meta?.question?.type,
+      typeLabel: item?.meta?.question?.typeLabel,
+      themeName: item?.meta?.question?.themeName,
+      code: item?.meta?.question?.code,
+      title: item?.title,
+      help: item?.meta?.question?.help,
+      fields: item?.meta?.question?.fields,
+      index: index,
+    }),
+    [item, index]
+  )
+  const chartId =
+    item?.meta?.question?.qid ?? item?.meta?.question?.id ?? item?.title
+
+  return (
+    <ChartRendererV2
+      index={index}
+      surveyId={surveyId}
+      chartId={chartId}
+      data={data}
+      valueType={valueType}
+      filters={filters}
+      question={question}
+    />
+  )
+})
+
 // Charts render in API order, which follows the survey structure (groups in
 // survey order, questions in group order), so paginated pages append
 // sequentially.
-const renderCharts = (items, surveyId, valueType) => (
+const renderCharts = (items, surveyId, valueType, filters) => (
   <div className="responses-statistics-charts row">
-    {items.map(({ item, index }) => {
-      const chartId =
-        item?.meta?.question?.qid ?? item?.meta?.question?.id ?? item?.title
-      return (
-        <div className="col-12" key={`responses-statistics-charts-${index}`}>
-          <ChartRendererV2
-            index={index}
-            surveyId={surveyId}
-            chartId={chartId}
-            data={getDataWithPercentages(item)}
-            graphType={item}
-            valueType={valueType}
-            question={{
-              type: item?.meta?.question?.type,
-              typeLabel: item?.meta?.question?.typeLabel,
-              themeName: item?.meta?.question?.themeName,
-              code: item?.meta?.question?.code,
-              title: item?.title,
-              help: item?.meta?.question?.help,
-              index: index,
-            }}
-          />
-        </div>
-      )
-    })}
+    {items.map(({ item, index }) => (
+      <div className="col-12" key={`responses-statistics-charts-${index}`}>
+        <StatisticsChartCard
+          item={item}
+          index={index}
+          surveyId={surveyId}
+          valueType={valueType}
+          filters={filters}
+        />
+      </div>
+    ))}
   </div>
 )
 
-export const StatisticsContainer = ({ statistics, surveyId, valueType }) => {
+export const StatisticsContainer = ({
+  statistics,
+  surveyId,
+  valueType,
+  filters,
+}) => {
   const { survey } = useSurvey(surveyId)
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
 
@@ -100,7 +128,7 @@ export const StatisticsContainer = ({ statistics, surveyId, valueType }) => {
               {group.title}
             </span>
           )}
-          {renderCharts(group.items, surveyId, valueType)}
+          {renderCharts(group.items, surveyId, valueType, filters)}
         </div>
       ))}
     </div>

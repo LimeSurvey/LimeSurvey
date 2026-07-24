@@ -5443,7 +5443,7 @@
    <row>
     <id><![CDATA[1268]]></id>
     <qid><![CDATA[794]]></qid>
-    <question><![CDATA[Welchem ​​Geschlecht gehören Sie an?
+    <question><![CDATA[Welchem   Geschlecht gehören Sie an?
 ]]></question>
     <help/>
     <language><![CDATA[de]]></language>
@@ -13462,17 +13462,17 @@
 		</tr>
 		<tr>
 			<td>qRankingAdv_1</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_1.shown}</td>
 		</tr>
 		<tr>
 			<td>qRankingAdv_2</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_2.shown}</td>
 		</tr>
 		<tr>
 			<td>qRankingAdv_3</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_3.shown}</td>
 		</tr>
 	</tbody>
@@ -14048,17 +14048,17 @@
 		</tr>
 		<tr>
 			<td>qRankingAdv_1</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_1.shown}</td>
 		</tr>
 		<tr>
 			<td>qRankingAdv_2</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_2.shown}</td>
 		</tr>
 		<tr>
 			<td>qRankingAdv_3</td>
-			<td> </td>
+			<td> </td>
 			<td>{qRankingAdv_3.shown}</td>
 		</tr>
 	</tbody>
@@ -14737,7 +14737,7 @@
    <row>
     <id><![CDATA[1123]]></id>
     <qid><![CDATA[827]]></qid>
-    <question><![CDATA[Excercise]]></question>
+    <question><![CDATA[Exercise]]></question>
     <help/>
     <script/>
     <language><![CDATA[en]]></language>

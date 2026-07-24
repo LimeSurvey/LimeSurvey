@@ -2,6 +2,12 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
+/**
+ * Array (Numbers): a numeric grid (Y subquestions × X columns). Each cell holds
+ * a number, so it is summarised as the per-cell mean. The chart is a single
+ * grouped chart: one row per Y subquestion, one bar per X column, the bar value
+ * being the mean of the numbers entered for that cell.
+ */
 class ArrayNumbersProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
@@ -12,88 +18,96 @@ class ArrayNumbersProcessor extends AbstractQuestionProcessor
     public function process()
     {
         $this->rt();
-        $charts = [];
-        [$min, $max, $step] = $this->getValues();
-        $values = [];
+
         $groups = [];
-
-        for ($i = $min; $i <= $max; $i += $step) {
-            $values[] = $i;
+        foreach ($this->question['subQuestions'] as $subQuestion) {
+            $groups[$subQuestion['scale_id']][] = $subQuestion['qid'];
         }
-        $strValues = array_map('strval', $values);
+        $rowQids = $groups[0] ?? [];
+        $columnQids = $groups[1] ?? [];
 
-        foreach ($this->question['subQuestions'] as $o) {
-            $groups[$o['scale_id']][] = $o['qid'];
-        }
-
-        $groupedSubQuestions = array_merge(
-            ...array_map(
-                fn($c0) => array_map(fn($c1) => "{$c0}_{$c1}", $groups[1]),
-                $groups[0]
-            )
-        );
-
-        $fieldMeta = []; // fieldName => [subQuestion1, subQuestion2]
-        foreach ($groupedSubQuestions as $questionIdConcat) {
-            $questionId = explode('_', $questionIdConcat);
-            $subQuestion1 = $this->question['subQuestions'][$questionId[0]];
-            $subQuestion2 = $this->question['subQuestions'][$questionId[1]];
-            $field = $this->rt . '_S' . $subQuestion1['qid'] . '_S' . $subQuestion2['qid'];
-            $fieldMeta[$field] = [$subQuestion1, $subQuestion2];
-        }
-
-        $batch = $this->buildBatchItemsForSubquestions(array_keys($fieldMeta), $strValues, $strValues);
-
-        foreach ($fieldMeta as $field => [$subQuestion1, $subQuestion2]) {
-            [$legend, $dataItems] = $batch[$field];
-            $charts[] = [
-                'title' => $this->question['question'] . ' [' . $subQuestion1['question'] . '] [' . $subQuestion2['question'] . ']',
-                'legend' => $legend,
-                'data' => $dataItems,
+        $data = [];
+        $questionFields = [];
+        foreach ($rowQids as $rowQid) {
+            $row = $this->question['subQuestions'][$rowQid];
+            $segments = [];
+            $rowFields = [];
+            foreach ($columnQids as $columnQid) {
+                $column = $this->question['subQuestions'][$columnQid];
+                $field = $this->rt . '_S' . $row['qid'] . '_S' . $column['qid'];
+                $rowFields[] = $field;
+                $segments[] = [
+                    'key' => (string)$column['qid'],
+                    'title' => $column['question'],
+                    'value' => $this->meanOf($field),
+                    'stats' => $this->statsOf($field),
+                ];
+            }
+            $questionFields = array_merge($questionFields, $rowFields);
+            $data[] = [
+                'key' => $row['title'],
+                'title' => $row['question'],
+                'value' => empty($rowFields)
+                    ? 0
+                    : $this->read($this->batch->countAnyNonEmpty($rowFields)),
+                'segments' => $segments,
             ];
         }
 
-        return $charts;
+        $legend = !empty($data[0]['segments'])
+            ? array_column($data[0]['segments'], 'title')
+            : [];
+
+        return [
+            'title' => $this->question['question'],
+            'legend' => $legend,
+            'data' => $data,
+            'total' => empty($questionFields)
+                ? 0
+                : $this->read($this->batch->countAnyNonEmpty($questionFields)),
+        ];
     }
 
-    private function getValues()
+    /**
+     * Deferred mean (sum / non-empty count) of a numeric column, resolved once
+     * the batch has executed. Returns 0 when the column has no answers.
+     *
+     * @return callable
+     */
+    private function meanOf(string $field): callable
     {
-        $minValue = 1;
-        $maxValue = 10;
-        $attributes = $this->question['attributes'] ?? [];
-        $checkbox = $attributes['multiflexible_checkbox'] ?? 0;
-        $multiflexibleMin = $attributes['multiflexible_min'] ?? '';
-        $multiflexibleMax = $attributes['multiflexible_max'] ?? '';
-        $multiflexibleStep = $attributes['multiflexible_step'] ?? '';
-        $reverse = $attributes['reverse'] ?? 0;
+        $sumAlias = $this->batch->sumValues($field);
+        $countAlias = $this->batch->countNumeric($field);
 
-        if ($checkbox != 0) {
-            return [0, 1, 1];
-        }
-
-        if (trim((string) $multiflexibleMax) != '' && trim((string) $multiflexibleMin) == '') {
-            $maxValue = $multiflexibleMax;
-        }
-
-        if (trim((string) $multiflexibleMin) != '' && trim((string) $multiflexibleMax) == '') {
-            $minValue = $multiflexibleMin;
-            $maxValue = $multiflexibleMin + 10;
-        }
-
-        if (trim((string) $multiflexibleMin) != '' && trim((string) $multiflexibleMax) != '') {
-            if ($multiflexibleMin < $multiflexibleMax) {
-                $minValue = $multiflexibleMin;
-                $maxValue = $multiflexibleMax;
+        return function () use ($sumAlias, $countAlias): float {
+            $count = $this->batch->value($countAlias);
+            if ($count <= 0) {
+                return 0;
             }
-        }
+            return round($this->batch->value($sumAlias) / $count, 2);
+        };
+    }
 
-        $stepValue = (trim((string) $multiflexibleStep) != '' && $multiflexibleStep > 0) ? $multiflexibleStep : 1;
+    private function statsOf(string $field): callable
+    {
+        $sumAlias = $this->batch->sumValues($field);
+        $countAlias = $this->batch->countNumeric($field);
+        $medianAlias = $this->batch->medianValue($field);
+        $minAlias = $this->batch->minValue($field);
+        $maxAlias = $this->batch->maxValue($field);
 
-        if ((int) $reverse === 1) {
-            [$minValue, $maxValue] = [$maxValue, $minValue];
-            $stepValue = -$stepValue;
-        }
+        return function () use ($sumAlias, $countAlias, $medianAlias, $minAlias, $maxAlias): ?array {
+            $count = $this->batch->value($countAlias);
+            if ($count <= 0) {
+                return null;
+            }
 
-        return [$minValue, $maxValue, $stepValue];
+            return [
+                'mean' => round($this->batch->value($sumAlias) / $count, 2),
+                'median' => round($this->batch->value($medianAlias), 2),
+                'min' => round($this->batch->value($minAlias), 2),
+                'max' => round($this->batch->value($maxAlias), 2),
+            ];
+        };
     }
 }
