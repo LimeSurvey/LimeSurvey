@@ -84,7 +84,11 @@ export const DropZone = ({
 
       const { success, uploadResultMessage } = response
       if (!success) {
-        onUploadFailed(url, previousPreviewUrl, uploadResultMessage || 'Upload failed')
+        onUploadFailed(
+          url,
+          previousPreviewUrl,
+          uploadResultMessage || 'Upload failed'
+        )
         return
       }
 
