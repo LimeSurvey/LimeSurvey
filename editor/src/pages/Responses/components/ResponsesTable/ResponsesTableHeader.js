@@ -1,11 +1,14 @@
 import classNames from 'classnames'
+import { flexRender } from '@tanstack/react-table'
+
+import { ContentEditor } from 'components'
+
 import {
   ActionsColumnId,
   getCommonPinningStyles,
   idColumnKey,
   SelectColumnId,
 } from '../../utils'
-import { flexRender } from '@tanstack/react-table'
 
 export const ResponsesTableHeader = ({
   table,
@@ -45,7 +48,7 @@ export const ResponsesTableHeader = ({
             return (
               <th
                 key={header.id}
-                className={classNames(`${header.id}`, {
+                className={classNames(`${header.id} table-header`, {
                   'highlight-cell': sortDir,
                   'columnBeforeActions': isColumnBeforeActions,
                 })}
@@ -72,10 +75,13 @@ export const ResponsesTableHeader = ({
                       </div>
                     </>
                   )}
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
+                  <ContentEditor
+                    value={flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    disabled={true}
+                  />
                 </div>
 
                 <div
