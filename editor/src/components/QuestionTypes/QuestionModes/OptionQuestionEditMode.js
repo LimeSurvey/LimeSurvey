@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
-import { useAppState, useSurvey } from 'hooks'
+import { useAppState, useSurvey, useChildKeyboardShortcuts } from 'hooks'
 import { Entities, hasTempId, L10ns, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
@@ -42,6 +42,14 @@ export const OptionQuestionEditMode = ({
     entity: isSingleChoiceTheme ? Entities.answer : Entities.subquestion,
   }
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+
+  const { getKeyDownHandler } = useChildKeyboardShortcuts({
+    children: _children,
+    entityType: childrenInfo.entity,
+    handleChildAdd,
+    handleChildDelete,
+    isSurveyActive,
+  })
 
   const getSubquestionStyle = (draggableStyle) => ({
     userSelect: 'none',
@@ -151,6 +159,10 @@ export const OptionQuestionEditMode = ({
                       isFocused={true}
                       idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
                       id={child[childrenInfo.idKey]}
+                      onKeyDown={getKeyDownHandler(
+                        child[childrenInfo.idKey],
+                        index
+                      )}
                       // Focus the child if it's a new child and also if the question is not a new question.
                       focus={
                         hasTempId(child[childrenInfo.idKey]) &&

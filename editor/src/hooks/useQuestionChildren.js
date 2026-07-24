@@ -71,7 +71,11 @@ export const useQuestionChildren = ({
     }
 
     if (newChild) {
-      updatedChildren.push(newChild)
+      if (props.insertAfterIndex !== undefined) {
+        updatedChildren.splice(props.insertAfterIndex + 1, 0, newChild)
+      } else {
+        updatedChildren.push(newChild)
+      }
     }
 
     updatedChildren =
