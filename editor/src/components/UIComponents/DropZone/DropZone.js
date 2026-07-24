@@ -53,12 +53,9 @@ export const DropZone = ({
     [setPreviewUrl, onChangePreview]
   )
 
-  const onUploadFailed = (message) => {
-    const previewUrlOld = previewUrl
-    if (previewUrlOld) {
-      URL.revokeObjectURL(previewUrlOld)
-    }
-    changePreview(previewUrlOld)
+  const onUploadFailed = (failedBlobUrl, previousPreviewUrl, message) => {
+    URL.revokeObjectURL(failedBlobUrl)
+    changePreview(previousPreviewUrl)
     setLoading(false)
     errorToast(message)
   }
@@ -67,6 +64,7 @@ export const DropZone = ({
     acceptedFiles.forEach(async (file) => {
       setLoading(true)
 
+      const previousPreviewUrl = previewUrl
       const url = URL.createObjectURL(file)
       changePreview(url)
 
@@ -80,13 +78,13 @@ export const DropZone = ({
         const message = error.response
           ? 'Upload failed with status code: ' + error.response.status
           : error.message
-        onUploadFailed(message)
+        onUploadFailed(url, previousPreviewUrl, message)
         return
       }
 
       const { success, uploadResultMessage } = response
       if (!success) {
-        onUploadFailed(uploadResultMessage || 'Upload failed')
+        onUploadFailed(url, previousPreviewUrl, uploadResultMessage || 'Upload failed')
         return
       }
 

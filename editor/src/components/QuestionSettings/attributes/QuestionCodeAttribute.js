@@ -49,7 +49,7 @@ export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
 
   const updateCodeToQuestion = (oldValue, newValue) => {
     const newCodeToQuestion = { ...codeToQuestion }
-    if (!newCodeToQuestion[oldValue]) {
+    if (!Object.hasOwn(newCodeToQuestion, oldValue)) {
       return
     }
     newCodeToQuestion[newValue] = newCodeToQuestion[oldValue]
