@@ -83,7 +83,7 @@ export const useSurvey = (id) => {
 
     if (!newData) return {}
 
-    if (newData?.survey === SURVEY_NOT_MODIFIED) {
+    if (newData?.survey === SURVEY_NOT_MODIFIED || !newData?.survey) {
       return queryClient.getQueryData([STATES.SURVEY]) || { survey: {} }
     }
 
