@@ -325,12 +325,12 @@ Changes from 6.17.2 (build 260507) to 6.17.3 (build 260512) May 12, 2026
 
 
 Changes from 6.17.1 (build 260427) to 6.17.2 (build 260507) May 7, 2026
--Fixed issue: various improvements to the dashboard page regarding accessibility, navigation, and aria labels, as well as all improvements to all tables (a11y) (#4413) (Anblik Audit Team) (Patrick Teichmann)
--Fixed issue: small aria adjustments to header backlinks (a11y) (#4508) (Anblik Audit Team) (Patrick Teichmann)
--Fixed issue: multiple small aria adjustments for survey settings, themes (a11y) (#4444) (Anblik Audit Team) (Patrick Teichmann)
--Fixed issue: modal save button focusable (a11y) (#4669) (Anblik Audit Team)
--Fixed issue: additional aria attributes for email templates (a11y) (#4769) (Anblik Audit Team)
--Fixed issue: added table captions as well as additional aria tags in group & question view and participants view (#4448) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: Various improvements to the dashboard page regarding accessibility, navigation, and aria labels, as well as all improvements to all tables (a11y) (#4413) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: Small aria adjustments to header backlinks (a11y) (#4508) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: Multiple small aria adjustments for survey settings, themes (a11y) (#4444) (Anblik Audit Team) (Patrick Teichmann)
+-Fixed issue: Modal save button focusable (a11y) (#4669) (Anblik Audit Team)
+-Fixed issue: Additional aria attributes for email templates (a11y) (#4769) (Anblik Audit Team)
+-Fixed issue: Added table captions as well as additional aria tags in group & question view and participants view (#4448) (Anblik Audit Team) (Patrick Teichmann)
 -Fixed issue #CR-1454: Added automatic fixing of code sniffer findings (#4023) (tiborpacalat)
 -Fixed issue #8030: Prefilled values for not relevant questions lost (#4941) (Denis Chenu)
 -Fixed issue #20507: Missing comment closing (#4958) (lajosarpad)
@@ -364,10 +364,10 @@ Changes from 6.17.0 (build 260421) to 6.17.1 (build 260427) April 27, 2026
 -Fixed issue #20494: Conditional Remote Code Execution via Question Theme Path Traversal and Custom Twig Extension Injection (Thank you to lavie3k for reporting the issue) (#4900) (Gabriel Jenik)
 -Fixed issue #19958: Public registration is not compliant with GDPR (#4887) (Denis Chenu)
 -Fixed issue #19309: Cannot click item to get into question group information if the name is empty (#4874) (Gabriel Jenik)
--Fixed issue: add missing aria and state attributes for email templates (a11y) (#4739) (Anblik Audit Team)
--Fixed issue: adjusted central participant modal headers (a11y) (#4751) (Anblik Audit Team)
--Fixed issue: added aria attributes, corrected html tags to central participant modals (a11y) (#4768) (Anblik Audit Team)
--Fixed issue: added aria attribute and changed heading semantics in select_modal used in export survey (a11y) (#4750) (Anblik Audit Team)
+-Fixed issue: Add missing aria and state attributes for email templates (a11y) (#4739) (Anblik Audit Team)
+-Fixed issue: Adjusted central participant modal headers (a11y) (#4751) (Anblik Audit Team)
+-Fixed issue: Added aria attributes, corrected html tags to central participant modals (a11y) (#4768) (Anblik Audit Team)
+-Fixed issue: Added aria attribute and changed heading semantics in select_modal used in export survey (a11y) (#4750) (Anblik Audit Team)
 #Updated translation: Turkish by kayazeren
 #Updated translation: Portuguese (Portugal) by ricardo.santos, xastrefernando
 #Updated translation: Japanese by d_inoue, nomoto
@@ -501,7 +501,7 @@ Changes from 6.16.14 (build 260323) to 6.16.15 (build 260330) March 30, 2026
 
 
 Changes from 6.16.13 (build 260316) to 6.16.14 (build 260323) March 23, 2026
--Fixed issue: Add aria-labels to button groups and heading semantic enhancements in survey menu panels (a11y) (#4447) (Anblik Audit Team)
+-Fixed issue: Add aria-labels to button groups and heading semantic enhancements in survey menu panels (a11y) (#4447) (Anblik Audit Team)
 -Fixed issue LS-CLOUD-409: array_merge() error when executing quota (Carsten Schmitz)
 -Fixed issue #LE-656: CPDB attribute edit/add modal languages delete button not working (#4802) (haythem chibani)
 -Fixed issue #LE-655: Delete sharing action in CPDB sharing panel doesn't work (#4798) (haythem chibani)
@@ -8153,7 +8153,7 @@ Changes from 3.13.1 (build 180629) to 3.13.2 (build 180709) July 09, 2018
 -Fixed issue #13821: When importing a survey I receive a "Failed to Insert [3]" error message (#1090) (githubLewis)
 -Fixed issue #13830: Language changer broken in Ajax mode (Markus Flür)
 -Fixed issue #13831: Export of survey-structure (*.lss - Files) is not possible in LS 3.13.0 (Markus Flür)
--Fixed issue #13833: Owner of survey are not able to edit assesments (no button) (Denis Chenu)
+-Fixed issue #13833: Owner of survey are not able to edit assessments (no button) (Denis Chenu)
 -Fixed issue #13842: missing translation (Markus Flür)
 -Fixed issue #13843: icon at the right side, should be in front of label (Markus Flür)
 -Fixed issue #13845: Can't export and then import tab-separated text survey file (Dominik Vitt)
@@ -8554,7 +8554,7 @@ Changes from 3.6.1 (build 180329) to 3.6.2 (build 180406) Apr 04, 2018
 -Fixed issue #13555: Long survey name + Long Group name : breadcumb seems unusuable (Denis Chenu)
 -Fixed issue #13562: CSRF in box deletion (markusfluer)
 -Fixed issue #13565: Remove punctuation points from PHP (Kai Ravesloot)
--Fixed issue #13569: Final assesments are shown even if no assessemnt is set (Denis Chenu)
+-Fixed issue #13569: Final assessments are shown even if no assessemnt is set (Denis Chenu)
 -Fixed issue: Import old survey table HTML broken (Denis Chenu)
 -Fixed issue: AuthLDAP doesn't work with multiple search bases. (#998) (ecraven)
 -Fixed issue: Couldn't change password (markusfluer)
