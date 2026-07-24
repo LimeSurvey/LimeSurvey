@@ -8,8 +8,21 @@
 
 <!-- Rendering massive action widget -->
 <?php
-    $buttons = [];
-    $surveyId = intval(App()->getRequest()->getQuery('surveyId'));
+$buttons = [];
+$surveyId = intval(App()->getRequest()->getQuery('surveyId'));
+$selectAllCapNote = '';
+if (!empty($selectAllMaxCount) && $numTotalAnswers > $selectAllMaxCount) {
+    $selectAllCapNote = '<div class="select-all-cap-note mt-2" style="display:none;">'
+        . $this->widget('ext.AlertWidget.AlertWidget', [
+            'tag'  => 'p',
+            'text' => sprintf(
+                gT('"Select all" is limited to the first %s responses in one action.'),
+                (int) $selectAllMaxCount
+            ),
+            'type' => 'info',
+        ], true)
+        . '</div>';
+}
 if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
     // Delete
     $buttons[] = [
@@ -28,7 +41,8 @@ if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) 
         'sModalTitle'   => gT('Delete responses'),
         'htmlModalBody' => gT('Are you sure you want to delete the selected responses?')
             . '<br/>'
-            . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.'),
+            . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.')
+            . $selectAllCapNote,
         'aCustomDatas'  => [
             ['name' =>'sid', 'value' => $surveyId],
         ],

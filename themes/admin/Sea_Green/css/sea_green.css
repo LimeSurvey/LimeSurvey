@@ -20050,7 +20050,8 @@ table [class^=ri-], table [class*=" ri-"] {
   background-color: #9094A7;
   flex-shrink: 0;
 }
-.grid-selection-bar .grid-selection-bar__deselect {
+.grid-selection-bar .grid-selection-bar__deselect,
+.grid-selection-bar .grid-selection-bar__select-all {
   padding: 4px 8px;
   font-weight: 500;
   white-space: nowrap;
