@@ -47,11 +47,27 @@ trait LSApplicationTrait
     public function createPublicUrl($route, $params = array(), $schema = '', $ampersand = '&')
     {
         $sPublicUrl = $this->getPublicBaseUrl(true);
-        $sActualBaseUrl = $this->getBaseUrl(true);
-        if ($sPublicUrl !== $sActualBaseUrl) {
+        $sActualAbsoluteBaseUrl = $this->getBaseUrl(true);
+        if ($sPublicUrl !== $sActualAbsoluteBaseUrl) {
+            /* @var string keep current urlmanager baseUrl */
+            $sActualBaseUrl = $this->getUrlManager()->getBaseUrl(false);
+            /* @var string keep current hostInfo */
+            $sActualhostInfo = $this->getRequest()->getHostInfo();
+            /* Set hostInfo to empty and baseUrl according to showScriptName (@see CUrlManager::getBaseUrl) */
+            if ($this->getUrlManager()->showScriptName) {
+                $this->getUrlManager()->setBaseUrl("/index.php");
+            } else {
+                $this->getUrlManager()->setBaseUrl("");
+            }
+            $this->getRequest()->setHostInfo("");
+            /* @var string the url */
             $url = $this->createAbsoluteUrl($route, $params, $schema, $ampersand);
-            if (substr((string)$url, 0, strlen((string)$sActualBaseUrl)) == $sActualBaseUrl) {
-                $url = substr((string)$url, strlen((string)$sActualBaseUrl));
+            /* Reset baseUrl and hostInfo to previous one */
+            $this->getUrlManager()->setBaseUrl($sActualBaseUrl);
+            $this->getRequest()->setHostInfo($sActualhostInfo);
+            /* Replace Yii public url by publicuirl set in config */
+            if (substr((string)$url, 0, strlen((string)$sActualAbsoluteBaseUrl)) == $sActualAbsoluteBaseUrl) {
+                $url = substr((string)$url, strlen((string)$sActualAbsoluteBaseUrl));
             }
             return trim((string)$sPublicUrl, "/") . $url;
         } else {
