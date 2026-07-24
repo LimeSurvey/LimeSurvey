@@ -49,6 +49,9 @@ export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
 
   const updateCodeToQuestion = (oldValue, newValue) => {
     const newCodeToQuestion = { ...codeToQuestion }
+    if (!Object.hasOwn(newCodeToQuestion, oldValue)) {
+      return
+    }
     newCodeToQuestion[newValue] = newCodeToQuestion[oldValue]
     newCodeToQuestion[newValue].question.title = newValue
     delete newCodeToQuestion[oldValue]
