@@ -191,84 +191,18 @@ class Update_709 extends DatabaseUpdateBase
     }
 
     /**
-     * Collects the table column metadata.
-     * @param string $table the tablename
-     * @return [] array of columns
+     * Collects the table column names using Yii's database-agnostic schema method
+     * Works with MySQL, PostgreSQL, SQL Server and any other Yii1-supported driver
+     * @param string $table the table name
+     * @return array array of column names
      */
-    protected function findColumnsMySQL(string $table)
+    protected function findColumns(string $table): array
     {
-        $sql='SHOW FULL COLUMNS FROM '.$table;
-        $columns=$this->db->createCommand($sql)->queryAll();
-        $result = [];
-        foreach ($columns as $column) {
-            $result[] = $column['Field'];
+        $tableSchema = $this->db->getSchema()->getTable($table);
+        if ($tableSchema === null) {
+            return [];
         }
-        return $result;
-    }
-
-    /**
-     * Collects the table column metadata.
-     * @param string $table the tablename
-     * @return [] array of columns
-     */
-    protected function findColumnsPostgreSQL(string $table)
-    {
-		$sql=<<<EOD
-select COLUMN_NAME
-from information_schema.columns
-where TABLE_CATALOG = current_database() and TABLE_NAME = :table
-EOD;
-		$command=$this->db->createCommand($sql);
-		$command->bindValue(':table', $table);
-        $columns=$command->queryAll();
-        $result = [];
-        foreach ($columns as $column) {
-            $result[] = $column['column_name'];
-        }
-        return $result;
-    }
-
-    /**
-     * Collects the table column metadata.
-     * @param string $table the tablename
-     * @return [] array of columns
-     */
-    protected function findColumnsSQLServer(string $table)
-    {
-		$sql="
-            SELECT TABLE_NAME, COLUMN_NAME
-            FROM information_schema.columns
-            WHERE TABLE_CATALOG = db_name() AND TABLE_NAME = :table
-        ";
-		$command=$this->db->createCommand($sql);
-		$command->bindValue(':table', $table);
-        $columns=$command->queryAll();
-        $result = [];
-        foreach ($columns as $column) {
-            $result[] = $column['COLUMN_NAME'];
-        }
-        return $result;
-    }
-
-    /**
-     * Collects the table column metadata.
-     * @param string $table the tablename
-     * @return [] array of columns
-     */
-    protected function findColumns(string $table)
-    {
-        switch (Yii::app()->db->getDriverName()) {
-            case 'mysqli':
-            case 'mysql':
-                return $this->findColumnsMySQL($table);
-            case 'pgsql':
-                return $this->findColumnsPostgreSQL($table);
-            case 'mssql':
-            case 'sqlsrv':
-            case 'dblib':
-                return $this->findColumnsSQLServer($table);
-        }
-        return [];
+        return array_keys($tableSchema->columns);
     }
     /**
      * Adjust ranking questions to be of JSON type
@@ -281,16 +215,13 @@ EOD;
         $this->updateRankingSubQuestionTypes();
 
         $rankingKey = 'R';
-        $rankingQuestionQuery = "
-            SELECT s.sid AS sid, q1.qid AS parent_qid, q2.qid AS qid
-            FROM {{surveys}} s
-            JOIN {{questions}} q1
-            ON s.sid = q1.sid AND s.active = 'Y'
-            JOIN {{questions}} q2
-            ON q1." . $this->db->quoteColumnName("type") . " = '{$rankingKey}' AND q1.qid = q2.parent_qid
-            ORDER BY q1.sid, q1.qid, q2.question_order
-        ";
-        $rankingQuestionResult = $this->db->createCommand($rankingQuestionQuery)->query();
+        $rankingQuestionResult = $this->db->createCommand()
+            ->select('s.sid AS sid, q1.qid AS parent_qid, q2.qid AS qid')
+            ->from('{{surveys}} s')
+            ->join('{{questions}} q1', 's.sid = q1.sid AND s.active = :active', [':active' => 'Y'])
+            ->join('{{questions}} q2', 'q1.' . $this->db->quoteColumnName('type') . ' = :rankingKey AND q1.qid = q2.parent_qid', [':rankingKey' => $rankingKey])
+            ->order('q1.sid, q1.qid, q2.question_order')
+            ->query();
         $sid = null;
         $alterMap = [];
         $columns = null;
