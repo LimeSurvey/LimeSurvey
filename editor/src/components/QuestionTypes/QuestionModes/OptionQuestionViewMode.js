@@ -3,7 +3,9 @@ import {
   Entities,
   getStringPartsUsingSeperator,
   getAttributeValue,
+  isTrue,
   L10ns,
+  OTHER_CODE,
 } from 'helpers'
 import {
   Button,
@@ -31,9 +33,48 @@ const dropdownThemeComponents = [
 
 const commentedCheckboxOptions = getCommentedCheckboxOptions()
 
-// todo: add an input for other and input fields for mutliple numerical/texts
+const OTHER_POSITIONS = {
+  BEGINNING: 'beginning',
+  END: 'end',
+  SPECIFIC: 'specific',
+}
+
+const insertOtherByPosition = (
+  items = [],
+  otherItem,
+  { position = OTHER_POSITIONS.END, specificCode, getCode }
+) => {
+  if (!otherItem) {
+    return
+  }
+
+  if (position === OTHER_POSITIONS.BEGINNING) {
+    items.unshift(otherItem)
+    return
+  }
+
+  if (
+    position === OTHER_POSITIONS.SPECIFIC &&
+    specificCode !== undefined &&
+    specificCode !== null &&
+    specificCode !== ''
+  ) {
+    const index = items.findIndex((item) => {
+      return String(getCode(item)) === String(specificCode)
+    })
+
+    if (index !== -1) {
+      items.splice(index + 1, 0, otherItem)
+      return
+    }
+  }
+
+  items.push(otherItem)
+}
+
+// todo: add input fields for mutliple numerical/texts
 export const OptionQuestionViewMode = ({
-  question: { questionThemeName, qid, gid, attributes, mandatory } = {},
+  question: { questionThemeName, qid, gid, attributes, mandatory, other } = {},
   language,
   _children = [],
   onValueChange = () => {},
@@ -42,7 +83,14 @@ export const OptionQuestionViewMode = ({
 }) => {
   const valueInfo = values?.[0] || {}
   const [selectedIndex, setSelectedIndex] = useState(-1)
-  const { commented_checkbox, slider_layout, slider_separator } = attributes
+  const {
+    commented_checkbox,
+    slider_layout,
+    slider_separator,
+    other_replace_text,
+    other_position,
+    other_position_code,
+  } = attributes || {}
   const isDropdownTheme = useMemo(
     () => dropdownThemeComponents.includes(questionThemeName),
     [questionThemeName]
@@ -109,6 +157,33 @@ export const OptionQuestionViewMode = ({
       [getQuestionTypeInfo().MULTIPLE_NUMERICAL_INPUTS.theme]: ContentEditor,
     }[questionThemeName] || FormCheck
 
+  // "Other" is only supported on choice themes (radio/checkbox/buttons/dropdown/ImageChoice)
+  const hasOther = isTrue(other)
+  const supportsOther = hasOther && UiComponentToRender !== ContentEditor
+
+  const otherLabel = useMemo(() => {
+    const replaceText = getAttributeValue(other_replace_text, language)
+    return replaceText || t('Other')
+  }, [other_replace_text, language])
+
+  const otherPosition = useMemo(() => {
+    const rawPosition = getAttributeValue(other_position)
+    const position = (
+      typeof rawPosition === 'string' ? rawPosition : ''
+    ).toLowerCase()
+
+    if (Object.values(OTHER_POSITIONS).includes(position)) {
+      return position
+    }
+
+    return OTHER_POSITIONS.END
+  }, [other_position])
+
+  const otherPositionCode = useMemo(
+    () => getAttributeValue(other_position_code),
+    [other_position_code]
+  )
+
   const children = useMemo(() => {
     const childrenArray = cloneDeep(_children)
 
@@ -126,6 +201,21 @@ export const OptionQuestionViewMode = ({
         }
       })
 
+      if (supportsOther) {
+        insertOtherByPosition(
+          selectOptions,
+          {
+            label: otherLabel,
+            value: OTHER_CODE,
+          },
+          {
+            position: otherPosition,
+            specificCode: otherPositionCode,
+            getCode: (item) => item.value,
+          }
+        )
+      }
+
       // incase of a dropdown question, we only need one select
       return [{ options: selectOptions }]
     } else {
@@ -137,9 +227,40 @@ export const OptionQuestionViewMode = ({
           isNoAnswer: true,
         })
       }
+
+      if (supportsOther) {
+        insertOtherByPosition(
+          childrenArray,
+          {
+            l10ns: { [language]: { [childrenInfo.titleKey]: otherLabel } },
+            [childrenInfo.idKey]: OTHER_CODE,
+            [childrenInfo.codeKey]: OTHER_CODE,
+            isOther: true,
+          },
+          {
+            position: otherPosition,
+            specificCode: otherPositionCode,
+            getCode: (item) => item?.[childrenInfo.codeKey],
+          }
+        )
+      }
+
       return childrenArray
     }
-  }, [_children])
+  }, [
+    _children,
+    childrenInfo.codeKey,
+    childrenInfo.idKey,
+    childrenInfo.titleKey,
+    isDropdownTheme,
+    isSingleChoiceTheme,
+    language,
+    mandatory,
+    otherLabel,
+    otherPosition,
+    otherPositionCode,
+    supportsOther,
+  ])
 
   const getChildTitle = (l10ns) => {
     const text = L10ns({
@@ -213,9 +334,15 @@ export const OptionQuestionViewMode = ({
   ) {
     return null
   }
+
   return (
     <div className="children-parent">
       {children?.map((child, index) => {
+        const ChildUiComponentToRender =
+          child.isOther && UiComponentToRender === ImageChoice
+            ? FormCheck
+            : UiComponentToRender
+
         const value = isSingleChoiceTheme
           ? childrenValuesInOrder[0]
           : childrenValuesInOrder[index]
@@ -226,14 +353,14 @@ export const OptionQuestionViewMode = ({
             data-testid="child-option"
             key={`view-mode-child-${index}-${child[childrenInfo.idKey]}`}
           >
-            <UiComponentToRender
+            <ChildUiComponentToRender
               value={
-                UiComponentToRender.name === selectName
+                ChildUiComponentToRender.name === selectName
                   ? child.options[selectedIndex]
                   : getChildTitle(child.l10ns)
               }
               defaultValue={
-                UiComponentToRender.name === selectName
+                ChildUiComponentToRender.name === selectName
                   ? child.options[selectedIndex]
                   : getChildTitle(child.l10ns)
               }
@@ -241,7 +368,8 @@ export const OptionQuestionViewMode = ({
               variant="outline-success"
               update={(newValue) => {
                 onValueChange(
-                  isSingleChoiceTheme && UiComponentToRender.name !== selectName
+                  isSingleChoiceTheme &&
+                    ChildUiComponentToRender.name !== selectName
                     ? child[childrenInfo.codeKey]
                     : newValue,
                   value?.key
@@ -283,7 +411,7 @@ export const OptionQuestionViewMode = ({
               }
               groupName={`${gid}X${qid}`}
               active={selectedIndex === index}
-              disabled={UiComponentToRender.name === contentEditorName}
+              disabled={ChildUiComponentToRender.name === contentEditorName}
               isNoAnswer={child.isNoAnswer}
             />
             {shouldShowInput && (
@@ -295,7 +423,7 @@ export const OptionQuestionViewMode = ({
                 placeholder={st('Enter your answer here.')}
                 rows={1}
                 maxLength={Infinity}
-                className={`w-100 d-block ${!participantMode ? 'comment-input' : ''}`}
+                className="w-100 d-block comment-input"
                 dataTestId="multiple-choice-comment-input"
                 type="textarea"
                 update={(newValue) =>
@@ -311,7 +439,7 @@ export const OptionQuestionViewMode = ({
                 value={value?.value}
                 placeholder={st('Enter your answer here.')}
                 maxLength={Infinity}
-                className={`w-100 d-block ${!participantMode ? 'comment-input' : ''}`}
+                className="w-100 d-block comment-input"
                 dataTestId="multiple-choice-comment-input"
                 update={(newValue) => onValueChange(newValue, value?.key)}
               />
@@ -329,6 +457,19 @@ export const OptionQuestionViewMode = ({
                   participantMode={participantMode}
                 />
               </div>
+            )}
+            {child.isOther && (
+              <Input
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+                placeholder={st('Enter your answer here.')}
+                rows={1}
+                maxLength={Infinity}
+                className="w-100 d-block comment-input"
+                dataTestId="other-option-input"
+                type="textarea"
+              />
             )}
           </div>
         )

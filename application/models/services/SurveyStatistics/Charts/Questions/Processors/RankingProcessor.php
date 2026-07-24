@@ -14,8 +14,7 @@ class RankingProcessor extends AbstractQuestionProcessor
         $this->rt();
         $subQuestions = $this->question['subQuestions'];
 
-        // One response column per rank slot; each holds the code of the answer
-        // placed at that rank.
+        // Build the rank column names
         $rankColumns = [];
         foreach ($subQuestions as $subQuestion) {
             $rankColumns[] = substr($this->rt, 1) . '_S' . $subQuestion['qid'];
@@ -25,19 +24,13 @@ class RankingProcessor extends AbstractQuestionProcessor
         $labels = array_column($subQuestions, 'question');
         $items = $this->buildBatchItemsForSubquestions($rankColumns, $codes, $labels);
 
+        // Re-assemble into per-item charts
         $rankCount = count($subQuestions);
-
-        // One combined chart: a single bar per answer option. The bar value is
-        // the total number of responses that ranked the option (summed across
-        // all positions), and the full per-rank breakdown ('ranks') is attached
-        // so the client can show every position's count in a modal/table. The
-        // client sorts highest-to-lowest and labels the bars by their
-        // leaderboard place (1st, 2nd, ...).
-        $legend = [];
-        $dataItems = [];
-        $position = 0;
+        $index = 0;
         foreach ($subQuestions as $subQuestion) {
-            $ranks = [];
+            $index++;
+            $legends = [];
+            $dataItems = [];
             for ($rank = 1; $rank <= $rankCount; $rank++) {
                 $rankCol = $rankColumns[$rank - 1];
                 // count of responses that placed this option at this rank

@@ -34,6 +34,97 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.5 (build 260623) to 7.0.6 (build 260722) July 22, 2026
++New feature #AT-2097: Floating mass action menu (#5108) (Patricia Stell)
+-Fixed issue: only show deactivate survey tooltip for active surveys (ramishenouda)
+-Fixed issue: Rearranged welcome title and description components in SurveyHeader for editor interface; updated placeholder text (ramishenouda)
+-Fixed issue: If a participant opens a 2nd browser window with a different access code the first session gets terminated (Carsten Schmitz)
+-Fixed issue: HTML is rendered as text in the sidebar (ramishenouda)
+-Fixed issue: Fixed formatting in survey header (#5156) (tiborpacalat)
+-Fixed issue: Expression manager script not being interpreted in printable survey (Carsten Schmitz)
+-Fixed issue: Default value taking precedence over set value in new question editor (Carsten Schmitz)
+-Fixed issue: A11y label is not provided for the select2 combobox (#5084) (Anblik Audit Team)
+-Fixed issue: A11y aria improvements regarding hints in global settings (#5080) (Anblik Audit Team)
+-Fixed issue #LE-828: [security] XSS in user activation confirmation endpoint (#5148) (haythem chibani)
+-Fixed issue #LE-826: editing ranking responses in new editor doesn't work (#5141) (haythem chibani)
+-Fixed issue #LE-824: Implemented fix for the group import (#5129) (lajosarpad)
+-Fixed issue #LE-820: Condition designer fixes for rankings (#5122) (Ahmed Abd El-Azeem)
+-Fixed issue #LE-816: ranking question display issue in new editor when subquestions have different lengths (#5103) (haythem chibani)
+-Fixed issue #LE-815: Help text not visible for theme options logo & background selects in new editor (#5101) (haythem chibani)
+-Fixed issue #AT-2185: Bulk actions partially broken on central participants table (#5154) (SaraDimoska)
+-Fixed issue #AT-2176: Question validation tip value is not exported for additional languages when exporting as txt (#5144) (Rami S. Zaki)
+-Fixed issue #AT-2160: Image multiple choice has issues with response viewing and editing (#5130) (Rami S. Zaki)
+-Fixed issue #AT-2112: Create table when user clicks on participants tab and when adding first participants from CPDB (#5153) (SaraDimoska)
+-Fixed issue #AT-2093: Add support for "Other" answer option in question view mode and condition designer in the new survey editor (#5059) (Rami S. Zaki)
+-Fixed issue #AT-2077: Add PreviewButton component to TopBar for survey language preview (#5044) (Rami S. Zaki)
+-Fixed issue #AT-2075: Change naming of survey responses from partial to incomplete (#5045) (Rami S. Zaki)
+-Fixed issue #AT-2010: LS7 added the capability to check items across multiple pages in tables (#5072) (Patricia Stell)
+-Fixed issue #AT-2007: hover, active, and focus-visible states and design adjustments for additional components (AT-1897) (#5058) (Tim Willig)
+-Fixed issue #AT-2006: Component states style update to match with the design (#5040) (Rami S. Zaki)
+-Fixed issue #AT-2000: Enhance layout and styling for RankingAdvancedQuestion components to improve responsiveness and alignment (#5060) (Rami S. Zaki)
+-Fixed issue #20617: Unable to delete subanswers (#5158) (Stefan K)
+-Fixed issue #20606: Response table schema is incorrect when activating a survey after previewing (#5146) (haythem chibani)
+-Fixed issue #20580: "Bootstrap buttons” layout does not display the input field when the built-in “Other” option is selected (#5119) (Tim Willig)
+-Fixed issue #20579: Statistics can't be exported (Carsten Schmitz)
+-Fixed issue #20571: Ranking question does not properly enforce maximum column setting anymore (#5073) (Carsten Schmitz)
+-Fixed issue #20561: Editing the default answers for a multiple-choice question results in a database error (#5076) (Gabriel Jenik)
+-Fixed issue #20556: Statistics filters for multiple choice questions error (#5123) (haythem chibani)
+-Fixed issue #20550: Subquestion conditions do not work in mobile view (#5074) (Gabriel Jenik)
+-Fixed issue #20532: STARTPOLICYLINK and ENDPOLICYLINK return errors in the survey logic view (#5133) (Gabriel Jenik)
+-Fixed issue #20372: Incorrect compatibility set when installing question theme (#4732) (Carsten Schmitz)
+-* Fixed issue #LE-826: editing ranking responses in the new editor doesn't work (haythem chibani)
+#Updated translation: Valencian by c_schmitz, joamuran, vbraque
+#Updated translation: Turkish by bulent, c_schmitz, kayazeren
+#Updated translation: Thai by adzpire, anucha, c_schmitz, tomzt, twilllig
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by c_schmitz, kkd
+#Updated translation: Hungarian (Informal) by c_schmitz, kkd
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch by BloomingPrime, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by acab1312, qualitatuvic
+
+
+Changes from 7.0.4 (build 260620) to 7.0.5 (build 260623) June 22, 2026
+-Fixed issue: navbar hover and focus styles not fitting with light buttons (#5068) (Tim Willig)
+-Fixed issue: A11y correct header semantics in account page (#5066) (Anblik Audit Team)
+-Fixed issue: A11y captions for tables in account page (#5065) (Anblik Audit Team)
+-Fixed issue TB-116: Kcfinder was not initialized for labelsets "Upload resources management" (#5056) (Patricia Stell)
+-Fixed issue #AT-2083: prevent loss of focus for question when creating/editing questions in editor (#5046) (Rami S. Zaki)
+-Fixed issue #20544: Read-only survey user can delete conditions (#5023) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Mongolian by amidral
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: German by c_schmitz
+#Updated translation: Dutch by c_schmitz, Han, L191
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Croatian by rovinj
+
+
+Changes from 7.0.3 (build 260618) to 7.0.4 (build 260620) June 18, 2026
++New feature: Extended integrity check to look for orphaned old_question tables (Carsten Schmitz)
++New feature: Additional check to find orphaned subquestions in integrity check (Carsten Schmitz)
+-Fixed issue: Remove any superflous subquestions on ranking question type before DB migration (Carsten Schmitz)
+-Fixed issue: Ranking subquestions are written as ranking type (Carsten Schmitz)
+-Fixed issue: Extended integrity check to also catch questions that should not have answer options and should not have subquestions (#5064) (Carsten Schmitz)
+
+
+Changes from 7.0.2 (build 260617) to 7.0.3 (build 260618) June 17, 2026
+-Fixed issue AT-2090: [security] SQL injection vulnerability in statistics (Carsten Schmitz)
+-Fixed issue #20565: survey start and expiry date are now displayed and saved correctly (#5061) (Patrick Teichmann)
+#Updated translation: Italian by c_schmitz, drsi.staff, lfanfoni, ritapas, twilllig, Valentina Tessaro
+#Updated translation: Italian (Informal) by c_schmitz, ciampix, lfanfoni, twilllig, Valentina Tessaro
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+
+
 Changes from 7.0.1 (build 260611) to 7.0.2 (build 260617) June 16, 2026
 -Fixed issue: Batch edit and edit for survey menus didn't work correctly (#5049) (Tim Willig)
 -Fixed issue: A11y survey menu tabs improvements (#4990) (Anblik Audit Team)

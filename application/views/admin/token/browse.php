@@ -59,6 +59,7 @@ $aLanguageNames = implode(";", $aLanguageNames);
                 'columns'               => $model->getAttributesForGrid(),
                 'ajaxUpdate'            => 'token-grid',
                 'ajaxType'              => 'POST',
+                'lsSelectAllEnabled'    => true,
                 'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();']
             ]);
             ?>

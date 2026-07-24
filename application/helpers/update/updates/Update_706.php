@@ -125,6 +125,7 @@ class Update_706 extends DatabaseUpdateBase
      */
     private function createUniqueEmailIndex()
     {
+        alterColumn('{{users}}', 'email', "string(192)");
         switch ($this->db->driverName) {
             case 'sqlsrv':
             case 'dblib':

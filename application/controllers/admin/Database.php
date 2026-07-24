@@ -306,15 +306,6 @@ class Database extends SurveyCommonAction
                 $input[$langCode] = $langInput;
             }
         }
-
-        if ($input['expires'] ?? false) {
-            $input['expires'] = getUTCOfDate(($input['expires']));
-        }
-
-        if ($input['startdate'] ?? false) {
-            $input['startdate'] = getUTCOfDate(($input['startdate']));
-        }
-
         $metaData = [];
         try {
             $metaData = $surveyUpdater->update(

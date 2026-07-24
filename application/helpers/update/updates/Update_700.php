@@ -929,6 +929,16 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Removes any existing subquestions of ranking questions before
+     * the ranking answers are converted into subquestions, to avoid duplicates.
+     * @return string
+     */
+    public function deleteRankingSubquestions()
+    {
+        return "DELETE FROM {{questions}} WHERE parent_qid IN (SELECT qid FROM (SELECT qid FROM {{questions}} WHERE type = '" . Question::QT_R_RANKING . "' AND parent_qid = 0) AS rankingquestions)";
+    }
+
+    /**
      * Creating subquestions for ranking instead of its answers
      * @return string
      */
@@ -936,7 +946,7 @@ class Update_700 extends DatabaseUpdateBase
     {
         return "
             INSERT INTO {{questions}}(parent_qid, sid, gid, type, title, question_order, relevance)
-            SELECT q.qid, q.sid, q.gid, '" . Question::QT_T_LONG_FREE_TEXT . "', a.code, a.sortorder, '1'
+            SELECT q.qid, q.sid, q.gid, '" . Question::QT_R_RANKING . "', a.code, a.sortorder, '1'
             FROM {{answers}} a
             JOIN {{questions}} q
             ON a.qid = q.qid and q.type = '" . Question::QT_R_RANKING . "'
@@ -1234,6 +1244,7 @@ class Update_700 extends DatabaseUpdateBase
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
     public function up()
     {
+        $this->db->createCommand($this->deleteRankingSubquestions())->execute();
         $this->db->createCommand($this->insertRankingSubquestions())->execute();
         $this->db->createCommand($this->insertRankingSubquestionsL10ns())->execute();
         $this->doPreparations();

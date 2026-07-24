@@ -2,7 +2,7 @@
 import 'tests/mocks'
 
 import { renderWithProviders } from 'tests/testUtils'
-import QuestionGroup from './QuestionGroup'
+import { QuestionGroup } from './QuestionGroup'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import surveyData from 'helpers/data/survey-detail.json'

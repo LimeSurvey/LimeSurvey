@@ -17,6 +17,7 @@
       font-size: $font-size-sm;
       line-height: $line-height-20;
     }
+
     .btn-check:active + .btn-outline-lime-toggle,
     .btn-check:checked + .btn-outline-lime-toggle,
     .btn-outline-lime-toggle.active,
@@ -73,6 +74,10 @@
         border: none;
         border-radius: 2px;
         border-left: 2px solid $grape;
+      }
+
+      .btn-outline-lime-toggle:hover {
+        background-color: $g-200;
       }
     }
   }
