@@ -3,8 +3,6 @@
 namespace LimeSurvey\Helpers\Update;
 
 use CException;
-use Question;
-use SurveyDynamic;
 use Yii;
 
 class Update_709 extends DatabaseUpdateBase
