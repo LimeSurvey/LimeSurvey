@@ -5,4 +5,9 @@ body {
     display          : flex;
     min-height       : 100vh;
     flex-direction   : column;
+
+    .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove:focus-visible {
+        outline        : 2px solid currentColor;
+        outline-offset : 2px;
+    }
 }

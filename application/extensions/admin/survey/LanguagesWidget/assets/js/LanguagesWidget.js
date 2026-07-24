@@ -23,6 +23,46 @@ $.fn.select2.amd.define(
 
     Utils.Extend(LanguagesWidgetSelectionAdapter, MultipleSelection);
 
+    LanguagesWidgetSelectionAdapter.prototype.selectionContainer = function () {
+      return $(
+        '<li class="select2-selection__choice">' +
+          '<button type="button" class="select2-selection__choice__remove" tabindex="0">' +
+            '<span aria-hidden="true">&times;</span>' +
+          '</button>' +
+          '<span class="select2-selection__choice__display"></span>' +
+        '</li>'
+      );
+    };
+
+    LanguagesWidgetSelectionAdapter.prototype.decorateSelection = function ($selection, selection) {
+      var formatted = this.display(selection, $selection);
+      var rendered = this.$selection.find('.select2-selection__rendered')[0];
+      var selectionIdPrefix = rendered.getAttribute('id') + '-choice-';
+      var selectionId = selectionIdPrefix + Utils.generateChars(4) + '-';
+
+      if (selection.id) {
+        selectionId += selection.id;
+      } else {
+        selectionId += Utils.generateChars(4);
+      }
+
+      var $display = $selection.find('.select2-selection__choice__display');
+      $display.append(formatted)[0].setAttribute('id', selectionId);
+
+      var title = selection.title || selection.text;
+      if (title) {
+        $selection[0].setAttribute('title', title);
+      }
+
+      var remove = $selection.find('.select2-selection__choice__remove')[0];
+      var messages = this.options.get('messages') || {};
+      remove.setAttribute('aria-label', messages.remove || 'Remove');
+      remove.setAttribute('aria-describedby', selectionId);
+      remove.setAttribute('tabindex', '0');
+
+      $selection.data('data', selection);
+    };
+
     LanguagesWidgetSelectionAdapter.prototype.update = function (data) {
       this.clear();
 
@@ -45,12 +85,7 @@ $.fn.select2.amd.define(
         selection.isBaseLanguage = this.baseLanguage && selection.id == this.baseLanguage;
 
         var $selection = this.selectionContainer();
-        var formatted = this.display(selection, $selection);
-
-        $selection.append(formatted);
-        $selection.prop('title', selection.title || selection.text);
-
-        $selection.data('data', selection);
+        this.decorateSelection($selection, selection);
 
         // Add base language options
         if (this.baseLanguageElement) {
@@ -116,6 +151,25 @@ $.fn.select2.amd.define(
             originalEvent: evt,
             data: data
           });
+        }
+      );
+
+      this.$selection.on(
+        'keydown',
+        '.select2-selection__choice__remove',
+        function (evt) {
+          if (self.options.get('disabled')) {
+            return;
+          }
+
+          if (evt.key === 'Enter' || evt.key === ' ' || evt.keyCode === 13 || evt.keyCode === 32) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            $(this).trigger('click');
+            return;
+          }
+
+          evt.stopPropagation();
         }
       );
 
