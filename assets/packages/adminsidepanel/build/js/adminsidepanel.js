@@ -1962,7 +1962,8 @@ class Sidebar {
   /**
    * Change current tab
    */
-  changeCurrentTab(tab) {
+  changeCurrentTab(tab, options) {
+    options = options || {};
     // Normalize tab name - 'structure' is alias for 'questiontree'
     if (tab === 'structure') {
       tab = 'questiontree';
@@ -1972,7 +1973,20 @@ class Sidebar {
       tab = 'settings';
     }
     _StateManager_js__WEBPACK_IMPORTED_MODULE_4__["default"].commit('changeCurrentTab', tab);
-    this.render();
+    const tabs = this.container.querySelectorAll('.sidebar-tab-link');
+    if (tabs.length === 0) {
+      this.render();
+      return;
+    }
+    this.updateSidebarTabA11y();
+    this.renderContent();
+    if (options.focusTab !== false) {
+      const tabSelector = tab === 'settings' ? '#adminsidepanel__sidebar--selectorSettingsButton' : '#adminsidepanel__sidebar--selectorStructureButton';
+      const activeTab = this.container.querySelector(tabSelector);
+      if (activeTab) {
+        activeTab.focus();
+      }
+    }
   }
 
   /**
@@ -2250,10 +2264,10 @@ class Sidebar {
       html += this.renderStateToggle(isCollapsed, currentTab, isRTL);
 
       // Side menu content
-      html += '<div id="sidemenu-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+      html += '<div id="sidemenu-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorSettingsButton" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
 
       // Question explorer content
-      html += '<div id="questionexplorer-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+      html += '<div id="questionexplorer-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorStructureButton" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
 
       // Quick menu (collapsed state)
       html += '<div id="quickmenu-container" style="display: ' + (isCollapsed ? 'block' : 'none') + ';"></div>';
@@ -2288,6 +2302,37 @@ class Sidebar {
 
     // Render sub-components
     this.renderContent();
+    this.updateSidebarTabA11y();
+  }
+
+  /**
+   * Keep exactly one sidebar tab marked selected for assistive technology.
+   */
+  updateSidebarTabA11y() {
+    const currentTab = _StateManager_js__WEBPACK_IMPORTED_MODULE_4__["default"].get('currentTab');
+    const isCollapsed = _StateManager_js__WEBPACK_IMPORTED_MODULE_4__["default"].getComputed('isCollapsed');
+    const tabs = this.container.querySelectorAll('.sidebar-tab-link');
+    tabs.forEach(tab => {
+      const tabName = tab.getAttribute('data-tab');
+      const isSelected = tabName === currentTab;
+      tab.classList.toggle('active', isSelected);
+      tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      tab.tabIndex = isSelected ? 0 : -1;
+    });
+    const sidemenu = document.getElementById('sidemenu-container');
+    const questionexplorer = document.getElementById('questionexplorer-container');
+    if (sidemenu) {
+      const show = !isCollapsed && currentTab === 'settings';
+      sidemenu.style.display = show ? 'block' : 'none';
+      sidemenu.hidden = !show;
+      sidemenu.setAttribute('aria-hidden', show ? 'false' : 'true');
+    }
+    if (questionexplorer) {
+      const show = !isCollapsed && currentTab === 'questiontree';
+      questionexplorer.style.display = show ? 'block' : 'none';
+      questionexplorer.hidden = !show;
+      questionexplorer.setAttribute('aria-hidden', show ? 'false' : 'true');
+    }
   }
 
   /**
@@ -2297,7 +2342,9 @@ class Sidebar {
     let html = '<div class="ls-space col-12">';
     html += '<div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 bottom-0 top-0">';
     if (!isCollapsed) {
-      html += '<div class="ls-flex-item grow-10 col-12">' + '<ul class="nav nav-tabs" id="surveysystem" role="tablist">' + '<li class="nav-item">' + '<a id="adminsidepanel__sidebar--selectorSettingsButton" class="nav-link sidebar-tab-link' + (currentTab === 'settings' ? ' active' : '') + '" href="#settings" data-tab="settings" role="tab">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_6__["default"].translate('settings') + '</a>' + '</li>' + '<li class="nav-item">' + '<a id="adminsidepanel__sidebar--selectorStructureButton" class="nav-link sidebar-tab-link' + (currentTab === 'questiontree' ? ' active' : '') + '" href="#structure" data-tab="questiontree" role="tab">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_6__["default"].translate('structure') + '</a>' + '</li>' + '</ul>' + '</div>';
+      const settingsSelected = currentTab === 'settings';
+      const structureSelected = currentTab === 'questiontree';
+      html += '<div class="ls-flex-item grow-10 col-12">' + '<ul class="nav nav-tabs" id="adminsidepanel-sidebar-tablist" role="tablist">' + '<li class="nav-item">' + '<a id="adminsidepanel__sidebar--selectorSettingsButton" class="nav-link sidebar-tab-link' + (settingsSelected ? ' active' : '') + '" href="#settings" data-tab="settings" role="tab" aria-controls="sidemenu-container" aria-selected="' + (settingsSelected ? 'true' : 'false') + '" tabindex="' + (settingsSelected ? '0' : '-1') + '">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_6__["default"].translate('settings') + '</a>' + '</li>' + '<li class="nav-item">' + '<a id="adminsidepanel__sidebar--selectorStructureButton" class="nav-link sidebar-tab-link' + (structureSelected ? ' active' : '') + '" href="#structure" data-tab="questiontree" role="tab" aria-controls="questionexplorer-container" aria-selected="' + (structureSelected ? 'true' : 'false') + '" tabindex="' + (structureSelected ? '0' : '-1') + '">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_6__["default"].translate('structure') + '</a>' + '</li>' + '</ul>' + '</div>';
     } else {
       const arrowClass = isRTL ? 'ri-arrow-left-s-line' : 'ri-arrow-right-s-line';
       html += '<button class="btn btn-outline-secondary ls-space padding left-15 right-15 expand-sidebar-btn">' + '<i class="' + arrowClass + '"></i>' + '</button>';
@@ -2336,7 +2383,39 @@ class Sidebar {
     $(this.container).off('click', '.sidebar-tab-link').on('click', '.sidebar-tab-link', e => {
       e.preventDefault();
       const tab = $(e.currentTarget).data('tab');
-      this.changeCurrentTab(tab);
+      this.changeCurrentTab(tab, { focusTab: true });
+    });
+
+    $(this.container).off('keydown', '.sidebar-tab-link').on('keydown', '.sidebar-tab-link', e => {
+      const key = e.key;
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].indexOf(key) === -1) {
+        return;
+      }
+
+      const $tabs = $(this.container).find('.sidebar-tab-link');
+      if ($tabs.length < 2) {
+        return;
+      }
+
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      const currentIndex = $tabs.index(e.currentTarget);
+      let nextIndex = currentIndex;
+
+      if (key === 'ArrowLeft' || key === 'ArrowUp') {
+        nextIndex = (currentIndex - 1 + $tabs.length) % $tabs.length;
+      } else if (key === 'ArrowRight' || key === 'ArrowDown') {
+        nextIndex = (currentIndex + 1) % $tabs.length;
+      } else if (key === 'Home') {
+        nextIndex = 0;
+      } else if (key === 'End') {
+        nextIndex = $tabs.length - 1;
+      }
+
+      if (nextIndex !== currentIndex) {
+        this.changeCurrentTab($tabs.eq(nextIndex).data('tab'), { focusTab: true });
+      }
     });
 
     // Expand button (collapsed state)
