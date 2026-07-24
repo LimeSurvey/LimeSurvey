@@ -681,6 +681,21 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getStandardColsForGrid()
     {
+        return self::buildStandardColsForGrid(self::$sid, $this);
+    }
+
+    /**
+     * Builds the standard (core) grid columns for a survey participant table.
+     *
+     * Static so it works for both the populated grid and the empty grid that is
+     * shown before the participant table exists.
+     *
+     * @param int $iSurveyId
+     * @param LSActiveRecord $labeler
+     * @return array
+     */
+    public static function buildStandardColsForGrid($iSurveyId, $labeler)
+    {
         return [
             [
                 'id'                => 'tid',
@@ -698,21 +713,21 @@ class TokenDynamic extends LSActiveRecord
                 'htmlOptions'       => ['class' => ' text-end'],
             ],
             [
-                'header'            => gT('First name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'firstname'),
+                'header'            => gT('First name') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'firstname'),
                 'name'              => 'firstname',
                 'value'             => '$data->firstname',
                 'headerHtmlOptions' => ['class' => ''],
                 'htmlOptions'       => ['class' => ' name'],
             ],
             [
-                'header'            => gT('Last name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'lastname'),
+                'header'            => gT('Last name') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'lastname'),
                 'name'              => 'lastname',
                 'value'             => '$data->lastname',
                 'headerHtmlOptions' => ['class' => ''],
                 'htmlOptions'       => ['class' => ' name'],
             ],
             [
-                'header'            => gT('Email address') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'email'),
+                'header'            => gT('Email address') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'email'),
                 'name'              => 'email',
                 'type'              => 'raw',
                 'value'             => '$data->emailFormated',
@@ -720,7 +735,7 @@ class TokenDynamic extends LSActiveRecord
                 'htmlOptions'       => ['class' => ' name'],
             ],
             [
-                'header'            => gT('Email status') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'emailstatus'),
+                'header'            => gT('Email status') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'emailstatus'),
                 'name'              => 'emailstatus',
                 'value'             => '$data->emailstatusFormated',
                 'type'              => 'raw',
@@ -803,9 +818,24 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getAttributesForGrid()
     {
+        return self::buildAttributesForGrid(self::$sid, $this);
+    }
+
+    /**
+     * Builds the full grid column set (standard + custom attributes + action column) for a survey.
+     *
+     * Extracted as static so it can be reused for the empty-state grid rendered before the
+     * participant table exists. $labeler is any LSActiveRecord used only for encryption labels.
+     *
+     * @param int $iSurveyId
+     * @param LSActiveRecord $labeler
+     * @return array
+     */
+    public static function buildAttributesForGrid($iSurveyId, $labeler)
+    {
         $aCustomAttributesCols = array();
 
-        $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
+        $oSurvey = Survey::model()->findByAttributes(array("sid" => $iSurveyId));
         $aCustomAttributes = $oSurvey->tokenAttributes;
 
         // Custom attributes
@@ -820,7 +850,7 @@ class TokenDynamic extends LSActiveRecord
             }
 
             $aCustomAttributesCols[] = array(
-                'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
+                'header' => $desc . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
                 'type' => $type,
                 'value' => $value,
@@ -841,7 +871,7 @@ class TokenDynamic extends LSActiveRecord
             ]
         ];
 
-        return array_merge($this->getStandardColsForGrid(), $aCustomAttributesCols, $actionColumn);
+        return array_merge(self::buildStandardColsForGrid($iSurveyId, $labeler), $aCustomAttributesCols, $actionColumn);
     }
 
     /**
