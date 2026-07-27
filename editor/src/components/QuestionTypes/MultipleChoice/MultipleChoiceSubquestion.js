@@ -147,6 +147,7 @@ export const MultipleChoiceSubquestion = ({
               value={value}
               update={(value) => handleUpdateSubquestion(value, index)}
               onKeyDown={onKeyDown}
+              showToolbar={true}
             />
           )}
         </div>

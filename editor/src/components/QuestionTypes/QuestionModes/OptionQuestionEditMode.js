@@ -169,6 +169,7 @@ export const OptionQuestionEditMode = ({
                         !questionHasTempId &&
                         !isTitleFocused
                       }
+                      showToolbar={true}
                     />
                   </div>
                 </div>
