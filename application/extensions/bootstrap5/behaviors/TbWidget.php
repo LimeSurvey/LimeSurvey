@@ -1,5 +1,4 @@
 <?php
-
 /**
  * TbWidget class file.
  * @author Christoffer Niska <christoffer.niska@gmail.com>
@@ -14,7 +13,9 @@
  */
 class TbWidget extends CBehavior
 {
-    private $_api;
+    /** @var int Static counter for generating unique script IDs. */
+    public static $counter = 0;
+
     private $_assetsUrl;
     private $_clientScript;
 
@@ -107,48 +108,38 @@ class TbWidget extends CBehavior
     }
 
     /**
-     * Registers the given plugin with the API.
+     * Registers the given plugin with the client script.
      * @param string $name the plugin name.
      * @param string $selector the CSS selector.
      * @param array $options the JavaScript options for the plugin.
      * @param int $position the position of the JavaScript code.
-     * @return boolean whether the plugin was registered.
      */
     public function registerPlugin($name, $selector, $options = array(), $position = CClientScript::POS_END)
     {
-        if (($api = $this->getApi()) !== null) {
-            $api->registerPlugin($name, $selector, $options, $position);
-            return true;
-        }
-        return false;
+        $options = !empty($options) ? CJavaScript::encode($options) : '';
+        $script = "jQuery('{$selector}').{$name}({$options});";
+        $id = __CLASS__ . '#Plugin' . self::$counter++;
+        Yii::app()->clientScript->registerScript($id, $script, $position);
     }
 
     /**
-     * Registers plugin events with the API.
+     * Registers plugin events with the client script.
      * @param string $selector the CSS selector.
      * @param string[] $events the JavaScript event configuration (name=>handler).
      * @param int $position the position of the JavaScript code.
-     * @return boolean whether the events were registered.
      */
     public function registerEvents($selector, $events, $position = CClientScript::POS_END)
     {
-        if (($api = $this->getApi()) !== null) {
-            $api->registerEvents($selector, $events, $position);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Returns the API instance.
-     * @return TbApi the api.
-     */
-    protected function getApi()
-    {
-        if (isset($this->_api)) {
-            return $this->_api;
-        } else {
-            return $this->_api = Yii::app()->getComponent('bootstrap');
+        if (!empty($events)) {
+            $script = '';
+            foreach ($events as $name => $handler) {
+                if (!$handler instanceof CJavaScriptExpression) {
+                    $handler = new CJavaScriptExpression($handler);
+                }
+                $script .= "jQuery('{$selector}').on('{$name}', {$handler});";
+            }
+            $id = __CLASS__ . '#Events' . self::$counter++;
+            Yii::app()->clientScript->registerScript($id, $script, $position);
         }
     }
 

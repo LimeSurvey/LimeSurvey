@@ -43,11 +43,15 @@ class QuestionGroupsAdministrationController extends LSBaseController
     }
 
     /**
-     * This part comes from renderWrappedTemplate
-     *
-     * @param string $view
-     * @return bool
-     */
+         * Prepare controller data and client assets before rendering a view.
+         *
+         * Ensures top-bar defaults, loads the survey model and configures the expression
+         * manager when a survey id is present, sets the question editor layout, and
+         * registers editor-related client script packages only for non-AJAX requests.
+         *
+         * @param string $view The view name to be rendered.
+         * @return bool `true` if rendering should proceed, `false` otherwise.
+         */
     protected function beforeRender($view)
     {
         // Set topbar type if not already set

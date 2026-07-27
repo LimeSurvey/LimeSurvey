@@ -39,7 +39,7 @@ class EditorConfig
                     $survey = \Survey::model()->findByPk($surveyId);
                     if (
                         $survey
-                        && $survey->getTemplateEffectiveName() === 'fruity_twentythree'
+                        && \Template::isBasedOn($survey->getTemplateEffectiveName(), 'fruity_twentythree')
                     ) {
                         $result = true;
                     }

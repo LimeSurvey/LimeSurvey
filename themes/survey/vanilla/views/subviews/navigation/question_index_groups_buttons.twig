@@ -9,14 +9,14 @@
   </div>
   {% for step, indexItem in aSurveyInfo.aQuestionIndex.items %}
     {% set templateClass = ''  %}
-    {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
+    {% if indexItem.stepStatus['index-item-unanswered'] is defined and indexItem.stepStatus['index-item-unanswered'] == true  %}
         {% set templateClass = templateClass ~ ' list-group-item-warning'  %}
     {% endif %}
-    {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true   %}
+    {% if indexItem.stepStatus['index-item-error'] is defined and indexItem.stepStatus['index-item-error'] == true   %}
         {% set templateClass = templateClass ~ ' list-group-item-danger'  %}
     {% endif %}
-    {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
-        {% set templateClass = statusClass ~  ' disabled'  %}
+    {% if indexItem.stepStatus['index-item-current'] is defined and indexItem.stepStatus['index-item-current'] == true %}
+        {% set templateClass = templateClass ~  ' disabled'  %}
     {% endif %}
     <button type="submit" name="move" value="{{ indexItem.step }}" class="list-group-item {{ indexItem.coreClass }} {{ templateClass }}" >{{ indexItem.text }}</button>
   {% endfor %}

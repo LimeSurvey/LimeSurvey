@@ -1,5 +1,8 @@
 <?php
 
+use LimeSurvey\DI;
+use LimeSurvey\Models\Services\SurveyThemeConfiguration;
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2026 The LimeSurvey Project Team
@@ -315,6 +318,10 @@ class SurveysGroupsController extends SurveyCommonAction
         asort($aData['users']);
 
         $aData['oSurvey'] = $oSurvey;
+
+        // Prepare theme configuration data for the view
+        $themeService = DI::getContainer()->get(SurveyThemeConfiguration::class);
+        $aData = array_merge($aData, $themeService->getThemeViewData($oSurvey->template, $oSurvey->oOptions ?? null));
 
         if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
             $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#" => 'surveygroups')));

@@ -702,7 +702,7 @@ class LimeMailer extends PHPMailer
     {
         if (
             'smtp' === $this->Mailer
-            || ('mail' === $this->Mailer && (\PHP_VERSION_ID >= 80000 || stripos(PHP_OS, 'WIN') === 0))
+            || ('mail' === $this->Mailer && stripos(PHP_OS, 'WIN') === 0)
         ) {
             //SMTP mandates RFC-compliant line endings
             //and it's also used with mail() on Windows
@@ -710,16 +710,6 @@ class LimeMailer extends PHPMailer
         } else {
             //Maintain backward compatibility with legacy Linux command line mailers
             static::setLE(PHP_EOL);
-        }
-        //Check for buggy PHP versions that add a header with an incorrect line break
-        if (
-            'mail' === $this->Mailer
-            && ((\PHP_VERSION_ID >= 70000 && \PHP_VERSION_ID < 70017)
-                || (\PHP_VERSION_ID >= 70100 && \PHP_VERSION_ID < 70103))
-            && ini_get('mail.add_x_header') === '1'
-            && stripos(PHP_OS, 'WIN') === 0
-        ) {
-            trigger_error($this->lang('buggy_php'), E_USER_WARNING);
         }
 
         try {
@@ -866,22 +856,47 @@ class LimeMailer extends PHPMailer
                 $aTokenReplacements[strtoupper((string) $attribute)] = $value;
             }
         }
-        /* Set the minimal url and add it to Placeholders */
-        $aTokenReplacements["OPTOUTURL"] = App()->getController()
-            ->createAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        /* Set the minimal url and add it to Placeholders - use validated URLs to prevent host header injection */
+        $aTokenReplacements["OPTOUTURL"] = App()
+            ->createValidatedAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["OPTOUTURL"] === false) {
+            $aTokenReplacements["OPTOUTURL"] = App()->getController()
+                ->createAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("OPTOUT");
-        $aTokenReplacements["GLOBALOPTOUTURL"] = App()->getController()
-            ->createAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $aTokenReplacements["GLOBALOPTOUTURL"] = App()
+            ->createValidatedAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["GLOBALOPTOUTURL"] === false) {
+            $aTokenReplacements["GLOBALOPTOUTURL"] = App()->getController()
+                ->createAbsoluteUrl("/optout/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("GLOBALOPTOUT");
-        $aTokenReplacements["OPTINURL"] = App()->getController()
-            ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $aTokenReplacements["OPTINURL"] = App()
+            ->createValidatedAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["OPTINURL"] === false) {
+            $aTokenReplacements["OPTINURL"] = App()->getController()
+                ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("OPTIN");
-        $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
-            ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        $aTokenReplacements["GLOBALOPTINURL"] = App()
+            ->createValidatedAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        if ($aTokenReplacements["GLOBALOPTINURL"] === false) {
+            $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
+                ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
+        }
         $this->addUrlsPlaceholders("GLOBALOPTINURL");
         $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
+        // Validate the survey URL host against allowed hosts to prevent host header injection
+        $parsedSurveyUrl = parse_url($aTokenReplacements["SURVEYURL"]);
+        if (isset($parsedSurveyUrl['host']) && !App()->isHostAllowed($parsedSurveyUrl['host'])) {
+            $aTokenReplacements["SURVEYURL"] = '';
+        }
         $this->addUrlsPlaceholders("SURVEY");
         $aTokenReplacements["SURVEYIDURL"] = $survey->getSurveyUrl($language, ["token" => $token], false);
+        $parsedSurveyIdUrl = parse_url($aTokenReplacements["SURVEYIDURL"]);
+        if (isset($parsedSurveyIdUrl['host']) && !App()->isHostAllowed($parsedSurveyIdUrl['host'])) {
+            $aTokenReplacements["SURVEYIDURL"] = '';
+        }
         $this->addUrlsPlaceholders("SURVEYID");
         return $aTokenReplacements;
     }

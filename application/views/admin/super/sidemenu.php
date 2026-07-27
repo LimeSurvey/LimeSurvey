@@ -30,10 +30,10 @@ if (
     $updateOrderLink =  $this->createUrl("/questionGroupsAdministration/updateOrder/", ["surveyid" =>  $surveyid]);
 
     $createPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create');
-if ($activated || !$createPermission) {
-    $createQuestionGroupLink = "";
-    $createQuestionLink = "";
-}
+    if ($activated || !$createPermission) {
+        $createQuestionGroupLink = "";
+        $createQuestionLink = "";
+    }
 
     $landOnSideMenuTab = ($sidemenu['landOnSideMenuTab'] ?? 'structure');
 
@@ -58,12 +58,12 @@ if ($activated || !$createPermission) {
             createQuestionLink: "' . $createQuestionLink . '",
             gid: ' . ($gid ?? 'null') . ',
             options: [],
-            surveyid: ' . $surveyid . ',
-            isActive: ' . (Survey::model()->findByPk($surveyid)->isActive ? "true" : "false") . ',
-            basemenus: ' . json_encode($menuObjectArray) . ',
-            updateOrderLink: "' . $updateOrderLink . '",
-            unlockLockOrganizerUrl: "' . $unlockLockOrganizerUrl . '",
-            allowOrganizer: ' . (SettingsUser::getUserSettingValue('lock_organizer') ? '1' : '0') . ',
+            surveyid: '.$surveyid.',
+            isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
+            basemenus: '.json_encode($menuObjectArray).',
+            updateOrderLink: "'.$updateOrderLink.'",
+            unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
+            allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '0' : '1').',
             translate: '
             . json_encode(
                 [
@@ -74,6 +74,11 @@ if ($activated || !$createPermission) {
                     "lockOrganizerTitle" => gT("Lock question organizer"),
                     "unlockOrganizerTitle" => gT("Unlock question organizer"),
                     "collapseAll" => gT("Collapse all question groups"),
+                    "collapseGroup" => gT("Collapse group"),
+                    "expandGroup" => gT("Expand group"),
+                    "surveyLogicFile" => gT("Survey logic overview"),
+                    "pageActionsMenu" => gT("Page actions menu"),
+                    "questionActionsMenu" => gT("Question actions menu"),
                 ]
             )
         . '};',

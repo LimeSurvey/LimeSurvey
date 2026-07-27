@@ -234,7 +234,7 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
         'id' => $fieldname . "_popupctrlena",
     ), '')
     . CHtml::tag('span', array(
-        'class' => "sr-only",
+        'class' => "visually-hidden",
     ), gT("Start HTML editor in a popup window"))
     . CHtml::tag('i', array(
         'class' => "ri-pencil-fill btneditanswerdis",

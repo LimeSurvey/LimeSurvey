@@ -9,6 +9,7 @@ use ls\tests\TestBaseClass;
  *
  * @since 2019-05-23
  * @group emcache
+ * @group debugoff
  */
 class EmCacheHelperTest extends TestBaseClass
 {
@@ -30,8 +31,7 @@ class EmCacheHelperTest extends TestBaseClass
         }
 
         if (!\EmCacheHelper::useCache()) {
-            echo 'emcache is not set to use';
-            exit(1);
+            self::fail('emcache is not available (debug mode is on)');
         }
 
     }

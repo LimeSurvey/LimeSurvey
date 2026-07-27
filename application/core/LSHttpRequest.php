@@ -298,19 +298,19 @@ class LSHttpRequest extends CHttpRequest
     }
 
     /**
-     * Check if an url are in allowed host (if exist)
-     * @var string $hostInfo
-     * @throw Exception
+     * Check if a URL's host is in the allowed hosts list.
+     * Delegates to App()->isHostAllowed() which is lenient when
+     * allowed_hosts.php does not exist yet, and strict once configured.
+     *
+     * @param string $hostInfo The URL or host info to validate.
+     * @throws CHttpException if the host is not allowed.
      * @return void
      */
     public static function checkIsAllowedHost($hostInfo)
     {
-        $allowedHosts = App()->getConfig('allowedHosts');
-        if (!empty($allowedHosts) && is_array($allowedHosts)) {
-            $host = parse_url($hostInfo, PHP_URL_HOST);
-            if ($host && !in_array($host, $allowedHosts)) {
-                 throw new CHttpException(400, gT("The requested hostname is invalid.", 'unescaped'));
-            }
+        $host = parse_url($hostInfo, PHP_URL_HOST);
+        if ($host && !App()->isHostAllowed($host)) {
+            throw new CHttpException(400, gT("The requested hostname is invalid.", 'unescaped'));
         }
     }
 }

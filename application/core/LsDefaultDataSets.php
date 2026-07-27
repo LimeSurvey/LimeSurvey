@@ -2098,7 +2098,7 @@ class LsDefaultDataSets
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/yesnouncertain",
                 "image_path" => "/assets/images/screenshots/C.png",
-                "title" => "Array (Yes/No/Uncertain)",
+                "title" => "Array (Yes/Uncertain/No)",
                 "creation_date" => "2018-09-08 00:00:00",
                 "author" => "LimeSurvey GmbH",
                 "author_email" => "info@limesurvey.org",
@@ -2107,7 +2107,7 @@ class LsDefaultDataSets
                 "license" => "GNU General Public License version 2 or later",
                 "version" => "1.0",
                 "api_version" => "1",
-                "description" => "Array (Yes/No/Uncertain) question type configuration",
+                "description" => "Array (Yes/Uncertain/No) question type configuration",
                 "last_update" => "2019-09-23 15:05:59",
                 "owner_id" => 1,
                 "theme_type" => "question_theme",
@@ -2523,7 +2523,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "",
                 "group" => "Mask questions",
-                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
+                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
             ),
             array(
                 "name" => "shortfreetext",
@@ -2763,7 +2763,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "R",
                 "group" => "Mask questions",
-                "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
+                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
             ),
         ];
 

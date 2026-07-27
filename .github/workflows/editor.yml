@@ -18,7 +18,7 @@ jobs:
     name: Install dependencies
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       # https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows
       - name: Attempt to restore the cache
         uses: actions/cache@v4
@@ -51,7 +51,7 @@ jobs:
     needs: Install-dependencies
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Attempt to restore the cache
         uses: actions/cache@v4
         id: cache
@@ -74,7 +74,7 @@ jobs:
     needs: Install-dependencies
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Attempt to restore the cache
         uses: actions/cache@v4
@@ -99,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Attempt to restore the cache
         uses: actions/cache@v4
         id: cache

@@ -48,7 +48,7 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
                                     'With the LimeSurvey Editor, you can create surveys in a squeeze of lime, combining intuitive design with powerful features for a faster, smarter survey-building experience.'
                                 ) ?>
                                     <br><br>
-                                    <?= printf(gT('%sDiscover now%s what the new editor can do!'), '<a class="link-info" href="https://www.limesurvey.org" target="_blank">', '</a>'); ?>
+                                    <?php printf(gT('%sDiscover now%s what the new editor can do!'), '<a class="link-info" href="https://www.limesurvey.org" target="_blank">', '</a>'); ?>
                                 </p>
                                 <div class="row mb-16">
                                     <label class="label-s mb-1" for='editor-switch-btn'><?php eT("Editor version"); ?></label>

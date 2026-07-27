@@ -6,6 +6,7 @@ use LimeSurvey\Api\Command\V1\{
     SurveyPatch,
     SurveyTemplate,
     SurveyArchive,
+    SurveyLogic,
     SurveyQuestionsFieldname
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
@@ -15,6 +16,7 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactorySurveyPatch,
     SchemaFactorySurveyTemplate,
     SchemaFactorySurveyArchive,
+    SchemaFactorySurveyLogic,
     SchemaFactorySurveyQuestionsFieldname
 };
 
@@ -159,6 +161,39 @@ $rest['v1/survey-archives/$id'] = [
                 'description' => 'Success',
                 'content' => null,
                 'schema' => (new SchemaFactorySurveyArchive())->make()
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ]
+];
+
+$rest['v1/survey-logic/$id'] = [
+    'GET' => [
+        'tag' => 'survey',
+        'description' => 'Survey logic overview',
+        'commandClass' => SurveyLogic::class,
+        'auth' => true,
+        'params' => [
+            'gid' => ['type' => 'integer'],
+            'qid' => ['type' => 'integer'],
+            'lang' => ['type' => 'string'],
+            'assessments' => ['type' => 'string'],
+        ],
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => (new SchemaFactorySurveyLogic())->make()
+            ],
+            'forbidden' => [
+                'code' => 403,
+                'description' => 'Forbidden',
+                'schema' => $errorSchema
             ],
             'not-found' => [
                 'code' => 404,

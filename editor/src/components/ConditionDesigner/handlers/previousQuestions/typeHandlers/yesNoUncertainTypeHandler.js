@@ -12,8 +12,8 @@ export const yesNoUncertainTypeHandler = (
   })
   const choices = [
     { value: 'Y', labelKey: t('Yes') },
-    { value: 'N', labelKey: t('No') },
     { value: 'U', labelKey: t('Uncertain') },
+    { value: 'N', labelKey: t('No') },
   ]
 
   createQuestion(cQuestions, question, null, fieldname, language)

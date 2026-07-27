@@ -43,10 +43,6 @@ final class Php83
     /** @return string|false */
     public static function mb_str_pad(string $string, int $length, string $pad_string = ' ', int $pad_type = \STR_PAD_RIGHT, ?string $encoding = null)
     {
-        if (!\in_array($pad_type, [\STR_PAD_RIGHT, \STR_PAD_LEFT, \STR_PAD_BOTH], true)) {
-            throw new \ValueError('mb_str_pad(): Argument #4 ($pad_type) must be STR_PAD_LEFT, STR_PAD_RIGHT, or STR_PAD_BOTH');
-        }
-
         if (null === $encoding) {
             $encoding = mb_internal_encoding();
         }
@@ -60,8 +56,12 @@ final class Php83
             $errorToTrigger = \sprintf('mb_str_pad(): Argument #5 ($encoding) must be a valid encoding, "%s" given', $encoding);
         }
 
-        if (mb_strlen($pad_string, $encoding) <= 0) {
+        if (null === $errorToTrigger && mb_strlen($pad_string, $encoding) <= 0) {
             $errorToTrigger = 'mb_str_pad(): Argument #3 ($pad_string) must be a non-empty string';
+        }
+
+        if (null === $errorToTrigger && !\in_array($pad_type, [\STR_PAD_RIGHT, \STR_PAD_LEFT, \STR_PAD_BOTH], true)) {
+            $errorToTrigger = 'mb_str_pad(): Argument #4 ($pad_type) must be STR_PAD_LEFT, STR_PAD_RIGHT, or STR_PAD_BOTH';
         }
 
         if (null !== $errorToTrigger) {
@@ -103,34 +103,33 @@ final class Php83
             throw new \ValueError('str_increment(): Argument #1 ($string) must be composed only of alphanumeric ASCII characters');
         }
 
-        if (is_numeric($string)) {
-            $offset = stripos($string, 'e');
-            if (false !== $offset) {
-                $char = $string[$offset];
-                ++$char;
-                $string[$offset] = $char;
-                ++$string;
+        for ($i = \strlen($string) - 1; $i >= 0; --$i) {
+            $char = $string[$i];
 
-                switch ($string[$offset]) {
-                    case 'f':
-                        $string[$offset] = 'e';
-                        break;
-                    case 'F':
-                        $string[$offset] = 'E';
-                        break;
-                    case 'g':
-                        $string[$offset] = 'f';
-                        break;
-                    case 'G':
-                        $string[$offset] = 'F';
-                        break;
-                }
-
-                return $string;
+            if ('z' === $char) {
+                $string[$i] = 'a';
+                continue;
             }
+            if ('Z' === $char) {
+                $string[$i] = 'A';
+                continue;
+            }
+            if ('9' === $char) {
+                $string[$i] = '0';
+                continue;
+            }
+
+            $string[$i] = \chr(\ord($char) + 1);
+
+            return $string;
         }
 
-        return ++$string;
+        switch ($string[0]) {
+            case 'a': return 'a'.$string;
+            case 'A': return 'A'.$string;
+        }
+
+        return '1'.$string;
     }
 
     public static function str_decrement(string $string): string

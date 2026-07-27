@@ -51,7 +51,7 @@ class TemplateConfig extends CActiveRecord
 
     /**
      * @var TemplateConfiguration $oMotherTemplate The mother template object
-     * This is used when a template inherit another one.
+     * This is used when a template extends another one.
      */
     public $oMotherTemplate;
 

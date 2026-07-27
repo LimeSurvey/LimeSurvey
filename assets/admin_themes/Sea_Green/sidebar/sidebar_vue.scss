@@ -219,5 +219,10 @@
             font-size : 24px;
             color: $g-700;
         }
+
+        &.btn:hover, &.btn:active, &.btn.show, &.btn:focus-visible, &.btn:focus {
+            box-shadow    : none !important;
+            @include state-border(1px, $grape75);
+        }
     }
 }

@@ -10,16 +10,16 @@ echo viewHelper::getViewTestTag('configurePlugin');
 <div class="plugin--configure">
     <div class="row">
         <div class="col-12">
-            <ul class="nav nav-tabs" id="settingTabs">
+            <ul class="nav nav-tabs" id="settingTabs" role="tablist" aria-label="<?php eT('Plugin configuration tabs'); ?>">
                 <li role="presentation" class="nav-item">
-                    <a class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a>
+                    <a id="overview-tab" class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview' aria-selected="true" aria-controls="overview" tabindex="0"><?php eT("Overview"); ?></a>
                 </li>
-                <li role="presentation">
-                    <a class="nav-link" role="tab" data-bs-toggle="tab" href='#settings'><?php eT("Settings"); ?></a>
+                <li role="presentation" class="nav-item">
+                    <a id="settings-tab" class="nav-link" role="tab" data-bs-toggle="tab" href='#settings' aria-selected="false" aria-controls="settings" tabindex="-1"><?php eT("Settings"); ?></a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="overview" class="tab-pane show active">
+                <div id="overview" class="tab-pane show active" role="tabpanel" aria-labelledby="overview-tab">
                     <?php $this->renderPartial(
                         './pluginmanager/overview',
                         [
@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('configurePlugin');
                     ); ?>
                 </div>
 
-                <div id="settings" class="tab-pane">
+                <div id="settings" class="tab-pane" role="tabpanel" aria-labelledby="settings-tab">
                     <?php if ($settings) :
                         $this->widget(
                             'ext.SettingsWidget.SettingsWidget',
@@ -56,3 +56,4 @@ echo viewHelper::getViewTestTag('configurePlugin');
         </div>
     </div>
 </div>
+

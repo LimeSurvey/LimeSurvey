@@ -27,8 +27,7 @@ if (ENVIRONEMENT === 'production') {
     plugins = [
         replace({
             ENVENVIRONEMENT:ENVIRONEMENT,
-            'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
-            'process.env.VUE_ENV': JSON.stringify('browser')
+            'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT)
         }),
         nodeResolve(),
         commonjs(),
@@ -54,8 +53,7 @@ if (ENVIRONEMENT === 'production') {
     plugins = [
         replace({
             ENVENVIRONEMENT: ENVIRONEMENT,
-            'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
-            'process.env.VUE_ENV': JSON.stringify('browser')
+            'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT)
         }),
         nodeResolve(),
         commonjs(),

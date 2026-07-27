@@ -147,6 +147,7 @@ export const SurveyFooter = ({
                       style={{ marginLeft: '-4px' }}
                       noPermissionDisabled={true}
                       showToolTip={false}
+                      showToolbar={true}
                       testId="survey-footer-end-text-content-editor"
                     />
                   </h6>

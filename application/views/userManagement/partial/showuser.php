@@ -7,6 +7,7 @@ Yii::app()->getController()->renderPartial(
 
 <div class="modal-body">
     <table class="table table-striped">
+        <caption class="visually-hidden"><?=gT('User details')?></caption>
         <tr>
             <td><?=gT('User groups:')?></td>
             <td><?=CHTml::encode(join(', ', $usergroups))?></td>

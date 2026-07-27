@@ -51,6 +51,7 @@
                     'model'         => $oQuota,
                     'attribute'     => 'active',
                     'checkedOption' => $oQuota->active,
+                    'ariaLabel'     => $oQuota->getAttributeLabel('active'),
                     'selectOptions' => [
                         '1' => gT('Yes'),
                         '0' => gT('No'),
@@ -67,6 +68,7 @@
                     'model'         => $oQuota,
                     'attribute'     => 'autoload_url',
                     'checkedOption' => $oQuota->autoload_url,
+                    'ariaLabel'     => $oQuota->getAttributeLabel('autoload_url'),
                     'selectOptions' => [
                         '1' => gT('Yes'),
                         '0' => gT('No'),

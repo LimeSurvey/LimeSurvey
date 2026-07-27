@@ -161,6 +161,9 @@ var PrepEmailTemplates = function(){
                 window.KCFinder.target = target;
                 window.KCFinder.callBack = kcFinderCallback;
                 $('#kc-modal-open').find('iframe').attr('src', uri);
+                window.setTimeout(function () {
+                    modalElement.focus();
+                }, 50);
             }, {once: true});
             modalElement.addEventListener('hidden.bs.modal', function () {
                 $(this).find('iframe').attr('src', 'about:blank');

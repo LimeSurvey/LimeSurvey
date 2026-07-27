@@ -1,5 +1,5 @@
 <!-- Add new token entry" -->
-<ul class="dropdown-menu" role="menu" aria-label="<?php echo CHtml::encode(gT('Add participants')); ?>">
+<ul class="dropdown-menu" role="menu" aria-label="<?php echo gT('Add participants'); ?>">
     <?php if ($hasTokensCreatePermission) : ?>
         <li role="none">
             <a class="pjax dropdown-item" role="menuitem" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/addnew/surveyid/$oSurvey->sid"); ?>" >

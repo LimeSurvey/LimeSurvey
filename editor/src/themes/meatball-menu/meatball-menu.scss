@@ -1,10 +1,11 @@
 .meatball-menu {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   border-radius: 2px;
-  height: 92px;
+  min-height: 92px;
   width: 172px;
 
   gap: 12px;
+  padding-block: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;

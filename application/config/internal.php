@@ -103,7 +103,6 @@ $internalConfig = array(
         'yiistrap_fork.widgets.*',
         'yiistrap_fork.helpers.*',
         'yiistrap_fork.behaviors.*',
-        'yiistrap_fork.components.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'vendor.Twig.*',
         'vendor.sodium.*',
@@ -113,10 +112,6 @@ $internalConfig = array(
     ),
     'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
-        // yiistrap_fork configuration
-        'bootstrap5' => array(
-            'class' => 'yiistrap_fork.components.TbApi',
-        ),
         // yiiwheels configuration
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',
@@ -287,7 +282,7 @@ $internalConfig = array(
                 'getLanguageRTL'          => 'LS_Twig_Extension::getLanguageRTL',
 
                 'intval'                  => 'intval',
-                'empty'                   => 'empty',
+                'empty'                   => 'LS_Twig_Extension::isEmpty',
                 'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
                 'strip_tags'              => 'strip_tags',
@@ -298,7 +293,7 @@ $internalConfig = array(
                 'getPost'                 => 'LS_Twig_Extension::getPost',
                 'getParam'                => 'LS_Twig_Extension::getParam',
                 'getQuery'                => 'LS_Twig_Extension::getQuery',
-                'isset'                   => 'isset',
+                'isset'                   => 'LS_Twig_Extension::isSet',
                 'assetPublish'            => 'LS_Twig_Extension::assetPublish',
                 'image'                   => 'LS_Twig_Extension::image',
                 'imageSrc'                => 'LS_Twig_Extension::imageSrc',

@@ -59,8 +59,8 @@ export const MultipleChoice = ({
         >
           {subquestions?.map((subQuestion, index) => (
             <Draggable
-              key={`${subQuestion.qid}-multiple-choice`}
-              draggableId={`${subQuestion.qid}-multiple-choice`}
+              key={`${subQuestion.appKey || subQuestion.qid}-multiple-choice`}
+              draggableId={`${subQuestion.appKey || subQuestion.qid}-multiple-choice`}
               index={index}
             >
               {(provided, snapshot) => (

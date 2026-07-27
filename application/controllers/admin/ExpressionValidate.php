@@ -10,10 +10,6 @@
 */
 class ExpressionValidate extends SurveyCommonAction
 {
-    /**
-     * @var string : Default layout is popup : less header, no footer
-     */
-    public $layout = 'popup';
 
     /**
      * @var integer : The survey ID to start to fill know vars
@@ -78,7 +74,6 @@ class ExpressionValidate extends SurveyCommonAction
         $aData = array(
             'aExpressions' => $aExpressions,
         );
-        $this->getController()->layout = $this->layout;
         $this->getController()->pageTitle = gT("Validate quota");
 
         $this->getController()->renderPartial("/admin/expressions/validationList", $aData);
@@ -240,7 +235,6 @@ class ExpressionValidate extends SurveyCommonAction
             );
         }
         $aData['aExpressions'] = $aExpressions;
-        $this->getController()->layout = $this->layout;
         $this->getController()->pageTitle = sprintf(gT("Validate expressions in email: %s"), $sType);
 
         $this->getController()->renderPartial("/admin/expressions/validationList", $aData);

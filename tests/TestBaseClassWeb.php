@@ -136,15 +136,27 @@ class TestBaseClassWeb extends TestBaseClass
     }
 
     /**
-     * @param string $userName
-     * @param string $password
+     * @param string $userName , it not set use user 1 (superadmin) login name
+     * @param string $password , it not set use user 1 (superadmin) password
      * @param boolean $wait If true, wait for and disregard popups at first login; useful to set to false during local testing and development
      * @return void
      * @throws \Exception
      * @throws \Facebook\WebDriver\Exception\NoSuchElementException
      */
-    public static function adminLogin($userName, $password, $wait = true)
+    public static function adminLogin($userName = null, $password = null, $wait = true)
     {
+        if (is_null($username)) {
+            $username = getenv('ADMINUSERNAME');
+        }
+        if (is_null($username) || $username === false) {
+            $username = 'admin';
+        }
+        if (is_null($password)) {
+            $password = getenv('PASSWORD');
+        }
+        if (is_null($password) || $password === false) {
+            $password = 'password';
+        }
         $url = self::getUrl(['login', 'route'=>'authentication/sa/login']);
         self::openView($url);
         try {

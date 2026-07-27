@@ -111,12 +111,14 @@
 @import 'modals/overview-modal.scss';
 @import 'modals/confirm-modal.scss';
 @import 'modals/component-modal.scss';
+@import 'survey-logic/survey-logic-modal.scss';
 @import 'input-range/input-range.scss';
 @import 'icon/icon.scss';
 @import 'tutorial/tutorial.scss';
 @import 'react-loading-skeleton/dist/skeleton.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 @import 'pagination-buttons/pagination-buttons.scss';
+@import 'ls-table/ls-table.scss';
 @import 'responses/responses.scss';
 @import 'responses/responses-statistics.scss';
 @import 'arrayParticipantMode/arrayParticipanMode.scss';

@@ -1,10 +1,13 @@
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { useFocused } from 'hooks'
-import { RemoveHTMLTagsInString } from 'helpers'
 import { SideBarRow } from 'components/SideBar/SideBarRow'
 import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
 import { QuestionListIcon } from 'components/icons'
+
+import { SurveyLogicModal } from './SurveyLogicModal'
 
 export const RowQuestion = ({
   question,
@@ -18,9 +21,8 @@ export const RowQuestion = ({
   focused,
 }) => {
   const { setFocused } = useFocused()
-  const questionTitleWithoutHtmlTags = RemoveHTMLTagsInString(
-    question.l10ns[language]?.question
-  )
+  const { surveyId } = useParams()
+  const [showLogicModal, setShowLogicModal] = useState(false)
 
   const handleDuplicate = () => {
     duplicateQuestion()
@@ -38,13 +40,20 @@ export const RowQuestion = ({
       <SideBarRow
         titlePlaceholder={t("What's your question?")}
         provided={provided}
-        title={questionTitleWithoutHtmlTags}
+        title={question.l10ns[language]?.question}
         meatballButton={
           <MeatballMenu
             deleteText={t('Delete question')}
             duplicateText={t('Duplicate question')}
             handleDelete={deleteQuestion}
             handleDuplicate={handleDuplicate}
+            additionalItems={[
+              {
+                label: t('Check Logic'),
+                testId: 'show-logic-button',
+                onClick: () => setShowLogicModal(true),
+              },
+            ]}
           />
         }
         icon={<QuestionListIcon />}
@@ -53,6 +62,13 @@ export const RowQuestion = ({
         onRowClick={() =>
           setFocused({ ...question }, groupIndex, questionIndex)
         }
+      />
+      <SurveyLogicModal
+        show={showLogicModal}
+        onHide={() => setShowLogicModal(false)}
+        sid={surveyId}
+        qid={question.qid}
+        language={language}
       />
     </div>
   )

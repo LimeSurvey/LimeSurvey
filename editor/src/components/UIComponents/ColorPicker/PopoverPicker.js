@@ -82,7 +82,7 @@ export const PopoverPicker = ({ color, onChange }) => {
             <HexColorPicker color={color} onChange={handlePickerChange} />
             <div className="color-inputs">
               <div className="color-input-group color-input-hex">
-                <label>{t('HEX')}</label>
+                <label>{t('Hex')}</label>
                 <input
                   type="text"
                   value={hexInput}

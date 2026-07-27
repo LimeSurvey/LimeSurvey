@@ -27,7 +27,6 @@ export const Responses = () => {
   const [sorting, setSorting] = useState([])
   const [showTableFilters, setShowTableFilters] = useState(false)
   const [showStatisticsFilters, setShowStatisticsFilters] = useState(false)
-  const [rowSelection, setRowSelection] = useState({})
   const [columnsFilters, setColumnsFilters] = useState([])
   const [tabKey, setTabKey] = useState(TAB_KEYS.RESPONSES)
   const [statisticsFilters, setStatisticsFilters] = useState({})
@@ -35,7 +34,11 @@ export const Responses = () => {
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
   const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
-  const { survey = {}, fetchSurvey } = useSurvey(surveyId)
+  const {
+    survey = {},
+    fetchSurvey,
+    refetchQuestionsFieldNamesMap,
+  } = useSurvey(surveyId)
   const { responses, isFetching, mutateOperations } = useResponses(
     surveyId,
     pagination,
@@ -160,6 +163,7 @@ export const Responses = () => {
 
   useEffect(() => {
     fetchSurvey(surveyId)
+    refetchQuestionsFieldNamesMap()
     setTopbarConfig({
       surveyId,
       showAddQuestionButton: false,
@@ -200,9 +204,7 @@ export const Responses = () => {
             <ResponsesTable
               responsesData={responses}
               globalFilter={globalFilter}
-              rowSelection={rowSelection}
               setGlobalFilter={setGlobalFilter}
-              setRowSelection={setRowSelection}
               setShowFilters={setShowTableFilters}
               showFilters={showTableFilters}
               setSorting={setSorting}

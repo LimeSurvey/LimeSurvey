@@ -8,7 +8,7 @@ if ($model->isNewRecord) {
     $modalTitle =  gT('Create permission role');
     $buttonTitle = gT('Create');
 } else {
-    $modalTitle = sprintf(gT("Edit permission role '%s'"), CHtml::encode($model->name));
+    $modalTitle = sprintf(gT("Edit permission role '%s'"), $model->name);
     $buttonTitle = gT('Save');
 }
 Yii::app()->getController()->renderPartial(
@@ -29,15 +29,57 @@ Yii::app()->getController()->renderPartial(
             </div>
             <?php echo $form->hiddenField($model, 'ptid'); ?>
 
+            <?php
+            $nameFieldId = 'RoleControl_modalform_name';
+            $nameLabelId = 'RoleControl_modalform_name_label';
+            $descFieldId = 'RoleControl_modalform_description';
+            $descLabelId = 'RoleControl_modalform_description_label';
+            ?>
             <div class="mb-3">
-                <?php echo $form->labelEx($model, 'name'); ?>
-                <?php echo $form->textField($model, 'name', array('size' => 60,'maxlength' => 192, 'required' => 'required')); ?>
+                <?php
+                echo CHtml::activeLabel($model, 'name', [
+                    'id' => $nameLabelId,
+                    'for' => $nameFieldId,
+                    'required' => false,
+                    'class' => 'form-label required',
+                    'encode' => false,
+                    'label' => $model->getAttributeLabel('name')
+                        . ' <span class="required" aria-label="' . gT('Required') . '">*</span>',
+                ]);
+                ?>
+                <?php echo $form->textField($model, 'name', [
+                    'id' => $nameFieldId,
+                    'size' => 60,
+                    'maxlength' => 192,
+                    'required' => 'required',
+                    'class' => 'form-control',
+                    'aria-required' => 'true',
+                    'aria-labelledby' => $nameLabelId,
+                ]); ?>
                 <?php echo $form->error($model, 'name'); ?>
             </div>
 
             <div class="mb-3">
-                <?php echo $form->labelEx($model, 'description'); ?>
-                <?php echo $form->textArea($model, 'description', array('rows' => 6, 'cols' => 50, 'required' => 'required')); ?>
+                <?php
+                echo CHtml::activeLabel($model, 'description', [
+                    'id' => $descLabelId,
+                    'for' => $descFieldId,
+                    'required' => false,
+                    'class' => 'form-label required',
+                    'encode' => false,
+                    'label' => $model->getAttributeLabel('description')
+                        . ' <span class="required" aria-label="' . gT('Required') . '">*</span>',
+                ]);
+                ?>
+                <?php echo $form->textArea($model, 'description', [
+                    'id' => $descFieldId,
+                    'rows' => 6,
+                    'cols' => 50,
+                    'required' => 'required',
+                    'class' => 'form-control',
+                    'aria-required' => 'true',
+                    'aria-labelledby' => $descLabelId,
+                ]); ?>
                 <?php echo $form->error($model, 'description'); ?>
             </div>
 

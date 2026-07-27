@@ -170,6 +170,28 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
     /**
+     * Wrapper for PHP's empty() language construct (not callable directly in Twig 3.27+).
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    public static function isEmpty($value)
+    {
+        return empty($value);
+    }
+
+    /**
+     * Wrapper for PHP's isset() language construct (not callable directly in Twig 3.27+).
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    public static function isSet($value)
+    {
+        return isset($value);
+    }
+
+    /**
      * since count with a noncountable element is throwing a warning in latest php versions
      * we have to be sure not to kill rendering by a wrong variable
      *
@@ -354,12 +376,17 @@ class LS_Twig_Extension extends AbstractExtension
      * Get the parsed output of the expression manager for a specific string
      *
      * @param String $sInString
+     * @param array $replacementFields - optional replacement values
      * @return String
      */
-    public static function getExpressionManagerOutput($sInString)
+    public static function getExpressionManagerOutput($sInString, $replacementFields = [])
     {
-        templatereplace(flattenText($sInString));
-        return LimeExpressionManager::GetLastPrettyPrintExpression();
+        templatereplace(flattenText($sInString), $replacementFields);
+        $output = LimeExpressionManager::GetLastPrettyPrintExpression();
+        if (!empty($replacementFields)) {
+            LimeExpressionManager::unsetTempVars(array_keys($replacementFields));
+        }
+        return $output;
     }
 
     /**

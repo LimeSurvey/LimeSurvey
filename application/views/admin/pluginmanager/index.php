@@ -85,7 +85,8 @@ $gridColumns = [
         'header' => gT('Description'),
         'name' => 'description',
         'type' => 'html',
-        'value' => '$data->getPossibleDescription()'
+        'value' => '$data->getPossibleDescription()',
+        'htmlOptions' => ['class' => 'can-contain-link'],
     ],
     [
         'header' => gT('Status'),
@@ -107,6 +108,7 @@ $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [
         'id'                       => 'plugins-grid',
+        'caption'                  => gT('Plugins'),
         'dataProvider'             => $dataProvider,
         'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
             . sprintf(
@@ -117,7 +119,8 @@ $this->widget(
                     Yii::app()->params['pageSizeOptions'],
                     [
                         'class' => 'changePageSize form-select',
-                        'style' => 'display: inline; width: auto'
+                        'style' => 'display: inline; width: auto',
+                        'aria-label' => gT('Rows per page')
                     ]
                 )
             ),

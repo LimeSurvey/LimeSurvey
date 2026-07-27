@@ -16,13 +16,11 @@
             align-items : center;
 
             &:hover {
-                color: inherit;
                 box-shadow: none;
                 @include state-border(1px, $grape90);
             }
 
             &:focus-visible {
-                color: inherit;
                 @include state-border(1px, $grape-light, 0px);
                 @include inset-border(1px, $grape-light);
             }

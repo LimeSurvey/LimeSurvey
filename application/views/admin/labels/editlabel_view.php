@@ -18,15 +18,27 @@
     <div class="row">
         <div class="col-12 content-right">
             <!-- Tabs -->
-            <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
-                <li class="nav-item">
-                    <a class="nav-link active" href='#neweditlblset0' data-bs-toggle="tab">
+            <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection" role="tablist" aria-label="<?= gT('Label set') ?>">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active"
+                       id="editlabel-tab-0"
+                       href="#neweditlblset0"
+                       role="tab"
+                       data-bs-toggle="tab"
+                       aria-controls="neweditlblset0"
+                       aria-selected="true">
                         <?php echo $tabitem; ?>
                     </a>
                 </li>
-                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href='#neweditlblset1' data-bs-toggle="tab">
+                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link"
+                           id="editlabel-tab-1"
+                           href="#neweditlblset1"
+                           role="tab"
+                           data-bs-toggle="tab"
+                           aria-controls="neweditlblset1"
+                           aria-selected="false">
                             <?php eT("Import label set(s)"); ?>
                         </a>
                     </li>
@@ -36,7 +48,7 @@
 
             <!-- Tabs content -->
             <div class="tab-content">
-                <div id='neweditlblset0' class="tab-pane fade show active">
+                <div id="neweditlblset0" class="tab-pane fade show active" role="tabpanel" aria-labelledby="editlabel-tab-0">
                     <!-- Form -->
                     <?php echo CHtml::form(["admin/labels/sa/process"], 'post', ['class' => 'form form30 ', 'id' => 'labelsetform', 'onsubmit' => "return isEmpty(document.getElementById('label_name'), '" . gT("Error: You have to enter a name for this label set.", "js") . "')"]); ?>
                     <!-- Set name -->
@@ -50,7 +62,7 @@
 
                         <!-- Languages -->
                         <div class="mb-3 col-lg-6">
-                            <label class=" form-label"><?php eT("Languages:"); ?></label>
+                            <label class="form-label" id="languageids-label" for="languageids"><?php eT("Languages:"); ?></label>
                             <div class="">
                                 <?php
                                 $aAllLanguages = getLanguageDataRestricted(false, 'short');
@@ -61,7 +73,13 @@
                                     'yiiwheels.widgets.select2.WhSelect2',
                                     [
                                         'asDropDownList' => true,
-                                        'htmlOptions'    => ['multiple' => 'multiple', 'style' => "width: 80%", 'required' => 'required'],
+                                        'htmlOptions'    => [
+                                            'id' => 'languageids',
+                                            'multiple' => 'multiple',
+                                            'style' => "width: 80%",
+                                            'required' => 'required',
+                                            'aria-labelledby' => 'languageids-label',
+                                        ],
                                         'data'           => $aAllLanguages,
                                         'value'          => $langidsarray,
                                         'name'           => 'languageids',
@@ -96,7 +114,7 @@
                 </div>
                 <!-- Import -->
                 <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
-                    <div id='neweditlblset1' class="tab-pane fade">
+                    <div id="neweditlblset1" class="tab-pane fade" role="tabpanel" aria-labelledby="editlabel-tab-1">
                         <?php echo CHtml::form(["admin/labels/sa/import"], 'post', ['enctype' => 'multipart/form-data', 'class' => 'form', 'id' => 'importlabels', 'name' => "importlabels"]); ?>
                         <div class="mb-3 col-6">
                             <label class="form-label" for='the_file'>

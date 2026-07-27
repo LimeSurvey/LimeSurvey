@@ -138,6 +138,26 @@ class Tokens extends SurveyCommonAction
         }
         $aData['model'] = $model;
 
+        // If the participant table doesn't exist yet, show an empty grid as a preview
+        $aData['emptyGridColumns'] = null;
+        $aData['emptyGridDataProvider'] = null;
+        $aData['emptyGridFilter'] = null;
+        if (!$model) {
+            $emptyGridColumns = TokenDynamic::buildAttributesForGrid($iSurveyId, $survey);
+            $aSortableNames = array();
+            foreach ($emptyGridColumns as $aColumn) {
+                if (!empty($aColumn['name']) && $aColumn['name'] !== 'actions') {
+                    $aSortableNames[] = $aColumn['name'];
+                }
+            }
+            $aData['emptyGridColumns'] = $emptyGridColumns;
+            $aData['emptyGridFilter'] = new TokenEmptyGridFilter($aSortableNames);
+            $aData['emptyGridDataProvider'] = new CArrayDataProvider([], [
+                'pagination' => false,
+                'sort'       => ['attributes' => $aSortableNames],
+            ]);
+        }
+
         // Set number of page
         if (isset($_POST['pageSizeTokenView'])) {
             Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
@@ -346,7 +366,13 @@ class Tokens extends SurveyCommonAction
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
-        $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
+        if (empty($aTokenIds) && Yii::app()->getRequest()->getPost('selectAll')) {
+            $aTokenIds = $this->getFilteredTokenIds((int) $iSid);
+        }
+        $deletedTokenCount = 0;
+        foreach (array_chunk($aTokenIds, 1000) as $chunk) {
+            $deletedTokenCount += TokenDynamic::model($iSid)->deleteRecords($chunk);
+        }
         if ($deletedTokenCount > 0) {
             ls\ajax\AjaxHelper::outputSuccess(ngT('Deleted {n} survey participant.|Deleted {n} survey participants.', $deletedTokenCount));
         } else {
@@ -381,6 +407,28 @@ class Tokens extends SurveyCommonAction
             Yii::app()->setFlashMessage(gT('Could not delete survey participant.'), 'error');
         }
         $this->getController()->redirect(array("admin/tokens", "sa" => "index", "surveyid" => $iSid));
+    }
+
+    /**
+     * Ids of all tokens matching the grid filters posted with a "Select all" massive action.
+     *
+     * @param int $surveyId
+     * @return array
+     */
+    private function getFilteredTokenIds(int $surveyId): array
+    {
+        $model = TokenDynamic::model($surveyId);
+        $model->bEncryption = true;
+        parse_str((string) Yii::app()->request->getPost('filterQuery', ''), $parsedFilterQuery);
+        $filters = $parsedFilterQuery['TokenDynamic'] ?? null;
+        if (is_array($filters) && !empty($filters)) {
+            $model->setAttributes($filters, false);
+        }
+        $criteria = $model->search()->criteria;
+        $criteria->select = 't.tid';
+        return $model->getCommandBuilder()
+            ->createFindCommand($model->tableSchema, $criteria)
+            ->queryColumn();
     }
 
     /**
@@ -1168,6 +1216,30 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
+     * Returns the custom attribute field names (attribute_N) for a survey.
+     *
+     * When the participant table exists the names are read from the actual table columns.
+     * When it does not exist yet, they come from the survey's attributedescriptions,
+     * so attributes can be managed before the table is created.
+     *
+     * @param Survey $oSurvey
+     * @return string[]
+     */
+    private function getSurveyAttributeFieldNames($oSurvey)
+    {
+        if ($oSurvey->hasTokensTable) {
+            return getAttributeFieldNames($oSurvey->sid);
+        }
+        $aAttributeFieldNames = array();
+        foreach (array_keys($oSurvey->decodedAttributedescriptions) as $sFieldName) {
+            if (preg_match('/^attribute_[0-9]+$/', (string) $sFieldName)) {
+                $aAttributeFieldNames[] = $sFieldName;
+            }
+        }
+        return $aAttributeFieldNames;
+    }
+
+    /**
      * Handle managetokenattributes action
      * @param int $iSurveyId
      * @return void
@@ -1182,10 +1254,6 @@ class Tokens extends SurveyCommonAction
         }
         // CHECK TO SEE IF A Survey participant list EXISTS FOR THIS SURVEY
         $bTokenExists = $oSurvey->hasTokensTable;
-        if (!$bTokenExists) {
-            //If no tokens table exists
-            $this->newParticipantTable($iSurveyId);
-        }
         Yii::app()->loadHelper("surveytranslator");
 
         $aData = array();
@@ -1196,7 +1264,7 @@ class Tokens extends SurveyCommonAction
         $aData['thissurvey'] = $oSurvey->attributes;
         $aData['surveyid'] = $iSurveyId;
         $aMandatoryAttributes = $oSurvey->getTokenEncryptionOptions();
-        $aAttributes = getAttributeFieldNames($iSurveyId);
+        $aAttributes = $this->getSurveyAttributeFieldNames($oSurvey);
         $aData['tokenFields'] = array_merge(array_keys($aMandatoryAttributes['columns']), $aAttributes);
 
         $aMandatoryList = array();
@@ -1235,7 +1303,8 @@ class Tokens extends SurveyCommonAction
         $aData['languages'] = $languages;
         $aData['tokencaptions'] = $captions;
         $aData['nrofattributes'] = 0;
-        $oToken = TokenDynamic::model($iSurveyId)->find();
+        // The example row can only be read from an existing participant table
+        $oToken = $bTokenExists ? TokenDynamic::model($iSurveyId)->find() : null;
         $aData['examplerow'] = $oToken;
         $aData['aCPDBAttributes'][''] = gT('(none)');
         foreach (ParticipantAttributeName::model()->getCPDBAttributes() as $aCPDBAttribute) {
@@ -1276,24 +1345,38 @@ class Tokens extends SurveyCommonAction
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
-        if (!$oSurvey->hasTokensTable) {
-            // If no tokens table exists
-            $this->newParticipantTable($iSurveyId);
-        }
-
         $number2add = sanitize_int(Yii::app()->request->getPost('addnumber'), 1, 100);
-        $tokenattributefieldnames = getAttributeFieldNames($iSurveyId);
+        $tokenattributefieldnames = $this->getSurveyAttributeFieldNames($oSurvey);
+        $bTokenExists = $oSurvey->hasTokensTable;
+        $aAttributeDescriptions = $oSurvey->decodedAttributedescriptions;
         $i = 1;
 
         for ($b = 0; $b < $number2add; $b++) {
             while (in_array('attribute_' . $i, $tokenattributefieldnames) !== false) {
                 $i++;
             }
-            $tokenattributefieldnames[] = 'attribute_' . $i;
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_" . intval($iSurveyId) . "}}", 'attribute_' . $i, 'text'))->execute();
+            $sNewAttribute = 'attribute_' . $i;
+            $tokenattributefieldnames[] = $sNewAttribute;
+            if ($bTokenExists) {
+                // Add the physical column to the existing participant table
+                Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_" . intval($iSurveyId) . "}}", $sNewAttribute, 'text'))->execute();
+            } else {
+                // No table yet, only register the attribute
+                $aAttributeDescriptions[$sNewAttribute] = array(
+                    'description'   => '',
+                    'mandatory'     => 'N',
+                    'encrypted'     => 'N',
+                    'show_register' => 'N',
+                    'cpdbmap'       => '',
+                );
+            }
         }
 
-        Yii::app()->db->schema->getTable($oSurvey->tokensTableName, true); // Refresh schema cache just in case the table existed in the past
+        if ($bTokenExists) {
+            Yii::app()->db->schema->getTable($oSurvey->tokensTableName, true); // Refresh schema cache just in case the table existed in the past
+        } else {
+            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($aAttributeDescriptions)));
+        }
         LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participant lists have changed
 
         Yii::app()->session['flashmessage'] = sprintf(gT("%s field(s) were successfully added."), $number2add);
@@ -1309,11 +1392,6 @@ class Tokens extends SurveyCommonAction
     {
         $iSurveyId = (int) $iSurveyId;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        // CHECK TO SEE IF A Survey participant list EXISTS FOR THIS SURVEY
-        if (!$oSurvey->hasTokensTable) {
-            Yii::app()->session['flashmessage'] = "No survey participant list.";
-            $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
-        }
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
@@ -1324,7 +1402,7 @@ class Tokens extends SurveyCommonAction
         $aData['surveyid'] = $iSurveyId;
         $confirm = Yii::app()->request->getPost('confirm', '');
         $cancel = Yii::app()->request->getPost('cancel', '');
-        $tokenfields = getAttributeFieldNames($iSurveyId);
+        $tokenfields = $this->getSurveyAttributeFieldNames($oSurvey);
         $sAttributeToDelete = Yii::app()->request->getPost('deleteattribute', '');
         if (!in_array($sAttributeToDelete, $tokenfields)) {
             $sAttributeToDelete = false;
@@ -1357,9 +1435,12 @@ class Tokens extends SurveyCommonAction
             unset($aTokenAttributeDescriptions[$sAttributeToDelete]);
             Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($aTokenAttributeDescriptions)));
 
-            $sTableName = "{{tokens_" . intval($iSurveyId) . "}}";
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->dropColumn($sTableName, $sAttributeToDelete))->execute();
-            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache
+            // Drop the physical column only when the participant table already exists
+            if ($oSurvey->hasTokensTable) {
+                $sTableName = "{{tokens_" . intval($iSurveyId) . "}}";
+                Yii::app()->db->createCommand(Yii::app()->db->getSchema()->dropColumn($sTableName, $sAttributeToDelete))->execute();
+                Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache
+            }
             LimeExpressionManager::SetDirtyFlag();
             Yii::app()->session['flashmessage'] = sprintf(gT("Attribute %s was deleted."), $sAttributeToDelete);
             Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
@@ -1402,8 +1483,7 @@ class Tokens extends SurveyCommonAction
             $aTokenencryptionoptions['columns'][$column] = $fieldcontents[$column]['encrypted'];
         }
 
-        // find custom attribute column names
-        $tokenattributefieldnames = getAttributeFieldNames($iSurveyId);
+        $tokenattributefieldnames = $this->getSurveyAttributeFieldNames($oSurvey);
         // custom attributes
         foreach ($tokenattributefieldnames as $fieldname) {
             if (isset(json_decode((string) $oSurvey->attributedescriptions)->$fieldname->encrypted)) {
@@ -1435,7 +1515,13 @@ class Tokens extends SurveyCommonAction
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
-            $this->updateEncryption($iSurveyId, $aOptionsAfterChange);
+            if ($oSurvey->hasTokensTable) {
+                $this->updateEncryption($iSurveyId, $aOptionsAfterChange);
+            } else {
+                // No table yet: there are no rows to encrypt, but still persist the encryption
+                // preference for the mandatory columns so it is applied when the table is created.
+                Survey::model()->updateByPk($iSurveyId, ['tokenencryptionoptions' => json_encode($aTokenencryptionoptions)]);
+            }
 
             // save token encryption options if everything was ok
             Survey::model()->updateByPk($iSurveyId, ['attributedescriptions' => json_encode($fieldcontents)]);
@@ -2837,8 +2923,13 @@ class Tokens extends SurveyCommonAction
 
         $thissurvey = $oSurvey->attributes;
         $aAdditionalAttributeFields = $oSurvey->decodedAttributedescriptions;
-        $aTokenFieldNames = Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}", true);
-        $aTokenFieldNames = array_keys($oSurvey->hasTokensTable ? $aTokenFieldNames->columns : $defaultFields);
+        if ($oSurvey->hasTokensTable) {
+            $aTokenFieldNames = Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}", true);
+            $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
+        } else {
+            // No table yet, include the core fields plus any attributes managed beforehand
+            $aTokenFieldNames = array_merge(array_keys($defaultFields), array_keys($aAdditionalAttributeFields));
+        }
         $aData['attrfieldnames'] = array();
         foreach ($aAdditionalAttributeFields as $sField => $aAttrData) {
             if (in_array($sField, $aTokenFieldNames)) {

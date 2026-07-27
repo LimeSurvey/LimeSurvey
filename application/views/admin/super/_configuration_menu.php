@@ -68,7 +68,7 @@
                         <ul>
 
                             <!-- ExpressionScript Engine -->
-                            <li class="dropdown-header">
+                            <li class="dropdown-header" role="presentation">
                                 <span class="ri-superscript"></span>
                                 <?php eT("Expression Engine"); ?>
                             </li>
@@ -136,7 +136,7 @@
                     <ul>
 
                         <!-- Advanced -->
-                        <li class="dropdown-header">
+                        <li class="dropdown-header" role="presentation">
                             <span class="ri-tools-fill"></span>
                             <span role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
                         </li>
@@ -193,7 +193,7 @@
                     <ul>
 
                         <!-- Users -->
-                        <li class="dropdown-header">
+                        <li class="dropdown-header" role="presentation">
 
                             <i class="ri-user-fill"></i>
                            <span role="heading" aria-level="2"> <?php eT('Users'); ?></span>
@@ -248,7 +248,7 @@
                     <ul>
 
                         <!-- Settings -->
-                        <li class="dropdown-header">
+                        <li class="dropdown-header" role="presentation">
                             <span class="ri-list-settings-line"></span>
                           <span role="heading" aria-level="2">  <?php eT('Settings'); ?></span>
                         </li>

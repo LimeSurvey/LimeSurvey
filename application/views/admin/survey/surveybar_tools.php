@@ -84,7 +84,7 @@
                 <?php if ($menuItem->isDivider()) : ?>
                     <li class="dropdown-divider"></li>
                 <?php elseif ($menuItem->isSmallText()) : ?>
-                    <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
+                    <li class="dropdown-header" role="presentation"><?php echo $menuItem->getLabel(); ?></li>
                 <?php else : ?>
                     <li>
                         <a href="<?php echo $menuItem->getHref(); ?>">
@@ -117,7 +117,7 @@
                 <li role="separator" class="dropdown-divider"></li>
 
                 <!-- Survey logic overview -->
-                <li class="dropdown-header"><?php eT("Survey logic overview"); ?></li>
+                <li class="dropdown-header" role="presentation"><?php eT("Survey logic overview"); ?></li>
                 <?php foreach ($oSurvey->allLanguages as $tmp_lang) : ?>
                     <!-- Languages -->
 
@@ -134,7 +134,7 @@
             <li role="separator" class="dropdown-divider"></li>
 
             <!-- Regenerate question codes -->
-            <li class="dropdown-header">
+            <li class="dropdown-header" role="presentation">
                 <?php eT("Regenerate question codes"); ?>
             </li>
 
