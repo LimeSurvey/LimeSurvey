@@ -148,7 +148,7 @@ class UserStatusTest extends TestBaseClassWeb
         $this->assertEquals(0, (int) $user->user_status, 'User status is 0');
     }
 
-    public function testMassiveActionDeactivate()
+    public function testFloatingActionDeactivate()
     {
         // Delete all users but superadmin
         User::model()->deleteAll('uid NOT IN (1)');
@@ -182,14 +182,13 @@ class UserStatusTest extends TestBaseClassWeb
         $checkbox = $row->findElement(WebDriverBy::cssSelector('.usermanagement--selector-userCheckbox'));
         $checkbox->click();
 
-        // Open massive action menu
-        $web->findByCss('.massiveAction')->click();
+        // Use floating actions: open "More actions" and choose "Edit status"
+        $floatingBar = $web->findById('floating-actions-bar-usermanagement--identity-gridPanel');
+        $floatingBar->findElement(WebDriverBy::cssSelector('.dropdown-toggle'))->click();
+        $floatingBar->findElement(WebDriverBy::cssSelector('.floating-actions-item[data-action="batchStatus"]'))->click();
 
-        // Click "Edit status"
-        $web->findByLinkText('Edit status')->click();
-
-        // Wait for modal to show
-        $web->waitById('massive-actions-modal-usermanagement--identity-gridPanel-batchStatus-3');
+        // Wait for the floating-actions modal to show
+        $web->waitById('floating-actions-modal-usermanagement--identity-gridPanel-batchStatus-d3_0');
 
         // Choose "Deactivate" in dropdown
         (new WebDriverSelect($web->findByCss('select[name=status_selector]')))->selectByValue('deactivate');
