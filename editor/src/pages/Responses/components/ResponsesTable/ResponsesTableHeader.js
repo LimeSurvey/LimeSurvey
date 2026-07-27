@@ -75,13 +75,22 @@ export const ResponsesTableHeader = ({
                       </div>
                     </>
                   )}
-                  <ContentEditor
-                    value={flexRender(
+                  {(() => {
+                    const renderedHeader = flexRender(
                       header.column.columnDef.header,
                       header.getContext()
-                    )}
-                    disabled={true}
-                  />
+                    )
+
+                    return typeof renderedHeader === 'string' ||
+                      typeof renderedHeader === 'number' ? (
+                      <ContentEditor
+                        value={String(renderedHeader)}
+                        disabled={true}
+                      />
+                    ) : (
+                      renderedHeader
+                    )
+                  })()}
                 </div>
 
                 <div
