@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 
 /**
  * Provides keyboard shortcuts for answer/subquestion editing:
@@ -14,10 +14,7 @@ export const useChildKeyboardShortcuts = ({
   isSurveyActive,
 }) => {
   const childrenRef = useRef(children)
-
-  useEffect(() => {
-    childrenRef.current = children
-  }, [children])
+  childrenRef.current = children
 
   const getKeyDownHandler = useCallback(
     (childId, index) => (event) => {
@@ -40,7 +37,12 @@ export const useChildKeyboardShortcuts = ({
         event.preventDefault()
         event.stopPropagation()
         event.nativeEvent?.stopImmediatePropagation?.()
-        handleChildAdd(currentChildren, entityType, { insertAfterIndex: index })
+        const currentIndex = currentChildren.findIndex(
+          (child) => child.qid === childId || child.aid === childId
+        )
+        handleChildAdd(currentChildren, entityType, {
+          insertAfterIndex: currentIndex >= 0 ? currentIndex : index,
+        })
         return
       }
 
