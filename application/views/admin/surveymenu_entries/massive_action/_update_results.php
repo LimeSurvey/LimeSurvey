@@ -13,6 +13,7 @@
 <?php else : ?>
     <?php unset($aResults['global']); ?>
     <table class="table table-striped">
+        <caption class="visually-hidden"><?php eT('Survey menu entry batch edit results'); ?></caption>
         <thead>
             <th><?php eT('Survey menu entry ID');?></th>
             <th><?php eT('Status');?></th>

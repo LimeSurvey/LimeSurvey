@@ -56,6 +56,12 @@ class ValidatedAbsoluteUrlTest extends TestBaseClass
     protected function setUp(): void
     {
         parent::setUp();
+        // Ensure server variables are available for URL generation in CLI/test
+        if (!isset($_SERVER['SERVER_NAME'])) {
+            $_SERVER['SERVER_NAME'] = 'localhost';
+        }
+        // Reset CHttpRequest's cached host info so it re-reads $_SERVER
+        Yii::app()->getRequest()->setHostInfo('http://' . $_SERVER['SERVER_NAME']);
         // Clean state before each test
         if (file_exists(self::$allowedHostsFile)) {
             unlink(self::$allowedHostsFile);

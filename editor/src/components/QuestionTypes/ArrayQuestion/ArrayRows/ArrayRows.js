@@ -29,6 +29,7 @@ export const ArrayRows = ({
   setVerticalEntitiesInfo,
   showNoAnswer = false,
   handleChildCodeUpdate = () => {},
+  isTitleFocused,
 }) => {
   const subQuestionsContainerRef = useRef(null)
   const isArrayByColumn =
@@ -160,8 +161,8 @@ export const ArrayRows = ({
       >
         {entitiesInfo.items?.map((entity, index) => (
           <Draggable
-            key={`${entity[entitiesInfo.idKey]}${index}-subquestion`}
-            draggableId={`${entity[entitiesInfo.idKey]}${index}-subquestion`}
+            key={`${entity.appKey || entity[entitiesInfo.idKey]}}-subquestion`}
+            draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}}-subquestion`}
             index={index}
           >
             {(provided, snapshot) => (
@@ -199,6 +200,7 @@ export const ArrayRows = ({
                   itemsKey={entitiesInfo.itemsKey}
                   entity={entity}
                   scaleId={scaleId}
+                  id={entity[entitiesInfo.idKey]}
                   code={entity[entitiesInfo.codeKey]}
                   showQuestionCode={showQuestionCode}
                   handleCodeUpdate={(value, index) =>
@@ -213,6 +215,7 @@ export const ArrayRows = ({
                       entityTitleKey: entitiesInfo.titleKey,
                     })
                   }
+                  istitleFocused={isTitleFocused}
                 />
               </div>
             )}
@@ -250,6 +253,7 @@ export const ArrayRows = ({
                 entityTitleKey: entitiesInfo.titleKey,
               })
             }
+            istitleFocused={isTitleFocused}
           />
         </div>
       )}

@@ -200,7 +200,9 @@ oop.inherits(FoldMode, BaseFoldMode);
         "end": -1,
         "loop": -1,
         "next": -1,
-        "wend": -1
+        "wend": -1,
+        "exit": 0,
+        "until": 0
     };
     this.foldingStartMarker = /(?:\s|^)(class|function|sub|if|select|do|for|while|with|property|else|elseif)\b/i;
     this.foldingStopMarker = /\b(end|loop|next|wend)\b/i;
@@ -222,6 +224,8 @@ oop.inherits(FoldMode, BaseFoldMode);
         var line = session.getLine(row);
         var isStart = this.foldingStartMarker.test(line);
         var isEnd = this.foldingStopMarker.test(line);
+        if (/(?:\s*|^)Exit\s+(Do|For|Sub|Function|Property)\b/i.test(line))
+            return "";
         if (isStart && !isEnd) {
             var match = this.foldingStartMarker.exec(line);
             var keyword = match && match[1].toLowerCase();
@@ -254,11 +258,32 @@ oop.inherits(FoldMode, BaseFoldMode);
             return;
         var startTokenValue = token.value.toLowerCase();
         var val = token.value.toLowerCase();
+        var firstRange = stream.getCurrentTokenRange();
+        var doubleKeywordResult = this.$isDoubleKeyword(token, stream);
+        if (doubleKeywordResult === "ignore") {
+            return;
+        }
+        var doubleKeywordPosition = null;
+        if (doubleKeywordResult) {
+            firstRange = doubleKeywordResult.range;
+            doubleKeywordPosition = doubleKeywordResult.position;
+            if (doubleKeywordResult.position === "second") {
+                val = doubleKeywordResult.keyword;
+                startTokenValue = val;
+            }
+        }
         var stack = [val];
         var dir = this.indentKeywords[val];
         if (!dir)
             return;
-        var firstRange = stream.getCurrentTokenRange();
+        if (doubleKeywordPosition === "first" && dir === 1) {
+            stream.stepForward();
+            stream.stepForward();
+        }
+        else if (doubleKeywordPosition === "second" && dir === -1) {
+            stream.stepBackward();
+            stream.stepBackward();
+        }
         switch (val) {
             case "property":
             case "sub":
@@ -339,6 +364,8 @@ oop.inherits(FoldMode, BaseFoldMode);
                 case "class":
                 case "while":
                 case "with":
+                case "until":
+                case "exit":
                     var line = session.getLine(stream.getCurrentTokenRow());
                     var singleLineCondition = /^\s*If\s+.*\s+Then(?!')\s+(?!')\S/i.test(line);
                     if (singleLineCondition) {
@@ -347,6 +374,11 @@ oop.inherits(FoldMode, BaseFoldMode);
                     }
                     var checkToken = new RegExp("^\\s* end\\s+" + val, "i");
                     if (checkToken.test(line)) {
+                        level = 0;
+                        ignore = true;
+                    }
+                    var doubleKeyword = this.$isDoubleKeyword(token, stream);
+                    if (doubleKeyword === "ignore" || (doubleKeyword && doubleKeyword.position === "second")) {
                         level = 0;
                         ignore = true;
                     }
@@ -386,7 +418,7 @@ oop.inherits(FoldMode, BaseFoldMode);
                                     }
                                     var nextTokenPos = stream.getCurrentTokenPosition();
                                     var endColumn = nextTokenPos.column + val.length;
-                                    outputRange = new Range(tokenPos.row, tokenPos.column, nextTokenPos.row, endColumn);
+                                    outputRange.setEnd(nextTokenPos.row, endColumn);
                                 }
                                 else {
                                     ranges.shift();
@@ -414,10 +446,18 @@ oop.inherits(FoldMode, BaseFoldMode);
                         case "do":
                             if (startTokenValue != "loop")
                                 ranges.shift();
+                            var doDouble = this.$isDoubleKeyword(token, stream);
+                            outputRange = (doDouble && doDouble.position === "first")
+                                ? doDouble.range
+                                : stream.getCurrentTokenRange();
                             break;
                         case "loop":
                             if (startTokenValue != "do")
                                 ranges.shift();
+                            var loopDouble = this.$isDoubleKeyword(token, stream);
+                            outputRange = (loopDouble && loopDouble.position === "first")
+                                ? loopDouble.range
+                                : stream.getCurrentTokenRange();
                             break;
                         case "for":
                             if (startTokenValue != "next")
@@ -462,6 +502,69 @@ oop.inherits(FoldMode, BaseFoldMode);
         else
             return new Range(startRow, startColumn, row - 1, session.getLine(row - 1).length);
     };
+    this.$isDoubleKeyword = function (currentToken, stream) {
+        var val = currentToken.value.toLowerCase();
+        var tokenIndex = stream.$tokenIndex;
+        var rowTokens = stream.$rowTokens;
+        var prevKeywordIndex = tokenIndex - 2;
+        var prevKeyword = prevKeywordIndex >= 0 ? rowTokens[prevKeywordIndex] : null;
+        if (prevKeyword) {
+            var prevVal = prevKeyword.value.toLowerCase();
+            if ((val === "while" || val === "until") && prevVal === "do") {
+                return {
+                    range: this.$getDoubleKeywordRange(prevKeywordIndex, tokenIndex, stream),
+                    position: "second",
+                    keyword: "do"
+                };
+            }
+            if ((val === "while" || val === "until") && prevVal === "loop") {
+                return {
+                    range: this.$getDoubleKeywordRange(prevKeywordIndex, tokenIndex, stream),
+                    position: "second",
+                    keyword: "loop"
+                };
+            }
+            if (prevVal === "exit" && (val === "for" || val === "do" || val === "sub" || val === "function" || val === "property")) {
+                return "ignore";
+            }
+        }
+        var nextKeywordIndex = tokenIndex + 2;
+        var nextKeyword = nextKeywordIndex < rowTokens.length ? rowTokens[nextKeywordIndex] : null;
+        if (nextKeyword) {
+            var nextVal = nextKeyword.value.toLowerCase();
+            if (val === "do" && (nextVal === "while" || nextVal === "until")) {
+                return {
+                    range: this.$getDoubleKeywordRange(tokenIndex, nextKeywordIndex, stream),
+                    position: "first",
+                    keyword: "do"
+                };
+            }
+            if (val === "loop" && (nextVal === "while" || nextVal === "until")) {
+                return {
+                    range: this.$getDoubleKeywordRange(tokenIndex, nextKeywordIndex, stream),
+                    position: "first",
+                    keyword: "loop"
+                };
+            }
+            if (val === "exit" && (nextVal === "for" || nextVal === "do" || nextVal === "sub" || nextVal === "function" || nextVal === "property")) {
+                return "ignore";
+            }
+        }
+        return false;
+    };
+    this.$getDoubleKeywordRange = function (firstTokenIndex, secondTokenIndex, stream) {
+        var row = stream.$row;
+        var rowTokens = stream.$rowTokens;
+        var firstStart = 0;
+        for (var i = 0; i < firstTokenIndex; i++) {
+            firstStart += rowTokens[i].value.length;
+        }
+        var secondEnd = 0;
+        for (var i = 0; i <= secondTokenIndex; i++) {
+            secondEnd += rowTokens[i].value.length;
+        }
+        return new Range(row, firstStart, row, secondEnd);
+    };
 }).call(FoldMode.prototype);
 
 });
@@ -492,6 +595,21 @@ oop.inherits(Mode, TextMode);
         "next",
         "wend"
     ];
+    function isSecondOfDoubleKeyword(tokens, i) {
+        var val = tokens[i].value.toLowerCase();
+        var prevToken = i >= 2 ? tokens[i - 2] : null;
+        if (!prevToken)
+            return false;
+        var prevVal = prevToken.value.toLowerCase();
+        if ((val === "while" || val === "until") && (prevVal === "do" || prevVal === "loop")) {
+            return true;
+        }
+        if (prevVal === "exit" && (val === "for" || val === "do" || val === "sub" || val === "function" || val
+            === "property")) {
+            return true;
+        }
+        return false;
+    }
     function getNetIndentLevel(tokens, line, indentKeywords) {
         var level = 0;
         for (var i = 0; i < tokens.length; i++) {
@@ -499,6 +617,9 @@ oop.inherits(Mode, TextMode);
             if (token.type == "keyword.control.asp" || token.type == "storage.type.function.asp") {
                 var val = token.value.toLowerCase();
                 if (val in indentKeywords) {
+                    if (isSecondOfDoubleKeyword(tokens, i)) {
+                        continue;
+                    }
                     switch (val) {
                         case "property":
                         case "sub":
@@ -570,6 +691,14 @@ oop.inherits(Mode, TextMode);
         var startToken = session.getTokenAt(row, column);
         if (startToken) {
             var val = startToken.value.toLowerCase();
+            if (/^\s+$/.test(val)) {
+                column = column + val.length;
+                startToken = session.getTokenAt(row, column);
+                if (!startToken) {
+                    return;
+                }
+                val = startToken.value.toLowerCase();
+            }
             if (val in this.indentKeywords)
                 return this.foldingRules.vbsBlock(session, row, column, tokenRange);
         }

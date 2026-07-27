@@ -91,7 +91,7 @@
  * @property Question[] $quotableQuestions
  *
  * @property integer $countFullAnswers Full-answers count
- * @property integer $countPartialAnswers Full-answers count
+ * @property integer $countIncompleteAnswers Incomplete-answers count
  * @property integer $countTotalAnswers Total-answers count
  * @property integer $groupsCount Number of groups in a survey (in base language)
  * @property array $surveyinfo

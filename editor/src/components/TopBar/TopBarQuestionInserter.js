@@ -7,6 +7,7 @@ import {
   SCALE_2,
   STATES,
   NEW_OBJECT_ID_PREFIX,
+  createQuestionGroup,
   createBufferOperation,
   getAnswerExample,
   getNextAnswerCode,
@@ -75,20 +76,13 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
   }
 
   const addQuestionGroup = () => {
-    const groupId = RandomNumber()
-    const newQuestionGroup = {
-      gid: NEW_OBJECT_ID_PREFIX + groupId,
+    const questionGroupTypeInfo = getQuestionTypeInfo().QUESTION_GROUP
+    const newQuestionGroup = createQuestionGroup({
       sid: surveyID,
-      type: getQuestionTypeInfo().QUESTION_GROUP.type,
-      theme: getQuestionTypeInfo().QUESTION_GROUP.theme,
-      l10ns: {
-        [language]: {
-          groupName: '',
-          description: '',
-        },
-      },
-      questions: [],
-    }
+      language,
+      type: questionGroupTypeInfo.type,
+      theme: questionGroupTypeInfo.theme,
+    })
 
     handleAddQuestionGroup(newQuestionGroup)
     setIsAddingQuestionOrGroup(false)

@@ -85,12 +85,14 @@ export const EditorContextController = ({ children }) => {
 
   useEffect(() => {
     let numberOfQuestions = 0
-    if (!survey?.questionGroups || !survey?.showXQuestions) {
+    if (!survey?.questionGroups) {
       return
     }
+
     for (const questionGroup of survey.questionGroups) {
       numberOfQuestions += questionGroup.questions.length
     }
+
     setNumberOfQuestions(numberOfQuestions)
   }, [survey.questionGroups])
 

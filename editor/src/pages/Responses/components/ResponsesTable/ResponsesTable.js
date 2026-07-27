@@ -478,9 +478,7 @@ export const ResponsesTable = ({
             language={survey.language}
             survey={survey}
             meta={{ ...clickedRowRef.current?.original?.meta }}
-            onSave={(valueInfo) =>
-              handleOnSave(valueInfo, clickedRowRef.current)
-            }
+            onSave={(valueInfo) => handleOnSave(valueInfo, responseViewRowInfo)}
             OnCancel={() => setShowQuestionComponent(false)}
             canGoNextResponse={
               table.getCanNextPage() ||

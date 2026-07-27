@@ -179,8 +179,8 @@ class TranslateLinksTest extends TestBaseClass
         \Yii::app()->getRequest()->setHostInfo('http://www.example.com');
         \Yii::app()->getRequest()->setBaseUrl('');
 
-        // Default public url
-        \Yii::app()->setConfig('publicurl', \Yii::app()->baseUrl . '/');
+        // Default public url (relative - no scheme/host)
+        \Yii::app()->setConfig('publicurl', '/');
 
         $link = translateLinks('label', '111111', '222222', $linkString);
 

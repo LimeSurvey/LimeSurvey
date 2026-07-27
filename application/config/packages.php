@@ -195,9 +195,6 @@ return [
             'build.min/js/globalsidepanel.js'
         ]
         ),
-        'css'        => [
-            'build.min/css/main.css'
-        ],
         'depends'    => [
             'adminbasics'
         ]

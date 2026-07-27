@@ -1,6 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
 
+    # Pass Authorization header to PHP (required for PHP-FPM/CGI setups)
+    RewriteCond %{HTTP:Authorization} .+
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     # If the request is NOT for the editor folder"
     RewriteCond %{REQUEST_URI} !/editor/ [NC]
     # if a directory or a file exists, use it directly
@@ -18,10 +22,17 @@
     RewriteRule ^composer.json - [F]
     # issue #19865
     RewriteRule ^setdebug.php - [F]
+
+    # deny access to the runtime directory (cache files, application.log, plugin.log)
+    # kept here so protection survives clearing the tmp directory content
+    RewriteRule ^tmp/runtime/ - [F]
 </IfModule>
 
 # deny access to hidden files and directories without mod_rewrite
 RedirectMatch 403 ^/(?!\.well-known/)(.*/)?\.+
+
+# deny access to the runtime directory without mod_rewrite
+RedirectMatch 403 ^/(.*/)?tmp/runtime/
 
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on
