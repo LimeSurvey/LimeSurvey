@@ -105,7 +105,16 @@ export const useQuestionChildren = ({
             scaleId: question.scaleId,
             parentQid: question.qid,
             languages: surveySettings.languages,
-            title: getNextSubQuestionCode(codeToQuestion, question.qid, null),
+            title: getNextSubQuestionCode(
+              {
+                ...question,
+                subquestions:
+                  props.scaleId !== undefined
+                    ? childArray.filter((sq) => sq.scaleId === props.scaleId)
+                    : childArray,
+              },
+              null
+            ),
             ...props,
           })
 

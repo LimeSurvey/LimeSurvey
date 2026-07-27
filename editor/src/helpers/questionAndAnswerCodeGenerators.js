@@ -32,18 +32,13 @@ export const getNextQuestionCode = (codeToQuestion) => {
   return `${maxCode.prefix}${newNumeric.toString().padStart(3, '0')}`
 }
 
-export const getNextSubQuestionCode = (
-  codeToQuestion,
-  questionId,
-  initialCode = null
-) => {
+export const getNextSubQuestionCode = (question, initialCode = null) => {
   let subquestionTitles = []
   if (
     (initialCode === null || initialCode === undefined) &&
-    (questionId !== null || questionId !== undefined) &&
-    (codeToQuestion !== null || codeToQuestion !== undefined)
+    question.qid !== null &&
+    question.qid !== undefined
   ) {
-    const question = findQuestionById(codeToQuestion, questionId)
     const subquestions = question?.subquestions ?? []
     subquestionTitles = subquestions.map((sq) => sq.title).filter(Boolean)
   } else {

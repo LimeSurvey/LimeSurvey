@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 /**
  * Provides keyboard shortcuts for answer/subquestion editing:
@@ -13,17 +13,34 @@ export const useChildKeyboardShortcuts = ({
   handleChildDelete,
   isSurveyActive,
 }) => {
+  const childrenRef = useRef(children)
+
+  useEffect(() => {
+    childrenRef.current = children
+  }, [children])
+
   const getKeyDownHandler = useCallback(
     (childId, index) => (event) => {
       if (isSurveyActive) return
+      if (event.defaultPrevented || event.repeat) return
 
       const isCtrlOrCmd = event.ctrlKey || event.metaKey
+      const isEnterKey =
+        event.key === 'Enter' ||
+        event.code === 'Enter' ||
+        event.code === 'NumpadEnter'
+      const currentChildren = childrenRef.current || []
+
+      if (isCtrlOrCmd && event.shiftKey) {
+        return
+      }
 
       // Ctrl+Enter or Cmd+Enter or Shift+Enter: Add new child after current
-      if (event.key === 'Enter' && (isCtrlOrCmd || event.shiftKey)) {
+      if (isEnterKey && (isCtrlOrCmd || event.shiftKey)) {
         event.preventDefault()
         event.stopPropagation()
-        handleChildAdd(children, entityType, { insertAfterIndex: index })
+        event.nativeEvent?.stopImmediatePropagation?.()
+        handleChildAdd(currentChildren, entityType, { insertAfterIndex: index })
         return
       }
 
@@ -34,12 +51,13 @@ export const useChildKeyboardShortcuts = ({
       ) {
         event.preventDefault()
         event.stopPropagation()
-        if (children.length > 1) {
-          handleChildDelete(childId, children, entityType)
+        event.nativeEvent?.stopImmediatePropagation?.()
+        if (currentChildren.length > 1) {
+          handleChildDelete(childId, currentChildren, entityType)
         }
       }
     },
-    [children, entityType, handleChildAdd, handleChildDelete, isSurveyActive]
+    [entityType, handleChildAdd, handleChildDelete, isSurveyActive]
   )
 
   return { getKeyDownHandler }
