@@ -184,14 +184,14 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       answers.push(
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(codeToQuestion, questionId, 0),
+          code: getNextAnswerCode(null, 0),
           language,
           sortOrder: 1,
           languages: survey.languages,
         }),
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(codeToQuestion, questionId, 1),
+          code: getNextAnswerCode(null, 1),
           sortOrder: 2,
           languages: survey.languages,
         })
@@ -227,14 +227,14 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       answers.push(
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(codeToQuestion, questionId, 2),
+          code: getNextAnswerCode(null, 2),
           languages: survey.languages,
           sortOrder: 3,
           scaleId: SCALE_2,
         }),
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(codeToQuestion, questionId, 3),
+          code: getNextAnswerCode(null, 3),
           languages: survey.languages,
           sortOrder: 4,
           scaleId: SCALE_2,

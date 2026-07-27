@@ -33,16 +33,6 @@ export const useQuestionChildren = ({
   )
 
   // Use useQuery directly to avoid circular dependencies
-  const { data: codeToQuestion = {} } = useQuery({
-    queryKey: ['appState', STATES.CODE_TO_QUESTION],
-    queryFn: () => ({}),
-    staleTime: Infinity,
-    cacheTime: Infinity,
-    meta: {
-      persist: true,
-    },
-  })
-
   const { data: activeLanguage = language } = useQuery({
     queryKey: ['appState', STATES.ACTIVE_LANGUAGE],
     queryFn: () => language,
@@ -96,7 +86,16 @@ export const useQuestionChildren = ({
       entityType === Entities.answer
         ? getAnswerExample({
             qid: question.qid,
-            code: getNextAnswerCode(codeToQuestion, question.qid, 0),
+            code: getNextAnswerCode(
+              {
+                ...question,
+                answers:
+                  props.scaleId !== undefined
+                    ? childArray.filter((a) => a.scaleId === props.scaleId)
+                    : childArray,
+              },
+              null
+            ),
             languages: surveySettings.languages,
             ...props,
           })
