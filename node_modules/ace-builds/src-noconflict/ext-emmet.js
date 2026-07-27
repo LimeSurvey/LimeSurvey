@@ -983,7 +983,17 @@ var Editor = require("./editor").Editor;
 
 });
 
-ace.define("ace/ext/emmet",["require","exports","module","ace/keyboard/hash_handler","ace/editor","ace/snippets","ace/range","ace/config","resources","resources","tabStops","resources","utils","actions"], function(require, exports, module){"use strict";
+ace.define("ace/ext/emmet",["require","exports","module","ace/keyboard/hash_handler","ace/editor","ace/snippets","ace/range","ace/config","resources","resources","tabStops","resources","utils","actions"], function(require, exports, module){/**
+ * ## Emmet extension
+ *
+ * Providing HTML/CSS abbreviation expansion, code navigation, and text editing utilities with configurable options and
+ * keyboard shortcuts for rapid web development workflow.
+ *
+ * **Enable:** `editor.setOption("enableEmmet", true)`
+ * or configure it during editor initialization in the options object.
+ * @module
+ */
+"use strict";
 var HashHandler = require("../keyboard/hash_handler").HashHandler;
 var Editor = require("../editor").Editor;
 var snippetManager = require("../snippets").snippetManager;

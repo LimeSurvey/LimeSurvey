@@ -9,7 +9,6 @@ $this->widget(
         'icon' => 'icon-add',
         'htmlOptions' => [
             'class' => 'btn btn-primary tab-dependent-button',
-            'title' => gT('Add new menu'),
             'data-tab' => '#surveymenues'
         ],
     ]

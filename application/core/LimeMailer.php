@@ -702,7 +702,7 @@ class LimeMailer extends PHPMailer
     {
         if (
             'smtp' === $this->Mailer
-            || ('mail' === $this->Mailer && (\PHP_VERSION_ID >= 80000 || stripos(PHP_OS, 'WIN') === 0))
+            || ('mail' === $this->Mailer && stripos(PHP_OS, 'WIN') === 0)
         ) {
             //SMTP mandates RFC-compliant line endings
             //and it's also used with mail() on Windows
@@ -710,16 +710,6 @@ class LimeMailer extends PHPMailer
         } else {
             //Maintain backward compatibility with legacy Linux command line mailers
             static::setLE(PHP_EOL);
-        }
-        //Check for buggy PHP versions that add a header with an incorrect line break
-        if (
-            'mail' === $this->Mailer
-            && ((\PHP_VERSION_ID >= 70000 && \PHP_VERSION_ID < 70017)
-                || (\PHP_VERSION_ID >= 70100 && \PHP_VERSION_ID < 70103))
-            && ini_get('mail.add_x_header') === '1'
-            && stripos(PHP_OS, 'WIN') === 0
-        ) {
-            trigger_error($this->lang('buggy_php'), E_USER_WARNING);
         }
 
         try {

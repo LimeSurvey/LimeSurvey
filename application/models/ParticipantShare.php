@@ -204,7 +204,7 @@ class ParticipantShare extends LSActiveRecord
         $participantIdAndShareUid = $this->participant_id . ',' . $this->share_uid;
 
         if ($isOwner || $isSuperAdmin) {
-            $html = "<input type='checkbox' class='selector_participantShareCheckbox' name='selectedParticipantShare[]' value='" . $participantIdAndShareUid . "' >";
+            $html = "<input type='checkbox' class='selector_participantShareCheckbox massiveActionsCheckbox' name='selectedParticipantShare[]' value='" . $participantIdAndShareUid . "' >";
         } else {
             $html = '';
         }

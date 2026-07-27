@@ -11,6 +11,7 @@ export const subquestionUpdateJoi = Joi.object({
       Joi.object({
         qid: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
         tempId: Joi.alternatives().try(Joi.string(), Joi.number()).optional(), // Optional tempId
+        appKey: Joi.string().optional(),
         parentQid: Joi.alternatives()
           .try(Joi.string(), Joi.number())
           .optional(),

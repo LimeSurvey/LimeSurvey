@@ -17,6 +17,7 @@ import { TooltipContainer } from 'components'
 
 import { RankingAdvancedQuestionSubquestionsPlaceholder } from './RankingAdvancedQuestionSubquestionsPlaceholder'
 import { RankingAdvancedQuestionSubquestions } from './RankingAdvancedQuestionSubquestions'
+import { findFieldname } from 'components/ConditionDesigner/handlers/previousQuestions/utils'
 
 const SUBQUESTIONS_DROPPALE_ID = 'ranking-advanced-subquestions'
 const PLACEHOLDERS_DROPPALE_ID = 'ranking-advanced-placeholders'
@@ -32,12 +33,14 @@ export const RankingAdvancedQuestion = ({
   participantMode,
   language,
   onValueChange = () => {},
+  isTitleFocused,
   handleChildCodeUpdate,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
 
   const [subquestionsHeight, setSubquestionsHeight] = useState([])
   const [subquestionsValue, setSubquestionsValue] = useState(cloneDeep(values))
+  const fieldname = findFieldname({ qid })
 
   const handleOnDragEnd = (dropResult) => {
     if (participantMode) {
@@ -79,10 +82,11 @@ export const RankingAdvancedQuestion = ({
     }
 
     setSubquestionsValue([...subquestionsValue])
-    onValueChange(
-      newSubquestionValue.title,
-      subquestionsValue[destinationIndex].key
+    const newRankings = subquestionsValue.map(
+      (subquestion) => subquestion.value
     )
+    const newRankingsJson = JSON.stringify(newRankings)
+    onValueChange(newRankingsJson, fieldname)
   }
 
   const clearSubquestion = (index) => {
@@ -98,7 +102,11 @@ export const RankingAdvancedQuestion = ({
     }
 
     setSubquestionsValue([...subquestionsValue])
-    onValueChange('', subquestionsValue[index].key)
+    const newRankings = subquestionsValue.map(
+      (subquestion) => subquestion.value
+    )
+    const newRankingsJson = JSON.stringify(newRankings)
+    onValueChange(newRankingsJson, fieldname)
   }
 
   const handleSubquestionUpdate = (value, index) => {
@@ -117,14 +125,18 @@ export const RankingAdvancedQuestion = ({
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div
         data-testid="ranking-advanced-question"
-        className={'ranking-advanced-question d-flex flex-row'}
+        className={'ranking-advanced-question gap-3 d-flex flex-wrap w-100'}
       >
         <Droppable
           key={SUBQUESTIONS_DROPPALE_ID}
           droppableId={SUBQUESTIONS_DROPPALE_ID}
         >
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+            <div
+              className="ranking-advanced-column"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
               <RankingAdvancedQuestionSubquestions
                 isFocused={isFocused}
                 handleSubquestionUpdate={handleSubquestionUpdate}
@@ -134,6 +146,7 @@ export const RankingAdvancedQuestion = ({
                 setSubQuestionsHeight={setSubquestionsHeight}
                 language={language}
                 handleCodeUpdate={handleChildCodeUpdate}
+                isTitleFocused={isTitleFocused}
               />
               {provided.placeholder}
             </div>
@@ -141,7 +154,11 @@ export const RankingAdvancedQuestion = ({
         </Droppable>
         <Droppable droppableId={PLACEHOLDERS_DROPPALE_ID}>
           {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+            <div
+              className="ranking-advanced-placeholder-column"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
               {!isFocused && (
                 <RankingAdvancedQuestionSubquestionsPlaceholder
                   isFocused={isFocused}

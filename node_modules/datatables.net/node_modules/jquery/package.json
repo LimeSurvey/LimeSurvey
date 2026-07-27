@@ -1,0 +1,66 @@
+{
+  "name": "jquery",
+  "title": "jQuery",
+  "description": "JavaScript library for DOM operations",
+  "version": "4.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "node": {
+        "import": "./dist-module/wrappers/jquery.node-module-wrapper.js",
+        "default": "./dist/jquery.js"
+      },
+      "module": {
+        "import": "./dist-module/jquery.module.js",
+        "default": "./dist/wrappers/jquery.bundler-require-wrapper.js"
+      },
+      "import": "./dist-module/jquery.module.js",
+      "default": "./dist/jquery.js"
+    },
+    "./slim": {
+      "node": {
+        "import": "./dist-module/wrappers/jquery.node-module-wrapper.slim.js",
+        "default": "./dist/jquery.slim.js"
+      },
+      "module": {
+        "import": "./dist-module/jquery.slim.module.js",
+        "default": "./dist/wrappers/jquery.bundler-require-wrapper.slim.js"
+      },
+      "import": "./dist-module/jquery.slim.module.js",
+      "default": "./dist/jquery.slim.js"
+    },
+    "./factory": {
+      "node": "./dist/jquery.factory.js",
+      "module": "./dist-module/jquery.factory.module.js",
+      "import": "./dist-module/jquery.factory.module.js",
+      "default": "./dist/jquery.factory.js"
+    },
+    "./factory-slim": {
+      "node": "./dist/jquery.factory.slim.js",
+      "module": "./dist-module/jquery.factory.slim.module.js",
+      "import": "./dist-module/jquery.factory.slim.module.js",
+      "default": "./dist/jquery.factory.slim.js"
+    },
+    "./src/*.js": "./src/*.js"
+  },
+  "main": "dist/jquery.js",
+  "homepage": "https://jquery.com",
+  "author": {
+    "name": "OpenJS Foundation and other contributors",
+    "url": "https://github.com/jquery/jquery/blob/4.0.0/AUTHORS.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jquery/jquery.git"
+  },
+  "keywords": [
+    "jquery",
+    "javascript",
+    "browser",
+    "library"
+  ],
+  "bugs": {
+    "url": "https://github.com/jquery/jquery/issues"
+  },
+  "license": "MIT"
+}

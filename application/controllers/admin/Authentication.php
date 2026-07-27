@@ -187,6 +187,11 @@ class Authentication extends SurveyCommonAction
                             ),
                             'info'
                         );
+                    } else {
+                        Yii::app()->setFlashMessage(
+                            gT('The allowed hosts file (application/config/allowed_hosts.php) could not be created because the application/config directory is not writable. No trusted host restriction is currently enforced. Please make the directory writable, then login again, to enable host header protection.'),
+                            'warning'
+                        );
                     }
                 }
 

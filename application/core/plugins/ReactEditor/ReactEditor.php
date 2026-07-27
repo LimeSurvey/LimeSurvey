@@ -107,7 +107,7 @@ class ReactEditor extends \PluginBase
                 true,
             );
 
-            $shouldShowModal = !$this->hasEditorSettingInDatabase();
+            $shouldShowModal = false;
 
             \Yii::app()->getClientScript()->registerScript(
                 'previewModal',

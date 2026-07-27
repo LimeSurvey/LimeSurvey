@@ -5,8 +5,11 @@ export const SCALE_1 = 0
 export const SCALE_2 = 1
 
 export const NEW_OBJECT_ID_PREFIX = 'temp__'
+export const APP_KEY_PREFIX = 'ls_ce_editor'
 
 export const SOFT_MANDATORY = 'S'
+
+export const OTHER_CODE = '-oth-'
 
 export const ignoreUpdate = '_________________________ignore_update________'
 

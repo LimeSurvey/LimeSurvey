@@ -48,7 +48,6 @@ class Sidemenu {
         const target = menuItem.link_external ? '_blank' : '';
         const tooltip = this.reConvertHTML(menuItem.menu_description);
         const menuItemPartial = menuItem.partial.split('/').pop();
-        const isSelected = this.store.get('lastMenuItemOpen') === menuItemPartial;
 
         return `
             <a data-menu-item="${esc(menuItemPartial)}"
@@ -59,16 +58,11 @@ class Sidemenu {
                title="${esc(tooltip)}"
                data-bs-toggle="tooltip">
                 <div class="col-12 ${esc(menuItem.menu_class || '')}">
-                    <div class="ls-space padding all-0 ${isSelected ? 'col-md-10' : 'col-12'}">
+                    <div class="ls-space padding all-0 col-12">
                         ${this.renderMenuIcon(menuItem)}
-                        <span>${esc(menuItem.menu_title)}</span>
+                        <span>${menuItem.menu_title}</span>
                         ${menuItem.link_external ? '<i class="ri-external-link-fill">&nbsp;</i>' : ''}
                     </div>
-                    ${isSelected ? `
-                        <div class="col-md-2 text-center ls-space padding all-0 background white">
-                            <i class="ri-arrow-right-s-line">&nbsp;</i>
-                        </div>
-                    ` : ''}
                 </div>
             </a>
         `;
@@ -78,18 +72,18 @@ class Sidemenu {
         if (!menuItem.menu_icon) return '';
 
         const esc = this.escapeHTML;
-        const iconType = menuItem.menu_icon_type || 'fontawesome';
-        let iconClass = '';
 
-        if (iconType === 'fontawesome') {
-            iconClass = `fa fa-${esc(menuItem.menu_icon)}`;
-        } else if (iconType === 'remix') {
-            iconClass = `ri-${esc(menuItem.menu_icon)}`;
-        } else if (iconType === 'iconClass') {
-            iconClass = esc(menuItem.menu_icon);
+        switch (menuItem.menu_icon_type || 'fontawesome') {
+            case 'fontawesome':
+                return `<i class="fa fa-${esc(menuItem.menu_icon)}">&nbsp;</i>`;
+            case 'image':
+                return `<img width="32px" src="${esc(menuItem.menu_icon)}" />`;
+            case 'iconclass':
+            case 'remix':
+                return `<i class="${esc(menuItem.menu_icon)}">&nbsp;</i>`;
+            default:
+                return '';
         }
-
-        return `<i class="${iconClass}"></i>`;
     }
 
     getHref(menuItem) {

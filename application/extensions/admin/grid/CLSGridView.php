@@ -28,6 +28,13 @@ class CLSGridView extends TbGridView
     public array $lsAdditionalColumnsSelected = [];
 
     /**
+     * When true, the selection bar offers a "Select all" button that selects the
+     * whole result set; massive actions then post a selectAll flag plus the grid filters.
+     * @var bool
+     */
+    public bool $lsSelectAllEnabled = false;
+
+    /**
      * string for a link that is on every row
      * @var string
      */
@@ -40,6 +47,13 @@ class CLSGridView extends TbGridView
     public $caption;
 
     /**
+     * Whether to render the cross-pagination selection bar below the grid.
+     * Set to false for grids that use the FloatingActionsWidget to show the count in the floating bar.
+     * @var bool
+     */
+    public $showSelectionBar = true;
+
+    /**
      *
      * Initializes the widget.
      * @throws CException
@@ -50,8 +64,12 @@ class CLSGridView extends TbGridView
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = 'grid-view-ls';
+        $this->htmlOptions['data-select-all-label'] = gT('Select all');
         $classes = ['table', 'table-hover'];
-        $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
+        $this->template = $this->render('template', [
+            'massiveActionTemplate' => $this->massiveActionTemplate,
+            'showSelectionBar'      => $this->showSelectionBar,
+        ], true);
         $this->rowLink();
         $this->lsAfterAjaxUpdate();
         if (!empty($classes)) {
@@ -100,6 +118,13 @@ class CLSGridView extends TbGridView
             }
         }
         parent::initColumns();
+
+        // Add massiveActionsCheckbox class to the first column if it is a CCheckBoxColumn
+        $firstColumn = reset($this->columns);
+        if ($firstColumn instanceof CCheckBoxColumn) {
+            $existing = isset($firstColumn->checkBoxHtmlOptions['class']) ? $firstColumn->checkBoxHtmlOptions['class'] . ' ' : '';
+            $firstColumn->checkBoxHtmlOptions['class'] = $existing . 'massiveActionsCheckbox';
+        }
     }
 
     /**
@@ -108,26 +133,44 @@ class CLSGridView extends TbGridView
      */
     protected function lsAfterAjaxUpdate(): void
     {
-        $restoreFocusJs = 'if(window.LS&&LS.gridView&&LS.gridView.restoreSortLinkFocus){LS.gridView.restoreSortLinkFocus(id);}';
+        $gridId = CJavaScript::encode($this->id);
 
-        // this will override afterAjaxUpdate if lsAfterAjaxUpdate is defined
-        // please do not override afterAjaxUpdate by default to keep compatibility with base functionality of yii
-        if (isset($this->lsAfterAjaxUpdate)) {
-            $this->afterAjaxUpdate = 'function(id, data){';
-            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
-                $this->afterAjaxUpdate .= $jsCode;
-            }
-            $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
-            $this->afterAjaxUpdate .= 'LS.rowlink.create();';
-            if (!empty($this->lsAdditionalColumns)) {
-                $this->afterAjaxUpdate .= 'initColumnFilter();';
-            }
-            $this->afterAjaxUpdate .= $restoreFocusJs;
-            $this->afterAjaxUpdate .= '}';
-        } elseif ($this->ajaxUpdate !== false && $this->ajaxUpdate !== null && $this->afterAjaxUpdate === null) {
-            // Grids without lsAfterAjaxUpdate: still restore sort-link focus after AJAX refresh
-            $this->afterAjaxUpdate = 'function(id, data){' . $restoreFocusJs . '}';
+        // Always restore persisted checkbox selection after an AJAX page update.
+        // LS.gridSelection is registered for every CLSGridView via registerGridviewScripts().
+        $alwaysJs  = 'LS.gridSelection.restoreCheckboxes(' . $gridId . ');';
+
+        // Non-AJAX grids have no afterAjaxUpdate callback to build
+        if ($this->ajaxUpdate === false) {
+            return;
         }
+
+        $parts = [];
+
+        // Preserve any existing afterAjaxUpdate set by the caller
+        if ($this->afterAjaxUpdate !== null) {
+            $definedFunction = ($this->afterAjaxUpdate instanceof CJavaScriptExpression)
+                ? (string) $this->afterAjaxUpdate // has a __toString magic function which returns the code
+                : $this->afterAjaxUpdate;
+            // execute the defined function preserving `this` context from the grid settings object
+            $parts[] = '(' . $definedFunction . ').call(this, id, data);';
+        }
+
+        // Add per-grid custom snippets from lsAfterAjaxUpdate
+        if (isset($this->lsAfterAjaxUpdate)) {
+            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
+                $parts[] = $jsCode;
+            }
+        }
+
+        // Always include selection restore and standard handlers
+        $parts[] = $alwaysJs;
+        $parts[] = 'LS.gridView.afterAjaxUpdate(id, data);';
+
+        if (!empty($this->lsAdditionalColumns)) {
+            $parts[] = 'initColumnFilter();';
+        }
+
+        $this->afterAjaxUpdate = 'function(id, data){' . implode('', $parts) . '}';
     }
 
     /**
@@ -148,88 +191,49 @@ class CLSGridView extends TbGridView
 
     private function registerGridviewScripts()
     {
+        $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
+
+        // Grid selection // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'gridSelection.js',
+            CClientScript::POS_BEGIN
+        );
+
         // Scrollbar
         App()->clientScript->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
+            $extensionsUrl . 'gridScrollbar.js',
             CClientScript::POS_BEGIN
         );
         // Accessibility: restore focus to sort column after AJAX grid update
         App()->clientScript->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/assets/restoreFocusAfterSort.js',
+            $extensionsUrl . 'restoreFocusAfterSort.js',
             CClientScript::POS_BEGIN
         );
-        // changePageSize
-        $script = '
-			jQuery(document).on("change", "#' . $this->id . ' .changePageSize", function(){
-				var pageSizeName = $(this).attr("name");
-				if (!pageSizeName) {
-					pageSizeName = "pageSize";
-				}
-				var data = $("#' . $this->id . ' .filters input, #' . $this->id . ' .filters select").serialize();
-				data += (data ? "&" : "") + pageSizeName + "=" + $(this).val();
-				$.fn.yiiGridView.update("' . $this->id . '", {data: data});
-			});
-		';
-        App()->getClientScript()->registerScript('pageChanger#' . $this->id, $script, LSYii_ClientScript::POS_POSTSCRIPT);
-
-        // Accessibility: announce "Select all" for header checkboxes (id ending with _all)
-        $selectAllLabel = gT('Select all');
-        $scriptAria = 'jQuery(document).ready(function(){ jQuery("#' . $this->id . ' input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
-        App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll#' . $this->id, $scriptAria, LSYii_ClientScript::POS_POSTSCRIPT);
-        if (!App()->getClientScript()->isScriptRegistered('CLSGridView-ariaSelectAll-ajax')) {
-            $scriptAriaAjax = 'jQuery(document).ajaxComplete(function(){ jQuery(".grid-view-ls input[type=checkbox][id$=\'_all\']").attr("aria-label", ' . json_encode($selectAllLabel) . '); });';
-            App()->getClientScript()->registerScript('CLSGridView-ariaSelectAll-ajax', $scriptAriaAjax, LSYii_ClientScript::POS_POSTSCRIPT);
-        }
-
-        if (!App()->getClientScript()->isScriptRegistered('CLSGridView-sortAccessibility')) {
-            $sortAccessibility = <<<'JS'
-(function ($) {
-    function storeSortFocus($link) {
-        var $grid = $link.closest('.grid-view-ls');
-        var gid = $grid.attr('id');
-        var attr = $link.attr('data-sort-attribute');
-        if (gid && attr) {
-            sessionStorage.setItem('LS_sortLinkFocus_' + gid, attr);
-        }
-    }
-    function restoreSortLinkFocus(gridId) {
-        var attr = sessionStorage.getItem('LS_sortLinkFocus_' + gridId);
-        if (!attr) {
-            return;
-        }
-        sessionStorage.removeItem('LS_sortLinkFocus_' + gridId);
-        var $link = $('#' + gridId + ' .sort-link[data-sort-attribute]').filter(function () {
-            return $(this).attr('data-sort-attribute') === attr;
-        });
-        if ($link.length) {
-            $link.first()[0].focus({ preventScroll: true });
-        }
-    }
-    $(document).on('keydown', '.grid-view-ls a.sort-link[role="button"]', function (e) {
-        if (e.key === ' ' || e.keyCode === 32) {
-            e.preventDefault();
-            $(this)[0].click();
-        }
-    });
-    $(document).on('click', '.grid-view-ls a.sort-link[data-sort-attribute]', function () {
-        storeSortFocus($(this));
-    });
-    $(document).on('keydown', '.grid-view-ls a.sort-link[data-sort-attribute]', function (e) {
-        if (e.key === 'Enter' || e.keyCode === 13) {
-            storeSortFocus($(this));
-        }
-    });
-    window.LS = window.LS || {};
-    LS.gridView = LS.gridView || {};
-    LS.gridView.restoreSortLinkFocus = restoreSortLinkFocus;
-})(jQuery);
-JS;
-            App()->getClientScript()->registerScript(
-                'CLSGridView-sortAccessibility',
-                $sortAccessibility,
-                LSYii_ClientScript::POS_POSTSCRIPT
-            );
-        }
+        // Row link: make entire table rows clickable via data-rowlink attribute
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'rowLink.js',
+            CClientScript::POS_END
+        );
+        // Page size selector
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'changePageSize.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: aria-label for "Select all" checkboxes
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'ariaSelectAll.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: keyboard navigation and focus management for sort links
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'sortAccessibility.js',
+            CClientScript::POS_END
+        );
+        // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'afterAjaxUpdate.js',
+            CClientScript::POS_END
+        );
     }
 
     /**
