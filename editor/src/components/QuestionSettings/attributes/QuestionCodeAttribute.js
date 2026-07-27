@@ -54,12 +54,14 @@ export const QuestionCodeAttribute = ({ value, update, disabled = false }) => {
       (key) => newCodeToQuestion[key].question?.qid === focused?.qid
     )
 
-    if (!keyToUpdate) {
+    if (!keyToUpdate || keyToUpdate === newValue) {
       return
     }
 
-    newCodeToQuestion[newValue] = newCodeToQuestion[keyToUpdate]
-    newCodeToQuestion[newValue].question.title = newValue
+    newCodeToQuestion[newValue] = {
+      ...newCodeToQuestion[keyToUpdate],
+      question: { ...newCodeToQuestion[keyToUpdate].question, title: newValue },
+    }
     delete newCodeToQuestion[keyToUpdate]
     setCodeToQuestion(newCodeToQuestion)
   }
