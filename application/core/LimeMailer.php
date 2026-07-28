@@ -476,11 +476,11 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-     * Add replacement to current one
+     * Add and replace current expression replacement to current one
      * @param string[]
      * @return void
      */
-    public function addOrReplaceReplacement($replacements)
+    public function addAndReplaceReplacement($replacements)
     {
         $this->aReplacements = array_merge($this->aReplacements, $replacements);
     }
