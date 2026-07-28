@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.12 (build 260721) to 6.17.13 (build 260728) July 28, 2026
++New feature #AT-2161: Select all responses spanning across multiple pages (#5139) (Stefan K)
+-Fixed issue #AT-2139: Implementation for the floating menu for LS6 (#5126) (Patricia Stell)
+-Fixed issue #AT-2112: Create table when user clicks on participants tab and when adding first participants from CPDB (#5166) (SaraDimoska)
+#Updated translation: Portuguese (Portugal) by ricardo.santos
+#Updated translation: Japanese by c_schmitz, d_inoue, nomoto, yamatt
+
+
 Changes from 6.17.11 (build 260706)  to 6.17.12 (build 260721) July 21, 2026
 -Fixed issue #LE-827: Interface language auto detect inconsistency when switching editor and error in account settings (#5142) (haythem chibani)
 -Fixed issue #AT-2176: Question validation tip value is not exported for additional languages when exporting as txt (#5143) (Rami S. Zaki)
