@@ -123,6 +123,38 @@ class LSYiiApplicationTest extends TestBaseClass
     }
 
     /**
+     * Create a public url with just a route.
+     */
+    public function testCreatePublicUrlHostinfoBaserlUpdatedWithARoute()
+    {
+        self::$testHelper::setUrlToExpectedDefault(\CUrlManager::PATH_FORMAT);
+        Yii::app()->getRequest()->setHostInfo('http://example.org');
+        Yii::app()->getUrlManager()->setBaseUrl('/limesurvey');
+        Yii::app()->setConfig('publicurl', 'http://www.example.com/');
+
+        Yii::app()->getUrlManager()->showScriptName = true;
+        $url = Yii::app()->createPublicUrl('controller/action');
+        $this->assertSame('http://www.example.com/index.php/controller/action', $url, 'Unexpected url if hostinfo and baseurl is set. The url does not correspond with a public url and a route with showScriptName and urlformat to path.');
+
+        Yii::app()->getUrlManager()->showScriptName = false;
+        $url = Yii::app()->createPublicUrl('controller/action');
+        $this->assertSame('http://www.example.com/controller/action', $url, 'Unexpected url if hostinfo and baseurl is set. The url does not correspond with a public url and a route without showScriptName and urlformat to path.');
+
+        self::$testHelper::setUrlToExpectedDefault(\CUrlManager::GET_FORMAT);
+        Yii::app()->getRequest()->setHostInfo('http://example.org');
+        Yii::app()->getUrlManager()->setBaseUrl('/limesurvey');
+        Yii::app()->setConfig('publicurl', 'http://www.example.com/');
+
+        Yii::app()->getUrlManager()->showScriptName = true;
+        $url = Yii::app()->createPublicUrl('controller/action');
+        $this->assertSame('http://www.example.com/index.php?r=controller/action', $url, 'Unexpected url if hostinfo and baseurl is set. The url does not correspond with a public url and a route with showScriptName and urlformat to get.');
+
+        Yii::app()->getUrlManager()->showScriptName = false;
+        $url = Yii::app()->createPublicUrl('controller/action');
+        $this->assertSame('http://www.example.com/?r=controller/action', $url, 'Unexpected url if hostinfo and baseurl is set. The url does not correspond with a public url and a route without showScriptName and urlformat to get.');
+    }
+
+    /**
      * Create a public url with a route and two parameters.
      */
     public function testCreatePublicUrlWithParams()

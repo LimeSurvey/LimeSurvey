@@ -38,6 +38,7 @@ trait LSApplicationTrait
 
     /**
      * Creates an absolute URL based on the given controller and action information.
+     * Check publicurl from config to get the final url
      * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
      * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
      * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
@@ -46,8 +47,11 @@ trait LSApplicationTrait
      */
     public function createPublicUrl($route, $params = array(), $schema = '', $ampersand = '&')
     {
+        /* @var string the base public url set by config or not */
         $sPublicUrl = $this->getPublicBaseUrl(true);
+        /* @var string the base public url without config */
         $sActualAbsoluteBaseUrl = $this->getBaseUrl(true);
+        /* If it's different : update */
         if ($sPublicUrl !== $sActualAbsoluteBaseUrl) {
             /* @var string keep current urlmanager baseUrl */
             $sActualBaseUrl = $this->getUrlManager()->getBaseUrl(false);
