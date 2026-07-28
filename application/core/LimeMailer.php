@@ -912,9 +912,13 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-     * Do the replacements : if current replacement key is set and LimeSurvey core have it too : it reset to the needed one.
-     * @param string $string where need to replace
-     * @return string
+     * Do the replacements : by order
+     * 1. Core replacement (SID, ADMINNAME ...)
+     * 2. Token replacement (TOKEN:) and if needed FIRSTNAME, LASTNAME AND ATTRIBUTE_X
+     * 3. The aReplacements set by external function
+     * The aReplacements can replace core and token replacement (by key)
+     * @param string $string original string
+     * @return string updated by LimeExpressionManager
      */
     public function doReplacements($string)
     {
