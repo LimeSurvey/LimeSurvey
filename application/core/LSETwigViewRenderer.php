@@ -739,16 +739,10 @@ window.addEventListener('message', function(event) {
          * operation runs only once per request; subsequent calls return the input unchanged.
          *
          * @param array $aSurveyInfo Survey rendering data; must contain at least `sid` when available.
-         * @return array The updated `$aSurveyInfo` array with `datasecurity_notice_label` and `datasecurity_error` ensured and the notice label rendered as HTML.
+         * @return array The updated `$aSurveyInfo` array with `datasecurity_notice_label` and `datasecurity_error` ensured.
          */
     private function setDefaultPrivacyText($aSurveyInfo)
     {
-        /* Do it one time only (and do not recall self when using renderPartial) */
-        static $DefaultPrivacyDone = false;
-        if ($DefaultPrivacyDone) {
-            return $aSurveyInfo;
-        }
-        $DefaultPrivacyDone = true;
         if (empty($aSurveyInfo['datasecurity_notice_label'])) {
             $aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
         }
@@ -759,13 +753,6 @@ window.addEventListener('message', function(event) {
         $translation = [
             "Show policy" => gT("Show policy")
         ];
-        $aSurveyInfo['datasecurity_notice_label'] =  $this->renderPartial(
-            './subviews/privacy/privacy_datasecurity_notice_label.twig',
-            [
-                'dataSecurityNoticeLabel' => $aSurveyInfo['datasecurity_notice_label'],
-                'sid' => $aSurveyInfo['sid'],
-            ]
-        );
         return $aSurveyInfo;
     }
 
