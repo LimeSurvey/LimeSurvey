@@ -3153,7 +3153,6 @@ class LimeExpressionManager
                 'exclusive_options' => array_merge($oldeo, $neweo),
             ];
         }
-
         foreach ($rowdivids as $sq) {
             $sq['eqn'] = implode(' and ', array_unique(array_merge($sq['eqns'], $sq['exclusive_options'])));   // without array_unique, get duplicate of filters for question types 1, :, and ;
             $eos = array_unique($sq['exclusive_options']);
@@ -3781,17 +3780,28 @@ class LimeExpressionManager
                 switch ($type) {
                     case Question::QT_L_LIST:// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                        if (!is_null($ansArray)) {
-                            foreach (array_keys($ansArray) as $key) {
-                                $parts = explode('~', $key);
-                                if ($parts[1] == '-oth-') {
-                                    $parts[1] = 'other';
+                        if (str_ends_with($varName, '_other') && $other == "Y") {
+                            $q2subqInfo[$questionNum]['subqs'][] = [
+                                'rowdivid' => 'Q' . $questionNum . '_Cother',
+                                'varName'  => $varName,
+                                'sqsuffix' => '_other',
+                                'csuffix' => '_Cother',
+                            ];
+                        } else {
+                            $Answers = Answer::model()->findAll([
+                                'select' => 'aid, code',
+                                'condition' => 'qid = :qid and scale_id = 0',
+                                'params' => [':qid' => $questionNum],
+                            ]);
+                            if (!is_null($Answers)) {
+                                foreach ($Answers as $Answer) {
+                                    $q2subqInfo[$questionNum]['subqs'][] = [
+                                        'rowdivid' => 'Q' . $questionNum . '_S' . $Answer->aid,
+                                        'varName'  => $varName,
+                                        'sqsuffix' => '_' . $Answer->code,
+                                        'csuffix' => '_S' . $Answer->aid,
+                                    ];
                                 }
-                                $q2subqInfo[$questionNum]['subqs'][] = [
-                                    'rowdivid' => 'Q' . $questionNum . $parts[1],
-                                    'varName'  => $varName,
-                                    'sqsuffix' => '_' . $parts[1],
-                                ];
                             }
                         }
                         break;
@@ -8057,6 +8067,17 @@ class LimeExpressionManager
     }
 
     /**
+     * Unset the specified temporary variable replacements
+     */
+    public static function unsetTempVars(array $keys)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        foreach ($keys as $key) {
+            unset($LEM->tempVars[$key]);
+        }
+    }
+
+    /**
      * Unit test strings containing expressions
      */
     public static function UnitTestProcessStringContainingExpressions()
@@ -9382,8 +9403,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
             if ($aSurveyInfo['surveyls_policy_notice_label'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
-                $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'], 0);
+                $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'], 0, ['STARTPOLICYLINK' => gT("Start of the link that opens the privacy policy popup"), 'ENDPOLICYLINK' => gT("End of the link that opens the privacy policy popup")]);
                 $sPrint = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                LimeExpressionManager::unsetTempVars(['STARTPOLICYLINK', 'ENDPOLICYLINK']);
                 $errClass = "";
                 if ($LEM->em->HasErrors()) {
                     $errClass = 'danger';

@@ -639,6 +639,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
     // Update question code references in custom conditions and relevance expressions
     replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+    replaceExpressionFieldnames($newgid, $aQIDReplacements);
 
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);

@@ -83,7 +83,7 @@ class ReactEditor extends \PluginBase
             // during the render phase – the same code path used by all core
             // packages (jquery, bootstrap, adminsidepanel …) that work reliably
             // even right after a fresh installation.
-             \Yii::setPathOfAlias('reacteditor.js', dirname(__FILE__) . '/js');
+            \Yii::setPathOfAlias('reacteditor.js', dirname(__FILE__) . '/js');
             \Yii::setPathOfAlias('reacteditor.css', dirname(__FILE__) . '/css');
 
             App()->clientScript->addPackage('reacteditor-modal', [

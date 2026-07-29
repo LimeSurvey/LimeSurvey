@@ -17,6 +17,7 @@ import { TooltipContainer } from 'components'
 
 import { RankingAdvancedQuestionSubquestionsPlaceholder } from './RankingAdvancedQuestionSubquestionsPlaceholder'
 import { RankingAdvancedQuestionSubquestions } from './RankingAdvancedQuestionSubquestions'
+import { findFieldname } from 'components/ConditionDesigner/handlers/previousQuestions/utils'
 
 const SUBQUESTIONS_DROPPALE_ID = 'ranking-advanced-subquestions'
 const PLACEHOLDERS_DROPPALE_ID = 'ranking-advanced-placeholders'
@@ -39,6 +40,7 @@ export const RankingAdvancedQuestion = ({
 
   const [subquestionsHeight, setSubquestionsHeight] = useState([])
   const [subquestionsValue, setSubquestionsValue] = useState(cloneDeep(values))
+  const fieldname = findFieldname({ qid })
 
   const handleOnDragEnd = (dropResult) => {
     if (participantMode) {
@@ -84,7 +86,7 @@ export const RankingAdvancedQuestion = ({
       (subquestion) => subquestion.value
     )
     const newRankingsJson = JSON.stringify(newRankings)
-    onValueChange(newRankingsJson, subquestionsValue[destinationIndex].key)
+    onValueChange(newRankingsJson, fieldname)
   }
 
   const clearSubquestion = (index) => {
@@ -104,7 +106,7 @@ export const RankingAdvancedQuestion = ({
       (subquestion) => subquestion.value
     )
     const newRankingsJson = JSON.stringify(newRankings)
-    onValueChange(newRankingsJson, subquestionsValue[index].key)
+    onValueChange(newRankingsJson, fieldname)
   }
 
   const handleSubquestionUpdate = (value, index) => {
