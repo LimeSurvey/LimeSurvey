@@ -69,11 +69,13 @@ const Submenu = ({
 export const Dropdown = ({
   menuItems = [],
   className = '',
+  testId = '',
   toggleSettings = {
     iconClassName: 'ri-more-fill',
     variant: 'light',
     id: '', // must be unique to trigger the menu
     title: '',
+    testId: '',
   },
 }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null)
@@ -82,11 +84,13 @@ export const Dropdown = ({
     <BootstrapDropdown
       className={classNames('lsr-dropdown', className)}
       align="end"
+      data-testid={testId}
     >
       <BootstrapDropdown.Toggle
         variant={toggleSettings.variant}
         className="button me-2"
         id={toggleSettings.id}
+        data-testid={toggleSettings.testId}
         role="menu"
       >
         <i className={toggleSettings.iconClassName}></i>
@@ -105,6 +109,7 @@ export const Dropdown = ({
               submenu,
               checked,
               className,
+              testId,
             },
             index
           ) => (
@@ -132,6 +137,7 @@ export const Dropdown = ({
                     disabled={disabled.state}
                     href={url ? url : '#'}
                     onClick={onClick}
+                    data-testid={testId}
                     className={classNames(className, {
                       'has-checkmark': checked !== undefined,
                     })}

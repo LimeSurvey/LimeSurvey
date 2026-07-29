@@ -44,6 +44,7 @@ export const QuestionGroupHeader = ({
       label: t('Duplicate group'),
       icon: 'ri-file-copy-line',
       onClick: handleDuplicate,
+      testId: 'duplicate-button',
     },
     {
       type: 'item',
@@ -51,6 +52,7 @@ export const QuestionGroupHeader = ({
       icon: 'ri-delete-bin-line',
       onClick: handleDelete,
       className: 'text-danger',
+      testId: 'delete-button',
     },
   ]
 
@@ -121,11 +123,13 @@ export const QuestionGroupHeader = ({
         </div>
         <Dropdown
           className="question-group-actions-dropdown"
+          testId="question-group-meatball-menu"
           menuItems={menuItems}
           toggleSettings={{
             iconClassName: 'ri-more-fill',
             variant: 'light',
             id: 'question-group-actions-menu',
+            testId: 'meatball-menu-button',
             title: '',
           }}
         />
