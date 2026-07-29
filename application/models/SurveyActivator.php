@@ -66,6 +66,11 @@ class SurveyActivator
             return ['error' => 'plugin'];
         }
 
+        // Clear session cache (e.g. from a survey preview run in
+        // the same browser session) before building the response table.
+        $iSurveyId = $this->survey->sid;
+        unset($_SESSION['responses_' . $iSurveyId]);
+
         $this->prepareResponsesTable();
 
         if ($this->isSimulation) {

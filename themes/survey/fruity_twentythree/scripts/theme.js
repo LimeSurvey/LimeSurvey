@@ -474,7 +474,7 @@ var TemplateCoreClass = function TemplateCoreClass() {
      * Must be before ready (event happen before ready)
      */
     hideMultipleColumn: function hideMultipleColumn() {
-      $("[id^='question']").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
+      $("[id^='question'].question-container").on('relevance:on', ".multiple-list [id^='javatbd']", function (event, data) {
         if (event.target != this) return;
         data = $.extend({
           style: 'hidden'
@@ -483,7 +483,7 @@ var TemplateCoreClass = function TemplateCoreClass() {
           $(this).closest(".list-unstyled").removeClass("ls-hidden");
         }
       });
-      $("[id^='question']").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
+      $("[id^='question'].question-container").on('relevance:off', ".multiple-list [id^='javatbd']", function (event, data) {
         if (event.target != this) return;
         data = $.extend({
           style: 'hidden'
@@ -555,22 +555,22 @@ function triggerEmRelevance() {
 /* On question */
 function triggerEmRelevanceQuestion() {
   /* Action on this question */
-  $("[id^='question']").on('relevance:on', function (event, data) {
+  $("[id^='question'].question-container").on('relevance:on', function (event, data) {
     /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. 
     Don't want to stop propagation. */
     if (event.target != this) return;
     $(this).removeClass("ls-irrelevant ls-hidden");
   });
-  $("[id^='question']").on('relevance:off', function (event, data) {
+  $("[id^='question'].question-container").on('relevance:off', function (event, data) {
     if (event.target != this) return;
     $(this).addClass("ls-irrelevant ls-hidden");
   });
   /* In all in one mode : need updating group too */
-  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:on', function (event, data) {
+  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:on', function (event, data) {
     if (event.target != this) return;
     $(this).closest("[id^='group-']").removeClass("ls-hidden");
   });
-  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:off', function (event, data) {
+  $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:off', function (event, data) {
     if (event.target != this) return;
     if ($(this).closest("[id^='group-']").find("[id^='question']").length == $(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length) {
       $(this).closest("[id^='group-']").addClass("ls-hidden");
@@ -608,6 +608,8 @@ function triggerEmRelevanceSubQuestion() {
       }
     }
     if (data.style == 'hidden') {
+      /* In all in one mode : need updating group too */
+      $(this).closest("[id^='group-']").removeClass("ls-hidden");
       updateLineClass($(this));
       updateRepeatHeading($(this).closest(".ls-answers"));
     }
@@ -627,6 +629,10 @@ function triggerEmRelevanceSubQuestion() {
       });
     }
     if (data.style == 'hidden') {
+      /* In all in one mode : need updating group too */
+      if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
+        $(this).closest("[id^='group-']").addClass("ls-hidden");
+      }
       updateLineClass($(this));
       updateRepeatHeading($(this).closest(".ls-answers"));
     }
