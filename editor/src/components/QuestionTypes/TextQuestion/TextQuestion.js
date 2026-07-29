@@ -45,6 +45,7 @@ export const TextQuestion = ({
         <BrowserDetectionTextAnswer
           value={value.value}
           attributes={attributes}
+          onLocationChange={handleOnChange}
         />
       )}
     </div>
