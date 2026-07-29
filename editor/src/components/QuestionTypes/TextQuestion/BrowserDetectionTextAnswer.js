@@ -14,7 +14,7 @@ import { getAttributeValue } from 'helpers'
 
 import './TextQuestion.scss'
 
-const LeafletMapComponent = () => {
+const LeafletMapComponent = (value = {}) => {
   const customIcon = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png',
     iconSize: [25, 41],
@@ -22,24 +22,27 @@ const LeafletMapComponent = () => {
     popupAnchor: [0, -41],
   })
 
+  const valueCords = value?.value?.split(';')
+
+  const center = valueCords
+    ? valueCords
+    : [53.61422133647984, 9.972816890552014]
+
   return (
     <MapContainer
-      center={[53.61422133647984, 9.972816890552014]}
+      center={center}
       zoom={8}
       style={{ height: '350px', width: '100%' }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <LeafLetMarker
-        icon={customIcon}
-        position={[53.61422133647984, 9.972816890552014]}
-      >
+      <LeafLetMarker icon={customIcon} position={center}>
         <Popup>{t('You are here!')}</Popup>
       </LeafLetMarker>
     </MapContainer>
   )
 }
 
-export const BrowserDetectionTextAnswer = ({ attributes = {} }) => {
+export const BrowserDetectionTextAnswer = ({ attributes = {}, value }) => {
   const [browserInfo, setBrowserInfo] = useState(false)
   const locationMapService = getAttributeValue(attributes.location_mapservice)
 
@@ -84,7 +87,7 @@ export const BrowserDetectionTextAnswer = ({ attributes = {} }) => {
           loading="lazy"
         ></iframe>
       )}
-      {locationMapService === '100' && <LeafletMapComponent />}
+      {locationMapService === '100' && <LeafletMapComponent value={value} />}
     </div>
   )
 }
