@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { createBufferOperation, hasTempId, L10ns } from 'helpers'
 import { useBuffer } from 'hooks'
 import { ContentEditor } from 'components/UIComponents'
-import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
+import { Dropdown } from 'components/UIComponents/Dropdown/Dropdown'
 import { ReactComponent as DownArrow } from 'assets/icons/down-arrow.svg'
 
 import { TestValidation } from './QuestionGroupSchema'
@@ -33,6 +33,26 @@ export const QuestionGroupHeader = ({
   const handleDelete = () => {
     deleteGroup()
   }
+
+  const menuItems = [
+    {
+      type: 'header',
+      label: t('Group actions'),
+    },
+    {
+      type: 'item',
+      label: t('Duplicate group'),
+      icon: 'ri-file-copy-line',
+      onClick: handleDuplicate,
+    },
+    {
+      type: 'item',
+      label: t('Delete group'),
+      icon: 'ri-delete-bin-line',
+      onClick: handleDelete,
+      className: 'text-danger',
+    },
+  ]
 
   const focusTitle = useMemo(
     () => isFocused && hasTempId(questionGroup.gid),
@@ -99,13 +119,15 @@ export const QuestionGroupHeader = ({
             <></>
           )}
         </div>
-        <MeatballMenu
-          deleteText={'Delete group'}
-          duplicateText={'Duplicate group'}
-          handleDelete={handleDelete}
-          handleDuplicate={handleDuplicate}
-          onClick={handleFocusGroup}
-          testId="question-group-meatball-menu"
+        <Dropdown
+          className="question-group-actions-dropdown"
+          menuItems={menuItems}
+          toggleSettings={{
+            iconClassName: 'ri-more-fill',
+            variant: 'light',
+            id: 'question-group-actions-menu',
+            title: '',
+          }}
         />
       </div>
     </>

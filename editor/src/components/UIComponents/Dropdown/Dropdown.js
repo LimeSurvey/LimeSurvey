@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Dropdown as BootstrapDropdown } from 'react-bootstrap'
+import classNames from 'classnames'
+
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 
 // {
@@ -66,6 +68,7 @@ const Submenu = ({
 
 export const Dropdown = ({
   menuItems = [],
+  className = '',
   toggleSettings = {
     iconClassName: 'ri-more-fill',
     variant: 'light',
@@ -76,7 +79,10 @@ export const Dropdown = ({
   const [openSubmenu, setOpenSubmenu] = useState(null)
 
   return (
-    <BootstrapDropdown className="lsr-dropdown" align="end">
+    <BootstrapDropdown
+      className={classNames('lsr-dropdown', className)}
+      align="end"
+    >
       <BootstrapDropdown.Toggle
         variant={toggleSettings.variant}
         className="button me-2"
@@ -98,6 +104,7 @@ export const Dropdown = ({
               disabled = {},
               submenu,
               checked,
+              className,
             },
             index
           ) => (
@@ -125,9 +132,9 @@ export const Dropdown = ({
                     disabled={disabled.state}
                     href={url ? url : '#'}
                     onClick={onClick}
-                    className={
-                      checked !== undefined ? 'has-checkmark' : undefined
-                    }
+                    className={classNames(className, {
+                      'has-checkmark': checked !== undefined,
+                    })}
                   >
                     {checked === undefined ? (
                       <>
