@@ -1,6 +1,5 @@
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import { useMemo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
@@ -20,7 +19,7 @@ const imageThemeComponents = [
 ]
 
 export const OptionQuestionEditMode = ({
-  question: { questionThemeName, qid } = {},
+  question: { questionThemeName } = {},
   handleChildLUpdate,
   isFocused,
   handleChildAdd,
@@ -61,10 +60,6 @@ export const OptionQuestionEditMode = ({
   }
 
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
-
-  const questionHasTempId = useMemo(() => {
-    return hasTempId(qid)
-  }, [])
 
   return (
     <div>
@@ -163,11 +158,9 @@ export const OptionQuestionEditMode = ({
                         child[childrenInfo.idKey],
                         index
                       )}
-                      // Focus the child if it's a new child and also if the question is not a new question.
+                      // Focus newly created child as long as question title is not focused.
                       focus={
-                        hasTempId(child[childrenInfo.idKey]) &&
-                        !questionHasTempId &&
-                        !isTitleFocused
+                        hasTempId(child[childrenInfo.idKey]) && !isTitleFocused
                       }
                       showToolbar={true}
                     />
