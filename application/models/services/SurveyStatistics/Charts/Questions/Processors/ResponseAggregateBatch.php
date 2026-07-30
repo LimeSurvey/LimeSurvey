@@ -22,6 +22,7 @@ final class ResponseAggregateBatch
     public const MAX_EXPRESSIONS_PER_QUERY = 1500;
 
     private const KIND_VALUE = 'value';
+    private const KIND_JSON_ELEMENT = 'jsonElement';
     private const KIND_BLANK = 'blank';
     private const KIND_NON_EMPTY = 'nonEmpty';
     private const KIND_ANY_NON_EMPTY = 'anyNonEmpty';
@@ -74,6 +75,20 @@ final class ResponseAggregateBatch
     public function countValue(string $field, string $value): string
     {
         return $this->register(self::KIND_VALUE, $field, $value);
+    }
+
+    /**
+     * Count of rows where the JSON-array column holds the given value at the
+     * given zero-based position (rankings store the whole answer as one JSON
+     * array of codes, the element index being the rank).
+     */
+    public function countJsonArrayValue(string $field, int $position, string $value): string
+    {
+        return $this->register(
+            self::KIND_JSON_ELEMENT,
+            $field . self::FIELD_SEPARATOR . $position,
+            $value
+        );
     }
 
     /**
@@ -285,6 +300,11 @@ final class ResponseAggregateBatch
                 $col = $db->quoteColumnName($request['field']);
                 return 'SUM(CASE WHEN ' . $col . ' = ' . $db->quoteValue($request['value'])
                     . ' THEN 1 ELSE 0 END)';
+            case self::KIND_JSON_ELEMENT:
+                [$field, $position] = explode(self::FIELD_SEPARATOR, $request['field']);
+                return 'SUM(CASE WHEN '
+                    . $this->jsonArrayElementCheck($db, $field, (int)$position, $request['value'])
+                    . ' THEN 1 ELSE 0 END)';
             case self::KIND_BLANK:
                 $col = $db->quoteColumnName($request['field']);
                 return $numeric
@@ -324,6 +344,44 @@ final class ResponseAggregateBatch
             default:
                 return 'COUNT(*)';
         }
+    }
+
+    /**
+     * Predicate testing the element at a zero-based position of a JSON-array
+     * column against a value. Extracting in SQL keeps per-rank counts inside
+     * the shared single scan instead of pulling every row into PHP. The
+     * merged query must survive cells that are not valid JSON (encrypted
+     * rankings live in plain text columns): MySQL/MSSQL guard per row with
+     * JSON_VALID()/ISJSON(); Postgres only gets the ->> operator when the
+     * column really is json/jsonb, because on a text column the operator
+     * itself is a hard SQL error.
+     */
+    private function jsonArrayElementCheck(CDbConnection $db, string $field, int $position, string $value): string
+    {
+        $col = $db->quoteColumnName($field);
+        $quoted = $db->quoteValue($value);
+
+        switch ($db->getDriverName()) {
+            case 'pgsql':
+                if (!$this->isJsonColumn($field)) {
+                    return '1=0';
+                }
+                return "($col ->> $position) = $quoted";
+            case 'sqlsrv':
+            case 'mssql':
+            case 'dblib':
+                $path = $db->quoteValue('$[' . $position . ']');
+                return "(ISJSON($col) = 1 AND JSON_VALUE($col, $path) = $quoted)";
+            default:
+                $path = $db->quoteValue('$[' . $position . ']');
+                return "(JSON_VALID($col) AND JSON_UNQUOTE(JSON_EXTRACT($col, $path)) = $quoted)";
+        }
+    }
+
+    private function isJsonColumn(string $field): bool
+    {
+        $column = SurveyDynamic::model($this->surveyId)->getTableSchema()->getColumn($field);
+        return $column !== null && preg_match('/^jsonb?$/i', (string)$column->dbType) === 1;
     }
 
     /**
