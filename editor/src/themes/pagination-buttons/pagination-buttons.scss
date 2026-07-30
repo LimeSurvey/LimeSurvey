@@ -51,7 +51,7 @@
     box-shadow: none;
 
     &:hover:not(:disabled):not(.active) {
-      background-color: $g-100;
+      background-color: $g-200;
       color: $g-700;
     }
 
