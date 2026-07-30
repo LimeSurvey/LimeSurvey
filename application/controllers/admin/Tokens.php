@@ -410,6 +410,43 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
+     * Returns all token IDs matching the current grid filters as a JSON array.
+     * Called via GET by the FloatingActionsWidget "Select all" button.
+     *
+     * @return void
+     */
+    public function getAllIds(): void
+    {
+        $surveyId = (int) Yii::app()->getRequest()->getParam('surveyid', 0);
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
+            Yii::app()->getRequest()->sendCsrfCookie();
+            header('Content-Type: application/json');
+            echo json_encode([]);
+            Yii::app()->end();
+            return;
+        }
+
+        $model = TokenDynamic::model($surveyId);
+        $model->bEncryption = true;
+
+        // Apply grid filter attributes sent as GET params (e.g. TokenDynamic[firstname]=...)
+        $filters = Yii::app()->getRequest()->getParam('TokenDynamic', []);
+        if (is_array($filters) && !empty($filters)) {
+            $model->setAttributes($filters, false);
+        }
+
+        $criteria         = $model->search()->criteria;
+        $criteria->select = 't.tid';
+        $ids = $model->getCommandBuilder()
+            ->createFindCommand($model->tableSchema, $criteria)
+            ->queryColumn();
+
+        header('Content-Type: application/json');
+        echo json_encode(array_map('intval', $ids));
+        Yii::app()->end();
+    }
+
+    /**
      * Ids of all tokens matching the grid filters posted with a "Select all" massive action.
      *
      * @param int $surveyId

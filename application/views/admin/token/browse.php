@@ -44,9 +44,9 @@ $aLanguageNames = implode(";", $aLanguageNames);
             require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/TokenListMassiveActions.php';
             $floatingActions = \actions\TokenListMassiveActions::getActions((int)$_GET['surveyid']);
             $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
-                'pk'       => 'tid',
-                'gridId'   => 'token-grid',
-                'aActions' => $floatingActions,
+                'pk'           => 'tid',
+                'gridId'       => 'token-grid',
+                'aActions'     => $floatingActions,
             ]);
             ?>
             <?php

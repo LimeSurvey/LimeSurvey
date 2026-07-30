@@ -378,10 +378,11 @@ LS.floatingActions = (function () {
                 function (e) { _onClick.call(this, e, gridId, pk); }
             );
             // ---- "Select all" across pagination ------------------------------
-            if (selectAllUrl) {
-                $(document).on('click' + ns, barSelector + ' .floating-actions-select-all', function (e) {
+            $(document).on('click' + ns, barSelector + ' .floating-actions-select-all', function (e) {
                     e.preventDefault();
                     var $btn = $(this);
+                    var resolvedSelectAllUrl = $btn.data('url') || selectAllUrl;
+                    if (!resolvedSelectAllUrl) { return; }
                     $btn.prop('disabled', true);
 
                     // Collect current grid filter params from the URL / form
@@ -403,7 +404,7 @@ LS.floatingActions = (function () {
                     });
 
                     $.ajax({
-                        url:      selectAllUrl,
+                        url:      resolvedSelectAllUrl,
                         type:     'GET',
                         data:     filterParams,
                         dataType: 'json',
@@ -451,7 +452,6 @@ LS.floatingActions = (function () {
                         }
                     });
                 });
-            }
             // ---- Scroll: keep bar position in sync with table position ---------
             $(window).on('scroll' + ns, function () {
                 _syncBarPosition(gridId);

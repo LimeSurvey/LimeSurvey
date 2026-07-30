@@ -14,6 +14,20 @@ class TokenListMassiveActions
     public static function getActions(int $surveyId): array
     {
         $buttons = [];
+        // Select all across pagination (must stay first, left of Batch-edit)
+        if (\Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read')) {
+            $buttons[] = [
+                'type'        => 'action',
+                'action'      => 'selectAll',
+                'url'         => \App()->createUrl('/admin/tokens/sa/getAllIds', ['surveyid' => $surveyId]),
+                'iconClasses' => 'ri-check-line',
+                'btnClass'    => 'floating-actions-select-all',
+                'text'        => \gT('Select all'),
+                'grid-reload' => 'no',
+                'actionType'  => 'select-all',
+            ];
+        }
+
         // batch edit
         if (\Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'update')) {
             $aLanguageCodes = \Survey::model()->findByPk($surveyId)->getAllLanguages();
