@@ -1,6 +1,6 @@
-<div class="h4">
+<h2 class="h4" id="preview-size-label">
     <?php eT("Preview:"); ?>
-</div>
+</h2>
 <div class="jumbotron message-box">
     <input type='button' value='<?php eT("Mobile"); ?>' id='iphone' class="btn btn-outline-secondary"/>
     <input type='button' value='640x480' id='x640' class="btn btn-outline-secondary"/>
