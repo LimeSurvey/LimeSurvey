@@ -397,7 +397,7 @@ class ParticipantsAction extends SurveyCommonAction
 
             ]
         );
-        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array('permissions' => $aData['permissions']), true, false);
+        // displayParticipants now uses FloatingActionsWidget directly in the view.
 
         // Set page size
         if ($request->getPost('pageSizeParticipantView')) {
@@ -408,6 +408,54 @@ class ParticipantsAction extends SurveyCommonAction
 
         // Loads the participant panel view and display participant view
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
+    }
+
+    /**
+     * Return all participant IDs matching the current CPDB filter set.
+     * Used by FloatingActionsWidget "Select all" across pagination.
+     *
+     * @return void
+     */
+    public function getAllParticipantIds()
+    {
+        if (!Permission::model()->hasGlobalPermission('participantpanel', 'read')) {
+            header('Content-Type: application/json; charset=UTF-8');
+            echo ls_json_encode([]);
+            Yii::app()->end();
+        }
+
+        $request = Yii::app()->request;
+        $model = new Participant();
+        if (Yii::app()->getConfig('hideblacklisted') === 'Y') {
+            $model->blacklisted = 'Y';
+        }
+
+        $participantParam = $request->getParam('Participant');
+        if (is_array($participantParam)) {
+            $model->setAttributes($participantParam, false);
+        }
+
+        $searchcondition = $request->getParam('searchcondition');
+        if (is_array($searchcondition)) {
+            $searchcondition = reset($searchcondition);
+        }
+        if (!empty($searchcondition)) {
+            $searchparams = explode('||', (string) $searchcondition);
+            $model->addSurveyFilter($searchparams);
+        }
+
+        $model->bEncryption = true;
+        $provider = $model->search();
+        $provider->setPagination(false);
+
+        $ids = [];
+        foreach ($provider->getData() as $participant) {
+            $ids[] = (string) $participant->id;
+        }
+
+        header('Content-Type: application/json; charset=UTF-8');
+        echo ls_json_encode($ids);
+        Yii::app()->end();
     }
 
 
