@@ -3,8 +3,6 @@
 namespace LimeSurvey\Helpers\Update;
 
 use CException;
-use Question;
-use SurveyDynamic;
 use Yii;
 
 class Update_709 extends DatabaseUpdateBase
@@ -174,7 +172,7 @@ class Update_709 extends DatabaseUpdateBase
     protected function updateRankingSubQuestionTypes()
     {
         $typeCol = $this->db->quoteColumnName('type');
-        $rankingKey = Question::QT_R_RANKING;
+        $rankingKey = 'R';
 
         switch (Yii::app()->db->getDriverName()) {
             case 'mysqli':
@@ -193,6 +191,20 @@ class Update_709 extends DatabaseUpdateBase
     }
 
     /**
+     * Collects the table column names using Yii's database-agnostic schema method
+     * Works with MySQL, PostgreSQL, SQL Server and any other Yii1-supported driver
+     * @param string $table the table name
+     * @return array array of column names
+     */
+    protected function findColumns(string $table): array
+    {
+        $tableSchema = $this->db->getSchema()->getTable($table);
+        if ($tableSchema === null) {
+            return [];
+        }
+        return array_keys($tableSchema->columns);
+    }
+    /**
      * Adjust ranking questions to be of JSON type
      *
      * @inheritDoc
@@ -202,32 +214,27 @@ class Update_709 extends DatabaseUpdateBase
     {
         $this->updateRankingSubQuestionTypes();
 
-        $rankingKey = Question::QT_R_RANKING;
-        $rankingQuestionQuery = "
-            SELECT s.sid AS sid, q1.qid AS parent_qid, q2.qid AS qid
-            FROM {{surveys}} s
-            JOIN {{questions}} q1
-            ON s.sid = q1.sid AND s.active = 'Y'
-            JOIN {{questions}} q2
-            ON q1." . $this->db->quoteColumnName("type") . " = '{$rankingKey}' AND q1.qid = q2.parent_qid
-            ORDER BY q1.sid, q1.qid, q2.question_order
-        ";
-        $rankingQuestionResult = $this->db->createCommand($rankingQuestionQuery)->query();
+        $rankingKey = 'R';
+        $rankingQuestionResult = $this->db->createCommand()
+            ->select('s.sid AS sid, q1.qid AS parent_qid, q2.qid AS qid')
+            ->from('{{surveys}} s')
+            ->join('{{questions}} q1', 's.sid = q1.sid AND s.active = :active', [':active' => 'Y'])
+            ->join('{{questions}} q2', 'q1.' . $this->db->quoteColumnName('type') . ' = :rankingKey AND q1.qid = q2.parent_qid', [':rankingKey' => $rankingKey])
+            ->order('q1.sid, q1.qid, q2.question_order')
+            ->query();
         $sid = null;
         $alterMap = [];
-        $model = null;
         $columns = null;
         foreach ($rankingQuestionResult as $rqr) {
             if ($rqr['sid'] !== $sid) {
                 $sid = $rqr['sid'];
                 $alterMap[$sid] = [];
-                $model = SurveyDynamic::model($sid);
-                $columns = $model->metaData->columns;
+                $columns = $this->findColumns((Yii::app()->db->tablePrefix ?? "") . "responses_{$sid}");
             }
             if (!isset($alterMap[$sid][$rqr['parent_qid']])) {
                 $alterMap[$sid][$rqr['parent_qid']] = [];
             }
-            if (isset($columns["Q{$rqr["parent_qid"]}_S{$rqr["qid"]}"])) {
+            if (in_array("Q{$rqr["parent_qid"]}_S{$rqr["qid"]}", $columns)) {
                 $alterMap[$sid][$rqr['parent_qid']][] = "Q{$rqr["parent_qid"]}_S{$rqr["qid"]}";
             };
         }
