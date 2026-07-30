@@ -378,6 +378,7 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aGroups'][1]["showdescription"] = true;
         $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["SGQ"]           = "1234X56X79";
         $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
 
         // If called from command line to generate Twig temp, renderPartial doesn't exist in ConsoleApplication
@@ -390,6 +391,7 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
 
         $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["SGQ"]           = "1234X56X78";
         $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
         if (method_exists(Yii::app()->getController(), 'renderPartial')) {
             $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
