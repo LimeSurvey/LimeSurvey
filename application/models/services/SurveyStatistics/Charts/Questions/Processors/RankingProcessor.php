@@ -2,8 +2,6 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
-
 class RankingProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
@@ -14,56 +12,56 @@ class RankingProcessor extends AbstractQuestionProcessor
     public function process()
     {
         $this->rt();
-        $charts = [];
         $subQuestions = $this->question['subQuestions'];
 
-        $column = substr($this->rt, 1);
-        $rawValues = $this->fetchColumnValues($column);
+        // One response column per rank slot; each holds the code of the answer
+        // placed at that rank.
+        $rankColumns = [];
+        foreach ($subQuestions as $subQuestion) {
+            $rankColumns[] = substr($this->rt, 1) . '_S' . $subQuestion['qid'];
+        }
+
+        $codes = array_column($subQuestions, 'title');
+        $labels = array_column($subQuestions, 'question');
+        $items = $this->buildBatchItemsForSubquestions($rankColumns, $codes, $labels);
 
         $rankCount = count($subQuestions);
 
-        $counts = [];
-        foreach ($rawValues as $rawValue) {
-            if ($rawValue === null || $rawValue === '') {
-                continue;
-            }
-            $ranking = json_decode((string)$rawValue, true);
-            if (!is_array($ranking)) {
-                continue;
-            }
-            $rank = 0;
-            foreach ($ranking as $itemCode) {
-                $rank++;
-                if ($rank > $rankCount) {
-                    break;
-                }
-                $itemCode = (string)$itemCode;
-                $counts[$itemCode][$rank] = ($counts[$itemCode][$rank] ?? 0) + 1;
-            }
-        }
-
+        $legend = [];
+        $dataItems = [];
+        $position = 0;
         foreach ($subQuestions as $subQuestion) {
-            $itemCode = (string)$subQuestion['title'];
-            $legends = [];
-            $dataItems = [];
+            $ranks = [];
             for ($rank = 1; $rank <= $rankCount; $rank++) {
-                $fieldName = 'RANK ' . $rank;
-                $legends[] = $fieldName;
-                $dataItems[] = [
-                    'key' => $subQuestion['title'],
-                    'title' => $fieldName,
-                    'value' => (int)($counts[$itemCode][$rank] ?? 0),
+                $rankCol = $rankColumns[$rank - 1];
+                // count of responses that placed this option at this rank
+                $ranks[] = [
+                    'position' => $rank,
+                    'value' => $items[$rankCol][1][$position]['value'],
                 ];
             }
-            $charts[] = new StatisticsChartDTO(
-                $this->question['question'] . ': ' . $subQuestion['question'],
-                $legends,
-                $dataItems,
-                $this->calculateTotal($dataItems),
-                ['question' => $this->question]
-            );
+            $position++;
+
+            $legend[] = $subQuestion['question'];
+            $dataItems[] = [
+                'key' => $subQuestion['title'],
+                'title' => $subQuestion['question'],
+                // Total times ranked (any position) drives the bar and ordering.
+                'value' => function () use ($ranks) {
+                    $total = 0;
+                    foreach ($ranks as $rankRow) {
+                        $total += (int) $rankRow['value']();
+                    }
+                    return $total;
+                },
+                'ranks' => $ranks,
+            ];
         }
 
-        return $charts;
+        return [
+            'title' => $this->question['question'],
+            'legend' => $legend,
+            'data' => $dataItems,
+        ];
     }
 }

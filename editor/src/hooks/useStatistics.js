@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
 import { getApiUrl, STATES } from 'helpers'
@@ -16,17 +16,27 @@ export function useStatistics(surveyId, filters) {
   const {
     data: statistics,
     isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
     refetch,
-  } = useQuery({
+  } = useInfiniteQuery({
     queryKey: [STATES.SURVEY_STATISTICS, surveyId, filters],
-    queryFn: () => statisticsService.getSurveyStatistics(surveyId, filters),
-    select: (data) => data.statistics,
+    queryFn: ({ pageParam }) =>
+      statisticsService.getSurveyStatistics(surveyId, filters, pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) =>
+      lastPage?.pagination?.hasMore ? lastPage.pagination.page + 1 : undefined,
+    select: (data) => data.pages.flatMap((page) => page?.statistics ?? []),
     placeholderData: keepPreviousData,
   })
 
   return {
     statistics,
     isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
     refetch,
   }
 }

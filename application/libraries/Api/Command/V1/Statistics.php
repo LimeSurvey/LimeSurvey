@@ -23,6 +23,9 @@ class Statistics implements CommandInterface
 {
     use AuthPermissionTrait;
 
+    /** Default number of charts returned per page */
+    private const DEFAULT_PAGE_SIZE = 15;
+
     protected Permission $permission;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
@@ -73,6 +76,11 @@ class Statistics implements CommandInterface
                 $this->statisticsService->setFilters($this->filters);
             }
 
+            $this->statisticsService->setPagination(
+                $this->getPage(),
+                $this->getPageSize()
+            );
+
             $statistics = $this->statisticsService->run();
         } catch (InvalidArgumentException $exception) {
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
@@ -88,7 +96,20 @@ class Statistics implements CommandInterface
         return $this->responseFactory
             ->makeSuccess([
                 'statistics' => $statistics,
+                'pagination' => $this->statisticsService->getPaginationMeta(),
             ]);
+    }
+
+    private function getPage(): int
+    {
+        $page = Yii::app()->getRequest()->getQueryParams()['page'] ?? 0;
+        return max(0, (int)$page);
+    }
+
+    private function getPageSize(): int
+    {
+        $pageSize = Yii::app()->getRequest()->getQueryParams()['pageSize'] ?? self::DEFAULT_PAGE_SIZE;
+        return max(1, (int)$pageSize);
     }
 
     public function getFilters(): StatisticsResponseFilters

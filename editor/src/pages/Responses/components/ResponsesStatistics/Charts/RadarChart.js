@@ -7,14 +7,14 @@ import {
   Radar,
   ResponsiveContainer,
 } from 'recharts'
-import { COLORS, CustomTooltip } from '../ChartsUtils'
+import { COLORS, CustomTooltip, TruncatedTick } from '../ChartsUtils'
 
 export const RadarChart = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" minHeight={400} height="100%">
       <RechartsRadarChart data={data}>
         <PolarGrid />
-        <PolarAngleAxis dataKey="title" />
+        <PolarAngleAxis dataKey="title" tick={<TruncatedTick dy={4} />} />
         <Radar
           name="Experience"
           dataKey="value"
