@@ -560,6 +560,9 @@ class Tokens extends SurveyCommonAction
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             // CHECK TO SEE IF A Survey participant list EXISTS FOR THIS SURVEY
             if (tableExists('{{tokens_' . $iSurveyId . '}}')) {
+                if (empty($aTokenIds) && Yii::app()->request->getPost('selectAll')) {
+                    $aTokenIds = $this->getFilteredTokenIds((int) $iSurveyId);
+                }
                 $diContainer = \LimeSurvey\DI::getContainer();
                 $attributeService = $diContainer->get(
                     LimeSurvey\Models\Services\ParticipantAttributeService::class
