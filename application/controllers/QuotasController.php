@@ -402,14 +402,16 @@ class QuotasController extends LSBaseController
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
 
         if (!$quotaService->checkActionPermissions($action)) {
-            $this->getResponse()->setHttpHeader('Content-Type', 'application/json');
-            echo json_encode(['success' => false, 'message' => gT('Access denied!')]);
-            Yii::app()->end();
-            return;
+            $this->renderJSON(['success' => false, 'message' => gT('Access denied!')]);
         }
 
+       // $sItems = Yii::app()->request->getPost('sItems', '');
+        //$aQuotaIds = json_decode($sItems) ?? [];
+        //$aQuotaIds = json_decode($sItems) ?? [];
         $sItems = Yii::app()->request->getPost('sItems', '');
-        $aQuotaIds = json_decode($sItems) ?? [];
+        $aQuotaIds = json_decode($sItems, true);
+        $aQuotaIds = is_array($aQuotaIds) ? $aQuotaIds : [];
+
         $errors = $quotaService->multipleItemsAction(
             $aQuotaIds,
             $action,
