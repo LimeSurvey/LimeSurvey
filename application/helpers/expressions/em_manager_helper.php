@@ -5187,6 +5187,11 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] == true) {
                 $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
                 $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
+                if($this->surveyOptions['anonymized']){
+                    //all dates should be anonymized
+                    $sdata['datestamp'] = $this->anonymizeDate();
+                    $sdata['startdate'] = $this->anonymizeDate();
+                }
             }
             if ($this->surveyOptions['ipaddr'] == true) {
                 $sdata['ipaddr'] = getIPAddress();
@@ -5264,6 +5269,10 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                 $_SESSION[$this->sessid]['datestamp'] = gmdate("Y-m-d H:i:s");
                 $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
+                if($this->surveyOptions['anonymized']){
+                    //all dates should be anonymized
+                    $aResponseAttributes['datestamp'] = $this->anonymizeDate();
+                }
             }
             if ($this->surveyOptions['ipaddr']) {
                 $aResponseAttributes['ipaddr'] = getIPAddress();
@@ -5408,11 +5417,10 @@ class LimeExpressionManager
                     Quotas::checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
                 } else {
                     if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
-                        /* Less update : just do what you need to to */
-                        if ($this->surveyOptions['datestamp']) {
+                        if ($this->surveyOptions['datestamp'] && !$this->surveyOptions['anonymized']) {
                             $submitdate = gmdate("Y-m-d H:i:s");
                         } else {
-                            $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                            $submitdate = $this->anonymizeDate();
                         }
                         if (!Response::model($this->sid)->updateByPk($oResponse->id, ['submitdate' => $submitdate]) && $submitdate != $oResponse->submitdate) {
                             LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error occurred when trying to submit your response.'), $this->sid);
@@ -5428,6 +5436,15 @@ class LimeExpressionManager
             'readWrite' => 'N',
         ];
         return $message;
+    }
+
+    /**
+     * Returns an anonymized date stamp.
+     *
+     * @return string
+     */
+    private function anonymizeDate() {
+        return date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
     }
 
     /**
