@@ -9,7 +9,7 @@ import {
   ContentEditor,
   getQuestionTypeInfo,
 } from 'components'
-import { RemoveHTMLTagsInString, STATES } from 'helpers'
+import { hasTempId, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ArraySubQuestionRadioAnswers } from './ArraySubQuestionRadioAnswers'
 import { ArraySubQuestionTextAnswers } from './ArraySubQuestionTextAnswers'
@@ -37,6 +37,8 @@ export const ArrayRow = ({
   isNoAnswer = false,
   code,
   scaleId,
+  isTitleFocused,
+  id = '',
 }) => {
   const { surveyId } = useParams()
 
@@ -118,14 +120,15 @@ export const ArrayRow = ({
           <ContentEditor
             placeholder={placeholder}
             value={titleValue}
-            update={(value) =>
-              handleUpdateL10ns(RemoveHTMLTagsInString(value), index)
-            }
+            update={(value) => handleUpdateL10ns(value, index)}
             className="array-subquestion-content-editor choice"
             style={{
               width: 'fit-content',
             }}
             disabled={isNoAnswer}
+            showToolbar={true}
+            // Focus the child if it's a new child and also if the question is not a new question.
+            focus={hasTempId(id) && !hasTempId(qid) && !isTitleFocused}
           />
         </div>
         <div className="d-flex">

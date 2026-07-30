@@ -1,10 +1,9 @@
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import { useMemo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
-import { useAppState, useSurvey } from 'hooks'
+import { useAppState, useSurvey, useChildKeyboardShortcuts } from 'hooks'
 import { Entities, hasTempId, L10ns, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
@@ -20,7 +19,7 @@ const imageThemeComponents = [
 ]
 
 export const OptionQuestionEditMode = ({
-  question: { questionThemeName, qid } = {},
+  question: { questionThemeName } = {},
   handleChildLUpdate,
   isFocused,
   handleChildAdd,
@@ -43,6 +42,14 @@ export const OptionQuestionEditMode = ({
   }
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
 
+  const { getKeyDownHandler } = useChildKeyboardShortcuts({
+    children: _children,
+    entityType: childrenInfo.entity,
+    handleChildAdd,
+    handleChildDelete,
+    isSurveyActive,
+  })
+
   const getSubquestionStyle = (draggableStyle) => ({
     userSelect: 'none',
     ...draggableStyle,
@@ -54,10 +61,6 @@ export const OptionQuestionEditMode = ({
 
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
 
-  const questionHasTempId = useMemo(() => {
-    return hasTempId(qid)
-  }, [])
-
   return (
     <div>
       <DragAndDrop
@@ -67,8 +70,8 @@ export const OptionQuestionEditMode = ({
       >
         {_children?.map((child, index) => (
           <Draggable
-            key={`${child[childrenInfo.idKey]}-choice`}
-            draggableId={`${child[childrenInfo.idKey]}-choice`}
+            key={`${child.appKey || child[childrenInfo.idKey]}-choice`}
+            draggableId={`${child.appKey || child[childrenInfo.idKey]}-choice`}
             index={index}
           >
             {(provided, snapshot) => (
@@ -146,17 +149,20 @@ export const OptionQuestionEditMode = ({
                           childrenInfo.entity
                         )
                       }
-                      key={`uicomponent-${child[childrenInfo.idKey]}-questionmode`}
+                      key={`uicomponent-${child.appKey || child[childrenInfo.idKey]}-questionmode`}
                       index={index}
                       isFocused={true}
                       idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
                       id={child[childrenInfo.idKey]}
-                      // Focus the child if it's a new child and also if the question is not a new question.
+                      onKeyDown={getKeyDownHandler(
+                        child[childrenInfo.idKey],
+                        index
+                      )}
+                      // Focus newly created child as long as question title is not focused.
                       focus={
-                        hasTempId(child[childrenInfo.idKey]) &&
-                        !questionHasTempId &&
-                        !isTitleFocused
+                        hasTempId(child[childrenInfo.idKey]) && !isTitleFocused
                       }
+                      showToolbar={true}
                     />
                   </div>
                 </div>

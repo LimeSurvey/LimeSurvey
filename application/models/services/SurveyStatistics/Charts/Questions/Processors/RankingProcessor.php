@@ -27,12 +27,6 @@ class RankingProcessor extends AbstractQuestionProcessor
 
         $rankCount = count($subQuestions);
 
-        // One combined chart: a single bar per answer option. The bar value is
-        // the total number of responses that ranked the option (summed across
-        // all positions), and the full per-rank breakdown ('ranks') is attached
-        // so the client can show every position's count in a modal/table. The
-        // client sorts highest-to-lowest and labels the bars by their
-        // leaderboard place (1st, 2nd, ...).
         $legend = [];
         $dataItems = [];
         $position = 0;

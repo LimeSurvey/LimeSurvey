@@ -33,7 +33,11 @@ export const Responses = () => {
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
   const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
-  const { survey = {}, fetchSurvey } = useSurvey(surveyId)
+  const {
+    survey = {},
+    fetchSurvey,
+    refetchQuestionsFieldNamesMap,
+  } = useSurvey(surveyId)
   const { responses, isFetching, mutateOperations } = useResponses(
     surveyId,
     pagination,
@@ -135,6 +139,7 @@ export const Responses = () => {
 
   useEffect(() => {
     fetchSurvey(surveyId)
+    refetchQuestionsFieldNamesMap()
     setTopbarConfig({
       surveyId,
       showAddQuestionButton: false,

@@ -502,14 +502,8 @@ class SurveyThemeHelper
      */
     public static function checkConfigFiles($configFile)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $domDocument = new \DOMDocument();
         $domDocument->load($configFile);
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
         if (!$domDocument) {
             \Yii::log('Invalid config file at ' . $configFile, \CLogger::LEVEL_WARNING, 'application');
             return;

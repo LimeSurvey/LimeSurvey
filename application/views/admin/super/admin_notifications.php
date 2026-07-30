@@ -10,7 +10,7 @@
     <li id='notification-li' class='dropdown nav-item'>
         <a aria-expanded='false' class="nav-link"
             href='#'>
-            <span class='ri-notification-2-line text-muted'></span>
+            <span class='ri-notification-2-line text-read'></span>
 	    <span class='visually-hidden'><?php eT('Notifications'); ?></span>
         </a>
     </li>
@@ -35,8 +35,9 @@
     </li>
 <?php else : ?>
     <li id='notification-li' class='dropdown nav-item' onclick='LS.styleNotificationMenu();'>
-        <a id='admin-notifications-menu-button' class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false' aria-haspopup='true' aria-controls='notification-outer-ul' href='#'>
-            <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
+        <a id='admin-notifications-menu-button' class='nav-link dropdown-toggle'
+           data-bs-toggle='dropdown' role='button' aria-expanded='false'
+           aria-haspopup='true' aria-controls='notification-outer-ul' href='#'>
             <span id='notification-bell' class='ri-notification-2-line <?php echo $bellColor; ?>'></span>
             <span class='visually-hidden'><?php eT('Notifications'); ?></span>
 
@@ -47,7 +48,8 @@
             <span class='caret'></span>
         </a>
 
-        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' aria-labelledby='admin-notifications-menu-button'>
+        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end'
+            aria-labelledby='admin-notifications-menu-button'>
             <li id='notification-inner-li'>
                 <ul id='notification-inner-ul' class='notification-list'>
                     <?php foreach ($notifications as $not) : ?>
@@ -62,14 +64,15 @@
                                 href='#'
                             >
                                 <?php if ($not->status == 'new') : ?>
-                                    <span class='ri-checkbox-blank-circle-fill text-<?php echo $not->display_class; ?>'></span>&nbsp;
-                                    <strong><?php echo $not->title; ?></strong>
-                                    <br />
-                                    <span class='text-muted'><?php echo ellipsize($not->message, 50); ?></span>
+                                    <span class='d-flex align-items-center gap-1'>
+                                        <span class='ri-checkbox-blank-circle-fill text-<?php echo $not->display_class; ?>'></span>
+                                        <strong><?php echo $not->title; ?></strong>
+                                    </span>
+                                    <span><?php echo ellipsize($not->message, 55); ?></span>
                                 <?php else : ?>
-                                    <span class='text-muted'><?php echo $not->title; ?></span>
+                                    <span class='text-read'><?php echo $not->title; ?></span>
                                     <br />
-                                    <span class='text-muted' style='opacity: 0.5;'><?php echo ellipsize($not->message, 50); ?></span>
+                                    <span class='text-read'><?php echo ellipsize($not->message, 55); ?></span>
                                 <?php endif; ?>
                             </a>
                         </li>
@@ -80,8 +83,10 @@
 
             <li id='notification-clear-all'>
                 <a href='#'  class="dropdown-item" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()' data-params="<?= $clearAllNotificationsParams ?>">
-                    <span class='ri-delete-bin-fill text-danger'></span>&nbsp;
-                    <?php eT('Delete all notifications'); ?>
+                    <span class='d-flex align-items-center gap-1'>
+                        <span class='ri-delete-bin-fill text-danger'></span>
+                        <?php eT('Delete all notifications'); ?>
+                    </span>
                 </a>
             </li>
         </ul>

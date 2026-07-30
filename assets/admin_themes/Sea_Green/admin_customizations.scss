@@ -174,3 +174,10 @@ blockquote {
   pointer-events: auto;
   cursor: not-allowed;
 }
+
+// Data consistency / redundancy check (check integrity)
+.data-consistency-list,
+.data-redundancy-list {
+  display: inline-block;
+  text-align: left;
+}

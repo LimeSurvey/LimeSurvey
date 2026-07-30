@@ -13,7 +13,6 @@ import ThemeOptionsImageUpload from '../../../ThemeOptions/ThemeOptionsImageUplo
 export const handleDropdownType = (
   attribute = {},
   keyPath,
-  imageFileList,
   hasFileUpload = false
 ) => {
   return {
@@ -43,7 +42,8 @@ export const handleDropdownType = (
       childComponent: Select,
       subText: hasFileUpload
         ? format(
-            t('Change or upload your own background image (max. file size %s)'),
+            t('Change or upload your own %s image (max. file size %s)'),
+            attribute.title?.split(' ')[0]?.toLowerCase(), // extract image type from title, e.g. "Background image" -> "background"
             FILE_UPLOAD_MAX_SIZE_STRING
           )
         : null,

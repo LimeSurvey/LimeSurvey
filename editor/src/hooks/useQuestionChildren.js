@@ -11,6 +11,8 @@ import {
   getNextAnswerCode,
   getQuestionExample,
   getNextSubQuestionCode,
+  RandomNumber,
+  APP_KEY_PREFIX,
 } from 'helpers'
 import { reportExtras } from 'appInstrumentation'
 import { singleChoiceThemes } from 'components/QuestionTypes'
@@ -31,16 +33,6 @@ export const useQuestionChildren = ({
   )
 
   // Use useQuery directly to avoid circular dependencies
-  const { data: codeToQuestion = {} } = useQuery({
-    queryKey: ['appState', STATES.CODE_TO_QUESTION],
-    queryFn: () => ({}),
-    staleTime: Infinity,
-    cacheTime: Infinity,
-    meta: {
-      persist: true,
-    },
-  })
-
   const { data: activeLanguage = language } = useQuery({
     queryKey: ['appState', STATES.ACTIVE_LANGUAGE],
     queryFn: () => language,
@@ -69,7 +61,11 @@ export const useQuestionChildren = ({
     }
 
     if (newChild) {
-      updatedChildren.push(newChild)
+      if (props.insertAfterIndex !== undefined) {
+        updatedChildren.splice(props.insertAfterIndex + 1, 0, newChild)
+      } else {
+        updatedChildren.push(newChild)
+      }
     }
 
     updatedChildren =
@@ -90,7 +86,16 @@ export const useQuestionChildren = ({
       entityType === Entities.answer
         ? getAnswerExample({
             qid: question.qid,
-            code: getNextAnswerCode(codeToQuestion, question.qid, 0),
+            code: getNextAnswerCode(
+              {
+                ...question,
+                answers:
+                  props.scaleId !== undefined
+                    ? childArray.filter((a) => a.scaleId === props.scaleId)
+                    : childArray,
+              },
+              null
+            ),
             languages: surveySettings.languages,
             ...props,
           })
@@ -99,9 +104,20 @@ export const useQuestionChildren = ({
             scaleId: question.scaleId,
             parentQid: question.qid,
             languages: surveySettings.languages,
-            title: getNextSubQuestionCode(codeToQuestion, question.qid, null),
+            title: getNextSubQuestionCode(
+              {
+                ...question,
+                subquestions:
+                  props.scaleId !== undefined
+                    ? childArray.filter((sq) => sq.scaleId === props.scaleId)
+                    : childArray,
+              },
+              null
+            ),
             ...props,
           })
+
+    newChild.appKey = `${entityType}-${APP_KEY_PREFIX}${RandomNumber()}`
 
     const updatedChildren = filterAndSortChildren(childArray, props, newChild)
 

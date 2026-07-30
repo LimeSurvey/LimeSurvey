@@ -59,7 +59,7 @@
 }
 
 /**
- * .ls-input-group (prefix/sufix): near same behaviour than BS input-group / input-group-addon */
+ * .ls-input-group (prefix/suffix): near same behaviour than BS input-group / input-group-addon */
 /* BUT : only with big screen : see @link https://bugs.limesurvey.org/view.php?id=11882
  * Add .suffix-prefix-force in question to force with little screen too
  **/
