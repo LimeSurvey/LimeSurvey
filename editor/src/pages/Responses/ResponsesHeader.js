@@ -35,7 +35,7 @@ export const ResponsesHeader = ({
             ) : (
               <i className="ri-filter-2-line me-2"></i>
             )}
-            {showFilters ? 'Hide filters' : 'Filter responses'}
+            {showFilters ? t('Hide filters') : t('Filter responses')}
           </Button>
         </div>
         <div>

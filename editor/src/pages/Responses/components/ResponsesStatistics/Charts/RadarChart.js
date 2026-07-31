@@ -16,7 +16,6 @@ export const RadarChart = ({ data }) => {
         <PolarGrid />
         <PolarAngleAxis dataKey="title" tick={<TruncatedTick dy={4} />} />
         <Radar
-          name="Experience"
           dataKey="value"
           stroke={COLORS[1]}
           fill={COLORS[1]}
