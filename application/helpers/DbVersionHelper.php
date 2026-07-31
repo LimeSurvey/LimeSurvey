@@ -52,7 +52,8 @@ class DbVersionHelper
         // MariaDB 10+ prepends a "5.5.5-" replication compatibility prefix to its
         // reported version. Strip it so the real version can be extracted.
         $cleanVersion = preg_replace('/^5\.5\.5-/', '', (string)$serverVersion);
-        $currentVersion = preg_match('/\d+(\.\d+)+/', $cleanVersion, $matches) ? $matches[0] : $cleanVersion;
+        // Accept both multi-segment ("10.3.38") and single-segment ("14") versions.
+        $currentVersion = preg_match('/\d+(\.\d+)*/', $cleanVersion, $matches) ? $matches[0] : '';
 
         if (in_array($driverName, ['mysql', 'mysqli'])) {
             if ($isMariaDb) {
@@ -104,7 +105,8 @@ class DbVersionHelper
             'minimum' => $minimum,
             'minimumLabel' => $minimumLabel ?? $minimum,
             'current' => $currentVersion,
-            'supported' => version_compare($currentVersion, $minimum, '>='),
+            // If the version can't be detected, don't block the connection.
+            'supported' => $currentVersion === '' || version_compare($currentVersion, $minimum, '>='),
         ];
     }
 }
