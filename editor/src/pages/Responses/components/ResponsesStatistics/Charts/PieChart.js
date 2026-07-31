@@ -141,7 +141,7 @@ const renderActiveShapeNew = ({
           className="responses-statistics-pie-label-id"
         >
           <tspan>{id}</tspan>
-          {isOther && <tspan fontStyle="italic"> - Other</tspan>}
+          {isOther && <tspan fontStyle="italic"> - {t('Other')}</tspan>}
         </text>
       )}
 
