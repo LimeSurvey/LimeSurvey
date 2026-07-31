@@ -304,7 +304,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     "afterAjaxResponsesReload();",
                     "onUpdateTokenGrid();",
                     '$("#responses-grid [data-bs-toggle=\'popover\']").popover();',
-                    'bindListItemclick();',
                 ],
                 'massiveActionTemplate' => $filterColumns,
                 'showSelectionBar'     => false,
