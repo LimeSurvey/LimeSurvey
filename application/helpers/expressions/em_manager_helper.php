@@ -9261,7 +9261,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         // End Message
 
         $LEM =& LimeExpressionManager::singleton();
-        $LEM->sPreviewMode = 'logic';
         // We set $LEM->em->resetErrorsAndWarningsOnEachPart = false because, if a string has more than one expression, error information could be lost
         $LEM->em->resetErrorsAndWarningsOnEachPart = false;
         $aSurveyInfo = getSurveyInfo($sid, $_SESSION['LEMlang']);
@@ -9281,6 +9280,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $surveyOptions = [
             'assessments'                 => $assessments === null ? ($aSurveyInfo['assessments'] == 'Y') : $assessments,
             'hyperlinkSyntaxHighlighting' => true,
+            'previewmode'                 => 'logic',
         ];
 
         $varNamesUsed = []; // keeps track of whether variables have been declared
