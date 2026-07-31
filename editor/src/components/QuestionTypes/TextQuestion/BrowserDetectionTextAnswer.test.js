@@ -50,6 +50,7 @@ jest.mock('react-leaflet', () => {
       capturedMapEvents = handlers
       return null
     },
+    useMap: () => ({ setView: jest.fn() }),
   }
 })
 
