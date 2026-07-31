@@ -63,10 +63,7 @@ const CategoryBarChart = ({ category, isPercentage, dataKey, domainMax }) => {
           >
             <XAxis type="number" hide domain={[0, domainMax]} />
             <YAxis type="category" dataKey="title" hide />
-            <Tooltip
-              cursor={{ fill: '#eeeff7' }}
-              content={<CustomTooltip />}
-            />
+            <Tooltip cursor={{ fill: '#eeeff7' }} content={<CustomTooltip />} />
             <Bar dataKey={dataKey} barSize={16} isAnimationActive={false}>
               {options.map((_, index) => (
                 <Cell

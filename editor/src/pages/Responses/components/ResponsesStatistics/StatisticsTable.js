@@ -89,5 +89,7 @@ export const StatisticsTable = ({ data = [], isImage = false }) => {
     },
   ]
 
-  return <LSTable columns={columns} data={withRowIds(data)} rowId="id" resizable />
+  return (
+    <LSTable columns={columns} data={withRowIds(data)} rowId="id" resizable />
+  )
 }
