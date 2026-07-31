@@ -21,7 +21,9 @@
     table.ls-answers th,
     table.ls-answers td,
     table.ls-answers tr {
-      display: block;
+      &:not(.ls-hidden) {
+        display: block;
+      }
     }
 
     & table.ls-answers,
