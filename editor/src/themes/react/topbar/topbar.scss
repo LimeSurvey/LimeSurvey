@@ -9,6 +9,8 @@
       padding: 12px;
       min-width: 250px;
       box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+      --bs-dropdown-link-active-color: #{$g-900};
+      --bs-dropdown-link-active-bg: #{$g-200};
     }
     .dropdown-header {
       font-size: $font-size-xs;
@@ -29,6 +31,11 @@
         background-color: unset;
         border: solid 1px $grape;
         color: $g-900;
+      }
+      &:active,
+      &.active {
+        color: $g-900;
+        background-color: $g-200;
       }
       &.has-submenu {
         display: flex;

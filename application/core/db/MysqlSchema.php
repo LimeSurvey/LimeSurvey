@@ -10,6 +10,10 @@ class MysqlSchema extends CMysqlSchema
          */
         $this->columnTypes['autoincrement'] = 'int(11) NOT NULL AUTO_INCREMENT';
         $this->columnTypes['longbinary'] = 'longblob';
+        /**
+         * JSON.
+         */
+        $this->columnTypes['json'] = 'json';
     }
 
     public function createTable($table, $columns, $options = null)

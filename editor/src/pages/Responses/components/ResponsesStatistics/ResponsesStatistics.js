@@ -1,15 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useState } from 'react'
 
 import { ToggleButtons } from 'components'
-import { useAppState, useStatistics, useSurvey } from 'hooks'
-import { STATES } from 'helpers'
+import { useStatistics } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
 import { ResponsesHeader } from '../../ResponsesHeader'
 import { TAB_KEYS } from '../../utils'
 import { VALUE_TYPE } from './ChartsUtils'
 import { StatisticsContainer } from './StatisticsContainer.js'
-import { buildQuestionOptions } from './StatisticsFiltersModal/utils'
 
 const valueTypeOptions = [
   { name: '%', value: VALUE_TYPE.PERCENTAGE },
@@ -31,27 +29,16 @@ export const ResponsesStatistics = ({
     fetchNextPage,
   } = useStatistics(surveyId, filters)
   const [valueType, setValueType] = useState(VALUE_TYPE.PERCENTAGE)
-  const [loadMoreRef, isLoadMoreInView] = useIsInViewport(null, {
+
+  const [loadMoreRef] = useIsInViewport(null, {
     initialInView: false,
+    rootMargin: '0px 0px 300px 0px',
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage()
+      }
+    },
   })
-
-  // Survey data drives the filter modal's Question / Participant / language
-  // options (same source as StatisticsContainer).
-  const { survey } = useSurvey(surveyId)
-  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
-  const questionOptions = useMemo(
-    () => buildQuestionOptions(survey, activeLanguage),
-    [survey?.questionGroups, activeLanguage]
-  )
-
-  // Auto-load the next page of charts while the sentinel below the list is in
-  // view. Re-runs when fetching settles, so it chains pages as long as the
-  // sentinel stays visible.
-  useEffect(() => {
-    if (isLoadMoreInView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage()
-    }
-  }, [isLoadMoreInView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   const renderContent = () => {
     if (!statistics?.length) {
@@ -86,8 +73,6 @@ export const ResponsesStatistics = ({
           showFilters={showFilters}
           setFilters={setFilters}
           tabKey={TAB_KEYS.STATISTICS}
-          survey={survey}
-          questionOptions={questionOptions}
         />
         <ToggleButtons
           id="statistics-value-type"
@@ -97,8 +82,6 @@ export const ResponsesStatistics = ({
         />
       </div>
       {renderContent()}
-      {/* Sentinel is always mounted so useIsInViewport's observer (set up once
-          on a stable ref) reliably tracks it once the charts render. */}
       <div ref={loadMoreRef} className="responses-statistics-load-more">
         {isFetchingNextPage && <span className="loader"></span>}
       </div>

@@ -250,6 +250,8 @@ class Labels extends SurveyCommonAction
 
             Yii::app()->loadHelper("admin.htmleditor");
 
+            initKcfinder();
+
             $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
             $maxSortOrder = array_reduce(

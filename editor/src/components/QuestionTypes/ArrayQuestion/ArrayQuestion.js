@@ -31,6 +31,7 @@ export const ArrayQuestion = ({
   handleChildDelete,
   handleOnChildDragEnd,
   handleChildCodeUpdate,
+  isTitleFocused,
 }) => {
   const { addToBuffer } = useBuffer()
   const [highestHeight1, setHighestHeight1] = useState(0)
@@ -175,6 +176,7 @@ export const ArrayQuestion = ({
               headersHeight={headersHeight}
               showNoAnswer={showNoAnswer && isArrayPointChoice}
               handleChildCodeUpdate={handleChildCodeUpdate}
+              istitleFocused={isTitleFocused}
             />
             <ArrayRows
               onDragEndCallback={handleOnDragEnd}
@@ -199,6 +201,7 @@ export const ArrayQuestion = ({
               setVerticalEntitiesInfo={setVerticalEntitiesInfo}
               showNoAnswer={showNoAnswer}
               handleChildCodeUpdate={handleChildCodeUpdate}
+              istitleFocused={isTitleFocused}
             />
           </div>
           <div
@@ -255,6 +258,7 @@ export const ArrayQuestion = ({
                 headersHeight={headersHeight}
                 showNoAnswer={showNoAnswer}
                 handleChildLUpdate={handleChildLUpdate}
+                istitleFocused={isTitleFocused}
               />
               <ArrayRows
                 onDragEndCallback={handleOnDragEnd}
@@ -279,6 +283,7 @@ export const ArrayQuestion = ({
                 handleUpdateL10ns={handleUpdateL10ns}
                 setVerticalEntitiesInfo={setVerticalEntitiesInfo}
                 handleChildLUpdate={handleChildLUpdate}
+                istitleFocused={isTitleFocused}
               />
             </div>
             <div

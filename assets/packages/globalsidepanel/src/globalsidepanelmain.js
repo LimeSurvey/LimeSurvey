@@ -41,8 +41,11 @@ const init = () => {
     // Initialize actions
     const actions = new Actions(store);
 
+    const placeholder = container.querySelector('global-sidemenu');
+    const mountEl = placeholder ? placeholder.parentElement : container;
+
     // Initialize main component
-    const globalSidePanel = new GlobalSidemenu(container, store, actions, {
+    const globalSidePanel = new GlobalSidemenu(mountEl, store, actions, {
         Sidemenu
     });
 

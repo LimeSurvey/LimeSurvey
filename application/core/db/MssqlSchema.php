@@ -25,6 +25,10 @@ class MssqlSchema extends CMssqlSchema
         $this->columnTypes['autoincrement'] = 'integer NOT NULL IDENTITY (1,1)';
 
         $this->columnTypes['longbinary'] = 'varbinary(max)';
+        /**
+         * MSSQL has no native JSON type, use nvarchar to store unicode JSON.
+         */
+        $this->columnTypes['json'] = 'nvarchar(max)';
     }
 
 

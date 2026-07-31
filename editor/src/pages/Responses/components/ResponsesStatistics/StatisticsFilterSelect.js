@@ -28,7 +28,9 @@ export const StatisticsFilterSelect = ({
                 style={{ backgroundColor: selected.fill }}
               />
             )}
-            {selectedLabel}
+            <span className="responses-statistics-filter-text">
+              {selectedLabel}
+            </span>
           </span>
         </Dropdown.Toggle>
         <Dropdown.Menu>
@@ -49,7 +51,9 @@ export const StatisticsFilterSelect = ({
                   style={{ backgroundColor: option.fill }}
                 />
               )}
-              {option.title || option.key}
+              <span className="responses-statistics-filter-text">
+                {option.title || option.key}
+              </span>
             </Dropdown.Item>
           ))}
         </Dropdown.Menu>

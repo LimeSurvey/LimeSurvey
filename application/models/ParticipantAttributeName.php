@@ -143,7 +143,7 @@ class ParticipantAttributeName extends LSActiveRecord
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
             return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }
-        return "<input type='checkbox' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
+        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
     }
 
     /**

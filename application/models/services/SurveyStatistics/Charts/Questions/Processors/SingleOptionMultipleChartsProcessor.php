@@ -15,124 +15,88 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
     {
         switch ($this->question['type']) {
             case Question::QT_A_ARRAY_5_POINT:
+                return $this->buildStackedChart(...$this->numericScale(5));
+
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
-                return $this->handleArray5Or10();
+                return $this->buildStackedChart(...$this->numericScale(10));
 
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-                return $this->handleYesUncertainNo();
+                return $this->buildStackedChart(['Y', 'U', 'N'], ['Yes', 'Uncertain', 'No']);
 
             case Question::QT_E_ARRAY_INC_SAME_DEC:
-                return $this->handleIncSameDec();
+                return $this->buildStackedChart(['I', 'S', 'D'], ['Increase', 'Same', 'Decrease']);
 
             case Question::QT_F_ARRAY:
             case Question::QT_H_ARRAY_COLUMN:
-                return $this->handleFOrHArray();
+                return $this->buildStackedChart(...$this->answerScale());
 
             default:
                 return [];
         }
     }
 
-    private function handleArray5Or10(): array
+    /**
+     * @return array{0: string[], 1: string[]}
+     */
+    private function numericScale(int $max): array
     {
-        $charts = [];
-        $max = $this->question['type'] == Question::QT_A_ARRAY_5_POINT ? 5 : 10;
         $codes = array_map('strval', range(1, $max));
-
-        $fieldMap = [];
-        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
-            $fieldMap[$qid] = $this->rt . "_S" . $subQuestion['qid'];
-        }
-
-        $batch = $this->buildBatchItemsForSubquestions(array_values($fieldMap), $codes, $codes);
-
-        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
-            $field = $fieldMap[$qid];
-            [$legend, $items] = $batch[$field];
-            $title = $this->question['question'] . '(' . $subQuestion['question'] . ')';
-            $charts[] = ['title' => $title, 'legend' => $legend, 'data' => $items];
-        }
-
-        return $charts;
+        return [$codes, $codes];
     }
 
-    private function handleYesUncertainNo(): array
+    /**
+     * @return array{0: string[], 1: string[]}
+     */
+    private function answerScale(): array
     {
-        $codes = ['Y', 'N', 'U'];
-        $labels = ['Yes', 'No', 'Uncertain'];
+        $codes = [];
+        $labels = [];
+        foreach ($this->answers as $answer) {
+            if ((int)($answer['scale_id'] ?? 0) !== 0) {
+                continue;
+            }
+            $codes[] = (string)$answer['code'];
+            $labels[] = (string)$answer['answer'];
+        }
 
+        return [$codes, $labels];
+    }
+
+    /**
+     * @param string[] $codes  Answer codes that form the segments
+     * @param string[] $labels Display labels aligned with $codes
+     * @return array Single chart plan
+     */
+    private function buildStackedChart(array $codes, array $labels): array
+    {
         $fieldMap = [];
         foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
+            if ((int)($subQuestion['scale_id'] ?? 0) !== 0) {
+                continue;
+            }
             $fieldMap[$qid] = $this->rt . "_S" . $subQuestion['qid'];
         }
 
         $batch = $this->buildBatchItemsForSubquestions(array_values($fieldMap), $codes, $labels);
 
-        $charts = [];
-        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
-            $field = $fieldMap[$qid];
-            [$legend, $items] = $batch[$field];
-            $title = $this->question['question'] . '[' . $subQuestion['question'] . ']';
-            $charts[] = ['title' => $title, 'legend' => $legend, 'data' => $items];
+        $data = [];
+        foreach ($fieldMap as $qid => $field) {
+            [, $items] = $batch[$field] ?? [[], []];
+            $data[] = [
+                'key' => $this->question['subQuestions'][$qid]['title'],
+                'title' => $this->question['subQuestions'][$qid]['question'],
+                'segments' => $items,
+            ];
         }
 
-        return $charts;
-    }
+        $legend = !empty($data[0]['segments'])
+            ? array_column($data[0]['segments'], 'title')
+            : $labels;
 
-    private function handleIncSameDec(): array
-    {
-        $codes = ['I', 'S', 'D'];
-        $labels = ['Increase', 'Same', 'Decrease'];
-
-        $fieldMap = [];
-        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
-            $fieldMap[$qid] = $this->rt . "_S" . $subQuestion['qid'];
-        }
-
-        $batch = $this->buildBatchItemsForSubquestions(array_values($fieldMap), $codes, $labels);
-
-        $charts = [];
-        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
-            $field = $fieldMap[$qid];
-            [$legend, $items] = $batch[$field];
-            $title = $this->question['question'] . '[' . $subQuestion['question'] . ']';
-            $charts[] = ['title' => $title, 'legend' => $legend, 'data' => $items];
-        }
-
-        return $charts;
-    }
-
-    private function handleFOrHArray(): array
-    {
-        $mainQuestionTitle = $this->question['question'];
-
-        $scale0Fields = [];
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            if ((int)$subQuestion['scale_id'] === 0) {
-                $scale0Fields[] = $this->rt . "_S" . $subQuestion['qid'];
-            }
-        }
-        $counts = $this->batchGetResponseCounts($scale0Fields);
-
-        $stats = [];
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $title = $mainQuestionTitle . "[{$subQuestion['question']}]";
-            $legend = [];
-            $items = [];
-
-            if ((int)$subQuestion['scale_id'] === 0) {
-                $field = $this->rt . "_S" . $subQuestion['qid'];
-                $legend[] = $subQuestion['question'];
-                $items[] = [
-                    'key' => $subQuestion['title'],
-                    'value' => $counts[$field],
-                    'title' => $subQuestion['question']
-                ];
-            }
-
-            $stats[] = ['title' => $title, 'legend' => $legend, 'data' => $items];
-        }
-
-        return $stats;
+        return [
+            'title' => $this->question['question'],
+            'legend' => $legend,
+            'data' => $data,
+        ];
     }
 }

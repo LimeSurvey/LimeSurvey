@@ -10,6 +10,7 @@ export const answerUpdateJoi = Joi.object({
     .items(
       Joi.object({
         tempId: Joi.alternatives().try(Joi.string(), Joi.number()).optional(),
+        appKey: Joi.string().optional(),
         aid: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
         code: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
         sortOrder: Joi.alternatives()

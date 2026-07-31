@@ -9,6 +9,7 @@ use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
+    ArrayTextProcessor,
     MultipleChoiceProcessor,
     ResponseAggregateBatch,
     SingleOptionMultipleChartsProcessor,
@@ -42,6 +43,9 @@ class QuestionStatistics implements StatisticsChartInterface
     /** @var array<string, string>|null Cached type code -> human-readable description map */
     private ?array $typeDescriptions = null;
 
+    /** @var array<int, string[]> Question id -> its response-table column fieldnames */
+    private array $questionFields = [];
+
     public function __construct()
     {
         $this->factories = [
@@ -61,7 +65,7 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_VERTICAL_FILE_UPLOAD => fn() => null,
             Question::QT_U_HUGE_FREE_TEXT => fn() => null,
             Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => null,
-            Question::QT_SEMICOLON_ARRAY_TEXT => fn() => null,
+            Question::QT_SEMICOLON_ARRAY_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_X_TEXT_DISPLAY => fn() => null,
 
             // Single option with multiple graphs for each subquestion
@@ -94,6 +98,7 @@ class QuestionStatistics implements StatisticsChartInterface
 
         $survey = $this->fetchSurveyMetadata();
         $surveyQuestions = $survey['questions'];
+        $this->questionFields = $this->buildQuestionFields();
 
         $batch = new ResponseAggregateBatch($surveyId, $this->filters);
 
@@ -117,18 +122,13 @@ class QuestionStatistics implements StatisticsChartInterface
 
         $eligible = $this->paginate($eligible);
 
-        // Phase 1 — plan: processors describe their charts and register every
-        // aggregate they need in the shared batch.
         $jobs = [];
         foreach ($eligible as [$factory, $question]) {
             $jobs[] = $this->planFactory($factory, $batch, $survey, $question);
         }
 
-        // One scan of the responses table for the whole survey (chunked into
-        // a few queries only for extremely large surveys).
         $batch->execute();
 
-        // Phase 2 — resolve: turn the plans into DTOs with real counts.
         foreach ($jobs as [$plans, $question]) {
             $this->output[] = $this->resolvePlans($plans, $question);
         }
@@ -240,7 +240,9 @@ class QuestionStatistics implements StatisticsChartInterface
         $data = [];
         $total = 0;
         foreach ($plan['data'] as $item) {
-            $item['value'] = (int)$item['value']();
+            if (isset($item['value']) && is_callable($item['value'])) {
+                $item['value'] = (int)$item['value']();
+            }
             // Resolve an optional deferred per-row breakdown (e.g. ranking's
             // per-position counts) the same way as the main value.
             if (!empty($item['ranks']) && is_array($item['ranks'])) {
@@ -250,7 +252,21 @@ class QuestionStatistics implements StatisticsChartInterface
                     }
                 }
             }
-            $total += $item['value'];
+            // Resolve a deferred stacked breakdown (array-type segments); when
+            // the row has no own value, its total is the sum of its segments.
+            if (!empty($item['segments']) && is_array($item['segments'])) {
+                $segmentsTotal = 0;
+                foreach ($item['segments'] as $i => $segment) {
+                    if (isset($segment['value']) && is_callable($segment['value'])) {
+                        $item['segments'][$i]['value'] = $this->toNumber($segment['value']());
+                    }
+                    $segmentsTotal += $this->toNumber($item['segments'][$i]['value']);
+                }
+                if (!isset($item['value']) || !is_numeric($item['value'])) {
+                    $item['value'] = $segmentsTotal;
+                }
+            }
+            $total += is_numeric($item['value'] ?? null) ? $item['value'] : 0;
             $data[] = $item;
         }
 
@@ -261,6 +277,19 @@ class QuestionStatistics implements StatisticsChartInterface
             $total,
             ['question' => $question]
         );
+    }
+
+    /**
+     * Normalise a (possibly numeric-string) value to an int or float,
+     * preserving fractional precision instead of truncating means to whole
+     * numbers. Non-numeric values become 0.
+     *
+     * @param mixed $value
+     * @return int|float
+     */
+    private function toNumber($value)
+    {
+        return is_numeric($value) ? $value + 0 : 0;
     }
 
     /**
@@ -290,6 +319,10 @@ class QuestionStatistics implements StatisticsChartInterface
                 'themeName' => $question['question_theme_name'] ?? null,
                 'help' => $question['help'] ?? null,
                 'attributes' => $question['attributes'] ?? [],
+                // Response-table columns of this question; the client passes
+                // them as `fields` to survey-responses so the comments/answers
+                // views fetch only this question's columns.
+                'fields' => $this->questionFields[(int) ($question['qid'] ?? 0)] ?? [],
             ];
             $dto->setMeta($meta);
         }
@@ -314,12 +347,11 @@ class QuestionStatistics implements StatisticsChartInterface
         $command = Yii::app()->db->createCommand()
             ->select($select)
             ->from('{{questions}} q')
-            ->leftJoin('{{groups}} g', 'q.gid = g.gid')
             ->leftJoin('{{question_l10ns}} ql', 'q.qid = ql.qid AND ql.language = :language')
             ->leftJoin('{{answers}} a', 'q.qid = a.qid')
             ->leftJoin('{{answer_l10ns}} al', 'a.aid = al.aid AND al.language = :language')
             ->leftJoin('{{question_attributes}} qa', 'q.qid = qa.qid')
-            ->where('q.sid = :sid AND (q.parent_qid = 0 OR q.parent_qid IN (SELECT qid FROM {{questions}} WHERE sid = :sid))')
+            ->where('q.sid = :sid AND (q.parent_qid = 0')
             ->order('q.parent_qid ASC, g.group_order ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
 
         $command->params = [
@@ -372,5 +404,32 @@ class QuestionStatistics implements StatisticsChartInterface
         }
 
         return compact('questions', 'answers');
+    }
+
+    /**
+     * Map every question id to its response-table column fieldnames (e.g.
+     * Q12, Q12_S34, Q12_Ccomment). These are the columns the client passes as
+     * `fields` to the survey-responses endpoint to fetch only that question's
+     * answers. Built once per run from the authoritative survey field map.
+     *
+     * @return array<int, string[]>
+     */
+    private function buildQuestionFields(): array
+    {
+        $survey = \Survey::model()->findByPk($this->surveyId);
+        if ($survey === null) {
+            return [];
+        }
+
+        $fieldMap = createFieldMap($survey, 'full', false, false, $this->language);
+
+        $byQid = [];
+        foreach ($fieldMap as $fieldname => $item) {
+            if (!empty($item['qid'])) {
+                $byQid[(int) $item['qid']][] = $fieldname;
+            }
+        }
+
+        return $byQid;
     }
 }

@@ -25,6 +25,7 @@ final class ResponseAggregateBatch
     private const KIND_BLANK = 'blank';
     private const KIND_NON_EMPTY = 'nonEmpty';
     private const KIND_TOTAL = 'total';
+    private const KIND_SUM = 'sum';
 
     private int $surveyId;
 
@@ -37,7 +38,7 @@ final class ResponseAggregateBatch
     /** @var array<string, string> dedup key => alias */
     private array $aliasIndex = [];
 
-    /** @var array<string, int> alias => count */
+    /** @var array<string, int|float> alias => count, or fractional sum for KIND_SUM */
     private array $results = [];
 
     private bool $executed = false;
@@ -81,6 +82,17 @@ final class ResponseAggregateBatch
     }
 
     /**
+     * Sum of the numeric values in a column (non-numeric/empty cells count as
+     * 0). Combined with countNonEmpty() this yields a column mean. The result
+     * preserves up to 4 decimal places, so fractional answers (e.g. 1.5) are
+     * not lost.
+     */
+    public function sumValues(string $field): string
+    {
+        return $this->register(self::KIND_SUM, $field, '');
+    }
+
+    /**
      * Execute all registered aggregates over the responses table.
      */
     public function execute(): void
@@ -104,7 +116,10 @@ final class ResponseAggregateBatch
             $row = $db->createCommand($sql)->queryRow() ?: [];
 
             foreach (array_keys($chunk) as $alias) {
-                $this->results[$alias] = (int)($row[$alias] ?? 0);
+                $value = $row[$alias] ?? 0;
+                // Counts come back as whole numbers; KIND_SUM may be fractional.
+                // "+ 0" yields an int or float, preserving decimal precision.
+                $this->results[$alias] = is_numeric($value) ? $value + 0 : 0;
             }
         }
 
@@ -117,9 +132,12 @@ final class ResponseAggregateBatch
     }
 
     /**
-     * Resolved count for a previously registered alias (0 before execute()).
+     * Resolved value for a previously registered alias (0 before execute()).
+     * Counts are integers; KIND_SUM aggregates may be fractional.
+     *
+     * @return int|float
      */
-    public function value(string $alias): int
+    public function value(string $alias)
     {
         return $this->results[$alias] ?? 0;
     }
@@ -151,6 +169,10 @@ final class ResponseAggregateBatch
             case self::KIND_NON_EMPTY:
                 $col = $db->quoteColumnName($request['field']);
                 return "SUM(CASE WHEN $col IS NOT NULL AND $col <> '' THEN 1 ELSE 0 END)";
+            case self::KIND_SUM:
+                $col = $db->quoteColumnName($request['field']);
+                return "SUM(CASE WHEN $col IS NOT NULL AND $col <> ''"
+                    . " THEN CAST($col AS DECIMAL(30, 4)) ELSE 0 END)";
             default:
                 return 'COUNT(*)';
         }

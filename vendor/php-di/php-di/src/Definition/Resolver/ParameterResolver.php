@@ -19,27 +19,22 @@ use ReflectionParameter;
 class ParameterResolver
 {
     /**
-     * @var DefinitionResolver
-     */
-    private $definitionResolver;
-
-    /**
      * @param DefinitionResolver $definitionResolver Will be used to resolve nested definitions.
      */
-    public function __construct(DefinitionResolver $definitionResolver)
-    {
-        $this->definitionResolver = $definitionResolver;
+    public function __construct(
+        private DefinitionResolver $definitionResolver,
+    ) {
     }
 
     /**
-     * @throws InvalidDefinition A parameter has no value defined or guessable.
      * @return array Parameters to use to call the function.
+     * @throws InvalidDefinition A parameter has no value defined or guessable.
      */
     public function resolveParameters(
-        MethodInjection $definition = null,
-        ReflectionMethod $method = null,
-        array $parameters = []
-    ) {
+        ?MethodInjection $definition = null,
+        ?ReflectionMethod $method = null,
+        array $parameters = [],
+    ) : array {
         $args = [];
 
         if (! $method) {
@@ -89,13 +84,12 @@ class ParameterResolver
      * Returns the default value of a function parameter.
      *
      * @throws InvalidDefinition Can't get default values from PHP internal classes and functions
-     * @return mixed
      */
-    private function getParameterDefaultValue(ReflectionParameter $parameter, ReflectionMethod $function)
+    private function getParameterDefaultValue(ReflectionParameter $parameter, ReflectionMethod $function) : mixed
     {
         try {
             return $parameter->getDefaultValue();
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             throw new InvalidDefinition(sprintf(
                 'The parameter "%s" of %s has no type defined or guessable. It has a default value, '
                 . 'but the default value can\'t be read through Reflection because it is a PHP internal class.',
