@@ -61,10 +61,7 @@ export const ArrayTextTable = ({ surveyId, questionCode, fields }) => {
       ...columns.map((column) => ({
         key: column.key,
         title: (
-          <ColumnHeader
-            primary={column.primary}
-            secondary={column.secondary}
-          />
+          <ColumnHeader primary={column.primary} secondary={column.secondary} />
         ),
       })),
     ],

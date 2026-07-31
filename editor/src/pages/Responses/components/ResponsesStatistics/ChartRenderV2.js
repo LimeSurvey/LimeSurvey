@@ -92,7 +92,10 @@ const VIEWS = [
     icon: () => <i className="ri-bar-chart-2-line"></i>,
     isAvailable: ({ isArray }) => isArray,
     render: ({ data, valueType }) => (
-      <GroupedBarChart data={getSegmentedCategories(data)} valueType={valueType} />
+      <GroupedBarChart
+        data={getSegmentedCategories(data)}
+        valueType={valueType}
+      />
     ),
   },
   {

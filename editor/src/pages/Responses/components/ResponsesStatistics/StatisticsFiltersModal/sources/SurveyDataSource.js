@@ -2,7 +2,11 @@ import React from 'react'
 
 import { FilterSelect } from '../FilterSelect'
 
-import { FIELD_KIND, getSurveyDataFieldOptions, getSurveyFieldKind } from '../utils'
+import {
+  FIELD_KIND,
+  getSurveyDataFieldOptions,
+  getSurveyFieldKind,
+} from '../utils'
 import {
   DateRangeField,
   IncludedToggle,

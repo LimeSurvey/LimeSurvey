@@ -3,7 +3,11 @@ import React, { useMemo } from 'react'
 import { FilterSelect } from '../../FilterSelect'
 
 // "Language" → multi-select of the survey's languages (chips).
-export const LanguageMultiSelect = ({ languages = [], value = [], onChange }) => {
+export const LanguageMultiSelect = ({
+  languages = [],
+  value = [],
+  onChange,
+}) => {
   const options = useMemo(
     () => languages.map((lang) => ({ value: lang, label: lang })),
     [languages]
