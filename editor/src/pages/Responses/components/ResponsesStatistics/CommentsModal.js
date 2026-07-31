@@ -24,7 +24,6 @@ export const CommentsModal = ({
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(initialAnswer)
 
-  // Re-sync when opened from a different bar (or reset by the caller).
   useEffect(() => {
     setSelectedAnswer(initialAnswer)
   }, [initialAnswer])
