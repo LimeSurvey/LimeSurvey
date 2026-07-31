@@ -5,7 +5,47 @@ class ResponseListMassiveActions
     public static function getActions(int $surveyId): array
     {
         $buttons = [];
+        if (\Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
+            $buttons[] = [
+                'type'               => 'action',
+                'action'             => 'export',
+                'url'                => \App()->createUrl('admin/export/sa/exportresults/', ['surveyId' => $surveyId]),
+                'iconClasses'        => 'ri-download-line',
+                'text'               => \gT('Export'),
+                'aLinkSpecificDatas' => [
+                    'input-name'      => 'responseIds',
+                    'input-separator' => ',',
+                    'target'          => '_self',
+                ],
+                'actionType'         => 'redirect',
+            ];
+            $buttons[] = [
+                'type'        => 'action',
+                'action'      => 'downloadZip',
+                'url'         => \App()->createUrl('responses/downloadfiles/', ['surveyId' => $surveyId, 'responseIds' => '']),
+                'iconClasses' => 'ri-download-line',
+                'text'        => \gT('Download files'),
+                'grid-reload' => 'no',
+                'actionType'  => 'window-location-href',
+            ];
+        }
         if (\Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
+            $buttons[] = [
+                'type'          => 'action',
+                'action'        => 'deleteAttachments',
+                'url'           => \App()->createUrl('responses/deleteAttachments/', ['surveyId' => $surveyId]),
+                'iconClasses'   => 'ri-delete-bin-fill',
+                'text'          => \gT('Delete attachments'),
+                'grid-reload'   => 'yes',
+                'actionType'    => 'modal',
+                'modalType'     => 'cancel-delete',
+                'keepopen'      => 'no',
+                'sModalTitle'   => \gT('Delete attachments'),
+                'htmlModalBody' => \gT('Are you sure you want to delete all uploaded files from the selected responses?'),
+                'aCustomDatas'  => [
+                    ['name' => 'sid', 'value' => $surveyId],
+                ],
+            ];
             $buttons[] = [
                 'type'          => 'action',
                 'action'        => 'delete',
@@ -23,46 +63,6 @@ class ResponseListMassiveActions
                 'aCustomDatas'  => [
                     ['name' => 'sid', 'value' => $surveyId],
                 ],
-            ];
-            $buttons[] = [
-                'type'          => 'action',
-                'action'        => 'deleteAttachments',
-                'url'           => \App()->createUrl('responses/deleteAttachments/', ['surveyId' => $surveyId]),
-                'iconClasses'   => 'text-danger ri-attachment-2',
-                'text'          => \gT('Delete attachments'),
-                'grid-reload'   => 'yes',
-                'actionType'    => 'modal',
-                'modalType'     => 'cancel-delete',
-                'keepopen'      => 'no',
-                'sModalTitle'   => \gT('Delete attachments'),
-                'htmlModalBody' => \gT('Are you sure you want to delete all uploaded files from the selected responses?'),
-                'aCustomDatas'  => [
-                    ['name' => 'sid', 'value' => $surveyId],
-                ],
-            ];
-        }
-        if (\Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
-            $buttons[] = [
-                'type'        => 'action',
-                'action'      => 'downloadZip',
-                'url'         => \App()->createUrl('responses/downloadfiles/', ['surveyId' => $surveyId, 'responseIds' => '']),
-                'iconClasses' => 'ri-download-fill',
-                'text'        => \gT('Download files'),
-                'grid-reload' => 'no',
-                'actionType'  => 'window-location-href',
-            ];
-            $buttons[] = [
-                'type'               => 'action',
-                'action'             => 'export',
-                'url'                => \App()->createUrl('admin/export/sa/exportresults/', ['surveyId' => $surveyId]),
-                'iconClasses'        => 'ri-upload-fill',
-                'text'               => \gT('Export'),
-                'aLinkSpecificDatas' => [
-                    'input-name'      => 'responseIds',
-                    'input-separator' => ',',
-                    'target'          => '_self',
-                ],
-                'actionType'         => 'redirect',
             ];
         }
         return $buttons;
