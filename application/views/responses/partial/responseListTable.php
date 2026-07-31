@@ -83,6 +83,17 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
         <?php endif; ?>
 
+        <?php if ($selectAllMaxCount !== null && $numTotalAnswers > $selectAllMaxCount) {
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'tag'  => 'p',
+                'text' => sprintf(
+                    gT('Deleting responses or their uploaded files with "Select all" is limited to %s responses in one action.'),
+                    $selectAllMaxCount
+                ),
+                'type' => 'info',
+            ]);
+        } ?>
+
         <?php
         // Render the floating action bar (cross-page selection, fixed at bottom)
         require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/ResponseListMassiveActions.php';
@@ -288,6 +299,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 'id'                    => 'responses-grid',
                 'ajaxUpdate'            => 'responses-grid',
                 'ajaxType'              => 'POST',
+                'lsSelectAllEnabled'    => true,
                 'lsAfterAjaxUpdate'     => [
                     "afterAjaxResponsesReload();",
                     "onUpdateTokenGrid();",
