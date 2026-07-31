@@ -3,7 +3,6 @@
  * @var UserRoleController $this
  * @var CActiveDataProvider $dataProvider
  * @var Permissiontemplates $model
- * @var string $massiveAction
  */
 
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
@@ -16,6 +15,14 @@ echo viewHelper::getViewTestTag('roles');
     <div class="row">
         <div class="col-12">
             <?php
+            require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/UserRoleListMassiveActions.php';
+            $floatingActions = \actions\UserRoleListMassiveActions::getActions();
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'       => 'selectedRole',
+                'gridId'   => 'RoleControl--identity-gridPanel',
+                'aActions' => $floatingActions,
+            ]);
+
             $this->widget(
                 'application.extensions.admin.grid.CLSGridView',
                 [
@@ -25,7 +32,7 @@ echo viewHelper::getViewTestTag('roles');
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
                     'filter' => $model,
-                    'massiveActionTemplate' => $massiveAction,
+                    'showSelectionBar' => false,
                     'ajaxType' => 'POST',
                     'ajaxUpdate' => 'RoleControl--identity-gridPanel',
                     'afterAjaxUpdate' => 'LS.RoleControl.bindButtons',
