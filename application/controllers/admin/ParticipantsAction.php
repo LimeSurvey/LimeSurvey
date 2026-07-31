@@ -411,55 +411,6 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Return all participant IDs matching the current CPDB filter set.
-     * Used by FloatingActionsWidget "Select all" across pagination.
-     *
-     * @return void
-     */
-    public function getAllParticipantIds()
-    {
-        if (!Permission::model()->hasGlobalPermission('participantpanel', 'read')) {
-            header('Content-Type: application/json; charset=UTF-8');
-            echo ls_json_encode([]);
-            Yii::app()->end();
-        }
-
-        $request = Yii::app()->request;
-        $model = new Participant();
-        if (Yii::app()->getConfig('hideblacklisted') === 'Y') {
-            $model->blacklisted = 'Y';
-        }
-
-        $participantParam = $request->getParam('Participant');
-        if (is_array($participantParam)) {
-            $model->setAttributes($participantParam, false);
-        }
-
-        $searchcondition = $request->getParam('searchcondition');
-        if (is_array($searchcondition)) {
-            $searchcondition = reset($searchcondition);
-        }
-        if (!empty($searchcondition)) {
-            $searchparams = explode('||', (string) $searchcondition);
-            $model->addSurveyFilter($searchparams);
-        }
-
-        $model->bEncryption = true;
-        $provider = $model->search();
-        $provider->setPagination(false);
-
-        $ids = [];
-        foreach ($provider->getData() as $participant) {
-            $ids[] = (string) $participant->id;
-        }
-
-        header('Content-Type: application/json; charset=UTF-8');
-        echo ls_json_encode($ids);
-        Yii::app()->end();
-    }
-
-
-    /**
      * Takes the delete call from the display participants and take appropriate action depending on the condition
      * @return void
      */

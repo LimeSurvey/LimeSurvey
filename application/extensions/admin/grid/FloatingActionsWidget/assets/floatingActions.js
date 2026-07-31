@@ -419,12 +419,6 @@ LS.floatingActions = (function () {
                         }
                     });
 
-                    // CPDB keeps survey-filter state in a hidden input outside
-                    // the grid filter row; include it so "Select all" stays scoped.
-                    var searchcondition = $('#searchcondition').val();
-                    if (searchcondition && !('searchcondition' in filterParams)) {
-                        filterParams.searchcondition = searchcondition;
-                    }
 
                     $.ajax({
                         url:      selectAllUrl,
