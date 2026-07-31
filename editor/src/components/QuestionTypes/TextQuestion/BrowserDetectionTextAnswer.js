@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import Bowser from 'bowser'
 import {
@@ -6,6 +6,7 @@ import {
   TileLayer,
   Popup,
   Marker as LeafLetMarker,
+  useMap,
   useMapEvents,
 } from 'react-leaflet'
 import L from 'leaflet'
@@ -35,16 +36,31 @@ const LeafletMapComponent = ({ value, onChange }) => {
   const [position, setPosition] = useState(initialPosition)
   const markerRef = useRef(null)
 
-  const updatePosition = ({ lat, lng }) => {
-    const newPosition = [lat, lng]
-    setPosition(newPosition)
-    onChange?.(`${lat};${lng}`)
-  }
+  useEffect(() => {
+    setPosition(initialPosition)
+  }, [initialPosition])
+
+  const updatePosition = useCallback(
+    ({ lat, lng }) => {
+      const newPosition = [lat, lng]
+      setPosition(newPosition)
+      onChange?.(`${lat};${lng}`)
+    },
+    [onChange]
+  )
 
   const MapClickHandler = () => {
     useMapEvents({
       click: (event) => updatePosition(event.latlng),
     })
+    return null
+  }
+
+  const MapViewSyncer = () => {
+    const map = useMap()
+    useEffect(() => {
+      map.setView(position)
+    }, [map, position])
     return null
   }
 
@@ -57,7 +73,7 @@ const LeafletMapComponent = ({ value, onChange }) => {
         }
       },
     }),
-    []
+    [updatePosition]
   )
 
   return (
@@ -68,6 +84,7 @@ const LeafletMapComponent = ({ value, onChange }) => {
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <MapClickHandler />
+      <MapViewSyncer />
       <LeafLetMarker
         icon={customIcon}
         position={position}
