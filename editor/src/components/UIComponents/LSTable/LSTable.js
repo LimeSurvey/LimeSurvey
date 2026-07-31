@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Table } from 'react-bootstrap'
 import classNames from 'classnames'
 
@@ -61,6 +61,9 @@ export const LSTable = ({
   const [columnWidths, setColumnWidths] = useState({})
   const [resizingKey, setResizingKey] = useState(null)
 
+  const resizeCleanupRef = useRef(null)
+  useEffect(() => () => resizeCleanupRef.current?.(), [])
+
   const startResize = (event, columnKey) => {
     event.preventDefault()
     event.stopPropagation()
@@ -85,7 +88,9 @@ export const LSTable = ({
       document.removeEventListener('touchend', onUp)
       document.body.style.cursor = ''
       document.body.style.userSelect = ''
+      resizeCleanupRef.current = null
     }
+    resizeCleanupRef.current = onUp
 
     document.addEventListener('mousemove', onMove)
     document.addEventListener('mouseup', onUp)

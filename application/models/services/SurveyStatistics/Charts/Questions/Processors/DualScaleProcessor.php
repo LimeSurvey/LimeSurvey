@@ -74,7 +74,7 @@ class DualScaleProcessor extends AbstractQuestionProcessor
                 }
             }
         }
-        $legend[] = 'NoAnswer';
+        $legend[] = 'No answer';
 
         return $legend;
     }

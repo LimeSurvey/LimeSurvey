@@ -125,11 +125,13 @@ export const GroupedBarChart = ({
   // Share one x-domain across every subquestion so bar lengths stay comparable.
   const domainMax = isPercentage
     ? 100
-    : Math.max(
-        1,
-        ...data.flatMap((category) =>
-          (category.options ?? []).map((option) => option.value || 0)
-        )
+    : data.reduce(
+        (max, category) =>
+          (category.options ?? []).reduce(
+            (categoryMax, option) => Math.max(categoryMax, option.value || 0),
+            max
+          ),
+        1
       )
 
   return (

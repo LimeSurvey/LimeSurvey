@@ -21,6 +21,8 @@ final class ResponseAggregateBatch
     /** Hard cap of SELECT expressions per query to bound per-row CASE cost */
     public const MAX_EXPRESSIONS_PER_QUERY = 1500;
 
+    private const MAX_MEDIANS_PER_QUERY = 100;
+
     private const KIND_VALUE = 'value';
     private const KIND_JSON_ELEMENT = 'jsonElement';
     private const KIND_BLANK = 'blank';
@@ -222,27 +224,43 @@ final class ResponseAggregateBatch
             }
         }
 
-        foreach ($this->medianRequests as $alias => $request) {
-            $count = (int)($this->results[$request['countAlias']] ?? 0);
-            $this->results[$alias] = $count > 0
-                ? $this->computeMedian($db, $table, $request['field'], $count, !empty($request['numeric']))
-                : 0;
-        }
+        $this->executeMedians($db, $table);
 
         $this->executed = true;
     }
 
     /**
      * Median via an ordered LIMIT/OFFSET sub-select: the middle value, or the
-     * mean of the two middle values for even counts. One query per field —
-     * there is no portable single-scan SQL median.
-     *
-     * @return int|float
+     * mean of the two middle values for even counts. There is no portable
+     * single-scan SQL median, but the per-field sub-selects are merged into
+     * chunked UNION ALL statements so resolving N fields (e.g. every cell of
+     * an array question) does not cost N round trips.
      */
-    private function computeMedian(CDbConnection $db, string $table, string $field, int $count, bool $numeric = false)
+    private function executeMedians(CDbConnection $db, string $table): void
     {
-        $col = $db->quoteColumnName($field);
-        $isNumericCell = $this->numericCellCheck($db, $field, $numeric);
+        $selects = [];
+        foreach ($this->medianRequests as $alias => $request) {
+            $count = (int)($this->results[$request['countAlias']] ?? 0);
+            if ($count > 0) {
+                $selects[] = $this->buildMedianSelect($db, $table, $request, $count, $alias);
+            } else {
+                $this->results[$alias] = 0;
+            }
+        }
+
+        foreach (array_chunk($selects, self::MAX_MEDIANS_PER_QUERY) as $chunk) {
+            $rows = $db->createCommand(implode(' UNION ALL ', $chunk))->queryAll();
+            foreach ($rows as $row) {
+                $value = $row['median'] ?? 0;
+                $this->results[$row['alias']] = is_numeric($value) ? $value + 0 : 0;
+            }
+        }
+    }
+
+    private function buildMedianSelect(CDbConnection $db, string $table, array $request, int $count, string $alias): string
+    {
+        $col = $db->quoteColumnName($request['field']);
+        $isNumericCell = $this->numericCellCheck($db, $request['field'], !empty($request['numeric']));
         $where = $this->buildWhere();
         $where = $where === '' ? " WHERE $isNumericCell" : "$where AND $isNumericCell";
 
@@ -256,10 +274,10 @@ final class ResponseAggregateBatch
             $take,
             $skip
         );
-        $sql = "SELECT AVG(v) FROM ($inner) median_values";
 
-        $value = $db->createCommand($sql)->queryScalar();
-        return is_numeric($value) ? $value + 0 : 0;
+        return 'SELECT ' . $db->quoteValue($alias) . ' AS ' . $db->quoteColumnName('alias')
+            . ', AVG(v) AS ' . $db->quoteColumnName('median')
+            . ' FROM (' . $inner . ') median_values';
     }
 
     public function isExecuted(): bool
