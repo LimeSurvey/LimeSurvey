@@ -207,8 +207,9 @@ class SurveyResponses implements CommandInterface
      * Only columns that exist in the survey's field map are honoured; the
      * fixed system columns the transformed output relies on (id, dates,
      * language, token, …) are always kept so selecting question columns never
-     * strips the metadata each response needs. When no (valid) field is
-     * provided every column is returned.
+     * strips the metadata each response needs. When the fields param is
+     * missing or empty every column is returned; a nonempty list matching no
+     * real column is rejected as a bad request.
      *
      * @param \LSDbCriteria $criteria
      * @param Request $request
@@ -223,7 +224,7 @@ class SurveyResponses implements CommandInterface
         $validColumns = array_keys($this->transformerOutputSurveyResponses->fieldMap);
         $selected = array_values(array_intersect($fields, $validColumns));
         if (empty($selected)) {
-            return;
+            throw new \InvalidArgumentException('No valid fields requested');
         }
 
         $fixed = array_intersect(self::FIXED_OUTPUT_COLUMNS, $validColumns);

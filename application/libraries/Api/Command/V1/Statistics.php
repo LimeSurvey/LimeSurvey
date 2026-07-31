@@ -26,6 +26,8 @@ class Statistics implements CommandInterface
     /** Default number of charts returned per page */
     private const DEFAULT_PAGE_SIZE = 15;
 
+    private const MAX_PAGE_SIZE = 100;
+
     protected Permission $permission;
     protected TransformerOutputSurvey $transformerOutputSurvey;
     protected ResponseFactory $responseFactory;
@@ -109,7 +111,7 @@ class Statistics implements CommandInterface
     private function getPageSize(): int
     {
         $pageSize = Yii::app()->getRequest()->getQueryParams()['pageSize'] ?? self::DEFAULT_PAGE_SIZE;
-        return max(1, (int)$pageSize);
+        return min(self::MAX_PAGE_SIZE, max(1, (int)$pageSize));
     }
 
     public function getFilters(): StatisticsResponseFilters
@@ -128,6 +130,11 @@ class Statistics implements CommandInterface
                     $key === 'completed' ? $value === 'true' : (int)$value
                 );
             }
+        }
+
+        $search = $params['search'] ?? null;
+        if ($search !== null) {
+            $this->filters->setSearchTerms(is_array($search) ? $search : [$search]);
         }
 
         return $this->filters;

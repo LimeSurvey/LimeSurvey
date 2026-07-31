@@ -4,10 +4,12 @@ import { useMemo } from 'react'
 import { getApiUrl, STATES } from 'helpers'
 import { StatisticsService } from 'services'
 
+import { useAppState } from './useAppState'
 import useAuth from './useAuth'
 
 export function useStatistics(surveyId, filters) {
   const auth = useAuth()
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const statisticsService = useMemo(
     () => new StatisticsService(auth, surveyId, getApiUrl()),
     [auth]
@@ -21,9 +23,15 @@ export function useStatistics(surveyId, filters) {
     fetchNextPage,
     refetch,
   } = useInfiniteQuery({
-    queryKey: [STATES.SURVEY_STATISTICS, surveyId, filters],
+    queryKey: [STATES.SURVEY_STATISTICS, surveyId, activeLanguage, filters],
     queryFn: ({ pageParam }) =>
-      statisticsService.getSurveyStatistics(surveyId, filters, pageParam),
+      statisticsService.getSurveyStatistics(
+        surveyId,
+        filters,
+        pageParam,
+        undefined,
+        activeLanguage
+      ),
     initialPageParam: 0,
     getNextPageParam: (lastPage) =>
       lastPage?.pagination?.hasMore ? lastPage.pagination.page + 1 : undefined,

@@ -27,7 +27,7 @@ export const ChartHeader = ({
       <div className="responses-statistics-chart-title">
         <div className="responses-statistics-chart-title-main">
           <span className="responses-statistics-chart-title-index">
-            {index} <i className="ri-arrow-right-line" />
+            {index + 1} <i className="ri-arrow-right-line" />
           </span>
           <span className="responses-statistics-chart-title-key">{code}</span>
           <Badge>{themeTitle}</Badge>

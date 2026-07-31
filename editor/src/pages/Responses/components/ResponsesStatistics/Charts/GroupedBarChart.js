@@ -14,8 +14,34 @@ import {
   COLORS,
   CustomTooltip,
   getMetricDataKey,
+  TooltipShell,
   VALUE_TYPE,
 } from '../ChartsUtils'
+
+const GroupedTooltip = ({ active, payload, categoryTitle }) => {
+  if (!active || !payload?.length) return null
+  const option = payload[0]?.payload ?? {}
+  const stats = option.stats
+  if (!stats) {
+    return <CustomTooltip active={active} payload={payload} />
+  }
+  return (
+    <TooltipShell>
+      <div style={{ fontWeight: 600, marginBottom: 4 }}>
+        {categoryTitle} - {option.title}
+      </div>
+      <div>
+        {t('Mean')}: {stats.mean}
+      </div>
+      <div>
+        {t('Median')}: {stats.median}
+      </div>
+      <div>
+        {t('Min/Max')}: {stats.min} - {stats.max}
+      </div>
+    </TooltipShell>
+  )
+}
 
 // Each bar gets a label above it + the bar itself, so the row is taller than a
 // plain bar; height sizes the small chart to its option count.
@@ -63,7 +89,10 @@ const CategoryBarChart = ({ category, isPercentage, dataKey, domainMax }) => {
           >
             <XAxis type="number" hide domain={[0, domainMax]} />
             <YAxis type="category" dataKey="title" hide />
-            <Tooltip cursor={{ fill: '#eeeff7' }} content={<CustomTooltip />} />
+            <Tooltip
+              cursor={{ fill: '#eeeff7' }}
+              content={<GroupedTooltip categoryTitle={title} />}
+            />
             <Bar dataKey={dataKey} barSize={16} isAnimationActive={false}>
               {options.map((_, index) => (
                 <Cell
@@ -96,11 +125,13 @@ export const GroupedBarChart = ({
   // Share one x-domain across every subquestion so bar lengths stay comparable.
   const domainMax = isPercentage
     ? 100
-    : Math.max(
-        1,
-        ...data.flatMap((category) =>
-          (category.options ?? []).map((option) => option.value || 0)
-        )
+    : data.reduce(
+        (max, category) =>
+          (category.options ?? []).reduce(
+            (categoryMax, option) => Math.max(categoryMax, option.value || 0),
+            max
+          ),
+        1
       )
 
   return (

@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
+import { format } from 'util'
 
-import { LSTable } from 'components'
+import {
+  HighlightedText,
+  LSTable,
+  SearchInput,
+  useSearchTerms,
+} from 'components'
 import { useQuestionResponses } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
-// Participants are shown as zero-padded sequence ids (001, 002, ...).
-const formatParticipant = (responseId) =>
-  String(responseId ?? '').padStart(3, '0')
+import { formatAnswerDate } from './ChartsUtils.js'
 
 // Two-tone subquestion header: "<Y subquestion> - <X subquestion>" with the X
 // part styled as secondary, matching the responses grid.
@@ -24,9 +28,13 @@ const ColumnHeader = ({ primary, secondary }) => (
   </>
 )
 
-// Array (Texts): a free-text grid shown as raw per-response data — participant
-// rows × subquestion columns — fetched from the responses endpoint.
-export const ArrayTextTable = ({ surveyId, questionCode, fields }) => {
+export const ArrayTextTable = ({
+  surveyId,
+  questionCode,
+  fields,
+  filters,
+  searchable = false,
+}) => {
   // Defer the fetch until the card scrolls into view, then keep it loaded.
   const [containerRef, isInView] = useIsInViewport(null, {
     initialInView: false,
@@ -38,9 +46,17 @@ export const ArrayTextTable = ({ surveyId, questionCode, fields }) => {
     }
   }, [isInView])
 
+  const { terms, setTerms, setTyped, search } = useSearchTerms()
+
+  const highlightTerms = useMemo(
+    () => [...new Set([...(filters?.search ?? []), ...search])],
+    [filters, search]
+  )
+
   const {
     columns,
     rows,
+    totalResults,
     isLoading,
     hasNextPage,
     fetchNextPage,
@@ -48,37 +64,70 @@ export const ArrayTextTable = ({ surveyId, questionCode, fields }) => {
   } = useQuestionResponses(surveyId, questionCode, {
     enabled: shouldLoad,
     fields,
+    filters,
+    search,
   })
 
   const tableColumns = useMemo(
     () => [
       {
-        key: 'participant',
-        title: t('Participant'),
+        key: 'date',
+        title: <ColumnHeader primary={t('Date')} />,
         sortable: true,
-        render: (row) => formatParticipant(row.responseId),
+        render: (row) => formatAnswerDate(row.date),
       },
       ...columns.map((column) => ({
         key: column.key,
-        title: (
+        title: column.primary ? (
           <ColumnHeader primary={column.primary} secondary={column.secondary} />
+        ) : (
+          t('Answer')
+        ),
+        render: (row) => (
+          <div className="responses-statistics-array-text-cell">
+            <HighlightedText text={row[column.key]} terms={highlightTerms} />
+          </div>
         ),
       })),
     ],
-    [columns]
+    [columns, highlightTerms]
   )
 
-  // Flatten each row's cells onto the row so LSTable can render columns by key;
-  // `participant` mirrors the response id so the first column can be sorted.
   const tableRows = useMemo(
     () =>
       rows.map((row) => ({
         id: row.responseId,
         responseId: row.responseId,
-        participant: row.responseId,
+        date: row.date,
         ...row.cells,
       })),
     [rows]
+  )
+
+  const searchBlock = (
+    <div className="responses-statistics-array-text-search">
+      <SearchInput
+        terms={terms}
+        onChange={setTerms}
+        onTyping={setTyped}
+        placeholder={t('Search responses')}
+      />
+      {search.length > 0 && totalResults != null && (
+        <span className="responses-statistics-search-results">
+          {totalResults === 1
+            ? t('1 result found')
+            : format(t('%s results found'), totalResults)}
+        </span>
+      )}
+    </div>
+  )
+
+  const emptyState = (
+    <div className="responses-statistics-empty">
+      {search.length
+        ? t('No responses match your search.')
+        : t('There are no responses for this question yet.')}
+    </div>
   )
 
   const renderContent = () => {
@@ -92,11 +141,7 @@ export const ArrayTextTable = ({ surveyId, questionCode, fields }) => {
     }
 
     if (!tableRows.length) {
-      return (
-        <div className="responses-statistics-empty">
-          {t('There are no responses for this question yet.')}
-        </div>
-      )
+      return emptyState
     }
 
     return (
@@ -116,7 +161,7 @@ export const ArrayTextTable = ({ surveyId, questionCode, fields }) => {
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
             >
-              {t('Load more')}
+              {isFetchingNextPage ? t('Loading...') : t('Load more')}
             </button>
           </div>
         )}
@@ -124,7 +169,10 @@ export const ArrayTextTable = ({ surveyId, questionCode, fields }) => {
     )
   }
 
-  // The ref must stay mounted across states so the viewport observer keeps
-  // tracking this card.
-  return <div ref={containerRef}>{renderContent()}</div>
+  return (
+    <div ref={containerRef}>
+      {searchable && shouldLoad && searchBlock}
+      {renderContent()}
+    </div>
+  )
 }

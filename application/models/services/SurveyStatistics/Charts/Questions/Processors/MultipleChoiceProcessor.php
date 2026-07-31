@@ -34,13 +34,14 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
                 'key' => $subQuestion['title'],
                 'title' => $subQuestion['question'],
                 'value' => $counts[$field],
+                'field' => $field,
             ];
         }
 
         if ($hasOther) {
             $field = $this->rt . '_Cother';
             $legend[] = 'other';
-            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$field]];
+            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$field], 'field' => $field];
         }
 
         return [

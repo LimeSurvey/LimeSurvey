@@ -7,20 +7,27 @@ import { PAGE_SIZE, useQuestionAnswers } from './useQuestionAnswers'
 export function useQuestionComments(
   surveyId,
   questionCode,
-  { enabled = true, selectedAnswer = '', fields = [] } = {}
+  {
+    enabled = true,
+    selectedAnswer = '',
+    selectedField = '',
+    fields = [],
+    questionType,
+  } = {}
 ) {
   const { data, ...rest } = useQuestionAnswers(
     surveyId,
     questionCode,
     ({ statisticsService, activeLanguage }) => ({
-      // selectedAnswer is part of the key so changing the filter refetches from
-      // page 0 instead of filtering the in-memory list.
       queryKey: [
         STATES.SURVEY_RESPONSE_COMMENTS,
         surveyId,
         questionCode,
         activeLanguage,
         selectedAnswer,
+        selectedField,
+        fields,
+        questionType,
       ],
       queryFn: ({ pageParam = 0 }) =>
         statisticsService.getQuestionComments(
@@ -30,7 +37,9 @@ export function useQuestionComments(
           PAGE_SIZE,
           activeLanguage,
           selectedAnswer,
-          fields
+          fields,
+          questionType,
+          selectedField
         ),
     }),
     { enabled, fields }

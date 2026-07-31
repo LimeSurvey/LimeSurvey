@@ -72,6 +72,7 @@ export const ResponsesStatistics = ({
         statistics={statistics}
         surveyId={surveyId}
         valueType={valueType}
+        filters={filters}
       />
     )
   }
