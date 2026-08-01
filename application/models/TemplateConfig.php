@@ -447,7 +447,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['returntosurveydiva']    = ' ls-return ';
 
         $aClassAndAttributes['attr']['loadformul']             = ' role="alert"';
-        $aClassAndAttributes['attr']['saveformrowlabel']       = ' for="savename" ';
+        $aClassAndAttributes['attr']['saveformrowlabel']       = ' for="loadname" ';
         $aClassAndAttributes['attr']['saveformrowlabelsmall']  = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['saveformrowcolinput']    = ' type="text"  name="loadname" value="" required ';
         $aClassAndAttributes['attr']['passwordrowinputi']      = ' type="password" id="loadpass" name="loadpass" value="" required ';
