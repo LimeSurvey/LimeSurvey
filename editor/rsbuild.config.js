@@ -88,6 +88,12 @@ export default defineConfig({
     polyfill: 'usage',
   },
   tools: {
+    cssLoader: {
+      url: {
+        // Server-relative URLs (shared /assets fonts) are served by the app, not bundled
+        filter: url => !url.startsWith('/assets/'),
+      },
+    },
     rspack: {
       resolve: {
         preferRelative: true,
