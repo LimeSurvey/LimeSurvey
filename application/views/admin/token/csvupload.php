@@ -158,11 +158,27 @@
 
             <!-- Infos -->
             <?php
-            $message = '<div><strong>' . gT("CSV input format") . '</strong><br/>' .
+            $exampleUrl = Yii::app()->createUrl("admin/tokens/sa/exampleImportFile/surveyid/{$iSurveyId}");
+            $exampleButton = $this->widget(
+                'ext.ButtonWidget.ButtonWidget',
+                [
+                    'name' => 'downloadExample',
+                    'text' => gT('Download example CSV file'),
+                    'icon' => 'icon-export',
+                    'link' => $exampleUrl,
+                    'htmlOptions' => [
+                        'class' => 'btn btn-outline-secondary flex-shrink-0',
+                    ]
+                ],
+                true
+            );
+            $message = '<div class="d-flex align-items-center justify-content-between gap-3">' .
+                '<div><strong>' . gT("CSV input format") . '</strong><br/>' .
                 '<p>' . gT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for most spreadsheet tools). The first line must contain the field names. The fields can be in any order.") . '</p>' .
                 '<span class="fw-bold">' . gT("Mandatory fields:") . '</span> firstname, lastname, email<br/>' .
                 '<span class="fw-bold">' . gT('Optional fields:') .
-                '</span> emailstatus, token, language, validfrom, validuntil, attribute_1, attribute_2, attribute_3, usesleft, ... .</div>';
+                '</span> emailstatus, token, language, validfrom, validuntil, usesleft, attribute_1, attribute_2, attribute_3, ... .</div>' .
+                $exampleButton . '</div>';
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'text' => $message,
                 'type' => 'info',
