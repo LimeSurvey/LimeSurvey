@@ -89,6 +89,13 @@ export default defineConfig({
     polyfill: 'usage',
   },
   tools: {
+    cssExtract: {
+      loaderOptions: {
+        // Resolve url() assets relative to the emitted CSS file so fonts load
+        // regardless of the install path (root or subdirectory)
+        publicPath: '../../',
+      },
+    },
     rspack: {
       resolve: {
         preferRelative: true,
