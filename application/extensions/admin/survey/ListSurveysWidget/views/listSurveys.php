@@ -26,9 +26,10 @@ use actions\SurveyListMassiveActions;
         // Render the floating action bar (cross-page selection, fixed at bottom)
         $floatingActions = SurveyListMassiveActions::getActions();
         $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
-            'pk'       => 'sid',
-            'gridId'   => 'survey-grid',
-            'aActions' => $floatingActions,
+            'pk'           => 'sid',
+            'gridId'       => 'survey-grid',
+            'aActions'     => $floatingActions,
+            'selectAllUrl' => Yii::app()->createUrl('surveyAdministration/getAllSurveyIds'),
         ]);
         ?>
         <?php
