@@ -9,9 +9,10 @@ const { publicVars, rawPublicVars } = loadEnv({
 })
 
 const isProduction = process.env.NODE_ENV === 'production'
-const isDevBuild = !isProduction
-    || process.env.REACT_APP_DEV_MODE === 'true'
-    || process.env.REACT_APP_DEMO_MODE === 'true'
+const isDevBuild =
+  !isProduction ||
+  process.env.REACT_APP_DEV_MODE === 'true' ||
+  process.env.REACT_APP_DEMO_MODE === 'true'
 
 const buildInfoMessage =
   `\x1b[1m${isDevBuild ? '\x1b[33m' : '\x1b[32m'}\n` +
