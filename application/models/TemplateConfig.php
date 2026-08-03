@@ -390,6 +390,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['maincolformdivddivbdivbutton'] = '  ';
 
 
+        $aClassAndAttributes['attr']['maincoldivdiva']                = ' role="heading" aria-level="2" ';
         $aClassAndAttributes['attr']['maincolformdivainput']          = ' type="password" id="token" name="token" value="" required aria-labelledby="token-label" ';
         $aClassAndAttributes['attr']['maincoldivdivbul']              = ' role="alert" ';
         $aClassAndAttributes['attr']['maincolformlabel']              = ' id="token-label" for="token" ';
