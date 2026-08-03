@@ -695,8 +695,9 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['questionasterixsmall'] = ' aria-hidden="true" ';
 
+        $aClassAndAttributes['attr']['lsquestiontext'] = ' role="heading" aria-level="2" ';
         $aClassAndAttributes['attr']['questioncontainer'] = $aClassAndAttributes['attr']['questiontitlecontainer'] = $aClassAndAttributes['attr']['questionasterix'] = $aClassAndAttributes['attr']['questionasterixspan'] = $aClassAndAttributes['attr']['questionnumber'] = $aClassAndAttributes['attr']['questioncode'] = '';
-        $aClassAndAttributes['attr']['questiontext'] = $aClassAndAttributes['attr']['lsquestiontext'] = $aClassAndAttributes['attr']['questionvalidcontainer'] = $aClassAndAttributes['attr']['answercontainer'] = $aClassAndAttributes['attr']['helpcontainer'] = '';
+        $aClassAndAttributes['attr']['questiontext'] = $aClassAndAttributes['attr']['questionvalidcontainer'] = $aClassAndAttributes['attr']['answercontainer'] = $aClassAndAttributes['attr']['helpcontainer'] = '';
 
         // Question group
         $aClassAndAttributes['class']['groupcontainer'] = ' group-container ';
