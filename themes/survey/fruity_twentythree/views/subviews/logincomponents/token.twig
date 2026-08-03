@@ -19,9 +19,13 @@
 
     {% block formcontent %}
         <div class="col-lg-12">
+            <span class="{{ aSurveyInfo.class.maincolformmandatoryinfo }}" {{ aSurveyInfo.attr.maincolformmandatoryinfo }}>
+                {{ gT("Fields marked with asterisk") }} (<span class="{{ aSurveyInfo.class.maincolformmandatoryinfoasterisk }}">*</span>) {{ gT("are mandatory.") }}
+            </span>
             <div class='{{ aSurveyInfo.class.maincolform }}' {{ aSurveyInfo.attr.maincolform }}>
                 <label class='{{ aSurveyInfo.class.maincolformlabel }} control-label' {{ aSurveyInfo.attr.maincolformlabel }}>
-                    {{ gT("Access code") }}<small class="{{ aSurveyInfo.class.maincolformlabelsmall }} asterisk ri-asterisk small " {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
+                    <small class="{{ aSurveyInfo.class.maincolformlabelsmall }} text-danger asterisk ri-asterisk float-start small " {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
+                    {{ gT("Access code:") }}
                     <span class="{{ aSurveyInfo.class.maincolformlabelspan }} visually-hidden asterisk " {{ aSurveyInfo.attr.maincolformlabelspan }}>
                     ( {{ gT("Mandatory") }} )
                     </span>

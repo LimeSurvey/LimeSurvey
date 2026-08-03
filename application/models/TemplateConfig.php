@@ -360,6 +360,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['maincoldivdivbul']             = '  ';
         $aClassAndAttributes['class']['maincoldivdivbdiv']            = ' ';
         $aClassAndAttributes['class']['maincolform']                  = '  ';
+        $aClassAndAttributes['class']['maincolformmandatoryinfo']     = ' text-muted large d-block mb-3 ';
+        $aClassAndAttributes['class']['maincolformmandatoryinfoasterisk'] = ' text-danger ';
         $aClassAndAttributes['class']['maincolformlabel']             = '  ';
         $aClassAndAttributes['class']['maincolformlabelsmall']        = ' superset ';
         $aClassAndAttributes['class']['maincolformlabelspan']         = ' ';
@@ -392,6 +394,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['maincoldivdivbul']              = ' role="alert" ';
         $aClassAndAttributes['attr']['maincolformlabel']              = ' id="token-label" for="token" ';
         $aClassAndAttributes['attr']['maincolformlabelsmall']         = ' aria-hidden="true" ';
+        $aClassAndAttributes['attr']['maincolformmandatoryinfo']      = ' ';
         $aClassAndAttributes['attr']['maincolformdivblabel']          = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['maincolformdivblabelsmall']     = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['maincolformdivbdivdivinput']    = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
