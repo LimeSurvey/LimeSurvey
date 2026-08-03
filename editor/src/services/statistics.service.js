@@ -250,9 +250,9 @@ export class StatisticsService {
   }
 
   /**
-   * Load the raw per-response answers of an Array (Texts) question and pivot
-   * them into a table: one row per participant (response), one column per
-   * subquestion cell. Each cell answer carries its `responseId`, the question
+   * Load the raw per-response answers of an Array (Texts) or Array (Dual
+   * scale) question and pivot them into a table: one row per participant
+   * (response), one column per subquestion cell. Each cell answer carries its `responseId`, the question
    * `title` (code) and the `subquestion1`/`subquestion2` scale labels, so the
    * columns and rows can be reconstructed from the flat answer list.
    */
@@ -300,7 +300,10 @@ export class StatisticsService {
         const columnKey = answer.key
         if (columnKey && !columnByKey[columnKey]) {
           const primary = answer.subquestion1 || answer.subquestion || ''
-          const secondary = answer.subquestion1 ? answer.subquestion2 || '' : ''
+          // Second header line: the X subquestion (array text) or the scale
+          // label (dual scale).
+          const secondary =
+            (answer.subquestion1 ? answer.subquestion2 : answer.scale) || ''
           columnByKey[columnKey] = { key: columnKey, primary, secondary }
           columnOrder.push(columnKey)
         }
@@ -315,7 +318,8 @@ export class StatisticsService {
           rowOrder.push(responseId)
         }
         if (responseId != null && columnKey) {
-          rowByResponse[responseId].cells[columnKey] = answer.value ?? ''
+          rowByResponse[responseId].cells[columnKey] =
+            answer.answerLabel ?? answer.value ?? ''
         }
       })
 

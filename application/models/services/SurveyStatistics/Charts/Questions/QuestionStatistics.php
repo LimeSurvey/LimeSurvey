@@ -364,6 +364,14 @@ class QuestionStatistics implements StatisticsChartInterface
                 // views fetch only this question's columns.
                 'fields' => $this->questionFields[(int) ($question['qid'] ?? 0)] ?? [],
             ];
+            // Dual-scale column headers by scale id, same source and defaults
+            // as the chart's per-scale titles (DualScaleProcessor).
+            if (($question['type'] ?? null) === Question::QT_1_ARRAY_DUAL) {
+                $meta['question']['scaleHeaders'] = [
+                    flattenText($question['attributes']['dualscale_headerA'] ?? 'Scale A', false, true),
+                    flattenText($question['attributes']['dualscale_headerB'] ?? 'Scale B', false, true),
+                ];
+            }
             $dto->setMeta($meta);
         }
     }

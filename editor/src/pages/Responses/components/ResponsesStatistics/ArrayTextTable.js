@@ -34,6 +34,7 @@ export const ArrayTextTable = ({
   fields,
   filters,
   searchable = false,
+  scaleHeaders,
 }) => {
   // Defer the fetch until the card scrolls into view, then keep it loaded.
   const [containerRef, isInView] = useIsInViewport(null, {
@@ -68,6 +69,13 @@ export const ArrayTextTable = ({
     search,
   })
 
+  // Dual-scale columns end in #<scale id>; label them with the question's
+  // scale headers when provided.
+  const secondaryFor = (column) => {
+    const scaleId = /#(\d+)$/.exec(column.key ?? '')?.[1]
+    return (scaleId != null && scaleHeaders?.[scaleId]) || column.secondary
+  }
+
   const tableColumns = useMemo(
     () => [
       {
@@ -79,7 +87,10 @@ export const ArrayTextTable = ({
       ...columns.map((column) => ({
         key: column.key,
         title: column.primary ? (
-          <ColumnHeader primary={column.primary} secondary={column.secondary} />
+          <ColumnHeader
+            primary={column.primary}
+            secondary={secondaryFor(column)}
+          />
         ) : (
           t('Answer')
         ),
@@ -90,7 +101,7 @@ export const ArrayTextTable = ({
         ),
       })),
     ],
-    [columns, highlightTerms]
+    [columns, highlightTerms, scaleHeaders]
   )
 
   const tableRows = useMemo(

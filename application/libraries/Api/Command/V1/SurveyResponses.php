@@ -228,8 +228,11 @@ class SurveyResponses implements CommandInterface
         }
 
         $fixed = array_intersect(self::FIXED_OUTPUT_COLUMNS, $validColumns);
-        $criteria->select = array_values(
-            array_unique(array_merge($fixed, $selected))
+        // Quote explicitly: Yii implodes an array select without quoting, and
+        // dual-scale column names contain `#`, which starts a MySQL comment.
+        $criteria->select = array_map(
+            [\Yii::app()->db, 'quoteColumnName'],
+            array_values(array_unique(array_merge($fixed, $selected)))
         );
     }
 

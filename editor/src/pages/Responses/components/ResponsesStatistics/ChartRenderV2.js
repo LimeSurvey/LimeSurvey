@@ -191,17 +191,19 @@ const VIEWS = [
       isImage,
       isArrayText,
       isText,
+      isDualScale,
       surveyId,
       question,
       filters,
     }) =>
-      isArrayText || isText ? (
+      isArrayText || isText || isDualScale ? (
         <ArrayTextTable
           surveyId={surveyId}
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
           searchable={isText}
+          scaleHeaders={question?.scaleHeaders}
         />
       ) : (
         <StatisticsTable data={data} isImage={isImage} />
