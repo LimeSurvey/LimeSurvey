@@ -14,12 +14,12 @@
 */
 
 /**
-* Strips html tags and replaces new lines
-*
-* @param string $string
-* @param boolean $removeOther   if 'true', removes '-oth-' from the string.
-* @return string
-*/
+ * Strips html tags and replaces new lines
+ *
+ * @param string $string
+ * @param boolean $removeOther   if 'true', removes '-oth-' from the string.
+ * @return string
+ */
 function stripTagsFull($string, $removeOther = true)
 {
     $string = flattenText($string, false, true); // stripo whole + html_entities
@@ -32,11 +32,11 @@ function stripTagsFull($string, $removeOther = true)
 }
 
 /**
-* Returns true if passed $value is numeric
-*
-* @param $value
-* @return bool
-*/
+ * Returns true if passed $value is numeric
+ *
+ * @param $value
+ * @return bool
+ */
 function isNumericExtended(string $value)
 {
     if (empty($value)) {
@@ -54,13 +54,13 @@ function isNumericExtended(string $value)
 }
 
 /**
-* Returns splitted unicode string correctly
-* source: http://www.php.net/manual/en/function.str-split.php#107658
-*
-* @param string $str
-* @param $l
-* @return string
-*/
+ * Returns splitted unicode string correctly
+ * source: http://www.php.net/manual/en/function.str-split.php#107658
+ *
+ * @param string $str
+ * @param $l
+ * @return string
+ */
 function strSplitUnicode($str, $l = 0)
 {
     if ($l > 0) {
@@ -75,12 +75,12 @@ function strSplitUnicode($str, $l = 0)
 }
 
 /**
-* Quotes a string with surrounding quotes and masking inside quotes by doubling them
-*
-* @param string|null $sText Text to quote
-* @param string $sQuoteChar The quote character (Use ' for SPSS and " for R)
-* @param string $aField General field information from SPSSFieldmap
-*/
+ * Quotes a string with surrounding quotes and masking inside quotes by doubling them
+ *
+ * @param string|null $sText Text to quote
+ * @param string $sQuoteChar The quote character (Use ' for SPSS and " for R)
+ * @param string $aField General field information from SPSSFieldmap
+ */
 function quoteSPSS($sText, $sQuoteChar, $aField)
 {
     $sText = trim((string) $sText);
@@ -3169,7 +3169,7 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['mandatory'] = !empty($subquestion['mandatory']) ? $subquestion['mandatory'] : '';
                                 $tsv_output['other'] = $subquestion['other'];
                                 $tsv_output['same_default'] = $subquestion['same_default'];
-                                $tsv_output['question_theme_name'] = $subquestion['question_theme_name'];
+                                $tsv_output['question_theme_name'] = $subquestion['question_theme_name'] ?? '';
                                 $tsv_output['same_script'] = $subquestion['same_script'];
 
                                 if (array_key_exists($language, $defaultvalues) && array_key_exists($subquestion['qid'], $defaultvalues[$language])) {

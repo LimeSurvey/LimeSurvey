@@ -4284,6 +4284,9 @@ function TSVImportSurvey($sFullFilePath)
     $quota_languagesettings = array();
     $output = array();
     foreach ($adata as $row) {
+        if (!isset($row['class'])) {
+            continue; // skip blank rows (e.g. a trailing newline in the file)
+        }
         switch ($row['class']) {
             case 'S':
                 if (isset($row['text']) && $row['name'] != 'datecreated') {
@@ -4346,6 +4349,9 @@ function TSVImportSurvey($sFullFilePath)
     $iGroupcounter = 1;
     foreach ($adata as $row) {
         $rownumber += 1;
+        if (!isset($row['class'])) {
+            continue; // skip blank rows (e.g. a trailing newline in the file)
+        }
         switch ($row['class']) {
             case 'G':
                 // insert group
@@ -4765,7 +4771,7 @@ function createXMLfromData($aData = array())
                             foreach ($value4 as $key5 => $value5) {
                                 if (!is_array($value5)) {
                                     $xml->startElement($key5);
-                                    $xml->writeCdata($value5);
+                                    $xml->writeCdata((string) $value5);
                                     $xml->endElement();
                                 }
                             }
@@ -4779,7 +4785,7 @@ function createXMLfromData($aData = array())
                                         $xml->startElement($key3);
                                     }
                                     $xml->startElement($key4);
-                                    $xml->writeCdata($value4);
+                                    $xml->writeCdata((string) $value4);
                                     $xml->endElement();
                                     $index3 += 1;
                                     if ($index3 === count($value3)) {
