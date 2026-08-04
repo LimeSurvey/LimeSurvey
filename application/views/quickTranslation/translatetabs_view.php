@@ -26,24 +26,32 @@ extract($tabData);
 
         <?php
         $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'answer');
+        $tabTitle = $type;
+        if (isset($singleTabFieldsData[0]['fieldData']['amTypeOptions']['description'])) {
+            $tabTitle = $singleTabFieldsData[0]['fieldData']['amTypeOptions']['description'];
+        }
         ?>
         <table class='table table-striped'>
+            <caption class="visually-hidden">
+                <?php printf(gT('Translation table for %s: from %s to %s'), $tabTitle, $baselangdesc, $tolangdesc); ?>
+            </caption>
             <thead>
-
+            <tr>
             <?php
             if ($type == 'answer') { ?>
-                <th class="col-lg-2 text-strong"> <?= gT('QCode / Answer Code / ID') ?> </th>
+                <th scope="col" class="col-lg-2 text-strong"> <?= gT('QCode / Answer Code / ID') ?> </th>
                 <?php
             } elseif ($threeRows) { ?>
-                <th class="col-lg-2 text-strong"> <?= gT('Question code / ID') ?> </th>
+                <th scope="col" class="col-lg-2 text-strong"> <?= gT('Question code / ID') ?> </th>
                 <?php
             }
             $cssClass = $threeRows ? "col-md-5 text-strong" : "col-md-6";
             ?>
-            <th class="<?= $cssClass ?>"> <?= $baselangdesc ?> </th>
-            <th class="<?= $cssClass ?>"> <?= $tolangdesc ?> </th>
+            <th scope="col" class="<?= $cssClass ?>"> <?= $baselangdesc ?> </th>
+            <th scope="col" class="<?= $cssClass ?>"> <?= $tolangdesc ?> </th>
+            </tr>
             </thead>
-
+            <tbody>
             <?php
             //table content should be rendered here translatefields_view
             //content of translatefields_view
@@ -63,6 +71,7 @@ extract($tabData);
                     }
                 }
             } ?>
+            </tbody>
         </table>
     </div>
     <?php
