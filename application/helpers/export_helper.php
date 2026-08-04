@@ -3099,7 +3099,8 @@ function tsvSurveyExport($surveyid)
                             }
 
                             foreach ($mergedAttributes as $attributeName => $attributeValue) {
-                                if (array_key_exists($attributeName, $fields)) {
+                                // Never let a stray same-named question attribute overwrite a base question column (e.g. 'encrypted').
+                                if (array_key_exists($attributeName, $fields) && !in_array($attributeName, $aBaseFields, true)) {
                                     if (is_array($attributeValue)) {
                                         if (safecount($attributeValue) > 0) {
                                             $tsv_output[$attributeName] = implode(' ', $attributeValue);

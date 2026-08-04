@@ -4464,6 +4464,7 @@ function TSVImportSurvey($sFullFilePath)
                         case 'help':
                         case 'language':
                         case 'mandatory':
+                        case 'encrypted':
                         case 'other':
                         case 'same_default':
                         case 'question_theme_name':
