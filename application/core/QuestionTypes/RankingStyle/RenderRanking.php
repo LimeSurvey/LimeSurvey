@@ -82,6 +82,7 @@ class RenderRanking extends QuestionBaseRenderer
         });
 
         $sSelects = '';
+        $inputnames = [];
 
         // Iterate through subquestions instead of answer options
         for ($i = 1; $i <= $iMaxLine; $i++) {
@@ -129,7 +130,7 @@ class RenderRanking extends QuestionBaseRenderer
                 true
             );
 
-            $this->inputnames[] = $myfname;
+            $inputnames[] = $myfname;
         }
 
         return $sSelects;

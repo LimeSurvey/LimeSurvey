@@ -22,18 +22,6 @@ var AdvancedRankingQuestion = function (options) {
     var relevancename= "relevance"+rankingName,
         rankingID = "javatbd" + rankingName;
 
-    // Build a map from data-value (title) to element id from the DOM
-    var buildValueToIdMap = function () {
-        var map = {};
-        $('#sortable-choice-' + questionId + ' .sortable-item').each(function () {
-            var val = $(this).data('value');
-            if (val) {
-                map[val] = $(this).attr('id');
-            }
-        });
-        return map;
-    };
-
     //define HTML snippets
     var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankadvancedhelp + "</div>"
 
@@ -172,14 +160,10 @@ var AdvancedRankingQuestion = function (options) {
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function () {
             $(this).appendTo('#sortable-choice-' + questionId );
         });
-        var valueToId = buildValueToIdMap();
         $('#question' + questionId + ' .select-item select :selected').each(function (index) {
             if ($(this).val() != '') {
                 $("#" + relevancename + (index+1)).val("1");
-                var elId = valueToId[$(this).val()];
-                if (elId) {
-                    $('#sortable-choice-' + questionId + ' #' + elId).appendTo('#sortable-rank-' + questionId);
-                }
+                $('#sortable-choice-' + questionId + ' #' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
             }
         });
 
