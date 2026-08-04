@@ -1,17 +1,42 @@
 import { useCallback, useEffect, useState } from 'react'
 import { debounce } from 'lodash'
 
-import { Button, Select } from 'components'
+import { Badge, Button, Select } from 'components'
 import { SideBarHeader } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
+
+const MAX_SEARCH_TERMS = 10
 
 export const StatisticsFilters = ({ filters, setFilters, setShowFilters }) => {
   const [_filters, _setFilters] = useState(filters)
   const [error, setError] = useState(null)
+  const [searchInput, setSearchInput] = useState('')
+
+  const searchTerms = _filters.search ?? []
+
+  const addSearchTerm = () => {
+    const term = searchInput.trim()
+    if (
+      !term ||
+      searchTerms.includes(term) ||
+      searchTerms.length >= MAX_SEARCH_TERMS
+    ) {
+      return
+    }
+    _setFilters({ ..._filters, search: [...searchTerms, term] })
+    setSearchInput('')
+  }
+
+  const removeSearchTerm = (term) => {
+    const next = searchTerms.filter((item) => item !== term)
+    const rest = { ..._filters }
+    delete rest.search
+    _setFilters(next.length ? { ...rest, search: next } : rest)
+  }
 
   const handleOnFilterChange = useCallback(
     debounce((filter) => {
-      setFilters({ ..._filters, ...filter })
+      setFilters(filter)
     }, 1000),
     [setFilters]
   )
@@ -101,6 +126,41 @@ export const StatisticsFilters = ({ filters, setFilters, setShowFilters }) => {
             </div>
           </div>
           <p>{error && <span className="text-danger">{error}</span>}</p>
+        </div>
+        <div className="mt-2">
+          <p className="label-s mb-1">{t('Search in answers')}</p>
+          <input
+            type="text"
+            className="form-control form-control-sm"
+            placeholder={t('Type a word and press Enter')}
+            maxLength={250}
+            value={searchInput}
+            onChange={({ target: { value } }) => setSearchInput(value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault()
+                addSearchTerm()
+              }
+            }}
+          />
+          {searchTerms.length > 0 && (
+            <div className="responses-statistics-search-terms mt-1">
+              {searchTerms.map((term) => (
+                <Badge key={term} className="responses-statistics-search-term">
+                  <span className="responses-statistics-search-term-label">
+                    {term}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label={t('Remove search term')}
+                    onClick={() => removeSearchTerm(term)}
+                  >
+                    <i className="ri-close-line"></i>
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

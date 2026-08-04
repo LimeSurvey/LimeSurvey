@@ -9,7 +9,7 @@ import {
   Line,
   ResponsiveContainer,
 } from 'recharts'
-import { CustomTooltip } from '../ChartsUtils'
+import { CustomTooltip, TruncatedTick, getLabelInterval } from '../ChartsUtils'
 
 const CustomizedLabel = ({ x, y, stroke, value }) => {
   return (
@@ -24,7 +24,11 @@ export const LineChart = ({ data }) => {
     <ResponsiveContainer width="100%" minHeight={500} height="100%">
       <RechartsLineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="title" />
+        <XAxis
+          dataKey="title"
+          interval={getLabelInterval(data.length)}
+          tick={<TruncatedTick />}
+        />
         <YAxis />
         <Tooltip content={<CustomTooltip />} />
         <Legend />

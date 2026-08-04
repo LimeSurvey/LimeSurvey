@@ -77,7 +77,7 @@ export const getDefaultColumns = ({
             },
           ]}
           meatballClassName="responses-meatball-menu"
-          actionsTitle="Response Actions"
+          actionsTitle={t('Response Actions')}
           placement="left"
         />
       ),
