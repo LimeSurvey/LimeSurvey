@@ -36,7 +36,7 @@
         "css/variations/theme_apple.css" will be updated via the theme variation options
 
         NOTE: The "add" tag also count as a "replace" tag.
-              Eg: You can't add a file with the same name as a file in the mother theme. It will always replace it. You must use a diffrent file name.
+              Eg: You can't add a file with the same name as a file in the mother theme. It will always replace it. You must use a different file name.
               Eg: Vanilla manifest already has "<add>css/theme.css</add>". So here, if you use "<add>css/theme.css</add>" it will replace the vanilla css/theme.css
 
         NOTE: If a file in a mother theme, you don't need to add it here again.
@@ -73,7 +73,7 @@
 
     <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
-    <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
+    <!-- for checkbox icons, use the Unicode of the character (eg: http://fontawesome.io/icon/check/ is f00c ) -->
     <options>
         <!-- simple options -->
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off"
@@ -210,7 +210,7 @@
         </packages>
 
         <!--
-            List of pages/files for tempalte editor
+            List of pages/files for template editor
             When a user select a page, the related files will be offer in the editable files
         -->
         <template_editor>

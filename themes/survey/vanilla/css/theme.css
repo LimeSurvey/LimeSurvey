@@ -307,7 +307,7 @@ body {
     cursor: pointer;
 }
 
-.radio-item [type='radio'], .checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+.radio-item [type='radio'], .checkbox-item [type='checkbox'] { /* Why we must positioning at same place */
     cursor: pointer;
 }
 

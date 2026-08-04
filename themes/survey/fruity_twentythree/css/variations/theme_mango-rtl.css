@@ -11641,7 +11641,7 @@ body .answer-item label::after {
  * Expression manager relevance system
  */
 .js .ls-hidden {
-  display: none;
+  display: none !important;
 }
 
 /* 3 class , and don't hide without javascript*/
@@ -11719,7 +11719,7 @@ body .answer-item label::after {
 
 /**
  * Except for really little screen : show ls-input-group in same line
- * ls-input-group used for suffix/preffix (a lot of time : very little and reset button
+ * ls-input-group used for suffix/prefix (a lot of time : very little and reset button
  */
 @media (min-width: 481px) {
   .ls-input-group {
@@ -13340,10 +13340,6 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     right: auto;
   }
 }
-li.radio-text-item .other-text-item {
-  min-width: 9em;
-}
-
 .radio-item label::before {
   border: 2px solid #6E748C;
   background-color: #fff;
@@ -15584,12 +15580,12 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 .no-tables-general .slider-list .slider-right {
   text-align: left;
 }
-.no-tables-general table.ls-answers,
-.no-tables-general table.ls-answers thead,
-.no-tables-general table.ls-answers tbody,
-.no-tables-general table.ls-answers th,
-.no-tables-general table.ls-answers td,
-.no-tables-general table.ls-answers tr {
+.no-tables-general table.ls-answers:not(.ls-hidden),
+.no-tables-general table.ls-answers thead:not(.ls-hidden),
+.no-tables-general table.ls-answers tbody:not(.ls-hidden),
+.no-tables-general table.ls-answers th:not(.ls-hidden),
+.no-tables-general table.ls-answers td:not(.ls-hidden),
+.no-tables-general table.ls-answers tr:not(.ls-hidden) {
   display: block;
 }
 .no-tables-general table.ls-answers, .no-tables-general table.ls-answers thead, .no-tables-general table.ls-answers tbody, .no-tables-general table.ls-answers th, .no-tables-general table.ls-answers td,
@@ -15688,12 +15684,12 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     /* bs fix */
     /* Don't display repeating header on mobile devices'*/
   }
-  .no-tables-mobile table.ls-answers,
-  .no-tables-mobile table.ls-answers thead,
-  .no-tables-mobile table.ls-answers tbody,
-  .no-tables-mobile table.ls-answers th,
-  .no-tables-mobile table.ls-answers td,
-  .no-tables-mobile table.ls-answers tr {
+  .no-tables-mobile table.ls-answers:not(.ls-hidden),
+  .no-tables-mobile table.ls-answers thead:not(.ls-hidden),
+  .no-tables-mobile table.ls-answers tbody:not(.ls-hidden),
+  .no-tables-mobile table.ls-answers th:not(.ls-hidden),
+  .no-tables-mobile table.ls-answers td:not(.ls-hidden),
+  .no-tables-mobile table.ls-answers tr:not(.ls-hidden) {
     display: block;
   }
   .no-tables-mobile table.ls-answers, .no-tables-mobile table.ls-answers thead, .no-tables-mobile table.ls-answers tbody, .no-tables-mobile table.ls-answers th, .no-tables-mobile table.ls-answers td,

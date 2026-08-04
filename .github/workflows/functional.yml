@@ -129,6 +129,9 @@ jobs:
           # This causes PHPUnit to use CDummyCache while Apache uses CFileCache, so cache->flush()
           # becomes a no-op and Apache serves stale schema entries that breaks subsequent functional tests.
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
+          #
+          # disable new editor for functional tests CI
+          sed -i '61i\        "editorEnabled"=>false,' application/config/config.php
           cat application/config/config.php
 
       # for debugging
