@@ -2,6 +2,7 @@
 
 use LimeSurvey\Models\Services\EditorService;
 use ReactEditor\EditorMessages;
+use ReactEditor\EditorSlides;
 
 // phpcs:disable
 require_once(__DIR__ . '/autoload.php');
@@ -100,6 +101,7 @@ class ReactEditor extends \PluginBase
                 '_modalActivateDeactivateEditor',
                 [
                     'activated' => $this->isEditorEnabled(false),
+                    'slides'    => EditorSlides::getSlides(),
                     'hasPathUrlFormat' => $this->hasPathUrlFormat(),
                     'warningHeader' => EditorMessages::getUrlFormatRequirementHeader(),
                     'warningMessage' => EditorMessages::getUrlFormatRequirementMessage(),
@@ -107,7 +109,7 @@ class ReactEditor extends \PluginBase
                 true,
             );
 
-            $shouldShowModal = !$this->hasEditorSettingInDatabase();
+            $shouldAutoShowModal = !$this->hasEditorSettingInDatabase();
 
             \Yii::app()->getClientScript()->registerScript(
                 'previewModal',
@@ -121,7 +123,7 @@ class ReactEditor extends \PluginBase
                 window.featurePreviewModalAdded = true;
                 
                 "
-                . ($shouldShowModal ? "$('#activate_editor').modal('show');" : "")
+                . ($shouldAutoShowModal ? "$('#activate_editor').attr('data-auto-open', true).modal('show');" : "")
                 . "
             }
             "

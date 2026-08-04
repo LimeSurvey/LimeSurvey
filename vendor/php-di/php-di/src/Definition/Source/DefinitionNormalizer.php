@@ -22,14 +22,9 @@ use DI\Definition\ValueDefinition;
  */
 class DefinitionNormalizer
 {
-    /**
-     * @var Autowiring
-     */
-    private $autowiring;
-
-    public function __construct(Autowiring $autowiring)
-    {
-        $this->autowiring = $autowiring;
+    public function __construct(
+        private Autowiring $autowiring,
+    ) {
     }
 
     /**
@@ -37,13 +32,12 @@ class DefinitionNormalizer
      *
      * This is usually a definition declared at the root of a definition array.
      *
-     * @param mixed $definition
      * @param string $name The definition name.
      * @param string[] $wildcardsReplacements Replacements for wildcard definitions.
      *
      * @throws InvalidDefinition
      */
-    public function normalizeRootDefinition($definition, string $name, array $wildcardsReplacements = null) : Definition
+    public function normalizeRootDefinition(mixed $definition, string $name, ?array $wildcardsReplacements = null) : Definition
     {
         if ($definition instanceof DefinitionHelper) {
             $definition = $definition->getDefinition($name);
@@ -62,6 +56,7 @@ class DefinitionNormalizer
         }
 
         if ($definition instanceof AutowireDefinition) {
+            /** @var AutowireDefinition $definition */
             $definition = $this->autowiring->autowire($name, $definition);
         }
 
@@ -83,12 +78,9 @@ class DefinitionNormalizer
     /**
      * Normalize a definition that is nested in another one.
      *
-     * @param mixed $definition
-     * @return mixed
-     *
      * @throws InvalidDefinition
      */
-    public function normalizeNestedDefinition($definition)
+    public function normalizeNestedDefinition(mixed $definition) : mixed
     {
         $name = '<nested definition>';
 

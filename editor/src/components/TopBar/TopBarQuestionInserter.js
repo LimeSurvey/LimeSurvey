@@ -7,6 +7,7 @@ import {
   SCALE_2,
   STATES,
   NEW_OBJECT_ID_PREFIX,
+  createQuestionGroup,
   createBufferOperation,
   getAnswerExample,
   getNextAnswerCode,
@@ -75,20 +76,13 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
   }
 
   const addQuestionGroup = () => {
-    const groupId = RandomNumber()
-    const newQuestionGroup = {
-      gid: NEW_OBJECT_ID_PREFIX + groupId,
+    const questionGroupTypeInfo = getQuestionTypeInfo().QUESTION_GROUP
+    const newQuestionGroup = createQuestionGroup({
       sid: surveyID,
-      type: getQuestionTypeInfo().QUESTION_GROUP.type,
-      theme: getQuestionTypeInfo().QUESTION_GROUP.theme,
-      l10ns: {
-        [language]: {
-          groupName: '',
-          description: '',
-        },
-      },
-      questions: [],
-    }
+      language,
+      type: questionGroupTypeInfo.type,
+      theme: questionGroupTypeInfo.theme,
+    })
 
     handleAddQuestionGroup(newQuestionGroup)
     setIsAddingQuestionOrGroup(false)
@@ -190,14 +184,14 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       answers.push(
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(codeToQuestion, questionId, 0),
+          code: getNextAnswerCode(null, 0),
           language,
           sortOrder: 1,
           languages: survey.languages,
         }),
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(codeToQuestion, questionId, 1),
+          code: getNextAnswerCode(null, 1),
           sortOrder: 2,
           languages: survey.languages,
         })
@@ -210,7 +204,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
           sortOrder: 1,
           parentQid: questionId,
           type: getQuestionTypeInfo().LONG_TEXT.type,
-          title: getNextSubQuestionCode(null, null, 0),
+          title: getNextSubQuestionCode(null, 0),
           questionThemeName: getQuestionTypeInfo().LONG_TEXT.theme,
           gid: questionGroupToAddQuestion.gid,
           sid: questionGroupToAddQuestion.sid,
@@ -221,7 +215,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
           languages: survey.languages,
           parentQid: questionId,
           type: getQuestionTypeInfo().LONG_TEXT.type,
-          title: getNextSubQuestionCode(null, null, 1),
+          title: getNextSubQuestionCode(null, 1),
           questionThemeName: getQuestionTypeInfo().LONG_TEXT.theme,
           gid: questionGroupToAddQuestion.gid,
           sid: questionGroupToAddQuestion.sid,
@@ -233,14 +227,14 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       answers.push(
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(codeToQuestion, questionId, 2),
+          code: getNextAnswerCode(null, 2),
           languages: survey.languages,
           sortOrder: 3,
           scaleId: SCALE_2,
         }),
         getAnswerExample({
           qid: questionId,
-          code: getNextAnswerCode(codeToQuestion, questionId, 3),
+          code: getNextAnswerCode(null, 3),
           languages: survey.languages,
           sortOrder: 4,
           scaleId: SCALE_2,
@@ -255,7 +249,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
           languages: survey.languages,
           parentQid: questionId,
           type: getQuestionTypeInfo().LONG_TEXT.type,
-          title: getNextSubQuestionCode(null, null, 2),
+          title: getNextSubQuestionCode(null, 2),
           questionThemeName: getQuestionTypeInfo().LONG_TEXT.theme,
           gid: questionGroupToAddQuestion.gid,
           sid: questionGroupToAddQuestion.sid,
@@ -266,7 +260,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
           languages: survey.languages,
           parentQid: questionId,
           type: getQuestionTypeInfo().LONG_TEXT.type,
-          title: getNextSubQuestionCode(null, null, 3),
+          title: getNextSubQuestionCode(null, 3),
           questionThemeName: getQuestionTypeInfo().LONG_TEXT.theme,
           gid: questionGroupToAddQuestion.gid,
           sid: questionGroupToAddQuestion.sid,
