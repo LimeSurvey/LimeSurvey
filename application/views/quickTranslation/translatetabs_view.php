@@ -1,16 +1,16 @@
 <?php
 /* @var $type string */
+/* @var $tabTitle string */
 /* @var $activeTab bool */
 /* @var $baselangdesc string */
 /* @var $tolangdesc string */
 
-extract($tabData);
-
+$captionId = 'translation-table-caption-' . $type;
 ?>
 
 <div id='tab-<?php echo $type; ?>' class='tab-pane fade <?php if ($activeTab) {
     echo "show active";
-             } ?>' role="tabpanel" aria-labelledby="quick-translation-tab-<?php echo $type; ?>">
+             } ?>' role="tabpanel" aria-labelledby="quick-translation-tab-<?php echo $type; ?>"<?php echo $activeTab ? '' : ' aria-hidden="true"'; ?>>
     <?php
     Yii::app()->loadHelper('admin.htmleditor');
     echo PrepareEditorScript(true, Yii::app()->getController());
@@ -26,13 +26,9 @@ extract($tabData);
 
         <?php
         $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'answer');
-        $tabTitle = $type;
-        if (isset($singleTabFieldsData[0]['fieldData']['amTypeOptions']['description'])) {
-            $tabTitle = $singleTabFieldsData[0]['fieldData']['amTypeOptions']['description'];
-        }
         ?>
-        <table class='table table-striped'>
-            <caption class="visually-hidden">
+        <table class='table table-striped' aria-labelledby="<?php echo $captionId; ?>">
+            <caption class="visually-hidden" id="<?php echo $captionId; ?>">
                 <?php printf(gT('Translation table for %s: from %s to %s'), $tabTitle, $baselangdesc, $tolangdesc); ?>
             </caption>
             <thead>

@@ -17,6 +17,13 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
             var $tabs = $translationTabList.find('[role="tab"]');
             $tabs.attr('aria-selected', 'false').attr('tabindex', '-1');
             $(event.target).attr('aria-selected', 'true').attr('tabindex', '0');
+
+            var $tabPanels = $translationTabList.closest('#translationtabs').find('[role="tabpanel"]');
+            $tabPanels.attr('aria-hidden', 'true');
+            var panelId = $(event.target).attr('aria-controls');
+            if (panelId) {
+                $('#' + panelId).attr('aria-hidden', 'false');
+            }
         });
         $(document).trigger('ajaxStop');
     }

@@ -55,11 +55,13 @@ extract($viewData ?? []);
 
         foreach ($singleTabs as $tabData) {
             //find the correct singleTabdata
-            $this->renderpartial('translatetabs_view', [
-                'baselangdesc' => $baselangdesc,
-                'tolangdesc' => $tolangdesc,
-                'tabData' => $tabData
-            ]);
+            $this->renderpartial('translatetabs_view', array_merge(
+                [
+                    'baselangdesc' => $baselangdesc,
+                    'tolangdesc' => $tolangdesc,
+                ],
+                $tabData
+            ));
         }
         ?>
     </div>
