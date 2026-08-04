@@ -82,7 +82,6 @@ class RenderRanking extends QuestionBaseRenderer
         });
 
         $sSelects = '';
-        $inputnames = [];
 
         // Iterate through subquestions instead of answer options
         for ($i = 1; $i <= $iMaxLine; $i++) {
@@ -130,7 +129,7 @@ class RenderRanking extends QuestionBaseRenderer
                 true
             );
 
-            $inputnames[] = $myfname;
+            $this->inputnames[] = $myfname;
         }
 
         return $sSelects;
@@ -181,7 +180,6 @@ class RenderRanking extends QuestionBaseRenderer
         ), true);
 
         $this->registerAssets();
-        $inputnames[] = $this->sSGQA;
         return array($answer, $this->inputnames);
     }
 }

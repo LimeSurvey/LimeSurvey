@@ -18,6 +18,18 @@ var RankingQuestion = function (options) {
     var relevancename = "relevance" + rankingName,
         rankingID = "javatbd" + rankingName;
 
+    // Build a map from data-value (title) to element id from the DOM
+    var buildValueToIdMap = function () {
+        var map = {};
+        $('#sortable-choice-' + questionId + ' li.sortable-item').each(function () {
+            var val = $(this).data('value');
+            if (val) {
+                map[val] = $(this).attr('id');
+            }
+        });
+        return map;
+    };
+
     //define HTML snippets
     var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankhelp + "</div>"
 
