@@ -176,10 +176,14 @@ var RankingQuestion = function (options) {
             $('#sortable-rank-' + questionId + ' li').each(function () {
                 $(this).appendTo('#sortable-choice-' + questionId);
             });
+            var valueToId = buildValueToIdMap();
             $('#question' + questionId + ' .select-item select :selected').each(function (index) {
                 if ($(this).val() != '') {
                     $("#" + relevancename + (index + 1)).val("1");
-                    $('#sortable-choice-' + questionId + ' li#' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
+                    var elId = valueToId[$(this).val()];
+                    if (elId) {
+                        $('#sortable-choice-' + questionId + ' li#' + elId).appendTo('#sortable-rank-' + questionId);
+                    }
                 }
                 /* set old-val for updateDragDropRank see #14425 */
                 $(this).closest("select").data("old-val", $(this).closest("select").val());
