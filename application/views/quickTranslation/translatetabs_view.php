@@ -10,7 +10,7 @@ extract($tabData);
 
 <div id='tab-<?php echo $type; ?>' class='tab-pane fade <?php if ($activeTab) {
     echo "show active";
-             } ?>'>
+             } ?>' role="tabpanel" aria-labelledby="quick-translation-tab-<?php echo $type; ?>">
     <?php
     Yii::app()->loadHelper('admin.htmleditor');
     echo PrepareEditorScript(true, Yii::app()->getController());

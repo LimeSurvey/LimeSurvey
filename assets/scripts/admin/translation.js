@@ -11,6 +11,16 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
     $('#translationtabs').show();
     $('#translationloading').hide();
 
+    var $translationTabList = $('#quick-translation-tabs');
+    if ($translationTabList.length) {
+        $translationTabList.on('shown.bs.tab', '[data-bs-toggle="tab"]', function (event) {
+            var $tabs = $translationTabList.find('[role="tab"]');
+            $tabs.attr('aria-selected', 'false').attr('tabindex', '-1');
+            $(event.target).attr('aria-selected', 'true').attr('tabindex', '0');
+        });
+        $(document).trigger('ajaxStop');
+    }
+
     $('input.auto-trans').click(function(ui)
     {
         var sTarget_id = $(ui.target).attr('id');
