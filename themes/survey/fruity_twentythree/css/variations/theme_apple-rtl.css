@@ -15781,13 +15781,3 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
   background-color: #333641;
   color: white;
 }
-
-/**
- * Global CSS for both legacy and new survey themes
- */
-/**
- * RTL specific styles
- *
- * NOTE: The main global CSS for survey themes is automatically adapted
- *       for RTL languages. This file is only for specific adjustments.
- */

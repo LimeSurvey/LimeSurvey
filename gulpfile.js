@@ -1,4 +1,4 @@
-﻿// for bootstrap 5:
+// for bootstrap 5:
 // gulp build / gulp watch
 // for admintheme:
 // gulp build_theme / gulp watch_theme
@@ -265,9 +265,7 @@ exports.build_survey_theme_global = build_survey_theme_global;
 exports.watch_survey_theme_global = function () {
     watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_global);
     watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_global_rtl);
-    watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_ls6);
-    watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_ls6_rtl);
-    watch('assets/packages/survey-theme-global/src/*.js', parallel(survey_theme_global_js, survey_theme_ls6_js));
+    watch('assets/packages/survey-theme-global/src/*.js', survey_theme_global_js);
 };
 
 function survey_theme_ls6() {
@@ -318,25 +316,12 @@ function survey_theme_ls6_rtl() {
     let variationsFiles = variations.map(variation => {
         let variationName = variation[0];
         let variationColor = variation[1];
-
-        // Process theme_template.scss
-        const mainStream = src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
+        return src(['assets/survey_themes/fruity_twentythree/theme_template.scss'])
             .pipe(replace('$base-color: #ffffff;', '$base-color: ' + variationColor + ';'))
             .pipe(sass())
             .pipe(rtlcss())
             .pipe(gulppostcss(plugins))
-            .pipe(rename('theme.css'));
-
-        // Process rtl-specific.scss from source (already RTL-written, not flipped by rtlcss)
-        const rtlSpecificStream = src(['assets/packages/survey-theme-global/src/rtl-specific.scss'])
-            .pipe(sass())
-            .pipe(gulppostcss(plugins))
-            .pipe(rename('rtl-specific.css'));
-
-        // Merge the streams: theme (RTL-flipped global included) + RTL-specific overrides
-        return merge(mainStream, rtlSpecificStream)
-            .pipe(order(['theme.css', 'rtl-specific.css']))
-            .pipe(concat('theme_' + variationName + '-rtl.css'))
+            .pipe(rename('theme_' + variationName + '-rtl.css'))
             .pipe(dest('themes/survey/fruity_twentythree/css/variations'));
     });
     return merge(variationsFiles);
@@ -367,17 +352,17 @@ function survey_theme_ls6_js() {
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }
 
-exports.build_survey_theme_ls6 = parallel(
-    survey_theme_ls6,
-    survey_theme_ls6_rtl,
-    survey_theme_ls6_js
+exports.build_survey_theme_ls6 = series(
+    build_survey_theme_global,
+    parallel(
+        survey_theme_ls6,
+        survey_theme_ls6_rtl,
+        survey_theme_ls6_js
+    )
 );
 
 exports.watch_survey_theme_ls6 = function () {
     watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6);
     watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6_rtl);
     watch('assets/survey_themes/fruity_twentythree/**/*.js', survey_theme_ls6_js);
-    watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_ls6);
-    watch('assets/packages/survey-theme-global/src/*.scss', survey_theme_ls6_rtl);
-    watch('assets/packages/survey-theme-global/src/*.js', survey_theme_ls6_js);
 };

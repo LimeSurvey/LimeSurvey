@@ -37,23 +37,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 // register to global scope
 window.bootstrap = Bootstrap;
 
-},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":13}],2:[function(require,module,exports){
-"use strict";
-
-/**
- * Always set an empty LSvar
-*/
-window.LSvar = window.LSvar || {};
-
-/**
- * Global code for both legacy and new survey themes
- */
-
-/**
- * Global code end
- */
-
-},{}],3:[function(require,module,exports){
+},{"../../../node_modules/bootstrap/dist/js/bootstrap.esm.js":12}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -111,7 +95,7 @@ $(document).on('classChangeGood', function (event) {
 var _default = A11yHandles;
 exports["default"] = _default;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -344,7 +328,7 @@ var ThemeScripts = function ThemeScripts() {
 exports.ThemeScripts = ThemeScripts;
 window.ThemeScripts = ThemeScripts;
 
-},{"./old_template_core_class.js":5}],5:[function(require,module,exports){
+},{"./old_template_core_class.js":4}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -527,7 +511,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   window.templateCore.triggerEmClassChangeTemplate();
 });
 
-},{"./old_template_core_pre.js":6}],6:[function(require,module,exports){
+},{"./old_template_core_pre.js":5}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1027,7 +1011,7 @@ window.updateMandatoryErrorClass = updateMandatoryErrorClass;
 window.activateSoftMandatory = activateSoftMandatory;
 window.resetQuestionTimers = resetQuestionTimers;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1063,7 +1047,7 @@ var NavbarScripts = function NavbarScripts() {
 exports.NavbarScripts = NavbarScripts;
 window.NavbarScripts = NavbarScripts;
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1095,7 +1079,7 @@ var ArrayScripts = function ArrayScripts() {
 exports.ArrayScripts = ArrayScripts;
 window.ArrayScripts = ArrayScripts;
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*
     LimeSurvey
     Copyright (C) 2007-2023
@@ -1127,14 +1111,13 @@ window.ArrayScripts = ArrayScripts;
 */
 "use strict";
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 var Disclaimer = _interopRequireWildcard(require("./theme_js_disclaimer.js"));
 var Bootstrap = _interopRequireWildcard(require("../../../assets/bootstrap_5/js/bootstrap_5.js"));
 var _old_core_theme = _interopRequireDefault(require("./core/old_core_theme.js"));
-var GlobalThemeScripts = _interopRequireWildcard(require("../../../assets/packages/survey-theme-global/src/survey-theme-global.js"));
 var _array = _interopRequireDefault(require("./questiontypes/array/array.js"));
 var _navbar = _interopRequireDefault(require("./navbar/navbar.js"));
 var _video = _interopRequireDefault(require("./video/video.js"));
@@ -1143,7 +1126,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"../../../assets/packages/survey-theme-global/src/survey-theme-global.js":2,"./a11y-handles/a11y-handles.js":3,"./core/old_core_theme.js":4,"./navbar/navbar.js":7,"./questiontypes/array/array.js":8,"./theme_js_disclaimer.js":9,"./video/video.js":11}],11:[function(require,module,exports){
+},{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./theme_js_disclaimer.js":8,"./video/video.js":10}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1181,7 +1164,7 @@ exports.Video = Video;
 window.video = new Video();
 video.fixVideoHeight();
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (process){(function (){
 /**
  * @popperjs/core v2.11.7 - MIT License
@@ -2928,7 +2911,7 @@ exports.popperOffsets = popperOffsets$1;
 exports.preventOverflow = preventOverflow$1;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":14}],13:[function(require,module,exports){
+},{"_process":13}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7676,7 +7659,7 @@ enableDismissTrigger(Toast);
 
 defineJQueryPlugin(Toast);
 
-},{"@popperjs/core":12}],14:[function(require,module,exports){
+},{"@popperjs/core":11}],13:[function(require,module,exports){
 "use strict";
 
 // shim for using process in browser
@@ -7855,4 +7838,4 @@ process.umask = function () {
   return 0;
 };
 
-},{}]},{},[10]);
+},{}]},{},[9]);
