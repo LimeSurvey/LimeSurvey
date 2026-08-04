@@ -610,6 +610,32 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
+     * Get all files from the survey-theme-global build directory.
+     * Returns the same associative format as getOtherFiles(): [ filename => fullPath ]
+     *
+     * @return array<string, string>
+     */
+    public function getGlobalFiles()
+    {
+        $globalFiles = [];
+        $buildPath   = App()->getBasePath() . '/../assets/packages/survey-theme-global/build';
+
+        if (file_exists($buildPath) && $handle = opendir($buildPath)) {
+            while (false !== ($file = readdir($handle))) {
+                if ($file === '.' || $file === '..') {
+                    continue;
+                }
+                if (!is_dir($buildPath . DIRECTORY_SEPARATOR . $file)) {
+                    $globalFiles[$file] = $buildPath . DIRECTORY_SEPARATOR . $file;
+                }
+            }
+            closedir($handle);
+        }
+
+        return $globalFiles;
+    }
+
+    /**
      * Returns the complete URL path to a given template name
      *
      * @return string template url
