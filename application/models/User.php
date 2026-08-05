@@ -1027,12 +1027,14 @@ class User extends LSActiveRecord
     public function getDateFilter($column)
     {
         $dateFilter = "<div class='input-group'>";
-        $dateFilter .= "<span class='input-group-text'>&gt;=</span>";
+        $dateFilter .= "<span class='input-group-text' style='font-size:1rem;line-height:16px;'>&gt;=</span>";
         $dateFilter .= CHtml::dateField(
             get_class($this) . "[" . $column . "]",
             $this->getAttribute($column),
             [
-                'class' => "form-control"
+                'class' => "form-control",
+                // Native date inputs keep a larger min-height for the picker; pin height to match the other form-control filters.
+                'style' => 'font-size:1rem;height:37.6px;min-height:0;'
             ]
         );
         $dateFilter .= "</div>";
