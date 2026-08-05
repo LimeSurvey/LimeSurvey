@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.6 (build 260722) to 7.0.7 (build 260729) July 28, 2026
++New feature #AT-2161: Select all responses spanning across multiple pages (#5140) (Stefan K)
+-Fixed issue #LE-850: Inconsistency in duplicate code validation for question codes in new editor (#5169) (haythem chibani)
+-Fixed issue #LE-832: Non successful survey image uploads throws filepath error and fetching survey with expired session throws error (#5168) (haythem chibani)
+-Fixed issue #AT-2121: Enabled the HTML editor for survey welcome, question title, and end-screen texts (Rami S. Zaki)
+-Fixed issue #AT-1797: Enable rich text editor and toolbar for subquestions and answers (#4950) (Rami S. Zaki)
+-Fixed issue #AT-1459: Fix bug where groups get unfolded when we add a new one (#5063) (Rami S. Zaki)
+-Fixed issue #AT-1249: Remove full name from user label in survey owners list if not provided (#5089) (Rami S. Zaki)
+-Fixed issue #20593: Array filter on single choice does not work (#5155) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by c_schmitz, d_inoue, twilllig
+#Updated translation: French (France) by fgervais
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Croatian by rovinj
+
+
 Changes from 7.0.5 (build 260623) to 7.0.6 (build 260722) July 22, 2026
 +New feature #AT-2097: Floating mass action menu (#5108) (Patricia Stell)
 -Fixed issue: only show deactivate survey tooltip for active surveys (ramishenouda)

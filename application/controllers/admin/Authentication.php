@@ -61,7 +61,7 @@ class Authentication extends SurveyCommonAction
                 ls\ajax\AjaxHelper::outputSuccess(gT('Successful login'));
                 return;
             } elseif ($failed) {
-                ls\ajax\AjaxHelper::outputError(gT('Incorrect username and/or password!'));
+                ls\ajax\AjaxHelper::outputError(gT('Incorrect or expired username and/or password!'));
                 return;
             }
         } else {
@@ -205,7 +205,7 @@ class Authentication extends SurveyCommonAction
                 $message = $identity->errorMessage;
                 if (empty($message)) {
                     // If no message, return a default message
-                    $message = gT('Incorrect username and/or password!');
+                    $message = gT('Incorrect or expired username and/or password!');
                 }
                 return array('failed', $message);
             }

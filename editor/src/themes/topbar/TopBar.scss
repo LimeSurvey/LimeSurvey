@@ -213,6 +213,16 @@
   &.active {
     background-color: $g-200;
   }
+
+  &.active,
+  &:active,
+  &:focus,
+  &:focus-visible,
+  &.is-checked {
+    border: 1px solid $grape;
+    background: transparent;
+    color: $g-900;
+  }
 }
 
 .topbar-question-inserter {

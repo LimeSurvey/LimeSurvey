@@ -93,8 +93,8 @@ export const Dropdown = ({
         data-testid={toggleSettings.testId}
         role="menu"
       >
-        <i className={toggleSettings.iconClassName}></i>
         {toggleSettings.title}
+        <i className={toggleSettings.iconClassName}></i>
       </BootstrapDropdown.Toggle>
       <BootstrapDropdown.Menu>
         {menuItems.map(
@@ -140,6 +140,7 @@ export const Dropdown = ({
                     data-testid={testId}
                     className={classNames(className, {
                       'has-checkmark': checked !== undefined,
+                      'is-checked': checked,
                     })}
                   >
                     {checked === undefined ? (
