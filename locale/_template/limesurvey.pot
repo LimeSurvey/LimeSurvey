@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-08-05 12:26:01+00:00\n"
+"POT-Creation-Date: 2026-08-05 17:49:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2358,8 +2358,8 @@ msgstr ""
 #: application/models/TemplateManifest.php:681
 #: application/models/TemplateManifest.php:683
 #: application/models/TemplateManifest.php:686
-#: application/models/TokenDynamic.php:978 application/models/User.php:1235
-#: application/models/User.php:1241 application/models/UserGroup.php:317
+#: application/models/TokenDynamic.php:978 application/models/User.php:1237
+#: application/models/User.php:1243 application/models/UserGroup.php:317
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:39
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:40
 #: application/views/admin/conditions/includes/conditions_edit.php:8
@@ -17665,11 +17665,11 @@ msgstr ""
 msgid "No of surveys"
 msgstr ""
 
-#: application/models/User.php:1192
+#: application/models/User.php:1194
 msgid "%s (%s)"
 msgstr ""
 
-#: application/models/User.php:1245
+#: application/models/User.php:1247
 msgid "Are you sure you want to delete user '%s' from user group '%s'?"
 msgstr ""
 
@@ -23857,7 +23857,7 @@ msgid "Access code length"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:49
-msgid "You can use %1$s to add the generated counter number, for example, “Firstname %1$s”."
+msgid "You can use {COUNTER} to add a generated counter number, for example, “Firstname {COUNTER}”."
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:60
@@ -28830,11 +28830,11 @@ msgid "Select row"
 msgstr ""
 
 #: editor/src/components/UIComponents/PaginationButtons/PaginationButtons.js:42
-msgid "%s results"
+msgid "%s records"
 msgstr ""
 
 #: editor/src/components/UIComponents/PaginationButtons/PaginationButtons.js:91
-msgid "items per page"
+msgid "Records per page"
 msgstr ""
 
 #: editor/src/components/WelcomeSettings/WelcomeSettings.js:48
