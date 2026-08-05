@@ -25,7 +25,7 @@ export const Responses = () => {
   const deepLinkResponseId = searchParams.get('id')
   const [filters, setFilters] = useState({})
   const [pagination, setPagination] = useState(() => ({
-    pageIndex: Number(searchParams.get('page')) || 0,
+    pageIndex: Math.max(Number(searchParams.get('page')) - 1, 0),
     pageSize: Number(searchParams.get('size')) || 10,
   }))
   const [globalFilter, setGlobalFilter] = useState('')
@@ -143,7 +143,7 @@ export const Responses = () => {
   // Keep page/size in the URL at all times so links are always shareable.
   useEffect(() => {
     const next = new URLSearchParams(searchParams)
-    next.set('page', String(pagination.pageIndex))
+    next.set('page', String(pagination.pageIndex + 1))
     next.set('size', String(pagination.pageSize))
     setSearchParams(next, { replace: true })
   }, [pagination.pageIndex, pagination.pageSize])
