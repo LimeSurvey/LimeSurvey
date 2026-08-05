@@ -140,12 +140,18 @@ export const Responses = () => {
     setPagination(pagination)
   }
 
+  // Keep page/size in the URL at all times so links are always shareable.
+  useEffect(() => {
+    const next = new URLSearchParams(searchParams)
+    next.set('page', String(pagination.pageIndex))
+    next.set('size', String(pagination.pageSize))
+    setSearchParams(next, { replace: true })
+  }, [pagination.pageIndex, pagination.pageSize])
+
   const handleResponseModalOpen = (responseId) => {
-    setSearchParams({
-      page: String(pagination.pageIndex),
-      size: String(pagination.pageSize),
-      id: String(responseId),
-    })
+    const next = new URLSearchParams(searchParams)
+    next.set('id', String(responseId))
+    setSearchParams(next)
   }
 
   const handleResponseModalClose = () => {
