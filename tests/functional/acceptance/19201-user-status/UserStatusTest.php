@@ -186,7 +186,7 @@ class UserStatusTest extends TestBaseClassWeb
         $web->findByCss('.massiveAction')->click();
 
         // Click "Edit status"
-        $web->findByLinkText('Edit status')->click();
+        $web->findById('edit-status')->click();
 
         // Wait for modal to show
         $web->waitById('massive-actions-modal-usermanagement--identity-gridPanel-batchStatus-3');
