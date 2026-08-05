@@ -51,13 +51,20 @@ export const TinyMCE = ({
     })
 
     htmlPopup({
-      title: t('Edit HTML'),
-      html: <CodeEditor value={formattedHTML} />,
+      title: t('Edit question using HTML'),
+      html: (
+        <CodeEditor
+          title={t('Use custom HTML to edit and format your question text.')}
+          className="html-editor"
+          value={formattedHTML}
+        />
+      ),
       showCloseButton: true,
       showCancelButton: true,
       showConfirmButton: true,
       confirmButtonText: 'Save',
       cancelButtonText: 'Cancel',
+      containerClass: 'html-editor-popup',
       width: '80vw',
     }).then((result) => {
       if (result.isConfirmed) {

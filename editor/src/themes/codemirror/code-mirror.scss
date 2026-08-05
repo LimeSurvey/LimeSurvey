@@ -1,0 +1,67 @@
+// styles for tinymce editor
+.html-editor-popup {
+  .swal2-popup {
+    padding: 24px 20px;
+  }
+
+  .swal2-html-container,
+  .swal2-title {
+    text-align: start;
+    padding: 0;
+  }
+
+  .html-editor {
+    .cm-editor {
+      width: 100%;
+    }
+  }
+
+  .swal2-close {
+    font-size: 28px;
+    top: 16px;
+    right: 16px;
+    color: $g-900;
+    font-weight: 300;
+  }
+
+  .swal2-title {
+    padding-top: 56px;
+    text-align: start;
+  }
+
+  .swal2-html-container {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .cm-editor {
+    text-align: start;
+    max-height: 65vh;
+
+    .cm-gutters-before {
+      margin-right: 4px;
+    }
+
+    .cm-lineNumbers {
+      min-width: 28px;
+      background-color: $g-200;
+
+      .cm-gutterElement {
+        font-size: $font-size-xs;
+      }
+    }
+
+    .cm-line {
+      @include label-m;
+    }
+  }
+
+  .swal2-actions {
+    text-align: end;
+    width: 100%;
+    display: flex;
+    margin-top: 44px;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+  }
+}
