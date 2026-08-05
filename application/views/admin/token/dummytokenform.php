@@ -46,7 +46,7 @@
                         <input class='form-control' type='text' size='30' id='firstname' name='firstname' aria-describedby='firstname-help' value="<?= CHtml::encode($firstname); ?>" />
                     </div>
                     <div class="form-text" id="firstname-help">
-                        <?= sprintf(gT('You can use %1$s to add the generated counter number, for example, “Firstname %1$s”.'), "{TOKEN_COUNTER}"); ?>
+                        <?= gT('You can use {COUNTER} to add a generated counter number, for example, “Firstname {COUNTER}”.'); ?>
                     </div>
                 </div>
 
