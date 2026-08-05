@@ -34,6 +34,40 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.7 (build 260729) to 7.0.8 (build 260806) August 5, 2026
++New feature: Download example CSV participant file inside the participant import dialog (Carsten Schmitz)
++New feature #AT-2179: "Select all" option in the floating menu (#5160) (Patricia Stell)
++New feature #AT-1387: Keyboard shortcut for new answer/subquestion option (#5047) (Rami S. Zaki)
+-Fixed issue: Bulk edit participants not working when in "select all" mode (#5178) (Stefan K)
+-Fixed issue #TB-82: Anonymize responses should anonymize the dates in the response table if the setting is on (#5071) (Patricia Stell)
+-Fixed issue #AT-2226: Clear other input on option change for image select and single choice bootstrap buttons (#5193) (Tim Willig)
+-Fixed issue #AT-2120: Question texts containing HTML entities are displayed incorrectly (#5086) (Rami S. Zaki)
+-Fixed issue #AT-2078: Missing preview functionality for question groups and questions in the new editor (#5121) (Rami S. Zaki)
+-Fixed issue #AT-1964: updated pagination style for tables (#5043) (Rami S. Zaki)
+-Fixed issue #20634: Wrong error message if user account has expired (Carsten Schmitz)
+-Fixed issue #20629: Loading fonts locally instead of through URL (#5196) (Stefan K)
+-Fixed issue #20627: JavaScript error when exporting statistics to Excel (Carsten Schmitz)
+-Fixed issue #20625: Question groups inconsistent behavior when drag and dropping (#5194) (Stefan K)
+-Fixed issue #20622: Mandatory ranking questions cannot be answered (#5181) (Ahmed Abd El-Azeem)
+-Fixed issue #20613: Survey logic overview option shows error 500 (#5200) (Gabriel Jenik)
+-Fixed issue #20609: Admin notification URLs are not interactive (#5151) (Denis Chenu)
+-Fixed issue #20575: [security] XSS in add dummy participant form (#5077) (Denis Chenu)
+-Fixed issue #20574: Unable to update LimeSurvey with incompatible theme (#5117) (Denis Chenu)
+-Fixed issue #20570: When not unchecking the "unseen or not answered" checkbox but editing a data set, the screen freezes on save (#5202) (Gabriel Jenik)
+-Fixed issue #20512: List (radio) 'Other' option text input too small/unusable on mobile when label is long (#5081) (Gabriel Jenik)
+-Fixed issue #20392: Invalid URL placeholders when using hostInfo or baseUrl and publicurl (#5159) (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, Cubitus
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Chinese (Simplified) by ChenLuan, hackbb, hdaphq, huyuchengus, twilllig
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 7.0.6 (build 260722) to 7.0.7 (build 260729) July 28, 2026
 +New feature #AT-2161: Select all responses spanning across multiple pages (#5140) (Stefan K)
 -Fixed issue #LE-850: Inconsistency in duplicate code validation for question codes in new editor (#5169) (haythem chibani)
