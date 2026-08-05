@@ -164,7 +164,11 @@ export const SurveyFooter = ({
                         testId="survey-footer-finish-button"
                       >
                         {finishButtonForwardingUrl ? (
-                          <a href={finishButtonForwardingUrl}>
+                          <a 
+                            href={finishButtonForwardingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             {finishButtonTitle}
                           </a>
                         ) : (
