@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-08-05 17:49:54+00:00\n"
+"POT-Creation-Date: 2026-08-05 17:50:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23861,7 +23861,7 @@ msgid "You can use {COUNTER} to add a generated counter number, for example, “
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:60
-msgid "You can use %1$s to add the generated counter number, for example, “Lastname %1$s”."
+msgid "You can use {COUNTER} to add a generated counter number, for example, “Lastname {COUNTER}”."
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:67
@@ -23871,7 +23871,7 @@ msgid "Email address:"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:72
-msgid "You can use %1$s to add the generated counter number, for example, “user%1$s@example.org”."
+msgid "You can use {COUNTER} to add a generated counter number, for example, “user{COUNTER}@example.org”."
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:87
