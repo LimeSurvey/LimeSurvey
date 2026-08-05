@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
 import { Container } from 'react-bootstrap'
@@ -21,8 +21,13 @@ import { RightSideBar } from './Sidebars/RightSideBar'
 export const Responses = () => {
   const { surveyId, menu, panel } = useParams()
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const deepLinkResponseId = searchParams.get('id')
   const [filters, setFilters] = useState({})
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
+  const [pagination, setPagination] = useState(() => ({
+    pageIndex: Number(searchParams.get('page')) || 0,
+    pageSize: Number(searchParams.get('size')) || 10,
+  }))
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState([])
   const [showTableFilters, setShowTableFilters] = useState(false)
@@ -135,6 +140,20 @@ export const Responses = () => {
     setPagination(pagination)
   }
 
+  const handleResponseModalOpen = (responseId) => {
+    setSearchParams({
+      page: String(pagination.pageIndex),
+      size: String(pagination.pageSize),
+      id: String(responseId),
+    })
+  }
+
+  const handleResponseModalClose = () => {
+    const next = new URLSearchParams(searchParams)
+    next.delete('id')
+    setSearchParams(next)
+  }
+
   const onFiltersChange = (filters) => {
     setFilters(filters)
   }
@@ -223,6 +242,9 @@ export const Responses = () => {
               columnsFilters={columnsFilters}
               setColumnsFilters={setColumnsFilters}
               disableUpdatingResponses={!hasResponsesUpdatePermission}
+              deepLinkResponseId={deepLinkResponseId}
+              onResponseModalOpen={handleResponseModalOpen}
+              onResponseModalClose={handleResponseModalClose}
             />
           )
         }
