@@ -79,7 +79,7 @@ export const CodeEditor = ({
 
   return (
     <>
-      {title && <div className="code-editor-title mb-3 mt-2">{title}</div>}
+      {title && <div className="code-editor-title mb-4 mt-2">{title}</div>}
       <CodeMirror
         id={id}
         value={value}

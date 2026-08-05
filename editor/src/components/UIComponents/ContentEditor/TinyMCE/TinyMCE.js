@@ -65,7 +65,6 @@ export const TinyMCE = ({
       confirmButtonText: 'Save',
       cancelButtonText: 'Cancel',
       containerClass: 'html-editor-popup',
-      width: '80vw',
     }).then((result) => {
       if (result.isConfirmed) {
         const newHtmlContent =
