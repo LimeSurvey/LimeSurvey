@@ -66,7 +66,7 @@ $aActionsArray = array(
             'action'            => 'batchStatus',
             'url'               => App()->createUrl('userManagement/batchStatus'),
             'iconClasses'       => 'ri-user-follow-fill',
-            'text'              => gT('Edit status'),
+            'text'              => gT('Set status'),
             'grid-reload'       => 'yes',
             //modal
             'actionType'        => 'modal',
