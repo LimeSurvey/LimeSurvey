@@ -981,18 +981,30 @@ $(document).on('submit', function (e) {
   if (e.target.id != 'limesurvey') {
     return;
   }
+  var $form = $(e.target);
   // We only care about the final submit, not normal forward/backward navigation.
   var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
   if (!submitter || submitter.attr('value') != 'movesubmit') {
     return;
   }
+  if (e.isDefaultPrevented()) {
+    return;
+  }
+  // Disabling the button is not sufficient when the browser has already queued
+  // more than one submit event. Explicitly cancel every repeated final submit.
+  if ($form.data('final-submit-active')) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return false;
+  }
+  $form.data('final-submit-active', true);
   // Still, we disable all submit buttons to make sure the "back" button is not
   // pressed while submitting.
-  $('#limesurvey button[type="submit"]').prop('disabled', true);
+  $form.find('button[type="submit"]').prop('disabled', true);
 
   // We also add a hidden input with the button's value, because it's not included
   // in the request when the button is disabled.
-  $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + submitter.attr('name') + '\' value=\'' + submitter.attr('value') + '\' type=\'hidden\' />');
+  $form.append('<input id="onsubmitbuttoninput" name=\'' + submitter.attr('name') + '\' value=\'' + submitter.attr('value') + '\' type=\'hidden\' />');
 });
 
 // register to global scope
