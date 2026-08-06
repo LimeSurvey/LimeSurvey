@@ -58,6 +58,139 @@
 
   box-shadow: 0 1px 2px -2px gray;
 
+  // Project title plus button shown when survey title is focused
+  .project-title-plus-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px;
+    color: $g-700;
+    border-radius: $border-radius;
+
+    &:hover {
+      background-color: $g-200;
+      color: $black;
+    }
+
+    i::before {
+      font-size: 16px;
+    }
+  }
+
+  // Project title pill badge
+  .project-title-badge {
+    display: inline-flex;
+    align-items: center;
+    max-width: 180px;
+    padding: 2px 8px;
+    margin-left: 6px;
+    background-color: $g-200;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: default;
+    }
+
+    &__text {
+      font-size: $font-size-xs;
+      color: $g-700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 160px;
+    }
+  }
+
+  // Project title entry form (shown below survey title)
+  .project-title-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0 4px;
+
+    &__label {
+      font-size: $font-size-xs;
+      font-weight: $font-weight-500;
+      color: $g-700;
+      margin-bottom: 2px;
+    }
+
+    &__row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    &__input {
+      flex: 1;
+      min-width: 160px;
+      max-width: 260px;
+      padding: 4px 8px;
+      font-size: $font-size-sm;
+      border: 1px solid $g-400;
+      border-radius: $border-radius;
+      outline: none;
+
+      &:focus {
+        border-color: $primary;
+      }
+    }
+
+    &__btn {
+      padding: 4px 10px;
+      font-size: $font-size-sm;
+      border-radius: $border-radius;
+      border: 1px solid transparent;
+      cursor: pointer;
+
+      &--save {
+        background-color: $primary;
+        color: $white;
+        border-color: $primary;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      &--cancel {
+        background: none;
+        color: $g-700;
+        border-color: $g-400;
+
+        &:hover {
+          background-color: $g-200;
+        }
+      }
+
+      &--close {
+        background: none;
+        border: none;
+        color: $g-600;
+        padding: 4px;
+
+        &:hover {
+          color: $black;
+        }
+
+        i::before {
+          font-size: 16px;
+        }
+      }
+    }
+
+    &__error {
+      font-size: $font-size-xs;
+      color: $danger;
+    }
+  }
+
   .top-bar-middle {
     position: absolute;
     left: 50%;

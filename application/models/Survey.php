@@ -558,6 +558,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showqnumcode', 'in', 'range' => array('B', 'N', 'C', 'X', 'I'), 'allowEmpty' => true),
             array('format', 'in', 'range' => array('G', 'S', 'A', 'I'), 'allowEmpty' => true),
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
+            array('projecttitle', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
+            array('projecttitle', 'length', 'max' => 255, 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
             array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false, 'min' => '-1', 'max' => Token::MAX_LENGTH, 'tooBig' => gT('Token length cannot be bigger than {max} characters.')),
@@ -570,9 +572,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('additional_languages', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('additional_languages', 'LSYii_Validators', 'isLanguageMulti' => true),
             array('running', 'safe', 'on' => 'search'),
-            array('expires', 'date', 'format' => ['yyyy-MM-dd HH:mm:ss','yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'], 'allowEmpty' => true),
-            array('startdate', 'date','format' => ['yyyy-MM-dd HH:mm:ss','yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('datecreated', 'date','format' => ['yyyy-MM-dd HH:mm:ss','yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('expires', 'date', 'format' => ['yyyy-MM-dd HH:mm:ss', 'yyyy-M-d H:m:s.???', 'yyyy-M-d H:m:s', 'yyyy-M-d H:m'], 'allowEmpty' => true),
+            array('startdate', 'date', 'format' => ['yyyy-MM-dd HH:mm:ss', 'yyyy-M-d H:m:s.???', 'yyyy-M-d H:m:s', 'yyyy-M-d H:m'], 'allowEmpty' => true),
+            array('datecreated', 'date', 'format' => ['yyyy-MM-dd HH:mm:ss', 'yyyy-M-d H:m:s.???', 'yyyy-M-d H:m:s', 'yyyy-M-d H:m'], 'allowEmpty' => true),
             array('expires', 'checkExpireAfterStart'),
             // The Google Analytics Tracking ID is inserted in a JS script. If the following rule is changed, make sure
             // that it doesn't render it vulnerable to XSS attacks.
@@ -1732,7 +1734,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'type'        => 'raw',
                 'value'       => '$data->hasTokensTable ? gT("Yes"):gT("No")',
                 'htmlOptions' => ['class' => 'has-link'],
-            ]
+            ],
+            'projecttitle' => [
+                'header'            => gT('Project title'),
+                'name'              => 'projecttitle',
+                'value'             => '$data->projecttitle',
+                'headerHtmlOptions' => ['class' => 'text-nowrap'],
+                'htmlOptions'       => ['class' => 'has-link'],
+            ],
         ];
 
         return $additionalColumns;
