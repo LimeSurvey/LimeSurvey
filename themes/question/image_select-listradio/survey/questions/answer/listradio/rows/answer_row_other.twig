@@ -63,6 +63,31 @@
         $("#answer{{ name }}othertext").on("keyup",function(){
             if($.trim($(this).val())!=''){ $('#SOTH{{ name }}').click(); };
         });
+        (function () {
+            var cb        = document.getElementById('SOTH{{ name }}');
+            var inputText = document.getElementById('answer{{ name }}othertext');
+            var item      = document.getElementById('javatbd{{ myfname }}');
+
+            var preClickChecked = false;
+
+            ['.other-text-item', '.othertext-suffix-label'].forEach(function (sel) {
+                var el = item.querySelector(sel);
+                if (!el) { return; }
+                el.addEventListener('mousedown', function () {
+                    preClickChecked = cb.checked;
+                });
+                el.addEventListener('click', function (event) {
+                    event.stopPropagation();
+                    if (event.target.tagName === 'INPUT') { return; }
+                    if (!preClickChecked) {
+                        cb.checked = true;
+                        inputText.focus();
+                        cb.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                    // if preClickChecked was true, deselect-singlechoice.js handles it
+                });
+            });
+        }());
     </script>
 </li>
 <!-- end of answer_row_other -->
