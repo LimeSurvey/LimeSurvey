@@ -95,6 +95,30 @@
             }
             ;
         });
+        (function () {
+            var cb        = document.getElementById('answer{{ myfname }}cbox');
+            var inputText = document.getElementById('answer{{ myfname }}');
+            var item      = document.getElementById('javatbd{{ myfname }}');
+
+            function handleToggleClick(event) {
+                event.stopPropagation();
+                if (event.target.tagName === 'INPUT') { return; }
+                if (cb.checked) {
+                    cb.checked = false;
+                    inputText.value = '';
+                    document.getElementById('java{{ myfname }}').value = '';
+                    LEMflagMandOther('{{ myfname }}', false);
+                    {{ checkconditionFunction }}('', '{{ myfname }}', 'text');
+                } else {
+                    inputText.focus();
+                }
+            }
+
+            ['.other-text-item', '.othertext-suffix-label'].forEach(function (sel) {
+                var el = item.querySelector(sel);
+                if (el) { el.addEventListener('click', handleToggleClick); }
+            });
+        }());
     </script>
 </li> <!-- Form group ; item row -->
 <!-- end of answer_row_other -->

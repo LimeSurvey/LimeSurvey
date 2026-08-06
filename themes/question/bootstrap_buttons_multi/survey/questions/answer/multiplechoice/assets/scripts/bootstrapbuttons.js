@@ -42,3 +42,14 @@ $(document).ready(function () {
     });
 
 });
+
+function attachSuffixFocusBehavior(containerId, inputId) {
+    var div    = document.getElementById(containerId);
+    var suffix = div ? div.querySelector('.othertext-suffix-label') : null;
+    if (!suffix) { return; }
+    suffix.style.cursor = 'pointer';
+    suffix.addEventListener('click', function (e) {
+        e.stopPropagation();
+        document.getElementById(inputId).focus();
+    });
+}

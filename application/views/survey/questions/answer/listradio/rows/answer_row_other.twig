@@ -62,6 +62,29 @@
         $("#answer{{ name }}othertext").on("keyup",function(){
             if($.trim($(this).val())!=''){ $('#SOTH{{ name }}').click(); };
         });
+        (function () {
+            var cb        = document.getElementById('SOTH{{ name }}');
+            var inputText = document.getElementById('answer{{ name }}othertext');
+            var item      = document.getElementById('javatbd{{ myfname }}');
+
+            function handleToggleClick(event) {
+                event.stopPropagation();
+                if (event.target.tagName === 'INPUT') { return; }
+                if (cb.checked) {
+                    cb.checked = false;
+                    inputText.value = '';
+                } else {
+                    cb.checked = true;
+                    inputText.focus();
+                }
+                cb.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            ['.other-text-item', '.othertext-suffix-label'].forEach(function (sel) {
+                var el = item.querySelector(sel);
+                if (el) { el.addEventListener('click', handleToggleClick); }
+            });
+        }());
     </script>
 </li>
 <!-- end of answer_row_other -->
