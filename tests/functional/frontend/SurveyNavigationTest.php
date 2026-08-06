@@ -107,6 +107,58 @@ class SurveyNavigationTest extends TestBaseClassWeb
     }
 
     /**
+     * A second final submit must be cancelled even if the browser has already
+     * queued both submit events before the submit button is disabled.
+     */
+    public function testRepeatedFinalSubmitIsPrevented()
+    {
+        $web = self::$webDriver;
+
+        try {
+            $web->get($this->getSurveyUrl());
+
+            // Welcome page, first group, then the final group.
+            $web->clickButton('ls-button-submit');
+            $web->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#group-0 .group-title')
+                )
+            );
+            $web->clickButton('ls-button-submit');
+            $web->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#group-1 .group-title')
+                )
+            );
+
+            $result = $web->executeScript(<<<'JS'
+                var form = document.getElementById('limesurvey');
+                var submitButton = document.getElementById('ls-button-submit');
+
+                function dispatchFinalSubmit() {
+                    var event = document.createEvent('Event');
+                    event.initEvent('submit', true, true);
+                    Object.defineProperty(event, 'submitter', {value: submitButton});
+                    return form.dispatchEvent(event);
+                }
+
+                return {
+                    firstSubmitAllowed: dispatchFinalSubmit(),
+                    secondSubmitAllowed: dispatchFinalSubmit(),
+                    submitValueInputCount: form.querySelectorAll('#onsubmitbuttoninput').length
+                };
+                JS);
+
+            $this->assertTrue($result['firstSubmitAllowed']);
+            $this->assertFalse($result['secondSubmitAllowed']);
+            $this->assertSame(1, $result['submitValueInputCount']);
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(true, self::$testHelper->javaTrace($ex));
+        }
+    }
+
+    /**
      * Check Resume Later navigation
      */
     public function testResumeLaterNavigation()
