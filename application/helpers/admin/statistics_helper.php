@@ -1023,9 +1023,14 @@ class statistics_helper
                 //CALCULATE QUARTILES
                 $medcount = $this->getQuartile(0, $fielddata, $sql, $excludezeros); // Get the recordcount
                 $quartiles = array();
-                $quartiles[1] = $this->getQuartile(1, $fielddata, $sql, $excludezeros);
-                $quartiles[2] = $this->getQuartile(2, $fielddata, $sql, $excludezeros);
-                $quartiles[3] = $this->getQuartile(3, $fielddata, $sql, $excludezeros);
+                // Encrypted data is sorted by ciphertext, so the ordering does not match the
+                // numeric values and quartiles cannot be computed reliably (see bug #20569).
+                $quartilesEncrypted = ($fielddata['encrypted'] === "Y");
+                if (!$quartilesEncrypted) {
+                    $quartiles[1] = $this->getQuartile(1, $fielddata, $sql, $excludezeros);
+                    $quartiles[2] = $this->getQuartile(2, $fielddata, $sql, $excludezeros);
+                    $quartiles[3] = $this->getQuartile(3, $fielddata, $sql, $excludezeros);
+                }
 
                 //we just put the total number of records at the beginning of this array
                 array_unshift($showem, array(gT("Count"), $medcount));
@@ -1034,14 +1039,18 @@ class statistics_helper
                 /* IF YOU DON'T UNDERSTAND WHAT QUARTILES ARE DO NOT MODIFY THIS CODE */
                 /* Quartiles and Median values are NOT related to average, and the sum is irrelevant */
 
-                if (isset($quartiles[1])) {
-                    $showem[] = array(gT("1st quartile (Q1)"), $quartiles[1]);
-                }
-                if (isset($quartiles[2])) {
-                    $showem[] = array(gT("2nd quartile (Median)"), $quartiles[2]);
-                }
-                if (isset($quartiles[3])) {
-                    $showem[] = array(gT("3rd quartile (Q3)"), $quartiles[3]);
+                if ($quartilesEncrypted) {
+                    $showem[] = array(gT("Quartiles (Q1, Median, Q3)"), gT("Not available for encrypted data"));
+                } else {
+                    if (isset($quartiles[1])) {
+                        $showem[] = array(gT("1st quartile (Q1)"), $quartiles[1]);
+                    }
+                    if (isset($quartiles[2])) {
+                        $showem[] = array(gT("2nd quartile (Median)"), $quartiles[2]);
+                    }
+                    if (isset($quartiles[3])) {
+                        $showem[] = array(gT("3rd quartile (Q3)"), $quartiles[3]);
+                    }
                 }
                 $showem[] = array(gT("Maximum"), $maximum);
 
