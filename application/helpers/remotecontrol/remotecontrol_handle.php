@@ -1883,7 +1883,9 @@ class remotecontrol_handle
                                                                             'qid = :qid AND defaultvaluel10ns.language = :language',
                                                                             array(':qid' => $iQuestionID, ':language' => $sLanguage)
                                                                         );
-                        $aResult['defaultvalue'] = $oDefaultValue !== null ? $oDefaultValue->defaultvalue : null;
+                        $aResult['defaultvalue'] = ($oDefaultValue !== null && isset($oDefaultValue->defaultvaluel10ns[$sLanguage]))
+                            ? $oDefaultValue->defaultvaluel10ns[$sLanguage]->defaultvalue
+                            : null;
                     } elseif ($sPropertyName == 'question' || $sPropertyName == 'help' || $sPropertyName == 'script') {
                         $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->$sPropertyName;
                     } elseif ($sPropertyName == 'questionl10ns') {
