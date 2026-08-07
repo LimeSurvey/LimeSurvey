@@ -47,7 +47,7 @@ foreach ($files as $file) {
     echo __content($reader->header);
 
     echo __title('Documents');
-    echo __content($reader->documents);
+    echo __content($reader->getDocumentArray());
 
     echo __title('Variables');
     echo __content($reader->variables);
