@@ -37,7 +37,13 @@
 
 {# The question text as entered by the survey creator in question editing #}
 <div class="{{ aSurveyInfo.class.questiontext }}" {{ aSurveyInfo.attr.questiontext }}>
-    <div id="ls-question-text-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.lsquestiontext }}" {{ aSurveyInfo.attr.lsquestiontext }}>
-        {{ aQuestion.text | raw }}
-    </div>
+    {% if aQuestion.type is defined and aQuestion.type in ['S', 'T', 'U', 'N'] %}
+        <label for="answer{{ aQuestion.SGQ }}" id="ls-question-text-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.lsquestiontext }}" {{ aSurveyInfo.attr.lsquestiontext }}>
+            {{ aQuestion.text | raw }}
+        </label>
+    {% else %}
+        <div id="ls-question-text-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.lsquestiontext }}" {{ aSurveyInfo.attr.lsquestiontext }}>
+            {{ aQuestion.text | raw }}
+        </div>
+    {% endif %}
 </div>

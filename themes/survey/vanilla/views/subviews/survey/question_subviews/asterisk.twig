@@ -5,6 +5,11 @@
 #}
 <!-- Add a visual information + just Mandatory string for aria : can be improved -->
 <div class="asterisk float-start">
-  <sup class="text-danger fa fa-asterisk small" aria-hidden='true'></sup>
-  <span class="visually-hidden text-danger">{{ gT("(This question is mandatory)") }}</span>
+
+  <span class="text-danger small">
+    <sup class="fa fa-asterisk" aria-hidden="true"></sup>
+    {{ gT("(Required)") }}
+  </span>
+
 </div>
+<br>
