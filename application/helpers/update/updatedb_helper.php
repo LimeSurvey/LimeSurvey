@@ -67,6 +67,34 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         return false;
     }
 
+    // Make sure the database server meets the documented minimum requirements
+    // before starting any migration. Otherwise a migration can fail halfway
+    // through (e.g. adding a JSON column on an unsupported MariaDB version) and
+    // leave the database in an inconsistent state.
+    try {
+        $oDbConnection = Yii::app()->getDb();
+        $requirement = \LimeSurvey\Helpers\DbVersionHelper::getRequirement(
+            $oDbConnection->getDriverName(),
+            $oDbConnection->getServerVersion()
+        );
+    } catch (CDbException $e) {
+        Yii::log('Could not verify database version before update: ' . $e->getMessage(), 'error', 'application.db.update');
+        return false;
+    }
+    if (!$requirement['supported']) {
+        $message = sprintf(
+            gT('The database update was aborted because your database server does not meet the minimum requirements. %s %s or newer is required, but the server reports version %s. Please upgrade your database server and try again.'),
+            $requirement['type'],
+            $requirement['minimumLabel'],
+            $requirement['current']
+        );
+        if (!$bSilent && Yii::app()->hasComponent('user')) {
+            Yii::app()->user->setFlash('error', $message);
+        }
+        Yii::log($message, 'error', 'application.db.update');
+        return false;
+    }
+
     // Try to acquire database update lock
     if (!getDatabaseUpdateLock()) {
         return false;
