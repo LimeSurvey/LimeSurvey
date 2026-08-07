@@ -23,6 +23,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
     'dataProvider'          => $oQuestionTheme->search(),
     'filter'                => $oQuestionTheme,
     'id'                    => 'questionthemes-grid',
+    'caption'               => gT('question themes'),
     'massiveActionTemplate' => $massiveAction,
     'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
             gT('%s rows per page'),

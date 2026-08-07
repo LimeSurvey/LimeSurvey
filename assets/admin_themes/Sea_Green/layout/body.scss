@@ -6,3 +6,11 @@ body {
     min-height       : 100vh;
     flex-direction   : column;
 }
+.navbar .navbar-brand:focus {
+outline: 2px solid currentColor !important;
+outline-offset: 3px !important;
+}
+.alert-dismissible .btn-close:focus {
+outline: 2px solid currentColor !important;
+outline-offset: -9px !important;
+}
