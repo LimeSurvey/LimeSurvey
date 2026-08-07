@@ -4,17 +4,7 @@
  * @var $oSurveyTheme TemplateConfiguration
  */
 
-$massiveAction = App()->getController()->renderPartial(
-    '/themeOptions/_selector',
-    [
-        'oSurveyTheme' => $oSurveyTheme,
-        'gridID' => 'themeoptions-grid',
-        'dropupID' => 'themeoptions-dropup',
-        'pk' => 'id'
-    ],
-    true,
-    false
-);
+$aFloatingActions = require(__DIR__ . '/floatingActions/_surveyThemeActions.php');
 $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [
@@ -25,7 +15,6 @@ $this->widget(
         'pager' => [
             'class' => 'application.extensions.admin.grid.CLSYiiPager',
         ],
-        'massiveActionTemplate' => $massiveAction,
         'summaryText' => html_entity_decode(
             gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
             sprintf(
@@ -102,11 +91,23 @@ $this->widget(
             ],
 
         ],
+        'showSelectionBar' => false,
         'ajaxUpdate' => true,
         'ajaxType' => 'POST',
         'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();LS.actionDropdown.create();}',
     ]
 );
+
+if (!empty($aFloatingActions)) {
+    $this->widget(
+        'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
+        [
+            'pk'       => 'id',
+            'gridId'   => 'themeoptions-grid',
+            'aActions' => $aFloatingActions,
+        ]
+    );
+}
 ?>
 
 <!-- To update rows per page via ajax setSession-->
