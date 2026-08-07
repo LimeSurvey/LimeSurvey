@@ -732,23 +732,16 @@ window.addEventListener('message', function(event) {
     }
 
     /**
-         * Ensure privacy text strings exist and render the privacy notice label.
-         *
-         * If specific privacy strings are empty, sets sensible defaults and renders
-         * the `datasecurity_notice_label` using the privacy twig partial. This
-         * operation runs only once per request; subsequent calls return the input unchanged.
-         *
-         * @param array $aSurveyInfo Survey rendering data; must contain at least `sid` when available.
-         * @return array The updated `$aSurveyInfo` array with `datasecurity_notice_label` and `datasecurity_error` ensured and the notice label rendered as HTML.
-         */
+     * Ensure privacy text strings exist.
+     *
+     * If specific privacy strings are empty, sets sensible defaults. The theme
+     * renders `datasecurity_notice_label` through its privacy subview.
+     *
+     * @param array $aSurveyInfo Survey rendering data; must contain at least `sid` when available.
+     * @return array The updated `$aSurveyInfo` array with `datasecurity_notice_label` and `datasecurity_error` ensured.
+     */
     private function setDefaultPrivacyText($aSurveyInfo)
     {
-        /* Do it one time only (and do not recall self when using renderPartial) */
-        static $DefaultPrivacyDone = false;
-        if ($DefaultPrivacyDone) {
-            return $aSurveyInfo;
-        }
-        $DefaultPrivacyDone = true;
         if (empty($aSurveyInfo['datasecurity_notice_label'])) {
             $aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey privacy policy.");
         }
@@ -759,25 +752,18 @@ window.addEventListener('message', function(event) {
         $translation = [
             "Show policy" => gT("Show policy")
         ];
-        $aSurveyInfo['datasecurity_notice_label'] =  $this->renderPartial(
-            './subviews/privacy/privacy_datasecurity_notice_label.twig',
-            [
-                'dataSecurityNoticeLabel' => $aSurveyInfo['datasecurity_notice_label'],
-                'sid' => $aSurveyInfo['sid'],
-            ]
-        );
         return $aSurveyInfo;
     }
 
     /**
-         * Ensure option flags that depend on files are coherent.
-         *
-         * If a file-related option (e.g., `brandlogofile`, `backgroundimagefile`) is empty,
-         * the corresponding boolean-like option (`brandlogo`, `backgroundimage`) is set to `"false"`.
-         *
-         * @param array $aData Rendering data (expects `aSurveyInfo['options']` when present).
-         * @return array The input `$aData` with corrected option flags where applicable.
-         */
+     * Ensure option flags that depend on files are coherent.
+     *
+     * If a file-related option (e.g., `brandlogofile`, `backgroundimagefile`) is empty,
+     * the corresponding boolean-like option (`brandlogo`, `backgroundimage`) is set to `"false"`.
+     *
+     * @param array $aData Rendering data (expects `aSurveyInfo['options']` when present).
+     * @return array The input `$aData` with corrected option flags where applicable.
+     */
     private function fixDataCoherence($aData)
     {
         // Clean option with files
