@@ -56,7 +56,7 @@ final class EasyHandle
     public $onHeadersException;
 
     /**
-     * @var \Exception|null Exception during createResponse (if any)
+     * @var \Throwable|null Exception during createResponse (if any)
      */
     public $createResponseException;
 
@@ -68,6 +68,8 @@ final class EasyHandle
      */
     public function createResponse(): void
     {
+        $this->response = null;
+
         [$ver, $status, $reason, $headers] = HeaderProcessor::parseHeaders($this->headers);
 
         $normalizedKeys = Utils::normalizeHeaderKeys($headers);
@@ -80,7 +82,7 @@ final class EasyHandle
 
                 $bodyLength = (int) $this->sink->getSize();
                 if ($bodyLength) {
-                    $headers[$normalizedKeys['content-length']] = $bodyLength;
+                    $headers[$normalizedKeys['content-length']] = [(string) $bodyLength];
                 } else {
                     unset($headers[$normalizedKeys['content-length']]);
                 }

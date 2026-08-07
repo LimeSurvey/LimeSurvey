@@ -6,7 +6,7 @@
         <select id='questionNav' class="form-select">
 
             <optgroup class='activesurveyselect' label='<?php eT("Before"); ?>' >
-                <?php foreach ($theserows as $row): ?>
+                <?php foreach ($theserows as $row) : ?>
                     <option value='<?php echo $row['value']; ?>'>
                         <?php echo $row['text']; ?>
                     </option>
@@ -20,7 +20,7 @@
             </optgroup>
 
             <optgroup class='activesurveyselect' label='<?php eT("After"); ?>' >
-                <?php foreach ($postrows as $row): ?>
+                <?php foreach ($postrows as $row) : ?>
                     <option value='<?php echo $row['value']; ?>'>
                         <?php echo $row['text']; ?>
                     </option>
@@ -33,9 +33,12 @@
 </div>
 
 <?php
-App()->getClientScript()->registerScript('conditionmovetoquestion', 
-"$('#questionNav').off('.conditionmovetoquestion').on('change.conditionmovetoquestion', function(e){
+App()->getClientScript()->registerScript(
+    'conditionmovetoquestion',
+    "$('#questionNav').off('.conditionmovetoquestion').on('change.conditionmovetoquestion', function(e){
     $(document).trigger('pjax:load', {url : $(this).val()});
-});", LSYii_ClientScript::POS_POSTSCRIPT);
+});",
+    LSYii_ClientScript::POS_POSTSCRIPT
+);
 ?>
 

@@ -13,7 +13,6 @@
 
 class TwigCommand extends CConsoleCommand
 {
-
     public $aLogs; // Array of logs
 
     /**

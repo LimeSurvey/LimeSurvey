@@ -496,6 +496,111 @@
                 ]
             }
         },
+        "\/rest\/v1\/survey-responses-export\/{_id}": {
+            "post": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Survey responses export",
+                "operationId": "post.survey-responses-export.id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Survey Responses Export",
+                                    "description": "Survey Responses Export",
+                                    "format": "binary",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "\/rest\/v1\/statistics-overview\/{_id}": {
             "get": {
                 "tags": [
@@ -530,14 +635,6 @@
                                                             "type": "integer"
                                                         },
                                                         "incompleteResponses": {
-                                                            "default": 0,
-                                                            "type": "integer"
-                                                        },
-                                                        "completedWithoutAnswers": {
-                                                            "default": 0,
-                                                            "type": "integer"
-                                                        },
-                                                        "incompletedWithoutAnswers": {
                                                             "default": 0,
                                                             "type": "integer"
                                                         },
@@ -752,14 +849,6 @@
                                                     "default": 0,
                                                     "type": "integer"
                                                 },
-                                                "completedWithoutAnswers": {
-                                                    "default": 0,
-                                                    "type": "integer"
-                                                },
-                                                "incompletedWithoutAnswers": {
-                                                    "default": 0,
-                                                    "type": "integer"
-                                                },
                                                 "completionRate": {
                                                     "default": "0.00",
                                                     "type": "string"
@@ -938,6 +1027,721 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "\/rest\/v1\/user-permissions": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User permissions",
+                "operationId": "get.user-permissions",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "User Permissions",
+                                    "description": "User Permissions",
+                                    "type": "object",
+                                    "properties": {
+                                        "permissions": {
+                                            "type": "object",
+                                            "properties": {
+                                                "global": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "participantpanel": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "labelsets": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "settings": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "surveysgroups": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "surveys": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "templates": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "usergroups": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "users": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "superadmin": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "auth_db": {
+                                                            "allOf": [
+                                                                {
+                                                                    "title": "Permission",
+                                                                    "description": "Permission",
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "create": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "read": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "update": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "delete": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "import": {
+                                                                            "type": "boolean"
+                                                                        },
+                                                                        "export": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "surveys": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "entity_id": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "assessments": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "quotas": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "statistics": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "survey": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "surveyactivation": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "surveycontent": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "surveylocale": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "surveysecurity": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "surveysettings": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "tokens": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "translations": {
+                                                                    "allOf": [
+                                                                        {
+                                                                            "title": "Permission",
+                                                                            "description": "Permission",
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "create": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "read": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "update": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "delete": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "import": {
+                                                                                    "type": "boolean"
+                                                                                },
+                                                                                "export": {
+                                                                                    "type": "boolean"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
                         "content": {
                             "application\/json": {
                                 "schema": {
@@ -1161,9 +1965,6 @@
                                                             },
                                                             "navigationDelay": {
                                                                 "type": "integer"
-                                                            },
-                                                            "noKeyboard": {
-                                                                "type": "boolean"
                                                             },
                                                             "allowedItAfterCompletion": {
                                                                 "type": "boolean"
@@ -1449,9 +2250,6 @@
                                                         "navigationDelay": {
                                                             "type": "integer"
                                                         },
-                                                        "noKeyboard": {
-                                                            "type": "boolean"
-                                                        },
                                                         "allowedItAfterCompletion": {
                                                             "type": "boolean"
                                                         },
@@ -1599,7 +2397,7 @@
                                                                                 "encrypted": {
                                                                                     "type": "boolean"
                                                                                 },
-                                                                                "questionOrder": {
+                                                                                "sortOrder": {
                                                                                     "default": 0,
                                                                                     "type": "integer"
                                                                                 },
@@ -2225,9 +3023,6 @@
                                                         "navigationDelay": {
                                                             "type": "integer"
                                                         },
-                                                        "noKeyboard": {
-                                                            "type": "boolean"
-                                                        },
                                                         "allowedItAfterCompletion": {
                                                             "type": "boolean"
                                                         },
@@ -2375,7 +3170,7 @@
                                                                                 "encrypted": {
                                                                                     "type": "boolean"
                                                                                 },
-                                                                                "questionOrder": {
+                                                                                "sortOrder": {
                                                                                     "default": 0,
                                                                                     "type": "integer"
                                                                                 },
@@ -2997,9 +3792,6 @@
                                                         "navigationDelay": {
                                                             "type": "integer"
                                                         },
-                                                        "noKeyboard": {
-                                                            "type": "boolean"
-                                                        },
                                                         "allowedItAfterCompletion": {
                                                             "type": "boolean"
                                                         },
@@ -3147,7 +3939,7 @@
                                                                                 "encrypted": {
                                                                                     "type": "boolean"
                                                                                 },
-                                                                                "questionOrder": {
+                                                                                "sortOrder": {
                                                                                     "default": 0,
                                                                                     "type": "integer"
                                                                                 },
@@ -3512,9 +4304,6 @@
                                                     "navigationDelay": {
                                                         "type": "integer"
                                                     },
-                                                    "noKeyboard": {
-                                                        "type": "boolean"
-                                                    },
                                                     "allowedItAfterCompletion": {
                                                         "type": "boolean"
                                                     },
@@ -3662,7 +4451,7 @@
                                                                             "encrypted": {
                                                                                 "type": "boolean"
                                                                             },
-                                                                            "questionOrder": {
+                                                                            "sortOrder": {
                                                                                 "default": 0,
                                                                                 "type": "integer"
                                                                             },
@@ -3989,9 +4778,6 @@
                                                         "navigationDelay": {
                                                             "type": "integer"
                                                         },
-                                                        "noKeyboard": {
-                                                            "type": "boolean"
-                                                        },
                                                         "allowedItAfterCompletion": {
                                                             "type": "boolean"
                                                         },
@@ -4139,7 +4925,7 @@
                                                                                 "encrypted": {
                                                                                     "type": "boolean"
                                                                                 },
-                                                                                "questionOrder": {
+                                                                                "sortOrder": {
                                                                                     "default": 0,
                                                                                     "type": "integer"
                                                                                 },
@@ -4410,21 +5196,45 @@
                 ]
             }
         },
-        "\/rest\/v1\/survey-archives\/{_id}\/{_basetable}": {
+        "\/rest\/v1\/survey-logic\/{_id}": {
             "get": {
                 "tags": [
                     "Survey"
                 ],
-                "summary": "Survey archives",
-                "operationId": "get.survey-archives",
+                "summary": "Survey logic overview",
+                "operationId": "get.survey-logic.id",
                 "parameters": [
                     {
                         "name": "_id",
                         "in": "path"
                     },
                     {
-                        "name": "_basetable",
-                        "in": "path"
+                        "name": "gid",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "qid",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "assessments",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -4433,25 +5243,51 @@
                         "content": {
                             "application\/json": {
                                 "schema": {
-                                    "title": "Survey",
-                                    "description": "Survey",
+                                    "title": "Survey Logic",
+                                    "description": "Survey logic overview",
                                     "type": "object",
                                     "properties": {
-                                        "timestamp": {
-                                            "type": "integer"
-                                        },
-                                        "count": {
-                                            "default": 0,
-                                            "type": "integer"
-                                        },
-                                        "newformat": {
-                                            "type": "boolean"
-                                        },
-                                        "types": {
-                                            "type": "array"
-                                        },
-                                        "hastokens": {
-                                            "type": "boolean"
+                                        "surveyLogic": {
+                                            "type": "object",
+                                            "properties": {
+                                                "html": {
+                                                    "description": "Rendered survey logic overview HTML",
+                                                    "type": "string"
+                                                },
+                                                "errors": {
+                                                    "description": "Total number of logic errors found",
+                                                    "default": 0,
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Error",
+                                    "description": "Error",
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "data": {
+                                                    "type": "object"
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -4478,6 +5314,80 @@
                                                 },
                                                 "data": {
                                                     "type": "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "\/rest\/v1\/survey-questions-fieldname\/{_id}": {
+            "get": {
+                "tags": [
+                    "Survey"
+                ],
+                "summary": "Survey questions fieldname",
+                "operationId": "get.survey-questions-fieldname.id",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "title": "Survey questions Fieldname",
+                                    "description": "Survey questions with their fieldname and properties",
+                                    "type": "object",
+                                    "properties": {
+                                        "": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "fieldname": {
+                                                            "type": "string"
+                                                        },
+                                                        "sid": {
+                                                            "type": "integer"
+                                                        },
+                                                        "gid": {
+                                                            "type": "integer"
+                                                        },
+                                                        "qid": {
+                                                            "type": "integer"
+                                                        },
+                                                        "sqid": {
+                                                            "type": "integer",
+                                                            "nullable": true
+                                                        },
+                                                        "aid": {
+                                                            "type": "string",
+                                                            "nullable": true
+                                                        },
+                                                        "title": {
+                                                            "type": "string"
+                                                        },
+                                                        "scale_id": {
+                                                            "type": "integer",
+                                                            "nullable": true
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -6062,6 +6972,10 @@
             "description": "Survey"
         },
         {
+            "name": "User",
+            "description": "User"
+        },
+        {
             "name": "Auth",
             "description": "Auth"
         },
@@ -6072,10 +6986,6 @@
         {
             "name": "Survey Group",
             "description": "Survey Group"
-        },
-        {
-            "name": "User",
-            "description": "User"
         },
         {
             "name": "Site Settings",

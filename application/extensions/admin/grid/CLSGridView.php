@@ -28,12 +28,33 @@ class CLSGridView extends TbGridView
     public array $lsAdditionalColumnsSelected = [];
 
     /**
+     * When true, the selection bar offers a "Select all" button that selects the
+     * whole result set; massive actions then post a selectAll flag plus the grid filters.
+     * @var bool
+     */
+    public bool $lsSelectAllEnabled = false;
+
+    /**
      * string for a link that is on every row
      * @var string
      */
     public string $rowLink;
 
     /**
+     * Optional table caption. When set, a <caption> element is rendered inside the grid table.
+     * @var string|null
+     */
+    public $caption;
+
+    /**
+     * Whether to render the cross-pagination selection bar below the grid.
+     * Set to false for grids that use the FloatingActionsWidget to show the count in the floating bar.
+     * @var bool
+     */
+    public $showSelectionBar = true;
+
+    /**
+     *
      * Initializes the widget.
      * @throws CException
      */
@@ -43,8 +64,12 @@ class CLSGridView extends TbGridView
 
         $this->pager = ['class' => 'application.extensions.admin.grid.CLSYiiPager'];
         $this->htmlOptions['class'] = 'grid-view-ls';
+        $this->htmlOptions['data-select-all-label'] = gT('Select all');
         $classes = ['table', 'table-hover'];
-        $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
+        $this->template = $this->render('template', [
+            'massiveActionTemplate' => $this->massiveActionTemplate,
+            'showSelectionBar'      => $this->showSelectionBar,
+        ], true);
         $this->rowLink();
         $this->lsAfterAjaxUpdate();
         if (!empty($classes)) {
@@ -59,6 +84,29 @@ class CLSGridView extends TbGridView
     }
 
     /**
+     * Renders the data items for the grid view.
+     * Overrides parent to output an optional table caption after the opening <table> tag.
+     */
+    public function renderItems()
+    {
+        if ($this->dataProvider->getItemCount() > 0 || $this->showTableOnEmpty) {
+            echo "<table class=\"{$this->itemsCssClass}\">\n";
+            if (!empty($this->caption)) {
+                echo CHtml::tag('caption', ['class' => 'visually-hidden'], CHtml::encode($this->caption)) . "\n";
+            }
+            $this->renderTableHeader();
+            ob_start();
+            $this->renderTableBody();
+            $body = ob_get_clean();
+            $this->renderTableFooter();
+            echo $body; // TFOOT must appear before TBODY according to the standard.
+            echo "</table>";
+        } else {
+            $this->renderEmptyText();
+        }
+    }
+
+    /**
      * Creates column objects and initializes them.
      */
     protected function initColumns()
@@ -70,6 +118,13 @@ class CLSGridView extends TbGridView
             }
         }
         parent::initColumns();
+
+        // Add massiveActionsCheckbox class to the first column if it is a CCheckBoxColumn
+        $firstColumn = reset($this->columns);
+        if ($firstColumn instanceof CCheckBoxColumn) {
+            $existing = isset($firstColumn->checkBoxHtmlOptions['class']) ? $firstColumn->checkBoxHtmlOptions['class'] . ' ' : '';
+            $firstColumn->checkBoxHtmlOptions['class'] = $existing . 'massiveActionsCheckbox';
+        }
     }
 
     /**
@@ -78,20 +133,44 @@ class CLSGridView extends TbGridView
      */
     protected function lsAfterAjaxUpdate(): void
     {
-        // this will override afterAjaxUpdate if lsAfterAjaxUpdate is defined
-        // please do not override afterAjaxUpdate by default to keep compatibility with base functionality of yii
-        if (isset($this->lsAfterAjaxUpdate)) {
-            $this->afterAjaxUpdate = 'function(id, data){';
-            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
-                $this->afterAjaxUpdate .= $jsCode;
-            }
-            $this->afterAjaxUpdate .= 'LS.actionDropdown.create();';
-            $this->afterAjaxUpdate .= 'LS.rowlink.create();';
-            if (!empty($this->lsAdditionalColumns)) {
-                $this->afterAjaxUpdate .= 'initColumnFilter()';
-            }
-            $this->afterAjaxUpdate .= '}';
+        $gridId = CJavaScript::encode($this->id);
+
+        // Always restore persisted checkbox selection after an AJAX page update.
+        // LS.gridSelection is registered for every CLSGridView via registerGridviewScripts().
+        $alwaysJs  = 'LS.gridSelection.restoreCheckboxes(' . $gridId . ');';
+
+        // Non-AJAX grids have no afterAjaxUpdate callback to build
+        if ($this->ajaxUpdate === false) {
+            return;
         }
+
+        $parts = [];
+
+        // Preserve any existing afterAjaxUpdate set by the caller
+        if ($this->afterAjaxUpdate !== null) {
+            $definedFunction = ($this->afterAjaxUpdate instanceof CJavaScriptExpression)
+                ? (string) $this->afterAjaxUpdate // has a __toString magic function which returns the code
+                : $this->afterAjaxUpdate;
+            // execute the defined function preserving `this` context from the grid settings object
+            $parts[] = '(' . $definedFunction . ').call(this, id, data);';
+        }
+
+        // Add per-grid custom snippets from lsAfterAjaxUpdate
+        if (isset($this->lsAfterAjaxUpdate)) {
+            foreach ($this->lsAfterAjaxUpdate as $jsCode) {
+                $parts[] = $jsCode;
+            }
+        }
+
+        // Always include selection restore and standard handlers
+        $parts[] = $alwaysJs;
+        $parts[] = 'LS.gridView.afterAjaxUpdate(id, data);';
+
+        if (!empty($this->lsAdditionalColumns)) {
+            $parts[] = 'initColumnFilter();';
+        }
+
+        $this->afterAjaxUpdate = 'function(id, data){' . implode('', $parts) . '}';
     }
 
     /**
@@ -112,24 +191,49 @@ class CLSGridView extends TbGridView
 
     private function registerGridviewScripts()
     {
-        // Scrollbar
+        $extensionsUrl = App()->getConfig("extensionsurl") . 'admin/grid/assets/';
+
+        // Grid selection // Cross-page checkbox selection persistence (generic, works for every CLSGridView)
         App()->clientScript->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/grid/assets/gridScrollbar.js',
+            $extensionsUrl . 'gridSelection.js',
             CClientScript::POS_BEGIN
         );
-        // changePageSize
-        $script = '
-			jQuery(document).on("change", "#' . $this->id . ' .changePageSize", function(){
-				var pageSizeName = $(this).attr("name");
-				if (!pageSizeName) {
-					pageSizeName = "pageSize";
-				}
-				var data = $("#' . $this->id . ' .filters input, #' . $this->id . ' .filters select").serialize();
-				data += (data ? "&" : "") + pageSizeName + "=" + $(this).val();
-				$.fn.yiiGridView.update("' . $this->id . '", {data: data});
-			});
-		';
-        App()->getClientScript()->registerScript('pageChanger#' . $this->id, $script, LSYii_ClientScript::POS_POSTSCRIPT);
+
+        // Scrollbar
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'gridScrollbar.js',
+            CClientScript::POS_BEGIN
+        );
+        // Accessibility: restore focus to sort column after AJAX grid update
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'restoreFocusAfterSort.js',
+            CClientScript::POS_BEGIN
+        );
+        // Row link: make entire table rows clickable via data-rowlink attribute
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'rowLink.js',
+            CClientScript::POS_END
+        );
+        // Page size selector
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'changePageSize.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: aria-label for "Select all" checkboxes
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'ariaSelectAll.js',
+            CClientScript::POS_END
+        );
+        // Accessibility: keyboard navigation and focus management for sort links
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'sortAccessibility.js',
+            CClientScript::POS_END
+        );
+        // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
+        App()->clientScript->registerScriptFile(
+            $extensionsUrl . 'afterAjaxUpdate.js',
+            CClientScript::POS_END
+        );
     }
 
     /**
@@ -212,7 +316,7 @@ class CLSGridView extends TbGridView
         if (!$this->dataProvider instanceof CActiveDataProvider) {
             return;
         }
-        $columns_filter_button = '<button role="button" type="button" class="btn b-0" data-bs-toggle="modal" data-bs-target="#survey-column-filter-modal">
+        $columns_filter_button = '<button role="button" type="button" aria-label="' . gT('Select columns') . '" class="btn b-0" data-bs-toggle="modal" data-bs-target="#column-filter-modal">
                 <i class="ri-layout-column-fill"></i>
             </button>';
         $this->columns[]  = [
@@ -222,6 +326,7 @@ class CLSGridView extends TbGridView
             'type'              => 'raw',
             'headerHtmlOptions' => ['class' => 'text-center ls-sticky-column', 'style' => 'font-size: 1.5em; font-weight: 400;'],
             'htmlOptions'       => ['class' => 'text-center ls-sticky-column'],
+            'filter'            => false
         ];
         /* Updating the columns to be added */
         if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {

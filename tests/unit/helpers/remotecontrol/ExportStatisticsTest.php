@@ -1,11 +1,13 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\DummyController;
 
 /**
  * Tests for the LimeSurvey remote API.
  */
-class RemoteControlExportStatisticsTest extends BaseTest
+class ExportStatisticsTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {
@@ -53,7 +55,7 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[3][2], '20.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($q1Data[4][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[4][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($q1Data[4][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($q1Data[4][2], '0.00%', 'The Percentage is incorrect for this option.');
 
@@ -102,7 +104,7 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[3][2], '30.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($q1Data[4][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[4][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($q1Data[4][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($q1Data[4][2], '0.00%', 'The Percentage is incorrect for this option.');
 
@@ -153,7 +155,7 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[6][2], '20.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($q1Data[7][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[7][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($q1Data[7][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($q1Data[7][2], '0.00%', 'The Percentage is incorrect for this option.');
 
@@ -189,7 +191,7 @@ class RemoteControlExportStatisticsTest extends BaseTest
         $this->assertSame($q1Data[3][2], '20.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($q1Data[4][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($q1Data[4][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($q1Data[4][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($q1Data[4][2], '0.00%', 'The Percentage is incorrect for this option.');
 
@@ -234,7 +236,10 @@ class RemoteControlExportStatisticsTest extends BaseTest
 
         // Get the table.
         $doc = new \DOMDocument();
+        $previous = libxml_use_internal_errors(true);
         $doc->loadHtml($htmlStatistics);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
 
         $table = $doc->getElementById($tableHtmlId);
 

@@ -2,7 +2,7 @@
     <div class="pagetitle h3">
         <span id="comfortUpdateIcon" class="ri-shield-check-fill text-success"></span>
         <?php eT('ComfortUpdate'); ?>
-        <?php if (YII_DEBUG): ?>
+        <?php if (YII_DEBUG) : ?>
             <small>
                 Server:
                 <em class="text-primary">
@@ -33,9 +33,9 @@
         <tbody>
             <tr>
                 <td>
-                    <?php if (!App()->getConfig('hide_update_key')): ?>
+                    <?php if (!App()->getConfig('hide_update_key')) : ?>
                         <?php echo $updateKey; ?>
-                    <?php else: ?>
+                    <?php else : ?>
                         <em>XXXXXXXXXXX</em>
                     <?php endif; ?>
                 </td>

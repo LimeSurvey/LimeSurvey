@@ -10,9 +10,9 @@ use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 class QuestionFactory
 {
     /**
-     * @param ?QuestionMockSet $init
+     * @param ?QuestionMockSet $mockSet
      */
-    public function make(QuestionMockSet $mockSet = null): QuestionService
+    public function make(?QuestionMockSet $mockSet = null): QuestionService
     {
         $mockSet = (new QuestionMockSetFactory())->make($mockSet);
 

@@ -77,7 +77,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             $this->assertFalse(self::$webDriver->findById('question'.$questions['G2Q04']['qid'])->isDisplayed());
 
             /* Check Y on question 1, and check if Q02 is visible */
-            $yTextSGQA = self::$surveyId."X".$questions['G2Q01']['gid']."X".$questions['G2Q01']['qid'];
+            $yTextSGQA = "Q".$questions['G2Q01']['qid'];
             $yText = self::$webDriver->findElement(WebDriverBy::id("answer".$yTextSGQA));
             $yText->sendKeys("Y");
             sleep(1);
@@ -136,8 +136,8 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             [
                 'sid' => self::$surveyId,
                 'action' => 'previewquestion',
-                'gid' => $questions['G3Q02']['gid'],
-                'qid' => $questions['G3Q02']['qid'],
+                'gid' => $questions['G3Q02']->gid,
+                'qid' => $questions['G3Q02']->qid,
             ]
         );
         try {
@@ -145,19 +145,24 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             sleep(1);
             /* Check question is visble */
             $this->assertTrue(
-                self::$webDriver->findElement(WebDriverBy::id('question'.$questions['G3Q02']['qid']))->isDisplayed(),
+                self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G3Q02']->qid))->isDisplayed(),
                 "Question preview force relevance broken"
             );
             /* Check filter is done */
-            $thirdLineSGQA = self::$surveyId."X".$questions['G3Q02']['gid']."X".$questions['G3Q02']['qid']."SQ003";
+            $thirdLineSGQA = "Q".$questions['G3Q02']->qid. "_S" .$questions["SQ003"]->qid;
             $this->assertFalse(
                 self::$webDriver->findElement(WebDriverBy::id('javatbd'.$thirdLineSGQA))->isDisplayed(),
                 "Question preview force relevance broken"
             );
             /* Check EM js */
+            $SQ001 = null;
+            foreach ($questions["SQ001"] as $item) {
+                if ($item->parent_qid == $questions["G3Q02"]->qid) {
+                    $SQ001 = $item;
+                }
+            }
             $checkboxToClickSGQA =
-                self::$surveyId."X".$questions['G3Q02']['gid']
-                . "X".$questions['G3Q02']['qid']."SQ001";
+                "Q".$questions['G3Q02']->qid . "_S" .$SQ001->qid;
             $label = self::$webDriver->findElement(
                 WebDriverBy::cssSelector(
                     sprintf(
@@ -194,8 +199,8 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             [
                 'sid' => self::$surveyId,
                 'action' => 'previewquestion',
-                'gid' => $questions['G3Q02']['gid'],
-                'qid' => $questions['G3Q02']['qid'],
+                'gid' => $questions['G3Q02']->gid,
+                'qid' => $questions['G3Q02']->qid,
                 'Q03' => "Y",
             ]
         );
@@ -204,11 +209,17 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             sleep(1);
             /* Check question is visble */
             $this->assertTrue(
-                self::$webDriver->findElement(WebDriverBy::id('question'.$questions['G3Q02']['qid']))->isDisplayed(),
+                self::$webDriver->findElement(WebDriverBy::id('question'.$questions['G3Q02']->qid))->isDisplayed(),
                 "Question preview force relevance broken"
             );
             /* Check filter is done */
-            $secondLineSGQA = self::$surveyId."X".$questions['G3Q02']['gid']."X".$questions['G3Q02']['qid']."SQ002";
+            $SQ002 = null;
+            foreach ($questions["SQ002"] as $item) {
+                if ($item->parent_qid == $questions['G3Q02']->qid) {
+                    $SQ002 = $item;
+                }
+            }
+            $secondLineSGQA = "Q".$questions['G3Q02']->qid . "_S" . $SQ002->qid;
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('javatbd'.$secondLineSGQA))->isDisplayed(),
                 "Question preview force relevance broken"
@@ -230,12 +241,16 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
      */
     private function getQuestions()
     {
-        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $rawQuestions = \Question::model()->findAll(":sid = sid", [":sid" => self::$surveyId]);
         $questions = [];
-        foreach ($survey->groups as $group) {
-            $questionObjects = $group->questions;
-            foreach ($questionObjects as $q) {
-                $questions[$q->title] = $q;
+        foreach ($rawQuestions as $rawQuestion) {
+            if (in_array($rawQuestion->title, ['SQ001', 'SQ002'])) {
+                if (!isset($questions[$rawQuestion->title])) {
+                    $questions[$rawQuestion->title] = [];
+                }
+                $questions[$rawQuestion->title][] = $rawQuestion;
+            } else {
+                $questions[$rawQuestion->title] = $rawQuestion;
             }
         }
         return $questions;

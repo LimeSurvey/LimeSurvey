@@ -2,7 +2,7 @@
     aria-labelledby="label-<?= CHtml::getIdByName($this->generalOption->name); ?>"
     <?= ($this->generalOption->formElement->help) ? 'aria-describedby="help-' . CHtml::getIdByName($this->generalOption->name) . '"' : "" ?>
     >
-    <?php foreach ($this->generalOption->formElement->options['options'] as $i => $option): ?>
+    <?php foreach ($this->generalOption->formElement->options['options'] as $i => $option) : ?>
         <?php if ($this->generalOption->formElement->value == $option->value) : ?>
             <input 
                 class="btn-check"

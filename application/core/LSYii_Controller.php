@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -35,11 +35,6 @@ abstract class LSYii_Controller extends CController
         parent::__construct($id, $module);
         $this->_checkInstallation();
 
-        //Yii::app()->session->init();
-        // Deprecated function
-        $this->loadHelper('globalsettings');
-        // tracevar function
-        //$this->loadHelper('common');
         $this->loadHelper('expressions.em_manager');
         $this->loadHelper('replacements');
         $this->customInit();
@@ -103,9 +98,9 @@ abstract class LSYii_Controller extends CController
             throw new CException($dieoutput);
         }
 
-        if (ini_get("max_execution_time") < intval(App()->getConfig('max_execution_time'))) {
-            if(!@set_time_limit(intval(App()->getConfig('max_execution_time')))) {
-                Yii::log("Unable to set time limit to " . App()->getConfig('max_execution_time'), \CLogger::LEVEL_WARNING, 'application.controller');
+        if (ini_get("max_execution_time") < intval(Yii::app()->getConfig('max_execution_time'))) {
+            if (!@set_time_limit(intval(Yii::app()->getConfig('max_execution_time')))) {
+                Yii::log("Unable to set time limit to " . Yii::app()->getConfig('max_execution_time'), \CLogger::LEVEL_WARNING, 'application.controller');
             }
         }
         if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit') . 'M')) {
@@ -122,23 +117,31 @@ abstract class LSYii_Controller extends CController
         //GlobalSettings Helper
         Yii::import("application.helpers.globalsettings");
 
-        enforceSSLMode(); // This really should be at the top but for it to utilise getGlobalSetting() it has to be here
+        enforceSSLMode(); // This really should be at the top but for it to utilise Yii::app()->getConfig() it has to be here
 
         //SET LOCAL TIME
-        $timeadjust = Yii::app()->getConfig("timeadjust");
-        if (substr((string) $timeadjust, 0, 1) != '-' && substr((string) $timeadjust, 0, 1) != '+') {
-            $timeadjust = '+' . $timeadjust;
+        $displayTimezone = Yii::app()->getConfig("displayTimezone");
+        // if the time zone is empty or does not exist, use UTC
+        if (empty($displayTimezone) || !in_array($displayTimezone, timezone_identifiers_list())) {
+            Yii::app()->setConfig("displayTimezone", "UTC");
         }
-        if (strpos((string) $timeadjust, 'hours') === false && strpos((string) $timeadjust, 'minutes') === false && strpos((string) $timeadjust, 'days') === false) {
-            Yii::app()->setConfig("timeadjust", $timeadjust . ' hours');
+
+        // If an admin user is logged in, override with their personal timezone preference if set
+        $loginID = Yii::app()->session['loginID'] ?? null;
+        if (!empty($loginID)) {
+            $userTimezone = SettingsUser::getUserSettingValue('displayTimezone', $loginID);
+            if (!empty($userTimezone) && in_array($userTimezone, timezone_identifiers_list())) {
+                Yii::app()->setConfig("displayTimezone", $userTimezone);
+            }
         }
+
         /* Set the default language, other controller can update if wanted */
         Yii::app()->setLanguage(Yii::app()->getConfig("defaultlang"));
     }
 
     /**
      * Returns an absolute URL based on the given controller and action information.
-     * The functionalty was moved to
+     * The functionality was moved to
      * \LSYii_Application::createPublicUrl, to be safe the function remains here.
      * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
      * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.

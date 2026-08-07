@@ -1,11 +1,12 @@
 <?php
+
 // French
 return array (
     // environ ~= about, it's optional
     'prefixAgo' => "il y a",
     'prefixFromNow' => "d'ici",
-    'suffixAgo' => NULL,
-    'suffixFromNow' => NULL,
+    'suffixAgo' => null,
+    'suffixFromNow' => null,
     'seconds' => "moins d'une minute",
     'minute' => "environ une minute",
     'minutes' => "environ %d minutes",

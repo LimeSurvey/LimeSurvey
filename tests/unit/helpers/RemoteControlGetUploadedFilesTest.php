@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\TestBaseClass;
 
 /**
  * Tests for the LimeSurvey remote API.
@@ -140,7 +142,9 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
 
         // Setup the test resources
         $testSid = self::$testSurvey->sid;
-        exec('sudo chmod -R 777 ' . \Yii::app()->getConfig('uploaddir')); // Add permisions to ./upload directory, neede for CI pipeline
+        if (DIRECTORY_SEPARATOR === '/') {
+            self::chmodRecursive(\Yii::app()->getConfig('uploaddir'), 0777);
+        }
         $surveyUploadsDir = \Yii::app()->getConfig('uploaddir') . "/surveys/$testSid/files/";
         if (!is_dir($surveyUploadsDir)) {
             $dirCreated = mkdir($surveyUploadsDir, 0777, true);
@@ -186,7 +190,7 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
     }
 
     /**
-     * Test the get_uploaded_files API call using response id and wrong token 
+     * Test the get_uploaded_files API call using response id and wrong token
      */
     public function testGetUploadedFilesByResponseIdAndWrongToken()
     {
@@ -213,5 +217,35 @@ class RemoteControlGetUploadedFilesTest extends TestBaseClass
         // Cleanup
         self::$testSurvey->delete();
         self::$testSurvey = null;
+    }
+
+    /**
+     * Recursively chmod a directory tree without shell commands.
+     */
+    private static function chmodRecursive(string $path, int $mode): void
+    {
+        if (!is_dir($path)) {
+            return;
+        }
+        if (!chmod($path, $mode)) {
+            throw new \RuntimeException("chmod failed on directory: $path");
+        }
+        $items = scandir($path);
+        if ($items === false) {
+            throw new \RuntimeException("scandir failed on directory: $path");
+        }
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+            $fullPath = $path . DIRECTORY_SEPARATOR . $item;
+            if (is_dir($fullPath)) {
+                self::chmodRecursive($fullPath, $mode);
+            } else {
+                if (!chmod($fullPath, $mode)) {
+                    throw new \RuntimeException("chmod failed on file: $fullPath");
+                }
+            }
+        }
     }
 }

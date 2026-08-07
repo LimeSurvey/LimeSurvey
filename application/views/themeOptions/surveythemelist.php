@@ -15,23 +15,36 @@ $massiveAction = App()->getController()->renderPartial(
     true,
     false
 );
-$this->widget('application.extensions.admin.grid.CLSGridView',
+$this->widget(
+    'application.extensions.admin.grid.CLSGridView',
     [
         'dataProvider' => $oSurveyTheme->searchGrid(),
         'filter' => $oSurveyTheme,
         'id' => 'themeoptions-grid',
+        'caption' => gT('Survey themes'),
         'pager' => [
             'class' => 'application.extensions.admin.grid.CLSYiiPager',
         ],
         'massiveActionTemplate' => $massiveAction,
-        'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
+        'summaryText' => html_entity_decode(
+            gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+            sprintf(
+                gT('%s rows per page'),
                 CHtml::dropDownList(
                     'pageSize',
                     $pageSize,
                     Yii::app()->params['pageSizeOptions'],
-                    array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
+                    array(
+                        'id' => 'themeoptions-pageSize',
+                        'class' => 'changePageSize form-select',
+                        'style' => 'display: inline; width: auto',
+                        'aria-label' => gT('Rows per page'),
+                    )
                 )
-            ),
+            ) .
+            ''
+        ),
+
         'columns' => [
             [
                 'id' => 'id',
@@ -59,7 +72,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
                 'header' => gT('Description'),
                 'name' => 'template_description',
                 'value' => '$data->description',
-                'htmlOptions' => ['class' => 'col-lg-3'],
+                'htmlOptions' => ['class' => 'col-lg-3 can-contain-link'],
                 'type' => 'raw',
             ],
 
@@ -99,7 +112,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView',
 <!-- To update rows per page via ajax setSession-->
 <?php
 $script = '
-                jQuery(document).on("change", "#pageSize", function(){
+                jQuery(document).on("change", "#themeoptions-pageSize", function(){
                     $.fn.yiiGridView.update("themeoptions-grid",{ data:{ pageSize: $(this).val() }});
                 });
                 ';

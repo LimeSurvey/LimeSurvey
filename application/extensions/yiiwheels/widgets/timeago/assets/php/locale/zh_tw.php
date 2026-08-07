@@ -1,10 +1,11 @@
 <?php
+
 // Traditional Chinese
 return array (
-    'prefixAgo' => NULL,
+    'prefixAgo' => null,
     'prefixFromNow' => "從現在開始",
     'suffixAgo' => "之前",
-    'suffixFromNow' => NULL,
+    'suffixFromNow' => null,
     'seconds' => "不到 1 分鐘",
     'minute' => "大約 1 分鐘",
     'minutes' => "%d 分鐘",

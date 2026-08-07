@@ -1,4 +1,15 @@
-ace.define("ace/ext/hardwrap",["require","exports","module","ace/range","ace/editor","ace/config"], function(require, exports, module){"use strict";
+ace.define("ace/ext/hardwrap",["require","exports","module","ace/range","ace/editor","ace/config"], function(require, exports, module){/**
+ * ## Text hard wrapping extension for automatic line breaking and text formatting.
+ *
+ * Provides intelligent line wrapping functionality that breaks long lines at configurable column limits while
+ * preserving indentation and optionally merging short adjacent lines. Supports both automatic wrapping during text
+ * input and manual formatting of selected text ranges.
+ *
+ * **Enable:** `editor.setOption("hardWrap", true)`
+ * or configure it during editor initialization in the options object.
+ * @module
+ */
+"use strict";
 var Range = require("../range").Range;
 function hardWrap(editor, options) {
     var max = options.column || editor.getOption("printMarginColumn");

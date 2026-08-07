@@ -22,7 +22,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * @group services
  */
-class SubQuestionsServiceTest extends TestBaseClass
+class SubquestionsServiceTest extends TestBaseClass
 {
     /**
      * @testdox save() throws PersistErrorException on create failure

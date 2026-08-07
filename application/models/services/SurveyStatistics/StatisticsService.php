@@ -47,12 +47,12 @@ class StatisticsService
      * Set survey context (ID + language).
      *
      * @param int|string $surveyId Survey ID
-     * @param string $language Language code (default = null)
+     * @param ?string $language Language code (default = null)
      * @return $this
      * @throws InvalidArgumentException
      * @throws NotFoundException
      */
-    public function setSurvey($surveyId, string $language = null): self
+    public function setSurvey($surveyId, ?string $language = null): self
     {
         // Validate survey ID
         if (!is_numeric($surveyId) || $surveyId < 1) {

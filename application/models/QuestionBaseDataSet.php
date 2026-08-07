@@ -5,7 +5,7 @@ use LimeSurvey\Datavalueobjects\SwitchOption;
 use LimeSurvey\Datavalueobjects\FormElement;
 
 /**
- * This is a base class to enable all question tpyes to extend the general settings.
+ * This is a base class to enable all question types to extend the general settings.
  * @TODO: Create an xml based solution to use external question type definitions as well
  */
 abstract class QuestionBaseDataSet extends StaticModel
@@ -50,7 +50,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         /*
         @todo Discussion:
         General options currently are
-        - Question theme => this should have a seperate advanced tab in my opinion
+        - Question theme => this should have a separate advanced tab in my opinion
         - Question group
         - Mandatory switch
         - Save as default switch
@@ -87,14 +87,8 @@ abstract class QuestionBaseDataSet extends StaticModel
         $sXmlFilePath = App()->getConfig('rootdir') . '/application/views/survey/questions/answer/' . $sFolderName . '/config.xml';
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
         }
 
         foreach ($generalOptions as $key => $generalOption) {

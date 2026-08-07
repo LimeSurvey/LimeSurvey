@@ -7,13 +7,13 @@
  * @var $nChecked
  * @var $naChecked
  * @var $noAnswer
- * @var $value                          $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$name]
+ * @var $value                          $_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$name]
  */
 #}
 
 <ul class="ls-answers answers-list yesno-button radio-list list-group list-group-horizontal" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
     <!-- Yes -->
-    <li id="javatbd{{ name }}Y" class="answer-item radio-item">
+    <li id="javatbd{{ name }}_CY" class="answer-item radio-item">
         <input
                 type="radio"
                 name="{{ name }}"
@@ -27,7 +27,7 @@
     </li>
 
     <!-- No -->
-    <li id="javatbd{{ name }}N" class="answer-item radio-item">
+    <li id="javatbd{{ name }}_CN" class="answer-item radio-item">
         <input
                 type="radio"
                 name="{{ name }}"

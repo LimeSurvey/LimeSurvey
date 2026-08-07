@@ -81,29 +81,6 @@ class PluginManager extends \CApplicationComponent
         }
         $this->loadPlugins();
     }
-    /**
-     * Return a list of installed plugins, but only if the files are still there
-     * @deprecated unused in 5.3.8
-     * This prevents errors when a plugin was installed but the files were removed
-     * from the server.
-     *
-     * @return array
-     */
-    public function getInstalledPlugins()
-    {
-        $pluginModel = Plugin::model();
-        $records = $pluginModel->findAll(['order' => 'priority DESC']);
-
-        $plugins = array();
-
-        foreach ($records as $record) {
-            // Only add plugins we can find
-            if ($this->loadPlugin($record->name, $record->id, $record->active) !== false) {
-                $plugins[$record->id] = $record;
-            }
-        }
-        return $plugins;
-    }
 
     /**
      * @param string $destdir
@@ -137,6 +114,9 @@ class PluginManager extends \CApplicationComponent
         }
 
         $newName = (string) $extensionConfig->xml->metadata->name;
+        if (!$this->validatePluginName($newName)) {
+            return [false, gT('Invalid plugin name in config.xml.')];
+        }
         if (!$this->isWhitelisted($newName)) {
             return [false, gT('The plugin is not in the plugin allowlist.')];
         }
@@ -191,7 +171,7 @@ class PluginManager extends \CApplicationComponent
             !$withoutNamespace && $withNamespace
         ) {
             $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
-        } else if (!($withoutNamespace || $withNamespace)) {
+        } elseif (!($withoutNamespace || $withNamespace)) {
             $relativePath = App()->getConfig('rootdir') . "/application/libraries/PluginManager/Storage/{$storageClass}.php";
             if (file_exists($relativePath)) {
                 require_once $relativePath;
@@ -250,6 +230,16 @@ class PluginManager extends \CApplicationComponent
                 }
             }
         }
+    }
+
+    /**
+     * Whether at least one plugin is subscribed to the given event.
+     * @param string $eventName
+     * @return boolean
+     */
+    public function hasSubscribers($eventName)
+    {
+        return !empty($this->subscriptions[$eventName]);
     }
 
     /**
@@ -424,8 +414,24 @@ class PluginManager extends \CApplicationComponent
         if (empty($alias)) {
             return null;
         }
-        $folder = Yii::getPathOfAlias($alias) . '/' . $config->getName();
+        $pluginName = $config->getName();
+        if (!$this->validatePluginName($pluginName)) {
+            throw new \InvalidArgumentException(gT('Invalid plugin name in config.xml.'));
+        }
+        $folder = Yii::getPathOfAlias($alias) . '/' . $pluginName;
         return $folder;
+    }
+
+    /**
+     * Validate that a plugin name can safely serve as folder, file and class name.
+     * Plugin names are used as a flat class identifier throughout the plugin manager.
+     *
+     * @param string $pluginName
+     * @return bool
+     */
+    public function validatePluginName($pluginName)
+    {
+        return preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', (string) $pluginName) === 1;
     }
 
     /**
@@ -602,11 +608,11 @@ class PluginManager extends \CApplicationComponent
      * Get plugin description.
      * First look in config.xml, then in plugin class.
      * @param string $class
-     * @param ExtensionConfig $extensionConfig
+     * @param ?ExtensionConfig $extensionConfig
      * @return string
      * @todo Localization.
      */
-    protected function getPluginDescription(string $class, \ExtensionConfig $extensionConfig = null)
+    protected function getPluginDescription(string $class, ?ExtensionConfig $extensionConfig = null)
     {
         $desc = null;
 
@@ -629,11 +635,11 @@ class PluginManager extends \CApplicationComponent
      * Get plugin name.
      * First look in config.xml, then in plugin class.
      * @param string $class
-     * @param ExtensionConfig $extensionConfig
+     * @param ?ExtensionConfig $extensionConfig
      * @return string
      * @todo Localization.
      */
-    protected function getPluginName(string $class, \ExtensionConfig $extensionConfig = null)
+    protected function getPluginName(string $class, ?ExtensionConfig $extensionConfig = null)
     {
         $name = null;
 
@@ -698,6 +704,7 @@ class PluginManager extends \CApplicationComponent
             'UpdateCheck',
             'AzureOAuthSMTP',
             'GoogleOAuthSMTP',
+            'ReactEditor',
         ];
     }
 

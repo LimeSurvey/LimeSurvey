@@ -1,4 +1,6 @@
-<?php /**
+<?php
+
+/**
  * @var int $successfullEmailCount how many emails succeeded
  * @var int $failedEmailCount how many emails failed
  */ ?>

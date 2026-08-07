@@ -26,17 +26,17 @@
     <?php
         $rows = array();
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminLoginName', array('class' => 'form-label ', 'label' => gT("Admin login name"), 'autofocus' => 'autofocus')),
-            'description' => gT("This will be the userid by which admin of board will login."),
+            'label' => CHtml::activeLabelEx($model, 'adminLoginName', array('class' => 'form-label ', 'label' => gT("Administrator username"), 'autofocus' => 'autofocus')),
+            'description' => gT("This will be the username of the administrator user and used for logging in."),
             'control' => CHtml::activeTextField($model, 'adminLoginName', array('class' => 'form-control', 'required' => true))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminLoginPwd', array('class' => 'form-label ', 'label' => gT("Admin login password"))),
-            'description' => gT("This will be the password of admin user."),
+            'label' => CHtml::activeLabelEx($model, 'adminLoginPwd', array('class' => 'form-label ', 'label' => gT("Administrator password"))),
+            'description' => gT("This will be the password of the administrator user."),
             'control' => CHtml::activePasswordField($model, 'adminLoginPwd', array('class' => 'form-control', 'required' => true))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'confirmPwd', array('class' => 'form-label ', 'label' => gT("Confirm your admin password"))),
+            'label' => CHtml::activeLabelEx($model, 'confirmPwd', array('class' => 'form-label ', 'label' => gT("Confirm your administrator password"))),
             'control' => CHtml::activePasswordField($model, 'confirmPwd', array('class' => 'form-control', 'required' => true))
         );
         $rows[] = array(
@@ -45,7 +45,7 @@
             'control' => CHtml::activeTextField($model, 'adminName', array('class' => 'form-control'))
         );
         $rows[] = array(
-            'label' => CHtml::activeLabelEx($model, 'adminEmail', array('class' => 'form-label ', 'label' => gT("Administrator email"))),
+            'label' => CHtml::activeLabelEx($model, 'adminEmail', array('class' => 'form-label ', 'label' => gT("Administrator email address"))),
             'description' => gT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."),
             'control' => CHtml::activeEmailField($model, 'adminEmail', array('class' => 'form-control', 'required' => true, 'placeholder' => 'admin@example.org'))
         );
@@ -54,38 +54,35 @@
             'description' => gT("This name will appear in the survey list overview and in the administration header."),
             'control' => CHtml::activeTextField($model, 'siteName', array('class' => 'form-control'))
         );
-        foreach(getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
-        {
+        foreach (getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind) {
             $languages[$langkey] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
         }
 
         $rows[] = array(
             'label' => CHtml::activeLabelEx($model, 'surveylang', array('class' => 'form-label ', 'label' => gT("Default language"))),
             'description' => gT("This will be your default language."),
-            'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => '', 'class'=>'form-control', 'encode' => false, 'options'=>array('en' => array('selected' => true))))
+            'control' => CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => '', 'class' => 'form-control', 'encode' => false, 'options' => array('en' => array('selected' => true))))
         );
 
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             echo CHtml::openTag('div', array('class' => 'mb-3'));
                 echo $row['label'];
 
                 echo CHtml::openTag('div', array('class' => ''));
                 echo $row['control'];
-                if (isset($row['description']))
-                {
-                    echo CHtml::tag('div', array('class' => 'help-block'), $row['description']);
-                }
+            if (isset($row['description'])) {
+                echo CHtml::tag('div', array('class' => 'help-block'), $row['description']);
+            }
                 echo CHtml::closeTag('div');
             echo CHtml::closeTag('div');
         }
-    ?>
+        ?>
         <div class="row navigator">
             <div class="col-lg-4">
             </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
-                <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
+                <?php echo CHtml::submitButton(gT("Next", 'unescaped'), array('class' => 'btn btn-outline-secondary')); ?>
             </div>
         </div>
 

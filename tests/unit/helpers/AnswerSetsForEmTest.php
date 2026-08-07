@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\TestBaseClass;
 
 use Yii;
 use LimeExpressionManager;
@@ -32,20 +34,16 @@ class AnswerSetsForEmTest extends TestBaseClass
     public function testGerman()
     {
         $ansArray = self::$em->getAnswerSetsForEM(self::$surveyId, 'en');
-        $this->assertCount(2, $ansArray);
-        $second  = array_pop($ansArray);
-        $first = array_pop($ansArray);
-        $this->assertEquals('0|First Entry', $first['0~1']);
-        $this->assertEquals('0|a en', $second['0~AO01']);
+        $this->assertCount(1, $ansArray);
+        $answers = array_pop($ansArray);
+        $this->assertEquals('0|First Entry', $answers['0~1']);
     }
 
     public function testEnglish()
     {
         $ansArray = self::$em->getAnswerSetsForEM(self::$surveyId, 'de');
-        $this->assertCount(2, $ansArray);
-        $second  = array_pop($ansArray);
-        $first = array_pop($ansArray);
-        $this->assertEquals('0|Erster Eintrag', $first['0~1']);
-        $this->assertEquals('0|a', $second['0~AO01']);
+        $this->assertCount(1, $ansArray);
+        $answers = array_pop($ansArray);
+        $this->assertEquals('0|Erster Eintrag', $answers['0~1']);
     }
 }

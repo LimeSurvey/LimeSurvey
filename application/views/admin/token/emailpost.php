@@ -5,14 +5,18 @@
 * @var $message html
 */
 
-if(isset($nosidebodyblock) && $nosidebodyblock === true ){ ?>
+if (isset($nosidebodyblock) && $nosidebodyblock === true) { ?>
     <div class='side-body'>
 <?php } ?>
 
 <div class="row" id="token-emailpost-messagebox">
     <div class="col-12 content-right">
         <div class="jumbotron message-box">
-            <h2><?php if ($bEmail) eT("Sending invitations..."); else eT("Sending reminders...");?></h2>
+            <h2><?php if ($bEmail) {
+                eT("Sending invitations...");
+                } else {
+                    eT("Sending reminders...");
+                }?></h2>
             <div style='border: 1px solid #ccc; max-height: 80em; overflow: scroll; text-align:left; padding-left:0.5em;'>
                 <?php echo $tokenoutput ?>
             </div>

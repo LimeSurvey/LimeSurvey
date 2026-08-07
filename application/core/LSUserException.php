@@ -97,17 +97,16 @@ class LSUserException extends CHttpException
     public function getDetailedErrorSummary($header = '', $htmlOptions = [])
     {
         $content = '';
-        foreach($this->getDetailedErrors() as $error)
-        {
-            if($error != '') {
+        foreach ($this->getDetailedErrors() as $error) {
+            if ($error != '') {
                 if (!isset($htmlOptions['encode']) || $htmlOptions['encode']) {
                     $error = CHtml::encode($error);
                 }
                 $content .= '<li>' . $error . "</li>\n";
             }
         }
-        if($content !== '') {
-            if(!isset($htmlOptions['class'])) {
+        if ($content !== '') {
+            if (!isset($htmlOptions['class'])) {
                 $htmlOptions['class'] = CHtml::$errorSummaryCss;
             }
             return CHtml::tag('div', $htmlOptions, $header . "<ul>\n$content</ul>");

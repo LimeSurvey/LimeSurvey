@@ -1,5 +1,5 @@
 
-<?php /* Ported from previous versions: Pending to adapt to screen own JS for saving (and validations) 
+<?php /* Ported from previous versions: Pending to adapt to screen own JS for saving (and validations)
 <!-- Save and new group -->
 <?php if(!empty($showSaveAndNewGroupButton)): ?>
     <a class="btn btn-outline-secondary" id='save-and-new-button' role="button">
@@ -17,18 +17,9 @@
 <?php endif; ?>
 */ ?>
 
-<?php
-// new question editor btn
-$this->renderPartial('/surveyAdministration/partial/topbar/_newQuestionEditorBtn', [
-    'editorUrl' => $editorUrl,
-    'enableEditorButton' => $enableEditorButton,
-    'editorEnabled' => $editorEnabled
-]);
-?>
-
 <!-- Close -->
-<?php if(!empty($showCloseButton)): ?>
-    <?php if (!empty($oQuestion->qid)): ?>
+<?php if (!empty($showCloseButton)) : ?>
+    <?php if (!empty($oQuestion->qid)) : ?>
         <?php
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',
@@ -45,7 +36,7 @@ $this->renderPartial('/surveyAdministration/partial/topbar/_newQuestionEditorBtn
             ]
         );
         ?>
-    <?php else: ?>
+    <?php else : ?>
         <?php
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',
@@ -65,7 +56,7 @@ $this->renderPartial('/surveyAdministration/partial/topbar/_newQuestionEditorBtn
 <?php endif;?>
 
 <!-- Save and close -->
-<?php if(!empty($showSaveAndCloseButton)): ?>
+<?php if (!empty($showSaveAndCloseButton)) : ?>
     <?php
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
@@ -84,7 +75,7 @@ $this->renderPartial('/surveyAdministration/partial/topbar/_newQuestionEditorBtn
 <?php endif; ?>
 
 <!-- Save -->
-<?php if(!empty($showSaveButton)): ?>
+<?php if (!empty($showSaveButton)) : ?>
     <?php
     $htmlOptions = [
         'class' => 'btn btn-primary',

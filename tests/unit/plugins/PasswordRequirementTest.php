@@ -2,7 +2,7 @@
 
 namespace ls\tests;
 
-class PassordRequirementTest extends TestBaseClass
+class PasswordRequirementTest extends TestBaseClass
 {
 
     private static $plugin;
@@ -84,27 +84,27 @@ class PassordRequirementTest extends TestBaseClass
         $this->assertTrue($passLen == $expLen, $msg . " Password has wrong length. Has {$passLen}, while {$expLen} expected.");
 
         // Check lower characters
-        $this->assertRegExp('/[' . self::$set_chars . ']/', $password, $msg . " Password does not have lower chars.");
+        $this->assertMatchesRegularExpression('/[' . self::$set_chars . ']/', $password, $msg . " Password does not have lower chars.");
         
         // Check numbers
         if ($variation[0]) {
-            $this->assertRegExp('/[' . self::$set_numeric_chars . ']/', $password, $msg . " Password does not have numbers.");
+            $this->assertMatchesRegularExpression('/[' . self::$set_numeric_chars . ']/', $password, $msg . " Password does not have numbers.");
         } else {
-            $this->assertNotRegExp('/[' . self::$set_numeric_chars . ']/', $password, $msg . " Password has numbers.");
+            $this->assertDoesNotMatchRegularExpression('/[' . self::$set_numeric_chars . ']/', $password, $msg . " Password has numbers.");
         }
 
         // Check upper chars
         if ($variation[1]) {
-            $this->assertRegExp('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password does not have upper chars.");
+            $this->assertMatchesRegularExpression('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password does not have upper chars.");
         } else {
-            $this->assertNotRegExp('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password has upper chars.");
+            $this->assertDoesNotMatchRegularExpression('/[' . self::$set_uppercase_chars . ']/', $password, $msg . " Password has upper chars.");
         }
 
         // Check non-alpha
         if ($variation[2]) {
-            $this->assertRegExp('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password does not have non-alpha chars.");
+            $this->assertMatchesRegularExpression('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password does not have non-alpha chars.");
         } else {
-            $this->assertNotRegExp('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password has non-alpha chars.");
+            $this->assertDoesNotMatchRegularExpression('/[' . self::$set_nonAlpha_chars . ']/', $password, $msg . " Password has non-alpha chars.");
         }
     }
 

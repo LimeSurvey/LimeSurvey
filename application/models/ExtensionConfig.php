@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -153,13 +153,7 @@ class ExtensionConfig
         if (!file_exists($file)) {
             return null;
         } else {
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
             $xml = simplexml_load_file(realpath($file));
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
             $config = new self($xml);
             return $config;
         }
@@ -186,13 +180,7 @@ class ExtensionConfig
         if ($configString === null) {
             throw new Exception('Config file is empty');
         }
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $xml = simplexml_load_string($configString);
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
         return new self($xml);
     }
 

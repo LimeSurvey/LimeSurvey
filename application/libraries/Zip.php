@@ -27,7 +27,7 @@ class Zip extends \ZipArchive
     /**
      * @inheritdoc
      */
-    public function close() : bool
+    public function close(): bool
     {
         $result = parent::close();
         $this->opened = false;

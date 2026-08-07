@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -51,7 +51,7 @@ class TemplateConfig extends CActiveRecord
 
     /**
      * @var TemplateConfiguration $oMotherTemplate The mother template object
-     * This is used when a template inherit another one.
+     * This is used when a template extends another one.
      */
     public $oMotherTemplate;
 
@@ -136,7 +136,7 @@ class TemplateConfig extends CActiveRecord
      * @param string $sPackageName   name of the package
      * @param array  $aPackage       the package to check (as provided by Yii::app()->clientScript)
      * @param string $sType          the type of file (css or js)
-     * @param array $aFilesToRemove  an array containing the files to chech and remove
+     * @param array $aFilesToRemove  an array containing the files to check and remove
      */
     protected function removeFilesFromPackage($sPackageName, $aPackage, $sType, $aFilesToRemove)
     {
@@ -463,7 +463,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowlabel'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva'] = '';
 
-        //Ã‚Â Save
+        //Ã‚Â Save
         $aClassAndAttributes['class']['savecontainer']                 = ' save-message ';
         $aClassAndAttributes['class']['savecontainertitle']            = '  ';
         $aClassAndAttributes['class']['savecontainertext']             = '  ';
@@ -862,6 +862,10 @@ class TemplateConfig extends CActiveRecord
 
     /**
      * Uninstalls the selected surveytheme and deletes database entry and configuration
+     * Return value can be : 
+     *    - true : Template was uninstalled, No TemplateConfiguration were uninstalled
+     *    - integer : Template was unsintalled and tells how many TemplateConfigurations were uninstalled
+     *    - false : Template was not uninstalled : lack of permission Not template of this name, issue when delete.
      * @param string $templatename Name of Template
      * @return bool|int
      * @throws CDbException
@@ -872,10 +876,16 @@ class TemplateConfig extends CActiveRecord
             $oTemplate = Template::model()->findByAttributes(['name' => $templatename]);
             if ($oTemplate) {
                 if ($oTemplate->delete()) {
-                    return TemplateConfiguration::model()->deleteAll(
+                    $count = TemplateConfiguration::model()->deleteAll(
                         'template_name=:templateName',
                         [':templateName' => $templatename]
                     );
+                    if ($count) {
+                        /* Number of TemplateConfiguration uninstalled */
+                        return $count;
+                    }
+                    /* No TemplateConfiguration, only Template */
+                    return true;
                 }
             }
         }
@@ -885,18 +895,20 @@ class TemplateConfig extends CActiveRecord
     /**
      * Uninstalls all surveythemes that are being extended from the supplied surveytheme name
      * @param $templateName
-     * @return void
+     * @return bool
      * @throws CDbException
      */
-    public static function uninstallThemesRecursive($templateName): void
+    public static function uninstallThemesRecursive($templateName): bool
     {
         $extendedTemplates = Template::model()->findAll('extends=:templateName', [':templateName' => $templateName]);
         if (!empty($extendedTemplates)) {
             foreach ($extendedTemplates as $extendedTemplate) {
-                self::uninstallThemesRecursive($extendedTemplate->name);
+                if (!self::uninstallThemesRecursive($extendedTemplate->name)) {
+                    return false;
+                }
             }
         }
-        self::uninstall($templateName);
+        return boolval(self::uninstall($templateName));
     }
 
     /**
@@ -910,20 +922,32 @@ class TemplateConfig extends CActiveRecord
      */
     public static function validateTheme($themeName, $themePath, bool $redirect = true): bool
     {
-        // check compatability with current limesurvey version
+        // check compatibility with current limesurvey version
         $isCompatible = TemplateConfig::isCompatible($themePath);
         if ($isCompatible === false) {
-            self::uninstallThemesRecursive($themeName);
-            if ($redirect) {
+            if (self::uninstallThemesRecursive($themeName)) {
+                if ($redirect) {
+                    if (method_exists(App(), 'setFlashMessage')) {
+                        App()->setFlashMessage(
+                            sprintf(
+                                gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                                $themeName
+                            ),
+                            'error'
+                        );
+                        App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                    }
+                    App()->end();
+                }
+            } else {
                 App()->setFlashMessage(
                     sprintf(
-                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
-                        $themeName
+                        gT("The “%s” theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."),
+                        $themeName,
+                        App()->getConfig('siteadminname'),
                     ),
                     'error'
                 );
-                App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
-                App()->end();
             }
         } elseif ((!$isCompatible) && $redirect) {
             App()->setFlashMessage(
@@ -936,14 +960,13 @@ class TemplateConfig extends CActiveRecord
         }
         // add more tests here
 
-        // all checks succeeded, continue loading the theme
-        return true;
+        // all checks succeeded, continue loading the theme if it compatible
+        return boolval($isCompatible);
     }
 
     /**
      * Checks if theme is compatible with the current limesurvey version
      * @param $themePath
-     * @param bool $redirect
      * @return bool|null
      */
     public static function isCompatible($themePath)
@@ -1068,6 +1091,11 @@ class TemplateConfig extends CActiveRecord
     {
         $optionsArray = [];
         foreach ($options as $option => $optionValue) {
+            // Skip deprecated ajaxmode option from old theme configs.
+            // Old themes may still have this in their config.xml, but it's no longer used.
+            if ($option === 'ajaxmode') {
+                continue;
+            }
             // Trim values, as they may be in a new line in the XML. For example:
             // <sample_option>
             //      default value

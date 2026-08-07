@@ -1,0 +1,27 @@
+.date-range-picker {
+  background-color: $white;
+
+  .date-range-placeholder {
+    padding: 10px;
+    border: 1px solid $g-200;
+    border-radius: $border-radius;
+    cursor: pointer;
+    min-width: 215px;
+  }
+
+  .date-range-container {
+    position: fixed;
+    z-index: 10;
+    outline: 1px solid $g-200;
+    background-color: $white;
+    padding: 10px;
+
+    .action-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      margin-top: 20px;
+      gap: 4px;
+    }
+  }
+}

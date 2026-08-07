@@ -11,6 +11,7 @@ $this->widget(
         'link' => $this->createUrl('dashboard/view'),
         'htmlOptions' => [
             'class' => 'btn btn-outline-secondary',
+            'role' => 'button'
         ],
     ]
 );
@@ -31,4 +32,3 @@ $this->widget(
         ],
     ]
 );
-

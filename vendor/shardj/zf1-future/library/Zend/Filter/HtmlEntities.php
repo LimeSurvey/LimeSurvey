@@ -182,7 +182,7 @@ class Zend_Filter_HtmlEntities implements Zend_Filter_Interface
      */
     public function setDoubleQuote($doubleQuote)
     {
-        $this->_doubleQuote = (boolean) $doubleQuote;
+        $this->_doubleQuote = (bool) $doubleQuote;
         return $this;
     }
 

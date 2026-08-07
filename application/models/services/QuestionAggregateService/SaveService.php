@@ -133,6 +133,10 @@ class SaveService
             $surveyId
         );
 
+        $this->attributesService->sanitizeAttributesByType(
+            $question
+        );
+
         $this->attributesService
             ->save(
                 $question,

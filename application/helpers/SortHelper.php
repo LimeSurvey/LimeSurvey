@@ -103,7 +103,7 @@ class SortHelper
     }
 
     /**
-     * Return flag tupe depend on functoion sed
+     * Returns the flag type depending on the function used
      * @param integer
      * @return integer
      */

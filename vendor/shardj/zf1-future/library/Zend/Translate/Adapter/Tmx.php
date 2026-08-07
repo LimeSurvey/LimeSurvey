@@ -68,7 +68,7 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
         }
 
         if (isset($options['useId'])) {
-            $this->_useId = (boolean) $options['useId'];
+            $this->_useId = (bool) $options['useId'];
         }
 
         $encoding = $this->_findEncoding($filename);

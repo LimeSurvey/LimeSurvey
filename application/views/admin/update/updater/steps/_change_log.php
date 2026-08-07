@@ -25,12 +25,12 @@
 $changelog = "";
 $currentVersion = Yii::app()->getConfig("versionnumber") . " Build " . Yii::app()->getConfig("buildnumber");
 foreach (array_reverse($changelogs->changelogentries) as $changelogentry) {
-    if (trim($changelogentry->changelog != '')) {
+    if (trim((string) $changelogentry->changelog) != '') {
           $tempfromversion = $changelogentry->versionnumber;
           $tempfrombuild = $changelogentry->build;
 
           $changelog .= "Changes in {$changelogentry->versionnumber} Build {$changelogentry->build} from {$currentVersion} --- Legend: + New feature, # Updated feature, - Bug fix\n";
-          $changelog .= $changelogentry->changelog."\n";
+          $changelog .= $changelogentry->changelog . "\n";
           $currentVersion = "{$changelogentry->versionnumber} Build {$changelogentry->build}";
     }
 }

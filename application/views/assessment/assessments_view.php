@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Assesments view
 */
@@ -13,13 +14,13 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
     <?=viewHelper::getViewTestTag('surveyAssessments');?>
       <h1 class="page-title h3" ><?=gT("Assessments")?></h1>
         <?php
-            $messageLink = gT("Assessment mode for this survey is not activated.").'<br/>'
-                . gT("If you want to activate it, click here:").'<br/>'
+            $messageLink = gT("Assessment mode for this survey is not activated.") . '<br/>'
+                . gT("If you want to activate it, click here:") . '<br/>'
                 . '<a role="button" class="btn btn-primary" href="'
-                . $this->createUrl('/assessment/activate', ['surveyid'=> $surveyid])
-                .'">'.gT('Activate assessements').'</a>';
-        if(!Assessment::isAssessmentActive($surveyid)) {
-        ?>
+                . $this->createUrl('/assessment/activate', ['surveyid' => $surveyid])
+                . '">' . gT('Activate assessements') . '</a>';
+        if (!Assessment::isAssessmentActive($surveyid)) {
+            ?>
           <div class="row text-center">
             <div class="jumbotron message-box warningheader col-md-12 col-lg-6 offset-lg-3">
               <h2><?= gT("Assessment mode not activated"); ?></h2>
@@ -27,9 +28,9 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             </div>
           </div>
 
-        <?php
+            <?php
         } else {
-        ?>
+            ?>
             <h2><?php eT("Assessment rules");?></h2>
             <div class="row">
                 <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
@@ -41,7 +42,8 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         'filter' => $model,
                         'emptyText' => gT('No customizable entries found.'),
                         'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                        . sprintf(gT('%s rows per page'),
+                        . sprintf(
+                            gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
@@ -56,7 +58,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                     ));
                 ?>
             </div>
-            <?php if ( Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create') ) { ?>
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create')) { ?>
               <div class="row">
                 <div class="col-12">
                   <button class="btn btn-primary" type="button" id="selector__assessment-add-new">
@@ -66,9 +68,9 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
               </div>
             <?php } ?>
             <!-- Edition - Modal -->
-            <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update'))  || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')) ) { ?>
+            <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'update'))  || (Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create'))) { ?>
                 <?php $this->renderPartial('assessments_delete', ['surveyid' => $surveyid]); ?>
-                <?php 
+                <?php
                     $this->renderPartial('assessments_edit', [
                             'surveyid' => $surveyid,
                             'editId' => $editId,
@@ -76,14 +78,13 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                             'baselang' => $baselang,
                             'groups' => $groups ?? [],
                             'gid' => $groupId,
-                        ]
-                    );
+                        ]);
                 ?>
             <?php } ?>
   <!-- opened in controller -->
-    <?php 
-    };
-    ?>
+            <?php
+        };
+        ?>
 </div>
 
 <script type="text/javascript">

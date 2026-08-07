@@ -22,7 +22,7 @@ echo viewHelper::getViewTestTag('listSurveys');
                         'pageSize' => Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
                         'model' => $model,
                 ));
-            ?>
+                                                                                                                                    ?>
         </div>
 
         <div id="surveygroups" class="tab-pane">

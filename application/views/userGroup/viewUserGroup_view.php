@@ -43,7 +43,8 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
 
             <br/><br/>
             <?php
-            $this->widget('application.extensions.admin.grid.CLSGridView',
+            $this->widget(
+                'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'usergroup-members-grid',
                     'dataProvider' => $dataProvider,
@@ -57,17 +58,17 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
                         'ugid' => $ugid
                     ], true),
                     'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $dataProvider->pagination->getPageSize(),
-                                App()->params['pageSizeOptions'],
-                                [
+                        gT('%s rows per page'),
+                        CHtml::dropDownList(
+                            'pageSize',
+                            $dataProvider->pagination->getPageSize(),
+                            App()->params['pageSizeOptions'],
+                            [
                                     'class' => 'changePageSize form-select',
                                     'style' => 'display: inline; width: auto'
                                 ]
-                            )
-                        ),
+                        )
+                    ),
                     'columns' => [
                         array(
                             'header'      => gT('Username'),

@@ -42,7 +42,7 @@ class UserDetail implements CommandInterface
      */
     public function run(Request $request)
     {
-        $userId = $request->getData('_id');
+        $userId = (int) $request->getData('_id');
         $hasPermission = $this->permission->hasGlobalPermission('users');
         //users should only be able to get their own data (when they don't have permission)
         if (App()->user->getId() !== $userId && !$hasPermission) {
@@ -50,7 +50,7 @@ class UserDetail implements CommandInterface
                 ->makeErrorForbidden();
         }
 
-        $userModel = $this->modelUser->findByAttributes(['uid' => (int)$userId]);
+        $userModel = $this->modelUser->findByAttributes(['uid' => $userId]);
 
         if (!$userModel) {
             return $this->responseFactory->makeErrorNotFound(
@@ -63,6 +63,7 @@ class UserDetail implements CommandInterface
         }
 
         $user = $this->transformerOutputSurveyOwner->transform($userModel);
+        $user['timezone'] = \Yii::app()->getConfig('displayTimezone') ?: 'UTC';
 
         return $this->responseFactory->makeSuccess($user);
     }

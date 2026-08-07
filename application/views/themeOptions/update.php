@@ -49,8 +49,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                 'enableAjaxValidation' => false,
                                 'htmlOptions'          => ['class' => 'form action_update_options_string_form'],
                                 'action'               => $actionUrl
-                            ]
-                        ); ?>
+                            ]); ?>
                 <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
             <!-- Tab panes -->
                 <div class="tab-content">

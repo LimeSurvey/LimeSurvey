@@ -6,11 +6,11 @@
  */
 ?>
 
-<?php if (!$aResults['global']['result']):?>
+<?php if (!$aResults['global']['result']) :?>
     <strong>
         <?php echo $aResults['global']['message'] ;?>
     </strong>
-<?php else: ?>
+<?php else : ?>
     <?php unset($aResults['global']); ?>
     <table class="table table-striped">
         <thead>
@@ -18,16 +18,16 @@
             <th><?php eT('Status');?></th>
         </thead>
         <tbody>
-            <?php foreach($aResults as $sParticipantToken => $result):?>
+            <?php foreach ($aResults as $sParticipantToken => $result) :?>
                 <tr>
                     <td>
                         <?php echo $sParticipantToken;?>
                     </td>
-                    <?php if ($result['status'] === true):?>
+                    <?php if ($result['status'] === true) :?>
                         <td class="text-success">
                             <?php echo $result['message']; ?>
                         </td>
-                    <?php else: ?>
+                    <?php else : ?>
                         <td class="text-danger">
                             <?php echo $result['message']; ?>
                         </td>

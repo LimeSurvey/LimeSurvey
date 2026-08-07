@@ -14,7 +14,7 @@
         <th><?php eT('Status');?></th>
     </thead>
     <tbody>
-        <?php foreach($aResults as $iSid => $result):?>
+        <?php foreach ($aResults as $iSid => $result) :?>
             <tr>
                 <td>
                     <?php echo $iSid;?>
@@ -22,11 +22,11 @@
                 <td>
                     <?php echo $result['title'];?>
                 </td>
-                <?php if ($result['result']):?>
+                <?php if ($result['result']) :?>
                     <td class="text-success">
                         <?php echo 'Exported' ; ?>
                     </td>
-                <?php else: ?>
+                <?php else : ?>
                     <td class="text-danger">
                         <?php echo $result['error'] ; ?>
                     </td>
@@ -36,8 +36,8 @@
     </tbody>
 </table>
 
-<?php if(!$bArchiveIsEmpty):?>
-    <button role="button" type="button" class='btn btn-primary' href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
+<?php if (!$bArchiveIsEmpty) :?>
+    <button role="button" type="button" class='btn btn-primary' href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/' . $sZip);?>">
         <span class="ri-download-fill"></span>
         <?php eT('Download archive');?>
     </button>

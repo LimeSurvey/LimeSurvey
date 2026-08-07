@@ -1,6 +1,7 @@
 <?php
+
 /* Set some part */
-$sRows="";
+$sRows = "";
 $sRows .= App()->twigRenderer->renderQuestion('/survey/questions/answer/listradio/columns/column_header', array(
     'bIsThemeEditor' => true,
     'iColumnWidth' => 12));
@@ -42,13 +43,13 @@ $sRows .= App()->twigRenderer->renderQuestion('/survey/questions/answer/listradi
 ));
 $sRows .= App()->twigRenderer->renderQuestion('/survey/questions/answer/listradio/columns/column_footer', array(
     'bIsThemeEditor' => true,
-    'last'=>true));
+    'last' => true));
 /* rendering */
 echo App()->twigRenderer->renderQuestion('/survey/questions/answer/listradio/answer', array(
     'bIsThemeEditor' => true,
-    'sTimer'=>'',
+    'sTimer' => '',
     'sRows' => $sRows,
     'name'  => '1234X56X79',
     'value' => 'A2',
-    'coreClass'=>"ls-answers answers-list radio-list",
+    'coreClass' => "ls-answers answers-list radio-list",
 ));

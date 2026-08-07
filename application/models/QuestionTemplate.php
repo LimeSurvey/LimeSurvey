@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -14,6 +14,14 @@
   */
 
 
+/**
+ * Class QuestionTemplate
+ *
+ * Handles question-level template overrides. Each question can have its own
+ * template that replaces default views and registers custom CSS/JS assets.
+ *
+ * @see QuestionTheme
+ */
 class QuestionTemplate extends CFormModel
 {
     // Main variables
@@ -95,9 +103,9 @@ class QuestionTemplate extends CFormModel
 
 
     /**
-     * Check if the question template offer a specific replacement for that view file.
-     * @param string $sView
-     * @return mixed
+     * Check if the question template offers a specific replacement for the given view file.
+     * @param string $sView The view name to check
+     * @return bool True if the template provides a replacement for the view
      */
     public function checkIfTemplateHasView($sView)
     {
@@ -197,8 +205,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * Return true if the core css should be loaded.
-     * @return null|boolean
+     * Return true if the core JavaScript should be loaded.
+     * @return bool|null
      */
     public function templateLoadsCoreJs()
     {
@@ -216,8 +224,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * Return true if the core css should be loaded.
-     * @return null|boolean
+     * Return true if the core CSS should be loaded.
+     * @return bool|null
      */
     public function templateLoadsCoreCss()
     {
@@ -236,7 +244,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Return true if the core packages should be loaded.
-     * @return null|boolean
+     * @return bool|null
      */
     public function templateLoadsCorePackage()
     {
@@ -255,7 +263,9 @@ class QuestionTemplate extends CFormModel
 
 
     /**
-     * In the future, could retrieve data from DB
+     * Load and parse the question template XML configuration.
+     * Sets template paths, engine flags (JS/CSS/package loading), and custom attributes.
+     * @return void
      */
     public function setConfig()
     {
@@ -304,7 +314,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     *
+     * Register custom CSS and JavaScript assets defined in the question template config.
+     * @return void
      */
     public function registerAssets()
     {
@@ -366,7 +377,8 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * @return array
+     * Return the custom attributes defined by the question template.
+     * @return array|null Array of attribute name => value pairs, or null if no custom attributes
      */
     public function getCustomAttributes()
     {

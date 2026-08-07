@@ -4,4 +4,5 @@
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace" />
         <exclude name="Generic.Files.LineLength"/>
     </rule>
+    <rule ref="Generic.Files.ByteOrderMark"/>
 </ruleset>

@@ -71,6 +71,34 @@ class Reader
         $this->_buffer->context = $this;
     }
 
+    private function readBodyInternal()
+    {
+        $infoCollection = new Record\InfoCollection();
+        $posVar         = 0;
+        do {
+            $recType = $this->_buffer->readInt();
+            switch ($recType) {
+                case Record\Variable::TYPE:
+                    $variable               = Record\Variable::fill($this->_buffer);
+                    $variable->realPosition = $posVar;
+                    $this->variables[]      = $variable;
+                    $posVar++;
+                    break;
+                case Record\ValueLabel::TYPE:
+                    $this->valueLabels[] = Record\ValueLabel::fill($this->_buffer, [
+                        'variables' => $this->variables,
+                    ]);
+                    break;
+                case Record\Info::TYPE:
+                    $this->info = $infoCollection->fill($this->_buffer);
+                    break;
+                case Record\Document::TYPE:
+                    $this->documents = Record\Document::fill($this->_buffer)->toArray();
+                    break;
+            }
+        } while (Record\Data::TYPE !== $recType);
+    }
+
     /**
      * @param string $file
      *
@@ -126,34 +154,27 @@ class Reader
             $this->readHeader();
         }
 
-        // TODO: refactory
-        $infoCollection = new Record\InfoCollection();
-        $tempVars       = [];
-        $posVar         = 0;
+        // TODO: We need to find a better way to decode the body, because the CharacterEncoding
+        // data is not necessary set at the beginning of the body and any string that is set
+        // before it is then not decode. So, we need to read twice the body, once to find the
+        // encode and another to decode it.
+        $headerPosition = $this->_buffer->position();
+        $this->readBodyInternal();
 
-        do {
-            $recType = $this->_buffer->readInt();
-            switch ($recType) {
-                case Record\Variable::TYPE:
-                    $variable               = Record\Variable::fill($this->_buffer);
-                    $variable->realPosition = $posVar;
-                    $tempVars[]             = $variable;
-                    $posVar++;
-                    break;
-                case Record\ValueLabel::TYPE:
-                    $this->valueLabels[] = Record\ValueLabel::fill($this->_buffer, [
-                        // TODO: refactory
-                        'variables' => $tempVars,
-                    ]);
-                    break;
-                case Record\Info::TYPE:
-                    $this->info = $infoCollection->fill($this->_buffer);
-                    break;
-                case Record\Document::TYPE:
-                    $this->documents = Record\Document::fill($this->_buffer)->toArray();
-                    break;
+        if (isset($this->info) && isset($this->info[Record\Info\CharacterEncoding::SUBTYPE])) {
+            $encode = $this->info[Record\Info\CharacterEncoding::SUBTYPE]->value;
+            // If is not set assume the UTF-8 encode.
+            $encode = (isset($encode) && !empty($encode)) ? $encode : "UTF-8";
+            $this->_buffer->charset = $encode;
+
+            if ($this->_buffer->seek($headerPosition) === 0) {
+                $this->valueLabels = [];
+                $this->info        = [];
+                $this->documents   = [];
+                $this->variables   = [];
+                $this->readBodyInternal();
             }
-        } while (Record\Data::TYPE !== $recType);
+        }
 
         // Excluding the records that are creating only as a consequence of very long string records
         // from the variables computation.
@@ -163,9 +184,11 @@ class Reader
         }
 
         $segmentsCount = 0;
+        $tempVars = $this->variables;
+        $this->variables = [];
         foreach ($tempVars as $index => $var) {
             // Skip blank records from the variables computation
-            if (-1 !== $var->width) {
+            if ($var->width !== -1) {
                 if ($segmentsCount <= 0) {
                     $segmentsCount = Utils::widthToSegments(
                         isset($veryLongStrings[$var->name]) ?
@@ -190,7 +213,7 @@ class Reader
 
         return $this;
     }
-    
+
     /**
      * @return booleam
      */
@@ -224,6 +247,14 @@ class Reader
         }
 
         return false;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfCases()
+    {
+        return $this->_buffer->context->header->casesCount;
     }
 
     /**

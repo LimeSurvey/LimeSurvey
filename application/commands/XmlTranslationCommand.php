@@ -33,7 +33,6 @@ class XmlTranslationCommand extends CConsoleCommand
 
             $sDirPath = $dirInfo->getRealPath();
             $this->generateFiles($sDirPath . '/survey/questions/answer', 'theme');
-
         }
     }
 
@@ -70,12 +69,9 @@ class XmlTranslationCommand extends CConsoleCommand
             $currentAttributeCategory = '';
 
             foreach ($attributes->attribute as $attribute) {
-
                 if ($currentAttributeCategory != (string)$attribute->category) {
-
                     $currentAttributeCategory = (string)$attribute->category;
                     fwrite($fileHandler, PHP_EOL . '//' . $currentAttributeCategory . ' attributes.' . PHP_EOL);
-
                 }
 
                 if (! empty($attribute->help)) {
@@ -87,15 +83,12 @@ class XmlTranslationCommand extends CConsoleCommand
                 }
 
                 if (! empty($attribute->options)) {
-
                     foreach ($attribute->options->children() as $option) {
-
                         if (! empty($option->text)) {
                             fwrite($fileHandler, 'gT("' . $option->text . '");' . PHP_EOL);
                         } else {
                             fwrite($fileHandler, 'gT("' . $option . '");' . PHP_EOL);
                         }
-
                     }
                 }
             }

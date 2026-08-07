@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Add dummy token
  */
+
 ?>
 
 <div class='side-body'>
@@ -9,7 +11,7 @@
 
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id'=>'edittoken', 'name'=>'edittoken', 'class'=>'form30 ')); ?>
+            <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id' => 'edittoken', 'name' => 'edittoken', 'class' => 'form30 ')); ?>
             <div class="row">
                 <!-- ID  -->
                 <div class="mb-3 col-12">
@@ -24,7 +26,7 @@
                 <div class="mb-3 col-6">
                     <label  class=" form-label" for='amount'><?php eT("Number of participants:"); ?></label>
                     <div class="">
-                        <input class='form-control' type='number' min='1' size='20' id='amount' name='amount' value="<?php echo $amount; ?>" />
+                        <input class='form-control' type='number' min='1' size='20' id='amount' name='amount' value="<?php echo intval($amount); ?>" />
                     </div>
                 </div>
 
@@ -32,7 +34,7 @@
                 <div class="mb-3 col-6">
                     <label  class=" form-label" for='tokenlen'><?php eT("Access code length"); ?>:</label>
                     <div class="">
-                        <input class='form-control' type='text' size='20' id='tokenlen' name='tokenlen' value="<?php echo $tokenlength; ?>" />
+                        <input class='form-control' type='text' size='20' id='tokenlen' name='tokenlen' value="<?php echo intval($tokenlength); ?>" />
                     </div>
                 </div>
             </div>
@@ -41,7 +43,10 @@
                 <div class="mb-3 col-6">
                     <label  class=" form-label" for='firstname'><?php eT("First name"); ?>:</label>
                     <div class="">
-                        <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="<?php echo $firstname; ?>" />
+                        <input class='form-control' type='text' size='30' id='firstname' name='firstname' aria-describedby='firstname-help' value="<?= CHtml::encode($firstname); ?>" />
+                    </div>
+                    <div class="form-text" id="firstname-help">
+                        <?= gT('You can use {COUNTER} to add a generated counter number, for example, “Firstname {COUNTER}”.'); ?>
                     </div>
                 </div>
 
@@ -49,7 +54,10 @@
                 <div class="mb-3 col-6">
                     <label  class=" form-label" for='lastname'><?php eT("Last name"); ?>:</label>
                     <div class="">
-                        <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="<?php echo $lastname; ?>" />
+                        <input class='form-control' type='text' size='30'  id='lastname' name='lastname' aria-describedby='lastname-help' value="<?= CHtml::encode($lastname); ?>" />
+                    </div>
+                    <div class="form-text" id="lastname-help">
+                        <?= gT('You can use {COUNTER} to add a generated counter number, for example, “Lastname {COUNTER}”.'); ?>
                     </div>
                 </div>
             </div>
@@ -58,7 +66,10 @@
                 <div class="mb-3 col-6">
                     <label  class=" form-label" for='email'><?php eT("Email address:"); ?></label>
                     <div class="">
-                        <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' value="<?php echo $email; ?>" />
+                        <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' aria-describedby='email-help' value="<?= CHtml::encode($email); ?>" />
+                    </div>
+                    <div class="form-text" id="email-help">
+                        <?= gT('You can use {COUNTER} to add a generated counter number, for example, “user{COUNTER}@example.org”.'); ?>
                     </div>
                 </div>
 
@@ -75,20 +86,18 @@
                 <div class="mb-3 col-6">
                     <label  class=" form-label" for='usesleft'><?php eT("Uses left:"); ?></label>
                     <div class="">
-                        <input class='form-control' type='text' size='20' id='usesleft' name='usesleft' value="<?php echo $usesleft; ?>" />
+                        <input class='form-control' type='text' size='20' id='usesleft' name='usesleft' value="<?= CHtml::encode($usesleft); ?>" />
                     </div>
                 </div>
             </div>
             <?php
-                if (isset($validfrom) && $validfrom != 'N')
-                {
-                    $validfrom = convertToGlobalSettingFormat($validfrom, true);
-                }
+            if (isset($validfrom) && $validfrom != 'N') {
+                $validfrom = convertToGlobalSettingFormat($validfrom, true);
+            }
 
-                if (isset($validuntil) && $validuntil != 'N')
-                {
-                    $validuntil = convertToGlobalSettingFormat($validuntil, true);
-                }
+            if (isset($validuntil) && $validuntil != 'N') {
+                $validuntil = convertToGlobalSettingFormat($validuntil, true);
+            }
             ?>
             <div class="row">
                 <!--  Validity -->
@@ -102,10 +111,11 @@
                                     'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' => true,
                                     'showClear' => true,
+                                    'theme' => 'light',
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 ]
                             ]);
-                        ?>
+                                                                ?>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
@@ -128,7 +138,7 @@
                                     'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                                 )
                             ));
-                        ?>
+                                                                    ?>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text'        => sprintf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')),
@@ -140,13 +150,19 @@
                 </div>
             </div>
                 <!-- Attribute fields  -->
-                <?php foreach ($aAttributeFields as $attr_name => $attr_description): ?>
-                    <div class="mb-3 col-6">
-                        <label  class=" form-label" for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
-                        <div class="">
-                            <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars((string) $$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
-                        </div>
-                    </div>
+                <?php foreach ($aAttributeFields as $attrName => $attrDescription) : ?>
+                    <?php
+                    $this->renderPartial(
+                        '/admin/token/attribute_subviews/tokenformAttributesWrapper',
+                        [
+                                    'attrDescription' => $attrDescription,
+                                    'attrName' => $attrName,
+                                    'inputValue' => null,
+                                    'jsDate' => $dateformatdetails['jsdate'],
+                                    'addClass' => 'col-6',
+                            ]
+                    );
+                    ?>
                 <?php endforeach; ?>
 
                 <!--Hidden Buttons (default action) -->

@@ -12,21 +12,27 @@
 namespace Twig\Node\Expression;
 
 use Twig\Compiler;
+use Twig\Node\Expression\Variable\ContextVariable;
 
-class MethodCallExpression extends AbstractExpression
+class MethodCallExpression extends AbstractExpression implements SupportDefinedTestInterface
 {
+    use SupportDefinedTestDeprecationTrait;
+    use SupportDefinedTestTrait;
+
     public function __construct(AbstractExpression $node, string $method, ArrayExpression $arguments, int $lineno)
     {
-        parent::__construct(['node' => $node, 'arguments' => $arguments], ['method' => $method, 'safe' => false, 'is_defined_test' => false], $lineno);
+        trigger_deprecation('twig/twig', '3.15', 'The "%s" class is deprecated, use "%s" instead.', __CLASS__, MacroReferenceExpression::class);
 
-        if ($node instanceof NameExpression) {
+        parent::__construct(['node' => $node, 'arguments' => $arguments], ['method' => $method, 'safe' => false], $lineno);
+
+        if ($node instanceof ContextVariable) {
             $node->setAttribute('always_defined', true);
         }
     }
 
     public function compile(Compiler $compiler): void
     {
-        if ($this->getAttribute('is_defined_test')) {
+        if ($this->definedTest) {
             $compiler
                 ->raw('method_exists($macros[')
                 ->repr($this->getNode('node')->getAttribute('name'))
@@ -43,21 +49,9 @@ class MethodCallExpression extends AbstractExpression
             ->repr($this->getNode('node')->getAttribute('name'))
             ->raw('], ')
             ->repr($this->getAttribute('method'))
-            ->raw(', [')
-        ;
-        $first = true;
-        /** @var ArrayExpression */
-        $args = $this->getNode('arguments');
-        foreach ($args->getKeyValuePairs() as $pair) {
-            if (!$first) {
-                $compiler->raw(', ');
-            }
-            $first = false;
-
-            $compiler->subcompile($pair['value']);
-        }
-        $compiler
-            ->raw('], ')
+            ->raw(', ')
+            ->subcompile($this->getNode('arguments'))
+            ->raw(', ')
             ->repr($this->getTemplateLine())
             ->raw(', $context, $this->getSourceContext())');
     }

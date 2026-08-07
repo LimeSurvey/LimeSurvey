@@ -266,6 +266,8 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
 
         $this->_value = $value;
         $this->_type  = $type;
+
+        return $this;
     }
 
     /**
@@ -326,6 +328,7 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
      */
     private function _fromDecimal($value, $type)
     {
+        $newvalue = '';
         $tempvalue = $value;
         if ($this->_units[$type][0] <= 16) {
             $newvalue = '';
@@ -399,7 +402,7 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
             throw new Zend_Measure_Exception('Unknown type of number:' . $type);
         }
 
-        $value = $this->_toDecimal($this->getValue(-1), $this->getType(-1));
+        $value = $this->_toDecimal($this->getValue(-1), $this->getType());
         $value = $this->_fromDecimal($value, $type);
 
         $this->_value = $value;

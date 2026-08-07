@@ -1,13 +1,15 @@
 <?php
+
 /**
  * This file register chartjs, and define needed js variables for statistics view.
  */
+
 ?>
 <script type='text/javascript'>
     var statisticsData = {};
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/graph"); ?>";
     var sStatisticsLanguage="<?php echo $sStatisticsLanguage; ?>";
-    var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/listcolumn/surveyid/".$surveyid."/column/"); ?>";
+    var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/listcolumn/surveyid/" . $surveyid . "/column/"); ?>";
     var showTextInline="<?php echo $showtextinline ?>";
     var jspdfworker="<?php echo yii::app()->clientScript->getPackageBaseUrl('jspdf'); ?>";
 </script>

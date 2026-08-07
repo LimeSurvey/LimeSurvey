@@ -107,10 +107,28 @@ class AttributesService
     {
         $questionBaseAttributes = $question->attributes;
 
+        // When the survey is active, attributes flagged as read-only while the survey
+        // is active must not be modified, even if they are present in the submitted data.
+        $survey = $question->survey;
+        $surveyIsActive = !empty($survey) && $survey->active === 'Y';
+        $readOnlyAttributes = [];
+        if ($surveyIsActive && !empty($dataSet)) {
+            $attributeSettings = QuestionAttribute::getQuestionAttributesSettings($question->type);
+            foreach ($attributeSettings as $attributeName => $attributeSetting) {
+                if (
+                    !empty($attributeSetting['readonly'])
+                    || !empty($attributeSetting['readonly_when_active'])
+                ) {
+                    $readOnlyAttributes[$attributeName] = true;
+                }
+            }
+        }
+
         foreach ($dataSet as $attributeKey => $attributeValue) {
             if (
                 !isset($attributeValue) ||
-                in_array($attributeKey, ['qid', 'debug', 'tempId'])
+                in_array($attributeKey, ['qid', 'debug', 'tempId']) ||
+                isset($readOnlyAttributes[$attributeKey])
             ) {
                 continue;
             }
@@ -231,5 +249,32 @@ class AttributesService
         }
         $question->refresh();
         return $question;
+    }
+
+    /**
+     * Removes question attributes from the database that are not valid
+     * for the question's current type. This prevents orphaned attributes
+     * from a previous question type from interfering with the current type.
+     *
+     * @param Question $question
+     * @return void
+     */
+    public function sanitizeAttributesByType(Question $question)
+    {
+        $validAttributes = $this->questionAttributeHelper
+            ->getQuestionAttributesWithValues($question);
+        $validAttributeNames = array_keys($validAttributes);
+
+        $existingAttributes = $this->modelQuestionAttribute->resetScope()
+            ->findAll(
+                'qid = :qid',
+                [':qid' => $question->qid]
+            );
+
+        foreach ($existingAttributes as $attr) {
+            if (!in_array($attr->attribute, $validAttributeNames)) {
+                $attr->delete();
+            }
+        }
     }
 }

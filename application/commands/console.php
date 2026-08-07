@@ -2,7 +2,7 @@
 <?php
     /*
     * LimeSurvey (tm)
-    * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2011-2026 The LimeSurvey Project Team
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant
@@ -25,7 +25,7 @@ define('BASEPATH', '.');
 define('EXT', '.php');
 
 require_once __DIR__ . '/../../vendor/autoload.php';
-require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . 'yii'. DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
+require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . 'yii' . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
 
 // Load configuration.
 $sCurrentDir = dirname(__FILE__);

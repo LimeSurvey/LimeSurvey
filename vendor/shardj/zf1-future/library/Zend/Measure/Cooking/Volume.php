@@ -115,7 +115,7 @@ class Zend_Measure_Cooking_Volume extends Zend_Measure_Abstract
      * @var array
      */
     protected $_units = [
-        'CAN_2POINT5'       => [['' => '0.0037854118', '/' => '16', '' => '3.5'], '2.5th can'],
+        'CAN_2POINT5'       => [['' => '3.5', '/' => '16'], '2.5th can'],
         'CAN_10'            => [['' => '0.0037854118', '*' => '0.75'],          '10th can'],
         'BARREL_WINE'       => ['0.143201835',   'bbl'],
         'BARREL'            => ['0.16365924',    'bbl'],

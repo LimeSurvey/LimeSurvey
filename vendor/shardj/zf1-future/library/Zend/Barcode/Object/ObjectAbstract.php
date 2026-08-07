@@ -620,7 +620,7 @@ abstract class Zend_Barcode_Object_ObjectAbstract
     public function getText()
     {
         $text = $this->_text;
-        if ($this->_withChecksum) {
+        if ($this->_withChecksum && method_exists($this, 'getChecksum')) {
             $text .= $this->getChecksum($this->_text);
         }
         return $this->_addLeadingZeros($text);

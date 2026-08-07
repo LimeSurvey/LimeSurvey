@@ -6,6 +6,7 @@
  * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */
+
 ?>
 <div class="modal-header">
     <?= gT('Error') ?>

@@ -29,8 +29,20 @@ trait MessageTrait
         return $this->protocol;
     }
 
+    /**
+     * @return static
+     */
     public function withProtocolVersion($version): MessageInterface
     {
+        if (!\is_string($version)) {
+            \trigger_deprecation(
+                'guzzlehttp/psr7',
+                '2.11',
+                'Passing %s to MessageInterface::withProtocolVersion() is deprecated; guzzlehttp/psr7 3.0 requires string.',
+                \get_debug_type($version)
+            );
+        }
+
         if ($this->protocol === $version) {
             return $this;
         }
@@ -69,9 +81,25 @@ trait MessageTrait
         return implode(', ', $this->getHeader($header));
     }
 
+    /**
+     * @return static
+     */
     public function withHeader($header, $value): MessageInterface
     {
         $this->assertHeader($header);
+        $values = \is_array($value) ? $value : [$value];
+        foreach ($values as $item) {
+            if (!\is_string($item) && (\is_scalar($item) || $item === null)) {
+                \trigger_deprecation(
+                    'guzzlehttp/psr7',
+                    '2.11',
+                    'Passing %s to MessageInterface::withHeader() is deprecated; guzzlehttp/psr7 3.0 requires string|string[].',
+                    \get_debug_type($item)
+                );
+
+                break;
+            }
+        }
         $value = $this->normalizeHeaderValue($value);
         $normalized = strtolower($header);
 
@@ -85,9 +113,25 @@ trait MessageTrait
         return $new;
     }
 
+    /**
+     * @return static
+     */
     public function withAddedHeader($header, $value): MessageInterface
     {
         $this->assertHeader($header);
+        $values = \is_array($value) ? $value : [$value];
+        foreach ($values as $item) {
+            if (!\is_string($item) && (\is_scalar($item) || $item === null)) {
+                \trigger_deprecation(
+                    'guzzlehttp/psr7',
+                    '2.11',
+                    'Passing %s to MessageInterface::withAddedHeader() is deprecated; guzzlehttp/psr7 3.0 requires string|string[].',
+                    \get_debug_type($item)
+                );
+
+                break;
+            }
+        }
         $value = $this->normalizeHeaderValue($value);
         $normalized = strtolower($header);
 
@@ -103,6 +147,9 @@ trait MessageTrait
         return $new;
     }
 
+    /**
+     * @return static
+     */
     public function withoutHeader($header): MessageInterface
     {
         $normalized = strtolower($header);
@@ -128,6 +175,9 @@ trait MessageTrait
         return $this->stream;
     }
 
+    /**
+     * @return static
+     */
     public function withBody(StreamInterface $body): MessageInterface
     {
         if ($body === $this->stream) {
@@ -151,6 +201,20 @@ trait MessageTrait
             $header = (string) $header;
 
             $this->assertHeader($header);
+            $values = \is_array($value) ? $value : [$value];
+            foreach ($values as $item) {
+                if (!\is_string($item) && (\is_scalar($item) || $item === null)) {
+                    \trigger_deprecation(
+                        'guzzlehttp/psr7',
+                        '2.11',
+                        'Passing %s to %s::__construct() is deprecated; guzzlehttp/psr7 3.0 requires string|string[].',
+                        \get_debug_type($item),
+                        static::class
+                    );
+
+                    break;
+                }
+            }
             $value = $this->normalizeHeaderValue($value);
             $normalized = strtolower($header);
             if (isset($this->headerNames[$normalized])) {
@@ -170,12 +234,16 @@ trait MessageTrait
      */
     private function normalizeHeaderValue($value): array
     {
-        if (!is_array($value)) {
-            return $this->trimAndValidateHeaderValues([$value]);
+        if (is_array($value) && $value === []) {
+            \trigger_deprecation(
+                'guzzlehttp/psr7',
+                '2.11',
+                'Passing an empty array as a header value is deprecated; guzzlehttp/psr7 3.0 rejects empty header value arrays.'
+            );
         }
 
-        if (count($value) === 0) {
-            throw new \InvalidArgumentException('Header value can not be an empty array.');
+        if (!is_array($value)) {
+            return $this->trimAndValidateHeaderValues([$value]);
         }
 
         return $this->trimAndValidateHeaderValues($value);

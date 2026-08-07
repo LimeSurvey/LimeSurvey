@@ -58,7 +58,7 @@ class SurveyAggregateService
     /**
      * Set REST Mode
      *
-     * In rest mode we have different expecations about data formats.
+     * In rest mode we have different expectations about data formats.
      * For example datetime objects inputs/output
      * as UTC JSON format Y-m-d\TH:i:s.000\Z.
      *

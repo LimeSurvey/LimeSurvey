@@ -18,6 +18,18 @@ var RankingQuestion = function (options) {
     var relevancename = "relevance" + rankingName,
         rankingID = "javatbd" + rankingName;
 
+    // Build a map from data-value (title) to element id from the DOM
+    var buildValueToIdMap = function () {
+        var map = {};
+        $('#sortable-choice-' + questionId + ' li.sortable-item').each(function () {
+            var val = $(this).data('value');
+            if (val) {
+                map[val] = $(this).attr('id');
+            }
+        });
+        return map;
+    };
+
     //define HTML snippets
     var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankhelp + "</div>"
 
@@ -118,9 +130,12 @@ var RankingQuestion = function (options) {
         updateDragDropRank = function () {
             $('#question' + questionId + ' .select-item select').val('');
             $('#sortable-rank-' + questionId + ' li').each(function (index) {
-                $('#question' + questionId + ' .select-item select').eq(index).data("old-val", $('#question' + questionId + ' .select-item select').eq(index).val());
-                $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
-                /* todo ? Set next option with same value disable ? */
+               var $targetSelect = $('#question' + questionId + ' .select-item select').eq(index);
+               if ($targetSelect.length > 0) {
+                    $targetSelect.data("old-val", $targetSelect.val());
+                    var valToSet = $(this).data("value");
+                    $targetSelect.val(valToSet);
+                }
             });
 
             // Update #relevance and lauch checkconditions function
@@ -161,10 +176,14 @@ var RankingQuestion = function (options) {
             $('#sortable-rank-' + questionId + ' li').each(function () {
                 $(this).appendTo('#sortable-choice-' + questionId);
             });
+            var valueToId = buildValueToIdMap();
             $('#question' + questionId + ' .select-item select :selected').each(function (index) {
                 if ($(this).val() != '') {
                     $("#" + relevancename + (index + 1)).val("1");
-                    $('#sortable-choice-' + questionId + ' li#' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
+                    var elId = valueToId[$(this).val()];
+                    if (elId) {
+                        $('#sortable-choice-' + questionId + ' li#' + elId).appendTo('#sortable-rank-' + questionId);
+                    }
                 }
                 /* set old-val for updateDragDropRank see #14425 */
                 $(this).closest("select").data("old-val", $(this).closest("select").val());

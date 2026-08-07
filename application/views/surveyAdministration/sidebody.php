@@ -57,7 +57,7 @@ if ((Yii::app()->request->getParam('popuppreview', false) !== false) && ($sid = 
     if ($language = Yii::app()->request->getParam('language', '')) {
         $language = "&language={$language}";
     }
-?>
+    ?>
 <div id="template-preview" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal Content -->
@@ -104,7 +104,7 @@ if ((Yii::app()->request->getParam('popuppreview', false) !== false) && ($sid = 
     });
 </script>
 
-<?php
+    <?php
 }
 ?>
 

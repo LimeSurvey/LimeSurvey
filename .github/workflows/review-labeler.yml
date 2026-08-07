@@ -1,0 +1,26 @@
+name: Label PR Review Status
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  label-review:
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Update review labels
+        run: |
+          pr=${{ github.event.pull_request.number }}
+          repo=${{ github.repository }}
+
+          echo "PR #${pr} approved, updating labels"
+          gh api "repos/${repo}/issues/${pr}/labels/Needs%20code%20review" --method DELETE || true
+          gh api "repos/${repo}/issues/${pr}/labels" -f "labels[]=Code review done" --method POST || true

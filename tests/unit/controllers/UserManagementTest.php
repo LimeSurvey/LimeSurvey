@@ -4,7 +4,7 @@ namespace ls\tests\controllers;
 
 /**
  *  LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -51,7 +51,13 @@ class UserManagementTest extends TestBaseClass
         \Yii::import('application.controllers.UserManagementController', true);
         \Yii::import('application.models.User', true);
         \Yii::app()->session['loginID'] = 1;
-        
+
+        // Clean up leftover user from a previous failed run.
+        $existingUser = \User::model()->findByAttributes(['users_name' => $aDataSet['new_user_data']['users_name']]);
+        if ($existingUser) {
+            $existingUser->delete();
+        }
+
         $oUser = new \User();
         $oUser->setAttributes($aDataSet['new_user_data']);
         if(!$oUser->save()) {

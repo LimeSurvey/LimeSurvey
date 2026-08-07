@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Set question group and position modal body (parsed to massive action widget)
  */
@@ -23,6 +24,6 @@
                 ],
             ]); ?>
         </div>
-        <input type="hidden" name="sid" value="<?php echo (int) Yii::app()->request->getParam('surveyid',0); ?>" class="custom-data"/>
+        <input type="hidden" name="sid" value="<?php echo (int) Yii::app()->request->getParam('surveyid', 0); ?>" class="custom-data"/>
     </div>
 </form>

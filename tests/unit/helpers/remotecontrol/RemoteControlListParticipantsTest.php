@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\TestBaseClass;
 
 /**
  * Tests for the LimeSurvey remote API.
@@ -198,7 +200,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         );
 
         $expected = [
-            'status' => 'No survey participants found.'
+            'status' => 'No survey participants found.',
+            'error_code' => 'ERR_NO_DATA'
         ];
 
         $this->assertEquals($expected, $list);
@@ -238,9 +241,136 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         );
 
         $expected = [
-            'status' => 'Illegal operator: !'
+            'status' => 'Illegal operator: ! for column validuntil',
+            'error_code' => 'ERR_INVALID_PARAMETERS'
         ];
 
+        $this->assertEquals($expected, $list);
+    }
+
+    /**
+     * Test invalid columns 'extractvalue(1,concat(0x3a,(DATABASE())))'.
+     *
+     * @return void
+     */
+    public function testConditionInvalidColumn()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        /** @var array */
+        $list = $handler->list_participants(
+            $sessionKey,
+            self::$surveyId,
+            0,
+            10,
+            false,
+            false,
+            ['extractvalue(1,concat(0x3a,(DATABASE())))' => ['=', 1]]
+        );
+
+        $expected = [
+            'status' => 'Invalid column name: extractvalue(1,concat(0x3a,(DATABASE())))',
+            'error_code' => 'ERR_INVALID_PARAMETERS'
+        ];
+
+        $this->assertEquals($expected, $list);
+    }
+
+    /**
+     * Test simple string.
+     *
+     * @return void
+     */
+    public function testSimpleString()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        /** @var array */
+        $list = $handler->list_participants(
+            $sessionKey,
+            self::$surveyId,
+            0,
+            10,
+            false,
+            false,
+            ["validuntil >= 2020-04-01 15:12:00"]
+        );
+
+        /** @var array */
+        $expected = [
+            [
+                'tid' => "1",
+                'token' => "c",
+                'participant_info' => [
+                    'firstname' => "a",
+                    'lastname' => "b",
+                    'email' => "a@a.a"
+                ]
+            ]
+        ];
+        $this->assertEquals($expected, $list);
+    }
+
+    /**
+     * Test broken (SQL return DB Name) string.
+     * TODO : search other SQL payload
+     * @return void
+     */
+    public function testSQLPayloadString()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        /** @var array */
+        $list = $handler->mail_registered_participants(
+            $sessionKey,
+            self::$surveyId,
+            ['extractvalue(1,concat(0x3a,(DATABASE())))']
+        );
+
+        /** @var array */
+        $expected = [
+            'status' => 'Invalid expression for condition',
+            'error_code' => 'ERR_INVALID_PARAMETERS'
+        ];
         $this->assertEquals($expected, $list);
     }
 
@@ -283,7 +413,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
 
         /** @var array */
         $expected = [
-            'status' => 'No survey participants found.'
+            'status' => 'No survey participants found.',
+            'error_code' => 'ERR_NO_DATA'
         ];
 
         $this->assertEquals($expected, $list);
@@ -339,7 +470,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
 
         /** @var array */
         $expected = [
-            'status' => 'No survey participants found.'
+            'status' => 'No survey participants found.',
+            'error_code' => 'ERR_NO_DATA'
         ];
 
         $this->assertEquals($expected, $list);

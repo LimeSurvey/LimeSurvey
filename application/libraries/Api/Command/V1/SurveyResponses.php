@@ -5,10 +5,11 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 use CDbException;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\SurveyAnswerCache;
 use Permission;
 use Survey;
-use Answer;
 use LimeSurvey\Api\Command\{CommandInterface,
     Request\Request,
     Response\Response,
@@ -20,38 +21,39 @@ use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurv
 class SurveyResponses implements CommandInterface
 {
     use AuthPermissionTrait;
+    use ResponseMappingTrait;
 
     protected Survey $survey;
-    protected Answer $answerModel;
     protected Permission $permission;
     protected ResponseFactory $responseFactory;
     protected FilterPatcher $responseFilterPatcher;
     protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
+    protected SurveyAnswerCache $answerCache;
 
     /**
      * Constructor
      *
      * @param Survey $survey
-     * @param Answer $answerModel
      * @param Permission $permission
      * @param FilterPatcher $responseFilterPatcher
      * @param ResponseFactory $responseFactory
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
+     * @param SurveyAnswerCache $answerCache
      */
     public function __construct(
         Survey $survey,
-        Answer $answerModel,
         Permission $permission,
         FilterPatcher $responseFilterPatcher,
         ResponseFactory $responseFactory,
-        TransformerOutputSurveyResponses $transformerOutputSurveyResponses
+        TransformerOutputSurveyResponses $transformerOutputSurveyResponses,
+        SurveyAnswerCache $answerCache
     ) {
         $this->survey = $survey;
-        $this->answerModel = $answerModel;
         $this->permission = $permission;
         $this->responseFactory = $responseFactory;
         $this->responseFilterPatcher = $responseFilterPatcher;
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
+        $this->answerCache = $answerCache;
     }
 
     /**
@@ -106,8 +108,8 @@ class SurveyResponses implements CommandInterface
             throw new TransformerException();
         }
 
-            $this->transformerOutputSurveyResponses->fieldMap =
-                createFieldMap($this->survey, 'full', false, false);
+        $this->transformerOutputSurveyResponses->fieldMap =
+            createFieldMap($this->survey, 'full', true, false);
 
         $data = [];
         $data['responses'] = $this->transformerOutputSurveyResponses->transform(
@@ -129,61 +131,13 @@ class SurveyResponses implements CommandInterface
             'sort' => $request->getData('sort', []),
         ];
 
-        return $this->mapResponsesToQuestions($data);
-    }
-
-    /**
-     * Maps survey responses to survey questions.
-     *
-     * @param array $data
-     * @return array
-     */
-    protected function mapResponsesToQuestions(array $data): array
-    {
-        foreach ($data['responses'] as &$response) {
-            foreach ($response['answers'] as &$answer) {
-                $qid = $answer['key'];
-                if (isset($data["surveyQuestions"][$qid])) {
-                    $answer = array_merge(
-                        $answer,
-                        $data["surveyQuestions"][$qid]
-                    );
-                    $answer['actual_aid'] = $this->getActualAid(
-                        $answer['qid'],
-                        $answer['scale_id'] ?? $answer['scaleid'] ?? 0,
-                        $answer['value'],
-                    );
-                }
-            }
-        }
-        return $data;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getQuestionFieldMap(): array
-    {
-        //This function generates an array containing the fieldcode, and matching data in the same order as the responses table
-        $fieldMap = $this->transformerOutputSurveyResponses->fieldMap;
-
-        return array_filter(
-            array_map(
-                function ($item) {
-                    if (!empty($item['qid'])) {
-                        return [
-                            'gid' => $item['gid'],
-                            'qid' => $item['qid'],
-                            'aid' => $item['aid'] ?? null,
-                            'sqid' => $item['sqid'] ?? null,
-                            'scaleid' => $item['scale_id'] ?? null,
-                        ];
-                    }
-                    return null; // Explicit return for when condition is false
-                },
-                $fieldMap
-            )
+        $this->answerCache->load((int) $surveyId, $this->survey->language);
+        $data['responses'] = $this->mapResponsesToQuestions(
+            $data['responses'],
+            $data['surveyQuestions']
         );
+
+        return $data;
     }
 
     protected function getSurvey(Request $request): void
@@ -261,52 +215,5 @@ class SurveyResponses implements CommandInterface
         }
 
         return $paginationDefault;
-    }
-
-    /**
-     * Gets all answers for the survey questions and caches them for later use
-     *
-     * @return array Answers indexed by qid, scale_id, and code
-     */
-    protected function getAllSurveyAnswers()
-    {
-        static $answersCache = [];
-        $surveyId = $this->survey->sid;
-        if (!isset($answersCache[$surveyId])) {
-            // Get all questions for this survey
-            /** @var \Question[] $questions */
-            /** @psalm-suppress UndefinedMagicPropertyFetch */
-            $questions = $this->survey->questions;
-            $questionIds = array_map(function (\Question $q): int {
-                return $q->qid;
-            }, $questions);
-
-            // Fetch all answers for these questions in a single query
-            $answers = $this->answerModel->findAll(
-                'qid IN (' . implode(',', $questionIds) . ')'
-            );
-
-            // Index answers by qid, scale_id, and code for fast lookup
-            $answersCache[$surveyId] = [];
-            foreach ($answers as $answer) {
-                $answersCache[$surveyId][$answer->qid][$answer->scale_id][$answer->code] = $answer->aid;
-            }
-        }
-
-        return $answersCache[$surveyId];
-    }
-
-    /**
-     * Gets the actual answer ID efficiently using the cached answers
-     *
-     * @param int $questionID The question ID
-     * @param int $scaleId The scale ID
-     * @param string $value The answer code
-     * @return int|null The answer ID or null if not found
-     */
-    protected function getActualAid($questionID, $scaleId, $value)
-    {
-        $allAnswers = $this->getAllSurveyAnswers();
-        return $allAnswers[$questionID][$scaleId][$value] ?? null;
     }
 }

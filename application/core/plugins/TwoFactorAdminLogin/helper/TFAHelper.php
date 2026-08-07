@@ -1,10 +1,10 @@
 <?php
+
 /**
  * Helper functionalities for 2fa plugin
  */
-class TFAHelper {
-  
-
+class TFAHelper
+{
     /**
      * Get the status of the plugin from db
      *
@@ -13,9 +13,9 @@ class TFAHelper {
     public static function isPluginActive()
     {
         $plugin = Plugin::model()->findByAttributes(["name" => "TwoFactorAdminLogin"]);
-        
+
         if ($plugin) {
-           return (int)$plugin->active;
+            return (int)$plugin->active;
         } else {
             return 0;
         }

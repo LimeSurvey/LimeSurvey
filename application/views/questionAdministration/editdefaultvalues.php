@@ -53,7 +53,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <?php if ($questionrow['other'] == 'Y'): ?>
+                                    <?php if ($questionrow['other'] == 'Y') : ?>
                                         <div class="mb-3">
                                             <label class="col-12 form-label" for='other_<?php echo "{$scale_id}_{$language}" ?>'>
                                                 <?php eT("Default value for option 'Other':") ?>
@@ -126,6 +126,7 @@
                             <?php endif; ?>
                             <?php if ($questionMetaData->answerscales == 0 && $questionMetaData->subquestions == 0) : ?>
                                 <?php
+
                                 /*
                                 case 'D':
                                 case 'N':
@@ -137,6 +138,7 @@
                                  * Call default value widget for yes/no question type
                                  * This is fast insert rewrite of this view follows
                                  */
+
                                 $widgetOptions = [
                                     'language' => $language,
                                     'questionrow' => $questionrow,
@@ -144,24 +146,24 @@
                                 ];
                                 $this->widget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', ['widgetOptions' => $widgetOptions]);
                                 ?>
-                                <?php if ($questionrow['type'] != Question::QT_Y_YES_NO_RADIO): //temporary solution - until everything is move to widgets?>
+                                <?php if ($questionrow['type'] != Question::QT_Y_YES_NO_RADIO) : //temporary solution - until everything is move to widgets?>
                                     <div class="mb-3">
                                         <label class="col-12 form-label" for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
                                             <?php eT("Default value:") ?>
                                         </label>
                                         <?php
                                             $defaultValue = DefaultValue::model()->findByAttributes(['qid' => $questionrow['qid']]);
-                                            if($defaultValue !== null){
-                                                $defaultValueLanguage = DefaultValueL10n::model()->findByAttributes(['dvid' => $defaultValue->dvid, 'language' => $language]);
-                                                // TODO: Small bug when importing survey with default answer, and then adding a new language after.
-                                                if ($defaultValueLanguage) {
-                                                    $defaultValueLanguageText = $defaultValueLanguage->defaultvalue;
-                                                } else {
-                                                    $defaultValueLanguageText = '';
-                                                }
-                                            }else{
+                                        if ($defaultValue !== null) {
+                                            $defaultValueLanguage = DefaultValueL10n::model()->findByAttributes(['dvid' => $defaultValue->dvid, 'language' => $language]);
+                                            // TODO: Small bug when importing survey with default answer, and then adding a new language after.
+                                            if ($defaultValueLanguage) {
+                                                $defaultValueLanguageText = $defaultValueLanguage->defaultvalue;
+                                            } else {
                                                 $defaultValueLanguageText = '';
                                             }
+                                        } else {
+                                            $defaultValueLanguageText = '';
+                                        }
                                         ?>
                                         <div class="col-12">
                                             <textarea <?php echo $hasUpdatePermission; ?>

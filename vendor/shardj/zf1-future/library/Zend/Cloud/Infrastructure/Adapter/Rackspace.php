@@ -421,10 +421,10 @@ class Zend_Cloud_Infrastructure_Adapter_Rackspace extends Zend_Cloud_Infrastruct
                         break;
                     case Zend_Cloud_Infrastructure_Instance::MONITOR_RAM:
                         if (preg_match('/(\d+)k total/', $output,$match)) {
-                            $total = (integer) $match[1];
+                            $total = (int) $match[1];
                         }
                         if (preg_match('/(\d+)k used/', $output,$match)) {
-                            $used = (integer) $match[1];
+                            $used = (int) $match[1];
                         }
                         if ($total>0) {
                             $usage= (float) $used/$total;

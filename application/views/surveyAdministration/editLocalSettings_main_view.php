@@ -15,7 +15,8 @@ $templateData['optionsOnOff']    = $optionsOnOff;
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyGeneralSettings');
 
-Yii::app()->getClientScript()->registerScript("editLocalSettings_formid_" . $entryData['name'],
+Yii::app()->getClientScript()->registerScript(
+    "editLocalSettings_formid_" . $entryData['name'],
     "
 var formId = '" . $entryData['name'] . "';
 ",
@@ -66,7 +67,8 @@ if (isset($scripts)) {
 <!-- END editLocalSettings -->
 <?php
 
-App()->getClientScript()->registerScript("editLocalSettings_submit_" . $entryData['name'],
+App()->getClientScript()->registerScript(
+    "editLocalSettings_submit_" . $entryData['name'],
     "
 
 $('#" . $entryData['name'] . "').off('.editLocalsettings');

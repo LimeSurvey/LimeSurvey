@@ -11,7 +11,7 @@ use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryAuthToken
 };
 
-$errorSchema = (new SchemaFactoryError)->make();
+$errorSchema = (new SchemaFactoryError())->make();
 
 $rest = [];
 
@@ -29,7 +29,7 @@ $rest['v1/auth'] = [
                 'code' => 200,
                 'description' => 'Success - returns string access token for use in header '
                     . '"Authorization: Bearer $token"',
-                'schema' => (new SchemaFactoryAuthToken)->make()
+                'schema' => (new SchemaFactoryAuthToken())->make()
             ],
             'unauthorized' => [
                 'code' => 401,
@@ -49,7 +49,7 @@ $rest['v1/auth'] = [
                 'code' => 200,
                 'description' => 'Success - returns string access token for use in header '
                 . '"Authorization: Bearer $token"',
-                'schema' => (new SchemaFactoryAuthToken)->make()
+                'schema' => (new SchemaFactoryAuthToken())->make()
             ],
             'unauthorized' => [
                 'code' => 401,

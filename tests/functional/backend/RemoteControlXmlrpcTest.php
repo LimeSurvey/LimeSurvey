@@ -4,6 +4,9 @@ namespace ls\tests;
 
 use Yii;
 
+/**
+ * @group api
+ */
 class RemoteControlXmlrpcTest extends TestBaseClassWeb
 {
     private static $tmpBaseUrl;
@@ -68,6 +71,7 @@ class RemoteControlXmlrpcTest extends TestBaseClassWeb
         $this->assertIsArray($sessionKey);
         $this->assertSame("Invalid user name or password", $sessionKey['status']);
 
-        self::$client->call('release_session_key', [$sessionKey]);
+        // $sessionKey is an error array, not a valid key — do not attempt to release it
+        // self::$client->call('release_session_key', [$sessionKey]);
     }
 }

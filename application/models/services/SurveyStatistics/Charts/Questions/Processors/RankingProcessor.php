@@ -8,33 +8,60 @@ class RankingProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
     {
-        $this->rt = $this->question['type'] . $this->surveyId . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = $this->question['type'] . 'Q' . $this->question['qid'];
     }
 
     public function process()
     {
         $this->rt();
         $charts = [];
-        $i = 0;
+        $subQuestions = $this->question['subQuestions'];
 
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $title = flattenText($this->question['question']) . " [{$subQuestion['question']}]";
-            $dataItems = [];
-            $legend = [];
+        $column = substr($this->rt, 1);
+        $rawValues = $this->fetchColumnValues($column);
 
-            foreach ($this->answers as $answer) {
-                $rt = $this->rt . $subQuestion['title'] . '#' . $i;
+        $rankCount = count($subQuestions);
 
-                if ((int)$answer->scale_id === 0) {
-                    $value = $this->getResponseCount($rt, $answer['code']);
-                    $dataItems[] = ['key' => $answer['code'], 'title' => $answer['answer'], 'value' => $value];
-                }
+        $counts = [];
+        foreach ($rawValues as $rawValue) {
+            if ($rawValue === null || $rawValue === '') {
+                continue;
             }
-            $legend[] = 'NoAnswer';
-            $dataItems[] = ['key' => 'NoAnswer', 'value' => 0, 'title' => 'No answer'];
+            $ranking = json_decode((string)$rawValue, true);
+            if (!is_array($ranking)) {
+                continue;
+            }
+            $rank = 0;
+            foreach ($ranking as $itemCode) {
+                $rank++;
+                if ($rank > $rankCount) {
+                    break;
+                }
+                $itemCode = (string)$itemCode;
+                $counts[$itemCode][$rank] = ($counts[$itemCode][$rank] ?? 0) + 1;
+            }
+        }
 
-            $charts[] = new StatisticsChartDTO($title, $legend, $dataItems, $this->calculateTotal($dataItems), ['question' => $this->question]);
-            $i++;
+        foreach ($subQuestions as $subQuestion) {
+            $itemCode = (string)$subQuestion['title'];
+            $legends = [];
+            $dataItems = [];
+            for ($rank = 1; $rank <= $rankCount; $rank++) {
+                $fieldName = 'RANK ' . $rank;
+                $legends[] = $fieldName;
+                $dataItems[] = [
+                    'key' => $subQuestion['title'],
+                    'title' => $fieldName,
+                    'value' => (int)($counts[$itemCode][$rank] ?? 0),
+                ];
+            }
+            $charts[] = new StatisticsChartDTO(
+                $this->question['question'] . ': ' . $subQuestion['question'],
+                $legends,
+                $dataItems,
+                $this->calculateTotal($dataItems),
+                ['question' => $this->question]
+            );
         }
 
         return $charts;

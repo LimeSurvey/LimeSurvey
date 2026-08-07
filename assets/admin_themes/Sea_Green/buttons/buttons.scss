@@ -8,6 +8,7 @@
         //default hover
         box-shadow : $btn-hover-boxshadow;
         color      : $white;
+        text-decoration: none;
     }
     &:focus, &:active, &.active, &:active:focus, &.dropdown-toggle.show, &.dropdown-toggle.show:focus {
         // default_focus
@@ -225,7 +226,7 @@
 // btn-link should be outsourced to links.scss or whatever it will be called
 .btn-link {
     color : $active-green;
-    &:hover, &:focus {
+    &:hover, &:focus, &:active, &:active:focus {
         color : $active-green;
     }
 }

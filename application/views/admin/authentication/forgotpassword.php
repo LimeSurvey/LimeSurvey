@@ -54,7 +54,7 @@
                         <br /><br />
                         <a href="<?php
                                     echo $this->createUrl("/admin"); ?>"><?php
-                                                                            eT('Main Admin Screen'); ?></a>
+                                                                            eT('Main admin screen'); ?></a>
                     </div>
 
                 </div>

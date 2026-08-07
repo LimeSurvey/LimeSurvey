@@ -58,23 +58,23 @@
 <!-- Compatible -->
 <div class="row">
     <label class="col-md-4 form-label text-end"><?php eT("Compatible"); ?></label>
-    <?php if ($plugin->isCompatible()): ?>
+    <?php if ($plugin->isCompatible()) : ?>
         <div class="col-md-4"><span class="ri-check-fill text-success"></span></div>
-    <?php else: ?>
+    <?php else : ?>
         <div class="col-md-4"><span class="ri-close-fill text-danger"></span></div>
     <?php endif; ?>
 </div>
 
 <!-- Active -->
-<?php if ($showactive): ?>
+<?php if ($showactive) : ?>
     <div class="row">
         <label class="col-md-4 form-label text-end"><?php eT("Active:"); ?></label>
-        <?php if ($plugin['active']): ?>
+        <?php if ($plugin['active']) : ?>
             <div class="col-md-2"><span class="ri-check-fill text-success"></span></div>
             <div class="col-md-2">
                 <?= $plugin->getDeactivateButton() ?>
             </div>
-        <?php else: ?>
+        <?php else : ?>
             <div class="col-md-2"><span class="ri-close-fill text-danger"></span></div>
             <div class="col-md-2">
                 <?= $plugin->getActivateButton() ?>
@@ -83,11 +83,11 @@
     </div>
 <?php endif; ?>
 
-<?php if ($plugin['active']): ?>
+<?php if ($plugin['active']) : ?>
     <?php
         $pluginStatus = $pluginObject->getHealthStatusText();
     ?>
-    <?php if (!empty($pluginStatus)): ?>
+    <?php if (!empty($pluginStatus)) : ?>
         <!-- Status -->
         <div class="row">
             <label class="col-md-4 form-label text-end"><?php eT("Status:"); ?></label>

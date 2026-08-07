@@ -1,11 +1,11 @@
 <?php
+
 /**
  * This file generate the hidden inputs required by the ajax process.
  * If a step is defined in the url's getters, then we parse it in an hidden input
  * comfortupdate.js will check this hidden input, and load the correct step.
  * Most steps also need to know the destination build
  */
-
 
  /**
   *
@@ -21,18 +21,18 @@ $p = new CHtmlPurifier();
     var csrf_token = "<?php echo htmlspecialchars((string) Yii::app()->request->csrfToken);?>";
 </script>
 
-<?php if(isset($_REQUEST['update'])):?>
-    <?php echo CHtml::hiddenField('update_step',$p->purify($_REQUEST['update']),array('id'=>'update_step'));?>
-<?php else:?>
-    <?php echo CHtml::hiddenField('update_step','',array('id'=>'update_step'));?>
+<?php if (isset($_REQUEST['update'])) :?>
+    <?php echo CHtml::hiddenField('update_step', $p->purify($_REQUEST['update']), array('id' => 'update_step'));?>
+<?php else :?>
+    <?php echo CHtml::hiddenField('update_step', '', array('id' => 'update_step'));?>
 <?php endif;?>
 
-<?php if(isset($_REQUEST['destinationBuild'])):?>
-    <?php echo CHtml::hiddenField('destinationBuildForAjax',(int)$_REQUEST['destinationBuild'],array('id'=>'destinationBuildForAjax'));?>
+<?php if (isset($_REQUEST['destinationBuild'])) :?>
+    <?php echo CHtml::hiddenField('destinationBuildForAjax', (int)$_REQUEST['destinationBuild'], array('id' => 'destinationBuildForAjax'));?>
 <?php endif;?>
 
-<?php if(isset($_REQUEST['access_token'])):?>
-    <?php echo CHtml::hiddenField('access_tokenForAjax',$p->purify($_REQUEST['access_token']),array('id'=>'access_tokenForAjax'));?>
+<?php if (isset($_REQUEST['access_token'])) :?>
+    <?php echo CHtml::hiddenField('access_tokenForAjax', $p->purify($_REQUEST['access_token']), array('id' => 'access_tokenForAjax'));?>
 <?php endif;?>
 
  <input id="updatebothbranchdatas" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getbothbuttons"); ?>"/>

@@ -312,7 +312,7 @@ class Zend_View_Helper_HeadScript extends Zend_View_Helper_Placeholder_Container
     /**
      * Override append
      *
-     * @param  string $value
+     * @param  string|stdClass $value
      * @return void
      */
     public function append($value)
@@ -330,7 +330,7 @@ class Zend_View_Helper_HeadScript extends Zend_View_Helper_Placeholder_Container
     /**
      * Override prepend
      *
-     * @param  string $value
+     * @param  string|stdClass $value
      * @return void
      */
     public function prepend($value)
@@ -348,7 +348,7 @@ class Zend_View_Helper_HeadScript extends Zend_View_Helper_Placeholder_Container
     /**
      * Override set
      *
-     * @param  string $value
+     * @param  string|stdClass $value
      * @return void
      */
     public function set($value)
@@ -367,7 +367,7 @@ class Zend_View_Helper_HeadScript extends Zend_View_Helper_Placeholder_Container
      * Override offsetSet
      *
      * @param  string|int $index
-     * @param  mixed $value
+     * @param  string|stdClass $value
      * @return void
      */
     #[\ReturnTypeWillChange]

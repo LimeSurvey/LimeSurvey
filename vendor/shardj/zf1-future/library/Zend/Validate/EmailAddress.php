@@ -337,7 +337,7 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
      */
     public function setDomainCheck($domain = true)
     {
-        $this->_options['domain'] = (boolean) $domain;
+        $this->_options['domain'] = (bool) $domain;
         return $this;
     }
 

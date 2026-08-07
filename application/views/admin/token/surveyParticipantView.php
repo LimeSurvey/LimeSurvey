@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             <div class="accordion-item">
                 <h2 class="accordion-header" id="panelsStayOpen-headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                        <span class="summary-title py-1"><?php eT("Survey participant summary"); ?></span>
+                        <span class="summary-title py-1"><?php eT("Summary"); ?></span>
                     </button>
                 </h2>
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total records"); ?>
+                                        <?php eT("Total"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['count']; ?>
@@ -34,27 +34,27 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                                 </div>
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total with no unique participant access code"); ?>
+                                        <?php eT("Having an invitation sent"); ?>
+                                    </div>
+                                    <div class="col">
+                                        <?php echo $queries['sent']; ?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col summary-detail">
+                                        <?php eT("Missing an access code"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['invalid']; ?>
                                     </div>
 
                                 </div>
-                                <div class="row">
-                                    <div class="col summary-detail">
-                                        <?php eT("Total invitations sent"); ?>
-                                    </div>
-                                    <div class="col">
-                                        <?php echo $queries['sent']; ?>
-                                    </div>
 
-                                </div>
                             </div>
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total opted out"); ?>
+                                        <?php eT("Opted out"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['optout']; ?>
@@ -63,7 +63,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                                 </div>
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total screened out"); ?>
+                                        <?php eT("Screened out"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['screenout']; ?>
@@ -72,7 +72,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                                 </div>
                                 <div class="row">
                                     <div class="col summary-detail">
-                                        <?php eT("Total participants completed"); ?>
+                                        <?php eT("Completed"); ?>
                                     </div>
                                     <div class="col">
                                         <?php echo $queries['completed']; ?>
@@ -86,13 +86,13 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             </div>
         </div>
     </div>
-    <h2 class="summary-title mt-4 pb-2 mb-3"><?php $model && eT("All participants"); ?></h2>
+    <h2 class="summary-title mt-4 pb-2 mb-3"><?php ($model || !empty($emptyGridDataProvider)) && eT("All participants"); ?></h2>
     <div class='side-body'>
         <input type='hidden' id="dateFormatDetails" name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
         <input type="hidden" id="locale" name="locale" value="<?= convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']) ?>" />
         <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
         <?php
-        $model && $this->widget('ext.AlertWidget.AlertWidget', [
+        ($model || !empty($emptyGridDataProvider)) && $this->widget('ext.AlertWidget.AlertWidget', [
             'tag'  => 'p',
             'text' => gT(
                 "You can use operators in the search filters (eg: >, <, >=, <=, = )"
@@ -113,38 +113,55 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
         <div class="row">
             <div class="content-right">
                 <?php
-                $model && $this->widget('application.extensions.admin.grid.CLSGridView', [
-                    'dataProvider'          => $model->search(),
-                    'filter'                => $model,
-                    'id'                    => 'token-grid',
-                    'emptyText'             => gT('No survey participants found.'),
-                    'massiveActionTemplate' => $massiveAction,
-                    'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSizeTokenView',
-                            $pageSizeTokenView,
-                            Yii::app()->params['pageSizeOptionsTokens'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                        )
-                    ),
-                    'columns'               => $model->getAttributesForGrid(),
-                    'ajaxUpdate'            => 'token-grid',
-                    'ajaxType'              => 'POST',
-                    'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();', 'switchStatusOfListActions();']
-                ]);
+                if ($model) {
+                    $this->widget('application.extensions.admin.grid.CLSGridView', [
+                        'dataProvider'          => $model->search(),
+                        'filter'                => $model,
+                        'id'                    => 'token-grid',
+                        'emptyText'             => gT('No survey participants found.'),
+                        'massiveActionTemplate' => $massiveAction,
+                        'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                            gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSizeTokenView',
+                                $pageSizeTokenView,
+                                Yii::app()->params['pageSizeOptionsTokens'],
+                                ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                            )
+                        ),
+                        'columns'               => $model->getAttributesForGrid(),
+                        'ajaxUpdate'            => 'token-grid',
+                        'ajaxType'              => 'POST',
+                        'lsSelectAllEnabled'    => true,
+                        'lsAfterAjaxUpdate'     => ['onUpdateTokenGrid();', 'switchStatusOfListActions();', 'LS.restoreFocusAfterSort("token-grid");']
+                    ]);
+                } elseif (!empty($emptyGridDataProvider)) {
+                    $this->widget('application.extensions.admin.grid.CLSGridView', [
+                        'dataProvider'          => $emptyGridDataProvider,
+                        'filter'                => $emptyGridFilter,
+                        'id'                    => 'token-grid',
+                        'emptyText'             => gT('No survey participants found.'),
+                        'massiveActionTemplate' => $massiveAction,
+                        'columns'               => $emptyGridColumns,
+                        'showTableOnEmpty'      => true,
+                        'ajaxUpdate'            => 'token-grid',
+                        'ajaxType'              => 'POST',
+                        'lsAfterAjaxUpdate'     => [],
+                    ]);
+                }
                 ?>
             </div>
         </div>
 
         <?php
-        if ((!$oSurvey->hasTokens()) && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create'))):
-            echo eT("No survey participants found.");
-        ?>
-                <input class="btn btn-large btn-block btn-outline-secondary" type='button' value='<?php eT("Add participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/" . $surveyid); ?>', '_top')" />
+        if ((!$oSurvey->hasTokens()) && (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'create'))) :
+            ?>
+                <a href="<?php echo $this->createUrl('admin/tokens/sa/addnew', ['surveyid' => $surveyid]); ?>" class="btn btn-large btn-block btn-outline-secondary" target="_top">
+                    <?php eT("Add participants"); ?>
+                </a>
                 <?php
                 if (isset($oldlist)) {
-                ?>
+                    ?>
                 <div class="col-12 content-right mt-4">
                     <div class="card card-primary">
                         <h2><?php eT("Restore options"); ?></h2>
@@ -157,22 +174,22 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                             </strong>
                         </p>
                         <p>
-                            <?php 
+                            <?php
                             echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post');
                             ?>
                                 <select size='4' name='oldtable' required>
                                     <?php
-                                        foreach ($oldlist as $ol) {
-                                            echo "<option>" . $ol . "</option>\n";
-                                        }
+                                    foreach ($oldlist as $ol) {
+                                        echo "<option>" . $ol . "</option>\n";
+                                    }
                                     ?>
                                 </select><br /><br />
                                 <input type='submit' value='<?php eT("Restore"); ?>' class="btn btn-outline-secondary btn-lg"/>
                                 <?php
                                 if (!$oSurvey->hasTokensTable) {
-                                ?>
+                                    ?>
                                 <input type="button" onclick="$.post('<?php echo Yii::app()->createUrl("admin/tokens/sa/startfromscratch/surveyId/" . $oSurvey->sid); ?>', { createtable: 'Y', redirect: 'N' }).done(function (data) { window.location.reload(); });" value="<?php eT("Start from scratch"); ?>" class="btn btn-outline-secondary btn-lg">
-                                <?php
+                                    <?php
                                 }
                                 ?>
                                 <input type='hidden' name='restoretable' value='Y' />
@@ -181,7 +198,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                         </p>
                     </div>
                 </div>
-                <?php
+                    <?php
                 }
                 ?>
         <?php endif;?>

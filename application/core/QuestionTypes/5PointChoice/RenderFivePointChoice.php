@@ -77,7 +77,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
                 true
             );
         }
-        
+
         if ($this->getQuestionAttribute('slider_rating') == 2) {
             $slider_rating = 2;
             $this->aPackages[] = 'question-5pointchoice-slider';

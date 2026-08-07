@@ -1,7 +1,9 @@
 <?php
+
     /**
      * Global file management page
      */
+
 ?>
 <?php $this->renderPartial("/admin/SurveyFiles/_jsVariables", ['data' => $jsData]); ?>
 <div class="pagetitle h3"><?php eT("File management");?></div>

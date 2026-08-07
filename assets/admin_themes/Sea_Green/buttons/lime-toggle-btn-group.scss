@@ -1,0 +1,89 @@
+@mixin disabled-toggle-state {
+    .btn-check:disabled + .btn-outline-secondary {
+        border-color: $g-100;
+        background-color: transparent;
+        color: $g-400;
+        pointer-events: none;
+        opacity: 1;
+    }
+
+    .btn-check:checked:disabled + .btn-outline-secondary {
+        background-color: $white;
+        border-color: $g-100;
+    }
+
+    &:has(.btn-check:disabled) {
+        background: $g-100;
+    }
+}
+
+.lime-toggle-btn-group {
+    // g-700 colored version used in the new editor
+    .btn-group {
+        width: 100%;
+        background: $g-700;
+        padding: 4px;
+        border-radius: $border-radius;
+        .btn {
+            display: block;
+            color: $g-400;
+            font-weight: $font-weight-500;
+            font-size: $font-size-sm;
+            line-height: $line-height-20;
+            padding: 2px 16px;
+            min-height: 20px;
+        }
+        .btn-check + .btn-outline-secondary {
+            background-color: transparent;
+            border-color: $g-700;
+        }
+
+        .btn-check:active + .btn-outline-secondary,
+        .btn-check:checked + .btn-outline-secondary,
+        .btn-outline-secondary.active,
+        .btn-outline-secondary.dropdown-toggle.show,
+        .btn-outline-secondary:active {
+            background-color: $white;
+            border-color: $g-700;
+            color: $g-900;
+            border-radius: 3px;
+        }
+
+        .btn-check:active + .btn-outline-secondary:focus,
+        .btn-check:checked + .btn-outline-secondary:focus,
+        .btn-outline-secondary.active:focus,
+        .btn-outline-secondary.dropdown-toggle.show:focus,
+        .btn-outline-secondary:active:focus,
+        .btn-check:focus + .btn-outline-secondary,
+        .btn-outline-secondary:hover {
+            box-shadow: none;
+        }
+
+        /* Provide a visible focus indicator for keyboard navigation */
+        .btn-check:focus + .btn-outline-secondary,
+        .btn-outline-secondary:focus-visible {
+            outline        : 2px solid $g-900;
+            outline-offset : 2px;
+        }
+
+        .btn-check:not(:checked) + .btn-outline-secondary:hover {
+            background-color: $g-800;
+            color: $g-200;
+        }
+
+        // disabled state
+        @include disabled-toggle-state;
+    }
+
+    // purple variant
+    &.isSecondary {
+        .btn-group {
+            background: $grape;
+            .btn-check + .btn-outline-secondary {
+                border-color: $grape;
+            }
+
+            @include disabled-toggle-state;
+        }
+    }
+}

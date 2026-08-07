@@ -30,17 +30,18 @@ $baseLanguage = $oSurvey->language;
             ]) ?>
         </div>
         <div id="groups" class="tab-pane row">
-            <?php $this->renderPartial('partial/groupView',
-            [
+            <?php $this->renderPartial(
+                'partial/groupView',
+                [
                 'oSurvey' => $oSurvey,
                 'groupModel' => $groupModel,
                 'surveybar' => $surveybar,
                 'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission,
-            ]
+                ]
             ) ?>
         </div>
         <div id="reorder" class="tab-pane row">
-            <?php $this->renderPartial('/admin/survey/organizeGroupsAndQuestions_view',[
+            <?php $this->renderPartial('/admin/survey/organizeGroupsAndQuestions_view', [
                 'surveyid' => $surveyid,
                 'surveyActivated' => $surveyActivated,
                 'aGroupsAndQuestions' => $aGroupsAndQuestions,

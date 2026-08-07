@@ -37,7 +37,7 @@ class SideBarWidget extends CWidget
             $boxData['title'] = $box->title;
             $boxData['ico'] = $box->getIconName();
             $boxData['description'] = $box->desc;
-            $boxData['selected'] = $route === $box->url;
+            $boxData['selected'] = substr($route, 0, strlen($box->url)) === $box->url;
 
             // default permission if usergroup is not within expected values
             $canSeeBox = false;

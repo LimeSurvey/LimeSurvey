@@ -13,6 +13,15 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('#btnAdd').click(addLanguages);
     $("#frmglobalsettings").submit(UpdateRestrictedLanguages);
 
+    // Intercept save button clicks to validate before the central save controller runs
+    $(document).on('click.emailPluginValidation', '#save-form-button, #save-and-close-form-button', function(e) {
+        var formId = $(this).attr('data-form-id');
+        if (formId === 'frmglobalsettings' && !validateEmailMethodPlugin()) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    });
+
     var getStorageUrl = '';
     $('#global-settings-calculate-storage').on(
         'click',
@@ -112,15 +121,22 @@ function Emailchange(ui,evt)
 {
     const selectedMethod = $('#emailmethod input:radio:checked').val();
 
-    const smtp_enabled = selectedMethod === 'smtp';
-    $('#emailsmtpssl label').toggleClass('disabled', !smtp_enabled);
-    $('#emailsmtpdebug label').toggleClass('disabled', !smtp_enabled);
-    $("#emailsmtphost").prop('disabled', !smtp_enabled);
-    $("#emailsmtpuser").prop('disabled', !smtp_enabled);
-    $("#emailsmtppassword").prop('disabled', !smtp_enabled);
+    // Hide all method-specific settings, then show only the relevant ones
+    $('.email-method-setting').hide();
+    if (selectedMethod === 'smtp') {
+        $('.email-method-smtp').show();
+    } else if (selectedMethod === 'plugin') {
+        $('.email-method-plugin').show();
+    }
+}
 
-    const plugin_enabled = selectedMethod === 'plugin';
-    $("#emailplugin").prop('disabled', !plugin_enabled);
+function validateEmailMethodPlugin() {
+    var selectedMethod = $('#emailmethod input:radio:checked').val();
+    if (selectedMethod === 'plugin' && $('#emailplugin').val() === '') {
+        LS.LsGlobalNotifier.createAlert(msgEmailPluginRequired, 'danger', {showCloseButton: true});
+        return false;
+    }
+    return true;
 }
 
 function BounceChange(ui,evt)

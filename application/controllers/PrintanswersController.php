@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -48,15 +48,15 @@ class PrintanswersController extends LSYii_Controller
 
         Yii::app()->loadHelper('database');
 
-        if (isset($_SESSION['survey_' . $iSurveyID]['sid'])) {
-            $iSurveyID = $_SESSION['survey_' . $iSurveyID]['sid'];
+        if (isset($_SESSION['responses_' . $iSurveyID]['sid'])) {
+            $iSurveyID = $_SESSION['responses_' . $iSurveyID]['sid'];
         } else {
             //die('Invalid survey/session');
         }
         // Get the survey inforamtion
         // Set the language for dispay
-        if (isset($_SESSION['survey_' . $iSurveyID]['s_lang'])) {
-            $sLanguage = $_SESSION['survey_' . $iSurveyID]['s_lang'];
+        if (isset($_SESSION['responses_' . $iSurveyID]['s_lang'])) {
+            $sLanguage = $_SESSION['responses_' . $iSurveyID]['s_lang'];
         } elseif ($survey) {
             // survey exist
             {
@@ -76,7 +76,7 @@ class PrintanswersController extends LSYii_Controller
         //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
         //Survey is not finished or don't exist
-        if (!isset($_SESSION['survey_' . $iSurveyID]['srid'])) {
+        if (!isset($_SESSION['responses_' . $iSurveyID]['srid'])) {
             //display "sorry but your session has expired"
             $this->sTemplate = $oTemplate->sTemplateName;
             $error = $this->renderPartial("/survey/system/errorWarning", array(
@@ -103,7 +103,7 @@ class PrintanswersController extends LSYii_Controller
             // App()->end();
         }
         //Fin session time out
-        $sSRID = $_SESSION['survey_' . $iSurveyID]['srid']; //I want to see the answers with this id
+        $sSRID = $_SESSION['responses_' . $iSurveyID]['srid']; //I want to see the answers with this id
         //Ensure script is not run directly, avoid path disclosure
         //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
