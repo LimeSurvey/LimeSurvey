@@ -17,7 +17,7 @@
     <div class="col-12" id='carrousel-container'>
         <div class="row">
             <div class="col-12" id="item-container"> <!-- width defined in css -->
-                <div class="h4"><?php eT('Select your theme:'); ?></div>
+                <h2 role="heading" class="h4"><?php eT('Select your theme:'); ?></h2>
 
                 <?php foreach ($templates as $key => $template) :?>
                     <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read') || Permission::model()->hasGlobalPermission('templates', 'read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $oSurvey->template == htmlspecialchars((string) $key)) : ?>
