@@ -166,7 +166,8 @@
           "sass-embedded-darwin-arm64": "^1.89.2"
         }
       }
-    }
+    },
+    "websocket-driver": "0.7.5"
   },
   "lint-staged": {
     "src/**/*.js": [
