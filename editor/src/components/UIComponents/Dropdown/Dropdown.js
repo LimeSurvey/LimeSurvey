@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Dropdown as BootstrapDropdown } from 'react-bootstrap'
+import classNames from 'classnames'
+
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 
 // {
@@ -66,21 +68,29 @@ const Submenu = ({
 
 export const Dropdown = ({
   menuItems = [],
+  className = '',
+  testId = '',
   toggleSettings = {
     iconClassName: 'ri-more-fill',
     variant: 'light',
     id: '', // must be unique to trigger the menu
     title: '',
+    testId: '',
   },
 }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null)
 
   return (
-    <BootstrapDropdown className="lsr-dropdown" align="end">
+    <BootstrapDropdown
+      className={classNames('lsr-dropdown', className)}
+      align="end"
+      data-testid={testId}
+    >
       <BootstrapDropdown.Toggle
         variant={toggleSettings.variant}
         className="button me-2"
         id={toggleSettings.id}
+        data-testid={toggleSettings.testId}
         role="menu"
       >
         {toggleSettings.title}
@@ -98,6 +108,8 @@ export const Dropdown = ({
               disabled = {},
               submenu,
               checked,
+              className,
+              testId,
             },
             index
           ) => (
@@ -125,12 +137,11 @@ export const Dropdown = ({
                     disabled={disabled.state}
                     href={url ? url : '#'}
                     onClick={onClick}
-                    className={[
-                      checked !== undefined ? 'has-checkmark' : null,
-                      checked ? 'is-checked' : null,
-                    ]
-                      .filter(Boolean)
-                      .join(' ')}
+                    data-testid={testId}
+                    className={classNames(className, {
+                      'has-checkmark': checked !== undefined,
+                      'is-checked': checked,
+                    })}
                   >
                     {checked === undefined ? (
                       <>
