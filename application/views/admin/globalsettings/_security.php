@@ -282,6 +282,61 @@
     </div>
 </div>
 
+<!-- Password requirements -->
+<?php
+    $pwRules = App()->getConfig('passwordValidationRules');
+    if (!is_array($pwRules)) {
+        $pwRules = [];
+    }
+    $pwSaveRules = App()->getConfig('passwordValidationRulesSurveySave');
+    if (!is_array($pwSaveRules)) {
+        $pwSaveRules = [];
+    }
+    $pwFields = [
+        'min'     => gT('Minimum length:'),
+        'max'     => gT('Maximum length (0 = no limit):'),
+        'lower'   => gT('Minimum lowercase letters:'),
+        'upper'   => gT('Minimum uppercase letters:'),
+        'numeric' => gT('Minimum digits:'),
+        'symbol'  => gT('Minimum special characters:'),
+    ];
+?>
+<div class="container">
+    <div class="card mb-4">
+        <div class="card-header">
+            <?php eT('Password requirements'); ?>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="h5"><?= gT('Administration accounts') ?></h4>
+                    <p class="form-text"><?= gT('Minimum requirements for administration account passwords. A value of 0 disables the corresponding check.') ?></p>
+                    <?php foreach ($pwFields as $pwKey => $pwLabel) { ?>
+                        <div class="mb-3">
+                            <label class="form-label" for="pwRule<?= ucfirst($pwKey) ?>"><?= $pwLabel ?></label>
+                            <input class="form-control" type="number" min="0" step="1" pattern="^\d*$"
+                                id="pwRule<?= ucfirst($pwKey) ?>" name="pwRule<?= ucfirst($pwKey) ?>"
+                                value="<?= (int) ($pwRules[$pwKey] ?? 0) ?>" />
+                        </div>
+                    <?php } ?>
+                </div>
+                <div class="col-md-6 border-start">
+                    <h4 class="h5"><?= gT('“Save and return later” feature') ?></h4>
+                    <p class="form-text"><?= gT('Requirements for the password a participant sets when saving a survey to continue later. A value of 0 disables the corresponding check.') ?></p>
+                    <?php foreach ($pwFields as $pwKey => $pwLabel) { ?>
+                        <div class="mb-3">
+                            <label class="form-label" for="pwSaveRule<?= ucfirst($pwKey) ?>"><?= $pwLabel ?></label>
+                            <input class="form-control" type="number" min="0" step="1" pattern="^\d*$"
+                                id="pwSaveRule<?= ucfirst($pwKey) ?>" name="pwSaveRule<?= ucfirst($pwKey) ?>"
+                                value="<?= (int) ($pwSaveRules[$pwKey] ?? 0) ?>" />
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php if (Yii::app()->getConfig("demoMode") == true) : ?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>

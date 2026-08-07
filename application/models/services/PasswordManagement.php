@@ -208,7 +208,108 @@ class PasswordManagement
         $oGetPasswordEvent->set('targetSize', $length);
         \Yii::app()->getPluginManager()->dispatchEvent($oGetPasswordEvent);
 
-        return $oGetPasswordEvent->get('password');
+        $password = $oGetPasswordEvent->get('password');
+        if (empty($password)) {
+            // No plugin provided a password: fall back to the core generator.
+            $password = self::generateRandomPassword($length);
+        }
+        return $password;
+    }
+
+    /**
+     * Validates a password against a set of rules.
+     *
+     * @param string $password The password to check.
+     * @param array $rules Rule set with keys min, max, lower, upper, numeric, symbol.
+     *                     A value of 0 disables the check (except 'min', where 0 means no minimum).
+     * @return string[] List of error messages; empty array when the password is valid.
+     */
+    public static function validatePasswordRules($password, array $rules)
+    {
+        $errors = [];
+        $length = strlen((string) $password);
+        $lowercase = preg_match_all('@[a-z]@', (string) $password);
+        $uppercase = preg_match_all('@[A-Z]@', (string) $password);
+        $number    = preg_match_all('@[0-9]@', (string) $password);
+        $specialChars = preg_match_all('@[^\w]@', (string) $password);
+
+        if (!empty($rules['min']) && $length < (int) $rules['min']) {
+            $errors[] = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $rules['min']), $rules['min']);
+        }
+        if (!empty($rules['max']) && $length > (int) $rules['max']) {
+            $errors[] = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $rules['max']), $rules['max']);
+        }
+        if (!empty($rules['lower']) && $lowercase < (int) $rules['lower']) {
+            $errors[] = sprintf(ngT('Password must include at least %d lowercase letter|Password must include at least %d lowercase letters', $rules['lower']), $rules['lower']);
+        }
+        if (!empty($rules['upper']) && $uppercase < (int) $rules['upper']) {
+            $errors[] = sprintf(ngT('Password must include at least %d uppercase letter|Password must include at least %d uppercase letters', $rules['upper']), $rules['upper']);
+        }
+        if (!empty($rules['numeric']) && $number < (int) $rules['numeric']) {
+            $errors[] = sprintf(ngT('Password must include at least %d number|Password must include at least %d numbers', $rules['numeric']), $rules['numeric']);
+        }
+        if (!empty($rules['symbol']) && $specialChars < (int) $rules['symbol']) {
+            $errors[] = sprintf(ngT('Password must include at least %d special character|Password must include at least %d special characters', $rules['symbol']), $rules['symbol']);
+        }
+        return $errors;
+    }
+
+    /**
+     * Generates a random password satisfying the configured administration password rules.
+     *
+     * @param int $length Requested password length (raised to the configured minimum if needed).
+     * @return string
+     */
+    public static function generateRandomPassword($length = self::MIN_PASSWORD_LENGTH)
+    {
+        $rules = \Yii::app()->getConfig('passwordValidationRules');
+        $minimumSize = (int) ($rules['min'] ?? 0);
+        $length = $length < $minimumSize ? $minimumSize : $length;
+        if ($length < 1) {
+            $length = self::MIN_PASSWORD_LENGTH;
+        }
+        $needsUppercase = !empty($rules['upper']);
+        $needsNumeric = !empty($rules['numeric']);
+        $needsSymbol = !empty($rules['symbol']);
+
+        // Lowercase is always available in the pool.
+        $chars = 'abcdefghijklmnopqrstuvwxyz';
+        $password = self::pickRandomChar($chars);
+
+        if ($needsUppercase) {
+            $uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $password .= self::pickRandomChar($uppercaseChars);
+            $chars .= $uppercaseChars;
+        }
+        if ($needsNumeric) {
+            $numericChars = '0123456789';
+            $password .= self::pickRandomChar($numericChars);
+            $chars .= $numericChars;
+        }
+        if ($needsSymbol) {
+            $symbolChars = '-=!@#$%&*_+,.?;:';
+            $password .= self::pickRandomChar($symbolChars);
+            $chars .= $symbolChars;
+        }
+
+        if (strlen($password) > $length) {
+            $password = substr($password, 0, $length);
+        }
+        for ($i = strlen($password); $i < $length; $i++) {
+            $password .= self::pickRandomChar($chars);
+        }
+
+        return str_shuffle($password);
+    }
+
+    /**
+     * Returns a random character from a string.
+     * @param string $chars Pool of characters to pick from.
+     * @return string
+     */
+    private static function pickRandomChar($chars)
+    {
+        return $chars[random_int(0, strlen($chars) - 1)];
     }
 
     /**

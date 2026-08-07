@@ -154,6 +154,17 @@ class Save
                 $this->aSaveErrors[] = gT("The answer to the security question is incorrect.");
             }
         }
+        // Core "Save and return later" password strength check.
+        $surveySaveRules = App()->getConfig('passwordValidationRulesSurveySave');
+        if (!empty($this->saveData['clearpassword'])) {
+            $passwordErrors = \LimeSurvey\Models\Services\PasswordManagement::validatePasswordRules(
+                $this->saveData['clearpassword'],
+                is_array($surveySaveRules) ? $surveySaveRules : []
+            );
+            foreach ($passwordErrors as $passwordError) {
+                $this->aSaveErrors[] = $passwordError;
+            }
+        }
         $this->launchSaveFormEvent($surveyid, 'validate');
         if (empty($this->aSaveErrors)) {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist

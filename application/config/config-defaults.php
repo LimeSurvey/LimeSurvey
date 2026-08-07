@@ -837,12 +837,27 @@ $config['encryptionsecretkey'] = '';
 $config['encryptionnonce'] = '';
 $config['encryptionsecretboxkey'] = '';
 
+// Password requirements for administration accounts.
+// These values are the defaults; they can be overridden in the admin GUI (Global settings > Security),
+// which stores them (JSON encoded) in the settings_global table.
+// A value of 0 disables the corresponding check (except 'min', where 0 means no minimum).
 $config['passwordValidationRules'] = array(
     'min' => 8,
     'max' => 0,
     'lower' => 0,
     'upper' => 1,
     'numeric' => 1,
+    'symbol' => 0,
+);
+
+// Password requirements for the participant "Save and return later" feature.
+// The check always runs; a rule value of 0 disables that individual requirement.
+$config['passwordValidationRulesSurveySave'] = array(
+    'min' => 0,
+    'max' => 0,
+    'lower' => 0,
+    'upper' => 0,
+    'numeric' => 0,
     'symbol' => 0,
 );
 

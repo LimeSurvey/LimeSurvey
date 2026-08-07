@@ -403,43 +403,9 @@ class User extends LSActiveRecord
     public function checkPasswordStrength(string $password)
     {
         $settings = Yii::app()->getConfig("passwordValidationRules");
-        $length = strlen($password);
-        $lowercase = preg_match_all('@[a-z]@', $password);
-        $uppercase = preg_match_all('@[A-Z]@', $password);
-        $number    = preg_match_all('@[0-9]@', $password);
-        $specialChars = preg_match_all('@[^\w]@', $password);
+        $errors = \LimeSurvey\Models\Services\PasswordManagement::validatePasswordRules($password, is_array($settings) ? $settings : []);
+        $resultDefaultRules = empty($errors) ? '' : (string) reset($errors);
 
-        $resultDefaultRules = "";
-        if ((int) $settings['min'] > 0) {
-            if ($length < $settings['min']) {
-                $resultDefaultRules = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
-            }
-        }
-        if ((int) $settings['max'] > 0) {
-            if ($length > $settings['max']) {
-                $resultDefaultRules = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
-            }
-        }
-        if ((int) $settings['lower'] > 0) {
-            if ($lowercase < $settings['lower']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d lowercase letter|Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
-            }
-        }
-        if ((int) $settings['upper'] > 0) {
-            if ($uppercase < $settings['upper']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d uppercase letter|Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
-            }
-        }
-        if ((int) $settings['numeric'] > 0) {
-            if ($number < $settings['numeric']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d number|Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
-            }
-        }
-        if ((int) $settings['symbol'] > 0) {
-            if ($specialChars < $settings['symbol']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d special character|Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
-            }
-        }
         $passwordOk = ($resultDefaultRules === '');
         $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
         $oPasswordTestEvent->set('password', $password);

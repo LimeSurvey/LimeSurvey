@@ -698,7 +698,6 @@ class PluginManager extends \CApplicationComponent
             'expressionQuestionHelp',
             'mailSenderToFrom',
             'oldUrlCompat',
-            'PasswordRequirement',
             'statFunctions',
             'TwoFactorAdminLogin',
             'UpdateCheck',

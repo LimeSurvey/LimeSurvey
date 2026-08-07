@@ -215,6 +215,15 @@ class LSYii_Application extends CWebApplication
         }
         $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
         $this->config = array_merge($this->config, $dbConfig);
+        /* Password rule sets are stored JSON encoded in settings_global; decode them back to arrays */
+        foreach (array('passwordValidationRules', 'passwordValidationRulesSurveySave') as $passwordRulesKey) {
+            if (isset($this->config[$passwordRulesKey]) && is_string($this->config[$passwordRulesKey])) {
+                $decodedPasswordRules = json_decode($this->config[$passwordRulesKey], true);
+                if (is_array($decodedPasswordRules)) {
+                    $this->config[$passwordRulesKey] = $decodedPasswordRules;
+                }
+            }
+        }
         /* According to updatedb_helper : no update can be done before settings_global->DBVersion > 183, then set it only if upper to 183 */
         if (!empty($dbConfig['DBVersion']) && $dbConfig['DBVersion'] > 183) {
             $this->dbVersion = $dbConfig['DBVersion'];

@@ -318,6 +318,21 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('maxLoginAttemptParticipants', sanitize_int(Yii::app()->getRequest()->getPost('maxLoginAttemptParticipants', 3)));
         SettingGlobal::setSetting('timeOutParticipants', sanitize_int(Yii::app()->getRequest()->getPost('timeOutParticipants', 600)));
 
+        //security: password requirements for administration accounts
+        $pwRuleKeys = ['min', 'max', 'lower', 'upper', 'numeric', 'symbol'];
+        $passwordRules = [];
+        foreach ($pwRuleKeys as $pwRuleKey) {
+            $passwordRules[$pwRuleKey] = max(0, sanitize_int(Yii::app()->getRequest()->getPost('pwRule' . ucfirst($pwRuleKey), 0)));
+        }
+        SettingGlobal::setSetting('passwordValidationRules', json_encode($passwordRules));
+
+        //security: password requirements for the "Save and return later" feature (always enforced)
+        $passwordSaveRules = [];
+        foreach ($pwRuleKeys as $pwRuleKey) {
+            $passwordSaveRules[$pwRuleKey] = max(0, sanitize_int(Yii::app()->getRequest()->getPost('pwSaveRule' . ucfirst($pwRuleKey), 0)));
+        }
+        SettingGlobal::setSetting('passwordValidationRulesSurveySave', json_encode($passwordSaveRules));
+
         // Unstable extensions can only be changed by super admin.
         if (Permission::model()->hasGlobalPermission('superadmin', 'delete')) {
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
