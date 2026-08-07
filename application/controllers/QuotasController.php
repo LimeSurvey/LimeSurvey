@@ -401,24 +401,31 @@ class QuotasController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyid);
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
 
-        if ($quotaService->checkActionPermissions($action)) {
-            $sItems = Yii::app()->request->getPost('sItems', '');
-            $aQuotaIds = json_decode($sItems);
-            $errors = $quotaService->multipleItemsAction(
-                $aQuotaIds,
-                $action,
-                Yii::app()->request->getPost('QuotaLanguageSetting', [])
-            );
-            if (empty($errors)) {
-                eT("OK");
-            } else {
-                eT("Error");
-            }
-        } else {
-            /* 403 error ? */
-            Yii::app()->user->setFlash('error', gT("Access denied!"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+        if (!$quotaService->checkActionPermissions($action)) {
+            $this->renderJSON(['success' => false, 'message' => gT('Access denied!')]);
         }
+
+       // $sItems = Yii::app()->request->getPost('sItems', '');
+        //$aQuotaIds = json_decode($sItems) ?? [];
+        //$aQuotaIds = json_decode($sItems) ?? [];
+        $sItems = Yii::app()->request->getPost('sItems', '');
+        $aQuotaIds = json_decode($sItems, true);
+        $aQuotaIds = is_array($aQuotaIds) ? $aQuotaIds : [];
+
+        $errors = $quotaService->multipleItemsAction(
+            $aQuotaIds,
+            $action,
+            Yii::app()->request->getPost('QuotaLanguageSetting', [])
+        );
+
+        if (empty($errors)) {
+            echo '<div class="alert alert-success mb-0">' . gT('Action completed successfully.') . '</div>';
+        } else {
+            echo '<div class="alert alert-danger mb-0">'
+                . gT('One or more errors occurred. Please check and try again.')
+                . '</div>';
+        }
+        Yii::app()->end();
     }
 
     /**
