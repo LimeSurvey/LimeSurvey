@@ -1785,11 +1785,11 @@ class remotecontrol_handle
                 foreach ($aQuestionSettings as $sPropertyName) {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
                         $oSubQuestions = Question::model()->with('questionl10ns')
-                                                          ->findAll(
-                                                              't.parent_qid = :parent_qid and questionl10ns.language = :language',
-                                                              array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
-                                                              array('order' => 'title')
-                                                          );
+                                                          ->findAll(array(
+                                                              'condition' => 't.parent_qid = :parent_qid and questionl10ns.language = :language',
+                                                              'params' => array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
+                                                              'order' => 't.title',
+                                                          ));
 
                         if (count($oSubQuestions) > 0) {
                             $aData = array();
