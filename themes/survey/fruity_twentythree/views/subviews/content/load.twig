@@ -34,7 +34,7 @@
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
     <div class="{{ aSurveyInfo.class.savemessage }} clearfix" {{ aSurveyInfo.attr.savemessage }}>
-        <div class="{{ aSurveyInfo.class.savemessagetitle }} large-heading mb-3" {{ aSurveyInfo.attr.savemessagetitle }}>{{ gT("Load unfinished survey") }}</div>
+        <div class="{{ aSurveyInfo.class.savemessagetitle }} large-heading mb-3" {{ aSurveyInfo.attr.savemessagetitle }} role="heading" aria-level="2">{{ gT("Load unfinished survey") }}</div>
         <div class="{{ aSurveyInfo.class.savemessagetext }} form-heading mb-3" {{ aSurveyInfo.attr.savemessagetext }}>
             <p {{ aSurveyInfo.attr.savemessagetextp }} > {{ gT("You can load a survey that you have previously saved from this screen.") }} </p>
             <p {{ aSurveyInfo.attr.savemessagetextpb }} > {{ gT("Type in the 'name' you used to save the survey, and the password.") }} </p>
@@ -81,6 +81,8 @@
 
             <!-- Name and Password -->
             <div class="{{ aSurveyInfo.class.saveform }} col-12" {{ aSurveyInfo.attr.saveform }}>
+
+                <span class="large mb-2 d-block">{{ gT("Fields marked with asterisk") }} (<span class="text-danger">*</span>) {{ gT("are mandatory.") }}</span>
 
                 <!-- Saved name  -->
                 <div class="{{ aSurveyInfo.class.saveformrow }} mb-3" {{ aSurveyInfo.attr.saveformrow }}>
