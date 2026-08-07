@@ -51,6 +51,10 @@ abstract class Dynamic extends LSActiveRecord
         return new $className($scenario);
     }
 
+    /**
+     * @inheritdoc
+     * Return the dynamicId from the constructor
+     */
     public function getDynamicId()
     {
         return $this->dynamicId;
