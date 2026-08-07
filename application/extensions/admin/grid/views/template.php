@@ -31,7 +31,7 @@ $countSpan = "<span class='grid-selection-count'>0</span>";
     <button type="button" class="grid-selection-bar__deselect grid-deselect-all grid-selection-action">
         <?= gT('Deselect all') ?>
     </button>
-    <button type="button" class="grid-selection-bar__close grid-deselect-all grid-selection-action" aria-label="<?= gT('Deselect all') ?>">
+    <button type="button" class="grid-selection-bar__close grid-deselect-all grid-selection-action" aria-label="<?= gT('close') ?>">
         <i class="ri-close-line"></i>
     </button>
 </div>
