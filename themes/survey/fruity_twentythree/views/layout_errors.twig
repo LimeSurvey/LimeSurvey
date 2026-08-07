@@ -62,6 +62,9 @@
                     {{ aError.title }}
                 </h2>
                 <div class="error-content">{{ aError.message }}</div>
+                {% if aError.URL %}
+                    <div class="error-content">{{ aError.URL }}</div>
+                {% endif %}
                 {% if aError.contact %}
                     {{ aError.contact }}
                 {% else %}

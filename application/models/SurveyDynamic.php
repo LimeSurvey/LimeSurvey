@@ -109,6 +109,8 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * Insert records from $data array
      * Still used in em_manager_helper when create response (2026-04-20)
+     *
+     * @access public
      * @deprecated Use setAttributes() and encryptSave()
      * @param array $data
      * @return integer|false

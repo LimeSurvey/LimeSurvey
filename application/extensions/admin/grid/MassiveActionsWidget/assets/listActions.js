@@ -25,6 +25,31 @@ function syncMassiveActionResultsTableCaption($modal, $container) {
 }
 
 /**
+ * Safely resolve a dotted global path (e.g. "LS.CPDB.onClickExport") to a callable,
+ * bound to its immediate parent object so method context is preserved.
+ * Used for the 'custom-js' and 'on-success' action callbacks so we avoid eval().
+ *
+ * @param {string} path  Dotted path to a function, resolved from window (e.g. "LS.AjaxHelper.onSuccess").
+ * @return {Function|null}  The bound function, or null if the path does not resolve to a function.
+ */
+function resolveActionCallback(path) {
+    if (typeof path !== 'string' || path === '') {
+        return null;
+    }
+    var parts = path.split('.');
+    var context = null;
+    var current = window;
+    for (var i = 0; i < parts.length; i++) {
+        if (current == null || typeof current[parts[i]] === 'undefined') {
+            return null;
+        }
+        context = current;
+        current = current[parts[i]];
+    }
+    return typeof current === 'function' ? current.bind(context) : null;
+}
+
+/**
  * Define what happen when an action is clicked:
  *
  * - redirection:
@@ -49,10 +74,12 @@ var onClickListAction =  function (e) {
     var $grididvalue   = $gridid.attr('id');
     var $oCheckedItems = LS.gridSelection.getAll($grididvalue); // All pages, not just current
     $oCheckedItems = JSON.stringify($oCheckedItems);
-    var actionType     = $that.data('actionType');   
+    var actionType     = $that.data('actionType');
     var selectedList   = $(".selected-items-list");
+    // In select-all mode no ids are sent; a selectAll flag is posted instead
+    var isSelectAllMode = LS.gridSelection.isSelectAll($grididvalue);
 
-    if ($oCheckedItems == '[]') {
+    if ($oCheckedItems == '[]' && !isSelectAllMode) {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
         console.log('error first');
@@ -124,9 +151,9 @@ var onClickListAction =  function (e) {
      */
     if (actionType == 'custom') {
         var js = $that.data('custom-js');
-        var func = eval(js);
+        var func = resolveActionCallback(js);
         var itemIds = LS.gridSelection.getAll($grididvalue);
-        func(itemIds);
+        if (func) { func(itemIds); }
         console.log('func itemIds');
         return;
     }
@@ -202,6 +229,10 @@ var onClickListAction =  function (e) {
 
         // Custom datas comming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};
+        if (LS.gridSelection.isSelectAll($grididvalue)) {
+            $postDatas['selectAll'] = 1;
+            $postDatas['filterQuery'] = LS.gridSelection.getFilterQuery($grididvalue);
+        }
         $modal.find('.custom-data').each(function(i, el)
         {
             if ($(this).hasClass('btn-group')){ // ext.ButtonGroupWidget.ButtonGroupWidget
@@ -266,8 +297,8 @@ var onClickListAction =  function (e) {
                 }
 
                 if (onSuccess) {
-                    var func = eval(onSuccess);
-                    func(html);
+                    var func = resolveActionCallback(onSuccess);
+                    if (func) { func(html); }
                     return;
                 }
             },
@@ -294,6 +325,7 @@ var onClickListAction =  function (e) {
     if (!modalEl) {
         return;
     }
+    $modal.find('.select-all-cap-note').toggle(isSelectAllMode);
     modalEl.setAttribute('tabindex', '-1');
     const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl, {});
     const focusModal = function () {

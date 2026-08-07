@@ -624,7 +624,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -13108,8 +13108,8 @@ iframe#dialog {
 }
 
 /** Fixed pager width */
-/* jqgrid table must take all place if available, but header and footer must not be outside the screen */
-/* Maybe use a pseudo fixd-y solution is a good idea */
+/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
+/* Myabe use a pseudo fixd-y solution is a good idea */
 .ui-jqgrid,
 .ui-jqgrid-view,
 .ui-jqgrid-titlebar,
@@ -13185,7 +13185,7 @@ td.subquestion-actions span:hover {
   display: none;
 }
 
-/* Box in responses list need a little more space */
+/* Box in resopnses list need a little more space */
 div#gview_displayresponses th#displayresponses_cb {
   width: 35px;
   /* Override jQgrid stuff */
@@ -13312,7 +13312,7 @@ a.explorer-group:focus {
 }
 
 #token-grid table tr.odd .blank_button {
-  /*For older Browsers with compatibility issues*/
+  /*For older Browsers with compatibilty issues*/
   border-color: #f9f9f9;
   background-color: #f9f9f9;
   /*New CSS3 Style of doing it*/
@@ -13422,7 +13422,7 @@ table#responsedetail tr td {
 
 #responses-grid .filter-container {
   min-width: 6em;
-  /* default em is 13px : 75/13 = 5.76… */
+  /* defaut em is 13px : 75/13 = 5.76… */
 }
 
 .edit-participant-modal-body {
@@ -19780,6 +19780,106 @@ table [class^=ri-], table [class*=" ri-"] {
   min-height: 300px;
 }
 
+.floating-actions-bar {
+  display: none;
+  position: fixed;
+  bottom: 16px;
+  right: 50%;
+  transform: translateX(50%);
+  width: auto;
+  z-index: 1040;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 8px;
+  height: 42px;
+  background: #fff;
+  border: 1px solid #D3D5DA;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+.floating-actions-bar.floating-actions-bar--visible {
+  display: flex;
+}
+.floating-actions-bar .floating-actions-count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+}
+.floating-actions-bar .floating-actions-count-number {
+  background: #EEEFF7;
+  border-radius: 2px;
+  padding: 2px 6px;
+}
+.floating-actions-bar .floating-actions-separator {
+  width: 1px;
+  height: 22px;
+  background: #D3D5DA;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+.floating-actions-bar .floating-actions-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-size: 0.855rem;
+  font-weight: 500;
+  color: #1E1E1E;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1.4;
+}
+.floating-actions-bar .floating-actions-btn i::before {
+  font-size: 14px;
+}
+.floating-actions-bar .floating-actions-btn:hover, .floating-actions-bar .floating-actions-btn:focus-visible {
+  background: #EEEFF7;
+  outline: none;
+}
+.floating-actions-bar .floating-actions-btn:focus {
+  background-color: unset;
+  border: solid 1px #8146F6;
+  color: #1E1E1E;
+}
+.floating-actions-bar .floating-actions-btn.text-danger {
+  color: #FF515F;
+}
+.floating-actions-bar .floating-actions-btn.text-danger i::before {
+  color: #FF515F;
+}
+.floating-actions-bar .floating-actions-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #1E1E1E;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+.floating-actions-bar .floating-actions-close i::before {
+  font-size: 16px;
+}
+.floating-actions-bar .floating-actions-close:hover, .floating-actions-bar .floating-actions-close:focus-visible {
+  background: #EEEFF7;
+  outline: none;
+}
+.floating-actions-bar .dropdown-menu {
+  font-size: 13px;
+}
+
+.grid-view, .grid-view-ls {
+  position: relative;
+}
 .grid-view .table, .grid-view-ls .table {
   padding: 20px;
   border-radius: 4px;
@@ -20043,7 +20143,8 @@ table [class^=ri-], table [class*=" ri-"] {
   background-color: #9094A7;
   flex-shrink: 0;
 }
-.grid-selection-bar .grid-selection-bar__deselect {
+.grid-selection-bar .grid-selection-bar__deselect,
+.grid-selection-bar .grid-selection-bar__select-all {
   padding: 4px 8px;
   font-weight: 500;
   white-space: nowrap;

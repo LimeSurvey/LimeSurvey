@@ -518,12 +518,10 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
         );
     }
 
-    // update replacement fields before we handle email sending
-    LimeExpressionManager::updateReplacementFields($aReplacementVars);
-
     // admin_notification (Basic admin notification)
     if (count($aEmailNotificationTo) > 0) {
         $mailer = LimeMailer::getInstance();
+        $mailer->addAndReplaceReplacement($aReplacementVars);
         $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
         foreach ($aEmailNotificationTo as $sRecipient) {
             /** set mailer params for @see FailedEmailController::actionResend() */
@@ -532,16 +530,14 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 $responseId = $sRecipient['responseId'];
                 $notificationRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
-                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
-                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
                 $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
                 $mailer->setTo($notificationRecipient);
                 $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
             } else {
                 $failedNotificationId = null;
                 $notificationRecipient = $sRecipient;
-                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
-                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
                 $mailer->setTo($notificationRecipient);
                 $mailerSuccess = $mailer->SendMessage();
             }
@@ -574,6 +570,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
         }
         $mailer = \LimeMailer::getInstance();
         $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
+        $mailer->addAndReplaceReplacement($aReplacementVars);
         foreach ($aEmailResponseTo as $sRecipient) {
             /** set mailer params for @see FailedEmailController::actionResend() */
             if (!empty($emails)) {
@@ -581,16 +578,14 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 $responseId = $sRecipient['responseId'];
                 $responseRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
-                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
-                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
                 $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
                 $mailer->setTo($responseRecipient);
                 $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
             } else {
                 $failedNotificationId = null;
                 $responseRecipient = $sRecipient;
-                $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
-                LimeExpressionManager::updateReplacementFields($aReplacementVars);
+                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
                 $mailer->setTo($responseRecipient);
                 $mailerSuccess = $mailer->SendMessage();
             }

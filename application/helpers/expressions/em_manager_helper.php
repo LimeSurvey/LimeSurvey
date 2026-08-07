@@ -3143,7 +3143,6 @@ class LimeExpressionManager
                 'exclusive_options' => array_merge($oldeo, $neweo),
             ];
         }
-
         foreach ($rowdivids as $sq) {
             $sq['eqn'] = implode(' and ', array_unique(array_merge($sq['eqns'], $sq['exclusive_options'])));   // without array_unique, get duplicate of filters for question types 1, :, and ;
             $eos = array_unique($sq['exclusive_options']);
@@ -3597,8 +3596,9 @@ class LimeExpressionManager
                 case Question::QT_R_RANKING: // Ranking STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     // csuffix = fieldname suffix ('_S{sqid}'); sqsuffix = qcode/aid suffix ('_1', '_2', ...)
                     $csuffix = $fielddata['suffix'] ?? '';
-                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                    $question = $fielddata['subquestion'];
+                    $isParent = isRankingQuestionParent($fielddata['aid'] ?? null);
+                    $varName = $fielddata['title'] . ((!$isParent) ? '_' . $fielddata['aid'] : '');
+                    $question = $fielddata[$isParent ? 'question' :  'subquestion'];
                     // In M and P , we use $question (sub question) for shown. With other : we show to the user 'other_replace_text' if it's set. see #13505
                     if ($other == "Y") {
                         if (isset($qattr[$questionNum]['other_replace_text']) && trim((string) $qattr[$questionNum]['other_replace_text']) != '') {
@@ -3607,7 +3607,7 @@ class LimeExpressionManager
                             $question = $this->gT('Other:');
                         }
                     }
-                    $sqsuffix = '_' . $fielddata['aid'];
+                    $sqsuffix = $isParent ? '' : '_' . $fielddata['aid'];
                     $rowdivid = $sgqa;
 
                     break;
@@ -3770,17 +3770,28 @@ class LimeExpressionManager
                 switch ($type) {
                     case Question::QT_L_LIST:// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                        if (!is_null($ansArray)) {
-                            foreach (array_keys($ansArray) as $key) {
-                                $parts = explode('~', $key);
-                                if ($parts[1] == '-oth-') {
-                                    $parts[1] = 'other';
+                        if (str_ends_with($varName, '_other') && $other == "Y") {
+                            $q2subqInfo[$questionNum]['subqs'][] = [
+                                'rowdivid' => 'Q' . $questionNum . '_Cother',
+                                'varName'  => $varName,
+                                'sqsuffix' => '_other',
+                                'csuffix' => '_Cother',
+                            ];
+                        } else {
+                            $Answers = Answer::model()->findAll([
+                                'select' => 'aid, code',
+                                'condition' => 'qid = :qid and scale_id = 0',
+                                'params' => [':qid' => $questionNum],
+                            ]);
+                            if (!is_null($Answers)) {
+                                foreach ($Answers as $Answer) {
+                                    $q2subqInfo[$questionNum]['subqs'][] = [
+                                        'rowdivid' => 'Q' . $questionNum . '_S' . $Answer->aid,
+                                        'varName'  => $varName,
+                                        'sqsuffix' => '_' . $Answer->code,
+                                        'csuffix' => '_S' . $Answer->aid,
+                                    ];
                                 }
-                                $q2subqInfo[$questionNum]['subqs'][] = [
-                                    'rowdivid' => 'Q' . $questionNum . $parts[1],
-                                    'varName'  => $varName,
-                                    'sqsuffix' => '_' . $parts[1],
-                                ];
                             }
                         }
                         break;
@@ -5176,6 +5187,11 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] == true) {
                 $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
                 $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
+                if($this->surveyOptions['anonymized']){
+                    //all dates should be anonymized
+                    $sdata['datestamp'] = $this->anonymizeDate();
+                    $sdata['startdate'] = $this->anonymizeDate();
+                }
             }
             if ($this->surveyOptions['ipaddr'] == true) {
                 $sdata['ipaddr'] = getIPAddress();
@@ -5253,6 +5269,10 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                 $_SESSION[$this->sessid]['datestamp'] = gmdate("Y-m-d H:i:s");
                 $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
+                if($this->surveyOptions['anonymized']){
+                    //all dates should be anonymized
+                    $aResponseAttributes['datestamp'] = $this->anonymizeDate();
+                }
             }
             if ($this->surveyOptions['ipaddr']) {
                 $aResponseAttributes['ipaddr'] = getIPAddress();
@@ -5304,13 +5324,13 @@ class LimeExpressionManager
             }
 
             if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active']) {
+                $survey = Survey::model()->findByPk($this->sid);
                 try {
                     $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                 } catch (\Exception $ex) {
                     // The response table no longer exists (survey deactivated/deleted while user had a stale session).
                     // Kill the stale session and redirect to the survey start page for a fresh start.
                     killSurveySession($this->sid);
-                    $survey = Survey::model()->findByPk($this->sid);
                     if ($survey) {
                         App()->getController()->redirect($survey->getSurveyUrl());
                     }
@@ -5319,7 +5339,6 @@ class LimeExpressionManager
                     // The response row was deleted (e.g. admin deleted incomplete response while survey was running).
                     // Kill the stale session and redirect to the survey start page for a fresh start.
                     killSurveySession($this->sid);
-                    $survey = Survey::model()->findByPk($this->sid);
                     if ($survey) {
                         App()->getController()->redirect($survey->getSurveyUrl());
                     }
@@ -5329,6 +5348,27 @@ class LimeExpressionManager
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion) {
                     try {
+                        $questions = $survey->questions;
+                        $empty = ['', false, null];
+                        foreach ($questions as $question) {
+                            if (!$question->parent_qid && ($question->type === Question::QT_R_RANKING)) {
+                                $toUpdate = false;
+                                $rankingToStore = [];
+                                foreach ($question->subquestions as $subquestion) {
+                                    $key = "Q{$question->qid}_S{$subquestion->qid}";
+                                    if (array_key_exists($key, $aResponseAttributes)) {
+                                        if (!in_array($aResponseAttributes[$key], $empty, true)) {
+                                            $rankingToStore[] = $aResponseAttributes[$key];
+                                        }
+                                        unset($aResponseAttributes[$key]);
+                                        $toUpdate = true;
+                                    }
+                                }
+                                if ($toUpdate) {
+                                    $aResponseAttributes["Q{$question->qid}"] = json_encode($rankingToStore);
+                                }
+                            }
+                        }
                         $oResponse->setAllAttributes($aResponseAttributes, false);
                     } catch (Exception $ex) {
                         // This can happen if the table is missing fields. It should never happen, but somehow it does.
@@ -5378,11 +5418,10 @@ class LimeExpressionManager
                     Quotas::checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
                 } else {
                     if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->isAllowEditAfterCompletion)) {
-                        /* Less update : just do what you need to to */
-                        if ($this->surveyOptions['datestamp']) {
+                        if ($this->surveyOptions['datestamp'] && !$this->surveyOptions['anonymized']) {
                             $submitdate = gmdate("Y-m-d H:i:s");
                         } else {
-                            $submitdate = date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
+                            $submitdate = $this->anonymizeDate();
                         }
                         if (!Response::model($this->sid)->updateByPk($oResponse->id, ['submitdate' => $submitdate]) && $submitdate != $oResponse->submitdate) {
                             LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error occurred when trying to submit your response.'), $this->sid);
@@ -5398,6 +5437,15 @@ class LimeExpressionManager
             'readWrite' => 'N',
         ];
         return $message;
+    }
+
+    /**
+     * Returns an anonymized date stamp.
+     *
+     * @return string
+     */
+    private function anonymizeDate() {
+        return date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
     }
 
     /**
@@ -6422,7 +6470,7 @@ class LimeExpressionManager
                         $maxUnrankedAnswers = 0;
                         $sMandatoryText = $LEM->gT('Please rank all items.');
                     }
-                    if (count($unansweredSQs) > $maxUnrankedAnswers) {
+                    if (count($unansweredSQs) - 1 > $maxUnrankedAnswers) {
                         $qmandViolation = true; // TODO - what about 'other'?
                     }
                     $mandatoryTip .= App()->twigRenderer->renderPartial(
@@ -8027,6 +8075,17 @@ class LimeExpressionManager
     }
 
     /**
+     * Unset the specified temporary variable replacements
+     */
+    public static function unsetTempVars(array $keys)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        foreach ($keys as $key) {
+            unset($LEM->tempVars[$key]);
+        }
+    }
+
+    /**
      * Unit test strings containing expressions
      */
     public static function UnitTestProcessStringContainingExpressions()
@@ -9203,7 +9262,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         // End Message
 
         $LEM =& LimeExpressionManager::singleton();
-        $LEM->sPreviewMode = 'logic';
         // We set $LEM->em->resetErrorsAndWarningsOnEachPart = false because, if a string has more than one expression, error information could be lost
         $LEM->em->resetErrorsAndWarningsOnEachPart = false;
         $aSurveyInfo = getSurveyInfo($sid, $_SESSION['LEMlang']);
@@ -9223,6 +9281,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $surveyOptions = [
             'assessments'                 => $assessments === null ? ($aSurveyInfo['assessments'] == 'Y') : $assessments,
             'hyperlinkSyntaxHighlighting' => true,
+            'previewmode'                 => 'logic',
         ];
 
         $varNamesUsed = []; // keeps track of whether variables have been declared
@@ -9332,8 +9391,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
             if ($aSurveyInfo['surveyls_policy_notice_label'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
-                $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'], 0);
+                $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'], 0, ['STARTPOLICYLINK' => gT("Start of the link that opens the privacy policy popup"), 'ENDPOLICYLINK' => gT("End of the link that opens the privacy policy popup")]);
                 $sPrint = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
+                LimeExpressionManager::unsetTempVars(['STARTPOLICYLINK', 'ENDPOLICYLINK']);
                 $errClass = "";
                 if ($LEM->em->HasErrors()) {
                     $errClass = 'danger';
