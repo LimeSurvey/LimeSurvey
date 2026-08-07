@@ -196,7 +196,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => "checkconditions",
             'sValueHidden'               => $sValueHidden,
-            'checkedState'               => ($mSessionValue != '' ? CHECKED : ''),
+            'checkedState'               => (
+                $mSessionValue != '' || LimeExpressionManager::isOtherCheckedWithoutValue($myfname) ? CHECKED : ''
+            ),
             'relevanceClass'             => $this->getCurrentRelevecanceClass($myfname),
             'other'                      => true,
             'anscount'                   => $this->getQuestionCount(),
