@@ -5,10 +5,10 @@
  */
 
 ?>
-<div class="sidebar">
-    <div class="sidebar-icons">
+<div class="sidebar" >
+    <div class="sidebar-icons" role="list">
         <?php foreach ($icons as $icon) : ?>
-            <div class="sidebar-icon">
+            <div class="sidebar-icon" role="listitem">
                 <div data-bs-toggle="tooltip"
                      title="<?= CHtml::encode($icon['title']) ?>"
                      data-bs-offset="0, 20"
@@ -16,8 +16,8 @@
                     <a href="<?= CHtml::encode($icon['url']) ?>"
                        target="<?= $icon['external'] ? '_blank' : '' ?>"
                        class="btn btn-g-800 btn-icon <?= $icon['selected'] ? 'active' : '' ?>"
-                       aria-label="<?= $icon['title'] ?>"
-                        <?= $icon['selected'] ? 'aria-current="page" selected' : '' ?>>
+                       aria-label="<?= CHtml::encode($icon['title']) ?>"
+                        <?= $icon['selected'] ? 'aria-current="page"' : '' ?>>
                         <i class="<?= CHtml::encode($icon['ico']); ?>" aria-hidden="true"></i>
                     </a>
 
