@@ -6362,11 +6362,7 @@ class LimeExpressionManager
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                 case Question::QT_L_LIST: //LIST drop-down/radio-button list
-                    // If at least one checkbox is checked, we're OK
-                    $bNoneChecked = count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs));
-                    if ($bNoneChecked) {
-                        $qmandViolation = true;
-                    }
+                    $bOtherCheckedWithoutValue = false;
                     if ($qInfo['type'] == Question::QT_M_MULTIPLE_CHOICE && $qInfo['other'] == 'Y') {
                         foreach ($sgqas as $s) {
                             if (
@@ -6375,9 +6371,17 @@ class LimeExpressionManager
                                 && in_array($s, $unansweredSQs)
                                 && self::isOtherCheckedWithoutValue($s)
                             ) {
+                                $bOtherCheckedWithoutValue = true;
                                 $qmandViolation = true;
                             }
                         }
+                    }
+
+                    $bNoneChecked = !$bOtherCheckedWithoutValue
+                        && count($relevantSQs) > 0
+                        && (count($relevantSQs) == count($unansweredSQs));
+                    if ($bNoneChecked) {
+                        $qmandViolation = true;
                     }
 
                     $bShowCheckAnItem = $qInfo['type'] != Question::QT_M_MULTIPLE_CHOICE || $bNoneChecked;
