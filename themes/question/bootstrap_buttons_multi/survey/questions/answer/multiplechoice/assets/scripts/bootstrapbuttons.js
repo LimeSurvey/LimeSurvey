@@ -43,6 +43,11 @@ $(document).ready(function () {
 
 });
 
+/**
+ * Makes an other-text suffix label focus its associated input when clicked.
+ * @param {string} containerId - The ID of the container holding the suffix label.
+ * @param {string} inputId - The ID of the input to focus.
+ */
 function attachSuffixFocusBehavior(containerId, inputId) {
     var div    = document.getElementById(containerId);
     var suffix = div ? div.querySelector('.othertext-suffix-label') : null;

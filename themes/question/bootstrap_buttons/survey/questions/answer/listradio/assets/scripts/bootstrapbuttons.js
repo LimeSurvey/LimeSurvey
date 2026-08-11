@@ -1,3 +1,6 @@
+/**
+ * Registers change behavior for Bootstrap radio groups with an “other” option.
+ */
 function doBootstrapRadioOther() {
     $("input:radio.button-item.btn-check").on('change', function () {
         var name = $(this).attr('name');
@@ -24,6 +27,11 @@ function doBootstrapRadioOther() {
     }
 }
 
+/**
+ * Makes an “other text” suffix label focus its associated input when clicked.
+ * @param {string} containerId - The ID of the container containing the suffix label.
+ * @param {string} inputId - The ID of the input to focus.
+ */
 function attachSuffixFocusBehavior(containerId, inputId) {
     var div    = document.getElementById(containerId);
     var suffix = div ? div.querySelector('.othertext-suffix-label') : null;
