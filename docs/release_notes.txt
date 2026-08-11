@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.8 (build 260806) to 7.0.9 (build 260812) August 11, 2026
+-Fixed issue #AT-1331: Open end screen URLs in a new tab (#5209) (Adil Moumni Abdou)
+-Fixed issue #20644: [security] ResponsesController::actionTime does not enforce survey response permissions (Carsten Schmitz)
+-Fixed issue #20642: [security] Unauthenticated arbitrary plugin-method invocation (#5219) (Carsten Schmitz)
+-Fixed issue #20641: [security] Missing survey permission check (#5220) (Carsten Schmitz)
+-Fixed issue #20640: "Error saving results" on surveys active before update to version 7 on PostgreSQL (#5214) (Carsten Schmitz)
+-Fixed issue #20635: Replacement fields not inserted correctly in templates with multiple editors (#5211) (Gabriel Jenik)
+-Fixed issue #20607: Placeholder fields are empty in the Email Templates editor (#5201) (Gabriel Jenik)
+-Fixed issue #20582: Several deprecation errors when using version 7.0.5 with PHP 8.4 (Carsten Schmitz)
+-Fixed issue #20569: Invalid quartile calculation for encrypted numeric response data (Carsten Schmitz)
+-Fixed issue #20557: Calling RemoteControl function get_question_properties without optional parameters crashes (Carsten Schmitz)
+-Fixed issue #20552: With debug set and demoMode an error is shown at end of surveys with email notification (Carsten Schmitz)
+-Fixed issue #20526: Broken CSS in fruity_twentythree theme (Carsten Schmitz)
+-Fixed issue #20523: [security] Server-side request forgery (SSRF) vulnerability (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, Cubitus, twilllig
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 7.0.7 (build 260729) to 7.0.8 (build 260806) August 5, 2026
 +New feature: Download example CSV participant file inside the participant import dialog (Carsten Schmitz)
 +New feature #AT-2179: "Select all" option in the floating menu (#5160) (Patricia Stell)
