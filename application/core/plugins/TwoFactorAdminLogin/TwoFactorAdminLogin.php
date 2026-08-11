@@ -50,7 +50,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     /**
      * Web direct methods that mutate data and therefore must only be reachable
-     * through an unsafe HTTP method (POST/PATCH), never GET.
+     * through an safe HTTP method (POST/PATCH), never GET.
      * @var string[]
      */
     private $writeDirectMethods = [
