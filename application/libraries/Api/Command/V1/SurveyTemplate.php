@@ -159,11 +159,9 @@ class SurveyTemplate implements CommandInterface
         $this->session->close();
 
         $ch = curl_init();
-        $root = (
-            !empty($_SERVER['HTTPS'])
-            ? 'https'
-            : 'http'
-        ) . '://' . ($_SERVER['HTTP_HOST'] ?? '');
+        // Use the trusted, server-side base URL instead of the client-supplied
+        // Host header to prevent server-side request forgery (SSRF).
+        $root = App()->getBaseUrl(true);
         curl_setopt(
             $ch,
             CURLOPT_URL,
