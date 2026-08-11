@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.14 (build 260805) to 6.17.15 (build 260811) August 11, 2026
+-Fixed issue #20642: [security] Unauthenticated arbitrary plugin-method invocation (#5218) (Carsten Schmitz)
+-Fixed issue #20641: [security] Missing survey permission check (#5220) (Carsten Schmitz)
+-Fixed issue #20523: [security] Server-side request forgery (SSRF) vulnerability (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by ricardo.santos, xastrefernando
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
 Changes from 6.17.13 (build 260728) to 6.17.14 (build 260805) August 5, 2026
 -Fixed issue: Bulk edit participants not working when in "select all" mode (#5179) (Stefan K)
 -Fixed issue #20606: Make sure repeated opening of preview survey does not cause survey submit errors (#5206) (haythem chibani)
