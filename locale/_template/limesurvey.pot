@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-08-11 13:48:30+00:00\n"
+"POT-Creation-Date: 2026-08-11 14:53:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9666,10 +9666,6 @@ msgstr ""
 
 #: application/core/plugins/ReactEditor/views/_modalActivateDeactivateEditor.php:79
 msgid "You can switch between classic and new editor anytime from your account settings. We recommend trying the new version -  it’s now out of beta, and we’d love to hear your feedback!"
-msgstr ""
-
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:188
-msgid "This action requires a POST request."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:241
