@@ -166,8 +166,9 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     //##############  Plugin event handlers ##############//
     /**
-     * Listen to direct requests
-     * Necessary for the getMetadata function
+     * Handle public web direct requests (plugins/direct endpoint).
+     * Only methods in $allowedDirectMethods are dispatchable; data-modifying
+     * ones additionally require a POST request.
      *
      * @return void
      */
