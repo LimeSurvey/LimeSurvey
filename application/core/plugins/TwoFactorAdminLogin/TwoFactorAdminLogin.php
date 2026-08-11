@@ -35,6 +35,39 @@ class TwoFactorAdminLogin extends AuthPluginBase
         'index'
     ];
 
+    /**
+     * Methods invokable through the public web 'newDirectRequest' event
+     * (plugins/direct endpoint). Each performs its own permission check.
+     * Any method not listed here must never be dispatchable from an
+     * attacker-controlled 'function' parameter.
+     * @var string[]
+     */
+    private $allowedDirectMethods = [
+        'directCallCreateNewKey',
+        'directCallConfirmKey',
+        'directCallDeleteKey',
+    ];
+
+    /**
+     * Web direct methods that mutate data and therefore must only be reachable
+     * through a safe HTTP method (POST/PATCH), never GET.
+     * @var string[]
+     */
+    private $writeDirectMethods = [
+        'directCallConfirmKey',
+        'directCallDeleteKey',
+    ];
+
+    /**
+     * Methods invokable through the CLI-only 'direct' event
+     * (console command "plugin index --target=... --function=...").
+     * @var string[]
+     */
+    private $allowedCliMethods = [
+        'deleteKeyForUserId',
+        'deleteKeyForUserName',
+    ];
+
     protected $storage = 'DbStorage';
     protected $settings = array(
         'force2fa' => array(
@@ -133,8 +166,9 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     //##############  Plugin event handlers ##############//
     /**
-     * Listen to direct requests
-     * Necessary for the getMetadata function
+     * Handle public web direct requests (plugins/direct endpoint).
+     * Only methods in $allowedDirectMethods are dispatchable; data-modifying
+     * ones additionally require a POST request.
      *
      * @return void
      */
@@ -147,9 +181,14 @@ class TwoFactorAdminLogin extends AuthPluginBase
         }
 
         $action = $oEvent->get('function');
-        if (method_exists($this, $action)) {
-            call_user_func([$this, $action], $oEvent, $request);
+        if (!in_array($action, $this->allowedDirectMethods, true) || !method_exists($this, $action)) {
+            return;
         }
+        // Data-modifying actions must never run on a safe (GET) request.
+        if (in_array($action, $this->writeDirectMethods, true) && !$request->getIsPostRequest()) {
+            throw new CHttpException(405, gT('This action requires a POST request.'));
+        }
+        call_user_func([$this, $action], $oEvent, $request);
     }
 
     /**
@@ -165,7 +204,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         }
         $option = $this->event->get("option");
         $action = $oEvent->get('function');
-        if (method_exists($this, $action)) {
+        if (in_array($action, $this->allowedCliMethods, true) && method_exists($this, $action)) {
             call_user_func([$this, $action], $oEvent, $option);
         }
     }
