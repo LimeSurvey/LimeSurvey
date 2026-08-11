@@ -62,10 +62,9 @@ export const InputRange = ({
       {labelText && <Form.Label>{labelText}</Form.Label>}
       <div className="d-flex align-items-center w-100">
         <div
-          className={classNames('w-100 position-relative', {
+          className={classNames('flex-grow-1 position-relative', {
             'd-flex': showMinMax && !horizontal,
           })}
-          style={{ minWidth: '250px' }}
         >
           {showMinMax && horizontal && (
             <div className="d-flex justify-content-between w-100 my-2">
@@ -167,7 +166,7 @@ export const InputRange = ({
           />
         </div>
         {showInput && (
-          <div className="input-range-input ms-2">
+          <div className="input-range-input">
             <Input
               value={values[0]}
               onChange={({ target: { value } }) =>

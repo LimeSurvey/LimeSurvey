@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useImperativeHandle, forwardRef } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Form, Button, Image } from 'react-bootstrap'
 
@@ -8,7 +8,7 @@ import { errorToast } from 'helpers/Alert'
 import { FILE_UPLOAD_MAX_SIZE } from 'helpers/constants'
 import classNames from 'classnames'
 
-export const DropZone = ({
+export const DropZone = forwardRef(({
   fileService,
   onChange = () => {},
   onLoading = () => {},
@@ -26,7 +26,7 @@ export const DropZone = ({
   trashIconEnabled = true,
   disabled = false,
   previewCover = true,
-}) => {
+}, ref) => {
   const [showTrashIcon, setShowTrashIcon] = useState(false)
   const [previewUrl, setPreviewUrl] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -119,7 +119,7 @@ export const DropZone = ({
     errorToast(error.message)
   }
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, open } = useDropzone({
     onDropAccepted,
     onDropRejected,
     onError,
@@ -132,6 +132,8 @@ export const DropZone = ({
     },
     disabled: disabled,
   })
+
+  useImperativeHandle(ref, () => ({ open }))
 
   const loadingSpinner = (
     <div className="position-absolute file-loading-btn-wrapper">
@@ -205,4 +207,4 @@ export const DropZone = ({
       {previewUrl ? preview : emptyDropzone}
     </div>
   )
-}
+})

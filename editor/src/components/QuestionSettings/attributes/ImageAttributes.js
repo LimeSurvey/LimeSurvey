@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { Direction } from 'react-range'
 
@@ -7,8 +7,9 @@ import {
   DropZone,
   ImageEditor,
   InputRange,
+  ToggleButtons,
 } from 'components/UIComponents'
-import { DeleteIcon, EditIcon } from 'components/icons'
+import { DeleteIconFilled, EditIcon } from 'components/icons'
 import { useFileService } from 'hooks'
 import {
   getQuestionImageObjectFromImageAttribute,
@@ -28,6 +29,8 @@ export const ImageAttributes = ({
   const [imageState, setImageState] = useState({})
   const [previewUrl, setPreviewUrl] = useState(null)
   const [forceUpdateKey, setForceUpdateKey] = useState(0)
+  const [showAltText, setShowAltText] = useState(false)
+  const dropzoneRef = useRef(null)
   const { fileService } = useFileService()
 
   // Initialize or update image state when value changes
@@ -35,6 +38,7 @@ export const ImageAttributes = ({
     const imageObject = getQuestionImageObjectFromImageAttribute(value)
     setImageState(imageObject)
     setRemainingChars(charLimit - (imageObject.imageAltText?.length || 0))
+    setShowAltText(!!imageObject.imageAltText)
 
     // Reset preview URL when the question/value changes
     if (imageObject && imageObject.imagePath) {
@@ -103,6 +107,14 @@ export const ImageAttributes = ({
     updateImageState({ imageAltText: altTextValue })
   }
 
+  const handleAltTextToggle = (toggleValue) => {
+    const isYes = toggleValue === 'yes'
+    setShowAltText(isYes)
+    if (!isYes) {
+      handleAltTextChange('')
+    }
+  }
+
   const onChangePreview = (previewUrl) => {
     setPreviewUrl(previewUrl)
   }
@@ -123,7 +135,6 @@ export const ImageAttributes = ({
     })
   }
 
-  const handleEditImage = () => setShow(true)
   const handleClose = () => setShow(false)
 
   return (
@@ -131,12 +142,13 @@ export const ImageAttributes = ({
       <div className="mb-3">
         {isSimpleSettings && <hr className="mb-3" />}
         <DropZone
+          ref={dropzoneRef}
           key={`dropzone-${previewUrl ? 'with-image' : 'empty'}`}
           previewUrlInit={previewUrl}
           onChangePreview={onChangePreview}
           fileService={fileService}
           onChange={handleImageChange}
-          labelText={t('Add image')}
+          labelText={t('Background image')}
           image={previewUrl}
           dataTestId="add-image-or-video"
           trashIconEnabled={false}
@@ -146,35 +158,32 @@ export const ImageAttributes = ({
         {previewUrl && (
           <>
             <div
-              className="mt-3 d-flex align-items-center justify-content-between"
+              className="mt-2 d-flex justify-content-end"
               data-testid="image-or-video-edit-delete"
             >
-              <span></span>
-              <div>
-                <Button
-                  className="d-none"
-                  onClick={handleEditImage}
-                  variant="secondary"
-                >
-                  <EditIcon className=" fill-current" />
-                </Button>
-                <Button
-                  onClick={handleDeleteImage}
-                  variant="secondary"
-                  className="ms-2"
-                >
-                  <DeleteIcon className="fill-current" />
-                </Button>
-              </div>
+              <Button
+                className="ms-2 btn-sm-sidebar"
+                onClick={() => dropzoneRef.current?.open()}
+                variant="secondary"
+              >
+                <EditIcon className="fill-current" width={16} height={16} />
+              </Button>
+              <Button
+                onClick={handleDeleteImage}
+                variant="secondary"
+                className="ms-2 btn-sm-sidebar"
+              >
+                <DeleteIconFilled width={16} height={16} />
+              </Button>
             </div>
-            <div className={'qe-input-group mt-3'}>
+            <div className={'qe-input-group multi-settings'}>
               <AlignButtons
                 update={handleAlignChange}
                 labelText={t('Alignment')}
                 value={imageState.imageAlign}
               />
             </div>
-            <div className={'qe-input-group mt-3 image-attributes-range'}>
+            <div className={'qe-input-group image-attributes-range multi-settings'}>
               <InputRange
                 key={`brightness-${forceUpdateKey}`}
                 onChange={handleBrightnessChange}
@@ -186,7 +195,7 @@ export const ImageAttributes = ({
                 direction={Direction.Right}
               />
             </div>
-            <div className={'qe-input-group mt-3 image-attributes-range'}>
+            <div className={'qe-input-group image-attributes-range multi-settings'}>
               <InputRange
                 key={`radius-${forceUpdateKey}`}
                 onChange={handleRadiusChange}
@@ -198,35 +207,46 @@ export const ImageAttributes = ({
                 direction={Direction.Right}
               />
             </div>
-            <div className="qe-input-group mt-3">
+            <div className="qe-input-group multi-settings">
               <Form.Label>{t('Alt text')}</Form.Label>
-              <div className=" position-relative">
-                <Form.Control
-                  value={imageState.imageAltText}
-                  className="textarea"
-                  maxLength={charLimit}
-                  placeholder={t('Image description')}
-                  as="textarea"
-                  rows={6}
-                  data-testid="alt-text"
-                  onChange={(e) => {
-                    if (charLimit) {
-                      let remains = charLimit - e.target.value.length
-                      setRemainingChars(remains) // Update characters remaining every change.
-                    }
-                    handleAltTextChange(e.target.value)
-                  }}
-                />
-                <p
-                  className="bottom-0 position-absolute"
-                  style={{
-                    right: '10px',
-                    color: getCharactersColor(remainingChars, charLimit),
-                  }}
-                >
-                  {remainingChars}/{charLimit}
-                </p>
-              </div>
+              <ToggleButtons
+                id="alt-text-toggle"
+                toggleOptions={[
+                  { name: t('Yes'), value: 'yes' },
+                  { name: t('No'), value: 'no' },
+                ]}
+                value={showAltText ? 'yes' : 'no'}
+                onChange={handleAltTextToggle}
+              />
+              {showAltText && (
+                <div className="position-relative mt-2">
+                  <Form.Control
+                    value={imageState.imageAltText}
+                    className="textarea"
+                    maxLength={charLimit}
+                    placeholder={t('Image description')}
+                    as="textarea"
+                    rows={6}
+                    data-testid="alt-text"
+                    onChange={(e) => {
+                      if (charLimit) {
+                        let remains = charLimit - e.target.value.length
+                        setRemainingChars(remains) // Update characters remaining every change.
+                      }
+                      handleAltTextChange(e.target.value)
+                    }}
+                  />
+                  <p
+                    className="bottom-0 position-absolute"
+                    style={{
+                      right: '10px',
+                      color: getCharactersColor(remainingChars, charLimit),
+                    }}
+                  >
+                    {remainingChars}/{charLimit}
+                  </p>
+                </div>
+              )}
             </div>
             <ImageEditor
               showModal={show}

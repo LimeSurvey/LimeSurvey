@@ -12,26 +12,10 @@ export const QuestionContainer = ({
   update,
   qid,
 }) => {
-  const [showDeleteIcon, setShowDeleteIcon] = useState(false)
   const { addToBuffer } = useBuffer()
 
   const hasQuestionImage = questionImageObject.hasQuestionImage
   const hasImageAsBackground = questionImageObject.hasQuestionImageAsBackground
-
-  const handleDeleteImage = () => {
-    const clearedImageData = {
-      ['image']: {
-        ['']: JSON.stringify(getClearedQuestionImageObject()),
-      },
-    }
-
-    const operation = createBufferOperation(qid)
-      .questionAttribute()
-      .update(clearedImageData)
-
-    update(clearedImageData)
-    addToBuffer(operation)
-  }
 
   // If no image, just render children
   if (!hasQuestionImage) {
@@ -43,20 +27,7 @@ export const QuestionContainer = ({
     return (
       <div className="position-relative w-100 h-auto overflow-hidden p-0">
         {/* Container for the image */}
-        <div
-          className="position-relative w-100"
-          onMouseEnter={() => setShowDeleteIcon(true)}
-          onMouseLeave={() => setShowDeleteIcon(false)}
-        >
-          {handleDeleteImage && (
-            <Button
-              onClick={handleDeleteImage}
-              variant="light"
-              className={`position-absolute bottom-0 end-0 m-4 z-2 ${showDeleteIcon ? '' : 'd-none'}`}
-            >
-              <DeleteIcon className="fill-current" />
-            </Button>
-          )}
+        <div className="position-relative w-100">
           <img
             className={'w-100 h-auto d-block'}
             src={questionImageObject.imagePreviewUrl}
@@ -87,20 +58,7 @@ export const QuestionContainer = ({
           'ps-3': questionImageObject.imageAlign === 'right',
         })}
       >
-        <div
-          className={'position-relative overflow-hidden w-100'}
-          onMouseEnter={() => setShowDeleteIcon(true)}
-          onMouseLeave={() => setShowDeleteIcon(false)}
-        >
-          {handleDeleteImage && (
-            <Button
-              onClick={handleDeleteImage}
-              variant="light"
-              className={`position-absolute bottom-0 end-0 m-4 z-2 ${showDeleteIcon ? '' : 'd-none'}`}
-            >
-              <DeleteIcon className="fill-current" />
-            </Button>
-          )}
+        <div className={'position-relative overflow-hidden w-100'}>
           <img
             className={'w-100 h-auto d-block'}
             src={questionImageObject.imagePreviewUrl}
