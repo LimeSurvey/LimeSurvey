@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-08-05 12:26:21+00:00\n"
+"POT-Creation-Date: 2026-08-11 13:48:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -238,10 +238,10 @@ msgstr ""
 #: application/controllers/PrintanswersController.php:155
 #: application/controllers/QuestionAdministrationController.php:225
 #: application/controllers/QuestionAdministrationController.php:374
-#: application/controllers/QuestionAdministrationController.php:1120
-#: application/controllers/QuestionAdministrationController.php:1249
-#: application/controllers/QuestionAdministrationController.php:1301
-#: application/controllers/QuestionAdministrationController.php:1731
+#: application/controllers/QuestionAdministrationController.php:1124
+#: application/controllers/QuestionAdministrationController.php:1253
+#: application/controllers/QuestionAdministrationController.php:1305
+#: application/controllers/QuestionAdministrationController.php:1735
 #: application/controllers/QuestionGroupsAdministrationController.php:128
 #: application/controllers/QuestionGroupsAdministrationController.php:180
 #: application/controllers/QuestionGroupsAdministrationController.php:242
@@ -430,9 +430,9 @@ msgstr ""
 #: application/controllers/FailedEmailController.php:38
 #: application/controllers/FailedEmailController.php:86
 #: application/controllers/FailedEmailController.php:166
-#: application/controllers/QuestionAdministrationController.php:740
-#: application/controllers/QuestionAdministrationController.php:812
-#: application/controllers/QuestionAdministrationController.php:2644
+#: application/controllers/QuestionAdministrationController.php:744
+#: application/controllers/QuestionAdministrationController.php:816
+#: application/controllers/QuestionAdministrationController.php:2648
 #: application/controllers/ResponsesController.php:124
 #: application/controllers/ResponsesController.php:417
 #: application/controllers/ResponsesController.php:574
@@ -921,7 +921,7 @@ msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:441
 #: application/controllers/LimereplacementfieldsController.php:456
-#: application/controllers/QuestionAdministrationController.php:1612
+#: application/controllers/QuestionAdministrationController.php:1616
 #: application/controllers/SurveyAdministrationController.php:3479
 #: application/models/Question.php:905
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
@@ -938,7 +938,7 @@ msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:491
 #: application/core/LsDefaultDataSets.php:52
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:254
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:293
 #: application/views/admin/dataentry/vvimport.php:28
 #: application/views/admin/export/exportresult_panels/_general.php:4
 #: application/views/admin/globalsettings/globalSettings_view.php:16
@@ -1072,11 +1072,11 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:82
 #: application/controllers/QuestionAdministrationController.php:164
 #: application/controllers/QuestionAdministrationController.php:309
-#: application/controllers/QuestionAdministrationController.php:1444
-#: application/controllers/QuestionAdministrationController.php:2649
-#: application/controllers/QuestionAdministrationController.php:2652
-#: application/controllers/QuestionAdministrationController.php:2655
-#: application/controllers/QuestionAdministrationController.php:2682
+#: application/controllers/QuestionAdministrationController.php:1448
+#: application/controllers/QuestionAdministrationController.php:2653
+#: application/controllers/QuestionAdministrationController.php:2656
+#: application/controllers/QuestionAdministrationController.php:2659
+#: application/controllers/QuestionAdministrationController.php:2686
 #: application/controllers/admin/Export.php:80
 #: application/core/SurveyCommonAction.php:154
 #: application/helpers/export_helper.php:2237
@@ -1088,7 +1088,7 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:168
 #: application/controllers/QuestionAdministrationController.php:313
 #: application/controllers/QuestionAdministrationController.php:615
-#: application/controllers/QuestionAdministrationController.php:1275
+#: application/controllers/QuestionAdministrationController.php:1279
 #: application/controllers/QuestionGroupsAdministrationController.php:109
 #: application/controllers/QuestionGroupsAdministrationController.php:162
 #: application/controllers/QuestionGroupsAdministrationController.php:221
@@ -1132,16 +1132,17 @@ msgid "Access denied"
 msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:343
-#: application/controllers/QuestionAdministrationController.php:743
-#: application/controllers/QuestionAdministrationController.php:815
-#: application/controllers/QuestionAdministrationController.php:1661
-#: application/controllers/QuestionAdministrationController.php:1669
-#: application/controllers/QuestionAdministrationController.php:1866
-#: application/controllers/QuestionAdministrationController.php:1874
-#: application/controllers/QuestionAdministrationController.php:1908
-#: application/controllers/QuestionAdministrationController.php:1916
-#: application/controllers/QuestionAdministrationController.php:2639
-#: application/controllers/QuestionAdministrationController.php:2685
+#: application/controllers/QuestionAdministrationController.php:700
+#: application/controllers/QuestionAdministrationController.php:747
+#: application/controllers/QuestionAdministrationController.php:819
+#: application/controllers/QuestionAdministrationController.php:1665
+#: application/controllers/QuestionAdministrationController.php:1673
+#: application/controllers/QuestionAdministrationController.php:1870
+#: application/controllers/QuestionAdministrationController.php:1878
+#: application/controllers/QuestionAdministrationController.php:1912
+#: application/controllers/QuestionAdministrationController.php:1920
+#: application/controllers/QuestionAdministrationController.php:2643
+#: application/controllers/QuestionAdministrationController.php:2689
 #: application/controllers/SurveyAdministrationController.php:751
 #: application/controllers/SurveyAdministrationController.php:1307
 #: application/controllers/SurveyAdministrationController.php:1378
@@ -1160,8 +1161,8 @@ msgstr ""
 #: application/controllers/admin/PluginManagerController.php:323
 #: application/controllers/admin/PluginManagerController.php:403
 #: application/controllers/admin/PluginManagerController.php:757
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:444
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:526
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:483
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:565
 #: application/core/plugins/TwoFactorAdminLogin/views/index.php:12
 #: application/helpers/admin/ajax_helper.php:176
 msgid "No permission"
@@ -1180,8 +1181,8 @@ msgstr ""
 msgid "Question saved"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1109
-#: application/controllers/QuestionAdministrationController.php:1146
+#: application/controllers/QuestionAdministrationController.php:1113
+#: application/controllers/QuestionAdministrationController.php:1150
 #: application/controllers/ThemeOptionsController.php:163
 #: application/controllers/ThemeOptionsController.php:223
 #: application/controllers/ThemeOptionsController.php:293
@@ -1220,31 +1221,31 @@ msgstr ""
 msgid "We are sorry but you don't have permissions to do this."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1176
+#: application/controllers/QuestionAdministrationController.php:1180
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1180
+#: application/controllers/QuestionAdministrationController.php:1184
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1204
+#: application/controllers/QuestionAdministrationController.php:1208
 #: application/models/services/QuestionGroupService.php:243
 msgid "Unknown file extension"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1233
+#: application/controllers/QuestionAdministrationController.php:1237
 msgid "Question imported successfully"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1386
+#: application/controllers/QuestionAdministrationController.php:1390
 #: application/controllers/SurveyAdministrationController.php:277
 #: application/controllers/UserManagementController.php:1096
 #: application/controllers/UserRoleController.php:391
 msgid "Deleted"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1403
+#: application/controllers/QuestionAdministrationController.php:1407
 #: application/controllers/QuestionGroupsAdministrationController.php:380
 #: application/controllers/ResponsesController.php:614
 #: application/controllers/ResponsesController.php:838
@@ -1259,20 +1260,20 @@ msgstr ""
 msgid "Invalid action"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1458
+#: application/controllers/QuestionAdministrationController.php:1462
 msgid "You are not authorized to delete questions."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1462
+#: application/controllers/QuestionAdministrationController.php:1466
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1612
+#: application/controllers/QuestionAdministrationController.php:1616
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:11
 msgid "Question title"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1612
+#: application/controllers/QuestionAdministrationController.php:1616
 #: application/controllers/SurveyAdministrationController.php:291
 #: application/controllers/ThemeOptionsController.php:152
 #: application/controllers/ThemeOptionsController.php:211
@@ -1303,7 +1304,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1638
+#: application/controllers/QuestionAdministrationController.php:1642
 #: application/controllers/SurveyAdministrationController.php:305
 #: application/controllers/ThemeOptionsController.php:250
 #: application/controllers/ThemeOptionsController.php:259
@@ -1314,48 +1315,48 @@ msgstr ""
 msgid "Selected"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1710
+#: application/controllers/QuestionAdministrationController.php:1714
 msgid "Access denied! You don't have permission to copy a question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1720
+#: application/controllers/QuestionAdministrationController.php:1724
 #: application/libraries/PluginManager/LimesurveyApi.php:651
 msgid "Question does not exist."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1804
+#: application/controllers/QuestionAdministrationController.php:1808
 msgid "Saved copied question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:1817
+#: application/controllers/QuestionAdministrationController.php:1821
 msgid "Could not save copied question"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2027
+#: application/controllers/QuestionAdministrationController.php:2031
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2027
+#: application/controllers/QuestionAdministrationController.php:2031
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2030
+#: application/controllers/QuestionAdministrationController.php:2034
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2030
+#: application/controllers/QuestionAdministrationController.php:2034
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2036
+#: application/controllers/QuestionAdministrationController.php:2040
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2038
+#: application/controllers/QuestionAdministrationController.php:2042
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2040
+#: application/controllers/QuestionAdministrationController.php:2044
 #: application/extensions/admin/grid/FloatingActionsWidget/actions/SurveyListMassiveActions.php:73
 #: application/extensions/admin/grid/FloatingActionsWidget/actions/SurveyListMassiveActions.php:88
 #: application/extensions/admin/grid/FloatingActionsWidget/actions/SurveyListMassiveActions.php:103
@@ -1368,17 +1369,17 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2257
+#: application/controllers/QuestionAdministrationController.php:2261
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:67
 #: application/views/questionAdministration/editdefaultvalues.php:42
 msgid "(No default value)"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2257
+#: application/controllers/QuestionAdministrationController.php:2261
 msgid "Checked"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2471
+#: application/controllers/QuestionAdministrationController.php:2475
 #: application/models/ParticipantAttributeName.php:89
 #: application/models/QuestionAttribute.php:387
 #: application/models/services/QuestionAttributeProvider.php:31
@@ -9375,19 +9376,23 @@ msgstr ""
 msgid "Check password when use “Save and return later” feature"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:203
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:189
+msgid "This action requires a POST request."
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:242
 msgid "2FA key (optional)"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:230
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:269
 msgid "Authentication method not supported"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:236
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:275
 msgid "Incorrect 2FA key"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:265
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:304
 #: application/views/admin/authentication/forgotpassword.php:15
 #: application/views/admin/authentication/login.php:17
 #: application/views/admin/authentication/newPassword.php:17
@@ -9395,51 +9400,51 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:274
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:313
 msgid "2FA settings"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:459
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:498
 msgid "Invalid auth type"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:466
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:505
 msgid "Please enter a confirmation key"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:472
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:511
 msgid "The confirmation key is not correct."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:481
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:508
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:520
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:547
 msgid "The two-factor authentication key could not be stored."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:483
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:510
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:522
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:549
 msgid "Two-factor method successfully stored"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:489
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:528
 msgid "Please enter a YubiKey OTP"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:496
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:535
 msgid "The YubiKey OTP is not correct."
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:530
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:550
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:569
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:589
 msgid "Successfully deleted"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:530
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:550
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:569
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:589
 msgid "Deletion failed"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:546
+#: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:585
 msgid "No 2FA key set for user ID %s"
 msgstr ""
 
