@@ -185,7 +185,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         }
         // Data-modifying actions must never run on a safe (GET) request.
         if (in_array($action, $this->writeDirectMethods, true) && !$request->getIsPostRequest()) {
-            throw new CHttpException(405, gT('This action requires a POST request.'));
+            throw new CHttpException(405, 'This action requires a POST request.');
         }
         call_user_func([$this, $action], $oEvent, $request);
     }
