@@ -219,3 +219,5 @@ export const DropZone = forwardRef(
     )
   }
 )
+
+DropZone.displayName = 'DropZone'

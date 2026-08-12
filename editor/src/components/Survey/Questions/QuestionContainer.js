@@ -1,19 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import classNames from 'classnames'
-import { DeleteIcon } from '../../icons'
-import { Button } from '../../UIComponents'
-import { getClearedQuestionImageObject } from 'helpers/questionImage'
-import { createBufferOperation } from 'helpers'
 import { useBuffer } from 'hooks'
 
-export const QuestionContainer = ({
-  questionImageObject,
-  children,
-  update,
-  qid,
-}) => {
-  const { addToBuffer } = useBuffer()
-
+export const QuestionContainer = ({ questionImageObject, children }) => {
   const hasQuestionImage = questionImageObject.hasQuestionImage
   const hasImageAsBackground = questionImageObject.hasQuestionImageAsBackground
 
