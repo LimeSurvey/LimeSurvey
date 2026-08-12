@@ -183,7 +183,9 @@ export const ImageAttributes = ({
                 value={imageState.imageAlign}
               />
             </div>
-            <div className={'qe-input-group image-attributes-range multi-settings'}>
+            <div
+              className={'qe-input-group image-attributes-range multi-settings'}
+            >
               <InputRange
                 key={`brightness-${forceUpdateKey}`}
                 onChange={handleBrightnessChange}
@@ -195,7 +197,9 @@ export const ImageAttributes = ({
                 direction={Direction.Right}
               />
             </div>
-            <div className={'qe-input-group image-attributes-range multi-settings'}>
+            <div
+              className={'qe-input-group image-attributes-range multi-settings'}
+            >
               <InputRange
                 key={`radius-${forceUpdateKey}`}
                 onChange={handleRadiusChange}

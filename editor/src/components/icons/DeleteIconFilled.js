@@ -1,5 +1,11 @@
 import React from 'react'
-export const DeleteIconFilled = ({ fill = 'currentColor', className, width, height, ...rest }) => {
+export const DeleteIconFilled = ({
+  fill = 'currentColor',
+  className,
+  width,
+  height,
+  ...rest
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
