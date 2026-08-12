@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 
 export const ProjectTitleBadge = ({ projectTitle, canEdit, onClick }) => {
@@ -5,16 +6,16 @@ export const ProjectTitleBadge = ({ projectTitle, canEdit, onClick }) => {
 
   return (
     <TooltipContainer tip={projectTitle} placement="bottom">
-      <button
-        className="project-title-badge"
-        type="button"
+      <div
+        className={classNames('project-title-badge', {
+          'disable-settings': !canEdit,
+        })}
         onClick={canEdit ? onClick : undefined}
         aria-label={`${t('Project title')}: ${projectTitle}`}
         disabled={!canEdit}
-        style={!canEdit ? { pointerEvents: 'none' } : undefined}
       >
-        <span className="project-title-badge__text">{projectTitle}</span>
-      </button>
+        {projectTitle}
+      </div>
     </TooltipContainer>
   )
 }

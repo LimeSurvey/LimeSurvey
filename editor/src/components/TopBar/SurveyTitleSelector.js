@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Entities, L10ns } from 'helpers'
-import { ContentEditor } from 'components'
+import { Button, ContentEditor } from 'components'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 import { SurveyListComponent } from './SurveyListComponent'
 import { ProjectTitleBadge } from './ProjectTitleBadge'
 import { ProjectTitleForm } from './ProjectTitleForm'
+import classNames from 'classnames'
 
 const TITLE_SELECT_OFFSET = 40
 
@@ -16,7 +17,6 @@ export const SurveyTitleSelector = ({
   onSurveyTitleChange,
   handleSurveySwitch,
   getError,
-  showCode,
   onProjectTitleSave,
   canEditProjectTitle,
 }) => {
@@ -88,16 +88,19 @@ export const SurveyTitleSelector = ({
     }
   }
 
-  const showProjectTitleUI = showCode
-
   return (
     <div
       data-error={getError(survey.sid, Entities.languageSetting)}
       className="d-flex align-items-center text-align-center top-bar-select align-middle"
       id="top-bar-select"
     >
-      <div className="d-flex flex-column align-items-start">
+      <div className="d-flex flex-column position-relative align-items-start">
         <div className="d-flex align-items-center">
+          <ProjectTitleBadge
+            projectTitle={projectTitle}
+            canEdit={canEditProjectTitle}
+            onClick={handleOpenForm}
+          />
           <ContentEditor
             value={surveyTitle}
             placeholder={t('Survey title')}
@@ -112,32 +115,23 @@ export const SurveyTitleSelector = ({
             testId="topbar-survey-title-content-editor"
           />
 
-          {showProjectTitleUI &&
-            canEditProjectTitle &&
-            surveyTitleIsFocused && (
-              <TooltipContainer tip={t('Add project title')} placement="bottom">
-                <button
-                  className="project-title-plus-btn"
-                  type="button"
-                  aria-label={t('Add project title')}
-                  onMouseDown={(e) => {
-                    // prevent title blur before click fires
-                    e.preventDefault()
-                    handleOpenForm()
-                  }}
-                >
-                  <i className="ri-add-line" aria-hidden="true" />
-                </button>
-              </TooltipContainer>
-            )}
-
-          {showProjectTitleUI && !surveyTitleIsFocused && (
-            <ProjectTitleBadge
-              projectTitle={projectTitle}
-              canEdit={canEditProjectTitle}
-              onClick={handleOpenForm}
-            />
-          )}
+          <TooltipContainer tip={t('Add project title')} placement="bottom">
+            <Button
+              className={classNames('project-title-plus-btn', {
+                'pointer-events-none opacity-0':
+                  !canEditProjectTitle || !surveyTitleIsFocused,
+              })}
+              type="button"
+              aria-label={t('Add project title')}
+              onMouseDown={(e) => {
+                // prevent title blur before click fires
+                e.preventDefault()
+                handleOpenForm()
+              }}
+            >
+              <i className="ri-add-line" aria-hidden="true" />
+            </Button>
+          </TooltipContainer>
 
           <SurveyListComponent
             surveyId={surveyId}
@@ -150,8 +144,7 @@ export const SurveyTitleSelector = ({
             handleSurveySwitch={handleSurveySwitch}
           />
         </div>
-
-        {showProjectTitleUI && formOpen && (
+        {formOpen && (
           <ProjectTitleForm
             initialValue={projectTitle}
             isNew={!projectTitle}
