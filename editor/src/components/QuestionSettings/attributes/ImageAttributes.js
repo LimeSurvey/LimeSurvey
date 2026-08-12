@@ -16,6 +16,7 @@ import {
   getAndGenerateImageStyles,
   getClearedQuestionImageObject,
 } from 'helpers/questionImage'
+import {getYesNoOptions, isTrue} from "helpers"
 
 export const ImageAttributes = ({
   update,
@@ -108,7 +109,7 @@ export const ImageAttributes = ({
   }
 
   const handleAltTextToggle = (toggleValue) => {
-    const isYes = toggleValue === 'yes'
+    const isYes = isTrue(toggleValue)
     setShowAltText(isYes)
     if (!isYes) {
       setRemainingChars(charLimit)
@@ -218,11 +219,8 @@ export const ImageAttributes = ({
               <Form.Label>{t('Alt text')}</Form.Label>
               <ToggleButtons
                 id="alt-text-toggle"
-                toggleOptions={[
-                  { name: t('Yes'), value: 'yes' },
-                  { name: t('No'), value: 'no' },
-                ]}
-                value={showAltText ? 'yes' : 'no'}
+                toggleOptions={getYesNoOptions()}
+                value={showAltText ? '1' : '0'}
                 onChange={handleAltTextToggle}
               />
               {showAltText && (
