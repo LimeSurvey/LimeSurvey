@@ -1,6 +1,5 @@
 import React from 'react'
 import classNames from 'classnames'
-import { useBuffer } from 'hooks'
 
 export const QuestionContainer = ({ questionImageObject, children }) => {
   const hasQuestionImage = questionImageObject.hasQuestionImage
