@@ -16,7 +16,7 @@ import {
   getAndGenerateImageStyles,
   getClearedQuestionImageObject,
 } from 'helpers/questionImage'
-import {getYesNoOptions, isTrue} from "helpers"
+import { getYesNoOptions, isTrue } from 'helpers'
 
 export const ImageAttributes = ({
   update,
