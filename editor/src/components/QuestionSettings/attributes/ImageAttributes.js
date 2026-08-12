@@ -111,6 +111,7 @@ export const ImageAttributes = ({
     const isYes = toggleValue === 'yes'
     setShowAltText(isYes)
     if (!isYes) {
+      setRemainingChars(charLimit)
       handleAltTextChange('')
     }
   }
@@ -165,6 +166,7 @@ export const ImageAttributes = ({
                 className="ms-2 btn-sm-sidebar"
                 onClick={() => dropzoneRef.current?.open()}
                 variant="secondary"
+                aria-label={t('Replace image')}
               >
                 <EditIcon className="fill-current" width={16} height={16} />
               </Button>
@@ -172,6 +174,7 @@ export const ImageAttributes = ({
                 onClick={handleDeleteImage}
                 variant="secondary"
                 className="ms-2 btn-sm-sidebar"
+                aria-label={t('Delete image')}
               >
                 <DeleteIconFilled width={16} height={16} />
               </Button>
