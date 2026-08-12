@@ -48,8 +48,7 @@
       color: $white;
       z-index: 1;
 
-      &:active,
-      &:focus {
+      option {
         color: black;
       }
     }
@@ -97,89 +96,34 @@
     @include reg12;
   }
 
-  // Project title entry form (shown below survey title)
   .project-title-form {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 8px 0 4px;
+    padding: 8px 12px;
     position: absolute;
+    top: calc($top-bar-height);
+    border-radius: 4px;
+    background: $white;
+    height: 154px;
+    width: 280px;
+    box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
 
-    &__label {
-      font-size: $font-size-xs;
-      font-weight: $font-weight-500;
-      color: $g-700;
-      margin-bottom: 2px;
-    }
-
-    &__row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    &__input {
-      flex: 1;
-      min-width: 160px;
-      max-width: 260px;
-      padding: 4px 8px;
-      font-size: $font-size-sm;
-      border: 1px solid $g-400;
-      border-radius: $border-radius;
-      outline: none;
-
-      &:focus {
-        border-color: $primary;
+    .buttons-container {
+      button {
+        height: 32px;
+        padding: 0 16px;
       }
     }
 
-    &__btn {
-      padding: 4px 10px;
-      font-size: $font-size-sm;
-      border-radius: $border-radius;
-      border: 1px solid transparent;
-      cursor: pointer;
-
-      &--save {
-        background-color: $primary;
-        color: $white;
-        border-color: $primary;
-
-        &:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-      }
-
-      &--cancel {
-        background: none;
-        color: $g-700;
-        border-color: $g-400;
-
-        &:hover {
-          background-color: $g-200;
-        }
-      }
-
-      &--close {
-        background: none;
-        border: none;
-        color: $g-600;
-        padding: 4px;
-
-        &:hover {
-          color: $black;
-        }
-
-        i::before {
-          font-size: 16px;
-        }
+    .close-button {
+      height: 16px;
+      button {
+        padding: 0;
       }
     }
 
-    &__error {
-      font-size: $font-size-xs;
-      color: $danger;
+    .project-title-input {
+      margin-bottom: 20px;
     }
   }
 

@@ -117,14 +117,12 @@ export const SurveyTitleSelector = ({
 
           <TooltipContainer tip={t('Add project title')} placement="bottom">
             <Button
-              className={classNames('project-title-plus-btn', {
+              className={classNames('project-title-plus-btn ms-2', {
                 'pointer-events-none opacity-0':
                   !canEditProjectTitle || !surveyTitleIsFocused,
               })}
-              type="button"
               aria-label={t('Add project title')}
               onMouseDown={(e) => {
-                // prevent title blur before click fires
                 e.preventDefault()
                 handleOpenForm()
               }}

@@ -1,3 +1,5 @@
+import { XIcon } from 'components/icons'
+import { Button, Input } from 'components/UIComponents'
 import { useEffect, useRef, useState } from 'react'
 
 export const ProjectTitleForm = ({
@@ -34,48 +36,39 @@ export const ProjectTitleForm = ({
       role="region"
       aria-label={t('Project title')}
     >
-      <label
-        htmlFor="project-title-input"
-        className="project-title-form__label"
-      >
-        {t('Project title')}
-      </label>
-      <div className="project-title-form__row">
-        <input
+      <div className="d-flex close-button justify-content-end align-items-center mb-1">
+        <Button onClick={() => onSave(value.trim())} variant="">
+          <XIcon />
+        </Button>
+      </div>
+      <div className="project-title-label mb-1">
+        <label htmlFor="project-title-input">{t('Project title')}</label>
+      </div>
+      <div className="project-title-input">
+        <Input
           id="project-title-input"
           ref={inputRef}
           type="text"
-          className="project-title-form__input"
           value={value}
           placeholder={t('Enter here')}
           maxLength={255}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
           aria-describedby={saveError ? 'project-title-error' : undefined}
+          focus={true}
         />
-        <button
-          className="project-title-form__btn project-title-form__btn--cancel"
-          type="button"
-          onClick={onCancel}
-        >
+      </div>
+      <div className="d-flex gap-1 buttons-container justify-content-end">
+        <Button variant="secondary" onClick={onCancel}>
           {t('Cancel')}
-        </button>
-        <button
-          className="project-title-form__btn project-title-form__btn--save"
-          type="button"
+        </Button>
+        <Button
+          variant="primary"
           disabled={isSaveDisabled || isSaving}
           onClick={() => onSave(value.trim())}
         >
           {t('Save')}
-        </button>
-        <button
-          className="project-title-form__btn project-title-form__btn--close"
-          type="button"
-          aria-label={t('Close project title form')}
-          onClick={onCancel}
-        >
-          <i className="ri-close-line" aria-hidden="true" />
-        </button>
+        </Button>
       </div>
       {saveError && (
         <div
