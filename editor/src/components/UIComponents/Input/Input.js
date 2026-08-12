@@ -9,7 +9,7 @@ import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 import { useQueryClient } from '@tanstack/react-query'
 
 export const Input = ({
-  value = '',
+  value = null,
   defaultValue = '',
   dataTestId,
   onChange = () => {},
