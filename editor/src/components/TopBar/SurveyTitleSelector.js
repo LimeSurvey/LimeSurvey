@@ -94,13 +94,13 @@ export const SurveyTitleSelector = ({
       className="d-flex align-items-center text-align-center top-bar-select align-middle"
       id="top-bar-select"
     >
-      <div className="d-flex flex-column position-relative align-items-start">
+      <div className="d-flex align-items-center position-relative align-items-start">
+        <ProjectTitleBadge
+          projectTitle={projectTitle}
+          canEdit={canEditProjectTitle}
+          onClick={handleOpenForm}
+        />
         <div className="d-flex align-items-center">
-          <ProjectTitleBadge
-            projectTitle={projectTitle}
-            canEdit={canEditProjectTitle}
-            onClick={handleOpenForm}
-          />
           <ContentEditor
             value={surveyTitle}
             placeholder={t('Survey title')}
