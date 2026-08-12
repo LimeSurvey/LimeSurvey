@@ -328,6 +328,16 @@ function buildSelects($allfields, $surveyid, $language)
 
     $responseModel = SurveyDynamic::model($surveyid);
 
+    // Security (bug #20648): the response table columns are the only identifiers
+    // that may be used in the filter query. Every POST key is validated against
+    // this list before being passed to quoteColumnName(), which does not escape
+    // identifier quoting characters and is not injection-safe on its own.
+    $validColumns = array();
+    $responseSchema = $responseModel->getTableSchema();
+    if ($responseSchema !== null) {
+        $validColumns = array_map('strtolower', $responseSchema->getColumnNames());
+    }
+
     /*
     * Iterate through postvars to create "nice" data for SQL later.
     *
@@ -341,6 +351,8 @@ function buildSelects($allfields, $surveyid, $language)
     *
     */
     foreach ($postvars as $pv) {
+        // Reset per iteration so a value from a previous key cannot leak in.
+        $firstletter = '';
         //Only do this if there is actually a value for the $pv
 
         if (
@@ -366,7 +378,8 @@ function buildSelects($allfields, $surveyid, $language)
             if (
                 $pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
                     $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
-                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp"
+                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp" &&
+                    in_array(strtolower($pv), $validColumns, true)
             ) {
                 //pull out just the fieldnames
                 //put together some SQL here
@@ -435,7 +448,7 @@ function buildSelects($allfields, $surveyid, $language)
             }
 
                 //"id" is a built in field, the unique database id key of each response row
-            elseif (substr($pv, 0, 2) == "id") {
+            elseif (substr($pv, 0, 2) == "id" && in_array(strtolower(substr($pv, 0, -1)), $validColumns, true)) {
                 if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
                     $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 0, -1)) . " > " . sanitize_int($_POST[$pv]);
                 }
