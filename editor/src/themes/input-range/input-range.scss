@@ -77,7 +77,8 @@
     box-shadow: $boxshadow-slider-handle;
   }
   &:focus-visible {
-    outline: none;
+    outline:none;
+    background-color: $grape;
   }
 
   &.type-0 {
