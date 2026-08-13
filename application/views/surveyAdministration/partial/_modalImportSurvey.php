@@ -55,7 +55,7 @@ $summaryLabels = [
             <div class="modal-body" id="modal-body-import-survey">
                 <div id="import-survey-form-content">
                     <div class="import-survey-modal__description">
-                        <p><?php eT('Select a survey structure file (.lss, .txt) or survey archive file (.lsa)'); ?></p>
+                        <p><?php eT('Select a survey structure file (.lss, .txt, .tsv) or survey archive file (.lsa)'); ?></p>
                         <p><?php eT('Maximum file size 40.00 MB'); ?></p>
                     </div>
                     <div>

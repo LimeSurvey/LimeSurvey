@@ -26,7 +26,7 @@ export const ImportSurveyForm = ({
       <div className="import-survey-modal__description">
         <p className="mb-1">
           {t(
-            'Select a survey structure file (.lss, .txt) or survey archive file (.lsa)'
+            'Select a survey structure file (.lss, .txt, .tsv) or survey archive file (.lsa)'
           )}
         </p>
         <p className="mb-0">
