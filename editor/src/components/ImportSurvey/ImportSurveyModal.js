@@ -36,6 +36,7 @@ export const ImportSurveyModal = ({
       setFileError('')
       setGroupStrategy(IMPORT_SURVEY_GROUP_STRATEGIES.DEFAULT)
       setSubmittedSummary(null)
+      setSubmitting(false)
     }
   }, [show])
 
