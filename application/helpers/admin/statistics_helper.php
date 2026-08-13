@@ -335,17 +335,20 @@ function buildSelects($allfields, $surveyid, $language)
     $validColumns = array();
     $responseSchema = $responseModel->getTableSchema();
     if ($responseSchema !== null) {
-        $validColumns = array_map('strtolower', $responseSchema->getColumnNames());
+        foreach ($responseSchema->getColumnNames() as $columnName) {
+            $validColumns[strtolower($columnName)] = $columnName;
+        }
     }
 
     // Quotes a response-table column for a filter condition and rejects any
     // identifier that is not a real column, so quoteColumnName() (which does not
     // escape identifier quotes) cannot be abused for SQL injection (bug #20648).
     $quoteColumn = function ($column) use ($validColumns) {
-        if (!in_array(strtolower((string) $column), $validColumns, true)) {
+        $key = strtolower((string) $column);
+        if (!isset($validColumns[$key])) {
             throw new InvalidArgumentException('Statistics filter references an unknown column.');
         }
-        return Yii::app()->db->quoteColumnName($column);
+        return Yii::app()->db->quoteColumnName($validColumns[$key]);
     };
 
     /*
