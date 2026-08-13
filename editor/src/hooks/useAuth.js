@@ -18,7 +18,7 @@ export const useAuth = () => {
       const restHeaders = getRestHeaders(initData)
       let result = initData
       if (isLoggedIn(initData) && getTokenAgeSeconds(initData) >= 60 * 30) {
-        result = await authService.refresh(restHeaders)
+        result = { ...initData, ...(await authService.refresh(restHeaders)) }
       }
       return result
     },
@@ -65,6 +65,9 @@ export const useAuth = () => {
     }
 
     setAuth({
+      csrfToken: cookies.LS_AUTH_INIT?.csrfToken,
+      csrfTokenName: cookies.LS_AUTH_INIT?.csrfTokenName,
+      surveyImportUrl: cookies.LS_AUTH_INIT?.surveyImportUrl,
       userId: cookies.LS_AUTH_INIT?.userId,
       token: cookies.LS_AUTH_INIT?.token,
       created: cookies.LS_AUTH_INIT?.created,
@@ -81,6 +84,9 @@ export const useAuth = () => {
     isLoggedIn: isLoggedIn(auth),
     logout,
     restHeaders: getRestHeaders(auth),
+    csrfToken: auth?.csrfToken,
+    csrfTokenName: auth?.csrfTokenName,
+    surveyImportUrl: auth?.surveyImportUrl,
     userId: auth?.userId,
     token: auth?.token,
   }

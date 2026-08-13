@@ -18,7 +18,10 @@ describe('ImportSurveyModal', () => {
     await renderWithProviders(<ImportSurveyModal show onImport={onImport} />)
 
     const file = new File(['survey'], 'survey.lss', { type: 'text/xml' })
-    await user.upload(screen.getByLabelText('Select or drop a file here'), file)
+    await user.upload(
+      await screen.findByLabelText('Select or drop a file here'),
+      file
+    )
     await user.click(screen.getByRole('button', { name: 'Import survey' }))
 
     expect(onImport).toHaveBeenCalledWith({
@@ -43,7 +46,9 @@ describe('ImportSurveyModal', () => {
       />
     )
 
-    await user.click(screen.getByRole('button', { name: 'Go to survey' }))
+    await user.click(
+      await screen.findByRole('button', { name: 'Go to survey' })
+    )
     expect(onGoToSurvey).toHaveBeenCalledWith(987654)
   })
 
@@ -60,7 +65,7 @@ describe('ImportSurveyModal', () => {
     )
 
     expect(
-      screen.getByText('Setting was not imported: allow_embed => Y')
+      await screen.findByText('Setting was not imported: allow_embed => Y')
     ).toBeInTheDocument()
   })
 })

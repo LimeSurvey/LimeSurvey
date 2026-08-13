@@ -29,7 +29,7 @@ describe('FileDropZone', () => {
     }
     await renderWithProviders(<ControlledFileDropZone />)
 
-    await user.upload(screen.getByLabelText('Survey file'), file)
+    await user.upload(await screen.findByLabelText('Survey file'), file)
     expect(onChange).toHaveBeenCalledWith(file)
 
     await user.click(
