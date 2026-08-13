@@ -26,19 +26,3 @@ function doBootstrapRadioOther() {
         });
     }
 }
-
-/**
- * Makes an “other text” suffix label focus its associated input when clicked.
- * @param {string} containerId - The ID of the container containing the suffix label.
- * @param {string} inputId - The ID of the input to focus.
- */
-function attachSuffixFocusBehavior(containerId, inputId) {
-    var div    = document.getElementById(containerId);
-    var suffix = div ? div.querySelector('.othertext-suffix-label') : null;
-    if (!suffix) { return; }
-    suffix.style.cursor = 'pointer';
-    suffix.addEventListener('click', function (e) {
-        e.stopPropagation();
-        document.getElementById(inputId).focus();
-    });
-}

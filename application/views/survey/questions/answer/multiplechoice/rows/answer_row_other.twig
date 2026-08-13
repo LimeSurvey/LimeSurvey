@@ -56,9 +56,9 @@
         </div>
 
         {% if othertextRight is defined and othertextRight|length >0 %}
-            <div class="othertext-suffix-label col-auto" id="suffix-{{ myfname }}-other">
+            <label class="othertext-suffix-label col-auto" for="answer{{ myfname }}cbox" id="suffix-{{ myfname }}-other">
                 {{ processString(othertextRight) }}
-            </div>
+            </label>
         {% endif %}
 
         <!-- hidden input -->
@@ -112,13 +112,12 @@
                     {{ checkconditionFunction }}('', '{{ myfname }}', 'text');
                 } else {
                     inputText.focus();
+                    cb.checked = true;
                 }
             }
 
-            ['.other-text-item', '.othertext-suffix-label'].forEach(function (sel) {
-                var el = item.querySelector(sel);
-                if (el) { el.addEventListener('click', handleToggleClick); }
-            });
+            var el = item.querySelector('.other-text-item');
+            if (el) { el.addEventListener('click', handleToggleClick); }
         }());
     </script>
 </li> <!-- Form group ; item row -->
