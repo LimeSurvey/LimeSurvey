@@ -27,25 +27,11 @@
      Please, use custom.js
 
 */
-(function(){/**
- * Creates a module loader for a bundled module dependency graph.
- * @param {Object} modules - Bundled module definitions and dependency mappings.
- * @param {Object} cache - Cache of initialized module exports.
- * @param {Array} entries - Module identifiers to initialize immediately.
- * @returns {Function} A function that loads a module by identifier.
- * @throws {Error} If the requested module cannot be found.
- */
-function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 var Bootstrap = _interopRequireWildcard(require("../../../node_modules/bootstrap/dist/js/bootstrap.esm.js"));
-/**
- * Creates a namespace object for interoperating with CommonJS and ES modules.
- * @param {*} e - The module value.
- * @param {boolean} t - Whether to treat the module as a non-ES module.
- * @return {Object} The module namespace object.
- */
 function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function _interopRequireWildcard(e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, "default": e }; if (null === e || "object" != _typeof(e) && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (var _t in e) "default" !== _t && {}.hasOwnProperty.call(e, _t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, _t)) && (i.get || i.set) ? o(f, _t, i) : f[_t] = e[_t]); return f; })(e, t); }
 // register to global scope
 window.bootstrap = Bootstrap;
@@ -115,11 +101,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ThemeScripts = void 0;
 var _old_template_core_class = _interopRequireDefault(require("./old_template_core_class.js"));
-/**
- * Normalizes a module value for default-export access.
- * @param {*} e - The module value.
- * @return {*} The original module or an object containing it as the default export.
- */
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 /**
  * The general Template closure.
@@ -567,9 +548,7 @@ function triggerEmRelevance() {
   triggerEmRelevanceGroup();
   triggerEmRelevanceSubQuestion();
 }
-/**
- * Registers handlers that update question and group visibility when relevance changes.
- */
+/* On question */
 function triggerEmRelevanceQuestion() {
   /* Action on this question */
   $("[id^='question'].question-container").on('relevance:on', function (event, data) {
@@ -594,9 +573,7 @@ function triggerEmRelevanceQuestion() {
     }
   });
 }
-/**
- * Registers handlers that update group visibility classes when group relevance changes.
- */
+/* On Group */
 function triggerEmRelevanceGroup() {
   $("[id^='group-']").on('relevance:on', function (event, data) {
     if (event.target != this) return;
@@ -607,12 +584,7 @@ function triggerEmRelevanceGroup() {
     $(this).addClass("ls-irrelevant ls-hidden");
   });
 }
-/**
- * Registers relevance handlers for subquestions and answer-list rows.
- *
- * Updates visibility or disabled state, clears checked disabled checkboxes, and
- * refreshes related row and heading classes when relevance changes.
- */
+/* On subquestion and answers-list */
 function triggerEmRelevanceSubQuestion() {
   $("[id^='question'].question-container").on('relevance:on', "[id^='javatbd']", function (event, data) {
     if (event.target != this) return; // not needed now, but after (2016-11-07)
@@ -898,7 +870,7 @@ function confirmSurveyDialog(submits) {
 }
 
 /**
- * Registers handlers that update validation classes for tips, dynamic totals, and form controls.
+ * Trigger tip class when classChangeGood/classChangeError happen
  */
 function triggerEmClassChange() {
   /* The tips */
@@ -1375,18 +1347,7 @@ var _video = _interopRequireDefault(require("./video/video.js"));
 var _a11yHandles = require("./a11y-handles/a11y-handles.js");
 var _deselectSinglechoice = _interopRequireDefault(require("./questiontypes/deselect-singlechoice/deselect-singlechoice.js"));
 var _deselectSinglechoice_other = _interopRequireDefault(require("./questiontypes/deselect-singlechoice/deselect-singlechoice_other.js"));
-/**
- * Normalizes a module value for default-export access.
- * @param {*} e - The module value.
- * @return {*} The original module or an object containing it as the default export.
- */
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
-/**
- * Creates a namespace object for interoperating with CommonJS and ES modules.
- * @param {*} e - The module value.
- * @param {boolean} t - Whether to treat the module as a non-ES module.
- * @return {Object} The module namespace object.
- */
 function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function _interopRequireWildcard(e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, "default": e }; if (null === e || "object" != _typeof(e) && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (var _t in e) "default" !== _t && {}.hasOwnProperty.call(e, _t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, _t)) && (i.get || i.set) ? o(f, _t, i) : f[_t] = e[_t]); return f; })(e, t); }
 
 },{"../../../assets/bootstrap_5/js/bootstrap_5.js":1,"./a11y-handles/a11y-handles.js":2,"./core/old_core_theme.js":3,"./navbar/navbar.js":6,"./questiontypes/array/array.js":7,"./questiontypes/deselect-singlechoice/deselect-singlechoice.js":8,"./questiontypes/deselect-singlechoice/deselect-singlechoice_other.js":9,"./theme_js_disclaimer.js":10,"./video/video.js":12}],12:[function(require,module,exports){
@@ -1396,27 +1357,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Video = void 0;
-/**
- * Creates an iterator helper for iterating over an iterable or array-like value.
- * @param {*} r - The value to iterate over.
- * @param {boolean} [e] - Whether array-like values may be iterated.
- * @return {Object} An iterator helper with start, next, error, and finish methods.
- * @throws {TypeError} If the value cannot be iterated.
- */
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
-/**
- * Converts supported iterable or array-like values into an array.
- * @param {*} r - The value to convert.
- * @param {number} a - The maximum number of elements to include.
- * @return {Array|undefined} The converted array, or `undefined` for unsupported values.
- */
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-/**
- * Copies elements from an array-like value into a new array.
- * @param {ArrayLike<*>} r - The source array-like value.
- * @param {number} [a] - The maximum number of elements to copy.
- * @return {Array<*>} A new array containing the copied elements.
- */
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 var Video = exports.Video = function Video() {
   var fixVideoHeight = function fixVideoHeight() {
@@ -1647,11 +1589,6 @@ function getLayoutRect(element) {
     height: height
   };
 }
-/**
- * Finds the effective parent node for an element, including slotted and shadow DOM relationships.
- * @param {Node} element - The node whose parent is resolved.
- * @return {Node} The parent node, or the document element when no parent is available.
- */
 function getParentNode(element) {
   if (getNodeName(element) === 'html') {
     return element;
@@ -1670,11 +1607,6 @@ function getParentNode(element) {
     getDocumentElement(element) // fallback
   );
 }
-/**
- * Finds the nearest scrollable ancestor of a node.
- * @param {Node} node - The node whose scrollable ancestor to find.
- * @return {HTMLElement} The nearest scrollable ancestor, or the document body.
- */
 function getScrollParent(node) {
   if (['html', 'body', '#document'].indexOf(getNodeName(node)) >= 0) {
     // $FlowFixMe[incompatible-return]: assume body is always available
@@ -1830,11 +1762,6 @@ function orderModifiers(modifiers) {
     }));
   }, []);
 }
-/**
- * Coalesces calls and invokes the function once in the next microtask.
- * @param {Function} fn - The function to invoke.
- * @return {Promise<*>} A promise resolving to the function's result.
- */
 function debounce(fn) {
   var pending;
   return function () {
@@ -1849,11 +1776,6 @@ function debounce(fn) {
     return pending;
   };
 }
-/**
- * Merges modifiers with the same name into a single modifier.
- * @param {Array<Object>} modifiers - The modifiers to merge.
- * @return {Array<Object>} The merged modifiers.
- */
 function mergeByName(modifiers) {
   var merged = modifiers.reduce(function (merged, current) {
     var existing = merged[current.name];
@@ -1971,14 +1893,7 @@ function getClippingParents(element) {
     return isElement(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body';
   });
 } // Gets the maximum area that the element is visible in due to any number of
-/**
- * Calculates the rectangle within which an element can be clipped.
- * @param {Element} element - The element whose clipping rectangle is calculated.
- * @param {string|Element} boundary - The clipping boundary or `clippingParents`.
- * @param {string|Element} rootBoundary - The root clipping boundary.
- * @param {string} strategy - The positioning strategy used to calculate boundary rectangles.
- * @return {Object} The combined clipping rectangle.
- */
+// clipping parents
 
 function getClippingRect(element, boundary, rootBoundary, strategy) {
   var mainClippingParents = boundary === 'clippingParents' ? getClippingParents(element) : [].concat(boundary);
@@ -1998,27 +1913,12 @@ function getClippingRect(element, boundary, rootBoundary, strategy) {
   clippingRect.y = clippingRect.top;
   return clippingRect;
 }
-/**
- * Extracts the base placement from a hyphenated placement value.
- * @param {string} placement - The placement value to parse.
- * @return {string} The portion before the first hyphen.
- */
 function getBasePlacement(placement) {
   return placement.split('-')[0];
 }
-/**
- * Extracts the variation segment from a hyphen-delimited placement.
- * @param {string} placement - The placement value containing a variation segment.
- * @return {string} The segment after the first hyphen.
- */
 function getVariation(placement) {
   return placement.split('-')[1];
 }
-/**
- * Determines the main axis for a placement direction.
- * @param {string} placement - The placement direction to evaluate.
- * @return {string} `x` for top or bottom placements, `y` otherwise.
- */
 function getMainAxisFromPlacement(placement) {
   return ['top', 'bottom'].indexOf(placement) >= 0 ? 'x' : 'y';
 }
@@ -2093,12 +1993,6 @@ function expandToHashMap(value, keys) {
     return hashMap;
   }, {});
 }
-/**
- * Calculates how far an element extends beyond its clipping boundaries.
- * @param {Object} state - The positioning state containing element geometry and modifier data.
- * @param {Object} [options] - Overflow detection settings.
- * @returns {Object} Overflow distances for the top, bottom, left, and right sides.
- */
 function detectOverflow(state, options) {
   if (options === void 0) {
     options = {};
@@ -2165,11 +2059,6 @@ function areValidElements() {
     return !(element && typeof element.getBoundingClientRect === 'function');
   });
 }
-/**
- * Creates a configured factory for positioning popper elements relative to reference elements.
- * @param {Object} [generatorOptions] - Default modifiers and options for created instances.
- * @return {Function} A function that creates and manages a popper instance.
- */
 function popperGenerator(generatorOptions) {
   if (generatorOptions === void 0) {
     generatorOptions = {};
@@ -2486,11 +2375,6 @@ function mapToStyles(_ref2) {
   }
   return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
 }
-/**
- * Computes positioning styles and placement attributes for the popper and arrow elements.
- * @param {Object} state - The current positioning state.
- * @param {Object} options - Style computation options.
- */
 function computeStyles(_ref5) {
   var state = _ref5.state,
     options = _ref5.options;
@@ -2677,12 +2561,6 @@ function getOppositeVariationPlacement(placement) {
     return hash[matched];
   });
 }
-/**
- * Computes the available placements for automatic positioning.
- * @param {Object} state - The positioning state used to measure overflow.
- * @param {Object} options - Placement and boundary configuration.
- * @return {string[]} Placement names ordered from least to greatest overflow.
- */
 function computeAutoPlacement(state, options) {
   if (options === void 0) {
     options = {};
@@ -2998,10 +2876,6 @@ function arrow(_ref) {
   var axisProp = axis;
   state.modifiersData[name] = (_state$modifiersData$ = {}, _state$modifiersData$[axisProp] = offset, _state$modifiersData$.centerOffset = offset - center, _state$modifiersData$);
 }
-/**
- * Identifies the arrow element used for popper positioning.
- * @param {Object} _ref2 - The popper state and modifier options.
- */
 function effect(_ref2) {
   var state = _ref2.state,
     options = _ref2.options;
@@ -3119,171 +2993,34 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Tooltip = exports.Toast = exports.Tab = exports.ScrollSpy = exports.Popover = exports.Offcanvas = exports.Modal = exports.Dropdown = exports.Collapse = exports.Carousel = exports.Button = exports.Alert = void 0;
 var Popper = _interopRequireWildcard(require("@popperjs/core"));
-/**
- * Creates a namespace object for interoperating with CommonJS and ES modules.
- * @param {*} e - The module value.
- * @param {boolean} t - Whether to treat the module as a non-ES module.
- * @return {Object} The module namespace object.
- */
 function _interopRequireWildcard(e, t) { if ("function" == typeof WeakMap) var r = new WeakMap(), n = new WeakMap(); return (_interopRequireWildcard = function _interopRequireWildcard(e, t) { if (!t && e && e.__esModule) return e; var o, i, f = { __proto__: null, "default": e }; if (null === e || "object" != _typeof(e) && "function" != typeof e) return f; if (o = t ? n : r) { if (o.has(e)) return o.get(e); o.set(e, f); } for (var _t in e) "default" !== _t && {}.hasOwnProperty.call(e, _t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, _t)) && (i.get || i.set) ? o(f, _t, i) : f[_t] = e[_t]); return f; })(e, t); }
-/**
- * Retrieves a property from a superclass.
- * @param {Function|Object} t - The class or object whose superclass is queried.
- * @param {Object} o - The property owner used for access.
- * @param {string|symbol} e - The property key and method receiver.
- * @param {number} r - Flags controlling prototype selection and method binding.
- * @return {*} The superclass property, optionally bound to the receiver.
- */
 function _superPropGet(t, o, e, r) { var p = _get(_getPrototypeOf(1 & r ? t.prototype : t), o, e); return 2 & r && "function" == typeof p ? function (t) { return p.apply(e, t); } : p; }
-/**
- * Retrieves a property from an object's prototype chain.
- * @param {object} object - The object whose prototype chain is searched.
- * @param {PropertyKey} property - The property key to retrieve.
- * @param {object} [receiver] - The object used as the getter receiver.
- * @return {*} The property's value.
- */
 function _get() { return _get = "undefined" != typeof Reflect && Reflect.get ? Reflect.get.bind() : function (e, t, r) { var p = _superPropBase(e, t); if (p) { var n = Object.getOwnPropertyDescriptor(p, t); return n.get ? n.get.call(arguments.length < 3 ? e : r) : n.value; } }, _get.apply(null, arguments); }
-/**
- * Finds the nearest object in a prototype chain that defines a property.
- * @param {object} t - The object whose prototype chain to inspect.
- * @param {PropertyKey} o - The property key to find.
- * @return {object} The nearest object defining the property, or the final object in the chain.
- */
 function _superPropBase(t, o) { for (; !{}.hasOwnProperty.call(t, o) && null !== (t = _getPrototypeOf(t));); return t; }
-/**
- * Collects an object's own property keys and symbols.
- * @param {Object} e - The object whose keys to collect.
- * @param {boolean} [r] - Whether to include only enumerable symbols.
- * @returns {(string|symbol)[]} The object's own property keys.
- */
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-/**
- * Merges properties from source objects into a target object.
- * @param {Object} e - The target object.
- * @param {...Object} sources - Objects whose properties are merged into the target.
- * @return {Object} The target object containing the merged properties.
- */
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-/**
- * Defines an own property on an object.
- * @param {object} e - The target object.
- * @param {PropertyKey} r - The property key.
- * @param {*} t - The property value.
- * @return {object} The target object.
- */
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-/**
- * Converts an array, iterable, or array-like value into an array.
- * @param {*} value - The value to convert.
- * @return {Array} The converted array.
- */
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-/**
- * Converts an iterable value to an array.
- * @param {*} value - The value to convert.
- * @return {Array|undefined} The resulting array, or `undefined` if the value is not iterable.
- */
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
-/**
- * Creates an array copy when the input is an array.
- * @param {*} r - The value to inspect.
- * @return {Array|undefined} A copied array, or `undefined` for non-array values.
- */
 function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
-/**
- * Invokes a superclass constructor for an instance.
- * @param {object} t - The instance being initialized.
- * @param {Function} o - The superclass constructor.
- * @param {Array} [e] - Arguments to pass to the superclass constructor.
- * @return {object} The initialized instance or the value returned by the superclass constructor.
- */
 function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
 function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-/**
- * Retrieves the prototype of an object.
- * @param {Object} t - The object whose prototype to retrieve.
- * @return {Object|null} The object's prototype, or `null` if it has none.
- */
 function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
-/**
- * Establishes inheritance between a constructor and its superclass.
- * @param {Function} t - The subclass constructor.
- * @param {Function|null} e - The superclass constructor, or `null`.
- * @throws {TypeError} If the superclass is neither a function nor `null`.
- */
 function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
-/**
- * Sets an object's prototype.
- * @param {Object} t - The object whose prototype is updated.
- * @param {Object|null} e - The prototype to assign.
- * @return {Object} The updated object.
- */
 function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
-/**
- * Ensures a class constructor is called with a valid instance context.
- * @param {*} a - The value to check as the instance.
- * @param {Function} n - The class constructor.
- * @throws {TypeError} If the value is not an instance of the specified class.
- */
 function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
-/**
- * Defines multiple properties on an object from property descriptors.
- * @param {object} e - The object to receive the properties.
- * @param {Array<object>} r - The property descriptors to define.
- */
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
-/**
- * Converts a value to a property key.
- * @param {*} value - The value to convert.
- * @return {symbol|string} The value as a symbol or string property key.
- */
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-/**
- * Converts a value to a primitive using its custom primitive conversion method when available.
- * @param {*} t - The value to convert.
- * @param {string} r - The preferred conversion hint.
- * @returns {*} The converted primitive value.
- * @throws {TypeError} If the custom conversion method returns an object.
- */
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-/**
- * Converts an iterable or array-like value into an array with an optional length limit.
- * @param {*} value - The value to convert.
- * @param {number} limit - The maximum number of elements to include.
- * @return {Array} The converted array.
- */
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-/**
- * Converts supported iterable or array-like values into an array.
- * @param {*} r - The value to convert.
- * @param {number} a - The maximum number of elements to include.
- * @return {Array|undefined} The converted array, or `undefined` for unsupported values.
- */
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
-/**
- * Copies elements from an array-like value into a new array.
- * @param {ArrayLike<*>} r - The source array-like value.
- * @param {number} [a] - The maximum number of elements to copy.
- * @return {Array<*>} A new array containing the copied elements.
- */
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
-/**
- * Converts an iterable into an array containing up to the specified number of elements.
- * @param {Iterable} r - The iterable to convert.
- * @param {number} l - The maximum number of elements to include.
- * @return {Array|undefined} The extracted elements, or `undefined` when the iterable cannot be processed.
- */
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-/**
- * Returns an array when the value is an array.
- * @param {*} r - The value to check.
- * @return {Array|undefined} The input array, or `undefined` for other values.
- */
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); } /*!
   * Bootstrap v5.1.3 (https://getbootstrap.com/)
@@ -3855,10 +3592,6 @@ var Data = {
 
 var VERSION = '5.1.3';
 var BaseComponent = /*#__PURE__*/function () {
-  /**
-   * Initializes a component for a DOM element.
-   * @param {Element|string} element - The element or selector associated with the component.
-   */
   function BaseComponent(element) {
     _classCallCheck(this, BaseComponent);
     element = getElement(element);
@@ -3967,9 +3700,6 @@ var CLASS_NAME_SHOW$8 = 'show';
  * ------------------------------------------------------------------------
  */
 var Alert = exports.Alert = /*#__PURE__*/function (_BaseComponent) {
-  /**
-   * Creates an alert component instance.
-   */
   function Alert() {
     _classCallCheck(this, Alert);
     return _callSuper(this, Alert, arguments);
@@ -4062,9 +3792,6 @@ var EVENT_CLICK_DATA_API$6 = "click".concat(EVENT_KEY$b).concat(DATA_API_KEY$7);
  * ------------------------------------------------------------------------
  */
 var Button = exports.Button = /*#__PURE__*/function (_BaseComponent2) {
-  /**
-   * Creates a Bootstrap button component.
-   */
   function Button() {
     _classCallCheck(this, Button);
     return _callSuper(this, Button, arguments);
@@ -4327,11 +4054,6 @@ var POINTER_TYPE_PEN = 'pen';
  * ------------------------------------------------------------------------
  */
 var Carousel = exports.Carousel = /*#__PURE__*/function (_BaseComponent3) {
-  /**
-   * Creates a carousel controller for the specified element.
-   * @param {HTMLElement} element - The carousel element to manage.
-   * @param {Object} config - Carousel configuration options.
-   */
   function Carousel(element, config) {
     var _this3;
     _classCallCheck(this, Carousel);
@@ -4812,11 +4534,6 @@ var SELECTOR_DATA_TOGGLE$4 = '[data-bs-toggle="collapse"]';
  * ------------------------------------------------------------------------
  */
 var Collapse = exports.Collapse = /*#__PURE__*/function (_BaseComponent4) {
-  /**
-   * Creates a collapsible component for an element.
-   * @param {Element} element - The collapsible element.
-   * @param {Object} config - Configuration options for the collapse behavior.
-   */
   function Collapse(element, config) {
     var _this8;
     _classCallCheck(this, Collapse);
@@ -5126,11 +4843,6 @@ var DefaultType$8 = {
  * ------------------------------------------------------------------------
  */
 var Dropdown = exports.Dropdown = /*#__PURE__*/function (_BaseComponent5) {
-  /**
-   * Creates a dropdown controller for an element.
-   * @param {Element} element - The dropdown toggle element.
-   * @param {Object} config - The dropdown configuration.
-   */
   function Dropdown(element, config) {
     var _this10;
     _classCallCheck(this, Dropdown);
@@ -5501,9 +5213,6 @@ defineJQueryPlugin(Dropdown);
 var SELECTOR_FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top';
 var SELECTOR_STICKY_CONTENT = '.sticky-top';
 var ScrollBarHelper = /*#__PURE__*/function () {
-  /**
-   * Creates a helper for managing the document body's scrollbar.
-   */
   function ScrollBarHelper() {
     _classCallCheck(this, ScrollBarHelper);
     this._element = document.body;
@@ -5626,10 +5335,6 @@ var CLASS_NAME_FADE$4 = 'fade';
 var CLASS_NAME_SHOW$5 = 'show';
 var EVENT_MOUSEDOWN = "mousedown.bs.".concat(NAME$8);
 var Backdrop = /*#__PURE__*/function () {
-  /**
-   * Configures a backdrop instance.
-   * @param {Object} config - Backdrop configuration options.
-   */
   function Backdrop(config) {
     _classCallCheck(this, Backdrop);
     this._config = this._getConfig(config);
@@ -5742,10 +5447,6 @@ var TAB_KEY = 'Tab';
 var TAB_NAV_FORWARD = 'forward';
 var TAB_NAV_BACKWARD = 'backward';
 var FocusTrap = /*#__PURE__*/function () {
-  /**
-   * Creates a focus trap with the specified configuration.
-   * @param {Object} config - Focus trap configuration.
-   */
   function FocusTrap(config) {
     _classCallCheck(this, FocusTrap);
     this._config = this._getConfig(config);
@@ -5869,11 +5570,6 @@ var SELECTOR_DATA_TOGGLE$2 = '[data-bs-toggle="modal"]';
  * ------------------------------------------------------------------------
  */
 var Modal = exports.Modal = /*#__PURE__*/function (_BaseComponent6) {
-  /**
-   * Creates a modal controller for the specified element.
-   * @param {Element} element - The modal element to control.
-   * @param {Object} config - Modal configuration options.
-   */
   function Modal(element, config) {
     var _this16;
     _classCallCheck(this, Modal);
@@ -6259,11 +5955,6 @@ var SELECTOR_DATA_TOGGLE$1 = '[data-bs-toggle="offcanvas"]';
  * ------------------------------------------------------------------------
  */
 var Offcanvas = exports.Offcanvas = /*#__PURE__*/function (_BaseComponent7) {
-  /**
-   * Creates an offcanvas component for the specified element.
-   * @param {HTMLElement} element - The offcanvas element.
-   * @param {Object} config - Configuration options for the component.
-   */
   function Offcanvas(element, config) {
     var _this26;
     _classCallCheck(this, Offcanvas);
@@ -6532,13 +6223,6 @@ var DefaultAllowlist = {
   u: [],
   ul: []
 };
-/**
- * Sanitizes HTML using a custom function or an element and attribute allowlist.
- * @param {string} unsafeHtml - The HTML content to sanitize.
- * @param {Object} allowList - Allowed element names and their permitted attributes.
- * @param {Function} [sanitizeFn] - Optional custom sanitizer applied to the HTML.
- * @return {string} The sanitized HTML content.
- */
 function sanitizeHtml(unsafeHtml, allowList, sanitizeFn) {
   var _ref7;
   if (!unsafeHtml.length) {
@@ -6664,12 +6348,6 @@ var TRIGGER_MANUAL = 'manual';
  * ------------------------------------------------------------------------
  */
 var Tooltip = exports.Tooltip = /*#__PURE__*/function (_BaseComponent8) {
-  /**
-   * Creates a tooltip instance for an element.
-   * @param {Element} element - The element associated with the tooltip.
-   * @param {Object} config - Tooltip configuration options.
-   * @throws {TypeError} If Popper is unavailable.
-   */
   function Tooltip(element, config) {
     var _this32;
     _classCallCheck(this, Tooltip);
@@ -7292,9 +6970,6 @@ var SELECTOR_CONTENT = '.popover-body';
  * ------------------------------------------------------------------------
  */
 var Popover = exports.Popover = /*#__PURE__*/function (_Tooltip) {
-  /**
-   * Creates a popover component instance.
-   */
   function Popover() {
     _classCallCheck(this, Popover);
     return _callSuper(this, Popover, arguments);
@@ -7416,11 +7091,6 @@ var METHOD_POSITION = 'position';
  * ------------------------------------------------------------------------
  */
 var ScrollSpy = exports.ScrollSpy = /*#__PURE__*/function (_BaseComponent9) {
-  /**
-   * Monitor an element's scroll position and update the active navigation target.
-   * @param {Element} element - The scrollable element to monitor.
-   * @param {Object} config - ScrollSpy configuration options.
-   */
   function ScrollSpy(element, config) {
     var _this38;
     _classCallCheck(this, ScrollSpy);
@@ -7652,9 +7322,6 @@ var SELECTOR_DROPDOWN_ACTIVE_CHILD = ':scope > .dropdown-menu .active';
  * ------------------------------------------------------------------------
  */
 var Tab = exports.Tab = /*#__PURE__*/function (_BaseComponent0) {
-  /**
-   * Create a tab component for managing tabbed navigation.
-   */
   function Tab() {
     _classCallCheck(this, Tab);
     return _callSuper(this, Tab, arguments);

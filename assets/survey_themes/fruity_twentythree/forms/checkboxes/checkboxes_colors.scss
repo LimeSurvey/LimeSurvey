@@ -4,6 +4,12 @@ $input-border-color : $g-700;
     color: $base-color;
 }
 
+li.checkbox-text-item:has(input.other-checkbox:checked) {
+    .othertext-suffix-label {
+        color: $base-color;
+    }
+}
+
 .checkbox-item label::before {
     border           : 3px solid $input-border-color;
     background-color : #fff;
