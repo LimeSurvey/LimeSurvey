@@ -43,9 +43,9 @@
             >
         </div>
         {% if otherTextRight is defined and otherTextRight|length > 0 %}
-            <div class="othertext-suffix-label button-suffix col-auto">
+            <label class="othertext-suffix-label button-suffix col-auto" for="answer{{ name }}othertext">
                 {{ processString(otherTextRight) }}
-            </div>
+            </label>
         {% endif %}
     </div>
 </div>

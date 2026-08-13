@@ -96,6 +96,22 @@ const DeselectSinglechoiceScripts = (() => {
             deselect(this);
         });
 
+        // Wrapper divs adjacent to the "other" radio (.other-text-item, .othertext-suffix-label).
+        // Use capture phase so stopPropagation() in the inline twig bubble-phase listener
+        // cannot block this handler from firing.
+        document.addEventListener('click', function (e) {
+            if (e.target.tagName === 'INPUT') { return; }
+            const wrapper = e.target.closest('.other-text-item, .othertext-suffix-label');
+            if (!wrapper) { return; }
+            if (!wrapper.closest(CONTAINER_SELECTOR)) { return; }
+            const item = wrapper.closest('li');
+            if (!item) { return; }
+            const radio = item.querySelector('input[type="radio"]');
+            if (radio && radio.checked) {
+                deselect(radio);
+            }
+        }, true); // capture phase
+
         // Pointer: native capture listener fires top-down before stopPropagation()
         // in inline onclick handlers (e.g. cancelBubbleThis in image-select questions).
         document.addEventListener('click', function (e) {
