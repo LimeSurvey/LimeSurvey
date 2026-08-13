@@ -78,12 +78,12 @@ $summaryLabels = [
                         </div>
                     </div>
                     <div class="import-survey-modal__group-select">
-                        <label class='form-label' for='surveysgroup'><?php eT("Destination survey group:"); ?></label>
+                        <label class='form-label' for='surveysgroup'><?php eT("Survey group:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', [
                             'asDropDownList' => true,
                             'htmlOptions' => [],
                             'data' => [
-                                'default'     => gT("Default survey group"),
+                                'default'     => gT("Import on default survey group"),
                                 'from_survey' => gT("Keep the survey group from the imported file"),
                             ],
                             'value' => 'default',
@@ -100,7 +100,7 @@ $summaryLabels = [
                         <label
                             class='form-label '
                             for='translinksfields'>
-                            <?php eT("Convert resource links and expression fields"); ?>
+                            <?php eT("Convert resource links and expression fields?"); ?>
                         </label>
                     </div>
                 </div>

@@ -1,28 +1,28 @@
 import { Alert, Table } from 'react-bootstrap'
 import { decodeHtmlEntities } from './decodeHtmlEntities'
 
-const SUMMARY_FIELDS = [
-  ['surveys', 'Surveys'],
-  ['languages', 'Languages'],
-  ['groups', 'Question groups'],
-  ['questions', 'Questions'],
-  ['question_attributes', 'Question attributes'],
-  ['answers', 'Answers'],
-  ['subquestions', 'Subquestions'],
-  ['defaultvalues', 'Default answers'],
-  ['conditions', 'Conditions'],
-  ['labelsets', 'Label sets'],
-  ['assessments', 'Assessments'],
-  ['quota', 'Quotas'],
-  ['quotamembers', 'Quota rules'],
-  ['quotals', 'Quota language settings'],
-  ['plugin_settings', 'Plugin settings'],
-  ['themes', 'Themes'],
-  ['responses', 'Responses'],
+const getSummaryFields = () => [
+  ['surveys', t('Surveys')],
+  ['languages', t('Languages')],
+  ['groups', t('Question groups')],
+  ['questions', t('Questions')],
+  ['question_attributes', t('Question attributes')],
+  ['answers', t('Answers')],
+  ['subquestions', t('Subquestions')],
+  ['defaultvalues', t('Default answers')],
+  ['conditions', t('Conditions')],
+  ['labelsets', t('Label sets')],
+  ['assessments', t('Assessments')],
+  ['quota', t('Quotas')],
+  ['quotamembers', t('Quota rules')],
+  ['quotals', t('Quota language settings')],
+  ['plugin_settings', t('Plugin settings')],
+  ['themes', t('Themes')],
+  ['responses', t('Responses')],
 ]
 
 export const ImportSurveySummary = ({ summary }) => {
-  const rows = SUMMARY_FIELDS.filter(
+  const rows = getSummaryFields().filter(
     ([key]) => summary[key] !== undefined && summary[key] !== null
   )
 
@@ -40,7 +40,7 @@ export const ImportSurveySummary = ({ summary }) => {
         <tbody>
           {rows.map(([key, label]) => (
             <tr key={key}>
-              <th scope="row">{t(label)}</th>
+              <th scope="row">{label}</th>
               <td className="text-end">{summary[key]}</td>
             </tr>
           ))}
