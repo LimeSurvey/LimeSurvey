@@ -48,8 +48,8 @@ export const ImportSurveyForm = ({
       />
       <Select
         className="import-survey-modal__group-select"
+        disabled={submitting}
         labelText={t('Destination survey group:')}
-        noAccessDisabled={submitting}
         onChange={onGroupStrategyChange}
         options={surveyGroupOptions}
         value={groupStrategy}
