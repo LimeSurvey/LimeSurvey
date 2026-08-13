@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html>
     <head>
-        <title><?php printf(gT('Editing %s'), $sFieldText); ?></title>
+        <title><?php printf(gT('Editing %s'), CHtml::encode($sFieldText)); ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="noindex, nofollow" />
         <?php
@@ -80,9 +80,9 @@
                 function CKeditor_OnComplete( evt )
                 {
                     var editor = evt.editor;
-                    editor.setData(window.opener.document.getElementById("<?php echo $sFieldName; ?>").value);
+                    editor.setData(window.opener.document.getElementById(<?php echo CJavaScript::encode($sFieldName); ?>).value);
                     editor.execCommand('maximize');
-                    window.status='<?php echo sprintf(gT('Editing %s', 'js'), javascriptEscape($sFieldText, true)); ?>';
+                    window.status=<?php echo CJavaScript::encode(sprintf(gT('Editing %s', 'unescaped'), $sFieldText)); ?>;
                 }
 
                 function html_transfert()
@@ -102,7 +102,7 @@
                     }
                     ?>
 
-                    window.opener.document.getElementById('<?php echo $sFieldName; ?>').value = editedtext;
+                    window.opener.document.getElementById(<?php echo CJavaScript::encode($sFieldName); ?>).value = editedtext;
                 }
 
 
@@ -110,9 +110,9 @@
                 {
                     html_transfert();
 
-                    window.opener.document.getElementById('<?php echo $sFieldName; ?>').readOnly= false;
-                    window.opener.document.getElementById('<?php echo $sControlIdEna; ?>').style.display='';
-                    window.opener.document.getElementById('<?php echo $sControlIdDis; ?>').style.display='none';
+                    window.opener.document.getElementById(<?php echo CJavaScript::encode($sFieldName); ?>).readOnly= false;
+                    window.opener.document.getElementById(<?php echo CJavaScript::encode($sControlIdEna); ?>).style.display='';
+                    window.opener.document.getElementById(<?php echo CJavaScript::encode($sControlIdDis); ?>).style.display='none';
                     window.opener.focus();
                     return true;
                 }
