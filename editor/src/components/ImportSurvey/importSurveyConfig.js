@@ -15,12 +15,11 @@ export const IMPORT_SURVEY_GROUP_STRATEGIES = {
 export const getImportSurveyGroupOptions = () => [
   {
     value: IMPORT_SURVEY_GROUP_STRATEGIES.DEFAULT,
-    label: t('Default survey group') || 'Default survey group',
+    label: t('Default survey group')
   },
   {
     value: IMPORT_SURVEY_GROUP_STRATEGIES.FROM_SURVEY,
     label:
-      t('Keep the survey group from the imported file') ||
-      'Keep the survey group from the imported file',
+      t('Keep the survey group from the imported file')
   },
 ]
