@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v7.0.0!
+Welcome to LimeSurvey v7!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.9 (build 260812) to 7.0.10 (build 260813) August 13, 2026
+-Fixed issue #20652: [security]Reflected XSS in HTML Editor popup endpoint (#5231) (Carsten Schmitz)
+-Fixed issue #20651: [security] SQL Injection in CPDB through a token (#5226) (Stefan K)
+-Fixed issue #20648: [security] SQL injection in statistics (#5225) (Carsten Schmitz)
+-Fixed issue #LB-153: Manually editing a response on an encrypted question saves the value unencrypted leading to an error (Carsten Schmitz)
+-Fixed issue #AT-2238: Translate aria labels on modal close buttons (#5227) (SaraDimoska)
+-Fixed issue #AT-2222: Persist question attributes when exporting as TXT (#5191) (Rami S. Zaki)
+-Fixed issue #20623: HTTP Authorization header field not treated as case-insensitive leading to new editor not working (#5186) (Carsten Schmitz)
+-Fixed issue #20620: Statistic export failed with output format PDF and Excel (Carsten Schmitz)
+-Fixed issue #20181: Links in survey groups don't have correct appearance (Carsten Schmitz)
+#Updated translation: Thai by tomzt
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 7.0.8 (build 260806) to 7.0.9 (build 260812) August 11, 2026
 -Fixed issue #AT-1331: Open end screen URLs in a new tab (#5209) (Adil Moumni Abdou)
 -Fixed issue #20644: [security] ResponsesController::actionTime does not enforce survey response permissions (Carsten Schmitz)
