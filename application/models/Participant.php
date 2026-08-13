@@ -2041,13 +2041,14 @@ class Participant extends LSActiveRecord
         if (empty($survey)) {
             return false;
         }
-        // CDbCommand::select() passes a string containing "(" through verbatim, so an
-        // unvalidated fieldname here is arbitrary SQL.
         if (!self::isValidTokenAttributeFieldname($survey, $tokenFieldname)) {
             return false;
         }
-        $participantAttributeId = intval($participantAttributeId);
-        if ($participantAttributeId === 0) {
+        if (!preg_match('/^[1-9][0-9]*$/', (string) $participantAttributeId)) {
+            return false;
+        }
+        $participantAttributeId = (int) $participantAttributeId;
+        if (ParticipantAttributeName::model()->findByPk($participantAttributeId) === null) {
             return false;
         }
 
