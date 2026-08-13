@@ -568,7 +568,7 @@ class Themes extends SurveyCommonAction
 
         /* Keep Bootstrap package clean after loading template, because template can update Bootstrap */
 
-        $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
+        $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true);
 
         App()->getClientScript()->reset();
 
@@ -976,20 +976,44 @@ JAVASCRIPT
     }
 
     /**
-     * Load CodeMirror editor and various files information.
+     * Loads the CodeMirror editor and collects various file information for the template editor view.
      *
-     * @access protected
-     * @param string $templatename
-     * @param string $screenname
-     * @param string $editfile
-     * @param string $templates
-     * @param string $files
-     * @param string $cssfiles
-     * @param array $otherfiles
-     * @param array $myoutput
-     * @return array
+     * This method prepares all data required to render the theme/template editor summary view,
+     * including writing a temporary HTML preview file, determining the ACE editor syntax mode
+     * based on the file extension, and assembling view data such as file lists, editor mode,
+     * and template configuration.
+     *
+     * @param string $templatename The name of the template being edited.
+     * @param string $screenname The name of the current screen (e.g. 'welcome', 'question').
+     * @param string $editfile The absolute path to the file currently open in the editor.
+     * @param string $relativePathEditfile The relative path of the file being edited (used for saving).
+     * @param array $templates List of all available templates.
+     * @param array $files List of view/screen files for the current template.
+     * @param array $cssfiles List of CSS files for the current template.
+     * @param array $jsfiles List of JavaScript files for the current template.
+     * @param array $otherfiles List of other (non-view, non-CSS, non-JS) files.
+     * @param array $globalfiles List of global (shared) files available across templates.
+     * @param string $myoutput The rendered HTML output for the template preview iframe.
+     * @param bool $isGlobalFile Whether the file being edited is a global (shared) file.
+     *                                         Defaults to false.
+     *
+     * @return array $aViewUrls Array containing the view URL key 'templatesummary_view' with the
+     *                          assembled data array to be passed to the view renderer.
      */
-    protected function templatesummary($templatename, $screenname, $editfile, $relativePathEditfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
+    protected function templatesummary(
+        $templatename,
+        $screenname,
+        $editfile,
+        $relativePathEditfile,
+        $templates,
+        $files,
+        $cssfiles,
+        $jsfiles,
+        $otherfiles,
+        $globalfiles,
+        $myoutput,
+        $isGlobalFile = false
+    )
     {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
@@ -1005,7 +1029,7 @@ JAVASCRIPT
         $aData['templateclasseditormode'] = $templateclasseditormode;
 
         // The following lines are forcing the browser to refresh the templates on each save
-        @$fnew = fopen("$tempdir/template_temp_$time.html", "w+");
+        $fnew = @fopen("$tempdir/template_temp_$time.html", "w+");
         $aData['time'] = $time;
         /* Load this template config, else 'survey-template' package can be outdated */
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, null, null, true)->prepareTemplateRendering($templatename);
@@ -1054,8 +1078,6 @@ JAVASCRIPT
 
         $sFileDisplayName = ltrim(str_replace(Yii::app()->getConfig('rootdir'), '', $editfile), DIRECTORY_SEPARATOR);
 
-        $editableCssFiles = $oEditedTemplate->getValidScreenFiles("css");
-        $filesdir = $oEditedTemplate->filesPath;
         $aData['oEditedTemplate'] = $oEditedTemplate;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
@@ -1065,12 +1087,13 @@ JAVASCRIPT
         $aData['templatename'] = $templatename;
         $aData['templates'] = $templates;
         $aData['files'] = $files;
-        $aData['cssfiles'] = $editableCssFiles;
+        $aData['cssfiles'] = $cssfiles;
         $aData['jsfiles'] = $jsfiles;
         $aData['otherfiles'] = $otherfiles;
-        $aData['filespath'] = $filesdir;
+        $aData['globalfiles'] = $globalfiles;
+        $aData['isGlobalFile'] = $isGlobalFile;
+        $aData['filespath'] = $oEditedTemplate->filesPath;
         $aData['tempurl'] = $tempurl;
-        $aData['time'] = $time;
         $aData['sEditorFileType'] = $sEditorFileType;
         $aData['sTemplateEditorMode'] = $sTemplateEditorMode;
 
@@ -1087,7 +1110,7 @@ JAVASCRIPT
      * @param string $screenname
      * @param string $editfile
      * @param bool $showsummary
-     * @return void
+     * @return array
      */
     protected function initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
@@ -1103,7 +1126,9 @@ JAVASCRIPT
         $sContentFile = $oEditedTemplate->getContentForScreen($screenname);
         $cssfiles     = $oEditedTemplate->getValidScreenFiles("css");
         $jsfiles      = $oEditedTemplate->getValidScreenFiles("js");
-        $editfile     = (empty($editfile) || ! ( in_array($editfile, $files) || in_array($editfile, $cssfiles) || in_array($editfile, $jsfiles)  )) ? $sLayoutFile : $editfile;
+        $otherfiles   = $oEditedTemplate->getOtherFiles();
+        $globalfiles  = $oEditedTemplate->getGlobalFiles();
+        // NOTE: editfile fallback to $sLayoutFile is handled below together with global file detection.
 
         // Standard screens
         $screens = $oEditedTemplate->getScreensList();
@@ -1131,26 +1156,17 @@ JAVASCRIPT
         if (!isset($aAllTemplates[$templatename])) {
             $templatename = Yii::app()->getConfig('defaulttheme');
         }
-
-        $normalfiles = array("DUMMYENTRY", ".", "..", "preview.png");
-        $normalfiles = $normalfiles + $files + $cssfiles;
         // Some global data
         $aData['sitename'] = Yii::app()->getConfig('sitename');
-        $siteadminname  = Yii::app()->getConfig('siteadminname');
-        $siteadminemail = Yii::app()->getConfig('siteadminemail');
 
         // NB: Used by answer print PDF layout.
         $print = [];
 
         $thissurvey  = $oEditedTemplate->getDefaultDataForRendering();
-        $templatedir = $oEditedTemplate->viewPath;
-        $templateurl = getTemplateURL($templatename);
 
         // Save these variables in an array
         // TODO: check if this aData is still used
-        $aData['thissurvey']       = $thissurvey;
-        $aGlobalReplacements       = array();
-        $myoutput[]                = "";
+        $aData['thissurvey'] = $thissurvey;
 
 
         switch ($screenname) {
@@ -1177,7 +1193,7 @@ JAVASCRIPT
                 );
 
                 $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array(), true);
-                $aData['aReplacements'] = array_merge($aGlobalReplacements, $aReplacements);
+                $aData['aReplacements'] = $aReplacements;
                 break;
 
             case 'register':
@@ -1191,7 +1207,9 @@ JAVASCRIPT
 
             case 'printablesurvey':
                 $sLayoutFile = "TODO";
-                $aData['aReplacements'] = $aGlobalReplacements;
+                $templatedir = $oEditedTemplate->viewPath;
+                $templateurl = getTemplateURL($templatename);
+                $aData['aReplacements'] = [];
                 $questionoutput = array();
                 foreach (file("$templatedir/print_question.pstpl") as $op) {
                     $questionoutput[] = templatereplace($op, array(
@@ -1282,9 +1300,6 @@ JAVASCRIPT
             $myoutput .= $ex->getMessage();
         }
 
-
-
-        $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles, $jsfiles);
 
         // XML Behaviour: if only one file, then $files is just a string
@@ -1292,8 +1307,14 @@ JAVASCRIPT
             $files = array(0 => $files);
         }
 
-        $otherfiles = $oEditedTemplate->getOtherFiles();
-        $sEditfile = $oEditedTemplate->getFilePathForEditing($editfile, array_merge($files, $aCssAndJsfiles));
+        // A global file path is already absolute — use it directly without getFilePathForEditing.
+        $isGlobalFile = in_array($editfile, $globalfiles);
+        if ($isGlobalFile) {
+            $sEditfile = $editfile;
+        } else {
+            $editfile  = (empty($editfile) || !(in_array($editfile, $files) || in_array($editfile, $cssfiles) || in_array($editfile, $jsfiles))) ? $sLayoutFile : $editfile;
+            $sEditfile = $oEditedTemplate->getFilePathForEditing($editfile, array_merge($files, $aCssAndJsfiles));
+        }
 
         $extension = substr(strrchr((string) $sEditfile, "."), 1);
         $highlighter = 'html';
@@ -1308,6 +1329,7 @@ JAVASCRIPT
         $aData['templateapiversion'] = $oEditedTemplate->getApiVersion();
         $aData['templates'] = $aAllTemplates;
         $aData['editfile'] = $sEditfile;
+        $aData['isGlobalFile'] = $isGlobalFile;
         $aData['screenname'] = $screenname;
         $aData['tempdir'] = Yii::app()->getConfig('tempdir');
         $aData['userthemerootdir'] = Yii::app()->getConfig('userthemerootdir');
@@ -1318,7 +1340,23 @@ JAVASCRIPT
 
         if ($showsummary) {
             Yii::app()->clientScript->registerPackage($oEditedTemplate->sPackageName);
-            $aViewUrls = array_merge($aViewUrls, $this->templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
+            $aViewUrls = array_merge(
+                $aViewUrls,
+                $this->templatesummary(
+                    $templatename,
+                    $screenname,
+                    $sEditfile,
+                    $editfile,
+                    $aAllTemplates,
+                    $files,
+                    $cssfiles,
+                    $jsfiles,
+                    $otherfiles,
+                    $globalfiles,
+                    $myoutput,
+                    $isGlobalFile
+                )
+            );
         }
 
 

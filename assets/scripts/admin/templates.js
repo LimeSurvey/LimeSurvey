@@ -10,6 +10,11 @@ $(document).on('ready pjax:scriptcomplete', function(){
         'toolbarCallback' : createToolbar
     });
 
+    // Global files are view-only — lock the ACE editor after initialization.
+    if ($('.ace.global-file-readonly').length && document.getElementById('changes__ace')) {
+        ace.edit('changes__ace').setReadOnly(true);
+    }
+
     $('.jquery-ace-wrapper').addClass('card');
 
     const changesAce = document.getElementById('changes__ace');
