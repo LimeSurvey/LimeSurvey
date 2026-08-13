@@ -68,7 +68,18 @@
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => true]); ?>
 
                 <!-- Render the modal for importing a survey -->
-                <?php App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'importSurveyFileUpload.js', LSYii_ClientScript::POS_BEGIN); ?>
+                <?php
+                $importSurveyStyleUrl = Yii::app()->getConfig('publicstyleurl') . 'importSurveyModal.css';
+                $importSurveyScriptUrl = Yii::app()->getConfig('adminscripts') . 'importSurveyFileUpload.js';
+                if (YII_DEBUG) {
+                    $importSurveyStylePath = Yii::app()->getConfig('rootdir') . '/assets/styles-public/importSurveyModal.css';
+                    $importSurveyScriptPath = Yii::app()->getConfig('rootdir') . '/assets/scripts/admin/importSurveyFileUpload.js';
+                    $importSurveyStyleUrl .= '?v=' . filemtime($importSurveyStylePath);
+                    $importSurveyScriptUrl .= '?v=' . filemtime($importSurveyScriptPath);
+                }
+                App()->getClientScript()->registerCssFile($importSurveyStyleUrl);
+                App()->getClientScript()->registerScriptFile($importSurveyScriptUrl, LSYii_ClientScript::POS_BEGIN);
+                ?>
                 <?php $this->renderPartial("/surveyAdministration/partial/_modalImportSurvey", []);?>
 
                 <?php App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'copySurvey.js', LSYii_ClientScript::POS_BEGIN); ?>

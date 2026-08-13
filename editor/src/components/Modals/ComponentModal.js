@@ -32,7 +32,7 @@ export const ComponentModal = ({
           className="modal-close-button p-0"
           variant="link"
           onClick={onHide}
-          aria-label="Close"
+          ariaLabel={t('Close')}
         >
           <CloseIcon className="text-black fill-current" />
         </Button>
