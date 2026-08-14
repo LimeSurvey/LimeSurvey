@@ -1636,6 +1636,12 @@ class UserManagementController extends LSBaseController
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
+            if ($newUser === null) {
+                return [
+                    'success' => false,
+                    'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
+                ];
+            }
             $success = true;
             $sReturnMessage = gT('User successfully created', 'unescaped');
 
