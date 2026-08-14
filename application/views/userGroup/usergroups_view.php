@@ -47,7 +47,7 @@
         </div>
 </div>
 
-    <h2  class="h4"><?php
+    <h2 class="h4"><?php
     if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
         eT('Groups to which I belong');
     }
