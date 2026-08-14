@@ -21,7 +21,7 @@ export const SurveyTitleSelector = ({
   canEditProjectTitle,
 }) => {
   const [surveyTitleIsFocused, setSurveyTitleIsFocused] = useState(false)
-  const [formOpen, setFormOpen] = useState(false)
+  const [projectFormOpen, setProjectFormOpen] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState(false)
   const titleRef = useRef(null)
@@ -51,6 +51,24 @@ export const SurveyTitleSelector = ({
     return () => resizeObserver.disconnect()
   }, [])
 
+  const onKeyDownProjectFormOpen = (e) => {
+    if (e.key === 'Escape') {
+      handleCloseForm()
+    } else if (e.key === 'Enter') {
+      handleSave(projectTitle)
+    }
+  }
+
+  useEffect(() => {
+    document.removeEventListener('keydown', onKeyDownProjectFormOpen)
+
+    if (projectFormOpen) {
+      document.addEventListener('keydown', onKeyDownProjectFormOpen)
+    } else {
+      document.removeEventListener('keydown', onKeyDownProjectFormOpen)
+    }
+  }, [projectFormOpen])
+
   const handleSurveyTitleFocusChange = useCallback(
     (isFocused) => () => {
       setSurveyTitleIsFocused(isFocused)
@@ -66,11 +84,11 @@ export const SurveyTitleSelector = ({
 
   const handleOpenForm = () => {
     setSaveError(false)
-    setFormOpen(true)
+    setProjectFormOpen(true)
   }
 
   const handleCloseForm = () => {
-    setFormOpen(false)
+    setProjectFormOpen(false)
     setSaveError(false)
   }
 
@@ -80,7 +98,7 @@ export const SurveyTitleSelector = ({
     setSaveError(false)
     try {
       await onProjectTitleSave(value)
-      setFormOpen(false)
+      setProjectFormOpen(false)
     } catch {
       setSaveError(true)
     } finally {
@@ -99,6 +117,7 @@ export const SurveyTitleSelector = ({
           projectTitle={projectTitle}
           canEdit={canEditProjectTitle}
           onClick={handleOpenForm}
+          showBadge={survey.showQNumCode?.showNumber}
         />
         <div className="d-flex align-items-center">
           <ContentEditor
@@ -119,7 +138,9 @@ export const SurveyTitleSelector = ({
             <Button
               className={classNames('project-title-plus-btn ms-2', {
                 'pointer-events-none opacity-0':
-                  !canEditProjectTitle || !surveyTitleIsFocused,
+                  !canEditProjectTitle ||
+                  !surveyTitleIsFocused ||
+                  !survey.showQNumCode?.showNumber,
               })}
               aria-label={t('Add project title')}
               onMouseDown={(e) => {
@@ -140,9 +161,10 @@ export const SurveyTitleSelector = ({
             titleRef={titleRef}
             titleSelectOffset={TITLE_SELECT_OFFSET}
             handleSurveySwitch={handleSurveySwitch}
+            showCode={survey.showQNumCode?.showCode}
           />
         </div>
-        {formOpen && (
+        {projectFormOpen && (
           <ProjectTitleForm
             initialValue={projectTitle}
             isNew={!projectTitle}

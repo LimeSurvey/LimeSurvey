@@ -22,11 +22,20 @@ export const ProjectTitleForm = ({
     setValue(initialValue)
   }, [initialValue])
 
-  const handleKeyDown = (e) => {
+  const onKeyDownProjectFormOpen = (e) => {
     if (e.key === 'Escape') {
       onCancel()
+    } else if (e.key === 'Enter') {
+      onSave(value.trim())
     }
   }
+
+  useEffect(() => {
+    document.addEventListener('keydown', onKeyDownProjectFormOpen)
+
+    return () =>
+      document.removeEventListener('keydown', onKeyDownProjectFormOpen)
+  }, [])
 
   const isSaveDisabled = isNew ? value.trim() === '' : false
 
@@ -53,7 +62,6 @@ export const ProjectTitleForm = ({
           placeholder={t('Enter here')}
           maxLength={255}
           onChange={(e) => setValue(e.target.value)}
-          onKeyDown={handleKeyDown}
           aria-describedby={saveError ? 'project-title-error' : undefined}
           focus={true}
         />
