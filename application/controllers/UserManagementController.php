@@ -907,6 +907,7 @@ class UserManagementController extends LSBaseController
         $created = [];
         $updated = [];
         $hasDuplicateIdentity = false;
+        $hasInvalidUsername = false;
         $canOverwriteDuplicateEmail = false;
         $existingAttributes = User::model()->attributeNames();
         $dateAttributes = ['last_login', 'validation_key_expiration','last_forgot_email_password','expires'];
@@ -958,6 +959,11 @@ class UserManagementController extends LSBaseController
                     }
                 }
             } else {
+                $aNewUser['users_name'] = flattenText($aNewUser['users_name'] ?? '');
+                if (empty($aNewUser['users_name'])) {
+                    $hasInvalidUsername = true;
+                    continue;
+                }
                 if (empty($aNewUser['password']) || $aNewUser['password'] == ' ') {
                     $aNewUser['password'] = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 }
@@ -989,6 +995,10 @@ class UserManagementController extends LSBaseController
         }
         if (count($created) || count($updated)) {
             Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
+        }
+
+        if ($hasInvalidUsername) {
+            Yii::app()->setFlashMessage(gT("A username was not supplied or the username is invalid."), 'warning');
         }
 
         if ($hasDuplicateIdentity) {
