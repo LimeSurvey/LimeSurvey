@@ -21690,7 +21690,7 @@
     <anonymized><![CDATA[N]]></anonymized>
     <format><![CDATA[G]]></format>
     <savetimings><![CDATA[N]]></savetimings>
-    <template><![CDATA[fruity]]></template>
+    <template><![CDATA[fruity_twentythree]]></template>
     <language><![CDATA[en]]></language>
     <additional_languages><![CDATA[de]]></additional_languages>
     <datestamp><![CDATA[N]]></datestamp>
@@ -21973,7 +21973,7 @@ Die folgenden Antworten wurden vom Teilnehmer gegeben:<br />
  <themes>
   <theme>
    <sid>677795</sid>
-   <template_name>fruity</template_name>
+   <template_name>fruity_twentythree</template_name>
    <config>
     <options>inherit</options>
    </config>
@@ -21982,13 +21982,13 @@ Die folgenden Antworten wurden vom Teilnehmer gegeben:<br />
  <themes_inherited>
   <theme>
    <sid>677795</sid>
-   <template_name>fruity</template_name>
+   <template_name>fruity_twentythree</template_name>
    <config>
     <options>
      <ajaxmode>off</ajaxmode>
      <fixnumauto>enable</fixnumauto>
      <brandlogo>on</brandlogo>
-     <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
+     <brandlogofile>themes/survey/fruity_twentythree/files/logo.png</brandlogofile>
      <container>on</container>
      <backgroundimage>off</backgroundimage>
      <animatebody>off</animatebody>
