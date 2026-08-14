@@ -915,6 +915,11 @@ class UserManagementController extends LSBaseController
             // Unset not imported or invalid attribute
             $aNewUser = array_intersect_key($aNewUser, array_flip($existingAttributes));
             $aNewUser = array_diff_key($aNewUser, array_flip(['uid','parent_id', 'created', 'modified']));
+            $aNewUser['users_name'] = flattenText($aNewUser['users_name'] ?? '');
+            if (empty($aNewUser['users_name'])) {
+                $hasInvalidUsername = true;
+                continue;
+            }
             $oUser = User::model()->find(
                 'users_name = :name OR email = :email',
                 [
@@ -959,11 +964,6 @@ class UserManagementController extends LSBaseController
                     }
                 }
             } else {
-                $aNewUser['users_name'] = flattenText($aNewUser['users_name'] ?? '');
-                if (empty($aNewUser['users_name'])) {
-                    $hasInvalidUsername = true;
-                    continue;
-                }
                 if (empty($aNewUser['password']) || $aNewUser['password'] == ' ') {
                     $aNewUser['password'] = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 }
@@ -977,7 +977,7 @@ class UserManagementController extends LSBaseController
                     'email' => $aNewUser['email'],
                     'lang' => $aNewUser['lang'],
                 ]);
-                if ($newUserAttributes) {
+                if (is_array($newUserAttributes) && isset($newUserAttributes['uid'])) {
                     /* Update it with other attributes */
                     $oUser = User::model()->findByPk($newUserAttributes['uid']);
                     $aNewUserExtra = array_diff_key($aNewUser, array_flip(['users_name','full_name', 'password', 'email', 'lang']));
@@ -1676,10 +1676,10 @@ class UserManagementController extends LSBaseController
      * @todo : move to private function
      *
      * @param array $aUser array with user details
-     * @return array returns all attributes from model user as an array
+     * @return array|null returns all attributes from model user as an array, or null when rendering an error response directly
      * @throws CException
      */
-    public function createNewUser(array $aUser): array
+    public function createNewUser(array $aUser): ?array
     {
         if (!App()->getRequest()->getIsPostRequest()) {
             throw new CHttpException(400, gT('Your request is invalid.'));
