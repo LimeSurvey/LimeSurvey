@@ -31,7 +31,7 @@ Yii::app()->getController()->renderPartial(
         'type' => 'info',
     ]);
     ?>
-    <div class="md-3" id="UserManagement--errors">
+    <div class="mb-3 d-none" id="UserManagement--errors" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1">
     </div>
     <div class="mb-3 ">
         <input type="checkbox" name="overwrite" value="overwrite" id="overwrite">
