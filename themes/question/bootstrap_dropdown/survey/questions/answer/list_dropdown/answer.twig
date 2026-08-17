@@ -87,10 +87,15 @@
                     || event.target.closest('.bootstrap-select') !== $bsWrapper.get(0)) {
                     return;
                 }
+                var isOpen = $bsToggle.attr('aria-expanded') === 'true';
+
+                if (event.key === 'Escape' && !isOpen) {
+                    return;
+                }
+
                 event.stopPropagation();
                 event.preventDefault();
 
-                var isOpen = $bsToggle.attr('aria-expanded') === 'true';
                 var $listbox = $bsWrapper.find('[role="listbox"]').first();
                 var target = (isOpen && $listbox.length) ? $listbox.get(0) : $bsToggle.get(0);
 
