@@ -1,12 +1,10 @@
 // Import shared mocks
 import 'tests/mocks'
 
-import { act, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { renderWithProviders } from 'tests/testUtils'
-import { queryClient } from 'queryClient'
-import { STATES } from 'helpers'
 
 import { MeatballMenu } from './MeatballMenu'
 describe('MeatballMenu', () => {

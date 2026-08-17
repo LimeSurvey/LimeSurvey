@@ -19,6 +19,12 @@
     letter-spacing: -0.5px;
   }
 
+  // The inner <input> drops its native outline, so surface focus on the wrapper.
+  &.form-control.form-control-sm:focus-within {
+    border-color: $grape;
+    box-shadow: 0 0 0 3px rgba($grape, 0.2);
+  }
+
   &-icon {
     flex-shrink: 0;
     color: $g-700;
