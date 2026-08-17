@@ -403,6 +403,7 @@ class QuotasController extends LSBaseController
 
         if (!$quotaService->checkActionPermissions($action)) {
             $this->renderJSON(['success' => false, 'message' => gT('Access denied!')]);
+            return;
         }
 
        // $sItems = Yii::app()->request->getPost('sItems', '');
