@@ -87,6 +87,7 @@ export const ArrayColumnTitle = ({
             value={title}
             update={(value) => handleUpdateL10ns(value, index)}
             disabled={isNoAnswer}
+            showToolbar={true}
             focus={hasTempId(id) && !hasTempId(qid) && !isTitleFocused}
           />
         </div>

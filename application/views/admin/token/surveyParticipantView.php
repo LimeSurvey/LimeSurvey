@@ -132,6 +132,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                         'columns'               => $model->getAttributesForGrid(),
                         'ajaxUpdate'            => 'token-grid',
                         'ajaxType'              => 'POST',
+                        'lsSelectAllEnabled'    => true,
                         'lsAfterAjaxUpdate'     => ['onUpdateTokenGrid();', 'switchStatusOfListActions();', 'LS.restoreFocusAfterSort("token-grid");']
                     ]);
                 } elseif (!empty($emptyGridDataProvider)) {

@@ -476,6 +476,16 @@ class LimeMailer extends PHPMailer
     }
 
     /**
+     * Add and replace current expression replacement to current one
+     * @param string[]
+     * @return void
+     */
+    public function addAndReplaceReplacement($replacements)
+    {
+        $this->aReplacements = array_merge($this->aReplacements, $replacements);
+    }
+
+    /**
      * Hate to use global var
      * maybe add format : raw (array of errors), html : clean html etc …
      * @param string $format (currently only html or null (return array))
@@ -823,9 +833,11 @@ class LimeMailer extends PHPMailer
         $resendHeader['message_type'] = $this->message_type;
         $resendHeader['Subject'] = $this->Subject;
         $resendHeader['uniqueid'] = $this->uniqueid;
-        $resendHeader['boundary'][1] = $this->boundary[1];
-        $resendHeader['boundary'][2] = $this->boundary[2];
-        $resendHeader['boundary'][3] = $this->boundary[3];
+        // The boundary array is only populated once the MIME message is built (preSend).
+        // When sending fails before that (e.g. a missing attachment) it stays empty, so guard the keys.
+        $resendHeader['boundary'][1] = $this->boundary[1] ?? '';
+        $resendHeader['boundary'][2] = $this->boundary[2] ?? '';
+        $resendHeader['boundary'][3] = $this->boundary[3] ?? '';
         $resendHeader['MIMEBody'] = $this->MIMEBody;
 
         return $resendHeader;
@@ -902,9 +914,13 @@ class LimeMailer extends PHPMailer
     }
 
     /**
-     * Do the replacements : if current replacement jey is set and LimeSurvey core have it too : it reset to the needed one.
-     * @param string $string where need to replace
-     * @return string
+     * Do the replacements : by order
+     * 1. Core replacement (SID, ADMINNAME ...)
+     * 2. Token replacement (TOKEN:) and if needed FIRSTNAME, LASTNAME AND ATTRIBUTE_X
+     * 3. The aReplacements set by external function
+     * The aReplacements can replace core and token replacement (by key)
+     * @param string $string original string
+     * @return string updated by LimeExpressionManager
      */
     public function doReplacements($string)
     {
@@ -928,6 +944,8 @@ class LimeMailer extends PHPMailer
             $string = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{" . "$1" . "}", $string);
         }
         $aReplacements = array_merge($aReplacements, $aTokenReplacements);
+        $aReplacements = array_merge($aReplacements, $this->aReplacements);
+        /* Replace URL placeholders for all replacements */
         foreach ($this->aUrlsPlaceholders as $urlPlaceholder) {
             if (!empty($aReplacements["{$urlPlaceholder}URL"])) {
                 $url = $aReplacements["{$urlPlaceholder}URL"];
@@ -937,7 +955,6 @@ class LimeMailer extends PHPMailer
                 }
             }
         }
-        $aReplacements = array_merge($aReplacements, $this->aReplacements);
         return LimeExpressionManager::ProcessString($string, null, $aReplacements, 3, 1, false, false, true);
     }
 
