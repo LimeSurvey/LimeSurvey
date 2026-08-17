@@ -185,8 +185,8 @@ class UserStatusTest extends TestBaseClassWeb
         // Open massive action menu
         $web->findByCss('.massiveAction')->click();
 
-        // Click "Edit status"
-        $web->findByLinkText('Edit status')->click();
+        // Click "Set status"
+        $web->findByCss('a[data-action="batchStatus"]')->click();
 
         // Wait for modal to show
         $web->waitById('massive-actions-modal-usermanagement--identity-gridPanel-batchStatus-3');

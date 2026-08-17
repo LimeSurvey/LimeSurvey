@@ -28,6 +28,13 @@ class CLSGridView extends TbGridView
     public array $lsAdditionalColumnsSelected = [];
 
     /**
+     * When true, the selection bar offers a "Select all" button that selects the
+     * whole result set; massive actions then post a selectAll flag plus the grid filters.
+     * @var bool
+     */
+    public bool $lsSelectAllEnabled = false;
+
+    /**
      * string for a link that is on every row
      * @var string
      */
@@ -38,6 +45,13 @@ class CLSGridView extends TbGridView
      * @var string|null
      */
     public $caption;
+
+    /**
+     * Whether to render the cross-pagination selection bar below the grid.
+     * Set to false for grids that use the FloatingActionsWidget to show the count in the floating bar.
+     * @var bool
+     */
+    public $showSelectionBar = true;
 
     /**
      *
@@ -52,7 +66,10 @@ class CLSGridView extends TbGridView
         $this->htmlOptions['class'] = 'grid-view-ls';
         $this->htmlOptions['data-select-all-label'] = gT('Select all');
         $classes = ['table', 'table-hover'];
-        $this->template = $this->render('template', ['massiveActionTemplate' => $this->massiveActionTemplate], true);
+        $this->template = $this->render('template', [
+            'massiveActionTemplate' => $this->massiveActionTemplate,
+            'showSelectionBar'      => $this->showSelectionBar,
+        ], true);
         $this->rowLink();
         $this->lsAfterAjaxUpdate();
         if (!empty($classes)) {

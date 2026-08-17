@@ -133,6 +133,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                           !isTitleFocused
                         }
                         testId="ranking-advanced-subquestion-content-editor"
+                        showToolbar={true}
                       />
                     </div>
                     <div

@@ -16,6 +16,7 @@ export const TinyMCE = ({
   disabled = false,
   onBlur,
   onFocus,
+  onKeyDown = () => {},
   handleOnChange,
   placeholder,
   value = '',
@@ -170,6 +171,7 @@ export const TinyMCE = ({
         init={{
           setup: (editor) => {
             mceToolbar(editor)
+            editor.on('keydown', onKeyDown)
             toolbarActions(
               editor,
               openHtmlEditorRef,

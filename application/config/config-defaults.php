@@ -893,5 +893,7 @@ $config['allow_unserialize_attachments'] = false;
 // @see https://bugs.limesurvey.org/view.php?id=20495
 $config['twig_getConfig_extraallowlist'] = null;
 
+$config['editorEnabled'] = true;
+
 return $config;
 //settings deleted

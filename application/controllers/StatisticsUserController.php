@@ -65,8 +65,6 @@ class StatisticsUserController extends SurveyController
         $iSurveyID = (int)$survey->sid;
         $this->iSurveyID = $survey->sid;
 
-        //$postlang = returnglobal('lang');
-        //~ Yii::import('application.libraries.admin.progressbar',true);
         Yii::app()->loadHelper("userstatistics");
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('surveytranslator');

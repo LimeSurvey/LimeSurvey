@@ -179,6 +179,11 @@ class SubQuestionsService
         $subquestion->sid = $question->sid;
         $subquestion->gid = $question->gid;
         $subquestion->parent_qid = $question->qid;
+
+        if ($question->type === Question::QT_R_RANKING) {
+            $subquestion->type = Question::QT_R_RANKING;
+        }
+
         $subquestion->question_order = $questionOrder;
         $questionOrder++;
         if ($scaleId === 0) {

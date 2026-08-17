@@ -190,24 +190,6 @@ export const SurveyHeader = ({
                   />
                 </TooltipContainer>
               </div>
-              <div ref={titleRef}>
-                <ContentEditor
-                  value={welcomeTitle}
-                  id="survey-header-welcome-title"
-                  className="welcome-title"
-                  update={(value) => handleUpdate({ welcomeText: value })}
-                  placeholder={t('Welcome title')}
-                  language={activeLanguage}
-                  useRichTextEditor={true}
-                  noPermissionDisabled={true}
-                  showToolTip={false}
-                  testId="survey-header-welcome-title"
-                  showToolbar={true}
-                  disabled={false}
-                  surveyHeader={true}
-                  attributeDescriptions={attributeDescriptions}
-                />
-              </div>
               <ContentEditor
                 id="survey-header-welcome-description"
                 className="welcome-description"
@@ -218,9 +200,8 @@ export const SurveyHeader = ({
                   disabled: !hasSurveyUpdatePermission,
                 })}
                 update={(value) => handleUpdate({ description: value })}
-                placeholder={t('Welcome description')}
+                placeholder={t('Description')}
                 language={language}
-                useRichTextEditor={true}
                 noPermissionDisabled={true}
                 showToolTip={false}
                 testId="survey-header-welcome-description"
@@ -229,15 +210,32 @@ export const SurveyHeader = ({
                 surveyHeader={true}
                 attributeDescriptions={attributeDescriptions}
               />
+              <div ref={titleRef}>
+                <ContentEditor
+                  value={welcomeTitle}
+                  id="survey-header-welcome-title"
+                  className="welcome-title"
+                  update={(value) => handleUpdate({ welcomeText: value })}
+                  placeholder={t('Welcome message')}
+                  language={activeLanguage}
+                  noPermissionDisabled={true}
+                  showToolTip={false}
+                  testId="survey-header-welcome-title"
+                  showToolbar={true}
+                  disabled={false}
+                  surveyHeader={true}
+                  attributeDescriptions={attributeDescriptions}
+                />
+              </div>
               <div className={classNames('ms-1 transition-all')}>
                 {showXQuestions && (
                   <p className="text-secondary mt-3 show-x-questions">
-                    {format(
-                      numberOfQuestions === 1
-                        ? st('There is 1 question in this survey.')
-                        : st('There are %s questions in this survey.'),
-                      numberOfQuestions
-                    )}
+                    {numberOfQuestions === 1
+                      ? st('There is 1 question in this survey.')
+                      : format(
+                          st('There are %s questions in this survey.'),
+                          numberOfQuestions
+                        )}
                   </p>
                 )}
                 {showPrivacyPolicy && (
