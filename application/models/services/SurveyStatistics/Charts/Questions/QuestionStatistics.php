@@ -11,6 +11,7 @@ use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
     ArrayTextProcessor,
     MultipleChoiceProcessor,
+    MultipleNumericalProcessor,
     NumericalProcessor,
     ResponseAggregateBatch,
     SingleOptionMultipleChartsProcessor,
@@ -65,7 +66,7 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_1_ARRAY_DUAL => fn() => new DualScaleProcessor(),
 
             // No statistics for these types of questions
-            Question::QT_K_MULTIPLE_NUMERICAL => fn() => null,
+            Question::QT_K_MULTIPLE_NUMERICAL => fn() => new MultipleNumericalProcessor(),
             Question::QT_ASTERISK_EQUATION => fn() => null,
             Question::QT_D_DATE => fn() => null,
             Question::QT_VERTICAL_FILE_UPLOAD => fn() => null,

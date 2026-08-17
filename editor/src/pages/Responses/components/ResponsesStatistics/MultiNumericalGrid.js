@@ -1,43 +1,23 @@
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { format } from 'util'
 
-import {
-  HighlightedText,
-  LSTable,
-  SearchInput,
-  useSearchTerms,
-} from 'components'
+import { HighlightedText, SearchInput, useSearchTerms } from 'components'
 import { htmlToPlainText } from 'helpers'
 import { useQuestionResponses } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
 import { formatAnswerDate } from './ChartsUtils.js'
 
-// Two-tone subquestion header: "<Y subquestion> - <X subquestion>" with the X
-// part styled as secondary, matching the responses grid.
-const ColumnHeader = ({ primary, secondary }) => (
-  <>
-    <span className="responses-statistics-array-text-col-primary">
-      {htmlToPlainText(primary)}
-    </span>
-    {secondary && (
-      <span className="responses-statistics-array-text-col-secondary">
-        {' - '}
-        {htmlToPlainText(secondary)}
-      </span>
-    )}
-  </>
-)
-
-export const ArrayTextTable = ({
+/**
+ * Per-response answers of a multiple numerical input (K): one card per
+ * participant, listing each subquestion and the number they entered.
+ */
+export const MultiNumericalGrid = ({
   surveyId,
   questionCode,
   fields,
   filters,
-  searchable = false,
-  scaleHeaders,
 }) => {
-  // Defer the fetch until the card scrolls into view, then keep it loaded.
   const [containerRef, isInView] = useIsInViewport(null, {
     initialInView: false,
   })
@@ -70,50 +50,23 @@ export const ArrayTextTable = ({
     search,
   })
 
-  // Dual-scale columns end in #<scale id>; label them with the question's
-  // scale headers when provided.
-  const secondaryFor = (column) => {
-    const scaleId = /#(\d+)$/.exec(column.key ?? '')?.[1]
-    return (scaleId != null && scaleHeaders?.[scaleId]) || column.secondary
-  }
-
-  const tableColumns = useMemo(
-    () => [
-      {
-        key: 'date',
-        title: <ColumnHeader primary={t('Date')} />,
-        sortable: true,
-        render: (row) => formatAnswerDate(row.date),
-      },
-      ...columns.map((column) => ({
-        key: column.key,
-        title: column.primary ? (
-          <ColumnHeader
-            primary={column.primary}
-            secondary={secondaryFor(column)}
-          />
-        ) : (
-          t('Answer')
-        ),
-        render: (row) => (
-          <div className="responses-statistics-array-text-cell">
-            <HighlightedText text={row[column.key]} terms={highlightTerms} />
-          </div>
-        ),
-      })),
-    ],
-    [columns, highlightTerms, scaleHeaders]
-  )
-
-  const tableRows = useMemo(
+  // One card per response: the subquestion label and the entered number.
+  const cards = useMemo(
     () =>
-      rows.map((row) => ({
-        id: row.responseId,
-        responseId: row.responseId,
-        date: row.date,
-        ...row.cells,
-      })),
-    [rows]
+      rows
+        .map((row) => ({
+          id: row.responseId,
+          date: row.date,
+          items: columns
+            .map((column) => ({
+              key: column.key,
+              label: htmlToPlainText(column.primary),
+              value: row.cells?.[column.key] ?? '',
+            }))
+            .filter((item) => item.value !== '' && item.value != null),
+        }))
+        .filter((card) => card.items.length),
+    [rows, columns]
   )
 
   const searchBlock = (
@@ -143,7 +96,6 @@ export const ArrayTextTable = ({
   )
 
   const renderContent = () => {
-    // Loader while waiting to come into view or while the first page loads.
     if (!shouldLoad || isLoading) {
       return (
         <div className="responses-statistics-comments-status">
@@ -152,19 +104,36 @@ export const ArrayTextTable = ({
       )
     }
 
-    if (!tableRows.length) {
+    if (!cards.length) {
       return emptyState
     }
 
     return (
       <>
-        <LSTable
-          columns={tableColumns}
-          data={tableRows}
-          rowId="id"
-          resizable
-          maxHeight="400px"
-        />
+        <div className="responses-statistics-grid responses-statistics-grid--two-col">
+          {cards.map((card) => (
+            <div className="responses-statistics-grid-row" key={card.id}>
+              <div className="responses-statistics-multi-numerical">
+                {card.items.map((item) => (
+                  <React.Fragment key={item.key}>
+                    <span className="responses-statistics-multi-numerical-label">
+                      {item.label}
+                    </span>
+                    <span className="responses-statistics-multi-numerical-value">
+                      <HighlightedText
+                        text={String(item.value)}
+                        terms={highlightTerms}
+                      />
+                    </span>
+                  </React.Fragment>
+                ))}
+              </div>
+              <span className="responses-statistics-grid-date">
+                {formatAnswerDate(card.date)}
+              </span>
+            </div>
+          ))}
+        </div>
         {hasNextPage && (
           <div className="responses-statistics-comments-more">
             <button
@@ -183,7 +152,7 @@ export const ArrayTextTable = ({
 
   return (
     <div ref={containerRef}>
-      {searchable && shouldLoad && searchBlock}
+      {shouldLoad && searchBlock}
       {renderContent()}
     </div>
   )

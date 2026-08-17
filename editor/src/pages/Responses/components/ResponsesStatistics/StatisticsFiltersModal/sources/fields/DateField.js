@@ -62,7 +62,7 @@ export const DateField = ({ value, placeholder, onChange }) => {
   }, [open])
 
   const handleSelect = (date) => {
-    onChange(date ? date.toJSON() : null)
+    onChange(date ? date.format('YYYY-MM-DD') : null)
     setOpen(false)
   }
 

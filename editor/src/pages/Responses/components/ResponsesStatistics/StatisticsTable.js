@@ -22,7 +22,11 @@ const AnswerCell = ({ row, isImage }) =>
 const withRowIds = (rows) =>
   rows.map((row, index) => ({ ...row, id: row.key ?? `row-${index}` }))
 
-export const StatisticsTable = ({ data = [], isImage = false }) => {
+export const StatisticsTable = ({
+  data = [],
+  isImage = false,
+  valueType = VALUE_TYPE.PERCENTAGE,
+}) => {
   const isRanking = data.some((item) => Array.isArray(item?.ranks))
   const isSegmented = data.some((item) => Array.isArray(item?.segments))
   const statsItem = data.find((item) => item?.stats)
@@ -162,8 +166,10 @@ export const StatisticsTable = ({ data = [], isImage = false }) => {
       ...getUnionSegments(data).map((segment, index) => ({
         key: `segment-${index}`,
         title: segment.title,
-        render: (row) =>
-          row.segments?.find((s) => s.title === segment.title)?.value ?? '',
+        render: (row) => {
+          const cell = row.segments?.find((s) => s.title === segment.title)
+          return cell ? getDisplayMetric(cell, valueType) : ''
+        },
       })),
     ]
     return (

@@ -50,6 +50,9 @@ const buildAnswerFilters = (
   }
 
   if (questionType === QT_O_LIST_WITH_COMMENT) {
+    if (selectedAnswer === 'NoAnswer') {
+      return []
+    }
     const baseField = fields.find((field) => !field.endsWith('comment'))
     if (baseField) {
       return [{ key: baseField, filterMethod: 'equal', value: selectedAnswer }]
@@ -227,7 +230,7 @@ export class StatisticsService {
           responseId: answer.responseId,
           comment: answer.value,
           subQuestion: isQuestionWide
-            ? (selectedByResponse[answer.responseId] ?? null)
+            ? (selectedByResponse[answer.responseId] ?? 'NoAnswer')
             : subQuestionCode ||
               answer.subquestion ||
               selectedByResponse[answer.responseId] ||

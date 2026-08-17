@@ -184,6 +184,26 @@ $statistics-tooltip-bg: #1f1f1f;
   }
 }
 
+.responses-statistics-multi-numerical {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 32px;
+  row-gap: 4px;
+  min-width: 0;
+
+  &-label {
+    color: $g-900;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-500;
+    word-break: break-word;
+  }
+
+  &-value {
+    color: $g-900;
+    font-size: $font-size-sm;
+  }
+}
+
 .responses-statistics-array-text-col-primary {
   font-weight: 600;
   color: $g-900;
@@ -567,6 +587,19 @@ $statistics-tooltip-bg: #1f1f1f;
     gap: 8px;
     min-width: 0;
     font-size: $font-size-sm;
+    border: 1px solid transparent;
+    border-radius: $border-radius-xs;
+
+    &:hover {
+      background-color: $g-200;
+      color: $g-900;
+    }
+
+    &:focus {
+      background-color: $g-200;
+      color: $g-900;
+      border-color: $grape;
+    }
   }
 }
 
@@ -576,6 +609,8 @@ $statistics-tooltip-bg: #1f1f1f;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 24px;
+  max-width: 1280px;
+  margin-inline: auto;
 }
 
 .responses-statistics-loading {
@@ -671,11 +706,18 @@ $statistics-tooltip-bg: #1f1f1f;
     align-items: center;
     padding: 0 8px;
     margin-left: 4px;
+    border: 1px solid transparent;
+    border-radius: $border-radius-xs;
 
     &:hover {
-      border-radius: $border-radius-xs;
-      outline: 1px solid $grape;
+      background-color: $g-200;
       color: $g-900;
+    }
+
+    &:focus {
+      background-color: $g-200;
+      color: $g-900;
+      border-color: $grape;
     }
   }
 
@@ -716,6 +758,20 @@ $statistics-tooltip-bg: #1f1f1f;
   }
 
   .meatball-submenu-item {
+    border: 1px solid transparent;
+    border-radius: $border-radius-xs;
+
+    &:hover {
+      background-color: $g-200;
+      color: $g-900;
+    }
+
+    &:focus {
+      background-color: $g-200;
+      color: $g-900;
+      border-color: $grape;
+    }
+
     &.is-active {
       color: $grape;
       font-weight: $font-weight-600;
@@ -725,6 +781,8 @@ $statistics-tooltip-bg: #1f1f1f;
 
 .responses-statistics-body {
   font-family: $ibm-font-family;
+  max-width: 1280px;
+  margin-inline: auto;
 
   .responses-statistics-group {
     margin-bottom: 24px;
@@ -965,7 +1023,15 @@ $statistics-tooltip-bg: #1f1f1f;
       display: block;
       box-sizing: border-box;
       width: 100%;
-      height: auto;
+      height: 100%;
+    }
+
+    .responses-statistics-legend-image {
+      @include chart-image;
+      display: block;
+      box-sizing: border-box;
+      width: 48px;
+      height: 48px;
     }
 
     .responses-statistics-bar-chart--clickable .recharts-bar-rectangle {

@@ -493,13 +493,17 @@ final class ResponseAggregateBatch
         }
 
         $conditions = [];
+        // Backslash is the escape char used above for %, _ and \; declare it
+        // explicitly so LIKE escapes consistently across drivers (some have no
+        // default ESCAPE).
+        $escapeClause = ' ESCAPE ' . $db->quoteValue('\\');
         foreach ($terms as $term) {
             $escaped = strtr(mb_strtolower((string)$term), ['%' => '\%', '_' => '\_', '\\' => '\\\\']);
             $pattern = $db->quoteValue('%' . $escaped . '%');
 
             $likes = [];
             foreach ($columns as $column) {
-                $likes[] = 'LOWER(' . $db->quoteColumnName($column) . ') LIKE ' . $pattern;
+                $likes[] = 'LOWER(' . $db->quoteColumnName($column) . ') LIKE ' . $pattern . $escapeClause;
             }
 
             $conditions[] = '(' . implode(' OR ', $likes) . ')';

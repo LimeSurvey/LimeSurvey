@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react'
 
 import { useAppState, useSurvey } from 'hooks'
-import { STATES } from 'helpers'
+import { htmlToPlainText, STATES } from 'helpers'
 
 import { getDataWithPercentages } from './ChartsUtils.js'
 import { ChartRendererV2 } from './ChartRenderV2.js'
@@ -18,7 +18,8 @@ const getGroupTitle = (group, activeLanguage) => {
   const localized =
     group.l10ns?.[activeLanguage] ??
     group.l10ns?.[Object.keys(group.l10ns || {})[0]]
-  return localized?.groupName ?? group.groupName ?? null
+  const name = localized?.groupName ?? group.groupName ?? null
+  return name ? htmlToPlainText(name) : name
 }
 
 const StatisticsChartCard = memo(function StatisticsChartCard({

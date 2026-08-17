@@ -148,6 +148,10 @@ export const MeatballMenu = ({
                       key={subIndex}
                       data-testid={`${subItem.label.toLowerCase()}-button`}
                       variant="layout"
+                      disabled={
+                        (isSurveyActive || !hasSurveyUpdatePermission) &&
+                        shouldDisableIfSurveyActive
+                      }
                       onClick={() => {
                         subItem.onClick()
                         setShowMeatballMenu(false)

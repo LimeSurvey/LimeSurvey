@@ -181,11 +181,8 @@ export const getDisplayMetric = (item, valueType, percentFallback) => {
   return `${percentage.toFixed(1).replace('.', ',')}%`
 }
 
-// The selectable answer options for the comment filter.
 export const getAnswerFilterOptions = (answerOptions = []) =>
-  answerOptions.filter(
-    (option) => option?.key && !NON_ANSWER_KEYS.includes(option.key)
-  )
+  answerOptions.filter((option) => option?.key && option.key !== 'comment')
 
 export const buildOptionByAnswer = (answerOptions = []) => {
   const map = {}
@@ -230,6 +227,8 @@ export const getSegmentedCategories = (data = []) =>
 export const TruncatedTick = ({
   x,
   y,
+  cx,
+  cy,
   payload,
   textAnchor = 'middle',
   dy = 12,
@@ -240,14 +239,24 @@ export const TruncatedTick = ({
   const value = payload?.value ?? ''
 
   if (shouldRenderImage(isImage, item) && value) {
+    const hasCenter = Number.isFinite(cx) && Number.isFinite(cy)
+    let boxX = -imageWidth / 2
+    let boxY = 4
+    if (hasCenter) {
+      const dirX = x - cx
+      const dirY = y - cy
+      const len = Math.hypot(dirX, dirY) || 1
+      boxX = (dirX / len) * (imageWidth / 2) - imageWidth / 2
+      boxY = (dirY / len) * (imageWidth / 2) - imageWidth / 2
+    }
     return (
       <g transform={`translate(${x},${y})`}>
         <foreignObject
-          x={-imageWidth / 2}
-          y={4}
+          x={boxX}
+          y={boxY}
           width={imageWidth}
           height={imageWidth}
-          overflow="visible"
+          overflow="hidden"
         >
           <img
             src={value}

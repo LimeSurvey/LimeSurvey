@@ -7,6 +7,7 @@ import {
   isRankingQuestion,
   QT_1_ARRAY_DUAL,
   QT_COLON_ARRAY_NUMBERS,
+  QT_K_MULTIPLE_NUMERICAL,
   QT_N_NUMERICAL,
   QT_S_SHORT_FREE_TEXT,
   QT_SEMICOLON_ARRAY_TEXT,
@@ -19,6 +20,7 @@ import { ChartHeader } from './ChartHeader.js'
 import { StatisticsTable } from './StatisticsTable.js'
 import { ArrayTextTable } from './ArrayTextTable.js'
 import { ResponsesGrid } from './ResponsesGrid.js'
+import { MultiNumericalGrid } from './MultiNumericalGrid.js'
 import {
   BarChart,
   PieChart,
@@ -62,8 +64,8 @@ const VIEWS = [
     value: VIEW.BAR_CHART,
     label: () => t('Bar chart'),
     icon: () => <i className="ri-bar-chart-line"></i>,
-    isAvailable: ({ isArray, isArrayText, isNumerical }) =>
-      !isArray && !isArrayText && !isNumerical,
+    isAvailable: ({ isArray, isArrayText, isNumerical, isMultiNumerical }) =>
+      !isArray && !isArrayText && !isNumerical && !isMultiNumerical,
     render: ({
       isRanking,
       data,
@@ -124,8 +126,14 @@ const VIEWS = [
     value: VIEW.PIE_CHART,
     label: () => t('Pie chart'),
     icon: () => <i className="ri-pie-chart-line"></i>,
-    isAvailable: ({ isRanking, isArray, isArrayText, isNumerical }) =>
-      !isRanking && !isArray && !isArrayText && !isNumerical,
+    isAvailable: ({
+      isRanking,
+      isArray,
+      isArrayText,
+      isNumerical,
+      isMultiNumerical,
+    }) =>
+      !isRanking && !isArray && !isArrayText && !isNumerical && !isMultiNumerical,
     // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
     // to the meatball menu.
     menuOnly: ({ hasComments }) => hasComments,
@@ -136,10 +144,12 @@ const VIEWS = [
   {
     value: VIEW.RADAR,
     label: () => t('Radar chart'),
-    icon: () => <i className="ri-radar-line"></i>,
+    icon: () => <i className="ri-webhook-line"></i>,
     menuOnly: true,
     isAvailable: ({ isChoice }) => isChoice,
-    render: ({ data }) => <RadarChart data={data} />,
+    render: ({ data, isImage, valueType }) => (
+      <RadarChart data={data} isImage={isImage} valueType={valueType} />
+    ),
   },
   {
     value: VIEW.LINE,
@@ -147,7 +157,9 @@ const VIEWS = [
     icon: () => <i className="ri-line-chart-line"></i>,
     menuOnly: true,
     isAvailable: ({ isChoice }) => isChoice,
-    render: ({ data }) => <LineChart data={data} />,
+    render: ({ data, isImage, valueType }) => (
+      <LineChart data={data} isImage={isImage} valueType={valueType} />
+    ),
   },
   {
     value: VIEW.POLAR_AREA,
@@ -155,7 +167,9 @@ const VIEWS = [
     icon: () => <i className="ri-pie-chart-2-line"></i>,
     menuOnly: true,
     isAvailable: ({ isChoice }) => isChoice,
-    render: ({ data }) => <PolarAreaChart data={data} />,
+    render: ({ data, isImage, valueType }) => (
+      <PolarAreaChart data={data} isImage={isImage} valueType={valueType} />
+    ),
   },
   {
     value: VIEW.DOUGHNUT,
@@ -163,50 +177,64 @@ const VIEWS = [
     icon: () => <i className="ri-donut-chart-line"></i>,
     menuOnly: true,
     isAvailable: ({ isChoice }) => isChoice,
-    render: ({ data }) => <DoughnutChart data={data} />,
+    render: ({ data, isImage }) => (
+      <DoughnutChart data={data} isImage={isImage} />
+    ),
   },
   {
     value: VIEW.GRID,
     label: () => t('Grid'),
     icon: () => <i className="ri-list-check"></i>,
-    isAvailable: ({ isGridable }) => isGridable,
-    render: ({ surveyId, question, filters, isNumerical }) => (
-      <ResponsesGrid
-        surveyId={surveyId}
-        questionCode={question?.code}
-        title={question?.title}
-        fields={question?.fields}
-        filters={filters}
-        twoColumns={isNumerical}
-      />
-    ),
+    isAvailable: ({ isGridable, isMultiNumerical }) =>
+      isGridable || isMultiNumerical,
+    render: ({ surveyId, question, filters, isNumerical, isMultiNumerical }) =>
+      isMultiNumerical ? (
+        <MultiNumericalGrid
+          surveyId={surveyId}
+          questionCode={question?.code}
+          fields={question?.fields}
+          filters={filters}
+        />
+      ) : (
+        <ResponsesGrid
+          surveyId={surveyId}
+          questionCode={question?.code}
+          title={question?.title}
+          fields={question?.fields}
+          filters={filters}
+          twoColumns={isNumerical}
+        />
+      ),
   },
   {
     value: VIEW.TABLE,
     label: () => t('Table'),
     icon: () => <i className="ri-table-line"></i>,
-    isAvailable: ({ isGridable, isNumerical }) => !isGridable || isNumerical,
+    isAvailable: ({ isGridable, isNumerical, isMultiNumerical }) =>
+      !isGridable || isNumerical || isMultiNumerical,
     render: ({
       data,
       isImage,
       isArrayText,
       isText,
       isDualScale,
+      isMultiNumerical,
+      valueType,
       surveyId,
       question,
       filters,
     }) =>
-      isArrayText || isText || isDualScale ? (
+      isArrayText || isText || isDualScale || isMultiNumerical ? (
         <ArrayTextTable
           surveyId={surveyId}
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
-          searchable={isText}
+          searchable={isText || isMultiNumerical}
           scaleHeaders={question?.scaleHeaders}
         />
       ) : (
-        <StatisticsTable data={data} isImage={isImage} />
+        <StatisticsTable data={data} isImage={isImage} valueType={valueType} />
       ),
   },
   {
@@ -257,12 +285,19 @@ export const ChartRendererV2 = ({
   filters = {},
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
+  const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
   const isGridable =
     isNumerical ||
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
       question?.type
     )
-  const [view, setView] = useState(isNumerical ? VIEW.TABLE : VIEW.BAR_CHART)
+  const [view, setView] = useState(
+    isNumerical
+      ? VIEW.TABLE
+      : isMultiNumerical
+        ? VIEW.GRID
+        : VIEW.BAR_CHART
+  )
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
@@ -275,11 +310,13 @@ export const ChartRendererV2 = ({
   const isText = TEXT_QUESTION_TYPES.includes(question?.type)
   const isArrayNumbers = question?.type === QT_COLON_ARRAY_NUMBERS
   const isDualScale = question?.type === QT_1_ARRAY_DUAL
-  const effectiveValueType = isArrayNumbers ? VALUE_TYPE.COUNT : valueType
+  const effectiveValueType =
+    isArrayNumbers || isRanking ? VALUE_TYPE.COUNT : valueType
   // No responses for this question when every answer option has a zero count.
   // Array text bypasses this — its table loads its own per-response data.
   const hasResponses =
     isArrayText ||
+    isMultiNumerical ||
     (data ?? []).reduce((sum, item) => sum + (item?.value || 0), 0) > 0
 
   const viewContext = {
@@ -291,6 +328,7 @@ export const ChartRendererV2 = ({
     isArrayNumbers,
     isDualScale,
     isNumerical,
+    isMultiNumerical,
     isGridable,
   }
 
@@ -317,6 +355,7 @@ export const ChartRendererV2 = ({
     isText,
     isDualScale,
     isNumerical,
+    isMultiNumerical,
     surveyId,
     chartId,
     question,
