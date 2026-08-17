@@ -52,7 +52,8 @@ echo viewHelper::getViewTestTag('usersIndex');
 
     <!-- Floating Actions Widget for User Management -->
     <?php
-    $aActions = require(__DIR__ . '/floatingActions/_actions.php');
+    require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.UserManagementMassiveActions') . '.php';
+    $aActions = \actions\UserManagementMassiveActions::getActions();
     $this->widget(
         'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
         [
