@@ -66,6 +66,39 @@
                 }, 200);
             });
             {% endif %}
+
+            {#
+                Keyboard access for the answer options (WCAG 2.1 SC 2.1.1).
+
+            #}
+            var $bsWrapper = $('#answer{{ name }}').closest('.bootstrap-select');
+            var $bsToggle  = $bsWrapper.find('.dropdown-toggle').first();
+
+            $bsToggle.attr('data-toggle', 'dropdown');
+
+            window.addEventListener('keydown', function (event) {
+                // Only the keys Bootstrap swallows; everything else already reaches
+                // bootstrap-select on its own.
+                if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown' && event.key !== 'Escape') {
+                    return;
+                }
+                // Ignore other widgets on the page; each one binds its own listener.
+                if (!event.target || typeof event.target.closest !== 'function'
+                    || event.target.closest('.bootstrap-select') !== $bsWrapper.get(0)) {
+                    return;
+                }
+                event.stopPropagation();
+                event.preventDefault();
+
+                var isOpen = $bsToggle.attr('aria-expanded') === 'true';
+                var $listbox = $bsWrapper.find('[role="listbox"]').first();
+                var target = (isOpen && $listbox.length) ? $listbox.get(0) : $bsToggle.get(0);
+
+                $.fn.selectpicker.Constructor.prototype.keydown.call(
+                    target,
+                    $.Event('keydown', { which: event.keyCode, keyCode: event.keyCode })
+                );
+            }, true);
         });
 
     </script>
