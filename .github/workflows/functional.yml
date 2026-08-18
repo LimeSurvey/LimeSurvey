@@ -53,17 +53,31 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
-      # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
-      - name: Install specified PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: ldap, gd, intl, zip, mysqli, xml, curl, mbstring, sqlite3
-      - name: Install Apache PHP module
+      - name: Install specified PHP and libapache2-mod-php
         run: |
-          sudo add-apt-repository -y ppa:ondrej/php
-          sudo apt-get update -q
-          sudo apt-get install -y libapache2-mod-php${{ matrix.php-versions }}
+          sudo apt update
+          # Add packages.sury.org, replacement for ppa:ondrej/php
+          # (the ondrej PPA is being merged into deb.sury.org and now produces
+          # conflicting Signed-By entries / missing packages on the runner).
+          sudo apt-get update > /dev/null
+          sudo apt-get -y install lsb-release ca-certificates curl
+          sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+          sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+          sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+          sudo apt-get update > /dev/null
+          sudo apt-get install -y \
+            php${{ matrix.php-versions }} \
+            php${{ matrix.php-versions }}-ldap \
+            php${{ matrix.php-versions }}-gd \
+            php${{ matrix.php-versions }}-intl \
+            php${{ matrix.php-versions }}-dom \
+            php${{ matrix.php-versions }}-zip \
+            php${{ matrix.php-versions }}-mysql \
+            php${{ matrix.php-versions }}-xml \
+            php${{ matrix.php-versions }}-curl \
+            php${{ matrix.php-versions }}-mbstring \
+            php${{ matrix.php-versions }}-sqlite3 \
+            libapache2-mod-php${{ matrix.php-versions }}
           sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
