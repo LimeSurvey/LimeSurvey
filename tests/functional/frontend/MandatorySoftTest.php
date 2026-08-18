@@ -48,12 +48,6 @@ class MandatorySoftTest extends TestBaseClassWeb
                 'Unable to find the action button after try to submit'
             );
             $mandatorysoftButton->click();
-            /* Wait for navigation to page 2 before checking */
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('question' . $questions['G02Q02']->qid)
-                )
-            );
             /* Check if question Q01 is here */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),
@@ -61,10 +55,10 @@ class MandatorySoftTest extends TestBaseClassWeb
             );
             /* Try to submit */
             self::$webDriver->next();
-            /* Wait for page to settle after next (page stays on group 2 due to mandatory soft) */
+            /* wait for the mandatory-soft modal to become clickable: after next()  */
             self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('question' . $questions['G02Q02']->qid)
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('mandatory-soft-alert-box-modal')
                 )
             );
             /* Check if question Q01 is here */
@@ -177,12 +171,11 @@ class MandatorySoftTest extends TestBaseClassWeb
             // Double-click to ensure modal closes (needed)
             $modalCloseButton->click();
             $modalCloseButton->click();
-            /* Wait for modal overlay to fully disappear (including Bootstrap fade-out animation)
-             * elementToBeClickable alone is not enough: the modal can still physically obscure
-             * ls-button-submit while its CSS transition is running, causing ElementClickInterceptedException. */
+
+            // wait for the Bootstrap backdrop overlay to fully disappear (including fade-out animation)
             self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::invisibilityOfElementLocated(
-                    WebDriverBy::id('bootstrap-alert-box-modal')
+                    WebDriverBy::cssSelector('.modal-backdrop')
                 )
             );
             /* Now wait for the submit button to be interactable */
