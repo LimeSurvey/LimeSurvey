@@ -51,7 +51,7 @@ export const ProjectTitleForm = ({
       aria-label={t('Project title')}
     >
       <div className="d-flex close-button justify-content-end align-items-center mb-1">
-        <Button onClick={() => onSave(value.trim())} variant="">
+        <Button onClick={() => onCancel()} variant="">
           <XIcon />
         </Button>
       </div>
