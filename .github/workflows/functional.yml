@@ -61,6 +61,7 @@ jobs:
           extensions: ldap, gd, intl, zip, mysqli, xml, curl, mbstring, sqlite3
       - name: Install Apache PHP module
         run: |
+          sudo apt-get update -q
           sudo apt-get install -y libapache2-mod-php${{ matrix.php-versions }}
           sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
