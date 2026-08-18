@@ -3004,25 +3004,22 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
 
-        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
-        if (!$editorEnabled) {
-            $this->createSampleSubquestion(
-                1,
-                $iSurveyID,
-                $iGroupID,
-                $oQuestion->qid,
-                $sLanguage,
-                gT('Option A')
-            );
-            $this->createSampleSubquestion(
-                2,
-                $iSurveyID,
-                $iGroupID,
-                $oQuestion->qid,
-                $sLanguage,
-                gT('Option B')
-            );
-        }
+        $this->createSampleSubquestion(
+            1,
+            $iSurveyID,
+            $iGroupID,
+            $oQuestion->qid,
+            $sLanguage,
+            gT('Option A')
+        );
+        $this->createSampleSubquestion(
+            2,
+            $iSurveyID,
+            $iGroupID,
+            $oQuestion->qid,
+            $sLanguage,
+            gT('Option B')
+        );
 
         return $oQuestion->qid;
     }
