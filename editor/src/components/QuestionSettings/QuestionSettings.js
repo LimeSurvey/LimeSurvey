@@ -97,6 +97,13 @@ export const QuestionSettings = ({ surveyId }) => {
     setFocused(question, groupIndex, questionIndex)
   }
 
+  /**
+   * Updates saved-default availability for every question of the given type.
+   * @param {string} questionType Question type code.
+   * @param {boolean} hasDefaults Whether saved defaults exist.
+   * @param {Object} attributes Saved attribute values.
+   * @returns {void}
+   */
   const updateDefaultValuesAvailability = (
     questionType,
     hasDefaults,

@@ -418,13 +418,6 @@ class QuestionService
         return $attributes;
     }
 
-    public function hasDefaultAttributeValues(string $questionType): bool
-    {
-        return $this->proxySettingsUser->getUserSettingValue(
-            'question_default_values_' . $questionType
-        ) !== null;
-    }
-
     /**
      * Return the current user's saved advanced attribute defaults for a
      * question type, flattened to the API's attribute => language => value

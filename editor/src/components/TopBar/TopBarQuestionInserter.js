@@ -287,6 +287,11 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
     setIsAddingQuestionOrGroup(false)
   }
 
+  /**
+   * Returns built-in defaults for a question theme.
+   * @param {string} questionThemeName Question theme name.
+   * @returns {Object} Built-in attribute defaults.
+   */
   const getDefaultAttributes = (questionThemeName) => {
     if (questionThemeName === getQuestionTypeInfo().BROWSER_DETECTION.theme) {
       return { location_mapservice: { '': '100' } }
@@ -295,6 +300,12 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
     return {}
   }
 
+  /**
+   * Combines built-in and user defaults for a new question.
+   * @param {string} questionThemeName Question theme name.
+   * @param {string} questionType Question type code.
+   * @returns {Object} Attributes and saved-default availability.
+   */
   const getQuestionAttributeDefaults = (questionThemeName, questionType) => {
     const userDefaults =
       survey.questionTypeDefaultAttributeValues?.[questionType] ?? {}

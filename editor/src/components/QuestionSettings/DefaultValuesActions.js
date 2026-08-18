@@ -3,6 +3,12 @@ import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { ArrowDownIcon, ArrowUpIcon, InformationIcon } from 'components/icons'
 
+/**
+ * Renders expandable explanatory content for a default-values action.
+ * @param {Object} props Component properties.
+ * @param {React.ReactNode} props.children Explanatory content.
+ * @returns {JSX.Element} Expandable details control.
+ */
 const Details = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -22,6 +28,15 @@ const Details = ({ children }) => {
     </div>
   )
 }
+
+/**
+ * Renders the actions for saving and clearing question attribute defaults.
+ * @param {Object} props Component properties.
+ * @param {Function} props.update Handles a default-values action.
+ * @param {boolean} props.hasDefaultAttributeValues Whether saved defaults exist.
+ * @param {boolean} props.activeDisabled Whether the actions are disabled.
+ * @returns {JSX.Element} Default-values action controls.
+ */
 export const DefaultValuesActions = ({
   update,
   hasDefaultAttributeValues = false,
