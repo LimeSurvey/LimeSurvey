@@ -48,6 +48,12 @@ class MandatorySoftTest extends TestBaseClassWeb
                 'Unable to find the action button after try to submit'
             );
             $mandatorysoftButton->click();
+            /* Wait for navigation to page 2 before checking */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('question' . $questions['G02Q02']->qid)
+                )
+            );
             /* Check if question Q01 is here */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),
@@ -55,6 +61,12 @@ class MandatorySoftTest extends TestBaseClassWeb
             );
             /* Try to submit */
             self::$webDriver->next();
+            /* Wait for page to settle after next (page stays on group 2 due to mandatory soft) */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('question' . $questions['G02Q02']->qid)
+                )
+            );
             /* Check if question Q01 is here */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),
@@ -165,7 +177,15 @@ class MandatorySoftTest extends TestBaseClassWeb
             // Double-click to ensure modal closes (needed)
             $modalCloseButton->click();
             $modalCloseButton->click();
-            /* Wait it was closed */
+            /* Wait for modal overlay to fully disappear (including Bootstrap fade-out animation)
+             * elementToBeClickable alone is not enough: the modal can still physically obscure
+             * ls-button-submit while its CSS transition is running, causing ElementClickInterceptedException. */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::invisibilityOfElementLocated(
+                    WebDriverBy::id('bootstrap-alert-box-modal')
+                )
+            );
+            /* Now wait for the submit button to be interactable */
             self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('ls-button-submit')
@@ -185,6 +205,12 @@ class MandatorySoftTest extends TestBaseClassWeb
                 )
             );
             $mandatorysoftButtonG1->click();
+            /* Wait for navigation to page 2 / Group 2 before asserting */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('question' . $questions['G02Q02']->qid)
+                )
+            );
             /* Must be at page 2 / Group 2 */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),
@@ -193,6 +219,12 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Try to move next */
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
+            /* Wait for page to settle (stays on page 2 because G02Q02 is still unanswered) */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::id('question' . $questions['G02Q02']->qid)
+                )
+            );
             /* Must stay at page 2 / Group 2 */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),
