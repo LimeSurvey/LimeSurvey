@@ -24,6 +24,36 @@ use LimeSurvey\Models\Services\Exception\{
  */
 class QuestionServiceTest extends TestBaseClass
 {
+    public function testGetDefaultAttributeValuesReturnsFlattenedDefaults()
+    {
+        $proxySettingsUser = Mockery::mock(
+            \LimeSurvey\Models\Services\Proxy\ProxySettingsUser::class
+        );
+        $proxySettingsUser->shouldReceive('getUserSettingValue')
+            ->with('question_default_values_L')
+            ->once()
+            ->andReturn(json_encode([
+                'Display' => [
+                    'random_order' => ['' => '1'],
+                ],
+                'Logic' => [
+                    'min_answers' => '2',
+                ],
+            ]));
+
+        $mockSetInit = new QuestionMockSet();
+        $mockSetInit->proxySettingsUser = $proxySettingsUser;
+        $questionService = (new QuestionFactory())->make($mockSetInit);
+
+        $this->assertSame(
+            [
+                'random_order' => ['' => '1'],
+                'min_answers' => ['' => '2'],
+            ],
+            $questionService->getDefaultAttributeValues('L')
+        );
+    }
+
     /**
      * @testdox save() throws PersistErrorException on create failure
      */

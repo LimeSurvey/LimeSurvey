@@ -279,7 +279,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       answers: answers,
       subquestions: subQuestions,
       sortOrder: questionGroupToAddQuestion.questions.length + 1,
-      attributes: getDefaultAttributes(questionThemeName),
+      ...getQuestionAttributeDefaults(questionThemeName, questionTypeInfo.type),
       languages: survey.languages,
     })
 
@@ -293,6 +293,19 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
     }
 
     return {}
+  }
+
+  const getQuestionAttributeDefaults = (questionThemeName, questionType) => {
+    const userDefaults =
+      survey.questionTypeDefaultAttributeValues?.[questionType] ?? {}
+
+    return {
+      attributes: {
+        ...getDefaultAttributes(questionThemeName),
+        ...userDefaults,
+      },
+      hasDefaultAttributeValues: Object.keys(userDefaults).length > 0,
+    }
   }
 
   return (

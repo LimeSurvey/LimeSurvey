@@ -377,11 +377,17 @@ class QuestionService
             )
             && $data['question']['save_as_default'] == 'Y'
         ) {
+            $advancedSettings = $data['advancedSettings'] ?? [];
+            if (!empty($data['loadCurrentAdvancedSettings'])) {
+                $advancedSettings = $this->getCurrentAdvancedSettings(
+                    (int) $data['question']['qid']
+                );
+            }
             $this->proxySettingsUser->setUserSetting(
                 'question_default_values_'
                 . $data['question']['type'],
                 ls_json_encode(
-                    $data['advancedSettings']
+                    $advancedSettings
                 )
             );
         } elseif (
@@ -396,6 +402,75 @@ class QuestionService
                 . $data['question']['type']
             );
         }
+    }
+
+    /**
+     * Return the currently persisted question attributes in the same shape as
+     * advancedSettings. Patch requests update attributes independently from
+     * the question, so action-only requests do not contain advancedSettings.
+     */
+    private function getCurrentAdvancedSettings(int $questionId): array
+    {
+        $attributes = [];
+        foreach ($this->getQuestionAttributes($questionId) as $attribute) {
+            $attributes[0][$attribute->attribute][$attribute->language] = $attribute->value;
+        }
+        return $attributes;
+    }
+
+    public function hasDefaultAttributeValues(string $questionType): bool
+    {
+        return $this->proxySettingsUser->getUserSettingValue(
+            'question_default_values_' . $questionType
+        ) !== null;
+    }
+
+    /**
+     * Return the current user's saved advanced attribute defaults for a
+     * question type, flattened to the API's attribute => language => value
+     * representation.
+     */
+    public function getDefaultAttributeValues(string $questionType): array
+    {
+        $storedDefaults = $this->proxySettingsUser->getUserSettingValue(
+            'question_default_values_' . $questionType
+        );
+        if ($storedDefaults === null) {
+            return [];
+        }
+
+        $defaultsByCategory = json_decode((string) $storedDefaults, true);
+        if (!is_array($defaultsByCategory)) {
+            return [];
+        }
+
+        $defaults = [];
+        foreach ($defaultsByCategory as $categoryDefaults) {
+            if (!is_array($categoryDefaults)) {
+                continue;
+            }
+            foreach ($categoryDefaults as $attribute => $value) {
+                $defaults[$attribute] = is_array($value)
+                    ? $value
+                    : ['' => $value];
+            }
+        }
+        return $defaults;
+    }
+
+    /**
+     * Return the current user's saved attribute defaults indexed by question type.
+     */
+    public function getDefaultAttributeValuesByQuestionType(): array
+    {
+        $defaultsByQuestionType = [];
+        foreach (array_keys(\QuestionType::modelsAttributes()) as $questionType) {
+            $defaults = $this->getDefaultAttributeValues($questionType);
+            if (!empty($defaults)) {
+                $defaultsByQuestionType[$questionType] = $defaults;
+            }
+        }
+        return $defaultsByQuestionType;
     }
 
     /**

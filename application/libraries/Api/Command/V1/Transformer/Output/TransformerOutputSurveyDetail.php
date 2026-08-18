@@ -203,6 +203,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
         $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
 
+        $survey['questionTypeDefaultAttributeValues'] = $this->questionService
+            ->getDefaultAttributeValuesByQuestionType();
+
         $survey['themesettings'] = [];
         $survey['templatePreview'] = '';
         $this->transformThemeSettings($survey['themesettings'], $survey['templatePreview'], $data);
@@ -245,6 +248,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 ),
                 $options
             );
+            $question['hasDefaultAttributeValues'] = $this->questionService
+                ->hasDefaultAttributeValues($questionModel->type);
 
             $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
 
