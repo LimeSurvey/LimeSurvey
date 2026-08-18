@@ -1,0 +1,225 @@
+.import-survey-modal {
+  .modal-dialog {
+    max-width: 680px;
+    min-width: 0;
+    width: calc(100vw - 32px);
+  }
+
+  .modal-content {
+    border: 0;
+    border-radius: 8px;
+  }
+
+  .modal-header,
+  .modal-footer {
+    border: 0;
+    padding: 24px 28px;
+  }
+
+  .modal-header {
+    align-items: flex-start;
+    padding-bottom: 12px;
+
+    .btn-close {
+      background-size: 22px;
+      margin: 0 0 0 auto;
+      opacity: 1;
+      padding: 8px;
+    }
+  }
+
+  .modal-title {
+    color: $g-900;
+    font-size: 28px;
+    font-weight: $font-weight-semibold;
+    line-height: 1.2;
+  }
+
+  .modal-body {
+    max-height: min(620px, calc(100vh - 190px));
+    overflow-y: auto;
+    padding: 12px 28px;
+  }
+
+  .modal-footer {
+    gap: 16px;
+    padding-top: 20px;
+
+    .btn {
+      font-size: 16px;
+      min-height: 42px;
+      padding: 9px 18px;
+    }
+  }
+}
+
+.import-survey-modal__description {
+  color: $g-800;
+  font-size: 16px;
+  line-height: 1.45;
+  margin-bottom: 26px;
+}
+
+.import-survey-modal .file-drop-zone {
+  font-size: 16px;
+}
+
+.import-survey-modal .file-drop-zone__icon {
+  height: 28px;
+  width: 28px;
+}
+
+.import-survey-modal__group-select {
+  margin-top: 20px;
+
+  .form-label {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .select {
+    min-height: 42px;
+  }
+}
+
+.import-survey-modal {
+  .file-drop-zone-field,
+  .import-survey-modal__group-select,
+  .form-check-ui-component {
+    width: 100%;
+  }
+
+  .form-check-ui-component {
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-start;
+    margin-top: 20px !important;
+    padding-left: 0;
+  }
+
+  .form-check-input[type='checkbox'] {
+    border: 0;
+    border-radius: 4px;
+    flex: 0 0 24px;
+    height: 24px;
+    margin: 0;
+    outline: 2px solid $g-900;
+    width: 24px;
+  }
+
+  .form-check-input:checked[type='checkbox'] {
+    background-color: $g-800;
+    color: $white;
+    outline: 2px solid $g-900;
+
+    &::before {
+      align-items: center;
+      display: flex;
+      font-size: 20px;
+      height: 24px;
+      justify-content: center;
+      line-height: 1;
+      width: 24px;
+    }
+  }
+
+  .form-check-label {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
+  }
+}
+
+.import-survey-summary {
+  > p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .table {
+    background: transparent;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    table-layout: fixed;
+  }
+
+  tr {
+    background: transparent;
+  }
+
+  th,
+  td {
+    background: $g-100;
+    border: 0;
+    border-bottom: 1px solid $g-400;
+    font-size: 14px;
+    padding: 7px 12px;
+  }
+
+  th {
+    font-weight: $font-weight-normal;
+  }
+
+  td {
+    color: $g-700;
+  }
+}
+
+.import-survey-summary__label-column,
+.import-survey-summary__value-column {
+  width: 50%;
+}
+
+.import-survey-toast {
+  align-items: center;
+  background: $white;
+  border: 1px solid $g-900;
+  border-left-width: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba($g-900, 0.2);
+  display: flex;
+  font-size: 18px;
+  gap: 14px;
+  min-width: 340px;
+  padding: 14px 18px;
+
+  svg {
+    fill: currentColor;
+    height: 24px;
+    width: 24px;
+  }
+
+  &--success {
+    border-left-color: $success;
+  }
+
+  &--error {
+    border-left-color: $danger;
+  }
+}
+
+@media (max-width: 767px) {
+  .import-survey-modal {
+    .modal-dialog {
+      width: calc(100vw - 24px);
+    }
+
+    .modal-header,
+    .modal-footer {
+      padding: 24px;
+    }
+
+    .modal-title {
+      font-size: 30px;
+    }
+
+    .modal-body {
+      padding: 12px 24px;
+    }
+  }
+
+  .import-survey-modal__description {
+    font-size: 18px;
+    margin-bottom: 28px;
+  }
+}
