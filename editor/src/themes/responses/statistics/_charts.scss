@@ -421,14 +421,6 @@
       height: 100%;
     }
 
-    .responses-statistics-legend-image {
-      @include chart-image;
-      display: block;
-      box-sizing: border-box;
-      width: 48px;
-      height: 48px;
-    }
-
     .responses-statistics-bar-chart--clickable .recharts-bar-rectangle {
       cursor: pointer;
     }
@@ -479,9 +471,9 @@
 
       &-image {
         @include chart-image;
-        max-width: 60px;
-        max-height: 32px;
-        padding: 12px 30px;
+        box-sizing: border-box;
+        width: 44px;
+        height: 44px;
       }
     }
 

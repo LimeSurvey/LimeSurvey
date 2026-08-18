@@ -34,7 +34,10 @@ export const LineChart = ({
   const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
   return (
     <ResponsiveContainer width="100%" minHeight={500} height="100%">
-      <RechartsLineChart data={data}>
+      <RechartsLineChart
+        data={data}
+        margin={{ top: 16, right: 28, left: 8, bottom: 8 }}
+      >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="title"
@@ -54,6 +57,7 @@ export const LineChart = ({
           type="monotone"
           dataKey={getMetricDataKey(valueType)}
           stroke="#8884d8"
+          strokeWidth={2.5}
           activeDot={{ r: 8 }}
           label={<CustomizedLabel isPercentage={isPercentage} />}
         />
