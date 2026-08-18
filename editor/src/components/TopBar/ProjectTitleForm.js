@@ -22,7 +22,7 @@ export const ProjectTitleForm = ({
     setValue(initialValue)
   }, [initialValue])
 
-  const onKeyDownProjectFormOpen = (e) => {
+  const onKeyDown = (e) => {
     if (e.key === 'Escape') {
       onCancel()
     } else if (e.key === 'Enter') {
@@ -30,11 +30,16 @@ export const ProjectTitleForm = ({
     }
   }
 
-  useEffect(() => {
-    document.addEventListener('keydown', onKeyDownProjectFormOpen)
+  const onEscapeClickCheck = (e) => {
+    if (e.key === 'Escape') {
+      onCancel()
+    }
+  }
 
-    return () =>
-      document.removeEventListener('keydown', onKeyDownProjectFormOpen)
+  useEffect(() => {
+    document.addEventListener('keydown', onEscapeClickCheck)
+
+    return () => document.removeEventListener('keydown', onEscapeClickCheck)
   }, [])
 
   const isSaveDisabled = isNew ? value.trim() === '' : false
@@ -64,6 +69,7 @@ export const ProjectTitleForm = ({
           onChange={(e) => setValue(e.target.value)}
           aria-describedby={saveError ? 'project-title-error' : undefined}
           focus={true}
+          onKeyDown={onKeyDown}
         />
       </div>
       <div className="d-flex gap-1 buttons-container justify-content-end">

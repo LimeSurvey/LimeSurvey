@@ -22,7 +22,6 @@ export const SurveyTitleSelector = ({
 }) => {
   const [surveyTitleIsFocused, setSurveyTitleIsFocused] = useState(false)
   const [projectFormOpen, setProjectFormOpen] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState(false)
   const titleRef = useRef(null)
 
@@ -51,36 +50,12 @@ export const SurveyTitleSelector = ({
     return () => resizeObserver.disconnect()
   }, [])
 
-  const onKeyDownProjectFormOpen = (e) => {
-    if (e.key === 'Escape') {
-      handleCloseForm()
-    } else if (e.key === 'Enter') {
-      handleSave(projectTitle)
-    }
-  }
-
-  useEffect(() => {
-    document.removeEventListener('keydown', onKeyDownProjectFormOpen)
-
-    if (projectFormOpen) {
-      document.addEventListener('keydown', onKeyDownProjectFormOpen)
-    } else {
-      document.removeEventListener('keydown', onKeyDownProjectFormOpen)
-    }
-  }, [projectFormOpen])
-
   const handleSurveyTitleFocusChange = useCallback(
     (isFocused) => () => {
       setSurveyTitleIsFocused(isFocused)
     },
     []
   )
-
-  const onTitleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-    }
-  }
 
   const handleOpenForm = () => {
     setSaveError(false)
@@ -93,16 +68,12 @@ export const SurveyTitleSelector = ({
   }
 
   const handleSave = async (value) => {
-    if (isSaving) return
-    setIsSaving(true)
     setSaveError(false)
     try {
       await onProjectTitleSave(value)
       setProjectFormOpen(false)
     } catch {
       setSaveError(true)
-    } finally {
-      setIsSaving(false)
     }
   }
 
@@ -128,7 +99,6 @@ export const SurveyTitleSelector = ({
             className="survey-title-content-editor"
             onBlur={handleSurveyTitleFocusChange(false)}
             onFocus={handleSurveyTitleFocusChange(true)}
-            onKeyDown={onTitleKeyDown}
             noPermissionDisabled={true}
             toolTipPlacement={'bottom'}
             testId="topbar-survey-title-content-editor"
@@ -168,7 +138,6 @@ export const SurveyTitleSelector = ({
           <ProjectTitleForm
             initialValue={projectTitle}
             isNew={!projectTitle}
-            isSaving={isSaving}
             saveError={saveError}
             onSave={handleSave}
             onCancel={handleCloseForm}
