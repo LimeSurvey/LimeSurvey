@@ -74,7 +74,7 @@
     function patchSearchField($select) {
         var ariaLabelledBy = getLabelledBy($select);
         var ariaLabel = getLabel($select);
-        var $searchField = $select.next('.select2-container').find('.select2-search__field');
+        var $searchField = $('.select2-search--dropdown .select2-search__field');
         if (!$searchField.length) {
             return;
         }
