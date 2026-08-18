@@ -16,7 +16,9 @@ export const Setting = ({
   simpleSettings = false,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
-  const [hasSurveyUpdatePermission] = useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
   const isDependsOnSatisfied = (dependsOn, dependsOnValue) => {
     if (!dependsOn) {
       return true
