@@ -134,7 +134,11 @@ const VIEWS = [
       isNumerical,
       isMultiNumerical,
     }) =>
-      !isRanking && !isArray && !isArrayText && !isNumerical && !isMultiNumerical,
+      !isRanking &&
+      !isArray &&
+      !isArrayText &&
+      !isNumerical &&
+      !isMultiNumerical,
     // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
     // to the meatball menu.
     menuOnly: ({ hasComments }) => hasComments,
@@ -293,11 +297,7 @@ export const ChartRendererV2 = ({
       question?.type
     )
   const [view, setView] = useState(
-    isNumerical
-      ? VIEW.TABLE
-      : isMultiNumerical
-        ? VIEW.GRID
-        : VIEW.BAR_CHART
+    isNumerical ? VIEW.TABLE : isMultiNumerical ? VIEW.GRID : VIEW.BAR_CHART
   )
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
