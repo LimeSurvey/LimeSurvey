@@ -212,12 +212,6 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Try to move next */
             self::$webDriver->scrollToBottom();
             self::$webDriver->next();
-            /* Wait for page to settle (stays on page 2 because G02Q02 is still unanswered) */
-            self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(
-                    WebDriverBy::id('question' . $questions['G02Q02']->qid)
-                )
-            );
             /* Must stay at page 2 / Group 2 */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('question' . $questions['G02Q02']->qid))),
