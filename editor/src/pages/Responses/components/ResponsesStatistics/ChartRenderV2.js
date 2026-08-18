@@ -15,6 +15,7 @@ import {
   QT_U_HUGE_FREE_TEXT,
 } from 'helpers'
 import { ReactComponent as StackedBarIcon } from 'assets/icons/stacked-bar-icon.svg'
+import { ReactComponent as RadarIcon } from 'assets/icons/radar-icon.svg'
 
 import { ChartHeader } from './ChartHeader.js'
 import { StatisticsTable } from './StatisticsTable.js'
@@ -144,7 +145,7 @@ const VIEWS = [
   {
     value: VIEW.RADAR,
     label: () => t('Radar chart'),
-    icon: () => <i className="ri-webhook-line"></i>,
+    icon: (props) => <RadarIcon width="16" height="17" {...props} />,
     menuOnly: true,
     isAvailable: ({ isChoice }) => isChoice,
     render: ({ data, isImage, valueType }) => (
@@ -419,7 +420,7 @@ export const ChartRendererV2 = ({
       })}
     >
       <ChartHeader {...question} actions={actions} />
-      <Collapsible open={!isHidden}>
+      <Collapsible open={!isHidden} unmountOnExit>
         {hasResponses ? (
           <>
             {isArrayNumbers && (

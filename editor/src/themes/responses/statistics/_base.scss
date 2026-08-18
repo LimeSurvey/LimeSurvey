@@ -1,0 +1,44 @@
+$statistics-tooltip-bg: #1f1f1f;
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin swatch($size: 10px, $radius: $border-radius-xs) {
+  display: inline-block;
+  flex-shrink: 0;
+  width: $size;
+  height: $size;
+  border-radius: $radius;
+  vertical-align: middle;
+}
+
+@mixin chart-image {
+  object-fit: contain;
+  border: 1px solid $g-400;
+}
+
+@mixin loader-size($size) {
+  position: relative;
+  width: $size;
+  height: $size;
+}
+
+.recharts-tooltip-wrapper {
+  z-index: 2;
+}
+
+// Empty state shown in a chart card when a question has no responses yet.
+.responses-statistics-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: $g-700;
+  font-family: $ibm-font-family;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-sm;
+}
+
