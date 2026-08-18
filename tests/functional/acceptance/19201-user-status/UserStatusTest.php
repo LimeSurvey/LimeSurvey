@@ -100,6 +100,7 @@ class UserStatusTest extends TestBaseClassWeb
             $this->assertTrue($deactiveElement->isDisplayed(), 'Element is displayed');
             $this->assertNull($deactiveElementAnchor->getAttribute('href'), 'Disabled anchor href is removed');
             $this->assertEquals('true', $deactiveElementAnchor->getAttribute('aria-disabled'), 'Disabled anchor has aria-disabled=true');
+            $this->assertEquals('-1', $deactiveElementAnchor->getAttribute('tabindex'), 'Disabled anchor is not keyboard-focusable');
         } catch (Throwable $e) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             echo $e->getMessage();
