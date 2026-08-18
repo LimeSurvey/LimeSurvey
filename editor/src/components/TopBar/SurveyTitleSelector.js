@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Entities, L10ns } from 'helpers'
-import { ContentEditor } from 'components'
+import { Button, ContentEditor } from 'components'
+import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 import { SurveyListComponent } from './SurveyListComponent'
+import { ProjectTitleBadge } from './ProjectTitleBadge'
+import { ProjectTitleForm } from './ProjectTitleForm'
+import classNames from 'classnames'
 
 const TITLE_SELECT_OFFSET = 40
 
@@ -13,9 +17,15 @@ export const SurveyTitleSelector = ({
   onSurveyTitleChange,
   handleSurveySwitch,
   getError,
+  onProjectTitleSave,
+  canEditProjectTitle,
 }) => {
   const [surveyTitleIsFocused, setSurveyTitleIsFocused] = useState(false)
+  const [projectFormOpen, setProjectFormOpen] = useState(false)
+  const [saveError, setSaveError] = useState(false)
   const titleRef = useRef(null)
+
+  const projectTitle = survey.projectTitle || ''
 
   const surveyTitle = L10ns({
     prop: 'title',
@@ -47,9 +57,23 @@ export const SurveyTitleSelector = ({
     []
   )
 
-  const onTitleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
+  const handleOpenForm = () => {
+    setSaveError(false)
+    setProjectFormOpen(true)
+  }
+
+  const handleCloseForm = () => {
+    setProjectFormOpen(false)
+    setSaveError(false)
+  }
+
+  const handleSave = async (value) => {
+    setSaveError(false)
+    try {
+      await onProjectTitleSave(value)
+      setProjectFormOpen(false)
+    } catch {
+      setSaveError(true)
     }
   }
 
@@ -59,31 +83,66 @@ export const SurveyTitleSelector = ({
       className="d-flex align-items-center text-align-center top-bar-select align-middle"
       id="top-bar-select"
     >
-      <div className="d-flex justify-content-center">
-        <ContentEditor
-          value={surveyTitle}
-          placeholder={t('Survey title')}
-          update={onSurveyTitleChange}
-          editorRef={titleRef}
-          className="survey-title-content-editor"
-          onBlur={handleSurveyTitleFocusChange(false)}
-          onFocus={handleSurveyTitleFocusChange(true)}
-          onKeyDown={onTitleKeyDown}
-          noPermissionDisabled={true}
-          toolTipPlacement={'bottom'}
-          testId="topbar-survey-title-content-editor"
+      <div className="d-flex align-items-center position-relative align-items-start">
+        <ProjectTitleBadge
+          projectTitle={projectTitle}
+          canEdit={canEditProjectTitle}
+          onClick={handleOpenForm}
+          showBadge={survey.showQNumCode?.showNumber}
         />
+        <div className="d-flex align-items-center">
+          <ContentEditor
+            value={surveyTitle}
+            placeholder={t('Survey title')}
+            update={onSurveyTitleChange}
+            editorRef={titleRef}
+            className="survey-title-content-editor"
+            onBlur={handleSurveyTitleFocusChange(false)}
+            onFocus={handleSurveyTitleFocusChange(true)}
+            noPermissionDisabled={true}
+            toolTipPlacement={'bottom'}
+            testId="topbar-survey-title-content-editor"
+          />
 
-        <SurveyListComponent
-          surveyId={surveyId}
-          surveyList={surveyList}
-          activeLanguage={activeLanguage}
-          surveyTitleIsFocused={surveyTitleIsFocused}
-          surveyTitleWidth={surveyTitleWidth}
-          titleRef={titleRef}
-          titleSelectOffset={TITLE_SELECT_OFFSET}
-          handleSurveySwitch={handleSurveySwitch}
-        />
+          <TooltipContainer tip={t('Add project title')} placement="bottom">
+            <Button
+              className={classNames('project-title-plus-btn ms-2', {
+                'pointer-events-none opacity-0':
+                  !canEditProjectTitle ||
+                  !surveyTitleIsFocused ||
+                  !survey.showQNumCode?.showNumber,
+              })}
+              aria-label={t('Add project title')}
+              onMouseDown={(e) => {
+                e.preventDefault()
+                handleOpenForm()
+              }}
+            >
+              <i className="ri-add-line" aria-hidden="true" />
+            </Button>
+          </TooltipContainer>
+
+          <SurveyListComponent
+            surveyId={surveyId}
+            surveyList={surveyList}
+            activeLanguage={activeLanguage}
+            surveyTitleIsFocused={surveyTitleIsFocused}
+            surveyTitleWidth={surveyTitleWidth}
+            titleRef={titleRef}
+            titleSelectOffset={TITLE_SELECT_OFFSET}
+            handleSurveySwitch={handleSurveySwitch}
+            showCode={survey.showQNumCode?.showCode}
+          />
+        </div>
+        {projectFormOpen && (
+          <ProjectTitleForm
+            initialValue={projectTitle}
+            isNew={!projectTitle}
+            saveError={saveError}
+            onSave={handleSave}
+            onCancel={handleCloseForm}
+          />
+        )}
       </div>
     </div>
   )
