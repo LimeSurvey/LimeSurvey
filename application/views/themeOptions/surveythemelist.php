@@ -4,7 +4,9 @@
  * @var $oSurveyTheme TemplateConfiguration
  */
 
-$aFloatingActions = require(__DIR__ . '/floatingActions/_surveyThemeActions.php');
+$aFloatingActions = require(
+    Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions._surveyThemeActions') . '.php'
+);
 $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [

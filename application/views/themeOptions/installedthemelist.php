@@ -7,7 +7,9 @@
 ?>
 
 <?php
-$aFloatingActions = require(__DIR__ . '/floatingActions/_questionThemeActions.php');
+$aFloatingActions = require(
+    Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions._questionThemeActions') . '.php'
+);
 
 $this->widget('application.extensions.admin.grid.CLSGridView', [
     'dataProvider'          => $oQuestionTheme->search(),
