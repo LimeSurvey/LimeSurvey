@@ -9,6 +9,12 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverSelect;
 
 /**
+ * Acceptance tests for user account status management in the User Management grid.
+ *
+ * Covers the ability to deactivate users via the per-row action dropdown and via
+ * the massive-action menu, and verifies that the superadmin account cannot be
+ * deactivated at all (its "Deactivate" action is rendered as a disabled link).
+ *
  * @group user
  */
 class UserStatusTest extends TestBaseClassWeb
@@ -25,6 +31,14 @@ class UserStatusTest extends TestBaseClassWeb
     // Try to login as not-active
     // Try to login as active
 
+    /**
+     * Logs in as the admin user before any test in this class runs.
+     *
+     * Credentials are read from the ADMINUSERNAME and PASSWORD environment
+     * variables, falling back to 'admin' / 'password' when they are not set.
+     * The Yii session is seeded with the superadmin uid so that server-side
+     * permission checks pass alongside the browser session.
+     */
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -46,6 +60,15 @@ class UserStatusTest extends TestBaseClassWeb
         self::adminLogin($username, $password, $wait = false);
     }
 
+    /**
+     * Verifies that the "Deactivate" action for the superadmin is rendered as a
+     * disabled, non-interactive link in the action dropdown.
+     *
+     * The rowLink.js initialisation removes the href attribute and sets
+     * aria-disabled="true" on any anchor with the .disabled class inside the
+     * grid, so the assertions check for those attributes rather than a plain
+     * href="#".
+     */
     public function testCannotDeactiveSuperadmin()
     {
         $urlMan = \Yii::app()->urlManager;
@@ -85,6 +108,15 @@ class UserStatusTest extends TestBaseClassWeb
         }
     }
 
+    /**
+     * Verifies that a regular (non-superadmin) user can be deactivated through
+     * the per-row action dropdown.
+     *
+     * Creates a fresh user owned by the superadmin, navigates to the User
+     * Management grid, opens the action dropdown for that user's row, clicks
+     * "Deactivate", confirms the modal, and asserts that the user's
+     * user_status column is set to 0 in the database.
+     */
     public function testCanDeactivateNewUser()
     {
         // Delete all users but superadmin
@@ -149,6 +181,15 @@ class UserStatusTest extends TestBaseClassWeb
         $this->assertEquals(0, (int) $user->user_status, 'User status is 0');
     }
 
+    /**
+     * Verifies that a regular user can be deactivated via the massive-action
+     * "Edit status" menu.
+     *
+     * Creates a fresh user, selects its checkbox in the User Management grid,
+     * opens the massive-action menu, chooses "Deactivate" from the status
+     * dropdown, confirms the modal, and asserts that user_status is 0 in the
+     * database.
+     */
     public function testMassiveActionDeactivate()
     {
         // Delete all users but superadmin
