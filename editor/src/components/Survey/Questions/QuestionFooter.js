@@ -1,11 +1,12 @@
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { useAppState, useBuffer } from 'hooks'
-import { STATES, createBufferOperation } from 'helpers'
+import { STATES, createBufferOperation, getSiteUrl } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from 'components'
-import { DeleteIcon, CopyIcon } from 'components/icons'
+import { DeleteIcon, CopyIcon, EyeIcon } from 'components/icons'
 import { ConfirmModal } from 'components/Modals'
 
 export const QuestionFooter = ({
@@ -15,6 +16,8 @@ export const QuestionFooter = ({
   isFocused = false,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
+  const { surveyId } = useParams()
   const { addToBuffer } = useBuffer()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
@@ -27,6 +30,13 @@ export const QuestionFooter = ({
     addToBuffer(operation)
     handleRemove()
     setShowDeleteModal(false)
+  }
+
+  const openQuestionPreview = () => {
+    const previewUrl = getSiteUrl(
+      `/index.php/survey/index/action/previewquestion/sid/${surveyId}/gid/${question.gid}/qid/${question.qid}/lang/${activeLanguage}`
+    )
+    window.open(previewUrl, '_blank')
   }
 
   return (
@@ -45,6 +55,23 @@ export const QuestionFooter = ({
         data-testid="question-footer"
         className="question-footer align-items-center justify-content-end d-flex gap-3 text-end pt-3 pe-3"
       >
+        <div
+          className={classNames('cursor-pointer', {
+            'disabled': !isFocused,
+            'pointer-events-none': !isFocused,
+          })}
+          data-testid="question-footer-preview-icon"
+          onClick={openQuestionPreview}
+        >
+          <EyeIcon
+            className={classNames('footer-icon ', {
+              'active-icon fill-current': isFocused,
+              'd-none disabled': !isFocused,
+            })}
+            width={20}
+            height={20}
+          />
+        </div>
         <TooltipContainer
           tip={getTooltipMessages().ACTIVE_DISABLED}
           showTip={isSurveyActive}

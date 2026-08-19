@@ -133,12 +133,13 @@
                 </div>
                 <!-- Advanced -->
                 <div class="mega-dropdown__column col-md-2">
-                    <ul>
+                    <span  id="list-heading-cn" class="sr-only" role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
+                    <ul aria-labelledby="list-heading-cn">
 
                         <!-- Advanced -->
                         <li class="dropdown-header" role="presentation">
                             <span class="ri-tools-fill"></span>
-                            <span role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
+                            <span role="none" aria-hidden="true" aria-level="2"> <?php eT('Advanced'); ?></span>
                         </li>
                         <?php if (Permission::model()->hasGlobalPermission('templates', 'read')) : ?>
                             <!-- Theme Editor -->
@@ -190,13 +191,14 @@
                 <div class="mega-dropdown__column col-md-2">
 
                     <!-- Users -->
+                   <h2 class="sr-only"> <?php eT('Users'); ?></h2>
                     <ul>
 
                         <!-- Users -->
                         <li class="dropdown-header" role="presentation">
 
                             <i class="ri-user-fill"></i>
-                           <span role="heading" aria-level="2"> <?php eT('Users'); ?></span>
+                           <span  aria-hidden="true" role="heading" aria-level="2"> <?php eT('Users'); ?></span>
                         </li>
 
                         <!-- User management -->
@@ -245,12 +247,13 @@
                 </div>
                 <!-- Settings -->
                 <div class="mega-dropdown__column col-md-2">
+                    <h2 class="sr-only">  <?php eT('Settings'); ?></h2>
                     <ul>
 
                         <!-- Settings -->
                         <li class="dropdown-header" role="presentation">
                             <span class="ri-list-settings-line"></span>
-                          <span role="heading" aria-level="2">  <?php eT('Settings'); ?></span>
+                          <span aria-hidden="true" role="heading" aria-level="2">  <?php eT('Settings'); ?></span>
                         </li>
 
                         <?php if (Permission::model()->hasGlobalPermission('settings', 'read')) : ?>

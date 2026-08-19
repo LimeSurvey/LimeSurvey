@@ -16,6 +16,7 @@ export const TinyMCE = ({
   disabled = false,
   onBlur,
   onFocus,
+  onKeyDown = () => {},
   handleOnChange,
   placeholder,
   value = '',
@@ -50,14 +51,20 @@ export const TinyMCE = ({
     })
 
     htmlPopup({
-      title: t('Edit HTML'),
-      html: <CodeEditor value={formattedHTML} />,
+      title: t('Edit question using HTML'),
+      html: (
+        <CodeEditor
+          title={t('Use custom HTML to edit and format your question text.')}
+          className="html-editor"
+          value={formattedHTML}
+        />
+      ),
       showCloseButton: true,
       showCancelButton: true,
       showConfirmButton: true,
       confirmButtonText: 'Save',
       cancelButtonText: 'Cancel',
-      width: '80vw',
+      containerClass: 'html-editor-popup',
     }).then((result) => {
       if (result.isConfirmed) {
         const newHtmlContent =
@@ -170,6 +177,7 @@ export const TinyMCE = ({
         init={{
           setup: (editor) => {
             mceToolbar(editor)
+            editor.on('keydown', onKeyDown)
             toolbarActions(
               editor,
               openHtmlEditorRef,

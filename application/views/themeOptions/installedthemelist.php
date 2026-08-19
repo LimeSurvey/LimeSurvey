@@ -15,6 +15,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
     'dataProvider'          => $oQuestionTheme->search(),
     'filter'                => $oQuestionTheme,
     'id'                    => 'questionthemes-grid',
+    'caption'               => gT('Question themes'),
     'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
             gT('%s rows per page'),
             CHtml::dropDownList(
