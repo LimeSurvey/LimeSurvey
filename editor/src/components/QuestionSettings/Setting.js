@@ -202,7 +202,7 @@ export const Setting = ({
         return (
           <div
             className="right-side-bar-settings"
-            key={`${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
+            key={`${question?.qid}-${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
           >
             <TooltipContainer
               tip={getTooltipMessages().ACTIVE_DISABLED}
