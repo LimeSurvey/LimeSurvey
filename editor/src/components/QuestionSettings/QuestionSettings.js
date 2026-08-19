@@ -42,6 +42,7 @@ export const QuestionSettings = ({ surveyId }) => {
 
   // holds the scenario ID currently has a new conditions (waiting for temp condition IDs to be replaced)
   const [pendingScenarioName, setPendingScenarioName] = useState(null)
+  const [expandedAdvancedSections, setExpandedAdvancedSections] = useState({})
 
   const {
     focused = {},
@@ -63,6 +64,43 @@ export const QuestionSettings = ({ surveyId }) => {
     return getQuestionSettings()[focused.questionThemeName]
   }, [focused?.questionThemeName])
 
+  const advancedQuestionSettings = useMemo(() => {
+    const simpleSettingsTitle = getQuestionAttributesTitles().SIMPLE
+
+    return (questionSettings || []).filter(
+      (setting) =>
+        setting.title !== simpleSettingsTitle && setting.title !== ' '
+    )
+  }, [questionSettings])
+
+  const areAllAdvancedSectionsExpanded =
+    advancedQuestionSettings.length > 0 &&
+    advancedQuestionSettings.every(
+      (setting) => !!expandedAdvancedSections[setting.title]
+    )
+
+  useEffect(() => {
+    if (!questionSettingsOptions?.isAdvanced) {
+      return
+    }
+
+    setExpandedAdvancedSections((previousState) => {
+      const nextSections = advancedQuestionSettings.reduce((acc, setting) => {
+        acc[setting.title] =
+          typeof previousState[setting.title] === 'boolean'
+            ? previousState[setting.title]
+            : false
+
+        return acc
+      }, {})
+
+      return {
+        ...previousState,
+        ...nextSections,
+      }
+    })
+  }, [questionSettingsOptions?.isAdvanced, advancedQuestionSettings])
+
   const handleOnQuestionCodeClick = () => {
     setFocused(focused, groupIndex, questionIndex)
   }
@@ -81,6 +119,30 @@ export const QuestionSettings = ({ surveyId }) => {
 
   const closeConditionDesignerPanels = () => {
     toggleConditionDesignerPanels(null, false, false)
+  }
+
+  const handleSectionToggle = (sectionTitle, isExpanded) => {
+    setExpandedAdvancedSections((previousState) => ({
+      ...previousState,
+      [sectionTitle]: isExpanded,
+    }))
+  }
+
+  const handleToggleAllSections = () => {
+    const shouldExpandAll = !areAllAdvancedSectionsExpanded
+
+    const nextExpandedSections = advancedQuestionSettings.reduce(
+      (acc, setting) => {
+        acc[setting.title] = shouldExpandAll
+        return acc
+      },
+      {}
+    )
+
+    setExpandedAdvancedSections((previousState) => ({
+      ...previousState,
+      ...nextExpandedSections,
+    }))
   }
 
   const handleUpdate = (question) => {
@@ -142,6 +204,11 @@ export const QuestionSettings = ({ surveyId }) => {
       .map((q) => q.theme)
       .includes(focused.questionThemeName)
 
+  const shouldShowExpandCollapseAll =
+    !isQuestionDisabled &&
+    !!questionSettingsOptions?.isAdvanced &&
+    advancedQuestionSettings.length > 0
+
   if (focused && typeof focused.qid === 'number') {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {
       return (
@@ -182,9 +249,23 @@ export const QuestionSettings = ({ surveyId }) => {
         >
           {t('Question settings')}
         </div>
-        <Button variant="link" style={{ padding: 0 }} onClick={unFocus}>
-          <CloseIcon className="text-black fill-current" />
-        </Button>
+        <div className="d-flex align-items-center gap-2">
+          {shouldShowExpandCollapseAll && (
+            <Button
+              variant="link"
+              className="p-0 text-primary"
+              onClick={handleToggleAllSections}
+            >
+              {areAllAdvancedSectionsExpanded
+                ? t('Collapse all')
+                : t('Expand all')}
+            </Button>
+          )}
+
+          <Button variant="link" style={{ padding: 0 }} onClick={unFocus}>
+            <CloseIcon className="text-black fill-current" />
+          </Button>
+        </div>
       </SideBarHeader>
       {!isQuestionDisabled && (
         <>
@@ -204,18 +285,21 @@ export const QuestionSettings = ({ surveyId }) => {
           </div>
 
           {questionSettings?.map((setting, index) => {
+            const isSimpleSettings =
+              getQuestionAttributesTitles().SIMPLE === setting.title
+
             return (
               <Setting
                 key={`${setting.title}-${index}`}
                 question={focused}
                 isAdvanced={!!questionSettingsOptions?.isAdvanced}
-                simpleSettings={
-                  getQuestionAttributesTitles().SIMPLE === setting.title
-                }
+                simpleSettings={isSimpleSettings}
                 handleUpdate={updateAttribute}
                 title={setting.title}
                 attributes={setting.attributes}
                 language={activeLanguage}
+                sectionExpanded={expandedAdvancedSections[setting.title]}
+                onSectionToggle={handleSectionToggle}
               />
             )
           })}
