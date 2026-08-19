@@ -274,9 +274,12 @@ export const QuestionSettings = ({ surveyId }) => {
                 title={setting.title}
                 attributes={setting.attributes}
                 language={activeLanguage}
-                hasDefaultAttributeValues={Boolean(
-                  survey.questionTypeDefaultAttributeValues?.[focused.type]
-                )}
+                hasDefaultAttributeValues={
+                  Object.keys(
+                    survey.questionTypeDefaultAttributeValues?.[focused.type] ??
+                      {}
+                  ).length > 0
+                }
               />
             )
           })}
