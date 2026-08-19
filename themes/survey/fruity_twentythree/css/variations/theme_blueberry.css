@@ -627,7 +627,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -12859,8 +12859,8 @@ dl dt {
 }
 
 a {
-  font-weight: 500;
-  font-size: 0.9975rem;
+  font-weight: inherit;
+  font-size: inherit;
   text-decoration: none;
 }
 a:hover {
