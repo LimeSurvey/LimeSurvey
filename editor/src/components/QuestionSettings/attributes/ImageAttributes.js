@@ -26,8 +26,8 @@ export const ImageAttributes = ({
 }) => {
   const charLimit = 125
   const [show, setShow] = useState(false)
-  const [imageState, setImageState] = useState(
-    () => getQuestionImageObjectFromImageAttribute(value)
+  const [imageState, setImageState] = useState(() =>
+    getQuestionImageObjectFromImageAttribute(value)
   )
   const [previewUrl, setPreviewUrl] = useState(() => {
     const obj = getQuestionImageObjectFromImageAttribute(value)
