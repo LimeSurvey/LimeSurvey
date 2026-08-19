@@ -179,6 +179,13 @@ LS.floatingActions = (function () {
             });
             return;
         }
+        // ---- window-location-href action ------------------------------
+        // Appends the checked ids (comma-separated) to the action URL and navigates.
+        // Used by "Download files" in the responses list.
+        if (actionType === 'window-location-href') {
+            window.location.href = actionUrl + checkedItems.join($that.data('input-separator') || ',');
+            return;
+        }
         // ---- modal action ---------------------------------------------
         var modalId = $that.data('modal-id');
         if (!modalId) { return; }
