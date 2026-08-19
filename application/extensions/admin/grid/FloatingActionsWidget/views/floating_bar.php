@@ -99,7 +99,9 @@ $pk     = CHtml::encode($this->pk);
     <button
         type="button"
         class="floating-actions-close"
-        aria-label="<?= gT('close') ?>"
+        data-bs-toggle="tooltip"
+        title="<?= gT('Deselect all') ?>"
+        aria-label="<?= gT('Close') ?>"
     >
         <i class="ri-close-line"></i>
     </button>
