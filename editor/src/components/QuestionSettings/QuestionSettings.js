@@ -274,6 +274,9 @@ export const QuestionSettings = ({ surveyId }) => {
                 title={setting.title}
                 attributes={setting.attributes}
                 language={activeLanguage}
+                hasDefaultAttributeValues={Boolean(
+                  survey.questionTypeDefaultAttributeValues?.[focused.type]
+                )}
               />
             )
           })}

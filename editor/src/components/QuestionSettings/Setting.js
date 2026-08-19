@@ -14,6 +14,7 @@ export const Setting = ({
   title = '',
   attributes = [],
   simpleSettings = false,
+  hasDefaultAttributeValues = false,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const [hasSurveyUpdatePermission] = useAppState(
@@ -193,7 +194,7 @@ export const Setting = ({
           ...(options ? { options } : {}),
           ...(attribute.action
             ? {
-                hasDefaultAttributeValues: question.hasDefaultAttributeValues,
+                hasDefaultAttributeValues,
               }
             : {}),
         }
