@@ -2020,6 +2020,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Get all surveys regardless of whether they already have a participant (token) table
+     *
+     * @return Survey[]
+     */
+    public static function getSurveysForAddingParticipants()
+    {
+        return self::model()->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
+    }
+
+    /**
      * Fix invalid question in this survey
      * Delete question that don't exist in primary language
      */

@@ -17835,7 +17835,6 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   align-items: center;
 }
 .navbar .nav-item > a:not(.dropdown-item):hover {
-  box-shadow: none;
   outline: none;
   border-radius: 2px;
   border: 1px solid rgba(123, 97, 255, 0.9);
@@ -17852,14 +17851,28 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   box-shadow: none;
 }
 .navbar .navbar-brand {
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid transparent;
   font-style: normal;
   font-weight: 800;
   font-size: 15px;
   color: #fff;
   width: auto;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  margin-right: 0px;
+  padding: 4px;
+  margin-right: 0;
+}
+.navbar .navbar-brand:hover {
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid rgba(123, 97, 255, 0.9);
+}
+.navbar .navbar-brand:focus-visible {
+  outline: none;
+  border-radius: 0px;
+  border: 1px solid #9b87ff;
+  outline: none;
+  box-shadow: inset 1px 0 0 #9b87ff, inset -1px 0 0 #9b87ff, inset 0 -1px 0 #9b87ff, inset 0 1px 0 #9b87ff;
 }
 .navbar .navbar-brand img {
   padding-left: 3px;
@@ -20122,7 +20135,8 @@ table [class^=ri-], table [class*=" ri-"] {
   background-color: #9094A7;
   flex-shrink: 0;
 }
-.grid-selection-bar .grid-selection-bar__deselect {
+.grid-selection-bar .grid-selection-bar__deselect,
+.grid-selection-bar .grid-selection-bar__select-all {
   padding: 4px 8px;
   font-weight: 500;
   white-space: nowrap;
@@ -20188,6 +20202,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   text-decoration: underline;
 }
+.alert-filled-primary.alert-dismissible .btn-close {
+  color: #1E1E1E;
+}
 .alert-filled-primary hr {
   border-top-color: var(--bs-primary);
 }
@@ -20196,6 +20213,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   background-color: #fff;
   border-left: 8px solid var(--bs-primary);
+}
+.alert-primary.alert-dismissible .btn-close {
+  color: #1E1E1E;
 }
 .alert-primary hr {
   border-top-color: var(--bs-primary);
@@ -20210,6 +20230,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   text-decoration: underline;
 }
+.alert-filled-secondary.alert-dismissible .btn-close {
+  color: #1E1E1E;
+}
 .alert-filled-secondary hr {
   border-top-color: var(--bs-secondary);
 }
@@ -20218,6 +20241,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   background-color: #fff;
   border-left: 8px solid var(--bs-secondary);
+}
+.alert-secondary.alert-dismissible .btn-close {
+  color: #1E1E1E;
 }
 .alert-secondary hr {
   border-top-color: var(--bs-secondary);
@@ -20232,6 +20258,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   text-decoration: underline;
 }
+.alert-filled-success.alert-dismissible .btn-close {
+  color: #1E1E1E;
+}
 .alert-filled-success hr {
   border-top-color: var(--bs-success);
 }
@@ -20240,6 +20269,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   background-color: #fff;
   border-left: 8px solid var(--bs-success);
+}
+.alert-success.alert-dismissible .btn-close {
+  color: #1E1E1E;
 }
 .alert-success hr {
   border-top-color: var(--bs-success);
@@ -20254,6 +20286,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   text-decoration: underline;
 }
+.alert-filled-warning.alert-dismissible .btn-close {
+  color: #1E1E1E;
+}
 .alert-filled-warning hr {
   border-top-color: var(--bs-warning);
 }
@@ -20262,6 +20297,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   background-color: #fff;
   border-left: 8px solid var(--bs-warning);
+}
+.alert-warning.alert-dismissible .btn-close {
+  color: #1E1E1E;
 }
 .alert-warning hr {
   border-top-color: var(--bs-warning);
@@ -20276,6 +20314,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   text-decoration: underline;
 }
+.alert-filled-danger.alert-dismissible .btn-close {
+  color: #1E1E1E;
+}
 .alert-filled-danger hr {
   border-top-color: var(--bs-danger);
 }
@@ -20284,6 +20325,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   background-color: #fff;
   border-left: 8px solid var(--bs-danger);
+}
+.alert-danger.alert-dismissible .btn-close {
+  color: #1E1E1E;
 }
 .alert-danger hr {
   border-top-color: var(--bs-danger);
@@ -20297,6 +20341,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #fff;
   text-decoration: underline;
 }
+.alert-filled-info.alert-dismissible .btn-close {
+  color: #fff;
+}
 .alert-filled-info hr {
   border-top-color: var(--bs-info);
 }
@@ -20305,6 +20352,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   background-color: #fff;
   border-left: 8px solid var(--bs-info);
+}
+.alert-info.alert-dismissible .btn-close {
+  color: #1E1E1E;
 }
 .alert-info hr {
   border-top-color: var(--bs-info);
@@ -20319,6 +20369,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   text-decoration: underline;
 }
+.alert-filled-light.alert-dismissible .btn-close {
+  color: #1E1E1E;
+}
 .alert-filled-light hr {
   border-top-color: var(--bs-light);
 }
@@ -20327,6 +20380,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #1E1E1E;
   background-color: #fff;
   border-left: 8px solid var(--bs-light);
+}
+.alert-light.alert-dismissible .btn-close {
+  color: #1E1E1E;
 }
 .alert-light hr {
   border-top-color: var(--bs-light);
@@ -20340,6 +20396,9 @@ table [class^=ri-], table [class*=" ri-"] {
   color: #fff;
   text-decoration: underline;
 }
+.alert-filled-dark.alert-dismissible .btn-close {
+  color: #fff;
+}
 .alert-filled-dark hr {
   border-top-color: var(--bs-dark);
 }
@@ -20349,17 +20408,27 @@ table [class^=ri-], table [class*=" ri-"] {
   background-color: #fff;
   border-left: 8px solid var(--bs-dark);
 }
+.alert-dark.alert-dismissible .btn-close {
+  color: #1E1E1E;
+}
 .alert-dark hr {
   border-top-color: var(--bs-dark);
 }
 
 .alert-dismissible .btn-close {
-  padding: 1rem 1rem;
+  font-size: 9px;
+  opacity: 1;
+  top: 50%;
+  transform: translateY(-50%);
 }
-.alert-dismissible .btn-close:focus {
+.alert-dismissible .btn-close:focus-visible {
+  outline: 2px solid #1E1E1E;
+  outline-offset: -12px;
   box-shadow: none;
-  color: #000;
-  opacity: 0.75;
+}
+.alert-dismissible .btn-close:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
 }
 
 .alert {

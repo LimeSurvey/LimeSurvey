@@ -1798,7 +1798,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         'sid' => $surveyid,
                         "gid" => $arow['gid'],
                         "qid" => $arow['qid'],
-                        "aid" => "other");
+                        "aid" => "other",
+                        "suffix" => "_Cother");
                         if (isset($answerColumnDefinition)) {
                             $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                         }
@@ -1832,7 +1833,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     'sid' => $surveyid,
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
-                    "aid" => "comment");
+                    "aid" => "comment",
+                    "suffix" => "_Ccomment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }

@@ -8,10 +8,6 @@ import { errorToast } from 'helpers/Alert'
 import { FILE_UPLOAD_MAX_SIZE } from 'helpers/constants'
 import classNames from 'classnames'
 
-const handleError = (errorMessage) => {
-  errorToast(errorMessage)
-}
-
 export const DropZone = ({
   fileService,
   onChange = () => {},
@@ -57,16 +53,20 @@ export const DropZone = ({
     [setPreviewUrl, onChangePreview]
   )
 
+  const onUploadFailed = (failedBlobUrl, previousPreviewUrl, message) => {
+    URL.revokeObjectURL(failedBlobUrl)
+    changePreview(previousPreviewUrl)
+    setLoading(false)
+    errorToast(message)
+  }
+
   const onDropAccepted = (acceptedFiles) => {
     acceptedFiles.forEach(async (file) => {
       setLoading(true)
 
-      const previewUrlOld = previewUrl
+      const previousPreviewUrl = previewUrl
       const url = URL.createObjectURL(file)
       changePreview(url)
-      if (previewUrlOld) {
-        URL.revokeObjectURL(previewUrlOld)
-      }
 
       const formData = new FormData()
       formData.append('file', file, file.name)
@@ -75,15 +75,20 @@ export const DropZone = ({
       try {
         response = await fileService.uploadSurveyImage(formData)
       } catch (error) {
-        changePreview(previewUrlOld)
-        setLoading(false)
-        if (error.response) {
-          handleError(
-            'Upload failed with status code: ' + error.response.status
-          )
-        } else {
-          handleError(error.message)
-        }
+        const message = error.response
+          ? 'Upload failed with status code: ' + error.response.status
+          : error.message
+        onUploadFailed(url, previousPreviewUrl, message)
+        return
+      }
+
+      const { success, uploadResultMessage } = response
+      if (!success) {
+        onUploadFailed(
+          url,
+          previousPreviewUrl,
+          uploadResultMessage || 'Upload failed'
+        )
         return
       }
 
@@ -93,16 +98,13 @@ export const DropZone = ({
     })
   }
 
-  const onDropRejected = useCallback(
-    (fileRejections) => {
-      fileRejections.forEach((fileRejection) => {
-        fileRejection.errors.forEach((error) => {
-          handleError(fileRejection.file.name + ': ' + error.message)
-        })
+  const onDropRejected = useCallback((fileRejections) => {
+    fileRejections.forEach((fileRejection) => {
+      fileRejection.errors.forEach((error) => {
+        errorToast(fileRejection.file.name + ': ' + error.message)
       })
-    },
-    [handleError]
-  )
+    })
+  }, [])
 
   const handleDelete = () => {
     // Deleting - does not delete the file from the server
@@ -114,7 +116,7 @@ export const DropZone = ({
   }
 
   const onError = (error) => {
-    handleError(error.message)
+    errorToast(error.message)
   }
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -132,11 +134,7 @@ export const DropZone = ({
   })
 
   const loadingSpinner = (
-    <div
-      className={`position-absolute file-loading-btn-wrapper ${
-        isLoading ? '' : 'd-none'
-      }`}
-    >
+    <div className="position-absolute file-loading-btn-wrapper">
       <div style={{ width: 24, height: 24 }} className="loader"></div>
     </div>
   )
@@ -157,7 +155,7 @@ export const DropZone = ({
         maxHeight: previewMaxHeight,
       }}
     >
-      {loadingSpinner}
+      {isLoading ? loadingSpinner : null}
       <Image
         src={isValidImg ? previewUrl : NoImageFound}
         alt="Image Select List"
