@@ -26,23 +26,19 @@ class QuestionServiceTest extends TestBaseClass
 {
     public function testGetDefaultAttributeValuesReturnsFlattenedDefaults()
     {
-        $proxySettingsUser = Mockery::mock(
-            \LimeSurvey\Models\Services\Proxy\ProxySettingsUser::class
+        $questionAttributeHelper = Mockery::mock(
+            \LimeSurvey\Models\Services\QuestionAttributeHelper::class
         );
-        $proxySettingsUser->shouldReceive('getUserSettingValue')
-            ->with('question_default_values_L')
+        $questionAttributeHelper->shouldReceive('getUserDefaultsForQuestionType')
+            ->with('L')
             ->once()
-            ->andReturn(json_encode([
-                'Display' => [
-                    'random_order' => ['' => '1'],
-                ],
-                'Logic' => [
-                    'min_answers' => '2',
-                ],
-            ]));
+            ->andReturn([
+                'random_order' => ['' => '1'],
+                'min_answers' => ['' => '2'],
+            ]);
 
         $mockSetInit = new QuestionMockSet();
-        $mockSetInit->proxySettingsUser = $proxySettingsUser;
+        $mockSetInit->questionAttributeHelper = $questionAttributeHelper;
         $questionService = (new QuestionFactory())->make($mockSetInit);
 
         $this->assertSame(

@@ -12,6 +12,7 @@ use Condition;
 use LSYii_Application;
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\{
+    QuestionAttributeHelper,
     Proxy\ProxySettingsUser,
     Proxy\ProxyQuestion,
     Exception\PersistErrorException,
@@ -32,6 +33,7 @@ class QuestionService
     private Survey $modelSurvey;
     private Condition $modelCondition;
     private L10nService $l10nService;
+    private QuestionAttributeHelper $questionAttributeHelper;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private LSYii_Application $yiiApp;
@@ -41,6 +43,7 @@ class QuestionService
         Survey $modelSurvey,
         Condition $modelCondition,
         L10nService $l10nService,
+        QuestionAttributeHelper $questionAttributeHelper,
         ProxySettingsUser $proxySettingsUser,
         ProxyQuestion $proxyQuestion,
         LSYii_Application $yiiApp
@@ -49,6 +52,7 @@ class QuestionService
         $this->modelSurvey = $modelSurvey;
         $this->modelCondition = $modelCondition;
         $this->l10nService = $l10nService;
+        $this->questionAttributeHelper = $questionAttributeHelper;
         $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyQuestion = $proxyQuestion;
         $this->yiiApp = $yiiApp;
@@ -425,30 +429,8 @@ class QuestionService
      */
     public function getDefaultAttributeValues(string $questionType): array
     {
-        $storedDefaults = $this->proxySettingsUser->getUserSettingValue(
-            'question_default_values_' . $questionType
-        );
-        if ($storedDefaults === null) {
-            return [];
-        }
-
-        $defaultsByCategory = json_decode((string) $storedDefaults, true);
-        if (!is_array($defaultsByCategory)) {
-            return [];
-        }
-
-        $defaults = [];
-        foreach ($defaultsByCategory as $categoryDefaults) {
-            if (!is_array($categoryDefaults)) {
-                continue;
-            }
-            foreach ($categoryDefaults as $attribute => $value) {
-                $defaults[$attribute] = is_array($value)
-                    ? $value
-                    : ['' => $value];
-            }
-        }
-        return $defaults;
+        return $this->questionAttributeHelper
+            ->getUserDefaultsForQuestionType($questionType);
     }
 
     /**
