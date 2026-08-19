@@ -438,14 +438,8 @@ class QuestionService
      */
     public function getDefaultAttributeValuesByQuestionType(): array
     {
-        $defaultsByQuestionType = [];
-        foreach (array_keys(\QuestionType::modelsAttributes()) as $questionType) {
-            $defaults = $this->getDefaultAttributeValues($questionType);
-            if (!empty($defaults)) {
-                $defaultsByQuestionType[$questionType] = $defaults;
-            }
-        }
-        return $defaultsByQuestionType;
+        return $this->questionAttributeHelper
+            ->getUserDefaultsByQuestionType();
     }
 
     /**
