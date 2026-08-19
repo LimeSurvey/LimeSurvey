@@ -26,35 +26,37 @@ export const ImageAttributes = ({
 }) => {
   const charLimit = 125
   const [show, setShow] = useState(false)
-  const [remainingChars, setRemainingChars] = useState(charLimit) // Init with all remaining.
-  const [imageState, setImageState] = useState({})
-  const [previewUrl, setPreviewUrl] = useState(null)
-  const [forceUpdateKey, setForceUpdateKey] = useState(0)
-  const [showAltText, setShowAltText] = useState(false)
+  const [imageState, setImageState] = useState(
+    () => getQuestionImageObjectFromImageAttribute(value)
+  )
+  const [previewUrl, setPreviewUrl] = useState(() => {
+    const obj = getQuestionImageObjectFromImageAttribute(value)
+    return obj.imagePath ? obj.imagePreviewUrl : null
+  })
+  const [showAltText, setShowAltText] = useState(() => {
+    const obj = getQuestionImageObjectFromImageAttribute(value)
+    return !!obj.imageAltText
+  })
+  const [remainingChars, setRemainingChars] = useState(() => {
+    const obj = getQuestionImageObjectFromImageAttribute(value)
+    return charLimit - (obj.imageAltText?.length || 0)
+  })
   const dropzoneRef = useRef(null)
   const { fileService } = useFileService()
 
-  // Initialize or update image state when value changes
+  // Keep state in sync when value changes (e.g. after a save confirmation)
   useEffect(() => {
     const imageObject = getQuestionImageObjectFromImageAttribute(value)
     setImageState(imageObject)
     setRemainingChars(charLimit - (imageObject.imageAltText?.length || 0))
     setShowAltText(!!imageObject.imageAltText)
 
-    // Reset preview URL when the question/value changes
     if (imageObject && imageObject.imagePath) {
       setPreviewUrl(imageObject.imagePreviewUrl)
     } else {
       setPreviewUrl(null)
     }
   }, [value])
-
-  // Only update the key when the image path changes when switching questions
-  useEffect(() => {
-    if (imageState.imagePath) {
-      setForceUpdateKey((prev) => prev + 1)
-    }
-  }, [imageState.imagePath])
 
   const updateImageState = (changes) => {
     // Create new state with changes
@@ -191,7 +193,7 @@ export const ImageAttributes = ({
               className={'qe-input-group image-attributes-range multi-settings'}
             >
               <InputRange
-                key={`brightness-${forceUpdateKey}`}
+                key="brightness"
                 onChange={handleBrightnessChange}
                 labelText={t('Brightness')}
                 min={-100}
@@ -205,7 +207,7 @@ export const ImageAttributes = ({
               className={'qe-input-group image-attributes-range multi-settings'}
             >
               <InputRange
-                key={`radius-${forceUpdateKey}`}
+                key="radius"
                 onChange={handleRadiusChange}
                 labelText={t('Radius')}
                 min={0}
