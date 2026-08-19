@@ -34,6 +34,7 @@ export const Input = ({
   errorMessage,
   inputClass = '',
   labelClass = '',
+  labelTooltip = '',
   showClassWhenValue = false,
   update = () => {},
   activeDisabled = false,
@@ -126,9 +127,11 @@ export const Input = ({
           <span className="qe-input-icon-left">{leftIcons}</span>
         )}
         {labelText && (
-          <Form.Label className={`ui-label ${labelClass}`}>
-            {labelText}
-          </Form.Label>
+          <TooltipContainer tip={labelTooltip} showTip={!!labelTooltip}>
+            <Form.Label className={`ui-label ${labelClass}`}>
+              {labelText}
+            </Form.Label>
+          </TooltipContainer>
         )}
         <TooltipContainer tip={toolTip} showTip={inputDisabled}>
           <Form.Control

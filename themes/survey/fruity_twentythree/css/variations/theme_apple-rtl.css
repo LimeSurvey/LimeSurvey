@@ -2053,7 +2053,8 @@ progress {
 .form-control::file-selector-button {
   padding: 0.375rem 0.75rem;
   margin: -0.375rem -0.75rem;
-  margin-inline-end: 0.75rem;
+  -webkit-margin-end: 0.75rem;
+          margin-inline-end: 0.75rem;
   color: #212529;
   background-color: #e9ecef;
   pointer-events: none;
@@ -2075,7 +2076,8 @@ progress {
 .form-control::-webkit-file-upload-button {
   padding: 0.375rem 0.75rem;
   margin: -0.375rem -0.75rem;
-  margin-inline-end: 0.75rem;
+  -webkit-margin-end: 0.75rem;
+          margin-inline-end: 0.75rem;
   color: #212529;
   background-color: #e9ecef;
   pointer-events: none;
@@ -2122,12 +2124,14 @@ progress {
 .form-control-sm::file-selector-button {
   padding: 0.25rem 0.5rem;
   margin: -0.25rem -0.5rem;
-  margin-inline-end: 0.5rem;
+  -webkit-margin-end: 0.5rem;
+          margin-inline-end: 0.5rem;
 }
 .form-control-sm::-webkit-file-upload-button {
   padding: 0.25rem 0.5rem;
   margin: -0.25rem -0.5rem;
-  margin-inline-end: 0.5rem;
+  -webkit-margin-end: 0.5rem;
+          margin-inline-end: 0.5rem;
 }
 
 .form-control-lg {
@@ -2144,12 +2148,14 @@ progress {
 .form-control-lg::file-selector-button {
   padding: 0.5rem 1rem;
   margin: -0.5rem -1rem;
-  margin-inline-end: 1rem;
+  -webkit-margin-end: 1rem;
+          margin-inline-end: 1rem;
 }
 .form-control-lg::-webkit-file-upload-button {
   padding: 0.5rem 1rem;
   margin: -0.5rem -1rem;
-  margin-inline-end: 1rem;
+  -webkit-margin-end: 1rem;
+          margin-inline-end: 1rem;
 }
 
 textarea.form-control {
@@ -12967,13 +12973,85 @@ a:hover {
   border-bottom-left-radius: 0;
 }
 
-.ls-answers label, .answer-item label, .control-label {
+.ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-suffix-label, .answer-item .othertext-suffix-label {
   font-weight: 600;
   font-size: 1.14rem;
   line-height: 20px;
 }
-.ls-answers label .radio-label, .answer-item label .radio-label, .control-label .radio-label {
+.ls-answers label .radio-label, .answer-item label .radio-label, .control-label .radio-label, .ls-answers .othertext-suffix-label .radio-label, .answer-item .othertext-suffix-label .radio-label {
   padding-right: 12px;
+}
+
+.ls-answers.answers-list .answer-item .othertext-suffix-label, .answer-item .othertext-suffix-label {
+  align-self: center;
+  color: #6E748C;
+}
+
+.no-prefix-othertext .othertext-label-checkox-container {
+  margin-left: 0;
+  padding-left: 8px;
+}
+.no-prefix-othertext .control-label {
+  padding: 0;
+  min-height: 19px;
+}
+.no-prefix-othertext .other-text-item {
+  padding-right: 0;
+}
+.no-prefix-othertext.checkbox-text-item .col-auto.d-flex {
+  padding-left: 0;
+}
+.no-prefix-othertext.checkbox-text-item .col-auto:not(.d-flex) {
+  padding-right: 12px;
+}
+
+.ls-input-sized .other-text-item.col {
+  flex-grow: 0;
+}
+
+.other-text-item input.multipleco-other-topic {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.multipleco-other-row > .multipleco-other-label-col {
+  flex: 1 0 auto;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 33.33%;
+  max-width: 100%;
+}
+
+.multipleco-other-row > .multipleco-other-comment-col {
+  margin-right: auto;
+}
+
+.multipleco-other-inner {
+  gap: 0.25rem 0.5rem;
+}
+
+.multipleco-other-inner .label-text.control-label {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
+  margin-bottom: 0;
+}
+
+.multipleco-other-inner .multipleco-other-topic {
+  flex: 1 1 6rem;
+  min-width: 6rem;
+  max-width: 100%;
+}
+
+.ls-input-sized .multipleco-other-inner .multipleco-other-topic {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+.multipleco-other-inner .othertext-suffix-label {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 textarea {
@@ -15357,8 +15435,10 @@ body .imageselect-listitem label::after {
 }
 .numeric-multi .ls-group-total-separator hr {
   border-top: solid 2px;
-  margin-block-start: 0;
-  margin-block-end: 0;
+  -webkit-margin-before: 0;
+          margin-block-start: 0;
+  -webkit-margin-after: 0;
+          margin-block-end: 0;
 }
 .numeric-multi .dynamic-total {
   font-weight: 600;
