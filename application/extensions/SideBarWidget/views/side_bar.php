@@ -5,7 +5,7 @@
  */
 
 ?>
-<div class="sidebar" >
+<div class="sidebar">
     <div class="sidebar-icons" role="list">
         <?php foreach ($icons as $icon) : ?>
             <div class="sidebar-icon" role="listitem">
