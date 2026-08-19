@@ -4,7 +4,7 @@
   *
   *      @desc Uploader class
   *   @package KCFinder
-  *   @version 3.12
+  *   @version 3.13.0-limesurvey
   *    @author Pavel Tzonkov <sunhater@sunhater.com>
   * @copyright 2010-2014 KCFinder Project
   *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
@@ -16,8 +16,8 @@ namespace kcfinder;
 
 class uploader {
 
-/** Release version */
-    const VERSION = "3.12";
+/** Release version (LimeSurvey-maintained fork, past upstream 3.12) */
+    const VERSION = "3.13.0-limesurvey";
 
 /** Config session-overrided settings
   * @var array */

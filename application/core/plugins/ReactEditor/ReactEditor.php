@@ -307,8 +307,8 @@ class ReactEditor extends \PluginBase
 
         if (!$isCompatible) {
             App()->setFlashMessage(
-                gT("The new editor is currently compatible only with the 'Fruity TwentyThree' theme and themes based on it."),
-                'warning'
+                "<span style='font-weight: bold;'>" . gT("The new editor cannot be used for this survey.") . '</span><br>' . gT("It is currently only compatible with the 'Fruity TwentyThree' theme and themes based on it."),
+                'error'
             );
         }
     }
