@@ -11,6 +11,7 @@ import {
 } from 'recharts'
 
 import { ordinal } from '../ChartsUtils'
+import { htmlToPlainText } from 'helpers'
 import { StatisticsDetailModal } from '../StatisticsDetailModal.js'
 import { StatisticsFilterSelect } from '../StatisticsFilterSelect.js'
 
@@ -125,7 +126,9 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
         onHide={() => setSelectedKey(null)}
         modalClassname="responses-statistics-ranking-modal"
       >
-        <h2 className="responses-statistics-modal-title">{title}</h2>
+        <h2 className="responses-statistics-modal-title">
+          {htmlToPlainText(title)}
+        </h2>
         <StatisticsFilterSelect
           label={t('See all rankings for:')}
           options={ranked}

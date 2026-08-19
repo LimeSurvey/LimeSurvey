@@ -123,15 +123,12 @@ export const StatisticsTable = ({
       },
     ]
       .filter((column) => column.value !== undefined)
-      .map(({ key, title, value }) => ({ key, title, render: () => value }))
-    return (
-      <LSTable
-        columns={columns}
-        data={[{ id: 'stats' }]}
-        rowId="id"
-        resizable
-      />
-    )
+      .map(({ key, title, value }) => ({
+        id: key,
+        header: title,
+        cell: () => value,
+      }))
+    return <LSTable columns={columns} data={[{ id: 'stats' }]} resizable />
   }
 
   if (isRanking) {
@@ -141,61 +138,62 @@ export const StatisticsTable = ({
     )
     const columns = [
       {
-        key: 'answer',
-        title: '',
-        render: (row) => <AnswerCell row={row} isImage={isImage} />,
+        id: 'answer',
+        header: '',
+        cell: ({ row }) => <AnswerCell row={row.original} isImage={isImage} />,
       },
       ...(rows[0]?.ranks ?? []).map((rank) => ({
-        key: `rank-${rank.position}`,
-        title: ordinal(rank.position),
-        render: (row) =>
-          row.ranks?.find((r) => r.position === rank.position)?.value ?? '',
+        id: `rank-${rank.position}`,
+        header: ordinal(rank.position),
+        cell: ({ row }) =>
+          row.original.ranks?.find((r) => r.position === rank.position)
+            ?.value ?? '',
       })),
     ]
-    return <LSTable columns={columns} data={rows} rowId="id" resizable />
+    return <LSTable columns={columns} data={rows} resizable />
   }
 
   if (isSegmented) {
     const columns = [
       {
-        key: 'subquestion',
-        title: '',
-        render: (row) =>
-          row.scaleTitle ? `${row.title} — ${row.scaleTitle}` : row.title,
+        id: 'subquestion',
+        header: '',
+        cell: ({ row }) =>
+          row.original.scaleTitle
+            ? `${row.original.title} — ${row.original.scaleTitle}`
+            : row.original.title,
       },
       ...getUnionSegments(data).map((segment, index) => ({
-        key: `segment-${index}`,
-        title: segment.title,
-        render: (row) => {
-          const cell = row.segments?.find((s) => s.title === segment.title)
+        id: `segment-${index}`,
+        header: segment.title,
+        cell: ({ row }) => {
+          const cell = row.original.segments?.find(
+            (s) => s.title === segment.title
+          )
           return cell ? getDisplayMetric(cell, valueType) : ''
         },
       })),
     ]
-    return (
-      <LSTable columns={columns} data={withRowIds(data)} rowId="id" resizable />
-    )
+    return <LSTable columns={columns} data={withRowIds(data)} resizable />
   }
 
   const columns = [
     {
-      key: 'answer',
-      title: t('Answer'),
-      render: (row) => <AnswerCell row={row} isImage={isImage} />,
+      id: 'answer',
+      header: t('Answer'),
+      cell: ({ row }) => <AnswerCell row={row.original} isImage={isImage} />,
     },
     {
-      key: 'responses',
-      title: t('Responses'),
-      render: (row) => getDisplayMetric(row, VALUE_TYPE.COUNT),
+      id: 'responses',
+      header: t('Responses'),
+      cell: ({ row }) => getDisplayMetric(row.original, VALUE_TYPE.COUNT),
     },
     {
-      key: 'percentage',
-      title: t('Percentage'),
-      render: (row) => getDisplayMetric(row, VALUE_TYPE.PERCENTAGE),
+      id: 'percentage',
+      header: t('Percentage'),
+      cell: ({ row }) => getDisplayMetric(row.original, VALUE_TYPE.PERCENTAGE),
     },
   ]
 
-  return (
-    <LSTable columns={columns} data={withRowIds(data)} rowId="id" resizable />
-  )
+  return <LSTable columns={columns} data={withRowIds(data)} resizable />
 }

@@ -3,6 +3,7 @@ import { format } from 'util'
 import classNames from 'classnames'
 
 import { HighlightedText, SearchInput, useSearchTerms } from 'components'
+import { htmlToPlainText } from 'helpers'
 import { useQuestionResponses } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
@@ -106,7 +107,10 @@ export const ResponsesGrid = ({
       {items.map((answer) => (
         <div className="responses-statistics-grid-row" key={answer.id}>
           <span className="responses-statistics-grid-answer">
-            <HighlightedText text={answer.value} terms={highlightTerms} />
+            <HighlightedText
+              text={htmlToPlainText(answer.value)}
+              terms={highlightTerms}
+            />
           </span>
           <span className="responses-statistics-grid-date">
             {formatAnswerDate(answer.date)}
@@ -164,7 +168,9 @@ export const ResponsesGrid = ({
         modalClassname="responses-statistics-responses-modal"
       >
         <div className="responses-statistics-comments">
-          <h2 className="responses-statistics-modal-title">{title}</h2>
+          <h2 className="responses-statistics-modal-title">
+            {htmlToPlainText(title)}
+          </h2>
           {searchBlock}
           {answers.length ? answersGrid(answers) : emptyState}
           {hasNextPage && (

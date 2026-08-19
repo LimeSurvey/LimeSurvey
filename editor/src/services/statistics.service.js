@@ -42,6 +42,13 @@ const buildAnswerFilters = (
     return []
   }
 
+  // "Other" is stored under a code the server-side equality filter can't match
+  // (single choice '-oth-'; multiple choice the free-text column), so skip the
+  // server narrowing and let the client-side pass match it by sub-question.
+  if (selectedAnswer === 'other') {
+    return []
+  }
+
   if (questionType === QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
     if (selectedField && fields.includes(selectedField)) {
       return [{ key: selectedField, filterMethod: 'equal', value: 'Y' }]
@@ -209,7 +216,10 @@ export class StatisticsService {
         !String(answer?.aid || '').endsWith('comment') &&
         hasValue(answer)
       ) {
-        selectedByResponse[answer.responseId] = answer.value
+        // Normalize the stored '-oth-' code to the 'other' option key the
+        // chart data / select use, so filtering and swatches line up.
+        selectedByResponse[answer.responseId] =
+          answer.value === '-oth-' ? 'other' : answer.value
       }
     })
 

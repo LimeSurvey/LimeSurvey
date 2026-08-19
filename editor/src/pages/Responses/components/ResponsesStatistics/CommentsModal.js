@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { useQuestionComments } from 'hooks'
-import { dayJsHelper } from 'helpers'
+import { dayJsHelper, htmlToPlainText } from 'helpers'
 
 import { StatisticsDetailModal } from './StatisticsDetailModal.js'
 import { StatisticsFilterSelect } from './StatisticsFilterSelect.js'
@@ -65,7 +65,9 @@ export const CommentsModal = ({
       modalClassname="responses-statistics-comments-modal"
     >
       <div className="responses-statistics-comments">
-        <h2 className="responses-statistics-modal-title">{questionTitle}</h2>
+        <h2 className="responses-statistics-modal-title">
+          {htmlToPlainText(questionTitle)}
+        </h2>
         {options.length > 0 && (
           <StatisticsFilterSelect
             label={t('See all comments for:')}
@@ -88,7 +90,7 @@ export const CommentsModal = ({
                       fill={optionByAnswer[comment.subQuestion]?.fill}
                     />
                   )}
-                  {comment.comment}
+                  {htmlToPlainText(comment.comment)}
                 </span>
                 {comment.date && (
                   <span className="responses-statistics-modal-row-meta">

@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { useQuestionComments } from 'hooks'
 import { LSTable } from 'components'
+import { htmlToPlainText } from 'helpers'
 
 import { CommentSwatch, buildOptionByAnswer } from './ChartsUtils.js'
 
@@ -26,21 +27,23 @@ export const QuestionComments = ({
   const columns = useMemo(
     () => [
       {
-        key: 'answer',
-        title: t('Answer option'),
-        render: (comment) => (
+        id: 'answer',
+        header: t('Answer option'),
+        cell: ({ row }) => (
           <>
-            <CommentSwatch fill={optionByAnswer[comment.subQuestion]?.fill} />
-            {optionByAnswer[comment.subQuestion]?.title ||
-              comment.subQuestion ||
+            <CommentSwatch
+              fill={optionByAnswer[row.original.subQuestion]?.fill}
+            />
+            {optionByAnswer[row.original.subQuestion]?.title ||
+              row.original.subQuestion ||
               ''}
           </>
         ),
       },
       {
-        key: 'comment',
-        title: t('Comment'),
-        render: (comment) => comment.comment,
+        id: 'comment',
+        header: t('Comment'),
+        cell: ({ row }) => htmlToPlainText(row.original.comment),
       },
     ],
     [optionByAnswer]
@@ -77,7 +80,7 @@ export const QuestionComments = ({
 
   return (
     <div className="responses-statistics-comments">
-      <LSTable columns={columns} data={previewRows} rowId="id" />
+      <LSTable columns={columns} data={previewRows} />
       <div className="responses-statistics-comments-more">
         <button
           type="button"

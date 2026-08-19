@@ -80,14 +80,15 @@ export const ArrayTextTable = ({
   const tableColumns = useMemo(
     () => [
       {
-        key: 'date',
-        title: <ColumnHeader primary={t('Date')} />,
-        sortable: true,
-        render: (row) => formatAnswerDate(row.date),
+        id: 'date',
+        accessorFn: (row) => row.date,
+        header: <ColumnHeader primary={t('Date')} />,
+        enableSorting: true,
+        cell: ({ row }) => formatAnswerDate(row.original.date),
       },
       ...columns.map((column) => ({
-        key: column.key,
-        title: column.primary ? (
+        id: column.key,
+        header: column.primary ? (
           <ColumnHeader
             primary={column.primary}
             secondary={secondaryFor(column)}
@@ -95,9 +96,12 @@ export const ArrayTextTable = ({
         ) : (
           t('Answer')
         ),
-        render: (row) => (
+        cell: ({ row }) => (
           <div className="responses-statistics-array-text-cell">
-            <HighlightedText text={row[column.key]} terms={highlightTerms} />
+            <HighlightedText
+              text={htmlToPlainText(row.original[column.key])}
+              terms={highlightTerms}
+            />
           </div>
         ),
       })),
@@ -161,7 +165,6 @@ export const ArrayTextTable = ({
         <LSTable
           columns={tableColumns}
           data={tableRows}
-          rowId="id"
           resizable
           maxHeight="400px"
         />
