@@ -86,6 +86,11 @@ jobs:
           sudo systemctl start mysql.service
 
       - name: Initialize and check all dependencies
+        env:
+          # Authenticate Composer against the GitHub API. Unauthenticated
+          # requests are heavily rate-limited and frequently return HTTP 504
+          # when downloading dist zipballs
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
           # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
           php tests/check_autoloader.php
@@ -98,7 +103,18 @@ jobs:
           mysql --version
           touch enabletests
           # NB: PHPUnit 6.5.* is installed with composer.
-          composer install -vvv
+          # Retry a few times to ride out transient GitHub API 504s.
+          # On the final attempt allow falling back to git sources (--prefer-source)
+          for attempt in 1 2 3; do
+            echo "composer install attempt ${attempt}/3"
+            if [ "${attempt}" -lt 3 ]; then
+              composer install -vvv && break
+            else
+              composer install -vvv --prefer-source && break
+            fi
+            echo "composer install failed, retrying in 15s..."
+            sleep 15
+          done
           ./vendor/bin/phpunit --version
       - name: Set up Apache+PHP
         run: |
