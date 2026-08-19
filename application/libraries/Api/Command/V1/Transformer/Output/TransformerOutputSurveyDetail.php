@@ -42,7 +42,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputSurveyMenus $transformerOutputSurveyMenus;
     private TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems;
     private SurveyCondition $surveyCondition;
-    private array $questionTypeDefaultAttributeValues = [];
 
     /**
      * Construct
@@ -123,10 +122,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['ownerInherited'] = $this->transformerSurveyOwner->transform(
             $data->oOptions->owner
         );
-        $this->questionTypeDefaultAttributeValues = $this->questionService
+        $survey['questionTypeDefaultAttributeValues'] = $this->questionService
             ->getDefaultAttributeValuesByQuestionType();
-        $survey['questionTypeDefaultAttributeValues'] =
-            $this->questionTypeDefaultAttributeValues;
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
@@ -250,11 +247,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 ),
                 $options
             );
-            $question['hasDefaultAttributeValues'] = array_key_exists(
-                $questionModel->type,
-                $this->questionTypeDefaultAttributeValues
-            );
-
             $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
 
             $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);

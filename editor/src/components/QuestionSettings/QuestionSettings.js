@@ -98,7 +98,7 @@ export const QuestionSettings = ({ surveyId }) => {
   }
 
   /**
-   * Updates saved-default availability for every question of the given type.
+   * Updates saved defaults for the given question type.
    * @param {string} questionType Question type code.
    * @param {boolean} hasDefaults Whether saved defaults exist.
    * @param {Object} attributes Saved attribute values.
@@ -109,17 +109,6 @@ export const QuestionSettings = ({ surveyId }) => {
     hasDefaults,
     attributes
   ) => {
-    const updatedQuestionGroups = survey.questionGroups.map(
-      (questionGroup) => ({
-        ...questionGroup,
-        questions: questionGroup.questions.map((question) =>
-          question.type === questionType
-            ? { ...question, hasDefaultAttributeValues: hasDefaults }
-            : question
-        ),
-      })
-    )
-
     const questionTypeDefaultAttributeValues = {
       ...(survey.questionTypeDefaultAttributeValues ?? {}),
     }
@@ -130,14 +119,8 @@ export const QuestionSettings = ({ surveyId }) => {
     }
 
     update({
-      questionGroups: updatedQuestionGroups,
       questionTypeDefaultAttributeValues,
     })
-    setFocused(
-      updatedQuestionGroups[groupIndex].questions[questionIndex],
-      groupIndex,
-      questionIndex
-    )
   }
 
   const updateAttribute = (value, isAttribute = true) => {

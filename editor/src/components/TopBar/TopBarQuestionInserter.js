@@ -279,7 +279,10 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       answers: answers,
       subquestions: subQuestions,
       sortOrder: questionGroupToAddQuestion.questions.length + 1,
-      ...getQuestionAttributeDefaults(questionThemeName, questionTypeInfo.type),
+      attributes: getQuestionAttributeDefaults(
+        questionThemeName,
+        questionTypeInfo.type
+      ),
       languages: survey.languages,
     })
 
@@ -304,18 +307,15 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
    * Combines built-in and user defaults for a new question.
    * @param {string} questionThemeName Question theme name.
    * @param {string} questionType Question type code.
-   * @returns {Object} Attributes and saved-default availability.
+   * @returns {Object} Combined attribute defaults.
    */
   const getQuestionAttributeDefaults = (questionThemeName, questionType) => {
     const userDefaults =
       survey.questionTypeDefaultAttributeValues?.[questionType] ?? {}
 
     return {
-      attributes: {
-        ...getDefaultAttributes(questionThemeName),
-        ...userDefaults,
-      },
-      hasDefaultAttributeValues: Object.keys(userDefaults).length > 0,
+      ...getDefaultAttributes(questionThemeName),
+      ...userDefaults,
     }
   }
 
