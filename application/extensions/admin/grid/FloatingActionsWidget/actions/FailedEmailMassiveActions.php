@@ -6,7 +6,7 @@ namespace actions;
  * Massive (floating bar) actions for the "Failed email notifications" grid.
  *
  * Returns the action definitions consumed by FloatingActionsWidget for the
- * failedemail-grid. Only the actions the current user is permitted to run are
+ * failed email-grid. Only the actions the current user is permitted to run are
  * included.
  */
 class FailedEmailMassiveActions
