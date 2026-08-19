@@ -169,9 +169,10 @@ export const InputRange = ({
           <div className="input-range-input">
             <Input
               value={values[0]}
-              onChange={({ target: { value } }) =>
-                handleOnChange([parseFloat(value) || min])
-              }
+              onChange={({ target: { value } }) => {
+                const parsed = parseFloat(value)
+                handleOnChange([isNaN(parsed) ? min : parsed])
+              }}
               min={min}
               max={max}
               inputRef={inputRef}
