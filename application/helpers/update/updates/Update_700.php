@@ -1466,6 +1466,13 @@ class Update_700 extends DatabaseUpdateBase
             }
         }
 
+        // Rebuilding the response/timing tables with a fresh serial "id" leaves the new
+        // PostgreSQL sequences at 1 while rows were copied in with their original ids;
+        // advance every sequence past MAX(id) to avoid duplicate key errors (bug #20640).
+        if (Yii::app()->db->getDriverName() === 'pgsql') {
+            \fixPostgresSequence();
+        }
+
         $archivedSettings = ArchivedTableSettings::model()->findAll();
         foreach ($archivedSettings as $archivedSetting) {
             if (strpos($archivedSetting->tbl_name, 'survey') !== false) {

@@ -917,6 +917,11 @@ class ResponsesController extends LSBaseController
      */
     public function actionTime(int $surveyId): void
     {
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+            App()->end();
+        }
         $aData = $this->getData($surveyId);
 
         $aData['columns'] = [

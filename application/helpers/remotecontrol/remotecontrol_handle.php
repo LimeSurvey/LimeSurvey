@@ -1785,11 +1785,11 @@ class remotecontrol_handle
                 foreach ($aQuestionSettings as $sPropertyName) {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
                         $oSubQuestions = Question::model()->with('questionl10ns')
-                                                          ->findAll(
-                                                              't.parent_qid = :parent_qid and questionl10ns.language = :language',
-                                                              array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
-                                                              array('order' => 'title')
-                                                          );
+                                                          ->findAll(array(
+                                                              'condition' => 't.parent_qid = :parent_qid and questionl10ns.language = :language',
+                                                              'params' => array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
+                                                              'order' => 't.title',
+                                                          ));
 
                         if (count($oSubQuestions) > 0) {
                             $aData = array();
@@ -1883,7 +1883,9 @@ class remotecontrol_handle
                                                                             'qid = :qid AND defaultvaluel10ns.language = :language',
                                                                             array(':qid' => $iQuestionID, ':language' => $sLanguage)
                                                                         );
-                        $aResult['defaultvalue'] = $oDefaultValue !== null ? $oDefaultValue->defaultvalue : null;
+                        $aResult['defaultvalue'] = ($oDefaultValue !== null && isset($oDefaultValue->defaultvaluel10ns[$sLanguage]))
+                            ? $oDefaultValue->defaultvaluel10ns[$sLanguage]->defaultvalue
+                            : null;
                     } elseif ($sPropertyName == 'question' || $sPropertyName == 'help' || $sPropertyName == 'script') {
                         $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->$sPropertyName;
                     } elseif ($sPropertyName == 'questionl10ns') {

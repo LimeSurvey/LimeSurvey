@@ -3,7 +3,6 @@
 namespace GuzzleHttp\Handler;
 
 use GuzzleHttp\TransportSharing;
-use GuzzleHttp\Utils;
 
 /**
  * @internal
@@ -70,7 +69,7 @@ final class CurlShareHandleState
         throw new \InvalidArgumentException(\sprintf(
             'The "%s" option must be null or a GuzzleHttp\\TransportSharing::* constant; received %s.',
             $option,
-            Utils::describeType($sharing)
+            \get_debug_type($sharing)
         ));
     }
 
@@ -108,7 +107,7 @@ final class CurlShareHandleState
 
         self::requireCurlConstant('CURLOPT_SHARE');
         $shareOption = self::requireCurlConstant('CURLSHOPT_SHARE');
-        $locks = self::handlerLocks();
+        $locks = self::handlerLocks($mode);
         $handle = curl_share_init();
 
         try {
@@ -135,12 +134,23 @@ final class CurlShareHandleState
     /**
      * @return int[]
      */
-    private static function handlerLocks(): array
+    private static function handlerLocks(string $mode): array
     {
-        return [
+        CurlVersion::ensureHandlerSharingSupported();
+
+        if ($mode === TransportSharing::HANDLER_REQUIRE) {
+            CurlVersion::ensureSslSessionSharingSupported();
+        }
+
+        $locks = [
             self::requireCurlConstant('CURL_LOCK_DATA_DNS'),
-            self::requireCurlConstant('CURL_LOCK_DATA_SSL_SESSION'),
         ];
+
+        if (CurlVersion::supportsSslSessionSharing()) {
+            $locks[] = self::requireCurlConstant('CURL_LOCK_DATA_SSL_SESSION');
+        }
+
+        return $locks;
     }
 
     private static function requireCurlConstant(string $constant): int
