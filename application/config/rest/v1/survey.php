@@ -113,7 +113,7 @@ $rest['v1/survey-template/$id'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactorySurveyTemplate())->make()
+                'schema' => $surveyTemplateSchema
             ],
             'not-found' => [
                 'code' => 404,
