@@ -23,7 +23,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
     'dataProvider'          => $oQuestionTheme->search(),
     'filter'                => $oQuestionTheme,
     'id'                    => 'questionthemes-grid',
-    'caption'               => gT('Question themes'),
+    'lsCaption'             => gT('Question themes'),
     'massiveActionTemplate' => $massiveAction,
     'lsPageSizeCurrentValue'  => $pageSize,
     'columns'               => [

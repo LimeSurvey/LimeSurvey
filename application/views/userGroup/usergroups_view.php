@@ -24,7 +24,7 @@
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'usergroups-grid-mine',
-                    'caption' => gT('My user groups'),
+                    'lsCaption' => gT('My user groups'),
                     'dataProvider' => $model->searchMine(true),
                     'columns' => $model->getManagementButtons(),
                     'emptyText' => gT('No user groups found.'),

@@ -48,7 +48,7 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
                 [
                     'id' => 'usergroup-members-grid',
                     'dataProvider' => $dataProvider,
-                    'caption' => gT('Group members'),
+                    'lsCaption' => gT('Group members'),
                     'filter' => $model,
                     'ajaxType'        => 'POST',
                     'emptyText' => gT('No user group members found.'),
