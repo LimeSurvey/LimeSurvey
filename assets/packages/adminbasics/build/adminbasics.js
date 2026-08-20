@@ -21700,6 +21700,9 @@
 	    if (!$tabList || !$tabList.length) {
 	      return;
 	    }
+	    if ($tabList.find('.sidebar-tab-link').length) {
+	      return;
+	    }
 	    var $tabs = listTabs($tabList);
 	    if ($tabs.length === 0) {
 	      return;
@@ -21712,7 +21715,9 @@
 	      $active = $tabs.first();
 	    }
 	    $tabs.attr('tabindex', '-1');
+	    $tabs.attr('aria-selected', 'false');
 	    $active.attr('tabindex', '0');
+	    $active.attr('aria-selected', 'true');
 	  }
 	  function refreshAllTablistsRovingTabindex() {
 	    var seen = [];
@@ -21736,6 +21741,9 @@
 	        return;
 	      }
 	      var $currentTab = $(this);
+	      if ($currentTab.hasClass('sidebar-tab-link')) {
+	        return;
+	      }
 	      var $tabList = getTabList($currentTab);
 	      if ($tabList.length === 0) {
 	        return;
@@ -21761,17 +21769,24 @@
 	      }
 	      var $nextTab = $tabs.eq(nextIndex);
 	      $nextTab.trigger('focus');
-	      if (window.bootstrap && window.bootstrap.Tab) {
-	        window.bootstrap.Tab.getOrCreateInstance($nextTab[0]).show();
-	      } else if (typeof $nextTab.tab === 'function') {
-	        $nextTab.tab('show');
+	      if ($nextTab.is('[data-bs-toggle="tab"], [data-bs-toggle="pill"]')) {
+	        if (window.bootstrap && window.bootstrap.Tab) {
+	          window.bootstrap.Tab.getOrCreateInstance($nextTab[0]).show();
+	        } else if (typeof $nextTab.tab === 'function') {
+	          $nextTab.tab('show');
+	        } else {
+	          $nextTab.trigger('click');
+	        }
 	      } else {
 	        $nextTab.trigger('click');
 	      }
+	      updateRovingTabindex($tabList);
 	    });
 	  }
 	  bindTabArrowNavigation();
 	  refreshAllTablistsRovingTabindex();
+	  window.LS = window.LS || {};
+	  window.LS.refreshTabsA11y = refreshAllTablistsRovingTabindex;
 
 	  // Update roving tabindex after every tab switch
 	  $(document).off('shown.bs.tab.ls-tabs-a11y', tabSelectors).on('shown.bs.tab.ls-tabs-a11y', tabSelectors, function () {
