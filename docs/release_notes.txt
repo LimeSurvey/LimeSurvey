@@ -34,6 +34,30 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.10 (build 260813) to 7.0.11 (build 260821) August 20, 2026
+-Fixed issue: A11y focus and hover states on alert close button and main logo (#5118) (Anblik Audit Team)
+-Fixed issue: A11y alternative text missing and incorrect list announced  for several links LSNF-2026-4 2./LSNF-2026-5 and empty search result not announced automatically by screen reader LSNF-2026-6 (#5135) (Anblik Audit Team)
+-Fixed issue: A11y Incorrect label is provided for the floating actions close button LSNF-2026-9 (#5149) (Anblik Audit Team)
+-Fixed issue: A11y Incorrect label announced for the select2 dropdowns (#5125) (Anblik Audit Team)
+-Fixed issue: A11y Improved heading structure across user group and template screens for clearer navigation (#5112) (Anblik Audit Team)
+-Fixed issue: A11y Buttons in gridviews not triggerable via keyboard LSNF-2026-1 (#5132) (Anblik Audit Team)
+-Fixed issue: A11y  improvements in usermanagement for aria attributes and error display in related modals (#5095) (Anblik Audit Team)
+-Fixed issue #AT-2257: Fix fieldmaps to include suffix for types L,! and O (#5241) (Tim Willig)
+-Fixed issue #AT-2214: New Editor map browser detection question type does not show correct map in response detail view (#5176) (Rami S. Zaki)
+-Fixed issue #AT-2193: UI fixes for question settings regarding Image upload (#5223) (Tim Willig)
+-Fixed issue #AT-2192: Create default subquestions for the initial question in React editor (#5215) (Adil Moumni Abdou)
+-Fixed issue #AT-2149: Style fixes for the HTML code editor (#5207) (Rami S. Zaki)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, nomoto
+#Updated translation: Japanese by d_inoue
+#Updated translation: Hungarian by kkd, twilllig
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 7.0.9 (build 260812) to 7.0.10 (build 260813) August 13, 2026
 -Fixed issue #20652: [security]Reflected XSS in HTML Editor popup endpoint (#5231) (Carsten Schmitz)
 -Fixed issue #20651: [security] SQL Injection in CPDB through a token (#5226) (Stefan K)
