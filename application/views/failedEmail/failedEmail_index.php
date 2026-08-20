@@ -24,15 +24,8 @@
                     'id' => 'failedemail-grid',
                     'emptyText' => gT('No failed email notifications found'),
                     'massiveActionTemplate' => $massiveAction,
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            App()->params['pageSizeOptionsTokens'],
-                            ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
-                        )
-                    ),
+                    'lsPageSizeCurrentValue'  => $pageSize,
+                    'lsPageSizeOptions'       => App()->params['pageSizeOptionsTokens'],
                     'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                     'columns' => $failedEmailModel->getColumns(),
                     'ajaxUpdate' => 'failedemail-grid',

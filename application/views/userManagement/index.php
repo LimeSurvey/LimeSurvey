@@ -31,35 +31,19 @@ echo viewHelper::getViewTestTag('usersIndex');
             'columns' => $model->getManagementColums(),
             'lsAdditionalColumns' => $model->getAdditionalColumns(),
             'massiveActionTemplate' => $massiveAction,
-            'caption' => gT('User management'),
+            'lsCaption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
                 'bindListItemclick();',
                 'LS.UserManagement.bindButtons();',
                 'showDeactivatedUserTooltip();'
             ],
             'filter' => $model,
-            'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        App()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                    )
-                ),
+            'lsPageSizeCurrentValue' => $pageSize,
         ]
     );
     ?>
 
-<!-- To update rows per page via ajax -->
 <script type="text/javascript">
-    jQuery(function ($) {
-        jQuery(document).on("change", '#pageSize', function () {
-            $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {data: {pageSize: $(this).val()}});
-        });
-    });
-    //show tooltip for gridview icons
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)

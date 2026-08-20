@@ -546,8 +546,8 @@ class ResponsesController extends LSBaseController
                 $oSavedControlModel->setAttributes($aFilters, false);
             }
             $aData['savedModel'] = $oSavedControlModel;
-            if (App()->request->getPost('savedResponsesPageSize')) {
-                App()->user->setState('savedResponsesPageSize', App()->request->getPost('savedResponsesPageSize'));
+            if (App()->request->getPost('pageSize')) {
+                App()->user->setState('savedResponsesPageSize', App()->request->getPost('pageSize'));
             }
             $aData['savedResponsesPageSize'] = App()->user->getState('savedResponsesPageSize', App()->params['defaultPageSize']);
             $aViewUrls[] = 'savedlist_view';

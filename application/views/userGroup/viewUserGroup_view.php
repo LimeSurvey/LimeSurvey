@@ -58,18 +58,7 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
                         'addableUsers' => $addableUsers,
                         'ugid' => $ugid
                     ], true),
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $dataProvider->pagination->getPageSize(),
-                            App()->params['pageSizeOptions'],
-                            [
-                                    'class' => 'changePageSize form-select',
-                                    'style' => 'display: inline; width: auto'
-                                ]
-                        )
-                    ),
+                    'lsPageSizeCurrentValue' => $dataProvider->pagination->getPageSize(),
                     'columns' => [
                         array(
                             'header'      => gT('Username'),

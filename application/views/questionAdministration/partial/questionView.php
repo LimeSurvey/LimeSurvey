@@ -104,26 +104,10 @@
             $this->widget('ext.admin.grid.CLSGridView', [ //done
                 'dataProvider' => $questionModel->search(),
                 'id' => 'question-grid',
-                'caption'      => gT("Questions"),
+                'lsCaption'      => gT("Questions"),
                 'emptyText' => gT('No questions found.'),
                 'massiveActionTemplate' => $massiveAction,
-                'summaryText'           => html_entity_decode(
-                    gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
-                    sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            App()->params['pageSizeOptions'],
-                            [
-                                'class'           => 'changePageSize form-select',
-                                'style'           => 'display: inline; width: auto',
-                                'aria-labelledby' => 'rows-per-page-label',
-                            ]
-                        ) . '<span id="rows-per-page-label">'
-                    ) .
-                    '</span>'
-                ),
+                'lsPageSizeCurrentValue' => $pageSize,
                 'columns'               => $questionModel->questionListColumns,
                 'ajaxUpdate'            => 'question-grid',
                 'afterAjaxUpdate'       => "bindPageSizeChange"

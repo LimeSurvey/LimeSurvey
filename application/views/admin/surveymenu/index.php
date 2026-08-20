@@ -41,19 +41,11 @@ echo viewHelper::getViewTestTag('surveyMenus');
                             [
                                 'dataProvider' => $model->search(),
                                 'id' => 'surveymenu-grid',
-                                'caption' => gT('Survey menus'),
+                                'lsCaption' => gT('Survey menus'),
                                 'columns' => $model->getColumns(),
                                 'filter' => $model,
                                 'emptyText' => gT('No customizable entries found.'),
-                                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                                    gT('%s rows per page'),
-                                    CHtml::dropDownList(
-                                        'pageSize',
-                                        $pageSize,
-                                        Yii::app()->params['pageSizeOptions'],
-                                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                                    )
-                                ),
+                                'lsPageSizeCurrentValue' => $pageSize,
                                 'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
                                 'ajaxType' => 'POST',
                                 'ajaxUpdate' => 'surveymenu-grid',

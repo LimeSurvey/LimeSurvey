@@ -41,19 +41,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                         'lsAfterAjaxUpdate'     => ['onQuotaOpenAction();', 'bindListItemclick();'],
                         'emptyText'             => gT('No quotas'),
                         'massiveActionTemplate' => $massiveAction,
-                        'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $iGridPageSize,
-                                Yii::app()->params['pageSizeOptions'],
-                                [
-                                        'class'    => 'changePageSize form-select',
-                                        'style'    => 'display: inline; width: auto',
-                                        'onchange' => "$.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }})"
-                                    ]
-                            )
-                        ),
+                        'lsPageSizeCurrentValue'  => $iGridPageSize,
                         'columns'               => [
                             [
                                 'id'             => 'id',

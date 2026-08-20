@@ -59,8 +59,6 @@ class ListSurveysWidget extends CWidget
 
         $this->pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 
-        App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/reload.js'));
-
         require_once dirname(__FILE__) . '/../../grid/FloatingActionsWidget/actions/SurveyListMassiveActions.php';
 
         $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [

@@ -108,22 +108,9 @@ $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [
         'id'                       => 'plugins-grid',
-        'caption'                  => gT('Plugins'),
+        'lsCaption'                  => gT('Plugins'),
         'dataProvider'             => $dataProvider,
-        'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-            . sprintf(
-                gT('%s rows per page'),
-                CHtml::dropDownList(
-                    'pageSize',
-                    $pageSize,
-                    Yii::app()->params['pageSizeOptions'],
-                    [
-                        'class' => 'changePageSize form-select',
-                        'style' => 'display: inline; width: auto',
-                        'aria-label' => gT('Rows per page')
-                    ]
-                )
-            ),
+        'lsPageSizeCurrentValue'     => $pageSize,
         'columns' => $gridColumns,
         'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
         'ajaxUpdate' => 'plugins-grid',
@@ -133,16 +120,3 @@ $this->widget(
 
 $this->renderPartial('./pluginmanager/uploadModal', []);
 ?>
-
-<script type="text/javascript">
-    jQuery(function($) {
-        // To update rows per page via ajax
-        $(document).on("change", '#pageSize', function() {
-            $.fn.yiiGridView.update('plugins-grid', {
-                data: {
-                    pageSize: $(this).val()
-                }
-            });
-        });
-    });
-</script>
