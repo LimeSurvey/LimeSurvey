@@ -69,6 +69,14 @@ class CLSGridView extends TbGridView
     public $lsPageSizeOptions = null;
 
     /**
+     * The name attribute of the rows-per-page <select> element. Defaults to 'pageSize'.
+     * Override when multiple grids share the same page so each grid's page-size
+     * change posts a distinct request parameter.
+     * @var string
+     */
+    public $lsPageSizeSelectorName = 'pageSize';
+
+    /**
      *
      * Initializes the widget.
      * @throws CException
@@ -83,7 +91,7 @@ class CLSGridView extends TbGridView
                 . sprintf(
                     gT('%s rows per page'),
                     CHtml::dropDownList(
-                        'pageSize',
+                        $this->lsPageSizeSelectorName,
                         $this->lsPageSizeCurrentValue,
                         $options,
                         [

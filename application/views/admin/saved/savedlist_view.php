@@ -25,7 +25,8 @@
                     'ajaxType'     => 'POST',
                     'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
                     'emptyText'    => gT('No customizable entries found.'),
-                    'lsPageSizeCurrentValue' => $savedResponsesPageSize,
+                    'lsPageSizeCurrentValue'  => $savedResponsesPageSize,
+                    'lsPageSizeSelectorName'  => 'savedResponsesPageSize',
                 ]);
             ?>
         </div>
