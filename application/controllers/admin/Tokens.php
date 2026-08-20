@@ -1121,9 +1121,9 @@ class Tokens extends SurveyCommonAction
                     $token = Token::create($iSurveyId);
                     $token->setAttributes($aData, false);
 
-                    $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->firstname);
-                    $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->lastname);
-                    $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->email);
+                    $token->firstname = str_replace('{COUNTER}', $newDummyToken, (string) $token->firstname);
+                    $token->lastname = str_replace('{COUNTER}', $newDummyToken, (string) $token->lastname);
+                    $token->email = str_replace('{COUNTER}', $newDummyToken, (string) $token->email);
 
                     $token->generateToken($aData['tokenlength']);
                     if ($token->encryptSave(true)) {

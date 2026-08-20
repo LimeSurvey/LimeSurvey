@@ -46,7 +46,7 @@
                         <input class='form-control' type='text' size='30' id='firstname' name='firstname' aria-describedby='firstname-help' value="<?= CHtml::encode($firstname); ?>" />
                     </div>
                     <div class="form-text" id="firstname-help">
-                        <?= sprintf(gT('You can use %1$s to add the generated counter number, for example, “Firstname %1$s”.'), "{TOKEN_COUNTER}"); ?>
+                        <?= gT('You can use {COUNTER} to add a generated counter number, for example, “Firstname {COUNTER}”.'); ?>
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                         <input class='form-control' type='text' size='30'  id='lastname' name='lastname' aria-describedby='lastname-help' value="<?= CHtml::encode($lastname); ?>" />
                     </div>
                     <div class="form-text" id="lastname-help">
-                        <?= sprintf(gT('You can use %1$s to add the generated counter number, for example, “Lastname %1$s”.'), "{TOKEN_COUNTER}"); ?>
+                        <?= gT('You can use {COUNTER} to add a generated counter number, for example, “Lastname {COUNTER}”.'); ?>
                     </div>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                         <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' aria-describedby='email-help' value="<?= CHtml::encode($email); ?>" />
                     </div>
                     <div class="form-text" id="email-help">
-                        <?= sprintf(gT('You can use %1$s to add the generated counter number, for example, “user%1$s@example.org”.'), "{TOKEN_COUNTER}"); ?>
+                        <?= gT('You can use {COUNTER} to add a generated counter number, for example, “user{COUNTER}@example.org”.'); ?>
                     </div>
                 </div>
 
