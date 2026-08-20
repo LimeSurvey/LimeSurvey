@@ -75,11 +75,10 @@
             var $bsToggle  = $bsWrapper.find('.dropdown-toggle').first();
 
             $bsToggle.attr('data-toggle', 'dropdown');
+            var handledKeys = ['ArrowUp', 'ArrowDown', 'Escape', 'Enter'];
 
             window.addEventListener('keydown', function (event) {
-                // Only the keys Bootstrap swallows; everything else already reaches
-                // bootstrap-select on its own.
-                if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown' && event.key !== 'Escape') {
+                if (handledKeys.indexOf(event.key) === -1) {
                     return;
                 }
                 // Ignore other widgets on the page; each one binds its own listener.
@@ -98,11 +97,16 @@
 
                 var $listbox = $bsWrapper.find('[role="listbox"]').first();
                 var target = (isOpen && $listbox.length) ? $listbox.get(0) : $bsToggle.get(0);
+                var keyCode = (event.key === 'Enter' && !isOpen) ? 40 : event.keyCode;
 
                 $.fn.selectpicker.Constructor.prototype.keydown.call(
                     target,
-                    $.Event('keydown', { which: event.keyCode, keyCode: event.keyCode })
+                    $.Event('keydown', { which: keyCode, keyCode: keyCode })
                 );
+
+                if (event.key === 'Enter' && isOpen && $bsToggle.attr('aria-expanded') === 'true') {
+                    $bsToggle.trigger('click.bs.dropdown.data-api').trigger('focus');
+                }
             }, true);
         });
 
