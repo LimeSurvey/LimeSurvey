@@ -52,7 +52,7 @@
                     [
                         'dataProvider' => $model->searchMine(false),
                         'id' => 'usergroups-grid-belong-to',
-                        'caption' => gT('Groups to which I belong'),
+                        'lsCaption' => gT('Groups to which I belong'),
                         'emptyText' => gT('No user groups found.'),
                         'lsPageSizeCurrentValue' => $pageSize,
                         'columns' => $model->columns,
