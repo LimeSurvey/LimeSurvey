@@ -469,6 +469,7 @@ export const OptionQuestionViewMode = ({
                 className="w-100 d-block comment-input"
                 dataTestId="other-option-input"
                 type="textarea"
+                value={values?.[1]?.value}
               />
             )}
           </div>
