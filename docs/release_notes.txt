@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from  (build ranslation:) to 6.17.17 (build 260820) August 20, 2026
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Hungarian by kkd
+#Updated translation: Hungarian (Informal) by kkd
+#Updated translation: Dutch by ginosupport, Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 6.17.15 (260811) to 6.17.16 (build 260814) August 13, 2026
 -Fixed issue #20652: [security] Reflected XSS in HTML Editor popup endpoint (#5231) (Carsten Schmitz)
 -Fixed issue #20651: [security] SQL Injection in CPDB through a token (#5226) (Stefan K)
