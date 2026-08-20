@@ -761,6 +761,7 @@ class QuestionExplorer {
     this.orderChanged = false; // Track if order actually changed during drag
     this.lastDragenterGid = null; // Prevent duplicate dragenter processing
     this.lastDragenterQid = null; // Prevent duplicate dragenter processing
+    this.dragStartGroupOrder = null; // Group gids in display order at dragstart
   }
 
   /**
@@ -1241,6 +1242,11 @@ class QuestionExplorer {
       this.questiongroupDragging = true;
       this.orderChanged = false; // Reset flag at start of drag
       this.lastDragenterGid = null; // Reset dragenter tracking
+      this.dragStartGroupOrder = LS.ld.orderBy(questiongroups, function (g) {
+        return _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].parseIntOr(g.group_order, 999999);
+      }, ['asc']).map(function (g) {
+        return g.gid;
+      });
       e.originalEvent.dataTransfer.setData('text/plain', 'node');
       // Add dragged class directly without re-rendering
       $(e.currentTarget).closest('.list-group-item').addClass('dragged');
@@ -1251,6 +1257,7 @@ class QuestionExplorer {
       if (this.draggedQuestionGroup !== null) {
         this.draggedQuestionGroup = null;
         this.questiongroupDragging = false;
+        this.dragStartGroupOrder = null;
         // Only trigger order update if order actually changed
         if (this.orderChanged && this.onOrderChange) {
           this.onOrderChange();
@@ -1273,16 +1280,33 @@ class QuestionExplorer {
         return g.gid === gid;
       });
       if (this.questiongroupDragging && this.draggedQuestionGroup && questiongroupObject) {
-        // Highlight the drop destination
+        // Highlight the group row as drop destination, never a question row
+        // (the event also fires on question rows, which carry data-gid too)
         $container.find('.list-group-item').removeClass('dragged');
-        $(e.currentTarget).addClass('dragged');
-        var targetPosition = parseInt(questiongroupObject.group_order);
-        var currentPosition = parseInt(this.draggedQuestionGroup.group_order);
-        if (Math.abs(targetPosition - currentPosition) === 1) {
-          questiongroupObject.group_order = currentPosition;
-          this.draggedQuestionGroup.group_order = targetPosition;
+        $(e.currentTarget).closest('.questiongroup-list-group > .list-group-item').addClass('dragged');
+        var startOrder = this.dragStartGroupOrder || [];
+        var draggedGid = this.draggedQuestionGroup.gid;
+        var targetIndex = startOrder.indexOf(gid);
+        if (targetIndex !== -1 && startOrder.indexOf(draggedGid) !== -1) {
+          // Rebuild from the order captured at dragstart: the dragged group
+          // takes the entered row's slot. The result depends only on the last
+          // row entered, so missed or repeated dragenter events can't corrupt it.
+          var newOrder = startOrder.filter(function (g) {
+            return g !== draggedGid;
+          });
+          newOrder.splice(targetIndex, 0, draggedGid);
+          LS.ld.each(newOrder, function (orderedGid, idx) {
+            var group = questiongroups.find(function (g) {
+              return g.gid === orderedGid;
+            });
+            if (group) {
+              group.group_order = idx + 1;
+            }
+          });
           _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].commit('updateQuestiongroups', questiongroups);
-          this.orderChanged = true; // Mark that order has changed
+          this.orderChanged = newOrder.some(function (g, idx) {
+            return g !== startOrder[idx];
+          });
           // Don't re-render during drag - wait for dragend
         }
       } else if (this.questionDragging && this.draggedQuestion && questiongroupObject) {

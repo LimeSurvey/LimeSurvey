@@ -74,10 +74,12 @@ var onClickListAction =  function (e) {
     var $grididvalue   = $gridid.attr('id');
     var $oCheckedItems = LS.gridSelection.getAll($grididvalue); // All pages, not just current
     $oCheckedItems = JSON.stringify($oCheckedItems);
-    var actionType     = $that.data('actionType');   
+    var actionType     = $that.data('actionType');
     var selectedList   = $(".selected-items-list");
+    // In select-all mode no ids are sent; a selectAll flag is posted instead
+    var isSelectAllMode = LS.gridSelection.isSelectAll($grididvalue);
 
-    if ($oCheckedItems == '[]') {
+    if ($oCheckedItems == '[]' && !isSelectAllMode) {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
         console.log('error first');
@@ -227,6 +229,10 @@ var onClickListAction =  function (e) {
 
         // Custom datas comming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};
+        if (LS.gridSelection.isSelectAll($grididvalue)) {
+            $postDatas['selectAll'] = 1;
+            $postDatas['filterQuery'] = LS.gridSelection.getFilterQuery($grididvalue);
+        }
         $modal.find('.custom-data').each(function(i, el)
         {
             if ($(this).hasClass('btn-group')){ // ext.ButtonGroupWidget.ButtonGroupWidget
@@ -319,6 +325,7 @@ var onClickListAction =  function (e) {
     if (!modalEl) {
         return;
     }
+    $modal.find('.select-all-cap-note').toggle(isSelectAllMode);
     modalEl.setAttribute('tabindex', '-1');
     const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl, {});
     const focusModal = function () {

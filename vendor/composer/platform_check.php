@@ -8,10 +8,6 @@ if (!(PHP_VERSION_ID >= 80100)) {
     $issues[] = 'Your Composer dependencies require a PHP version ">= 8.1.0". You are running ' . PHP_VERSION . '.';
 }
 
-if (PHP_INT_SIZE !== 8) {
-    $issues[] = 'Your Composer dependencies require a 64-bit build of PHP.';
-}
-
 if ($issues) {
     if (!headers_sent()) {
         header('HTTP/1.1 500 Internal Server Error');
