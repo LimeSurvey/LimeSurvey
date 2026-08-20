@@ -407,6 +407,40 @@ LS.gridSelection = (function () {
          */
         count: function (gridId) {
             return _set(gridId).size;
+        },
+
+        /**
+         * Adds a single PK value to the selection store for a grid.
+         * Does NOT touch DOM checkboxes – call restoreCheckboxes() or update
+         * visible checkboxes manually after bulk-adding entries.
+         *
+         * @param {string} gridId
+         * @param {string} pkValue
+         */
+        add: function (gridId, pkValue) {
+            _set(gridId).add(String(pkValue));
+            _syncMassiveActionButton(gridId);
+            _syncSelectionBar(gridId);
+        },
+        /**
+         * Replaces the entire selection store for a grid with the supplied values
+         * and synchronises the UI exactly once.
+         *
+         * Use this instead of clear() + repeated add() calls when bulk-selecting
+         * many rows (e.g. "Select all" across pagination), to avoid triggering
+         * O(n) DOM queries for large result sets.
+         *
+         * Does NOT touch DOM checkboxes – call restoreCheckboxes() or update
+         * visible checkboxes manually after calling this method.
+         *
+         * @param {string}            gridId
+         * @param {string[]|number[]} values  Array of PK values to select.
+         */
+        replaceAll: function (gridId, values) {
+            _store.set(gridId, new Set(values.map(String)));
+            _syncHeaderCheckbox(gridId);
+            _syncMassiveActionButton(gridId);
+            _syncSelectionBar(gridId);
         }
     };
 }());

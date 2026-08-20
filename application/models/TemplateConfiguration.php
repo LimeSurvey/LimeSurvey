@@ -1217,14 +1217,24 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function uninstallIncorectTheme($sTemplateName)
     {
-        TemplateConfiguration::uninstall($sTemplateName);
-        App()->setFlashMessage(
-            sprintf(
-                gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
-                $sTemplateName
-            ),
-            'error'
-        );
+        if (TemplateConfiguration::uninstall($sTemplateName)) {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                    $sTemplateName
+                ),
+                'error'
+            );
+        } else {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("The “%s” theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."),
+                    $sTemplateName,
+                    App()->getConfig('siteadminname'),
+                ),
+                'error'
+            );
+        }
         App()->getController()->redirect(array("themeOptions/index", "#" => "surveythemes"));
         App()->end();
     }

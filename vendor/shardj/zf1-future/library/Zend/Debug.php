@@ -82,19 +82,20 @@ class Zend_Debug
         var_dump($var);
         $output = ob_get_clean();
 
-        // neaten the newlines and indents
-        $output = preg_replace("/\]\=\>\n(\s+)/m", "] => ", $output);
+        $varDumpIsOverloaded = extension_loaded('xdebug') && str_contains((string) ini_get('xdebug.mode'), 'develop');
+
+        if (!$varDumpIsOverloaded) {
+            // neaten the newlines and indents
+            $output = preg_replace("/\]\=\>\n(\s+)/m", '] => ', $output);
+        }
+
         if (self::getSapi() == 'cli') {
             $output = PHP_EOL . $label
                     . PHP_EOL . $output
                     . PHP_EOL;
         } else {
-            if(!extension_loaded('xdebug')) {
-                $flags = ENT_QUOTES;
-                // PHP 5.4.0+
-                if (defined('ENT_SUBSTITUTE')) {
-                    $flags = ENT_QUOTES | ENT_SUBSTITUTE;
-                }
+            if (!$varDumpIsOverloaded) {
+                $flags = ENT_QUOTES | ENT_SUBSTITUTE;
                 $output = htmlspecialchars($output, $flags);
             }
 
