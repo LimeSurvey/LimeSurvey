@@ -413,6 +413,71 @@ class Labels extends SurveyCommonAction
     }
 
     /**
+     * Delete selected label sets independently.
+     *
+     * @return void
+     */
+    public function massDelete()
+    {
+        $this->requirePostRequest();
+        Yii::import('application.helpers.admin.ajax_helper', true);
+
+        $labelSetIds = json_decode(App()->getRequest()->getPost('sItems', ''), true);
+        if (!is_array($labelSetIds)) {
+            \ls\ajax\AjaxHelper::outputError(gT('Please select at least one item'));
+        }
+
+        $labelSetIds = array_values(array_unique(array_filter(
+            array_map(
+                static function ($labelSetId) {
+                    if (!is_int($labelSetId) && !is_string($labelSetId)) {
+                        return false;
+                    }
+                    return filter_var($labelSetId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                },
+                $labelSetIds
+            )
+        )));
+
+        if (empty($labelSetIds)) {
+            \ls\ajax\AjaxHelper::outputError(gT('Please select at least one item'));
+        }
+
+        $deleted = 0;
+        $failed = 0;
+        foreach ($labelSetIds as $labelSetId) {
+            $labelSet = LabelSet::model()->findByPk((int) $labelSetId);
+            if (
+                $labelSet === null
+                || !$labelSet->hasPermission('labelset', 'delete')
+                || !$labelSet->deleteLabelSet((int) $labelSetId)
+            ) {
+                $failed++;
+                continue;
+            }
+            $deleted++;
+        }
+
+        if ($failed === 0) {
+            \ls\ajax\AjaxHelper::outputSuccess(
+                ngT('{n} label set deleted successfully.|{n} label sets deleted successfully.', $deleted)
+            );
+        }
+
+        if ($deleted === 0) {
+            \ls\ajax\AjaxHelper::outputError(
+                ngT('{n} label set could not be deleted.|{n} label sets could not be deleted.', $failed)
+            );
+        }
+
+        \ls\ajax\AjaxHelper::outputError(
+            ngT('{n} label set deleted successfully.|{n} label sets deleted successfully.', $deleted)
+            . ' '
+            . ngT('{n} label set could not be deleted.|{n} label sets could not be deleted.', $failed)
+        );
+    }
+
+    /**
      * Multi label export
      *
      * @return void
@@ -792,7 +857,7 @@ class Labels extends SurveyCommonAction
         if (empty(LabelSet::model()->findByPk($lid))) {
             throw new CHttpException(404, gT("Label set not found"));
         }
-        if (!LabelSet::model()->findByPk($lid)->hasPermission($permission)) {
+        if (!LabelSet::model()->findByPk($lid)->hasPermission('labelset', $permission)) {
             throw new CHttpException(403);
         }
         return $lid;
