@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-08-19 15:06:02+00:00\n"
+"POT-Creation-Date: 2026-08-20 09:27:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8113,7 +8113,7 @@ msgstr ""
 #: application/views/installer/populatedb_view.php:22
 #: application/views/installer/precheck_view.php:165
 #: application/views/survey/system/actionButton/movePrevious.php:11
-#: editor/src/pages/Responses/components/ResponseDetailView.js:92
+#: editor/src/pages/Responses/components/ResponseDetailView.js:102
 #: themes/survey/fruity_twentythree/views/subviews/content/quotas.twig:80
 #: themes/survey/fruity_twentythree/views/subviews/navigation/navigator.twig:35
 #: themes/survey/vanilla/views/subviews/content/quotas.twig:80
@@ -8128,7 +8128,7 @@ msgstr ""
 #: application/views/quotas/newanswer_view.php:34
 #: application/views/quotas/newanswertwo_view.php:52
 #: application/views/survey/system/actionButton/moveNext.php:11
-#: editor/src/pages/Responses/components/ResponseDetailView.js:100
+#: editor/src/pages/Responses/components/ResponseDetailView.js:110
 #: themes/survey/fruity_twentythree/views/subviews/navigation/navigator.twig:59
 #: themes/survey/vanilla/views/subviews/navigation/navigator.twig:53
 msgid "Next"
@@ -11715,13 +11715,15 @@ msgstr ""
 #: application/helpers/update/updates/Update_700.php:141
 #: application/models/SavedControl.php:152
 #: application/views/admin/dataentry/caption_view.php:80
-#: editor/src/pages/Responses/components/ResponseDetailView.js:75
+#: editor/src/pages/Responses/components/ResponseDetailView.js:76
+#: editor/src/pages/Responses/components/ResponseDetailView.js:80
 msgid "IP address"
 msgstr ""
 
 #: application/helpers/common_helper.php:1657
 #: application/helpers/update/updates/Update_700.php:150
-#: editor/src/pages/Responses/components/ResponseDetailView.js:79
+#: editor/src/pages/Responses/components/ResponseDetailView.js:85
+#: editor/src/pages/Responses/components/ResponseDetailView.js:89
 msgid "Referrer URL"
 msgstr ""
 
@@ -29194,12 +29196,12 @@ msgstr ""
 msgid "Last action"
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponseDetailView.js:76
 #: editor/src/pages/Responses/components/ResponseDetailView.js:80
+#: editor/src/pages/Responses/components/ResponseDetailView.js:89
 msgid "Not enabled"
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponseDetailView.js:110
+#: editor/src/pages/Responses/components/ResponseDetailView.js:120
 msgid "Export response"
 msgstr ""
 
