@@ -60,7 +60,7 @@ return array(
     // then please check your error-logs - either in your hosting provider admin panel or in some /logs directory
     // on your webspace.
     // LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard themes
-        'debug' => (int) getenv('LS_DEBUG'),
+        'debug' => 0,
         'debugsql' => 0 // Set this to 1 to enanble sql logging, only active when debug = 2
     )
 );
