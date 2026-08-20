@@ -10,7 +10,11 @@ class QuestionListMassiveActions
     {
         $actions = [];
 
-        if (!$oSurvey->isActive) {
+        $surveyId  = $oSurvey->sid;
+        $hasUpdate = \Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update');
+        $hasDelete = \Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'delete');
+
+        if (!$oSurvey->isActive && $hasUpdate) {
             $actions[] = [
                 'type' => 'action',
                 'action' => 'set-group-position',
@@ -32,106 +36,110 @@ class QuestionListMassiveActions
             ];
         }
 
-        $advancedItems = [
-            [
-                'type' => 'dropdown-header',
-                'text' => gT('ADVANCED OPTIONS'),
-            ],
-            [
-                'action' => 'set-mandatory',
-                'url' => App()->createUrl('questionAdministration/changeMultipleQuestionMandatoryState/'),
-                'iconClasses' => '',
-                'text' => gT('Set') . ' "' . gT('Mandatory') . '" ' . gT("state"),
-                'grid-reload' => 'yes',
-                'actionType' => 'modal',
-                'modalType' => 'cancel-apply',
-                'keepopen' => 'no',
-                'sModalTitle' => gT('Set "Mandatory" state'),
-                'htmlModalBody' => Yii::app()->getController()->renderPartial(
-                    '/admin/survey/Question/massive_actions/_set_questions_mandatory',
-                    ['model' => $model, 'oSurvey' => $oSurvey],
-                    true
-                ),
-            ],
-            [
-                'action' => 'set-css',
-                'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-                'iconClasses' => '',
-                'text' => gT('Set CSS class'),
-                'grid-reload' => 'yes',
-                'actionType' => 'modal',
-                'modalType' => 'cancel-apply',
-                'keepopen' => 'no',
-                'sModalTitle' => gT('Set CSS class'),
-                'htmlModalBody' => Yii::app()->getController()->renderPartial(
-                    '/admin/survey/Question/massive_actions/_set_css_class',
-                    ['model' => $model],
-                    true
-                ),
-            ],
-            [
-                'action' => 'set-statistics',
-                'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-                'iconClasses' => '',
-                'text' => gT('Set statistics options'),
-                'grid-reload' => 'yes',
-                'actionType' => 'modal',
-                'modalType' => 'cancel-apply',
-                'keepopen' => 'no',
-                'sModalTitle' => gT('Set statistics options'),
-                'htmlModalBody' => Yii::app()->getController()->renderPartial(
-                    '/admin/survey/Question/massive_actions/_set_statistics_options',
-                    ['model' => $model],
-                    true
-                ),
-            ],
-        ];
+        if ($hasUpdate) {
+            $advancedItems = [
+                [
+                    'type' => 'dropdown-header',
+                    'text' => gT('ADVANCED OPTIONS'),
+                ],
+                [
+                    'action' => 'set-mandatory',
+                    'url' => App()->createUrl('questionAdministration/changeMultipleQuestionMandatoryState/'),
+                    'iconClasses' => '',
+                    'text' => gT('Set') . ' "' . gT('Mandatory') . '" ' . gT("state"),
+                    'grid-reload' => 'yes',
+                    'actionType' => 'modal',
+                    'modalType' => 'cancel-apply',
+                    'keepopen' => 'no',
+                    'sModalTitle' => gT('Set "Mandatory" state'),
+                    'htmlModalBody' => Yii::app()->getController()->renderPartial(
+                        '/admin/survey/Question/massive_actions/_set_questions_mandatory',
+                        ['model' => $model, 'oSurvey' => $oSurvey],
+                        true
+                    ),
+                ],
+                [
+                    'action' => 'set-css',
+                    'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
+                    'iconClasses' => '',
+                    'text' => gT('Set CSS class'),
+                    'grid-reload' => 'yes',
+                    'actionType' => 'modal',
+                    'modalType' => 'cancel-apply',
+                    'keepopen' => 'no',
+                    'sModalTitle' => gT('Set CSS class'),
+                    'htmlModalBody' => Yii::app()->getController()->renderPartial(
+                        '/admin/survey/Question/massive_actions/_set_css_class',
+                        ['model' => $model],
+                        true
+                    ),
+                ],
+                [
+                    'action' => 'set-statistics',
+                    'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
+                    'iconClasses' => '',
+                    'text' => gT('Set statistics options'),
+                    'grid-reload' => 'yes',
+                    'actionType' => 'modal',
+                    'modalType' => 'cancel-apply',
+                    'keepopen' => 'no',
+                    'sModalTitle' => gT('Set statistics options'),
+                    'htmlModalBody' => Yii::app()->getController()->renderPartial(
+                        '/admin/survey/Question/massive_actions/_set_statistics_options',
+                        ['model' => $model],
+                        true
+                    ),
+                ],
+            ];
 
-        if (!$oSurvey->isActive) {
+            if (!$oSurvey->isActive) {
+                $advancedItems[] = [
+                    'action' => 'set-other',
+                    'url' => App()->createUrl('questionAdministration/changeMultipleQuestionOtherState'),
+                    'iconClasses' => '',
+                    'text' => gT("Set ") . ' "' . gT('Other') . '" ' . gT('state'),
+                    'grid-reload' => 'yes',
+                    'actionType' => 'modal',
+                    'modalType' => 'cancel-apply',
+                    'keepopen' => 'no',
+                    'sModalTitle' => gT('Set "Other" state'),
+                    'htmlModalBody' => Yii::app()->getController()->renderPartial(
+                        '/admin/survey/Question/massive_actions/_set_questions_other',
+                        ['model' => $model],
+                        true
+                    ),
+                ];
+            }
+
             $advancedItems[] = [
-                'action' => 'set-other',
-                'url' => App()->createUrl('questionAdministration/changeMultipleQuestionOtherState'),
+                'action' => 'set-subquestions-answers-sort',
+                'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
                 'iconClasses' => '',
-                'text' => gT("Set ") . ' "' . gT('Other') . '" ' . gT('state'),
+                'text' => gT('Present subquestions/answer options in random order'),
                 'grid-reload' => 'yes',
                 'actionType' => 'modal',
                 'modalType' => 'cancel-apply',
-                'keepopen' => 'no',
-                'sModalTitle' => gT('Set "Other" state'),
+                'keepopen' => 'false',
+                'sModalTitle' => gT('Present subquestions/answer options in random order'),
                 'htmlModalBody' => Yii::app()->getController()->renderPartial(
-                    '/admin/survey/Question/massive_actions/_set_questions_other',
+                    '/admin/survey/Question/massive_actions/_set_subquestansw_order',
                     ['model' => $model],
                     true
                 ),
             ];
+
+            $actions[] = [
+                'type' => 'dropdown',
+                'icon' => 'ri-settings-3-line',
+                'text' => gT('Advanced options'),
+                'items' => $advancedItems,
+            ];
         }
 
-        $advancedItems[] = [
-            'action' => 'set-subquestions-answers-sort',
-            'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
-            'iconClasses' => '',
-            'text' => gT('Present subquestions/answer options in random order'),
-            'grid-reload' => 'yes',
-            'actionType' => 'modal',
-            'modalType' => 'cancel-apply',
-            'keepopen' => 'false',
-            'sModalTitle' => gT('Present subquestions/answer options in random order'),
-            'htmlModalBody' => Yii::app()->getController()->renderPartial(
-                '/admin/survey/Question/massive_actions/_set_subquestansw_order',
-                ['model' => $model],
-                true
-            ),
-        ];
-
-        $actions[] = [
-            'type' => 'dropdown',
-            'icon' => 'ri-settings-3-line',
-            'text' => gT('Advanced options'),
-            'items' => $advancedItems,
-        ];
-
-        if (!$oSurvey->isActive) {
-            $actions[] = ['type' => 'separator'];
+        if (!$oSurvey->isActive && $hasDelete) {
+            if (!empty($actions)) {
+                $actions[] = ['type' => 'separator'];
+            }
             $actions[] = [
                 'type' => 'action',
                 'action' => 'delete',
@@ -153,6 +161,3 @@ class QuestionListMassiveActions
         return $actions;
     }
 }
-
-
-
