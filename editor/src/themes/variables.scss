@@ -72,6 +72,7 @@ $ibm-font-family: 'IBM Plex Sans';
 
 $font-size-root: 14px;
 $font-size-base: 1.14rem; // 16px, Browser default usually is 14px
+$font-size-xxs: $font-size-base * 0.65; // 10px
 $font-size-xs: $font-size-base * 0.75; // 12px
 $font-size-sm: $font-size-base * 0.875; // 14px
 $font-size-md: $font-size-base * 1.125; // 18px

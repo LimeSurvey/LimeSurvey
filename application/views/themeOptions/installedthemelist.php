@@ -7,16 +7,8 @@
 ?>
 
 <?php
-$massiveAction = App()->getController()->renderPartial(
-    './_selector',
-    [
-        'oQuestionTheme' => $oQuestionTheme,
-        'gridID'         => 'questionthemes-grid',
-        'dropupID'       => 'questionsthemes-dropup',
-        'pk'             => 'questionId'
-    ],
-    true,
-    false
+$aFloatingActions = require(
+    Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions._questionThemeActions') . '.php'
 );
 
 $this->widget('application.extensions.admin.grid.CLSGridView', [
@@ -24,7 +16,6 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
     'filter'                => $oQuestionTheme,
     'id'                    => 'questionthemes-grid',
     'caption'               => gT('Question themes'),
-    'massiveActionTemplate' => $massiveAction,
     'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
             gT('%s rows per page'),
             CHtml::dropDownList(
@@ -44,6 +35,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             'id'             => 'questionId',
             'class'          => 'CCheckBoxColumn',
             'selectableRows' => '100',
+            'checkBoxHtmlOptions' => ['class' => 'massiveActionsCheckbox'],
         ],
 
         [
@@ -85,26 +77,24 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             "filter"            => ['N' => gT("Off"), 'Y' => gT('On')],
         ]
     ],
+    'showSelectionBar'      => false,
     'ajaxUpdate'            => 'questionthemes-grid',
     'ajaxType'              => 'POST',
-    // @todo create a new javascript file and call function from here, related: 1573120573738
-    'afterAjaxUpdate'       => '
-                                function(id, data){
-                                    window.LS.doToolTip();
-                                    bindListItemclick();
-                                    let togglequestionthemes = document.getElementsByClassName("toggle_question_theme");
-                                    for (let togglequestiontheme of togglequestionthemes) {
-                                        togglequestiontheme.addEventListener("change", () => {
-                                            let $url = togglequestiontheme.getAttribute("data-url");
-                                            let data = new FormData();
-                                            let xhttp = new XMLHttpRequest();
-                                            data.append(LS.data.csrfTokenName, LS.data.csrfToken);
-                                            xhttp.open("POST", $url, true);
-                                            xhttp.send(data);
-                                        });
-                                    }
-                                }',
+    // This will be called FIRST before restoreCheckboxes, so we use lsAfterAjaxUpdate instead
+    // But we also register a separate event to ensure the bar is updated after the full pipeline
+
 ]);
+
+if (!empty($aFloatingActions)) {
+    $this->widget(
+        'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
+        [
+            'pk'       => 'questionId',
+            'gridId'   => 'questionthemes-grid',
+            'aActions' => $aFloatingActions,
+        ]
+    );
+}
 ?>
 
 <?php
@@ -117,18 +107,47 @@ $script = '
                         }
                     });
                 });
-                let togglequestionthemes = document.getElementsByClassName("toggle_question_theme");
-                for (let togglequestiontheme of togglequestionthemes) {
-                    togglequestiontheme.addEventListener("change", () => {
-                        let $url = togglequestiontheme.getAttribute("data-url");
-                        let data = new FormData();
-                        let xhttp = new XMLHttpRequest();
-                        data.append(LS.data.csrfTokenName, LS.data.csrfToken);
-                        xhttp.open("POST", $url, true);
-                        xhttp.send(data);
-                    });
-                }
+                // Use event delegation for toggle question themes so it works across pagination
+                jQuery(document).on("change", ".toggle_question_theme", function () {
+                    let $url = $(this).attr("data-url");
+                    let data = new FormData();
+                    let xhttp = new XMLHttpRequest();
+                    data.append(LS.data.csrfTokenName, LS.data.csrfToken);
+                    xhttp.open("POST", $url, true);
+                    xhttp.send(data);
+                });
+                // Ensure floating actions bar is updated whenever checkboxes change  
+                jQuery(document).on("change", "#questionthemes-grid tbody .massiveActionsCheckbox", function () {
+                    if (window.LS && LS.floatingActions && typeof LS.floatingActions.updateBar === "function") {
+                        setTimeout(function() {
+                            LS.floatingActions.updateBar("questionthemes-grid", "questionId");
+                        }, 50);
+                    }
+                });
+                // Hook into yiiGridView after updates
+                jQuery("#questionthemes-grid").on("yiiGridView:afterUpdate", function() {
+                    if (window.LS && LS.floatingActions && typeof LS.floatingActions.updateBar === "function") {
+                        setTimeout(function() {
+                            LS.floatingActions.updateBar("questionthemes-grid", "questionId");
+                        }, 100);
+                    }
+                });
                 ';
 App()->getClientScript()->registerScript('questionthemes-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
