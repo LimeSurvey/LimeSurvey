@@ -267,8 +267,8 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
  */
 function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    $openEditorTitle = gT("Open editor");
-    $ariaLabel = sprintf(gT('Open editor for %s'), $fieldtext);
+    $openEditorTitle = gT("Open editor", 'unescaped');
+    $ariaLabel = sprintf(gT('Open editor for %s', 'unescaped'), (string) $fieldtext);
     $htmlcode = "<button type='button' class='btn btn-sm btn-outline-secondary htmleditor--openmodal'"
         . " data-target-field-id='" . htmlspecialchars((string) $fieldname, ENT_QUOTES) . "'"
         . " data-modal-title='" . htmlspecialchars((string) $fieldtext, ENT_QUOTES) . "'"

@@ -10,7 +10,7 @@ $captionId = 'translation-table-caption-' . $type;
 
 <div id='tab-<?php echo $type; ?>' class='tab-pane fade <?php if ($activeTab) {
     echo "show active";
-             } ?>' role="tabpanel" aria-labelledby="quick-translation-tab-<?php echo $type; ?>"<?php echo $activeTab ? '' : ' aria-hidden="true"'; ?>>
+             } ?>' role="tabpanel" aria-labelledby="quick-translation-tab-<?php echo $type; ?>">
     <?php
     Yii::app()->loadHelper('admin.htmleditor');
     echo PrepareEditorScript(true, Yii::app()->getController());

@@ -41,7 +41,7 @@
                     data-target-field-id="title_{{ language }}_{{ rowId }}"
                     data-bs-toggle="tooltip"
                     title="{{ gT("Open editor") }}"
-                    aria-label="{{ gT("Open editor") }}">
+                    aria-label="{{ sprintf(gT("Open editor for %s"), code|escape) }}">
                     <i class="ri-file-edit-line" aria-hidden="true"></i>
                 </button>
                 {% if first %}
