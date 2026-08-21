@@ -267,6 +267,7 @@ class QuickTranslationController extends LSBaseController
                 $associatedData = $quickTranslation->setupTranslateFields($associatedName);
             }
             $singleTabData['type'] = $tabName;
+            $singleTabData['tabTitle'] = $translateFieldOptions['description'];
             //always set first tab active
             $singleTabData['activeTab'] = $tabName === 'title';
 

@@ -14,12 +14,16 @@ tests/Zend/Filter/_files/**/zipextracted.txt
 tests/Zend/Mail/_files/test.tmp/INBOX
 tests/Zend/Paginator/_files/test-write-tmp.sqlite
 vendor/*
-composer.lock
 bin/dbunit
 bin/phpunit
 bin/parallel-lint
 .php-cs-fixer.cache
 .php_cs.cache
+.phpcs.result.cache
+.phpcs*.xml
+!.phpcs.dist*.xml
+!.phpcs.xml
+phpcs.xml
 .phpstan.cache/*
 .idea
 .vscode
