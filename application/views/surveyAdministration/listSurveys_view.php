@@ -35,17 +35,8 @@ echo viewHelper::getViewTestTag('listSurveys');
                         'dataProvider'     => $groupModel->search(),
                         'lsAfterAjaxUpdate'          => [],
                         'columns'          => $groupModel->columns,
-                        'rowLink' => 'App()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))',
-                        'summaryText'      => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                            . sprintf(
-                                gT('%s rows per page'),
-                                CHtml::dropDownList(
-                                    'surveygroups--pageSize',
-                                    Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
-                                    App()->params['pageSizeOptions'],
-                                    ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                                )
-                            ),
+                        'lsRowLink' => 'App()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))',
+                        'lsPageSizeCurrentValue'     => Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']),
                     ]);
                     ?>
                 </div>
@@ -67,11 +58,6 @@ echo viewHelper::getViewTestTag('listSurveys');
 </script>
 <!-- To update rows per page via ajax -->
 <script type="text/javascript">
-    jQuery(function($) {
-        jQuery(document).on("change", '#surveygroups--pageSize', function(){
-            $.fn.yiiGridView.update('surveygroups--gridview',{ data:{ pageSize: $(this).val() }});
-        });
-    });
     //show tooltip for gridview icons
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

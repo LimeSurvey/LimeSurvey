@@ -21,16 +21,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
             'massiveActionTemplate' => $massiveAction,
             'emptyText'                => gT('No attributes found.'),
             'lsAfterAjaxUpdate' => ['LS.CPDB.bindButtons();', 'LS.CPDB.attributePanel();', 'switchStatusOfListActions();'],
-            'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSizeAttributes',
-                        Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']),
-                        App()->params['pageSizeOptions'],
-                        array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
-                    )
-                ),
+            'lsPageSizeCurrentValue'    => Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']),
         ]);
         ?>
     </div>

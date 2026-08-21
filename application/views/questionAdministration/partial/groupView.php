@@ -87,26 +87,10 @@
             'ext.admin.grid.CLSGridView', //done
             [
                 'id'           => 'question-group-grid',
-                'caption'      => gT("Question groups"),
+                'lsCaption'      => gT("Question groups"),
                 'dataProvider' => $groupModel->search(),
                 'emptyText'    => gT('No question groups found.'),
-                'summaryText'  => html_entity_decode(
-                    gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
-                    sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            [
-                                'class' => 'changePageSize form-select',
-                                'style' => 'display: inline; width: auto',
-                                'aria-labelledby' => 'question-group-rows-per-page-label',
-                            ]
-                        ) . '<span id="question-group-rows-per-page-label">'
-                    ) .
-                    '</span>'
-                ),
+                'lsPageSizeCurrentValue' => $pageSize,
 
                 // Columns to dispplay
                 'columns'         => [

@@ -47,15 +47,8 @@ $aLanguageNames = implode(";", $aLanguageNames);
                 'id'                    => 'token-grid',
                 'emptyText'             => gT('No survey participants found.'),
                 'massiveActionTemplate' => $massiveAction,
-                'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSizeTokenView',
-                        $pageSizeTokenView,
-                        Yii::app()->params['pageSizeOptionsTokens'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                    )
-                ),
+                'lsPageSizeCurrentValue'  => $pageSizeTokenView,
+                'lsPageSizeOptions'       => Yii::app()->params['pageSizeOptionsTokens'],
                 'columns'               => $model->getAttributesForGrid(),
                 'ajaxUpdate'            => 'token-grid',
                 'ajaxType'              => 'POST',

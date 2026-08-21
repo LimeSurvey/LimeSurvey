@@ -21,30 +21,9 @@ $this->widget(
         'dataProvider' => $oSurveyTheme->searchGrid(),
         'filter' => $oSurveyTheme,
         'id' => 'themeoptions-grid',
-        'caption' => gT('Survey themes'),
-        'pager' => [
-            'class' => 'application.extensions.admin.grid.CLSYiiPager',
-        ],
+        'lsCaption' => gT('Survey themes'),
         'massiveActionTemplate' => $massiveAction,
-        'summaryText' => html_entity_decode(
-            gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
-            sprintf(
-                gT('%s rows per page'),
-                CHtml::dropDownList(
-                    'pageSize',
-                    $pageSize,
-                    Yii::app()->params['pageSizeOptions'],
-                    array(
-                        'id' => 'themeoptions-pageSize',
-                        'class' => 'changePageSize form-select',
-                        'style' => 'display: inline; width: auto',
-                        'aria-label' => gT('Rows per page'),
-                    )
-                )
-            ) .
-            ''
-        ),
-
+        'lsPageSizeCurrentValue'  => $pageSize,
         'columns' => [
             [
                 'id' => 'id',

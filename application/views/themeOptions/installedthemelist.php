@@ -23,22 +23,9 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
     'dataProvider'          => $oQuestionTheme->search(),
     'filter'                => $oQuestionTheme,
     'id'                    => 'questionthemes-grid',
-    'caption'               => gT('Question themes'),
+    'lsCaption'             => gT('Question themes'),
     'massiveActionTemplate' => $massiveAction,
-    'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-            gT('%s rows per page'),
-            CHtml::dropDownList(
-                'pageSize',
-                $pageSize,
-                App()->params['pageSizeOptions'],
-                [
-                    'id' => 'questionthemes-pageSize',
-                    'class' => 'changePageSize form-select',
-                    'style' => 'display: inline; width: auto',
-                    'aria-label' => gT('Rows per page')
-                ]
-            )
-        ),
+    'lsPageSizeCurrentValue'  => $pageSize,
     'columns'               => [
         [
             'id'             => 'questionId',
