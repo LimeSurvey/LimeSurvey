@@ -34,10 +34,8 @@ export const getThumbStyle = (baseStyle, isDragged, thumbType) => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgb(129, 70, 246)',
-    boxShadow: isDragged
-      ? '0 0 0 1.5px #fff, 0 0 0 .3rem rgba(129, 70, 246, 0.25)'
-      : 'none',
+    backgroundColor: isDragged ? 'rgb(129, 70, 246)' : undefined,
+    boxShadow: 'none',
   }
 
   switch (thumbType) {
