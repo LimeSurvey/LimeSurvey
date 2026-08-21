@@ -83,21 +83,6 @@ const NotifcationSystem  = function (){
 
     /*##########PUBLIC##########*/
     /**
-     * Bind dropdown open handler once per toggle button.
-     * @return
-     */
-    bindNotificationDropdown = () => {
-        const toggle = document.getElementById('admin-notifications-menu-button');
-        if (!toggle || toggle.dataset.notificationDropdownBound === 'true') {
-            return;
-        }
-        toggle.dataset.notificationDropdownBound = 'true';
-        toggle.addEventListener('shown.bs.dropdown', () => {
-            styleNotificationMenu();
-        });
-    },
-
-    /**
      * Bind onclick and stuff
      * @return
      */
@@ -135,7 +120,6 @@ const NotifcationSystem  = function (){
 
         });
         
-        bindNotificationDropdown();
     },
 
     /**
@@ -163,10 +147,9 @@ const NotifcationSystem  = function (){
     styleNotificationMenu = () => {
         LOG.log('styleNotificationMenu');
         const height = window.innerHeight - 70;
-        $('#notification-outer-ul').css({
-            height: height + 'px',
-            'overflow-y': 'auto',
-        });
+        $('#notification-outer-ul').css('height', height + 'px');
+        $('#notification-inner-ul').css('height', (height - 60) + 'px');
+        $('#notification-inner-li').css('height', (height - 60) + 'px');
     },
 
     deleteAllNotifications = (url, updateUrl) => {
