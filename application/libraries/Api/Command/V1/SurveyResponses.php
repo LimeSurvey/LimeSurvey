@@ -137,7 +137,83 @@ class SurveyResponses implements CommandInterface
             $data['surveyQuestions']
         );
 
+        $data['timingFields'] = $this->appendTimingData($data['responses']);
+
         return $data;
+    }
+
+    /**
+     * Adds timing values to the responses and returns the metadata needed to
+     * build timing columns in API clients.
+     *
+     * Timings are stored in a separate table, so fetching them after response
+     * pagination keeps the response count and pagination unchanged.
+     *
+     * @param array $responses
+     * @return array
+     */
+    protected function appendTimingData(array &$responses): array
+    {
+        if (!$this->survey->hasTimingsTable) {
+            return [];
+        }
+
+        $timingFields = $this->getTimingFields();
+        $timingsByResponse = $this->getTimingsByResponse(
+            array_column($responses, 'id'),
+            array_column($timingFields, 'fieldname')
+        );
+
+        $responses = array_map(
+            static function (array $response) use ($timingsByResponse): array {
+                $responseId = (int)($response['id'] ?? 0);
+                $response['timings'] = $timingsByResponse[$responseId] ?? [];
+                return $response;
+            },
+            $responses
+        );
+
+        return $timingFields;
+    }
+
+    /**
+     * @return array
+     */
+    private function getTimingFields(): array
+    {
+        return array_values(createTimingsFieldMap(
+            $this->survey->sid,
+            'full',
+            false,
+            false,
+            $this->survey->language
+        ));
+    }
+
+    /**
+     * @param array $responseIds
+     * @param array $fieldNames
+     * @return array
+     */
+    private function getTimingsByResponse(array $responseIds, array $fieldNames): array
+    {
+        if ($responseIds === []) {
+            return [];
+        }
+
+        $criteria = new \CDbCriteria();
+        $criteria->addInCondition('id', $responseIds);
+        $records = \SurveyTimingDynamic::model($this->survey->sid)->findAll($criteria);
+        $timings = [];
+
+        foreach ($records as $record) {
+            $timings[(int)$record->id] = array_map(
+                static fn($value) => is_numeric($value) ? (float)$value : null,
+                $record->getAttributes($fieldNames)
+            );
+        }
+
+        return $timings;
     }
 
     protected function getSurvey(Request $request): void

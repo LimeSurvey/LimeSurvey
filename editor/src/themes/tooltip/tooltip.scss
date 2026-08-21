@@ -1,3 +1,11 @@
 .tooltip {
   z-index: 10001;
 }
+
+.timing-columns-info-tooltip .tooltip-inner {
+  max-width: none;
+  white-space: nowrap;
+  padding: 8px 12px;
+  font-size: $font-size-md;
+  line-height: 24px;
+}
