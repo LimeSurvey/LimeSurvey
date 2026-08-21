@@ -3,6 +3,6 @@
 }
 
 .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid #8146F6;
     outline-offset: 2px;
 }
