@@ -316,7 +316,9 @@ LS.CPDB = (function() {
         $('#pageSizeParticipantView').on("change", function(){
             $.fn.yiiGridView.update('list_central_participants',{ data:{ pageSizeParticipantView: $(this).val() }});
         });
-        bindListItemclick();
+        if (typeof bindListItemclick === 'function') {
+            bindListItemclick();
+        }
 
         if($('#export').hasClass('d-none')){
             $('#export').removeClass('d-none');
