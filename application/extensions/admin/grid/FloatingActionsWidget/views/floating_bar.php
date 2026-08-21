@@ -77,7 +77,10 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                 >
-                    <i class="<?= CHtml::encode($action['icon'] ?? '') ?>"></i>
+                    <?php $iconClasses = !empty($action['iconClasses']) ? $action['iconClasses'] : ($action['icon'] ?? ''); ?>
+                    <?php if ($iconClasses !== '') : ?>
+                        <i class="<?= CHtml::encode($iconClasses) ?>"></i>
+                    <?php endif; ?>
                     <?= CHtml::encode($action['text'] ?? '') ?>
                 </button>
                 <ul class="dropdown-menu">
