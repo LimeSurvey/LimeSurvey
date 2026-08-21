@@ -255,14 +255,16 @@ export const ColumnsManagement = ({
       </DragDropContext>
       {!!timingColumns.length && (
         <div className="timing-columns-section mb-3">
-          <button
-            type="button"
-            className="timing-columns-header"
-            aria-expanded={showTimings}
-            onClick={() => setShowTimings((isVisible) => !isVisible)}
-          >
-            <span className="med14 timing-columns-title">
-              {t('Timings')}
+          <div className="timing-columns-header">
+            <div className="timing-columns-title">
+              <button
+                type="button"
+                className="med14 timing-columns-toggle"
+                aria-expanded={showTimings}
+                onClick={() => setShowTimings((isVisible) => !isVisible)}
+              >
+                {t('Timings')}
+              </button>
               <TooltipContainer
                 placement="right"
                 tooltipClassName="timing-columns-info-tooltip"
@@ -270,17 +272,28 @@ export const ColumnsManagement = ({
                   'For timings to be enabled, activate them first in Survey settings > Notifications & data.'
                 )}
               >
-                <span
+                <button
+                  type="button"
                   className="timing-columns-info-icon"
                   data-testid="timings-info-icon"
-                  onClick={(event) => event.stopPropagation()}
+                  aria-label={t('About survey timings')}
                 >
                   <i className="ri-information-line" aria-hidden="true" />
-                </span>
+                </button>
               </TooltipContainer>
-            </span>
-            {showTimings ? <ArrowUpIcon /> : <ArrowDownIcon />}
-          </button>
+            </div>
+            <button
+              type="button"
+              className="timing-columns-toggle timing-columns-chevron"
+              aria-expanded={showTimings}
+              aria-label={t(
+                showTimings ? 'Collapse timings' : 'Expand timings'
+              )}
+              onClick={() => setShowTimings((isVisible) => !isVisible)}
+            >
+              {showTimings ? <ArrowUpIcon /> : <ArrowDownIcon />}
+            </button>
+          </div>
           {showTimings && (
             <div
               className="columns-container timing-columns-container"

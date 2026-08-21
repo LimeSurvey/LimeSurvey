@@ -201,9 +201,19 @@ class SurveyResponses implements CommandInterface
             return [];
         }
 
+        $model = \SurveyTimingDynamic::model($this->survey->sid);
+        $fieldNames = array_values(array_intersect(
+            $fieldNames,
+            $model->getTableSchema()->getColumnNames()
+        ));
+
+        if ($fieldNames === []) {
+            return [];
+        }
+
         $criteria = new \CDbCriteria();
         $criteria->addInCondition('id', $responseIds);
-        $records = \SurveyTimingDynamic::model($this->survey->sid)->findAll($criteria);
+        $records = $model->findAll($criteria);
         $timings = [];
 
         foreach ($records as $record) {

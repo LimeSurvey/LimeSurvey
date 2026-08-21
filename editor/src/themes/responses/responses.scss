@@ -542,9 +542,24 @@
       gap: 8px;
     }
 
+    .timing-columns-toggle {
+      display: inline-flex;
+      align-items: center;
+      border: 0;
+      padding: 0;
+      color: inherit;
+      background-color: transparent;
+    }
+
+    .timing-columns-chevron {
+      margin-left: auto;
+    }
+
     .timing-columns-info-icon {
       display: inline-flex;
       align-items: center;
+      border: 0;
+      padding: 0;
       color: $g-700;
       background-color: transparent;
 

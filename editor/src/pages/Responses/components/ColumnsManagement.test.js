@@ -77,9 +77,12 @@ describe('ColumnsManagement', () => {
     expect(screen.getAllByText('Q3')[0]).toHaveClass('column-question-code')
 
     const timingToggle = screen.getByRole('button', { name: 'Timings' })
+    const timingInfo = screen.getByRole('button', {
+      name: 'About survey timings',
+    })
 
     expect(timingToggle).toHaveAttribute('aria-expanded', 'false')
-    expect(screen.getByTestId('timings-info-icon')).toBeInTheDocument()
+    expect(timingInfo).toBe(screen.getByTestId('timings-info-icon'))
     expect(screen.queryByTestId('timing-columns-container')).toBeNull()
 
     await user.click(screen.getByRole('button', { name: 'Select all' }))
