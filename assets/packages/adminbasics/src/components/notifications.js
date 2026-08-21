@@ -69,14 +69,30 @@ const NotifcationSystem  = function (){
             $('#admin-notification-modal .modal-body-text').html(not.message);
             $('#admin-notification-modal .modal-content').addClass('card-' + not.display_class);
             $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
+
             const modal = new bootstrap.Modal(document.getElementById('admin-notification-modal'));
             modal.show();
-            
+
+            // Move screen reader / keyboard focus to the modal title once the modal is visible
+            $('#admin-notification-modal').one('shown.bs.modal', () => {
+                const title = document.getElementById('admin-notification-modal-title');
+                if (title) {
+                    title.focus();
+                }
+            });
+
             // TODO: Will this work in message includes a link that is clicked?
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
                 __notificationIsRead(that);
                 $('#admin-notification-modal .modal-content').removeClass('card-' + not.display_class);
+                // Return focus to the dropdown toggle — it is always visible in the
+                // navbar and gives the screen reader a meaningful landing point after
+                // the modal closes (the dropdown itself is already closed at this point).
+                const dropdownToggle = document.getElementById('admin-notifications-menu-button');
+                if (dropdownToggle) {
+                    dropdownToggle.focus();
+                }
             });
         });
     },

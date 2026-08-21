@@ -79,7 +79,7 @@
                     <?php endforeach; ?>
                 </ul>
             </li>
-            <li id='notification-divider' class="dropdown-divider"></li>
+            <li id='notification-divider' class="dropdown-divider" aria-hidden="true"></li>
 
             <li id='notification-clear-all'>
                 <a href='#'  class="dropdown-item" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()' data-params="<?= $clearAllNotificationsParams ?>">
