@@ -122,6 +122,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['ownerInherited'] = $this->transformerSurveyOwner->transform(
             $data->oOptions->owner
         );
+        $survey['questionTypeDefaultAttributeValues'] = $this->questionService
+            ->getDefaultAttributeValuesByQuestionType();
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
@@ -245,7 +247,6 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 ),
                 $options
             );
-
             $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
 
             $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);
