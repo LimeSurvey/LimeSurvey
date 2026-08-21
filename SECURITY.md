@@ -32,7 +32,7 @@ Security updates are provided **free of charge** for all currently supported Lim
 
 ## Software Bill of Materials (SBOM)
 
-A Software Bill of Materials for each release is available on request, to help you assess exposure to vulnerabilities in third-party components we depend on.
+A Software Bill of Materials for each release is available as part of the ComfortUpdate Extension package (see https://community.limesurvey.org/comfort-update-extension/ ), to help you assess exposure to vulnerabilities in third-party components we depend on.
 
 ## Recognition
 
