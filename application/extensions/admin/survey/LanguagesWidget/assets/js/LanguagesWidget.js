@@ -54,11 +54,13 @@ $.fn.select2.amd.define(
         $selection[0].setAttribute('title', title);
       }
 
-      var remove = $selection.find('.select2-selection__choice__remove')[0];
-      var messages = this.options.get('messages') || {};
-      remove.setAttribute('aria-label', messages.remove || 'Remove');
-      remove.setAttribute('aria-describedby', selectionId);
-      remove.setAttribute('tabindex', '0');
+        var remove = $selection.find('.select2-selection__choice__remove')[0];
+        var messages = this.options.get('messages') || {};
+        remove.setAttribute('aria-label', messages.remove || 'Remove');
+        remove.setAttribute('aria-describedby', selectionId);
+        var disabled = this.options.get('disabled');
+        remove.disabled = !!disabled;
+        remove.setAttribute('tabindex', disabled ? '-1' : '0');
 
       $selection.data('data', selection);
     };
