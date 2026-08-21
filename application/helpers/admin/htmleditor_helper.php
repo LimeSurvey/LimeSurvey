@@ -267,9 +267,16 @@ function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $g
  */
 function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
 {
-    $htmlcode = "<a href='#' class='btn btn-sm btn-outline-secondary htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-bs-toggle='tooltip' data-bs-original-title='" . gT("Open editor") . "'>\n" .
-                "\t<i class='ri-pencil-fill' id='{$fieldname}_modal_icon'></i>\n" .
-                "</a>\n";
+    $openEditorTitle = gT("Open editor", 'unescaped');
+    $ariaLabel = sprintf(gT('Open editor for %s', 'unescaped'), (string) $fieldtext);
+    $htmlcode = "<button type='button' class='btn btn-sm btn-outline-secondary htmleditor--openmodal'"
+        . " data-target-field-id='" . htmlspecialchars((string) $fieldname, ENT_QUOTES) . "'"
+        . " data-modal-title='" . htmlspecialchars((string) $fieldtext, ENT_QUOTES) . "'"
+        . " data-bs-toggle='tooltip'"
+        . " title='" . htmlspecialchars($openEditorTitle, ENT_QUOTES) . "'"
+        . " aria-label='" . htmlspecialchars($ariaLabel, ENT_QUOTES) . "'>\n"
+        . "\t<i class='ri-pencil-fill' id='" . htmlspecialchars((string) $fieldname, ENT_QUOTES) . "_modal_icon' aria-hidden='true'></i>\n"
+        . "</button>\n";
 
     return $htmlcode;
 }
