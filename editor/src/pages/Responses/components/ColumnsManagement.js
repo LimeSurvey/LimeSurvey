@@ -286,9 +286,9 @@ export const ColumnsManagement = ({
               type="button"
               className="timing-columns-toggle timing-columns-chevron"
               aria-expanded={showTimings}
-              aria-label={t(
-                showTimings ? 'Collapse timings' : 'Expand timings'
-              )}
+              aria-label={
+                showTimings ? t('Collapse timings') : t('Expand timings')
+              }
               onClick={() => setShowTimings((isVisible) => !isVisible)}
             >
               {showTimings ? <ArrowUpIcon /> : <ArrowDownIcon />}
