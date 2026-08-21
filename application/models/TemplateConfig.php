@@ -360,6 +360,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['maincoldivdivbul']             = '  ';
         $aClassAndAttributes['class']['maincoldivdivbdiv']            = ' ';
         $aClassAndAttributes['class']['maincolform']                  = '  ';
+        $aClassAndAttributes['class']['maincolformmandatoryinfo']     = ' text-muted large d-block mb-3 ';
+        $aClassAndAttributes['class']['maincolformmandatoryinfoasterisk'] = ' text-danger ';
         $aClassAndAttributes['class']['maincolformlabel']             = '  ';
         $aClassAndAttributes['class']['maincolformlabelsmall']        = ' superset ';
         $aClassAndAttributes['class']['maincolformlabelspan']         = ' ';
@@ -388,10 +390,12 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['maincolformdivddivbdivbutton'] = '  ';
 
 
-        $aClassAndAttributes['attr']['maincolformdivainput']          = ' type="password" id="token" name="token" value="" required ';
+        $aClassAndAttributes['attr']['maincoldivdiva']                = ' role="heading" aria-level="2" ';
+        $aClassAndAttributes['attr']['maincolformdivainput']          = ' type="password" id="token" name="token" value="" required aria-labelledby="token-label" ';
         $aClassAndAttributes['attr']['maincoldivdivbul']              = ' role="alert" ';
-        $aClassAndAttributes['attr']['maincolformlabel']              = ' for="token"';
+        $aClassAndAttributes['attr']['maincolformlabel']              = ' id="token-label" for="token" ';
         $aClassAndAttributes['attr']['maincolformlabelsmall']         = ' aria-hidden="true" ';
+        $aClassAndAttributes['attr']['maincolformmandatoryinfo']      = ' ';
         $aClassAndAttributes['attr']['maincolformdivblabel']          = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['maincolformdivblabelsmall']     = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['maincolformdivbdivdivinput']    = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
@@ -538,7 +542,8 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['navigatorcollbutton'] = '  type="submit" name="move" ';
         $aClassAndAttributes['attr']['navigatorcolrbutton'] = '  type="submit" name="move" value="confirmquota" ';
-        $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['quotamessage'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
+        $aClassAndAttributes['attr']['quotamessage'] = ' role="heading" aria-level="2" ';
+        $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
 
         // Register
         $aClassAndAttributes['class']['register']                 = ' register-container';
