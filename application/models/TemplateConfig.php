@@ -451,7 +451,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['returntosurveydiva']    = ' ls-return ';
 
         $aClassAndAttributes['attr']['loadformul']             = ' role="alert"';
-        $aClassAndAttributes['attr']['saveformrowlabel']       = ' for="savename" ';
+        $aClassAndAttributes['attr']['saveformrowlabel']       = ' for="loadname" ';
         $aClassAndAttributes['attr']['saveformrowlabelsmall']  = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['saveformrowcolinput']    = ' type="text"  name="loadname" value="" required ';
         $aClassAndAttributes['attr']['passwordrowinputi']      = ' type="password" id="loadpass" name="loadpass" value="" required ';
@@ -464,7 +464,8 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['savemessage'] = $aClassAndAttributes['attr']['savemessagetext'] = $aClassAndAttributes['attr']['savemessagetitle'] = $aClassAndAttributes['attr']['loadform'] = $aClassAndAttributes['attr']['savemessagetextp'] = $aClassAndAttributes['attr']['savemessagetextpb'] = '';
         $aClassAndAttributes['attr']['loadformulli'] = $aClassAndAttributes['attr']['saveform'] = $aClassAndAttributes['attr']['saveformrow'] = $aClassAndAttributes['attr']['saveformrowlabelspan'] = $aClassAndAttributes['attr']['saveformrowcol'] = $aClassAndAttributes['attr']['passwordrow'] = '';
-        $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowlabel'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
+        $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
+        $aClassAndAttributes['attr']['captcharowlabel'] = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva'] = '';
 
         //Ã‚Â Save
