@@ -22,10 +22,10 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
     <span class="reg-12" aria-live="polite" aria-atomic="true">
         <span class="floating-actions-count-number">0</span>&nbsp;<?= gT('selected') ?>
     </span>
+    <div class="floating-actions-separator" role="separator" aria-hidden="true"></div>
 
     <?php if ($selectAllUrl): ?>
         <!-- Separator before "Select all" -->
-        <div class="floating-actions-separator" role="separator" aria-hidden="true"></div>
         <!-- Select all button -->
         <button
             type="button"
@@ -77,33 +77,42 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                 >
-                    <i class="<?= CHtml::encode($action['icon'] ?? '') ?>"></i>
+                    <?php $iconClasses = !empty($action['iconClasses']) ? $action['iconClasses'] : ($action['icon'] ?? ''); ?>
+                    <?php if ($iconClasses !== '') : ?>
+                        <i class="<?= CHtml::encode($iconClasses) ?>"></i>
+                    <?php endif; ?>
                     <?= CHtml::encode($action['text'] ?? '') ?>
                 </button>
                 <ul class="dropdown-menu">
                     <?php foreach ($action['items'] as $subKey => $subAction) : ?>
-                        <li>
-                            <a href="#"
-                               class="dropdown-item floating-actions-item"
-                               data-url="<?= CHtml::encode($subAction['url'] ?? '') ?>"
-                               data-action="<?= CHtml::encode($subAction['action'] ?? '') ?>"
-                               data-action-type="<?= CHtml::encode($subAction['actionType'] ?? '') ?>"
-                               data-grid-reload="<?= CHtml::encode($subAction['grid-reload'] ?? 'no') ?>"
-                               <?php if (($subAction['actionType'] ?? '') === 'modal') : ?>
-                                   data-modal-id="<?= $this->getModalId('d' . $key . '_' . $subKey, $subAction['action']) ?>"
-                               <?php endif; ?>
-                               <?php if (isset($subAction['aLinkSpecificDatas'])) : ?>
-                                   <?php foreach ($subAction['aLinkSpecificDatas'] as $dataName => $dataValue) : ?>
-                                       data-<?= CHtml::encode($dataName) ?>="<?= CHtml::encode($dataValue) ?>"
-                                   <?php endforeach; ?>
-                               <?php endif; ?>
-                            >
-                                <?php if (!empty($subAction['iconClasses'])) : ?>
-                                    <i class="<?= CHtml::encode($subAction['iconClasses']) ?>"></i>
-                                <?php endif; ?>
-                                <?= CHtml::encode($subAction['text'] ?? '') ?>
-                            </a>
-                        </li>
+                        <?php if (($subAction['type'] ?? '') === 'dropdown-header') : ?>
+                            <li><h6 class="dropdown-header"><?= CHtml::encode($subAction['text'] ?? '') ?></h6></li>
+                        <?php elseif (($subAction['type'] ?? '') === 'separator') : ?>
+                            <li><hr class="dropdown-divider"></li>
+                        <?php else : ?>
+                            <li>
+                                <a href="#"
+                                   class="dropdown-item floating-actions-item"
+                                   data-url="<?= CHtml::encode($subAction['url'] ?? '') ?>"
+                                   data-action="<?= CHtml::encode($subAction['action'] ?? '') ?>"
+                                   data-action-type="<?= CHtml::encode($subAction['actionType'] ?? '') ?>"
+                                   data-grid-reload="<?= CHtml::encode($subAction['grid-reload'] ?? 'no') ?>"
+                                   <?php if (($subAction['actionType'] ?? '') === 'modal') : ?>
+                                       data-modal-id="<?= $this->getModalId('d' . $key . '_' . $subKey, $subAction['action']) ?>"
+                                   <?php endif; ?>
+                                   <?php if (isset($subAction['aLinkSpecificDatas'])) : ?>
+                                       <?php foreach ($subAction['aLinkSpecificDatas'] as $dataName => $dataValue) : ?>
+                                           data-<?= CHtml::encode($dataName) ?>="<?= CHtml::encode($dataValue) ?>"
+                                       <?php endforeach; ?>
+                                   <?php endif; ?>
+                                >
+                                    <?php if (!empty($subAction['iconClasses'])) : ?>
+                                        <i class="<?= CHtml::encode($subAction['iconClasses']) ?>"></i>
+                                    <?php endif; ?>
+                                    <?= CHtml::encode($subAction['text'] ?? '') ?>
+                                </a>
+                            </li>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
             </div>

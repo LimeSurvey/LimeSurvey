@@ -2,13 +2,14 @@
  * Floating Actions Widget – JavaScript
  *
  * Provides LS.floatingActions:
- *   - Shows a context bar with action buttons just above the pagination row of
- *     a CLSGridView whenever one or more row-checkboxes are checked.
- *   - The bar is injected into the grid DOM just before .grid-view-ls-footer and
- *     re-injected automatically after every AJAX grid update so that it always
- *     sits above the pager regardless of page changes.
+ *   - Shows a context bar with action buttons at the bottom of the viewport
+ *     whenever one or more row-checkboxes are checked in a CLSGridView.
+ *   - The bar lives in <body> (position:fixed) so it is never removed by
+ *     yiiGridView's replaceWith() operation on pagination.
  *   - Uses LS.gridSelection.count() for cross-page selection tracking when
  *     LS.gridSelection is available (registered by CLSGridView via gridSelection.js).
+ *   - CLSGridView calls LS.floatingActions.refresh(id) explicitly after every
+ *     AJAX update to keep the count in sync.
  */
 /* global $, bootstrap, LS */
 window.LS = window.LS || {};
@@ -29,6 +30,28 @@ LS.floatingActions = (function () {
     /** Return the stored bar reference for a grid (or query the DOM as fallback). */
     function _bar(gridId) {
         return _barRefs[gridId] || $('#floating-actions-bar-' + gridId);
+    }
+
+    /**
+     * Resolve dotted callback paths (e.g. "LS.CPDB.onClickExport") safely.
+     * Returns a function bound to its parent object, or null.
+     *
+     * @param {string} path
+     * @returns {Function|null}
+     */
+    function _resolveActionCallback(path) {
+        if (typeof path !== 'string' || path === '') { return null; }
+        var parts = path.split('.');
+        var context = null;
+        var current = window;
+        for (var i = 0; i < parts.length; i++) {
+            if (current == null || typeof current[parts[i]] === 'undefined') {
+                return null;
+            }
+            context = current;
+            current = current[parts[i]];
+        }
+        return typeof current === 'function' ? current.bind(context) : null;
     }
     /**
      * Count selected rows and update the floating bar visibility.
@@ -103,19 +126,22 @@ LS.floatingActions = (function () {
         }
     }
     /**
-     * (Re-)inject the bar directly before .grid-view-ls-footer inside the grid
-     * container.  The element reference is stable even when the grid replaces its
-     * own innerHTML via AJAX, so this works both on first init and after updates.
+     * Ensure the bar is attached to <body>.
+     * Since the bar uses position:fixed it does not need to live inside the grid
+     * container – it only needs to be somewhere in the document.  Keeping it in
+     * <body> means it is never removed by yiiGridView's replaceWith() operation,
+     * so there is no detach/re-inject cycle to manage.
      *
      * @param {string} gridId
      */
     function _injectBar(gridId) {
-        var $bar    = _bar(gridId);
-        var $footer = $('#' + gridId).find('.grid-view-ls-footer');
-        if ($bar.length && $footer.length) {
-            $footer.before($bar);
-            _syncBarPosition(gridId);
+        var $bar = _bar(gridId);
+        if (!$bar.length) { return; }
+        // Move to body once (or whenever it has been removed from the document).
+        if (!$.contains(document.body, $bar[0])) {
+            $('body').append($bar);
         }
+        _syncBarPosition(gridId);
     }
     // -------------------------------------------------------------------------
     // Action click handler
@@ -160,6 +186,33 @@ LS.floatingActions = (function () {
                 type  : 'hidden',
             })).appendTo('body');
             newForm.submit();
+            return;
+        }
+        // ---- fill-session-and-redirect action -------------------------
+        // Posts checked IDs to a session-fill endpoint (postUrl), then redirects.
+        if (actionType === 'fill-session-and-redirect') {
+            var setSessionUrl = (typeof postUrl !== 'undefined' && postUrl) ? postUrl : actionUrl;
+            var postData = {
+                itemsid: checkedItems.join($that.data('input-separator') || ','),
+            };
+            postData[LS.data.csrfTokenName] = LS.data.csrfToken;
+            $.post(setSessionUrl, postData, function () {
+                window.location.href = actionUrl;
+            });
+            return;
+        }
+        // ---- window-location-href action ------------------------------
+        // Appends the checked ids (comma-separated) to the action URL and navigates.
+        // Used by "Download files" in the responses list.
+        if (actionType === 'window-location-href') {
+            window.location.href = actionUrl + checkedItems.join($that.data('input-separator') || ',');
+            return;
+        }
+
+        // ---- custom JS action -----------------------------------------
+        if (actionType === 'custom') {
+            var cb = _resolveActionCallback($that.data('custom-js'));
+            if (cb) { cb(checkedItems); }
             return;
         }
         // ---- modal action ---------------------------------------------
@@ -259,7 +312,7 @@ LS.floatingActions = (function () {
                         }
                     }
                     if (onSuccess) {
-                        var func = typeof window[onSuccess] === 'function' ? window[onSuccess] : null;
+                        var func = _resolveActionCallback(onSuccess);
                         if (func) { func(html); }
                     }
                 },
@@ -449,5 +502,18 @@ LS.floatingActions = (function () {
         },
         /** Manually refresh the bar state (e.g. after an external grid update). */
         updateBar: _updateBar,
+        /**
+         * Re-ensure the bar is in the DOM and refresh the selection count.
+         * Called explicitly by CLSGridView after every AJAX pagination update.
+         * Since the bar now lives in <body> (not inside the grid), this is mainly
+         * a count refresh, but _injectBar also re-attaches if somehow removed.
+         *
+         * @param {string} gridId
+         */
+        refresh: function (gridId) {
+            if (!_barRefs[gridId]) { return; }
+            _injectBar(gridId);
+            _updateBar(gridId, _barRefs[gridId].data('pk'));
+        },
     };
 }());
