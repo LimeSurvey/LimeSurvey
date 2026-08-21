@@ -425,6 +425,7 @@ class Labels extends SurveyCommonAction
         $labelSetIds = json_decode(App()->getRequest()->getPost('sItems', ''), true);
         if (!is_array($labelSetIds)) {
             \ls\ajax\AjaxHelper::outputError(gT('Please select at least one item'));
+            return;
         }
 
         $labelSetIds = array_values(array_unique(array_filter(
@@ -441,6 +442,7 @@ class Labels extends SurveyCommonAction
 
         if (empty($labelSetIds)) {
             \ls\ajax\AjaxHelper::outputError(gT('Please select at least one item'));
+            return;
         }
 
         $deleted = 0;
@@ -462,12 +464,14 @@ class Labels extends SurveyCommonAction
             \ls\ajax\AjaxHelper::outputSuccess(
                 ngT('{n} label set deleted successfully.|{n} label sets deleted successfully.', $deleted)
             );
+            return;
         }
 
         if ($deleted === 0) {
             \ls\ajax\AjaxHelper::outputError(
                 ngT('{n} label set could not be deleted.|{n} label sets could not be deleted.', $failed)
             );
+            return;
         }
 
         \ls\ajax\AjaxHelper::outputError(
