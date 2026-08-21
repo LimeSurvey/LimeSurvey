@@ -40,12 +40,12 @@ const NotifcationSystem  = function (){
      */
     __notificationIsRead = (that) => {
         LOG.log('notificationIsRead');
-        $.ajax({
+        return $.ajax({
             url: $(that).data('read-url'),
             method: 'GET',
-        }).done((response) => {
-            // Fetch new HTML for menu widget
-            __updateNotificationWidget($(that).data('update-url'));
+        }).then(() => {
+            // Fetch new HTML for menu widget; return so callers can chain on completion.
+            return __updateNotificationWidget($(that).data('update-url'));
         });
 
     },
@@ -84,15 +84,15 @@ const NotifcationSystem  = function (){
             // TODO: Will this work in message includes a link that is clicked?
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
-                __notificationIsRead(that);
                 $('#admin-notification-modal .modal-content').removeClass('card-' + not.display_class);
-                // Return focus to the dropdown toggle — it is always visible in the
-                // navbar and gives the screen reader a meaningful landing point after
-                // the modal closes (the dropdown itself is already closed at this point).
-                const dropdownToggle = document.getElementById('admin-notifications-menu-button');
-                if (dropdownToggle) {
-                    dropdownToggle.focus();
-                }
+                // Restore focus only after __updateNotificationWidget() has completed and
+                // replaced the menu toggle, so the element we focus is already in the DOM.
+                __notificationIsRead(that).then(() => {
+                    const dropdownToggle = document.getElementById('admin-notifications-menu-button');
+                    if (dropdownToggle) {
+                        dropdownToggle.focus();
+                    }
+                });
             });
         });
     },
@@ -116,7 +116,8 @@ const NotifcationSystem  = function (){
             // Important 2 = nag only once (used e.g. for redirect).
             if (importance == 2 && status == 'new') {
                 __showNotificationModal(that, url);
-                __notificationIsRead(that);
+                // __notificationIsRead is called by the hidden.bs.modal handler
+                // registered inside __showNotificationModal; no second call needed.
                 LOG.log('stoploop');
                 return false;  // Stop loop
             }
