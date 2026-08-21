@@ -22,10 +22,10 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
     <span class="reg-12" aria-live="polite" aria-atomic="true">
         <span class="floating-actions-count-number">0</span>&nbsp;<?= gT('selected') ?>
     </span>
+    <div class="floating-actions-separator" role="separator" aria-hidden="true"></div>
 
     <?php if ($selectAllUrl): ?>
         <!-- Separator before "Select all" -->
-        <div class="floating-actions-separator" role="separator" aria-hidden="true"></div>
         <!-- Select all button -->
         <button
             type="button"
