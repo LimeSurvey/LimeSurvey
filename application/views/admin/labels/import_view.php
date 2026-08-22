@@ -13,7 +13,11 @@
 <?php else:?>
     <div class="jumbotron message-box">
             <h2 class="text-success"><?php eT("Import Label Set") ?></h2>
-            <p class="lead"><?php eT("File upload succeeded.") ?></p>
+            <?php if ($aImportResults['labelsets'] > 0): ?>
+                <p class="lead text-success"><?php eT("File upload succeeded.") ?></p>
+            <?php else: ?>
+                <p class="lead text-danger"><?php eT("No new label sets were imported.") ?></p>
+            <?php endif; ?>
             <?php if (count($aImportResults['warnings']) > 0): ?>
                 <p  class="lead text-danger">
                     <?php eT("Warnings") ?>
@@ -35,11 +39,18 @@
                 <ul class="list-unstyled">
                     <li><?php echo gT("Label sets") . ": {$aImportResults['labelsets']}" ?></li>
                     <li><?php echo gT("Labels") . ": {$aImportResults['labels']}" ?></li>
+                    <?php if (!empty($aImportResults['duplicates'])): ?>
+                        <li><?php echo gT("Duplicate label sets skipped") . ": {$aImportResults['duplicates']}" ?></li>
+                    <?php endif; ?>
                 </ul>
             </p>
 
             <p>
-                <strong><?php eT("Import of label set(s) is completed.") ?></strong>
+                <?php if ($aImportResults['labelsets'] > 0): ?>
+                    <strong><?php eT("Import of label set(s) is completed.") ?></strong>
+                <?php else: ?>
+                    <strong><?php eT("Import completed without adding new label sets.") ?></strong>
+                <?php endif; ?>
             </p>
 
             <p>
