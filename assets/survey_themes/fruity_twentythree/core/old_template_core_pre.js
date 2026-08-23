@@ -451,6 +451,21 @@ export function resetQuestionTimers(sid) {
 }
 
 /**
+ * Older browsers, Safari below 15.4 mainly, do not provide SubmitEvent.submitter.
+ * Remember the clicked button so the final submit is recognised there too.
+ */
+$(document).on('click', 'form#limesurvey button[type="submit"]', function () {
+    var $form = $(this.form);
+    $form.data('clicked-submit', this);
+    // The browser dispatches the matching submit event synchronously, as soon as
+    // the click event finished propagating: forgetting the button on the next tick
+    // is enough to never rely on an outdated one.
+    setTimeout(function () {
+        $form.removeData('clicked-submit');
+    }, 0);
+});
+
+/**
  * Disable submit button to prevent multiple submits
  * This is done on 'document' instead of the '#limesurvey' form in order to allow
  * other scripts (custom themes?) to cancel the submit before we disable the button.
@@ -462,7 +477,7 @@ $(document).on('submit', function (e) {
     }
     var $form = $(e.target);
     // We only care about the final submit, not normal forward/backward navigation.
-    var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
+    var submitter = e.originalEvent ? $(e.originalEvent.submitter || $form.data('clicked-submit')) : null;
     if (!submitter || submitter.attr('value') != 'movesubmit') {
         return;
     }
