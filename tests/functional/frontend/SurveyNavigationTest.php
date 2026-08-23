@@ -159,6 +159,72 @@ class SurveyNavigationTest extends TestBaseClassWeb
     }
 
     /**
+     * The same protection must work on browsers without SubmitEvent.submitter,
+     * Safari below 15.4 mainly, where the clicked button is used instead.
+     */
+    public function testRepeatedFinalSubmitIsPreventedWithoutSubmitter()
+    {
+        $web = self::$webDriver;
+
+        try {
+            $web->get($this->getSurveyUrl());
+
+            // Welcome page, first group, then the final group.
+            $web->clickButton('ls-button-submit');
+            $web->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#group-0 .group-title')
+                )
+            );
+            $web->clickButton('ls-button-submit');
+            $web->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#group-1 .group-title')
+                )
+            );
+
+            $result = $web->executeScript(<<<'JS'
+                var form = document.getElementById('limesurvey');
+                var submitButton = document.getElementById('ls-button-submit');
+
+                // The click must not submit the form by itself: the submit event is
+                // dispatched below instead, without any submitter.
+                submitButton.addEventListener('click', function (event) {
+                    event.preventDefault();
+                });
+
+                function clickThenSubmitWithoutSubmitter() {
+                    submitButton.dispatchEvent(
+                        new MouseEvent('click', {bubbles: true, cancelable: true})
+                    );
+                    var event = document.createEvent('Event');
+                    event.initEvent('submit', true, true);
+                    return form.dispatchEvent(event);
+                }
+
+                var firstSubmitAllowed = clickThenSubmitWithoutSubmitter();
+                var secondSubmitAllowed = clickThenSubmitWithoutSubmitter();
+                var hiddenInput = form.querySelector('#onsubmitbuttoninput');
+
+                return {
+                    firstSubmitAllowed: firstSubmitAllowed,
+                    secondSubmitAllowed: secondSubmitAllowed,
+                    submitValueInputCount: form.querySelectorAll('#onsubmitbuttoninput').length,
+                    submitValue: hiddenInput ? hiddenInput.value : null
+                };
+                JS);
+
+            $this->assertTrue($result['firstSubmitAllowed']);
+            $this->assertFalse($result['secondSubmitAllowed']);
+            $this->assertSame(1, $result['submitValueInputCount']);
+            $this->assertSame('movesubmit', $result['submitValue']);
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(true, self::$testHelper->javaTrace($ex));
+        }
+    }
+
+    /**
      * Check Resume Later navigation
      */
     public function testResumeLaterNavigation()
