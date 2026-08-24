@@ -137,6 +137,9 @@ node_modules/**/src
 !/node_modules/chart.js/dist/
 !/node_modules/chart.js/LICENSE.md
 
+# build dependencies of the asset sub-packages
+assets/packages/**/node_modules/
+
 vendor/**/docs/
 vendor/**/scripts/
 vendor/**/tests/
