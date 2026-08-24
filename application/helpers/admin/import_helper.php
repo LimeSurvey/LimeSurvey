@@ -3551,8 +3551,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['FieldReMap'] = $aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
     translateInsertansTags($iNewSID, $iOldSID, $aOldNewFieldmap);
-    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
-    replaceExpressionCodes($iNewSID, $aQuestionsMapping); // replace question codes in format "38612X105X3011"
+    // Restrict the replacement to the newly imported group(s) so expressions/conditions in other groups are left untouched.
+    $aImportedGids = array_values($aGIDReplacements);
+    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements, $aImportedGids);
+    replaceExpressionCodes($iNewSID, $aQuestionsMapping, $aImportedGids); // replace question codes in format "38612X105X3011"
     if (count($aQuestionCodeReplacements)) {
         array_unshift($results['importwarnings'], "<span class='warningtitle'>" . gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.') . '</span>');
     }
