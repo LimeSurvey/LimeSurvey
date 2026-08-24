@@ -81,16 +81,35 @@ const NotifcationSystem  = function (){
                 }
             });
 
-            // TODO: Will this work in message includes a link that is clicked?
+            // Track any pending internal-link navigation triggered from within the message body.
+            let pendingHref = null;
+
+            // Intercept internal (same-origin) links in the notification message body:
+            // prevent immediate navigation, mark as read first, then navigate.
+            $('#admin-notification-modal .modal-body-text').off('click.notificationLink');
+            $('#admin-notification-modal .modal-body-text').on('click.notificationLink', 'a', (e) => {
+                const link = e.currentTarget;
+                if (link.origin === window.location.origin) {
+                    e.preventDefault();
+                    pendingHref = link.href;
+                    bootstrap.Modal.getInstance(document.getElementById('admin-notification-modal')).hide();
+                }
+            });
+
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
                 $('#admin-notification-modal .modal-content').removeClass('card-' + not.display_class);
-                // Restore focus only after __updateNotificationWidget() has completed and
-                // replaced the menu toggle, so the element we focus is already in the DOM.
-                __notificationIsRead(that).then(() => {
-                    const dropdownToggle = document.getElementById('admin-notifications-menu-button');
-                    if (dropdownToggle) {
-                        dropdownToggle.focus();
+                // Restore focus after __updateNotificationWidget() has completed (or failed).
+                // Use .always() so focus is restored even if the read-url or widget-refresh
+                // requests reject.
+                __notificationIsRead(that).always(() => {
+                    if (pendingHref) {
+                        window.location.href = pendingHref;
+                    } else {
+                        const dropdownToggle = document.getElementById('admin-notifications-menu-button');
+                        if (dropdownToggle) {
+                            dropdownToggle.focus();
+                        }
                     }
                 });
             });
