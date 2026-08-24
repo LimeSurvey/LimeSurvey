@@ -925,32 +925,38 @@ class TemplateConfig extends CActiveRecord
         // check compatibility with current limesurvey version
         $isCompatible = TemplateConfig::isCompatible($themePath);
         if ($isCompatible === false) {
-            /** TODO: temporary disabling of uninstalling themes to rework it after LS7 release has been completed #AT-2266 */
-            return true;
-//            if (self::uninstallThemesRecursive($themeName)) {
-//                if ($redirect) {
-//                    if (method_exists(App(), 'setFlashMessage')) {
-//                        App()->setFlashMessage(
-//                            sprintf(
-//                                gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
-//                                $themeName
-//                            ),
-//                            'error'
-//                        );
-//                        App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
-//                    }
-//                    App()->end();
-//                }
-//            } else {
-//                App()->setFlashMessage(
-//                    sprintf(
-//                        gT("The “%s” theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."),
-//                        $themeName,
-//                        App()->getConfig('siteadminname'),
-//                    ),
-//                    'error'
-//                );
-//            }
+            // If the theme was written for a version lower than 6 it should be uninstalled.
+            // Themes targeting version 6 or higher are kept for now (temporary workaround).
+            $extensionConfig = ExtensionConfig::loadFromFile($themePath);
+            if (self::isThemeTooOldToKeep($extensionConfig)) {
+                if (self::uninstallThemesRecursive($themeName)) {
+                    if ($redirect) {
+                        if (method_exists(App(), 'setFlashMessage')) {
+                            App()->setFlashMessage(
+                                sprintf(
+                                    gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                                    $themeName
+                                ),
+                                'error'
+                            );
+                            App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                        }
+                        App()->end();
+                    }
+                } else {
+                    App()->setFlashMessage(
+                        sprintf(
+                            gT("The '%s' theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."),
+                            $themeName,
+                            App()->getConfig('siteadminname'),
+                        ),
+                        'error'
+                    );
+                }
+            } else {
+                /** TODO: temporary disabling of uninstalling themes to rework it after LS7 release has been completed #AT-2266 */
+                return true;
+            }
         } elseif (($isCompatible === null) && $redirect) {
             App()->setFlashMessage(
                 sprintf(
@@ -965,6 +971,43 @@ class TemplateConfig extends CActiveRecord
         // all checks succeeded, continue loading the theme if it compatible
         return boolval($isCompatible);
     }
+
+    /**
+     * Returns true when all compatibility versions declared in the theme config are strictly below
+     * the minimum allowed major version (current LimeSurvey major version minus one).
+     *
+     * Example: if the running LS is 7.x the minimum allowed major is 6, so a theme that only
+     * declares compatibility with 5.x or lower is considered too old and should be uninstalled.
+     * A theme that declares at least one version >= minimum allowed major is kept.
+     *
+     * @param ExtensionConfig|null $extensionConfig
+     * @return bool
+     */
+    private static function isThemeTooOldToKeep(?ExtensionConfig $extensionConfig): bool
+    {
+        if ($extensionConfig === null) {
+            return false;
+        }
+        if (
+            !isset($extensionConfig->xml->compatibility)
+            || !isset($extensionConfig->xml->compatibility->version)
+        ) {
+            return false;
+        }
+
+        $lsVersion = require App()->getBasePath() . '/config/version.php';
+        $currentMajor = (int) substr((string) $lsVersion['versionnumber'], 0, 1);
+        $minimumAllowedMajor = $currentMajor - 1;
+
+        foreach ($extensionConfig->xml->compatibility->version as $version) {
+            if ((int) substr((string) $version, 0, 1) >= $minimumAllowedMajor) {
+                // At least one declared compatibility version is recent enough to keep
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Checks if theme is compatible with the current limesurvey version
