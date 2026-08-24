@@ -19,7 +19,7 @@ class SurveyMenuListMassiveActions
                 'type' => 'action',
                 'action' => 'batchEdit',
                 'url' => \App()->createUrl('/admin/menus/sa/batchEdit/'),
-                'iconClasses' => 'ri-download-fill',
+                'iconClasses' => 'ri-pencil-line',
                 'text' => \gT('Batch edit'),
                 'grid-reload' => 'yes',
                 'actionType' => 'modal',

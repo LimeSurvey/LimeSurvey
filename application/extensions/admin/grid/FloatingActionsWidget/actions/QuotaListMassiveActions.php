@@ -42,7 +42,7 @@ class QuotaListMassiveActions
                 'type'          => 'action',
                 'action'        => 'deactivate',
                 'url'           => \App()->createUrl('quotas/massiveAction', ['action' => 'deactivate', 'surveyid' => $surveyId]),
-                'iconClasses'   => 'ri-pause-fill',
+                'iconClasses'   => 'ri-stop-fill',
                 'text'          => \gT('Deactivate'),
                 'grid-reload'   => 'yes',
                 'actionType'    => 'modal',

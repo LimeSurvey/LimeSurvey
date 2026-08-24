@@ -17,7 +17,7 @@ class UserRoleListMassiveActions
                 'type'               => 'action',
                 'action'             => 'batchExport',
                 'url'                => \App()->createUrl('userRole/batchExport'),
-                'iconClasses'        => 'ri-download-line',
+                'iconClasses'        => 'ri-upload-line',
                 'text'               => \gT('Bulk export roles'),
                 'grid-reload'        => 'no',
                 'actionType'         => 'redirect',

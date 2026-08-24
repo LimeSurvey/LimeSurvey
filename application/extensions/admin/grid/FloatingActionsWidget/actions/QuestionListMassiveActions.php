@@ -19,7 +19,7 @@ class QuestionListMassiveActions
                 'type' => 'action',
                 'action' => 'set-group-position',
                 'url' => App()->createUrl('questionAdministration/setMultipleQuestionGroup/'),
-                'iconClasses' => 'ri-folder-line',
+                'iconClasses' => 'ri-folder-settings-line',
                 'text' => gT('Set question group and position'),
                 'grid-reload' => 'yes',
                 'actionType' => 'modal',
@@ -130,7 +130,6 @@ class QuestionListMassiveActions
 
             $actions[] = [
                 'type' => 'dropdown',
-                'icon' => 'ri-settings-3-line',
                 'text' => gT('Advanced options'),
                 'items' => $advancedItems,
             ];

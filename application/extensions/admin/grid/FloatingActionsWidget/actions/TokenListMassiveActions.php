@@ -82,7 +82,7 @@ class TokenListMassiveActions
 
             $buttons[] = [
                 'type'  => 'dropdown',
-                'icon'  => 'ri-mail-fill',
+                'icon'  => 'ri-mail-star-line',
                 'text'  => \gT('Send email'),
                 'items' => $emailItems,
             ];
@@ -94,7 +94,7 @@ class TokenListMassiveActions
                 'type'               => 'action',
                 'action'             => 'addCPDB',
                 'url'                => \App()->createUrl('admin/participants/sa/attributeMapToken/sid/' . $surveyId),
-                'iconClasses'        => 'ri-user-add-fill',
+                'iconClasses'        => 'ri-add-fill',
                 'text'               => \gT('Add to central participants database'),
                 'grid-reload'        => 'no',
                 'actionType'         => 'fill-session-and-redirect',

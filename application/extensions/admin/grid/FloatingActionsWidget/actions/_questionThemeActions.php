@@ -30,6 +30,7 @@ return [
         'action'        => 'Uninstall',
         'url'           => App()->createUrl('themeOptions/uninstallMultiple/'),
         'iconClasses'   => 'ri-delete-bin-fill',
+        'btnClass'      => 'floating-delete-button',
         'text'          => gT('Uninstall'),
         'grid-reload'   => 'yes',
         'actionType'    => 'modal',
