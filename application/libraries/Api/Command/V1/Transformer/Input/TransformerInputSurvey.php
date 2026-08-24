@@ -241,8 +241,8 @@ class TransformerInputSurvey extends Transformer
             ],
             'template' => true,
             'format' => ['range' => ['G', 'S', 'A', 'I']],
-            'projectTitle' => [
-                'key' => 'projecttitle'
+            'internalTitle' => [
+                'key' => 'internaltitle'
             ],
         ]);
     }

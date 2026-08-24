@@ -56,7 +56,7 @@
     "googleAnalyticsStyle": 0,
     "googleAnalyticsApiKey": null,
     "showSurveyPolicyNotice": 0,
-    "projectTitle": null,
+    "internalTitle": null,
     "access_mode": "O",
     "hasTokens": false,
     "languageSettings": {

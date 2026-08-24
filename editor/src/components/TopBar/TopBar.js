@@ -88,13 +88,13 @@ export const TopBar = ({
     })
   }
 
-  const onProjectTitleSave = (projectTitle) => {
+  const onInternalTitleSave = (internalTitle) => {
     const operation = createBufferOperation(survey.sid?.toString())
       .survey()
-      .update({ projectTitle })
+      .update({ internalTitle })
 
     addToBuffer(operation)
-    update({ projectTitle })
+    update({ internalTitle })
   }
 
   const handleSurveySwitch = async (e) => {
@@ -144,8 +144,8 @@ export const TopBar = ({
           handleSurveySwitch={handleSurveySwitch}
           getError={getError}
           showCode={showCode}
-          onProjectTitleSave={onProjectTitleSave}
-          canEditProjectTitle={hasSurveyUpdatePermission}
+          onInternalTitleSave={onInternalTitleSave}
+          canEditInternalTitle={hasSurveyUpdatePermission}
         />
         <SurveyNavigation surveyId={surveyId} />
       </div>

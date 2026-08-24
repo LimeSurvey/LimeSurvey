@@ -3,8 +3,8 @@ import { Entities, L10ns } from 'helpers'
 import { Button, ContentEditor } from 'components'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 import { SurveyListComponent } from './SurveyListComponent'
-import { ProjectTitleBadge } from './ProjectTitleBadge'
-import { ProjectTitleForm } from './ProjectTitleForm'
+import { InternalTitleBadge } from './InternalTitleBadge'
+import { InternalTitleForm } from './InternalTitleForm'
 import classNames from 'classnames'
 
 const TITLE_SELECT_OFFSET = 40
@@ -17,15 +17,15 @@ export const SurveyTitleSelector = ({
   onSurveyTitleChange,
   handleSurveySwitch,
   getError,
-  onProjectTitleSave,
-  canEditProjectTitle,
+  onInternalTitleSave,
+  canEditInternalTitle,
 }) => {
   const [surveyTitleIsFocused, setSurveyTitleIsFocused] = useState(false)
-  const [projectFormOpen, setProjectFormOpen] = useState(false)
+  const [internalFormOpen, setInternalFormOpen] = useState(false)
   const [saveError, setSaveError] = useState(false)
   const titleRef = useRef(null)
 
-  const projectTitle = survey.projectTitle || ''
+  const internalTitle = survey.internalTitle || ''
 
   const surveyTitle = L10ns({
     prop: 'title',
@@ -59,19 +59,19 @@ export const SurveyTitleSelector = ({
 
   const handleOpenForm = () => {
     setSaveError(false)
-    setProjectFormOpen(true)
+    setInternalFormOpen(true)
   }
 
   const handleCloseForm = () => {
-    setProjectFormOpen(false)
+    setInternalFormOpen(false)
     setSaveError(false)
   }
 
   const handleSave = async (value) => {
     setSaveError(false)
     try {
-      await onProjectTitleSave(value)
-      setProjectFormOpen(false)
+      await onInternalTitleSave(value)
+      setInternalFormOpen(false)
     } catch {
       setSaveError(true)
     }
@@ -84,9 +84,9 @@ export const SurveyTitleSelector = ({
       id="top-bar-select"
     >
       <div className="d-flex align-items-center position-relative align-items-start">
-        <ProjectTitleBadge
-          projectTitle={projectTitle}
-          canEdit={canEditProjectTitle}
+        <InternalTitleBadge
+          internalTitle={internalTitle}
+          canEdit={canEditInternalTitle}
           onClick={handleOpenForm}
           showBadge={survey.showQNumCode?.showNumber}
         />
@@ -104,15 +104,15 @@ export const SurveyTitleSelector = ({
             testId="topbar-survey-title-content-editor"
           />
 
-          <TooltipContainer tip={t('Add project title')} placement="bottom">
+          <TooltipContainer tip={t('Add internal title')} placement="bottom">
             <Button
-              className={classNames('project-title-plus-btn ms-2', {
+              className={classNames('internal-title-plus-btn ms-2', {
                 'pointer-events-none opacity-0':
-                  !canEditProjectTitle ||
+                  !canEditInternalTitle ||
                   !surveyTitleIsFocused ||
                   !survey.showQNumCode?.showNumber,
               })}
-              aria-label={t('Add project title')}
+              aria-label={t('Add internal title')}
               onMouseDown={(e) => {
                 e.preventDefault()
                 handleOpenForm()
@@ -134,10 +134,10 @@ export const SurveyTitleSelector = ({
             showCode={survey.showQNumCode?.showCode}
           />
         </div>
-        {projectFormOpen && (
-          <ProjectTitleForm
-            initialValue={projectTitle}
-            isNew={!projectTitle}
+        {internalFormOpen && (
+          <InternalTitleForm
+            initialValue={internalTitle}
+            isNew={!internalTitle}
             saveError={saveError}
             onSave={handleSave}
             onCancel={handleCloseForm}

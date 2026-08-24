@@ -297,7 +297,7 @@ class GeneralSettings
             'gsid' => ['default' => 1],
             'format' => [],
             'template' => [],
-            'projecttitle' => []
+            'internaltitle' => []
         ];
     }
 

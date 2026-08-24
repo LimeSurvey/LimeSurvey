@@ -2,7 +2,7 @@ import { XIcon } from 'components/icons'
 import { Button, Input } from 'components/UIComponents'
 import { useEffect, useRef, useState } from 'react'
 
-export const ProjectTitleForm = ({
+export const InternalTitleForm = ({
   initialValue = '',
   isNew,
   isSaving,
@@ -46,28 +46,28 @@ export const ProjectTitleForm = ({
 
   return (
     <div
-      className="project-title-form"
+      className="internal-title-form"
       role="region"
-      aria-label={t('Project title')}
+      aria-label={t('Internal title')}
     >
       <div className="d-flex close-button justify-content-end align-items-center mb-1">
         <Button onClick={() => onCancel()} variant="">
           <XIcon />
         </Button>
       </div>
-      <div className="project-title-label mb-1">
-        <label htmlFor="project-title-input">{t('Project title')}</label>
+      <div className="internal-title-label mb-1">
+        <label htmlFor="internal-title-input">{t('Internal title')}</label>
       </div>
-      <div className="project-title-input">
+      <div className="internal-title-input">
         <Input
-          id="project-title-input"
+          id="internal-title-input"
           ref={inputRef}
           type="text"
           value={value}
           placeholder={t('Enter here')}
           maxLength={255}
           onChange={(e) => setValue(e.target.value)}
-          aria-describedby={saveError ? 'project-title-error' : undefined}
+          aria-describedby={saveError ? 'internal-title-error' : undefined}
           focus={true}
           onKeyDown={onKeyDown}
         />
@@ -86,11 +86,11 @@ export const ProjectTitleForm = ({
       </div>
       {saveError && (
         <div
-          id="project-title-error"
-          className="project-title-form__error"
+          id="internal-title-error"
+          className="internal-title-form__error"
           role="alert"
         >
-          {t('Failed to save project title. Please try again.')}
+          {t('Failed to save internal title. Please try again.')}
         </div>
       )}
     </div>
