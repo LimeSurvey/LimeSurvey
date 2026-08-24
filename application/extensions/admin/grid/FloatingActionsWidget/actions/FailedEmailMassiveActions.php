@@ -56,7 +56,7 @@ class FailedEmailMassiveActions
                 'action'        => 'delete',
                 'url'           => \Yii::app()->createUrl('failedEmail/delete/', ['surveyid' => $surveyId]),
                 'iconClasses'   => 'ri-delete-bin-fill',
-                'btnClass'      => 'text-danger',
+                'btnClass'      => 'floating-delete-button',
                 'text'          => gT('Delete'),
                 'grid-reload'   => 'yes',
                 'actionType'    => 'modal',

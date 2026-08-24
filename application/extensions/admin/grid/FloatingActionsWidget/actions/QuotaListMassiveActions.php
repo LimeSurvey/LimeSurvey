@@ -83,7 +83,7 @@ class QuotaListMassiveActions
                 'action'        => 'delete',
                 'url'           => \App()->createUrl('quotas/massiveAction', ['action' => 'delete', 'surveyid' => $surveyId]),
                 'iconClasses'   => 'ri-delete-bin-fill',
-                'btnClass'      => 'text-danger',
+                'btnClass'      => 'floating-delete-button',
                 'text'          => \gT('Delete'),
                 'grid-reload'   => 'yes',
                 'actionType'    => 'modal',

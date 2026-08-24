@@ -228,9 +228,7 @@ table {
         color: $g-900;
       }
 
-        &.text-danger {
-            color : $error;
-
+        &.floating-delete-button {
             i::before {
                 color : $error;
             }

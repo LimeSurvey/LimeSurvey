@@ -145,7 +145,7 @@ class QuestionListMassiveActions
                 'action' => 'delete',
                 'url' => App()->createUrl('questionAdministration/deleteMultiple/'),
                 'iconClasses' => 'ri-delete-bin-fill',
-                'btnClass' => 'text-danger',
+                'btnClass' => 'floating-delete-button',
                 'text' => gT('Delete'),
                 'grid-reload' => 'yes',
                 'actionType' => 'modal',
