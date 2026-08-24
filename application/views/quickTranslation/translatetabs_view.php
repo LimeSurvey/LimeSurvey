@@ -1,16 +1,16 @@
 <?php
 /* @var $type string */
+/* @var $tabTitle string */
 /* @var $activeTab bool */
 /* @var $baselangdesc string */
 /* @var $tolangdesc string */
 
-extract($tabData);
-
+$captionId = 'translation-table-caption-' . $type;
 ?>
 
 <div id='tab-<?php echo $type; ?>' class='tab-pane fade <?php if ($activeTab) {
     echo "show active";
-             } ?>'>
+             } ?>' role="tabpanel" aria-labelledby="quick-translation-tab-<?php echo $type; ?>">
     <?php
     Yii::app()->loadHelper('admin.htmleditor');
     echo PrepareEditorScript(true, Yii::app()->getController());
@@ -27,23 +27,27 @@ extract($tabData);
         <?php
         $threeRows = ($type == 'question' || $type == 'subquestion' || $type == 'answer');
         ?>
-        <table class='table table-striped'>
+        <table class='table table-striped' aria-labelledby="<?php echo $captionId; ?>">
+            <caption class="visually-hidden" id="<?php echo $captionId; ?>">
+                <?php printf(gT('Translation table for %s: from %s to %s'), $tabTitle, $baselangdesc, $tolangdesc); ?>
+            </caption>
             <thead>
-
+            <tr>
             <?php
             if ($type == 'answer') { ?>
-                <th class="col-lg-2 text-strong"> <?= gT('QCode / Answer Code / ID') ?> </th>
+                <th scope="col" class="col-lg-2 text-strong"> <?= gT('QCode / Answer Code / ID') ?> </th>
                 <?php
             } elseif ($threeRows) { ?>
-                <th class="col-lg-2 text-strong"> <?= gT('Question code / ID') ?> </th>
+                <th scope="col" class="col-lg-2 text-strong"> <?= gT('Question code / ID') ?> </th>
                 <?php
             }
             $cssClass = $threeRows ? "col-md-5 text-strong" : "col-md-6";
             ?>
-            <th class="<?= $cssClass ?>"> <?= $baselangdesc ?> </th>
-            <th class="<?= $cssClass ?>"> <?= $tolangdesc ?> </th>
+            <th scope="col" class="<?= $cssClass ?>"> <?= $baselangdesc ?> </th>
+            <th scope="col" class="<?= $cssClass ?>"> <?= $tolangdesc ?> </th>
+            </tr>
             </thead>
-
+            <tbody>
             <?php
             //table content should be rendered here translatefields_view
             //content of translatefields_view
@@ -63,6 +67,7 @@ extract($tabData);
                     }
                 }
             } ?>
+            </tbody>
         </table>
     </div>
     <?php

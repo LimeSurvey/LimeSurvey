@@ -15,6 +15,11 @@ $alert-status : (
     color  : $g-900;
     background-color : $white;
     border-left      : 8px solid $color;
+    &.alert-dismissible {
+      .btn-close {
+        color: $g-900;
+      }
+    }
   } @else {
     background-color : $color;
     @if ($color== var(--bs-info) or  $color== var(--bs-dark)) {
@@ -23,12 +28,22 @@ $alert-status : (
         color : $white;
         text-decoration: underline;
       }
+      &.alert-dismissible {
+        .btn-close {
+          color: $white;
+        }
+      }
     } @else {
       border : 1.33px solid $g-900;
       color  : $g-900;
       .alert-link {
         color : $g-900;
         text-decoration: underline;
+      }
+      &.alert-dismissible {
+        .btn-close {
+          color: $g-900;
+        }
       }
     }
   }
@@ -49,11 +64,18 @@ $alert-status : (
 
 .alert-dismissible {
   .btn-close {
-    padding: 1rem 1rem;
-    &:focus {
+    font-size: 9px;
+    opacity: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    &:focus-visible {
+      outline: 2px solid $g-900;
+      outline-offset: -12px;
       box-shadow: none;
-      color: $black;
-      opacity: 0.75;
+    }
+    &:focus:not(:focus-visible) {
+      outline: none;
+      box-shadow: none;
     }
   }
 }
