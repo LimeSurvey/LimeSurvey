@@ -925,31 +925,33 @@ class TemplateConfig extends CActiveRecord
         // check compatibility with current limesurvey version
         $isCompatible = TemplateConfig::isCompatible($themePath);
         if ($isCompatible === false) {
-            if (self::uninstallThemesRecursive($themeName)) {
-                if ($redirect) {
-                    if (method_exists(App(), 'setFlashMessage')) {
-                        App()->setFlashMessage(
-                            sprintf(
-                                gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
-                                $themeName
-                            ),
-                            'error'
-                        );
-                        App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
-                    }
-                    App()->end();
-                }
-            } else {
-                App()->setFlashMessage(
-                    sprintf(
-                        gT("The “%s” theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."),
-                        $themeName,
-                        App()->getConfig('siteadminname'),
-                    ),
-                    'error'
-                );
-            }
-        } elseif ((!$isCompatible) && $redirect) {
+            /** TODO: temporary disabling of uninstalling themes to rework it after LS7 release has been completed #AT-2266 */
+            return true;
+//            if (self::uninstallThemesRecursive($themeName)) {
+//                if ($redirect) {
+//                    if (method_exists(App(), 'setFlashMessage')) {
+//                        App()->setFlashMessage(
+//                            sprintf(
+//                                gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+//                                $themeName
+//                            ),
+//                            'error'
+//                        );
+//                        App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+//                    }
+//                    App()->end();
+//                }
+//            } else {
+//                App()->setFlashMessage(
+//                    sprintf(
+//                        gT("The “%s” theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."),
+//                        $themeName,
+//                        App()->getConfig('siteadminname'),
+//                    ),
+//                    'error'
+//                );
+//            }
+        } elseif (($isCompatible === null) && $redirect) {
             App()->setFlashMessage(
                 sprintf(
                     gT("Theme '%s' was not found."),
