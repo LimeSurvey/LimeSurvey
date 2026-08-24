@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { useMemo, useState } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 
 import { Button } from 'components'
 import { CheckIcon, DragIcon, XIconWithBorder } from 'components/icons'

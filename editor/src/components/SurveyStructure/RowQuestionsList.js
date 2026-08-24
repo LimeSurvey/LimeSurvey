@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Draggable, Droppable } from 'react-beautiful-dnd'
+import { Draggable, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 
 import { useBuffer, useFocused } from 'hooks'

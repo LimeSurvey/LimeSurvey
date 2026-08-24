@@ -5,8 +5,8 @@ import { DragAndDrop } from './DragAndDrop'
 import { renderWithProviders } from 'tests/testUtils'
 import { screen } from '@testing-library/react'
 import { useState } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
+import { DragDropContext } from '@hello-pangea/dnd'
 import { DragIcon } from 'components/icons'
 
 const DATA = [

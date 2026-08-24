@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 
 import { DragAndDrop } from 'components/UIComponents/DragAndDrop/DragAndDrop'
