@@ -225,6 +225,74 @@ class SurveyNavigationTest extends TestBaseClassWeb
     }
 
     /**
+     * A final submit that reaches the server a second time - double click on a slow
+     * server, browser "Try again" prompt, back navigation, reload - must display the
+     * completed page again. The response is already recorded at that point, so
+     * reporting an expired session tells the participant their answers are lost
+     * while the server counted the response as complete.
+     */
+    public function testReplayedFinalSubmitShowsCompletedPage()
+    {
+        $web = self::$webDriver;
+
+        try {
+            $web->get($this->getSurveyUrl());
+
+            // Welcome page, first group, then the final group.
+            $web->clickButton('ls-button-submit');
+            $web->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#group-0 .group-title')
+                )
+            );
+            $web->clickButton('ls-button-submit');
+            $web->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#group-1 .group-title')
+                )
+            );
+
+            // Send the very same final submit twice, straight from the last page, so
+            // the second request is an exact replay of the first one.
+            $result = $web->executeAsyncScript(<<<'JS'
+                var callback = arguments[arguments.length - 1];
+                var form = document.getElementById('limesurvey');
+                var body = new URLSearchParams(new FormData(form));
+                body.set('move', 'movesubmit');
+
+                function submitOnce() {
+                    return fetch(form.action, {
+                        method: 'POST',
+                        body: body,
+                        credentials: 'same-origin',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).then(function (response) { return response.text(); });
+                }
+
+                submitOnce().then(function (first) {
+                    return submitOnce().then(function (second) {
+                        callback({
+                            firstCompleted: /completed-text/.test(first),
+                            secondCompleted: /completed-text/.test(second),
+                            secondExpired: /session has expired/i.test(second)
+                        });
+                    });
+                }).catch(function (error) {
+                    callback({error: String(error)});
+                });
+                JS, []);
+
+            $this->assertArrayNotHasKey('error', $result);
+            $this->assertTrue($result['firstCompleted'], 'The first final submit must show the completed page.');
+            $this->assertFalse($result['secondExpired'], 'A replayed final submit must not report an expired session.');
+            $this->assertTrue($result['secondCompleted'], 'A replayed final submit must show the completed page again.');
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(true, self::$testHelper->javaTrace($ex));
+        }
+    }
+
+    /**
      * Check Resume Later navigation
      */
     public function testResumeLaterNavigation()
