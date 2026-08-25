@@ -1673,7 +1673,8 @@ class SurveyAdministrationController extends LSBaseController
                         $templateName = App()->request->getPost('templatename');
                         $themeConfiguration = Template::model()->getInstance($templateName, $iSurveyID);
                         if ($themeConfiguration !== null && method_exists($themeConfiguration, 'getImageFileListEntry')) {
-                            $fileData = $themeConfiguration->getImageFileListEntry($returnedData['fileName']);
+                            $uploadedFilePath = $destDir . DIRECTORY_SEPARATOR . $returnedData['fileName'];
+                            $fileData = $themeConfiguration->getImageFileListEntry($returnedData['fileName'], $uploadedFilePath);
                         }
                     }
                 } else {

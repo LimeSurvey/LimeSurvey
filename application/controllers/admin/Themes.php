@@ -274,7 +274,7 @@ class Themes extends SurveyCommonAction
         // Return the uploaded file's dropdown entry so the image selectors can be updated client-side.
         $fileData = null;
         if ($success && method_exists($oTemplateConfiguration, 'getImageFileListEntry')) {
-            $fileData = $oTemplateConfiguration->getImageFileListEntry($filename);
+            $fileData = $oTemplateConfiguration->getImageFileListEntry($filename, $fullfilepath);
         }
 
         return App()->getController()->renderPartial(

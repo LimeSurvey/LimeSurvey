@@ -1001,23 +1001,46 @@ class TemplateConfiguration extends TemplateConfig
      * matching the format used in the theme options image selectors. Used to update the selectors
      * client-side right after an image upload, without a full page reload.
      *
+     * The same filename can exist in several categories (theme, generalfiles, survey), so when the
+     * uploaded file's destination path is known, the entry whose real path matches it is preferred,
+     * falling back to the first filename match otherwise.
+     *
      * @param string $fileName
+     * @param string|null $destinationFilePath absolute path where the uploaded file was stored
      * @return array|null the dropdown entry, or null if the file is not found in the image file list.
      */
-    public function getImageFileListEntry($fileName)
+    public function getImageFileListEntry($fileName, $destinationFilePath = null)
     {
         $attributes = $this->getOptionPageAttributes();
+        $targetRealPath = empty($destinationFilePath) ? false : realpath($destinationFilePath);
+        $matchedImage = null;
         foreach ($attributes['imageFileList'] as $image) {
-            if ($image['filename'] === $fileName) {
-                return [
-                    'group' => $image['group'],
-                    'filename' => $image['filename'],
-                    'filepath' => $image['filepath'],
-                    'preview' => $image['preview'],
-                ];
+            if ($image['filename'] !== $fileName) {
+                continue;
             }
+            if ($targetRealPath !== false) {
+                $imageRealPath = realpath(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $image['filepathOptions']);
+                if ($imageRealPath === $targetRealPath) {
+                    $matchedImage = $image;
+                    break;
+                }
+                if ($matchedImage === null) {
+                    $matchedImage = $image;
+                }
+                continue;
+            }
+            $matchedImage = $image;
+            break;
         }
-        return null;
+        if ($matchedImage === null) {
+            return null;
+        }
+        return [
+            'group' => $matchedImage['group'],
+            'filename' => $matchedImage['filename'],
+            'filepath' => $matchedImage['filepath'],
+            'preview' => $matchedImage['preview'],
+        ];
     }
 
     /**
