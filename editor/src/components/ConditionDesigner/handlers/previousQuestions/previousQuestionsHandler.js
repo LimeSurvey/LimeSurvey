@@ -1,4 +1,4 @@
-import { getPreviousQuestions, NEW_OBJECT_ID_PREFIX } from 'helpers'
+import { getPreviousQuestions } from 'helpers'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 
 import {
@@ -65,9 +65,6 @@ export const previousQuestionsHandler = (
   }
 
   for (const question of previousQuestions) {
-    if (String(question.qid).toLowerCase().includes(NEW_OBJECT_ID_PREFIX))
-      continue
-
     const handler = handlers[question.type] || defaultTypeHandler
     handler(question, language, cQuestions, cAnswers)
   }

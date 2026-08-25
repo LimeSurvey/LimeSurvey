@@ -1,4 +1,4 @@
-import { Entities, Operations } from 'helpers'
+import { Entities, Operations } from '../../../../helpers/Buffer'
 
 import { answerCreateJoi } from './answerCreateJoi'
 import { answerUpdateJoi } from './answerUpdateJoi'

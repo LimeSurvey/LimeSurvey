@@ -1,5 +1,3 @@
-import { NEW_OBJECT_ID_PREFIX } from 'helpers'
-
 const hasPreviousQuestions = (
   survey,
   group,
@@ -36,11 +34,7 @@ export const getPreviousQuestions = (
     const groupQuestions = group?.questions || []
 
     groupQuestions.forEach((question) => {
-      if (
-        !question ||
-        String(question.qid).toLowerCase().includes(NEW_OBJECT_ID_PREFIX)
-      )
-        return
+      if (!question) return
 
       if (
         hasPreviousQuestions(
