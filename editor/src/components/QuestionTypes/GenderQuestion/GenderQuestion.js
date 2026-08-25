@@ -16,8 +16,9 @@ export const GenderQuestion = ({
   onValueChange = () => {},
 }) => {
   const valueInfo = values?.[0] || {}
-  const [currentSelectedOptionIndex, setCurrentSelectedOptionIndex] =
-    useState(2)
+  const [currentSelectedOptionIndex, setCurrentSelectedOptionIndex] = useState(
+    surveySettings.preselectNoAnswer ? 2 : -1
+  )
 
   const options = [
     { icon: WomenLineIcon, name: st('Female'), value: 'F' },
@@ -26,13 +27,18 @@ export const GenderQuestion = ({
 
   useEffect(() => {
     const info = valueInfo.value
+    let selectedIndex = surveySettings.preselectNoAnswer ? 2 : -1
 
-    options.map((option, index) => {
-      if (info === option.value) {
-        setCurrentSelectedOptionIndex(index)
+    options.forEach((option, index) => {
+      if (
+        info === option.value &&
+        (option.value !== null || surveySettings.preselectNoAnswer)
+      ) {
+        selectedIndex = index
       }
     })
-  }, [values])
+    setCurrentSelectedOptionIndex(selectedIndex)
+  }, [values, surveySettings.preselectNoAnswer])
 
   const handleValueChange = (value, key, index) => {
     onValueChange(value, key)
@@ -77,14 +83,17 @@ export const GenderQuestion = ({
             defaultChecked={currentSelectedOptionIndex === 1}
             onClick={() => handleValueChange('M', valueInfo.key, 1)}
           />
-          {!isTrue(question.mandatory) && (
+          {showNoAnswer && (
             <FormCheck
               value={'no answer'}
               type={'radio'}
               label={getNoAnswerLabel(true)}
               name={`${question.qid}-gender-question-radio-list`}
               data-testid="gender-question-option"
-              defaultChecked={currentSelectedOptionIndex === 2}
+              defaultChecked={
+                surveySettings.preselectNoAnswer &&
+                currentSelectedOptionIndex === 2
+              }
               onClick={() => handleValueChange(null, valueInfo.key, 2)}
             />
           )}

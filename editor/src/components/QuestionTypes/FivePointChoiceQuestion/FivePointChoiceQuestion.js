@@ -45,7 +45,9 @@ export const FivePointChoiceQuestion = ({
           className="choice"
           update={() => onValueChange(null, valueInfo.key)}
           groupName={valueInfo.key}
-          defaultChecked={!valueInfo.checked}
+          defaultChecked={
+            surveySettings?.preselectNoAnswer && !valueInfo.checked
+          }
         />
       )}
     </div>

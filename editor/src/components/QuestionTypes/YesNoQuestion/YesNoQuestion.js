@@ -16,8 +16,9 @@ export const YesNoQuestion = ({
   onValueChange = () => {},
 }) => {
   const valueInfo = values?.[0] || {}
-  const [currentSelectedOptionIndex, setCurrentSelectedOptionIndex] =
-    useState(2)
+  const [currentSelectedOptionIndex, setCurrentSelectedOptionIndex] = useState(
+    surveySettings.preselectNoAnswer ? 2 : -1
+  )
 
   const options = [
     { icon: CheckboxCircleLineIcon, name: st('Yes'), value: 'Y' },
@@ -26,13 +27,18 @@ export const YesNoQuestion = ({
 
   useEffect(() => {
     const info = valueInfo.value
+    let selectedIndex = surveySettings.preselectNoAnswer ? 2 : -1
 
-    options.map((option, index) => {
-      if (info === option.value) {
-        setCurrentSelectedOptionIndex(index)
+    options.forEach((option, index) => {
+      if (
+        info === option.value &&
+        (option.value !== null || surveySettings.preselectNoAnswer)
+      ) {
+        selectedIndex = index
       }
     })
-  }, [values])
+    setCurrentSelectedOptionIndex(selectedIndex)
+  }, [values, surveySettings.preselectNoAnswer])
 
   const displayType = getAttributeValue(question.attributes.display_type)
   const showNoAnswer =
@@ -77,14 +83,17 @@ export const YesNoQuestion = ({
             defaultChecked={currentSelectedOptionIndex === 1}
             onClick={() => handleValueChange('N', valueInfo.key, 1)}
           />
-          {!isTrue(question.mandatory) && (
+          {showNoAnswer && (
             <FormCheck
-              value={null}
+              value=""
               type={'radio'}
               label={getNoAnswerLabel(true)}
               name={`${question.qid}-yes-no-question-radio-list`}
               data-testid="yes-no-question-answer"
-              defaultChecked={currentSelectedOptionIndex === 2}
+              defaultChecked={
+                surveySettings.preselectNoAnswer &&
+                currentSelectedOptionIndex === 2
+              }
               onClick={() => handleValueChange(null, valueInfo.key, 2)}
             />
           )}

@@ -80,6 +80,7 @@ export const OptionQuestionViewMode = ({
   onValueChange = () => {},
   values = [],
   participantMode = false,
+  surveySettings = {},
 }) => {
   const valueInfo = values?.[0] || {}
   const [selectedIndex, setSelectedIndex] = useState(-1)
@@ -219,7 +220,7 @@ export const OptionQuestionViewMode = ({
       // incase of a dropdown question, we only need one select
       return [{ options: selectOptions }]
     } else {
-      if (!mandatory && isSingleChoiceTheme) {
+      if (!mandatory && isSingleChoiceTheme && surveySettings.showNoAnswer) {
         childrenArray.push({
           l10ns: { [language]: { answer: t('No answer') } },
           aid: -999,
@@ -256,6 +257,7 @@ export const OptionQuestionViewMode = ({
     isSingleChoiceTheme,
     language,
     mandatory,
+    surveySettings.showNoAnswer,
     otherLabel,
     otherPosition,
     otherPositionCode,
@@ -279,20 +281,28 @@ export const OptionQuestionViewMode = ({
   }
 
   useEffect(() => {
+    let matched = false
     if (UiComponentToRender.name === selectName) {
       children[0]?.options.map((option, index) => {
         if (option.value === valueInfo?.aid) {
+          matched = true
           setSelectedIndex(index)
         }
       })
     } else {
       children.map((child, index) => {
         if (child[childrenInfo.idKey] === valueInfo?.aid) {
+          matched = true
           setSelectedIndex(index)
         }
       })
     }
-  }, [children])
+
+    if (!matched) {
+      const noAnswerIndex = children.findIndex((child) => child.isNoAnswer)
+      setSelectedIndex(surveySettings.preselectNoAnswer ? noAnswerIndex : -1)
+    }
+  }, [children, surveySettings.preselectNoAnswer, valueInfo?.aid])
 
   const shouldShowInput =
     (isMultipleChoiceWithComments &&
@@ -406,7 +416,9 @@ export const OptionQuestionViewMode = ({
               options={child.options}
               defaultChecked={
                 isSingleChoiceTheme
-                  ? child[childrenInfo.idKey] === value?.aid
+                  ? child.isNoAnswer
+                    ? surveySettings.preselectNoAnswer && !value?.checked
+                    : child[childrenInfo.idKey] === value?.aid
                   : value?.checked
               }
               groupName={`${gid}X${qid}`}

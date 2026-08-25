@@ -58,7 +58,9 @@ class RenderListComment extends QuestionBaseRenderer
                 'name' => $this->sSGQA,
                 'id' => 'answer' . $this->sSGQA,
                 'value' => '',
-                'check_ans' => ($this->mSessionValue == '' || $this->mSessionValue == ' ') ? CHECKED : '',
+                'check_ans' => (
+                    PRESELECT_NO_ANSWER && ($this->mSessionValue == '' || $this->mSessionValue == ' ')
+                ) ? CHECKED : '',
                 'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
                 'labeltext' => gT('No answer'),
             );
@@ -114,7 +116,9 @@ class RenderListComment extends QuestionBaseRenderer
             $itemData = array(
                 'classes' => ' noanswer-item ',
                 'value' => '',
-                'check_ans' => ($this->mSessionValue == '' ? SELECTED : ''),
+                'check_ans' => (
+                    PRESELECT_NO_ANSWER && $this->mSessionValue == ''
+                ) ? SELECTED : '',
                 'option_text' => gT('No answer'),
             );
             $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/dropdown/rows/option', $itemData, true);

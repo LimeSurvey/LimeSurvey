@@ -37,6 +37,21 @@ export const getPresentationSettingsBlocks = () => ({
           noPermissionDisabled: true,
         },
       },
+      PRESELECT_NO_ANSWER: {
+        keyPath: 'preselectNoAnswer',
+        disableCondition: {
+          check: (globalStates) =>
+            globalStates[STATES.SURVEY]?.survey?.showNoAnswer === false,
+          message: t('Enable “No answer” to configure this setting.'),
+        },
+        props: {
+          id: 'preselect-no-answer',
+          mainText: t('“No answer” preselected'),
+          childComponent: ToggleButtons,
+          toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
+          noPermissionDisabled: true,
+        },
+      },
       SHOW_GROUP_INFO: {
         keyPath: 'showGroupInfo',
         props: {

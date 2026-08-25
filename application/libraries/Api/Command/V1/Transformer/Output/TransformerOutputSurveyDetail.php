@@ -23,7 +23,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         'assessments', 'autoredirect', 'bounce_email', 'datestamp', 'emailnotificationto', 'emailresponseto',
         'format', 'googleanalyticsapikey', 'htmlemail', 'ipaddr', 'ipanonymize', 'listpublic', 'navigationdelay',
         'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
-        'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'showprogress', 'showqnumcode',
+        'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showprogress', 'showqnumcode',
         'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie',
     ];
 

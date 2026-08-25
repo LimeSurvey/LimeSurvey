@@ -207,6 +207,7 @@ class CreateSurvey
         $this->survey->showgroupinfo = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->showqnumcode = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->shownoanswer = self::STRING_SHORT_VALUE_INHERIT;
+        $this->survey->preselectnoanswer = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->showwelcome = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->allowprev =  self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->questionindex = self::INTEGER_VALUE_FOR_INHERIT;

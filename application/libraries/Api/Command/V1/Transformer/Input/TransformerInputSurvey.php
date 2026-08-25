@@ -162,6 +162,10 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'shownoanswer',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'preselectNoAnswer' => [
+                'key' => 'preselectnoanswer',
+                'formatter' => ['ynToBool' => ['revert' => true]]
+            ],
             'showQNumCode' => 'showqnumcode',
             'bounceTime' => [
                 'key' => 'bouncetime', 'type' => 'int', 'numerical'

@@ -58,6 +58,7 @@ class SchemaFactorySurvey
                 Schema::boolean('showXQuestions')->default(null),
                 Schema::boolean('showGroupInfo')->default(null),
                 Schema::boolean('showNoAnswer')->default(null),
+                Schema::boolean('preselectNoAnswer')->default(null),
                 Schema::boolean('showQNumCode')->default(null),
                 Schema::integer('bounceTime')->default(null),
                 Schema::boolean('bounceProcessing')->default(null),
