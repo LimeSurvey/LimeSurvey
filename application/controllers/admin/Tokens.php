@@ -560,6 +560,9 @@ class Tokens extends SurveyCommonAction
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             // CHECK TO SEE IF A Survey participant list EXISTS FOR THIS SURVEY
             if (tableExists('{{tokens_' . $iSurveyId . '}}')) {
+                if (empty($aTokenIds) && Yii::app()->request->getPost('selectAll')) {
+                    $aTokenIds = $this->getFilteredTokenIds((int) $iSurveyId);
+                }
                 $diContainer = \LimeSurvey\DI::getContainer();
                 $attributeService = $diContainer->get(
                     LimeSurvey\Models\Services\ParticipantAttributeService::class
@@ -1118,9 +1121,9 @@ class Tokens extends SurveyCommonAction
                     $token = Token::create($iSurveyId);
                     $token->setAttributes($aData, false);
 
-                    $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->firstname);
-                    $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->lastname);
-                    $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->email);
+                    $token->firstname = str_replace('{COUNTER}', $newDummyToken, (string) $token->firstname);
+                    $token->lastname = str_replace('{COUNTER}', $newDummyToken, (string) $token->lastname);
+                    $token->email = str_replace('{COUNTER}', $newDummyToken, (string) $token->email);
 
                     $token->generateToken($aData['tokenlength']);
                     if ($token->encryptSave(true)) {
@@ -2617,6 +2620,62 @@ class Tokens extends SurveyCommonAction
         $aData['thischaracterset'] = $thischaracterset;
 
         $this->renderWrappedTemplate('token', array('csvupload'), $aData);
+    }
+
+    /**
+     * Outputs a basic example CSV file showing the expected import structure.
+     * Works even when the survey participants table does not exist yet.
+     * @param int $iSurveyId
+     * @return void
+     */
+    public function exampleImportFile($iSurveyId)
+    {
+        $iSurveyId = (int) $iSurveyId;
+        $survey = Survey::model()->findByPk($iSurveyId);
+        if (empty($survey)) {
+            throw new CHttpException(404, gT("Invalid survey ID"));
+        }
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import')) {
+            Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
+        }
+
+        // Base columns, mirroring the "CSV input format" description shown on the import page.
+        $aHeader = array('firstname', 'lastname', 'email', 'emailstatus', 'token', 'language', 'validfrom', 'validuntil', 'usesleft');
+        // Add attribute columns when a participants table already exists.
+        if ($survey->hasTokensTable) {
+            foreach (getAttributeFieldNames($iSurveyId) as $sAttributeField) {
+                $aHeader[] = $sAttributeField;
+            }
+        }
+
+        $sLanguage = $survey->language;
+        $aExampleRow = array(
+            'firstname'  => 'John',
+            'lastname'   => 'Doe',
+            'email'      => 'john.doe@example.com',
+            'emailstatus' => 'OK',
+            'token'      => '',
+            'language'   => $sLanguage,
+            'validfrom'  => '',
+            'validuntil' => '',
+            'usesleft'   => '1',
+        );
+
+        header("Content-Disposition: attachment; filename=participants_example_" . $iSurveyId . ".csv");
+        header("Content-type: text/comma-separated-values; charset=UTF-8");
+        header("Cache-Control: must-revalidate, no-store, no-cache");
+
+        // UTF-8 BOM so spreadsheet tools detect the encoding correctly.
+        $sOutput = chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF'));
+        $sOutput .= implode(',', $aHeader) . "\n";
+        $aValues = array();
+        foreach ($aHeader as $sField) {
+            $aValues[] = isset($aExampleRow[$sField]) ? $aExampleRow[$sField] : '';
+        }
+        $sOutput .= implode(',', $aValues) . "\n";
+        echo $sOutput;
+        Yii::app()->end();
     }
 
     /**
