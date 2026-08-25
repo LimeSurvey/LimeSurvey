@@ -414,13 +414,8 @@ export const OptionQuestionViewMode = ({
               id={child[childrenInfo.idKey]}
               hasReset={false}
               options={child.options}
-              defaultChecked={
-                isSingleChoiceTheme
-                  ? child.isNoAnswer
-                    ? surveySettings.preselectNoAnswer && !value?.checked
-                    : child[childrenInfo.idKey] === value?.aid
-                  : value?.checked
-              }
+              checked={isSingleChoiceTheme ? selectedIndex === index : null}
+              defaultChecked={!isSingleChoiceTheme && value?.checked}
               groupName={`${gid}X${qid}`}
               active={selectedIndex === index}
               disabled={ChildUiComponentToRender.name === contentEditorName}

@@ -47,7 +47,7 @@ export const FormCheck = ({
         value={value}
         className={`form-check-ui-component ${className}`}
         data-testid={dataTestId}
-        defaultChecked={defaultChecked || checked}
+        {...(checked === null ? { defaultChecked } : { checked })}
         onChange={(event) =>
           update(sendValueOnUpdate ? value : event.target.checked)
         }

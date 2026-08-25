@@ -71,8 +71,8 @@ export const YesNoQuestion = ({
             label={st('Yes')}
             name={`${question.qid}-yes-no-question-radio-list`}
             data-testid="yes-no-question-answer"
-            defaultChecked={currentSelectedOptionIndex === 0}
-            onClick={() => handleValueChange('Y', valueInfo.key, 0)}
+            checked={currentSelectedOptionIndex === 0}
+            onChange={() => handleValueChange('Y', valueInfo.key, 0)}
           />
           <FormCheck
             value={'N'}
@@ -80,8 +80,8 @@ export const YesNoQuestion = ({
             label={st('No')}
             name={`${question.qid}-yes-no-question-radio-list`}
             data-testid="yes-no-question-answer"
-            defaultChecked={currentSelectedOptionIndex === 1}
-            onClick={() => handleValueChange('N', valueInfo.key, 1)}
+            checked={currentSelectedOptionIndex === 1}
+            onChange={() => handleValueChange('N', valueInfo.key, 1)}
           />
           {showNoAnswer && (
             <FormCheck
@@ -90,11 +90,8 @@ export const YesNoQuestion = ({
               label={getNoAnswerLabel(true)}
               name={`${question.qid}-yes-no-question-radio-list`}
               data-testid="yes-no-question-answer"
-              defaultChecked={
-                surveySettings.preselectNoAnswer &&
-                currentSelectedOptionIndex === 2
-              }
-              onClick={() => handleValueChange(null, valueInfo.key, 2)}
+              checked={currentSelectedOptionIndex === 2}
+              onChange={() => handleValueChange(null, valueInfo.key, 2)}
             />
           )}
         </>

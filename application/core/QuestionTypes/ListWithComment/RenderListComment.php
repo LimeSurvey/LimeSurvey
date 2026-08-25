@@ -112,7 +112,12 @@ class RenderListComment extends QuestionBaseRenderer
             }
         }
 
-        if ($this->mSessionValue !== "" && $this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S' && SHOW_NO_ANSWER == 1) {
+        if (
+            ($this->mSessionValue !== "" || PRESELECT_NO_ANSWER)
+            && $this->oQuestion->mandatory != 'Y'
+            && $this->oQuestion->mandatory != 'S'
+            && SHOW_NO_ANSWER == 1
+        ) {
             $itemData = array(
                 'classes' => ' noanswer-item ',
                 'value' => '',

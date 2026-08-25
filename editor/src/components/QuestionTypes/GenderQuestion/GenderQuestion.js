@@ -71,8 +71,8 @@ export const GenderQuestion = ({
             label={st('Female')}
             name={`${question.qid}-gender-question-radio-list`}
             data-testid="gender-question-option"
-            defaultChecked={currentSelectedOptionIndex === 0}
-            onClick={() => handleValueChange('F', valueInfo.key, 0)}
+            checked={currentSelectedOptionIndex === 0}
+            onChange={() => handleValueChange('F', valueInfo.key, 0)}
           />
           <FormCheck
             value={'M'}
@@ -80,8 +80,8 @@ export const GenderQuestion = ({
             label={st('Male')}
             name={`${question.qid}-gender-question-radio-list`}
             data-testid="gender-question-option"
-            defaultChecked={currentSelectedOptionIndex === 1}
-            onClick={() => handleValueChange('M', valueInfo.key, 1)}
+            checked={currentSelectedOptionIndex === 1}
+            onChange={() => handleValueChange('M', valueInfo.key, 1)}
           />
           {showNoAnswer && (
             <FormCheck
@@ -90,11 +90,8 @@ export const GenderQuestion = ({
               label={getNoAnswerLabel(true)}
               name={`${question.qid}-gender-question-radio-list`}
               data-testid="gender-question-option"
-              defaultChecked={
-                surveySettings.preselectNoAnswer &&
-                currentSelectedOptionIndex === 2
-              }
-              onClick={() => handleValueChange(null, valueInfo.key, 2)}
+              checked={currentSelectedOptionIndex === 2}
+              onChange={() => handleValueChange(null, valueInfo.key, 2)}
             />
           )}
         </div>

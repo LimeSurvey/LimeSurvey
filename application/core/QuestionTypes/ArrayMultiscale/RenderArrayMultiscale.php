@@ -193,8 +193,15 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
             $aData['labels0'] = $this->aLabels[0];
             $aData['labels1'] = $this->aLabels[1];
-            $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER);
-            $aData['aSubQuestions'][$i]['showNoAnswer1'] = ($sActualAnswer1 != '' && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER);
+            $showNoAnswer = (
+                $this->oQuestion->mandatory != 'Y'
+                && $this->oQuestion->mandatory != 'S'
+                && SHOW_NO_ANSWER
+            );
+            $aData['aSubQuestions'][$i]['showNoAnswer0'] = $showNoAnswer
+                && ($sActualAnswer0 !== '' || PRESELECT_NO_ANSWER);
+            $aData['aSubQuestions'][$i]['showNoAnswer1'] = $showNoAnswer
+                && ($sActualAnswer1 !== '' || PRESELECT_NO_ANSWER);
 
             $this->inputnames[] = $myfname0;
             $this->inputnames[] = $myfname1;
