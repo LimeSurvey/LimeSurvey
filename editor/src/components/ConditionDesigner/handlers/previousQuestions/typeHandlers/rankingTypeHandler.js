@@ -13,28 +13,28 @@ export const rankingTypeHandler = (
   cQuestions,
   cAnswers
 ) => {
-  const subquestions = question.subquestions
+  const rankingItems = question.subquestions ?? []
 
-  const rankingAnswers = subquestions.map((subquestion) => ({
-    value: subquestion.title,
-    label: `${subquestion.title} (${getQuestionText(subquestion, language)})`,
+  const rankingAnswers = rankingItems.map((rankingItem) => ({
+    value: rankingItem.title,
+    label: `${rankingItem.title} (${getQuestionText(rankingItem, language)})`,
   }))
 
-  for (let j = 0; j < subquestions.length; j++) {
-    const rankingPos = j + 1
+  rankingItems.forEach((rankingItem, index) => {
+    const rankPos = index + 1
+
     const fieldname = findFieldname({
       qid: question.qid,
-      sqid: subquestions[j].qid,
-      aid: rankingPos,
+      sqid: rankingItem.qid,
     })
 
     createQuestion(
       cQuestions,
       question,
-      subquestions[j],
+      rankingItem,
       fieldname,
       language,
-      format(t('Rank %s'), rankingPos)
+      format(t('Rank %s'), rankPos)
     )
 
     rankingAnswers.forEach(({ value, label }) => {
@@ -42,5 +42,5 @@ export const rankingTypeHandler = (
     })
 
     addNoAnswerIfAllowed(cAnswers, question, fieldname)
-  }
+  })
 }

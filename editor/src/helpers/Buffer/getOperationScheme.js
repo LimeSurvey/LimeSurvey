@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-import { Operations, Entities } from 'helpers'
+import { Operations, Entities } from './'
 import {
   questionAttributeUpdateJoi,
   questionCreateJoi,
