@@ -139,6 +139,7 @@ node_modules/**/src
 
 # build dependencies of the asset sub-packages
 assets/packages/**/node_modules/
+assets/packages/**/coverage/
 
 vendor/**/docs/
 vendor/**/scripts/

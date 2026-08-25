@@ -7,10 +7,13 @@
   "main": "LSRTLPlugin.js",
   "license": "GPL-2.0-or-later",
   "dependencies": {
-    "lodash": "^4.17.15",
-    "rtlcss": "^3.5.0"
+    "lodash": "^4.18.1",
+    "rtlcss": "^4.3.0"
   },
   "devDependencies": {
     "webpack-sources": "^3.2.3"
+  },
+  "resolutions": {
+    "postcss": "8.5.26"
   }
 }

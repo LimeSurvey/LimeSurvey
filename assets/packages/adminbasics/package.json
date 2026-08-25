@@ -19,7 +19,7 @@
     "jest-localstorage-mock": "^2.4.26",
     "jest-transform-stub": "^2.0.0",
     "jest-watch-typeahead": "^3.0.1",
-    "rollup": "^2.40.0",
+    "rollup": "^2.79.2",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
@@ -27,7 +27,14 @@
     "rollup-plugin-terser": "^7.0.2"
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.18.1"
   },
-  "browserslist": "> 0.25%, not dead"
+  "browserslist": "> 0.25%, not dead",
+  "resolutions": {
+    "test-exclude": "7.0.1",
+    "js-yaml": "3.15.1",
+    "cross-spawn": "7.0.6",
+    "serialize-javascript": "7.1.0",
+    "**/anymatch/picomatch": "2.3.2"
+  }
 }

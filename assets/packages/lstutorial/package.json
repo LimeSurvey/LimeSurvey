@@ -16,7 +16,7 @@
     "core-js": "3",
     "env-cmd": "^10.1.0",
     "eslint": "^8.9.0",
-    "rollup": "^2.67.2",
+    "rollup": "^2.79.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
@@ -30,5 +30,18 @@
   "dependencies": {
     "popper.js": "^1.15.0"
   },
-  "browserslist": "> 0.25%, not dead"
+  "browserslist": "> 0.25%, not dead",
+  "resolutions": {
+    "minimatch": "3.1.5",
+    "brace-expansion": "1.1.18",
+    "js-yaml": "4.3.1",
+    "postcss": "8.5.26",
+    "nanoid": "3.3.18",
+    "ajv": "6.15.0",
+    "flatted": "3.4.4",
+    "word-wrap": "1.2.5",
+    "cross-spawn": "7.0.6",
+    "terser": "5.50.0",
+    "serialize-javascript": "7.1.0"
+  }
 }

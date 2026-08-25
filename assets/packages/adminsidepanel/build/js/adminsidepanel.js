@@ -1280,17 +1280,12 @@ class QuestionExplorer {
         return g.gid === gid;
       });
       if (this.questiongroupDragging && this.draggedQuestionGroup && questiongroupObject) {
-        // Highlight the group row as drop destination, never a question row
-        // (the event also fires on question rows, which carry data-gid too)
         $container.find('.list-group-item').removeClass('dragged');
         $(e.currentTarget).closest('.questiongroup-list-group > .list-group-item').addClass('dragged');
         var startOrder = this.dragStartGroupOrder || [];
         var draggedGid = this.draggedQuestionGroup.gid;
         var targetIndex = startOrder.indexOf(gid);
         if (targetIndex !== -1 && startOrder.indexOf(draggedGid) !== -1) {
-          // Rebuild from the order captured at dragstart: the dragged group
-          // takes the entered row's slot. The result depends only on the last
-          // row entered, so missed or repeated dragenter events can't corrupt it.
           var newOrder = startOrder.filter(function (g) {
             return g !== draggedGid;
           });
@@ -1985,6 +1980,8 @@ class Sidebar {
 
   /**
    * Change current tab
+   * @param {string} tab
+   * @param {{focusTab?: boolean}} [options]
    */
   changeCurrentTab(tab, options) {
     options = options || {};
@@ -2407,26 +2404,23 @@ class Sidebar {
     $(this.container).off('click', '.sidebar-tab-link').on('click', '.sidebar-tab-link', e => {
       e.preventDefault();
       const tab = $(e.currentTarget).data('tab');
-      this.changeCurrentTab(tab, { focusTab: true });
+      this.changeCurrentTab(tab, {
+        focusTab: true
+      });
     });
-
     $(this.container).off('keydown', '.sidebar-tab-link').on('keydown', '.sidebar-tab-link', e => {
       const key = e.key;
       if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].indexOf(key) === -1) {
         return;
       }
-
       const $tabs = $(this.container).find('.sidebar-tab-link');
       if ($tabs.length < 2) {
         return;
       }
-
       e.preventDefault();
       e.stopImmediatePropagation();
-
       const currentIndex = $tabs.index(e.currentTarget);
       let nextIndex = currentIndex;
-
       if (key === 'ArrowLeft' || key === 'ArrowUp') {
         nextIndex = (currentIndex - 1 + $tabs.length) % $tabs.length;
       } else if (key === 'ArrowRight' || key === 'ArrowDown') {
@@ -2436,9 +2430,10 @@ class Sidebar {
       } else if (key === 'End') {
         nextIndex = $tabs.length - 1;
       }
-
       if (nextIndex !== currentIndex) {
-        this.changeCurrentTab($tabs.eq(nextIndex).data('tab'), { focusTab: true });
+        this.changeCurrentTab($tabs.eq(nextIndex).data('tab'), {
+          focusTab: true
+        });
       }
     });
 
