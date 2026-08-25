@@ -486,6 +486,7 @@ class SurveysGroupsettings extends LSActiveRecord
                 !($attribute === 'ipanonymize' && $dbversion < 412)
                 && !($attribute === 'showregisterpolicy' && $dbversion < 649)
                 && !($attribute === 'showtokenpolicy' && $dbversion < 649)
+                && !($attribute === 'preselectnoanswer' && $dbversion < 711)
             ) {
                 $this->$attribute = 'I';
             }
