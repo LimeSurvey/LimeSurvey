@@ -6,7 +6,11 @@ import { Button, Input } from 'components'
 import { useBuffer, useFocused, useConditionDesigner } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { ArrowLeftIcon } from 'components/icons'
-import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import {
+  getQuestionById,
+  hasTempId,
+  QUESTION_RELEVANCE_DEFAULT_VALUE,
+} from 'helpers'
 
 import { previousQuestionsHandler } from './handlers/previousQuestions/previousQuestionsHandler'
 import { ConditionItem } from './ConditionItem'
@@ -33,7 +37,6 @@ export const ConditionDesigner = ({
   update,
   language,
   scenarioToPatch = null,
-  setPendingScenarioName,
   onNavigateBack = () => {},
 }) => {
   const { focused, groupIndex, questionIndex } = useFocused()
@@ -92,7 +95,6 @@ export const ConditionDesigner = ({
     questionIndex,
     update,
     focused,
-    setPendingScenarioName,
     onNavigateBack,
     scid,
     setScid,
@@ -119,7 +121,7 @@ export const ConditionDesigner = ({
 
       const isSourceValid =
         sourceType === conditionTypeInfo.SOURCE.QUESTION
-          ? typeof cqid === 'number' && cqid > 0
+          ? (typeof cqid === 'number' && cqid > 0) || hasTempId(String(cqid))
           : Boolean(cfieldname)
 
       return isMethodValid && isValueValid && isScidValid && isSourceValid

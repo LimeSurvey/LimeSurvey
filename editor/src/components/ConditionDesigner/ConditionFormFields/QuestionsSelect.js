@@ -35,8 +35,8 @@ export const QuestionsSelect = ({
 
   const defaultHandleChange = ({ value, cqid, answers }) => {
     const updates = {
-      qid: +focused.qid,
-      cqid: +cqid,
+      qid: focused.qid,
+      cqid: cqid,
       cfieldname: value,
       cquestions: value,
       answers: answers,

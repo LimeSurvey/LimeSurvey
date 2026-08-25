@@ -1,11 +1,23 @@
 // Helper functions for condition operations
-import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import { hasTempId, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 
 import { getConditionTypeInfo } from './getConditionTypeInfo'
 import { getAllowedMethods } from './getAllowedMethods'
 
 const conditionTypeInfo = getConditionTypeInfo()
 const allowedMethods = getAllowedMethods()
+
+/**
+ * Coerce an ID value to a number if it is numeric, otherwise return it as-is.
+ * This preserves temp IDs (e.g. "temp__123456") while still converting
+ * real numeric IDs to numbers.
+ */
+const coerceId = (value) => {
+  if (value == null || value === '') return value
+  if (typeof value === 'string' && hasTempId(value)) return value
+  const num = Number(value)
+  return isNaN(num) ? value : num
+}
 
 export const getDefaultCondition = () => ({
   qid: '',
@@ -104,9 +116,9 @@ export const hasUnsavedChanges = (
 }
 
 export const getBaseConditionObject = (condition, scenarioId) => ({
-  cid: +condition.cid,
-  qid: +condition.qid,
-  cqid: +condition.cqid,
+  cid: coerceId(condition.cid),
+  qid: coerceId(condition.qid),
+  cqid: coerceId(condition.cqid),
   cfieldname: condition.cfieldname,
   cquestions: condition.cfieldname,
   method: condition.method,
