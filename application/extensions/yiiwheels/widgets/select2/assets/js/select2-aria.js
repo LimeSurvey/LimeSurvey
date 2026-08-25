@@ -58,7 +58,8 @@
             return null;
         }
 
-        return 'select2-' + selectId + '-results';
+        // Apply the same normalization Select2 uses in _generateId (select2.full.js)
+        return 'select2-' + selectId.replace(/(:|\.|\[|\]|,)/g, '') + '-results';
     }
 
     function patchCombobox($select) {
