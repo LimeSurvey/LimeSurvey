@@ -139,6 +139,19 @@ export const replaceTempIdsInSurveyAndBuffer = (
       }
     }
 
+    // Also update cross-references for group, question, and subquestion temp IDs across the survey.
+    if (
+      entityType === EntitiesType.group ||
+      entityType === EntitiesType.question ||
+      entityType === EntitiesType.subquestion
+    ) {
+      survey.questionGroups = replaceValuesInObject(
+        survey.questionGroups,
+        tempIdMap.tempId,
+        tempIdMap.id
+      )
+    }
+
     replaceSurveyEntityParentRefs(
       survey,
       entityInfo.groupIndex,

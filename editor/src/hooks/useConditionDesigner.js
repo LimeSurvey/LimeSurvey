@@ -31,7 +31,6 @@ export const useConditionDesigner = ({
   setScid,
   setConditions,
   update,
-  setPendingScenarioName,
   onNavigateBack,
 }) => {
   const originalScenarios = question.scenarios
@@ -53,8 +52,8 @@ export const useConditionDesigner = ({
   }
 
   const addCondition = () => {
-    const sorted = [...conditions].sort(
-      (a, b) => Number(a.cqid) - Number(b.cqid)
+    const sorted = [...conditions].sort((a, b) =>
+      String(a.cqid).localeCompare(String(b.cqid), undefined, { numeric: true })
     )
     setConditions([
       ...sorted,
@@ -207,7 +206,6 @@ export const useConditionDesigner = ({
           apiProps.scenarios.push(...createProps.scenarios)
           handleQuestionUpdate(createProps.scenarios)
           message = getSuccessMessage('create')
-          setPendingScenarioName(scid)
           scenarioHasUpdates = true
         }
       }

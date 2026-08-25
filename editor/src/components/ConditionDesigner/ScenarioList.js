@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
@@ -13,11 +13,7 @@ import { CloseCircleIcon } from 'components/icons'
 
 import { getApiOperationActions, showDeleteScenarioOverlay } from './utils'
 
-export const ScenarioList = ({
-  setScenarioToPatch,
-  pendingScenarioName,
-  setPendingScenarioName,
-}) => {
+export const ScenarioList = ({ setScenarioToPatch }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
   const { focused, groupIndex, questionIndex } = useFocused()
@@ -25,27 +21,6 @@ export const ScenarioList = ({
 
   const question = getQuestionById(focused.qid, survey).question
   const scenarios = question?.scenarios || []
-
-  const [hasTempId, setHasTempId] = useState(!!pendingScenarioName)
-
-  useEffect(() => {
-    if (!pendingScenarioName) return
-
-    const processedScenario = scenarios.find(
-      (scenario) => scenario.scid === pendingScenarioName
-    )
-
-    if (processedScenario) {
-      const tempIdExists = processedScenario.conditions.some((condition) =>
-        condition.cid.toString().includes('temp')
-      )
-      setHasTempId(tempIdExists)
-
-      if (pendingScenarioName && !tempIdExists) {
-        setPendingScenarioName(null)
-      }
-    }
-  }, [question, pendingScenarioName, scenarios])
 
   const handleDeleteScenario = (scenarioId) => {
     const properties = {
@@ -83,11 +58,6 @@ export const ScenarioList = ({
     focused.relevance = question.relevance
   }
 
-  const isPendingAndHasTempId = useCallback(
-    (scenario) => scenario.scid === pendingScenarioName && hasTempId,
-    [pendingScenarioName, hasTempId]
-  )
-
   return (
     <div className="d-grid gap-2">
       {scenarios.map((scenario) => {
@@ -95,9 +65,7 @@ export const ScenarioList = ({
           <div
             key={scenario.scid}
             id={`scenario-${scenario.scid}`}
-            className={classNames('scenario-list-item', {
-              disabled: isPendingAndHasTempId(scenario),
-            })}
+            className={classNames('scenario-list-item', {})}
           >
             <span
               className="fw-medium"

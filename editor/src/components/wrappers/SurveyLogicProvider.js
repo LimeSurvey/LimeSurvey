@@ -14,6 +14,7 @@ import {
   updateSurveyEntitiesData,
   dayJsHelper,
   RandomNumber,
+  getQuestionById,
 } from 'helpers'
 
 export const SurveyLogicProvider = ({ children }) => {
@@ -169,6 +170,18 @@ export const SurveyLogicProvider = ({ children }) => {
       update({ ...mapResult.survey })
       refetchQuestionsFieldNamesMap()
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
+
+      // Refresh focused entity from the updated survey
+      if (focused?.qid) {
+        const updatedInfo = getQuestionById(focused.qid, mapResult.survey)
+        if (updatedInfo.question) {
+          setFocused(
+            updatedInfo.question,
+            updatedInfo.groupIndex,
+            updatedInfo.questionIndex
+          )
+        }
+      }
 
       setSaveState(
         format(

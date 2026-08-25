@@ -8,7 +8,6 @@ import {
   createBufferOperation,
   getDisabledQuestionTypes,
   errorToast,
-  isTempId,
 } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
@@ -39,9 +38,6 @@ export const QuestionSettings = ({ surveyId }) => {
   })
   const [scenarioToPatch, setScenarioToPatch] = useState(null)
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
-
-  // holds the scenario ID currently has a new conditions (waiting for temp condition IDs to be replaced)
-  const [pendingScenarioName, setPendingScenarioName] = useState(null)
 
   const {
     focused = {},
@@ -142,7 +138,7 @@ export const QuestionSettings = ({ surveyId }) => {
       .map((q) => q.theme)
       .includes(focused.questionThemeName)
 
-  if (focused && typeof focused.qid === 'number') {
+  if (focused) {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {
       return (
         <ConditionDesigner
@@ -152,7 +148,6 @@ export const QuestionSettings = ({ surveyId }) => {
           language={language}
           onNavigateBack={closeConditionDesignerPanels}
           scenarioToPatch={scenarioToPatch}
-          setPendingScenarioName={setPendingScenarioName}
         />
       )
     }
@@ -231,7 +226,7 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!focused || (focused && isTempId(focused.qid)) ? null : (
+        {!focused ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}
@@ -242,8 +237,6 @@ export const QuestionSettings = ({ surveyId }) => {
               <ScenarioList
                 key={`scenario-list-${focused.qid}-${focused.scenarios.length}`}
                 setScenarioToPatch={setScenarioToPatch}
-                pendingScenarioName={pendingScenarioName}
-                setPendingScenarioName={setPendingScenarioName}
               />
             ) : null}
 
