@@ -150,9 +150,11 @@
         patchSearchField($select);
         syncComboboxExpandedState($select, true);
 
-        // Re-assert after Select2 moves focus to the inline search field.
+        // Re-assert after Select2 moves focus to the inline search field,
+        // reading actual open state in case the dropdown closed in the meantime.
         window.setTimeout(function () {
-            syncComboboxExpandedState($select, true);
+            var isStillOpen = $select.next('.select2-container').hasClass('select2-container--open');
+            syncComboboxExpandedState($select, isStillOpen);
         }, 0);
     });
 
