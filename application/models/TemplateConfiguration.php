@@ -997,6 +997,30 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Returns the image dropdown entry (group, filename, filepath, preview) for a given file name,
+     * matching the format used in the theme options image selectors. Used to update the selectors
+     * client-side right after an image upload, without a full page reload.
+     *
+     * @param string $fileName
+     * @return array|null the dropdown entry, or null if the file is not found in the image file list.
+     */
+    public function getImageFileListEntry($fileName)
+    {
+        $attributes = $this->getOptionPageAttributes();
+        foreach ($attributes['imageFileList'] as $image) {
+            if ($image['filename'] === $fileName) {
+                return [
+                    'group' => $image['group'],
+                    'filename' => $image['filename'],
+                    'filepath' => $image['filepath'],
+                    'preview' => $image['preview'],
+                ];
+            }
+        }
+        return null;
+    }
+
+    /**
      * Resolves the file path for an option image by walking up the theme inheritance chain.
      *
      * @param string $imageFileName The image file name (e.g. 'cornerradius_0.svg')

@@ -271,9 +271,15 @@ class Themes extends SurveyCommonAction
             $success = true;
         };
 
+        // Return the uploaded file's dropdown entry so the image selectors can be updated client-side.
+        $fileData = null;
+        if ($success && method_exists($oTemplateConfiguration, 'getImageFileListEntry')) {
+            $fileData = $oTemplateConfiguration->getImageFileListEntry($filename);
+        }
+
         return App()->getController()->renderPartial(
             '/admin/super/_renderJson',
-            array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+            array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug, 'file' => $fileData]),
             false,
             false
         );
