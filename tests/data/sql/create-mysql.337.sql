@@ -1086,6 +1086,7 @@ CREATE TABLE `lime_surveys` (
   `alloweditaftercompletion` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT 'N',
   `googleanalyticsstyle` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `googleanalyticsapikey` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `internaltitle` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`sid`),
   KEY `lime_idx1_surveys` (`owner_id`),
   KEY `lime_idx2_surveys` (`gsid`)

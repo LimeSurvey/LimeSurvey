@@ -54,6 +54,7 @@ export const surveyExample = {
   googleAnalyticsStyle: 0,
   googleAnalyticsApiKey: null,
   showSurveyPolicyNotice: 0,
+  internalTitle: null,
   languageSettings: {
     en: {
       sid: 596477,

@@ -40,6 +40,10 @@ export const TopBar = ({
   const [currentActiveLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const [showOverViewModal, setShowOverViewModal] = useState(false)
   const [topbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION,
+    false
+  )
 
   const activeLanguage = useMemo(
     () =>
@@ -57,6 +61,8 @@ export const TopBar = ({
   const operationsLength = useMemo(() => {
     return operationsBuffer?.getOperations()?.length
   }, [operationsBuffer.getOperations()?.length])
+
+  const showCode = !!survey.showQNumCode?.showCode
 
   const onSurveyTitleChange = (title) => {
     let updatedTitle = RemoveHTMLTagsInString(title).replaceAll('&nbsp;', '')
@@ -80,6 +86,15 @@ export const TopBar = ({
         },
       },
     })
+  }
+
+  const onInternalTitleSave = (internalTitle) => {
+    const operation = createBufferOperation(survey.sid?.toString())
+      .survey()
+      .update({ internalTitle })
+
+    addToBuffer(operation)
+    update({ internalTitle })
   }
 
   const handleSurveySwitch = async (e) => {
@@ -128,6 +143,9 @@ export const TopBar = ({
           onSurveyTitleChange={onSurveyTitleChange}
           handleSurveySwitch={handleSurveySwitch}
           getError={getError}
+          showCode={showCode}
+          onInternalTitleSave={onInternalTitleSave}
+          canEditInternalTitle={hasSurveyUpdatePermission}
         />
         <SurveyNavigation surveyId={surveyId} />
       </div>

@@ -14,6 +14,7 @@ export const Input = ({
   dataTestId,
   onChange = () => {},
   onBlur = () => {},
+  onKeyDown = () => {},
   inputRef: inputRefProp = null,
   type = 'text',
   role = 'input',
@@ -143,6 +144,7 @@ export const Input = ({
             type={type}
             role={role}
             rows={rows}
+            onKeyDown={onKeyDown}
             as={role}
             onBlur={handleOnBlur}
             style={{
