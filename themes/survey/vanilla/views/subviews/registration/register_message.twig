@@ -16,7 +16,8 @@
 #}
 
 {% if registerSuccess %}
-    <h2 {{ aSurveyInfo.attr.registermessageb }} >{{ gT("Thank you for registering. You will receive an email shortly. But if you already registered, you will not receive another email.") }}</h2>
+    <h2 {{ aSurveyInfo.attr.registermessageb }} >{{ gT("Thank you for registering.") }}</h2>
+    <p>{{ gT("You will receive an email shortly. But if you already registered, you will not receive another email.") }}</p>
 {% else %}
     {% if sStartDate %}
     <h2 {{ aSurveyInfo.attr.registermessagea }} > {{ gT("You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey.") }}</h2>
