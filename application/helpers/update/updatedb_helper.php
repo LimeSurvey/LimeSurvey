@@ -3231,7 +3231,7 @@ function fixPostgresSequence($tableName = null)
     if ($tableName != null) {
         $query .= " AND PGT.tablename= '{{" . $tableName . "}}' ";
     }
-    $query .= "ORDER BY S.relname;";
+    $query .= " ORDER BY S.relname;";
     $FixingQueries = Yii::app()->db->createCommand($query)->queryColumn();
     foreach ($FixingQueries as $fixingQuery) {
         $oDB->createCommand($fixingQuery)->execute();

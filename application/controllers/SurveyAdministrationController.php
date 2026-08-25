@@ -52,6 +52,7 @@ class SurveyAdministrationController extends LSBaseController
                     'getCurrentEditorValues',
                     'getDataSecTextSettings',
                     'getDateFormatOptions',
+                    'getAllSurveyIds',
                     'updateAccessMode',
                     ''
                 ],
@@ -313,6 +314,60 @@ class SurveyAdministrationController extends LSBaseController
                 'caption'     => gT('Selected surveys'),
             )
         );
+    }
+
+    /**
+     * Returns all survey IDs matching the current filter as a JSON array.
+     * Used by the "Select all" button in the floating actions bar to select
+     * all surveys across pagination.
+     *
+     * @return void
+     */
+    public function actionGetAllSurveyIds()
+    {
+        if (!Yii::app()->request->isAjaxRequest) {
+            throw new CHttpException(400, 'Invalid request');
+        }
+
+        $model = new Survey('search');
+
+        // Reset active attribute to '' so search() does not filter by the DB column default ('N').
+        // This mirrors ListSurveysWidget which explicitly sets $this->model->active = "".
+        $model->active = '';
+
+        // Apply Survey[...] grid filters (e.g. searched_value)
+        $filters = Yii::app()->request->getParam('Survey', []);
+        if (is_array($filters)) {
+            $model->setAttributes($filters, false);
+        }
+
+        // Apply the status filter that ListSurveysWidget reads from $_GET['active']
+        $activeFilter = Yii::app()->request->getParam('active', '');
+        if (!empty($activeFilter)) {
+            $model->active = $activeFilter;
+        }
+
+        // Apply survey-group filter
+        $gsid = Yii::app()->request->getParam('gsid', '');
+        if (!empty($gsid)) {
+            $model->gsid = (int) $gsid;
+        }
+
+        // Fetch every matching ID in a single unbounded query.
+        // getData() only returns one page, so a large fixed pageSize can still miss
+        // rows on larger installations.  Disabling pagination removes the LIMIT/OFFSET
+        // entirely so all matching survey IDs are always returned.
+        $dataProvider = $model->search();
+        $dataProvider->setPagination(false);
+        $surveys = $dataProvider->getData();
+
+        $ids = array_map(static function ($survey) {
+            return (int) $survey->sid;
+        }, $surveys);
+
+        header('Content-Type: application/json');
+        echo json_encode(array_values($ids));
+        Yii::app()->end();
     }
 
     /**
@@ -978,6 +1033,11 @@ class SurveyAdministrationController extends LSBaseController
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
+                // Cast identifiers to int so the JSON stays consistent with jQuery's
+                // numeric .data() conversion on the client (see issue 20625).
+                $curGroup['gid'] = (int) $curGroup['gid'];
+                $curGroup['sid'] = (int) $curGroup['sid'];
+                $curGroup['group_order'] = (int) $curGroup['group_order'];
                 $curGroup['group_name'] = viewHelper::flatEllipsizeText($group->questiongroupl10ns[$baselang]->group_name, true, 150);
                 $curGroup['groupDropdown'] = [];
                 $condarray = getGroupDepsForConditions($surveyid, "all", $group->gid, "by-targgid");
@@ -1066,6 +1126,13 @@ class SurveyAdministrationController extends LSBaseController
                 foreach ($group->aQuestions as $question) {
                     if (is_object($question)) {
                         $curQuestion = $question->attributes;
+                        // Cast identifiers to int so the JSON stays consistent with jQuery's
+                        // numeric .data() conversion on the client (see issue 20625).
+                        $curQuestion['qid'] = (int) $curQuestion['qid'];
+                        $curQuestion['gid'] = (int) $curQuestion['gid'];
+                        $curQuestion['sid'] = (int) $curQuestion['sid'];
+                        $curQuestion['parent_qid'] = (int) $curQuestion['parent_qid'];
+                        $curQuestion['question_order'] = (int) $curQuestion['question_order'];
                         $curQuestion['link'] = $this->createUrl(
                             "questionAdministration/view",
                             ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid' => $question->qid]
@@ -2949,25 +3016,22 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
 
-        $editorEnabled = Yii::app()->getConfig('editorEnabled') ?? false;
-        if (!$editorEnabled) {
-            $this->createSampleSubquestion(
-                1,
-                $iSurveyID,
-                $iGroupID,
-                $oQuestion->qid,
-                $sLanguage,
-                gT('Option A')
-            );
-            $this->createSampleSubquestion(
-                2,
-                $iSurveyID,
-                $iGroupID,
-                $oQuestion->qid,
-                $sLanguage,
-                gT('Option B')
-            );
-        }
+        $this->createSampleSubquestion(
+            1,
+            $iSurveyID,
+            $iGroupID,
+            $oQuestion->qid,
+            $sLanguage,
+            gT('Option A')
+        );
+        $this->createSampleSubquestion(
+            2,
+            $iSurveyID,
+            $iGroupID,
+            $oQuestion->qid,
+            $sLanguage,
+            gT('Option B')
+        );
 
         return $oQuestion->qid;
     }
@@ -3572,7 +3636,7 @@ class SurveyAdministrationController extends LSBaseController
     public function actionDeleteUrlParam()
     {
         $surveyId = sanitize_int(Yii::app()->request->getPost('surveyId'));
-        $redirectUrl = ['surveyAdministration/rendersidemenulink/', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
+        $redirectUrl = ['surveyAdministration/rendersidemenulink', 'surveyid' => $surveyId, 'subaction' => 'panelintegration'];
         $paramId = Yii::app()->request->getPost('urlParamId');
         if (empty($paramId)) {
             throw new CHttpException(400, gT('Invalid request'));
