@@ -1643,6 +1643,7 @@ class SurveyAdministrationController extends LSBaseController
         $iSurveyID = (int)Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
+        $fileData = null;
         if (
             Permission::model()->hasSurveyPermission(
                 $iSurveyID,
@@ -1667,6 +1668,15 @@ class SurveyAdministrationController extends LSBaseController
                     $message = $returnedData['uploadResultMessage'];
                     $debug = $returnedData['debug'];
                     $success = $returnedData['success'];
+                    // Return the uploaded file's dropdown entry so the image selectors can be updated client-side.
+                    if ($success) {
+                        $templateName = App()->request->getPost('templatename');
+                        $themeConfiguration = Template::model()->getInstance($templateName, $iSurveyID);
+                        if ($themeConfiguration !== null && method_exists($themeConfiguration, 'getImageFileListEntry')) {
+                            $uploadedFilePath = $destDir . DIRECTORY_SEPARATOR . $returnedData['fileName'];
+                            $fileData = $themeConfiguration->getImageFileListEntry($returnedData['fileName'], $uploadedFilePath);
+                        }
+                    }
                 } else {
                     $message = sprintf(
                         gT("Incorrect permissions in your %s folder."),
@@ -1689,7 +1699,8 @@ class SurveyAdministrationController extends LSBaseController
                 'data' => [
                     'success' => $success,
                     'message' => $message,
-                    'debug' => $debug
+                    'debug' => $debug,
+                    'file' => $fileData
                 ]
             ),
         );
