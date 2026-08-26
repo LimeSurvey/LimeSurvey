@@ -35,7 +35,7 @@ class ParticipantListMassiveActions
                 'type' => 'action',
                 'action' => 'export',
                 'url' => '#',
-                'iconClasses' => 'ri-upload-2-line',
+                'iconClasses' => 'ri-download-line',
                 'text' => gT('Export'),
                 'grid-reload' => 'no',
                 'actionType' => 'custom',
