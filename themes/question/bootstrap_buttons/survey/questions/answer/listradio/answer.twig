@@ -11,9 +11,10 @@
 <!-- answer -->
 {{ sTimer }}
 <div class="container-fluid">
-    <div class="row {{coreClass}} " data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
+    <ul class="row {{coreClass}} list-unstyled" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
     {# rows/answer_row.php #}
     {{ sRows }}
+    </ul>
 
     {# Value for expression manager javascript (use id) ; no need to submit #}
     {{ C.Html.hiddenField("java"~name,value,({
@@ -21,7 +22,6 @@
         'disabled' : true,
     }))
     }}
-    </div>
     {# Must add it only of other is set ! #}
     <div class="row row-cols-lg-auto align-items-center mb-3 ls-js-hidden answer-item" id="div{{ name }}other">
         <label for="answer{{ name }}othertext" class="col-form-label" id="label-id-{{ name }}">{{ othertext }}</label>
