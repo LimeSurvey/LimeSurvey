@@ -7,6 +7,6 @@ class Update_711 extends DatabaseUpdateBase
 {
     public function up()
     {
-        addColumn('{{surveys}}', 'internaltitle', 'string');
+        addColumn('{{surveys}}', 'code', 'string');
     }
 }
