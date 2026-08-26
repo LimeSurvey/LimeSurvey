@@ -2,21 +2,26 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use TemplateConfiguration;
+use CException;
 
 class Update_710 extends DatabaseUpdateBase
 {
     /**
-     * Add the 'deselectsinglechoice' option (introduced in fruity_twentythree config.xml)
-     * to all existing fruity_twentythree TemplateConfiguration DB records that are missing it.
+     * Repairs PostgreSQL databases already migrated to LS7 with stale sequences. Update_700
+     * rebuilt the response/timing tables with a fresh serial "id" (sequence starting at 1)
+     * and copied existing rows in with their original ids, which never advanced the sequence,
+     * causing duplicate primary key violations on the next response (bug #20640).
+     * fixPostgresSequence() advances every sequence in the database past its column MAX,
+     * which also covers any other tables affected by the same rename.
+     *
+     * @inheritDoc
+     * @throws CException
      */
     public function up()
     {
-        $themes = TemplateConfiguration::model()->findAllByAttributes([
-            'template_name' => 'fruity_twentythree',
-        ]);
-        foreach ($themes as $theme) {
-            $theme->addOptionFromXMLToLiveTheme();
+        if ($this->db->getDriverName() !== 'pgsql') {
+            return;
         }
+        \fixPostgresSequence();
     }
 }

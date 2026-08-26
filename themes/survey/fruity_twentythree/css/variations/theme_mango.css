@@ -627,7 +627,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -12859,8 +12859,8 @@ dl dt {
 }
 
 a {
-  font-weight: 500;
-  font-size: 0.9975rem;
+  font-weight: inherit;
+  font-size: inherit;
   text-decoration: none;
 }
 a:hover {
@@ -13434,6 +13434,10 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
     left: auto;
   }
 }
+li.radio-text-item .other-text-item {
+  min-width: 9em;
+}
+
 .radio-item label::before {
   border: 2px solid #6E748C;
   background-color: #fff;
