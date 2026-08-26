@@ -367,7 +367,7 @@ class Tokens extends SurveyCommonAction
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
         if (empty($aTokenIds) && Yii::app()->getRequest()->getPost('selectAll')) {
-            $aTokenIds = $this->getFilteredTokenIds((int) $iSid);
+            $aTokenIds = $this->removeSelectAllExcludedIds($this->getFilteredTokenIds((int) $iSid));
         }
         $deletedTokenCount = 0;
         foreach (array_chunk($aTokenIds, 1000) as $chunk) {
@@ -429,6 +429,19 @@ class Tokens extends SurveyCommonAction
         return $model->getCommandBuilder()
             ->createFindCommand($model->tableSchema, $criteria)
             ->queryColumn();
+    }
+
+    private function removeSelectAllExcludedIds(array $tokenIds): array
+    {
+        $excludedIds = json_decode(Yii::app()->request->getPost('excludedItems', '[]'), true);
+        if (!is_array($excludedIds) || empty($excludedIds)) {
+            return $tokenIds;
+        }
+
+        $excludedIds = array_flip(array_map('strval', $excludedIds));
+        return array_values(array_filter($tokenIds, function ($tokenId) use ($excludedIds) {
+            return !isset($excludedIds[(string) $tokenId]);
+        }));
     }
 
     /**
@@ -561,7 +574,7 @@ class Tokens extends SurveyCommonAction
             // CHECK TO SEE IF A Survey participant list EXISTS FOR THIS SURVEY
             if (tableExists('{{tokens_' . $iSurveyId . '}}')) {
                 if (empty($aTokenIds) && Yii::app()->request->getPost('selectAll')) {
-                    $aTokenIds = $this->getFilteredTokenIds((int) $iSurveyId);
+                    $aTokenIds = $this->removeSelectAllExcludedIds($this->getFilteredTokenIds((int) $iSurveyId));
                 }
                 $diContainer = \LimeSurvey\DI::getContainer();
                 $attributeService = $diContainer->get(
