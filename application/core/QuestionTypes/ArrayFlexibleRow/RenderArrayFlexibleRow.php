@@ -211,7 +211,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'value' => '',
                     'selected' => ''
                 );
-                $showNoAnswer = $showNoAnswer && PRESELECT_NO_ANSWER;
+                $showNoAnswer = false;
             }
             // Real options
             foreach ($this->aAnswerOptions[0] as $i => $oAnswer) {
