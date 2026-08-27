@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { EditorState } from '@uiw/react-codemirror'
 import { EditorView } from '@codemirror/view'
 
 import { CodeEditor } from '../ContentEditor/CodeEditor/CodeEditor'
@@ -77,6 +78,7 @@ export const ExpressionScriptEditor = ({
           ...expressionScriptExtensions,
           ...expressionScriptDiagnostics(diagnostics, (value ?? '').length),
           EditorView.lineWrapping,
+          EditorState.readOnly.of(isDisabled),
           EditorView.editable.of(!isDisabled),
           EditorView.contentAttributes.of({
             'aria-label': ariaLabel || labelText || t('Expression script'),
