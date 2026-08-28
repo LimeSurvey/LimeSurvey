@@ -52,7 +52,11 @@ export const ExpressionScriptEditor = ({
           setDiagnostics(result?.diagnostics ?? [])
         }
       } catch (error) {
-        if (error?.name !== 'CanceledError' && error?.name !== 'AbortError') {
+        if (
+          !abortController.signal.aborted &&
+          error?.name !== 'CanceledError' &&
+          error?.name !== 'AbortError'
+        ) {
           setDiagnostics([
             {
               from: 0,
