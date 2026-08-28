@@ -53,7 +53,14 @@ export const ExpressionScriptEditor = ({
         }
       } catch (error) {
         if (error?.name !== 'CanceledError' && error?.name !== 'AbortError') {
-          setDiagnostics([])
+          setDiagnostics([
+            {
+              from: 0,
+              to: value.length,
+              severity: 'warning',
+              message: t('Expression validation is temporarily unavailable.'),
+            },
+          ])
         }
       }
     }, validationDelay)
