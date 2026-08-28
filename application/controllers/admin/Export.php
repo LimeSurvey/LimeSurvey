@@ -313,10 +313,199 @@ class Export extends SurveyCommonAction
             $sFilter = '';
         }
 
+        $this->dispatchResponseExportTrackingEvent($iSurveyID, $sExportType);
+
         viewHelper::disableHtmlLogging();
         $resultsService->exportResponses($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
         Yii::app()->end();
+    }
+
+    /**
+     * Dispatch a tracking event for response export usage in Cloud context.
+     * Tracking failures must never block export.
+     *
+     * @param int $surveyId
+     * @param string|null $exportType
+     * @return void
+     */
+    private function dispatchResponseExportTrackingEvent($surveyId, $exportType)
+    {
+        if (empty($exportType)) {
+            return;
+        }
+
+        $subscriptionAlias = $this->resolveTrackingSubscriptionAlias();
+        if ($subscriptionAlias === null) {
+            return;
+        }
+
+        $majorVersion = $this->resolveMajorVersion();
+        if ($majorVersion < 6 || $majorVersion > 7) {
+            return;
+        }
+
+        $trackingData = [
+            'feature' => 'response_export',
+            'action' => 'export_click',
+            'export_format' => (string) $exportType,
+            'survey_id' => (int) $surveyId,
+            'ls_major_version' => $majorVersion,
+        ];
+
+        $trackingDataJson = json_encode($trackingData);
+        if ($trackingDataJson === false) {
+            $trackingDataJson = '{}';
+        }
+
+        try {
+            $trackingEvent = new PluginEvent('responseExportTracking');
+            $trackingEvent->set('main_category', 'feature_tracking');
+            $trackingEvent->set('sub_category', 'response_export');
+            $trackingEvent->set('subscription_alias', $subscriptionAlias);
+            $trackingEvent->set('number_of_users', 1);
+            $trackingEvent->set('tracking_data', $trackingDataJson);
+            $trackingEvent->set('survey_id', (int) $surveyId);
+            App()->getPluginManager()->dispatchEvent($trackingEvent);
+        } catch (\Throwable $e) {
+            Yii::log(
+                sprintf('Response export tracking skipped: %s', $e->getMessage()),
+                CLogger::LEVEL_WARNING,
+                'application.controllers.admin.Export'
+            );
+        }
+
+        $this->persistResponseExportTrackingRecord($subscriptionAlias, $trackingDataJson);
+    }
+
+    /**
+     * Returns subscription alias when available. Missing alias means non-Cloud.
+     *
+     * @return string|null
+     */
+    private function resolveTrackingSubscriptionAlias()
+    {
+        $headers = [
+            'HTTP_X_SUBSCRIPTION_ALIAS',
+            'HTTP_X_PLAN_ALIAS',
+            'HTTP_X_SUBSCRIPTION_PLAN',
+            'HTTP_X_PRICING_PLAN',
+        ];
+
+        foreach ($headers as $headerName) {
+            if (!empty($_SERVER[$headerName])) {
+                return trim((string) $_SERVER[$headerName]);
+            }
+        }
+
+        $configKeys = [
+            'subscription_alias',
+            'plan_alias',
+            'pricing_plan',
+        ];
+
+        foreach ($configKeys as $configKey) {
+            $configValue = App()->getConfig($configKey);
+            if (!empty($configValue)) {
+                return trim((string) $configValue);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return int
+     */
+    private function resolveMajorVersion()
+    {
+        $version = (string) App()->getConfig('versionnumber');
+        if ($version === '') {
+            return 0;
+        }
+
+        $parts = explode('.', $version);
+        return (int) ($parts[0] ?? 0);
+    }
+
+    /**
+     * Persist tracking data into the Cloud tracking table.
+     * Any DB errors are logged and ignored to avoid impacting exports.
+     *
+     * @param string $subscriptionAlias
+     * @param string $trackingDataJson
+     * @return void
+     */
+    private function persistResponseExportTrackingRecord($subscriptionAlias, $trackingDataJson)
+    {
+        $db = $this->resolveTrackingDbConnection();
+        $schema = $db->schema;
+        $table = $this->resolveTrackingTableName($db);
+
+        $subscriptionAliasColumn = $schema->quoteColumnName('subscription_alias');
+        $numberOfUsersColumn = $schema->quoteColumnName('number_of_users');
+        $mainCategoryColumn = $schema->quoteColumnName('main_category');
+        $subCategoryColumn = $schema->quoteColumnName('sub_category');
+        $trackingDataColumn = $schema->quoteColumnName('tracking_data');
+
+        $sql = sprintf(
+            'INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (:subscription_alias, :number_of_users, :main_category, :sub_category, :tracking_data)',
+            $table,
+            $subscriptionAliasColumn,
+            $numberOfUsersColumn,
+            $mainCategoryColumn,
+            $subCategoryColumn,
+            $trackingDataColumn
+        );
+
+        try {
+            $db->createCommand($sql)->execute([
+                ':subscription_alias' => $subscriptionAlias,
+                ':number_of_users' => 1,
+                ':main_category' => 'feature_tracking',
+                ':sub_category' => 'response_export',
+                ':tracking_data' => $trackingDataJson,
+            ]);
+        } catch (\Throwable $e) {
+            Yii::log(
+                sprintf('Response export tracking DB insert skipped: %s', $e->getMessage()),
+                CLogger::LEVEL_WARNING,
+                'application.controllers.admin.Export'
+            );
+        }
+    }
+
+    /**
+     * Prefer dbstats in Cloud setups. Fallback to default db in CE/dev.
+     *
+     * @return CDbConnection
+     */
+    private function resolveTrackingDbConnection()
+    {
+        if (Yii::app()->hasComponent('dbstats')) {
+            return Yii::app()->getComponent('dbstats');
+        }
+
+        return Yii::app()->db;
+    }
+
+    /**
+     * Resolve table name depending on connection component.
+     *
+     * @param CDbConnection $db
+     * @return string
+     */
+    private function resolveTrackingTableName($db)
+    {
+        $schema = $db->schema;
+        $isStatsConnection = Yii::app()->hasComponent('dbstats')
+            && $db === Yii::app()->getComponent('dbstats');
+
+        if ($isStatsConnection) {
+            return $schema->quoteTableName('tracking');
+        }
+
+        return $schema->quoteTableName('limeservice_statistics') . '.' . $schema->quoteTableName('tracking');
     }
 
     /**
