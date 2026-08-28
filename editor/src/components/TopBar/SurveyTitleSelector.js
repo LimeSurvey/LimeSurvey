@@ -3,8 +3,8 @@ import { Entities, L10ns } from 'helpers'
 import { Button, ContentEditor } from 'components'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 import { SurveyListComponent } from './SurveyListComponent'
-import { InternalTitleBadge } from './InternalTitleBadge'
-import { InternalTitleForm } from './InternalTitleForm'
+import { SurveyCodeBadge } from './SurveyCodeBadge'
+import { SurveyCodeForm } from './SurveyCodeForm'
 import classNames from 'classnames'
 
 const TITLE_SELECT_OFFSET = 40
@@ -17,15 +17,15 @@ export const SurveyTitleSelector = ({
   onSurveyTitleChange,
   handleSurveySwitch,
   getError,
-  onInternalTitleSave,
-  canEditInternalTitle,
+  onSurveyCodeSave,
+  canEditSurveyCode,
 }) => {
   const [surveyTitleIsFocused, setSurveyTitleIsFocused] = useState(false)
   const [internalFormOpen, setInternalFormOpen] = useState(false)
   const [saveError, setSaveError] = useState(false)
   const titleRef = useRef(null)
 
-  const internalTitle = survey.internalTitle || ''
+  const surveyCode = survey.code || ''
 
   const surveyTitle = L10ns({
     prop: 'title',
@@ -70,7 +70,7 @@ export const SurveyTitleSelector = ({
   const handleSave = async (value) => {
     setSaveError(false)
     try {
-      await onInternalTitleSave(value)
+      await onSurveyCodeSave(value)
       setInternalFormOpen(false)
     } catch {
       setSaveError(true)
@@ -84,9 +84,9 @@ export const SurveyTitleSelector = ({
       id="top-bar-select"
     >
       <div className="d-flex align-items-center position-relative align-items-start">
-        <InternalTitleBadge
-          internalTitle={internalTitle}
-          canEdit={canEditInternalTitle}
+        <SurveyCodeBadge
+          surveyCode={surveyCode}
+          canEdit={canEditSurveyCode}
           onClick={handleOpenForm}
           showBadge={survey.showQNumCode?.showNumber}
         />
@@ -108,7 +108,7 @@ export const SurveyTitleSelector = ({
             <Button
               className={classNames('internal-title-plus-btn ms-2', {
                 'pointer-events-none opacity-0':
-                  !canEditInternalTitle ||
+                  !canEditSurveyCode ||
                   !surveyTitleIsFocused ||
                   !survey.showQNumCode?.showNumber,
               })}
@@ -135,9 +135,9 @@ export const SurveyTitleSelector = ({
           />
         </div>
         {internalFormOpen && (
-          <InternalTitleForm
-            initialValue={internalTitle}
-            isNew={!internalTitle}
+          <SurveyCodeForm
+            initialValue={surveyCode}
+            isNew={!surveyCode}
             saveError={saveError}
             onSave={handleSave}
             onCancel={handleCloseForm}

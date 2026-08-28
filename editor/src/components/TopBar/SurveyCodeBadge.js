@@ -1,26 +1,26 @@
 import classNames from 'classnames'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 
-export const InternalTitleBadge = ({
-  internalTitle,
+export const SurveyCodeBadge = ({
+  surveyCode,
   canEdit,
   onClick,
   showBadge = false,
 }) => {
-  if (!internalTitle) return null
+  if (!surveyCode) return null
 
   return (
-    <TooltipContainer tip={showBadge && internalTitle} placement="bottom">
+    <TooltipContainer tip={showBadge && surveyCode} placement="bottom">
       <div
         className={classNames('internal-title-badge', {
           'disable-settings': !canEdit,
           'opacity-0 pointer-events-none': !showBadge,
         })}
         onClick={canEdit ? onClick : undefined}
-        aria-label={showBadge && `${t('Internal title')}: ${internalTitle}`}
+        aria-label={showBadge && `${t('Internal title')}: ${surveyCode}`}
         disabled={!canEdit}
       >
-        {showBadge && internalTitle}
+        {showBadge && surveyCode}
       </div>
     </TooltipContainer>
   )

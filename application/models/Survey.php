@@ -1736,7 +1736,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'htmlOptions' => ['class' => 'has-link'],
             ],
             'code' => [
-                'header'            => gT('Code'),
+                'header'            => gT('Internal title'),
                 'name'              => 'code',
                 'value'             => '$data->code',
                 'headerHtmlOptions' => ['class' => 'text-nowrap'],

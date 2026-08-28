@@ -2,7 +2,7 @@ import { XIcon } from 'components/icons'
 import { Button, Input } from 'components/UIComponents'
 import { useEffect, useRef, useState } from 'react'
 
-export const InternalTitleForm = ({
+export const SurveyCodeForm = ({
   initialValue = '',
   isNew,
   isSaving,
