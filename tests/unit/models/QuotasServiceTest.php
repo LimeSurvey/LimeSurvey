@@ -67,6 +67,45 @@ class QuotasServiceTest extends \ls\tests\TestBaseClass
         $this->assertEquals(count($newQuota->getErrors()), 0);
     }
 
+    public function testSaveNewQuotaFiltersQuotaMessageBeforeSaving()
+    {
+        $quotaData['name'] = 'FilteredMessageQuota';
+        $quotaData['qlimit'] = 0;
+        $quotaData['action'] = 1;
+        $quotaData['active'] = 1;
+        $quotaData['autoload_url'] = 0;
+
+        $originalQuotaLanguageSetting = $_POST['QuotaLanguageSetting'] ?? null;
+        $_POST['QuotaLanguageSetting'] = [];
+        foreach (self::$testSurvey->getAllLanguages() as $language) {
+            $_POST['QuotaLanguageSetting'][$language] = [
+                'quotals_message' => '<img src=x onerror="alert(document.domain)">',
+            ];
+        }
+
+        try {
+            $quotaService = new Quotas(self::$testSurvey);
+            $newQuota = $quotaService->saveNewQuota($quotaData);
+        } finally {
+            if ($originalQuotaLanguageSetting === null) {
+                unset($_POST['QuotaLanguageSetting']);
+            } else {
+                $_POST['QuotaLanguageSetting'] = $originalQuotaLanguageSetting;
+            }
+        }
+
+        $this->assertEquals(count($newQuota->getErrors()), 0);
+
+        $quotaLanguageSetting = \QuotaLanguageSetting::model()->findByAttributes([
+            'quotals_quota_id' => $newQuota->primaryKey,
+            'quotals_language' => self::$testSurvey->language,
+        ]);
+
+        $this->assertNotNull($quotaLanguageSetting);
+        $this->assertStringNotContainsString('onerror', $quotaLanguageSetting->quotals_message);
+        $this->assertStringNotContainsString('alert(document.domain)', $quotaLanguageSetting->quotals_message);
+    }
+
     public function testEditQuota()
     {
         $quotaService = new Quotas(self::$testSurvey);
