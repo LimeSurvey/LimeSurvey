@@ -583,7 +583,7 @@ class SurveymenuEntries extends LSActiveRecord
             $this->menu_title = empty($this->menu_title) ? $this->title : $this->menu_title;
             $this->menu_description = empty($this->menu_description) ? $this->title : $this->menu_title;
         }
-        parent::save($runValidation, $attributes);
+        return parent::save($runValidation, $attributes);
     }
 
     /**
