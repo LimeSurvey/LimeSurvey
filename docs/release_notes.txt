@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 6.17.18 (build 260831) to 6.17.19 (build 260832) August 31, 2026
+#Updated translation: Turkish by kayazeren
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+
+
 Changes from 6.17.17 (build 260820) to 6.17.18 (build 260831) August 31, 2026
 -Fixed issue: [security] Stored XSS in survey menu entries (Carsten Schmitz)
 -Fixed issue: [security] Stored XSS in replacement-fields question title rendering (Carsten Schmitz)
