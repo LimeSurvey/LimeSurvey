@@ -269,6 +269,16 @@ LS.floatingActions = (function () {
             if ($form.data('trigger-validation') && !$form[0].reportValidity()) {
                 return;
             }
+            
+            // Sync all CKEditor instances back to their textareas before collecting form data
+            if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances) {
+                for (var instanceName in CKEDITOR.instances) {
+                    if (CKEDITOR.instances.hasOwnProperty(instanceName)) {
+                        CKEDITOR.instances[instanceName].updateElement();
+                    }
+                }
+            }
+            
             var postData = { sItems: checkedItemsJson };
             $modal.find('.custom-data').each(function () {
                 if ($(this).hasClass('btn-group')) {
@@ -517,3 +527,4 @@ LS.floatingActions = (function () {
         },
     };
 }());
+
