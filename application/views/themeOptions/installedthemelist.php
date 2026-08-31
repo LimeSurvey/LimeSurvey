@@ -7,9 +7,8 @@
 ?>
 
 <?php
-$aFloatingActions = require(
-    Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions._questionThemeActions') . '.php'
-);
+require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.QuestionThemeMassiveActions') . '.php';
+$aFloatingActions = \actions\QuestionThemeMassiveActions::getActions();
 
 $this->widget('application.extensions.admin.grid.CLSGridView', [
     'dataProvider'          => $oQuestionTheme->search(),
@@ -134,6 +133,8 @@ $script = '
                 });
                 ';
 App()->getClientScript()->registerScript('questionthemes-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
+
+
 
 
 
