@@ -56,6 +56,11 @@ export const SurveyOverview = ({
     )
   }
 
+  const handleShowingResultsPanel = () => {
+    setShowOverViewModal(false)
+    navigate(`/responses/${survey.sid}`)
+  }
+
   useEffect(() => {
     // Adjust font size based on content length
     numberRefs.current.forEach((ref) => {
@@ -150,7 +155,7 @@ export const SurveyOverview = ({
               </div>
             </div>
             <div
-              onClick={() => navigate(`/responses/${survey.sid}`)}
+              onClick={handleShowingResultsPanel}
               className="text-primary text-start arrow-link med14-c cursor-pointer"
             >
               {t('View results overview')} <img src={rightArrowIcon} />

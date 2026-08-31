@@ -22,7 +22,6 @@ import { TopBarQuestionInserter } from './TopBarQuestionInserter'
 export const TopBarActions = ({
   surveyId,
   showPreviewButton,
-  showShareButton,
   isSurveyActive,
   survey,
   operationsLength,
@@ -34,7 +33,6 @@ export const TopBarActions = ({
   showPublishSettings,
   triggerPublish,
   isAddingQuestionOrGroup,
-  setShowOverviewModalRef,
 }) => {
   const location = useLocation()
   const { update } = useSurvey(surveyId)
@@ -246,14 +244,6 @@ export const TopBarActions = ({
         toggleSettings={dropdownToggleSettings}
       />
       {showPreviewButton && survey.sid && <PreviewButton survey={survey} />}
-      {isSurveyActive && showShareButton && (
-        <div
-          onClick={() => setShowOverviewModalRef.current(true)}
-          className="preview-button me-2 d-flex align-items-center justify-content-center btn btn-light"
-        >
-          <i className="ri-share-forward-line"></i>
-        </div>
-      )}
       <ActionButton
         className="me-2"
         survey={survey}
