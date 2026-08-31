@@ -15400,14 +15400,55 @@ body .imageselect-listitem label::after {
 .answer-container .bootstrap-select .btn.dropdown-toggle:focus, .answer-container .bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
   outline: none !important;
 }
-.answer-container .bootstrap-select .dropdown-toggle .filter-option {
+.answer-container .bootstrap-select > .btn.dropdown-toggle {
+  padding: 10px 12px;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 4px;
+  font-size: 0.9975rem;
+  font-weight: 400;
+  line-height: 20px;
+}
+.answer-container .bootstrap-select > .btn.dropdown-toggle .filter-option {
   text-align: right;
 }
-
-.dropdown-menu .dropdown-item {
-  font-weight: 600;
-  font-size: 1.14rem;
+.answer-container .bootstrap-select > .btn.dropdown-toggle p:last-child {
+  margin-bottom: 0;
+}
+.answer-container .bootstrap-select > .btn.dropdown-toggle::after {
+  font-family: "remixicon";
+  content: "\ea4e";
+  border: none;
+  margin-right: 8px;
+  vertical-align: 0;
   line-height: 20px;
+  font-size: 1.425rem;
+}
+.answer-container .bootstrap-select .dropdown-menu {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+.answer-container .bootstrap-select .dropdown-menu.inner {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow-x: hidden;
+}
+.answer-container .bootstrap-select .dropdown-header {
+  padding: 8px 12px;
+}
+.answer-container .bootstrap-select .dropdown-item {
+  padding: 8px 12px;
+  font-size: 0.9975rem;
+  font-weight: 400;
+  line-height: 20px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.answer-container .bootstrap-select .dropdown-item p:last-child {
+  margin-bottom: 0;
 }
 
 .dropdown-menu {
@@ -15454,6 +15495,42 @@ body .imageselect-listitem label::after {
 
 .dropdown-header, .dropdown-item {
   color: #6E748C;
+}
+
+.answer-container .bootstrap-select > .btn.dropdown-toggle {
+  background-color: #ffffff;
+  border-color: #6E748C;
+  color: #1E1E1E;
+}
+.answer-container .bootstrap-select > .btn.dropdown-toggle:focus, .answer-container .bootstrap-select > .btn.dropdown-toggle:focus-visible {
+  border-color: #1E1E1E;
+  box-shadow: -4px 4px 0 rgba(66, 0, 255, 0.2);
+}
+.answer-container .bootstrap-select > .btn.dropdown-toggle.bs-placeholder, .answer-container .bootstrap-select > .btn.dropdown-toggle.bs-placeholder:hover, .answer-container .bootstrap-select > .btn.dropdown-toggle.bs-placeholder:focus, .answer-container .bootstrap-select > .btn.dropdown-toggle.bs-placeholder:active {
+  color: #6E748C;
+}
+.answer-container .bootstrap-select .dropdown-menu {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+.answer-container .bootstrap-select .dropdown-item {
+  color: #1E1E1E;
+}
+.answer-container .bootstrap-select .dropdown-item:hover,
+.answer-container .bootstrap-select .dropdown-item:focus,
+.answer-container .bootstrap-select .dropdown-item.active,
+.answer-container .bootstrap-select li.active > .dropdown-item {
+  color: #1E1E1E !important;
+  background-color: #EEEFF7 !important;
+}
+.answer-container .bootstrap-select li.selected > .dropdown-item, .answer-container .bootstrap-select li.selected > .dropdown-item:hover, .answer-container .bootstrap-select li.selected > .dropdown-item:focus, .answer-container .bootstrap-select li.selected > .dropdown-item.active {
+  color: #ffffff !important;
+  background-color: #ED5046 !important;
+}
+.answer-container .bootstrap-select .dropdown-item.disabled,
+.answer-container .bootstrap-select .dropdown-item:disabled,
+.answer-container .bootstrap-select li.disabled > .dropdown-item {
+  color: #9094A7 !important;
+  background-color: transparent !important;
 }
 
 /*
