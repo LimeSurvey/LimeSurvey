@@ -96,7 +96,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
         <?php
         // Render the floating action bar (cross-page selection, fixed at bottom)
-        require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/ResponseListMassiveActions.php';
+        require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.ResponseListMassiveActions') . '.php';
         $floatingActions = \actions\ResponseListMassiveActions::getActions($surveyid);
         $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
             'pk'       => 'id',

@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('roles');
     <div class="row">
         <div class="col-12">
             <?php
-            require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/UserRoleListMassiveActions.php';
+            require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.UserRoleListMassiveActions') . '.php';
             $floatingActions = \actions\UserRoleListMassiveActions::getActions();
             $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
                 'pk'       => 'selectedRole',

@@ -6,8 +6,6 @@
  * @var array $permissions
  */
 
-use actions\FailedEmailMassiveActions;
-
 require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.FailedEmailMassiveActions') . '.php';
 ?>
 <?= viewHelper::getViewTestTag('surveyFailedEmail') ?>
@@ -27,7 +25,7 @@ require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActi
                 $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
                     'pk'       => 'id',
                     'gridId'   => 'failedemail-grid',
-                    'aActions' => FailedEmailMassiveActions::getActions($surveyId, $permissions),
+                    'aActions' => \actions\FailedEmailMassiveActions::getActions($surveyId, $permissions),
                 ]);
 
                 $this->widget('application.extensions.admin.grid.CLSGridView', [

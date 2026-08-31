@@ -1,8 +1,6 @@
 <?php
 
-use actions\QuestionListMassiveActions;
-
-require_once App()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/QuestionListMassiveActions.php';
+require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.QuestionListMassiveActions') . '.php';
 
 $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 ?>
@@ -102,7 +100,7 @@ $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);
     <div class="row ls-space margin top-10">
         <div class="col-12">
             <?php
-            $floatingActions = QuestionListMassiveActions::getActions($questionModel, $oSurvey);
+            $floatingActions = \actions\QuestionListMassiveActions::getActions($questionModel, $oSurvey);
             $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
                 'pk'       => 'id',
                 'gridId'   => 'question-grid',

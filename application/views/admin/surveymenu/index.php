@@ -35,7 +35,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                 <div class="col-12 ls-space margin top-15">
                     <div class="col-12 ls-flex-item">
                         <?php
-                        require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/SurveyMenuListMassiveActions.php';
+                        require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.SurveyMenuListMassiveActions') . '.php';
                         $floatingActions = \actions\SurveyMenuListMassiveActions::getActions();
                         $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
                             'pk' => 'id',
