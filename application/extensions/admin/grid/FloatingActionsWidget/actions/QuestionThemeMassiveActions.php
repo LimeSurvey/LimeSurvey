@@ -24,25 +24,6 @@ class QuestionThemeMassiveActions
             return $actions;
         }
 
-        // ------------------------------------------------------------------ reset
-        $actions[] = [
-            'type'          => 'action',
-            'action'        => 'reset',
-            'url'           => App()->createUrl('themeOptions/resetMultiple/'),
-            'iconClasses'   => 'ri-refresh-line',
-            'text'          => gT('Reset'),
-            'grid-reload'   => 'yes',
-            'actionType'    => 'modal',
-            'modalType'     => 'cancel-apply',
-            'keepopen'      => 'yes',
-            'showSelected'  => 'yes',
-            'selectedUrl'   => App()->createUrl('themeOptions/selectedItems/'),
-            'yes'           => gT('Reset'),
-            'no'            => gT('Cancel'),
-            'sModalTitle'   => gT('Reset themes'),
-            'htmlModalBody' => gT('Are you sure you want to reset the selected themes?'),
-        ];
-
         // ------------------------------------------------------------------ uninstall
         $actions[] = [
             'type'          => 'action',
