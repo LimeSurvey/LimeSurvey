@@ -78,6 +78,11 @@ class UserManagementMassiveActions
         $aMoreActionsItems = [];
 
         if ($canUsersUpdate) {
+            $aMoreActionsItems[] =
+            [
+                'type' => 'dropdown-header',
+                'text' => gT('USER ACTIONS'),
+            ];
             // Edit Status (in dropdown)
             $aMoreActionsItems[] = [
                 'type'              => 'action',
