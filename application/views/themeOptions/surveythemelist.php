@@ -4,9 +4,9 @@
  * @var $oSurveyTheme TemplateConfiguration
  */
 
-$aFloatingActions = require(
-    Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions._surveyThemeActions') . '.php'
-);
+require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.SurveyThemeMassiveActions') . '.php';
+
+$aFloatingActions = \actions\SurveyThemeMassiveActions::getActions();
 $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [
@@ -121,4 +121,5 @@ $script = '
                 ';
 App()->getClientScript()->registerScript('themeoptions-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
+
 
