@@ -195,11 +195,14 @@ export const TinyMCE = ({
           license_key: 'gpl',
           valid_elements: '*[*]',
           valid_styles: '*[*]',
+          formats: {
+            underline: { inline: 'u', exact: true },
+          },
           plugins: ['link'],
           verify_html: false,
           disabled,
           toolbar: showToolbar
-            ? 'alignmentMenu customBold customItalic link toolbarActions'
+            ? 'alignmentMenu customBold customItalic customUnderline link toolbarActions'
             : false,
           selector: id,
           forced_root_block: FORCED_ROOT_BLOCK,
