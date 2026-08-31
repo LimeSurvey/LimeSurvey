@@ -34,7 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-Changes from  (build ranslation:) to 6.17.17 (build 260820) August 20, 2026
+Changes from 6.17.17 (build 260820) to 6.17.18 (build 260831) August 31, 2026
+-Fixed issue: [security] Stored XSS in survey menu entries (Carsten Schmitz)
+-Fixed issue: [security] Stored XSS in replacement-fields question title rendering (Carsten Schmitz)
+-Fixed issue: [security] Stored XSS in quota message rendering (Carsten Schmitz)
+-Fixed issue: [security] Improper authorization in survey menu entry creation (Carsten Schmitz)
+-Fixed issue #20655: Incorrect message text when soft-mandatory question was not answered (Carsten Schmitz)
+
+
+Changes from 6.17.16 (build 260814) to 6.17.17 (build 260820) August 20, 2026
 #Updated translation: Polish by elissa
 #Updated translation: Polish (Informal) by elissa
 #Updated translation: Japanese by nomoto
