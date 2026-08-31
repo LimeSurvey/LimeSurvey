@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             </h1>
             <?php
             if ($oDataProvider->itemCount > 0) {
-                require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/QuotaListMassiveActions.php';
+                require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.QuotaListMassiveActions') . '.php';
                 $floatingActions = \actions\QuotaListMassiveActions::getActions(
                     (int) $oSurvey->getPrimaryKey(),
                     $oQuota,

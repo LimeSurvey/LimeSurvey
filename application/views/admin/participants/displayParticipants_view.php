@@ -62,7 +62,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
             <?php
             echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='" . join("||", $searchcondition) . "' />";
 
-            require_once Yii::app()->getBasePath() . '/extensions/admin/grid/FloatingActionsWidget/actions/ParticipantListMassiveActions.php';
+            require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.ParticipantListMassiveActions') . '.php';
             $floatingActions = \actions\ParticipantListMassiveActions::getActions($permissions);
             $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
                 'pk'           => 'selectedParticipant',
