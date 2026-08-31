@@ -1930,6 +1930,9 @@
                                                             "showNoAnswer": {
                                                                 "type": "boolean"
                                                             },
+                                                            "preselectNoAnswer": {
+                                                                "type": "boolean"
+                                                            },
                                                             "showQNumCode": {
                                                                 "type": "boolean"
                                                             },
@@ -2212,6 +2215,9 @@
                                                             "type": "boolean"
                                                         },
                                                         "showNoAnswer": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "preselectNoAnswer": {
                                                             "type": "boolean"
                                                         },
                                                         "showQNumCode": {
@@ -2987,6 +2993,9 @@
                                                         "showNoAnswer": {
                                                             "type": "boolean"
                                                         },
+                                                        "preselectNoAnswer": {
+                                                            "type": "boolean"
+                                                        },
                                                         "showQNumCode": {
                                                             "type": "boolean"
                                                         },
@@ -3756,6 +3765,9 @@
                                                         "showNoAnswer": {
                                                             "type": "boolean"
                                                         },
+                                                        "preselectNoAnswer": {
+                                                            "type": "boolean"
+                                                        },
                                                         "showQNumCode": {
                                                             "type": "boolean"
                                                         },
@@ -4268,6 +4280,9 @@
                                                     "showNoAnswer": {
                                                         "type": "boolean"
                                                     },
+                                                    "preselectNoAnswer": {
+                                                        "type": "boolean"
+                                                    },
                                                     "showQNumCode": {
                                                         "type": "boolean"
                                                     },
@@ -4740,6 +4755,9 @@
                                                             "type": "boolean"
                                                         },
                                                         "showNoAnswer": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "preselectNoAnswer": {
                                                             "type": "boolean"
                                                         },
                                                         "showQNumCode": {

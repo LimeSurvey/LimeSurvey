@@ -37,6 +37,7 @@ export const surveyExample = {
   showXQuestions: null,
   showGroupInfo: 'I',
   showNoAnswer: null,
+  preselectNoAnswer: false,
   showQNumCode: 'I',
   bounceTime: 0,
   bounceProcessing: false,

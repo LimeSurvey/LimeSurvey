@@ -126,6 +126,10 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
                 'key' => 'showNoAnswer',
                 'formatter' => ['ynToBool' => true]
             ],
+            "preselectnoanswer" => [
+                'key' => 'preselectNoAnswer',
+                'formatter' => ['ynToBool' => true]
+            ],
             "showqnumcode" => 'showQNumCode',
             "bouncetime" => ['key' => 'bounceTime', 'type' => 'int'],
             "bounceprocessing" => [

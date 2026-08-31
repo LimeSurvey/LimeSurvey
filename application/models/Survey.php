@@ -62,6 +62,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $showxquestions Show "There are X questions in this survey": (Y/N)
  * @property string $showgroupinfo Show group name and/or group description: (Y/N)
  * @property string $shownoanswer Show "No answer": (Y/N)
+ * @property string $preselectnoanswer Preselect "No answer": (Y/N)
  * @property string $showqnumcode Show question number and/or code: (Y/N)
  * @property integer $bouncetime
  * @property string $bounceprocessing
@@ -137,6 +138,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isShowXQuestions Show "There are X questions in this survey"
  * @property bool $isShowGroupInfo Show group name and/or group description
  * @property bool $isShowNoAnswer Show "No answer"
+ * @property bool $isPreselectNoAnswer Preselect "No answer"
  * @property bool $isShowQnumCode Show question number and/or code
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
@@ -545,6 +547,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('usetokens', 'in', 'range' => array('Y', 'N'), 'allowEmpty' => true),
             array('showxquestions', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('shownoanswer', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
+            array('preselectnoanswer', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('showwelcome', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('showsurveypolicynotice', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => true),
             array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
@@ -1404,6 +1407,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getIsShowNoAnswer()
     {
         return ($this->oOptions->shownoanswer === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsPreselectNoAnswer()
+    {
+        return ($this->oOptions->preselectnoanswer === 'Y');
     }
     /**
      * @return bool

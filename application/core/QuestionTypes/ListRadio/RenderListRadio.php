@@ -120,7 +120,10 @@ class RenderListRadio extends QuestionBaseRenderer
 
     public function addNoAnswerRow()
     {
-        if (!isset($this->mSessionValue) || $this->mSessionValue == '' || $this->mSessionValue == ' ') {
+        if (
+            PRESELECT_NO_ANSWER
+            && (!isset($this->mSessionValue) || $this->mSessionValue == '' || $this->mSessionValue == ' ')
+        ) {
             $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
         } else {
             $check_ans = '';
