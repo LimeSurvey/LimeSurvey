@@ -41,7 +41,7 @@
 
     <div class="{{ aSurveyInfo.class.savecontainer }} clearfix " {{ aSurveyInfo.attr.savecontainer }}>
         <div class="">
-            <div class="{{ aSurveyInfo.class.savecontainertitle }} large-heading mb-3" {{ aSurveyInfo.attr.savecontainertitle }}>{{ gT("Save your unfinished survey") }}</div>
+            <h2 class="{{ aSurveyInfo.class.savecontainertitle }} large-heading mb-3" {{ aSurveyInfo.attr.savecontainertitle }}>{{ gT("Save your unfinished survey") }}</h2>
             <div class="{{ aSurveyInfo.class.savecontainertext }} form-heading mb-3" {{ aSurveyInfo.attr.savecontainertext }}>
                 <p {{ aSurveyInfo.attr.savecontainertextpa }}> {{ gT("Enter a name and password for this survey and click save below.") }} </p>
                 <p {{ aSurveyInfo.attr.savecontainertextpb }}> {{ gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.") }} </p>
@@ -94,6 +94,9 @@
 
             <!-- Name and Password -->
             <div class='{{ aSurveyInfo.class.saveformsurvey }} col-12' {{ aSurveyInfo.attr.saveformsurvey }}>
+
+                <span class="large mb-2 d-block">{{ gT("Fields marked with an asterisk (*) are mandatory.") }}</span>
+
                 <div class='{{ aSurveyInfo.class.saveformsurveydiva }} mb-3' {{ aSurveyInfo.attr.saveformsurveydiva }}>
 
                     <!-- Saved name  -->

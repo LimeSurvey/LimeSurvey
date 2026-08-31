@@ -46,8 +46,8 @@ dl {
 
 // LINKS
 a {
-  font-weight: $font-weight-500;
-  font-size: $font-size-sm;
+  font-weight: inherit;
+  font-size: inherit;
   text-decoration: none;
   &:hover {
     text-decoration: none;
