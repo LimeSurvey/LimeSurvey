@@ -177,6 +177,13 @@
     &.text-danger:hover {
       background-color: $g-200;
     }
+
+    // when foucsed the border color should be $grape
+    &:focus,
+    &.text-danger:focus {
+      outline: 1px solid $grape;
+      background-color: $white;
+    }
   }
 }
 
