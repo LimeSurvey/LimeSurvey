@@ -70,6 +70,7 @@ export const Dropdown = ({
   menuItems = [],
   className = '',
   testId = '',
+  align = 'end',
   toggleSettings = {
     iconClassName: 'ri-more-fill',
     variant: 'light',
@@ -83,7 +84,7 @@ export const Dropdown = ({
   return (
     <BootstrapDropdown
       className={classNames('lsr-dropdown', className)}
-      align="end"
+      align={align}
       data-testid={testId}
     >
       <BootstrapDropdown.Toggle

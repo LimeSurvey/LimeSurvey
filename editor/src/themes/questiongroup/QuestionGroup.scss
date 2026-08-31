@@ -146,9 +146,11 @@
   }
 
   .dropdown-menu {
-    border-color: $g-200;
-    border-radius: 4px;
-    padding: 12px;
+    border: 1px solid $g-900;
+    width: 250px;
+    height: 124px;
+    border-radius: 2px;
+    padding: 6px 12px;
     min-width: 220px;
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
   }
@@ -171,12 +173,15 @@
       padding-right: 8px;
     }
 
-    &:hover {
+    &:hover,
+    &.text-danger:hover {
       background-color: $g-200;
     }
+  }
+}
 
-    &.text-danger:hover {
-      background-color: rgba(255, 76, 76, 0.1);
-    }
+#delete-question-group-modal {
+  .description {
+    color: $g-900;
   }
 }
