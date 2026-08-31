@@ -2,7 +2,7 @@
     "name": "shardj/zf1-future",
     "description": "Zend Framework 1. The aim is to keep ZF1 working with the latest PHP versions",
     "type": "library",
-    "version": "1.25.1",
+    "version": "1.25.2",
     "keywords": [
         "framework",
         "zf1"
