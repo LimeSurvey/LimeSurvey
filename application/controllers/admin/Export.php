@@ -438,27 +438,27 @@ class Export extends SurveyCommonAction
      */
     private function persistResponseExportTrackingRecord($subscriptionAlias, $trackingDataJson)
     {
-        $db = $this->resolveTrackingDbConnection();
-        $schema = $db->schema;
-        $table = $this->resolveTrackingTableName($db);
-
-        $subscriptionAliasColumn = $schema->quoteColumnName('subscription_alias');
-        $numberOfUsersColumn = $schema->quoteColumnName('number_of_users');
-        $mainCategoryColumn = $schema->quoteColumnName('main_category');
-        $subCategoryColumn = $schema->quoteColumnName('sub_category');
-        $trackingDataColumn = $schema->quoteColumnName('tracking_data');
-
-        $sql = sprintf(
-            'INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (:subscription_alias, :number_of_users, :main_category, :sub_category, :tracking_data)',
-            $table,
-            $subscriptionAliasColumn,
-            $numberOfUsersColumn,
-            $mainCategoryColumn,
-            $subCategoryColumn,
-            $trackingDataColumn
-        );
-
         try {
+            $db = $this->resolveTrackingDbConnection();
+            $schema = $db->schema;
+            $table = $this->resolveTrackingTableName($db);
+
+            $subscriptionAliasColumn = $schema->quoteColumnName('subscription_alias');
+            $numberOfUsersColumn = $schema->quoteColumnName('number_of_users');
+            $mainCategoryColumn = $schema->quoteColumnName('main_category');
+            $subCategoryColumn = $schema->quoteColumnName('sub_category');
+            $trackingDataColumn = $schema->quoteColumnName('tracking_data');
+
+            $sql = sprintf(
+                'INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (:subscription_alias, :number_of_users, :main_category, :sub_category, :tracking_data)',
+                $table,
+                $subscriptionAliasColumn,
+                $numberOfUsersColumn,
+                $mainCategoryColumn,
+                $subCategoryColumn,
+                $trackingDataColumn
+            );
+
             $db->createCommand($sql)->execute([
                 ':subscription_alias' => $subscriptionAlias,
                 ':number_of_users' => 1,
