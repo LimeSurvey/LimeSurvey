@@ -8,6 +8,9 @@
  *
  * On select2:open, the same label reference is also copied to the search field
  * inside the dropdown.
+ *
+ * Keeps aria-expanded and aria-controls on the combobox in sync when the
+ * dropdown opens/closes so screen readers announce the correct state.
  */
 (function ($) {
     function getLabelledBy($select) {
@@ -49,6 +52,16 @@
         return tokens.join(' ');
     }
 
+    function getResultsId($select) {
+        var selectId = $select.attr('id');
+        if (!selectId) {
+            return null;
+        }
+
+        // Apply the same normalization Select2 uses in _generateId (select2.full.js)
+        return 'select2-' + selectId.replace(/(:|\.|\[|\]|,)/g, '') + '-results';
+    }
+
     function patchCombobox($select) {
         var ariaLabelledBy = getLabelledBy($select);
         var ariaLabel = getLabel($select);
@@ -88,6 +101,26 @@
         }
     }
 
+    function syncComboboxExpandedState($select, isOpen) {
+        var $combobox = $select.next('.select2-container').find('[role="combobox"]');
+        if (!$combobox.length) {
+            return;
+        }
+
+        $combobox.attr('aria-expanded', isOpen ? 'true' : 'false');
+
+        var resultsId = getResultsId($select);
+        if (!resultsId) {
+            return;
+        }
+
+        if (isOpen) {
+            $combobox.attr('aria-controls', resultsId);
+        } else {
+            $combobox.removeAttr('aria-controls');
+        }
+    }
+
     function patchSelect2Container($container) {
         var $select = $container.prev('select');
         if ($select.length) {
@@ -112,8 +145,21 @@
         patchSelect2Container($(this));
     });
 
-    // On open, also patch the search field inside the dropdown
+    // On open, patch the search field and sync expanded state
     $(document).on('select2:open', function (e) {
-        patchSearchField($(e.target));
+        var $select = $(e.target);
+        patchSearchField($select);
+        syncComboboxExpandedState($select, true);
+
+        // Re-assert after Select2 moves focus to the inline search field,
+        // reading actual open state in case the dropdown closed in the meantime.
+        window.setTimeout(function () {
+            var isStillOpen = $select.next('.select2-container').hasClass('select2-container--open');
+            syncComboboxExpandedState($select, isStillOpen);
+        }, 0);
+    });
+
+    $(document).on('select2:close', function (e) {
+        syncComboboxExpandedState($(e.target), false);
     });
 }(jQuery));

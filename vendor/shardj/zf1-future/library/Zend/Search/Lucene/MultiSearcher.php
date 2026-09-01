@@ -217,7 +217,7 @@ class Zend_Search_Lucene_MultiSearcher implements Zend_Search_Lucene_Interface
      *
      * @param string $fieldName
      */
-    public static function setDefaultSearchField($fieldName)
+    public function setDefaultSearchField($fieldName)
     {
         foreach ($this->_indices as $index) {
             $index->setDefaultSearchField($fieldName);
@@ -233,7 +233,7 @@ class Zend_Search_Lucene_MultiSearcher implements Zend_Search_Lucene_Interface
      * @return string
      * @throws Zend_Search_Lucene_Exception
      */
-    public static function getDefaultSearchField()
+    public function getDefaultSearchField()
     {
         if (count($this->_indices) === 0) {
             require_once 'Zend/Search/Lucene/Exception.php';
@@ -259,7 +259,7 @@ class Zend_Search_Lucene_MultiSearcher implements Zend_Search_Lucene_Interface
      *
      * @param integer $limit
      */
-    public static function setResultSetLimit($limit)
+    public function setResultSetLimit($limit)
     {
         foreach ($this->_indices as $index) {
             $index->setResultSetLimit($limit);
@@ -274,7 +274,7 @@ class Zend_Search_Lucene_MultiSearcher implements Zend_Search_Lucene_Interface
      * @return integer
      * @throws Zend_Search_Lucene_Exception
      */
-    public static function getResultSetLimit()
+    public function getResultSetLimit()
     {
         if (count($this->_indices) === 0) {
             require_once 'Zend/Search/Lucene/Exception.php';

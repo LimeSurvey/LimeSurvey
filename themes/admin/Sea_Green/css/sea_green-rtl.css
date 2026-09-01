@@ -19848,9 +19848,14 @@ table [class^=ri-], table [class*=" ri-"] {
 .floating-actions-bar .floating-actions-close i::before {
   font-size: 16px;
 }
-.floating-actions-bar .floating-actions-close:hover, .floating-actions-bar .floating-actions-close:focus-visible {
+.floating-actions-bar .floating-actions-close:hover {
   background: #EEEFF7;
   outline: none;
+}
+.floating-actions-bar .floating-actions-close:focus, .floating-actions-bar .floating-actions-close:focus-visible {
+  background: unset;
+  outline: none;
+  border: solid 1px #8146F6;
 }
 .floating-actions-bar .dropdown-menu {
   font-size: 13px;
