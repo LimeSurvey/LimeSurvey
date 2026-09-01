@@ -1,5 +1,5 @@
-/**
- * Floating Actions Widget – JavaScript
+﻿/**
+ * Floating Actions Widget â€“ JavaScript
  *
  * Provides LS.floatingActions:
  *   - Shows a context bar with action buttons at the bottom of the viewport
@@ -128,7 +128,7 @@ LS.floatingActions = (function () {
     /**
      * Ensure the bar is attached to <body>.
      * Since the bar uses position:fixed it does not need to live inside the grid
-     * container – it only needs to be somewhere in the document.  Keeping it in
+     * container â€“ it only needs to be somewhere in the document.  Keeping it in
      * <body> means it is never removed by yiiGridView's replaceWith() operation,
      * so there is no detach/re-inject cycle to manage.
      *
@@ -162,7 +162,7 @@ LS.floatingActions = (function () {
         var onSuccess  = $that.data('on-success');
         var gridReload = $that.data('grid-reload');
         var $grid      = $('#' + gridId);
-        // Get selected items – use cross-page store when available, fall back to DOM
+        // Get selected items â€“ use cross-page store when available, fall back to DOM
         var checkedItems;
         if (window.LS && LS.gridSelection && typeof LS.gridSelection.getAll === 'function') {
             checkedItems = LS.gridSelection.getAll(gridId);
@@ -405,6 +405,10 @@ LS.floatingActions = (function () {
             $(document).on('change' + ns, gridSelector + ' input[type="checkbox"][id$="_all"]', function () {
                 setTimeout(function () { _updateBar(gridId, pk); }, 50);
             });
+            // Also handle action_toggleAllParticipant checkbox used in Central Participant Management
+            $(document).on('change' + ns, '#action_toggleAllParticipant', function () {
+                setTimeout(function () { _updateBar(gridId, pk); }, 50);
+            });
             // ---- Bar controls (delegated from document) ---------------------
             // Close / deselect-all: clear cross-page store AND uncheck visible checkboxes
             $(document).on('click' + ns, barSelector + ' .floating-actions-close', function () {
@@ -527,4 +531,8 @@ LS.floatingActions = (function () {
         },
     };
 }());
+
+
+
+
 
