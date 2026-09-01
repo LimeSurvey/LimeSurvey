@@ -231,7 +231,7 @@ class UserStatusTest extends TestBaseClassWeb
         $floatingBar->findElement(WebDriverBy::cssSelector('.floating-actions-item[data-action="batchStatus"]'))->click();
 
         // Wait for the floating-actions modal to show
-        $web->waitById('floating-actions-modal-usermanagement--identity-gridPanel-batchStatus-d3_0');
+        $web->waitById('floating-actions-modal-usermanagement--identity-gridPanel-batchStatus-d3_1');
 
         // Choose "Deactivate" in dropdown
         (new WebDriverSelect($web->findByCss('select[name=status_selector]')))->selectByValue('deactivate');
