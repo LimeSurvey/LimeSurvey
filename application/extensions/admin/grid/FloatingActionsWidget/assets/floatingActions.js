@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Floating Actions Widget â€“ JavaScript
  *
  * Provides LS.floatingActions:
@@ -413,6 +413,10 @@ LS.floatingActions = (function () {
             $(document).on('change' + ns, '#RoleControl--action-toggleAllRoles', function () {
                 setTimeout(function () { _updateBar(gridId, pk); }, 50);
             });
+            // Also handle action_toggleAllAttributeNames checkbox used in Attribute Management
+            $(document).on('change' + ns, '#action_toggleAllAttributeNames', function () {
+                setTimeout(function () { _updateBar(gridId, pk); }, 50);
+            });
             // ---- Bar controls (delegated from document) ---------------------
             // Close / deselect-all: clear cross-page store AND uncheck visible checkboxes
             $(document).on('click' + ns, barSelector + ' .floating-actions-close', function () {
@@ -535,6 +539,7 @@ LS.floatingActions = (function () {
         },
     };
 }());
+
 
 
 

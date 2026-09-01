@@ -1411,12 +1411,7 @@ class ParticipantsAction extends SurveyCommonAction
         $aData['searchstring'] = $searchstring;
         // loads the participant panel view and display participant view
 
-        $aData['massiveAction'] = App()->getController()->renderPartial(
-            '/admin/participants/massive_actions/_selector_attribute',
-            array(),
-            true,
-            false
-        );
+        // Floating actions widget is now used instead of massive action template
         $aData['topbar'] = $this->getTopBarComponents($title, false, true);
 
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);
