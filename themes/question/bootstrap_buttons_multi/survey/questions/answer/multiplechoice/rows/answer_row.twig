@@ -20,7 +20,7 @@
 #}
 
 <!-- answer_row -->
-<div id='javatbd{{ myfname }}' class="bootstrap-buttons-div question-item answer-item col-12 {{ max_buttons_row }} mb-1">
+<li id='javatbd{{ myfname }}' class="bootstrap-buttons-div question-item answer-item col-12 {{ max_buttons_row }} mb-1">
     <div class="form-check col-12 {% if checkedState!='' %} active {% endif %}">
     <input
         type="checkbox"
@@ -40,5 +40,5 @@
         value="{{ C.Html.encode( sValue ) }}"
     />
     </div>
-</div>
+</li>
 <!-- end of answer_row -->

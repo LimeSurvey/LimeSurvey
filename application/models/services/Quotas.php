@@ -232,8 +232,7 @@ class Quotas
                 // Fix bug with FCKEditor saving strange BR types
                 $oQuotaLanguageSetting->quotals_message = fixCKeditorText($oQuotaLanguageSetting->quotals_message);
 
-                $oQuotaLanguageSetting->save(false);
-                if (!$oQuotaLanguageSetting->validate()) {
+                if (!$oQuotaLanguageSetting->save()) {
                     $oQuota->addErrors($oQuotaLanguageSetting->getErrors());
                 }
             }
