@@ -405,6 +405,7 @@ LS.floatingActions = (function () {
             $(document).on('change' + ns, gridSelector + ' input[type="checkbox"][id$="_all"]', function () {
                 setTimeout(function () { _updateBar(gridId, pk); }, 50);
             });
+            
             // Also handle action_toggleAllParticipant checkbox used in Central Participant Management
             $(document).on('change' + ns, '#action_toggleAllParticipant', function () {
                 setTimeout(function () { _updateBar(gridId, pk); }, 50);
@@ -539,10 +540,5 @@ LS.floatingActions = (function () {
         },
     };
 }());
-
-
-
-
-
 
 
