@@ -2,6 +2,8 @@
 
 namespace actions;
 
+use LimeSurvey\Models\Services\Quotas;
+
 /**
  * Action definitions for the survey quotas floating action bar.
  */
@@ -25,8 +27,8 @@ class QuotaListMassiveActions
             // Activate
             $buttons[] = [
                 'type'          => 'action',
-                'action'        => 'activate',
-                'url'           => \App()->createUrl('quotas/massiveAction', ['action' => 'activate', 'surveyid' => $surveyId]),
+                'action'        => Quotas::MASSIVE_ACTION_ACTIVATE,
+                'url'           => \App()->createUrl('quotas/massiveAction', ['action' => Quotas::MASSIVE_ACTION_ACTIVATE, 'surveyid' => $surveyId]),
                 'iconClasses'   => 'ri-play-fill',
                 'text'          => \gT('Activate'),
                 'grid-reload'   => 'yes',
@@ -40,8 +42,8 @@ class QuotaListMassiveActions
             // Deactivate
             $buttons[] = [
                 'type'          => 'action',
-                'action'        => 'deactivate',
-                'url'           => \App()->createUrl('quotas/massiveAction', ['action' => 'deactivate', 'surveyid' => $surveyId]),
+                'action'        => Quotas::MASSIVE_ACTION_DEACTIVATE,
+                'url'           => \App()->createUrl('quotas/massiveAction', ['action' => Quotas::MASSIVE_ACTION_DEACTIVATE, 'surveyid' => $surveyId]),
                 'iconClasses'   => 'ri-stop-fill',
                 'text'          => \gT('Deactivate'),
                 'grid-reload'   => 'yes',
@@ -55,8 +57,8 @@ class QuotaListMassiveActions
             // Change texts
             $buttons[] = [
                 'type'           => 'action',
-                'action'         => 'changeLanguageSettings',
-                'url'            => \App()->createUrl('quotas/massiveAction', ['action' => 'changeLanguageSettings', 'surveyid' => $surveyId]),
+                'action'         => Quotas::MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS,
+                'url'            => \App()->createUrl('quotas/massiveAction', ['action' => Quotas::MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS, 'surveyid' => $surveyId]),
                 'iconClasses'    => 'ri-refresh-line',
                 'text'           => \gT('Change texts'),
                 'grid-reload'    => 'yes',
@@ -80,8 +82,8 @@ class QuotaListMassiveActions
         if (\Permission::model()->hasSurveyPermission($surveyId, 'quotas', 'delete')) {
             $buttons[] = [
                 'type'          => 'action',
-                'action'        => 'delete',
-                'url'           => \App()->createUrl('quotas/massiveAction', ['action' => 'delete', 'surveyid' => $surveyId]),
+                'action'        => Quotas::MASSIVE_ACTION_DELETE,
+                'url'           => \App()->createUrl('quotas/massiveAction', ['action' => Quotas::MASSIVE_ACTION_DELETE, 'surveyid' => $surveyId]),
                 'iconClasses'   => 'ri-delete-bin-fill',
                 'btnClass'      => 'floating-delete-button',
                 'text'          => \gT('Delete'),

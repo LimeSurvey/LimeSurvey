@@ -411,9 +411,6 @@ class QuotasController extends LSBaseController
             return;
         }
 
-       // $sItems = Yii::app()->request->getPost('sItems', '');
-        //$aQuotaIds = json_decode($sItems) ?? [];
-        //$aQuotaIds = json_decode($sItems) ?? [];
         $sItems = Yii::app()->request->getPost('sItems', '');
         $aQuotaIds = json_decode($sItems, true);
         $aQuotaIds = is_array($aQuotaIds) ? $aQuotaIds : [];
