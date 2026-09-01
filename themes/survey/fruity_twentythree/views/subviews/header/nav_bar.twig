@@ -22,7 +22,7 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
         <div class="container-fluid col-xl-8">
             {% if( aSurveyInfo.options.brandlogo == "on") %}
                 <div class="navbar-brand logo-container">
-                    {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-fluid"}) }}
+                    {{ image(aSurveyInfo.options.brandlogofile, '', {"class": "logo img-fluid"}) }}
                 </div>
             {% endif %}
             <div id="navbar-menu" class="dropdown ms-auto ls-no-js-hidden">
