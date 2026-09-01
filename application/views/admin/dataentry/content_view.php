@@ -421,7 +421,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         </script>
 
         <table border='0'>
-                <?php if ($qidattributes['show_title'] && $qidattributes['show_title']) { ?>
+                <?php if ($qidattributes['show_title'] && $qidattributes['show_comment']) { ?>
                 <tr><th>Title</th><th>Comment</th>
                 <?php } elseif ($qidattributes['show_title']) { ?>
                     <tr><th>Title</th>
