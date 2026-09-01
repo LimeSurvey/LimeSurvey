@@ -16,6 +16,7 @@ export const TableCell = ({ cell }) => {
           answerTitle,
           questionThemeName,
           checked,
+          key,
         },
         index
       ) => {
@@ -29,6 +30,7 @@ export const TableCell = ({ cell }) => {
               questionThemeName,
               checked,
               index,
+              key,
             })}
           </Badge>
         )

@@ -13,7 +13,10 @@ export const renderCellText = ({
   questionThemeName = '',
   checked,
   index,
+  key = '',
 }) => {
+  const isOtherKey = key.endsWith('_Cother')
+
   if (!value && !answerTitle && !comment?.value) {
     return <></>
   }
@@ -47,8 +50,9 @@ export const renderCellText = ({
         <i className="ri-check-line text-success"></i>
       )}
       {isRankingQuestion(questionThemeName) && `${index + 1}. `}
-      {!isSingleChoiceQuestion(questionThemeName) && `${subquestionTitle}`}
-      {isSingleChoiceQuestion(questionThemeName) && answerTitle}
+      {isSingleChoiceQuestion(questionThemeName)
+        ? `${isOtherKey ? 'Other :' : ''} ${answerTitle}`
+        : `${isOtherKey ? 'Other: ' : ''}${subquestionTitle}`}
       {comment?.value && (
         <span>
           {answerTitle && ':'} {comment.value}
