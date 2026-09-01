@@ -409,6 +409,10 @@ LS.floatingActions = (function () {
             $(document).on('change' + ns, '#action_toggleAllParticipant', function () {
                 setTimeout(function () { _updateBar(gridId, pk); }, 50);
             });
+            // Also handle RoleControl--action-toggleAllRoles checkbox used in User Roles
+            $(document).on('change' + ns, '#RoleControl--action-toggleAllRoles', function () {
+                setTimeout(function () { _updateBar(gridId, pk); }, 50);
+            });
             // ---- Bar controls (delegated from document) ---------------------
             // Close / deselect-all: clear cross-page store AND uncheck visible checkboxes
             $(document).on('click' + ns, barSelector + ' .floating-actions-close', function () {
@@ -531,6 +535,7 @@ LS.floatingActions = (function () {
         },
     };
 }());
+
 
 
 
