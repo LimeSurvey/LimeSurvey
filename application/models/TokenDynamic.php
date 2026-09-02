@@ -687,7 +687,7 @@ class TokenDynamic extends LSActiveRecord
         $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->crypt_method == 'H';
         $encryptedAttributes = $this->getAllEncryptedAttributes(self::$sid, 'Token');
         $standardColsToCheck = ['firstname', 'lastname', 'emails'];
-        foreach($standardColsToCheck as $standardColToCheck) {
+        foreach ($standardColsToCheck as $standardColToCheck) {
             if (in_array($standardColToCheck, $encryptedAttributes)) {
                 if ($hardenedCrypt) {
                     /* can not filter if hardened */
@@ -846,7 +846,7 @@ class TokenDynamic extends LSActiveRecord
         $aCustomAttributes = $oSurvey->tokenAttributes;
         $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->crypt_method == 'H';
         $encryptedAttributes = $this->getAllEncryptedAttributes(self::$sid, 'Token');
-        foreach($encryptedAttributes as $encryptedAttribute) {
+        foreach ($encryptedAttributes as $encryptedAttribute) {
             if (isset($attributesForGrid[$encryptedAttribute])) {
                 if ($hardenedCrypt) {
                     /* can not filter if hardened */
