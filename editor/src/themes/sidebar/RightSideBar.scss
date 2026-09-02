@@ -57,3 +57,39 @@
 .right-sidebar-attribute {
   margin-top: 1rem;
 }
+
+.default-values-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .default-values-details {
+    margin-top: 10px;
+    color: $g-700;
+  }
+
+  .default-values-details-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+
+    svg:first-child {
+      width: 20px;
+      height: 20px;
+
+      path {
+        fill: currentColor;
+      }
+    }
+  }
+
+  .default-values-details-text {
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+}
