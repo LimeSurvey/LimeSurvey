@@ -43,6 +43,7 @@ export const PrivacyPolicyButtons = ({
             <div key={optionValue} data-testid={`option-${optionValue}`}>
               <ToggleButton
                 id={`privacy-policy-option-${optionValue}`}
+                name="privacy-policy-display-mode"
                 type="radio"
                 variant="outline-lime-svg"
                 checked={value === optionValue}
