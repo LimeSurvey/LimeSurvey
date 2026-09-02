@@ -17,32 +17,30 @@ import { cloneDeep } from 'lodash'
 export const generateData = (responses, language, generatedColumns) => {
   const data = []
   const questions = {}
+  const formatDate = (date) =>
+    date ? dayJsHelper(date).format('MM-DD-YYYY HH:mm:ss') : 'N/A'
 
-  responses.map((response, index) => {
-    data.push({})
-    data[index].language = response.language
-    data[index].id = response.id
-    data[index].seed = response.seed
-    data[index].submitDate = response.submitDate
-    data[index].token = response.token
-    data[index].firstName = response.firstName
-    data[index].lastName = response.lastName
-    data[index].email = response.email
-
-    const formatDate = (date) =>
-      date ? dayJsHelper(date).format('MM-DD-YYYY HH:mm:ss') : 'N/A'
-    data[index].dateLastAction = formatDate(response.dateLastAction)
-    data[index].startDate = formatDate(response.startDate)
-    data[index].submitDate = formatDate(response.submitDate)
-
-    data[index].ipAddr = response.ipAddr
-    data[index].refUrl = response.refUrl
-    data[index].completed = response.completed
-      ? 'ri-check-line text-success'
-      : 'ri-close-large-line text-danger'
-
-    data[index].answer = {}
-    data[index].meta = {}
+  responses.forEach((response, index) => {
+    data.push({
+      ...response.timings,
+      language: response.language,
+      id: response.id,
+      seed: response.seed,
+      token: response.token,
+      firstName: response.firstName,
+      lastName: response.lastName,
+      email: response.email,
+      dateLastAction: formatDate(response.dateLastAction),
+      startDate: formatDate(response.startDate),
+      submitDate: formatDate(response.submitDate),
+      ipAddr: response.ipAddr,
+      refUrl: response.refUrl,
+      completed: response.completed
+        ? 'ri-check-line text-success'
+        : 'ri-close-large-line text-danger',
+      answer: {},
+      meta: {},
+    })
 
     Object.entries(response.answers).forEach(([, _answer]) => {
       const answer = cloneDeep(_answer)
