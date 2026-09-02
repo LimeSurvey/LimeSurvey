@@ -20,6 +20,10 @@ export const TableCell = ({ cell }) => {
         },
         index
       ) => {
+        if (value === '-oth-') {
+          return <></>
+        }
+
         return (
           <Badge key={`cell-value-${index}${cell.column.id}`}>
             {renderCellText({

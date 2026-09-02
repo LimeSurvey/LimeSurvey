@@ -317,8 +317,13 @@ export const OptionQuestionViewMode = ({
       const child = children[i]
 
       valuesInOrder.push(
-        values?.find((value) => {
-          return value[childrenInfo.idKey] == child[childrenInfo.idKey]
+        values?.find((value = {}) => {
+          const valueIsOther = value.key?.endsWith('_Cother')
+
+          return (
+            value[childrenInfo.idKey] == child[childrenInfo.idKey] ||
+            (valueIsOther && child.isOther)
+          )
         })
       )
     }
@@ -469,7 +474,11 @@ export const OptionQuestionViewMode = ({
                 className="w-100 d-block comment-input"
                 dataTestId="other-option-input"
                 type="textarea"
-                value={values?.[1]?.value}
+                value={
+                  isSingleChoiceTheme
+                    ? values?.[1]?.value
+                    : childrenValuesInOrder[index]?.value
+                }
               />
             )}
           </div>
