@@ -2,10 +2,11 @@ import { Entities, getSettingValueFromSurvey, STATES } from 'helpers'
 import { getOnOffOptions, ONOFF_BOOLEAN } from 'helpers/options'
 
 import {
-    ContentEditor,
-    Select,
-    ToggleButtons,
-    Input, PrivacyPolicyButtons,
+  ContentEditor,
+  Select,
+  ToggleButtons,
+  Input,
+  PrivacyPolicyButtons,
 } from 'components/UIComponents'
 
 export const getPrivacyPolicySettingsBlocks = () => ({
@@ -15,7 +16,9 @@ export const getPrivacyPolicySettingsBlocks = () => ({
         keyPath: 'showSurveyPolicyNotice',
         props: {
           id: 'show-survey-policy-notice',
-          mainText: t('Show privacy policy text with mandatory checkbox in welcome screen'),
+          mainText: t(
+            'Show privacy policy text with mandatory checkbox in welcome screen'
+          ),
           childComponent: PrivacyPolicyButtons,
           noPermissionDisabled: true,
         },
