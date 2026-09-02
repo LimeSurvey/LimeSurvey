@@ -72,50 +72,54 @@ export const QuestionFooter = ({
             height={20}
           />
         </div>
-        <TooltipContainer
-          tip={getTooltipMessages().ACTIVE_DISABLED}
-          showTip={isSurveyActive}
-        >
-          <div
-            style={{
-              opacity: isSurveyActive && 0.3,
-              cursor: !isSurveyActive && 'pointer',
-              pointerEvents: (isSurveyActive || !isFocused) && 'none',
-            }}
-            className={classNames({ disabled: !isFocused })}
-            data-testid="question-footer-copy-icon"
-            onClick={handleDuplicate}
-          >
-            <CopyIcon
-              className={classNames('footer-icon ', {
-                'active-icon fill-current': isFocused,
-                'd-none disabled': !isFocused,
-              })}
-            />
-          </div>
-        </TooltipContainer>
-        <TooltipContainer
-          tip={getTooltipMessages().ACTIVE_DISABLED}
-          showTip={isSurveyActive}
-        >
-          <div
-            style={{
-              opacity: isSurveyActive && 0.3,
-              cursor: !isSurveyActive && 'pointer',
-              pointerEvents: isSurveyActive && 'none',
-            }}
-            onClick={handleRemoveQuestion}
-            data-testid="question-footer-delete-icon"
-            id="question-footer-delete-icon"
-          >
-            <DeleteIcon
-              className={classNames('footer-icon ', {
-                'active-icon fill-current': isFocused,
-                'opacity-0 disabled': !isFocused,
-              })}
-            />
-          </div>
-        </TooltipContainer>
+        {isFocused && (
+          <>
+            <TooltipContainer
+              tip={getTooltipMessages().ACTIVE_DISABLED}
+              showTip={isSurveyActive}
+            >
+              <div
+                style={{
+                  opacity: isSurveyActive && 0.3,
+                  cursor: !isSurveyActive && 'pointer',
+                  pointerEvents: (isSurveyActive || !isFocused) && 'none',
+                }}
+                className={classNames({ disabled: !isFocused })}
+                data-testid="question-footer-copy-icon"
+                onClick={handleDuplicate}
+              >
+                <CopyIcon
+                  className={classNames('footer-icon ', {
+                    'active-icon fill-current': isFocused,
+                    'd-none disabled': !isFocused,
+                  })}
+                />
+              </div>
+            </TooltipContainer>
+            <TooltipContainer
+              tip={getTooltipMessages().ACTIVE_DISABLED}
+              showTip={isSurveyActive}
+            >
+              <div
+                style={{
+                  opacity: isSurveyActive && 0.3,
+                  cursor: !isSurveyActive && 'pointer',
+                  pointerEvents: isSurveyActive && 'none',
+                }}
+                onClick={handleRemoveQuestion}
+                data-testid="question-footer-delete-icon"
+                id={'question-footer-delete-icon'}
+              >
+                <DeleteIcon
+                  className={classNames('footer-icon ', {
+                    'active-icon fill-current': isFocused,
+                    'opacity-0 disabled': !isFocused,
+                  })}
+                />
+              </div>
+            </TooltipContainer>
+          </>
+        )}
       </div>
     </>
   )
