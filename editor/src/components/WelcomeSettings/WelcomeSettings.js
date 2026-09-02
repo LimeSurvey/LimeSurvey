@@ -88,14 +88,16 @@ export const WelcomeSettings = ({ surveyId }) => {
           />
         </div>
         <div className="ms-3 mt-3 pt-3 privacy-settings-link-border-top">
-          <span
+          <Button
+            variant="link"
             className="privacy-settings-link"
+            style={{ padding: 0, border: 'none' }}
             onClick={handlePrivacyDetailsClick}
             data-testid="privacy-details-link"
           >
             <SettingsIcon />
             {t('Define and edit privacy details')}
-          </span>
+          </Button>
         </div>
       </SettingsWrapper>
     </div>

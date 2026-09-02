@@ -45,6 +45,14 @@ $sidebar-row-padding: 0 0.5rem 0 1.5rem;
   font-size: $font-size-sm;
   line-height: $line-height-20;
   letter-spacing: -0.21px;
+  background: transparent;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: $grape;
+    text-decoration: none;
+  }
 
   svg {
     width: 16px;
