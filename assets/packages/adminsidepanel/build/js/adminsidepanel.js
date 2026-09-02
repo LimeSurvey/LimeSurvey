@@ -761,6 +761,7 @@ class QuestionExplorer {
     this.orderChanged = false; // Track if order actually changed during drag
     this.lastDragenterGid = null; // Prevent duplicate dragenter processing
     this.lastDragenterQid = null; // Prevent duplicate dragenter processing
+    this.dragStartGroupOrder = null; // Group gids in display order at dragstart
   }
 
   /**
@@ -1241,6 +1242,11 @@ class QuestionExplorer {
       this.questiongroupDragging = true;
       this.orderChanged = false; // Reset flag at start of drag
       this.lastDragenterGid = null; // Reset dragenter tracking
+      this.dragStartGroupOrder = LS.ld.orderBy(questiongroups, function (g) {
+        return _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].parseIntOr(g.group_order, 999999);
+      }, ['asc']).map(function (g) {
+        return g.gid;
+      });
       e.originalEvent.dataTransfer.setData('text/plain', 'node');
       // Add dragged class directly without re-rendering
       $(e.currentTarget).closest('.list-group-item').addClass('dragged');
@@ -1251,6 +1257,7 @@ class QuestionExplorer {
       if (this.draggedQuestionGroup !== null) {
         this.draggedQuestionGroup = null;
         this.questiongroupDragging = false;
+        this.dragStartGroupOrder = null;
         // Only trigger order update if order actually changed
         if (this.orderChanged && this.onOrderChange) {
           this.onOrderChange();
@@ -1273,16 +1280,33 @@ class QuestionExplorer {
         return g.gid === gid;
       });
       if (this.questiongroupDragging && this.draggedQuestionGroup && questiongroupObject) {
-        // Highlight the drop destination
+        // Highlight the group row as drop destination, never a question row
+        // (the event also fires on question rows, which carry data-gid too)
         $container.find('.list-group-item').removeClass('dragged');
-        $(e.currentTarget).addClass('dragged');
-        var targetPosition = parseInt(questiongroupObject.group_order);
-        var currentPosition = parseInt(this.draggedQuestionGroup.group_order);
-        if (Math.abs(targetPosition - currentPosition) === 1) {
-          questiongroupObject.group_order = currentPosition;
-          this.draggedQuestionGroup.group_order = targetPosition;
+        $(e.currentTarget).closest('.questiongroup-list-group > .list-group-item').addClass('dragged');
+        var startOrder = this.dragStartGroupOrder || [];
+        var draggedGid = this.draggedQuestionGroup.gid;
+        var targetIndex = startOrder.indexOf(gid);
+        if (targetIndex !== -1 && startOrder.indexOf(draggedGid) !== -1) {
+          // Rebuild from the order captured at dragstart: the dragged group
+          // takes the entered row's slot. The result depends only on the last
+          // row entered, so missed or repeated dragenter events can't corrupt it.
+          var newOrder = startOrder.filter(function (g) {
+            return g !== draggedGid;
+          });
+          newOrder.splice(targetIndex, 0, draggedGid);
+          LS.ld.each(newOrder, function (orderedGid, idx) {
+            var group = questiongroups.find(function (g) {
+              return g.gid === orderedGid;
+            });
+            if (group) {
+              group.group_order = idx + 1;
+            }
+          });
           _StateManager_js__WEBPACK_IMPORTED_MODULE_0__["default"].commit('updateQuestiongroups', questiongroups);
-          this.orderChanged = true; // Mark that order has changed
+          this.orderChanged = newOrder.some(function (g, idx) {
+            return g !== startOrder[idx];
+          });
           // Don't re-render during drag - wait for dragend
         }
       } else if (this.questionDragging && this.draggedQuestion && questiongroupObject) {
@@ -1962,7 +1986,8 @@ class Sidebar {
   /**
    * Change current tab
    */
-  changeCurrentTab(tab) {
+  changeCurrentTab(tab, options) {
+    options = options || {};
     // Normalize tab name - 'structure' is alias for 'questiontree'
     if (tab === 'structure') {
       tab = 'questiontree';
@@ -1972,7 +1997,20 @@ class Sidebar {
       tab = 'settings';
     }
     _StateManager_js__WEBPACK_IMPORTED_MODULE_4__["default"].commit('changeCurrentTab', tab);
-    this.render();
+    const tabs = this.container.querySelectorAll('.sidebar-tab-link');
+    if (tabs.length === 0) {
+      this.render();
+      return;
+    }
+    this.updateSidebarTabA11y();
+    this.renderContent();
+    if (options.focusTab !== false) {
+      const tabSelector = tab === 'settings' ? '#adminsidepanel__sidebar--selectorSettingsButton' : '#adminsidepanel__sidebar--selectorStructureButton';
+      const activeTab = this.container.querySelector(tabSelector);
+      if (activeTab) {
+        activeTab.focus();
+      }
+    }
   }
 
   /**
@@ -2250,10 +2288,10 @@ class Sidebar {
       html += this.renderStateToggle(isCollapsed, currentTab, isRTL);
 
       // Side menu content
-      html += '<div id="sidemenu-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+      html += '<div id="sidemenu-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorSettingsButton" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
 
       // Question explorer content
-      html += '<div id="questionexplorer-container" class="slide-fade" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+      html += '<div id="questionexplorer-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorStructureButton" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
 
       // Quick menu (collapsed state)
       html += '<div id="quickmenu-container" style="display: ' + (isCollapsed ? 'block' : 'none') + ';"></div>';
@@ -2288,6 +2326,37 @@ class Sidebar {
 
     // Render sub-components
     this.renderContent();
+    this.updateSidebarTabA11y();
+  }
+
+  /**
+   * Keep exactly one sidebar tab marked selected for assistive technology.
+   */
+  updateSidebarTabA11y() {
+    const currentTab = _StateManager_js__WEBPACK_IMPORTED_MODULE_4__["default"].get('currentTab');
+    const isCollapsed = _StateManager_js__WEBPACK_IMPORTED_MODULE_4__["default"].getComputed('isCollapsed');
+    const tabs = this.container.querySelectorAll('.sidebar-tab-link');
+    tabs.forEach(tab => {
+      const tabName = tab.getAttribute('data-tab');
+      const isSelected = tabName === currentTab;
+      tab.classList.toggle('active', isSelected);
+      tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      tab.tabIndex = isSelected ? 0 : -1;
+    });
+    const sidemenu = document.getElementById('sidemenu-container');
+    const questionexplorer = document.getElementById('questionexplorer-container');
+    if (sidemenu) {
+      const show = !isCollapsed && currentTab === 'settings';
+      sidemenu.style.display = show ? 'block' : 'none';
+      sidemenu.hidden = !show;
+      sidemenu.setAttribute('aria-hidden', show ? 'false' : 'true');
+    }
+    if (questionexplorer) {
+      const show = !isCollapsed && currentTab === 'questiontree';
+      questionexplorer.style.display = show ? 'block' : 'none';
+      questionexplorer.hidden = !show;
+      questionexplorer.setAttribute('aria-hidden', show ? 'false' : 'true');
+    }
   }
 
   /**
@@ -2297,7 +2366,9 @@ class Sidebar {
     let html = '<div class="ls-space col-12">';
     html += '<div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 bottom-0 top-0">';
     if (!isCollapsed) {
-      html += '<div class="ls-flex-item grow-10 col-12">' + '<ul class="nav nav-tabs" id="surveysystem" role="tablist">' + '<li class="nav-item">' + '<a id="adminsidepanel__sidebar--selectorSettingsButton" class="nav-link sidebar-tab-link' + (currentTab === 'settings' ? ' active' : '') + '" href="#settings" data-tab="settings" role="tab">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_6__["default"].translate('settings') + '</a>' + '</li>' + '<li class="nav-item">' + '<a id="adminsidepanel__sidebar--selectorStructureButton" class="nav-link sidebar-tab-link' + (currentTab === 'questiontree' ? ' active' : '') + '" href="#structure" data-tab="questiontree" role="tab">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_6__["default"].translate('structure') + '</a>' + '</li>' + '</ul>' + '</div>';
+      const settingsSelected = currentTab === 'settings';
+      const structureSelected = currentTab === 'questiontree';
+      html += '<div class="ls-flex-item grow-10 col-12">' + '<ul class="nav nav-tabs" id="adminsidepanel-sidebar-tablist" role="tablist">' + '<li class="nav-item">' + '<a id="adminsidepanel__sidebar--selectorSettingsButton" class="nav-link sidebar-tab-link' + (settingsSelected ? ' active' : '') + '" href="#settings" data-tab="settings" role="tab" aria-controls="sidemenu-container" aria-selected="' + (settingsSelected ? 'true' : 'false') + '" tabindex="' + (settingsSelected ? '0' : '-1') + '">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_6__["default"].translate('settings') + '</a>' + '</li>' + '<li class="nav-item">' + '<a id="adminsidepanel__sidebar--selectorStructureButton" class="nav-link sidebar-tab-link' + (structureSelected ? ' active' : '') + '" href="#structure" data-tab="questiontree" role="tab" aria-controls="questionexplorer-container" aria-selected="' + (structureSelected ? 'true' : 'false') + '" tabindex="' + (structureSelected ? '0' : '-1') + '">' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_6__["default"].translate('structure') + '</a>' + '</li>' + '</ul>' + '</div>';
     } else {
       const arrowClass = isRTL ? 'ri-arrow-left-s-line' : 'ri-arrow-right-s-line';
       html += '<button class="btn btn-outline-secondary ls-space padding left-15 right-15 expand-sidebar-btn">' + '<i class="' + arrowClass + '"></i>' + '</button>';
@@ -2336,7 +2407,39 @@ class Sidebar {
     $(this.container).off('click', '.sidebar-tab-link').on('click', '.sidebar-tab-link', e => {
       e.preventDefault();
       const tab = $(e.currentTarget).data('tab');
-      this.changeCurrentTab(tab);
+      this.changeCurrentTab(tab, { focusTab: true });
+    });
+
+    $(this.container).off('keydown', '.sidebar-tab-link').on('keydown', '.sidebar-tab-link', e => {
+      const key = e.key;
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].indexOf(key) === -1) {
+        return;
+      }
+
+      const $tabs = $(this.container).find('.sidebar-tab-link');
+      if ($tabs.length < 2) {
+        return;
+      }
+
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      const currentIndex = $tabs.index(e.currentTarget);
+      let nextIndex = currentIndex;
+
+      if (key === 'ArrowLeft' || key === 'ArrowUp') {
+        nextIndex = (currentIndex - 1 + $tabs.length) % $tabs.length;
+      } else if (key === 'ArrowRight' || key === 'ArrowDown') {
+        nextIndex = (currentIndex + 1) % $tabs.length;
+      } else if (key === 'Home') {
+        nextIndex = 0;
+      } else if (key === 'End') {
+        nextIndex = $tabs.length - 1;
+      }
+
+      if (nextIndex !== currentIndex) {
+        this.changeCurrentTab($tabs.eq(nextIndex).data('tab'), { focusTab: true });
+      }
     });
 
     // Expand button (collapsed state)

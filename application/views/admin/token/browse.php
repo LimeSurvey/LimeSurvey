@@ -59,6 +59,7 @@ $aLanguageNames = implode(";", $aLanguageNames);
                 'columns'               => $model->getAttributesForGrid(),
                 'ajaxUpdate'            => 'token-grid',
                 'ajaxType'              => 'POST',
+                'lsSelectAllEnabled'    => true,
                 'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();']
             ]);
             ?>
@@ -116,3 +117,5 @@ $aLanguageNames = implode(";", $aLanguageNames);
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<?php $this->renderPartial('/admin/token/_bounceProcessingModal'); ?>

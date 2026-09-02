@@ -54,7 +54,7 @@ See: http://twig.sensiolabs.org/
 The main variable is aSurveyInfo. It's an array containing the main information about the survey.
 aSurveyInfo also contains other needed arrays, such as aNavigator, or aQuestionGroups (which contain aQuestions), etc.
 
-If you want to see what is availabe in aSurveyInfo, turn debug mode on in application/config.php, and copy the following line to the end of the <body> element below:
+If you want to see what is available in aSurveyInfo, turn debug mode on in application/config.php, and copy the following line to the end of the <body> element below:
 {{ dump(aSurveyInfo) }}
 
 To echo a variable, just insert                      : {{ variable }}
@@ -123,7 +123,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             <div class="row justify-content-center">
                                 <div
                                     id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
-                                    {{ image('./files/survey_list_header.png', aSurveyInfo.name, {"class": "img-fluid mx-auto d-block"}) }}
+                                    {{ image('./files/survey_list_header.png', gT("LimeSurvey"), {"class": "img-fluid mx-auto d-block"}) }}
                                     <span class="text-center">{{ aSurveyInfo.sSiteName }}</span>
                                 </div>
                             </div>
@@ -183,7 +183,7 @@ NOTE: Feel free to ask for functions, variables, etc, that you feel are missing 
                             <div {{ aSurveyInfo.attr.surveylistfootercontp }} class="row">
                                 <div class="col-6 col-md-12">
                                     <a {{ aSurveyInfo.attr.surveylistfootercontpaa }}>
-                                        {{ image("./files/poweredby.png", "LimeSurvey Survey Software", {class: 'img-fluid'}) }}
+                                        {{ image("./files/poweredby.png", gT("Proudly powered by LimeSurvey"), {class: 'img-fluid'}) }}
                                     </a>
                                 </div>
                                 <div class="col-12 d-block d-sm-none d-md-block text-center">

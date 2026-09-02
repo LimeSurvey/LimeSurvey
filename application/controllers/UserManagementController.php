@@ -396,6 +396,8 @@ class UserManagementController extends LSBaseController
         $action = Yii::app()->request->getParam('action');
 
         $userId = sanitize_int($userId);
+        // Only allow the two known actions
+        $action = in_array($action, ['activate', 'deactivate'], true) ? $action : 'deactivate';
 
         $aData['userId'] = $userId;
         $aData['action'] = $action;
@@ -417,7 +419,10 @@ class UserManagementController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $userId = sanitize_int(Yii::app()->request->getParam('userid'));
-        $action = Yii::app()->request->getParam('action');
+        $action = Yii::app()->request->getParam('action', 'deactivate');
+        if (!in_array($action, ['activate', 'deactivate'], true)) {
+            throw new CHttpException(400, gT("Invalid action"));
+        }
         $oUser = User::model()->findByPk($userId);
 
         if ($oUser == null) {
@@ -907,6 +912,7 @@ class UserManagementController extends LSBaseController
         $created = [];
         $updated = [];
         $hasDuplicateIdentity = false;
+        $hasInvalidUsername = false;
         $canOverwriteDuplicateEmail = false;
         $existingAttributes = User::model()->attributeNames();
         $dateAttributes = ['last_login', 'validation_key_expiration','last_forgot_email_password','expires'];
@@ -914,6 +920,11 @@ class UserManagementController extends LSBaseController
             // Unset not imported or invalid attribute
             $aNewUser = array_intersect_key($aNewUser, array_flip($existingAttributes));
             $aNewUser = array_diff_key($aNewUser, array_flip(['uid','parent_id', 'created', 'modified']));
+            $aNewUser['users_name'] = flattenText($aNewUser['users_name'] ?? '');
+            if (empty($aNewUser['users_name'])) {
+                $hasInvalidUsername = true;
+                continue;
+            }
             $oUser = User::model()->find(
                 'users_name = :name OR email = :email',
                 [
@@ -971,7 +982,7 @@ class UserManagementController extends LSBaseController
                     'email' => $aNewUser['email'],
                     'lang' => $aNewUser['lang'],
                 ]);
-                if ($newUserAttributes) {
+                if (is_array($newUserAttributes) && isset($newUserAttributes['uid'])) {
                     /* Update it with other attributes */
                     $oUser = User::model()->findByPk($newUserAttributes['uid']);
                     $aNewUserExtra = array_diff_key($aNewUser, array_flip(['users_name','full_name', 'password', 'email', 'lang']));
@@ -989,6 +1000,10 @@ class UserManagementController extends LSBaseController
         }
         if (count($created) || count($updated)) {
             Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
+        }
+
+        if ($hasInvalidUsername) {
+            Yii::app()->setFlashMessage(gT("A username was not supplied or the username is invalid."), 'warning');
         }
 
         if ($hasDuplicateIdentity) {
@@ -1626,6 +1641,12 @@ class UserManagementController extends LSBaseController
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
+            if ($newUser === null) {
+                return [
+                    'success' => false,
+                    'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
+                ];
+            }
             $success = true;
             $sReturnMessage = gT('User successfully created', 'unescaped');
 
@@ -1666,10 +1687,10 @@ class UserManagementController extends LSBaseController
      * @todo : move to private function
      *
      * @param array $aUser array with user details
-     * @return array returns all attributes from model user as an array
+     * @return array|null returns all attributes from model user as an array, or null when rendering an error response directly
      * @throws CException
      */
-    public function createNewUser(array $aUser): array
+    public function createNewUser(array $aUser): ?array
     {
         if (!App()->getRequest()->getIsPostRequest()) {
             throw new CHttpException(400, gT('Your request is invalid.'));

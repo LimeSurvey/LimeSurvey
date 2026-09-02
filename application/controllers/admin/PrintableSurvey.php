@@ -93,6 +93,10 @@ class PrintableSurvey extends SurveyCommonAction
 
             LimeExpressionManager::StartSurvey($surveyid, 'survey', null, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
             LimeExpressionManager::NavigateForwards();
+            // Process EM expressions in survey-level text fields so functions like qrCode() render correctly.
+            $aSurveyInfo['surveyls_welcometext'] = LimeExpressionManager::ProcessString((string) $aSurveyInfo['surveyls_welcometext']);
+            $aSurveyInfo['surveyls_description'] = LimeExpressionManager::ProcessString((string) $aSurveyInfo['surveyls_description']);
+            $end = LimeExpressionManager::ProcessString((string) $end);
             Yii::app()->clientScript->reset(); // Remove all scripts
             /* Add css */
             Yii::app()->getClientScript()->registerPackage('printable');
@@ -159,7 +163,9 @@ class PrintableSurvey extends SurveyCommonAction
                 $arQuestions = $arQuestionGroup->questions;
 
                 if (!empty($arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description)) {
-                    $group_desc = $arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description;
+                    $group_desc = LimeExpressionManager::ProcessString(
+                        $arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description
+                    );
                 } else {
                     $group_desc = '';
                 }
@@ -505,7 +511,10 @@ class PrintableSurvey extends SurveyCommonAction
                         // content of the question code field
                         'code' => $arQuestion['title'],
                         // content of the question field
-                        'text' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is', '', (string) $arQuestion->questionl10ns[$sLanguageCode]->question),
+                        'text' => LimeExpressionManager::ProcessString(
+                            preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is', '', (string) $arQuestion->questionl10ns[$sLanguageCode]->question),
+                            $arQuestion['qid']
+                        ),
                         // if there are conditions on a question, list the conditions.
                         'scenario' => $sExplanation,
                         // translated 'mandatory' identifier
@@ -553,7 +562,10 @@ class PrintableSurvey extends SurveyCommonAction
 
                     //DIFFERENT TYPES OF DATA FIELD HERE
                     if (!empty($arQuestion->questionl10ns[$sLanguageCode]->help)) {
-                        $question['help'] = $arQuestion->questionl10ns[$sLanguageCode]->help;
+                        $question['help'] = LimeExpressionManager::ProcessString(
+                            $arQuestion->questionl10ns[$sLanguageCode]->help,
+                            $arQuestion['qid']
+                        );
                     }
 
 
@@ -646,12 +658,8 @@ class PrintableSurvey extends SurveyCommonAction
                                 }
                             }
 
-                            if (($arQuestion['other'] == 'Y') && isset($qidattributes["printable_help"])) {
-                                /*echo '<pre>';
-                                print_r($qidattributes);
-                                echo '</pre>';
-                                die();*/
-                                if (trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
+                            if ($arQuestion['other'] == 'Y') {
+                                if (!isset($qidattributes["printable_help"][$sLanguageCode]) || trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = gT("Other");
                                 }
                                 //                    $printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".self::inputTypeImage('radio' , gT("Other"))."\n\t\t\t".gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
@@ -724,8 +732,8 @@ class PrintableSurvey extends SurveyCommonAction
                                     ++$colcounter;
                                 }
                             }
-                            if (($arQuestion['other'] == "Y") && (isset($qidattributes["printable_help"]))) {
-                                if (trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
+                            if ($arQuestion['other'] == "Y") {
+                                if (!isset($qidattributes["printable_help"][$sLanguageCode]) || trim((string) $qidattributes["printable_help"][$sLanguageCode]) == '') {
                                     $qidattributes["printable_help"][$sLanguageCode] = "Other";
                                 }
                                 $question['answer'] .= $wrapper['item-start-other'] . self::inputTypeImage('checkbox', '') . gT($qidattributes["printable_help"][$sLanguageCode]) . ":\n\t\t" . self::inputTypeImage('other') . self::addsgqacode(" (" . $fieldname . "other) ") . $wrapper['item-end'];

@@ -1254,16 +1254,10 @@ class remotecontrol_handle
                 file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
 
                 if (strtolower($sImportDataType) == 'lsg') {
-                    if (\PHP_VERSION_ID < 80000) {
-                        $bOldEntityLoaderState = libxml_disable_entity_loader(true);  // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-                    }
                     $sXMLdata = file_get_contents($sFullFilePath);
                     $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
                     if (!$xml) {
                         unlink($sFullFilePath);
-                        if (\PHP_VERSION_ID < 80000) {
-                            libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                        }
                         return array('status' => 'Error: Invalid LimeSurvey group structure XML ', 'error_code' => self::ERR_INVALID_XML);
                     }
                     $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID, true);
@@ -1275,9 +1269,6 @@ class remotecontrol_handle
                 unlink($sFullFilePath);
 
                 if (isset($aImportResults['fatalerror'])) {
-                    if (\PHP_VERSION_ID < 80000) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                    }
                     return array('status' => 'Error: ' . $aImportResults['fatalerror'], 'error_code' => self::ERR_CREATION_FAILED);
                 } else {
                     $iNewgid = $aImportResults['newgid'];
@@ -1296,9 +1287,6 @@ class remotecontrol_handle
                         $oGroupL10n->save();
                     } catch (Exception $e) {
                         // no need to throw exception
-                    }
-                    if (\PHP_VERSION_ID < 80000) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
                     }
                     return (int) $aImportResults['newgid'];
                 }
@@ -1660,36 +1648,21 @@ class remotecontrol_handle
         file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
 
         if (strtolower($sImportDataType) == 'lsq') {
-            if (\PHP_VERSION_ID < 80000) {
-                $bOldEntityLoaderState = libxml_disable_entity_loader(true);  // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-            }
             $sXMLdata = file_get_contents($sFullFilePath);
             $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
             if (!$xml) {
                 unlink($sFullFilePath);
-                if (\PHP_VERSION_ID < 80000) {
-                    libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                }
                 return array('status' => 'Error: Invalid LimeSurvey question structure XML ', 'error_code' => self::ERR_INVALID_XML);
             }
             $aImportResults = XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID, $importOptions);
         } else {
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
-            }
             return array('status' => 'Really Invalid extension', 'error_code' => self::ERR_INVALID_EXTENSION);
         }
         unlink($sFullFilePath);
         $iNewqid = 0;
         if (isset($aImportResults['fatalerror'])) {
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
-            }
             return array('status' => 'Error: ' . $aImportResults['fatalerror'], 'error_code' => self::ERR_CREATION_FAILED);
         } else {
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader($bOldEntityLoaderState);  // Put back entity loader to its original state, to avoid contagion to other applications on the server
-            }
             fixLanguageConsistency($iSurveyID);
 
             $iNewqid = $aImportResults['newqid'];
@@ -1819,11 +1792,11 @@ class remotecontrol_handle
                 foreach ($aQuestionSettings as $sPropertyName) {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
                         $oSubQuestions = Question::model()->with('questionl10ns')
-                                                          ->findAll(
-                                                              't.parent_qid = :parent_qid and questionl10ns.language = :language',
-                                                              array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
-                                                              array('order' => 'title')
-                                                          );
+                                                          ->findAll(array(
+                                                              'condition' => 't.parent_qid = :parent_qid and questionl10ns.language = :language',
+                                                              'params' => array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
+                                                              'order' => 't.title',
+                                                          ));
 
                         if (count($oSubQuestions) > 0) {
                             $aData = array();
@@ -1917,7 +1890,9 @@ class remotecontrol_handle
                                                                             'qid = :qid AND defaultvaluel10ns.language = :language',
                                                                             array(':qid' => $iQuestionID, ':language' => $sLanguage)
                                                                         );
-                        $aResult['defaultvalue'] = $oDefaultValue !== null ? $oDefaultValue->defaultvalue : null;
+                        $aResult['defaultvalue'] = ($oDefaultValue !== null && isset($oDefaultValue->defaultvaluel10ns[$sLanguage]))
+                            ? $oDefaultValue->defaultvaluel10ns[$sLanguage]->defaultvalue
+                            : null;
                     } elseif ($sPropertyName == 'question' || $sPropertyName == 'help' || $sPropertyName == 'script') {
                         $aResult[$sPropertyName] = $oQuestion->questionl10ns[$sLanguage]->$sPropertyName;
                     } elseif ($sPropertyName == 'questionl10ns') {

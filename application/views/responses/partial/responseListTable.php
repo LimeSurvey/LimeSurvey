@@ -85,9 +85,28 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->crypt_me
 
         <?php endif; ?>
 
+        <?php if ($selectAllMaxCount !== null && $numTotalAnswers > $selectAllMaxCount) {
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'tag'  => 'p',
+                'text' => sprintf(
+                    gT('Deleting responses or their uploaded files with "Select all" is limited to %s responses in one action.'),
+                    $selectAllMaxCount
+                ),
+                'type' => 'info',
+            ]);
+        } ?>
+
         <?php
         // the massive actions dropup button
-        $massiveAction = App()->getController()->renderPartial('/responses/massive_actions/_selector', [], true);
+        $massiveAction = App()->getController()->renderPartial(
+            '/responses/massive_actions/_selector',
+            [
+                'selectAllMaxCount' => $selectAllMaxCount,
+                'numTotalAnswers'   => $numTotalAnswers,
+            ],
+            true
+        );
+
         /* @var string notice text for encryption */
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
         if ($hideCryptedFilter) {
@@ -95,7 +114,6 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->crypt_me
         }
         /* @var string notice HTML for encryption */
         $encryptionHtmlNotice = ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
-
         // The first few columns are fixed.
         // Specific columns at start
         $aColumns = [
@@ -299,6 +317,7 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->crypt_me
                 'id'                    => 'responses-grid',
                 'ajaxUpdate'            => 'responses-grid',
                 'ajaxType'              => 'POST',
+                'lsSelectAllEnabled'    => true,
                 'lsAfterAjaxUpdate'     => [
                     "afterAjaxResponsesReload();",
                     "onUpdateTokenGrid();",

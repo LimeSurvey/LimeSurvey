@@ -19,6 +19,15 @@ use SurveyActivator;
 
 class TestHelper extends TestCase
 {
+    /* @var string keep publicurl */
+    protected static $tmpPublicUrl;
+    /* @var string keep request->baseUrl */
+    protected static $tmpBaseUrl;
+    /* @var \CUrlManager|null keep App()->urlmanager */
+    protected static $originalUrlManager;
+    /* @var string keep App()->request->hostInfo */
+    protected static $tmpHostInfo;
+
     /**
      * Import all helpers etc.
      * @return void
@@ -532,5 +541,43 @@ class TestHelper extends TestCase
         $property = $reflection->getProperty('_hostInfo');
         $property->setAccessible(true);
         $property->setValue(Yii::app()->getRequest(), null);
+    }
+
+    /**
+     * Save url generation configuration
+     */
+    public static function saveUrlSettings()
+    {
+        self::$tmpPublicUrl = Yii::app()->getConfig('publicurl');
+        self::$tmpBaseUrl = Yii::app()->getRequest()->baseUrl;
+        self::$tmpHostInfo = Yii::app()->getRequest()->hostInfo;
+        self::$originalUrlManager = Yii::app()->getUrlManager();
+    }
+
+    /**
+     * Set config and component to expected default
+     */
+    public static function setUrlToExpectedDefault($urlFormat = \CUrlManager::PATH_FORMAT)
+    {
+        Yii::app()->setConfig('publicurl', null);
+        $urlManager = [
+            'urlFormat' => $urlFormat,
+            'rules' => require(APPPATH . 'config/routes.php'),
+            'showScriptName' => true,
+        ];
+        Yii::app()->setComponent('urlManager', null); // Be sure to reset component
+        Yii::app()->setComponent('urlManager', $urlManager);
+    }
+
+    /**
+     * Reset url generation configuration
+     */
+    public static function resetUrlSettings()
+    {
+        Yii::app()->setConfig('publicurl', self::$tmpPublicUrl);
+        Yii::app()->getRequest()->baseUrl = self::$tmpBaseUrl;
+        Yii::app()->getRequest()->hostInfo = self::$tmpHostInfo;
+        Yii::app()->setComponent('urlManager', null); // Be sure to reset component
+        Yii::app()->setComponent('urlManager', self::$originalUrlManager);
     }
 }

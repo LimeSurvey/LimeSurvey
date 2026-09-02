@@ -360,6 +360,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['maincoldivdivbul']             = '  ';
         $aClassAndAttributes['class']['maincoldivdivbdiv']            = ' ';
         $aClassAndAttributes['class']['maincolform']                  = '  ';
+        $aClassAndAttributes['class']['maincolformmandatoryinfo']     = ' text-muted large d-block mb-3 ';
+        $aClassAndAttributes['class']['maincolformmandatoryinfoasterisk'] = ' text-danger ';
         $aClassAndAttributes['class']['maincolformlabel']             = '  ';
         $aClassAndAttributes['class']['maincolformlabelsmall']        = ' superset ';
         $aClassAndAttributes['class']['maincolformlabelspan']         = ' ';
@@ -388,10 +390,12 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['maincolformdivddivbdivbutton'] = '  ';
 
 
-        $aClassAndAttributes['attr']['maincolformdivainput']          = ' type="password" id="token" name="token" value="" required ';
+        $aClassAndAttributes['attr']['maincoldivdiva']                = ' role="heading" aria-level="2" ';
+        $aClassAndAttributes['attr']['maincolformdivainput']          = ' type="password" id="token" name="token" value="" required aria-labelledby="token-label" ';
         $aClassAndAttributes['attr']['maincoldivdivbul']              = ' role="alert" ';
-        $aClassAndAttributes['attr']['maincolformlabel']              = ' for="token"';
+        $aClassAndAttributes['attr']['maincolformlabel']              = ' id="token-label" for="token" ';
         $aClassAndAttributes['attr']['maincolformlabelsmall']         = ' aria-hidden="true" ';
+        $aClassAndAttributes['attr']['maincolformmandatoryinfo']      = ' ';
         $aClassAndAttributes['attr']['maincolformdivblabel']          = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['maincolformdivblabelsmall']     = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['maincolformdivbdivdivinput']    = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
@@ -447,7 +451,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['returntosurveydiva']    = ' ls-return ';
 
         $aClassAndAttributes['attr']['loadformul']             = ' role="alert"';
-        $aClassAndAttributes['attr']['saveformrowlabel']       = ' for="savename" ';
+        $aClassAndAttributes['attr']['saveformrowlabel']       = ' for="loadname" ';
         $aClassAndAttributes['attr']['saveformrowlabelsmall']  = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['saveformrowcolinput']    = ' type="text"  name="loadname" value="" required ';
         $aClassAndAttributes['attr']['passwordrowinputi']      = ' type="password" id="loadpass" name="loadpass" value="" required ';
@@ -460,7 +464,8 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['savemessage'] = $aClassAndAttributes['attr']['savemessagetext'] = $aClassAndAttributes['attr']['savemessagetitle'] = $aClassAndAttributes['attr']['loadform'] = $aClassAndAttributes['attr']['savemessagetextp'] = $aClassAndAttributes['attr']['savemessagetextpb'] = '';
         $aClassAndAttributes['attr']['loadformulli'] = $aClassAndAttributes['attr']['saveform'] = $aClassAndAttributes['attr']['saveformrow'] = $aClassAndAttributes['attr']['saveformrowlabelspan'] = $aClassAndAttributes['attr']['saveformrowcol'] = $aClassAndAttributes['attr']['passwordrow'] = '';
-        $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowlabel'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
+        $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
+        $aClassAndAttributes['attr']['captcharowlabel'] = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva'] = '';
 
         //Ã‚Â Save
@@ -538,7 +543,8 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['navigatorcollbutton'] = '  type="submit" name="move" ';
         $aClassAndAttributes['attr']['navigatorcolrbutton'] = '  type="submit" name="move" value="confirmquota" ';
-        $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['quotamessage'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
+        $aClassAndAttributes['attr']['quotamessage'] = ' role="heading" aria-level="2" ';
+        $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
 
         // Register
         $aClassAndAttributes['class']['register']                 = ' register-container';
@@ -862,6 +868,10 @@ class TemplateConfig extends CActiveRecord
 
     /**
      * Uninstalls the selected surveytheme and deletes database entry and configuration
+     * Return value can be : 
+     *    - true : Template was uninstalled, No TemplateConfiguration were uninstalled
+     *    - integer : Template was unsintalled and tells how many TemplateConfigurations were uninstalled
+     *    - false : Template was not uninstalled : lack of permission Not template of this name, issue when delete.
      * @param string $templatename Name of Template
      * @return bool|int
      * @throws CDbException
@@ -872,10 +882,16 @@ class TemplateConfig extends CActiveRecord
             $oTemplate = Template::model()->findByAttributes(['name' => $templatename]);
             if ($oTemplate) {
                 if ($oTemplate->delete()) {
-                    return TemplateConfiguration::model()->deleteAll(
+                    $count = TemplateConfiguration::model()->deleteAll(
                         'template_name=:templateName',
                         [':templateName' => $templatename]
                     );
+                    if ($count) {
+                        /* Number of TemplateConfiguration uninstalled */
+                        return $count;
+                    }
+                    /* No TemplateConfiguration, only Template */
+                    return true;
                 }
             }
         }
@@ -885,18 +901,20 @@ class TemplateConfig extends CActiveRecord
     /**
      * Uninstalls all surveythemes that are being extended from the supplied surveytheme name
      * @param $templateName
-     * @return void
+     * @return bool
      * @throws CDbException
      */
-    public static function uninstallThemesRecursive($templateName): void
+    public static function uninstallThemesRecursive($templateName): bool
     {
         $extendedTemplates = Template::model()->findAll('extends=:templateName', [':templateName' => $templateName]);
         if (!empty($extendedTemplates)) {
             foreach ($extendedTemplates as $extendedTemplate) {
-                self::uninstallThemesRecursive($extendedTemplate->name);
+                if (!self::uninstallThemesRecursive($extendedTemplate->name)) {
+                    return false;
+                }
             }
         }
-        self::uninstall($templateName);
+        return boolval(self::uninstall($templateName));
     }
 
     /**
@@ -913,21 +931,39 @@ class TemplateConfig extends CActiveRecord
         // check compatibility with current limesurvey version
         $isCompatible = TemplateConfig::isCompatible($themePath);
         if ($isCompatible === false) {
-            self::uninstallThemesRecursive($themeName);
-            if ($redirect) {
-                if (method_exists(App(), 'setFlashMessage')) {
+            // If the theme was written for a version lower than 6 it should be uninstalled.
+            // Themes targeting version 6 or higher are kept for now (temporary workaround).
+            $extensionConfig = ExtensionConfig::loadFromFile($themePath);
+            if (self::isThemeTooOldToKeep($extensionConfig)) {
+                if (self::uninstallThemesRecursive($themeName)) {
+                    if ($redirect) {
+                        if (method_exists(App(), 'setFlashMessage')) {
+                            App()->setFlashMessage(
+                                sprintf(
+                                    gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
+                                    $themeName
+                                ),
+                                'error'
+                            );
+                            App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
+                        }
+                        App()->end();
+                    }
+                } else {
                     App()->setFlashMessage(
                         sprintf(
-                            gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."),
-                            $themeName
+                            gT("The '%s' theme is not compatible with this LimeSurvey version. It could not be uninstalled. Please contact %s regarding this issue."),
+                            $themeName,
+                            App()->getConfig('siteadminname'),
                         ),
                         'error'
                     );
-                    App()->getController()->redirect(["themeOptions/index", "#" => "surveythemes"]);
                 }
-                App()->end();
+            } else {
+                /** TODO: temporary disabling of uninstalling themes to rework it after LS7 release has been completed #AT-2266 */
+                return true;
             }
-        } elseif ((!$isCompatible) && $redirect) {
+        } elseif (($isCompatible === null) && $redirect) {
             App()->setFlashMessage(
                 sprintf(
                     gT("Theme '%s' was not found."),
@@ -938,14 +974,50 @@ class TemplateConfig extends CActiveRecord
         }
         // add more tests here
 
-        // all checks succeeded, continue loading the theme
+        // all checks succeeded, continue loading the theme if it compatible
+        return boolval($isCompatible);
+    }
+
+    /**
+     * Returns true when all compatibility versions declared in the theme config are strictly below
+     * the minimum allowed major version (current LimeSurvey major version minus one).
+     *
+     * Example: if the running LS is 7.x the minimum allowed major is 6, so a theme that only
+     * declares compatibility with 5.x or lower is considered too old and should be uninstalled.
+     * A theme that declares at least one version >= minimum allowed major is kept.
+     *
+     * @param ExtensionConfig|null $extensionConfig
+     * @return bool
+     */
+    private static function isThemeTooOldToKeep(?ExtensionConfig $extensionConfig): bool
+    {
+        if ($extensionConfig === null) {
+            return false;
+        }
+        if (
+            !isset($extensionConfig->xml->compatibility)
+            || !isset($extensionConfig->xml->compatibility->version)
+        ) {
+            return false;
+        }
+
+        $lsVersion = require App()->getBasePath() . '/config/version.php';
+        $currentMajor = (int) substr((string) $lsVersion['versionnumber'], 0, 1);
+        $minimumAllowedMajor = $currentMajor - 1;
+
+        foreach ($extensionConfig->xml->compatibility->version as $version) {
+            if ((int) substr((string) $version, 0, 1) >= $minimumAllowedMajor) {
+                // At least one declared compatibility version is recent enough to keep
+                return false;
+            }
+        }
         return true;
     }
+
 
     /**
      * Checks if theme is compatible with the current limesurvey version
      * @param $themePath
-     * @param bool $redirect
      * @return bool|null
      */
     public static function isCompatible($themePath)

@@ -39,16 +39,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function actualizeLastUpdate()
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $config = simplexml_load_file(realpath($this->xmlFile));
         $config->metadata->lastUpdate = date("Y-m-d H:i:s");
         $config->asXML(realpath($this->xmlFile)); // Belt
         touch($this->path); // & Suspenders ;-)
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -384,6 +378,8 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aGroups'][1]["showdescription"] = true;
         $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["SGQ"]           = "1234X56X79";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["type"]          = "L";
         $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
 
         // If called from command line to generate Twig temp, renderPartial doesn't exist in ConsoleApplication
@@ -396,6 +392,8 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
 
         $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["SGQ"]           = "1234X56X78";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["type"]          = "T";
         $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
         if (method_exists(Yii::app()->getController(), 'renderPartial')) {
             $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
@@ -885,17 +883,11 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function rename($sOldName, $sNewName)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
         $oNewManifest = self::getManifestDOM($sConfigPath);
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         $oNewManifest->save($sConfigPath . "/config.xml");
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -994,9 +986,6 @@ class TemplateManifest extends TemplateConfiguration
         $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
 
         // First we get the XML file
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $oNewManifest = self::getManifestDOM($sConfigPath);
 
         self::deleteEngineInDom($oNewManifest);
@@ -1007,10 +996,6 @@ class TemplateManifest extends TemplateConfiguration
         self::changeExtendsInDom($oNewManifest, $sToExtends);
 
         $oNewManifest->save($sConfigPath . "/config.xml");
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -1034,11 +1019,6 @@ class TemplateManifest extends TemplateConfiguration
         }
 
         if (file_exists(realpath($this->xmlFile))) {
-            if (\PHP_VERSION_ID < 80000) {
-                $bOldEntityLoaderState = libxml_disable_entity_loader(
-                    true
-                ); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-            }
             SurveyThemeHelper::checkConfigFiles($this->xmlFile);
             $sXMLConfigFile = file_get_contents(
                 realpath($this->xmlFile)
@@ -1060,9 +1040,6 @@ class TemplateManifest extends TemplateConfiguration
                 }
 
                 $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-                if (\PHP_VERSION_ID < 80000) {
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                }
             }
         } else {
             throw new Exception(" Error: Can't find a manifest for $this->sTemplateName in ' $this->path ' ");
@@ -1176,9 +1153,6 @@ class TemplateManifest extends TemplateConfiguration
     public function addFileReplacement($sFile, $sType)
     {
         // First we get the XML file
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $oNewManifest = new DOMDocument();
         $oNewManifest->load($this->path . "config.xml");
 
@@ -1205,9 +1179,6 @@ class TemplateManifest extends TemplateConfiguration
         $oAssetType->appendChild($oAssetElem);
         $oConfig->insertBefore($oFiles, $oOptions);
         $oNewManifest->save($this->path . "config.xml");
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -1430,16 +1401,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function getOptionAttributes($path)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $file = realpath($path . "config.xml");
         if (file_exists($file)) {
             $sXMLConfigFile        = file_get_contents($file);
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
             $aOptions['categories'] = array();
 
             foreach ($oXMLConfig->options->children() as $key => $option) {

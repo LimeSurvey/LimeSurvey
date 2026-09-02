@@ -29,7 +29,7 @@ export const RankingAdvancedQuestionSubquestionsPlaceholder = ({
                 ref={provided.innerRef}
                 {...provided.draggableProps}
               >
-                <div className="position-relative subquestion-item-placeholder p-1 ms-3 d-flex align-items-center">
+                <div className="position-relative subquestion-item-placeholder p-1 d-flex align-items-center">
                   <div
                     className={classNames(
                       'cursor-pointer position-absolute remove-option-button',
