@@ -607,4 +607,3 @@ class SurveymenuEntries extends LSActiveRecord
         }
     }
 }
-
