@@ -246,12 +246,13 @@ LS.floatingActions = (function () {
             });
         }
         // Reset modal to original state on close
-        $modal.off('hidden.bs.modal.floating').on('hidden.bs.modal.floating', function () {
+        $modal.off('hidden.bs.modal.floating hidden.bs.modal').on('hidden.bs.modal.floating hidden.bs.modal', function () {
             $modalTitle.text($oldModalTitle);
             $modalBody.empty().append($oldModalBody);
             $modalClose.hide();
             $oldModalButtons.show();
-            if (gridReload === 'yes') {
+            var modalGridReload = $modal.data('grid-reload');
+            if (modalGridReload === 'yes') {
                 // Clear cross-page selection: deleted (or modified) rows no longer exist.
                 if (window.LS && LS.gridSelection && typeof LS.gridSelection.clear === 'function') {
                     LS.gridSelection.clear(gridId);
@@ -259,6 +260,9 @@ LS.floatingActions = (function () {
                 // Uncheck all visible checkboxes on the current page
                 $('#' + gridId + ' tbody .massiveActionsCheckbox').prop('checked', false);
                 $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', false);
+                // Get pk from the floating bar's data attribute and update immediately
+                var barPk = _bar(gridId).data('pk');
+                _updateBar(gridId, barPk);
                 $('#' + gridId).yiiGridView('update');
                 setTimeout(function () { $(document).trigger('actions-updated'); }, 500);
             }
@@ -540,5 +544,14 @@ LS.floatingActions = (function () {
         },
     };
 }());
+
+
+
+
+
+
+
+
+
 
 
