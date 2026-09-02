@@ -221,6 +221,16 @@ class Export extends SurveyCommonAction
                 chr(9) => gT("Tab"),
             );
 
+            $subscriptionAlias = strtolower((string) Yii::app()->getConfig('subscription_alias', ''));
+            $data['isFreeUser'] = strpos($subscriptionAlias, 'free') === 0;
+
+            if (App()->request->getParam('modal')) {
+                $data['selectedColumns'] = $this->getResponseExportColumns($iSurveyID, array_keys($aFields));
+                $data['responseFilters'] = App()->request->getParam('SurveyDynamic', array());
+                $this->getController()->renderPartial('/admin/export/exportresults_modal', $data);
+                Yii::app()->end();
+            }
+
             $data['sidemenu']['state'] = false;
 
             $data['topBar']['name'] = 'baseTopbar_view';
@@ -309,6 +319,8 @@ class Export extends SurveyCommonAction
                     $sFilter = "{{responses_{$iSurveyID}}}.id=" . (int) Yii::app()->request->getPost('response_id');
         } elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_' . $iSurveyID])) {
             $sFilter = Yii::app()->session['statistics_selects_' . $iSurveyID];
+        } elseif (Yii::app()->request->getPost('exportdata') === 'filtered') {
+            $sFilter = $this->getResponseBrowseFilter($survey, Yii::app()->request->getPost('SurveyDynamic', array()));
         } else {
             $sFilter = '';
         }
@@ -317,6 +329,98 @@ class Export extends SurveyCommonAction
         $resultsService->exportResponses($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
         Yii::app()->end();
+    }
+
+    /**
+     * @param int $iSurveyID
+     * @param array $aAvailableColumns
+     * @return array
+     */
+    private function getResponseExportColumns($iSurveyID, array $aAvailableColumns)
+    {
+        $aFilteredColumns = isset($_SESSION['responses_' . $iSurveyID]['filteredColumns'])
+            ? $_SESSION['responses_' . $iSurveyID]['filteredColumns']
+            : null;
+
+        if (empty($aFilteredColumns)) {
+            return $aAvailableColumns;
+        }
+
+        return array_values(array_intersect($aAvailableColumns, $aFilteredColumns));
+    }
+
+    /**
+     * @param Survey $survey
+     * @param array $aFilters
+     * @return array
+     */
+    private function getResponseBrowseFilter(Survey $survey, array $aFilters)
+    {
+        $aConditions = array();
+        $sResponseTable = $survey->responsesTableName;
+        $sTokenTable = 'tokentable';
+        $aResponseColumns = Yii::app()->db->schema->getTable($sResponseTable)->getColumnNames();
+        $bHasTokenJoin = tableExists($survey->tokensTableName)
+            && array_key_exists('token', SurveyDynamic::model($survey->primaryKey)->attributes)
+            && Permission::model()->hasSurveyPermission($survey->primaryKey, 'tokens', 'read');
+
+        $this->addExactFilter($aConditions, $sResponseTable . '.id', $aFilters['id'] ?? null, true);
+        $this->addExactFilter($aConditions, $sResponseTable . '.lastpage', $aFilters['lastpage'] ?? null, true);
+        $this->addLikeFilter($aConditions, $sResponseTable . '.submitdate', $aFilters['submitdate'] ?? null);
+        $this->addLikeFilter($aConditions, $sResponseTable . '.startlanguage', $aFilters['startlanguage'] ?? null);
+        if ($bHasTokenJoin) {
+            $this->addLikeFilter($aConditions, $sTokenTable . '.firstname', $aFilters['firstname_filter'] ?? null);
+            $this->addLikeFilter($aConditions, $sTokenTable . '.lastname', $aFilters['lastname_filter'] ?? null);
+            $this->addLikeFilter($aConditions, $sTokenTable . '.email', $aFilters['email_filter'] ?? null);
+        }
+
+        if (($aFilters['completed_filter'] ?? '') === 'Y') {
+            $aConditions[] = $sResponseTable . '.submitdate IS NOT NULL';
+        } elseif (($aFilters['completed_filter'] ?? '') === 'N') {
+            $aConditions[] = $sResponseTable . '.submitdate IS NULL';
+        }
+
+        foreach ($aFilters as $sColumn => $sValue) {
+            if ($sValue === '' || in_array($sColumn, array('id', 'lastpage', 'submitdate', 'startlanguage', 'completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter')) || !in_array($sColumn, $aResponseColumns)) {
+                continue;
+            }
+
+            $this->addLikeFilter($aConditions, $sResponseTable . '.' . Yii::app()->db->quoteColumnName($sColumn), $sValue);
+        }
+
+        return $aConditions;
+    }
+
+    /**
+     * @param array $aConditions
+     * @param string $sColumn
+     * @param mixed $mValue
+     * @param bool $bInteger
+     * @return void
+     */
+    private function addExactFilter(array &$aConditions, $sColumn, $mValue, $bInteger = false)
+    {
+        if ($mValue === null || $mValue === '') {
+            return;
+        }
+
+        $mValue = $bInteger ? (int) $mValue : Yii::app()->db->quoteValue($mValue);
+        $aConditions[] = $sColumn . ' = ' . $mValue;
+    }
+
+    /**
+     * @param array $aConditions
+     * @param string $sColumn
+     * @param mixed $mValue
+     * @return void
+     */
+    private function addLikeFilter(array &$aConditions, $sColumn, $mValue)
+    {
+        if ($mValue === null || $mValue === '') {
+            return;
+        }
+
+        $aConditions[] = $sColumn . ' LIKE ' . Yii::app()->db->quoteValue('%' . $mValue . '%');
     }
 
     /**

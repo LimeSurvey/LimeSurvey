@@ -612,3 +612,47 @@
     width: 95%;
   }
 }
+
+.export-responses-modal {
+  padding: 0 23px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.export-results-modal {
+  .modal-dialog {
+    max-width: 807px;
+  }
+
+  .modal-content {
+    width: 807px;
+    height: 658px;
+    padding: 12px 0 24px;
+    border-radius: 4px;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .export-results-modal-header {
+    padding: 28px 23px 0;
+    margin-bottom: 16px;
+
+    .modal-title {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 32px;
+      letter-spacing: -0.017em;
+      color: #1E1E1E;
+    }
+  }
+
+  .modal-footer {
+    gap: 10px;
+    margin-top: 24px;
+    padding: 0 24px 12px;
+  }
+}
+

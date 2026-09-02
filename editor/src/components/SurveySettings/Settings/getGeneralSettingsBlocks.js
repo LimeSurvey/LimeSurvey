@@ -73,7 +73,7 @@ export const getGeneralSettingsBlocks = () => ({
 
           // Removing the base language from the list of additional languages if it exists to avoid duplication.
           // And sort alphabetically.
-          additonalLanguages = additonalLanguages
+          additonalLanguages = (additonalLanguages || '')
             .replace(language, '')
             .trim()
             .split(' ')

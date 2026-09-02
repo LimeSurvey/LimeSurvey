@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
 import { Container } from 'react-bootstrap'
 import { useAppState, useResponses, useSurvey } from 'hooks'
-import { createBufferOperation, htmlPopup, PAGES, STATES } from 'helpers'
+import {
+  createBufferOperation,
+  downloadBlob,
+  getFilenameFromContentDisposition,
+  getSiteUrl,
+  PAGES,
+  STATES,
+  toastComponent,
+} from 'helpers'
+import { ComponentModal } from 'components'
 
 import { LeftSideBar } from './Sidebars/LeftSideBar'
 import {
   ResponsesTable,
-  ExportPopupHTML,
+  ExportResponsesModal,
   ResponsesStatistics,
 } from './components'
 import { ResponsesHeader } from './ResponsesHeader'
@@ -30,6 +39,8 @@ export const Responses = () => {
   const [columnsFilters, setColumnsFilters] = useState([])
   const [tabKey, setTabKey] = useState(TAB_KEYS.RESPONSES)
   const [statisticsFilters, setStatisticsFilters] = useState({})
+  const [showExportModal, setShowExportModal] = useState(false)
+  const exportFormRef = useRef(null)
   const [hasResponsesUpdatePermission] = useAppState(
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
@@ -74,21 +85,44 @@ export const Responses = () => {
     navigate(`/responses/${surveyId}/${currentPanel}/${menuKey}`)
   }
 
-  const handleExport = () => {}
+  const handleExport = async () => {
+    const formEl = exportFormRef.current?.querySelector(
+      '#resultexport-modal-form'
+    )
+    if (!formEl) return
+
+    try {
+      const response = await fetch(
+        getSiteUrl(`/admin/export/sa/exportresults/surveyid/${surveyId}`),
+        {
+          method: 'POST',
+          credentials: 'include',
+          body: new FormData(formEl),
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error('Export request failed')
+      }
+
+      const blob = await response.blob()
+      const filename = getFilenameFromContentDisposition(
+        response.headers.get('content-disposition'),
+        'responses.csv'
+      )
+      downloadBlob(blob, filename)
+      setShowExportModal(false)
+    } catch (error) {
+      toastComponent({
+        Component: (
+          <span>{t('Something went wrong while exporting responses.')}</span>
+        ),
+      })
+    }
+  }
 
   const onExportResponsesClick = () => {
-    htmlPopup({
-      html: <ExportPopupHTML exportOptions={{}} />,
-      showCloseButton: true,
-      showCancelButton: true,
-      showConfirmButton: true,
-      confirmButtonText: t('Export'),
-      cancelButtonText: t('Cancel'),
-      closeButtonClass: 'modal-close-button',
-      popupClass: 'export-popup-container',
-      confirmButtonClass: 'export-button',
-      preConfirm: handleExport,
-    })
+    setShowExportModal(true)
   }
 
   const onSortChange = (sorting) => {
@@ -263,6 +297,20 @@ export const Responses = () => {
         </div>
       )}
       <Toaster />
+      <ComponentModal
+        show={showExportModal}
+        onHide={() => setShowExportModal(false)}
+        title={t('Export results')}
+        headerClassname="export-results-modal-header"
+        Component={
+          <ExportResponsesModal surveyId={surveyId} formRef={exportFormRef} />
+        }
+        componentClassname="export-responses-modal"
+        modalClassname="export-results-modal"
+        useFooter
+        confirmButtonText={t('Export results')}
+        onConfirm={handleExport}
+      />
       <div className="responses-body">
         <LeftSideBar
           showSidebarCloseButton={false}

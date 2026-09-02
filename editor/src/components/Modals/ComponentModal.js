@@ -11,6 +11,9 @@ export const ComponentModal = ({
   componentClassname = '',
   modalClassname = '',
   headerClassname = '',
+  title = '',
+  confirmButtonText = t('Confirm'),
+  cancelButtonText = t('Cancel'),
   onConfirm = () => {},
   useFooter = false,
   ...props
@@ -25,9 +28,10 @@ export const ComponentModal = ({
       {...props}
     >
       <Modal.Header
-        className={`border-none d-flex align-items-center gap-2 text-center ${headerClassname}`}
+        className={`border-none d-flex align-items-center ${title ? 'justify-content-between' : 'gap-2'} text-center ${headerClassname}`}
         closeButton={false}
       >
+        {title && <h2 className="modal-title h5 mb-0">{title}</h2>}
         <Button
           className="modal-close-button p-0"
           variant="link"
@@ -39,14 +43,14 @@ export const ComponentModal = ({
       </Modal.Header>
       <div className={componentClassname}>{Component}</div>
       {useFooter && (
-        <Modal.Footer className="border-none d-block text-end">
+        <Modal.Footer className="border-none d-flex justify-content-end gap-2">
           <Button
             size="lg"
             className="text-light"
             variant="secondary"
             onClick={onHide}
           >
-            {t('Cancel')}
+            {cancelButtonText}
           </Button>
           <Button
             size="lg"
@@ -54,7 +58,7 @@ export const ComponentModal = ({
             variant="primary"
             onClick={onConfirm}
           >
-            {t('Confirm')}
+            {confirmButtonText}
           </Button>
         </Modal.Footer>
       )}

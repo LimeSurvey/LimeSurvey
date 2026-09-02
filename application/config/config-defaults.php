@@ -318,6 +318,9 @@ $config['demoMode'] = false;
 */
 $config['demoModePrefill'] = false;
 
+// LimeSurvey CE has no paid tiers; Cloud can override this for free-plan accounts.
+$config['isFreeUser'] = false;
+
 
 /**
 * column_style
