@@ -1,7 +1,7 @@
 {
   "name": "lstutorial",
   "version": "1.0.0",
-  "description": "A tutorial for ls3",
+  "description": "Tutorial for LimeSurvey",
   "main": "./build/lstutorial.js",
   "author": "Markus Flür <markus.fluer@limesurvey.org>",
   "license": "GPL-3.0",
@@ -14,17 +14,9 @@
     "@babel/core": "^7.17.4",
     "@babel/preset-env": "^7.5.5",
     "core-js": "3",
-    "css-loader": "^6.6.0",
     "env-cmd": "^10.1.0",
     "eslint": "^8.9.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-friendly-formatter": "^4.0.1",
-    "eslint-loader": "^4.0.2",
-    "eslint-plugin-html": "^6.2.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-standard": "^5.0.0",
-    "node-sass": "^7.0.1",
-    "rollup": "^2.67.2",
+    "rollup": "^2.79.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
@@ -32,11 +24,24 @@
     "rollup-plugin-scss": "^3.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "rtlcss": "^3.5.0",
+    "sass": "~1.103.0",
     "uglifycss": "^0.0.29"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
     "popper.js": "^1.15.0"
   },
-  "browserslist": "> 0.25%, not dead"
+  "browserslist": "> 0.25%, not dead",
+  "resolutions": {
+    "minimatch": "3.1.5",
+    "brace-expansion": "1.1.18",
+    "js-yaml": "4.3.1",
+    "postcss": "8.5.26",
+    "nanoid": "3.3.18",
+    "ajv": "6.15.0",
+    "flatted": "3.4.4",
+    "word-wrap": "1.2.5",
+    "cross-spawn": "7.0.6",
+    "terser": "5.50.0",
+    "serialize-javascript": "7.1.0"
+  }
 }
