@@ -78,9 +78,27 @@
     // purple variant
     &.isSecondary {
         .btn-group {
-            background: $grape;
+            background: $g-300;
+
             .btn-check + .btn-outline-secondary {
-                border-color: $grape;
+                border: none;
+                color: $g-700;
+            }
+
+            .btn-check:checked + .btn-outline-secondary {
+                border: none;
+                border-left: 2px solid $grape;
+                color: $g-750;
+            }
+            .btn-check:not(:checked) + .btn-outline-secondary:hover {
+                background-color: $g-200;
+                color: $g-700;
+            }
+
+            .btn-check:focus + .btn-outline-secondary,
+            .btn-outline-secondary:focus-visible {
+                outline: 2px solid $grape;
+                outline-offset: -2px;
             }
 
             @include disabled-toggle-state;

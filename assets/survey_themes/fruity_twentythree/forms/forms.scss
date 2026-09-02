@@ -39,12 +39,82 @@ $dropdown-font-size: $font-size-sm;
     border-bottom-right-radius: 0;
 }
 
-.ls-answers label, .answer-item label, .control-label {
+.ls-answers label, .answer-item label, .control-label, .ls-answers .othertext-suffix-label, .answer-item .othertext-suffix-label {
     @include h2;
 
     .radio-label {
         padding-left : 12px;
     }
+}
+
+.ls-answers.answers-list .answer-item .othertext-suffix-label, .answer-item .othertext-suffix-label {
+    align-self: center;
+    color : $g-700;
+}
+
+// special rules for other input field positioning when no prefix text is present
+.no-prefix-othertext {
+    .othertext-label-checkox-container {
+        margin-right: 0;
+        padding-right: 8px;
+    }
+
+    .control-label {
+        padding: 0;
+        min-height: 19px; // ensures label::before (radio circle) has reference height when label text is empty
+    }
+
+    .other-text-item {
+        padding-left: 0;
+    }
+    &.checkbox-text-item .col-auto.d-flex {
+        padding-right: 0;
+    }
+    &.checkbox-text-item .col-auto:not(.d-flex) {
+        padding-left: 12px;
+    }
+}
+
+.ls-input-sized .other-text-item.col {
+    flex-grow: 0;
+}
+.other-text-item input.multipleco-other-topic {
+    min-width: 0;
+    max-width: 100%;
+}
+// MP-with-comments other row: label col grows to fit content; comment wraps to next line when label content overflows
+.multipleco-other-row > .multipleco-other-label-col {
+    flex: 1 0 auto;
+    width: fit-content;
+    min-width: 33.33%;
+    max-width: 100%;
+}
+.multipleco-other-row > .multipleco-other-comment-col {
+    margin-left: auto;
+}
+// Inner flex row: prefix, input, suffix wrap in source order within the label column
+.multipleco-other-inner {
+    gap: 0.25rem 0.5rem;
+}
+.multipleco-other-inner .label-text.control-label {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
+    margin-bottom: 0;
+}
+.multipleco-other-inner .multipleco-other-topic {
+    flex: 1 1 6rem;
+    min-width: 6rem;
+    max-width: 100%;
+}
+.ls-input-sized .multipleco-other-inner .multipleco-other-topic {
+    flex: 0 0 auto;
+    max-width: 100%;
+}
+.multipleco-other-inner .othertext-suffix-label {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 textarea {

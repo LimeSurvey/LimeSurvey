@@ -2,34 +2,21 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use CException;
+use TemplateConfiguration;
 
-class Update_709 extends DatabaseUpdateBase
+class Update_712 extends DatabaseUpdateBase
 {
     /**
-     * Adds the crypt_method column to surveys and surveys_groupsettings tables.
-     * Sets the global default (gsid=0) to 'B' (Basic encryption method).
-     *
-     * @inheritDoc
-     * @throws CException
+     * Add the 'deselectsinglechoice' option (introduced in fruity_twentythree config.xml)
+     * to all existing fruity_twentythree TemplateConfiguration DB records that are missing it.
      */
     public function up()
     {
-        /* Create or alter crypt_method column, handling cases where dev git users may already have it */
-        $surveysTable = $this->db->schema->getTable('{{surveys}}', true);
-        if (!isset($surveysTable->columns['crypt_method'])) {
-            addColumn('{{surveys}}', 'crypt_method', "string(1) DEFAULT 'I'");
-        } else {
-            alterColumn('{{surveys}}', 'crypt_method', "string(1) DEFAULT 'I'");
+        $themes = TemplateConfiguration::model()->findAllByAttributes([
+            'template_name' => 'fruity_twentythree',
+        ]);
+        foreach ($themes as $theme) {
+            $theme->addOptionFromXMLToLiveTheme();
         }
-
-        $groupSettingsTable = $this->db->schema->getTable('{{surveys_groupsettings}}', true);
-        if (!isset($groupSettingsTable->columns['crypt_method'])) {
-            addColumn('{{surveys_groupsettings}}', 'crypt_method', "string(1) DEFAULT 'I'");
-        } else {
-            alterColumn('{{surveys_groupsettings}}', 'crypt_method', "string(1) DEFAULT 'I'");
-        }
-        /* Set global one to B (basic) if it's not hardened (only if I), didn't update any response table */
-        $this->db->createCommand()->update("{{surveys_groupsettings}}", ["crypt_method" => "B"], "gsid = 0 and crypt_method <> 'H'");
     }
 }

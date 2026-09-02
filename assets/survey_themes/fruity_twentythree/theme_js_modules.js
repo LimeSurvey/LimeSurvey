@@ -8,3 +8,5 @@ import ArrayScripts from './questiontypes/array/array.js';
 import NavbarScripts from './navbar/navbar.js';
 import Video from './video/video.js';
 import { A11yHandles } from './a11y-handles/a11y-handles.js';
+import DeselectSinglechoiceScripts from './questiontypes/deselect-singlechoice/deselect-singlechoice.js';
+import DeselectSinglechoiceOtherScripts from './questiontypes/deselect-singlechoice/deselect-singlechoice_other.js';
