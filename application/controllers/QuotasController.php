@@ -415,6 +415,10 @@ class QuotasController extends LSBaseController
         $aQuotaIds = json_decode($sItems, true);
         $aQuotaIds = is_array($aQuotaIds) ? $aQuotaIds : [];
 
+        if(empty($aQuotaIds)) {
+            $this->renderJSON(['success' => false, 'message' => gT('No quotas selected!')]);
+            return;
+        }
         $errors = $quotaService->multipleItemsAction(
             $aQuotaIds,
             $action,

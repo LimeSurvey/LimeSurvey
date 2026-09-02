@@ -173,6 +173,7 @@ class CLSGridView extends TbGridView
         //    clear the cross-page selections before the floating bar is updated.
         $parts[] = 'if(window.LS&&LS.gridSelection&&LS.gridSelection.freeze){LS.gridSelection.freeze(' . $gridId . ');}';
 
+        $parts[] = 'try{';
         // 3. Preserve any existing afterAjaxUpdate set by the caller
         if ($this->afterAjaxUpdate !== null) {
             $definedFunction = ($this->afterAjaxUpdate instanceof CJavaScriptExpression)
@@ -199,7 +200,9 @@ class CLSGridView extends TbGridView
         $parts[] = 'if(window.LS&&LS.floatingActions&&LS.floatingActions.refresh){LS.floatingActions.refresh(id);}';
 
         // 7. Unfreeze so that real user-triggered filter changes clear the store normally.
+        $parts[] = '}finally{';
         $parts[] = 'if(window.LS&&LS.gridSelection&&LS.gridSelection.unfreeze){LS.gridSelection.unfreeze(' . $gridId . ');}';
+        $parts[] = '}';
 
         if (!empty($this->lsAdditionalColumns)) {
             $parts[] = 'initColumnFilter();';
