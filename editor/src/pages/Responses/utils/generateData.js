@@ -10,6 +10,7 @@ import {
   getSubquestionById,
   getSubquestionByProperty,
   isRankingQuestion,
+  OTHER_CODE,
   RemoveHTMLTagsInString,
 } from 'helpers'
 import { cloneDeep } from 'lodash'
@@ -144,12 +145,18 @@ export const generateData = (responses, language, generatedColumns) => {
             [idName]: cell[cell.length - 1][idName],
           }
         } else {
+          // this is to checkbox of the other option in response preview.
+          if (!answer.aid && answer.value === OTHER_CODE) {
+            answer.aid = OTHER_CODE
+          }
+
           cell.push({
             value: value,
             key: answer.key,
             aid: answer.actual_aid,
             [idName]: answer[idName],
             qid: answer[idName],
+            fsya: true,
             checked: value ? true : false,
             responseId: response.id,
             questionThemeName: question.questionThemeName,
@@ -166,6 +173,7 @@ export const generateData = (responses, language, generatedColumns) => {
 
       answer.aid = actual_aid
       delete answer.question
+
       data[index].answer[qid].push(answer)
     })
   })

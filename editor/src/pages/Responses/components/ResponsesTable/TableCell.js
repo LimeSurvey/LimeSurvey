@@ -16,9 +16,14 @@ export const TableCell = ({ cell }) => {
           answerTitle,
           questionThemeName,
           checked,
+          key,
         },
         index
       ) => {
+        if (value === '-oth-') {
+          return <></>
+        }
+
         return (
           <Badge key={`cell-value-${index}${cell.column.id}`}>
             {renderCellText({
@@ -29,6 +34,7 @@ export const TableCell = ({ cell }) => {
               questionThemeName,
               checked,
               index,
+              key,
             })}
           </Badge>
         )
