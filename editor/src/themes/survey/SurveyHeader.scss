@@ -97,12 +97,15 @@
 
   .welcome-title,
   .welcome-description {
-    font-size: $font-size-base;
-    letter-spacing: -0.017em;
-    text-align: left;
+    @include reg16;
     margin-bottom: 10px;
-    font-weight: $font-weight-normal;
-    font-style: italic;
+    line-height: $line-height-24;
+    .mce-content-body {
+      // Before contains the placeholder
+      &::before {
+        font-style: font-style-placeholder;
+      }
+    }
   }
 
   .collapse-control {
