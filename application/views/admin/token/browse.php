@@ -41,19 +41,28 @@ $aLanguageNames = implode(";", $aLanguageNames);
     <div class="row">
         <div class="content-right">
             <?php
+            require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.TokenListMassiveActions') . '.php';
+            $floatingActions = \actions\TokenListMassiveActions::getActions((int)$_GET['surveyid']);
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'       => 'tid',
+                'gridId'   => 'token-grid',
+                'aActions' => $floatingActions,
+            ]);
+            ?>
+            <?php
             $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'dataProvider'          => $model->search(),
                 'filter'                => $model,
                 'id'                    => 'token-grid',
                 'emptyText'             => gT('No survey participants found.'),
+                'lsShowSelectionBar'    => false,
                 'massiveActionTemplate' => $massiveAction,
-                'lsPageSizeCurrentValue'  => $pageSizeTokenView,
-                'lsPageSizeOptions'       => Yii::app()->params['pageSizeOptionsTokens'],
+                'lsPageSizeCurrentValue'=> $pageSizeTokenView,
+                'lsPageSizeOptions'     => Yii::app()->params['pageSizeOptionsTokens'],
                 'columns'               => $model->getAttributesForGrid(),
                 'ajaxUpdate'            => 'token-grid',
                 'ajaxType'              => 'POST',
-                'lsSelectAllEnabled'    => true,
-                'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();']
+                'lsAfterAjaxUpdate'     => ['onUpdateTokenGrid();', 'LS.restoreFocusAfterSort("token-grid");']
             ]);
             ?>
         </div>
@@ -110,3 +119,5 @@ $aLanguageNames = implode(";", $aLanguageNames);
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<?php $this->renderPartial('/admin/token/_bounceProcessingModal'); ?>

@@ -4,7 +4,6 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-$massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entries/massive_action/_selector', [], true, false);
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyMenuEntries');
@@ -15,6 +14,14 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
 <div class="ls-flex-row">
     <div class="col-12 ls-flex-item">
         <?php
+        require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.SurveyMenuEntriesMassiveActions') . '.php';
+        $floatingActions = \actions\SurveyMenuEntriesMassiveActions::getActions();
+        $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+            'pk' => 'id',
+            'gridId' => 'surveymenu-entries-grid',
+            'aActions' => $floatingActions,
+        ]);
+
         $this->widget('application.extensions.admin.grid.CLSGridView', [
             'dataProvider' => $model->search(),
             'id' => 'surveymenu-entries-grid',
@@ -26,8 +33,8 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
             'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
             'ajaxType' => 'POST',
             'ajaxUpdate' => 'surveymenu-entries-grid',
-            'massiveActionTemplate' => $massiveAction,
-            'lsAfterAjaxUpdate'        => ['bindListItemclick();', 'surveyMenuEntryFunctions();'],
+            'showSelectionBar' => false,
+            'lsAfterAjaxUpdate'        => ['surveyMenuEntryFunctions();'],
         ]);
         ?>
     </div>
@@ -66,6 +73,3 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
         </div>
     </div>
 </div>
-
-
-

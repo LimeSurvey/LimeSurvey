@@ -14,19 +14,18 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                 <?php eT("Survey quotas");?>
             </h1>
             <?php
-            $massiveAction = '';
             if ($oDataProvider->itemCount > 0) {
-                if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) {
-                    $massiveAction =  $this->renderPartial(
-                        'viewquotas_massive_selector',
-                        array(
-                           'oSurvey' => $oSurvey,
-                           'oQuota' => $oQuota,
-                           'aQuotaLanguageSettings' => $aQuotaLanguageSettings,
-                        ),
-                        true
-                    );
-                }
+                require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.QuotaListMassiveActions') . '.php';
+                $floatingActions = \actions\QuotaListMassiveActions::getActions(
+                    (int) $oSurvey->getPrimaryKey(),
+                    $oQuota,
+                    $aQuotaLanguageSettings
+                );
+                $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                    'pk'       => 'id',
+                    'gridId'   => 'quota-grid',
+                    'aActions' => $floatingActions,
+                ]);
             }
             ?>
 
@@ -38,9 +37,9 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                         'dataProvider'          => $oDataProvider,
                         'id'                    => 'quota-grid',
                         'ajaxUpdate'            => 'quota-grid',
-                        'lsAfterAjaxUpdate'     => ['onQuotaOpenAction();', 'bindListItemclick();'],
+                        'lsAfterAjaxUpdate' => ['onQuotaOpenAction();', 'if (typeof bindListItemclick === "function") { bindListItemclick(); }'],
                         'emptyText'             => gT('No quotas'),
-                        'massiveActionTemplate' => $massiveAction,
+                        'lsShowSelectionBar'  => false,
                         'lsPageSizeCurrentValue'  => $iGridPageSize,
                         'columns'               => [
                             [

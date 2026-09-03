@@ -3,7 +3,6 @@
  * @var $this UserManagementController
  * @var $dataProvider CActiveDataProvider
  * @var $model User
- * @var string $massiveAction
  * @var string $pageSize selected pagesize
  **/
 
@@ -30,10 +29,9 @@ echo viewHelper::getViewTestTag('usersIndex');
             'dataProvider' => $model->search(),
             'columns' => $model->getManagementColums(),
             'lsAdditionalColumns' => $model->getAdditionalColumns(),
-            'massiveActionTemplate' => $massiveAction,
+            'lsShowSelectionBar' => false,
             'lsCaption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
-                'bindListItemclick();',
                 'LS.UserManagement.bindButtons();',
                 'showDeactivatedUserTooltip();'
             ],
@@ -43,6 +41,21 @@ echo viewHelper::getViewTestTag('usersIndex');
     );
     ?>
 
+    <!-- Floating Actions Widget for User Management -->
+    <?php
+    require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.UserManagementMassiveActions') . '.php';
+    $aActions = \actions\UserManagementMassiveActions::getActions();
+    $this->widget(
+        'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
+        [
+            'pk'       => 'uid',
+            'gridId'   => 'usermanagement--identity-gridPanel',
+            'aActions' => $aActions,
+        ]
+    );
+    ?>
+
+<!-- To update rows per page via ajax -->
 <script type="text/javascript">
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -69,7 +82,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 </script>
 <div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
-    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
         </div>
     </div>

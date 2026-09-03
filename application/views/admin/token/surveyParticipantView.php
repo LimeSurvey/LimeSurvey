@@ -114,27 +114,37 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
             <div class="content-right">
                 <?php
                 if ($model) {
+                    require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.TokenListMassiveActions') . '.php';
+                    $floatingActions = \actions\TokenListMassiveActions::getActions($surveyid);
+                    $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                        'pk'       => 'tid',
+                        'gridId'   => 'token-grid',
+                        'aActions' => $floatingActions,
+                    ]);
+                }
+                ?>
+                <?php
+                if ($model) {
                     $this->widget('application.extensions.admin.grid.CLSGridView', [
                         'dataProvider'          => $model->search(),
                         'filter'                => $model,
                         'id'                    => 'token-grid',
                         'emptyText'             => gT('No survey participants found.'),
-                        'massiveActionTemplate' => $massiveAction,
+                        'lsShowSelectionBar'      => false,
                         'lsPageSizeCurrentValue'  => $pageSizeTokenView,
                         'lsPageSizeOptions'       => Yii::app()->params['pageSizeOptionsTokens'],
                         'columns'               => $model->getAttributesForGrid(),
                         'ajaxUpdate'            => 'token-grid',
                         'ajaxType'              => 'POST',
-                        'lsSelectAllEnabled'    => true,
-                        'lsAfterAjaxUpdate'     => ['onUpdateTokenGrid();', 'switchStatusOfListActions();', 'LS.restoreFocusAfterSort("token-grid");']
-                    ]);
+                        'lsAfterAjaxUpdate'     => ['onUpdateTokenGrid();', 'LS.restoreFocusAfterSort("token-grid");']
+                ]);
                 } elseif (!empty($emptyGridDataProvider)) {
                     $this->widget('application.extensions.admin.grid.CLSGridView', [
                         'dataProvider'          => $emptyGridDataProvider,
                         'filter'                => $emptyGridFilter,
                         'id'                    => 'token-grid',
                         'emptyText'             => gT('No survey participants found.'),
-                        'massiveActionTemplate' => $massiveAction,
+                        'showSelectionBar'      => false,
                         'columns'               => $emptyGridColumns,
                         'showTableOnEmpty'      => true,
                         'ajaxUpdate'            => 'token-grid',
@@ -247,3 +257,5 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
+
+<?php $this->renderPartial('/admin/token/_bounceProcessingModal'); ?>

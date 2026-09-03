@@ -16,7 +16,6 @@
  * @var $this ListSurveysWidget
  */
 
-use actions\SurveyListMassiveActions;
 ?>
 
 <!-- Grid -->
@@ -24,7 +23,7 @@ use actions\SurveyListMassiveActions;
     <div class="col-12">
         <?php
         // Render the floating action bar (cross-page selection, fixed at bottom)
-        $floatingActions = SurveyListMassiveActions::getActions();
+        $floatingActions = \actions\SurveyListMassiveActions::getActions();
         $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
             'pk'           => 'sid',
             'gridId'       => 'survey-grid',

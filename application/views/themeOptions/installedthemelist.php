@@ -7,30 +7,21 @@
 ?>
 
 <?php
-$massiveAction = App()->getController()->renderPartial(
-    './_selector',
-    [
-        'oQuestionTheme' => $oQuestionTheme,
-        'gridID'         => 'questionthemes-grid',
-        'dropupID'       => 'questionsthemes-dropup',
-        'pk'             => 'questionId'
-    ],
-    true,
-    false
-);
+require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.QuestionThemeMassiveActions') . '.php';
+$aFloatingActions = \actions\QuestionThemeMassiveActions::getActions();
 
 $this->widget('application.extensions.admin.grid.CLSGridView', [
     'dataProvider'          => $oQuestionTheme->search(),
     'filter'                => $oQuestionTheme,
     'id'                    => 'questionthemes-grid',
     'lsCaption'             => gT('Question themes'),
-    'massiveActionTemplate' => $massiveAction,
     'lsPageSizeCurrentValue'  => $pageSize,
     'columns'               => [
         [
             'id'             => 'questionId',
             'class'          => 'CCheckBoxColumn',
             'selectableRows' => '100',
+            'checkBoxHtmlOptions' => ['class' => 'massiveActionsCheckbox'],
         ],
 
         [
@@ -72,50 +63,29 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             "filter"            => ['N' => gT("Off"), 'Y' => gT('On')],
         ]
     ],
+    'showSelectionBar'      => false,
     'ajaxUpdate'            => 'questionthemes-grid',
     'ajaxType'              => 'POST',
-    // @todo create a new javascript file and call function from here, related: 1573120573738
-    'afterAjaxUpdate'       => '
-                                function(id, data){
-                                    window.LS.doToolTip();
-                                    bindListItemclick();
-                                    let togglequestionthemes = document.getElementsByClassName("toggle_question_theme");
-                                    for (let togglequestiontheme of togglequestionthemes) {
-                                        togglequestiontheme.addEventListener("change", () => {
-                                            let $url = togglequestiontheme.getAttribute("data-url");
-                                            let data = new FormData();
-                                            let xhttp = new XMLHttpRequest();
-                                            data.append(LS.data.csrfTokenName, LS.data.csrfToken);
-                                            xhttp.open("POST", $url, true);
-                                            xhttp.send(data);
-                                        });
-                                    }
-                                }',
+    // This will be called FIRST before restoreCheckboxes, so we use lsAfterAjaxUpdate instead
+    // But we also register a separate event to ensure the bar is updated after the full pipeline
+
 ]);
+
+if (!empty($aFloatingActions)) {
+    $this->widget(
+        'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
+        [
+            'pk'       => 'questionId',
+            'gridId'   => 'questionthemes-grid',
+            'aActions' => $aFloatingActions,
+        ]
+    );
+}
 ?>
 
 <?php
-// todo create a new javascript file and call function from here, related: 1573120573738
-$script = '
-                jQuery(document).on("change", "#questionthemes-pageSize", function () {
-                    $.fn.yiiGridView.update("questionthemes-grid", {
-                        data: {
-                            pageSize: $(this).val()
-                        }
-                    });
-                });
-                let togglequestionthemes = document.getElementsByClassName("toggle_question_theme");
-                for (let togglequestiontheme of togglequestionthemes) {
-                    togglequestiontheme.addEventListener("change", () => {
-                        let $url = togglequestiontheme.getAttribute("data-url");
-                        let data = new FormData();
-                        let xhttp = new XMLHttpRequest();
-                        data.append(LS.data.csrfTokenName, LS.data.csrfToken);
-                        xhttp.open("POST", $url, true);
-                        xhttp.send(data);
-                    });
-                }
-                ';
-App()->getClientScript()->registerScript('questionthemes-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
-
+App()->getClientScript()->registerScriptFile(
+    Yii::app()->getAssetManager()->publish('assets/scripts/admin/installedThemesList.js'
+    )
+);
 

@@ -114,7 +114,7 @@ class SurveyListMassiveActions
                 'action' => 'delete',
                 'url' => App()->createUrl('/surveyAdministration/deleteMultiple/'),
                 'iconClasses' => 'ri-delete-bin-fill',
-                'btnClass' => 'text-danger',
+                'btnClass' => 'floating-delete-button',
                 'text' => gT('Delete'),
                 'grid-reload' => 'yes',
                 'actionType' => 'modal',

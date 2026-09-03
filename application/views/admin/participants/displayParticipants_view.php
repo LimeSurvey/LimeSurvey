@@ -3,7 +3,6 @@
  * @var AdminController $this
  * @var array $searchcondition
  * @var Participant $model
- * @var string $massiveAction
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -63,12 +62,20 @@ echo viewHelper::getViewTestTag('displayParticipants');
             <?php
             echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='" . join("||", $searchcondition) . "' />";
 
+            require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.ParticipantListMassiveActions') . '.php';
+            $floatingActions = \actions\ParticipantListMassiveActions::getActions($permissions);
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'           => 'selectedParticipant',
+                'gridId'       => 'list_central_participants',
+                'aActions'     => $floatingActions,
+            ]);
+
             $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'id'                       => 'list_central_participants',
                 'dataProvider'             => $model->search(),
                 'columns'                  => $model->columns,
-                'massiveActionTemplate'    => $massiveAction,
-                'lsAfterAjaxUpdate'        => ['LS.CPDB.bindButtons;', 'LS.CPDB.participantPanel();', 'bindListItemclick();', 'switchStatusOfListActions();'],
+                'showSelectionBar'         => false,
+                'lsAfterAjaxUpdate'        => ['LS.CPDB.participantPanel();'],
                 'ajaxType'                 => 'POST',
                 'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
                 'beforeAjaxUpdate'         => 'insertSearchCondition',

@@ -33,8 +33,9 @@ class OpHandlerResponseContainConditionTest extends TestCondition
 
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
-        $this->assertFieldConditions($criteria->condition, '[0] LIKE :match', ['status']);
-        $this->assertSame([':match' => '%active%'], $criteria->params);
+        $paramName = array_key_first($criteria->params);
+        $this->assertFieldConditions($criteria->condition, "[0] LIKE $paramName", ['status']);
+        $this->assertSame([$paramName => '%active%'], $criteria->params);
     }
 
     public function testExecuteArrayKeysBuildsOrConditionAndIndexedParams(): void
@@ -45,17 +46,20 @@ class OpHandlerResponseContainConditionTest extends TestCondition
 
         $this->assertInstanceOf(\CDbCriteria::class, $criteria);
 
-        // Expect OR chain with uniquely indexed placeholders
+        // Expect OR chain with unique placeholders
+        $paramNames = array_keys($criteria->params);
+        $this->assertCount(2, $paramNames);
+        $this->assertNotSame($paramNames[0], $paramNames[1]);
         $this->assertFieldConditions(
             $criteria->condition,
-            '[0] LIKE :match0 OR [1] LIKE :match1',
+            "[0] LIKE {$paramNames[0]} OR [1] LIKE {$paramNames[1]}",
             ['first_name', 'last_name']
         );
 
         $this->assertSame(
             [
-                ':match0' => '%Name%',
-                ':match1' => '%Name%',
+                $paramNames[0] => '%Name%',
+                $paramNames[1] => '%Name%',
             ],
             $criteria->params
         );
@@ -74,34 +78,40 @@ class OpHandlerResponseContainConditionTest extends TestCondition
         $this->assertStringNotContainsString(';', $criteria->condition, 'Semicolon should be removed from condition.');
 
         // Expect the sanitized, quoted column name and LIKE placeholder
+        $paramName = array_key_first($criteria->params);
         $this->assertFieldConditions(
             $criteria->condition,
-            '[0] LIKE :match',
+            "[0] LIKE $paramName",
             ['nameDROPTABLEresponses--']
         );
-        $this->assertSame([':match' => '%ok%'], $criteria->params);
+        $this->assertSame([$paramName => '%ok%'], $criteria->params);
     }
 
     /**
      * Regression: when array keys are provided, confirm unique param placeholders are used
-     * (:match0, :match1, ...) and each receives the same %value% payload.
+     * and each receives the same %value% payload.
      */
     public function testArrayKeysUniquePlaceholdersRegression(): void
     {
         $handler = new ContainConditionHandler();
 
         $criteria = $handler->execute(['fieldA', 'fieldB', 'fieldC'], 'shared');
-        $pattern = '/(?:"|`|\[)?fieldA(?:"|`|\])?\s+LIKE\s+:match0.*?\s+OR\s+(?:"|`|\[)?fieldB(?:"|`|\])?\s+LIKE\s+:match1.*?\s+OR\s+(?:"|`|\[)?fieldC(?:"|`|\])?\s+LIKE\s+:match2/s';
+        $paramNames = array_keys($criteria->params);
+        $this->assertCount(3, $paramNames);
+        $this->assertSame($paramNames, array_unique($paramNames));
+        $pattern = '/(?:"|`|\[)?fieldA(?:"|`|\])?\s+LIKE\s+' . preg_quote($paramNames[0], '/')
+            . '.*?\s+OR\s+(?:"|`|\[)?fieldB(?:"|`|\])?\s+LIKE\s+' . preg_quote($paramNames[1], '/')
+            . '.*?\s+OR\s+(?:"|`|\[)?fieldC(?:"|`|\])?\s+LIKE\s+' . preg_quote($paramNames[2], '/') . '/s';
         $this->assertTrue(
             (bool)preg_match($pattern, $criteria->condition),
-            "Failed asserting OR chain uses unique indexed placeholders: {$criteria->condition}"
+            "Failed asserting OR chain uses unique placeholders: {$criteria->condition}"
         );
 
         $this->assertSame(
             [
-                ':match0' => '%shared%',
-                ':match1' => '%shared%',
-                ':match2' => '%shared%',
+                $paramNames[0] => '%shared%',
+                $paramNames[1] => '%shared%',
+                $paramNames[2] => '%shared%',
             ],
             $criteria->params
         );

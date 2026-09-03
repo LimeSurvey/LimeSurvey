@@ -50,10 +50,10 @@
 
         <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end'
             aria-labelledby='admin-notifications-menu-button'>
-            <li id='notification-inner-li'>
-                <ul id='notification-inner-ul' class='notification-list'>
+            <li id='notification-inner-li' role="none">
+                <ul id='notification-inner-ul' class='notification-list' role="none">
                     <?php foreach ($notifications as $not) : ?>
-                        <li>
+                        <li role="none">
                             <a 
                                 class='admin-notification-link'
                                 data-url='<?php echo $not->ajaxUrl; ?>'
@@ -68,18 +68,18 @@
                                         <span class='ri-checkbox-blank-circle-fill text-<?php echo $not->display_class; ?>'></span>
                                         <strong><?php echo $not->title; ?></strong>
                                     </span>
-                                    <span><?php echo ellipsize($not->message, 55); ?></span>
+                                    <span><?php echo ellipsize($not->message, 50); ?></span>
                                 <?php else : ?>
                                     <span class='text-read'><?php echo $not->title; ?></span>
                                     <br />
-                                    <span class='text-read'><?php echo ellipsize($not->message, 55); ?></span>
+                                    <span class='text-read'><?php echo ellipsize($not->message, 50); ?></span>
                                 <?php endif; ?>
                             </a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
             </li>
-            <li id='notification-divider' class="dropdown-divider"></li>
+            <li id='notification-divider' class="dropdown-divider" aria-hidden="true"></li>
 
             <li id='notification-clear-all'>
                 <a href='#'  class="dropdown-item" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()' data-params="<?= $clearAllNotificationsParams ?>">

@@ -125,6 +125,7 @@ return [
     'ckeditor'          => [
         'devBaseUrl' => 'assets/packages/ckeditor',
         'basePath'   => 'core.ckeditor',
+        'position'   => CClientScript::POS_BEGIN,
         'js'         => [
             'ckeditor.js',
             'config.js',
@@ -136,6 +137,7 @@ return [
     'ckeditoradditions' => [
         'devBaseUrl' => 'assets/packages/ckeditoradditions/',
         'basePath'   => 'core.ckeditoradditions',
+        'position'   => CClientScript::POS_BEGIN,
         'js'         => [
             'ckeditoradditions.js',
         ],
