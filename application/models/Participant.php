@@ -2129,7 +2129,17 @@ class Participant extends LSActiveRecord
     {
         $survey = Survey::model()->findByPk($surveyid);
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participant list
-        $tokenids = json_decode((string) $tokenid_string, true);
+        // The id list may reach the session in different shapes depending on the grid widget used:
+        // a JSON-encoded array ("[1,2]"), a separator-joined string ("1,2,3") from the floating
+        // actions widget, or an actual PHP array. Normalise all of them to an array of ids.
+        if (is_array($tokenid_string)) {
+            $tokenids = $tokenid_string;
+        } else {
+            $tokenids = json_decode((string) $tokenid_string, true);
+            if (!is_array($tokenids)) {
+                $tokenids = ((string) $tokenid_string === '') ? [] : explode(',', (string) $tokenid_string);
+            }
+        }
         $duplicate = 0;
         $sucessfull = 0;
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at

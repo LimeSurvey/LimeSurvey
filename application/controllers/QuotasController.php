@@ -397,28 +397,42 @@ class QuotasController extends LSBaseController
      */
     public function actionMassiveAction($action, $surveyid)
     {
+
         $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
+        if($oSurvey === null) {
+            $this->renderJSON(['success' => false, 'message' => gT('Survey not found!')]);
+            return;
+        }
         $quotaService = new \LimeSurvey\Models\Services\Quotas($oSurvey);
 
-        if ($quotaService->checkActionPermissions($action)) {
-            $sItems = Yii::app()->request->getPost('sItems', '');
-            $aQuotaIds = json_decode($sItems);
-            $errors = $quotaService->multipleItemsAction(
-                $aQuotaIds,
-                $action,
-                Yii::app()->request->getPost('QuotaLanguageSetting', [])
-            );
-            if (empty($errors)) {
-                eT("OK");
-            } else {
-                eT("Error");
-            }
-        } else {
-            /* 403 error ? */
-            Yii::app()->user->setFlash('error', gT("Access denied!"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+        if (!$quotaService->checkActionPermissions($action)) {
+            $this->renderJSON(['success' => false, 'message' => gT('Access denied!')]);
+            return;
         }
+
+        $sItems = Yii::app()->request->getPost('sItems', '');
+        $aQuotaIds = json_decode($sItems, true);
+        $aQuotaIds = is_array($aQuotaIds) ? $aQuotaIds : [];
+
+        if(empty($aQuotaIds)) {
+            $this->renderJSON(['success' => false, 'message' => gT('No quotas selected!')]);
+            return;
+        }
+        $errors = $quotaService->multipleItemsAction(
+            $aQuotaIds,
+            $action,
+            Yii::app()->request->getPost('QuotaLanguageSetting', [])
+        );
+
+        if (empty($errors)) {
+            echo '<div class="alert alert-success mb-0">' . gT('Action completed successfully.') . '</div>';
+        } else {
+            echo '<div class="alert alert-danger mb-0">'
+                . gT('One or more errors occurred. Please check and try again.')
+                . '</div>';
+        }
+        Yii::app()->end();
     }
 
     /**
