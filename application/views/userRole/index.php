@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('roles');
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
                     'filter' => $model,
-                    'showSelectionBar' => false,
+                    'lsShowSelectionBar' => false,
                     'ajaxType' => 'POST',
                     'ajaxUpdate' => 'RoleControl--identity-gridPanel',
                     'afterAjaxUpdate' => 'LS.RoleControl.bindButtons',

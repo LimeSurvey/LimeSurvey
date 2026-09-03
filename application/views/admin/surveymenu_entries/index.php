@@ -33,7 +33,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
             'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
             'ajaxType' => 'POST',
             'ajaxUpdate' => 'surveymenu-entries-grid',
-            'showSelectionBar' => false,
+            'lsShowSelectionBar' => false,
             'lsAfterAjaxUpdate'        => ['surveyMenuEntryFunctions();'],
         ]);
         ?>

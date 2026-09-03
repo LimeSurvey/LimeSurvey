@@ -63,7 +63,7 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
             "filter"            => ['N' => gT("Off"), 'Y' => gT('On')],
         ]
     ],
-    'showSelectionBar'      => false,
+    'lsShowSelectionBar'      => false,
     'ajaxUpdate'            => 'questionthemes-grid',
     'ajaxType'              => 'POST',
     // This will be called FIRST before restoreCheckboxes, so we use lsAfterAjaxUpdate instead

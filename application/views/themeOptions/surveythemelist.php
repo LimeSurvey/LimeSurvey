@@ -72,7 +72,7 @@ $this->widget(
             ],
 
         ],
-        'showSelectionBar' => false,
+        'lsShowSelectionBar' => false,
         'ajaxUpdate' => true,
         'ajaxType' => 'POST',
         'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();}',

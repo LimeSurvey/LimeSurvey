@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
             'columns' => $model->columns,
             'filter' => $model,
             'rowHtmlOptionsExpression' => '["data-attribute_id" => $data->attribute_id]',
-            'showSelectionBar'         => false,
+            'lsShowSelectionBar'         => false,
             'emptyText'                => gT('No attributes found.'),
             'lsAfterAjaxUpdate' => ['LS.CPDB.bindButtons();', 'LS.CPDB.attributePanel();'],
             'lsPageSizeCurrentValue'    => Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']),

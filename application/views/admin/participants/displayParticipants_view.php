@@ -74,7 +74,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                 'id'                       => 'list_central_participants',
                 'dataProvider'             => $model->search(),
                 'columns'                  => $model->columns,
-                'showSelectionBar'         => false,
+                'lsShowSelectionBar'       => false,
                 'lsAfterAjaxUpdate'        => ['LS.CPDB.participantPanel();'],
                 'ajaxType'                 => 'POST',
                 'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
