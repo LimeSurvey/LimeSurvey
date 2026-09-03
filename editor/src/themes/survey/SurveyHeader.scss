@@ -30,7 +30,7 @@
       font-family: IBM Plex Sans;
       font-size: $font-size-sm;
       font-weight: $font-weight-600;
-      line-height: 20px;
+      line-height: $line-height-20;
       letter-spacing: -0.017em;
       text-align: left;
     }
@@ -55,7 +55,7 @@
 
       font-size: $font-size-sm;
       font-weight: $font-weight-500;
-      line-height: 20px;
+      line-height: $line-height-20;
       letter-spacing: -0.015em;
       text-align: left;
       color: $white;
@@ -86,9 +86,9 @@
       color: $g-900;
       font-size: 40px;
       margin-bottom: 16px;
-      font-style: normal;
-      font-family: 'IBM Plex Sans';
-      font-weight: 600;
+      font-style: $font-style-base;
+      font-family: $ibm-font-family;
+      font-weight: $font-weight-600;
       line-height: 52px;
       letter-spacing: -0.68px;
       padding: 0;
