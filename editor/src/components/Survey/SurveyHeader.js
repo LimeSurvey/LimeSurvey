@@ -198,7 +198,7 @@ export const SurveyHeader = ({
                 </TooltipContainer>
               </div>
               <ContentEditor
-                id="survey-header-welcome-description"
+                id="survey-header-survey-title"
                 className="welcome-screen-survey-title"
                 value={RemoveHTMLTagsInString(
                   L10ns({

@@ -4,6 +4,7 @@
   border-radius: 2px;
   width: 100%;
   padding: 63px 67px;
+  border: 2px solid $g-700;
 
   .show-x-questions {
     font-size: 16px;
@@ -82,13 +83,15 @@
 
   .welcome-screen-survey-title {
     .content-editable {
-      color: $g-800;
+      color: $g-900;
       font-size: 40px;
-      height: 100%;
       margin-bottom: 16px;
       font-style: normal;
+      font-family: 'IBM Plex Sans';
       font-weight: 600;
-      line-height: 40px;
+      line-height: 52px;
+      letter-spacing: -0.68px;
+      padding: 0;
     }
   }
 
