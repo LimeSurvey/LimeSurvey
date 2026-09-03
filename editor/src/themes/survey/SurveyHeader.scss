@@ -1,5 +1,4 @@
 .survey-header-container {
-  background-color: #a3c8ff44;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   border-radius: 2px;
   width: 100%;
@@ -22,8 +21,8 @@
 
     *,
     svg {
-      color: #5076ff !important;
-      fill: #5076ff;
+      color: $active-green !important;
+      fill: $active-green;
       padding: 0;
       //styleName: LSD/Typography/Sans/Semi14;
       font-family: IBM Plex Sans;
