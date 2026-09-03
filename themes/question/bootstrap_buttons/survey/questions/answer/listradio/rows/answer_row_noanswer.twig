@@ -12,7 +12,7 @@
 {% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-md-2' : question_template_attribute.max_buttons_row %}
 
 <!-- answer_row_noanswer -->
-<div class="bootstrap-buttons-div col-12 {{ max_buttons_row }}">
+<li class="bootstrap-buttons-div col-12 {{ max_buttons_row }}">
     <div id="javatbd{{ name }}" class="form-check col-12 {% if check_ans!='' %} active {% endif %} col-12">
         <input
             class="btn-check visually-hidden button-item"
@@ -26,5 +26,5 @@
             <span class="" aria-hidden="true"></span> {{ gT('No answer') }}
         </label>
     </div>
-</div>
+</li>
 <!-- endof answer_row_noanswer -->

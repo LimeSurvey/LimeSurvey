@@ -136,6 +136,7 @@
     min-height: 40px;
     min-width: 68.62px;
     width: 100%;
+    align-items: stretch;
     .left-side {
       width: 50%;
       font-size: $font-size-xxl;
@@ -147,6 +148,7 @@
     .center-side {
       width: 100%;
       font-size: $font-size-xxl;
+      background-color: $g-600;
     }
   }
   .btn-check:active + .btn-outline-lime-alignment,
