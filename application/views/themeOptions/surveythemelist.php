@@ -96,7 +96,7 @@ $this->widget(
         'showSelectionBar' => false,
         'ajaxUpdate' => true,
         'ajaxType' => 'POST',
-        'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();LS.actionDropdown.create();}',
+        'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();}',
     ]
 );
 

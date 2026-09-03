@@ -47,7 +47,7 @@ require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActi
                     'columns' => $failedEmailModel->getColumns(),
                     'ajaxUpdate' => 'failedemail-grid',
                     'ajaxType' => 'POST',
-                    'lsAfterAjaxUpdate' => ['bindListItemclick();', 'LS.FailedEmail.bindButtons();']
+                    'lsAfterAjaxUpdate' => ['LS.FailedEmail.bindButtons();']
                 ]);
                 ?>
             </div>
