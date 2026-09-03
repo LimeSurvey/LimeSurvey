@@ -30,6 +30,28 @@ LS.floatingActions = (function () {
     function _bar(gridId) {
         return _barRefs[gridId] || $('#floating-actions-bar-' + gridId);
     }
+
+    /**
+     * Resolve dotted callback paths (e.g. "LS.CPDB.onClickExport") safely.
+     * Returns a function bound to its parent object, or null.
+     *
+     * @param {string} path
+     * @returns {Function|null}
+     */
+    function _resolveActionCallback(path) {
+        if (typeof path !== 'string' || path === '') { return null; }
+        var parts = path.split('.');
+        var context = null;
+        var current = window;
+        for (var i = 0; i < parts.length; i++) {
+            if (current == null || typeof current[parts[i]] === 'undefined') {
+                return null;
+            }
+            context = current;
+            current = current[parts[i]];
+        }
+        return typeof current === 'function' ? current.bind(context) : null;
+    }
     /**
      * Count selected rows and update the floating bar visibility.
      * Uses LS.gridSelection.count() (cross-page) when available,
@@ -162,6 +184,14 @@ LS.floatingActions = (function () {
             newForm.submit();
             return;
         }
+
+        // ---- custom JS action -----------------------------------------
+        if (actionType === 'custom') {
+            var cb = _resolveActionCallback($that.data('custom-js'));
+            if (cb) { cb(checkedItems); }
+            return;
+        }
+
         // ---- modal action ---------------------------------------------
         var modalId = $that.data('modal-id');
         if (!modalId) { return; }
@@ -259,7 +289,7 @@ LS.floatingActions = (function () {
                         }
                     }
                     if (onSuccess) {
-                        var func = typeof window[onSuccess] === 'function' ? window[onSuccess] : null;
+                        var func = _resolveActionCallback(onSuccess);
                         if (func) { func(html); }
                     }
                 },
@@ -388,6 +418,7 @@ LS.floatingActions = (function () {
                             filterParams[key] = val;
                         }
                     });
+
 
                     $.ajax({
                         url:      selectAllUrl,
