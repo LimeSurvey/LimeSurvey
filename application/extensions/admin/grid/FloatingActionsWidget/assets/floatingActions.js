@@ -113,6 +113,9 @@ LS.floatingActions = (function () {
         var $bar    = _bar(gridId);
         var $footer = $('#' + gridId).find('.grid-view-ls-footer');
         if ($bar.length && $footer.length) {
+            // Remove bar from DOM first if it's already there (avoid duplicates)
+            $bar.detach();
+            // Re-insert before footer
             $footer.before($bar);
             _syncBarPosition(gridId);
         }
