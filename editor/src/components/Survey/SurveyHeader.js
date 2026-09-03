@@ -8,6 +8,7 @@ import {
   createBufferOperation,
   decodeHTMLEntities,
   L10ns,
+  RemoveHTMLTagsInString,
   ScrollToElement,
   STATES,
 } from 'helpers'
@@ -111,6 +112,12 @@ export const SurveyHeader = ({
     }
   }
 
+  const handleTitleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+    }
+  }
+
   const welcomeTitle = useMemo(
     () =>
       L10ns({
@@ -192,6 +199,29 @@ export const SurveyHeader = ({
               </div>
               <ContentEditor
                 id="survey-header-welcome-description"
+                className="welcome-screen-survey-title"
+                value={RemoveHTMLTagsInString(
+                  L10ns({
+                    prop: 'title',
+                    language: activeLanguage,
+                    l10ns: languageSettings,
+                    disabled: !hasSurveyUpdatePermission,
+                  })
+                )}
+                update={(value) =>
+                  handleUpdate({ title: RemoveHTMLTagsInString(value) })
+                }
+                placeholder={t('Survey title')}
+                language={language}
+                noPermissionDisabled={true}
+                showToolTip={false}
+                testId="survey-header-survey-title"
+                disabled={false}
+                onKeyDown={handleTitleKeyDown}
+                attributeDescriptions={attributeDescriptions}
+              />
+              <ContentEditor
+                id="survey-header-welcome-description"
                 className="welcome-description"
                 value={L10ns({
                   prop: 'description',
@@ -200,7 +230,7 @@ export const SurveyHeader = ({
                   disabled: !hasSurveyUpdatePermission,
                 })}
                 update={(value) => handleUpdate({ description: value })}
-                placeholder={t('Description')}
+                placeholder={t('Welcome description')}
                 language={language}
                 noPermissionDisabled={true}
                 showToolTip={false}
