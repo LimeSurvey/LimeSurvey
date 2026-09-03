@@ -33,7 +33,7 @@ export function useResponses(surveyId, pagination, filters, sorting) {
         filters,
         sorting,
       }),
-    select: (data) => data.responses,
+    select: (data) => data,
     placeholderData: keepPreviousData,
   })
 
