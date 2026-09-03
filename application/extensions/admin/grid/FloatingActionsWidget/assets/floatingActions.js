@@ -135,7 +135,7 @@ LS.floatingActions = (function () {
     /**
      * Ensure the bar is attached to <body>.
      * Since the bar uses position:fixed it does not need to live inside the grid
-     * container Ã¢â‚¬â€œ it only needs to be somewhere in the document.  Keeping it in
+     * container it only needs to be somewhere in the document.  Keeping it in
      * <body> means it is never removed by yiiGridView's replaceWith() operation,
      * so there is no detach/re-inject cycle to manage.
      *
@@ -551,16 +551,3 @@ LS.floatingActions = (function () {
         },
     };
 }());
-
-
-
-
-
-
-
-
-
-
-
-
-
