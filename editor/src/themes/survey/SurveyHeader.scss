@@ -84,12 +84,12 @@
   .welcome-screen-survey-title {
     .content-editable {
       color: $g-900;
-      font-size: 40px;
+      font-size: $font-size-xxxl;
       margin-bottom: 16px;
       font-style: $font-style-base;
-      font-family: $ibm-font-family;
+      font-family: $ibm-font-serif;
       font-weight: $font-weight-600;
-      line-height: 52px;
+      line-height: $line-height-52;
       letter-spacing: -0.68px;
       padding: 0;
     }
@@ -97,7 +97,7 @@
 
   .welcome-title,
   .welcome-description {
-    font-size: 16px;
+    font-size: $font-size-base;
     letter-spacing: -0.017em;
     text-align: left;
     margin-bottom: 10px;
@@ -109,7 +109,7 @@
     color: $g-700;
     font-size: $font-size-sm;
     font-weight: $font-weight-600;
-    line-height: 24px;
+    line-height: $line-height-24;
   }
 
   .border-bottom {
