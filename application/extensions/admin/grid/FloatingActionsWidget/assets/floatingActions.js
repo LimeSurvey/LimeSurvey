@@ -1,5 +1,5 @@
-/**
- * Floating Actions Widget â€“ JavaScript
+﻿/**
+ * Floating Actions Widget JavaScript
  *
  * Provides LS.floatingActions:
  *   - Shows a context bar with action buttons at the bottom of the viewport
@@ -80,6 +80,13 @@ LS.floatingActions = (function () {
             // rendered at the correct location regardless of scroll state.
             _syncBarPosition(gridId);
         } else {
+            // Dispose of any Bootstrap tooltips in the bar before hiding it
+            $bar.find('[data-bs-toggle="tooltip"]').each(function () {
+                var tooltipInstance = bootstrap.Tooltip.getInstance(this);
+                if (tooltipInstance) {
+                    tooltipInstance.dispose();
+                }
+            });
             $bar.removeClass('floating-actions-bar--visible');
         }
         // Keep the legacy MassiveActionsWidget button in sync as well
@@ -128,7 +135,7 @@ LS.floatingActions = (function () {
     /**
      * Ensure the bar is attached to <body>.
      * Since the bar uses position:fixed it does not need to live inside the grid
-     * container â€“ it only needs to be somewhere in the document.  Keeping it in
+     * container Ã¢â‚¬â€œ it only needs to be somewhere in the document.  Keeping it in
      * <body> means it is never removed by yiiGridView's replaceWith() operation,
      * so there is no detach/re-inject cycle to manage.
      *
@@ -162,7 +169,7 @@ LS.floatingActions = (function () {
         var onSuccess  = $that.data('on-success');
         var gridReload = $that.data('grid-reload');
         var $grid      = $('#' + gridId);
-        // Get selected items â€“ use cross-page store when available, fall back to DOM
+        // Get selected items Ã¢â‚¬â€œ use cross-page store when available, fall back to DOM
         var checkedItems;
         if (window.LS && LS.gridSelection && typeof LS.gridSelection.getAll === 'function') {
             checkedItems = LS.gridSelection.getAll(gridId);
@@ -544,6 +551,8 @@ LS.floatingActions = (function () {
         },
     };
 }());
+
+
 
 
 
