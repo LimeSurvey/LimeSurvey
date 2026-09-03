@@ -397,7 +397,7 @@ class ParticipantsAction extends SurveyCommonAction
 
             ]
         );
-        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array('permissions' => $aData['permissions']), true, false);
+        // displayParticipants now uses FloatingActionsWidget directly in the view.
 
         // Set page size
         if ($request->getPost('pageSizeParticipantView')) {
@@ -409,7 +409,6 @@ class ParticipantsAction extends SurveyCommonAction
         // Loads the participant panel view and display participant view
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
     }
-
 
     /**
      * Takes the delete call from the display participants and take appropriate action depending on the condition
@@ -1412,12 +1411,7 @@ class ParticipantsAction extends SurveyCommonAction
         $aData['searchstring'] = $searchstring;
         // loads the participant panel view and display participant view
 
-        $aData['massiveAction'] = App()->getController()->renderPartial(
-            '/admin/participants/massive_actions/_selector_attribute',
-            array(),
-            true,
-            false
-        );
+        // Floating actions widget is now used instead of massive action template
         $aData['topbar'] = $this->getTopBarComponents($title, false, true);
 
         $this->renderWrappedTemplate('participants', array('participantsPanel', 'attributeControl'), $aData);

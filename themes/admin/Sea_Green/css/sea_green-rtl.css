@@ -19780,7 +19780,7 @@ table [class^=ri-], table [class*=" ri-"] {
   width: 1px;
   height: 22px;
   background: #D3D5DA;
-  margin: 0 4px;
+  margin: 0 12px;
   flex-shrink: 0;
 }
 .floating-actions-bar .floating-actions-btn {
@@ -19809,10 +19809,7 @@ table [class^=ri-], table [class*=" ri-"] {
   border: solid 1px #8146F6;
   color: #1E1E1E;
 }
-.floating-actions-bar .floating-actions-btn.text-danger {
-  color: #FF515F;
-}
-.floating-actions-bar .floating-actions-btn.text-danger i::before {
+.floating-actions-bar .floating-actions-btn.floating-delete-button i::before {
   color: #FF515F;
 }
 .floating-actions-bar .floating-actions-close {
