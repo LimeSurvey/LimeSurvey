@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-08-31 11:44:31+00:00\n"
+"POT-Creation-Date: 2026-09-03 09:32:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -377,6 +377,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1046
 #: application/helpers/userstatistics_helper.php:992
 #: application/models/Assessment.php:84
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:47
 msgid "Minimum"
 msgstr ""
 
@@ -384,6 +385,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1084
 #: application/helpers/userstatistics_helper.php:1021
 #: application/models/Assessment.php:85
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:56
 msgid "Maximum"
 msgstr ""
 
@@ -1768,6 +1770,7 @@ msgstr ""
 #: application/views/survey/questions/answer/file_upload/answer.twig:85
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadItem.js:80
 #: editor/src/components/QuestionTypes/FileUpload/FileUploadParticipantView.js:46
+#: editor/src/pages/Responses/components/ResponsesStatistics/QuestionComments.js:45
 #: editor/src/pages/Responses/components/ResponsesTable/FileInfoCell.js:38
 msgid "Comment"
 msgstr ""
@@ -2320,7 +2323,7 @@ msgstr ""
 #: application/views/userRole/massiveAction/_updatepermissions.php:37
 #: application/views/userRole/partials/_permissions.php:40
 #: editor/src/components/TopBar/TopBarActions.js:145
-#: editor/src/pages/Responses/Responses.js:85
+#: editor/src/pages/Responses/Responses.js:74
 #: editor/src/pages/Responses/components/BulkActions.js:43
 msgid "Export"
 msgstr ""
@@ -2853,7 +2856,10 @@ msgstr ""
 #: editor/src/helpers/options/getYesNoOptions.js:32
 #: editor/src/helpers/options/getYesNoOptions.js:38
 #: editor/src/helpers/options/getYesNoOptions.js:44
+#: editor/src/pages/Responses/components/ColumnFilter.js:110
 #: editor/src/pages/Responses/components/ExportPopupHTML.js:75
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/FileUploadedToggle.js:9
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/buildQuestionOptions.js:141
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:10
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_yes-no.twig:11
 #: themes/survey/vanilla/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:10
@@ -3029,7 +3035,10 @@ msgstr ""
 #: editor/src/helpers/options/getYesNoOptions.js:31
 #: editor/src/helpers/options/getYesNoOptions.js:37
 #: editor/src/helpers/options/getYesNoOptions.js:43
+#: editor/src/pages/Responses/components/ColumnFilter.js:109
 #: editor/src/pages/Responses/components/ExportPopupHTML.js:74
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/FileUploadedToggle.js:8
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/buildQuestionOptions.js:140
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:8
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_yes-no.twig:9
 #: themes/survey/vanilla/views/subviews/printanswers/question_types/template_array-yes-uncertain-no.twig:8
@@ -3270,13 +3279,13 @@ msgstr ""
 #: editor/src/components/ConditionDesigner/Overlays/DeleteScenarioOverlay.js:25
 #: editor/src/components/ConditionDesigner/Overlays/ExpressionScriptEditorOverlay.js:77
 #: editor/src/components/ConditionDesigner/Overlays/ResetAllConditionsOverlay.js:21
-#: editor/src/components/Modals/ComponentModal.js:49
+#: editor/src/components/Modals/ComponentModal.js:53
 #: editor/src/components/Modals/ConfirmModal.js:38
 #: editor/src/components/PublicSurveyAlias/PublicSurveyAlias.js:168
 #: editor/src/components/Survey/Questions/QuestionPreview/QuestionPreviewBody.js:113
 #: editor/src/components/SurveyStatusSwitchPopup/SurveyStatusSwitchPopupFooter.js:30
 #: editor/src/components/UIComponents/DateRangePicker/DateRangePicker.js:114
-#: editor/src/pages/Responses/Responses.js:86
+#: editor/src/pages/Responses/Responses.js:75
 #: editor/src/pages/Responses/components/ColumnsManagement.js:186
 #: themes/survey/fruity_twentythree/views/subviews/messages/bootstrap_alert_modal.twig:68
 msgid "Cancel"
@@ -3813,7 +3822,7 @@ msgstr ""
 #: application/views/survey/questions/answer/list_with_comment/dropdown/answer.twig:33
 #: application/views/surveyPermissions/index.php:32
 #: application/views/surveyPermissions/index.php:65
-#: editor/src/components/UIComponents/Select/Select.js:33
+#: editor/src/components/UIComponents/Select/Select.js:34
 msgid "Please choose..."
 msgstr ""
 
@@ -4926,7 +4935,7 @@ msgstr ""
 #: application/models/services/Export/ExportAnswerFormatter.php:162
 #: application/models/services/SurveyCondition.php:940
 #: application/models/services/SurveyCondition.php:1015
-#: application/models/services/SurveyStatistics/Charts/Questions/Processors/SingleOptionProcessor.php:86
+#: application/models/services/SurveyStatistics/Charts/Questions/Processors/SingleOptionProcessor.php:78
 #: application/views/admin/dataentry/content_view.php:166
 #: application/views/admin/dataentry/content_view.php:170
 #: application/views/admin/dataentry/content_view.php:193
@@ -4938,6 +4947,8 @@ msgstr ""
 #: editor/src/components/QuestionSettings/attributes/getGeneralAttributes.js:98
 #: editor/src/components/QuestionTypes/QuestionModes/OptionQuestionViewMode.js:166
 #: editor/src/helpers/getQuestionAttributesTitles.js:7
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/PieChart.js:144
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/buildQuestionOptions.js:249
 #: themes/question/image_select-listradio/survey/questions/answer/listradio/rows/answer_row_other.twig:42
 msgid "Other"
 msgstr ""
@@ -6379,6 +6390,8 @@ msgstr ""
 #: application/views/admin/export/statistics_view.php:23
 #: editor/src/components/SurveySettings/panelOptions.js:114
 #: editor/src/helpers/getQuestionAttributesTitles.js:9
+#: editor/src/pages/Responses/Sidebars/getResponsesPanels.js:35
+#: editor/src/pages/Responses/Sidebars/getResponsesPanels.js:36
 msgid "Statistics"
 msgstr ""
 
@@ -6968,6 +6981,7 @@ msgstr ""
 #: application/views/admin/token/exportdialog.php:70
 #: application/views/responses/partial/responseListTable.php:152
 #: application/views/userRole/partials/_permissions.php:28
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/IncludedToggle.js:8
 msgid "All"
 msgstr ""
 
@@ -7817,6 +7831,7 @@ msgstr ""
 #: application/views/admin/survey/surveybar_statistics.php:23
 #: application/views/surveyAdministration/importSurvey_view.php:151
 #: editor/src/components/SurveySettings/panelOptions.js:105
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:188
 msgid "Responses"
 msgstr ""
 
@@ -11281,7 +11296,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:209
 #: application/helpers/userstatistics_helper.php:1397
 #: application/helpers/userstatistics_helper.php:1661
-#: application/models/services/SurveyStatistics/Charts/Questions/Processors/SingleOptionProcessor.php:102
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:247
 msgid "Comments"
 msgstr ""
 
@@ -11312,6 +11327,8 @@ msgstr ""
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:84
 #: application/views/admin/export/generatestats/_statisticsoutput_header.php:35
 #: application/views/quotas/viewquotas_quota_members.php:45
+#: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:97
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:183
 msgid "Answer"
 msgstr ""
 
@@ -11410,6 +11427,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2206
 #: application/helpers/userstatistics_helper.php:2217
 #: application/helpers/userstatistics_helper.php:2223
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:66
 msgid "Sum"
 msgstr ""
 
@@ -11422,11 +11440,14 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2371
 #: application/views/admin/export/generatestats/_statisticsoutput_arithmetic.php:23
 #: application/views/admin/export/generatestats/simplestats/_statisticsoutput_arithmetic.php:26
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:70
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:72
 msgid "Standard deviation"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:1045
 #: application/helpers/userstatistics_helper.php:991
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:85
 msgid "Average"
 msgstr ""
 
@@ -11452,7 +11473,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1826
 #: application/helpers/userstatistics_helper.php:1833
 #: application/views/admin/export/generatestats/_statisticsoutput_header.php:41
-#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:9
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:65
 msgid "Count"
 msgstr ""
 
@@ -11555,7 +11576,8 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1821
 #: application/helpers/userstatistics_helper.php:1826
 #: application/helpers/userstatistics_helper.php:1835
-#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:12
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:315
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:193
 msgid "Percentage"
 msgstr ""
 
@@ -11616,6 +11638,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2369
 #: application/views/admin/export/generatestats/_statisticsoutput_arithmetic.php:12
 #: application/views/admin/export/generatestats/simplestats/_statisticsoutput_arithmetic.php:12
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:87
 msgid "Arithmetic mean"
 msgstr ""
 
@@ -11672,6 +11695,7 @@ msgstr ""
 #: application/views/questionAdministration/textElements.php:5
 #: application/views/quotas/viewquotas_quota_members.php:44
 #: editor/src/components/ConditionDesigner/ConditionFormFields/QuestionTypeToggle.js:55
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/FilterSelectionRow.js:11
 #: themes/survey/bootswatch/config.xml:135
 #: themes/survey/fruity_twentythree/config.xml:219
 #: themes/survey/vanilla/config.xml:127
@@ -11679,6 +11703,7 @@ msgid "Question"
 msgstr ""
 
 #: application/helpers/common_helper.php:1075
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/buildQuestionOptions.js:217
 #: themes/survey/fruity_twentythree/views/subviews/printanswers/question_types/template_ranking.twig:7
 #: themes/survey/vanilla/views/subviews/printanswers/question_types/template_ranking.twig:7
 msgid "Rank"
@@ -11688,7 +11713,8 @@ msgstr ""
 #: application/helpers/update/updates/Update_700.php:64
 #: application/models/FailedEmail.php:151
 #: editor/src/pages/Responses/components/ResponseDetailView.js:60
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:70
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:95
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/surveyDataFields.js:12
 msgid "Response ID"
 msgstr ""
 
@@ -11711,6 +11737,7 @@ msgstr ""
 #: application/helpers/common_helper.php:1599
 #: application/helpers/update/updates/Update_700.php:92
 #: editor/src/pages/Responses/components/ResponseDetailView.js:66
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/surveyDataFields.js:13
 #: editor/src/pages/Responses/utils/generateColumns.js:104
 msgid "Seed"
 msgstr ""
@@ -11723,6 +11750,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:1635
 #: application/helpers/update/updates/Update_700.php:128
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/surveyDataFields.js:15
 msgid "Date last action"
 msgstr ""
 
@@ -11747,6 +11775,7 @@ msgstr ""
 #: application/helpers/update/updates/Update_700.php:419
 #: application/models/services/SurveyCondition.php:825
 #: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/arrayDualScaleTypeHandler.js:18
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/buildQuestionOptions.js:182
 msgid "Scale 1"
 msgstr ""
 
@@ -11755,6 +11784,7 @@ msgstr ""
 #: application/helpers/update/updates/Update_700.php:443
 #: application/models/services/SurveyCondition.php:826
 #: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/arrayDualScaleTypeHandler.js:21
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/buildQuestionOptions.js:183
 msgid "Scale 2"
 msgstr ""
 
@@ -13363,6 +13393,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:56
 #: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:18
 #: editor/src/pages/Responses/components/ChartRenderer.js:112
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:66
 msgid "Bar chart"
 msgstr ""
 
@@ -13372,6 +13403,7 @@ msgstr ""
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:52
 #: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:22
 #: editor/src/pages/Responses/components/ChartRenderer.js:121
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:128
 msgid "Pie chart"
 msgstr ""
 
@@ -13380,6 +13412,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:60
 #: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:26
 #: editor/src/pages/Responses/components/ChartRenderer.js:130
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:151
 msgid "Radar chart"
 msgstr ""
 
@@ -13388,6 +13421,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:62
 #: editor/src/components/QuestionSettings/attributes/getStatisticsAttributes.js:30
 #: editor/src/pages/Responses/components/ChartRenderer.js:140
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:161
 msgid "Line chart"
 msgstr ""
 
@@ -13402,6 +13436,8 @@ msgstr ""
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:102
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:66
 #: editor/src/pages/Responses/components/ChartRenderer.js:149
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:121
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:181
 msgid "Doughnut chart"
 msgstr ""
 
@@ -15589,6 +15625,7 @@ msgstr ""
 #: editor/src/components/SurveySettings/GeneralSettings/LanguageSwitch.js:7
 #: editor/src/components/SurveySettings/Settings/getPresentationSettingsBlocks.js:139
 #: editor/src/components/SurveySettings/Settings/getPrivacyPolicySettingsBlocks.js:125
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/surveyDataFields.js:17
 #: editor/src/pages/Responses/utils/generateColumns.js:116
 #: modules/admin/globalsettings/views/globalSettings_view.php:22
 msgid "Language"
@@ -15689,6 +15726,7 @@ msgstr ""
 
 #: application/models/FailedEmail.php:79
 #: application/models/ParticipantAttributeName.php:164
+#: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:85
 msgid "Date"
 msgstr ""
 
@@ -16714,6 +16752,7 @@ msgid "Anonymized responses"
 msgstr ""
 
 #: application/models/Survey.php:1712
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/IncludedToggle.js:10
 msgid "Incomplete"
 msgstr ""
 
@@ -18558,6 +18597,7 @@ msgstr ""
 #: application/views/admin/conditions/includes/conditions_scenario.php:22
 #: editor/src/components/ConditionDesigner/ConditionItem.js:49
 #: editor/src/components/QuestionTypes/RankingQuestion/RankingQuestionSubquestion.js:71
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/FilterSelectionRow.js:18
 msgid "OR"
 msgstr ""
 
@@ -19149,7 +19189,7 @@ msgstr ""
 #: application/views/admin/export/vv_view.php:39
 #: application/views/responses/browseindex_view.php:32
 #: editor/src/pages/Responses/components/ExportPopupHTML.js:60
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:60
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:85
 msgid "All responses"
 msgstr ""
 
@@ -19314,14 +19354,14 @@ msgstr ""
 #: application/views/admin/export/spss_view.php:22
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:15
 #: application/views/admin/export/statistics_user_view.php:33
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:61
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:86
 msgid "Complete only"
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:23
 #: application/views/admin/export/statistics_subviews/_mainoptions.php:16
 #: application/views/admin/export/statistics_user_view.php:34
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:62
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:87
 msgid "Incomplete only"
 msgstr ""
 
@@ -19580,7 +19620,6 @@ msgstr ""
 
 #: application/views/admin/export/statistics_subviews/_question.php:962
 #: application/views/admin/export/statistics_subviews/_question.php:1029
-#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:6
 msgid "Label"
 msgstr ""
 
@@ -20472,7 +20511,7 @@ msgstr ""
 #: application/views/admin/super/footer.php:144
 #: application/views/admin/super/footer.php:165
 #: editor/src/components/ConditionDesigner/Overlays/DeleteScenarioOverlay.js:9
-#: editor/src/components/Modals/ComponentModal.js:57
+#: editor/src/components/Modals/ComponentModal.js:61
 #: editor/src/components/Modals/ConfirmModal.js:12
 #: editor/src/components/Survey/Questions/QuestionPreview/QuestionPreviewBody.js:121
 #: editor/src/components/UIComponents/DateRangePicker/DateRangePicker.js:117
@@ -21767,6 +21806,10 @@ msgstr ""
 #: application/views/admin/super/header.php:62
 #: application/views/layouts/header.php:66
 #: application/views/quickTranslation/translatetabs_view.php:24
+#: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:179
+#: editor/src/pages/Responses/components/ResponsesStatistics/CommentsModal.js:118
+#: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:145
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:184
 msgid "Loading..."
 msgstr ""
 
@@ -27645,6 +27688,7 @@ msgstr ""
 #: editor/src/components/ConditionDesigner/ConditionFormFields/AnswerTypeSelect.js:51
 #: editor/src/components/ConditionDesigner/ConditionFormFields/ParticipantDataSelect.js:58
 #: editor/src/components/ConditionDesigner/ConditionFormFields/QuestionTypeToggle.js:60
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/FilterSelectionRow.js:13
 msgid "Participant data"
 msgstr ""
 
@@ -27653,6 +27697,7 @@ msgid "Enter regular expression"
 msgstr ""
 
 #: editor/src/components/ConditionDesigner/ConditionItem.js:50
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/FilterSelectionRow.js:17
 msgid "AND"
 msgstr ""
 
@@ -27730,10 +27775,12 @@ msgid "Continue editing"
 msgstr ""
 
 #: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/genderTypeHandler.js:10
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/buildQuestionOptions.js:135
 msgid "Female (F)"
 msgstr ""
 
 #: editor/src/components/ConditionDesigner/handlers/previousQuestions/typeHandlers/genderTypeHandler.js:11
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/buildQuestionOptions.js:136
 msgid "Male (M)"
 msgstr ""
 
@@ -28137,12 +28184,15 @@ msgstr ""
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:213
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:236
 #: editor/src/components/QuestionsParticipantMode/ArrayParticipantMode/ArrayParticipantMode.js:249
+#: editor/src/pages/Responses/components/ResponsesStatistics/QuestionComments.js:31
 msgid "Answer option"
 msgstr ""
 
 #: editor/src/components/QuestionTypes/DateTime/DateTime.js:124
 #: editor/src/pages/Responses/components/ColumnFilter.js:188
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:76
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:101
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/NumberRangeField.js:10
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:45
 msgid "Min"
 msgstr ""
 
@@ -28880,24 +28930,12 @@ msgstr ""
 msgid "Enter here"
 msgstr ""
 
-#: editor/src/components/UIComponents/LSTable/LSTable.js:140
-msgid "Select all rows"
-msgstr ""
-
-#: editor/src/components/UIComponents/LSTable/LSTable.js:175
-msgid "Sorted ascending"
-msgstr ""
-
-#: editor/src/components/UIComponents/LSTable/LSTable.js:176
+#: editor/src/components/UIComponents/LSTable/LSTable.js:144
 msgid "Sorted descending"
 msgstr ""
 
-#: editor/src/components/UIComponents/LSTable/LSTable.js:177
-msgid "Sortable"
-msgstr ""
-
-#: editor/src/components/UIComponents/LSTable/LSTable.js:220
-msgid "Select row"
+#: editor/src/components/UIComponents/LSTable/LSTable.js:145
+msgid "Sorted ascending"
 msgstr ""
 
 #: editor/src/components/UIComponents/PaginationButtons/PaginationButtons.js:42
@@ -28906,6 +28944,11 @@ msgstr ""
 
 #: editor/src/components/UIComponents/PaginationButtons/PaginationButtons.js:91
 msgid "Records per page"
+msgstr ""
+
+#: editor/src/components/UIComponents/SearchInput/SearchInput.js:107
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:155
+msgid "Remove search term"
 msgstr ""
 
 #: editor/src/components/WelcomeSettings/WelcomeSettings.js:48
@@ -29128,11 +29171,20 @@ msgstr ""
 msgid "Page doesn't exist"
 msgstr ""
 
-#: editor/src/pages/Responses/Responses.js:252
+#: editor/src/pages/Responses/Responses.js:225
 msgid "Loading responses..."
 msgstr ""
 
-#: editor/src/pages/Responses/ResponsesHeader.js:62
+#: editor/src/pages/Responses/ResponsesHeader.js:43
+msgid "Hide filters"
+msgstr ""
+
+#: editor/src/pages/Responses/ResponsesHeader.js:43
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:70
+msgid "Filter responses"
+msgstr ""
+
+#: editor/src/pages/Responses/ResponsesHeader.js:56
 msgid "Clear filters"
 msgstr ""
 
@@ -29160,8 +29212,14 @@ msgstr ""
 msgid "Pin column"
 msgstr ""
 
+#: editor/src/pages/Responses/components/ColumnActions.js:34
+msgid "Column Actions"
+msgstr ""
+
 #: editor/src/pages/Responses/components/ColumnFilter.js:201
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:90
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:115
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/NumberRangeField.js:16
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:54
 msgid "Max"
 msgstr ""
 
@@ -29194,7 +29252,7 @@ msgid "Complete responses"
 msgstr ""
 
 #: editor/src/pages/Responses/components/Overview/ResponsesOverview.js:78
-#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesStatistics.js:57
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesStatistics.js:61
 msgid "Loading statistics..."
 msgstr ""
 
@@ -29244,32 +29302,323 @@ msgstr ""
 msgid "Are you sure you want to delete the attachments for the selected responses?"
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesStatistics.js:59
+#: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:129
+#: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:78
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:81
+msgid "Search responses"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:134
+#: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:83
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:86
+msgid "1 result found"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:135
+#: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:84
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:87
+msgid "%s results found"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:144
+#: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:93
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:96
+msgid "No responses match your search."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:145
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:457
+#: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:94
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:97
+msgid "There are no responses for this question yet."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ArrayTextTable.js:179
+#: editor/src/pages/Responses/components/ResponsesStatistics/CommentsModal.js:118
+#: editor/src/pages/Responses/components/ResponsesStatistics/MultiNumericalGrid.js:145
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:153
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesGrid.js:184
+msgid "Load more"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartHeader.js:42
+msgid "Chart Actions"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:95
+msgid "Stacked bar chart"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:109
+msgid "Grouped bar chart"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:171
+msgid "Polar area chart"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:191
+msgid "Grid"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:216
+msgid "Table"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:393
+msgid "All chart options"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:404
+msgid "Show chart"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:409
+msgid "Hide chart"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:430
+msgid "Each value is the mean of the numbers entered for a subquestion (row) and answer option (column): their sum divided by the number of responses that answered that cell. Unanswered cells are left out."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:434
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/GroupedBarChart.js:34
+msgid "Mean"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartRenderV2.js:438
+msgid "of the subquestions (rows) in the concerning answer option (columns)"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/GroupedBarChart.js:37
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:114
+msgid "Median"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/GroupedBarChart.js:40
+msgid "Min/Max"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/RankingBarChart.js:65
+msgid "Click to view all rankings for this option"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/RankingBarChart.js:133
+msgid "See all rankings for:"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/RankingBarChart.js:149
+msgid "vote"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/RankingBarChart.js:149
+msgid "votes"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/Charts/StackedLegend.js:8
+msgid "Distribution by choice"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:28
+msgid "Yesterday"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:311
+msgid "participant selected this option"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:312
+msgid "participants selected this option"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:343
+msgid "Click to view comments"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/CommentsModal.js:73
+msgid "See all comments for:"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/CommentsModal.js:77
+msgid "All answers"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/CommentsModal.js:106
+msgid "No comments for this answer."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/CommentsModal.js:107
+#: editor/src/pages/Responses/components/ResponsesStatistics/QuestionComments.js:75
+msgid "No comments for this question."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/QuestionComments.js:90
+msgid "Show all"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/ResponsesStatistics.js:63
 msgid "No responses or compatible data available to display statistics."
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:21
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:46
 msgid "Max ID must be greater than Min ID"
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:28
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:53
 msgid "Min ID must be less than Max ID"
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:31
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:56
 msgid "Max ID must be a positive integer"
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:34
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:59
 msgid "Min ID must be a positive integer"
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:45
-msgid "Filter responses"
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:81
+msgid "Completion state"
 msgstr ""
 
-#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:56
-msgid "Completion state"
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:131
+msgid "Search in answers"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFilters.js:135
+msgid "Type a word and press Enter"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/FilterSelectionRow.js:12
+msgid "Survey data"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/FilterSelectionRow.js:49
+msgid "Filter selection"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/FilterSelectionRow.js:87
+msgid "Remove filter"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/StatisticsFiltersBuilder.js:137
+msgid "Add filter"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/StatisticsFiltersBuilder.js:150
+msgid "Reset filter"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/StatisticsFiltersBuilder.js:154
+msgid "Apply filter"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/ArrayFilter.js:23
+msgid "Select row ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/ArrayFilter.js:39
+msgid "Select column ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/ArrayFilter.js:88
+msgid "Filter for keywords ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/ParticipantSource.js:19
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/QuestionSource.js:200
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/SurveyDataSource.js:30
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/LanguageMultiSelect.js:24
+msgid "Please select ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/ParticipantSource.js:27
+msgid "Enter value"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/QuestionSource.js:64
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/QuestionSource.js:108
+msgid "Contains ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/QuestionSource.js:123
+msgid "Please select sub-question ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/QuestionSource.js:156
+msgid "File uploaded"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/QuestionSource.js:167
+msgid "Filter by file title ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/QuestionSource.js:182
+msgid "Please select answer options ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/RankingFilter.js:19
+msgid "Select rank ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/RankingFilter.js:28
+msgid "Select answer ..."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/DateRangeField.js:10
+msgid "Start date"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/DateRangeField.js:13
+msgid "End date"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/fields/IncludedToggle.js:9
+msgid "Complete"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/surveyDataFields.js:14
+#: editor/src/pages/Responses/utils/generateColumns.js:129
+msgid "Submit date"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/utils/surveyDataFields.js:16
+msgid "Included responses"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:49
+msgid "shows the lowest value given by participants in the collected data."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:58
+msgid "shows the highest value given by participants in the collected data."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:73
+msgid "shows how much the values vary from the average."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:76
+msgid "A low value means responses are similar, while a high value indicates greater differences between participants."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:88
+msgid "shows the average value of all responses."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:91
+msgid "It is calculated by adding all values together and dividing the result by the number of responses."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:112
+msgid "2nd quartile (median)"
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:115
+msgid "shows the middle value of all responses."
+msgstr ""
+
+#: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsTable.js:118
+msgid "Half of the responses are below this value, and the other half are above it."
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesTable/FileInfoCell.js:12
@@ -29288,12 +29637,12 @@ msgstr ""
 msgid "Date of last action"
 msgstr ""
 
-#: editor/src/pages/Responses/utils/generateColumns.js:129
-msgid "Submit date"
-msgstr ""
-
 #: editor/src/pages/Responses/utils/getDefaultColumns.js:53
 msgid "View/edit response details"
+msgstr ""
+
+#: editor/src/pages/Responses/utils/getDefaultColumns.js:80
+msgid "Response Actions"
 msgstr ""
 
 #: editor/src/providers/PermissionsProvider.js:39
