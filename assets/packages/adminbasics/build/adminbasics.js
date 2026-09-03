@@ -19959,6 +19959,13 @@
 	            const formid = '#' + $(this).attr('data-form-id'),
 	              $form = $(formid),
 	              $firstSubmit = $form.find('[type="submit"]').first();
+
+	            // Do not start the loading state when native constraint validation
+	            // prevents the form from being submitted.
+	            if (!$form[0].reportValidity()) {
+	              $('#save-form-button').removeClass('disabled');
+	              return false;
+	            }
 	            if ($firstSubmit.length > 0) {
 	              $firstSubmit.trigger('click');
 	            } else {
@@ -20024,6 +20031,13 @@
 	            ev.preventDefault();
 	            const formid = '#' + $(this).attr('data-form-id'),
 	              $form = $(formid);
+
+	            // Do not start the loading state or add redirect state when native
+	            // constraint validation prevents the form from being submitted.
+	            if (!$form[0].reportValidity()) {
+	              $('#save-and-close-form-button').removeClass('disabled');
+	              return false;
+	            }
 
 	            // Add input to tell us to not redirect
 	            // TODO : change that
