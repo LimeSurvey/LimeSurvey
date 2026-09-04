@@ -1,14 +1,16 @@
 import { Button } from 'react-bootstrap'
 import React from 'react'
 import classNames from 'classnames'
+import { useNavigate } from 'react-router-dom'
 
-import { isTrue, createBufferOperation } from 'helpers'
+import { isTrue, createBufferOperation, SURVEY_MENU_TITLES } from 'helpers'
+import { getSurveyPanels } from 'helpers/options'
 import { useBuffer, useFocused, useSurvey } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { SettingsWrapper, ToggleButtons } from 'components/UIComponents'
 import { GetImageAttributes } from 'components/QuestionSettings/attributes/getImageAttributes'
 
-import { CloseIcon } from '../icons'
+import { CloseIcon, SettingsIcon } from '../icons'
 
 export const WelcomeSettings = ({ surveyId }) => {
   const {
@@ -23,6 +25,7 @@ export const WelcomeSettings = ({ surveyId }) => {
   } = useSurvey(surveyId)
   const { focused = {}, unFocus, setFocused } = useFocused()
   const { addToBuffer } = useBuffer()
+  const navigate = useNavigate()
 
   const handleUpdate = (prop) => {
     update(prop)
@@ -36,6 +39,12 @@ export const WelcomeSettings = ({ surveyId }) => {
 
   const handleOnQuestionCodeClick = () => {
     setFocused(focused)
+  }
+
+  const handlePrivacyDetailsClick = () => {
+    navigate(
+      `/survey/${surveyId}/${getSurveyPanels().settings.panel}/${SURVEY_MENU_TITLES.dataSecurity}`
+    )
   }
 
   return (
@@ -77,6 +86,18 @@ export const WelcomeSettings = ({ surveyId }) => {
             onOffToggle
             noPermissionDisabled={true}
           />
+        </div>
+        <div className="ms-3 mt-3 pt-3 privacy-settings-link-border-top">
+          <Button
+            variant="link"
+            className="privacy-settings-link"
+            style={{ padding: 0, border: 'none' }}
+            onClick={handlePrivacyDetailsClick}
+            data-testid="privacy-details-link"
+          >
+            <SettingsIcon />
+            {t('Define and edit privacy details')}
+          </Button>
         </div>
       </SettingsWrapper>
     </div>
