@@ -210,7 +210,7 @@ class TransformerInputSurvey extends Transformer
             ],
             'template' => true,
             'format' => ['range' => ['G', 'S', 'A', 'I']],
-            'welcomeImage' => 'welcome_image'
+            'welcomeImage' => ['key' => 'welcome_image', 'json' => true]
         ]);
     }
 
