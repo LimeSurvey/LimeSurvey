@@ -56,7 +56,6 @@ $aLanguageNames = implode(";", $aLanguageNames);
                 'id'                    => 'token-grid',
                 'emptyText'             => gT('No survey participants found.'),
                 'lsShowSelectionBar'    => false,
-                'massiveActionTemplate' => $massiveAction,
                 'lsPageSizeCurrentValue'=> $pageSizeTokenView,
                 'lsPageSizeOptions'     => Yii::app()->params['pageSizeOptionsTokens'],
                 'columns'               => $model->getAttributesForGrid(),
