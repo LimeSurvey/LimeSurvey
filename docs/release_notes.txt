@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.13 (build 260903) to 7.0.14 (build 260904) September 4, 2026
++New feature AT-2140: Floating menu for all gridviews (Patricia Stell)
+-Fixed issue: Check integrity did not work on Postgres (Carsten Schmitz)
+-Fixed issue #20666: Fixed ranking condition qid mapping and response (#5273) (Ahmed Abd El-Azeem)
+#Updated translation: German by c_schmitz
+
+
 Changes from 7.0.12 (build 260833) to 7.0.13 (build 260903) September 3, 2026
 +New feature: Statistics V2 for the new Question Editor (#5197) (Stefan K)
 -Fixed issue #AT-2187: Fixed a display issue with the question delete button while running the editor tutorial. (ramishenouda)
