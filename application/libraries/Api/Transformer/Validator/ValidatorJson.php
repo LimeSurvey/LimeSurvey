@@ -27,7 +27,7 @@ class ValidatorJson implements ValidatorInterface
     {
         $config[$this->name] = $this->normaliseConfigValue($config);
         $messages = [];
-        if ($config[$this->name] && !empty($value)) {
+        if ($config[$this->name] && $value !== null && $value !== '') {
             if (!is_string($value)) {
                 $messages[] = $key . ' must be a JSON encoded string.';
             } else {

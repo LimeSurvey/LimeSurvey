@@ -41,6 +41,8 @@ class ValidatorJsonTest extends TestBaseClass
         $valueValidJson = '{"image_path":"/upload/surveys/1/images/demo.png","image_align":"left"}';
         $valueInvalidJson = 'not-valid-json{';
         $valueNotAString = ['image_path' => '/upload/surveys/1/images/demo.png'];
+        $valueFalse = false;
+        $valueZero = 0;
         $configTrue = [
             'json' => true
         ];
@@ -63,6 +65,12 @@ class ValidatorJsonTest extends TestBaseClass
         $result = $validator->validate($key, $valueInvalidJson, $configTrue, $data);
         $this->assertIsArray($result);
         $result = $validator->validate($key, $valueNotAString, $configTrue, $data);
+        $this->assertIsArray($result);
+        // Regression: false and 0 must still be checked (not treated as
+        // empty/skippable like null and ''), and must fail is_string().
+        $result = $validator->validate($key, $valueFalse, $configTrue, $data);
+        $this->assertIsArray($result);
+        $result = $validator->validate($key, $valueZero, $configTrue, $data);
         $this->assertIsArray($result);
     }
 
