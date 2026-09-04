@@ -209,7 +209,8 @@ class TransformerInputSurvey extends Transformer
                 'range' => [0, 1, 2]
             ],
             'template' => true,
-            'format' => ['range' => ['G', 'S', 'A', 'I']]
+            'format' => ['range' => ['G', 'S', 'A', 'I']],
+            'welcomeImage' => ['key' => 'welcome_image', 'json' => true]
         ]);
     }
 
