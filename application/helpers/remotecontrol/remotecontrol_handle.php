@@ -643,8 +643,14 @@ class remotecontrol_handle
             $sLanguage = $oSurvey->language;
         }
 
-        $oAllQuestions = Question::model()->getQuestionList($iSurveyID);
-        if (!isset($oAllQuestions)) {
+        $oValidQuestions = $oAllQuestions = Question::model()->getQuestionList($iSurveyID);
+        /* Remove hardened crypted question */
+        if ($oSurvey->oOptions->crypt_method == 'H') {
+            $oValidQuestions = array_filter($oAllQuestions, function ($oQuestion) {
+                return $oQuestion->encrypted != 'Y' && $oQuestion->parent_qid == 0;
+            });
+        }
+        if (empty($oValidQuestions)) {
             return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
         }
 
@@ -670,6 +676,7 @@ class remotecontrol_handle
                 foreach ($oAllQuestions as $key => $aQuestion) {
                     if (!in_array($aQuestion['gid'], $groupIDs)) {
                         unset($oAllQuestions[$key]);
+                        unset($oValidQuestions[$key]);
                     }
                 }
             } else {
@@ -677,13 +684,13 @@ class remotecontrol_handle
             }
         }
 
-        if (!isset($oAllQuestions)) {
+        if (empty($oValidQuestions)) {
             return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
         }
 
-        usort($oAllQuestions, 'groupOrderThenQuestionOrder');
+        usort($oValidQuestions, 'groupOrderThenQuestionOrder');
 
-        $aSummary = createCompleteSGQA($iSurveyID, $oAllQuestions, $sLanguage);
+        $aSummary = createCompleteSGQA($iSurveyID, $oValidQuestions, $sLanguage);
 
         $helper = new statistics_helper();
         switch ($docType) {

@@ -125,17 +125,26 @@
             <!-- Duplicates are determined by -->
             <div class="mb-3" id='lifilterduplicatefields'>
                 <label class=" form-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
-                <div class="">
-                    <?php
-                    unset($aTokenTableFields['token']); // token are already duplicate forbidden mantis #14334, remove it
-                    echo CHtml::listBox(
-                        'filterduplicatefields',
-                        ['firstname', 'lastname', 'email'],
-                        $aTokenTableFields,
-                        ['multiple' => 'multiple', 'size' => '7', 'class' => 'form-control']
+                <?php
+                echo CHtml::listBox(
+                    'filterduplicatefields',
+                    ['firstname', 'lastname', 'email'],
+                    $aTokenTableFields,
+                    [
+                        'multiple' => 'multiple',
+                        'size' => '7',
+                        'class' => 'form-control',
+                        'aria-describedby' => ($surveyCryptmethod == 'H' ? 'filterduplicatefields-extrahelp' : null)
+                    ]
+                );
+                if ($surveyCryptmethod == 'H') {
+                    echo CHtml::tag(
+                        'div',
+                        ['class' => 'form-text', 'id' => 'filterduplicatefields-extrahelp'],
+                        gT('Encrypted attributes cannot be used to filter duplicates.')
                     );
-                    ?>
-                </div>
+                }
+                ?>
             </div>
 
             <!-- Buttons -->

@@ -322,13 +322,17 @@ class LSActiveRecord extends CActiveRecord
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
-
-        if (method_exists($this, 'getSurveyId')) {
-            $iSurveyId = $this->getSurveyId();
-        } else {
-            $iSurveyId = 0;
-        }
+        $iSurveyId = 0;
         $class = get_class($this);
+        if ($class == 'ParticipantAttribute' || $class == 'Participant') {
+            $sodium->setEncryptionMethod(App()->getConfig('CPDB_crypt_method', 'B'));
+        } elseif (method_exists($this, 'getSurveyId')) {
+            $iSurveyId = $this->getSurveyId();
+            if ($iSurveyId && $oSurvey = Survey::model()->findByPk($iSurveyId)) {
+                /* Set encryption method according to survey */
+                $sodium->setEncryptionMethod($oSurvey->oOptions->crypt_method);
+            } // $iSurveyId === 0
+        }
         $encryptedAttributes = $this->getAllEncryptedAttributes($iSurveyId, $class);
         foreach ($attributes as $key => $attribute) {
             if (in_array($key, $encryptedAttributes)) {
@@ -354,12 +358,19 @@ class LSActiveRecord extends CActiveRecord
         if (!empty($value)) {
             // load sodium library
             $sodium = Yii::app()->sodium;
-
+            if (get_class($this) === 'ParticipantAttribute' || get_class($this) === 'Participant') {
+                $sodium->setEncryptionMethod(App()->getConfig('CPDB_crypt_method', 'B'));
+            } elseif (method_exists($this, 'getSurveyId')) {
+                $iSurveyId = $this->getSurveyId();
+                /* Set encryption method according to survey */
+                if ($iSurveyId && $oSurvey = Survey::model()->findByPk($iSurveyId)) {
+                    $sodium->setEncryptionMethod($oSurvey->oOptions->crypt_method);
+                } // $iSurveyId === 0
+            }
             return $sodium->decrypt($value);
         } else {
-            // decrypt attributes
+            // decrypt (empty) value ?
             $this->decryptEncryptAttributes('decrypt');
-
             return $this;
         }
     }
@@ -368,14 +379,17 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Decrypt single value
      * @param string $value String value which needs to be decrypted
+     * @param string $cryptmethod 'B' or 'H' , if not 'H' : hardened
      * @return string the decrypted string
      */
-    public static function decryptSingle($value = ''): string
+    public static function decryptSingle($value = '', $cryptmethod = 'B'): string
     {
         // if $value is provided, it would decrypt
         if (!empty($value)) {
             // load sodium library
             $sodium = Yii::app()->sodium;
+            $sodium->setEncryptionMethod($cryptmethod);
+            // efault test both, then decrypt in all case
             return $sodium->decrypt($value);
         }
         return '';
@@ -415,15 +429,18 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Encrypt single value
      * @param string $value String value which needs to be encrypted
+     * @param string $cryptmethod 'B' or 'H' , if not 'H' : hardened
+     * @return string
      */
-    public static function encryptSingle($value = '')
+    public static function encryptSingle($value = '', $cryptmethod = 'B')
     {
-        // if $value is provided, it would decrypt
-        if (isset($value) && $value !== "") {
-            // load sodium library
-            $sodium = Yii::app()->sodium;
-            return $sodium->encrypt($value);
+        if ($value === null || $value === '') {
+            return $value;
         }
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $sodium->setEncryptionMethod($cryptmethod);
+        return $sodium->encrypt($value);
     }
 
 
@@ -464,8 +481,17 @@ class LSActiveRecord extends CActiveRecord
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
-
         $class = get_class($this);
+        if ($class === 'ParticipantAttribute' || $class === 'Participant') {
+            $sodium->setEncryptionMethod(App()->getConfig('CPDB_crypt_method', 'B'));
+        } elseif (method_exists($this, 'getSurveyId')) {
+            $iSurveyId = $this->getSurveyId();
+            /* Set encryption method according to survey */
+            if ($iSurveyId && $oSurvey = Survey::model()->findByPk($iSurveyId)) {
+                $sodium->setEncryptionMethod($oSurvey->oOptions->crypt_method);
+            } // $iSurveyId  === 0
+        }
+
         // TODO: Use OOP polymorphism instead of switching on class names.
         if ($class === 'ParticipantAttribute') {
             $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]), 'attribute_id', '');
@@ -486,21 +512,31 @@ class LSActiveRecord extends CActiveRecord
     }
 
     /**
-     * Function to show encryption symbol in gridview attribute header if value ois encrypted
+     * Function to show encryption symbol in gridview attribute header if value is encrypted
      * @param int $surveyId
      * @param string $className
      * @param string $attributeName
      * @return string
-     * @throws CException
      */
     public function setEncryptedAttributeLabel(int $surveyId, string $className, string $attributeName)
     {
         $encryptedAttributes = $this->getAllEncryptedAttributes($surveyId, $className);
+        if (empty($encryptedAttributes)) {
+            return "";
+        }
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
-        if (isset($encryptedAttributes)) {
-            if (in_array($attributeName, $encryptedAttributes)) {
-                return ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
+        if ((get_class($this) === 'ParticipantAttribute' || get_class($this) === 'Participant') && App()->getConfig('CPDB_crypt_method', 'B') == "H") {
+            $encryptionNotice = gT("This field is encrypted and can not be searched or ordered.");
+        } elseif ($surveyId) {
+            /* Set notice according to survey */
+            if ($oSurvey = Survey::model()->findByPk($surveyId)) {
+                if ($oSurvey->oOptions->crypt_method == "H") {
+                    $encryptionNotice = gT("This field is encrypted and can not be searched or ordered.");
+                }
             }
+        }
+        if (in_array($attributeName, $encryptedAttributes)) {
+            return ' <span  data-bs-toggle="tooltip" title="' . $encryptionNotice . '" class="ri-key-2-fill text-success"></span>';
         }
     }
 }
