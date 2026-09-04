@@ -888,6 +888,30 @@ class TemplateManifest extends TemplateConfiguration
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         $oNewManifest->save($sConfigPath . "/config.xml");
+        // Keep child theme inheritance working by pointing their manifests to the new parent name.
+        // The DB extends column is already updated to the new name when this runs.
+        $childTemplates = Template::model()->findAllByAttributes(array('extends' => $sNewName));
+        foreach ($childTemplates as $childTemplate) {
+            self::renameExtends($childTemplate->name, $sNewName);
+        }
+    }
+
+    /**
+     * Update the extends node inside a child template's manifest so it points to the renamed parent.
+     * Called when a parent template is renamed, to keep child theme inheritance working.
+     *
+     * @param string $sChildName     The name of the child template whose manifest must be updated
+     * @param string $sNewParentName The new name of the parent template
+     */
+    public static function renameExtends($sChildName, $sNewParentName)
+    {
+        $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sChildName;
+        if (!file_exists($sConfigPath . "/config.xml")) {
+            return;
+        }
+        $oManifest = self::getManifestDOM($sConfigPath);
+        self::changeExtendsInDom($oManifest, $sNewParentName);
+        $oManifest->save($sConfigPath . "/config.xml");
     }
 
     /**
