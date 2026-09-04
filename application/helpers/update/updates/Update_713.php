@@ -15,7 +15,19 @@ class Update_713 extends DatabaseUpdateBase
         $columnNames = $db->schema->getTable('{{surveys}}')->columnNames;
 
         if (!in_array('welcome_image', $columnNames, true)) {
-            addColumn('{{surveys}}', 'welcome_image', 'mediumtext NULL');
+            switch ($db->driverName) {
+                case 'mysql':
+                case 'mysqli':
+                    addColumn('{{surveys}}', 'welcome_image', 'mediumtext NULL');
+                    break;
+                case 'pgsql':
+                case 'mssql':
+                case 'sqlsrv':
+                case 'dblib':
+                default:
+                    addColumn('{{surveys}}', 'welcome_image', 'text NULL');
+                    break;
+            }
         }
     }
 }
