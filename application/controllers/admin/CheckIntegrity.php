@@ -1033,6 +1033,8 @@ class CheckIntegrity extends SurveyCommonAction
         $aTypesWithoutSubquestions = array();
         $aTypesWithoutAnswers = array();
         foreach (QuestionType::modelsAttributes() as $sTypeCode => $aTypeAttributes) {
+            // PHP casts numeric array keys to int; the type column is varchar, so force string for the DB comparison
+            $sTypeCode = (string) $sTypeCode;
             if (empty($aTypeAttributes['subquestions'])) {
                 $aTypesWithoutSubquestions[] = $sTypeCode;
             }
