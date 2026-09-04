@@ -681,6 +681,7 @@ function populateDatabase($oDB)
             'tokenencryptionoptions' => "text NULL",
             'access_mode' => "string(1) DEFAULT 'O'",
             'lastmodified' => 'datetime NOT NULL',
+            'welcome_image' => 'mediumtext NULL'
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
