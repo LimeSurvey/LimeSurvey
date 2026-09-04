@@ -98,12 +98,13 @@
   .welcome-title,
   .welcome-description {
     @include reg16;
+
     margin-bottom: 10px;
     line-height: $line-height-24;
     .mce-content-body {
       // Before contains the placeholder
       &::before {
-        font-style: font-style-placeholder;
+        font-style: $font-style-placeholder;
       }
     }
   }
