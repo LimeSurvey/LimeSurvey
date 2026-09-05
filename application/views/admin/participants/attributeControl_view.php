@@ -25,19 +25,10 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
             'columns' => $model->columns,
             'filter' => $model,
             'rowHtmlOptionsExpression' => '["data-attribute_id" => $data->attribute_id]',
-            'showSelectionBar'         => false,
+            'lsShowSelectionBar'         => false,
             'emptyText'                => gT('No attributes found.'),
             'lsAfterAjaxUpdate' => ['LS.CPDB.bindButtons();', 'LS.CPDB.attributePanel();'],
-            'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSizeAttributes',
-                        Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']),
-                        App()->params['pageSizeOptions'],
-                        array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
-                    )
-                ),
+            'lsPageSizeCurrentValue'    => Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']),
         ]);
         ?>
     </div>

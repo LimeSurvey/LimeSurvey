@@ -159,8 +159,8 @@ class Tokens extends SurveyCommonAction
         }
 
         // Set number of page
-        if (isset($_POST['pageSizeTokenView'])) {
-            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
+        if (isset($_POST['pageSize'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSize']);
         }
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
@@ -538,8 +538,8 @@ class Tokens extends SurveyCommonAction
         $aData['model'] = $model;
 
         // Set number of page
-        if (isset($_POST['pageSizeTokenView'])) {
-            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
+        if (isset($_POST['pageSize'])) {
+            Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSize']);
         }
 
         $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
