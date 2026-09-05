@@ -43,6 +43,7 @@ class SurveyIndex extends CAction
         /* Newtest must be done before all other action */
         if (isset($param['newtest']) && $param['newtest'] == "Y") {
             killSurveySession($surveyid);
+            unset($_SESSION['submitted_' . $surveyid]);
             resetQuestionTimers($surveyid);
         }
         /* Get client token by POST or GET value */
@@ -325,6 +326,8 @@ class SurveyIndex extends CAction
 
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
+
+        $this->restoreSessionIfSubmitReplayed($surveyid);
 
         if ($this->didSessionTimeout($surveyid)) {
             $aErrors = [gT('We are sorry but your session has expired.')];
@@ -758,6 +761,26 @@ class SurveyIndex extends CAction
     private function didSessionTimeout($surveyid)
     {
         return (!isset($_SESSION['responses_' . $surveyid]['step']) && null !== App()->request->getPost('thisstep'));
+    }
+
+    /**
+     * The survey session is killed once the completed page has been displayed, so a
+     * final submit sent a second time - double click, browser "Try again" prompt,
+     * back navigation, reload - used to be reported as an expired session, although
+     * the response is fully recorded. Put the finished session back in place, so the
+     * completed page is displayed again. The response itself is not written again.
+     * @param int $surveyid
+     * @return void
+     */
+    private function restoreSessionIfSubmitReplayed($surveyid)
+    {
+        if (App()->request->getPost('move') !== 'movesubmit') {
+            return;
+        }
+        if (isset($_SESSION['responses_' . $surveyid]['step']) || !isset($_SESSION['submitted_' . $surveyid])) {
+            return;
+        }
+        $_SESSION['responses_' . $surveyid] = $_SESSION['submitted_' . $surveyid];
     }
 
     private function canUserPreviewSurvey($iSurveyID)
