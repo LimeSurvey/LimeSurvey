@@ -22184,13 +22184,14 @@
 	      }
 
 	      // Load sea_green css again after iframe is fully loaded
+	      var sKcfBaseUrl = LS.data.baseUrl.replace(/\/+$/, "");
 	      handleAppendCssLink({
 	        header: fileManagerIframe.contentWindow.document.head,
-	        linkUrl: LS.data.baseUrl + "/themes/admin/Sea_Green/css/sea_green.css"
+	        linkUrl: sKcfBaseUrl + "/themes/admin/Sea_Green/css/sea_green.css"
 	      });
 	      handleAppendCssLink({
 	        header: fileManagerIframe.contentWindow.document.head,
-	        linkUrl: LS.data.baseUrl + "/assets/fonts/font-src/remix/remixicon.css"
+	        linkUrl: sKcfBaseUrl + "/assets/fonts/font-src/remix/remixicon.css"
 	      });
 	    });
 	  }

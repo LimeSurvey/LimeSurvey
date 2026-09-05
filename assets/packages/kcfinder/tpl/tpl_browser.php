@@ -10,7 +10,7 @@
         $sKcfBaseUrl .= '/assets/packages/kcfinder';
     }
 ?>
-<base href="<?= $sKcfBaseUrl ?>/">
+<base href="<?= $sKcfBaseUrl ?>/" />
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 <?php INCLUDE "tpl/tpl_css.php" ?>
 <?php INCLUDE "tpl/tpl_javascript.php" ?>
