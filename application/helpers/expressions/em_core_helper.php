@@ -2960,7 +2960,7 @@ function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, 
                     return null;
                 }
                 $fCurrentDiff = abs($aFromValues[$i] - $fValueToReplace);
-                if ($fCurrentDiff === 0) {
+                if ($fCurrentDiff == 0) {
                     return $aToValues[$i];
                 } elseif ($i === 0) {
                     $fMinimumDiff = $fCurrentDiff;
