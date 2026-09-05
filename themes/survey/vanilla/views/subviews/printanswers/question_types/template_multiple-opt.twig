@@ -11,7 +11,14 @@
                 {% endif %}
             </div>
             <div class="col-lg-8 text-start">
-                <b>{{subquestion.question}} {% if subquestion.qid != 'other' %}({{subquestion.qid}}){% endif %}</b>
+                <b>
+                    {% if question.question_theme_name == 'image_select-multiplechoice' and subquestion.question|isImageUrl %}
+                        <img src="{{ subquestion.question|escape('html_attr') }}" style="max-width:150px;max-height:150px;" />
+                    {% else %}
+                        {{subquestion.question}}
+                    {% endif %}
+                    {% if subquestion.qid != 'other' %}({{subquestion.qid}}){% endif %}
+                </b>
             </div>
         </div>
     {% endfor %}

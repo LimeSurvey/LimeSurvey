@@ -5,6 +5,8 @@
         <div class="col-lg-4 text-end">
             {% if question.answercode == '-oth-' %}
                 {{question.answeroption.answer|escape}}
+            {% elseif question.question_theme_name == 'image_select-listradio' and question.answeroption.answer|isImageUrl %}
+                <img src="{{ question.answeroption.answer|escape('html_attr') }}" style="max-width:150px;max-height:150px;" />
             {% else %}
                 {{question.answeroption.answer}}
             {%endif %}
