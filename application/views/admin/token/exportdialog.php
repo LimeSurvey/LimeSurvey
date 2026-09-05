@@ -120,6 +120,29 @@
                         ?>
                     </div>
                     <?php } ?>
+                    <div class="mb-3 control-group " data-name="includesurveylink">
+                        <label class="default form-label" for="includesurveylink">
+                            <?php eT('Include survey link:'); ?>
+                        </label>
+                        <div class="default controls">
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                'name' => 'includesurveylink',
+                                'checkedOption' => 0,
+                                'ariaLabel' => gT('Include survey link'),
+                                'selectOptions' => [
+                                    '1' => gT('On'),
+                                    '0' => gT('Off'),
+                                ],
+                            ]); ?>
+                        </div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('Add a column with the participant-specific survey URL (including the token).'),
+                            'type' => 'info',
+                            'htmlOptions' => ['class' => 'mt-1'],
+                        ]);
+                        ?>
+                    </div>
                     <div class="mb-3 control-group " data-name="maskequations">
                         <label class="default form-label" for="maskequations">
                             <?php eT('Quote equations:'); ?>
