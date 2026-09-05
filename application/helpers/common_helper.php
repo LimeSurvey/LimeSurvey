@@ -4149,17 +4149,24 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 *
 * @param integer $iSurveyID The survey ID
 * @param mixed $aCodeMap The codemap array (old_code=>new_code)
+* @param int[]|null $aRestrictToGids When set, only questions/groups in these group IDs are updated (e.g. when importing a single group). The survey end text is left untouched in that case.
 */
-function replaceExpressionCodes($iSurveyID, $aCodeMap)
+function replaceExpressionCodes($iSurveyID, $aCodeMap, $aRestrictToGids = null)
 {
-    $arQuestions = Question::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
+    $bRestrictToGroups = is_array($aRestrictToGids);
+    $questionCriteria = new CDbCriteria();
+    $questionCriteria->addColumnCondition(['sid' => $iSurveyID]);
+    if ($bRestrictToGroups) {
+        $questionCriteria->addInCondition('gid', $aRestrictToGids);
+    }
+    $arQuestions = Question::model()->findAll($questionCriteria);
     foreach ($arQuestions as $arQuestion) {
         $bModified = false;
         foreach ($aCodeMap as $sOldCode => $sNewCode) {
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen((string) $sOldCode) > 1 && !is_numeric($sOldCode)) {
                 $sOldCode = preg_quote((string) $sOldCode, '~');
-                $arQuestion->relevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arQuestion->relevance, -1, $iCount);
+                $arQuestion->relevance = preg_replace("~\b{$sOldCode}(?![a-zA-Z0-9])~", (string) $sNewCode, (string) $arQuestion->relevance, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
         }
@@ -4174,10 +4181,10 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                     $sOldCode = preg_quote((string) $sOldCode, '~');
                     // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
                     // to catch all occurrences.
-                    $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
+                    $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
                     $bModified = $bModified || $iCount;
                     // Apply the replacement on question help text
-                    $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
+                    $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
                     $bModified = $bModified || $iCount;
                 }
             }
@@ -4198,7 +4205,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                         continue;
                     }
                     $sOldCode = preg_quote((string) $sOldCode, '~');
-                    $defaultValueL10n->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $defaultValueL10n->defaultvalue, -1, $iCount);
+                    $defaultValueL10n->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $defaultValueL10n->defaultvalue, -1, $iCount);
                     $bModified = $bModified || $iCount;
                 }
                 if ($bModified > 0) {
@@ -4207,12 +4214,17 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             }
         }
     }
-    $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid' => $iSurveyID));
+    $groupCriteria = new CDbCriteria();
+    $groupCriteria->addColumnCondition(['sid' => $iSurveyID]);
+    if ($bRestrictToGroups) {
+        $groupCriteria->addInCondition('gid', $aRestrictToGids);
+    }
+    $arGroups = QuestionGroup::model()->findAll($groupCriteria);
     foreach ($arGroups as $arGroup) {
         $bModified = false;
         foreach ($aCodeMap as $sOldCode => $sNewCode) {
             $sOldCode = preg_quote((string) $sOldCode, '~');
-            $arGroup->grelevance = preg_replace("~\b{$sOldCode}~", (string) $sNewCode, (string) $arGroup->grelevance, -1, $iCount);
+            $arGroup->grelevance = preg_replace("~\b{$sOldCode}(?![a-zA-Z0-9])~", (string) $sNewCode, (string) $arGroup->grelevance, -1, $iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified) {
@@ -4221,7 +4233,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
             foreach ($aCodeMap as $sOldCode => $sNewCode) {
                 $sOldCode = preg_quote((string) $sOldCode, '~');
-                $arQuestionGroupLS->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
+                $arQuestionGroupLS->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
             if ($bModified) {
@@ -4229,20 +4241,22 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             }
         }
     }
-    // Apply the replacement on survey's end message
-    $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-    foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
-        $bModified = false;
-        foreach ($aCodeMap as $sOldCode => $sNewCode) {
-            if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
-                continue;
+    // Apply the replacement on survey's end message (survey-wide, so skip it when restricting to specific groups)
+    if (!$bRestrictToGroups) {
+        $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+        foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+            $bModified = false;
+            foreach ($aCodeMap as $sOldCode => $sNewCode) {
+                if (strlen((string) $sOldCode) <= 1 || is_numeric($sOldCode)) {
+                    continue;
+                }
+                $sOldCode = preg_quote((string) $sOldCode, '~');
+                $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?![a-zA-Z0-9])(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
+                $bModified = $bModified || $iCount;
             }
-            $sOldCode = preg_quote((string) $sOldCode, '~');
-            $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
-            $bModified = $bModified || $iCount;
-        }
-        if ($bModified) {
-            $surveyLanguageSetting->save();
+            if ($bModified) {
+                $surveyLanguageSetting->save();
+            }
         }
     }
 }

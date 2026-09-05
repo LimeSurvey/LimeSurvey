@@ -638,7 +638,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
     }
 
     // Update question code references in custom conditions and relevance expressions
-    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+    // Restrict to the imported group so expressions/conditions in other groups of the target survey are left untouched.
+    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements, array($newgid));
     replaceExpressionFieldnames($newgid, $aQIDReplacements);
 
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
