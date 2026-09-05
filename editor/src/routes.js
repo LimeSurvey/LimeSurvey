@@ -56,6 +56,7 @@ const routes = [
             <PermissionsProvider>
               <SurveyWorkspace>
                 <EditorContextController>
+                  <Outlet />
                   <Editor />
                 </EditorContextController>
               </SurveyWorkspace>
