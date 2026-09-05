@@ -28,8 +28,8 @@ class SurveysController extends LSYii_Controller
         } else {
             $lang = Yii::app()->getConfig('defaultlang');
         }
-            App()->setLanguage($lang);
-
+        App()->setLanguage($lang);
+        LimeExpressionManager::SetSurveyId(0);
 
         $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
         $this->sTemplate = $oTemplate->sTemplateName;
