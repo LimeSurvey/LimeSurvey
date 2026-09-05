@@ -51,6 +51,27 @@ class SurveyListMassiveActions
                 ),
             ],
 
+            // ------------------------------------------------------------------ expiry date
+            [
+                'type' => 'action',
+                'action' => 'expire',
+                'url' => App()->createUrl('/surveyAdministration/expireMultipleSurveys/'),
+                'iconClasses' => 'ri-skip-forward-fill',
+                'text' => gT('Set expiry date'),
+                'grid-reload' => 'yes',
+                'actionType' => 'modal',
+                'modalType' => 'cancel-apply',
+                'showSelected' => 'yes',
+                'selectedUrl' => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
+                'keepopen' => 'yes',
+                'sModalTitle' => gT('Set expiry date'),
+                'htmlModalBody' => Yii::app()->getController()->renderFile(
+                    dirname(__FILE__) . '/../../../survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php',
+                    [],
+                    true
+                ),
+            ],
+
             // ------------------------------------------------------------------ export (dropdown)
             [
                 'type' => 'dropdown',
