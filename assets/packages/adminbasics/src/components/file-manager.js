@@ -211,12 +211,12 @@ export default function fileManagerStyle() {
             // Load sea_green css again after iframe is fully loaded
             handleAppendCssLink({
                 header: fileManagerIframe.contentWindow.document.head,
-                linkUrl: "/themes/admin/Sea_Green/css/sea_green.css",
+                linkUrl: LS.data.baseUrl + "/themes/admin/Sea_Green/css/sea_green.css",
             });
             handleAppendCssLink({
                 header: fileManagerIframe.contentWindow.document.head,
                 linkUrl:
-                    "/assets/fonts/font-src/remix/remixicon.css",
+                    LS.data.baseUrl + "/assets/fonts/font-src/remix/remixicon.css",
             });
         });
     }
