@@ -35,6 +35,13 @@ class CLSGridView extends TbGridView
     public bool $lsSelectAllEnabled = false;
 
     /**
+     * Maximum number of selected rows that still allows individual deselection
+     * after using the cross-page "Select all" action.
+     * @var int
+     */
+    public int $lsSelectAllDisableThreshold = 1000;
+
+    /**
      * string for a link that is on every row
      * @var string
      */

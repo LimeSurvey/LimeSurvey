@@ -50,6 +50,15 @@ LS.gridSelection = (function () {
     var _selectAllMode = new Set();
 
     /**
+     * PKs explicitly deselected while their grid is in select-all mode.
+     * @type {Map<string, Set<string>>}
+     */
+    var _selectAllExcluded = new Map();
+
+    var SELECT_ALL_WARNING_TEXT = 'Individual deselection is unavailable when more than {threshold} entries are selected. Reduce the selection below {threshold} to enable this feature.';
+    var _lockedCheckboxWarningVisible = false;
+
+    /**
      * Returns (and lazily creates) the Set for a given gridId.
      * @param  {string} gridId
      * @return {Set<string>}
@@ -59,6 +68,112 @@ LS.gridSelection = (function () {
             _store.set(gridId, new Set());
         }
         return _store.get(gridId);
+    }
+
+    function _excludedSet(gridId) {
+        if (!_selectAllExcluded.has(gridId)) {
+            _selectAllExcluded.set(gridId, new Set());
+        }
+        return _selectAllExcluded.get(gridId);
+    }
+
+    function _selectionBar(gridId) {
+        return $('.grid-selection-bar[data-grid-id="' + gridId + '"]');
+    }
+
+    function _selectAllDisableThreshold(gridId) {
+        var threshold = parseInt(_selectionBar(gridId).attr('data-select-all-disable-threshold'), 10);
+        return isNaN(threshold) ? null : threshold;
+    }
+
+    function _shouldLockCheckboxes(gridId) {
+        var threshold = _selectAllDisableThreshold(gridId);
+        return threshold !== null && _selectedCount(gridId) > threshold;
+    }
+
+    function _selectedCount(gridId) {
+        if (!_selectAllMode.has(gridId)) {
+            return _set(gridId).size;
+        }
+
+        var total = parseInt(_selectionBar(gridId).attr('data-total-count'), 10);
+        if (total === null) {
+            return _set(gridId).size;
+        }
+        if (isNaN(total)) {
+            return _set(gridId).size;
+        }
+        return Math.max(total - _excludedSet(gridId).size, 0);
+    }
+
+    function _showLockedCheckboxWarning(gridId) {
+        if (_lockedCheckboxWarningVisible) {
+            return;
+        }
+
+        var threshold = _selectAllDisableThreshold(gridId);
+        var thresholdText = threshold;
+        if (threshold !== null && typeof threshold.toLocaleString === 'function') {
+            thresholdText = threshold.toLocaleString();
+        }
+
+        var messageTemplate = _selectionBar(gridId).attr('data-select-all-warning-message') || SELECT_ALL_WARNING_TEXT;
+        var message = messageTemplate.replace(/\{threshold\}/g, thresholdText === null ? '' : String(thresholdText));
+        var timeout = 3000;
+
+        _lockedCheckboxWarningVisible = true;
+        window.setTimeout(function () {
+            _lockedCheckboxWarningVisible = false;
+        }, timeout);
+
+        if (window.LS && LS.LsGlobalNotifier && typeof LS.LsGlobalNotifier.createAlert === 'function') {
+            LS.LsGlobalNotifier.createAlert(message, 'warning', { showCloseButton: true, timeout: timeout });
+            return;
+        }
+
+        var $alert = $('<div class="alert alert-warning alert-dismissible" role="alert"></div>')
+            .append($('<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'))
+            .append(document.createTextNode(message));
+        $('#notif-container').append($alert);
+        window.setTimeout(function () { $alert.alert('close'); }, timeout);
+    }
+
+    function _syncManualThresholdLocks(gridId, showWarning) {
+        if (_selectAllMode.has(gridId)) {
+            return;
+        }
+
+        var threshold = _selectAllDisableThreshold(gridId);
+        var shouldLock = threshold !== null && _selectedCount(gridId) > threshold;
+        var stored = _set(gridId);
+
+        $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
+            var $checkbox = $(this);
+            var pk = String($checkbox.val());
+            var isSelected = stored.has(pk);
+
+            if (shouldLock && isSelected && !$checkbox.is(':disabled')) {
+                $checkbox.prop('disabled', true)
+                    .addClass('grid-threshold-locked')
+                    .css('pointer-events', 'none')
+                    .closest('td').addClass('grid-selectall-locked-cell');
+                return;
+            }
+
+            if ($checkbox.hasClass('grid-threshold-locked') && (!shouldLock || !isSelected)) {
+                $checkbox.prop('disabled', false)
+                    .removeClass('grid-threshold-locked')
+                    .css('pointer-events', '');
+
+                if (!$checkbox.hasClass('grid-selectall-locked')) {
+                    $checkbox.closest('td').removeClass('grid-selectall-locked-cell');
+                }
+            }
+        });
+
+        if (shouldLock && showWarning) {
+            _showLockedCheckboxWarning(gridId);
+        }
     }
 
     /**
@@ -73,17 +188,33 @@ LS.gridSelection = (function () {
     }
 
     /**
-     * Checks and disables the current page's row checkboxes while select-all
-     * mode is active. Rows disabled for other reasons are left untouched.
+     * Checks the current page's row checkboxes while select-all mode is active.
+     * Large selections also disable visible row checkboxes to prevent expensive per-row exclusions.
      * @param {string} gridId
      */
     function _lockCheckboxes(gridId) {
+        var excluded = _excludedSet(gridId);
+        var lockCheckboxes = _shouldLockCheckboxes(gridId);
+
         $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
-            if (!$(this).is(':disabled')) {
-                $(this).prop('checked', true)
-                    .prop('disabled', true)
-                    .addClass('grid-selectall-locked');
-                _set(gridId).add(String($(this).val()));
+            var $checkbox = $(this);
+            var pk = String($checkbox.val());
+            var isExcluded = excluded.has(pk);
+
+            if (!$checkbox.is(':disabled') || $checkbox.hasClass('grid-selectall-locked')) {
+                $checkbox.prop('checked', !isExcluded);
+                if (!isExcluded) {
+                    _set(gridId).add(pk);
+                } else {
+                    _set(gridId).delete(pk);
+                }
+            }
+
+            if (lockCheckboxes && !isExcluded && !$checkbox.is(':disabled')) {
+                $checkbox.prop('disabled', true)
+                    .addClass('grid-selectall-locked')
+                    .css('pointer-events', 'none')
+                    .closest('td').addClass('grid-selectall-locked-cell');
             }
         });
         $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', true);
@@ -96,7 +227,15 @@ LS.gridSelection = (function () {
     function _unlockCheckboxes(gridId) {
         $('#' + gridId + ' tbody .massiveActionsCheckbox.grid-selectall-locked')
             .prop('disabled', false)
-            .removeClass('grid-selectall-locked');
+            .removeClass('grid-selectall-locked')
+            .css('pointer-events', '')
+            .closest('td').removeClass('grid-selectall-locked-cell');
+
+        $('#' + gridId + ' tbody .massiveActionsCheckbox.grid-threshold-locked')
+            .prop('disabled', false)
+            .removeClass('grid-threshold-locked')
+            .css('pointer-events', '')
+            .closest('td').removeClass('grid-selectall-locked-cell');
     }
 
     /**
@@ -106,16 +245,12 @@ LS.gridSelection = (function () {
      * @param {string} gridId
      */
     function _syncSelectionBar(gridId) {
-        var count = _set(gridId).size;
+        var count = _selectedCount(gridId);
         // The bar element is rendered by CLSGridView's template.php with data-grid-id
-        var $bar = $('.grid-selection-bar[data-grid-id="' + gridId + '"]');
+        var $bar = _selectionBar(gridId);
         if (!$bar.length) { return; }
 
-        if (_selectAllMode.has(gridId)) {
-            var total = parseInt($bar.attr('data-total-count'), 10);
-            $bar.find('.grid-selection-count').text(isNaN(total) ? count : total);
-            $bar.show();
-        } else if (count > 0) {
+        if (count > 0) {
             $bar.find('.grid-selection-count').text(count);
             $bar.show();
         } else {
@@ -148,6 +283,7 @@ LS.gridSelection = (function () {
             if (_frozenGridIds.has(gridId)) { return; }
             _store.set(gridId, new Set());
             _selectAllMode.delete(gridId);
+            _selectAllExcluded.delete(gridId);
             _unlockCheckboxes(gridId);
             _syncSelectionBar(gridId);
             _syncMassiveActionButton(gridId);
@@ -164,6 +300,7 @@ LS.gridSelection = (function () {
         // Clear internal store
         _store.set(gridId, new Set());
         _selectAllMode.delete(gridId);
+        _selectAllExcluded.delete(gridId);
         _unlockCheckboxes(gridId);
 
         // Uncheck only row-selection checkboxes (tbody) via .massiveActionsCheckbox and the header checkbox.
@@ -183,10 +320,21 @@ LS.gridSelection = (function () {
         if (!gridId) { return; }
 
         _selectAllMode.add(gridId);
+        _selectAllExcluded.delete(gridId);
+        _unlockCheckboxes(gridId);
         _lockCheckboxes(gridId);
 
         _syncSelectionBar(gridId);
         _syncMassiveActionButton(gridId);
+    });
+
+    $(document).on('click', '.grid-view-ls tbody .grid-selectall-locked-cell', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var gridId = $(this).closest('.grid-view-ls').attr('id');
+        if (gridId) {
+            _showLockedCheckboxWarning(gridId);
+        }
     });
 
 
@@ -202,6 +350,7 @@ LS.gridSelection = (function () {
         var isChecked = $(this).is(':checked');
         if (!isChecked && _selectAllMode.has(gridId)) {
             _selectAllMode.delete(gridId);
+            _selectAllExcluded.delete(gridId);
             _unlockCheckboxes(gridId);
             _store.set(gridId, new Set());
             $('#' + gridId + ' tbody .massiveActionsCheckbox').prop('checked', false);
@@ -210,15 +359,31 @@ LS.gridSelection = (function () {
             return;
         }
 
+        var inSelectAllMode = _selectAllMode.has(gridId);
         $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
-            var pk = String($(this).val());
-            if (isChecked && !$(this).is(':disabled')) {
+            var $checkbox = $(this);
+            var pk = String($checkbox.val());
+            var uiManagedBySelection = !$checkbox.is(':disabled') || $checkbox.hasClass('grid-selectall-locked') || $checkbox.hasClass('grid-threshold-locked');
+            var shouldSelect = (inSelectAllMode && isChecked) || (isChecked && !$checkbox.is(':disabled'));
+
+            if (inSelectAllMode && isChecked) {
+                _excludedSet(gridId).delete(pk);
+            }
+
+            if (shouldSelect) {
                 _set(gridId).add(pk);
             } else {
                 _set(gridId).delete(pk);
             }
+
+            if (uiManagedBySelection) {
+                $checkbox.prop('checked', shouldSelect);
+            }
         });
 
+        _syncManualThresholdLocks(gridId, false);
+
+        _syncHeaderCheckbox(gridId);
         _syncMassiveActionButton(gridId);
         _syncSelectionBar(gridId);
     });
@@ -233,13 +398,21 @@ LS.gridSelection = (function () {
         if (!gridId) { return; }
 
         var pk = String($(this).val());
-        if ($(this).is(':checked')) {
+        if (_selectAllMode.has(gridId)) {
+            if ($(this).is(':checked')) {
+                _set(gridId).add(pk);
+                _excludedSet(gridId).delete(pk);
+            } else {
+                _set(gridId).delete(pk);
+                _excludedSet(gridId).add(pk);
+            }
+        } else if ($(this).is(':checked')) {
             _set(gridId).add(pk);
         } else {
             _set(gridId).delete(pk);
-            _selectAllMode.delete(gridId);
         }
 
+        _syncManualThresholdLocks(gridId, false);
         _syncHeaderCheckbox(gridId);
         _syncMassiveActionButton(gridId);
         _syncSelectionBar(gridId);
@@ -258,6 +431,19 @@ LS.gridSelection = (function () {
 
         if (total === 0) {
             $grid.find('thead input[type="checkbox"]').prop('checked', false);
+            return;
+        }
+
+        if (_selectAllMode.has(gridId)) {
+            var excluded = _excludedSet(gridId);
+            var allSelected = true;
+            $tbodyCb.each(function () {
+                if (excluded.has(String($(this).val()))) {
+                    allSelected = false;
+                    return false; // break
+                }
+            });
+            $grid.find('thead input[type="checkbox"]').prop('checked', allSelected);
             return;
         }
 
@@ -286,7 +472,7 @@ LS.gridSelection = (function () {
             // Fallback: single massive-action button on the page
             $btn = $('.massiveAction');
         }
-        if (_set(gridId).size > 0 || _selectAllMode.has(gridId)) {
+        if (_selectedCount(gridId) > 0) {
             $btn.removeClass('disabled').removeAttr('disabled');
         } else {
             $btn.addClass('disabled').attr('disabled', 'disabled');
@@ -307,6 +493,7 @@ LS.gridSelection = (function () {
             // In select-all mode every row of the new page is selected by definition.
             if (_selectAllMode.has(gridId)) {
                 _lockCheckboxes(gridId);
+                _syncHeaderCheckbox(gridId);
                 _syncMassiveActionButton(gridId);
                 _syncSelectionBar(gridId);
                 return;
@@ -338,6 +525,7 @@ LS.gridSelection = (function () {
                 }
             });
 
+            _syncManualThresholdLocks(gridId, false);
             _syncHeaderCheckbox(gridId);
             _syncMassiveActionButton(gridId);
             _syncSelectionBar(gridId);
@@ -405,6 +593,7 @@ LS.gridSelection = (function () {
         clear: function (gridId) {
             _store.set(gridId, new Set());
             _selectAllMode.delete(gridId);
+            _selectAllExcluded.delete(gridId);
             _unlockCheckboxes(gridId);
             _syncHeaderCheckbox(gridId);
             _syncMassiveActionButton(gridId);
@@ -418,7 +607,11 @@ LS.gridSelection = (function () {
          * @return {number}
          */
         count: function (gridId) {
-            return _set(gridId).size;
+            return _selectedCount(gridId);
+        },
+
+        getExcluded: function (gridId) {
+            return Array.from(_excludedSet(gridId));
         },
 
         /**
@@ -472,6 +665,21 @@ LS.gridSelection = (function () {
          */
         replaceAll: function (gridId, values) {
             _store.set(gridId, new Set(values.map(String)));
+            _selectAllExcluded.delete(gridId);
+            _unlockCheckboxes(gridId);
+            var threshold = _selectAllDisableThreshold(gridId);
+            if (threshold !== null && values.length > threshold) {
+                $('#' + gridId + ' tbody .massiveActionsCheckbox').each(function () {
+                    var $checkbox = $(this);
+                    if (_set(gridId).has(String($checkbox.val())) && !$checkbox.is(':disabled')) {
+                        $checkbox.prop('checked', true)
+                            .prop('disabled', true)
+                            .addClass('grid-selectall-locked')
+                            .css('pointer-events', 'none')
+                            .closest('td').addClass('grid-selectall-locked-cell');
+                    }
+                });
+            }
             _syncHeaderCheckbox(gridId);
             _syncMassiveActionButton(gridId);
             _syncSelectionBar(gridId);
