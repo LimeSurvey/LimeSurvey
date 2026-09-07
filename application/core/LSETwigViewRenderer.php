@@ -302,15 +302,39 @@ window.addEventListener('message', function(event) {
         if ($this->getPathOfFile($sView . '.twig', null, $extraPath, $sDirName)) {
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
-                        //  aData and surveyInfo variables are accessible from question type twig files
+           //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
 
-            // check if this method is called from theme editor
+            // Theme editor previews render question fragments without a real question context.
             if (empty($aData['bIsThemeEditor'])) {
-                    $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
-                    $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-                    $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
-                    $aData['this'] = App()->getController();
+                $oQuestionModel = $this->getValidatedQuestionModel($oQuestionTemplate);
+                // Expose Question model's attributes as 'question'
+                $aData['question'] = $oQuestionModel->attributes;
+
+                $questionL10ns = is_array($oQuestionModel->questionl10ns) ? $oQuestionModel->questionl10ns : [];
+                $sSurveyLanguage = $oQuestionModel->survey->language ?? null;
+                $sCurrentLanguage = $this->resolveQuestionL10nLanguage(
+                    $questionL10ns,
+                    App()->language,
+                    $sSurveyLanguage,
+                    $oQuestionModel->qid ?? 'unknown'
+                );
+
+                $questionAttributesRaw = QuestionAttribute::model()->getQuestionAttributes($oQuestionModel, $sCurrentLanguage);
+                if ($questionAttributesRaw === false) {
+                    $questionAttributesRaw = [];
+                }
+
+                $questionL10n = $questionL10ns[$sCurrentLanguage];
+                $aData['sCurrentLanguage'] = $sCurrentLanguage;
+                $aData['questionAttributesI18n'] = $questionAttributesRaw;
+                $aData['questionAttributes'] = $this->resolveI18nQuestionAttributesForLanguage($questionAttributesRaw, $sCurrentLanguage);
+                $aData['question_text'] = $questionL10n->question;
+                $aData['question_help'] = $questionL10n->help;
+                $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+                $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
+                $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+                $aData['this'] = App()->getController();
             } else {
                 $aData['question_template_attribute'] = null;
             }
@@ -319,6 +343,98 @@ window.addEventListener('message', function(event) {
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
         }
+    }
+
+    /**
+     * @param mixed $oQuestionTemplate
+     * @return Question
+     */
+    private function getValidatedQuestionModel($oQuestionTemplate)
+    {
+        $questionTemplateId = (is_object($oQuestionTemplate) && isset($oQuestionTemplate->id))
+            ? (string) $oQuestionTemplate->id
+            : 'unknown';
+
+        if (!$oQuestionTemplate instanceof QuestionTemplate) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Expected QuestionTemplate instance in %s::renderQuestion(), got %s.',
+                    __CLASS__,
+                    is_object($oQuestionTemplate) ? get_class($oQuestionTemplate) : gettype($oQuestionTemplate)
+                )
+            );
+        }
+
+        $oQuestionModel = $oQuestionTemplate->oQuestion;
+        if (!$oQuestionModel instanceof Question) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'QuestionTemplate has no valid Question model; question template id: %s; received: %s.',
+                    $questionTemplateId,
+                    is_object($oQuestionModel) ? get_class($oQuestionModel) : gettype($oQuestionModel)
+                )
+            );
+        }
+
+        return $oQuestionModel;
+    }
+
+    /**
+     * @param array $questionL10ns
+     * @param string|null $currentLanguage
+     * @param string|null $surveyLanguage
+     * @param int|string $questionId
+     * @return string
+     */
+    private function resolveQuestionL10nLanguage(array $questionL10ns, $currentLanguage, $surveyLanguage, $questionId)
+    {
+        $candidateLanguages = array_unique(
+            array_filter(
+                [$currentLanguage, $surveyLanguage],
+                static function ($language) {
+                    return is_string($language) && $language !== '';
+                }
+            )
+        );
+
+        foreach ($candidateLanguages as $language) {
+            if (isset($questionL10ns[$language])) {
+                return $language;
+            }
+        }
+
+        throw new InvalidArgumentException(
+            sprintf(
+                'Question has no translation for current language "%s" or survey language "%s"; question id: %s.',
+                $currentLanguage ?? 'null',
+                $surveyLanguage ?? 'null',
+                $questionId
+            )
+        );
+    }
+
+    /**
+     * Resolve i18n question attribute values for a single language.
+     *
+     * The QuestionAttribute model returns i18n values as arrays keyed by language, even if a single language is
+     * requested. For Twig templates, it is more convenient to work with scalar values for the current language.
+     *
+     * @param array $questionAttributes
+     * @param string $language
+     * @return array
+     */
+    private function resolveI18nQuestionAttributesForLanguage(array $questionAttributes, $language)
+    {
+        $resolved = [];
+        foreach ($questionAttributes as $name => $value) {
+            if (is_array($value)) {
+                $resolved[$name] = array_key_exists($language, $value) ? $value[$language] : '';
+                continue;
+            }
+            $resolved[$name] = $value;
+        }
+
+        return $resolved;
     }
 
     /**
