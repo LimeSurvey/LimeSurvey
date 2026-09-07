@@ -176,6 +176,7 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
      */
     protected function _stripQuoted($sql)
     {
+        $sql = (string) $sql;
 
         // get the character for value quoting
         // this should be '
@@ -191,13 +192,13 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
         if (!empty($q)) {
             $escapeChar = preg_quote($escapeChar);
             // this segfaults only after 65,000 characters instead of 9,000
-            $sql = preg_replace("/$q([^$q{$escapeChar}]*|($qe)*)*$q/s", '', (string) $sql);
+            $sql = preg_replace("/$q([^$q{$escapeChar}]*|($qe)*)*$q/s", '', $sql) ?? $sql;
         }
 
         // get a version of the SQL statement with all quoted
         // values and delimited identifiers stripped out
         // remove "foo\"bar"
-        $sql = preg_replace("/\"(\\\\\"|[^\"])*\"/Us", '', (string) $sql);
+        $sql = preg_replace("/\"(\\\\\"|[^\"])*\"/Us", '', $sql) ?? $sql;
 
         // get the character for delimited id quotes,
         // this is usually " but in MySQL is `
@@ -209,7 +210,7 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
         $de = substr($de, 1, 2);
         $de = preg_quote($de);
         // Note: $de and $d where never used..., now they are:
-        $sql = preg_replace("/$d($de|\\\\{2}|[^$d])*$d/Us", '', (string) $sql);
+        $sql = preg_replace("/$d($de|\\\\{2}|[^$d])*$d/Us", '', $sql) ?? $sql;
         return $sql;
     }
 

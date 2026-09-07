@@ -7,17 +7,48 @@ import {
   Radar,
   ResponsiveContainer,
 } from 'recharts'
-import { COLORS, CustomTooltip } from '../ChartsUtils'
+import {
+  COLORS,
+  CustomTooltip,
+  TruncatedTick,
+  getMetricDataKey,
+  VALUE_TYPE,
+} from '../ChartsUtils'
 
-export const RadarChart = ({ data }) => {
+const RADAR_IMAGE_SIZE = 72
+
+export const RadarChart = ({
+  data,
+  isImage = false,
+  valueType = VALUE_TYPE.PERCENTAGE,
+}) => {
   return (
     <ResponsiveContainer width="100%" minHeight={400} height="100%">
-      <RechartsRadarChart data={data}>
+      <RechartsRadarChart
+        data={data}
+        // Leave room outside the plot for the image ticks.
+        outerRadius={isImage ? '62%' : '80%'}
+      >
         <PolarGrid />
-        <PolarAngleAxis dataKey="title" />
+        <PolarAngleAxis
+          dataKey="title"
+          tick={(props) => {
+            const item = isImage
+              ? data.find((row) => row.title === props.payload?.value)
+              : null
+            return (
+              <TruncatedTick
+                {...props}
+                dy={4}
+                isImage={isImage}
+                item={item}
+                imageWidth={RADAR_IMAGE_SIZE}
+              />
+            )
+          }}
+        />
         <Radar
-          name="Experience"
-          dataKey="value"
+          dataKey={getMetricDataKey(valueType)}
           stroke={COLORS[1]}
           fill={COLORS[1]}
           fillOpacity={0.6}

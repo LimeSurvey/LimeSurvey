@@ -1001,20 +1001,18 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage, $questi
         return '';
     }
     $survey = Survey::model()->findByPk($iSurveyID);
-    $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $iSurveyID]);
-    $found = false;
-    foreach ($rawQuestions as $rawQuestion) {
-        $found = $found || (strpos($sFieldCode, "Q{$rawQuestion->qid}") === 0);
-    }
-    //Fieldcode used to determine question, $sValue used to match against answer code
-    //Returns NULL if question type does not suit
-    if ($found) {
+    /* @var boolean : it's look like question */
+    /* Just do a quickest test, happen multiple time in browse real createFieldMap after */
+    $looksLikeQuestion = isset($sFieldCode[1]) && $sFieldCode[0] === 'Q' && ctype_digit($sFieldCode[1]);
+    //Returns $sValue if question type does not suit
+    if ($looksLikeQuestion) {
         //Only check if it looks like a real fieldcode
         $fieldmap = createFieldMap($survey, 'short', false, false, $sLanguage);
         if (isset($fieldmap[$sFieldCode])) {
             $fields = $fieldmap[$sFieldCode];
         } else {
-            return '';
+            /* Not in fieldmap : return the raw value */
+            return $sValue;
         }
 
         // If it is a comment field there is nothing to convert here
@@ -1798,7 +1796,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         'sid' => $surveyid,
                         "gid" => $arow['gid'],
                         "qid" => $arow['qid'],
-                        "aid" => "other");
+                        "aid" => "other",
+                        "suffix" => "_Cother");
                         if (isset($answerColumnDefinition)) {
                             $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                         }
@@ -1832,7 +1831,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     'sid' => $surveyid,
                     "gid" => $arow['gid'],
                     "qid" => $arow['qid'],
-                    "aid" => "comment");
+                    "aid" => "comment",
+                    "suffix" => "_Ccomment");
                     if (isset($answerColumnDefinition)) {
                         $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
                     }

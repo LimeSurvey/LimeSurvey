@@ -31,8 +31,11 @@ export const Select = ({
   isMultiselect = false,
   defaultValue = options[0],
   menuStyle = {},
+  menuClassName = '',
   placeholder = t('Please choose...'),
   menuPlacement = 'auto',
+  menuPosition = 'absolute',
+  formatOptionLabel,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [canUseAppState, setCanUseAppState] = useState(false)
@@ -113,6 +116,7 @@ export const Select = ({
         <ReactSelect
           classNames={{
             control: () => 'select',
+            menu: () => menuClassName,
           }}
           classNamePrefix="select"
           defaultValue={defaultValue}
@@ -122,7 +126,9 @@ export const Select = ({
           placeholder={placeholder}
           isMulti={isMultiselect}
           menuPlacement={menuPlacement}
+          menuPosition={menuPosition}
           menuPortalTarget={document.body}
+          formatOptionLabel={formatOptionLabel}
           components={{
             IndicatorSeparator: () => null,
           }}

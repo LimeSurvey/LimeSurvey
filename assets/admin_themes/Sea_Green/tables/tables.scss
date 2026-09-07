@@ -194,7 +194,7 @@ table {
         width      : 1px;
         height     : 22px;
         background : $g-400;
-        margin     : 0 4px;
+        margin     : 0 12px;
         flex-shrink: 0;
     }
 
@@ -228,9 +228,7 @@ table {
         color: $g-900;
       }
 
-        &.text-danger {
-            color : $error;
-
+        &.floating-delete-button {
             i::before {
                 color : $error;
             }
@@ -256,10 +254,14 @@ table {
             font-size : 16px;
         }
 
-        &:hover,
-        &:focus-visible {
+        &:hover {
             background : $g-200;
             outline    : none;
+        }
+        &:focus, &:focus-visible {
+            background : unset;
+            outline    : none;
+            border     : solid 1px $grape;
         }
     }
 
@@ -604,4 +606,3 @@ table {
     }
   }
 }
-

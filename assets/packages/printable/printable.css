@@ -91,5 +91,8 @@ h1,h2,h3,h4 {
   }
   .form-control.print-control{border:1px solid #000;margin:0.1em;max-width:100%}
   .table{width:100%;table-layout:fixed}
-  .print-control.input-other,.print-control.input-othercomment,.print-control.input-rank{display:inline-block}
+  .print-control.input-other,.print-control.input-othercomment,.print-control.input-rank{display:inline-block;vertical-align:middle}
+  .other-item{display:flex;align-items:center}
+  .other-item .input-radio:before,.other-item .input-checkbox:before{top:0}
+  .other-item .input-radio,.other-item .input-checkbox{margin-right:0.4em}
   

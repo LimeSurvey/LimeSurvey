@@ -106,8 +106,8 @@ export const ColumnFilter = ({ column, columnsFilters, setColumnsFilters }) => {
           label: !idIsCompletedColumnkey
             ? answer?.toString()
             : answer
-              ? 'Yes'
-              : 'No',
+              ? t('Yes')
+              : t('No'),
           value: answer?.toString(),
         })) || []
     } else if (filterType !== null) {

@@ -232,6 +232,9 @@ var onClickListAction =  function (e) {
         if (LS.gridSelection.isSelectAll($grididvalue)) {
             $postDatas['selectAll'] = 1;
             $postDatas['filterQuery'] = LS.gridSelection.getFilterQuery($grididvalue);
+            if (typeof LS.gridSelection.getExcluded === 'function') {
+                $postDatas['excludedItems'] = JSON.stringify(LS.gridSelection.getExcluded($grididvalue));
+            }
         }
         $modal.find('.custom-data').each(function(i, el)
         {

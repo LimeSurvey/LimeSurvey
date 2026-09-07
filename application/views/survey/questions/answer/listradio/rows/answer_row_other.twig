@@ -24,6 +24,7 @@
             name="{{ name }}"
             id="SOTH{{ name }}"
             {{ checkedState }}
+            aria-labelledby="ls-question-text-{{ name }} label-id-{{ name }}"
             />
 
             <label for="SOTH{{ name }}" class="control-label label-radio" id="label-id-{{ name }}">{{ processString(othertext) }}</label>
