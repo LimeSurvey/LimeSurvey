@@ -343,6 +343,23 @@ class LimeMailer extends PHPMailer
             $this->addAddress($sEmailaddress, $oToken->firstname . " " . $oToken->lastname);
         }
         $this->addCustomHeader("X-tokenid", $oToken->token);
+
+        // add list unsubscribe header
+        // see: https://datatracker.ietf.org/doc/html/rfc2369
+        // the url is the same as OPTOUTURL replacement field
+        $oneClickURL = App()->getController()->createAbsoluteUrl(
+            "/optout/tokens",
+            [
+                "surveyid" => $this->surveyId,
+                "token" => $oToken->token,
+                "langcode" => $this->mailLanguage,
+            ],
+        );
+        $this->addCustomHeader("List-Unsubscribe", "<$oneClickURL>");
+
+        // add one click unsubscribe header
+        // see: https://datatracker.ietf.org/doc/html/rfc8058
+        $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
     }
 
     /**
