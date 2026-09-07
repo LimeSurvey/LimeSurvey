@@ -3279,7 +3279,9 @@ class Tokens extends SurveyCommonAction
         $aTokenIds = $aTokenIds === false ? Yii::app()->request->getQuery('tokenids', false) : $aTokenIds;
 
         if (!empty($aTokenIds)) {
-            $aTokenIds = explode('|', (string) $aTokenIds);
+            // The id list may be delimited with '|' (legacy massive-action widget and the
+            // invite/remind confirmation form) or ',' (floating actions widget), so accept both.
+            $aTokenIds = preg_split('/[|,]/', (string) $aTokenIds);
             $aTokenIds = array_filter($aTokenIds);
             $aTokenIds = array_map('sanitize_int', $aTokenIds);
         }

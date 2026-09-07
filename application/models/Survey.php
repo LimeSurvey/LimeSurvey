@@ -1035,11 +1035,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * @inheritdoc . But use a static var because can be used a lot of time.
+     * Named scopes (active(), open(), …) merge a condition into getDbCriteria(), which is only
+     * consumed/reset by parent::findByPk() (via applyScopes()). If a scope is pending, the static
+     * cache must be bypassed entirely: otherwise a cache hit would (a) skip the scope condition
+     * and return a value invalid for that scope, and (b) leave the scope criteria unconsumed,
+     * leaking it into the next unrelated query on this model.
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
         /** @var self $model */
-        if (empty($condition) && empty($params)) {
+        $hasPendingScope = $this->getDbCriteria(false) !== null;
+        if (empty($condition) && empty($params) && !$hasPendingScope) {
             if (array_key_exists($pk, self::$findByPkCache)) {
                 return self::$findByPkCache[$pk];
             } else {
