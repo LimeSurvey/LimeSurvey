@@ -513,6 +513,73 @@ class LimesurveyApi
         return \UserGroup::model()->findAllAsArray();
     }
 
+
+    /**
+     * Returns an array of all roles / permissiontemplates
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return \Permissiontemplates::model()->findAllAsArray();    
+    }
+
+
+    /**
+     * Returns a role / permissiontemplate object by $ptid
+     * Returns null if the object does not exist
+     *
+     * @param int $ptid The role / permissiontemplate ID
+     * @return \Permissiontemplates|null
+     */
+    public function getRole($ptid)
+    {
+        return \Permissiontemplates::model()->findByAttributes(array('ptid' => $ptid));
+    }
+
+
+    /**
+     * Adds a new role / permissiontemplate object
+     * Returns null if the object does not exist
+     *
+     * @param string $roleName The name vor the new role
+     * @param string $description The description of the new role 
+     * @param int $create_by user uid . Default is the admin user (1)
+     * @return boolean True or false if role was added or not
+     */
+    public function addRole($roleName, $description, $created_by = 1)
+    {
+        $roleName = flattenText($roleName, false, true, 'UTF-8', true);
+        $description = flattenText($description);
+        if (isset($roleName) && strlen((string) $roleName) > 0) {
+            $newRole = new \Permissiontemplates();
+            $newRole->name = $roleName;
+            $newRole->description = $description;
+            $newRole->created_by = $created_by;
+            # @todo formate of date ?
+            $newRole->created_at = date('Y-m-d H:i:s');
+            $newRole->renewed_last = date('Y-m-d H:i:s');
+            return (boolean) $newRole->save();
+        }else {
+            throw new InvalidArgumentException('must provide a role name');
+        }
+    }
+
+    /**
+     * Adds a role to a User
+     * @param integer $ptid The ID of the role/ permissiontemplate the user should be added to
+     * @param integer $uid The Id of the user that should have the new role assigned  
+     */
+    public function addUserInRole($ptid, $uid)
+    {
+        $role = $this->getRole($ptid);
+        if ($role !== null ){
+            return $role -> applyToUser($uid);
+        }else{
+            throw new InvalidArgumentException('Ust provide a valid ptid / permissiontemplate can not be found');    
+        }
+    }
+
     /**
      * Returns a UserGroup object by ugid
      * Returns null if the object does not exist
@@ -537,6 +604,8 @@ class LimesurveyApi
     {
         return \UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
     }
+
+    
 
     /**
      * Adds a new user group
