@@ -5273,20 +5273,20 @@ function handleLegacyRankingAnswers(
             ? $oldQIDGIDMap[$iOldParentQID]
             : $iGID;
 
-        // Determine the placeholder qid for this answer row.
-        // Modern XML exports include an 'aid' field; legacy exports do not.
-        // When 'aid' is absent we generate a unique negative surrogate so that
-        // every answer row gets its own entry in $aQIDReplacements and the
-        // subquestions import loop saves all of them (not just the first one).
-        if (isset($insertdata['aid']) && $insertdata['aid'] !== '') {
-            $iOldAID = $insertdata['aid'];
-        } else {
-            $iOldAID = $surrogateCounter--;
-        }
+        // Real answer id (if any), used only as the key for l10n/raids lookups below.
+        $sRealAID = (isset($insertdata['aid']) && $insertdata['aid'] !== '') ? $insertdata['aid'] : null;
 
-        // Use the old answer ID (or surrogate) as the placeholder qid so the
-        // subquestions import loop can track it in $aQIDReplacements and assign
-        // a real qid.
+        // Placeholder qid for this injected subquestion row. This must always be a
+        // fresh negative surrogate rather than the real 'aid' value: 'aid' and 'qid'
+        // are independent id spaces in the source file and can collide (e.g. an
+        // answer with aid=1 while the parent ranking question itself has qid=1).
+        // Reusing the real aid as the placeholder would make it look, to the
+        // subquestions import loop below, as if that qid had already been imported
+        // (via $aQIDReplacements), causing the row to be silently skipped.
+        $iOldAID = $surrogateCounter--;
+
+        // Use the surrogate as the placeholder qid so the subquestions import loop
+        // can track it in $aQIDReplacements and assign a real qid.
         $subQuestionData = [
             'sid'            => $iNewSID,
             'gid'            => $iRowGID,
@@ -5311,9 +5311,9 @@ function handleLegacyRankingAnswers(
             $newRow->addChild($key, htmlspecialchars((string) $value, ENT_XML1));
         }
 
-        // Store placeholder qid -> ['old_parent_qid' => int, 'code' => string]
-        // for l10n resolution by the caller.
-        $raids[$iOldAID] = [
+        // Store the real answer id (old qid placeholder is not meaningful to the caller)
+        // -> ['old_parent_qid' => int, 'code' => string] for l10n resolution by the caller.
+        $raids[$sRealAID ?? $iOldAID] = [
             'old_parent_qid' => $iOldParentQID,
             'code'           => $insertdata['code'],
         ];
@@ -5326,7 +5326,7 @@ function handleLegacyRankingAnswers(
         //
         // For legacy formats without answer_l10ns, fall back to the 'answer'
         // and 'language' fields that are stored directly in the answers table.
-        $l10nRows = $rankingAnswerL10ns[$iOldAID] ?? null;
+        $l10nRows = ($sRealAID !== null ? ($rankingAnswerL10ns[$sRealAID] ?? null) : null);
         if (empty($l10nRows) && isset($insertdata['answer'])) {
             $l10nRows = [[
                 'answer'   => $insertdata['answer'],

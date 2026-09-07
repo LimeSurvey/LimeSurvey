@@ -3214,22 +3214,29 @@ function fixPostgresSequence($tableName = null)
 {
     $oDB = Yii::app()->getDb();
     $query = "SELECT 'SELECT SETVAL(' ||
-                quote_literal(quote_ident(PGT.schemaname) || '.' || quote_ident(S.relname)) ||
+                quote_literal(quote_ident(SN.nspname) || '.' || quote_ident(S.relname)) ||
                 ', COALESCE(MAX(' ||quote_ident(C.attname)|| '), 1) ) FROM ' ||
-                quote_ident(PGT.schemaname)|| '.'||quote_ident(T.relname)|| ';'
+                quote_ident(TN.nspname)|| '.'||quote_ident(T.relname)|| ';'
             FROM pg_class AS S,
                 pg_depend AS D,
                 pg_class AS T,
                 pg_attribute AS C,
-                pg_tables AS PGT
+                pg_namespace AS SN,
+                pg_namespace AS TN
             WHERE S.relkind = 'S'
                 AND S.oid = D.objid
                 AND D.refobjid = T.oid
                 AND D.refobjid = C.attrelid
                 AND D.refobjsubid = C.attnum
-                AND T.relname = PGT.tablename";
+                AND S.relnamespace = SN.oid
+                AND T.relnamespace = TN.oid
+                AND D.classid = 'pg_class'::regclass
+                AND D.refclassid = 'pg_class'::regclass
+                AND D.deptype IN ('a', 'i')
+                AND C.atttypid IN ('int2'::regtype, 'int4'::regtype, 'int8'::regtype)
+                AND NOT C.attisdropped";
     if ($tableName != null) {
-        $query .= " AND PGT.tablename= '{{" . $tableName . "}}' ";
+        $query .= " AND T.relname = '{{" . $tableName . "}}' ";
     }
     $query .= " ORDER BY S.relname;";
     $FixingQueries = Yii::app()->db->createCommand($query)->queryColumn();
