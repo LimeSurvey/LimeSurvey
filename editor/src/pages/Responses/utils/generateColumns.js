@@ -1,4 +1,4 @@
-import { getQuestionById, RemoveHTMLTagsInString } from 'helpers'
+import { getQuestionById, htmlToPlainText } from 'helpers'
 import {
   containfilter,
   dateRangeFilter,
@@ -165,7 +165,7 @@ export const generateColumns = (surveyQuestions, survey) => {
     columns.push({
       accessorKey: qid.toString(),
       id: qid.toString(),
-      header: `${RemoveHTMLTagsInString(question?.l10ns[survey.language]?.question)}`,
+      header: `${htmlToPlainText(question?.l10ns[survey.language]?.question)}`,
       meta: {
         question,
         questionNumber,

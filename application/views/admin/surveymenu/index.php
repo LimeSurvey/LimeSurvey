@@ -7,7 +7,6 @@
  */
 
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-$massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massive_action/_selector', [], true, false);
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyMenus');
@@ -36,6 +35,14 @@ echo viewHelper::getViewTestTag('surveyMenus');
                 <div class="col-12 ls-space margin top-15">
                     <div class="col-12 ls-flex-item">
                         <?php
+                        require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.SurveyMenuListMassiveActions') . '.php';
+                        $floatingActions = \actions\SurveyMenuListMassiveActions::getActions();
+                        $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                            'pk' => 'id',
+                            'gridId' => 'surveymenu-grid',
+                            'aActions' => $floatingActions,
+                        ]);
+
                         $this->widget(
                             'application.extensions.admin.grid.CLSGridView',
                             [
@@ -57,8 +64,8 @@ echo viewHelper::getViewTestTag('surveyMenus');
                                 'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
                                 'ajaxType' => 'POST',
                                 'ajaxUpdate' => 'surveymenu-grid',
-                                'massiveActionTemplate' => $massiveAction,
-                                'lsAfterAjaxUpdate'  => ['bindListItemclick();', 'surveyMenuFunctions();'],
+                                'showSelectionBar' => false,
+                                'lsAfterAjaxUpdate'  => ['surveyMenuFunctions();'],
                             ]
                         ); ?>
                     </div>

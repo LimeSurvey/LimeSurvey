@@ -1,9 +1,15 @@
-import { boldIcon, italicIcon, verticalThreeDots } from './tinyMCEIcons'
+import {
+  boldIcon,
+  italicIcon,
+  underlineIcon,
+  verticalThreeDots,
+} from './tinyMCEIcons'
 
 export const mceToolbar = (editor) => {
   editor.ui.registry.addIcon('verticalThreeDots', verticalThreeDots)
   editor.ui.registry.addIcon('boldIcon', boldIcon)
   editor.ui.registry.addIcon('italicIcon', italicIcon)
+  editor.ui.registry.addIcon('underlineIcon', underlineIcon)
 
   editor.ui.registry.addToggleButton('customItalic', {
     icon: 'italicIcon',
@@ -27,6 +33,20 @@ export const mceToolbar = (editor) => {
     onSetup: (api) => {
       api.setActive(editor.formatter.match('bold'))
       const changed = editor.formatter.formatChanged('bold', (state) =>
+        api.setActive(state)
+      )
+      return () => changed.unbind()
+    },
+  })
+
+  editor.ui.registry.addToggleButton('customUnderline', {
+    icon: 'underlineIcon',
+    onAction: (api) => {
+      editor.execCommand('mceToggleFormat', !api.isActive(), 'underline')
+    },
+    onSetup: (api) => {
+      api.setActive(editor.formatter.match('underline'))
+      const changed = editor.formatter.formatChanged('underline', (state) =>
         api.setActive(state)
       )
       return () => changed.unbind()
