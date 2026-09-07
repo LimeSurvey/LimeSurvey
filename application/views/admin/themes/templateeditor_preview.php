@@ -1,12 +1,14 @@
-<div role="heading" class="h4">
+<h2 class="h4" id="preview-size-label">
     <?php eT("Preview:"); ?>
-</div>
+</h2>
 <div class="jumbotron message-box">
-    <input type='button' value='<?php eT("Mobile"); ?>' id='iphone' class="btn btn-outline-secondary"/>
-    <input type='button' value='640x480' id='x640' class="btn btn-outline-secondary"/>
-    <input type='button' value='800x600' id='x800' class="btn btn-outline-secondary"/>
-    <input type='button' value='1024x768' id='x1024' class="btn btn-outline-secondary"/>
-    <input type='button' value='<?php eT("Full"); ?>' id='full' class="btn btn-outline-secondary"/>
+    <div id="preview-size-toolbar" role="toolbar" aria-labelledby="preview-size-label">
+        <button type="button" id="iphone" class="btn btn-outline-secondary preview-size-btn" aria-pressed="false" tabindex="-1"><?php eT("Mobile"); ?></button>
+        <button type="button" id="x640" class="btn btn-outline-secondary preview-size-btn" aria-pressed="false" tabindex="-1">640x480</button>
+        <button type="button" id="x800" class="btn btn-outline-secondary preview-size-btn" aria-pressed="false" tabindex="-1">800x600</button>
+        <button type="button" id="x1024" class="btn btn-outline-secondary preview-size-btn" aria-pressed="false" tabindex="-1">1024x768</button>
+        <button type="button" id="full" class="btn btn-outline-secondary preview-size-btn active" aria-pressed="true" tabindex="0"><?php eT("Full"); ?></button>
+    </div>
     <br>
     <br>
     <br>

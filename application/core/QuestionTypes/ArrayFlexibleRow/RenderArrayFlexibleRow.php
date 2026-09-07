@@ -226,7 +226,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $options[] = array(
                     'text' => gT('No answer'),
                     'value' => '',
-                    'selected' => ($value == '') ?  SELECTED : '',
+                    'selected' => (
+                        PRESELECT_NO_ANSWER && $value == ''
+                    ) ? SELECTED : '',
                 );
             }
             unset($showNoAnswer);
@@ -297,7 +299,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'ld'                     => '',
                     'code' => $oAnswer->code,
                     'label'                  => gT('No answer'),
-                    'checked'                => (is_null($value) || $value === '') ? 'checked' : '',
+                    'checked'                => (
+                        PRESELECT_NO_ANSWER && (is_null($value) || $value === '')
+                    ) ? 'checked' : '',
                 );
             }
 

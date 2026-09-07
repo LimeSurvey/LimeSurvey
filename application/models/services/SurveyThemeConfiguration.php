@@ -11,6 +11,8 @@ use TemplateManifest;
 
 class SurveyThemeConfiguration
 {
+    private const DEFAULT_CORNER_RADIUS = '2';
+
     private Permission $permission;
 
     public function __construct(
@@ -276,6 +278,9 @@ class SurveyThemeConfiguration
             $attributesCompleteData[$key]['category'] = $optionAttribute['category'];
             $attributesCompleteData[$key]['currentValue'] = $currentThemeOptions->$key ?? 'inherit';
             $attributesCompleteData[$key]['parentValue'] = $parentThemeOptions[$key] ?? '';
+            if ($key === 'cornerradius' && empty($attributesCompleteData[$key]['parentValue'])) {
+                $attributesCompleteData[$key]['parentValue'] = self::DEFAULT_CORNER_RADIUS;
+            }
             if (
                 $attributesCompleteData[$key]['type'] === 'dropdown'
                 // "checkicon" is of type "icon" but has dropdown options

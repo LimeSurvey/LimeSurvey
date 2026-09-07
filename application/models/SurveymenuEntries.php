@@ -350,7 +350,7 @@ class SurveymenuEntries extends LSActiveRecord
                 'class'               => 'CCheckBoxColumn',
                 'selectableRows'      => 2,
                 'name'                => 'id',
-                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'action_selectthisentry'],
+                'checkBoxHtmlOptions' => ['name' => 'id[]', 'class' => 'massiveActionsCheckbox action_selectthisentry'],
                 'headerHtmlOptions'   => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions'   => ['class' => 'ls-sticky-column'],
                 'htmlOptions'         => ['class' => 'ls-sticky-column'],
@@ -400,7 +400,7 @@ class SurveymenuEntries extends LSActiveRecord
             ],
             [
                 'name'   => 'data',
-                'value'  => '$data->data ? "<i class=\'ri-information-fill bigIcons\' title=\'".$data->data."\'></i>"
+                'value'  => '$data->data ? CHtml::tag("i", array("class" => "ri-information-fill bigIcons", "title" => $data->data), "")
                 : ( $data->getdatamethod ? gT("GET data method:")."<br/>".CHtml::encode($data->getdatamethod) : "")',
                 'type'   => 'raw',
                 'filter' => false,
@@ -583,7 +583,7 @@ class SurveymenuEntries extends LSActiveRecord
             $this->menu_title = empty($this->menu_title) ? $this->title : $this->menu_title;
             $this->menu_description = empty($this->menu_description) ? $this->title : $this->menu_title;
         }
-        parent::save($runValidation, $attributes);
+        return parent::save($runValidation, $attributes);
     }
 
     /**

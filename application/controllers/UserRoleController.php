@@ -29,11 +29,6 @@ class UserRoleController extends LSBaseController
         App()->getClientScript()->registerPackage('permissionroles');
         $request = App()->request;
 
-        $massiveAction = $this->renderPartial(
-            'massiveAction/_selector',
-            [],
-            true
-        );
 
         // Set page size
         $pageSize = $request->getParam('pageSize');
@@ -65,9 +60,8 @@ class UserRoleController extends LSBaseController
         $this->render(
             'index',
             [
-                'model'         => $model,
-                'massiveAction' => $massiveAction,
-                'pageTitle'     => gT('User roles'),
+                'model'     => $model,
+                'pageTitle' => gT('User roles'),
             ]
         );
     }
