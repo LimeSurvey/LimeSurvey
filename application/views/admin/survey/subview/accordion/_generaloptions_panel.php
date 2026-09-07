@@ -85,7 +85,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <?php if (!$oSurvey->isNewRecord): ?>
                 <!-- Survey Languages -->
                 <div class="mb-3">
-                    <label class=" form-label" for='additional_languages'><?php eT("Survey languages:"); ?></label>
+                    <label id="additional_languages_label" class=" form-label" for='additional_languages'><?php eT("Survey languages:"); ?></label>
                     <div class="">
                         <?php
                         $aAllLanguages = getLanguageDataRestricted(false, 'short');
@@ -93,7 +93,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         Yii::app()->getController()->widget('ext.admin.survey.LanguagesWidget.LanguagesWidget',
                             array(
                                 'asDropDownList' => true,
-                                'htmlOptions' => array('multiple' => 'multiple', 'style' => "width: 100%", 'class' => 'form-select'),
+                                'htmlOptions' => array('multiple' => 'multiple', 'style' => "width: 100%", 'class' => 'form-select', 'aria-labelledby' => 'additional_languages_label'),
                                 'data' => $aAllLanguages,
                                 'value' => $oSurvey->allLanguages,
                                 'name' => 'additional_languages',

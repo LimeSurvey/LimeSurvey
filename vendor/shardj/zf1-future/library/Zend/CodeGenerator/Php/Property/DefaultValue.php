@@ -228,6 +228,32 @@ class Zend_CodeGenerator_Php_Property_DefaultValue extends Zend_CodeGenerator_Ph
     }
 
     /**
+     * Wraps each array element in a DefaultValue instance for code generation.
+     *
+     * Replaces the old RecursiveArrayIterator approach, which under PHP 8.5
+     * mutated values via offsetSet during iteration and called
+     * new ArrayIterator($object) when descending (deprecated in 8.5).
+     *
+     * @param  array $array
+     * @param  int   $depth
+     * @return array
+     */
+    protected function _prepareArrayValue(array $array, $depth)
+    {
+        $result = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $value = new self(['value' => $this->_prepareArrayValue($value, $depth + 1)]);
+            } elseif (!$value instanceof self) {
+                $value = new self(['value' => $value]);
+            }
+            $value->setArrayDepth($depth);
+            $result[$key] = $value;
+        }
+        return $result;
+    }
+
+    /**
      * generate()
      *
      * @return string
@@ -246,18 +272,7 @@ class Zend_CodeGenerator_Php_Property_DefaultValue extends Zend_CodeGenerator_Ph
             $type = $this->_getAutoDeterminedType($value);
 
             if ($type == self::TYPE_ARRAY) {
-                $rii = new RecursiveIteratorIterator(
-                    $it = new RecursiveArrayIterator($value),
-                    RecursiveIteratorIterator::SELF_FIRST
-                    );
-                foreach ($rii as $curKey => $curValue) {
-                    if (!$curValue instanceof Zend_CodeGenerator_Php_Property_DefaultValue) {
-                        $curValue = new self(['value' => $curValue]);
-                        $rii->getSubIterator()->offsetSet($curKey, $curValue);
-                    }
-                    $curValue->setArrayDepth($rii->getDepth());
-                }
-                $value = $rii->getSubIterator()->getArrayCopy();
+                $value = $this->_prepareArrayValue((array) $value, 0);
             }
 
         }

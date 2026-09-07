@@ -23,5 +23,5 @@ $modalDialogSrId = !empty($modalTitleId) ? $modalTitleId . '-dialogsr' : null;
     <?php if (!empty($modalTitleId) && !empty($modalDialogSrId)) : ?>
         <span class="visually-hidden" id="<?= CHtml::encode($modalDialogSrId) ?>"><?= gT('Dialog') ?></span>
     <?php endif; ?>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close modal window') ?>"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"></button>
 </div>

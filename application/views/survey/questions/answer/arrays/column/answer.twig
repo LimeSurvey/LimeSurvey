@@ -14,24 +14,24 @@
     <table class="{{ coreClass }} table table-bordered table-col-hover">
         <colgroup>
             <col class="col-answers" style='width: {{ answerwidth }}%;' />
-            <!-- @see https://www.w3.org/WAI/ARIA/apg/patterns/radio/ -->
+            {# A <col> is not exposed in the accessibility tree, so no ARIA here:
+               the subquestion (column) is instead named on each radio through
+               aria-labelledby, together with the answer option (row). #}
             {% for i, question in aQuestions %}
                 <col
                     class="answers-list radio-list {% if i % 2 %}ls-odd{% else %}ls-even{% endif %} {% if question.errormandatory %} ls-error-mandatory has-error{% endif %}"
                     style='width: {{ cellwidth }}%;'
-                    role="radiogroup"
-                    aria-labelledby="answertext{{ question.myfname }}"
                     >
             {% endfor %}
         </colgroup>
-        <thead><!-- The global concept is hard to understand : must control if aria-labelledby for radiogroup is OK and if we can add aria-hidden here -->
+        <thead>
             <tr class='ls-heading'><!-- unsure for ls-heading class here -->
                 <td></td>
                 {% for i, question in aQuestions %}
                     <th
                         id="answertext{{ question.myfname }}"
                         class="answertext control-label {% if question.errormandatory %} has-error error-mandatory{% endif %}"
-                        role="columnheader"
+                        scope="col"
                     >
                         {{ processString(question.question) }}
                     </th>
@@ -41,17 +41,21 @@
         <tbody>
             {% for ansrow in labels %}
                 <tr id="javatbd{{ ansrow.myfname }}" class="answers-list">
-                    <th id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} visually-hidden{% endif %}">
+                    <th id="label-{{ basename }}-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} visually-hidden{% endif %}" scope="row">
                         {{ processString(ansrow.answer) }}
                     </th>
                     {% for i, ld in anscode %}
                         <td class="answer_cell_{{ ld }}{% if ansrow.code=="" %} noanswer-item{% endif %} answer-item radio-item">
+                                {# tabindex overrides the browser default of a single tab stop per radio
+                                   group. The groups are the columns, but the DOM order is row by row, so
+                                   the default leaves options unreachable once one is selected. #}
                                 <input
                                     type="radio"
                                     name="{{ aQuestions[i].myfname }}"
                                     value="{{ ansrow.code }}"
                                     id="answer{{ aQuestions[i].myfname }}-{{ ansrow.code }}"
-                                    aria-labelledby="label-{{ ansrow.code }}"
+                                    aria-labelledby="answertext{{ aQuestions[i].myfname }} label-{{ basename }}-{{ ansrow.code }}"
+                                    tabindex="0"
                                     {{ checked[ansrow.code][ld] }}
                                      />
                                 <label class="ls-label-xs-visibility " for="answer{{ aQuestions[i].myfname }}-{{ ansrow.code }}" aria-hidden="true">

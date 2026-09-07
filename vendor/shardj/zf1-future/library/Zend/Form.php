@@ -2123,6 +2123,7 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
      */
     protected function _dissolveArrayValue($value, $arrayPath)
     {
+        $arrayPath = $arrayPath ?? '';
         // As long as we have more levels
         while ($arrayPos = strpos((string) $arrayPath, '[')) {
             // Get the next key in the path
@@ -2181,6 +2182,7 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
      */
     protected function _attachToArray($value, $arrayPath)
     {
+        $arrayPath = $arrayPath ?? '';
         // As long as we have more levels
         while ($arrayPos = strrpos($arrayPath, '[')) {
             // Get the next key in the path

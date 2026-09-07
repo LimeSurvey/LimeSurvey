@@ -10,7 +10,7 @@ import {
   getSubquestionById,
   getSubquestionByProperty,
   isRankingQuestion,
-  RemoveHTMLTagsInString,
+  htmlToPlainText,
 } from 'helpers'
 import { cloneDeep } from 'lodash'
 
@@ -115,7 +115,7 @@ export const generateData = (responses, language, generatedColumns) => {
         !hasAnswersOrSubquestions
       ) {
         cell.push({
-          value: RemoveHTMLTagsInString(value),
+          value: htmlToPlainText(value),
           key: answer.key,
           aid: answer.actual_aid,
           [idName]: answer[idName],
@@ -124,8 +124,8 @@ export const generateData = (responses, language, generatedColumns) => {
       } else {
         if (maybeComment) {
           value = !questionAnswer
-            ? RemoveHTMLTagsInString(value)
-            : RemoveHTMLTagsInString(questionAnswer?.l10ns[language]?.answer)
+            ? htmlToPlainText(value)
+            : htmlToPlainText(questionAnswer?.l10ns[language]?.answer)
 
           if (!cell.length) {
             cell.push({
@@ -154,12 +154,10 @@ export const generateData = (responses, language, generatedColumns) => {
             responseId: response.id,
             questionThemeName: question.questionThemeName,
             subquestionTitle:
-              RemoveHTMLTagsInString(
-                questionSubquestion?.l10ns[language]?.question
-              ) || value,
-            answerTitle:
-              RemoveHTMLTagsInString(questionAnswer?.l10ns[language]?.answer) ||
+              htmlToPlainText(questionSubquestion?.l10ns[language]?.question) ||
               value,
+            answerTitle:
+              htmlToPlainText(questionAnswer?.l10ns[language]?.answer) || value,
           })
         }
       }
@@ -248,9 +246,8 @@ const handleRankingQuestionType = (
       responseId: response.id,
       questionThemeName: question.questionThemeName,
       subquestionTitle:
-        RemoveHTMLTagsInString(
-          questionSubquestion?.l10ns[language]?.question
-        ) || subquestionTitle,
+        htmlToPlainText(questionSubquestion?.l10ns[language]?.question) ||
+        subquestionTitle,
     })
   })
 }
