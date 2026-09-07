@@ -296,9 +296,6 @@ export const ChartRendererV2 = ({
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
       question?.type
     )
-  const [view, setView] = useState(
-    isNumerical ? VIEW.TABLE : isMultiNumerical ? VIEW.GRID : VIEW.BAR_CHART
-  )
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
@@ -311,6 +308,22 @@ export const ChartRendererV2 = ({
   const isText = TEXT_QUESTION_TYPES.includes(question?.type)
   const isArrayNumbers = question?.type === QT_COLON_ARRAY_NUMBERS
   const isDualScale = question?.type === QT_1_ARRAY_DUAL
+  const getDefaultView = () => {
+    if (isArray && !isArrayNumbers) {
+      return VIEW.STACKED_BAR
+    }
+
+    if (isNumerical) {
+      return VIEW.TABLE
+    }
+
+    if (isMultiNumerical) {
+      return VIEW.GRID
+    }
+
+    return VIEW.BAR_CHART
+  }
+  const [view, setView] = useState(getDefaultView)
   const effectiveValueType =
     isArrayNumbers || isRanking ? VALUE_TYPE.COUNT : valueType
   // No responses for this question when every answer option has a zero count.
