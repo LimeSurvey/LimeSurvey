@@ -140,6 +140,7 @@ class SurveysGroupCreatorTest extends TestCase
             'showxquestions',
             'showgroupinfo',
             'shownoanswer',
+            'preselectnoanswer',
             'showqnumcode',
             'showwelcome',
             'showprogress',

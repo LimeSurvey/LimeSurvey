@@ -70,6 +70,10 @@ function setNoAnswerMode($thissurvey)
     } else {
         define('SHOW_NO_ANSWER', 1);
     }
+
+    // Default to the historic behaviour when rendering legacy/imported data
+    // that does not contain the setting yet.
+    define('PRESELECT_NO_ANSWER', ($thissurvey['preselectnoanswer'] ?? 'Y') === 'Y' ? 1 : 0);
 }
 
 /**
@@ -1067,7 +1071,10 @@ function do_yesno($ia)
     $noAnswer = false;
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
-        if (empty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]])) {
+        if (
+            PRESELECT_NO_ANSWER
+            && empty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]])
+        ) {
             $naChecked = CHECKED;
         }
     }
@@ -1111,7 +1118,10 @@ function do_gender($ia)
     $displayType            = (int) $aQuestionAttributes['display_type'];
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
-        if ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == '') {
+        if (
+            PRESELECT_NO_ANSWER
+            && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$ia[1]] == ''
+        ) {
             $naChecked = CHECKED;
         }
     }
@@ -1305,7 +1315,13 @@ function do_array_5point($ia)
 
         // ==>tds
         if (($isNotYes && $isNotS) && $showNoAnswer) {
-            $CHECKED = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+            $CHECKED = (
+                PRESELECT_NO_ANSWER
+                && (
+                    !isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])
+                    || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == ''
+                )
+            ) ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i' => "",
                 'labelText' => gT('No answer'),
@@ -1474,7 +1490,13 @@ function do_array_10point($ia)
         }
 
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
-            $CHECKED = (!isset($_SESSION['responses_' . $iSurveyId][$myfname]) || $_SESSION['responses_' . $iSurveyId][$myfname] == '') ? 'CHECKED' : '';
+            $CHECKED = (
+                PRESELECT_NO_ANSWER
+                && (
+                    !isset($_SESSION['responses_' . $iSurveyId][$myfname])
+                    || $_SESSION['responses_' . $iSurveyId][$myfname] == ''
+                )
+            ) ? 'CHECKED' : '';
             $answer_tds .= doRender(
                 '/survey/questions/answer/arrays/10point/rows/cells/answer_td_input',
                 array(
@@ -1593,7 +1615,13 @@ function do_array_yesnouncertain($ia)
             $Ychecked  = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'Y') ? 'CHECKED' : '';
             $Uchecked  = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'U') ? 'CHECKED' : '';
             $Nchecked  = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'N') ? 'CHECKED' : '';
-            $NAchecked = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+            $NAchecked = (
+                PRESELECT_NO_ANSWER
+                && (
+                    !isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])
+                    || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == ''
+                )
+            ) ? 'CHECKED' : '';
 
             $sRows .= doRender('/survey/questions/answer/arrays/yesnouncertain/rows/answer_row', array(
                 'basename'               => $ia[1],
@@ -1694,7 +1722,13 @@ function do_array_increasesamedecrease($ia)
         $Ichecked       = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'I') ? 'CHECKED' : '';
         $Schecked       = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'S') ? 'CHECKED' : '';
         $Dchecked       = (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == 'D') ? 'CHECKED' : '';
-        $NAchecked      = (!isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+        $NAchecked      = (
+            PRESELECT_NO_ANSWER
+            && (
+                !isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname])
+                || $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] == ''
+            )
+        ) ? 'CHECKED' : '';
         $no_answer      = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? true : false;
 
         $sRows .= doRender('/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row', array(
@@ -2580,12 +2614,14 @@ function do_arraycolumns($ia)
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
                     if (
                         isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) &&
-                        $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] === $ansrow['code']
+                        $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] === $ansrow['code'] &&
+                        ($ansrow['code'] !== '' || PRESELECT_NO_ANSWER)
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     } elseif (
                         !isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname]) &&
-                        $ansrow['code'] == ''
+                        $ansrow['code'] == '' &&
+                        PRESELECT_NO_ANSWER
                     ) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                         // Humm.. (by lemeur), not sure this section can be reached
