@@ -181,7 +181,6 @@ vendor/**/gulpfile.js
 /vendor/symfony/polyfill-intl-grapheme/
 /vendor/symfony/polyfill-intl-normalizer/
 /vendor/symfony/process/
-/vendor/composer/pcre/
 /vendor/psr/log/
 /vendor/spatie/
 yarn-error.log

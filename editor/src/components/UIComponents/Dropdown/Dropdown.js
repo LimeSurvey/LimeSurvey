@@ -83,8 +83,8 @@ export const Dropdown = ({
         id={toggleSettings.id}
         role="menu"
       >
-        <i className={toggleSettings.iconClassName}></i>
         {toggleSettings.title}
+        <i className={toggleSettings.iconClassName}></i>
       </BootstrapDropdown.Toggle>
       <BootstrapDropdown.Menu>
         {menuItems.map(
@@ -125,9 +125,12 @@ export const Dropdown = ({
                     disabled={disabled.state}
                     href={url ? url : '#'}
                     onClick={onClick}
-                    className={
-                      checked !== undefined ? 'has-checkmark' : undefined
-                    }
+                    className={[
+                      checked !== undefined ? 'has-checkmark' : null,
+                      checked ? 'is-checked' : null,
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
                   >
                     {checked === undefined ? (
                       <>

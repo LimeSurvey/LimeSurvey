@@ -20,8 +20,9 @@ import 'core-js';
 //Define LS Namespace
 window.LS = window.LS || {};
 
-//import lodash
+//import lodash and expose it globally for plain admin scripts (e.g. questionEditor.js, will be reworked to not use lodash in future)
 import _ from 'lodash';
+window._ = _;
 
 //import jquery additions and prototypes
 import './jqueryAdditions/center.js';

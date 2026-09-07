@@ -40,7 +40,7 @@ const displaySettings = () => {
     displayAttributes.IMAGE_SETTINGS,
     displayAttributes.LABEL_FOR_OTHER_OPTIONS,
     displayAttributes.POSITION_FOR_OTHER_OPTION,
-    displayAttributes.SUBQUESTION_TITLE,
+    displayAttributes.OTHER_POSITION_CODE,
     displayAttributes.SUBQUESTION_OPTIONS_ORDER,
     displayAttributes.KEEP_CODE_ORDER,
     displayAttributes.HIDE_TIP,

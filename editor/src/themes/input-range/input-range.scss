@@ -2,6 +2,10 @@
   min-width: 250px;
 }
 
+.input-range-input {
+  margin-left: 12px;
+}
+
 .input-range-track {
   display: flex;
   height: 4px;
@@ -25,9 +29,20 @@
   }
 }
 
-.image-attributes-range .input-range-input {
-  width: 45%;
-  padding-right: 6px;
+.image-attributes-range {
+  .input-range {
+    min-width: 0;
+  }
+  .input-range-input {
+    flex-shrink: 0;
+    width: 60px;
+    .qe-input-group {
+      input {
+        height: 34px;
+        text-align: center;
+      }
+    }
+  }
 }
 
 .input-range-value {
@@ -52,7 +67,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $grape;
+  background-color: $g-700;
   box-shadow: none;
   height: 12px;
   width: 12px;
@@ -60,6 +75,10 @@
 
   &.active {
     box-shadow: $boxshadow-slider-handle;
+  }
+  &:focus-visible {
+    outline: none;
+    background-color: $grape;
   }
 
   &.type-0 {

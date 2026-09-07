@@ -409,6 +409,7 @@ export const ResponsesTable = ({
             onNextPageClick={table.nextPage}
             onPrevPageClick={table.previousPage}
             totalPages={table.getPageCount()}
+            totalResults={responsesData._meta?.pagination?.totalItems}
             onPageSizeChange={(value) => {
               table.setPageSize(value)
               table.firstPage()

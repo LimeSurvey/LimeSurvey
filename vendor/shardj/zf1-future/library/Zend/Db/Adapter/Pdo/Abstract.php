@@ -91,7 +91,7 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
 
         // use all remaining parts in the DSN
         foreach ($dsn as $key => $val) {
-            $dsn[$key] = "$key=$val";
+            $dsn[$key] = "{$key}={$val}";
         }
 
         return $this->_pdoType . ':' . implode(';', $dsn);

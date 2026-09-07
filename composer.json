@@ -53,7 +53,7 @@
 		"vintagesucks/twig-renderer": "^3.0",
 		"league/oauth2-client": "^2.0",
 		"league/oauth2-google": "^3.0",
-		"goldspecdigital/oooas": "^2.10",
+		"goldspecdigital/oooas": "dev-fix-implicitely-marking-parameter-as-nullable-deprecations",
 		"php-di/php-di": "^7.0",
 		"anper/iuliia": "^1.2",
 		"shardj/zf1-future": "^1.24",
@@ -108,5 +108,11 @@
             "./vendor/bin/psalm",
             "./vendor/bin/psalm -c psalm-strict.xml"
         ]
-    }
+    },
+	"repositories": {
+		"oooas": {
+			"type": "vcs",
+			"url": "https://github.com/PrinsFrank/goldspecdigital-oooas"
+		}
+	}
 }

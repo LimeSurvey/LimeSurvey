@@ -10,7 +10,7 @@ import {
   getSubquestionById,
   getSubquestionByProperty,
   isRankingQuestion,
-  RemoveHTMLTagsInString,
+  htmlToPlainText,
 } from 'helpers'
 import { cloneDeep } from 'lodash'
 
@@ -96,11 +96,17 @@ export const generateData = (responses, language, generatedColumns) => {
         : 'sqid'
 
       if (isRankingQuestion(question.questionThemeName)) {
-        questionSubquestion = getSubquestionByProperty(
-          answer.value,
-          'title',
-          question
-        ).subquestion
+        handleRankingQuestionType(
+          answer,
+          value,
+          qid,
+          index,
+          response,
+          cell,
+          question,
+          language
+        )
+        return
       }
 
       if (
@@ -109,7 +115,7 @@ export const generateData = (responses, language, generatedColumns) => {
         !hasAnswersOrSubquestions
       ) {
         cell.push({
-          value: RemoveHTMLTagsInString(value),
+          value: htmlToPlainText(value),
           key: answer.key,
           aid: answer.actual_aid,
           [idName]: answer[idName],
@@ -118,8 +124,8 @@ export const generateData = (responses, language, generatedColumns) => {
       } else {
         if (maybeComment) {
           value = !questionAnswer
-            ? RemoveHTMLTagsInString(value)
-            : RemoveHTMLTagsInString(questionAnswer?.l10ns[language]?.answer)
+            ? htmlToPlainText(value)
+            : htmlToPlainText(questionAnswer?.l10ns[language]?.answer)
 
           if (!cell.length) {
             cell.push({
@@ -148,12 +154,10 @@ export const generateData = (responses, language, generatedColumns) => {
             responseId: response.id,
             questionThemeName: question.questionThemeName,
             subquestionTitle:
-              RemoveHTMLTagsInString(
-                questionSubquestion?.l10ns[language]?.question
-              ) || value,
-            answerTitle:
-              RemoveHTMLTagsInString(questionAnswer?.l10ns[language]?.answer) ||
+              htmlToPlainText(questionSubquestion?.l10ns[language]?.question) ||
               value,
+            answerTitle:
+              htmlToPlainText(questionAnswer?.l10ns[language]?.answer) || value,
           })
         }
       }
@@ -206,4 +210,44 @@ const handleFileUploadQuestionType = (
     // eslint-disable-next-line no-console
     console.error('Error parsing file upload value:', error)
   }
+}
+
+const handleRankingQuestionType = (
+  answer,
+  value,
+  qid,
+  index,
+  response,
+  cell,
+  question,
+  language
+) => {
+  let values = []
+  try {
+    const parsed = JSON.parse(value)
+    values = Array.isArray(parsed) ? parsed : []
+  } catch (error) {
+    //
+  }
+
+  values.forEach((subquestionTitle) => {
+    const questionSubquestion = getSubquestionByProperty(
+      subquestionTitle,
+      'title',
+      question
+    ).subquestion
+
+    cell.push({
+      value: subquestionTitle,
+      key: answer.key,
+      aid: answer.actual_aid,
+      qid: questionSubquestion?.qid ?? '',
+      checked: subquestionTitle ? true : false,
+      responseId: response.id,
+      questionThemeName: question.questionThemeName,
+      subquestionTitle:
+        htmlToPlainText(questionSubquestion?.l10ns[language]?.question) ||
+        subquestionTitle,
+    })
+  })
 }

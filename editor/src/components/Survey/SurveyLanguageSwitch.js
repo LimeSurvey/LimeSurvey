@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { useAppState } from 'hooks'
 import { decodeHTMLEntities, STATES } from 'helpers'
 
-import { Select } from '../UIComponents'
+import { Dropdown } from '../UIComponents'
 import { SurveyTranslationIcon } from '../icons'
 
 export const SurveyLanguageSwitch = ({ survey, allLanguages }) => {
@@ -20,7 +20,7 @@ export const SurveyLanguageSwitch = ({ survey, allLanguages }) => {
     return [survey.language, ...survey.additionalLanguages.split(' ')]
   }, [survey.language, survey.additionalLanguages])
 
-  const getLanguages = (languages) => {
+  const languageOptions = useMemo(() => {
     if (!languages) return []
 
     return languages.map((language) => {
@@ -29,11 +29,26 @@ export const SurveyLanguageSwitch = ({ survey, allLanguages }) => {
         label: decodeHTMLEntities(allLanguages?.[language]?.description),
       }
     })
-  }
+  }, [languages, allLanguages])
 
-  const handleLanguageChange = (value) => {
-    setActiveLanguage(value)
-  }
+  const activeLanguageLabel = useMemo(() => {
+    return (
+      languageOptions.find((language) => language.value === activeLanguage)
+        ?.label || ''
+    )
+  }, [languageOptions, activeLanguage])
+
+  const dropdownMenuItems = useMemo(() => {
+    return languageOptions.map((language) => ({
+      type: 'item',
+      label: language.label,
+      checked: language.value === activeLanguage,
+      onClick: (event) => {
+        event.preventDefault()
+        setActiveLanguage(language.value)
+      },
+    }))
+  }, [languageOptions, activeLanguage, setActiveLanguage])
 
   const surveyHasAdditionalLanguages = () => {
     // here we check if lang switch is even possible
@@ -42,13 +57,15 @@ export const SurveyLanguageSwitch = ({ survey, allLanguages }) => {
 
   return (
     surveyHasAdditionalLanguages() && (
-      <div className="language-dropdown-section d-flex mt-2">
-        <Select
-          onChange={({ value }) => handleLanguageChange(value)}
-          value={activeLanguage}
-          options={getLanguages(languages)}
-          className="language-box"
-          placeholder=""
+      <div className="language-dropdown-section language-box d-flex mt-2">
+        <Dropdown
+          menuItems={dropdownMenuItems}
+          toggleSettings={{
+            title: activeLanguageLabel,
+            iconClassName: 'ri-arrow-down-s-line',
+            variant: 'light',
+            id: `survey-language-switch-${survey.sid || survey.id || 'default'}`,
+          }}
         />
         <SurveyTranslationIcon
           className={'text-black fill-current'}

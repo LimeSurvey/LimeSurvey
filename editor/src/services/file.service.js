@@ -13,6 +13,7 @@ export class FileService {
     return await this.restClient.post(
       `${this.baseurl}/file-upload-survey-image/${this.surveyId}`,
       data,
+      {},
       true
     )
   }

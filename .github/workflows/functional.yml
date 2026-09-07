@@ -53,14 +53,31 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
-      # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
-      - name: Install specified PHP
+      - name: Install specified PHP and libapache2-mod-php
         run: |
-          sudo add-apt-repository ppa:ondrej/php
           sudo apt update
-          sudo apt -y install php${{ matrix.php-versions }}
+          # Add packages.sury.org, replacement for ppa:ondrej/php
+          # (the ondrej PPA is being merged into deb.sury.org and now produces
+          # conflicting Signed-By entries / missing packages on the runner).
           sudo apt-get update > /dev/null
-          sudo apt --fix-broken install php php${{ matrix.php-versions }}-ldap php${{ matrix.php-versions }}-gd php${{ matrix.php-versions }}-intl php${{ matrix.php-versions }}-zip php${{ matrix.php-versions }}-mysql php${{ matrix.php-versions }}-xml php${{ matrix.php-versions }}-curl php${{ matrix.php-versions }}-mbstring php${{ matrix.php-versions }}-sqlite3 libapache2-mod-php${{ matrix.php-versions }} -y
+          sudo apt-get -y install lsb-release ca-certificates curl
+          sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+          sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+          sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+          sudo apt-get update > /dev/null
+          sudo apt-get install -y \
+            php${{ matrix.php-versions }} \
+            php${{ matrix.php-versions }}-ldap \
+            php${{ matrix.php-versions }}-gd \
+            php${{ matrix.php-versions }}-intl \
+            php${{ matrix.php-versions }}-dom \
+            php${{ matrix.php-versions }}-zip \
+            php${{ matrix.php-versions }}-mysql \
+            php${{ matrix.php-versions }}-xml \
+            php${{ matrix.php-versions }}-curl \
+            php${{ matrix.php-versions }}-mbstring \
+            php${{ matrix.php-versions }}-sqlite3 \
+            libapache2-mod-php${{ matrix.php-versions }}
           sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
@@ -69,6 +86,11 @@ jobs:
           sudo systemctl start mysql.service
 
       - name: Initialize and check all dependencies
+        env:
+          # Authenticate Composer against the GitHub API. Unauthenticated
+          # requests are heavily rate-limited and frequently return HTTP 504
+          # when downloading dist zipballs
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
           # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
           php tests/check_autoloader.php
@@ -81,7 +103,18 @@ jobs:
           mysql --version
           touch enabletests
           # NB: PHPUnit 6.5.* is installed with composer.
-          composer install -vvv
+          # Retry a few times to ride out transient GitHub API 504s.
+          # On the final attempt allow falling back to git sources (--prefer-source)
+          for attempt in 1 2 3; do
+            echo "composer install attempt ${attempt}/3"
+            if [ "${attempt}" -lt 3 ]; then
+              composer install -vvv && break
+            else
+              composer install -vvv --prefer-source && break
+            fi
+            echo "composer install failed, retrying in 15s..."
+            sleep 15
+          done
           ./vendor/bin/phpunit --version
       - name: Set up Apache+PHP
         run: |
@@ -129,6 +162,9 @@ jobs:
           # This causes PHPUnit to use CDummyCache while Apache uses CFileCache, so cache->flush()
           # becomes a no-op and Apache serves stale schema entries that breaks subsequent functional tests.
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
+          #
+          # disable new editor for functional tests CI
+          sed -i '61i\        "editorEnabled"=>false,' application/config/config.php
           cat application/config/config.php
 
       # for debugging

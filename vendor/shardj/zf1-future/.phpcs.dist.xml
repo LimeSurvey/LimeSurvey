@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ruleset name="OpenMage" namespace="OpenMage\CS\Standard">
+    <file>library</file>
+    <rule ref="PHPCompatibility" />
+</ruleset>

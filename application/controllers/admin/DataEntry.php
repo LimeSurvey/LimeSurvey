@@ -259,6 +259,8 @@ class DataEntry extends SurveyCommonAction
             return;
         }
 
+        $survey = Survey::model()->findByPk($iSurveyId);
+
         if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none') {
             // Schema that serves as the base for compatibility checks.
             $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
@@ -299,7 +301,6 @@ class DataEntry extends SurveyCommonAction
 
             //Get the menubar
             $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
-            $survey = Survey::model()->findByPk($iSurveyId);
 
             $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $aData['sidemenu']['state'] = false;
@@ -362,6 +363,14 @@ class DataEntry extends SurveyCommonAction
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
             /* @var boolean preserveIDs */
             $preserveIDs = (bool)App()->getRequest()->getPost('preserveIDs');
+            $rankingMap = [];
+            foreach ($survey->questions as $q) {
+                if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
+                    foreach ($q->subquestions as $s) {
+                        $rankingMap["Q{$s->parent_qid}_S{$s->qid}"] = "Q{$s->parent_qid}";
+                    }
+                }
+            }
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
@@ -378,6 +387,29 @@ class DataEntry extends SurveyCommonAction
                     if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
                     }
+                }
+                $rankingJSONs = [];
+
+                foreach ($rankingMap as $oldFieldName => $newFieldName) {
+                    if (!empty($sourceResponse[$oldFieldName])) {
+                        if (!isset($rankingJSONs[$newFieldName])) {
+                            $rankingJSONs[$newFieldName] = [];
+                        }
+
+                        $value = $sourceResponse[$oldFieldName];
+                        if (in_array($oldFieldName, $archivedEncryptedAttributes, false) && !in_array($oldFieldName, $encryptedAttributes, false)) {
+                            $value = $sourceResponse->decryptSingle($sourceResponse[$oldFieldName]);
+                        }
+                        if (!in_array($oldFieldName, $archivedEncryptedAttributes, false) && in_array($oldFieldName, $encryptedAttributes, false)) {
+                            $value = $sourceResponse->encryptSingle($sourceResponse[$oldFieldName]);
+                        }
+                        
+                        $rankingJSONs[$newFieldName][] = $value;
+                    }
+                }
+
+                foreach ($rankingJSONs as $newFieldName => $value) {
+                    $targetResponse[$newFieldName] = json_encode($value);
                 }
 
                 if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
@@ -441,7 +473,9 @@ class DataEntry extends SurveyCommonAction
                     } else {
                         continue;
                     }
+                    switchMSSQLIdentityInsert($sNewTimingsTable, true);
                     Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
+                    switchMSSQLIdentityInsert($sNewTimingsTable, false);
                     $iRecordCountT++;
                 }
                 if (empty($responseErrors)) {
@@ -658,7 +692,6 @@ class DataEntry extends SurveyCommonAction
         $qidattributes = [];
         $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
         $qs = [];
-        $totalTime = 0;
         foreach ($rawQuestions as $rawQuestion) {
             $qs[$rawQuestion->qid] = $rawQuestion;
         }
@@ -900,9 +933,10 @@ class DataEntry extends SurveyCommonAction
                         $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
                         $unseen = true;
                         while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
+                            $isParent = isRankingQuestionParent($fname['aid'] ?? null);
                             //Let's get all the existing values into an array
-                            if ($idrow[$fname['fieldname']]) {
-                                $currentvalues[] = $idrow[$fname['fieldname']];
+                            if (isset($idrow[$fname['fieldname']]) && $isParent) {
+                                $currentvalues = json_decode($idrow[$fname['fieldname']], true);
                             }
                             // If any ranking field is not null, we mark the question as seen.
                             if (isset($idrow[$fname['fieldname']])) {
@@ -1574,12 +1608,23 @@ class DataEntry extends SurveyCommonAction
             }
         }
 
-        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+        $rawQuestions = Question::model()->findAll([
+            'condition' => 'sid = :sid',
+            'params' => [':sid' => $surveyid],
+            'order' => 'question_order ASC',
+        ]);
 
         $questions = [];
+        $subquestions = [];
 
         foreach ($rawQuestions as $rawQuestion) {
             $questions[$rawQuestion->qid] = $rawQuestion;
+            if ($rawQuestion->parent_qid) {
+                if (!isset($subquestions[$rawQuestion->parent_qid])) {
+                    $subquestions[$rawQuestion->parent_qid] = [];
+                }
+                $subquestions[$rawQuestion->parent_qid][] = $rawQuestion;
+            }
         }
 
         $thissurvey = getSurveyInfo($surveyid);
@@ -1592,7 +1637,12 @@ class DataEntry extends SurveyCommonAction
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null.
             // There are some special cases we need to handle.
             if ($irow['type'] == Question::QT_R_RANKING) {
-                $unseenFieldName = "unseen:" . 'Q' . $irow['qid'];
+                $isParent = isRankingQuestionParent($irow['aid'] ?? null);
+                if ($isParent) {
+                    $unseenFieldName = "unseen:" . 'Q' . $irow['qid'];
+                } else {
+                    continue; // Skip subquestions of ranking questions, as they are handled by the parent question.
+                }
             } elseif ($irow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                 // Remove trailing "comment" from the fieldname, if present
                 $unseenFieldName = "unseen:" . preg_replace('/comment$/', '', $fieldname);
@@ -1664,6 +1714,20 @@ class DataEntry extends SurveyCommonAction
                         break;
                     }
                     $oResponse->$fieldname = $thisvalue;
+                    break;
+                case Question::QT_R_RANKING:
+                    $isParent = isRankingQuestionParent($irow['aid'] ?? null);
+                    if (!$isParent) {
+                        break;
+                    }
+                    $rankFieldBase = 'Q' . $irow['qid'];
+                    $rankSubquestions = $subquestions[$irow['qid']] ?? array();
+                    $rankValues = array();
+                    foreach ($rankSubquestions as $rankSubquestion) {
+                        $posValue = Yii::app()->request->getPost($rankFieldBase . '_S' . $rankSubquestion->qid, '');
+                        $rankValues[] = $posValue;
+                    }
+                    $oResponse->$fieldname = json_encode($rankValues);
                     break;
                 case 'submitdate':
                     if (Yii::app()->request->getPost('completed') == "N") {
@@ -1738,14 +1802,23 @@ class DataEntry extends SurveyCommonAction
 
         $insertSubaction = $subaction == 'insert';
         $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create');
-        $rawQuestions = Question::model()->findAll("sid = :sid", [":sid" => $surveyid]);
+        $rawQuestions = Question::model()->findAll([
+            'condition' => 'sid = :sid',
+            'params' => [':sid' => $surveyid],
+            'order' => 'question_order ASC',
+        ]);
 
         $questions = [];
-
-        $totalTime = 0;
+        $subquestions = [];
 
         foreach ($rawQuestions as $rawQuestion) {
             $questions[$rawQuestion->qid] = $rawQuestion;
+            if ($rawQuestion->parent_qid) {
+                if (!isset($subquestions[$rawQuestion->parent_qid])) {
+                    $subquestions[$rawQuestion->parent_qid] = [];
+                }
+                $subquestions[$rawQuestion->parent_qid][] = $rawQuestion;
+            }
         }
         if ($insertSubaction && $hasResponsesCreatePermission) {
             // TODO: $surveytable is unused. Remove it.
@@ -1866,6 +1939,20 @@ class DataEntry extends SurveyCommonAction
                 $phparray = [];
                 foreach ($fieldmap as $irow) {
                     $fieldname = $irow['fieldname'];
+                    if ($irow['type'] == Question::QT_R_RANKING) {
+                        $isParent = isRankingQuestionParent($irow['aid'] ?? null);
+                        if (!$isParent) {
+                            continue;
+                        }
+                        $rankSubquestions = $subquestions[$irow['qid']] ?? array();
+                        $rankValues = array();
+                        foreach ($rankSubquestions as $rankSubquestion) {
+                            $posValue = Yii::app()->request->getPost($fieldname . '_S' . $rankSubquestion->qid, '');
+                            $rankValues[] = $posValue;
+                        }
+                        $insert_data[$fieldname] = json_encode($rankValues);
+                        continue;
+                    }
                     if (isset($_POST[$fieldname])) {
                         if ($_POST[$fieldname] == "" && ($irow['type'] == Question::QT_D_DATE || $irow['type'] == Question::QT_N_NUMERICAL || $irow['type'] == Question::QT_K_MULTIPLE_NUMERICAL)) {
                             // can't add '' in Date column

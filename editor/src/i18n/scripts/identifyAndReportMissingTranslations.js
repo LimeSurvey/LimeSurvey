@@ -62,6 +62,12 @@ export async function identifyAndReportMissingTranslations(
       throw new Error('Failed to load translation strings')
     }
 
+    const contentType = response.headers.get('content-type')
+    if (!contentType || !contentType.includes('application/json')) {
+      // 'translationStrings.json is not a valid JSON file. Skipping missing translation check.'
+      return
+    }
+
     const translationStrings = await response.json()
 
     const storageKey = `i18next_res_${userLang}-translation`

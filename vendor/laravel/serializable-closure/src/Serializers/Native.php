@@ -328,6 +328,10 @@ class Native implements Serializable
      */
     protected function mapPointers(&$data)
     {
+        if ($data instanceof SerializableClosure || $data instanceof UnsignedSerializableClosure) {
+            return;
+        }
+
         $scope = $this->scope;
 
         if ($data instanceof static) {
@@ -363,6 +367,8 @@ class Native implements Serializable
             foreach ($data as $key => &$value) {
                 if ($value instanceof SelfReference && $value->hash === $this->code['self']) {
                     $data->{$key} = &$this->closure;
+                } elseif ($value instanceof static) {
+                    $data->{$key} = &$value->closure;
                 } elseif (is_array($value) || is_object($value)) {
                     $this->mapPointers($value);
                 }
@@ -399,6 +405,8 @@ class Native implements Serializable
                             'property' => $property,
                             'object' => $item instanceof SelfReference ? $this : $item,
                         ];
+                    } elseif ($item instanceof static) {
+                        static::setPropertyValue($property, $data, $item->closure);
                     } elseif (is_array($item) || is_object($item)) {
                         $this->mapPointers($item);
                         static::setPropertyValue($property, $data, $item);

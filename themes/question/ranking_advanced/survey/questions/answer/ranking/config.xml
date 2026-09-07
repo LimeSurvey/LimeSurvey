@@ -20,8 +20,8 @@
         <description>New implementation of the ranking question</description>
         <questionType>R</questionType>
         <group>Mask questions</group>
-        <subquestions>0</subquestions>
-        <answerscales>1</answerscales>
+        <subquestions>1</subquestions>
+        <answerscales>0</answerscales>
         <hasdefaultvalues>0</hasdefaultvalues>
         <assessable>1</assessable>
         <class>ranking</class>

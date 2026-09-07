@@ -59,7 +59,7 @@ export const ContentEditable = ({
     if (focus && inputRef.current) {
       inputRef.current?.focus()
     }
-  }, [inputRef.current])
+  }, [focus])
 
   return (
     <>

@@ -54,7 +54,7 @@ class MediaType extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function json(string $objectId = null): self
+    public static function json(?string $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_APPLICATION_JSON);
@@ -64,7 +64,7 @@ class MediaType extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function pdf(string $objectId = null): self
+    public static function pdf(?string $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_APPLICATION_PDF);
@@ -74,7 +74,7 @@ class MediaType extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function jpeg(string $objectId = null): self
+    public static function jpeg(?string $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_IMAGE_JPEG);
@@ -84,7 +84,7 @@ class MediaType extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function png(string $objectId = null): self
+    public static function png(?string $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_IMAGE_PNG);
@@ -94,7 +94,7 @@ class MediaType extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function calendar(string $objectId = null): self
+    public static function calendar(?string $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_TEXT_CALENDAR);
@@ -104,7 +104,7 @@ class MediaType extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function plainText(string $objectId = null): self
+    public static function plainText(?string $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_TEXT_PLAIN);
@@ -114,7 +114,7 @@ class MediaType extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function xml(string $objectId = null): self
+    public static function xml(?string $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_TEXT_XML);
@@ -124,7 +124,7 @@ class MediaType extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function formUrlEncoded(string $objectId = null): self
+    public static function formUrlEncoded(?string $objectId = null): self
     {
         return static::create($objectId)
             ->mediaType(static::MEDIA_TYPE_APPLICATION_X_WWW_FORM_URLENCODED);

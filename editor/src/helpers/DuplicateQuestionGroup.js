@@ -1,4 +1,8 @@
-import { DuplicateQuestion, NEW_OBJECT_ID_PREFIX } from 'helpers'
+import {
+  APP_KEY_PREFIX,
+  DuplicateQuestion,
+  NEW_OBJECT_ID_PREFIX,
+} from 'helpers'
 import { RandomNumber } from './RandomNumber'
 import { cloneDeep } from 'lodash'
 
@@ -7,6 +11,7 @@ export const DuplicateQuestionGroup = (questionGroup) => {
   const gid = `${NEW_OBJECT_ID_PREFIX}${RandomNumber()}`
   duplicatedQuestionGroup.gid = gid
   duplicatedQuestionGroup.tempId = gid
+  duplicatedQuestionGroup.appKey = `questionGroup-${APP_KEY_PREFIX}${RandomNumber()}`
 
   for (const [languageKey, language] of Object.entries(
     duplicatedQuestionGroup.l10ns ?? {}

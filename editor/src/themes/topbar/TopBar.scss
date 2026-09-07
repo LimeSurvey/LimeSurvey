@@ -137,6 +137,10 @@
         background-color: $white;
         color: $g-750;
       }
+
+      .btn-outline-lime-toggle:hover {
+        background-color: $g-100;
+      }
     }
   }
 }
@@ -207,7 +211,17 @@
 
   &:hover,
   &.active {
-    border-color: $grape;
+    background-color: $g-200;
+  }
+
+  &.active,
+  &:active,
+  &:focus,
+  &:focus-visible,
+  &.is-checked {
+    border: 1px solid $grape;
+    background: transparent;
+    color: $g-900;
   }
 }
 

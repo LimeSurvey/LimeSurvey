@@ -187,7 +187,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         );
         $survey['googleAnalyticsApiKeySetting'] = $data->getGoogleanalyticsapikeysetting();
         $survey['ownersList'] = array_map(function ($user) {
-            return ['value' => $user['uid'], 'label' => $user['user'] . ' - ' . $user['full_name']];
+            return ['value' => $user['uid'], 'label' => $user['user'] . ($user['full_name'] ? ' - ' . $user['full_name'] : '')];
         }, getUserList());
         $survey['availableThemes'] = array_map(function ($template) {
             $themeConf = TemplateConfiguration::getInstanceFromTemplateName($template['name']);
