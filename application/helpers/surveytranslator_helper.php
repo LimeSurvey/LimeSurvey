@@ -1340,6 +1340,22 @@ function getLanguageRTL($sLanguageCode)
     }
 }
 
+/**
+ * Returns a valid BCP 47 language tag for use in the HTML lang attribute.
+ * LimeSurvey language codes for variants (e.g. 'nl-informal', 'de-easy') are not
+ * valid language tags, so this uses the same 'cldr' mapping relied on for locale
+ * matching (see LSYii_Locale and SortHelper) and normalizes underscores to hyphens.
+ *
+ * @param string $sLanguageCode
+ * @return string
+ */
+function getHtmlLangAttributeValue($sLanguageCode)
+{
+    $aLanguageData = getLanguageData(false, $sLanguageCode);
+    $sCode = (!empty($aLanguageData[$sLanguageCode]['cldr'])) ? $aLanguageData[$sLanguageCode]['cldr'] : $sLanguageCode;
+    return str_replace('_', '-', (string) $sCode);
+}
+
     /**
      * Returns the locale settings for a certain language code
      *
