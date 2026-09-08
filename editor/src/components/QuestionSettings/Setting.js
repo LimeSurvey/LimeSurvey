@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { STATES, isTrue } from 'helpers'
+import { STATES, isTempId, isTrue } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { useAppState, useExpressionScriptValidation } from 'hooks'
 import { SettingsWrapper } from 'components/UIComponents'
@@ -15,6 +15,7 @@ export const Setting = ({
   title = '',
   attributes = [],
   simpleSettings = false,
+  hasDefaultAttributeValues = false,
 }) => {
   const { surveyId } = useParams()
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
@@ -180,12 +181,14 @@ export const Setting = ({
             'questionThemeName',
             'encrypted',
             'attributes.save_as_default',
+            'defaultAttributeValuesActions',
             'other',
           ].includes(attribute.attributePath) ||
             attribute.disableWhenActive) &&
           isSurveyActive
             ? true
-            : false
+            : attribute.action &&
+              (isTempId(question.qid) || !hasSurveyUpdatePermission)
 
         const options =
           typeof attribute.getOptions === 'function'
@@ -197,6 +200,11 @@ export const Setting = ({
           ...(options ? { options } : {}),
           ...(attribute.attributePath === 'attributes.equation'
             ? { validateExpression }
+            : {}),
+          ...(attribute.action
+            ? {
+                hasDefaultAttributeValues,
+              }
             : {}),
         }
 
@@ -222,7 +230,11 @@ export const Setting = ({
                       : ''
                 }
                 name={attribute.attributePath}
-                update={(value) => handleUpdateAttribute(value, attribute)}
+                update={(value) =>
+                  attribute.action
+                    ? handleUpdate(value, false)
+                    : handleUpdateAttribute(value, attribute)
+                }
                 isSimpleSettings={simpleSettings}
                 theme="light"
               />
