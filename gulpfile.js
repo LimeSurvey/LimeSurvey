@@ -1,11 +1,19 @@
+// run "yarn install" first
+//
 // for bootstrap 5:
-// gulp build / gulp watch
+// yarn gulp build_bootstrap
+//
 // for admintheme:
-// gulp build_theme / gulp watch_theme
+// yarn gulp build_admintheme
+//
 // for survey_theme_fruity:
-// gulp build_survey_theme_fruity / gulp watch_survey_theme_fruity
-// for survey_theme_ls6:
-// gulp build_survey_theme_ls6 / gulp watch_survey_theme_ls6
+// yarn gulp build_survey_theme_fruity
+//
+// for survey_theme_fruity_twentythree:
+// yarn gulp build_survey_theme_fruity_twentythree
+//
+// you can also use watch instead of build for every command
+// e.g. yarn gulp watch_bootstrap
 
 const {watch, series, parallel} = require('gulp');
 const {src, dest} = require('gulp');
@@ -95,12 +103,12 @@ function scss_minify_rtl() {
         .pipe(dest('assets/bootstrap_5/build/css'));
 }
 
-exports.watch = function () {
+exports.watch_bootstrap = function () {
     watch('assets/bootstrap_5/js/**/*.js', js_minify);
     watch('assets/bootstrap_5/scss/**/*.scss', parallel(scss_minify, scss_minify_rtl));
 };
 
-exports.build = parallel(
+exports.build_bootstrap = parallel(
     js_minify,
     scss_minify,
     scss_minify_rtl
@@ -142,12 +150,12 @@ function theme_rtl() {
         .pipe(dest('themes/admin/Sea_Green/css'));
 }
 
-exports.watch_theme = function () {
+exports.watch_admintheme = function () {
     watch('assets/admin_themes/**/*.scss', theme);
     watch('assets/admin_themes/**/*.scss', theme_rtl);
 };
 
-exports.build_theme = parallel(
+exports.build_admintheme = parallel(
     theme,
     theme_rtl
 );
@@ -276,13 +284,13 @@ function survey_theme_ls6_js() {
         .pipe(dest('themes/survey/fruity_twentythree/scripts/'));
 }
 
-exports.build_survey_theme_ls6 = parallel(
+exports.build_survey_theme_fruity_twentythree = parallel(
     survey_theme_ls6,
     survey_theme_ls6_rtl,
     survey_theme_ls6_js
 );
 
-exports.watch_survey_theme_ls6 = function () {
+exports.watch_survey_theme_fruity_twentythree = function () {
     watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6);
     watch('assets/survey_themes/fruity_twentythree/**/*.scss', survey_theme_ls6_rtl);
     watch('assets/survey_themes/fruity_twentythree/**/*.js', survey_theme_ls6_js);

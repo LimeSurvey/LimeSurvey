@@ -47,6 +47,7 @@ export const getOtherAttributes = () => ({
   CHOICE_HEADER: {
     component: Input,
     attributePath: 'attributes.choice_title',
+    languageBased: true,
     props: {
       labelText: t('Choice header'),
       dataTestId: 'choice-header',
@@ -55,6 +56,7 @@ export const getOtherAttributes = () => ({
   RANK_HEADER: {
     component: Input,
     attributePath: 'attributes.rank_title',
+    languageBased: true,
     props: {
       labelText: t('Rank header'),
       dataTestId: 'rank-header',

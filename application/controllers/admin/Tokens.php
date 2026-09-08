@@ -367,7 +367,7 @@ class Tokens extends SurveyCommonAction
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
         if (empty($aTokenIds) && Yii::app()->getRequest()->getPost('selectAll')) {
-            $aTokenIds = $this->getFilteredTokenIds((int) $iSid);
+            $aTokenIds = $this->removeSelectAllExcludedIds($this->getFilteredTokenIds((int) $iSid));
         }
         $deletedTokenCount = 0;
         foreach (array_chunk($aTokenIds, 1000) as $chunk) {
@@ -429,6 +429,19 @@ class Tokens extends SurveyCommonAction
         return $model->getCommandBuilder()
             ->createFindCommand($model->tableSchema, $criteria)
             ->queryColumn();
+    }
+
+    private function removeSelectAllExcludedIds(array $tokenIds): array
+    {
+        $excludedIds = json_decode(Yii::app()->request->getPost('excludedItems', '[]'), true);
+        if (!is_array($excludedIds) || empty($excludedIds)) {
+            return $tokenIds;
+        }
+
+        $excludedIds = array_flip(array_map('strval', $excludedIds));
+        return array_values(array_filter($tokenIds, function ($tokenId) use ($excludedIds) {
+            return !isset($excludedIds[(string) $tokenId]);
+        }));
     }
 
     /**
@@ -561,7 +574,7 @@ class Tokens extends SurveyCommonAction
             // CHECK TO SEE IF A Survey participant list EXISTS FOR THIS SURVEY
             if (tableExists('{{tokens_' . $iSurveyId . '}}')) {
                 if (empty($aTokenIds) && Yii::app()->request->getPost('selectAll')) {
-                    $aTokenIds = $this->getFilteredTokenIds((int) $iSurveyId);
+                    $aTokenIds = $this->removeSelectAllExcludedIds($this->getFilteredTokenIds((int) $iSurveyId));
                 }
                 $diContainer = \LimeSurvey\DI::getContainer();
                 $attributeService = $diContainer->get(
@@ -1121,9 +1134,9 @@ class Tokens extends SurveyCommonAction
                     $token = Token::create($iSurveyId);
                     $token->setAttributes($aData, false);
 
-                    $token->firstname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->firstname);
-                    $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->lastname);
-                    $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, (string) $token->email);
+                    $token->firstname = str_replace('{COUNTER}', $newDummyToken, (string) $token->firstname);
+                    $token->lastname = str_replace('{COUNTER}', $newDummyToken, (string) $token->lastname);
+                    $token->email = str_replace('{COUNTER}', $newDummyToken, (string) $token->email);
 
                     $token->generateToken($aData['tokenlength']);
                     if ($token->encryptSave(true)) {
@@ -3279,7 +3292,9 @@ class Tokens extends SurveyCommonAction
         $aTokenIds = $aTokenIds === false ? Yii::app()->request->getQuery('tokenids', false) : $aTokenIds;
 
         if (!empty($aTokenIds)) {
-            $aTokenIds = explode('|', (string) $aTokenIds);
+            // The id list may be delimited with '|' (legacy massive-action widget and the
+            // invite/remind confirmation form) or ',' (floating actions widget), so accept both.
+            $aTokenIds = preg_split('/[|,]/', (string) $aTokenIds);
             $aTokenIds = array_filter($aTokenIds);
             $aTokenIds = array_map('sanitize_int', $aTokenIds);
         }

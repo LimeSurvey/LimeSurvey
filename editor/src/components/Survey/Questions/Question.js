@@ -148,18 +148,7 @@ export const Question = ({
         ref={questionRef}
       >
         {isInView || isInTestMode ? (
-          <QuestionContainer
-            questionImageObject={questionImageObject}
-            update={(image) => {
-              // Update the image attribute in the question
-              const updatedAttributes = {
-                ...question.attributes,
-                ...image,
-              }
-              handleUpdate({ attributes: updatedAttributes })
-            }}
-            qid={question.qid}
-          >
+          <QuestionContainer questionImageObject={questionImageObject}>
             <div
               className="w-100"
               data-testid="question-container"

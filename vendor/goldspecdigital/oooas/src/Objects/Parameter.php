@@ -106,7 +106,7 @@ class Parameter extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function query(string $objectId = null): self
+    public static function query(?string $objectId = null): self
     {
         return static::create($objectId)->in(static::IN_QUERY);
     }
@@ -115,7 +115,7 @@ class Parameter extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function header(string $objectId = null): self
+    public static function header(?string $objectId = null): self
     {
         return static::create($objectId)->in(static::IN_HEADER);
     }
@@ -124,7 +124,7 @@ class Parameter extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function path(string $objectId = null): self
+    public static function path(?string $objectId = null): self
     {
         return static::create($objectId)->in(static::IN_PATH);
     }
@@ -133,7 +133,7 @@ class Parameter extends BaseObject
      * @param string|null $objectId
      * @return static
      */
-    public static function cookie(string $objectId = null): self
+    public static function cookie(?string $objectId = null): self
     {
         return static::create($objectId)->in(static::IN_COOKIE);
     }

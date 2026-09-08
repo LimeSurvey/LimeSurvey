@@ -833,9 +833,11 @@ class LimeMailer extends PHPMailer
         $resendHeader['message_type'] = $this->message_type;
         $resendHeader['Subject'] = $this->Subject;
         $resendHeader['uniqueid'] = $this->uniqueid;
-        $resendHeader['boundary'][1] = $this->boundary[1];
-        $resendHeader['boundary'][2] = $this->boundary[2];
-        $resendHeader['boundary'][3] = $this->boundary[3];
+        // The boundary array is only populated once the MIME message is built (preSend).
+        // When sending fails before that (e.g. a missing attachment) it stays empty, so guard the keys.
+        $resendHeader['boundary'][1] = $this->boundary[1] ?? '';
+        $resendHeader['boundary'][2] = $this->boundary[2] ?? '';
+        $resendHeader['boundary'][3] = $this->boundary[3] ?? '';
         $resendHeader['MIMEBody'] = $this->MIMEBody;
 
         return $resendHeader;

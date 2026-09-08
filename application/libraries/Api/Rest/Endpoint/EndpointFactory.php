@@ -225,17 +225,16 @@ class EndpointFactory
      */
     protected function getAuthBearerToken()
     {
-        $headers = getAllHeaders();
+        // HTTP header field names are case-insensitive (RFC 7230), so lowercase
+        // all keys. Some servers or proxies (e.g. HTTP/2) send them lowercased.
+        $headers = array_change_key_case(getAllHeaders(), CASE_LOWER);
 
         $token = null;
         if (
-            isset($headers['Authorization'])
-            && strpos(
-                $headers['Authorization'],
-                'Bearer '
-            ) === 0
+            isset($headers['authorization'])
+            && strpos($headers['authorization'], 'Bearer ') === 0
         ) {
-            $token = substr($headers['Authorization'], 7);
+            $token = substr($headers['authorization'], 7);
         }
 
         return $token;

@@ -51,14 +51,20 @@ export const TinyMCE = ({
     })
 
     htmlPopup({
-      title: t('Edit HTML'),
-      html: <CodeEditor value={formattedHTML} />,
+      title: t('Edit question using HTML'),
+      html: (
+        <CodeEditor
+          title={t('Use custom HTML to edit and format your question text.')}
+          className="html-editor"
+          value={formattedHTML}
+        />
+      ),
       showCloseButton: true,
       showCancelButton: true,
       showConfirmButton: true,
       confirmButtonText: 'Save',
       cancelButtonText: 'Cancel',
-      width: '80vw',
+      containerClass: 'html-editor-popup',
     }).then((result) => {
       if (result.isConfirmed) {
         const newHtmlContent =
@@ -189,11 +195,14 @@ export const TinyMCE = ({
           license_key: 'gpl',
           valid_elements: '*[*]',
           valid_styles: '*[*]',
+          formats: {
+            underline: { inline: 'u', exact: true },
+          },
           plugins: ['link'],
           verify_html: false,
           disabled,
           toolbar: showToolbar
-            ? 'alignmentMenu customBold customItalic link toolbarActions'
+            ? 'alignmentMenu customBold customItalic customUnderline link toolbarActions'
             : false,
           selector: id,
           forced_root_block: FORCED_ROOT_BLOCK,
