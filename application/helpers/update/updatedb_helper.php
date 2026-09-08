@@ -68,7 +68,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     }
 
     // Try to acquire database update lock
-    if (!getDatabaseUpdateLock()) {
+    if (!getDatabaseUpdateLock(false, $sLockError)) {
+        Yii::app()->user->setFlash('error', $sLockError ?: 'Could not acquire the database update lock.');
         return false;
     }
 
@@ -217,9 +218,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
  * The lock is automatically released if the current process finishes
  *
  * @param bool $bRelease If true, release the lock instead of acquiring it.
+ * @param string|null &$sError Set to a human-readable reason when acquiring the lock fails.
  * @return boolean True if the lock was established (or released), otherwise false
  */
-function getDatabaseUpdateLock($bRelease = false)
+function getDatabaseUpdateLock($bRelease = false, &$sError = null)
 {
     static $pLock = null;
     if ($bRelease) {
@@ -231,10 +233,16 @@ function getDatabaseUpdateLock($bRelease = false)
         return true;
     }
     if ($pLock !== null) {
+        $sError = 'The database update lock has already been acquired by this process.';
         return false;
     }
-    $pLock = @fopen(Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock', 'w+');
+    $sLockFile = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock';
+    $pLock = @fopen($sLockFile, 'w+');
     if (!$pLock) {
+        $sError = sprintf(
+            'Could not open the database update lock file "%s". Check that the file (and its directory) are writable by the user running this process.',
+            $sLockFile
+        );
         return false;
     }
     if (flock($pLock, LOCK_EX | LOCK_NB)) {
@@ -242,7 +250,38 @@ function getDatabaseUpdateLock($bRelease = false)
     }
     fclose($pLock);
     $pLock = null;
+    $sError = sprintf(
+        'Another process is currently holding the database update lock ("%s"). Please wait for it to finish, or remove the lock file if you are sure no update is running.',
+        $sLockFile
+    );
     return false;
+}
+
+/**
+ * Checks whether another process currently holds the database update lock, without
+ * acquiring it. Meant for display purposes (e.g. the update confirmation screen), so a
+ * user isn't invited to start an update that would immediately fail because one is
+ * already running elsewhere (CLI, cron, another browser tab, ...).
+ *
+ * @return bool True if another process currently holds the lock.
+ */
+function isDatabaseUpdateLockHeld()
+{
+    $sLockFile = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock';
+    if (!file_exists($sLockFile)) {
+        return false;
+    }
+    $pLock = @fopen($sLockFile, 'r');
+    if (!$pLock) {
+        // Can't check (e.g. permission issue): don't block the UI over it.
+        return false;
+    }
+    $bLocked = !flock($pLock, LOCK_EX | LOCK_NB);
+    if (!$bLocked) {
+        flock($pLock, LOCK_UN);
+    }
+    fclose($pLock);
+    return $bLocked;
 }
 
 /**
