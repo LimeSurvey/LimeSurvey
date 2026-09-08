@@ -2,6 +2,9 @@
   "name": "adminsidepanel",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "description": "LimeSurvey Admin Side Panel - Vanilla JS",
   "scripts": {
     "build": "npm run dev && npm run prod",
