@@ -868,11 +868,13 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 {
     if (!isset($exclude['answers'])) {
         //Answer table
+        // Tiebreaker on the primary key is required because sortorder alone is not unique across questions,
+        // and chunked LIMIT/OFFSET pagination needs a fully deterministic order (varies between DB engines otherwise).
         $aquery = "SELECT {{answers}}.*
         FROM {{answers}}, {{questions}}
         WHERE {{answers}}.qid={{questions}}.qid
         AND {{questions}}.sid=$iSurveyID
-        ORDER BY {{answers}}.sortorder";
+        ORDER BY {{answers}}.sortorder, {{answers}}.aid";
         buildXMLFromQuery($xmlwriter, $aquery);
 
         //Answer L10n table
@@ -881,7 +883,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         WHERE {{answers}}.aid={{answer_l10ns}}.aid
         AND {{answers}}.qid={{questions}}.qid
         AND {{questions}}.sid=$iSurveyID
-        ORDER BY {{answers}}.sortorder";
+        ORDER BY {{answers}}.sortorder, {{answer_l10ns}}.id";
         buildXMLFromQuery($xmlwriter, $aquery);
     }
 
@@ -907,7 +909,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 
     // DefaultValues L10n
     $query = "SELECT {{defaultvalue_l10ns}}.*
-    FROM {{defaultvalue_l10ns}} JOIN {{defaultvalues}} ON {{defaultvalue_l10ns}}.dvid = {{defaultvalues}}.dvid JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID ORDER BY {{defaultvalues}}.dvid";
+    FROM {{defaultvalue_l10ns}} JOIN {{defaultvalues}} ON {{defaultvalue_l10ns}}.dvid = {{defaultvalues}}.dvid JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID ORDER BY {{defaultvalues}}.dvid, {{defaultvalue_l10ns}}.id";
     buildXMLFromQuery($xmlwriter, $query);
 
     // QuestionGroup
@@ -923,7 +925,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     FROM {{group_l10ns}}
     JOIN $quotedGroups on $quotedGroups.gid={{group_l10ns}}.gid
     WHERE sid=$iSurveyID
-    ORDER BY {{group_l10ns}}.gid";
+    ORDER BY {{group_l10ns}}.gid, {{group_l10ns}}.id";
     buildXMLFromQuery($xmlwriter, $gquery);
 
     //Questions
@@ -945,7 +947,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     FROM {{question_l10ns}}
     JOIN {{questions}} ON {{questions}}.qid={{question_l10ns}}.qid
     WHERE sid=$iSurveyID
-    ORDER BY {{question_l10ns}}.qid";
+    ORDER BY {{question_l10ns}}.qid, {{question_l10ns}}.id";
     buildXMLFromQuery($xmlwriter, $qquery);
 
 
