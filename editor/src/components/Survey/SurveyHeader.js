@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Collapse, FormCheck } from 'react-bootstrap'
+import { Collapse } from 'react-bootstrap'
 import classNames from 'classnames'
 import { format } from 'util'
 import { useFocused, useBuffer, useAppState } from 'hooks'
@@ -20,12 +20,12 @@ import {
   ImageWrapper,
   Select,
 } from 'components/UIComponents'
-import { LanguageSwitch } from 'components/SurveySettings/GeneralSettings/LanguageSwitch'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 import { LanguageIcon } from 'components/icons'
 
 import { Section } from './Section'
 import { TooltipContainer } from '../TooltipContainer/TooltipContainer'
+import { SurveyPrivacyPolicy } from './SurveyPrivacyPolicy'
 
 export const SurveyHeader = ({
   update,
@@ -38,13 +38,7 @@ export const SurveyHeader = ({
     welcomeImage,
     showWelcome,
     showXQuestions,
-    allowLanguageSwitch,
-    showPrivacyPolicy,
-    privacyPolicyCheckBox,
-    privacyPolicyMessage,
-    legalNoticeMessage,
-    privacyPolicyLabelMessage,
-    showLegalNotice,
+    showSurveyPolicyNotice,
     additionalLanguages,
     hasSurveyUpdatePermission,
   },
@@ -136,6 +130,26 @@ export const SurveyHeader = ({
         l10ns: languageSettings,
       }),
     [languageSettings]
+  )
+
+  const policyNotice = useMemo(
+    () =>
+      L10ns({
+        prop: 'policyNotice',
+        language: activeLanguage,
+        l10ns: languageSettings,
+      }),
+    [languageSettings, activeLanguage]
+  )
+
+  const policyNoticeLabel = useMemo(
+    () =>
+      L10ns({
+        prop: 'policyNoticeLabel',
+        language: activeLanguage,
+        l10ns: languageSettings,
+      }),
+    [languageSettings, activeLanguage]
   )
 
   if (!sid) {
@@ -291,67 +305,25 @@ export const SurveyHeader = ({
                       attributeDescriptions={attributeDescriptions}
                     />
                   </div>
-                  <div className={classNames('ms-1 transition-all')}>
-                    {showXQuestions && (
-                      <p className="text-secondary mt-3 show-x-questions">
-                        {numberOfQuestions === 1
-                          ? st('There is 1 question in this survey.')
-                          : format(
-                              st('There are %s questions in this survey.'),
-                              numberOfQuestions
-                            )}
-                      </p>
-                    )}
-                    {showPrivacyPolicy && (
-                      <div className="survey-privacy">
-                        <div className="d-flex align-items-center ms-1">
-                          <FormCheck
-                            checked={privacyPolicyCheckBox}
-                            label={
-                              privacyPolicyLabelMessage || t('Privacy policy')
-                            }
-                            type="checkbox"
-                            name="privacy-policy-checkbox"
-                            data-testid="privacy-policy-checkbox"
-                            onChange={(e) =>
-                              update({
-                                privacyPolicyCheckBox: e.target.checked,
-                              })
-                            }
-                          />
-                        </div>
-                        <div className="mt-3">
-                          <h6>
-                            <ContentEditor
-                              value={privacyPolicyMessage}
-                              update={(value) =>
-                                update({ privacyPolicyMessage: value })
-                              }
-                              placeholder={t('Privacy policy message')}
-                            />
-                          </h6>
-                        </div>
-                        {allowLanguageSwitch && (
-                          <div className="mt-4 ms-1">
-                            <LanguageSwitch
-                              language={language}
-                              label={st('Survey language')}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {showLegalNotice && (
-                      <div className="d-flex ">
-                        <a
-                          href="/legalNotice"
-                          className="text-success ms-auto"
-                        >
-                          {legalNoticeMessage}
-                        </a>
-                      </div>
-                    )}
-                  </div>
+                  {!!showSurveyPolicyNotice && (
+                    <div className="survey-privacy">
+                      <SurveyPrivacyPolicy
+                        mode={showSurveyPolicyNotice}
+                        policyNotice={policyNotice}
+                        policyNoticeLabel={policyNoticeLabel}
+                      />
+                    </div>
+                  )}
+                  {showXQuestions && (
+                    <p className="text-secondary mt-4 show-x-questions">
+                      {numberOfQuestions === 1
+                        ? st('There is 1 question in this survey.')
+                        : format(
+                            st('There are %s questions in this survey.'),
+                            numberOfQuestions
+                          )}
+                    </p>
+                  )}
 
                   <div className="start-survey-section mt-4 ms-1 d-flex align-items-center gap-3">
                     <Button className="start-button">

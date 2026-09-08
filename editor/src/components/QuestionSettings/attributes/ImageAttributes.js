@@ -17,7 +17,7 @@ import {
   getClearedImageObject,
 } from 'helpers/surveyImage'
 import { getYesNoOptions, isTrue } from 'helpers'
-import classNames from "classnames";
+import classNames from 'classnames'
 
 export const ImageAttributes = ({
   update,
