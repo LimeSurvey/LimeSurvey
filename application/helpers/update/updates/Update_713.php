@@ -30,6 +30,6 @@ class Update_713 extends DatabaseUpdateBase
             alterColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1) DEFAULT 'I'");
         }
         /* Set global one to B (basic) if it's not hardened (only if I), didn't update any response table */
-        $this->db->createCommand()->update("{{surveys_groupsettings}}", ["encryption_method" => "B"], "gsid = 0 and encryption_method <> 'H'");
+        $this->db->createCommand()->update("{{surveys_groupsettings}}", ["encryption_method" => "B"], "gsid = 0 AND (encryption_method IS NULL OR encryption_method <> 'H')");
     }
 }
