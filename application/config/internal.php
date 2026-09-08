@@ -280,6 +280,7 @@ $internalConfig = array(
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
                 'getLanguageRTL'          => 'LS_Twig_Extension::getLanguageRTL',
+                'getHtmlLangAttributeValue' => 'getHtmlLangAttributeValue',
 
                 'intval'                  => 'intval',
                 'empty'                   => 'LS_Twig_Extension::isEmpty',
@@ -404,6 +405,7 @@ $internalConfig = array(
                     'getExpressionManagerOutput',
                     'getTextDisplayWidget',
                     'getLanguageNameFromCode',
+                    'getHtmlLangAttributeValue',
                     'getAllQuestionClasses',
                     'checkPermission',
                     'intval',
