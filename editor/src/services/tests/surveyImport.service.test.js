@@ -4,7 +4,6 @@ describe('SurveyImportService', () => {
   const auth = {
     csrfToken: 'csrf-token',
     csrfTokenName: 'YII_CSRF_TOKEN',
-    surveyImportUrl: '/index.php/admin/survey/sa/import',
   }
 
   let service
@@ -33,7 +32,7 @@ describe('SurveyImportService', () => {
     const [url, formData, headers, skipGlobalErrorHandler] =
       service.restClient.post.mock.calls[0]
 
-    expect(url).toBe(auth.surveyImportUrl)
+    expect(url).toMatch(/\/surveyAdministration\/import$/)
     expect(formData.get('the_file')).toEqual(file)
     expect(formData.get('surveysgroup')).toBe('default')
     expect(formData.get('translinksfields')).toBe('1')

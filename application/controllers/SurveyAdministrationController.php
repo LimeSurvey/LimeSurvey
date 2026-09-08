@@ -2585,7 +2585,6 @@ class SurveyAdministrationController extends LSBaseController
                 : [
                     'success' => true,
                     'summary' => $aData['aImportResults'],
-                    'surveyUrl' => $aData['sLink'],
                 ];
 
             return $this->renderPartial('/admin/super/_renderJson', ['data' => $response]);

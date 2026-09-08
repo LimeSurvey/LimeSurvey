@@ -8,6 +8,6 @@ export const useSurveyImportService = () => {
 
   return useMemo(
     () => new SurveyImportService(auth),
-    [auth.csrfToken, auth.csrfTokenName, auth.surveyImportUrl]
+    [auth.csrfToken, auth.csrfTokenName]
   )
 }

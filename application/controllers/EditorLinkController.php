@@ -71,9 +71,6 @@ class EditorLinkController extends LSYii_Controller
         );
         $cookieData['csrfTokenName'] = $app->request->csrfTokenName;
         $cookieData['csrfToken'] = $app->request->csrfToken;
-        $cookieData['surveyImportUrl'] = $app->createUrl(
-            'surveyAdministration/import'
-        );
         $cookieDataJson = json_encode($cookieData);
 
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);

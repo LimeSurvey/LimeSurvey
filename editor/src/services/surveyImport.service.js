@@ -1,15 +1,16 @@
+import { getSiteUrl } from 'helpers'
 import { RestClient } from './restClient.service'
 
 export class SurveyImportService {
   constructor(auth) {
     this.csrfToken = auth.csrfToken
     this.csrfTokenName = auth.csrfTokenName
-    this.importUrl = auth.surveyImportUrl
+    this.importUrl = getSiteUrl('/surveyAdministration/import')
     this.restClient = new RestClient('', {})
   }
 
   importSurvey = async ({ convertResourceLinks, file, groupStrategy }) => {
-    if (!this.importUrl || !this.csrfTokenName || !this.csrfToken) {
+    if (!this.csrfTokenName || !this.csrfToken) {
       throw new Error(t('The survey could not be imported.'))
     }
 
