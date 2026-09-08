@@ -201,9 +201,9 @@ class LSYii_Application extends CWebApplication
             $this->config = array_merge($this->config, $userConfigs['config']);
         }
 
-        /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
+        /* encrypt emailsmtppassword value by file, because emailsmtppassword in database is also encrypted
            it would be decrypted in LimeMailer when needed */
-        $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+        $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword'], 'H');
 
         /* Check DB : let throw error if DB is broken issue #14875 */
         $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
@@ -315,7 +315,13 @@ class LSYii_Application extends CWebApplication
      */
     public function getConfig($name, $default = false)
     {
-        return $this->config[$name] ?? $default;
+        if (!isset($this->config[$name])) {
+            return $default;
+        }
+        if (in_array($name, SettingGlobal::getCryptedSettings())) {
+            return LSActiveRecord::decryptSingle($this->config[$name], 'H');
+        }
+        return $this->config[$name];
     }
 
     /**
