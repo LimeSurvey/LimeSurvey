@@ -6,19 +6,13 @@ import { isTrue, createBufferOperation } from 'helpers'
 import { useBuffer, useFocused, useSurvey } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { SettingsWrapper, ToggleButtons } from 'components/UIComponents'
-import { GetImageAttributes } from 'components/QuestionSettings/attributes/getImageAttributes'
+import { ImageAttributes } from 'components/QuestionSettings/attributes'
 
 import { CloseIcon } from '../icons'
 
 export const WelcomeSettings = ({ surveyId }) => {
   const {
-    survey: {
-      imageAlign,
-      showXQuestions,
-      showWelcome,
-      welcomeImage,
-      imageBrightness,
-    },
+    survey: { showXQuestions, showWelcome, welcomeImage },
     update,
   } = useSurvey(surveyId)
   const { focused = {}, unFocus, setFocused } = useFocused()
@@ -62,12 +56,6 @@ export const WelcomeSettings = ({ surveyId }) => {
             noPermissionDisabled={true}
           />
         </div>
-        <GetImageAttributes
-          imageAlign={imageAlign}
-          value={welcomeImage}
-          imageBrightness={imageBrightness || 0}
-          update={(info) => handleUpdate(info)}
-        />
         <div className="ms-3 mt-3">
           <ToggleButtons
             id="question-counter"
@@ -78,6 +66,12 @@ export const WelcomeSettings = ({ surveyId }) => {
             noPermissionDisabled={true}
           />
         </div>
+        <ImageAttributes
+          update={(welcomeImage) => handleUpdate({ welcomeImage })}
+          value={welcomeImage}
+          isSimpleSettings={true}
+          wrapperClass={'ms-3 mt-3'}
+        />
       </SettingsWrapper>
     </div>
   )
