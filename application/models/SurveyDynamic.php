@@ -74,7 +74,11 @@ class SurveyDynamic extends LSActiveRecord
      */
     public static function sid($sid)
     {
-        self::$sid = (int) $sid;
+        $sid = (int) $sid;
+        if (self::$survey && self::$sid !== $sid) {
+            self::$survey = null;
+        }
+        self::$sid = $sid;
     }
 
     /** @inheritdoc */
