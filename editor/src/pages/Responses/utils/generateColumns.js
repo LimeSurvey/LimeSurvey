@@ -1,4 +1,4 @@
-import { getQuestionById, RemoveHTMLTagsInString } from 'helpers'
+import { getQuestionById, htmlToPlainText } from 'helpers'
 import {
   containfilter,
   dateRangeFilter,
@@ -18,7 +18,7 @@ export const getInitialColumnVisibility = (columns) =>
 
 const createQuestionLabel = (question, language) => {
   const code = question?.title
-  const text = RemoveHTMLTagsInString(question?.l10ns?.[language]?.question)
+  const text = htmlToPlainText(question?.l10ns?.[language]?.question)
 
   return code && text ? { code, text } : undefined
 }

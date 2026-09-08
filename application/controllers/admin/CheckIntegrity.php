@@ -1033,6 +1033,8 @@ class CheckIntegrity extends SurveyCommonAction
         $aTypesWithoutSubquestions = array();
         $aTypesWithoutAnswers = array();
         foreach (QuestionType::modelsAttributes() as $sTypeCode => $aTypeAttributes) {
+            // PHP casts numeric array keys to int; the type column is varchar, so force string for the DB comparison
+            $sTypeCode = (string) $sTypeCode;
             if (empty($aTypeAttributes['subquestions'])) {
                 $aTypesWithoutSubquestions[] = $sTypeCode;
             }
@@ -1272,9 +1274,14 @@ class CheckIntegrity extends SurveyCommonAction
         }
 
         // delete archivedTableSettings without archived table
+        // Use getTableNames() (a plain list of table name strings) instead of getTable() per row:
+        // getTable() loads and permanently caches a full CDbTableSchema (all columns, indexes, FKs)
+        // for the rest of the request, so calling it once per archived table setting could retain
+        // thousands of heavy schema objects in memory on installations with many archived tables.
         $archivedTableSettings = ArchivedTableSettings::model()->findAll();
+        $aExistingTables = array_flip(Yii::app()->db->schema->getTableNames());
         foreach ($archivedTableSettings as $archivedTableSetting) {
-            if (Yii::app()->db->schema->getTable("{{{$archivedTableSetting->tbl_name}}}") === null) {
+            if (!isset($aExistingTables[$sDBPrefix . $archivedTableSetting->tbl_name])) {
                 $archivedTableSetting->delete();
             }
         }

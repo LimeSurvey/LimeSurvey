@@ -9,31 +9,57 @@ import {
   Line,
   ResponsiveContainer,
 } from 'recharts'
-import { CustomTooltip } from '../ChartsUtils'
+import {
+  BAR_MAX_SIZE,
+  CustomTooltip,
+  TruncatedTick,
+  getLabelInterval,
+  getMetricDataKey,
+  VALUE_TYPE,
+} from '../ChartsUtils'
 
-const CustomizedLabel = ({ x, y, stroke, value }) => {
+const CustomizedLabel = ({ x, y, stroke, value, isPercentage }) => {
   return (
     <text x={x} y={y} dy={-4} fill={stroke} fontSize={10} textAnchor="middle">
-      {value}
+      {isPercentage ? `${Math.round(value)}%` : value}
     </text>
   )
 }
 
-export const LineChart = ({ data }) => {
+export const LineChart = ({
+  data,
+  isImage = false,
+  valueType = VALUE_TYPE.PERCENTAGE,
+}) => {
+  const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
   return (
     <ResponsiveContainer width="100%" minHeight={500} height="100%">
-      <RechartsLineChart data={data}>
+      <RechartsLineChart
+        data={data}
+        margin={{ top: 16, right: 28, left: 8, bottom: 8 }}
+      >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="title" />
-        <YAxis />
+        <XAxis
+          dataKey="title"
+          height={isImage ? BAR_MAX_SIZE + 24 : undefined}
+          interval={getLabelInterval(data.length)}
+          tick={(props) => {
+            const item = isImage
+              ? data.find((row) => row.title === props.payload?.value)
+              : null
+            return <TruncatedTick {...props} isImage={isImage} item={item} />
+          }}
+        />
+        <YAxis unit={isPercentage ? '%' : undefined} />
         <Tooltip content={<CustomTooltip />} />
         <Legend />
         <Line
           type="monotone"
-          dataKey="value"
+          dataKey={getMetricDataKey(valueType)}
           stroke="#8884d8"
+          strokeWidth={2.5}
           activeDot={{ r: 8 }}
-          label={<CustomizedLabel />}
+          label={<CustomizedLabel isPercentage={isPercentage} />}
         />
       </RechartsLineChart>
     </ResponsiveContainer>

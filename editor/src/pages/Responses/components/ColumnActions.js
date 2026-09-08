@@ -31,7 +31,7 @@ export const ColumnActions = ({
         },
       ]}
       meatballClassName="column-meatball-menu"
-      actionsTitle="Column Actions"
+      actionsTitle={t('Column Actions')}
       placement="top"
       TogglerIcon={ArrowDownIcon}
     />
