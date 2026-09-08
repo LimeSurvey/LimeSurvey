@@ -3,9 +3,9 @@
 }
 
 .timing-columns-info-tooltip .tooltip-inner {
-  max-width: 420px;
-  white-space: normal;
+  max-width: none;
+  white-space: nowrap;
   padding: 8px 12px;
-  font-size: $font-size-md;
-  line-height: 24px;
+  font-size: $font-size-sm;
+  line-height: $line-height-20;
 }

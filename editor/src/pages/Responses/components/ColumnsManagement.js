@@ -259,7 +259,7 @@ export const ColumnsManagement = ({
             <div className="timing-columns-title">
               <button
                 type="button"
-                className="med14 timing-columns-toggle"
+                className="med14-c timing-columns-toggle"
                 aria-expanded={showTimings}
                 onClick={() => setShowTimings((isVisible) => !isVisible)}
               >
