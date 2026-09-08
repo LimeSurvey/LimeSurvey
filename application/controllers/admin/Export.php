@@ -221,8 +221,7 @@ class Export extends SurveyCommonAction
                 chr(9) => gT("Tab"),
             );
 
-            $subscriptionAlias = strtolower((string) Yii::app()->getConfig('subscription_alias', ''));
-            $data['isFreeUser'] = strpos($subscriptionAlias, 'free') === 0;
+            $data['isFreeUser'] = (new \LimeSurvey\Models\Services\SubscriptionService())->isFreeUser();
 
             if (App()->request->getParam('modal')) {
                 $data['selectedColumns'] = $this->getResponseExportColumns($iSurveyID, array_keys($aFields));

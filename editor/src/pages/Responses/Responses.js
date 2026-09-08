@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 import { Container } from 'react-bootstrap'
 import { useAppState, useResponses, useSurvey } from 'hooks'
@@ -8,7 +9,6 @@ import {
   createBufferOperation,
   downloadBlob,
   getFilenameFromContentDisposition,
-  getSiteUrl,
   PAGES,
   STATES,
   toastComponent,
@@ -28,6 +28,7 @@ import { getResponsesPanels, panelItemsKeys } from './Sidebars'
 import { RightSideBar } from './Sidebars/RightSideBar'
 
 export const Responses = () => {
+  const { t } = useTranslation()
   const { surveyId, menu, panel } = useParams()
   const navigate = useNavigate()
   const [filters, setFilters] = useState({})
@@ -40,7 +41,7 @@ export const Responses = () => {
   const [tabKey, setTabKey] = useState(TAB_KEYS.RESPONSES)
   const [statisticsFilters, setStatisticsFilters] = useState({})
   const [showExportModal, setShowExportModal] = useState(false)
-  const exportFormRef = useRef(null)
+  const exportOptionsRef = useRef(null)
   const [hasResponsesUpdatePermission] = useAppState(
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
@@ -50,12 +51,13 @@ export const Responses = () => {
     fetchSurvey,
     refetchQuestionsFieldNamesMap,
   } = useSurvey(surveyId)
-  const { responses, isFetching, mutateOperations } = useResponses(
-    surveyId,
-    pagination,
-    filters,
-    sorting
-  )
+  const {
+    responses,
+    isFetching,
+    mutateOperations,
+    exportResponses,
+    isExporting,
+  } = useResponses(surveyId, pagination, filters, sorting)
 
   useEffect(() => {
     if (menu === panelItemsKeys.statistics) {
@@ -86,36 +88,28 @@ export const Responses = () => {
   }
 
   const handleExport = async () => {
-    const formEl = exportFormRef.current?.querySelector(
-      '#resultexport-modal-form'
-    )
-    if (!formEl) return
+    const exportData = exportOptionsRef.current
+    if (!exportData || !exportData.options) {
+      toastComponent({
+        Component: <span>Export options not initialized</span>,
+      })
+      return
+    }
 
     try {
-      const response = await fetch(
-        getSiteUrl(`/admin/export/sa/exportresults/surveyid/${surveyId}`),
-        {
-          method: 'POST',
-          credentials: 'include',
-          body: new FormData(formEl),
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error('Export request failed')
-      }
-
-      const blob = await response.blob()
+      const response = await exportResponses(exportData.options)
       const filename = getFilenameFromContentDisposition(
-        response.headers.get('content-disposition'),
-        'responses.csv'
+        response.headers['content-disposition'],
+        `responses.${exportData.options.type}`
       )
-      downloadBlob(blob, filename)
+      downloadBlob(response.data, filename)
       setShowExportModal(false)
     } catch (error) {
       toastComponent({
         Component: (
-          <span>{t('Something went wrong while exporting responses.')}</span>
+          <span>
+            {t('Export failed')}: {error.message}
+          </span>
         ),
       })
     }
@@ -303,13 +297,20 @@ export const Responses = () => {
         title={t('Export results')}
         headerClassname="export-results-modal-header"
         Component={
-          <ExportResponsesModal surveyId={surveyId} formRef={exportFormRef} />
+          <ExportResponsesModal
+            surveyId={surveyId}
+            surveyLanguage={survey?.language}
+            additionalLanguages={survey?.additionalLanguages}
+            isFreeUser={false}
+            exportRef={exportOptionsRef}
+          />
         }
         componentClassname="export-responses-modal"
         modalClassname="export-results-modal"
         useFooter
-        confirmButtonText={t('Export results')}
+        confirmButtonText={isExporting ? t('Exporting...') : t('Export results')}
         onConfirm={handleExport}
+        isLoading={isExporting}
       />
       <div className="responses-body">
         <LeftSideBar

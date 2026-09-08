@@ -615,9 +615,7 @@
 
 .export-responses-modal {
   padding: 0 23px;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
+  overflow: visible;
 }
 
 .export-results-modal {
@@ -627,7 +625,7 @@
 
   .modal-content {
     width: 807px;
-    height: 658px;
+    min-height: 658px;
     padding: 12px 0 24px;
     border-radius: 4px;
     opacity: 1;

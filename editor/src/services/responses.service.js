@@ -60,4 +60,14 @@ export class ResponseService {
   getResponsesOverview = async (sid) => {
     return await this.restClient.get(`statistics-overview/${sid}`)
   }
+
+  exportResponses = async (options) => {
+    return await this.restClient.post(
+      `survey-responses-export/${this.surveyId}`,
+      options,
+      {},
+      true,
+      { responseType: 'blob' }
+    )
+  }
 }

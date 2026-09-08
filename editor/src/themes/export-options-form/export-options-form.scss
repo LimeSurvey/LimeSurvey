@@ -1,0 +1,231 @@
+.export-options-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0;
+
+  .export-upsell-banner {
+    background-color: #FFF3E6;
+    border-radius: 4px;
+    padding: 20px 25px;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+
+    .export-upsell-banner-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .export-upsell-banner-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .export-upsell-icon {
+      flex: none;
+      width: 24px;
+      height: 24px;
+      background-color: #FFFFFF;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFBA68;
+    }
+
+    .export-upsell-banner-title {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 20px;
+      letter-spacing: -0.017em;
+      color: #1E1E1E;
+    }
+
+    .export-upsell-banner-subtitle-row {
+      padding-left: 35px;
+    }
+
+    .export-upsell-banner-subtitle {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.017em;
+      color: #333641;
+    }
+
+    .export-upsell-banner-button {
+      flex: none;
+      width: 109px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #FFBA68;
+      color: #1E1E1E;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 12px;
+      gap: 8px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.015em;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #FFA500;
+        color: #1E1E1E;
+        text-decoration: none;
+      }
+
+      &:active {
+        background-color: #FF9500;
+      }
+    }
+  }
+
+  .export-options-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    padding: 3px 12px 3px 16px;
+    gap: 8px;
+  }
+
+  .export-options-label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.017em;
+    color: #1E1E1E;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .export-sparkle {
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+    flex: none;
+    color: #FFBA68;
+  }
+
+  .export-format-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+
+  .export-format-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .export-format-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+
+  .export-format-option {
+    display: flex;
+    align-items: center;
+    width: 140px;
+    height: 24px;
+
+    &.export-format-option--fenced {
+      pointer-events: none;
+
+      .form-check {
+        gap: 16px;
+      }
+
+      input[type='radio'] {
+        border-color: #FFF1E0 !important;
+        opacity: 1 !important;
+        filter: none !important;
+        cursor: not-allowed !important;
+      }
+    }
+
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-left: 0;
+      margin-bottom: 0;
+      min-height: 24px;
+    }
+
+    input[type='radio'] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      margin: 0;
+      float: none;
+      border: 1.33px solid #1E1E1E;
+      border-radius: 50% !important;
+      outline: none !important;
+      background-color: #FFFFFF;
+      position: relative;
+      cursor: pointer;
+
+      &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      &:checked {
+        background-color: #FFFFFF !important;
+        background-size: initial !important;
+        border: 1.33px solid #1E1E1E !important;
+        outline: none !important;
+      }
+
+      &:checked::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #333641;
+        border: 1.33px solid #1E1E1E;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    label {
+      margin-bottom: 0;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.017em;
+      color: #1E1E1E;
+    }
+  }
+}
