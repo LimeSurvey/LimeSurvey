@@ -95,7 +95,8 @@ const VIEWS = [
     label: () => t('Stacked bar chart'),
     icon: (props) => <StackedBarIcon width="20" height="22" {...props} />,
     // Array numbers shows means, which don't stack — grouped only.
-    isAvailable: ({ isArray, isArrayNumbers }) => isArray && !isArrayNumbers,
+    isAvailable: ({ isArray, isArrayText, isArrayNumbers }) =>
+      isArray && !isArrayText && !isArrayNumbers,
     render: ({ data, valueType, isDualScale }) => (
       <StackedBarChart
         data={data}
@@ -108,7 +109,8 @@ const VIEWS = [
     value: VIEW.GROUPED_BAR,
     label: () => t('Grouped bar chart'),
     icon: () => <i className="ri-bar-chart-horizontal-line"></i>,
-    isAvailable: ({ isArray, isDualScale }) => isArray && !isDualScale,
+    isAvailable: ({ isArray, isArrayText, isDualScale }) =>
+      isArray && !isArrayText && !isDualScale,
     render: ({ data, valueType }) => (
       <GroupedBarChart
         data={getSegmentedCategories(data)}
@@ -280,6 +282,25 @@ const writeHiddenCharts = (hidden) => {
 const getStorageKey = (surveyId, chartId, index) =>
   `${surveyId ?? 'unknown'}:${chartId ?? `index-${index}`}`
 
+const getDefaultView = (availableViews, viewContext) => {
+  const preferredViews = [
+    viewContext.isArrayText && VIEW.TABLE,
+    viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
+    viewContext.isNumerical && VIEW.TABLE,
+    viewContext.isMultiNumerical && VIEW.GRID,
+    VIEW.BAR_CHART,
+    VIEW.TABLE,
+  ].filter(Boolean)
+
+  return (
+    preferredViews.find((view) =>
+      availableViews.some(({ value }) => value === view)
+    ) ??
+    availableViews[0]?.value ??
+    VIEW.TABLE
+  )
+}
+
 export const ChartRendererV2 = ({
   data,
   index = 0,
@@ -308,22 +329,6 @@ export const ChartRendererV2 = ({
   const isText = TEXT_QUESTION_TYPES.includes(question?.type)
   const isArrayNumbers = question?.type === QT_COLON_ARRAY_NUMBERS
   const isDualScale = question?.type === QT_1_ARRAY_DUAL
-  const getDefaultView = () => {
-    if (isArray && !isArrayNumbers) {
-      return VIEW.STACKED_BAR
-    }
-
-    if (isNumerical) {
-      return VIEW.TABLE
-    }
-
-    if (isMultiNumerical) {
-      return VIEW.GRID
-    }
-
-    return VIEW.BAR_CHART
-  }
-  const [view, setView] = useState(getDefaultView)
   const effectiveValueType =
     isArrayNumbers || isRanking ? VALUE_TYPE.COUNT : valueType
   // No responses for this question when every answer option has a zero count.
@@ -348,6 +353,9 @@ export const ChartRendererV2 = ({
 
   const availableViews = VIEWS.filter(
     ({ isAvailable }) => isAvailable?.(viewContext) ?? true
+  )
+  const [view, setView] = useState(() =>
+    getDefaultView(availableViews, viewContext)
   )
   // `menuOnly` hides a view from the quick toggle (it stays in the meatball
   // menu); it can be a flag or a predicate of the view context.
