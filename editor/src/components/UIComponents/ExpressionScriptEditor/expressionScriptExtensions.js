@@ -1,4 +1,9 @@
-import { Decoration, EditorView, ViewPlugin } from '@codemirror/view'
+import {
+  Decoration,
+  EditorView,
+  hoverTooltip,
+  ViewPlugin,
+} from '@codemirror/view'
 
 const KEYWORDS = new Set(['and', 'or', 'not', 'true', 'false', 'null'])
 const OPENING_BRACKETS = new Set(['(', '[', '{'])
@@ -152,11 +157,10 @@ const buildDecorations = (view) => {
   const decorations = []
   const content = view.state.doc.toString()
 
-  tokenizeExpressionScript(content).forEach(({ from, to, type, message }) => {
+  tokenizeExpressionScript(content).forEach(({ from, to, type }) => {
     decorations.push(
       Decoration.mark({
         class: tokenClassNames[type],
-        attributes: message ? { title: message } : undefined,
       }).range(from, to)
     )
   })
@@ -203,7 +207,28 @@ export const expressionScriptTheme = EditorView.theme({
     textDecorationThickness: '1.5px',
     textUnderlineOffset: '3px',
   },
+  '.cm-tooltip.cm-tooltip-hover': {
+    backgroundColor: '#1e1e1e',
+    border: 'none',
+    borderRadius: '3px',
+    color: '#ffffff',
+  },
+  '.cm-tooltip-hover .cm-expression-tooltip': {
+    fontSize: '12px',
+    maxWidth: '260px',
+    padding: '8px 12px',
+  },
 })
+
+const normalizeDiagnostic = ({ from, to, severity, message }, docLength) => {
+  const safeFrom = Math.max(0, Math.min(Number(from) || 0, docLength - 1))
+  const safeTo = Math.max(
+    safeFrom + 1,
+    Math.min(Number(to) || safeFrom + 1, docLength)
+  )
+
+  return { from: safeFrom, to: safeTo, severity, message }
+}
 
 export const expressionScriptDiagnostics = (
   diagnostics = [],
@@ -211,24 +236,70 @@ export const expressionScriptDiagnostics = (
 ) => {
   if (docLength === 0 || diagnostics.length === 0) return []
 
-  const decorations = diagnostics.map(({ from, to, severity, message }) => {
-    const safeFrom = Math.max(0, Math.min(Number(from) || 0, docLength - 1))
-    const safeTo = Math.max(
-      safeFrom + 1,
-      Math.min(Number(to) || safeFrom + 1, docLength)
-    )
-
+  const decorations = diagnostics.map((diagnostic) => {
+    const { from, to, severity } = normalizeDiagnostic(diagnostic, docLength)
     return Decoration.mark({
       class:
         severity === 'warning'
           ? 'cm-expression-semantic-warning'
           : 'cm-expression-semantic-error',
-      attributes: message ? { title: message } : undefined,
-    }).range(safeFrom, safeTo)
+    }).range(from, to)
   })
 
   return [EditorView.decorations.of(Decoration.set(decorations, true))]
 }
+
+export const findExpressionScriptIssue = (
+  content,
+  diagnostics,
+  position,
+  side
+) => {
+  if (!content) return null
+
+  const issues = [
+    ...tokenizeExpressionScript(content).filter(({ message }) => message),
+    ...diagnostics
+      .filter(({ message }) => message)
+      .map((diagnostic) => normalizeDiagnostic(diagnostic, content.length)),
+  ]
+
+  return (
+    issues.find(
+      ({ from, to }) =>
+        (from < position || (from === position && side > 0)) &&
+        (to > position || (to === position && side < 0))
+    ) ?? null
+  )
+}
+
+export const expressionScriptTooltips = (diagnostics = []) =>
+  hoverTooltip(
+    (view, position, side) => {
+      const issue = findExpressionScriptIssue(
+        view.state.doc.toString(),
+        diagnostics,
+        position,
+        side
+      )
+
+      if (!issue) return null
+
+      return {
+        pos: issue.from,
+        end: issue.to,
+        above: true,
+        create: () => {
+          const dom = document.createElement('div')
+          dom.className = 'cm-expression-tooltip'
+          dom.setAttribute('role', 'tooltip')
+          dom.textContent = issue.message
+          return { dom }
+        },
+      }
+    },
+    { hideOnChange: true }
+  )
 
 export const expressionScriptExtensions = [
   expressionScriptHighlighting,

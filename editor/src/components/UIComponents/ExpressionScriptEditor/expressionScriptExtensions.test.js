@@ -1,5 +1,6 @@
 import {
   expressionScriptDiagnostics,
+  findExpressionScriptIssue,
   tokenizeExpressionScript,
 } from './expressionScriptExtensions'
 
@@ -65,5 +66,27 @@ describe('Expression Script highlighting', () => {
     )
 
     expect(extensions).toHaveLength(1)
+  })
+
+  it('creates hover feedback for expression issues', () => {
+    const issue = findExpressionScriptIssue(
+      'unknown_function(1)',
+      [
+        {
+          from: 0,
+          to: 16,
+          severity: 'error',
+          message: 'Undefined function',
+        },
+      ],
+      5,
+      1
+    )
+
+    expect(issue).toMatchObject({
+      from: 0,
+      to: 16,
+      message: 'Undefined function',
+    })
   })
 })

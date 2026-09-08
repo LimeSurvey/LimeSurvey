@@ -6,6 +6,7 @@ import { CodeEditor } from '../ContentEditor/CodeEditor/CodeEditor'
 import {
   expressionScriptDiagnostics,
   expressionScriptExtensions,
+  expressionScriptTooltips,
 } from './expressionScriptExtensions'
 
 export const ExpressionScriptEditor = ({
@@ -88,6 +89,7 @@ export const ExpressionScriptEditor = ({
         extensions={[
           ...expressionScriptExtensions,
           ...expressionScriptDiagnostics(diagnostics, (value ?? '').length),
+          expressionScriptTooltips(diagnostics),
           EditorView.lineWrapping,
           EditorState.readOnly.of(isDisabled),
           EditorView.editable.of(!isDisabled),
