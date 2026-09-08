@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
 import { Container } from 'react-bootstrap'
@@ -20,8 +20,13 @@ import { RightSideBar } from './Sidebars/RightSideBar'
 
 export const Responses = () => {
   const { surveyId, menu } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const deepLinkResponseId = searchParams.get('id')
   const [filters, setFilters] = useState({})
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
+  const [pagination, setPagination] = useState(() => ({
+    pageIndex: Math.max(Number(searchParams.get('page')) - 1, 0),
+    pageSize: Number(searchParams.get('size')) || 10,
+  }))
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState([])
   const [showTableFilters, setShowTableFilters] = useState(false)
@@ -111,6 +116,26 @@ export const Responses = () => {
     setPagination(pagination)
   }
 
+  // Keep page/size in the URL at all times so links are always shareable.
+  useEffect(() => {
+    const next = new URLSearchParams(searchParams)
+    next.set('page', String(pagination.pageIndex + 1))
+    next.set('size', String(pagination.pageSize))
+    setSearchParams(next, { replace: true })
+  }, [pagination.pageIndex, pagination.pageSize])
+
+  const handleResponseModalOpen = (responseId) => {
+    const next = new URLSearchParams(searchParams)
+    next.set('id', String(responseId))
+    setSearchParams(next)
+  }
+
+  const handleResponseModalClose = () => {
+    const next = new URLSearchParams(searchParams)
+    next.delete('id')
+    setSearchParams(next)
+  }
+
   const onFiltersChange = (filters) => {
     setFilters(filters)
   }
@@ -175,31 +200,37 @@ export const Responses = () => {
           />
         )
       case panelItemsKeys.list:
-        return (
-          <ResponsesTable
-            responsesData={responses}
-            globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
-            setShowFilters={setShowTableFilters}
-            showFilters={showTableFilters}
-            setSorting={setSorting}
-            sorting={sorting}
-            sortedColumnId={sortedColumnId}
-            survey={survey}
-            onPaginationChange={onPaginationChange}
-            onFiltersChange={onFiltersChange}
-            onSortChange={onSortChange}
-            handleResponsesDelete={handleResponsesDelete}
-            handleAttachmentsDelete={handleAttachmentsDelete}
-            handleResponsesUpdate={handleResponsesUpdate}
-            pagination={pagination}
-            setPagination={setPagination}
-            isFetching={isFetching}
-            columnsFilters={columnsFilters}
-            setColumnsFilters={setColumnsFilters}
-            disableUpdatingResponses={!hasResponsesUpdatePermission}
-          />
-        )
+        if (tabKey === TAB_KEYS.RESPONSES) {
+          return (
+            <ResponsesTable
+              responsesData={responses}
+              globalFilter={globalFilter}
+              setGlobalFilter={setGlobalFilter}
+              setShowFilters={setShowTableFilters}
+              showFilters={showTableFilters}
+              setSorting={setSorting}
+              sorting={sorting}
+              sortedColumnId={sortedColumnId}
+              survey={survey}
+              onPaginationChange={onPaginationChange}
+              onFiltersChange={onFiltersChange}
+              onSortChange={onSortChange}
+              handleResponsesDelete={handleResponsesDelete}
+              handleAttachmentsDelete={handleAttachmentsDelete}
+              handleResponsesUpdate={handleResponsesUpdate}
+              pagination={pagination}
+              setPagination={setPagination}
+              isFetching={isFetching}
+              columnsFilters={columnsFilters}
+              setColumnsFilters={setColumnsFilters}
+              disableUpdatingResponses={!hasResponsesUpdatePermission}
+              deepLinkResponseId={deepLinkResponseId}
+              onResponseModalOpen={handleResponseModalOpen}
+              onResponseModalClose={handleResponseModalClose}
+            />
+          )
+        }
+        return null
       default:
         return (
           <ResponsesOverview
