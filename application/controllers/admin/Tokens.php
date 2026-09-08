@@ -1545,7 +1545,7 @@ class Tokens extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $oTokens = Token::model($iSurveyId)->findAll();
         $aTokenencryptionoptions['enabled'] = 'Y';
-        $cryptMethod = $oSurvey->oOptions->crypt_method;
+        $cryptMethod = $oSurvey->oOptions->encryption_method;
         // find default attributes
         $aDefaultAttributes = $oSurvey->getTokenEncryptionOptions();
         // default attributes
@@ -1897,7 +1897,7 @@ class Tokens extends SurveyCommonAction
         } else {
             $aData['surveyid'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
-            $aData['surveyCryptmethod'] = $survey->oOptions->crypt_method;
+            $aData['surveyEncryptionmethod'] = $survey->oOptions->encryption_method;
             $aData['aEncryptedAttributes'] = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
             $aData['sAction'] = App()->createUrl("admin/tokens", array("sa" => "exportdialog", "surveyid" => $iSurveyId));
             $aData['aButtons'] = array(
@@ -2603,7 +2603,7 @@ class Tokens extends SurveyCommonAction
         $aData['iSurveyId'] = $iSurveyId;
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
-        $aData['surveyCryptmethod'] = $survey->oOptions->crypt_method;
+        $aData['surveyEncryptionmethod'] = $survey->oOptions->encryption_method;
         $aTokenTableFields = getTokenFieldsAndNames($iSurveyId);
         unset($aTokenTableFields['sent']);
         unset($aTokenTableFields['remindersent']);
@@ -2617,7 +2617,7 @@ class Tokens extends SurveyCommonAction
             $aNewTokenTableFields[$sKey] = $sValue['description'];
         }
         /* Removed crypted field for hardened survey */
-        if ($aData['surveyCryptmethod'] == "H") {
+        if ($aData['surveyEncryptionmethod'] == "H") {
             $aEncryptedAttributes = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
             $aNewTokenTableFields = array_diff_key($aNewTokenTableFields, array_flip($aEncryptedAttributes));
         }

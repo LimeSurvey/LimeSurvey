@@ -324,7 +324,7 @@ class Participant extends LSActiveRecord
      */
     public function getColumns()
     {
-        $hardenedCrypt = App()->getConfig('CPDB_crypt_method', 'S') == "H";
+        $hardenedCrypt = App()->getConfig('CPDB_encryption_method', 'S') == "H";
         $encryptedAttributesColums = $this->getencryptedAttributesColums();
         $cols = [
             [
@@ -2204,7 +2204,7 @@ class Participant extends LSActiveRecord
                         }
                     }
                     /* Disable $existing control by firstname+lastname+email if one of data is crypted and hardened crypted */
-                    if (empty($cpdbEncrypted) || App()->getConfig('CPDB_crypt_method', 'B') != 'H') {
+                    if (empty($cpdbEncrypted) || App()->getConfig('CPDB_encryption_method', 'B') != 'H') {
                         // Build comparison values: re-encrypt if the CPDB column is encrypted
                         $compareFirstname = !empty($cpdbEncrypted['firstname']) ? LSActiveRecord::encryptSingle(
                             $oTokenDynamic->firstname

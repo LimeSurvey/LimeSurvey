@@ -645,7 +645,7 @@ class remotecontrol_handle
 
         $oValidQuestions = $oAllQuestions = Question::model()->getQuestionList($iSurveyID);
         /* Remove hardened crypted question */
-        if ($oSurvey->oOptions->crypt_method == 'H') {
+        if ($oSurvey->oOptions->encryption_method == 'H') {
             $oValidQuestions = array_filter($oAllQuestions, function ($oQuestion) {
                 return $oQuestion->encrypted != 'Y' && $oQuestion->parent_qid == 0;
             });

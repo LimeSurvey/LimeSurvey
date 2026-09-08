@@ -119,7 +119,7 @@ class Statistics extends SurveyCommonAction
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$surveyid}"));
         }
         /* Crypt method allow statitics here */
-        $hardenedCryptMethod = $oSurvey->oOptions->crypt_method == 'H';
+        $hardenedCryptMethod = $oSurvey->oOptions->encryption_method == 'H';
         $aData['warningCryptedQuestionHidden'] = false;
         // Set language for questions and answers to base language of this survey
         $aData['language'] = $oSurvey->language;
@@ -688,7 +688,7 @@ class Statistics extends SurveyCommonAction
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         /* Crypt method allow statitics here */
-        $hardenedCryptMethod = $oSurvey->oOptions->crypt_method == 'H';
+        $hardenedCryptMethod = $oSurvey->oOptions->encryption_method == 'H';
 
         // Set language for questions and answers to base language of this survey
         $language = $oSurvey->language;
@@ -714,7 +714,7 @@ class Statistics extends SurveyCommonAction
             $questions[$rawQuestion->qid] = $rawQuestion;
         }
 
-        // The questions to display (all question, exceot crypted if hardened */
+        // The questions to display (all questions, except for hardened encryption_method) */
         foreach ($rows as $row) {
             if ($hardenedCryptMethod && $row['encrypted'] == 'Y') {
                 continue;

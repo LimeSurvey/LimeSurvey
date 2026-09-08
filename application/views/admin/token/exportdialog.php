@@ -82,7 +82,7 @@
                         </label>
                         <?php
                             $emailCrypted = in_array('email', $aEncryptedAttributes);
-                            $isDisabled = $surveyCryptmethod == 'H' && $emailCrypted;
+                            $isDisabled = $surveyEncryptionmethod == 'H' && $emailCrypted;
                             $helptext = gT('Only export entries which contain this string in the email address.');
                             if ($isDisabled) {
                                 $helptext = gT('It is not possible to filter by email because email data is encrypted using Hardened method.');

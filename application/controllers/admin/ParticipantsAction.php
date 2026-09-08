@@ -871,7 +871,7 @@ class ParticipantsAction extends SurveyCommonAction
             $attributes = ParticipantAttributeName::model()->model()->getCPDBAttributes();
                 /* Warning for duplicate control */
                 $duplicateControlDisable = false;
-                if (App()->getConfig('CPDB_crypt_method', 'B') == 'H') {
+                if (App()->getConfig('CPDB_encryption_method', 'B') == 'H') {
                     $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
                     $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
                         return $attribute->encrypted == "Y";
@@ -1472,7 +1472,7 @@ class ParticipantsAction extends SurveyCommonAction
         $attributeName->encrypted = $encrypted_value;
         $encryptedAfterChange = $attributeName->isEncrypted();
         $sDefaultname = $attributeName->defaultname;
-        $cryptMedthod = App()->getConfig('CPDB_crypt_method', 'B');
+        $cryptMedthod = App()->getConfig('CPDB_encryption_method', 'B');
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeeded or none
         $oDB = Yii::app()->db;
@@ -1634,7 +1634,7 @@ class ParticipantsAction extends SurveyCommonAction
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
         $operation = Yii::app()->request->getPost('oper');
-        $cryptMedthod = App()->getConfig('CPDB_crypt_method', 'B');
+        $cryptMedthod = App()->getConfig('CPDB_encryption_method', 'B');
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
@@ -2749,7 +2749,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         /* Warning for duplicate control */
         $duplicateControlDisable = false;
-        if (App()->getConfig('CPDB_crypt_method', 'B') == 'H') {
+        if (App()->getConfig('CPDB_encryption_method', 'B') == 'H') {
             $cpdbCoreAttributes = ParticipantAttributeName::model()->findAllByAttributes(['core_attribute' => 'Y']);
             $cpdbCoreCryptedAttributes = array_filter($cpdbCoreAttributes, function($attribute) {
                 return $attribute->encrypted == "Y";

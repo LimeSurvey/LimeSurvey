@@ -684,17 +684,17 @@ class TokenDynamic extends LSActiveRecord
     {
         $standardColsForGrid = self::buildStandardColsForGrid(self::$sid, $this);
         $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
-        $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->crypt_method == 'H';
+        $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->encryption_method == 'H';
         $encryptedAttributes = $this->getAllEncryptedAttributes(self::$sid, 'Token');
-        $standardColsToCheck = ['firstname', 'lastname', 'emails'];
+        $standardColsToCheck = ['firstname', 'lastname', 'email'];
         foreach ($standardColsToCheck as $standardColToCheck) {
             if (in_array($standardColToCheck, $encryptedAttributes)) {
                 if ($hardenedCrypt) {
                     /* can not filter if hardened */
-                    $standardColsForGrid['firstname']['filter'] = false;
+                    $standardColsForGrid[$standardColToCheck]['filter'] = false;
                 }
                 /* can not sort if crypted */
-                $standardColsForGrid['firstname']['sortable'] = false;
+                $standardColsForGrid[$standardColToCheck]['sortable'] = false;
             }
         }
         return $standardColsForGrid;
@@ -844,16 +844,16 @@ class TokenDynamic extends LSActiveRecord
         $attributesForGrid = self::buildAttributesForGrid(self::$sid, $this);
         $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
         $aCustomAttributes = $oSurvey->tokenAttributes;
-        $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->crypt_method == 'H';
+        $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->encryption_method == 'H';
         $encryptedAttributes = $this->getAllEncryptedAttributes(self::$sid, 'Token');
         foreach ($encryptedAttributes as $encryptedAttribute) {
             if (isset($attributesForGrid[$encryptedAttribute])) {
                 if ($hardenedCrypt) {
                     /* can not filter if hardened */
-                    $attributesForGrid['firstname']['filter'] = false;
+                    $attributesForGrid[$encryptedAttribute]['filter'] = false;
                 }
                 /* can not sort if crypted */
-                $attributesForGrid['firstname']['sortable'] = false;
+                $attributesForGrid[$encryptedAttribute]['sortable'] = false;
             }
         }
         return $attributesForGrid;

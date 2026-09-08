@@ -134,10 +134,10 @@
                         'multiple' => 'multiple',
                         'size' => '7',
                         'class' => 'form-control',
-                        'aria-describedby' => ($surveyCryptmethod == 'H' ? 'filterduplicatefields-extrahelp' : null)
+                        'aria-describedby' => ($surveyEncryptionmethod == 'H' ? 'filterduplicatefields-extrahelp' : null)
                     ]
                 );
-                if ($surveyCryptmethod == 'H') {
+                if ($surveyEncryptionmethod == 'H') {
                     echo CHtml::tag(
                         'div',
                         ['class' => 'form-text', 'id' => 'filterduplicatefields-extrahelp'],
