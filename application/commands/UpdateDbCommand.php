@@ -101,11 +101,19 @@ class UpdateDBCommand extends CConsoleCommand
             Yii::app()->params[$configKey] = $configValue;
         }
 
+        // Prevent CDbConnection::init() from auto-connecting with whatever connection is
+        // currently configured (the default application/config/config.php one) before we
+        // get a chance to point it at the custom config below.
+        Yii::app()->configure(array('components' => array('db' => array('autoConnect' => false))));
+
         $this->connection = Yii::app()->getDb();
         $this->connection->active = false;
         $this->connection->connectionString = $dbConnectionArray['connectionString'];
         $this->connection->username = $dbConnectionArray['username'];
         $this->connection->password = $dbConnectionArray['password'];
+        if (isset($dbConnectionArray['tablePrefix'])) {
+            $this->connection->tablePrefix = $dbConnectionArray['tablePrefix'];
+        }
         $this->connection->active = true;
         echo "Using connection string " . $this->connection->connectionString . "\n";
     }
