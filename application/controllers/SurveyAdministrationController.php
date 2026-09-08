@@ -1886,12 +1886,14 @@ class SurveyAdministrationController extends LSBaseController
             //check if survey is in "open-access-mode"
             $survey = Survey::model()->findByPk($surveyId);
             $surveyActivator = new SurveyActivator($survey);
+            $responseTableSizeEstimate = ResponseTableSizeEstimator::forSurvey($survey);
             $html = $this->renderPartial(
                 '/surveyAdministration/surveyActivation/_activateSurveyOptions',
                 [
                 'oSurvey' => $oSurvey,
                 'aSurveysettings' => $aSurveysettings,
                     'closeAccessMode' => $surveyActivator->isCloseAccessMode(),
+                    'responseTableSizeEstimate' => $responseTableSizeEstimate,
                 ],
                 true
             );

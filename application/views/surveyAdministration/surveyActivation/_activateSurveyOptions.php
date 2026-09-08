@@ -2,9 +2,53 @@
 /** @var $aSurveysettings array */
 /** @var  $oSurvey Survey */
 /** @var bool $closeAccessMode */
+/** @var ResponseTableSizeEstimator|null $responseTableSizeEstimate */
 
 $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
 ?>
+
+<?php if ($responseTableSizeEstimate !== null): ?>
+    <div class="row">
+        <div class='col-md-12'>
+            <?php
+            $severity = $responseTableSizeEstimate->getSeverity();
+            $columnCountPercent = round($responseTableSizeEstimate->getColumnCountRatio() * 100);
+            $rowBytePercent = round($responseTableSizeEstimate->getRowByteRatio() * 100);
+            $definitionSizePercent = round($responseTableSizeEstimate->getDefinitionSizeRatio() * 100);
+
+            $metrics = sprintf(
+                gT("columns used: %s%%, estimated row size: %s%%, estimated table definition size: %s%% of the maximum"),
+                $columnCountPercent,
+                $rowBytePercent,
+                $definitionSizePercent
+            );
+            if ($responseTableSizeEstimate->isInnoDb()) {
+                $innoDbInlinePercent = round($responseTableSizeEstimate->getInnoDbInlineRatio() * 100);
+                $metrics .= ', ' . sprintf(gT("estimated InnoDB inline row size: %s%% of the maximum"), $innoDbInlinePercent);
+            }
+
+            switch ($severity) {
+                case 'critical':
+                    $type = 'danger';
+                    $text = gT("This survey's response table is estimated to exceed limits your database enforces on a single table (%s). Activation may fail. Consider reducing the number of questions, subquestions or answer options.");
+                    break;
+                case 'warning':
+                    $type = 'warning';
+                    $text = gT("This survey's response table is getting close to limits your database enforces on a single table (%s). If you keep adding questions, subquestions or answer options, activation may eventually fail.");
+                    break;
+                default:
+                    $type = 'info';
+                    $text = gT("This survey's response table is well within the limits your database enforces on a single table (%s).");
+            }
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text' => sprintf($text, $metrics),
+                'type' => $type,
+                'htmlOptions' => ['class' => 'controls']
+            ]);
+            ?>
+        </div>
+    </div>
+<?php endif; ?>
 <div class="row">
     <div class='col-md-12'>
         <h2><?php eT("Please keep in mind:"); ?></h2>

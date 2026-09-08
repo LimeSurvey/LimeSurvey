@@ -332,6 +332,24 @@ class SurveyActivator
     }
 
     /**
+     * Builds and returns the response-table field/type list (fieldname =>
+     * type-definition string) with no DB side effects at all: no invalid-
+     * question cleanup, no ranking-attribute repair, no plugin events, no
+     * table creation. Intended for read-only previews/estimates that may run
+     * before the admin has decided to actually activate the survey (e.g. the
+     * activation confirmation screen).
+     *
+     * @return array
+     */
+    public function previewTableDefinition()
+    {
+        $collation = $this->getCollation();
+        $sFieldMap = createFieldMap($this->survey, 'full', true, false, $this->survey->language);
+        $this->prepareTableDefinition($collation, $sFieldMap);
+        return $this->tableDefinition;
+    }
+
+    /**
      * @return boolean
      * @throws CDbException
      * @throws CException
