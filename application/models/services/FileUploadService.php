@@ -139,12 +139,15 @@ class FileUploadService
         string $destinationDir
     ) {
         $success = false;
-        $fileName = $fileInfoArray['name'] = sanitize_filename(
+        $sanitizedName = sanitize_filename(
             $fileInfoArray['name'],
             false,
             false,
             false
         ); // Don't force lowercase or alphanumeric
+        // Defense-in-depth: discard any directory component regardless of OS separator,
+        // so a crafted filename (e.g. "../../evil.png") can never escape $destinationDir.
+        $fileName = $fileInfoArray['name'] = basename(str_replace('\\', '/', $sanitizedName));
         $fileAlreadyExists = $this->isDuplicateFile(
             $fileInfoArray,
             $destinationDir
