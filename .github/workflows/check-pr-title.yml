@@ -1,0 +1,22 @@
+name: Validate PR title (squash commit message)
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+    branches:
+      - master
+
+jobs:
+  check-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title prefix
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          PATTERN='^(Fixed issue|Dev|New feature|Updated translation|Release)'
+          if ! echo "$PR_TITLE" | grep -qE "$PATTERN"; then
+            echo "::error::PR title must start with one of: 'Fixed issue', 'Dev', 'New feature', 'Updated translation', 'Release'"
+            echo "Got: '$PR_TITLE'"
+            exit 1
+          fi
