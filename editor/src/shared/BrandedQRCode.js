@@ -26,6 +26,7 @@ export const BrandedQRCode = ({
   fgColor = '#000000',
   bgColor = '#ffffff',
   showDownloadButton = true,
+  showBranding = true,
 }) => {
   const qrWrapperRef = useRef(null)
 
@@ -45,7 +46,7 @@ export const BrandedQRCode = ({
       <div className="text-center mb-4" ref={qrWrapperRef}>
         <QRCode
           value={value}
-          logoImage={lsIcon}
+          {...(showBranding ? { logoImage: lsIcon } : {})}
           size={size}
           quietZone={quietZone}
           ecLevel={ecLevel}

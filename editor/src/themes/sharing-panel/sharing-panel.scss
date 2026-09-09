@@ -27,10 +27,6 @@
     }
   }
 
-  .alias-info {
-    min-height: 40px;
-  }
-
   .bg-purple {
     background-color: $grape;
   }
@@ -70,4 +66,16 @@
   right: 0;
   transform: translate(-20%, -50%);
   color: $g-600;
+}
+
+.customize-button-container {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: $grape;
+}
+
+.customize-button-container.disable-settings {
+  color: $g-400;
 }
