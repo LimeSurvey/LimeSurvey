@@ -441,7 +441,18 @@ class DataEntry extends SurveyCommonAction
                     } else {
                         continue;
                     }
-                    Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
+                    if (in_array(Yii::app()->db->getDriverName(), ['mssql', 'sqlsrv', 'dblib'])) {
+                        $insertClause = [];
+                        $valueClause = [];
+                        foreach ($sRecord as $column => $value) {
+                            $insertClause[] = $column;
+                            $valueClause[] = $value ?? 'null';
+                        }
+                        $insert = "INSERT INTO {{{$sNewTimingsTable}}}(" . implode(",", $insertClause) . ") values(" . implode(",", $valueClause) . ")";
+                        Yii::app()->db->createCommand("SET IDENTITY_INSERT {{{$sNewTimingsTable}}} ON;{$insert};SET IDENTITY_INSERT {{{$sNewTimingsTable}}} OFF;")->execute();
+                    } else {
+                        Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
+                    }
                     $iRecordCountT++;
                 }
                 if (empty($responseErrors)) {
