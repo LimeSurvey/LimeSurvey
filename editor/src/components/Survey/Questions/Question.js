@@ -12,7 +12,7 @@ import {
   STATES,
 } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
-import { getQuestionImageObjectFromImageAttribute } from 'helpers/questionImage'
+import { getImageObjectFromJsonData } from 'helpers/surveyImage'
 import { ArrowDownIcon, ArrowUpIcon } from 'components/icons'
 import { QuestionSkeleton, TooltipContainer } from 'components'
 import { useIsInViewport } from 'hooks/useInViewport'
@@ -53,7 +53,7 @@ export const Question = ({
   const { getError } = useErrors()
   const [isTitleFocused, setIsTitleFocused] = useState(false)
   const questionImageObject = useMemo(
-    () => getQuestionImageObjectFromImageAttribute(attributes?.image),
+    () => getImageObjectFromJsonData(attributes?.image),
     [attributes?.image]
   )
 
@@ -142,7 +142,7 @@ export const Question = ({
             'hover-element': !isFocused,
             'opacity-25': isTrue(getAttributeValue(attributes.hide_question)),
             'cursor-not-allowed': !hasSurveyUpdatePermission,
-            'p-0': questionImageObject.hasQuestionImageAsBackground,
+            'p-0': questionImageObject.hasImageAsBackground,
           }
         )}
         ref={questionRef}

@@ -12,33 +12,35 @@ import {
 import { DeleteIconFilled, EditIcon } from 'components/icons'
 import { useFileService } from 'hooks'
 import {
-  getQuestionImageObjectFromImageAttribute,
+  getImageObjectFromJsonData,
   getAndGenerateImageStyles,
-  getClearedQuestionImageObject,
-} from 'helpers/questionImage'
+  getClearedImageObject,
+} from 'helpers/surveyImage'
 import { getYesNoOptions, isTrue } from 'helpers'
+import classNames from 'classnames'
 
 export const ImageAttributes = ({
   update,
   value = {},
   isSimpleSettings = false,
   disabled = false,
+  wrapperClass = '',
 }) => {
   const charLimit = 125
   const [show, setShow] = useState(false)
   const [imageState, setImageState] = useState(() =>
-    getQuestionImageObjectFromImageAttribute(value)
+    getImageObjectFromJsonData(value)
   )
   const [previewUrl, setPreviewUrl] = useState(() => {
-    const obj = getQuestionImageObjectFromImageAttribute(value)
+    const obj = getImageObjectFromJsonData(value)
     return obj.imagePath ? obj.imagePreviewUrl : null
   })
   const [showAltText, setShowAltText] = useState(() => {
-    const obj = getQuestionImageObjectFromImageAttribute(value)
+    const obj = getImageObjectFromJsonData(value)
     return !!obj.imageAltText
   })
   const [remainingChars, setRemainingChars] = useState(() => {
-    const obj = getQuestionImageObjectFromImageAttribute(value)
+    const obj = getImageObjectFromJsonData(value)
     return charLimit - (obj.imageAltText?.length || 0)
   })
   const dropzoneRef = useRef(null)
@@ -46,7 +48,7 @@ export const ImageAttributes = ({
 
   // Keep state in sync when value changes (e.g. after a save confirmation)
   useEffect(() => {
-    const imageObject = getQuestionImageObjectFromImageAttribute(value)
+    const imageObject = getImageObjectFromJsonData(value)
     setImageState(imageObject)
     setRemainingChars(charLimit - (imageObject.imageAltText?.length || 0))
     setShowAltText(!!imageObject.imageAltText)
@@ -124,7 +126,7 @@ export const ImageAttributes = ({
   }
 
   const handleDeleteImage = () => {
-    updateImageState(getClearedQuestionImageObject())
+    updateImageState(getClearedImageObject())
     setPreviewUrl(null)
   }
 
@@ -143,7 +145,7 @@ export const ImageAttributes = ({
 
   return (
     <>
-      <div className="mb-3">
+      <div className={classNames('mb-3', wrapperClass)}>
         {isSimpleSettings && <hr className="mb-3" />}
         <DropZone
           ref={dropzoneRef}
@@ -157,6 +159,7 @@ export const ImageAttributes = ({
           dataTestId="add-image-or-video"
           trashIconEnabled={false}
           disabled={disabled}
+          fixedHeight="80px"
         />
 
         {previewUrl && (
