@@ -86,7 +86,7 @@ class QuestionGroup extends LSActiveRecord
                 'Question',
                 'gid',
                 'condition' => 'questions.parent_qid = 0',
-                'order' => 'questions.question_order ASC',
+                'order' => 'questions.question_order ASC, questions.title ASC',
                 'together' => false
             ),
             'questiongroupl10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
