@@ -137,7 +137,7 @@ export const SideBarRow = ({
                 'd-none': !isQuestionGroup,
               })}
             >
-              <ArrowDownIcon />
+              <ArrowDownIcon fill={'#1E1E1E'} />
             </Button>
             {typeof icon === 'string' ? (
               <img
