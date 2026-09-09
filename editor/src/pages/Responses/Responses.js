@@ -105,8 +105,13 @@ export const Responses = () => {
       return
     }
 
+    const exportPayload = {
+      ...exportData.options,
+      filters: exportData.options.responseType === 'filtered' ? filters : {},
+    }
+
     try {
-      const response = await exportResponses(exportData.options)
+      const response = await exportResponses(exportPayload)
       const filename = getFilenameFromContentDisposition(
         response.headers['content-disposition'],
         `responses.${exportData.options.type}`
@@ -317,7 +322,9 @@ export const Responses = () => {
         componentClassname="export-responses-modal"
         modalClassname="export-results-modal"
         useFooter
-        confirmButtonText={isExporting ? t('Exporting...') : t('Export results')}
+        confirmButtonText={
+          isExporting ? t('Exporting...') : t('Export results')
+        }
         onConfirm={handleExport}
         isLoading={isExporting}
       />

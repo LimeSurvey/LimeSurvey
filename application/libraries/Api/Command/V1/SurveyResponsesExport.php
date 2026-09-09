@@ -187,10 +187,10 @@ class SurveyResponsesExport implements CommandInterface
             throw new RuntimeException('Survey is not active - no responses are available.');
         }
 
-        [$type, $language, $answerFormat, $csvSeparator] = $this->getExportRequestData($request);
+        [$type, $language, $answerFormat, $csvSeparator, $filters] = $this->getExportRequestData($request);
 
         if (!in_array($type, $this->nativeFormats)) {
-            return $this->exportViaLegacyExporter($surveyId, $type, $language, $answerFormat, $csvSeparator);
+            return $this->exportViaLegacyExporter($surveyId, $type, $language, $answerFormat, $csvSeparator, $filters);
         }
 
         $exportService = $this->exportSurvey
@@ -203,6 +203,10 @@ class SurveyResponsesExport implements CommandInterface
 
         if ($csvSeparator) {
             $exportService->setCsvSeparator($csvSeparator);
+        }
+
+        if (!empty($filters)) {
+            $exportService->setFilters($filters);
         }
 
         return $exportService->exportResponses($surveyId, $type);
@@ -218,6 +222,7 @@ class SurveyResponsesExport implements CommandInterface
      * @param string|null $language
      * @param string|null $answerFormat
      * @param string|null $csvSeparator
+     * @param array $filters
      * @return array The export data with filePath/filename/mimeType
      *
      * @throws RuntimeException
@@ -227,7 +232,8 @@ class SurveyResponsesExport implements CommandInterface
         string $type,
         ?string $language,
         ?string $answerFormat,
-        ?string $csvSeparator
+        ?string $csvSeparator,
+        array $filters = []
     ): array {
         Yii::app()->loadHelper('admin.exportresults');
 
@@ -248,8 +254,10 @@ class SurveyResponsesExport implements CommandInterface
         $options->csvFieldSeparator = $csvSeparator ?: ',';
         $options->output = 'file';
 
+        $sqlFilter = $this->buildLegacySqlFilter($filters);
+
         $legacyService = new \ExportSurveyResultsService();
-        $filePath = $legacyService->exportResponses($surveyId, $language, $legacyType, $options);
+        $filePath = $legacyService->exportResponses($surveyId, $language, $legacyType, $options, $sqlFilter);
 
         if (!$filePath || !file_exists($filePath)) {
             throw new RuntimeException('Export format not available: ' . $type);
@@ -262,6 +270,37 @@ class SurveyResponsesExport implements CommandInterface
             'filename' => 'responses_' . $surveyId . '.' . $meta['extension'],
             'mimeType' => $meta['mimeType'],
         ];
+    }
+
+    /**
+     * The legacy exporter only accepts filters as a raw SQL string, so we build
+     * the same criteria as the native export and turn it into a plain condition
+     * with the values quoted in directly.
+     *
+     * @param array $filters
+     * @return string
+     */
+    protected function buildLegacySqlFilter(array $filters): string
+    {
+        if (empty($filters)) {
+            return '';
+        }
+
+        $criteria = $this->exportSurvey->setFilters($filters)->buildFilterCriteria();
+        if ($criteria === null || empty($criteria->condition)) {
+            return '';
+        }
+
+        $condition = $criteria->condition;
+        $params = $criteria->params;
+        // sort longest first so :ph1 doesn't get replaced inside :ph10
+        uksort($params, fn($a, $b) => strlen((string)$b) <=> strlen((string)$a));
+        foreach ($params as $name => $value) {
+            $placeholder = is_int($name) ? '?' : $name;
+            $condition = str_replace($placeholder, Yii::app()->db->quoteValue($value), $condition);
+        }
+
+        return $condition;
     }
 
     /**
@@ -292,7 +331,13 @@ class SurveyResponsesExport implements CommandInterface
             throw new InvalidArgumentException('Invalid CSV field separator specified');
         }
 
-        return [$type, $language, $answerFormat, $csvSeparator];
+        // filters only get applied when the user picked "filtered data"
+        $filters = $request->getData('filters', []);
+        if (!is_array($filters)) {
+            throw new InvalidArgumentException('Invalid filters specified');
+        }
+
+        return [$type, $language, $answerFormat, $csvSeparator, $filters];
     }
 
     /**

@@ -62,9 +62,24 @@ export class ResponseService {
   }
 
   exportResponses = async (options) => {
+    const { filters, ...restOptions } = options
+    const body = { ...restOptions, filters: [] }
+
+    Object.entries(filters || {}).forEach(
+      ([, { value, filterMethod: type, keys }]) => {
+        if (!value?.length && !value) return
+
+        body.filters.push({
+          key: keys[0],
+          filterMethod: type,
+          value,
+        })
+      }
+    )
+
     return await this.restClient.post(
       `survey-responses-export/${this.surveyId}`,
-      options,
+      body,
       {},
       true,
       { responseType: 'blob' }
