@@ -169,6 +169,11 @@ export const ordinal = (n) => {
   }
 }
 
+export const formatMetricValue = (value, valueType) =>
+  valueType === VALUE_TYPE.PERCENTAGE
+    ? `${Math.round(value ?? 0)}%`
+    : `${value ?? 0}`
+
 export const getMetricDataKey = (valueType) =>
   valueType === VALUE_TYPE.COUNT ? 'value' : 'percentageValue'
 
