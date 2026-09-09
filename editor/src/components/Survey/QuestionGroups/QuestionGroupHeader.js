@@ -147,6 +147,7 @@ export const QuestionGroupHeader = ({
           className="meatball-dropdown"
           testId="question-group-meatball-menu"
           menuItems={menuItems}
+          align="start"
           toggleSettings={{
             iconClassName: 'ri-more-fill',
             variant: 'light',
