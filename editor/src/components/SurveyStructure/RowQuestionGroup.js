@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 
 import { SideBarRow } from 'components/SideBar/SideBarRow'
 import { RowQuestionsList } from './RowQuestionsList'
-import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
 import { ClipBoardIcon } from 'components/icons'
 import { LANGUAGE_CODES } from 'helpers'
 import { useFocused } from 'hooks'
@@ -62,21 +61,35 @@ export const RowQuestionGroup = ({
         provided={provided}
         icon={<ClipBoardIcon />}
         isQuestionGroup={true}
-        meatballButton={
-          <MeatballMenu
-            deleteText={t('Delete group')}
-            duplicateText={t('Duplicate group')}
-            handleDelete={handleDelete}
-            handleDuplicate={handleDuplicate}
-            additionalItems={[
-              {
-                label: t('Check logic'),
-                testId: 'show-logic-button',
-                onClick: () => setShowLogicModal(true),
-              },
-            ]}
-          />
-        }
+        menuId="group-meatball-menu"
+        menuToggleId="group-meatball-menu-toggle"
+        menuItems={[
+          {
+            type: 'header',
+            label: t('Group actions'),
+          },
+          {
+            type: 'item',
+            label: t('Duplicate group'),
+            icon: 'ri-file-copy-line',
+            onClick: handleDuplicate,
+            testId: 'duplicate-button',
+          },
+          {
+            type: 'item',
+            label: t('Delete group'),
+            icon: 'ri-delete-bin-line',
+            onClick: handleDelete,
+            className: 'text-danger',
+            testId: 'delete-button',
+          },
+          {
+            type: 'item',
+            label: t('Check logic'),
+            onClick: () => setShowLogicModal(true),
+            testId: 'show-logic-button',
+          },
+        ]}
         isOpen={isQuestionGroupFocused}
         isFocused={shouldHighlightQuestionGroup}
       >

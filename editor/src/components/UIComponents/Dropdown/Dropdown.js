@@ -89,7 +89,7 @@ export const Dropdown = ({
     >
       <BootstrapDropdown.Toggle
         variant={toggleSettings.variant}
-        className="button me-2"
+        className="button me-2 dropdown-toggler"
         id={toggleSettings.id}
         data-testid={toggleSettings.testId}
         role="menu"

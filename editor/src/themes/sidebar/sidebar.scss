@@ -82,6 +82,21 @@
     align-items: center;
   }
 
+  .dropdown-toggler {
+    opacity: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &.sidebar-row-focused {
+    .dropdown-toggler {
+      color: $white !important;
+      opacity: 1;
+    }
+  }
+
   .sidebar-row-tag {
     background-color: $g-100;
     padding: 4px 8px;

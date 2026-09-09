@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 
 import { useSurvey } from 'hooks'
 import { ArrowDownIcon } from 'components/icons'
-import { ContentEditor, TooltipContainer } from 'components'
+import { ContentEditor, Dropdown, TooltipContainer } from 'components'
 import { RemoveHTMLTagsInString } from 'helpers'
 
 import { QuestionContextMenu } from './QuestionContextMenu'
@@ -15,18 +15,21 @@ export const SideBarRow = ({
   title,
   titlePlaceholder,
   code,
-  meatballButton,
   children,
   style,
   testId = '',
+  /* Also used as a test id for the menu toggle */
+  menuToggleId = '',
+  /* Also used as a test id for the menu toggle */
+  menuId = '',
   provided = {},
   onTitleClick = () => {},
   onRowClick = () => {},
-  showMeatballButton,
   isQuestionGroup,
   isOpen: _isOpen = false,
   className = '',
   isFocused = false,
+  menuItems = [],
 }) => {
   const [isOpen, setOpen] = useState(_isOpen)
   const { surveyId } = useParams()
@@ -110,7 +113,7 @@ export const SideBarRow = ({
       >
         <div
           className={classNames(`sidebar-row ps-1 ${className}`, {
-            'focus-bg-purple text-white': isFocused,
+            'focus-bg-purple text-white sidebar-row-focused': isFocused,
           })}
           style={{
             ...style,
@@ -176,12 +179,24 @@ export const SideBarRow = ({
                 </TooltipContainer>
               )}
             </div>
-            <span
-              className={classNames('sidebar-meatball-menu my-1', {
-                'opacity-100': showMeatballButton,
-              })}
-            >
-              {meatballButton}
+            <span>
+              {
+                // this is important so we don't render "0" in the screen.
+                menuItems.length !== 0 && (
+                  <Dropdown
+                    className="meatball-dropdown"
+                    testId={menuId}
+                    menuItems={menuItems}
+                    toggleSettings={{
+                      iconClassName: 'ri-more-fill',
+                      variant: 'light',
+                      id: menuToggleId,
+                      testId: menuToggleId,
+                      title: '',
+                    }}
+                  />
+                )
+              }
             </span>
           </div>
         </div>
