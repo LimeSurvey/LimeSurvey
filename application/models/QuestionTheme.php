@@ -282,16 +282,15 @@ class QuestionTheme extends LSActiveRecord
             throw new Exception('Found no question theme metadata');
         }
 
-        // Non-core themes are stored relative to uploaddir, so they stay valid if uploaddir is moved.
-        if (empty($aQuestionMetaData['coreTheme'])) {
-            $aQuestionMetaData['xml_path'] = self::getPathRelativeToUploadDir($aQuestionMetaData['xml_path']);
-        }
-
         /** @var array<string, mixed> */
         // todo proper error handling should be done before in getQuestionMetaData via validate()
         $aMetaDataArray = self::getMetaDataArray($aQuestionMetaData);
 
         $this->setAttributes($aMetaDataArray, false);
+        // Non-core themes are stored relative to their type directory, so they stay valid if it moves.
+        if (empty($this->core_theme)) {
+            $this->xml_path = $this->getRelativeXmlPath();
+        }
         if ($this->save()) {
             return $aQuestionMetaData['title'];
         } else {
@@ -708,22 +707,6 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Strips the configured upload dir from $path, so the result stays valid even if uploaddir is moved.
-     * Returns $path unchanged if it does not lie within the upload dir.
-     * @param string $path
-     * @return string
-     */
-    public static function getPathRelativeToUploadDir($path)
-    {
-        $uploadDir = rtrim(str_replace('\\', '/', (string) App()->getConfig('uploaddir')), '/');
-        $normalizedPath = str_replace('\\', '/', (string) $path);
-        if (strncmp($normalizedPath, $uploadDir . '/', strlen($uploadDir) + 1) === 0) {
-            return substr($normalizedPath, strlen($uploadDir) + 1);
-        }
-        return $path;
-    }
-
-    /**
      * Returns QuestionMetaData Array for use in ->save operations
      *
      * @param array $questionMetaData
@@ -1123,13 +1106,13 @@ class QuestionTheme extends LSActiveRecord
 
     /**
      * Returns the XML path.
-     * For non-core themes, xml_path is stored relative to uploaddir and resolved to an absolute path here.
+     * For non-core themes, xml_path is stored relative to its type directory and resolved to a full path here.
      * @return string
      */
     public function getXmlPath()
     {
         if (empty($this->core_theme) && !isAbsolutePath((string) $this->xml_path)) {
-            return rtrim((string) App()->getConfig('uploaddir'), '/\\') . '/' . $this->xml_path;
+            return self::getAbsolutePathForType($this->xml_path, $this->getThemeType());
         }
         return $this->xml_path;
     }
