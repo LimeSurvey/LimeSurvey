@@ -179,25 +179,19 @@ export const SideBarRow = ({
                 </TooltipContainer>
               )}
             </div>
-            <span>
-              {
-                // this is important so we don't render "0" in the screen.
-                menuItems.length !== 0 && (
-                  <Dropdown
-                    className="meatball-dropdown"
-                    testId={menuId}
-                    menuItems={menuItems}
-                    toggleSettings={{
-                      iconClassName: 'ri-more-fill',
-                      variant: 'light',
-                      id: menuToggleId,
-                      testId: menuToggleId,
-                      title: '',
-                    }}
-                  />
-                )
-              }
-            </span>
+            <Dropdown
+              className="meatball-dropdown"
+              testId={menuId}
+              align="start"
+              menuItems={menuItems}
+              toggleSettings={{
+                iconClassName: 'ri-more-fill',
+                variant: 'light',
+                id: menuToggleId,
+                testId: menuToggleId,
+                title: '',
+              }}
+            />
           </div>
         </div>
         {isOpen && <div style={{ paddingLeft: '18px' }}>{children}</div>}

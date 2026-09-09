@@ -99,6 +99,7 @@
   margin-right: auto;
   padding: $grid-gutter-width $container-padding;
   width: 100%;
+
   .dropdown-header {
     color: $g-600;
     font-weight: $font-weight-600;
@@ -106,6 +107,7 @@
     padding: 5px 60px 5px 5px;
     line-height: 30px;
   }
+
   > li {
     > ul {
       padding: 0;
@@ -120,10 +122,12 @@
         }
       }
     }
+
     ul > li > a {
       &:hover {
         text-decoration: none;
       }
+
       &:focus {
         text-decoration: none;
       }
@@ -155,11 +159,13 @@
   font-size: $dropdown-font-size;
   font-weight: $font-weight-500;
   color: $g-800;
+
   &:hover {
     text-decoration: none;
     color: $g-800;
     background-color: $g-200;
   }
+
   &:focus {
     text-decoration: none;
     color: $white;
