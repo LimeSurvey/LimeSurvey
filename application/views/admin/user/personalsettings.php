@@ -43,7 +43,7 @@ foreach ($aQuestionTypeList as $questionTheme) {
     $questionTypeData['title'] = $questionTheme->title;
     $questionTypeData['detailpage'] = '
         <div class="col-12 currentImageContainer">
-            <img src="' . $questionTheme->image_path . '" />
+            <img src="' . $questionTheme->getImagePath() . '" />
         </div>';
     if ($imageName == 'S') {
         $questionTypeData['detailpage'] = '
