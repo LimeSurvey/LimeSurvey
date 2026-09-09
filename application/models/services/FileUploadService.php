@@ -120,11 +120,11 @@ class FileUploadService
         if (!is_dir($surveyDir)) {
             @mkdir($surveyDir);
         }
-        if (!is_dir($surveyDir . DIRECTORY_SEPARATOR . $directoryName)) {
-            @mkdir($surveyDir . DIRECTORY_SEPARATOR . $directoryName);
+        if (!is_dir($surveyDir . '/' . $directoryName)) {
+            @mkdir($surveyDir . '/' . $directoryName);
         }
 
-        return $this->rTrimPathSeparators($surveyDir . DIRECTORY_SEPARATOR . $directoryName);
+        return $this->rTrimPathSeparators($surveyDir . '/' . $directoryName);
     }
 
     /**
@@ -155,7 +155,7 @@ class FileUploadService
                 $destinationDir
             );
         }
-        $fullFilePath = $destinationDir . DIRECTORY_SEPARATOR . $fileName;
+        $fullFilePath = $destinationDir . '/' . $fileName;
         $debugInfoArray[] = $destinationDir;
         $debugInfoArray[] = $fileName;
         $debugInfoArray[] = $fullFilePath;
@@ -222,7 +222,7 @@ class FileUploadService
     private function isDuplicateFile(array $fileInfoArray, $path)
     {
         $newFilePath = $fileInfoArray['tmp_name'];
-        $existingFilePath = $path . DIRECTORY_SEPARATOR . $fileInfoArray['name'];
+        $existingFilePath = $path . '/' . $fileInfoArray['name'];
 
         // Check if a file with the same name exists
         if (!file_exists($existingFilePath)) {
@@ -272,7 +272,7 @@ class FileUploadService
             if ($item === '.' || $item === '..') {
                 continue;
             }
-            $path = $directory . DIRECTORY_SEPARATOR . $item;
+            $path = $directory . '/' . $item;
             if (is_file($path)) {
                 $files[] = $item;
             } elseif (is_dir($path)) {
@@ -282,7 +282,7 @@ class FileUploadService
                     false
                 );
                 foreach ($subFiles as $subFile) {
-                    $files[] = $item . DIRECTORY_SEPARATOR . $subFile;
+                    $files[] = $item . '/' . $subFile;
                 }
             }
         }
@@ -305,7 +305,7 @@ class FileUploadService
         $relativePath = $this->convertFullIntoRelativePath($directory);
         $files = $this->getFilesFromDirectory($directory, $surveyId);
         foreach ($files as $i => $file) {
-            $filesOutput[$i]['filePath'] = $relativePath . DIRECTORY_SEPARATOR . $file;
+            $filesOutput[$i]['filePath'] = $relativePath . '/' . $file;
             $filesOutput[$i]['fileUrl'] = $baseUrl . '/' .  $relativePath . '/' . $file;
             $filesOutput[$i]['previewPath'] = $this->getPreviewPath(
                 $relativePath . '/' . $file
@@ -318,14 +318,19 @@ class FileUploadService
 
     /**
      * Removes the configured "uploaddir" part from the path which
-     * results in the relative path
+     * results in the relative path.
+     * Paths are normalized to forward slashes first, so the result is a
+     * web-compatible path even when generated on Windows (where native
+     * paths use backslashes).
      * @param string $filePath
      * @return string
      */
     private function convertFullIntoRelativePath(string $filePath)
     {
+        $normalizedFilePath = str_replace('\\', '/', $filePath);
+        $normalizedUploadPath = str_replace('\\', '/', $this->getUploadPath());
         return $this->rTrimPathSeparators(
-            substr($filePath, strlen($this->getUploadPath()))
+            substr($normalizedFilePath, strlen($normalizedUploadPath))
         );
     }
 
