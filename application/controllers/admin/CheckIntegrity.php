@@ -862,7 +862,10 @@ class CheckIntegrity extends SurveyCommonAction
         /**********************************************************************/
         /*     Check question attributes                                      */
         /**********************************************************************/
-        $question_attributes = QuestionAttribute::model()->findAllBySql('select qid from {{question_attributes}} where qid not in (select qid from {{questions}})');
+        // resetScope() is required: QuestionAttribute's defaultScope indexes results by
+        // the 'attribute' column, which is not selected here, so every row would collapse
+        // into a single array entry (attribute === null for all) without this reset.
+        $question_attributes = QuestionAttribute::model()->resetScope()->findAllBySql('select qid from {{question_attributes}} where qid not in (select qid from {{questions}})');
         foreach ($question_attributes as $question_attribute) {
             $aDelete['questionattributes'][] = array('qid' => $question_attribute['qid']);
         }
