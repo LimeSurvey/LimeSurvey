@@ -135,7 +135,7 @@ class ThemeOptionsController extends LSBaseController
                     /** @var QuestionTheme|null */
                     $questionTheme = QuestionTheme::model()->findByPk($templateID);
                     $templatename = $questionTheme->name;
-                    $templatefolder = $questionTheme->xml_path;
+                    $templatefolder = $questionTheme->getXmlPath();
                     $aResults[$template]['title'] = $templatename;
                     $sQuestionThemeName = $questionTheme->importManifest($templatefolder);
                     $aResults[$template]['result'] = isset($sQuestionThemeName) ? true : false;
