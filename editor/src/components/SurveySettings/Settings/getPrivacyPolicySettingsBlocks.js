@@ -6,6 +6,7 @@ import {
   Select,
   ToggleButtons,
   Input,
+  PrivacyPolicyButtons,
 } from 'components/UIComponents'
 
 export const getPrivacyPolicySettingsBlocks = () => ({
@@ -15,22 +16,18 @@ export const getPrivacyPolicySettingsBlocks = () => ({
         keyPath: 'showSurveyPolicyNotice',
         props: {
           id: 'show-survey-policy-notice',
-          mainText: t('Show privacy policy text with mandatory checkbox'),
-          childComponent: ToggleButtons,
-          toggleOptions: [
-            { name: t('No'), value: 0 },
-            { name: t('Inline'), value: 1 },
-            { name: t('Collapsible'), value: 2 },
-          ],
+          mainText: t(
+            'Show privacy policy text with mandatory checkbox in welcome screen'
+          ),
+          childComponent: PrivacyPolicyButtons,
           noPermissionDisabled: true,
         },
       },
       SHOW_LEGAL_NOTICE_BUTTON: {
         keyPath: 'showLegalNoticeButton',
-        renderExistCondition: 'showLegalNoticeButton',
         props: {
           id: 'show-legal-notice',
-          mainText: t('Show link to legal notice in survey'),
+          mainText: t('Show link to legal notice in survey footer'),
           childComponent: ToggleButtons,
           toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
           noPermissionDisabled: true,
@@ -53,10 +50,9 @@ export const getPrivacyPolicySettingsBlocks = () => ({
       },
       SHOW_DATA_POLICY_BUTTON: {
         keyPath: 'showDataPolicyButton',
-        renderExistCondition: 'showDataPolicyButton',
         props: {
           id: 'show-privacy-policy',
-          mainText: t('Show link to data policy in survey'),
+          mainText: t('Show link to data policy in survey footer'),
           childComponent: ToggleButtons,
           toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
           noPermissionDisabled: true,
@@ -132,7 +128,6 @@ export const getPrivacyPolicySettingsBlocks = () => ({
       LEGAL_NOTICE: {
         entity: Entities.languageSetting,
         keyPath: 'languageSettings.legalNotice',
-        renderExistCondition: 'showLegalNoticeButton',
         props: {
           childComponent: ContentEditor,
           childOnNewLine: true,
