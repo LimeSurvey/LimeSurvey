@@ -624,13 +624,16 @@
   }
 
   .modal-content {
-    width: 807px;
-    min-height: 658px;
+    width: 100%;
+    max-width: 807px;
+    min-height: min(658px, calc(100vh - 2rem));
+    max-height: calc(100vh - 2rem);
     padding: 12px 0 24px;
     border-radius: 4px;
     opacity: 1;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
   }
 
   .export-results-modal-header {

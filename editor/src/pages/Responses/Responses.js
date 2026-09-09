@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 
 import { Container } from 'react-bootstrap'
-import { useAppState, useResponses, useSurvey } from 'hooks'
+import { useAppState, useResponses, useSetAllLanguages, useSurvey } from 'hooks'
 import {
   createBufferOperation,
   downloadBlob,
@@ -51,6 +51,7 @@ export const Responses = () => {
     fetchSurvey,
     refetchQuestionsFieldNamesMap,
   } = useSurvey(surveyId)
+  const { fetchAllLanguages } = useSetAllLanguages()
   const {
     responses,
     isFetching,
@@ -58,6 +59,14 @@ export const Responses = () => {
     exportResponses,
     isExporting,
   } = useResponses(surveyId, pagination, filters, sorting)
+
+  // Responses page isn't wrapped by EditorContextController, so fetch languages here
+  // to show full language names (not just codes) in the export modal.
+  useEffect(() => {
+    if (survey.sid) {
+      fetchAllLanguages(survey.languages)
+    }
+  }, [survey.sid])
 
   useEffect(() => {
     if (menu === panelItemsKeys.statistics) {

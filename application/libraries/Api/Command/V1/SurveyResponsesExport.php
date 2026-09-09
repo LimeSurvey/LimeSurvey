@@ -193,17 +193,18 @@ class SurveyResponsesExport implements CommandInterface
             return $this->exportViaLegacyExporter($surveyId, $type, $language, $answerFormat, $csvSeparator);
         }
 
-        // Configure export service with additional options
         $exportService = $this->exportSurvey
             ->setLanguage($language)
             ->setOutputMode('file');
 
-        // Set answer format if provided (long/short)
         if ($answerFormat) {
             $exportService->setAnswerFormat($answerFormat);
         }
 
-        // Use file output mode for better memory efficiency with large exports
+        if ($csvSeparator) {
+            $exportService->setCsvSeparator($csvSeparator);
+        }
+
         return $exportService->exportResponses($surveyId, $type);
     }
 

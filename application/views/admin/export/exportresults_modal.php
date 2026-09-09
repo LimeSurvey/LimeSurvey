@@ -58,6 +58,11 @@
         background-color: #fff !important;
     }
 
+    #resultexport-modal-form .export-radio-option .form-check-input:focus-visible {
+        outline: 2px solid #0d6efd !important;
+        outline-offset: 2px;
+    }
+
     #resultexport-modal-form .export-radio-option .form-check-input:checked {
         background-color: #333641 !important;
         box-shadow: inset 0 0 0 5px #fff !important;
@@ -167,13 +172,14 @@
 
     <div class="export-section">
         <label class="export-section-label"><?php eT('Export data'); ?></label>
+        <?php $hasActiveFilters = !empty(array_filter($responseFilters, fn($value) => $value !== '')); ?>
         <div class="export-radio-grid">
             <div class="export-radio-option">
-                <input class="form-check-input" type="radio" name="exportdata" id="exportdata-filtered" value="filtered" checked>
+                <input class="form-check-input" type="radio" name="exportdata" id="exportdata-filtered" value="filtered" <?= $hasActiveFilters ? 'checked' : ''; ?>>
                 <label class="form-check-label" for="exportdata-filtered"><?php eT('Filtered data'); ?></label>
             </div>
             <div class="export-radio-option">
-                <input class="form-check-input" type="radio" name="exportdata" id="exportdata-all" value="all">
+                <input class="form-check-input" type="radio" name="exportdata" id="exportdata-all" value="all" <?= !$hasActiveFilters ? 'checked' : ''; ?>>
                 <label class="form-check-label" for="exportdata-all"><?php eT('All data'); ?></label>
             </div>
         </div>

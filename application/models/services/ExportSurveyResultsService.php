@@ -80,6 +80,9 @@ class ExportSurveyResultsService
     /** @var string 'long' for full translated answers, 'short' for raw answer codes. */
     protected $answerFormat = 'long';
 
+    /** @var string CSV field separator character. */
+    protected $csvSeparator = ',';
+
     /**
      * ExportSurveyResultsService constructor.
      *
@@ -179,6 +182,24 @@ class ExportSurveyResultsService
     }
 
     /**
+     * @param string $csvSeparator
+     * @return $this
+     */
+    public function setCsvSeparator($csvSeparator)
+    {
+        $this->csvSeparator = $csvSeparator;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCsvSeparator()
+    {
+        return $this->csvSeparator;
+    }
+
+    /**
      * Export survey responses to the specified format.
      *
      * @param int $surveyId The survey ID
@@ -211,6 +232,7 @@ class ExportSurveyResultsService
             'language' => $language,
             'exportType' => $exportType,
             'outputMode' => $this->outputMode,
+            'csvSeparator' => $this->csvSeparator,
         ];
 
         // Export responses using chunked writing

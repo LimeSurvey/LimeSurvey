@@ -9,7 +9,12 @@ import { UpgradeSparkleIcon } from 'components/icons'
  * Handles format selection (with subscription gating), language, and answer format.
  * Displays upsell banner for free-tier users.
  */
-export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', isFreeUser = false, onOptionsChange }) => {
+export const ExportOptionsForm = ({
+  surveyLanguage,
+  additionalLanguages = '',
+  isFreeUser = false,
+  onOptionsChange,
+}) => {
   const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
   const languageNames = allLanguages?.[userDetails?.lang]
@@ -22,13 +27,15 @@ export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', is
   // Build language options from survey language + additional languages
   const languages = surveyLanguage ? [surveyLanguage] : []
   if (additionalLanguages && typeof additionalLanguages === 'string') {
-    const additional = additionalLanguages.split(' ').filter(l => l && l !== surveyLanguage)
+    const additional = additionalLanguages
+      .split(' ')
+      .filter((l) => l && l !== surveyLanguage)
     languages.push(...additional)
   }
 
   const responseTypeOptions = [
     { label: 'Filtered data', value: 'filtered' },
-    { label: 'All data', value: 'all' }
+    { label: 'All data', value: 'all' },
   ]
 
   // All available export formats, grouped into rows matching the design
@@ -42,26 +49,28 @@ export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', is
     { value: 'r_data', label: 'R (data file)' },
     { value: 'json', label: 'JSON' },
     { value: 'excel', label: 'Microsoft Excel' },
-    { value: 'word', label: 'Microsoft Word' }
+    { value: 'word', label: 'Microsoft Word' },
   ]
   const formatRows = [
     ['csv', 'html'],
     ['pdf', 'spss', 'stata', 'r_syntax'],
-    ['r_data', 'json', 'excel', 'word']
+    ['r_data', 'json', 'excel', 'word'],
   ]
 
   // For MVP: Free tier only gets CSV + HTML; others get all (but only CSV/HTML routed to API for now)
-  const allowedFormats = isFreeUser ? ['csv', 'html'] : allExportFormats.map(f => f.value)
+  const allowedFormats = isFreeUser
+    ? ['csv', 'html']
+    : allExportFormats.map((f) => f.value)
 
   const getFormat = (value) => {
-    const format = allExportFormats.find(f => f.value === value)
+    const format = allExportFormats.find((f) => f.value === value)
     return { ...format, disabled: !allowedFormats.includes(value) }
   }
 
   const csvSeparatorOptions = [
     { label: 'Comma (,)', value: ',' },
     { label: 'Semicolon (;)', value: ';' },
-    { label: 'Tab', value: '\t' }
+    { label: 'Tab', value: '\t' },
   ]
 
   // Notify parent of form state changes
@@ -72,10 +81,17 @@ export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', is
         type,
         language,
         answerFormat,
-        csvSeparator
+        csvSeparator,
       })
     }
-  }, [responseType, type, language, answerFormat, csvSeparator, onOptionsChange])
+  }, [
+    responseType,
+    type,
+    language,
+    answerFormat,
+    csvSeparator,
+    onOptionsChange,
+  ])
 
   return (
     <div className="export-options-form">
@@ -86,20 +102,25 @@ export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', is
               <span className="export-upsell-icon">
                 <UpgradeSparkleIcon width={17} height={16} />
               </span>
-              <span className="export-upsell-banner-title">Take your results anywhere - unlock more formats</span>
+              <span className="export-upsell-banner-title">
+                Take your results anywhere - unlock more formats
+              </span>
             </div>
             <div className="export-upsell-banner-subtitle-row">
-              <span className="export-upsell-banner-subtitle">Switch to LimeSurvey Expert to receive the advanced export options.</span>
+              <span className="export-upsell-banner-subtitle">
+                Switch to LimeSurvey Expert to receive the advanced export
+                options.
+              </span>
             </div>
           </div>
-          <a href="#" className="export-upsell-banner-button">Show options</a>
+          <span className="export-upsell-banner-button">Show options</span>
         </div>
       )}
 
       <div className="export-options-section">
         <label className="export-options-label">Export data</label>
         <div className="export-format-options">
-          {responseTypeOptions.map(option => (
+          {responseTypeOptions.map((option) => (
             <div key={option.value} className="export-format-option">
               <Form.Check
                 type="radio"
@@ -123,10 +144,13 @@ export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', is
         <div className="export-format-grid">
           {formatRows.map((row, rowIndex) => (
             <div key={rowIndex} className="export-format-row">
-              {row.map(value => {
+              {row.map((value) => {
                 const format = getFormat(value)
                 return (
-                  <div key={format.value} className={`export-format-option ${format.disabled ? 'export-format-option--fenced' : ''}`}>
+                  <div
+                    key={format.value}
+                    className={`export-format-option ${format.disabled ? 'export-format-option--fenced' : ''}`}
+                  >
                     <Form.Check
                       type="radio"
                       id={`format-${format.value}`}
@@ -134,7 +158,9 @@ export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', is
                       value={format.value}
                       label={format.label}
                       checked={type === format.value && !format.disabled}
-                      onChange={(e) => !format.disabled && setType(e.target.value)}
+                      onChange={(e) =>
+                        !format.disabled && setType(e.target.value)
+                      }
                       disabled={format.disabled}
                     />
                   </div>
@@ -149,7 +175,7 @@ export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', is
         <div className="export-options-section">
           <label className="export-options-label">CSV file seperator</label>
           <div className="export-format-options">
-            {csvSeparatorOptions.map(option => (
+            {csvSeparatorOptions.map((option) => (
               <div key={option.value} className="export-format-option">
                 <Form.Check
                   type="radio"
@@ -170,14 +196,16 @@ export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', is
         <div className="export-options-section">
           <label className="export-options-label">Export language</label>
           <div className="export-format-options">
-            {languages.map(lang => (
+            {languages.map((lang) => (
               <div key={lang} className="export-format-option">
                 <Form.Check
                   type="radio"
                   id={`language-${lang}`}
                   name="exportLanguage"
                   value={lang}
-                  label={decodeHTMLEntities(languageNames?.[lang]?.description || lang)}
+                  label={decodeHTMLEntities(
+                    languageNames?.[lang]?.description || lang
+                  )}
                   checked={language === lang}
                   onChange={(e) => setLanguage(e.target.value)}
                 />
@@ -189,4 +217,3 @@ export const ExportOptionsForm = ({ surveyLanguage, additionalLanguages = '', is
     </div>
   )
 }
-

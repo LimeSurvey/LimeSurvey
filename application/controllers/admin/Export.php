@@ -221,7 +221,8 @@ class Export extends SurveyCommonAction
                 chr(9) => gT("Tab"),
             );
 
-            $data['isFreeUser'] = (new \LimeSurvey\Models\Services\SubscriptionService())->isFreeUser();
+            // Subscription-based format fencing is not yet enforced in CE; all formats are available.
+            $data['isFreeUser'] = false;
 
             if (App()->request->getParam('modal')) {
                 $data['selectedColumns'] = $this->getResponseExportColumns($iSurveyID, array_keys($aFields));

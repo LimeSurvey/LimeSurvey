@@ -5,7 +5,7 @@
   padding: 0;
 
   .export-upsell-banner {
-    background-color: #FFF3E6;
+    background-color: #fff3e6;
     border-radius: 4px;
     padding: 20px 25px;
     display: flex;
@@ -30,12 +30,12 @@
       flex: none;
       width: 24px;
       height: 24px;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
       border-radius: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #FFBA68;
+      color: #ffba68;
     }
 
     .export-upsell-banner-title {
@@ -45,7 +45,7 @@
       font-size: 18px;
       line-height: 20px;
       letter-spacing: -0.017em;
-      color: #1E1E1E;
+      color: #1e1e1e;
     }
 
     .export-upsell-banner-subtitle-row {
@@ -69,8 +69,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #FFBA68;
-      color: #1E1E1E;
+      background-color: #ffba68;
+      color: #1e1e1e;
       border: none;
       border-radius: 4px;
       padding: 4px 12px;
@@ -81,20 +81,8 @@
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.015em;
-      cursor: pointer;
-      text-decoration: none;
+      cursor: default;
       white-space: nowrap;
-      transition: background-color 0.2s ease;
-
-      &:hover {
-        background-color: #FFA500;
-        color: #1E1E1E;
-        text-decoration: none;
-      }
-
-      &:active {
-        background-color: #FF9500;
-      }
     }
   }
 
@@ -114,7 +102,7 @@
     font-size: 12px;
     line-height: 16px;
     letter-spacing: -0.017em;
-    color: #1E1E1E;
+    color: #1e1e1e;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -125,7 +113,7 @@
     height: 16px;
     border-radius: 5px;
     flex: none;
-    color: #FFBA68;
+    color: #ffba68;
   }
 
   .export-format-options {
@@ -160,7 +148,7 @@
       }
 
       input[type='radio'] {
-        border-color: #FFF1E0 !important;
+        border-color: #fff1e0 !important;
         opacity: 1 !important;
         filter: none !important;
         cursor: not-allowed !important;
@@ -184,10 +172,10 @@
       min-width: 24px;
       margin: 0;
       float: none;
-      border: 1.33px solid #1E1E1E;
+      border: 1.33px solid #1e1e1e;
       border-radius: 50% !important;
       outline: none !important;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
       position: relative;
       cursor: pointer;
 
@@ -197,9 +185,9 @@
       }
 
       &:checked {
-        background-color: #FFFFFF !important;
+        background-color: #ffffff !important;
         background-size: initial !important;
-        border: 1.33px solid #1E1E1E !important;
+        border: 1.33px solid #1e1e1e !important;
         outline: none !important;
       }
 
@@ -212,7 +200,7 @@
         height: 14px;
         border-radius: 50%;
         background: #333641;
-        border: 1.33px solid #1E1E1E;
+        border: 1.33px solid #1e1e1e;
         transform: translate(-50%, -50%);
       }
     }
@@ -225,7 +213,7 @@
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.017em;
-      color: #1E1E1E;
+      color: #1e1e1e;
     }
   }
 }
