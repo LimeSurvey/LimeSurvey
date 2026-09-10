@@ -182,6 +182,15 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
             'desc' => 'languages desc',
             ),
         );
+        $sort->defaultOrder = 'label_name';
+
+        // Persist the chosen sort order in session, the same way pageSize is persisted above,
+        // since CSort itself only reads from the current request's GET params.
+        if (isset($_GET[$sort->sortVar]) && is_string($_GET[$sort->sortVar])) {
+            Yii::app()->user->setState('labelSetsSort', $_GET[$sort->sortVar]);
+        } elseif (($sLabelSetsSort = Yii::app()->user->getState('labelSetsSort')) !== null) {
+            $_GET[$sort->sortVar] = $sLabelSetsSort;
+        }
 
         $dataProvider = new CActiveDataProvider('LabelSet', array(
             'criteria' => $criteria,
