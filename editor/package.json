@@ -166,6 +166,27 @@
           "sass-embedded-darwin-arm64": "^1.89.2"
         }
       }
+    },
+    "@pmmmwh/react-refresh-webpack-plugin": {
+      "websocket-driver": "0.7.5"
+    },
+    "@storybook/preset-create-react-app": {
+      "websocket-driver": "0.7.5"
+    },
+    "faye-websocket": {
+      "websocket-driver": "0.7.5"
+    },
+    "react-scripts": {
+      "websocket-driver": "0.7.5"
+    },
+    "sockjs": {
+      "websocket-driver": "0.7.5"
+    },
+    "webpack-dev-server": {
+      "websocket-driver": "0.7.5"
+    },
+    "websocket-driver": {
+      "websocket-driver": "0.7.5"
     }
   },
   "lint-staged": {
