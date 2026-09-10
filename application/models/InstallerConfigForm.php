@@ -134,6 +134,9 @@ class InstallerConfigForm extends CFormModel
     public $isPhpImapPresent = false;
 
     /** @var bool */
+    public $isPhpCurlPresent = false;
+
+    /** @var bool */
     public $isPhpVersionOK = false;
 
     /** @var bool */
@@ -222,6 +225,7 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpLdapPresent = extension_loaded('ldap');
         $this->isPhpImapPresent = extension_loaded('imap');
         $this->isPhpZipPresent = extension_loaded('zip');
+        $this->isPhpCurlPresent = extension_loaded('curl');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
         $this->isCollatorPresent = class_exists('Collator');
 
