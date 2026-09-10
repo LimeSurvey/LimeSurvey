@@ -25,7 +25,7 @@ export var ThemeScripts = function () {
      * on the same value
      */
     var fixBodyPadding = function fixBodyPadding() {
-        var navHeightPx = Math.round($('#survey-nav').outerHeight());
+        var navHeightPx = Math.round($('#survey-nav').outerHeight() || 0);
         $('body').css('padding-top', navHeightPx + 'px');
         $('#main-dropdown').css('max-height', 'calc(100vh - ' + navHeightPx + 'px)');
     };
