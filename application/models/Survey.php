@@ -1490,8 +1490,11 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getLastModifiedDate()
     {
         $shifted = self::shiftedDateTime($this->lastmodified);
-
-        return $shifted ? $shifted->format('d.m.Y') : null;
+        if (!$shifted) {
+            return null;
+        }
+        $dateformatdata = getDateFormatData(Yii::app()->session['dateformat']);
+        return $shifted->format($dateformatdata['phpdate']);
     }
 
     /**
