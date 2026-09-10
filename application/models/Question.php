@@ -909,8 +909,8 @@ class Question extends LSActiveRecord
                 'desc' => 't.qid desc',
             ),
             'question_order' => array(
-                'asc' => 'g.group_order asc, t.question_order asc',
-                'desc' => 'g.group_order desc,t.question_order desc',
+                'asc' => 'g.group_order asc, t.question_order asc, t.title asc',
+                'desc' => 'g.group_order desc,t.question_order desc, t.title desc',
             ),
             'title' => array(
                 'asc' => 't.title asc',

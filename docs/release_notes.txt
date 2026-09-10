@@ -34,6 +34,33 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.0.14 (build 260904) to 7.0.15 (build 260910) September 10, 2026
++New feature #JD-133: Add underline option to text editor formatting (#5264) (Adil Moumni Abdou)
++New feature #JD-102: Added survey option to preselect "No answer" in questions (#5253) (Adil Moumni Abdou)
+-Fixed issue #JD-81: Improved UX for "default value" actions for question options (#5240) (Adil Moumni Abdou)
+-Fixed issue: When importing a v6 survey file the first ranking option was missing (Carsten Schmitz)
+-Fixed issue: When copying a multilingual survey some advanced translated question settings were not copied properly (Carsten Schmitz)
+-Fixed issue: Questions with undetermined sort order should order by title as second criteria (Carsten Schmitz)
+-Fixed issue: Missing 'Set expiry date' action in survey list (Carsten Schmitz)
+-Fixed issue: If a DB update is already running, show a proper message instead of offering to run the db update (Carsten Schmitz)
+-Fixed issue: High memory usage during integrity check (Carsten Schmitz)
+-Fixed issue #JD-73: Redirect surveys with incompatible themes out of the new editor (#5217) (SaraDimoska)
+-Fixed issue #JD-45: Improved behaviour when trying to deselect table entries after using select all (#5256) (Razvan Pandor)
+-Fixed issue #JD-131: default active state for corner radius theme option is now set correctly (#5263) (Adil Moumni Abdou)
+-Fixed issue #JD-127: provide guidance which input is allowed for global setting "answer options prefix" (#5272) (Adil Moumni Abdou)
+-Fixed issue #AT-2218: Added value to the multiple short text question type in the responses table (#5188) (Rami S. Zaki)
+-Fixed issue #20673: Variable names are corrupted when exporting responses in R format (#5279) (Carsten Schmitz)
+-Fixed issue #20671: Prevent "Undefined array key" warning when restricting available survey languages (Carsten Schmitz)
+-Fixed issue #20653: Listing submitted responses for surveys takes a long time (#5260) (Denis Chenu)
+-Fixed issue #20645: Fruity theme hides selected value in Bootstrap Select dropdown on hover (#5261) (Denis Chenu)
+-Fixed issue #20630: Renaming a parent custom theme breaks child theme inheritance and leaves stale parent references (Carsten Schmitz)
+-Fixed issue #20624: Error when updating to 7.0.7 due to missing DB version check (#5185) (Carsten Schmitz)
+-Fixed issue #20608: Data security notice label is not rendered correctly in "All in one" survey (#5174) (Denis Chenu)
+-Fixed issue #20600: Reload page when trying to create dummy participants without filling mandatory attributes (#5233) (Gabriel Jenik)
+-Fixed issue #20519: When importing a question group (or old survey) codes are badly replaced (#5252) (Carsten Schmitz)
+-Fixed issue #20417: Survey findByPk returns invalid value if scope is set (Carsten Schmitz)
+-Fixed issue #19664: Plugin log should be disabled by default (Carsten Schmitz)
+
 Changes from 7.0.13 (build 260903) to 7.0.14 (build 260904) September 4, 2026
 +New feature AT-2140: Floating menu for all gridviews (Patricia Stell)
 -Fixed issue: Check integrity did not work on Postgres (Carsten Schmitz)

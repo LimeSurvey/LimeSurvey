@@ -1052,7 +1052,7 @@ class SurveyAdministrationController extends LSBaseController
                         "gid" => $group['gid'],
                         'parent_qid' => 0
                     ),
-                    array('order' => 'question_order ASC')
+                    array('order' => 'question_order ASC, title ASC')
                 );
 
                 if ($configData['hasSurveyContentReadPermission']) {

@@ -29,8 +29,9 @@
 	{% endif %}
 {% endif %}
 <div class="form-check">
+    {% set dataSecurityNoticeLabel = include('./subviews/privacy/privacy_datasecurity_notice_label.twig') %}
     <input required class="{{ aSurveyInfo.class.privacydataseccheckbox }} form-check-input" {{ privacychecked }} type="checkbox" name="datasecurity_accepted" id="datasecurity_accepted" aria-describedby="{{ describedbyprivacy }}"/>
-    <label for="datasecurity_accepted" class="form-check-label fw-bold {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">{{ aSurveyInfo.datasecurity_notice_label }}</label>
+    <label for="datasecurity_accepted" class="form-check-label fw-bold {{ aSurveyInfo.class.privacydataseccheckboxlabel }}">{{ dataSecurityNoticeLabel }}</label>
 </div>
 <div class="collapse fade mb-3" id="data-security-modal-{{aSurveyInfo.sid}}">
     <div class="card card-primary">
