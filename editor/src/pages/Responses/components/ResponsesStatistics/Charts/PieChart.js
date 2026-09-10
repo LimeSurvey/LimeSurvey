@@ -198,6 +198,14 @@ const renderActiveShapeNew = ({
 // Vertical label-block footprint (id + value/image + metric rows)
 const LABEL_MIN_GAP = 58
 
+// Pie geometry is fixed in pixels so the chart can grow taller to fit stacked
+// labels without the pie growing with it.
+const CHART_BASE_HEIGHT = 400
+const CHART_MARGIN_TOP = 30
+const CHART_MARGIN_BOTTOM = 40
+const PIE_RADIUS = 130
+const PIE_CY = CHART_MARGIN_TOP + PIE_RADIUS + 35
+
 // Zero (or tiny) slices share the same midAngle, so their labels land on the
 // same point. Recompute every slice's label anchor with the same angle math
 // recharts uses and push down any label that would overlap the one above it
@@ -230,6 +238,13 @@ const computeLabelYOffsets = (data, cy, outerRadius) => {
   return offsets
 }
 
+// Labels pushed down to avoid overlapping would fall outside the base height,
+// so grow the chart by the largest push-down.
+const computeChartHeight = (data) => {
+  const offsets = computeLabelYOffsets(data, PIE_CY, PIE_RADIUS)
+  return CHART_BASE_HEIGHT + Math.ceil(Math.max(...offsets, 0))
+}
+
 export const PieChart = ({
   data,
   valueType = VALUE_TYPE.PERCENTAGE,
@@ -247,19 +262,24 @@ export const PieChart = ({
 
   return (
     <div className="responses-statistics-pie-chart">
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="100%" height={computeChartHeight(data)}>
         <RechartsPieChart
-          margin={{ top: 30, right: 160, bottom: 40, left: 160 }}
+          margin={{
+            top: CHART_MARGIN_TOP,
+            right: 160,
+            bottom: CHART_MARGIN_BOTTOM,
+            left: 160,
+          }}
         >
           <Pie
             data={data}
             cx="50%"
-            cy="50%"
+            cy={PIE_CY}
             dataKey="value"
             nameKey="title"
             label={renderLabel}
             labelLine={false}
-            outerRadius="80%"
+            outerRadius={PIE_RADIUS}
             animationBegin={0}
             animationDuration={600}
             fill="#8884d8"
