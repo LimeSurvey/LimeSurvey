@@ -198,13 +198,17 @@ const renderActiveShapeNew = ({
 // Vertical label-block footprint (id + value/image + metric rows)
 const LABEL_MIN_GAP = 58
 
-// Pie geometry is fixed in pixels so the chart can grow taller to fit stacked
-// labels without the pie growing with it.
+// Fixed pie size, so the chart can grow taller for stacked labels without the
+// pie growing too. Recharts adds margin.top to a numeric cy.
 const CHART_BASE_HEIGHT = 400
 const CHART_MARGIN_TOP = 30
 const CHART_MARGIN_BOTTOM = 40
 const PIE_RADIUS = 130
-const PIE_CY = CHART_MARGIN_TOP + PIE_RADIUS + 35
+const PIE_CY = 150
+const PIE_CY_IN_CHART = CHART_MARGIN_TOP + PIE_CY
+
+// Space a label takes below its dot (image frame + metric row)
+const LABEL_HEIGHT_BELOW_ANCHOR = 64
 
 // Zero (or tiny) slices share the same midAngle, so their labels land on the
 // same point. Recompute every slice's label anchor with the same angle math
@@ -235,14 +239,29 @@ const computeLabelYOffsets = (data, cy, outerRadius) => {
         return y + LABEL_MIN_GAP
       }, -Infinity)
   })
-  return offsets
+  return { offsets, anchors }
 }
 
-// Labels pushed down to avoid overlapping would fall outside the base height,
-// so grow the chart by the largest push-down.
+// Stacked labels can end up below the pie, so make the chart tall enough for
+// the lowest one.
 const computeChartHeight = (data) => {
-  const offsets = computeLabelYOffsets(data, PIE_CY, PIE_RADIUS)
-  return CHART_BASE_HEIGHT + Math.ceil(Math.max(...offsets, 0))
+  const { offsets, anchors } = computeLabelYOffsets(
+    data,
+    PIE_CY_IN_CHART,
+    PIE_RADIUS
+  )
+  const lowestLabelBottom = anchors.reduce(
+    (lowest, anchor) =>
+      Math.max(
+        lowest,
+        anchor.ey + offsets[anchor.index] + LABEL_HEIGHT_BELOW_ANCHOR
+      ),
+    0
+  )
+  return Math.max(
+    CHART_BASE_HEIGHT,
+    Math.ceil(lowestLabelBottom + CHART_MARGIN_BOTTOM)
+  )
 }
 
 export const PieChart = ({
@@ -251,7 +270,7 @@ export const PieChart = ({
   isImage = false,
 }) => {
   const renderLabel = (props) => {
-    const offsets = computeLabelYOffsets(data, props.cy, props.outerRadius)
+    const { offsets } = computeLabelYOffsets(data, props.cy, props.outerRadius)
     return renderActiveShapeNew({
       ...props,
       valueType,
