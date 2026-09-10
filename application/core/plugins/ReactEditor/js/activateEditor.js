@@ -19,7 +19,7 @@ $(document).ready(function () {
 
             const updateContent = () => {
                 $title.html(slide.title);
-                $image.attr("src", slide.image).attr("alt", "slider image " + (index + 1));
+                $image.attr("src", slide.image).attr("alt", slide.title);
                 $desc.html(slide.description);
 
                 // Swap the info panel if custom info is provided for this slide
@@ -146,10 +146,10 @@ $(document).ready(function () {
 
         let url = $("#saveUrl").val();
         let data = { optin: newValue };
-        savedViaSwitch = true;
 
         $.post(url, data)
             .done(function () {
+                savedViaSwitch = true;
                 let successMessage =
                     newValue === "1"
                         ? $("#successMsgFeatureOptin").val()
@@ -174,9 +174,9 @@ $(document).ready(function () {
      * "Switch to new editor" button in auto-open mode — saves optin=1
      */
     $(document).on("click", "#switch-new-editor-btn", function () {
-        savedViaSwitch = true;
         $.post($("#saveUrl").val(), { optin: 1 })
             .done(function () {
+                savedViaSwitch = true;
                 $("#activate_editor").modal("hide");
                 LS.ajaxAlerts($("#successMsgFeatureOptin").val(), "alert-success", {
                     showCloseButton: true,
