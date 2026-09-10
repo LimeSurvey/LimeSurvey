@@ -25,6 +25,7 @@ class NullConditionHandler implements HandlerInterface
             $value = [$value];
         }
 
+        /** @psalm-suppress RedundantCastGivenDocblockType */
         $quotedKey = $this->sanitizeKey((string) $key);
         $conditions = [];
 
