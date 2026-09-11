@@ -90,6 +90,8 @@ class SurveyDeactivate
             );
         }
         $survey = $this->survey->findByPk($iSurveyID);
+        // Unset siddate from previous call using the same deactivator instance.
+        unset($this->siddates[$iSurveyID]);
         $datestamp = time();
         $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
         $DBDate = date('Y-m-d H:i:s', $datestamp);
