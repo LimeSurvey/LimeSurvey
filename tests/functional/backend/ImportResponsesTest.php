@@ -35,9 +35,9 @@ class ImportResponsesTest extends TestBaseClass
                 $surveyLink,
                 $savedControl
             );
-            $surveyDeactivator->setArchivedResponseSettings(new \ArchivedTableSettings());
-            $surveyDeactivator->setArchivedTimingsSettings(new \ArchivedTableSettings());
-            $surveyDeactivator->setArchivedTokenSettings(new \ArchivedTableSettings());
+            $surveyDeactivator->setArchivedResponseSettings(\ArchivedTableSettings::model());
+            $surveyDeactivator->setArchivedTimingsSettings(\ArchivedTableSettings::model());
+            $surveyDeactivator->setArchivedTokenSettings(\ArchivedTableSettings::model());
             $responses1 = App()->db->createCommand($query)->queryAll();
             $surveyDeactivator->deactivate($survey->sid, ['ok' => true], true);
             $questions[1]->encrypted = 'Y';
