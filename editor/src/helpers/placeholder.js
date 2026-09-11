@@ -16,3 +16,20 @@ export const getQuestionPlaceholders = (language, question) => {
 export const isPlaceholderInUse = (language, question, placeholderKey) => {
   return getQuestionPlaceholders(language, question).includes(placeholderKey)
 }
+
+// Placeholders are highlighted with a <badge> tag so researchers can see at a
+// glance that a question or answer uses one. See the `badge` rule in
+// themes/contenteditor/content-editor.scss for the styling.
+const PLACEHOLDER_REGEX = /(\{[^{}]+\})/g
+const PLACEHOLDER_BADGE_REGEX = /<badge>(\{[^{}]+\})<\/badge>/g
+
+export const wrapPlaceholdersInBadges = (text = '') => {
+  return removePlaceholderBadges(text).replace(
+    PLACEHOLDER_REGEX,
+    '<badge>$1</badge>'
+  )
+}
+
+export const removePlaceholderBadges = (text = '') => {
+  return text.replace(PLACEHOLDER_BADGE_REGEX, '$1')
+}
