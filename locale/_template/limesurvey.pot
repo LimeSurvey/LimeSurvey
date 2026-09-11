@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: https://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2026-09-11 13:20:29+00:00\n"
+"POT-Creation-Date: 2026-09-11 13:46:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29570,7 +29570,7 @@ msgid "votes"
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/Charts/StackedLegend.js:8
-msgid "Distribution by choice"
+msgid "Distribution"
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/ChartsUtils.js:28
@@ -29695,7 +29695,7 @@ msgid "Contains ..."
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/QuestionSource.js:123
-msgid "Please select sub-question ..."
+msgid "Please select subquestion ..."
 msgstr ""
 
 #: editor/src/pages/Responses/components/ResponsesStatistics/StatisticsFiltersModal/sources/QuestionSource.js:156
@@ -30330,10 +30330,6 @@ msgstr ""
 
 #: themes/survey/fruity_twentythree/views/subviews/registration/register_message.twig:33
 msgid "Please fill in the information and we’ll send you a link immediately."
-msgstr ""
-
-#: themes/survey/vanilla/views/layout_survey_list.twig:126
-msgid "LimeSurvey"
 msgstr ""
 
 #: themes/survey/vanilla/views/subviews/content/load.twig:90
