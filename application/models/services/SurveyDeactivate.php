@@ -68,7 +68,7 @@ class SurveyDeactivate
     protected function getSiddate(int $iSurveyID): string
     {
         if (!isset($this->siddates[$iSurveyID])) {
-            $date = date('YmdHis', time());
+            $date = (new \DateTime())->format('YmdHisu');
             $this->siddates[$iSurveyID] = "{$iSurveyID}_{$date}";
         }
         return $this->siddates[$iSurveyID];
