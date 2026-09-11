@@ -215,17 +215,18 @@ class SurveyDeactivate
     {
         switch ($tableType) {
             case 'token':
-                $model = $this->archivedTokenSettings;
+                $modelClass = get_class($this->archivedTokenSettings);
                 break;
             case 'timings':
-                $model = $this->archivedTimingsSettings;
+                $modelClass = get_class($this->archivedTimingsSettings);
                 break;
             case 'response':
-                $model = $this->archivedResponseSettings;
+                $modelClass = get_class($this->archivedResponseSettings);
                 break;
             default:
                 throw new \InvalidArgumentException('Unknown table type: ' . $tableType);
         }
+        $model = new $modelClass();
         $model->survey_id = $iSurveyID;
         $model->user_id = $userID;
         $model->tbl_name = $tableName;
