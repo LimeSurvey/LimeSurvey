@@ -2379,8 +2379,8 @@ class remotecontrol_handle
      *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
-     *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
-     *                  Only the IN operator allows for several values.
+     *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
+     *                  Only the IN and NOT IN operators allow for several values.
      *              All conditions are connected by AND.
      * @return array On success: list of participants. On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
@@ -3096,8 +3096,8 @@ class remotecontrol_handle
      *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
-     *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
-     *                  Only the IN operator allows for several values.
+     *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
+     *                  Only the IN and NOT IN operators allow for several values.
      *              All conditions are connected by AND.
      * @return array On success: results of each email send action. On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
@@ -4151,8 +4151,8 @@ class remotecontrol_handle
      *              key => value if key is an integer : value is used as comparaison string : sample ['tid = 2']
      *              key=>value search value in column key  : sample ['tid' => '2']
      *              key=>array(operator,value[,value[...]]) using an operator : sample ['tid'=>['=','2']]
-     *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
-     *                  Only the IN operator allows for several values.
+     *                  Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN', 'NOT IN']
+     *                  Only the IN and NOT IN operators allow for several values.
      *              All conditions are connected by AND.
      * @return null|string if string it's an error.
      */
