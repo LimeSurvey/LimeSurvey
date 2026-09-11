@@ -3671,8 +3671,8 @@ class remotecontrol_handle
      * @param array $aFields (optional) Name the fields to export
      * @param array $aAdditionalOptions (optional) Addition options for export, @see \FormattingOptions, example : 'convertY', 'convertN', 'nValue', 'yValue', 'headerSpacesToUnderscores', 'useEMCode'
      * @return array|string On success: requested file as base64-encoded string. On failure: array with 'status' and 'error_code' keys.
-     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION, ERR_NO_RESPONSE_TABLE,
-     *              ERR_NO_DATA, ERR_INVALID_LANGUAGE.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
+     *              ERR_NO_RESPONSE_TABLE, ERR_NO_DATA, ERR_INVALID_LANGUAGE.
      */
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null, $aAdditionalOptions = null)
     {
@@ -3681,6 +3681,9 @@ class remotecontrol_handle
 
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
+        }
+        if (is_null($survey)) {
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) {
             return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
@@ -3762,7 +3765,7 @@ class remotecontrol_handle
      * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
      * @param array $aFields Optional Selected fields
      * @return array|string On success: requested file as base64-encoded string. On failure: array with 'status' and 'error_code' keys.
-     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_RESPONSE_TABLE, ERR_NO_DATA,
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_RESPONSE_TABLE, ERR_NO_DATA,
      *              ERR_INVALID_LANGUAGE, ERR_INVALID_PARAMETERS, ERR_NOT_FOUND, ERR_NO_PERMISSION.
      */
     public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $aTokens, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $aFields = null)
@@ -3771,6 +3774,9 @@ class remotecontrol_handle
         $survey = Survey::model()->findByPk($iSurveyID);
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
+        }
+        if (is_null($survey)) {
+            return array('status' => 'Error: Invalid survey ID', 'error_code' => self::ERR_INVALID_SURVEY);
         }
         Yii::app()->loadHelper('admin.exportresults');
         if (!tableExists($survey->responsesTableName)) {
