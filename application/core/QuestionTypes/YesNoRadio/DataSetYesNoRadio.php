@@ -2,5 +2,4 @@
 
 class DataSetYesNoRadio extends QuestionBaseDataSet
 {
-
 }

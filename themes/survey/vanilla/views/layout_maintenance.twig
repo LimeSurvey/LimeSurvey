@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2019 The LimeSurvey Project Team / Dominik Vitt
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -44,11 +44,11 @@
         {% endblock %}
         <article id="block_maintenance">
             <div>
-                    <h1> Website Under Maintenance </h1>
+                    <h1> {{ gT("Site under maintenance") }}</h1>
                 <p>
-                    Our website is undergoing maintenance. <br>
-                    Sorry for the inconvenience. <br>
-                    Please check back soon.
+                    {{ gT("Our survey site is currently undergoing maintenance.") }} <br>
+                    {{ gT("We are sorry for the inconvenience.") }} <br>
+                    {{ gT("Please check back soon.") }}
                 </p>
             </div>
         </article>

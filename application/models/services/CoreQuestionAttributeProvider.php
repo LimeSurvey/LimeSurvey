@@ -110,9 +110,6 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
                 unset($xmlAttributes);
                 $xmlAttributes['attribute'][0] = $temp;
             }
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
         } else {
             return [];
         }

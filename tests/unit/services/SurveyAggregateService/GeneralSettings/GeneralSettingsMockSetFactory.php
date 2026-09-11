@@ -22,7 +22,7 @@ class GeneralSettingsMockSetFactory
     /**
      * @param ?GeneralSettingsMockSet $init
      */
-    public function make(GeneralSettingsMockSet $init = null): GeneralSettingsMockSet
+    public function make(?GeneralSettingsMockSet $init = null): GeneralSettingsMockSet
     {
         $mockSet = new GeneralSettingsMockSet;
 

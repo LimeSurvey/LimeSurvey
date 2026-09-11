@@ -14,8 +14,8 @@
             <!-- Left actions -->
             <div class="col text-start">
                 <!-- Add new Menu -->
-                <?php if (isset($fullpagebar['menus'])): ?>
-                    <?php if (isset($fullpagebar['menus']['buttons']['addMenu']) && $fullpagebar['menus']['buttons']['addMenu']): ?>
+                <?php if (isset($fullpagebar['menus'])) : ?>
+                    <?php if (isset($fullpagebar['menus']['buttons']['addMenu']) && $fullpagebar['menus']['buttons']['addMenu']) : ?>
                     <a class="btn btn-outline-secondary tab-dependent-button"
                            id="createnewmenu"
                            data-tab="#surveymenues"

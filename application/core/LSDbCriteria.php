@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -72,7 +72,7 @@ class LSDbCriteria extends CDbCriteria
      * @throws BadRequestException
      * @return void
      */
-    public function addSafeStringSearchCondition($oModel,$condition)
+    public function addSafeStringSearchCondition($oModel, $condition)
     {
         if ($condition === '') {
             return;
@@ -80,7 +80,7 @@ class LSDbCriteria extends CDbCriteria
         if (!is_string($condition) || !preg_match('/^([a-zA-Z0-9_]+)\s*(<=|>=|<>|=|<|>)\s*(.*)$/', $condition, $matches)) {
             throw new BadRequestException('Invalid expression for condition');
         }
-        $this->addSafeStructuredSearchCondition($oModel, [$matches[1]=>[$matches[2], $matches[3]]]);
+        $this->addSafeStructuredSearchCondition($oModel, [$matches[1] => [$matches[2], $matches[3]]]);
     }
 
     /**

@@ -3,7 +3,6 @@
  * @var $this UserManagementController
  * @var $dataProvider CActiveDataProvider
  * @var $model User
- * @var string $massiveAction
  * @var string $pageSize selected pagesize
  **/
 
@@ -22,14 +21,17 @@ echo viewHelper::getViewTestTag('usersIndex');
 <?php endif; ?>
 
     <?php
-    $this->widget('application.extensions.admin.grid.CLSGridView',
+    $this->widget(
+        'application.extensions.admin.grid.CLSGridView',
         [
             'id' => 'usermanagement--identity-gridPanel',
+            'ajaxUpdate' => 'usermanagement--identity-gridPanel',
             'dataProvider' => $model->search(),
             'columns' => $model->getManagementColums(),
-            'massiveActionTemplate' => $massiveAction,
+            'lsAdditionalColumns' => $model->getAdditionalColumns(),
+            'showSelectionBar' => false,
+            'caption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
-                'bindListItemclick();',
                 'LS.UserManagement.bindButtons();',
                 'showDeactivatedUserTooltip();'
             ],
@@ -44,6 +46,20 @@ echo viewHelper::getViewTestTag('usersIndex');
                         ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
                     )
                 ),
+        ]
+    );
+    ?>
+
+    <!-- Floating Actions Widget for User Management -->
+    <?php
+    require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.UserManagementMassiveActions') . '.php';
+    $aActions = \actions\UserManagementMassiveActions::getActions();
+    $this->widget(
+        'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
+        [
+            'pk'       => 'uid',
+            'gridId'   => 'usermanagement--identity-gridPanel',
+            'aActions' => $aActions,
         ]
     );
     ?>
@@ -81,7 +97,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 </script>
 <div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
-    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
         </div>
     </div>

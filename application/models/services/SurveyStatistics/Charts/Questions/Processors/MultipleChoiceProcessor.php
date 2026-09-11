@@ -2,49 +2,52 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use Question;
 
 class MultipleChoiceProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
     {
-        $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     public function process()
     {
-        $this->rt();
-
         $legend = [];
         $dataItems = [];
-        $field = null;
+
+        $fieldNames = [];
+        foreach ($this->question['subQuestions'] ?? [] as $subQuestion) {
+            $fieldNames[] = $this->rt . '_S' . $subQuestion['qid'];
+        }
+        $hasOther = $this->question['other'] === Question::QT_Y_YES_NO_RADIO;
+        if ($hasOther) {
+            $fieldNames[] = $this->rt . '_Cother';
+        }
+
+        $counts = $this->batchGetResponseCounts($fieldNames);
 
         foreach ($this->question['subQuestions'] ?? [] as $subQuestion) {
-            $field = $this->rt . $subQuestion['title'];
+            $field = $this->rt . "_S" . $subQuestion['qid'];
             $legend[] = $subQuestion['question'];
-
-            $count = $this->getResponseCount($field);
             $dataItems[] = [
                 'key' => $subQuestion['title'],
                 'title' => $subQuestion['question'],
-                'value' => $count,
+                'value' => $counts[$field],
+                'field' => $field,
             ];
         }
 
-        if ($this->question['other'] === Question::QT_Y_YES_NO_RADIO) {
-            $field = $this->rt . 'other';
+        if ($hasOther) {
+            $field = $this->rt . '_Cother';
             $legend[] = 'other';
-            $count = $this->getResponseCount($field);
-            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $count];
+            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$field], 'field' => $field];
         }
 
-        return new StatisticsChartDTO(
-            $this->question['question'],
-            $legend,
-            $dataItems,
-            $this->calculateTotal($dataItems),
-            ['question' => $this->question]
-        );
+        return [
+            'title' => $this->question['question'],
+            'legend' => $legend,
+            'data' => $dataItems,
+        ];
     }
 }

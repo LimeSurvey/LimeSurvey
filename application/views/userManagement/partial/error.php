@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Subview: Error messsage in the usermanagement panel
  *
@@ -6,6 +7,7 @@
  * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */
+
 ?>
 <div class="modal-header">
     <h5 class="modal-title"><?= gT('Error') ?></h5>
@@ -33,7 +35,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <?php if (!isset($noButton)): ?>
+    <?php if (!isset($noButton)) : ?>
         <button id="exitForm" class="btn btn-cancel" data-bs-dismiss="modal">
             <?= gT('Close') ?>
         </button>

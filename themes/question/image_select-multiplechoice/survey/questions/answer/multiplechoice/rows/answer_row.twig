@@ -39,13 +39,13 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
         <input
             class="imageselect-checkbox"
             type="checkbox"
-            name="{{ name }}{{ title }}"
-            id="answer{{ name}}{{ title }}"
+            name="{{ myfname }}"
+            id="answer{{ myfname }}"
             value="Y"
             {{ checkedState }}
             onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'
         />
-        <label for="answer{{ name }}{{ title }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
+        <label for="answer{{ myfname }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
 
          <img class="unforce-height" src="{{ question|escape('html_attr') }}"
          style="{%if question_template_attribute.fix_width > 1%} 
@@ -54,7 +54,7 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
             height: {{question_template_attribute.fix_height}}px
             {% endif %}"/>
         </label>
-        <label for="answer{{ name}}{{ title }}" class="imageselect-select d-none"></label>
+        <label for="answer{{ myfname }}" class="imageselect-select d-none"></label>
     </div>
     <input
         type="hidden"
@@ -64,8 +64,8 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
     />
 </li>
 <script>
-    var imageselectjs_{{name}} = new IMAGESELECT("{{ name}}{{ title }}", {
-        keepAspect: {{question_template_attribute.keep_aspect ? 'true' : 'false'}}, 
+    var imageselectjs_{{name}} = new IMAGESELECT("{{ myfname }}", {
+        keepAspect: {{question_template_attribute.keep_aspect ? 'true' : 'false'}},
         horizontalScroll: {{question_template_attribute.horizontal_scroll ? 'true' : 'false'}},
         crop_or_resize: {{question_template_attribute.crop_or_resize ? true : false}}
         }); 

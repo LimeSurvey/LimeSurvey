@@ -1,4 +1,4 @@
-﻿(function ($) {
+(function ($) {
 $.Redactor.opts.langs['vi'] = {
 	html: 'Xem HTML',
 	video: 'Chèn Video...',

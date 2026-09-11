@@ -1,8 +1,10 @@
 <?php
+
 /**
  * This view display the left progress "menus" (steps such as welcome, or pre-installation check, etc.)
  * The ajax code change the active step.
  */
+
 ?>
 <div id="progressContainer">
     <h3 class="maintitle"><?php eT("Progress"); ?></h3>

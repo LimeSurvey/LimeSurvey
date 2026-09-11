@@ -13,6 +13,10 @@ class PgsqlSchema extends CPgsqlSchema
         $this->columnTypes['decimal'] = 'numeric (10,0)'; // Same default than MySql (not used)
         $this->columnTypes['mediumtext'] = 'text';
         $this->columnTypes['longtext'] = 'text';
+        /**
+         * JSON.
+         */
+        $this->columnTypes['json'] = 'json';
     }
 
     /**
@@ -75,13 +79,13 @@ class PgsqlSchema extends CPgsqlSchema
         );
     }
 
-	/**
-	 * Creates a command builder for the database.
-	 * This method may be overridden by child classes to create a DBMS-specific command builder.
-	 * @return LSPgsqlDbCommandBuilder command builder instance
-	 */
-	protected function createCommandBuilder()
-	{
-		return new LSPgsqlDbCommandBuilder($this);
-	}
+    /**
+     * Creates a command builder for the database.
+     * This method may be overridden by child classes to create a DBMS-specific command builder.
+     * @return LSPgsqlDbCommandBuilder command builder instance
+     */
+    protected function createCommandBuilder()
+    {
+        return new LSPgsqlDbCommandBuilder($this);
+    }
 }

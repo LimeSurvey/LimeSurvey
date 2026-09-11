@@ -17,7 +17,7 @@
         <div class="col-12 content-right">
             <div class="card card-primary h-100">
                 <h3>
-                    <?php eT('Activate Survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)
+                    <?php eT('Activate survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)
                 </h3>
                 <p class='lead'>
                     <?php eT("Your survey has been activated and the responses and statistics section is now available."); ?>

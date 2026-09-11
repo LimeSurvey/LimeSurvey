@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -80,16 +80,6 @@ class UserGroup extends LSActiveRecord
             'users' => array(self::MANY_MANY, 'User', '{{user_in_groups}}(ugid, uid)'), // Louis: this is the correct relation
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id'),
         );
-    }
-
-    /**
-     * @param $data
-     * @return mixed
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        return Yii::app()->db->insert('user_groups', $data);
     }
 
     // TODO seems to be unused, probably shouldn't be done like that
@@ -210,53 +200,6 @@ class UserGroup extends LSActiveRecord
 
         return UserGroup::model()->find($criteria);
     }
-
-    /**
-     * @param integer $ugId
-     * @param integer $userId
-     * @return array
-     * @deprecated Not needed anymore
-     */
-    public function requestViewGroup($ugId, $userId)
-    {
-        $sQuery = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid";
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            $sQuery .= "  AND (owner_id = :userid OR uid = :userid) ";
-        }
-        $sQuery .= " ORDER BY name";
-        $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugId, PDO::PARAM_INT);
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            $command->bindParam(":userid", $userId, PDO::PARAM_INT);
-        }
-        return $command->query()->readAll();
-    }
-
-    /**
-     * @param integer $ugId
-     * @param integer $ownerId
-     * @return bool
-     * @deprecated since 2018-04-21 use $this->delete and do the permissions check in controller!!
-     */
-    public function deleteGroup($ugId, $ownerId)
-    {
-        $aParams = array();
-        $aParams[':ugid'] = $ugId;
-        $sCondition = "ugid = :ugid";
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            $sCondition .= " AND owner_id=:ownerid";
-            $aParams[':ownerid'] = $ownerId;
-        }
-
-        $group = UserGroup::model()->find($sCondition, $aParams);
-        $group->delete();
-
-        if ($group->getErrors()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
 
     /**
      * {@inheritdoc}
@@ -596,7 +539,7 @@ class UserGroup extends LSActiveRecord
             $cnt++;
         }
 
-        $msgToUser = gT('Sending emails to users(sucess/errors):') . "<br>";
+        $msgToUser = gT('Sending emails to users:') . "<br>";
         foreach ($sendEmailSuccessErrors as $emaiLResult) {
             $msgToUser .= $emaiLResult['username'] . ': ';
             if ($emaiLResult['success']) {

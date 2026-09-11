@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var $this FailedEmailController
  * @var $surveyId int
@@ -6,7 +7,7 @@
  */
 ?>
 
-<?= App()->getController()->renderPartial('/layouts/partial_modals/modal_header', ['modalTitle' => gT('Resend email')]) ?>
+<?= App()->getController()->renderPartial('/layouts/partial_modals/modal_header', ['modalTitle' => gT('Resend')]) ?>
 <?= CHtml::form(['/failedEmail/resend/', 'surveyid' => $surveyId, 'item' => $id], 'post', ['id' => 'failedemail-action-modal--form']) ?>
 <div class="modal-body">
     <?= $this->renderPartial('./partials/modal/resend_body', [], false) ?>

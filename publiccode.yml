@@ -1,0 +1,88 @@
+publiccodeYmlVersion: 0.5.0
+name: LimeSurvey
+url: https://github.com/LimeSurvey/LimeSurvey
+logo: https://www.limesurvey.org/images/2022/logo_limesurvey_eu.svg
+platforms:
+  - web
+categories:
+  - survey
+  - data-collection
+  - data-analytics
+  - data-visualization
+organisation:
+  uri: https://www.limesurvey.org
+  name: LimeSurvey GmbH
+fundedBy:
+  - name: LimeSurvey GmbH
+    uri: https://www.limesurvey.org
+roadmap: https://www.limesurvey.org/manual/LimeSurvey_roadmap
+developmentStatus: stable
+softwareType: standalone/web
+description:
+  en:
+    localisedName: LimeSurvey
+    shortDescription: LimeSurvey is an open‑source web app for creating, publishing,
+      and analyzing online surveys with multilingual support and advanced logic.
+    longDescription: LimeSurvey is an open‑source web application that enables
+      organizations to design, publish, and manage online surveys of any
+      complexity. It supports more than 30 question types, advanced conditional
+      logic, and fully customizable templates, allowing public institutions to
+      create structured questionnaires tailored to diverse research and feedback
+      needs. Its built‑in multilingual support makes it suitable for
+      international or multilingual audiences, while optional anonymity modes
+      and GDPR‑compliant data handling ensure secure and privacy‑respecting
+      response collection. LimeSurvey includes tools for participant management,
+      automated invitations, and reminders, as well as comprehensive reporting
+      and export features for analysis in external systems such as SPSS, R, or
+      Excel. Through its extensible architecture and RemoteControl API,
+      LimeSurvey integrates easily with existing administrative workflows,
+      making it a flexible solution for surveys, evaluations, consultations, and
+      research activities in the public sector.
+    documentation: https://www.limesurvey.org/manual
+    apiDocumentation: https://www.limesurvey.org/manual/RemoteControl_2_API
+    features:
+      - Survey creation — Build surveys with 30+ question types and customizable
+        layouts.
+      - Conditional logic — Use branching, relevance equations, and quotas for
+        dynamic workflows.
+      - Multilingual support — Create surveys in multiple languages with
+        translation tools.
+      - Participant management — Manage respondent lists, tokens, invitations,
+        and reminders.
+      - Survey distribution — Publish via public links, QR codes, email tokens,
+        or restricted access.
+      - Response collection — Capture structured data securely with optional
+        anonymity modes.
+      - Data export — Export results to CSV, Excel, SPSS, R, PDF, and other
+        formats.
+      - Reporting & analysis — View statistics, charts, and response summaries
+        in real time.
+      - Template customization — Modify themes using HTML, CSS, and JavaScript.
+      - API integration — Automate survey creation, distribution, and data
+        retrieval via RemoteControl API.
+    screenshots:
+      - https://www.limesurvey.org/images/2023/survey%20structure_editor_settings_img.webp
+      - https://www.limesurvey.org/images/2022/free-survey-tool-limesurvey.png
+    awards:
+      - In December 20007 LimeSurvey won the First Prize in the French based Les
+        Trophées du libre award in the category 'Enterprise Management'.
+      - In 2008 LimeSurvey was one of the Top 10 finalists in the category
+        'Business application' in the famous SourceForge.net Community awards.
+legal:
+  license: LGPL-2.0-or-later
+maintenance:
+  type: community
+  contacts:
+    - name: LimeSurvey Commercial Support
+      email: support@limesurvey.org
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - de-DE
+    - fr
+    - pt
+    - pt-BR
+    - nl
+    - af
+    - sq
+    - ar

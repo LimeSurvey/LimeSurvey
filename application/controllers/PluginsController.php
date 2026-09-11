@@ -53,15 +53,4 @@ class PluginsController extends LSYii_Controller
             $this->renderText($sOutput);
         }
     }
-
-    /**
-     * Show list of plugins
-     * @deprecated
-     * @return void
-     */
-    public function actionIndex()
-    {
-        // Or shortcut for actionDirect ?
-        $this->redirect($this->createUrl("admin/pluginmanager/sa/index"));
-    }
 }

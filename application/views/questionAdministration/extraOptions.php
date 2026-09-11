@@ -2,7 +2,7 @@
     <?php $tabCount = 0; ?>
     <!-- Subquestions and Answers tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <?php if ($question->questionType->subquestions > 0): ?>
+        <?php if ($question->questionType->subquestions > 0) : ?>
             <li class="nav-item" role="presentation">
                 <a class="nav-link <?= (++$tabCount == 1) ? "active" : "" ?>"
                     href="#subquestions"
@@ -14,7 +14,7 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php if ($question->questionType->answerscales > 0): ?>
+        <?php if ($question->questionType->answerscales > 0) : ?>
             <li class="nav-item" role="presentation">
                 <a class="nav-link <?= (++$tabCount == 1) ? "active" : "" ?>"
                     href="#answeroptions"
@@ -29,7 +29,7 @@
     </ul>
     <?php $tabCount = 0; ?>
     <div class="tab-content bg-white pt-0 ps-2 pe-2">
-        <?php if ($question->questionType->subquestions > 0): ?>
+        <?php if ($question->questionType->subquestions > 0) : ?>
             <div role="tabpanel" class="tab-pane <?= (++$tabCount == 1) ? 'show active' : '' ?>" id="subquestions">
                 <!-- TODO: Add path in controller. -->
                 <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
@@ -43,13 +43,13 @@
                         'question'     => $question,
                         'allLanguages' => $survey->allLanguages,
                         'language'     => $survey->language,
-                        'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets','create'),
+                        'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets', 'create'),
                     ],
                     true
                 ); ?>
             </div>
         <?php endif; ?>
-        <?php if ($question->questionType->answerscales > 0): ?>
+        <?php if ($question->questionType->answerscales > 0) : ?>
             <div role="tabpanel" class="tab-pane<?php echo (++$tabCount == 1 ? ' active' : ''); ?>" id="answeroptions">
                 <!-- TODO: Add path in controller. -->
                 <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
@@ -64,7 +64,7 @@
                         'question'     => $question,
                         'allLanguages' => $survey->allLanguages,
                         'language'   => $survey->language,
-                        'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets','create'),
+                        'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets', 'create'),
                     ],
                     true
                 ); ?>

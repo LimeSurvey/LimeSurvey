@@ -38,7 +38,7 @@ class PluginHelper extends SurveyCommonAction
 
         $aData['sidemenu'] = array();
         $aData['sidemenu']['state'] = false;
-        $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+        $aData['sideMenuBehaviour'] = Yii::app()->getConfig('sideMenuBehaviour');
         $aData['content'] = $content;
 
         $this->renderWrappedTemplate(null, array('super/sidebody'), $aData);

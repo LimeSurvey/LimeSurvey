@@ -1,0 +1,237 @@
+import React from 'react'
+import { STATES, isTempId, isTrue } from 'helpers'
+import { getTooltipMessages } from 'helpers/options'
+import { useAppState } from 'hooks'
+import { SettingsWrapper } from 'components/UIComponents'
+
+import { TooltipContainer } from '../TooltipContainer/TooltipContainer'
+
+export const Setting = ({
+  question,
+  handleUpdate,
+  isAdvanced = false,
+  language = 'en',
+  title = '',
+  attributes = [],
+  simpleSettings = false,
+  hasDefaultAttributeValues = false,
+}) => {
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  const isDependsOnSatisfied = (dependsOn, dependsOnValue) => {
+    if (!dependsOn) {
+      return true
+    }
+
+    if (Object.prototype.hasOwnProperty.call(dependsOn, 'value')) {
+      return String(dependsOnValue) === String(dependsOn.value)
+    }
+
+    if (Array.isArray(dependsOn.values)) {
+      return dependsOn.values
+        .map((value) => String(value))
+        .includes(String(dependsOnValue))
+    }
+
+    return isTrue(dependsOnValue)
+  }
+
+  const getAttributeValueFromPath = (attributePath, languageBased) => {
+    const path = attributePath.split('.')
+    const attribute = path.reduce((acc, key) => acc[key], question)
+
+    if (!attribute) {
+      return ''
+    }
+
+    if (['string', 'number', 'boolean'].includes(typeof attribute)) {
+      return attribute
+    } else if (typeof attribute === 'object') {
+      if (attribute[''] && !languageBased) {
+        return attribute['']
+      }
+
+      return attribute[language]
+    }
+
+    return undefined
+  }
+
+  const getFullAttributeValueFromPath = (attributePath) => {
+    const path = attributePath.split('.')
+    return path.reduce((acc, key) => acc[key], question) || ''
+  }
+
+  const getUpdateValueFromPath = (value, attribute) => {
+    const attributePath = attribute?.attributePath ?? ''
+    const attributeName = attributePath.toString().includes('attributes.')
+      ? attributePath.replace('attributes.', '')
+      : ''
+
+    // Todo: why is it called advanced attribute?
+    const isAdvancedAttribute = attributePath.includes('attributes.')
+
+    const updateValue = {}
+
+    if (isAdvancedAttribute) {
+      if (attribute.languageBased) {
+        updateValue[attributeName] = {
+          ...getFullAttributeValueFromPath(attributePath),
+          [language]: value,
+        }
+      } else {
+        updateValue[attributeName] = {
+          ['']: value,
+        }
+      }
+    } else {
+      attribute.returnValues.map((returnValue) => {
+        updateValue[returnValue] = value[returnValue]
+          ? value[returnValue]
+          : value
+      })
+    }
+
+    return { ...updateValue }
+  }
+
+  if (!attributes.length) {
+    return <></>
+  }
+
+  const handleUpdateAttribute = (value, attribute) => {
+    // Advanced means the attribute is  inside the attributes object.
+    // Like attributes.numbers_only => is an advanced attribute
+    // But mandatory for instance is not an advanced attribute but a base attribute.
+    const isAdvancedAttribute = attribute.attributePath.includes('attributes.')
+
+    const updateValue = getUpdateValueFromPath(value, attribute)
+    handleUpdate(updateValue, isAdvancedAttribute)
+
+    // update other attributes that depends on this attribute
+    attributes.map((dependsOnAttribute) => {
+      if (
+        dependsOnAttribute.dependsOn &&
+        dependsOnAttribute.dependsOn.attributePath === attribute.attributePath
+      ) {
+        if (!isDependsOnSatisfied(dependsOnAttribute.dependsOn, value)) {
+          const isAdvancedAttribute =
+            dependsOnAttribute.attributePath.includes('attributes.')
+
+          const updateValue = getUpdateValueFromPath(
+            dependsOnAttribute.onDependsToggle.onFalse,
+            dependsOnAttribute
+          )
+          handleUpdate(updateValue, isAdvancedAttribute)
+        }
+      }
+    })
+  }
+
+  return (
+    <SettingsWrapper
+      simpleSettings={simpleSettings}
+      isAdvanced={isAdvanced}
+      title={title}
+    >
+      {attributes.map((attribute) => {
+        if (
+          (attribute.attributePath === 'relevance' &&
+            process.env.REACT_APP_DEV_MODE) ||
+          attribute.hidden
+        ) {
+          return (
+            <React.Fragment
+              key={`${title}-settings-${attribute.attributePath}`}
+            ></React.Fragment>
+          )
+        }
+
+        // if the attribute depends on another attribute and it's not true, skip this attribute
+        if (attribute.dependsOn) {
+          const dependsOn = attribute.dependsOn
+          const dependsOnValue = getAttributeValueFromPath(
+            dependsOn.attributePath,
+            dependsOn.languageBased
+          )
+
+          if (!isDependsOnSatisfied(dependsOn, dependsOnValue)) {
+            return (
+              <React.Fragment
+                key={`${title}-settings-${attribute.attributePath}`}
+              ></React.Fragment>
+            )
+          }
+        }
+
+        const value = getAttributeValueFromPath(
+          attribute.attributePath,
+          attribute.languageBased
+        )
+        const isDisabled =
+          ([
+            'questionThemeName',
+            'encrypted',
+            'attributes.save_as_default',
+            'defaultAttributeValuesActions',
+            'other',
+          ].includes(attribute.attributePath) ||
+            attribute.disableWhenActive) &&
+          isSurveyActive
+            ? true
+            : attribute.action &&
+              (isTempId(question.qid) || !hasSurveyUpdatePermission)
+
+        const options =
+          typeof attribute.getOptions === 'function'
+            ? attribute.getOptions({ question, language })
+            : undefined
+
+        const attributeProps = {
+          ...attribute.props,
+          ...(options ? { options } : {}),
+          ...(attribute.action
+            ? {
+                hasDefaultAttributeValues,
+              }
+            : {}),
+        }
+
+        return (
+          <div
+            className="right-side-bar-settings"
+            key={`${question?.qid}-${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
+          >
+            <TooltipContainer
+              tip={getTooltipMessages().ACTIVE_DISABLED}
+              showTip={isDisabled}
+            >
+              <attribute.component
+                {...attributeProps}
+                activeDisabled={isDisabled}
+                noPermissionDisabled={true}
+                value={
+                  value
+                    ? value
+                    : attributeProps.value
+                      ? attributeProps.value
+                      : ''
+                }
+                name={attribute.attributePath}
+                update={(value) =>
+                  attribute.action
+                    ? handleUpdate(value, false)
+                    : handleUpdateAttribute(value, attribute)
+                }
+                isSimpleSettings={simpleSettings}
+                theme="light"
+              />
+            </TooltipContainer>
+          </div>
+        )
+      })}
+    </SettingsWrapper>
+  )
+}

@@ -2,5 +2,4 @@
 
 class DataSetGenderDropdown extends QuestionBaseDataSet
 {
-
 }

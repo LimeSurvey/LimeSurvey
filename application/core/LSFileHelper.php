@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2019 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2019 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -21,7 +21,6 @@
 
 class LSFileHelper extends CFileHelper
 {
-
     /**
      * @inheritdoc
      * Can not call parent since usage of self::getMimeType
@@ -36,7 +35,7 @@ class LSFileHelper extends CFileHelper
             $magicFile = Yii::app()->getConfig('magic_file');
         }
         if (empty($magicFile) && $mimeTypes === null) {
-            $mimeTypes=require(Yii::getPathOfAlias('application.core.utils.fileExtensions').'.php');
+            $mimeTypes = require(Yii::getPathOfAlias('application.core.utils.fileExtensions') . '.php');
         } elseif ($magicFile !== null && !isset($customMimeTypes[$magicFile])) {
             $customMimeTypes[$magicFile] = require($magicFile);
         }

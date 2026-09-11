@@ -1,7 +1,8 @@
 <?php
+
 /*
 * LimeSurvey
-* Copyright (C) 2007-2023 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -16,14 +17,14 @@
  */
 class LSGettextMoFile extends CGettextMoFile
 {
-	/**
-	 * @inheritdoc
-	 */
-	protected function readString($fr, $length, $offset = null)
-	{
-		if($offset !== null) {
-			fseek($fr, $offset);
+    /**
+     * @inheritdoc
+     */
+    protected function readString($fr, $length, $offset = null)
+    {
+        if ($offset !== null) {
+            fseek($fr, $offset);
         }
-		return (string) $this->readByte($fr, $length);
-	}
+        return (string) $this->readByte($fr, $length);
+    }
 }

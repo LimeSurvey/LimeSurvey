@@ -38,7 +38,7 @@ class SmtpOAuthController extends LSBaseController
     public function actionPrepareRefreshTokenRequest($plugin)
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->createUrl("/admin"));
         }
 
@@ -88,7 +88,7 @@ class SmtpOAuthController extends LSBaseController
     public function actionLaunchRefreshTokenRequest($plugin)
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->redirect(Yii::app()->createUrl("/admin"));
         }
 

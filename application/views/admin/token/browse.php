@@ -41,22 +41,34 @@ $aLanguageNames = implode(";", $aLanguageNames);
     <div class="row">
         <div class="content-right">
             <?php
+            require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.TokenListMassiveActions') . '.php';
+            $floatingActions = \actions\TokenListMassiveActions::getActions((int)$_GET['surveyid']);
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'       => 'tid',
+                'gridId'   => 'token-grid',
+                'aActions' => $floatingActions,
+            ]);
+            ?>
+            <?php
             $this->widget('application.extensions.admin.grid.CLSGridView', [
                 'dataProvider'          => $model->search(),
                 'filter'                => $model,
                 'id'                    => 'token-grid',
                 'emptyText'             => gT('No survey participants found.'),
-                'massiveActionTemplate' => $massiveAction,
-                'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSizeTokenView',
-                            $pageSizeTokenView,
-                            Yii::app()->params['pageSizeOptionsTokens'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto'])),
+                'showSelectionBar'      => false,
+                'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                    gT('%s rows per page'),
+                    CHtml::dropDownList(
+                        'pageSizeTokenView',
+                        $pageSizeTokenView,
+                        Yii::app()->params['pageSizeOptionsTokens'],
+                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
+                    )
+                ),
                 'columns'               => $model->getAttributesForGrid(),
                 'ajaxUpdate'            => 'token-grid',
                 'ajaxType'              => 'POST',
-                'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();']
+                'lsAfterAjaxUpdate'       => ['onUpdateTokenGrid();', 'LS.restoreFocusAfterSort("token-grid");']
             ]);
             ?>
         </div>
@@ -74,7 +86,8 @@ $aLanguageNames = implode(";", $aLanguageNames);
         "if($('#token-grid').length > 0){
             reinstallParticipantsFilterDatePicker();
         }",
-        LSYii_ClientScript::POS_POSTSCRIPT);
+        LSYii_ClientScript::POS_POSTSCRIPT
+    );
     ?>
 </div>
 
@@ -112,3 +125,5 @@ $aLanguageNames = implode(";", $aLanguageNames);
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<?php $this->renderPartial('/admin/token/_bounceProcessingModal'); ?>

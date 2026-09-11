@@ -3,7 +3,6 @@
  * @var UserRoleController $this
  * @var CActiveDataProvider $dataProvider
  * @var Permissiontemplates $model
- * @var string $massiveAction
  */
 
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
@@ -16,37 +15,54 @@ echo viewHelper::getViewTestTag('roles');
     <div class="row">
         <div class="col-12">
             <?php
+            require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.UserRoleListMassiveActions') . '.php';
+            $floatingActions = \actions\UserRoleListMassiveActions::getActions();
+            $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                'pk'       => 'selectedRole',
+                'gridId'   => 'RoleControl--identity-gridPanel',
+                'aActions' => $floatingActions,
+            ]);
+
             $this->widget(
                 'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'RoleControl--identity-gridPanel',
+                    'caption' => gT('User roles'),
                     'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
                     'filter' => $model,
-                    'massiveActionTemplate' => $massiveAction,
+                    'showSelectionBar' => false,
                     'ajaxType' => 'POST',
                     'ajaxUpdate' => 'RoleControl--identity-gridPanel',
                     'afterAjaxUpdate' => 'LS.RoleControl.bindButtons',
                     'pager' => [
                         'class' => 'application.extensions.admin.grid.CLSYiiPager',
                     ],
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                        . sprintf(
+                    'summaryText' => html_entity_decode(
+                        gT('Displaying {start}-{end} of {count} result(s).') . ' ' .
+                        '<span id="RoleControl--identity-gridPanel-rows-per-page-label">' .
+                        sprintf(
                             gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
                                 App()->params['pageSizeOptions'],
-                                array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
+                                [
+                                    'class' => 'changePageSize form-select',
+                                    'style' => 'display: inline; width: auto',
+                                    'aria-labelledby' => 'RoleControl--identity-gridPanel-rows-per-page-label',
+                                ]
                             )
-                        ),
+                        ) .
+                        '</span>'
+                    ),
                 ]
             );
             ?>
         </div>
     </div>
-    <div id='RoleControl-action-modal' class="modal fade RoleControl--selector--modal" tabindex="-1" role="dialog">
+    <div id='RoleControl-action-modal' class="modal fade RoleControl--selector--modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle-addedit" aria-modal="true">
         <div id="userrole-modal-dialog" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
             </div>

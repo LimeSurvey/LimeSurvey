@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2011-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -14,7 +14,6 @@
  */
 class InstallCommand extends CConsoleCommand
 {
-
     /**
      * If true, output trace.
      * @var boolean
@@ -28,8 +27,10 @@ class InstallCommand extends CConsoleCommand
     public $connection;
 
     /**
-     * @param array $args
-     * @return int
+     * Installs LimeSurvey: creates the database (if needed), tables, admin user and permissions.
+     *
+     * @param array $args Expected order: [0] admin username, [1] admin password, [2] admin full name, [3] admin email, [4] optional verbose flag.
+     * @return int Returns 0 on success, 1 if required arguments are missing or table creation fails.
      * @throws CException
      * @throws Exception
      */
@@ -77,9 +78,11 @@ class InstallCommand extends CConsoleCommand
 
 
     /**
-     * @param string $sProperty
-     * @param string $connectionString
-     * @return string|null
+     * Extracts the value of a property (e.g. dbname) from a PDO-style connection string.
+     *
+     * @param string $sProperty Name of the property to extract, e.g. 'dbname'.
+     * @param string|null $connectionString Connection string to parse; defaults to the current connection's string.
+     * @return string|null The property value, or null if not found.
      */
     public function getDBConnectionStringProperty($sProperty, $connectionString = null)
     {
@@ -94,9 +97,10 @@ class InstallCommand extends CConsoleCommand
     }
 
     /**
-     * Create database with name?
+     * Creates the database specified in the connection string, then reconnects to it.
+     *
      * @return void
-     * @throws CException
+     * @throws CException If the connection cannot be opened or the database could not be created.
      */
     protected function createDatabase()
     {
@@ -158,7 +162,9 @@ class InstallCommand extends CConsoleCommand
     }
 
     /**
-     * @param string $msg
+     * Prints a message to stdout, but only when $noisy is true.
+     *
+     * @param string $msg The message to print.
      * @return void
      */
     public function output($msg)
@@ -181,6 +187,12 @@ class InstallCommand extends CConsoleCommand
     }
 
 
+    /**
+     * Sets the connection charset to utf8mb4 for the supported database drivers.
+     *
+     * @return void
+     * @throws Exception If the database driver is not supported.
+     */
     private function prepareCharset()
     {
         $this->connection->charset = 'utf8';
@@ -199,6 +211,12 @@ class InstallCommand extends CConsoleCommand
         }
     }
 
+    /**
+     * Inserts the initial admin user record.
+     *
+     * @param array $data Same order as run()'s $args: [0] username, [1] password, [2] full name, [3] email.
+     * @return void
+     */
     private function createUser($data)
     {
         $this->output('Creating admin user...');
@@ -215,6 +233,11 @@ class InstallCommand extends CConsoleCommand
         );
     }
 
+    /**
+     * Grants the initial admin user (uid=1) the superadmin permission.
+     *
+     * @return void
+     */
     private function createPermissions()
     {
         $this->output('Creating permissions ...');

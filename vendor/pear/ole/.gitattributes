@@ -1,3 +1,0 @@
-# Debug with: git archive --format=tar HEAD | tar t
-
-/tests                export-ignore

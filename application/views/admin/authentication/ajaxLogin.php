@@ -16,65 +16,55 @@
         </div>
 
         <!-- Form -->
-        <?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id'=>'loginform', 'name'=>'loginform'));?>
+        <?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id' => 'loginform', 'name' => 'loginform'));?>
             <div class="row login-content login-content-form">
                 <div class="col-md-6 offset-md-3">
                     <?php
                         $pluginNames = array_keys($pluginContent);
-                        if (!isset($defaultAuth))
-                        {
-                            // Make sure we have a default auth, if not set, use the first one we find
-                            $defaultAuth = reset($pluginNames);
-                        }
+                    if (!isset($defaultAuth)) {
+                        // Make sure we have a default auth, if not set, use the first one we find
+                        $defaultAuth = reset($pluginNames);
+                    }
 
-                        if (count($pluginContent)>1)
-                        {
-                            $selectedAuth = App()->getRequest()->getParam('authMethod', $defaultAuth);
-                            if (!in_array($selectedAuth, $pluginNames))
-                            {
-                                $selectedAuth = $defaultAuth;
-                            }
-                    ?>
+                    if (count($pluginContent) > 1) {
+                        $selectedAuth = App()->getRequest()->getParam('authMethod', $defaultAuth);
+                        if (!in_array($selectedAuth, $pluginNames)) {
+                            $selectedAuth = $defaultAuth;
+                        }
+                        ?>
 
                    <label for='authMethod'><?php eT("Authentication method"); ?></label>
                         <?php
                             $possibleAuthMethods = array();
-                            foreach($pluginNames as $plugin)
-                            {
-                                $info = App()->getPluginManager()->getPluginInfo($plugin);
-                                $possibleAuthMethods[$plugin] = $info['pluginName'];
-                            }
+                        foreach ($pluginNames as $plugin) {
+                            $info = App()->getPluginManager()->getPluginInfo($plugin);
+                            $possibleAuthMethods[$plugin] = $info['pluginName'];
+                        }
                             //print_r($possibleAuthMethods); die();
 
                             $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
-                                'name' => 'authMethod',
-                                'data' => $possibleAuthMethods,
-                                'value' => $selectedAuth,
-                                'pluginOptions' => array(
-                                    'options' => array(
-                                            'onChange'=>'this.form.submit();'
-                                            )
+                            'name' => 'authMethod',
+                            'data' => $possibleAuthMethods,
+                            'value' => $selectedAuth,
+                            'pluginOptions' => array(
+                                'options' => array(
+                                        'onChange' => 'this.form.submit();'
+                                        )
                             )));
-
-
-                        }
-                        else
-                        {
-                            echo CHtml::hiddenField('authMethod', $defaultAuth);
-                            $selectedAuth = $defaultAuth;
-                        }
-                        if (isset($pluginContent[$selectedAuth]))
-                        {
-                            $blockData = $pluginContent[$selectedAuth];
-                            /* @var $blockData PluginEventContent */
-                            echo $blockData->getContent();
-                        }
+                    } else {
+                        echo CHtml::hiddenField('authMethod', $defaultAuth);
+                        $selectedAuth = $defaultAuth;
+                    }
+                    if (isset($pluginContent[$selectedAuth])) {
+                        $blockData = $pluginContent[$selectedAuth];
+                        /* @var $blockData PluginEventContent */
+                        echo $blockData->getContent();
+                    }
 
                         $languageData = array(
                             'default' => gT('Default')
                         );
-                        foreach (getLanguageDataRestricted(true) as $sLangKey => $aLanguage)
-                        {
+                        foreach (getLanguageDataRestricted(true) as $sLangKey => $aLanguage) {
                             $languageData[$sLangKey] =  html_entity_decode((string) $aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
                         }
                         echo '<div id="language-selector">';
@@ -94,8 +84,7 @@
                         ?>
                         </div>
 
-                        <?php   if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
-                        { ?>
+                        <?php   if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true) { ?>
                             <p><?php eT("Demo mode: Login credentials are prefilled - just click the Login button."); ?></p>
                             <?php
                         } ?>
@@ -110,8 +99,7 @@
                             <button type="submit" class="btn btn-outline-secondary" name='login_submit' value='login'><?php eT('Log in');?></button><br />
                             <br/>
                             <?php
-                            if (Yii::app()->getConfig("display_user_password_in_email") === true)
-                            {
+                            if (Yii::app()->getConfig("display_user_password_in_email") === true) {
                                 ?>
                                 <a href='<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php eT("Forgot your password?"); ?></a><br />
                                 <?php
@@ -138,18 +126,18 @@ $( document ).ready(function() {
         console.log(data);
         console.log(url);
 
-		var o = {};
-		var a = data;
-		$.each(a, function() {
-			if (o[this.name] !== undefined) {
-				if (!o[this.name].push) {
-					o[this.name] = [o[this.name]];
-				}
-				o[this.name].push(this.value || '');
-			} else {
-				o[this.name] = this.value || '';
-			}
-		});
+        var o = {};
+        var a = data;
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
 
         o.login_submit = 'login';
 

@@ -2,7 +2,7 @@
 <?php
     /*
     * LimeSurvey (tm)
-    * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2011-2026 The LimeSurvey Project Team
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant
@@ -24,8 +24,17 @@ define('BASEPATH', '.');
 // The PHP file extension
 define('EXT', '.php');
 
+// fix for fcgi
+defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
+// NOTE: YII_DEBUG must be defined BEFORE requiring yii.php below. YiiBase.php (loaded by
+// yii.php) does `defined('YII_DEBUG') or define('YII_DEBUG', false);` as one of its first
+// statements. If that runs first, YII_DEBUG gets permanently locked to false and the
+// `defined('YII_DEBUG') or define('YII_DEBUG', true)` further down becomes a no-op
+// (PHP constants cannot be redefined), regardless of the 'debug' setting in config.php.
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+
 require_once __DIR__ . '/../../vendor/autoload.php';
-require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . 'yii'. DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
+require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'yiisoft' . DIRECTORY_SEPARATOR . 'yii' . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
 
 // Load configuration.
 $sCurrentDir = dirname(__FILE__);
@@ -50,10 +59,6 @@ if (!isset($config['runtimePath'])) {
     }
     $config['runtimePath'] = $runtimePath;
 }
-
-// fix for fcgi
-defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
-defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 /* specific for web */
 unset($config['defaultController']);

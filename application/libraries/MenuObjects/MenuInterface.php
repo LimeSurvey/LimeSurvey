@@ -1,4 +1,5 @@
 <?php
+
 // ensure backwards compatibility
 namespace LimeSurvey\Menu;
 

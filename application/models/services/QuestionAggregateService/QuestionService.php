@@ -12,6 +12,7 @@ use Condition;
 use LSYii_Application;
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\{
+    QuestionAttributeHelper,
     Proxy\ProxySettingsUser,
     Proxy\ProxyQuestion,
     Exception\PersistErrorException,
@@ -32,6 +33,7 @@ class QuestionService
     private Survey $modelSurvey;
     private Condition $modelCondition;
     private L10nService $l10nService;
+    private QuestionAttributeHelper $questionAttributeHelper;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private LSYii_Application $yiiApp;
@@ -41,6 +43,7 @@ class QuestionService
         Survey $modelSurvey,
         Condition $modelCondition,
         L10nService $l10nService,
+        QuestionAttributeHelper $questionAttributeHelper,
         ProxySettingsUser $proxySettingsUser,
         ProxyQuestion $proxyQuestion,
         LSYii_Application $yiiApp
@@ -49,6 +52,7 @@ class QuestionService
         $this->modelSurvey = $modelSurvey;
         $this->modelCondition = $modelCondition;
         $this->l10nService = $l10nService;
+        $this->questionAttributeHelper = $questionAttributeHelper;
         $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyQuestion = $proxyQuestion;
         $this->yiiApp = $yiiApp;
@@ -270,36 +274,12 @@ class QuestionService
      */
     private function updateQuestionData(Question $question, $data)
     {
-        // @todo something wrong in frontend ... (?what is wrong?)
-        if (isset($data['same_default'])) {
-            if ($data['same_default'] == 1) {
-                $data['same_default'] = 0;
-            } else {
-                $data['same_default'] = 1;
-            }
-        }
-
-        if (!isset($data['same_script'])) {
-            $data['same_script'] = 0;
-        }
+        $data = $this->normalizeQuestionFlags($data);
 
         $originalRelevance = $question->relevance;
-
+        $originalTitle = $question->title;
         if ($question->type !== ($data['type'] ?? $question->type)) {
-            $answers = Answer::model()->findAll('qid = :qid', [':qid' => $question->qid]);
-            $qids = [];
-            foreach ($answers as $answer) {
-                $conditions = Condition::model()->findAll('cqid = :qid and value = :title', [':qid' => $question->qid, ':title' => $answer->code]);
-                foreach ($conditions as $condition) {
-                    $qids[$condition->qid] = true;
-                    $condition->delete();
-                }
-                AnswerL10n::model()->deleteAll('aid = :aid', [':aid' => $answer->aid]);
-                $answer->delete();
-            }
-            foreach ($qids as $qid => $value) {
-                LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
-            }
+            $this->removeAnswersAndDependentConditions($question->qid);
         }
 
         $question->setAttributes($data, false);
@@ -310,6 +290,9 @@ class QuestionService
             );
         }
 
+        if ($question->title !== $originalTitle) {
+            $this->upgradeDependentQuestionRelevance($question->qid);
+        }
         // If relevance equation was manually edited,
         // existing conditions must be cleared
         if (
@@ -325,6 +308,67 @@ class QuestionService
     }
 
     /**
+     * @param array $data
+     * @return array
+     */
+    private function normalizeQuestionFlags($data)
+    {
+        // @todo something wrong in frontend ... (?what is wrong?)
+        if (isset($data['same_default'])) {
+            $data['same_default'] = $data['same_default'] == 1 ? 0 : 1;
+        }
+
+        if (!isset($data['same_script'])) {
+            $data['same_script'] = 0;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param int $questionId
+     * @return void
+     */
+    private function removeAnswersAndDependentConditions($questionId)
+    {
+        $answers = Answer::model()->findAll('qid = :qid', [':qid' => $questionId]);
+        $qids = [];
+        foreach ($answers as $answer) {
+            $conditions = Condition::model()->findAll(
+                'cqid = :qid and value = :title',
+                [':qid' => $questionId, ':title' => $answer->code]
+            );
+            foreach ($conditions as $condition) {
+                $qids[$condition->qid] = true;
+                $condition->delete();
+            }
+            AnswerL10n::model()->deleteAll('aid = :aid', [':aid' => $answer->aid]);
+            $answer->delete();
+        }
+
+        foreach (array_keys($qids) as $qid) {
+            LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
+        }
+    }
+
+    /**
+     * @param int $questionId
+     * @return void
+     */
+    private function upgradeDependentQuestionRelevance($questionId)
+    {
+        $dependentConditions = Condition::model()->findAllByAttributes([
+            'cqid' => $questionId
+        ]);
+        $dependentQuestionIds = [];
+        foreach ($dependentConditions as $condition) {
+            $dependentQuestionIds[(int) $condition->qid] = true;
+        }
+        foreach (array_keys($dependentQuestionIds) as $dependentQuestionId) {
+            LimeExpressionManager::UpgradeConditionsToRelevance(null, $dependentQuestionId);
+        }
+    }
+    /**
      * Save defaults
      */
     private function saveDefaults($data)
@@ -337,11 +381,17 @@ class QuestionService
             )
             && $data['question']['save_as_default'] == 'Y'
         ) {
+            $advancedSettings = $data['advancedSettings'] ?? [];
+            if (!empty($data['loadCurrentAdvancedSettings'])) {
+                $advancedSettings = $this->getCurrentAdvancedSettings(
+                    (int) $data['question']['qid']
+                );
+            }
             $this->proxySettingsUser->setUserSetting(
                 'question_default_values_'
                 . $data['question']['type'],
                 ls_json_encode(
-                    $data['advancedSettings']
+                    $advancedSettings
                 )
             );
         } elseif (
@@ -356,6 +406,40 @@ class QuestionService
                 . $data['question']['type']
             );
         }
+    }
+
+    /**
+     * Return the currently persisted question attributes in the same shape as
+     * advancedSettings. Patch requests update attributes independently from
+     * the question, so action-only requests do not contain advancedSettings.
+     */
+    private function getCurrentAdvancedSettings(int $questionId): array
+    {
+        $attributes = [];
+        foreach ($this->getQuestionAttributes($questionId) as $attribute) {
+            $attributes[0][$attribute->attribute][$attribute->language] = $attribute->value;
+        }
+        return $attributes;
+    }
+
+    /**
+     * Return the current user's saved advanced attribute defaults for a
+     * question type, flattened to the API's attribute => language => value
+     * representation.
+     */
+    public function getDefaultAttributeValues(string $questionType): array
+    {
+        return $this->questionAttributeHelper
+            ->getUserDefaultsForQuestionType($questionType);
+    }
+
+    /**
+     * Return the current user's saved attribute defaults indexed by question type.
+     */
+    public function getDefaultAttributeValuesByQuestionType(): array
+    {
+        return $this->questionAttributeHelper
+            ->getUserDefaultsByQuestionType();
     }
 
     /**

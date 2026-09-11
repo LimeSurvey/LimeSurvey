@@ -30,8 +30,8 @@ function doFileUpload()
 {
     var fieldname = $('#ia').val();
     /* Load the previously uploaded files */
-    var filecount = window.parent.window.$('#' + fieldname + '_filecount').val();
-    $('#' + fieldname + '_filecount').val(filecount);
+    var filecount = window.parent.window.$('#' + fieldname + '_Cfilecount').val();
+    $('#' + fieldname + '_Cfilecount').val(filecount);
 
     var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
 
@@ -103,7 +103,7 @@ function doFileUpload()
         ),
         onSubmit: function (file, ext) {
             var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
-            var filecount = parseInt($('#' + fieldname + '_filecount').val());
+            var filecount = parseInt($('#' + fieldname + '_Cfilecount').val());
             var allowed_filetypes = $('#' + fieldname + '_allowed_filetypes').val().split(",");
 
             /* If maximum number of allowed filetypes have already been uploaded,
@@ -217,11 +217,11 @@ function doFileUpload()
 
                 // add file to the list
                 $('#field' + fieldname + '_listfiles').prepend(previewblock);
-                var filecount = parseInt($('#' + fieldname + '_filecount').val());
+                var filecount = parseInt($('#' + fieldname + '_Cfilecount').val());
                 var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
                 filecount++;
                 var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
-                $('#' + fieldname + '_filecount').val(filecount);
+                $('#' + fieldname + '_Cfilecount').val(filecount);
 
                 if (filecount < minfiles) {
                     $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s', (minfiles - filecount))).removeClass('d-none');
@@ -292,7 +292,7 @@ function passJSON(fieldname, show_title, show_comment, pos)
 
 function saveAndExit(fieldname, show_title, show_comment, pos)
 {
-    var filecount = parseInt($('#' + fieldname + '_filecount').val());
+    var filecount = parseInt($('#' + fieldname + '_Cfilecount').val());
     var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
 
     if (minfiles != 0 && filecount < minfiles && showpopups)
@@ -318,7 +318,7 @@ function deletefile(fieldname, count)
     var filename = $("#" + fieldname + "_filename_" + count).val();
     var name = $("#" + fieldname + "_name_" + count).val();
 
-    var filecount = parseInt($('#' + fieldname + '_filecount').val());
+    var filecount = parseInt($('#' + fieldname + '_Cfilecount').val());
     var licount = parseInt($('#' + fieldname + '_licount').val());
 
     fileheight = $("#" + fieldname + "_li_" + count).height();
@@ -342,7 +342,7 @@ function deletefile(fieldname, count)
             }, 5000);
             $("#" + fieldname + "_li_" + count).hide();
             filecount--;
-            $('#' + fieldname + '_filecount').val(filecount);
+            $('#' + fieldname + '_Cfilecount').val(filecount);
             file_index = $("#" + fieldname + "_file_index_" + count).val();
             for (j = count; j <= licount; j++)
             {

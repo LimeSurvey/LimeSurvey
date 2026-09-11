@@ -35,7 +35,7 @@ This will generate a dropup button of this kind :
 The array of actions and modals can accept different types of items :
 
 - **separator**: generates a separator in the dropup list
-- **dropdown-header**: generates a header un the dropup list
+- **dropdown-header**: generates a header in the dropup list
 - **action**: generates an action link, and the modal associated to it (if needed).
 
 ```php
@@ -134,7 +134,7 @@ This will generate a dropup button of this kind :
 You can also add some data attributes in the link, if you need it for custom JavaScript. Just add an array 'aLinkSpecificDatas' to your action. In LS, it's used only for the token grid, for the redirect action type.
 
 ```php
-// Exemple of action with some custom data attribute in the link
+// Example of action with some custom data attribute in the link
 array(
     // li element
     'type'        => 'action',                                                        
@@ -222,7 +222,7 @@ The form will not be posted to the url directly by the ajax request. Indeed, the
 ```
 
 ## Special cases with special classes:
-To fit LimeSurvey specifities, two special cases has been added to make the code dryer:
+To fit LimeSurvey specifics, two special cases have been added to make the code dryer:
 - A special case for defining question attributes (adding a class "attributes-to-update" to a custom-data)
 
 ### Question attributes

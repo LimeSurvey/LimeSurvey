@@ -397,12 +397,11 @@ class Transformer implements TransformerInterface
     }
 
     /**
-     * Called automatically by DI container via @Inject annotation
-     * Whenever we are on PHP 8.1 we can switch this to PHP attributes
+     * Called automatically by DI container via #[Inject] attribute
      * @param Registry $registry
      * @return void
-     * @Inject
      */
+    #[\DI\Attribute\Inject]
     public function setRegistry(Registry $registry)
     {
         $this->registry = $registry;

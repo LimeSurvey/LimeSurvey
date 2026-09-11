@@ -98,6 +98,13 @@ var UserManagement = function () {
                         $('#UserManagement--modalform').off('submit.USERMANAGERMODAL');
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         if (!result.hasOwnProperty('html')) {
+                            var isDelete = /\/deleteUser/.test($('#UserManagement--modalform').attr('action'));
+                            if (isDelete) {
+                                var userId = data.find(function(f) { return f.name === 'userid'; });
+                                if (userId) {
+                                    LS.gridSelection.markRowDeleted('usermanagement--identity-gridPanel', userId.value);
+                                }
+                            }
                             triggerModalClose();
                             window.LS.ajaxAlerts(result.message, 'success', {showCloseButton: true, useHtml: true, showIcon: true});
                             if (result.hasOwnProperty('href')) {
@@ -116,7 +123,7 @@ var UserManagement = function () {
                         return;
                     }
                     $("#usermanagement-modal-doalog").offset({ top: 10 });
-                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger');
+                    $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger').focus();
                 },
                 error: function (request, status, error) {
                     if (request && request.responseJSON && request.responseJSON.message) {
@@ -126,7 +133,7 @@ var UserManagement = function () {
                                 'danger',
                                 {showCloseButton: true, timeout: 10000}
                             )
-                        ).removeClass('d-none');
+                        ).removeClass('d-none').focus();
                     } else {
                         alert('An error occured while trying to save, please reload the page Code:1571926261195');
                     }

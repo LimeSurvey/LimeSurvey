@@ -14,38 +14,21 @@ use DI\Definition\ExtendsPreviousDefinition;
  */
 class SourceChain implements DefinitionSource, MutableDefinitionSource
 {
-    /**
-     * @var DefinitionSource[]
-     */
-    private $sources;
+    private ?MutableDefinitionSource $mutableSource;
 
     /**
-     * @var DefinitionSource
+     * @param list<DefinitionSource> $sources
      */
-    private $rootSource;
-
-    /**
-     * @var MutableDefinitionSource|null
-     */
-    private $mutableSource;
-
-    /**
-     * @param DefinitionSource[] $sources
-     */
-    public function __construct(array $sources)
-    {
-        // We want a numerically indexed array to ease the traversal later
-        $this->sources = array_values($sources);
-        $this->rootSource = $this;
+    public function __construct(
+        private array $sources,
+    ) {
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param int $startIndex Use this parameter to start looking from a specific
      *                        point in the source chain.
      */
-    public function getDefinition(string $name, int $startIndex = 0)
+    public function getDefinition(string $name, int $startIndex = 0) : ?Definition
     {
         $count = count($this->sources);
         for ($i = $startIndex; $i < $count; ++$i) {
@@ -67,20 +50,17 @@ class SourceChain implements DefinitionSource, MutableDefinitionSource
 
     public function getDefinitions() : array
     {
-        $names = [];
-        foreach ($this->sources as $source) {
-            $names = array_merge($names, $source->getDefinitions());
-        }
-        $names = array_keys($names);
+        $allDefinitions = array_merge(...array_map(fn ($source) => $source->getDefinitions(), $this->sources));
 
-        $definitions = array_combine($names, array_map(function (string $name) {
-            return $this->getDefinition($name);
-        }, $names));
+        /** @var string[] $allNames */
+        $allNames = array_keys($allDefinitions);
 
-        return $definitions;
+        $allValues = array_filter(array_map(fn ($name) => $this->getDefinition($name), $allNames));
+
+        return array_combine($allNames, $allValues);
     }
 
-    public function addDefinition(Definition $definition)
+    public function addDefinition(Definition $definition) : void
     {
         if (! $this->mutableSource) {
             throw new \LogicException("The container's definition source has not been initialized correctly");
@@ -101,7 +81,7 @@ class SourceChain implements DefinitionSource, MutableDefinitionSource
         }
     }
 
-    public function setMutableDefinitionSource(MutableDefinitionSource $mutableSource)
+    public function setMutableDefinitionSource(MutableDefinitionSource $mutableSource) : void
     {
         $this->mutableSource = $mutableSource;
 

@@ -4,6 +4,9 @@ namespace ls\tests;
 
 use Yii;
 
+/**
+ * @group api
+ */
 class RemoteControlJsonrpcTest extends TestBaseClassWeb
 {
     private static $tmpBaseUrl;
@@ -18,8 +21,7 @@ class RemoteControlJsonrpcTest extends TestBaseClassWeb
         $urlMan = Yii::app()->urlManager;
         self::$tmpBaseUrl = $urlMan->getBaseUrl();
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-        //$serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
-        $serverUrl = $urlMan->createUrl('/admin/remotecontrol');
+        $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
 
         self::$tmpRPCType = Yii::app()->getConfig('RPCInterface');
 
@@ -65,6 +67,7 @@ class RemoteControlJsonrpcTest extends TestBaseClassWeb
         $this->assertIsArray($sessionKey);
         $this->assertSame("Invalid user name or password", $sessionKey['status']);
 
-        self::$client->call('release_session_key', [$sessionKey]);
+        // $sessionKey is an error array, not a valid key — do not attempt to release it
+        // self::$client->call('release_session_key', [$sessionKey]);
     }
 }

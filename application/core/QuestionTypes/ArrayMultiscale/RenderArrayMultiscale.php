@@ -165,11 +165,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $anscount = count($this->aSubQuestions[0]);
 
         foreach ($this->aSubQuestions[0] as $i => $oQuestionRow) {
-            $myfname = $this->sSGQA . $oQuestionRow->title;
-            $myfname0 = $this->sSGQA . $oQuestionRow->title . "#0";
-            $myfid0 = $this->sSGQA . $oQuestionRow->title . "_0";
-            $myfname1 = $this->sSGQA . $oQuestionRow->title . "#1";
-            $myfid1 = $this->sSGQA . $oQuestionRow->title . "_1";
+            $myfname = $this->sSGQA . '_S' . $oQuestionRow->qid;
+            $myfname0 = $this->sSGQA . '_S' . $oQuestionRow->qid . "#0";
+            $myfid0 = $this->sSGQA . '_S' . $oQuestionRow->qid . "_0";
+            $myfname1 = $this->sSGQA . '_S' . $oQuestionRow->qid . "#1";
+            $myfid1 = $this->sSGQA . '_S' . $oQuestionRow->qid . "_1";
             $sActualAnswer0 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname0), "");
             $sActualAnswer1 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname1), "");
 
@@ -193,8 +193,15 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
             $aData['labels0'] = $this->aLabels[0];
             $aData['labels1'] = $this->aLabels[1];
-            $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER);
-            $aData['aSubQuestions'][$i]['showNoAnswer1'] = ($sActualAnswer1 != '' && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER);
+            $showNoAnswer = (
+                $this->oQuestion->mandatory != 'Y'
+                && $this->oQuestion->mandatory != 'S'
+                && SHOW_NO_ANSWER
+            );
+            $aData['aSubQuestions'][$i]['showNoAnswer0'] = $showNoAnswer
+                && ($sActualAnswer0 !== '' || PRESELECT_NO_ANSWER);
+            $aData['aSubQuestions'][$i]['showNoAnswer1'] = $showNoAnswer
+                && ($sActualAnswer1 !== '' || PRESELECT_NO_ANSWER);
 
             $this->inputnames[] = $myfname0;
             $this->inputnames[] = $myfname1;
@@ -236,11 +243,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $answertextcenter = "";
             }
 
-            $myfname = $this->sSGQA . $oQuestionRow->title;
-            $myfname0 = $this->sSGQA . $oQuestionRow->title . '#0';
-            $myfid0 = $this->sSGQA . $oQuestionRow->title . '_0';
-            $myfname1 = $this->sSGQA . $oQuestionRow->title . '#1'; // new multi-scale-answer
-            $myfid1 = $this->sSGQA . $oQuestionRow->title . '_1';
+            $myfname = $this->sSGQA . '_S' . $oQuestionRow->qid;
+            $myfname0 = $this->sSGQA . '_S' . $oQuestionRow->qid . '#0';
+            $myfid0 = $this->sSGQA . '_S' . $oQuestionRow->qid . '_0';
+            $myfname1 = $this->sSGQA . '_S' . $oQuestionRow->qid . '#1'; // new multi-scale-answer
+            $myfid1 = $this->sSGQA . '_S' . $oQuestionRow->qid . '_1';
 
             $aData['aSubQuestions'][$i]['title'] = $oQuestionRow->title;
             $aData['aSubQuestions'][$i]['myfname'] = $myfname;
@@ -289,7 +296,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 // if second label set is used
 
                     if (!empty($this->getFromSurveySession($myfname1))) {
-                        //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
+                        //$answer .= $_SESSION['responses_'.Yii::app()->getConfig('surveyID')][$myfname1];
                         $aData['aSubQuestions'][$i]['sessionfname1'] = $this->getFromSurveySession($myfname1);
                     } else {
                         $aData['aSubQuestions'][$i]['sessionfname1'] = '';
@@ -301,7 +308,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                         // If value is empty, notset should be checked.
                         // string "0" should be considered as valid answer,
                         // so notset should not be checked in that case.
-                        if ($fname0value !== '0' && empty($fname0value)) {
+                        if (PRESELECT_NO_ANSWER && $fname0value !== '0' && empty($fname0value)) {
                             //$answer .= CHECKED;
                             $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                         } else {
@@ -329,7 +336,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                     // If value is empty, notset should be checked.
                     // string "0" should be considered as valid answer,
                     // so notset should not be checked in that case.
-                    if ($fname1value !== '0' && empty($fname1value)) {
+                    if (PRESELECT_NO_ANSWER && $fname1value !== '0' && empty($fname1value)) {
                         #$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname1_notset'] = CHECKED;
                     } else {
@@ -340,7 +347,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                     // If value is empty, notset should be checked.
                     // string "0" should be considered as valid answer,
                     // so notset should not be checked in that case.
-                    if ($fname0value !== '0' && empty($fname0value)) {
+                    if (PRESELECT_NO_ANSWER && $fname0value !== '0' && empty($fname0value)) {
                         //$answer .= CHECKED;
                         $aData['aSubQuestions'][$i]['myfname0_notset'] = CHECKED;
                     } else {

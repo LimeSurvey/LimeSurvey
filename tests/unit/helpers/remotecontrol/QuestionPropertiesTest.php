@@ -1,11 +1,11 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
 
 /**
  * Tests for the LimeSurvey remote API.
  */
-class QuestionGroupPropertiesTest extends BaseTest
+class QuestionPropertiesTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {

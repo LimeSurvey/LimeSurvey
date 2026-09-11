@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhTypeAhead widget class
  *
@@ -10,11 +11,11 @@
  * @package YiiWheels.widgets.typeahead
  * @uses YiiStrap.helpers.TbArray
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhTypeAhead extends CInputWidget
 {
-
     /**
      * @var array the plugin options
      * @see https://github.com/twitter/typeahead.js

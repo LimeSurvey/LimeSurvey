@@ -31,7 +31,11 @@ class QuestionThemeInstaller extends ExtensionInstaller
     public function install()
     {
         $extConfig = $this->getConfig();
-        $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $extConfig->getName();
+        $questionThemeName = $extConfig->getName();
+        if (!$this->validateQuestionThemeName($questionThemeName)) {
+            throw new Exception(gT('Invalid question theme name in config.xml'));
+        }
+        $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $questionThemeName;
 
         if ($this->fileFetcher->move($destdir)) {
             $questionTheme = new QuestionTheme();
@@ -90,12 +94,16 @@ class QuestionThemeInstaller extends ExtensionInstaller
     public function update()
     {
         $extConfig = $this->getConfig();
-        $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $extConfig->getName();
+        $questionThemeName = $extConfig->getName();
+        if (!$this->validateQuestionThemeName($questionThemeName)) {
+            throw new Exception(gT('Invalid question theme name in config.xml'));
+        }
+        $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $questionThemeName;
 
         if ($this->fileFetcher->move($destdir)) {
-            $questionTheme =  QuestionTheme::model()->findByAttributes(['name' => $extConfig->getName()]);
+            $questionTheme =  QuestionTheme::model()->findByAttributes(['name' => $questionThemeName]);
             if (empty($questionTheme)) {
-                throw new Exception('Tried to update question theme but found no theme with name ' . $extConfig->getName());
+                throw new Exception('Tried to update question theme but found no theme with name ' . $questionThemeName);
             }
             $xmlFolder = $this->getXmlFolder($destdir);
             if (empty($xmlFolder)) {
@@ -133,5 +141,29 @@ class QuestionThemeInstaller extends ExtensionInstaller
             }
         }
         return null;
+    }
+
+    /**
+     * Validate that a question theme name is safe to use for installation.
+     *
+     * @param string $questionThemeName
+     * @return bool
+     */
+    public function validateQuestionThemeName($questionThemeName)
+    {
+        // TODO: Should this be stricter, e.g. only allow alphanumeric characters plus hyphens and underscores?
+
+        // Reject path traversal and other unsafe path component values.
+        \Yii::import('application.helpers.sanitize_helper', true);
+        if (!validate_path_component($questionThemeName)) {
+            return false;
+        }
+
+        // Match the QuestionTheme model validation limit for the name field.
+        if (mb_strlen((string) $questionThemeName, 'UTF-8') > 150) {
+            return false;
+        }
+
+        return true;
     }
 }

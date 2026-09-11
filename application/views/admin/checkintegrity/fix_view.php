@@ -41,7 +41,7 @@
                     }
                     $infoList .= '</ul>';
                     $this->widget('ext.AlertWidget.AlertWidget', [
-                        'header' => gT('info'),
+                        'header' => gT('Info'),
                         'text' => $infoList,
                         'type' => 'info',
                     ]);

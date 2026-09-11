@@ -15,7 +15,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'surveyPreview_require_Auth',
-                        'ariaLabel'=> gT('Survey preview only for administration users:'),
+                        'ariaLabel' => gT('Survey preview only for administration users:'),
                         'checkedOption' => App()->getConfig('surveyPreview_require_Auth'),
                         'selectOptions' => [
                             '1' => gT('On'),
@@ -31,20 +31,34 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'filterxsshtml',
-                        'ariaLabel'=> gT('Filter HTML for XSS:'),
-                        'checkedOption' => App()->getConfig('filterxsshtml'),
+                        'checkedOption' => App()->getConfig('filterxsshtml_forcedall') ? 1 : App()->getConfig('filterxsshtml'),
+                        'ariaLabel' => gT('Filter HTML for XSS:'),
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),
+                        ],
+                        'htmlOptions' => [
+                            'disabled' => App()->getConfig('filterxsshtml_forcedall'),
+                            'aria-describedby' => 'filterxsshtml-hint'
                         ]
-                    ]); ?>
+                                                                ]); ?>
                 </div>
-                <div class="help-block mt-1">
-                    <?php
-                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                        'text' => gT("Note: XSS filtering is always disabled for the superadministrator."),
-                        'type' => 'success',
-                    ]);
+                <div class="help-block mt-1" id="filterxsshtml-hint">
+                    <?php if (!App()->getConfig('filterxsshtml_forcedall')) {
+                        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT("Note: XSS filtering is always disabled for the superadministrator."),
+                            'type' => 'success',
+                        ]);
+                    } else {
+                        $text = gT("XSS filtering is enforced via the configuration file and cannot be changed here. It applies to all users, including super administrators.");
+                        if (App()->getConfig('filterxsshtml_allowforcedsuperadmin')) {
+                            $text = gT("XSS filtering is enforced via the configuration file and cannot be changed here. Forced super administrators are exempt.");
+                        }
+                        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => $text,
+                            'type' => 'warning',
+                        ]);
+                    }
                     ?>
                 </div>
             </div>
@@ -54,20 +68,36 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'disablescriptwithxss',
-                        'ariaLabel'=> gT('Disable question script for XSS restricted user:'),
-                        'checkedOption' => App()->getConfig('disablescriptwithxss'),
+                        'checkedOption' => (App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui') ? 1 : App()->getConfig('disablescriptwithxss'),
+                        'ariaLabel' => gT('Disable question script for XSS restricted user:'),
                         'selectOptions' => [
                             '1' => gT('On'),
                             '0' => gT('Off'),
+                        ],
+                        'htmlOptions' => [
+                            'disabled' => App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui',
+                            'aria-describedby' => 'disablescriptwithxss-hint'
                         ]
                     ]); ?>
                 </div>
-                <div class="help-block mt-1">
-                    <?php
-                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                    'text' => gT("If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."),
-                    'type' => 'warning',
-                    ]);
+                <div class="help-block mt-1" id="disablescriptwithxss-hint">
+                    <?php if (App()->getConfig('filterxsshtml_forcedall') && App()->getConfig('filterxsshtml_enablescript') != 'gui') {
+                        $text = gT("Script editing is forcibly disabled by your configuration file. No user can add or update question script.");
+                        if (App()->getConfig('filterxsshtml_enablescript') == 'superadmin') {
+                            $text = gT("Script editing is forcibly disabled by your configuration file. Only the super admin(s) can add or update question script.");
+                        } elseif (App()->getConfig('filterxsshtml_allowforcedsuperadmin') || App()->getConfig('filterxsshtml_enablescript') == 'forcedsuperadmin') {
+                            $text = gT("Script editing is forcibly disabled by your configuration file. Only forced super admin(s) can add or update question script.");
+                        }
+                        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => $text,
+                            'type' => 'warning',
+                        ]);
+                    } else {
+                        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("If you disable this option, users with XSS restrictions will still be able to add scripts. This may allow cross-site scripting (XSS) attacks."),
+                        'type' => 'warning',
+                        ]);
+                    }
                     ?>
                 </div>
             </div>
@@ -78,7 +108,7 @@
                 <div class="">
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'usercontrolSameGroupPolicy',
-                        'ariaLabel'=> gT('Group member can only see own group:'),
+                        'ariaLabel' => gT('Group member can only see own group:'),
                         'id'            => 'usercontrolSameGroupPolicy',
                         'checkedOption' => App()->getConfig('usercontrolSameGroupPolicy'),
                         'selectOptions' => [
@@ -98,7 +128,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'x_frame_options',
-                        'ariaLabel'=> gT('IFrame embedding allowed:'),
+                        'ariaLabel' => gT('IFrame embedding allowed:'),
                         'checkedOption' => Yii::app()->getConfig('x_frame_options'),
                         'selectOptions' => [
                             "allow"      => gT("Allow", 'unescaped'),
@@ -118,7 +148,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'force_ssl',
-                        'ariaLabel'=> gT('Force HTTPS:'),
+                        'ariaLabel' => gT('Force HTTPS:'),
                         'checkedOption' => App()->getConfig('force_ssl'),
                         'selectOptions' => [
                             "on"  => gT("On", 'unescaped'),
@@ -133,7 +163,7 @@
                                                     gT('%sWarning:%s Before turning on HTTPS,%s check this link.%s'),
                                                     '<b>',
                                                     '</b>',
-                                                    '<a href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
+                                                    '<a class="ls-link" href="https://' . $_SERVER['HTTP_HOST'] . $this->createUrl("admin/globalsettings/sa") . '" title="' . gT('Test if your server has SSL enabled by clicking on this link.') . '">',
                                                     '</a>'
                                                 )
                                                     . '<br/> '
@@ -227,6 +257,26 @@
                         <?php eT("Reset participant attempts"); ?>
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <!-- Allowed Hosts -->
+        <div class="col-6 mt-4">
+            <h3><?= gT('Allowed hosts (host header injection protection)') ?></h3>
+            <div class="mb-3">
+                <p class="form-text">
+                    <?php eT("The following domain names are configured as trusted hosts. Requests from any other hostname will be rejected. The publicurl host is always trusted implicitly. This list is stored in application/config/allowed_hosts.php."); ?>
+                </p>
+                <?php
+                $allowedHosts = App()->loadAllowedHosts();
+                if (!empty($allowedHosts)) : ?>
+                    <textarea class="form-control" readonly rows="<?= min(count($allowedHosts), 5) ?>"><?= htmlspecialchars(implode("\n", $allowedHosts)) ?></textarea>
+                <?php else : ?>
+                    <?php App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("No allowed hosts configured. The file application/config/allowed_hosts.php does not exist or is empty. It will be auto-generated on the next admin login."),
+                        'type' => 'warning',
+                    ]); ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>

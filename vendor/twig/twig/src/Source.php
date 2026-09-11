@@ -18,20 +18,16 @@ namespace Twig;
  */
 final class Source
 {
-    private $code;
-    private $name;
-    private $path;
-
     /**
      * @param string $code The template source code
      * @param string $name The template logical name
      * @param string $path The filesystem path of the template if any
      */
-    public function __construct(string $code, string $name, string $path = '')
-    {
-        $this->code = $code;
-        $this->name = $name;
-        $this->path = $path;
+    public function __construct(
+        private string $code,
+        private string $name,
+        private string $path = '',
+    ) {
     }
 
     public function getCode(): string
@@ -47,5 +43,24 @@ final class Source
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    /**
+     * Returns the 1-based column for a 0-based byte offset in the source code.
+     *
+     * A negative offset means the position is unknown and yields null.
+     *
+     * @return positive-int|null
+     */
+    public function getColumn(int $offset): ?int
+    {
+        if ($offset < 0) {
+            return null;
+        }
+
+        $before = str_replace(["\r\n", "\r"], "\n", substr($this->code, 0, $offset));
+        $lineStart = strrpos($before, "\n");
+
+        return false === $lineStart ? \strlen($before) + 1 : \strlen($before) - $lineStart;
     }
 }

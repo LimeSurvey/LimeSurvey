@@ -3,7 +3,7 @@
     <h2 class="h3"><?php eT("Survey participant export options"); ?></h2>
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
+            <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post', array('class' => 'form-core settingswidget ','id' => 'bouncesettings','name' => 'frmeditquestion')); ?>
             <div class="row">
                 <div class="settings-list col-12 col-lg-6">
                     <!--Survey status -->
@@ -30,12 +30,12 @@
                         <div class="default controls">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'invitationstatus',
-                                'checkedOption'=> 0 ,
-                                'ariaLabel'=>gT('Invitation status'),
-                                'selectOptions'=>array(
-                                    "0"=>gT("All",'unescaped'),
-                                    "1"=>gT("Invited",'unescaped'),
-                                    "2"=>gT("Not invited",'unescaped')
+                                'checkedOption' => 0 ,
+                                'ariaLabel' => gT('Invitation status'),
+                                'selectOptions' => array(
+                                    "0" => gT("All", 'unescaped'),
+                                    "1" => gT("Invited", 'unescaped'),
+                                    "2" => gT("Not invited", 'unescaped')
                                 )
                             ));?>
                         </div>
@@ -49,12 +49,12 @@
                         <div class="default controls">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'reminderstatus',
-                                'checkedOption'=> 0 ,
-                                'ariaLabel'=>gT('Reminder status'),
-                                'selectOptions'=>array(
-                                    "0"=>gT("All",'unescaped'),
-                                    "1"=>gT("Reminder(s) sent",'unescaped'),
-                                    "2"=>gT("No reminder(s) sent",'unescaped')
+                                'checkedOption' => 0 ,
+                                'ariaLabel' => gT('Reminder status'),
+                                'selectOptions' => array(
+                                    "0" => gT("All", 'unescaped'),
+                                    "1" => gT("Reminder(s) sent", 'unescaped'),
+                                    "2" => gT("No reminder(s) sent", 'unescaped')
                                 )
                             ));?>
                         </div>
@@ -96,7 +96,6 @@
 
                     <!--Delete exported tokens -->
                     <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')) { ?>
-
                     <div class="mb-3 control-group " data-name="tokendeleteexported">
                         <label class="default form-label" for="tokendeleteexported">
                             <?php eT('Delete exported participants:'); ?>

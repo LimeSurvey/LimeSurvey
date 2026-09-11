@@ -19,6 +19,15 @@ use SurveyActivator;
 
 class TestHelper extends TestCase
 {
+    /* @var string keep publicurl */
+    protected static $tmpPublicUrl;
+    /* @var string keep request->baseUrl */
+    protected static $tmpBaseUrl;
+    /* @var \CUrlManager|null keep App()->urlmanager */
+    protected static $originalUrlManager;
+    /* @var string keep App()->request->hostInfo */
+    protected static $tmpHostInfo;
+
     /**
      * Import all helpers etc.
      * @return void
@@ -78,9 +87,7 @@ class TestHelper extends TestCase
         $this->assertNotEmpty($group);
 
         $sgqa = sprintf(
-            '%sX%sX%s',
-            $surveyId,
-            $group->gid,
+            'Q%s',
             $question->qid
         );
 
@@ -101,6 +108,10 @@ class TestHelper extends TestCase
         $radix = \getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['separator'];
         $LEMdebugLevel = 0;
+
+        // Initialize displayTimezone from config (fallback to UTC if empty)
+        $displayTimezone = Yii::app()->getConfig('displayTimezone') ?: 'UTC';
+
         $surveyOptions = array(
             'active' => ($thissurvey['active'] == 'Y'),
             'allowsave' => ($thissurvey['allowsave'] == 'Y'),
@@ -111,14 +122,15 @@ class TestHelper extends TestCase
             'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),
             'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
             'radix' => $radix,
-            // FIXME !! $LEMsessid is not defined
             'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : null),
             'savetimings' => ($thissurvey['savetimings'] == "Y"),
             'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
             'startlanguage' => (isset(App()->language) ? App()->language : $thissurvey['language']),
             'target' => Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $thissurvey['sid'] . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR,
             'tempdir' => Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR,
-            'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
+            // for backward compatibilty convert timezone string to +/- hours
+            'timeadjust' => convertTimezoneDiffToHours(),
+            'displayTimezone' => (isset($displayTimezone) ? $displayTimezone : 'UTC'),
             'token' => (isset($clienttoken) ? $clienttoken : null),
         );
         return $surveyOptions;
@@ -155,7 +167,6 @@ class TestHelper extends TestCase
         $db = Yii::app()->getDb();
         $db->schema->getTables();
         $db->schema->refresh();
-        $db->active = false;
         $db->active = true;
 
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null, 'isAllowRegister' => false], $result, 'Activate survey is OK');
@@ -167,9 +178,9 @@ class TestHelper extends TestCase
      */
     public function deactivateSurvey($surveyId)
     {
-        $date     = date('YmdHis');
-        $oldSurveyTableName = Yii::app()->db->tablePrefix . "survey_{$surveyId}";
-        $newSurveyTableName = Yii::app()->db->tablePrefix . "old_survey_{$surveyId}_{$date}";
+        $date     = gmdate('YmdHis');
+        $oldSurveyTableName = Yii::app()->db->tablePrefix . "responses_{$surveyId}";
+        $newSurveyTableName = Yii::app()->db->tablePrefix . "old_responses_{$surveyId}_{$date}";
         Yii::app()->db->createCommand()->renameTable($oldSurveyTableName, $newSurveyTableName);
         $survey = \Survey::model()->findByPk($surveyId);
         $survey->active = 'N';
@@ -442,37 +453,29 @@ class TestHelper extends TestCase
         do {
             try {
                 $address = getenv('WEBDRIVERHOST') ?: 'localhost';
-                $host = 'http://' . $address . ':' . TestBaseClassWeb::$webPort . '/wd/hub'; // this is the default
+                $suffix = getenv('WEBDRIVERSUFFIX') ?: '/wd/hub';
+                if ($suffix === 'none') {
+                    $suffix = '';
+                }
+                $host = 'http://' . $address . ':' . TestBaseClassWeb::$webPort . $suffix;
+                $firefoxOptions = new \Facebook\WebDriver\Firefox\FirefoxOptions();
+                $firefoxOptions->setPreference(\Facebook\WebDriver\Firefox\FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
+                $firefoxOptions->setPreference('browser.link.open_newwindow', 3);
+                $firefoxOptions->setPreference('browser.download.folderList', 2);
+                $firefoxOptions->setPreference('browser.download.dir', ROOT . '/tmp/');
+                $firefoxOptions->setPreference('browser.download.panel.shown', false);
+                $firefoxOptions->setPreference('browser.helperApps.neverAsk.saveToDisk', 'application/force-download');
+                $firefoxOptions->setPreference('browser.download.manager.showAlertOnComplete', false);
+                $firefoxOptions->setPreference('browser.download.manager.closeWhenDone', false);
+                $firefoxOptions->setPreference('browser.download.manager.showAlertInterval', 100);
+                $firefoxOptions->setPreference('browser.download.manager.resumeOnWakeDelay', 0);
+                $firefoxOptions->setPreference('browser.tabs.remote.autostart', false);
+                $firefoxOptions->setPreference('browser.tabs.remote.autostart.2', false);
+
                 $capabilities = DesiredCapabilities::firefox();
                 $capabilities->setCapability('acceptInsecureCerts', true);
-                $profile = new FirefoxProfile();
-                $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
+                $capabilities->setCapability(\Facebook\WebDriver\Firefox\FirefoxOptions::CAPABILITY, $firefoxOptions);
 
-                // Open target="_blank" in new tab.
-                $profile->setPreference('browser.link.open_newwindow', 3);
-
-                // When set to 2, the location specified for the most recent download is utilized again.
-                $profile->setPreference('browser.download.folderList', 2);
-
-                // Further settings to automatically download exported theme files.
-                // Test testExportAndImport() in ThemeControllerTest depends on these lines.
-                $profile->setPreference('browser.download.dir', ROOT . '/tmp/');
-                $profile->setPreference('browser.download.panel.shown', false);
-                $profile->setPreference('browser.helperApps.neverAsk.saveToDisk', 'application/force-download');
-
-                $profile->setPreference('browser.download.manager.showAlertOnComplete', false);
-                $profile->setPreference('browser.download.manager.closeWhenDone', false);
-                $profile->setPreference('browser.download.manager.showAlertInterval', 100);
-                $profile->setPreference('browser.download.manager.resumeOnWakeDelay', 0);
-
-                // This two lines are necessary to avoid issue https://github.com/SeleniumHQ/docker-selenium/issues/388.
-                $profile->setPreference('browser.tabs.remote.autostart', false);
-                $profile->setPreference('browser.tabs.remote.autostart.2', false);
-
-                $capabilities->setCapability('acceptSslCerts', true);
-                $capabilities->setCapability('acceptInsecureCerts', true);
-
-                $capabilities->setCapability(FirefoxDriver::PROFILE, $profile);
                 $webDriver = LimeSurveyWebDriver::create($host, $capabilities, 5000);
 
                 $success = true;
@@ -538,5 +541,43 @@ class TestHelper extends TestCase
         $property = $reflection->getProperty('_hostInfo');
         $property->setAccessible(true);
         $property->setValue(Yii::app()->getRequest(), null);
+    }
+
+    /**
+     * Save url generation configuration
+     */
+    public static function saveUrlSettings()
+    {
+        self::$tmpPublicUrl = Yii::app()->getConfig('publicurl');
+        self::$tmpBaseUrl = Yii::app()->getRequest()->baseUrl;
+        self::$tmpHostInfo = Yii::app()->getRequest()->hostInfo;
+        self::$originalUrlManager = Yii::app()->getUrlManager();
+    }
+
+    /**
+     * Set config and component to expected default
+     */
+    public static function setUrlToExpectedDefault($urlFormat = \CUrlManager::PATH_FORMAT)
+    {
+        Yii::app()->setConfig('publicurl', null);
+        $urlManager = [
+            'urlFormat' => $urlFormat,
+            'rules' => require(APPPATH . 'config/routes.php'),
+            'showScriptName' => true,
+        ];
+        Yii::app()->setComponent('urlManager', null); // Be sure to reset component
+        Yii::app()->setComponent('urlManager', $urlManager);
+    }
+
+    /**
+     * Reset url generation configuration
+     */
+    public static function resetUrlSettings()
+    {
+        Yii::app()->setConfig('publicurl', self::$tmpPublicUrl);
+        Yii::app()->getRequest()->baseUrl = self::$tmpBaseUrl;
+        Yii::app()->getRequest()->hostInfo = self::$tmpHostInfo;
+        Yii::app()->setComponent('urlManager', null); // Be sure to reset component
+        Yii::app()->setComponent('urlManager', self::$originalUrlManager);
     }
 }

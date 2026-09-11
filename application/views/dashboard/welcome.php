@@ -127,47 +127,6 @@ gT('Themes');
 
     <?php endif; ?>
 
-    <?php //Check for IE and show a warning box ?>
-    <?php if (
-    preg_match('~MSIE|Internet Explorer~i', (string)$_SERVER['HTTP_USER_AGENT'])
-        || (strpos((string)$_SERVER['HTTP_USER_AGENT'], 'Trident/7.0') !== false
-            && strpos((string)$_SERVER['HTTP_USER_AGENT'], 'rv:11.0') !== false
-        )
-) : ?>
-        <div class="container">
-            <?php
-            $htmlContent = "
-                <div class='row'>
-                    <h4 class='col-12'><span class='ri-error-warning-fill'></span>" . gT('Warning!') . "</h4>
-                </div>
-                <div class='row'>
-                    <div class='col-12'>" .
-                gT('You are using Microsoft Internet Explorer.') . "<br/><br/>" .
-                gT('LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work.') . "<br/>" .
-                gT('If you have any issues, please try using a modern browser first, before reporting it.') .
-                "</div>
-                </div>";
-            $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => $htmlContent,
-                'type' => 'danger',
-                'showIcon' => false,
-                'showCloseButton' => false,
-                'htmlOptions' => ['id' => 'warningIE11']
-            ]);
-            ?>
-        </div>
-    <?php endif;?>
-    <?php
-    App()->getClientScript()->registerScript(
-        'WelcomeCheckIESafety',
-        "
-    if(!/(MSIE|Trident\/)/i.test(navigator.userAgent)) {
-        $('#warningIE11').remove();
-    }
-    ",
-        LSYii_ClientScript::POS_POSTSCRIPT
-    );
-    ?>
     <!-- Last visited survey/question -->
     <?php
     // bShowLastSurveyAndQuestion is the homepage setting,
@@ -177,7 +136,7 @@ gT('Themes');
         <?php if ($showLastSurvey) : ?>
                 <div id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:"); ?>
-                    <a href="<?php echo $surveyUrl; ?>">
+                    <a class="ls-link" href="<?php echo $surveyUrl; ?>">
                         <?= viewHelper::flatEllipsizeText($surveyTitle, true, 60) ?>
                     </a>
                 </div>
@@ -186,7 +145,7 @@ gT('Themes');
         <?php if ($showLastQuestion) : ?>
                 <div id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
                     <?php eT("Last visited question:"); ?>
-                    <a href="<?php echo $last_question_link; ?>">
+                    <a class="ls-link" href="<?php echo $last_question_link; ?>">
                         <?= viewHelper::flatEllipsizeText($last_question_name, true, 60) ?>
                     </a>
                 </div>

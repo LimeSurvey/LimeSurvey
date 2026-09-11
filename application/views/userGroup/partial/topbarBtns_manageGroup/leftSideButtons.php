@@ -8,7 +8,7 @@ if ($hasPermission) {
         [
             'name' => 'group-mail-button',
             'id' => 'group-mail-button',
-            'text' => gT('Mail to all Members'),
+            'text' => gT('Mail to all members'),
             'icon' => 'ri-mail-send-fill',
             'link' => $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroupId),
             'htmlOptions' => [

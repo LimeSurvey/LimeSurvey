@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Login Form
  */
@@ -24,9 +25,11 @@ echo viewHelper::getViewTestTag('login');
                     ?>
                     <!-- Form -->
                     <?php
-                    echo CHtml::form(['admin/authentication/sa/newPassword'],
+                    echo CHtml::form(
+                        ['admin/authentication/sa/newPassword'],
                         'post',
-                        ['id' => 'loginform', 'name' => 'loginform']); ?>
+                        ['id' => 'loginform', 'name' => 'loginform']
+                    ); ?>
                     <div class="row login-content login-content-form">
                         <div class="col-12">
                             <?php
@@ -60,7 +63,7 @@ echo viewHelper::getViewTestTag('login');
                             <p>
                                 <button type="submit" class="btn btn-outline-secondary" name='login_submit'
                                         value='login'><?php
-                                    eT('Save'); ?></button>
+                                        eT('Save'); ?></button>
                                 <br/>
                             </p>
                         </div>

@@ -10,7 +10,7 @@
             <?= gT('Help'); ?>
         </a>
     </li>
-    <?php if ($showScriptField): ?>
+    <?php if ($showScriptField) : ?>
         <li class="nav-item" role="presentation">
             <a class="nav-link" href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-bs-toggle="tab">
                 <?= gT('Script'); ?>
@@ -29,7 +29,7 @@
 <div class="tab-content bg-white ps-2 pe-2">
     <!-- Question text tab content -->
     <div role="tabpanel" class="tab-pane show active" id="question-tab">
-        <?php foreach($oSurvey->allLanguages as $lang): ?>
+        <?php foreach ($oSurvey->allLanguages as $lang) : ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
             <div class="mb-3">
                 <div class="input-group w-100">
@@ -46,13 +46,14 @@
                         ]
                     ); ?>
                     <?= getEditor(
-                        'question-text',//"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
+                        'question-text', //"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
                         "question_" . $lang,
-                        "[".gT("Question:","js")."](".$lang.")",
+                        "[" . gT("Question:", "js") . "](" . $lang . ")",
                         $oSurvey->sid,
                         $question->gid ?? 0,
                         $question->qid ?? 0,
-                        'editquestion');
+                        'editquestion'
+                    );
                     ?>
                 </div>
             </div>
@@ -62,7 +63,7 @@
 
     <!-- Question help tab content -->
     <div role="tabpanel" class="tab-pane" id="question-help-tab">
-        <?php foreach($oSurvey->allLanguages as $lang): ?>
+        <?php foreach ($oSurvey->allLanguages as $lang) : ?>
         <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
             <div class="mb-3">
                 <div class="input-group w-100">
@@ -79,9 +80,9 @@
                         ]
                     ); ?>
                     <?= getEditor(
-                        "help_".$lang,
-                        "help_".$lang,
-                        "[".gT("Help:", "js")."](".$lang.")",
+                        "help_" . $lang,
+                        "help_" . $lang,
+                        "[" . gT("Help:", "js") . "](" . $lang . ")",
                         $oSurvey->sid,
                         $question->gid ?? 0,
                         $question->qid ?? 0,
@@ -92,10 +93,10 @@
         </div>
         <?php endforeach; ?>
     </div>
-    <?php if ($showScriptField): ?>
+    <?php if ($showScriptField) : ?>
         <!-- Script tab content -->
         <div role="tabpanel" class="tab-pane" id="script-field-tab">
-            <?php foreach($oSurvey->allLanguages as $lang): ?>
+            <?php foreach ($oSurvey->allLanguages as $lang) : ?>
             <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
                 <div class="mb-3">
                     <?php
@@ -114,7 +115,7 @@
                                 <?= gT('Open full-screen editor'); ?>
                             </button>
                         </div>
-                        <?php if ($lang == $oSurvey->language): ?>
+                        <?php if ($lang == $oSurvey->language) : ?>
                             <div class="form-check mb-0">
                                 <input
                                     type="checkbox"
@@ -122,7 +123,9 @@
                                     name="question[same_script]"
                                     id="same_script"
                                     value="1"
-                                    <?php if($question->same_script): ?>checked="checked"<?php endif; ?>
+                                    <?php if ($question->same_script) :
+                                        ?>checked="checked"<?php
+                                    endif; ?>
                                 />
                                 <label class="form-check-label" for="same_script">
                                     <?= gT('Use for all languages'); ?>
@@ -131,7 +134,7 @@
                         <?php endif; ?>
                     </div>
 
-                    <?php if ($lang != $oSurvey->language): ?>
+                    <?php if ($lang != $oSurvey->language) : ?>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text' => gT('The script for this language will not be used because "Use for all languages" is set on the base language\'s script.'),

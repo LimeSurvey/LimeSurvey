@@ -1,6 +1,12 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
 
+    # Pass Authorization header to PHP (required for PHP-FPM/CGI setups)
+    RewriteCond %{HTTP:Authorization} .+
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # If the request is NOT for the editor folder"
+    RewriteCond %{REQUEST_URI} !/editor/ [NC]
     # if a directory or a file exists, use it directly
     RewriteCond %{REQUEST_FILENAME} !-f
     # RewriteCond %{REQUEST_FILENAME} !-d
@@ -12,14 +18,31 @@
     RewriteCond %{REQUEST_URI} !^/\.well-known
     RewriteRule ^(.*/)?\.+ - [F]
 
-    # deny access to composer.json that is used for remote fingerprinting
-    RewriteRule ^composer.json - [F]
     # issue #19865
     RewriteRule ^setdebug.php - [F]
+
+    # deny access to the runtime directory (cache files, application.log, plugin.log)
+    # kept here so protection survives clearing the tmp directory content
+    RewriteRule ^tmp/runtime/ - [F]
+
+    # deny access to Composer dependencies: never requested directly, only used server-side
+    RewriteRule ^vendor/ - [F]
+
+    # issue #19297: deny access to development/build/fingerprinting files at the document root
+    RewriteRule ^(composer\.(json|lock)|package\.json|yarn\.lock|gulpfile\.js|open-api-gen\.php|phpunit\.xml|psalm(-\w+)?\.xml|phpci\.yml|phpcs\.ruleset\.xml|publiccode\.yml|manifest\.yml|CONTRIBUTING\.md|README\.md|SECURITY\.md)$ - [F]
 </IfModule>
 
 # deny access to hidden files and directories without mod_rewrite
 RedirectMatch 403 ^/(?!\.well-known/)(.*/)?\.+
+
+# deny access to the runtime directory without mod_rewrite
+RedirectMatch 403 ^/(.*/)?tmp/runtime/
+
+# deny access to Composer dependencies without mod_rewrite
+RedirectMatch 403 ^/vendor/
+
+# issue #19297: deny access to development/build/fingerprinting files without mod_rewrite
+RedirectMatch 403 ^/(composer\.(json|lock)|package\.json|yarn\.lock|gulpfile\.js|open-api-gen\.php|phpunit\.xml|psalm(-\w+)?\.xml|phpci\.yml|phpcs\.ruleset\.xml|publiccode\.yml|manifest\.yml|CONTRIBUTING\.md|README\.md|SECURITY\.md)$
 
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on

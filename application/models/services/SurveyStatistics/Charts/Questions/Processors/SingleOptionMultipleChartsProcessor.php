@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use Question;
 
 class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
@@ -16,94 +15,88 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
     {
         switch ($this->question['type']) {
             case Question::QT_A_ARRAY_5_POINT:
+                return $this->buildStackedChart(...$this->numericScale(5));
+
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
-                return $this->handleArray5Or10();
+                return $this->buildStackedChart(...$this->numericScale(10));
 
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-                return $this->handleYesUncertainNo();
+                return $this->buildStackedChart(['Y', 'U', 'N'], ['Yes', 'Uncertain', 'No']);
 
             case Question::QT_E_ARRAY_INC_SAME_DEC:
-                return $this->handleIncSameDec();
+                return $this->buildStackedChart(['I', 'S', 'D'], ['Increase', 'Same', 'Decrease']);
 
             case Question::QT_F_ARRAY:
             case Question::QT_H_ARRAY_COLUMN:
-                return $this->handleFOrHArray();
+                return $this->buildStackedChart(...$this->answerScale());
 
             default:
                 return [];
         }
     }
 
-    private function handleArray5Or10(): array
+    /**
+     * @return array{0: string[], 1: string[]}
+     */
+    private function numericScale(int $max): array
     {
-        $charts = [];
-        $max = $this->question['type'] == Question::QT_A_ARRAY_5_POINT ? 5 : 10;
         $codes = array_map('strval', range(1, $max));
-
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $rt = $this->rt . $subQuestion['title'];
-            [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $codes);
-            $title = $this->question['question'] . '(' . $subQuestion['question'] . ')';
-
-            $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
-        }
-
-        return $charts;
+        return [$codes, $codes];
     }
 
-    private function handleYesUncertainNo(): array
+    /**
+     * @return array{0: string[], 1: string[]}
+     */
+    private function answerScale(): array
     {
-        $codes = ['Y', 'N', 'U'];
-        $labels = ['Yes', 'No', 'Uncertain'];
-        $charts = [];
-
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $rt = $this->rt . $subQuestion['title'];
-            [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
-            $title = $this->question['question'] . "[{$subQuestion['question']}]";
-
-            $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
-        }
-
-        return $charts;
-    }
-
-    private function handleIncSameDec(): array
-    {
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $title = $this->question['question'] . "[{$subQuestion['question']}]";
-            $codes = ['I', 'S', 'D'];
-            $labels = ['Increase', 'Same', 'Decrease'];
-            $rt = $this->rt . $subQuestion['title'];
-            [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
-
-            $charts[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
-        }
-
-        return $charts;
-    }
-
-    private function handleFOrHArray(): array
-    {
-        $mainQuestionTitle = $this->question['question'];
-        $stats = [];
-
-        $codes = array_map(fn($data) => $data['code'], $this->answers);
-        $labels  = array_map(fn($data) => $data['answer'], $this->answers);
-        foreach ($this->question['subQuestions'] as $subQuestion) {
-            $rt = $this->rt . $subQuestion['title'];
-
-            $title = $mainQuestionTitle . "[{$subQuestion['question']}]";
-            $legend = [];
-            $items = [];
-
-            if ((int)$subQuestion['scale_id'] === 0) {
-                [$legend, $items] = $this->buildItemsFromCodes($rt, $codes, $labels);
+        $codes = [];
+        $labels = [];
+        foreach ($this->answers as $answer) {
+            if ((int)($answer['scale_id'] ?? 0) !== 0) {
+                continue;
             }
-
-            $stats[] = new StatisticsChartDTO($title, $legend, $items, $this->calculateTotal($items), ['question' => $this->question]);
+            $codes[] = (string)$answer['code'];
+            $labels[] = (string)$answer['answer'];
         }
 
-        return $stats;
+        return [$codes, $labels];
+    }
+
+    /**
+     * @param string[] $codes  Answer codes that form the segments
+     * @param string[] $labels Display labels aligned with $codes
+     * @return array Single chart plan
+     */
+    private function buildStackedChart(array $codes, array $labels): array
+    {
+        $fieldMap = [];
+        foreach ($this->question['subQuestions'] as $qid => $subQuestion) {
+            if ((int)($subQuestion['scale_id'] ?? 0) !== 0) {
+                continue;
+            }
+            $fieldMap[$qid] = $this->rt . "_S" . $subQuestion['qid'];
+        }
+
+        $batch = $this->buildBatchItemsForSubquestions(array_values($fieldMap), $codes, $labels);
+
+        $data = [];
+        foreach ($fieldMap as $qid => $field) {
+            [, $items] = $batch[$field] ?? [[], []];
+            $data[] = [
+                'key' => $this->question['subQuestions'][$qid]['title'],
+                'title' => $this->question['subQuestions'][$qid]['question'],
+                'segments' => $items,
+            ];
+        }
+
+        $legend = !empty($data[0]['segments'])
+            ? array_column($data[0]['segments'], 'title')
+            : $labels;
+
+        return [
+            'title' => $this->question['question'],
+            'legend' => $legend,
+            'data' => $data,
+        ];
     }
 }

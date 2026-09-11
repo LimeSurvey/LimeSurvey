@@ -1,13 +1,12 @@
 <?php
 
 use LimeSurvey\Api\Command\V1\{SurveyGroupList, SurveyGroups};
-
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
     SchemaFactorySurveyGroupList
 };
 
-$errorSchema = (new SchemaFactoryError)->make();
+$errorSchema = (new SchemaFactoryError())->make();
 
 $rest = [];
 
@@ -26,7 +25,7 @@ $rest['v1/survey-group-list'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactorySurveyGroupList)->make()
+                'schema' => (new SchemaFactorySurveyGroupList())->make()
             ],
             'unauthorized' => [
                 'code' => 401,
@@ -52,7 +51,7 @@ $rest['v1/survey-groups'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactorySurveyGroupList)->make()
+                'schema' => (new SchemaFactorySurveyGroupList())->make()
             ],
             'unauthorized' => [
                 'code' => 401,

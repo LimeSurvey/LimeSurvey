@@ -2,5 +2,4 @@
 
 class DataSetRanking extends QuestionBaseDataSet
 {
-
 }

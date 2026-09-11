@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -40,7 +40,7 @@ class InstallerConfigForm extends CFormModel
     public const DB_TYPE_ODBC = 'odbc';
 
     public const MINIMUM_MEMORY_LIMIT = 128;
-    public const MINIMUM_PHP_VERSION = '7.4.0';
+    public const MINIMUM_PHP_VERSION = '8.1.29';
 
     // Database
     /** @var string $dbtype */
@@ -134,6 +134,9 @@ class InstallerConfigForm extends CFormModel
     public $isPhpImapPresent = false;
 
     /** @var bool */
+    public $isPhpCurlPresent = false;
+
+    /** @var bool */
     public $isPhpVersionOK = false;
 
     /** @var bool */
@@ -167,6 +170,7 @@ class InstallerConfigForm extends CFormModel
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
             array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
             array('dbtype', 'in', 'range' => array_keys($this->supportedDbTypes), 'on' => 'database'),
+            array('dbtype', 'validateDBVersion', 'on' => 'database'),
             array('dbengine', 'validateDBEngine', 'on' => 'database'),
             array('dbengine', 'in', 'range' => array_keys($this->dbEngines), 'on' => 'database'),
             //Optional
@@ -188,7 +192,7 @@ class InstallerConfigForm extends CFormModel
             'dbuser' => gT('Database user'),
             'dbpwd' => gT('Database password'),
             'dbprefix' => gT('Table prefix'),
-            'dbengine' => gT('MySQL database engine type'),
+            'dbengine' => gT('MariaDB/MySQL database engine type'),
         );
     }
 
@@ -221,6 +225,7 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpLdapPresent = extension_loaded('ldap');
         $this->isPhpImapPresent = extension_loaded('imap');
         $this->isPhpZipPresent = extension_loaded('zip');
+        $this->isPhpCurlPresent = extension_loaded('curl');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
         $this->isCollatorPresent = class_exists('Collator');
 
@@ -234,7 +239,7 @@ class InstallerConfigForm extends CFormModel
     }
 
     /**
-     * Chek whether system meets minimum requirements
+     * Check whether system meets minimum requirements
      * @return bool
      */
     public function getHasMinimumRequirements()
@@ -286,13 +291,46 @@ class InstallerConfigForm extends CFormModel
         return convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024;
     }
 
+    /**
+     * Verifies that the connected database server meets the documented minimum
+     * version requirements. Adds a validation error if it does not.
+     * @param string $attribute
+     * @return void
+     */
+    public function validateDBVersion($attribute)
+    {
+        // Skip if the connection could not be established (a connection error is
+        // already reported in that case).
+        if (empty($this->db)) {
+            return;
+        }
+        try {
+            $driverName = $this->db->getDriverName();
+            $serverVersion = $this->db->getServerVersion();
+        } catch (\Exception $e) {
+            return;
+        }
+        $requirement = \LimeSurvey\Helpers\DbVersionHelper::getRequirement($driverName, $serverVersion);
+        if (!$requirement['supported']) {
+            $this->addError(
+                $attribute,
+                sprintf(
+                    gT('Your database server does not meet the minimum requirements. %s %s or newer is required, but the server reports version %s.'),
+                    $requirement['type'],
+                    $requirement['minimumLabel'],
+                    $requirement['current']
+                )
+            );
+        }
+    }
+
     public function validateDBEngine($attribute)
     {
         if (
             $this->isMysql
             && ($this->dbengine === null or !in_array($this->dbengine, array_keys($this->dbEngines)))
         ) {
-            $this->addError($attribute, gT('The database engine type must be set for MySQL'));
+            $this->addError($attribute, gT('The database engine type must be set to MariaDB/MySQL'));
         }
 
         if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {

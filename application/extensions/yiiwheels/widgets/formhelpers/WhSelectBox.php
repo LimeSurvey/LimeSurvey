@@ -1,6 +1,7 @@
 <?php
+
  /**
- * 
+ *
  * WhSelectBox.php
  *
  * Date: 06/09/14
@@ -9,6 +10,7 @@
  * @link http://www.ramirezcobos.com/
  * @link http://www.2amigos.us/
  */
+
 Yii::import('yiiwheels.widgets.formhelpers.WhInputWidget');
 
 class WhSelectBox extends WhInputWidget
@@ -43,4 +45,4 @@ class WhSelectBox extends WhInputWidget
 
         $this->registerPlugin('bfhselectbox');
     }
-} 
+}

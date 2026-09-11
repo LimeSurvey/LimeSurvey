@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Set question group and position modal body (parsed to massive action widget)
  */
+
 $surveyid = App()->request->getParam('surveyid', 0);
 /** @var AdminController $this */
 /** @var Question $model */

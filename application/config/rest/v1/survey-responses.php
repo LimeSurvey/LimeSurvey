@@ -1,13 +1,14 @@
 <?php
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesExport;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponsesPatch;
+use LimeSurvey\Libraries\Api\Rest\V1\SchemaFactory\SchemaFactorySurveyResponsesExport;
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
     SchemaFactorySurveyResponses,
     SchemaFactorySurveyResponsesPatch
 };
-
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 
 $errorSchema = (new SchemaFactoryError())->make();
@@ -25,8 +26,9 @@ $rest['v1/survey-responses/$id'] = [
         'params' => [
             'filters' => ['type' => 'array'],
             'sort' => ['type' => 'array'],
-            'pageSize' => ['type' => 'array'],
-            'page' => ['type' => 'array']
+            'page' => ['type' => 'array'],
+            'language' => ['type' => 'string'],
+            'fields' => ['type' => 'array']
         ],
         'responses' => [
             'success' => [
@@ -72,6 +74,37 @@ $rest['v1/survey-responses/$id'] = [
             ]
         ]
     ]
+];
+
+$rest['v1/survey-responses-export/$id'] = [
+    'POST' => [
+        'tag' => 'survey',
+        'description' => 'Survey responses export',
+        'commandClass' => SurveyResponsesExport::class,
+        'auth' => true,
+        'params' => [
+            'language' => ['type' => 'string'],
+            'type' => ['type' => 'string'],
+        ],
+        'responses' => [
+            'success' => [
+                'code' => 200,
+                'description' => 'Success',
+                'content' => null,
+                'schema' => (new SchemaFactorySurveyResponsesExport())->make(),
+            ],
+            'unauthorized' => [
+                'code' => 401,
+                'description' => 'Unauthorized',
+                'schema' => $errorSchema
+            ],
+            'not-found' => [
+                'code' => 404,
+                'description' => 'Not Found',
+                'schema' => $errorSchema
+            ]
+        ]
+    ],
 ];
 
 

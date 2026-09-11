@@ -151,7 +151,7 @@ class AppErrorHandler
                 $outputData['noReload'] = $exception->getNoReload();
             }
             // Add the detailed errors to the message, so simple handlers can just show it.
-            $outputData['message'] = "<p>" . $exception->getMessage() . "</p>". $exception->getDetailedErrorSummary();
+            $outputData['message'] = "<p>" . $exception->getMessage() . "</p>" . $exception->getDetailedErrorSummary();
             // But save the "simpler" message on 'error', and the list of errors on "detailedErrors"
             // so that more complex handlers can decide what to show.
             $outputData['error'] = $exception->getMessage();
@@ -163,14 +163,14 @@ class AppErrorHandler
         Yii::app()->end();
     }
 
-	/**
-	 * Handles uncaught PHP exceptions.
-	 *
+    /**
+     * Handles uncaught PHP exceptions.
+     *
      * @param CExceptionEvent $event
      * @return void
-	 */
+     */
     private function handleRestException($event)
-	{
+    {
         $this->restErrorResponse(
             $event->exception->getCode(),
             $event->exception->getMessage(),
@@ -180,12 +180,12 @@ class AppErrorHandler
     }
 
     /**
-	 * Handles PHP execution errors such as warnings, notices.
-	 *
-	 * @param CErrorEvent
-	 */
+     * Handles PHP execution errors such as warnings, notices.
+     *
+     * @param CErrorEvent
+     */
     private function handleRestError($event)
-	{
+    {
         $this->restErrorResponse(
             $event->code,
             $event->message,
@@ -195,13 +195,13 @@ class AppErrorHandler
     }
 
     /**
-	 * JSON error response.
-	 *
-	 * @param integer $code the level of the error raised
-	 * @param string $message the error message
-	 * @param string $file the filename that the error was raised in
-	 * @param integer $line the line number the error was raised at
-	 */
+     * JSON error response.
+     *
+     * @param integer $code the level of the error raised
+     * @param string $message the error message
+     * @param string $file the filename that the error was raised in
+     * @param integer $line the line number the error was raised at
+     */
     private function restErrorResponse($code, $message, $file, $line)
     {
         http_response_code(500);

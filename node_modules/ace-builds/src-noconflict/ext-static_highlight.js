@@ -2,7 +2,17 @@ ace.define("ace/ext/static-css",["require","exports","module"], function(require
 
 });
 
-ace.define("ace/ext/static_highlight",["require","exports","module","ace/edit_session","ace/layer/text","ace/ext/static-css","ace/config","ace/lib/dom","ace/lib/lang"], function(require, exports, module){"use strict";
+ace.define("ace/ext/static_highlight",["require","exports","module","ace/edit_session","ace/layer/text","ace/ext/static-css","ace/config","ace/lib/dom","ace/lib/lang"], function(require, exports, module){/**
+ * ## Static syntax highlighting extension for code-to-HTML conversion
+ *
+ * Transforms code snippets into syntax-highlighted HTML with CSS styling without requiring a live editor instance.
+ * Uses a simplified DOM implementation to generate standalone HTML output suitable for static content generation,
+ * documentation, code export, and embedding highlighted code in web pages. Supports automatic language detection
+ * from CSS classes and custom modes/themes.
+ *
+ * @module
+ */
+"use strict";
 var EditSession = require("../edit_session").EditSession;
 var TextLayer = require("../layer/text").Text;
 var baseStyles = require("./static-css");

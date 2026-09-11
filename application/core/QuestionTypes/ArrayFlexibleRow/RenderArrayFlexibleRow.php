@@ -187,7 +187,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         //$aAnswer->answerl10ns[$sSurveyLanguage]->answer
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
-            $myfname        = $this->sSGQA . $oQuestion->title;
+            $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
             $answertext     = $oQuestion->questionl10ns[$this->sLanguage]['question'];
             // Check the mandatory sub Q violation
             $error = (in_array($myfname, $this->aMandatoryViolationSubQ));
@@ -226,7 +226,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $options[] = array(
                     'text' => gT('No answer'),
                     'value' => '',
-                    'selected' => ($value == '') ?  SELECTED : '',
+                    'selected' => (
+                        PRESELECT_NO_ANSWER && $value == ''
+                    ) ? SELECTED : '',
                 );
             }
             unset($showNoAnswer);
@@ -264,7 +266,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 }
             }
 
-            $myfname        = $this->sSGQA . $oQuestion->title;
+            $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
             $answertext     = $oQuestion->questionl10ns[$this->sLanguage]->question;
             $answertext     = (strpos((string) $answertext, '|') !== false) ? substr((string) $answertext, 0, strpos((string) $answertext, '|')) : $answertext;
 
@@ -297,7 +299,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'ld'                     => '',
                     'code' => $oAnswer->code,
                     'label'                  => gT('No answer'),
-                    'checked'                => (is_null($value) || $value === '') ? 'checked' : '',
+                    'checked'                => (
+                        PRESELECT_NO_ANSWER && (is_null($value) || $value === '')
+                    ) ? 'checked' : '',
                 );
             }
 

@@ -22,7 +22,7 @@ class RenderFileUpload extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/dummy/answer';
     }
-    
+
     public function getRows()
     {
         return;
@@ -32,10 +32,10 @@ class RenderFileUpload extends QuestionBaseRenderer
     {
         $this->registerAssets();
         return do_file_upload($this->aFieldArray);
-        
+
         $answer = '';
         $inputnames = [];
-        
+
         if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
@@ -47,7 +47,7 @@ class RenderFileUpload extends QuestionBaseRenderer
             'content' => $this->oQuestion,
             'coreClass' => 'ls-answers ' . $sCoreClasses,
             ), true);
-            
+
         $inputnames[] = [];
         return array($answer, $inputnames);
     }

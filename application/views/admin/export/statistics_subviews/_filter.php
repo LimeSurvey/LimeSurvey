@@ -49,6 +49,7 @@ if (isset($datestamp) && $datestamp == "Y") : ?>
                             'format' => ($dateformatdetails['jsdate']),
                             'allowInputToggle' => true,
                             'showClear' => true,
+                            'theme' => 'light',
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     ));
@@ -70,6 +71,7 @@ if (isset($datestamp) && $datestamp == "Y") : ?>
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' => true,
                             'showClear' => true,
+                            'theme' => 'light',
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     ));
@@ -91,6 +93,7 @@ if (isset($datestamp) && $datestamp == "Y") : ?>
                             'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' => true,
                             'showClear' => true,
+                            'theme' => 'light',
                             'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
                         )
                     ));

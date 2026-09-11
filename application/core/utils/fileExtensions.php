@@ -15,6 +15,7 @@ return array_merge(
         'image/heif-sequence' => 'heifs',
         'image/heic' => 'heic',
         'image/heic-sequence' => 'heics',
+        'audio/x-m4a' => 'm4a',
         /* xml as text/xml : #18353 */
         'text/xml' => 'xml',
         /* svg as image/xml : #18347 */

@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -39,6 +39,9 @@ class SettingGlobal extends LSActiveRecord
         'demoMode', // No demoMode update via model
         'ssl_emergency_override', // security related
         'ssl_disable_alert', // security related
+        'filterxsshtml_forcedall',  // security related, must disable GUI
+        'filterxsshtml_allowforcedsuperadmin',  // security related
+        'filterxsshtml_enablescript',  // security related, must disable GUI
     );
 
     /**
@@ -114,7 +117,7 @@ class SettingGlobal extends LSActiveRecord
      */
     public static function increaseCustomAssetsversionnumber()
     {
-        $iCustomassetversionnumber = getGlobalSetting('customassetversionnumber');
+        $iCustomassetversionnumber = Yii::app()->getConfig('customassetversionnumber');
         $iCustomassetversionnumber++;
         self::setSetting('customassetversionnumber', $iCustomassetversionnumber);
         return;

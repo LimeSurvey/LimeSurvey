@@ -2,5 +2,4 @@
 
 class DataSetArrayMultiscale extends QuestionBaseDataSet
 {
-
 }

@@ -14,19 +14,18 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                 <?php eT("Survey quotas");?>
             </h1>
             <?php
-            $massiveAction = '';
             if ($oDataProvider->itemCount > 0) {
-                if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) {
-                    $massiveAction =  $this->renderPartial(
-                        'viewquotas_massive_selector',
-                        array(
-                           'oSurvey' => $oSurvey,
-                           'oQuota' => $oQuota,
-                           'aQuotaLanguageSettings' => $aQuotaLanguageSettings,
-                        ),
-                        true
-                    );
-                }
+                require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.QuotaListMassiveActions') . '.php';
+                $floatingActions = \actions\QuotaListMassiveActions::getActions(
+                    (int) $oSurvey->getPrimaryKey(),
+                    $oQuota,
+                    $aQuotaLanguageSettings
+                );
+                $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
+                    'pk'       => 'id',
+                    'gridId'   => 'quota-grid',
+                    'aActions' => $floatingActions,
+                ]);
             }
             ?>
 
@@ -35,25 +34,25 @@ echo viewHelper::getViewTestTag('surveyQuotas');
             <div class="row">
                 <div class="col-12 content-right">
                     <?php $this->widget('application.extensions.admin.grid.CLSGridView', [
-                        'dataProvider'          => $oDataProvider,
-                        'id'                    => 'quota-grid',
-                        'ajaxUpdate'            => 'quota-grid',
-                        'lsAfterAjaxUpdate'     => ['onQuotaOpenAction();', 'bindListItemclick();'],
-                        'emptyText'             => gT('No quotas'),
-                        'massiveActionTemplate' => $massiveAction,
-                        'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                                gT('%s rows per page'),
-                                CHtml::dropDownList(
-                                    'pageSize',
-                                    $iGridPageSize,
-                                    Yii::app()->params['pageSizeOptions'],
-                                    [
+                        'dataProvider'      => $oDataProvider,
+                        'id'                => 'quota-grid',
+                        'ajaxUpdate'        => 'quota-grid',
+                        'lsAfterAjaxUpdate' => ['onQuotaOpenAction();', 'if (typeof bindListItemclick === "function") { bindListItemclick(); }'],
+                        'emptyText'         => gT('No quotas'),
+                        'showSelectionBar'  => false,
+                        'summaryText'       => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                            gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $iGridPageSize,
+                                Yii::app()->params['pageSizeOptions'],
+                                [
                                         'class'    => 'changePageSize form-select',
                                         'style'    => 'display: inline; width: auto',
                                         'onchange' => "$.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }})"
                                     ]
-                                )
-                            ),
+                            )
+                        ),
                         'columns'               => [
                             [
                                 'id'             => 'id',
@@ -62,20 +61,20 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'htmlOptions'    => ['style' => 'vertical-align:top'],
                             ],
                             [
-                                'name'        => gT('Quota members'),
+                                'name'        => gT('Quota rules'),
                                 'type'        => 'raw',
                                 'htmlOptions' => ['style' => 'vertical-align:top'],
                                 'value'       => function ($oQuota) use ($oSurvey, $aQuotaItems) {
                                     /** @var Quota $oQuota */
                                     $out = '<p>' . $this->renderPartial(
-                                            '/quotas/viewquotas_quota_members',
-                                            [
+                                        '/quotas/viewquotas_quota_members',
+                                        [
                                                 'oSurvey'     => $oSurvey,
                                                 'oQuota'      => $oQuota,
                                                 'aQuotaItems' => $aQuotaItems,
                                             ],
-                                            true
-                                        ) . '<p>';
+                                        true
+                                    ) . '<p>';
                                     return $out;
                                 },
                             ],
@@ -105,7 +104,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                     ]);
                     ?>
                 </div>
-                <?php endif; ?>
+            <?php endif; ?>
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')) :?>
                     <div class="float-end">
                         <?php echo CHtml::beginForm(array("quotas/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>

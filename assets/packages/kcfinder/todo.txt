@@ -1,0 +1,3 @@
+Abandoned - no maintained package available
+Also has multiple customization
+Further to-do: Rolls its own jQuery/UI in /js directory

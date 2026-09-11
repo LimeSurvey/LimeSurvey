@@ -2,5 +2,4 @@
 
 class DataSetArrayMultiFlexNumbers extends QuestionBaseDataSet
 {
-
 }

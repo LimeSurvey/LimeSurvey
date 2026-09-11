@@ -6,7 +6,7 @@
  * @var string $basefilename the base file name of the backup file
  * @var string $tempdir the temp dir where the backup file is saved
  */
-$downloadString = gT('Download this file');
+$downloadString = gT('Download file');
 ?>
 
 <h3 class="maintitle"><?php eT('Creating file backup')?></h3>
@@ -58,7 +58,7 @@ if (isset($dbBackupInfos->html)) {
                 $db_message = gT('This update will not change the database. No database backup is required.');
                 break;
             case 'not_mysql':
-                $db_message = gT('Your database type is not MySQL!') . ' ' . gT('Before proceeding please back up your database using a backup tool!');
+                $db_message = gT('Your database type is not MariaDB/MySQL!') . ' ' . gT('Before proceeding please back up your database using a backup tool!');
                 break;
             case 'db_backup_zip_failed':
                 $db_message = gT('We could not zip your database!') . ' ' . gT('Before proceeding please back up your database using a backup tool!');

@@ -13,5 +13,5 @@ use DI\Definition\Definition;
  */
 interface MutableDefinitionSource extends DefinitionSource
 {
-    public function addDefinition(Definition $definition);
+    public function addDefinition(Definition $definition) : void;
 }

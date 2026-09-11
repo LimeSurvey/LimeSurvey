@@ -1,0 +1,95 @@
+.right-side-bar {
+  position: fixed;
+  right: 0;
+  left: auto;
+  width: $right-side-bar-width;
+  overflow-y: auto;
+  max-height: calc(100vh - $top-bar-height); // 56px is the topbar height.
+  background: $g-100;
+  opacity: 1 !important;
+  border-left: 1px #eeeeee solid;
+  padding: 8px 6px;
+
+  .focused-question-code {
+    cursor: pointer;
+  }
+
+  a {
+    color: black;
+  }
+
+  .right-side-bar-settings,
+  .advanced-toggle,
+  .accordion-button {
+    padding: 4px 12px 8px 16px;
+  }
+
+  .right-side-bar-settings {
+    .form-label {
+      margin-bottom: 6px;
+    }
+    .multi-settings {
+      padding-top: 4px;
+      padding-bottom: 8px;
+    }
+  }
+
+  .right-sidebar-settings {
+    .accordion {
+      .accordion-header {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-grow: 1;
+      }
+      .accordion-button {
+        padding: 0 8px;
+      }
+    }
+  }
+}
+
+.right-side-bar.active-side-bar {
+  background: $white !important;
+}
+
+.right-sidebar-attribute {
+  margin-top: 1rem;
+}
+
+.default-values-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .default-values-details {
+    margin-top: 10px;
+    color: $g-700;
+  }
+
+  .default-values-details-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+
+    svg:first-child {
+      width: 20px;
+      height: 20px;
+
+      path {
+        fill: currentColor;
+      }
+    }
+  }
+
+  .default-values-details-text {
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+}

@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -16,7 +16,7 @@
         <form enctype="multipart/form-data" id="limesurvey" name="limesurvey" autocomplete="off" class="survey-form-container" action="index.php/289445" method="post">
         <input type="hidden" value="393e1f3e91d6fb062b8c67d39771bb674de337ca" name="YII_CSRF_TOKEN">
 
-    It uses the Yii fuction CHtml::form
+    It uses the Yii function CHtml::form
     @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
 
     The hidden submit button is used for any submission (triggered via JS event).
@@ -52,15 +52,6 @@
     )
 }}
 
-<!-- Ajax value -->
-<!-- Needs to be set by javascript! Because if JavaScript is disabled, ajaxmode will completely fail! -->
-{{
-    registerScript("AJAXACTIVATE", "
-    $('#limesurvey').append('<input type=\"hidden\" name=\"ajax\" value=\"off\" id=\"ajax\" />');
-    ", "POS_POSTSCRIPT")
-}}
-
-
 <!-- Field Names -->
 <input type='hidden' name='fieldnames' value='{{ aSurveyInfo.hiddenfieldnames }}' id='fieldnames' />
 
@@ -68,4 +59,4 @@
 {{ aSurveyInfo.hiddenInputs }}
 
 <!-- Submit button -->
-<button type="submit" id="defaultbtn" value="default" name="move" class="submit d-none" style="display:none">{{gT('default')}}</button>
+<button type="submit" id="defaultbtn" value="default" name="move" class="submit d-none" style="display:none">{{gT('Default')}}</button>

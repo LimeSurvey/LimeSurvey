@@ -12,7 +12,7 @@
 ?>
 
 <hr class="ls-space margin top-35 bottom-25"/>
-<?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"editconditions",'name'=>"editconditions", 'class' => 'form'));?>
+<?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id' => "editconditions",'name' => "editconditions", 'class' => 'form'));?>
     <div class="row ">
     <!-- Form  editconditions -->
         <div class='col-12 h4'>
@@ -25,8 +25,10 @@
         <div class='mb-3'>
             <label class='form-label col-12'><?php eT('Scenario'); ?></label>
             <div class='add-scenario-column col-12  ls-space padding bottom-15'>
-                <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if($showScenario):?> style='display: none;' <?php endif;?>/>
-                <?php if($showScenario):?>
+                <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if ($showScenario) :
+                    ?> style='display: none;' <?php
+                                                                                               endif;?>/>
+                <?php if ($showScenario) :?>
                     <div id="defaultscenarioshow" class="col-12">
                         <span>
                             <?php eT("Default scenario"); ?>
@@ -48,8 +50,10 @@
             <label class='form-label'><?php eT("Comparison operator"); ?></label>
             <div class=''>
                 <select class='form-select' name='method' id='method'>
-                    <?php foreach ($method as $methodCode => $methodTxt): ?>
-                        <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "=="): echo ' selected="selected" '; endif; ?>>
+                    <?php foreach ($method as $methodCode => $methodTxt) : ?>
+                        <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "==") :
+                            echo ' selected="selected" ';
+                                       endif; ?>>
                             <?php echo $methodTxt; ?>
                         </option>
                     <?php endforeach; ?>
@@ -81,7 +85,7 @@
                     <div class='mb-3 question-option'>
                         <div class=''>
                             <select class='form-select' name='cquestions' id='cquestions' size='7'>
-                                <?php foreach ($cquestions as $cqn): ?>
+                                <?php foreach ($cquestions as $cqn) : ?>
                                     <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars((string) $cqn[0]); ?>">
                                         <?php echo $cqn[0]; ?>
                                     </option>
@@ -91,7 +95,7 @@
                     </div>
                 </div>
                 <div role='tabpanel' class='tab-pane ' id='SRCTOKENATTRS'>
-                    <?php if($surveyIsAnonymized) {
+                    <?php if ($surveyIsAnonymized) {
                         $this->widget('ext.AlertWidget.AlertWidget', [
                             'text' => gT("This is an anonymized survey. Participant attributes can only be used in non-anonymised surveys."),
                             'type' => 'warning',
@@ -100,8 +104,10 @@
                     <div class='mb-3 question-option'>
                         <div class=''>
                             <select class='form-select' name='csrctoken' id='csrctoken' size='7'>
-                                <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
-                                    <option value='{TOKEN:<?php echo strtoupper((string) $tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper((string) $tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
+                                <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName) : ?>
+                                    <option value='{TOKEN:<?php echo strtoupper((string) $tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:' . strtoupper((string) $tokenattr) . '}') :
+                                        echo ' selected="selected" ';
+                                                          endif; ?>>
                                         <?php echo HTMLEscape($tokenattrName['description']); ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -145,7 +151,9 @@
                             <select
                                 class='form-control'
                                 name='canswers[]'
-                                <?php if ($subaction != 'editthiscondition'): echo ' multiple '; endif; ?>
+                                <?php if ($subaction != 'editthiscondition') :
+                                    echo ' multiple ';
+                                endif; ?>
                                 id='canswers'
                                 size='7'
                             >
@@ -168,13 +176,15 @@
                         <div class=''></div>
                         <div class=''>
                             <select class='form-select' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>
-                                <?php foreach ($cquestions as $cqn): ?>
-                                <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS): ?>
+                                <?php foreach ($cquestions as $cqn) : ?>
+                                    <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) : ?>
                                         <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
                                         <option
                                             value='<?php echo '@' . $cqn[3] . '@'; ?>'
                                             title="<?php echo HTMLEscape($cqn[0]); ?>"
-                                            <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@'): echo ' selected="selected" '; endif; ?>
+                                            <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@') :
+                                                echo ' selected="selected" ';
+                                            endif; ?>
                                             >
                                             <?php echo HTMLEscape($cqn[0]); ?>
                                         </option>
@@ -190,7 +200,7 @@
                         <div class=''></div>
                         <div class=''>
                             <select class='form-select' name='tokenAttr' id='tokenAttr' size='7'>
-                                <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
+                                <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName) : ?>
                                     <option value='{TOKEN:<?php echo strtoupper((string) $tokenattr); ?>}'>
                                         <?php echo HTMLEscape($tokenattrName['description']); ?>
                                     </option>

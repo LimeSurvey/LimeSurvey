@@ -6,28 +6,29 @@
  */
 ?>
 
-<?php if (!$aResults['global']['result']):?>
+<?php if (!$aResults['global']['result']) :?>
     <strong>
         <?php echo $aResults['global']['message'] ;?>
     </strong>
-<?php else: ?>
+<?php else : ?>
     <?php unset($aResults['global']); ?>
     <table class="table table-striped">
+        <caption class="visually-hidden"><?php eT('Survey menu batch edit results'); ?></caption>
         <thead>
             <th><?php eT('Survey menu entry ID');?></th>
             <th><?php eT('Status');?></th>
         </thead>
         <tbody>
-            <?php foreach($aResults as $iSurveyMenuEntryId => $result):?>
+            <?php foreach ($aResults as $iSurveyMenuEntryId => $result) :?>
                 <tr>
                     <td>
                         <?php echo $iSurveyMenuEntryId;?>
                     </td>
-                    <?php if ($result['status'] === true):?>
+                    <?php if ($result['status'] === true) :?>
                         <td class="text-success">
                             <?php echo $result['message']; ?>
                         </td>
-                    <?php else: ?>
+                    <?php else : ?>
                         <td class="text-danger">
                             <?php echo $result['message']; ?>
                         </td>

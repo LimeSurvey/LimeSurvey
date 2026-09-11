@@ -15,7 +15,7 @@ if ($showUpload) {
                 'class' => 'btn btn-outline-secondary',
                 'data-bs-toggle' => "modal",
                 'data-bs-target' => '#installPluginZipModal',
-                'title' => gT('Install plugin by ZIP archive')
+                'title' => gT('Install plugin ZIP file')
             ],
         ]
     );

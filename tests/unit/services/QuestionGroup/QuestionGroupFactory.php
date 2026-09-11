@@ -6,7 +6,7 @@ use LimeSurvey\Models\Services\QuestionGroupService;
 
 class QuestionGroupFactory
 {
-    public function make(QuestionGroupMockSet $mockSet = null): QuestionGroupService
+    public function make(?QuestionGroupMockSet $mockSet = null): QuestionGroupService
     {
         $mockSet = (new QuestionGroupMockSetFactory())->make($mockSet);
 

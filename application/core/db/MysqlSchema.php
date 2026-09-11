@@ -10,6 +10,10 @@ class MysqlSchema extends CMysqlSchema
          */
         $this->columnTypes['autoincrement'] = 'int(11) NOT NULL AUTO_INCREMENT';
         $this->columnTypes['longbinary'] = 'longblob';
+        /**
+         * JSON.
+         */
+        $this->columnTypes['json'] = 'json';
     }
 
     public function createTable($table, $columns, $options = null)
@@ -79,13 +83,13 @@ class MysqlSchema extends CMysqlSchema
         return $sResult;
     }
 
-	/**
-	 * Creates a command builder for the database.
-	 * This method may be overridden by child classes to create a DBMS-specific command builder.
-	 * @return LSMysqlDbCommandBuilder command builder instance
-	 */
-	protected function createCommandBuilder()
-	{
-		return new LSMysqlDbCommandBuilder($this);
-	}
+    /**
+     * Creates a command builder for the database.
+     * This method may be overridden by child classes to create a DBMS-specific command builder.
+     * @return LSMysqlDbCommandBuilder command builder instance
+     */
+    protected function createCommandBuilder()
+    {
+        return new LSMysqlDbCommandBuilder($this);
+    }
 }

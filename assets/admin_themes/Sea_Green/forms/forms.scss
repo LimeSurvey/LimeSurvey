@@ -66,6 +66,11 @@ input[type="number"] {
     &:focus {
         box-shadow : 4px 4px 0px $elevation-shadow;
     }
+    &:hover {
+        //default hover
+        box-shadow : $btn-hover-boxshadow;
+        text-decoration: none;
+    }
     &:disabled {
         border           : $input-border-width solid $input-border-color-disabled;
         background-color : $g-400;

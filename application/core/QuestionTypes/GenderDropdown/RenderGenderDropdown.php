@@ -22,7 +22,7 @@ class RenderGenderDropdown extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/dummy/answer';
     }
-    
+
     public function getRows()
     {
         return;
@@ -48,7 +48,7 @@ class RenderGenderDropdown extends QuestionBaseRenderer
             'coreClass' => 'ls-answers ' . $sCoreClasses,
             ), true);
 
-        
+
         $inputnames[] = [];
         return array($answer, $inputnames);
     }

@@ -1,4 +1,4 @@
-<?php if ($oSurvey->isActive): ?>
+<?php if ($oSurvey->isActive) : ?>
     <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block">
         <?php
         $this->widget(
@@ -27,8 +27,8 @@
         );
         ?>
     </span>
-<?php elseif ($hasSurveyContentCreatePermission): ?>
-    <?php if (!$oSurvey->groups): ?>
+<?php elseif ($hasSurveyContentCreatePermission) : ?>
+    <?php if (!$oSurvey->groups) : ?>
         <span class="btntooltip" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block">
             <?php
             $this->widget(

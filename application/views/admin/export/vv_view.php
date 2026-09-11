@@ -107,8 +107,8 @@
                     </div>
                 </div>
             </div>
-            <?php echo CHtml::submitButton(gT('Export results','unescaped'), array('class'=>'btn btn-outline-secondary d-none')); ?>
-            <?php echo CHtml::hiddenField('subaction','export'); ?>
+            <?php echo CHtml::submitButton(gT('Export results', 'unescaped'), array('class' => 'btn btn-outline-secondary d-none')); ?>
+            <?php echo CHtml::hiddenField('subaction', 'export'); ?>
             <form>
         </div>
     </div>

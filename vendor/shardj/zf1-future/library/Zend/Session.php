@@ -278,14 +278,8 @@ class Zend_Session extends Zend_Session_Abstract
             return;
         }
 
-        $result = session_set_save_handler(
-            [&$saveHandler, 'open'],
-            [&$saveHandler, 'close'],
-            [&$saveHandler, 'read'],
-            [&$saveHandler, 'write'],
-            [&$saveHandler, 'destroy'],
-            [&$saveHandler, 'gc']
-            );
+        $adapter = new Zend_Session_SaveHandler_SessionHandlerInterfaceAdapter($saveHandler);
+        $result = session_set_save_handler($adapter, false);
         register_shutdown_function('session_write_close');
 
         if (!$result) {
@@ -467,8 +461,10 @@ class Zend_Session extends Zend_Session_Abstract
                . " output started in {$filename}/{$linenum}");
         }
 
-        // See http://www.php.net/manual/en/ref.session.php for explanation
-        if (!self::$_unitTestEnabled && defined('SID')) {
+        // Use session_status() instead of defined('SID'): in PHP 8.x the SID constant remains
+        // defined after session_write_close(), so the old check incorrectly reports that a session
+        // is already active on the next request when it is not. session_status() is authoritative.
+        if (!self::$_unitTestEnabled && session_status() === PHP_SESSION_ACTIVE) {
             /** @see Zend_Session_Exception */
             require_once 'Zend/Session/Exception.php';
             throw new Zend_Session_Exception('session has already been started by session.auto-start or session_start()');
@@ -675,7 +671,7 @@ class Zend_Session extends Zend_Session_Abstract
      */
     public static function setId($id)
     {
-        if (!self::$_unitTestEnabled && defined('SID')) {
+        if (!self::$_unitTestEnabled && session_status() === PHP_SESSION_ACTIVE) {
             /** @see Zend_Session_Exception */
             require_once 'Zend/Session/Exception.php';
             throw new Zend_Session_Exception('The session has already been started.  The session id must be set first.');

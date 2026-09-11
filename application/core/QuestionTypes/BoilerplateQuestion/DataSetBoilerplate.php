@@ -2,5 +2,4 @@
 
 class DataSetBoilerplate extends QuestionBaseDataSet
 {
-
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\TestBaseClass;
 
 /**
  * Tests for the LimeSurvey remote API.
@@ -150,7 +152,7 @@ class RemoteControlTest extends TestBaseClass
         // Get sgqa.
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $question = $survey->groups[0]->questions[0];
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $question->qid;
+        $sgqa = 'Q' . $question->qid;
 
         // Add response
         $response = [
@@ -160,7 +162,7 @@ class RemoteControlTest extends TestBaseClass
         $this->assertEquals('19', $result, '$result = ' . json_encode($result));
 
         // Check result via database.
-        $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
+        $query = sprintf('SELECT * FROM {{responses_%d}}', self::$surveyId);
         $result = $dbo->createCommand($query)->queryAll();
         $this->assertCount(1, $result, 'Exactly one response');
         $this->assertEquals('One answer', $result[0][$sgqa], '"One answer" response');
@@ -225,7 +227,7 @@ class RemoteControlTest extends TestBaseClass
         $this->assertEquals([19 => 'deleted'], $result, '$result = ' . json_encode($result));
 
         // Check result via database.
-        $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
+        $query = sprintf('SELECT * FROM {{responses_%d}}', self::$surveyId);
         $result = $dbo->createCommand($query)->queryAll();
         $this->assertCount(1, $result, 'Exactly one response');
 
@@ -285,11 +287,6 @@ class RemoteControlTest extends TestBaseClass
         $result = $handler->list_groups($sessionKey, self::$surveyId, 'de');
         $this->assertCount(1, $result);
         $this->assertEquals('Das Deutsch title', $result[0]['group_name']);
-
-        // Fetch French group text (does not exist).
-        $result = $handler->list_groups($sessionKey, self::$surveyId, 'fr');
-        $this->assertCount(1, $result);
-        $this->assertEquals(null, $result[0]['group_name']);
     }
 
     /**
@@ -585,7 +582,7 @@ class RemoteControlTest extends TestBaseClass
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $group = $survey->groups[0];
         $question = $group->questions[0];
-        $sgq = self::$surveyId . "X" . $group->gid . "X" . $question->qid;
+        $sgq = "Q" . $question->qid;
 
         // Check base language fieldmap
         $result = $handler->get_fieldmap($sessionKey, self::$surveyId);

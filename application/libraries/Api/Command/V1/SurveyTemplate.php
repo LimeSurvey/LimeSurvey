@@ -89,7 +89,8 @@ class SurveyTemplate implements CommandInterface
                 )->toArray()
             );
         }
-        $language = (($request->getData('language') ?? $survey->language) ?? 'en');
+        $language = $request->getData('language', $survey->language);
+        $language = $language ?? 'en';
         $languageSettings = $this
             ->surveyLanguageSetting
             ->find('surveyls_survey_id = :sid and surveyls_language = :language', [
@@ -159,11 +160,9 @@ class SurveyTemplate implements CommandInterface
         $this->session->close();
 
         $ch = curl_init();
-        $root = (
-            !empty($_SERVER['HTTPS'])
-            ? 'https'
-            : 'http'
-        ) . '://' . ($_SERVER['HTTP_HOST'] ?? '');
+        // Use the trusted, server-side base URL instead of the client-supplied
+        // Host header to prevent server-side request forgery (SSRF).
+        $root = App()->getBaseUrl(true);
         curl_setopt(
             $ch,
             CURLOPT_URL,

@@ -18,13 +18,18 @@ $active-green : #14AE5C; // buttons & links
 $elevation-shadow: rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
 $elevation-shadow-soft: rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
 
-$white        : #fff;
-$black        : #000;
-$black60      : #666666; // rgba(0, 0, 0, 0.6);
-$black75      : rgba(0, 0, 0, 0.75);
-$grape75 : rgba(123, 97, 255, 0.4);
+$white       : #fff;
+$black       : #000;
+$black60     : #666666; // rgba(0, 0, 0, 0.6);
+$black75     : rgba(0, 0, 0, 0.75);
+$grape75     : rgba(123, 97, 255, 0.4);
+$grape90     : rgba(123, 97, 255, 0.9);
+$grape-light : #9b87ff;
+
 $heading-title-color: #152536;
 $heading-sub-title-color: #182535;
+
+$active-green-hover: #9cba9e;
 
 $g-900        : #1E1E1E;
 $g-800        : #333641;
@@ -52,6 +57,7 @@ $theme-colors : (
 );
 
 $border-radius: 4px;
+$border-radius-sm: 2px;
 
 // Typography START
 $ibm-font-family:
@@ -79,6 +85,7 @@ $font-size-xs: $font-size-base * 0.75; // 12px
 $font-size-sm: $font-size-base * 0.875; // 14px
 $font-size-md: $font-size-base * 1.125; // 18px
 $font-size-lg: $font-size-base * 1.25; // 20px
+$font-size-xl: $font-size-base * 1.5; // 24px
 
 $font-weight-300: 300;
 $font-weight-normal: 400;
@@ -88,6 +95,7 @@ $font-weight-600: 600;
 $line-height-20: 20px;
 $line-height-24: 24px;
 $line-height-26: 26px;
+$line-height-32: 32px;
 // Typography End
 
 // Buttons START
@@ -130,7 +138,7 @@ $tooltip-arrow-color:               $tooltip-bg;
 
 // links
 $link-color-action:                       $action !default;
-$link-color:                              $active-green !default;
+$link-color:                              #2D7A53 !default; // a11y needs more contrast on g-200 background
 $link-decoration:                         none !default;
 $link-shade-percentage:                   20% !default;
 $link-hover-color-action:                 shift-color($link-color-action, $link-shade-percentage) !default;
@@ -142,6 +150,7 @@ $breadcrumb-spacing:                6px;
 $breadcrumb-divider-color:          $g-600;
 $breadcrumb-active-color:           $g-900;
 $breadcrumb-link-color:             $link-color;
+$breadcrumb-item-max-width:         80ch; // Per-crumb cap; longer text truncates with an ellipsis
 
 // forms
 // input variables

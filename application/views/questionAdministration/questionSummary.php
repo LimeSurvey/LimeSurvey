@@ -10,7 +10,7 @@
 
 <div id="question-overview"<?= empty($visibilityOverview) ? ' style="display:none;"' : '' ?>>
     <?php
-    if ($question->qid !== 0): ?>
+    if ($question->qid !== 0) : ?>
             <!-- Question summary -->
             <div class="pagetitle">
                 <h1 aria-describedby="question-summary-meta"><?php eT('Question summary'); ?></h1>

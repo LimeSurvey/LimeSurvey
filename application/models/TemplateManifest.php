@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -39,16 +39,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function actualizeLastUpdate()
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $config = simplexml_load_file(realpath($this->xmlFile));
         $config->metadata->lastUpdate = date("Y-m-d H:i:s");
         $config->asXML(realpath($this->xmlFile)); // Belt
         touch($this->path); // & Suspenders ;-)
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -237,7 +231,7 @@ class TemplateManifest extends TemplateConfiguration
          * It implies they respect the convention :
          * $aSurveyData[custom screen name][custom variable] = custom variable value
          * Where custom variable value can't be an array.
-         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convetion.
+         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convention.
          * Eg: don't use arrays like $thissurvey['aAssessments']["datas"]["total"][0] or $thissurvey['aGroups'][1]["aQuestions"][1]
         */
         $thissurvey = $this->getCustomScreenData($thissurvey);
@@ -384,6 +378,8 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey['aGroups'][1]["showdescription"] = true;
         $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["SGQ"]           = "1234X56X79";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["type"]          = "L";
         $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
 
         // If called from command line to generate Twig temp, renderPartial doesn't exist in ConsoleApplication
@@ -396,6 +392,8 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
 
         $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["SGQ"]           = "1234X56X78";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["type"]          = "T";
         $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
         if (method_exists(Yii::app()->getController(), 'renderPartial')) {
             $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
@@ -435,14 +433,14 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aLoadForm']['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => 1));
 
         // Those values can be overwritten by XML
-        $thissurvey['name'] = gT("Template Sample");
+        $thissurvey['name'] = gT("Theme sample");
         $thissurvey['description'] =
         "<p>" . gT('This is a sample survey description. It could be quite long.') . "</p>" .
         "<p>" . gT("But this one isn't.") . "<p>";
         $thissurvey['welcome'] =
         "<p>" . gT('Welcome to this sample survey') . "<p>" .
-        "<p>" . gT('You should have a great time doing this') . "<p>";
-        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
+        "<p>" . gT('You should have a great time doing this.') . "<p>";
+        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey.');
         $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
 
@@ -502,7 +500,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Retreives the absolute path for a file to edit (current template, mother template, etc)
+     * Retrieves the absolute path for a file to edit (current template, mother template, etc)
      * Also perform few checks (permission to edit? etc)
      *
      * @param string $sFile relative path to the file to edit
@@ -731,7 +729,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
         $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
         $aDatas['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
-        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormated($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
+        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormatted($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
         $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
         $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
 
@@ -853,7 +851,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function changeDateInDOM($oNewManifest, $sDate = '')
     {
-        $sDate = (empty($sDate)) ? dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")) : $sDate;
+        $sDate = (empty($sDate)) ? gmdate("Y-m-d H:i") : $sDate;
         $oConfig = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         if ($ometadata->getElementsByTagName('creationDate')) {
@@ -885,16 +883,37 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function rename($sOldName, $sNewName)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
         $oNewManifest = self::getManifestDOM($sConfigPath);
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         $oNewManifest->save($sConfigPath . "/config.xml");
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
+        self::updateChildrenExtends($sOldName, $sNewName);
+    }
+
+    /**
+     * Update the <extends> node in the manifest of every custom theme (installed or not)
+     * that references $sOldName, so child themes keep resolving their renamed parent.
+     *
+     * @param string $sOldName The previous name of the parent template
+     * @param string $sNewName The new name of the parent template
+     */
+    public static function updateChildrenExtends($sOldName, $sNewName)
+    {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $aUserThemes = SurveyThemeHelper::getTemplateInFolder(Yii::app()->getConfig('userthemerootdir'));
+        foreach ($aUserThemes as $sThemeName => $sThemePath) {
+            if ($sThemeName === $sNewName || !file_exists($sThemePath . '/config.xml')) {
+                continue;
+            }
+            $oManifest = self::getManifestDOM($sThemePath);
+            $oConfig = $oManifest->getElementsByTagName('config')->item(0);
+            $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
+            $oExtendsNode = $ometadata->getElementsByTagName('extends')->item(0);
+            if ($oExtendsNode !== null && $oExtendsNode->nodeValue === $sOldName) {
+                self::changeExtendsInDom($oManifest, $sNewName);
+                $oManifest->save($sThemePath . '/config.xml');
+            }
         }
     }
 
@@ -979,7 +998,7 @@ class TemplateManifest extends TemplateConfiguration
      * 1. Delete files and engine nodes
      * 2. Update the name of the template
      * 3. Change the creation/modification date to the current date
-     * 4. Change the autor name to the current logged in user
+     * 4. Change the author name to the current logged in user
      * 5. Change the author email to the admin email
      *
      * Used in template editor
@@ -994,9 +1013,6 @@ class TemplateManifest extends TemplateConfiguration
         $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
 
         // First we get the XML file
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $oNewManifest = self::getManifestDOM($sConfigPath);
 
         self::deleteEngineInDom($oNewManifest);
@@ -1007,10 +1023,6 @@ class TemplateManifest extends TemplateConfiguration
         self::changeExtendsInDom($oNewManifest, $sToExtends);
 
         $oNewManifest->save($sConfigPath . "/config.xml");
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -1034,11 +1046,6 @@ class TemplateManifest extends TemplateConfiguration
         }
 
         if (file_exists(realpath($this->xmlFile))) {
-            if (\PHP_VERSION_ID < 80000) {
-                $bOldEntityLoaderState = libxml_disable_entity_loader(
-                    true
-                ); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-            }
             SurveyThemeHelper::checkConfigFiles($this->xmlFile);
             $sXMLConfigFile = file_get_contents(
                 realpath($this->xmlFile)
@@ -1060,9 +1067,6 @@ class TemplateManifest extends TemplateConfiguration
                 }
 
                 $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-                if (\PHP_VERSION_ID < 80000) {
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                }
             }
         } else {
             throw new Exception(" Error: Can't find a manifest for $this->sTemplateName in ' $this->path ' ");
@@ -1176,9 +1180,6 @@ class TemplateManifest extends TemplateConfiguration
     public function addFileReplacement($sFile, $sType)
     {
         // First we get the XML file
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $oNewManifest = new DOMDocument();
         $oNewManifest->load($this->path . "config.xml");
 
@@ -1205,9 +1206,6 @@ class TemplateManifest extends TemplateConfiguration
         $oAssetType->appendChild($oAssetElem);
         $oConfig->insertBefore($oFiles, $oOptions);
         $oNewManifest->save($this->path . "config.xml");
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
     }
 
     /**
@@ -1229,7 +1227,7 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Proxy for Yii::app()->clientScript->removeFileFromPackage()
-     * It's not realy needed here, but it is needed for TemplateConfiguration model.
+     * It's not really needed here, but it is needed for TemplateConfiguration model.
      * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
      * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
      *
@@ -1298,7 +1296,7 @@ class TemplateManifest extends TemplateConfiguration
             $this->oOptions = new stdClass();
         }
 
-        // Not mandatory (use package dependances)
+        // Not mandatory (use package dependencies)
         $this->cssFramework             = (!empty($this->config->xpath("//cssframework"))) ? $this->config->engine->cssframework : '';
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
@@ -1356,7 +1354,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param boolean $bInlcudeRemove   also get the files to remove
      * @return stdClass
      */
-    public static function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    public static function getAssetsToReplaceFormatted($oEngine, $sType, $bInlcudeRemove = false)
     {
         $oAssetsToReplaceFormated = new stdClass();
         if (!empty($oEngine->cssframework->$sType) && !empty($oEngine->cssframework->$sType->attributes()->replace)) {
@@ -1367,6 +1365,19 @@ class TemplateManifest extends TemplateConfiguration
             $oAssetsToReplaceFormated->replace = array(array($sAssetsToReplace, $sAssetsReplacement));
         }
         return $oAssetsToReplaceFormated;
+    }
+
+    /**
+     * Deprecated alias for getAssetsToReplaceFormatted()
+     * @deprecated Use getAssetsToReplaceFormatted() instead
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return stdClass
+     */
+    public static function getAssetsToReplaceFormated($oEngine, $sType, $bInlcudeRemove = false)
+    {
+        trigger_error('getAssetsToReplaceFormated() is deprecated, use getAssetsToReplaceFormatted() instead', E_USER_DEPRECATED);
+        return self::getAssetsToReplaceFormatted($oEngine, $sType, $bInlcudeRemove);
     }
 
     /**
@@ -1417,16 +1428,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function getOptionAttributes($path)
     {
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $file = realpath($path . "config.xml");
         if (file_exists($file)) {
             $sXMLConfigFile        = file_get_contents($file);
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
             $aOptions['categories'] = array();
 
             foreach ($oXMLConfig->options->children() as $key => $option) {
@@ -1535,7 +1540,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($coreFontPackages as $coreKey => $corePackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("Core") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("Core") . '">';
             }
             $fontOptions .= '<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
         }
@@ -1548,7 +1553,7 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($userFontPackages as $userKey => $userPackage) {
             $i += 1;
             if ($i === 1) {
-                $fontOptions .= '<optgroup  label="' . gT("Local Server") . ' - ' . gT("User") . '">';
+                $fontOptions .= '<optgroup  label="' . gT("Local server") . ' - ' . gT("User") . '">';
             }
             $fontOptions .= '<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
         }
@@ -1575,7 +1580,7 @@ class TemplateManifest extends TemplateConfiguration
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
             $sDescription = viewHelper::purified($sDescription);
         } catch (\Exception $e) {
-            // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to annoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template " .

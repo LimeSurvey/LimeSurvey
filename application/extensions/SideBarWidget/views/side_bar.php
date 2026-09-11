@@ -15,14 +15,19 @@
                      data-bs-placement="right">
                     <a href="<?= CHtml::encode($icon['url']) ?>"
                        target="<?= $icon['external'] ? '_blank' : '' ?>"
-                       class="btn btn-g-800 btn-icon"
-                        <?= $icon['selected'] ? 'selected' : '' ?>
-                    >
-                        <i class="<?php echo CHtml::encode($icon['ico']); ?>"></i>
+                       class="btn btn-g-800 btn-icon <?= $icon['selected'] ? 'active' : '' ?>"
+                       aria-label="<?= $icon['title'] ?>"
+                        <?= $icon['selected'] ? 'aria-current="page" selected' : '' ?>>
+                        <i class="<?= CHtml::encode($icon['ico']); ?>" aria-hidden="true"></i>
                     </a>
+
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
-    <?php /** here we could at the menu part of the sidebar */ ?>
+    <?php
+
+/** here we could at the menu part of the sidebar */
+
+    ?>
 </div>

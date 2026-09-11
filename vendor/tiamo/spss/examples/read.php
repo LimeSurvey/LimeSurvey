@@ -47,7 +47,7 @@ foreach ($files as $file) {
     echo __content($reader->header);
 
     echo __title('Documents');
-    echo __content($reader->documents);
+    echo __content($reader->getDocumentArray());
 
     echo __title('Variables');
     echo __content($reader->variables);
@@ -59,7 +59,7 @@ foreach ($files as $file) {
     echo __content($reader->info);
 
     echo __title('Data');
-    echo __content($reader->data);
+    echo __content($reader->getDataArray());
 
     echo PHP_EOL;
 }

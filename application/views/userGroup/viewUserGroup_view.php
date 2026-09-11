@@ -12,7 +12,7 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
 <div class="col-12 list-surveys">
     <div class="row">
         <div class="col-12 content-right">
-            <div class="h4"><?php eT("Group members"); ?></div>
+            <h2 class="h4"><?php eT("Group members"); ?></h2>
 
             <?php if (isset($groupfound)) : ?>
                 <strong><?php eT("Group description: "); ?></strong>
@@ -43,10 +43,12 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
 
             <br/><br/>
             <?php
-            $this->widget('application.extensions.admin.grid.CLSGridView',
+            $this->widget(
+                'application.extensions.admin.grid.CLSGridView',
                 [
                     'id' => 'usergroup-members-grid',
                     'dataProvider' => $dataProvider,
+                    'caption' => gT('Group members'),
                     'filter' => $model,
                     'ajaxType'        => 'POST',
                     'emptyText' => gT('No user group members found.'),
@@ -57,17 +59,17 @@ $dataProvider = $model->searchUserGroupMembers($ugid);
                         'ugid' => $ugid
                     ], true),
                     'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $dataProvider->pagination->getPageSize(),
-                                App()->params['pageSizeOptions'],
-                                [
+                        gT('%s rows per page'),
+                        CHtml::dropDownList(
+                            'pageSize',
+                            $dataProvider->pagination->getPageSize(),
+                            App()->params['pageSizeOptions'],
+                            [
                                     'class' => 'changePageSize form-select',
                                     'style' => 'display: inline; width: auto'
                                 ]
-                            )
-                        ),
+                        )
+                    ),
                     'columns' => [
                         array(
                             'header'      => gT('Username'),

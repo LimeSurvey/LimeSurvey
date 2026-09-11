@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * WhDropdownInputWidget.php
@@ -9,6 +10,7 @@
  * @link http://www.ramirezcobos.com/
  * @link http://www.2amigos.us/
  */
+
 Yii::import('yiiwheels.widgets.formhelpers.WhInputWidget');
 
 class WhDropDownInputWidget extends WhInputWidget
@@ -28,8 +30,6 @@ class WhDropDownInputWidget extends WhInputWidget
                 ? CHtml::activeDropDownList($this->model, $this->attribute, array(), $this->htmlOptions)
                 : CHtml::dropDownList($this->name, $this->value, array(), $this->htmlOptions);
         } else {
-
-
             ob_start();
             ob_implicit_flush(false);
             try {
@@ -52,5 +52,4 @@ class WhDropDownInputWidget extends WhInputWidget
             return ob_get_clean();
         }
     }
-
-} 
+}

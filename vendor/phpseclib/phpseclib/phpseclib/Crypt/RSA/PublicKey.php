@@ -116,7 +116,7 @@ final class PublicKey extends RSA implements Common\PublicKey
         }
 
         // Compare
-        return $r1 || $r2;
+        return boolval($r1 | $r2);
     }
 
     /**
@@ -228,7 +228,11 @@ final class PublicKey extends RSA implements Common\PublicKey
         // be output.
 
         $emLen = ($emBits + 7) >> 3; // ie. ceil($emBits / 8);
-        $sLen = $this->sLen !== null ? $this->sLen : $this->hLen;
+        if (static::$autoSaltLength) {
+            $sLen = 0;
+        } else {
+            $sLen = $this->sLen !== null ? $this->sLen : $this->hLen;
+        }
 
         $mHash = $this->hash->hash($m);
         if ($emLen < $this->hLen + $sLen + 2) {
@@ -248,11 +252,17 @@ final class PublicKey extends RSA implements Common\PublicKey
         $dbMask = $this->mgf1($h, $emLen - $this->hLen - 1);
         $db = $maskedDB ^ $dbMask;
         $db[0] = ~chr(256 - (1 << ($emBits & 7))) & $db[0];
-        $temp = $emLen - $this->hLen - $sLen - 2;
-        if (substr($db, 0, $temp) != str_repeat(chr(0), $temp) || ord($db[$temp]) != 1) {
+
+        // PS is a run of zero bytes terminated by a single 0x01
+        $psLen = strspn($db, "\0");
+        if ($psLen == strlen($db) || $db[$psLen] != chr(0x01)) {
             return false;
         }
-        $salt = substr($db, $temp + 1); // should be $sLen long
+        if (!static::$autoSaltLength && $psLen != $emLen - $this->hLen - $sLen - 2) {
+            return false;
+        }
+
+        $salt = substr($db, $psLen + 1); // should be $sLen long
         $m2 = "\0\0\0\0\0\0\0\0" . $mHash . $salt;
         $h2 = $this->hash->hash($m2);
         return hash_equals($h, $h2);
@@ -301,6 +311,11 @@ final class PublicKey extends RSA implements Common\PublicKey
      */
     public function verify($message, $signature)
     {
+        $result = $this->handleOpenSSL('openssl_verify', $message, $signature);
+        if ($result !== null) {
+            return $result;
+        }
+
         switch ($this->signaturePadding) {
             case self::SIGNATURE_RELAXED_PKCS1:
                 return $this->rsassa_pkcs1_v1_5_relaxed_verify($message, $signature);
@@ -450,6 +465,11 @@ final class PublicKey extends RSA implements Common\PublicKey
      */
     public function encrypt($plaintext)
     {
+        $result = $this->handleOpenSSL('openssl_public_encrypt', $plaintext);
+        if ($result !== null) {
+            return $result;
+        }
+
         switch ($this->encryptionPadding) {
             case self::ENCRYPTION_NONE:
                 return $this->raw_encrypt($plaintext);

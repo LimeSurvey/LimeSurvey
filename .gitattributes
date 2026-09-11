@@ -2,7 +2,6 @@
 
 # exclude build/devel/test files from export to zip/tarball
 .bowerrc                export-ignore
-buildVueComponents.js   export-ignore
 gulpfile.js             export-ignore
 composer.json           export-ignore
 CONTRIBUTING.md         export-ignore

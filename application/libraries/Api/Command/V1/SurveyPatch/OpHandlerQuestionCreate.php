@@ -27,6 +27,7 @@ use LimeSurvey\ObjectPatch\{
 };
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use Question;
+use Condition;
 
 class OpHandlerQuestionCreate implements OpHandlerInterface
 {
@@ -235,6 +236,15 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 true
             )
         );
+        $cids = [];
+        if ($data['question']['scenarios'] ?? false) {
+            foreach ($data['question']['scenarios'] as $scenario) {
+                foreach ($scenario['conditions'] as $rawCondition) {
+                    $cids[] = $rawCondition['cid'];
+                }
+            }
+            Condition::model()->copyConditions($cids, $question->qid);
+        }
         return ['tempIdMapping' => $mapping];
     }
 

@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -26,7 +26,7 @@ use LimeSurvey\Models\Services\Exception\{
  * @property integer $sid Survey ID
  * @property integer $group_order Group order number (max 100 chars)
  * @property string $randomization_group  Randomization group
- * @property string $grelevance Group's relevane equation
+ * @property string $grelevance Group's relevance equation
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions
@@ -86,7 +86,7 @@ class QuestionGroup extends LSActiveRecord
                 'Question',
                 'gid',
                 'condition' => 'questions.parent_qid = 0',
-                'order' => 'questions.question_order ASC',
+                'order' => 'questions.question_order ASC, questions.title ASC',
                 'together' => false
             ),
             'questiongroupl10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
@@ -144,26 +144,6 @@ class QuestionGroup extends LSActiveRecord
                     $oQuestion->save(true);
                 }
             }
-        }
-    }
-    /**
-     * Insert an array into the groups table
-     * Returns false if insertion fails, otherwise the new GID
-     *
-     * @param array $data
-     * @return bool|int
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $group = new self();
-        foreach ($data as $k => $v) {
-            $group->$k = $v;
-        }
-        if (!$group->save()) {
-            return false;
-        } else {
-            return $group->gid;
         }
     }
 

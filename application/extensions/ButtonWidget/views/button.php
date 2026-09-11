@@ -23,4 +23,4 @@ $dropDownIconHtml = $displayDropDownIcon ? '<span class="menu-button-divider"></
     <?php endif; ?>
 <?php else : ?>
     <?= CHtml::link($iconLeft . $text . $iconRight, $link, $htmlOptions); ?>
-<?php endif; ?>
+<?php endif;

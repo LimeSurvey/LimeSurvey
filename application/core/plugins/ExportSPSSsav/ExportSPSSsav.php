@@ -1,11 +1,11 @@
 <?php
+
 class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
 {
-
     protected $storage = 'DbStorage';
 
-    static protected $description = 'Core: Export survey results to an SPSS sav file';
-    static protected $name = 'SPSS Export';
+    protected static $description = 'Core: Export survey results to an SPSS sav file';
+    protected static $name = 'SPSS Export';
 
     public function init()
     {
@@ -23,7 +23,7 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
             'label' => 'Export for SPSS',
             'options' => array('16' => 'versions 14 and above', '13'  => 'version 13 and below (limited string length)'),
             'default' => '16',
-            'submitonchange'=> false
+            'submitonchange' => false
             )
         );
 

@@ -2,32 +2,34 @@
 
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
-
 class TextProcessor extends AbstractQuestionProcessor
 {
     public function rt(): void
     {
-        $this->rt = $this->question['sid'] . 'X' . $this->question['gid'] . 'X' . $this->question['qid'];
+        $this->rt = 'Q' . $this->question['qid'];
     }
 
     public function process()
     {
         $this->rt();
 
+        $totalResponses = $this->getTotalCount();
+        $answered = $this->countFieldResponses($this->rt);
+
         $legend = ['Answer', 'NoAnswer'];
-        $count = $this->getResponseCount($this->rt);
         $dataItems = [
-            ['key' => 'Answer', 'title' => 'Answer', 'value' => $count],
-            ['key' => 'NoAnswer', 'title' => 'No answer', 'value' => $this->getResponseNotAnsweredCount($this->rt)],
+            ['key' => 'Answer', 'title' => 'Answer', 'value' => $answered],
+            [
+                'key' => 'NoAnswer',
+                'title' => 'No answer',
+                'value' => fn(): int => $totalResponses() - $answered(),
+            ],
         ];
 
-        return new StatisticsChartDTO(
-            $this->question['question'],
-            $legend,
-            $dataItems,
-            $this->calculateTotal($dataItems),
-            ['question' => $this->question]
-        );
+        return [
+            'title' => $this->question['question'],
+            'legend' => $legend,
+            'data' => $dataItems,
+        ];
     }
 }

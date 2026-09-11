@@ -10,7 +10,7 @@ trait OpHandlerExceptionTrait
     /**
      * @param OpInterface $op
      * @param string $name
-     * @return void
+     * @return never
      * @throws OpHandlerException
      */
     private function throwNoValuesException(OpInterface $op, string $name = '')

@@ -22,7 +22,7 @@ class RenderBoilerplate extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/boilerplate/answer';
     }
-    
+
     public function getRows()
     {
         return;

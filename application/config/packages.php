@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /** @var array $userConfig */
@@ -35,7 +37,7 @@ return [
             'decimalcustom', // Use by fixnum_checkconditions
         ]
     ],
-    /* For public template functionnality */
+    /* For public template functionality */
     'limesurvey-public' => [
         'devBaseUrl' => 'assets/packages/limesurvey/',
         'basePath'   => 'core.limesurvey', /* public part only : rename directory ? */
@@ -84,7 +86,7 @@ return [
 //            'bootstrap'
         ]
     ],
-    /* For public template extended functionnality (based on default template) */
+    /* For public template extended functionality (based on default template) */
     'template-core'     => [
         'devBaseUrl' => 'assets/packages/template-core/',
         'basePath'   => 'core.template-core',
@@ -123,6 +125,7 @@ return [
     'ckeditor'          => [
         'devBaseUrl' => 'assets/packages/ckeditor',
         'basePath'   => 'core.ckeditor',
+        'position'   => CClientScript::POS_BEGIN,
         'js'         => [
             'ckeditor.js',
             'config.js',
@@ -134,6 +137,7 @@ return [
     'ckeditoradditions' => [
         'devBaseUrl' => 'assets/packages/ckeditoradditions/',
         'basePath'   => 'core.ckeditoradditions',
+        'position'   => CClientScript::POS_BEGIN,
         'js'         => [
             'ckeditoradditions.js',
         ],
@@ -193,9 +197,6 @@ return [
             'build.min/js/globalsidepanel.js'
         ]
         ),
-        'css'        => [
-            'build.min/css/main.css'
-        ],
         'depends'    => [
             'adminbasics'
         ]

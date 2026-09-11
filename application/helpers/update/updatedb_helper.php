@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -42,26 +42,84 @@ use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 */
 
 /**
-* @param integer $iOldDBVersion The previous database version
-* @param boolean $bSilent Run update silently with no output - this checks if the update can be run silently at all. If not it will not run any updates at all.
-*/
+ * Executes all required database migrations from the given previous DB version up to the configured target DB version.
+ *
+ * @param int $iOldDBVersion The previous database version to upgrade from.
+ * @param bool $bSilent If true, attempt a silent update; the function will return `false` and perform no updates when one or more critical versions are included in the required update range.
+ * @return bool `true` if all updates were applied successfully, `false` otherwise.
+ */
 function db_upgrade_all($iOldDBVersion, $bSilent = false)
 {
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
      * @link https://www.limesurvey.org/manual/Database_versioning for explanations
-     * @var array $aCriticalDBVersions An array of cricital database version.
+     * @var array $aCriticalDBVersions An array of critical database version.
      */
-    $aCriticalDBVersions = array(310, 400, 450, 600);
+    $aCriticalDBVersions = array(310, 400, 450, 600, 700);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
-    // If trying to update silenty check if it is really possible
+    // If trying to update silently check if it is really possible
     if ($bSilent && (count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0)) {
         return false;
     }
-    // If DBVersion is older than 184 don't allow database update
+    // If DBVersion is older than 132 don't allow database update
     if ($iOldDBVersion < 132) {
         return false;
+    }
+
+    // Make sure the database server meets the documented minimum requirements
+    // before starting any migration. Otherwise a migration can fail halfway
+    // through (e.g. adding a JSON column on an unsupported MariaDB version) and
+    // leave the database in an inconsistent state.
+    try {
+        $oDbConnection = Yii::app()->getDb();
+        $requirement = \LimeSurvey\Helpers\DbVersionHelper::getRequirement(
+            $oDbConnection->getDriverName(),
+            $oDbConnection->getServerVersion()
+        );
+    } catch (CDbException $e) {
+        Yii::log('Could not verify database version before update: ' . $e->getMessage(), 'error', 'application.db.update');
+        return false;
+    }
+    if (!$requirement['supported']) {
+        $message = sprintf(
+            gT('The database update was aborted because your database server does not meet the minimum requirements. %s %s or newer is required, but the server reports version %s. Please upgrade your database server and try again.'),
+            $requirement['type'],
+            $requirement['minimumLabel'],
+            $requirement['current']
+        );
+        if (!$bSilent && Yii::app()->hasComponent('user')) {
+            Yii::app()->user->setFlash('error', $message);
+        }
+        Yii::log($message, 'error', 'application.db.update');
+        return false;
+    }
+
+    // Try to acquire database update lock
+    if (!getDatabaseUpdateLock(false, $sLockError)) {
+        Yii::app()->user->setFlash('error', $sLockError ?: 'Could not acquire the database update lock.');
+        return false;
+    }
+
+    // Enable maintenance mode during critical updates so survey participants
+    // see a maintenance page. Preserve the previous value to restore it afterwards.
+    $bIsCriticalUpdate = count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0;
+    $sPreviousMaintenanceMode = App()->getConfig('maintenancemode');
+    $bMaintenanceModeRestored = true;
+    if ($bIsCriticalUpdate && $sPreviousMaintenanceMode !== 'hard') {
+        SettingGlobal::setSetting('maintenancemode', 'hard');
+        $bMaintenanceModeRestored = false;
+
+        // Safety net: restore maintenance mode even on fatal error / timeout.
+        register_shutdown_function(function () use ($sPreviousMaintenanceMode, &$bMaintenanceModeRestored) {
+            if (!$bMaintenanceModeRestored) {
+                try {
+                    SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                } catch (\Throwable $t) {
+                    // DB may be unavailable at this point, nothing we can do.
+                }
+            }
+        });
     }
 
     /// This function does anything necessary to upgrade
@@ -69,11 +127,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     Yii::app()->loadHelper('database');
     Yii::import('application.helpers.admin.import_helper', true);
+    /** Needed in update 470 */
+    Yii::import('application.helpers.expressions.em_manager_helper', true);
     $oDB                        = Yii::app()->getDb();
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
     $options = "";
-    // The engine has to be explicitely set because MYSQL 8 switches the default engine to INNODB
+    // The engine has to be explicitly set because MYSQL 8 switches the default engine to INNODB
     if (Yii::app()->db->driverName == 'mysql') {
         $options = 'ENGINE=' . Yii::app()->getConfig('mysqlEngine') . ' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
         if (Yii::app()->getConfig('mysqlEngine') == 'INNODB') {
@@ -100,12 +160,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         $file = end($fileInfo);
         Yii::app()->user->setFlash(
             'error',
-            gT('An non-recoverable error happened during the update. Error details:')
+            gT('A non-recoverable error occurred during the database update. Error details:')
             . '<p>'
             . htmlspecialchars($e->getMessage())
             . '</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
+        // Restore previous maintenance mode if it was changed
+        if (!$bMaintenanceModeRestored) {
+            try {
+                SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                $bMaintenanceModeRestored = true;
+            } catch (\Throwable $t) {
+                Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
+            }
+        }
+        releaseDatabaseUpdateLock();
         // If we're debugging, re-throw the exception.
         if (defined('YII_DEBUG') && YII_DEBUG) {
             throw $e;
@@ -125,8 +195,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     // Force User model to refresh meta data (for updates from very old versions)
     User::model()->refreshMetaData();
     Yii::app()->db->schema->getTable('{{surveys}}', true);
+    Yii::app()->db->schema->getTable('{{surveys_groupsettings}}', true);
     Yii::app()->db->schema->getTable('{{templates}}', true);
     Survey::model()->refreshMetaData();
+    SurveysGroupsettings::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
 
     // Try to clear tmp/runtime (database cache files).
@@ -153,12 +225,103 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     fixLanguageConsistencyAllSurveys();
 
+    // Restore previous maintenance mode if it was changed
+    if (!$bMaintenanceModeRestored) {
+        try {
+            SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+            $bMaintenanceModeRestored = true;
+        } catch (\Throwable $t) {
+            Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
+        }
+    }
+    releaseDatabaseUpdateLock();
     Yii::app()->setConfig('Updating', false);
     return true;
 }
 
 /**
- * Update previous encrpted values to new encryption
+ * This function sets the database update lock.
+ * The database update lock is used to prevent another process / client to start
+ * another (silent or not) database update while an existing one is still running.
+ * The lock is automatically released if the current process finishes
+ *
+ * @param bool $bRelease If true, release the lock instead of acquiring it.
+ * @param string|null &$sError Set to a human-readable reason when acquiring the lock fails.
+ * @return boolean True if the lock was established (or released), otherwise false
+ */
+function getDatabaseUpdateLock($bRelease = false, &$sError = null)
+{
+    static $pLock = null;
+    if ($bRelease) {
+        if ($pLock !== null) {
+            flock($pLock, LOCK_UN);
+            fclose($pLock);
+            $pLock = null;
+        }
+        return true;
+    }
+    if ($pLock !== null) {
+        $sError = 'The database update lock has already been acquired by this process.';
+        return false;
+    }
+    $sLockFile = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock';
+    $pLock = @fopen($sLockFile, 'w+');
+    if (!$pLock) {
+        $sError = sprintf(
+            'Could not open the database update lock file "%s". Check that the file (and its directory) are writable by the user running this process.',
+            $sLockFile
+        );
+        return false;
+    }
+    if (flock($pLock, LOCK_EX | LOCK_NB)) {
+        return true;
+    }
+    fclose($pLock);
+    $pLock = null;
+    $sError = sprintf(
+        'Another process is currently holding the database update lock ("%s"). Please wait for it to finish, or remove the lock file if you are sure no update is running.',
+        $sLockFile
+    );
+    return false;
+}
+
+/**
+ * Checks whether another process currently holds the database update lock, without
+ * acquiring it. Meant for display purposes (e.g. the update confirmation screen), so a
+ * user isn't invited to start an update that would immediately fail because one is
+ * already running elsewhere (CLI, cron, another browser tab, ...).
+ *
+ * @return bool True if another process currently holds the lock.
+ */
+function isDatabaseUpdateLockHeld()
+{
+    $sLockFile = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'dbupdate.lock';
+    if (!file_exists($sLockFile)) {
+        return false;
+    }
+    $pLock = @fopen($sLockFile, 'r');
+    if (!$pLock) {
+        // Can't check (e.g. permission issue): don't block the UI over it.
+        return false;
+    }
+    $bLocked = !flock($pLock, LOCK_EX | LOCK_NB);
+    if (!$bLocked) {
+        flock($pLock, LOCK_UN);
+    }
+    fclose($pLock);
+    return $bLocked;
+}
+
+/**
+ * Release the database update lock acquired by getDatabaseUpdateLock().
+ */
+function releaseDatabaseUpdateLock()
+{
+    getDatabaseUpdateLock(true);
+}
+
+/**
+ * Update previous encrypted values to new encryption
  * @param CDbConnection $oDB
  * @throws CException
  */
@@ -536,16 +699,10 @@ function createFieldMap450($survey): array
 
                 $answerColumnDefinition = '';
                 if (isset($questionTheme['xml_path'])) {
-                    if (PHP_VERSION_ID < 80000) {
-                        $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-                    }
                     $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $questionTheme['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
                     $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
                     if (isset($oQuestionConfig->metadata->answercolumndefinition)) {
                         $answerColumnDefinition = json_decode(json_encode($oQuestionConfig->metadata->answercolumndefinition), true)[0];
-                    }
-                    if (PHP_VERSION_ID < 80000) {
-                        libxml_disable_entity_loader($bOldEntityLoaderState);
                     }
                 }
                 $cacheMemo[$cacheKey] = $answerColumnDefinition;
@@ -1013,7 +1170,7 @@ function upgradeArchivedTableSettings446()
         $type = $tableNameParts[1] ?? '';
         $surveyID = $tableNameParts[2] ?? '';
         $typeExtended = $tableNameParts[3] ?? '';
-        // skip if table entry allready exists
+        // skip if table entry already exists
         foreach ($archivedTableSettings as $archivedTableSetting) {
             if ($archivedTableSetting['tbl_name'] === $tableName) {
                 continue 2;
@@ -1328,7 +1485,7 @@ function upgrade328($oDB)
 */
 function upgrade327($oDB)
 {
-    // Update the box value so it uses to the the themeoptions controler
+    // Update the box value so it uses the themeoptions controller
     $oDB->createCommand()->update('{{boxes}}', array(
         'position' =>  '6',
         'url'      =>  'admin/themeoptions',
@@ -1511,7 +1668,6 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         'showprogress' => "string(1) NULL DEFAULT 'Y'",
         'questionindex' => "integer NULL DEFAULT '0'",
         'navigationdelay' => "integer NULL DEFAULT '0'",
-        'nokeyboard' => "string(1) NULL DEFAULT 'N'",
         'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
     ));
     addPrimaryKey('surveys_groupsettings', array('gsid'));
@@ -1535,6 +1691,16 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     // TODO: Don't use models in updatedb_helper.
     $attributes = $settings1->attributes;
     unset($attributes['ipanonymize']);
+    // Same as ipanonymize, stale schema persists on model after column is removed from db,
+    // and interacts with older updates
+    if (isset($attributes['nokeyboard'])) {
+        unset($attributes['nokeyboard']);
+    }
+    /* Added in 649 update */
+    unset($attributes['showregisterpolicy']);
+    unset($attributes['showtokenpolicy']);
+    /* Added in 712 update */
+    unset($attributes['preselectnoanswer']);
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
@@ -1585,7 +1751,6 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         "showprogress" => "I",
         "questionindex" => -1,
         "navigationdelay" => -1,
-        "nokeyboard" => "I",
         "alloweditaftercompletion" => "I",
     );
 
@@ -1681,7 +1846,7 @@ function upgradeTemplateTables304($oDB)
         'author'                 => 'LimeSurvey GmbH',
         'author_email'           => 'info@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
-        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'copyright'              => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
         'version'                => '1.0',
         'api_version'            => '3.0',
@@ -1701,7 +1866,7 @@ function upgradeTemplateTables304($oDB)
         'author'                 => 'LimeSurvey GmbH',
         'author_email'           => 'info@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
-        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'copyright'              => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
         'version'                => '1.0',
         'api_version'            => '3.0',
@@ -1723,7 +1888,7 @@ function upgradeTemplateTables304($oDB)
         'author'                 => 'LimeSurvey GmbH',
         'author_email'           => 'info@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
-        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'copyright'              => 'Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
         'version'                => '1.0',
         'api_version'            => '3.0',
@@ -2427,7 +2592,6 @@ function upgradeSurveyTables164()
     }
 }
 
-
 function upgradeSurveys156()
 {
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
@@ -2460,13 +2624,13 @@ function upgradeTokens148()
 function upgradeQuestionAttributes148()
 {
     $sSurveyQuery = "SELECT sid,language,additional_languages FROM {{surveys}}";
-    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->query();
     $aAllAttributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
         $iSurveyID = $aSurveyRow['sid'];
         $aLanguages = array_merge(array($aSurveyRow['language']), explode(' ', (string) $aSurveyRow['additional_languages']));
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
-        $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
+        $oAttributeResult =  Yii::app()->db->createCommand($sAttributeQuery)->query();
         foreach ($oAttributeResult->readAll() as $aAttributeRow) {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n']) {
                 Yii::app()->getDb()->createCommand("delete from {{question_attributes}} where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
@@ -2503,7 +2667,7 @@ function upgradeTokens145()
 function upgradeSurveys145()
 {
     $sSurveyQuery = "SELECT * FROM {{surveys}} where notification<>'0'";
-    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->query();
     foreach ($oSurveyResult->readAll() as $aSurveyRow) {
         if ($aSurveyRow['notification'] == '1' && trim((string) $aSurveyRow['adminemail']) != '') {
             $aEmailAddresses = explode(';', (string) $aSurveyRow['adminemail']);
@@ -3119,24 +3283,31 @@ function fixPostgresSequence($tableName = null)
 {
     $oDB = Yii::app()->getDb();
     $query = "SELECT 'SELECT SETVAL(' ||
-                quote_literal(quote_ident(PGT.schemaname) || '.' || quote_ident(S.relname)) ||
+                quote_literal(quote_ident(SN.nspname) || '.' || quote_ident(S.relname)) ||
                 ', COALESCE(MAX(' ||quote_ident(C.attname)|| '), 1) ) FROM ' ||
-                quote_ident(PGT.schemaname)|| '.'||quote_ident(T.relname)|| ';'
+                quote_ident(TN.nspname)|| '.'||quote_ident(T.relname)|| ';'
             FROM pg_class AS S,
                 pg_depend AS D,
                 pg_class AS T,
                 pg_attribute AS C,
-                pg_tables AS PGT
+                pg_namespace AS SN,
+                pg_namespace AS TN
             WHERE S.relkind = 'S'
                 AND S.oid = D.objid
                 AND D.refobjid = T.oid
                 AND D.refobjid = C.attrelid
                 AND D.refobjsubid = C.attnum
-                AND T.relname = PGT.tablename";
+                AND S.relnamespace = SN.oid
+                AND T.relnamespace = TN.oid
+                AND D.classid = 'pg_class'::regclass
+                AND D.refclassid = 'pg_class'::regclass
+                AND D.deptype IN ('a', 'i')
+                AND C.atttypid IN ('int2'::regtype, 'int4'::regtype, 'int8'::regtype)
+                AND NOT C.attisdropped";
     if ($tableName != null) {
-        $query .= " AND PGT.tablename= '{{" . $tableName . "}}' ";
+        $query .= " AND T.relname = '{{" . $tableName . "}}' ";
     }
-    $query .= "ORDER BY S.relname;";
+    $query .= " ORDER BY S.relname;";
     $FixingQueries = Yii::app()->db->createCommand($query)->queryColumn();
     foreach ($FixingQueries as $fixingQuery) {
         $oDB->createCommand($fixingQuery)->execute();

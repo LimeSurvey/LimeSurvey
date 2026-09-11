@@ -141,7 +141,7 @@ As you can see, it's using its own view, so it's rendered in its own page like i
 
 ## Extending a method from the GlobalSettings controller
 
-Of course, most of the time, when you extend a class, what you want is to override one of its methode to add some specific logic to it. Here, we did a very simple exemple.
+Of course, most of the time, when you extend a class, what you want is to override one of its methode to add some specific logic to it. Here, we did a very simple example.
 
 ### New class parameter
 First, we added a new parameter to the GlobalSetting class:
@@ -169,10 +169,10 @@ protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $
 ```
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/controller/globalsettings.php#L50-L64
 
-As you can see, we do only one thing: we add $myNewParam to $aData, then we just call the parent method. This is a very normal way of processing. Then what ever change we do to the core method will also apply to your extension. For exemple, that what we're doing when we override the renderPartial method:
+As you can see, we do only one thing: we add $myNewParam to $aData, then we just call the parent method. This is a very normal way of processing. Then what ever change we do to the core method will also apply to your extension. For example, that what we're doing when we override the renderPartial method:
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/application/controllers/AdminController.php#L200-L221
 
-Of course, you can also completly rewrite the logic of the parent method, and not calling at all the parent method. Sometime: you just don't have the choice. Especially when the code is not that much functional oriented, and when the method signature is poor (and let be honnest, it is often the case in LimeSurvey code). For exemple we could also have override the method  \GlobalSetting::_displaySettings(). But it accepts no parameter at all, so we would have been forced to rewrite it locally:
+Of course, you can also completly rewrite the logic of the parent method, and not calling at all the parent method. Sometime: you just don't have the choice. Especially when the code is not that much functional oriented, and when the method signature is poor (and let be honnest, it is often the case in LimeSurvey code). For example we could also have override the method  \GlobalSetting::_displaySettings(). But it accepts no parameter at all, so we would have been forced to rewrite it locally:
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/application/controllers/admin/globalsettings.php#L68-L110
 
 But good news: LimeSurvey is OpenSource. So if you feel blocked because the signature of a core method is too poor to be called as a parent method, just modify the signature, and submit a PR. Then, step by step, all the core code will become much more functionnal and easy to override from modules.
@@ -239,8 +239,8 @@ Now, in _overview.php, we show that data:
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/_overview.php#L39-L44
 
 Now, if debug mode is on, you should see:
-![Full page Global Settings view overriden](https://account.limesurvey.org/images/github/global-setting-views-override.png)
+![Full page Global Settings view overridden](https://account.limesurvey.org/images/github/global-setting-views-override.png)
 
 ## Conclusion
 
-That was a very brief introduction. Of course, you can do much more complex things. In global settings, you could add new settings for one of your modules (like the HelloWorld module). You would then need to override the _saveSettings method. Now, you can modify LimeSurvey deeply wihtout waiting for the team to add new events, or without modifying the core files. 
+That was a very brief introduction. Of course, you can do much more complex things. In global settings, you could add new settings for one of your modules (like the HelloWorld module). You would then need to override the _saveSettings method. Now, you can modify LimeSurvey deeply without waiting for the team to add new events, or without modifying the core files. 

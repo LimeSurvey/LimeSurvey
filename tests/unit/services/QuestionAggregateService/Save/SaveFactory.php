@@ -10,9 +10,9 @@ use LimeSurvey\Models\Services\QuestionAggregateService\SaveService;
 class SaveFactory
 {
     /**
-     * @param ?QuestionMockSet $init
+     * @param ?SaveMockSet $mockSet
      */
-    public function make(SaveMockSet $mockSet = null): SaveService
+    public function make(?SaveMockSet $mockSet = null): SaveService
     {
         $mockSet = (new SaveMockSetFactory())->make($mockSet);
 

@@ -1255,6 +1255,15 @@
     };
   }
 
+  /**
+   * Create a stylesheet updater that ensures new stylesheet links present in a document are added to the document head if not already present.
+   *
+   * The returned function iterates over `elements` (new <link> elements) and, for each one, checks `oldElements` for a stylesheet with a matching `href` (preferring the element's `href` attribute and falling back to the DOM `href` property). If no match is found, it creates and appends a `<link rel="stylesheet" type="text/css">` with the new stylesheet's `href` to the document head.
+   *
+   * @return {Function} A function that accepts `(elements, oldElements)` and updates the document's stylesheets.
+   * @param {Array|NodeList|HTMLCollection} elements - New stylesheet link elements to consider for insertion.
+   * @param {Array|NodeList|HTMLCollection} oldElements - Existing stylesheet link elements to compare against.
+   */
   function getUpdateStylesheets () {
     var _this = this;
 
@@ -1265,7 +1274,9 @@
 
       forEachEls(elements, function (newEl) {
         var resemblingOld = ArrayFrom(oldElements).reduce(function (acc, oldEl) {
-          acc = oldEl.href === newEl.href ? oldEl : acc;
+          var oldHref = oldEl.getAttribute("href") || oldEl.href;
+          var nHref = newEl.getAttribute("href") || newEl.href;
+          acc = (oldHref === nHref || oldEl.href === newEl.href) ? oldEl : acc;
           return acc;
         }, null);
 
@@ -1280,7 +1291,7 @@
 
           var head = document.getElementsByTagName('head')[0];
           var link = document.createElement('link');
-          link.setAttribute('href', newEl.href);
+          link.setAttribute('href', newEl.getAttribute('href') || newEl.href);
           link.setAttribute('rel', 'stylesheet');
           link.setAttribute('type', 'text/css');
           head.appendChild(link);

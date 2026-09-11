@@ -3,53 +3,63 @@
 <!-- List of actions -->
 <ul class="dropdown-menu listActions" role="menu" aria-labelledby="<?php echo $this->dropupId; ?>-button">
 
-    <?php foreach($this->aActions as $key => $aAction):?>
+    <?php foreach ($this->aActions as $key => $aAction) :?>
         <?php
-        switch ($aAction['type']):
+        switch ($aAction['type']) :
             case 'separator':
                 ?>
 
                 <!-- Separator -->
                 <li role="separator" class="dropdown-divider"></li>
-                <?php break;?>
+                <?php
+                break;?>
 
-            <?php case 'dropdown-header': ?>
+            <?php case 'dropdown-header':
+                ?>
 
             <!-- Header -->
             <li class="dropdown-header" role="presentation"><?php echo $aAction['text'];?></li>
-            <?php break;?>
+                <?php
+                      break;?>
 
-        <?php case 'action': ?>
+            <?php case 'action':
+                ?>
 
             <!-- Action -->
             <li role="none"
-                <?php if(!empty($aAction['disabled'])) : ?>
+                <?php if (!empty($aAction['disabled'])) : ?>
                     class='disabled'
                 <?php endif;?>
             >
                 <a href="#"
                    role="menuitem"
                    class="dropdown-item"
-                    <?php if(!empty($aAction['disabled'])) : ?>
+                    <?php if (!empty($aAction['disabled'])) : ?>
                         data-disabled='1'
                     <?php endif;?>
                    data-url="<?php echo $aAction['url'];?>"
-                    <?php if (isset($aAction['on-success'])): ?>
+                    <?php if (isset($aAction['on-success'])) : ?>
                         data-on-success="<?php echo $aAction['on-success'];?>"
                     <?php endif; ?>
-                    <?php if (isset($aAction['custom-js'])): ?>
+                    <?php if (isset($aAction['custom-js'])) : ?>
                         data-custom-js="<?php echo $aAction['custom-js'];?>"
                     <?php endif; ?>
                    data-action="<?php echo $aAction['action'];?>"
                    data-type="<?php echo $aAction['actionType']; //Direct action, or modal ?>"
-                   data-grid-reload="<?php if(isset($aAction['grid-reload'])){echo $aAction['grid-reload'];}else{echo "no";}?>"
+                   data-grid-reload="<?php if (isset($aAction['grid-reload'])) {
+                        echo $aAction['grid-reload'];
+                                     } else {
+                                         echo "no";
+                                     }?>"
                     <?php
+
                     /**
                      * It the action type is 'modal', a modal will be generated for this action, with the id: massive-actions-modal- $this->gridid - $aAction['action'] -  $key
                      * It will be shown by a javascript call in listAction.js
                      */
+
                     ?>
-                    <?php if ($aAction['actionType']=="modal"):?>
+                    <?php if ($aAction['actionType'] == "modal") :?>
                         data-modal-id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>"
                     <?php endif;?>
 
@@ -59,8 +69,8 @@
                     // Specific datas needed for the js
                     // See token grid emails for an example
                     ?>
-                    <?php if (isset($aAction['aLinkSpecificDatas'])):?>
-                        <?php foreach($aAction['aLinkSpecificDatas'] as $sDataName => $sDataValue ):?>
+                    <?php if (isset($aAction['aLinkSpecificDatas'])) :?>
+                        <?php foreach ($aAction['aLinkSpecificDatas'] as $sDataName => $sDataValue) :?>
                             data-<?php echo $sDataName; ?> = "<?php echo $sDataValue;?>"
                         <?php endforeach;?>
                     <?php endif;?>
@@ -69,7 +79,8 @@
                     <?php echo $aAction['text'];?>
                 </a>
             </li>
-            <?php break;?>
+                <?php
+                      break;?>
 
         <?php endswitch;?>
     <?php endforeach;?>

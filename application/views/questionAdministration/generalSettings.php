@@ -20,7 +20,7 @@
             aria-expanded="true"
             aria-controls="collapse-question"
         >
-            <?= gT('General Settings'); ?>
+            <?= gT('General settings'); ?>
         </button>
     </h2>
     <div

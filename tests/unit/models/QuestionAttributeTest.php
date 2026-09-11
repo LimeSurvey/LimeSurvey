@@ -3,7 +3,7 @@
 namespace ls\tests;
 
 
-class QuestionAttributeTest extends BaseModelTestCase
+class QuestionAttributeModelTest extends BaseModelTestCase
 {
     protected $modelClassName = \QuestionAttribute::class;
 }

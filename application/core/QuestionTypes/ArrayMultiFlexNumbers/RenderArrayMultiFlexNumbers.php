@@ -22,7 +22,7 @@ class RenderArrayMultiFlexNumbers extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/dummy/answer';
     }
-    
+
     public function getRows()
     {
         return;
@@ -32,7 +32,7 @@ class RenderArrayMultiFlexNumbers extends QuestionBaseRenderer
     {
         $this->registerAssets();
         return do_array_multiflexi($this->aFieldArray);
-        
+
         $answer = '';
         $inputnames = [];
 

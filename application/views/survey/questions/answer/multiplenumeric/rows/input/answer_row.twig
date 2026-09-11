@@ -9,12 +9,10 @@
  * @var $prefix
  * @var $myfname
  * @var $labelText
- * @var $sufix
- * @var $kpclass
+ * @var $suffix
  * @var $rows
  * @var $checkconditionFunction
  * @var $dispVal
- * @var $suffix
  */ #}
 
 <!-- answer_row -->
@@ -36,7 +34,7 @@
             {% endif %}
                 {{ C.Html.textField( myfname,dispVal, {
                     'id' : 'answer'~myfname,
-                    'class' : 'form-control numeric '~kpclass,
+                    'class' : 'form-control numeric',
                     'title' : gT('Only numbers may be entered in this field.'),
                     'size' : (inputsize ? inputsize : null),
                     'maxlength':  (maxlength ? maxlength : null),

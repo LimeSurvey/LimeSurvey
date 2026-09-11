@@ -2,7 +2,7 @@
     <div class="pagetitle h1 pt-3 pb-2">
         <?php eT("Conditions designer"); ?>
 
-        <?php if ($scenariocount > 0): ?>
+        <?php if ($scenariocount > 0) : ?>
             <?php
             $this->widget('ext.ButtonWidget.ButtonWidget', [
                 'name' => 'delete-all-conditions',
@@ -20,7 +20,7 @@
             ]); ?>
         <?php endif; ?>
 
-        <?php if ($scenariocount > 1): ?>
+        <?php if ($scenariocount > 1) : ?>
             <?php
             $this->widget('ext.ButtonWidget.ButtonWidget', [
                 'name' => 'renumber-scenario',
@@ -67,7 +67,7 @@
                     <?php eT('Save'); ?>
                 </button>
                 <span id='quick-add-url' class="d-none">
-                	<?php echo $quickAddConditionURL; ?>
+                    <?php echo $quickAddConditionURL; ?>
                 </span>
             </div>
         </div>

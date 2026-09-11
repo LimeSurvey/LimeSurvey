@@ -6,6 +6,9 @@ use LimeSurvey\Models\Services\SurveyAccessModeService;
 use Survey;
 use Permission;
 
+/**
+ * @group survey
+ */
 class AccessModeChangeTest extends TestBaseClass
 {
     protected $survey = null;

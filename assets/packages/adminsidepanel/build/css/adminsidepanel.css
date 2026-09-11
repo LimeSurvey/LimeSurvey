@@ -1,86 +1,11 @@
-.scoped-bottom-bar {
-  align-self: flex-end;
-}
-.scoped-toolbuttons-left {
-  flex: 3 0 auto;
-  align-self: flex-start;
-}
-.scoped-toolbuttons-left .btn {
-  flex: 1;
-}
-.scoped-toolbuttons-right {
-  flex: 2 1 auto;
-  align-self: flex-end;
-  white-space: nowrap;
-}
-.scoped-toolbuttons-right .btn {
-  float: right;
-}
-.list-group-item.question-question-list-item .editIcon {
-  margin: 10px 10px 10px 5px;
-}
-.display-as-container {
-  display: block;
-}
-#questionexplorer {
-  overflow: auto;
-  background-color: #fff;
-  /* position: relative; */
-  /* z-index: 2; */
-  min-height: 100vh;
-}
-.question-question-list-item .dropdown-menu li a.disabled {
-  opacity: 0.5;
-}
-.loader-adminpanel.loader-quickmenu .contain-pulse {
-  width: 2em;
-}
-.sidebar_loader[data-v-19f8877c] {
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  background: rgba(231, 231, 231, 0.3);
-  z-index: 4501;
-  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
-  top: 0;
-}
-.scoped-placeholder-greyed-area[data-v-19f8877c] {
-  display: none;
-}
-@media (max-width: 768px) {
-.scoped-hide-on-small[data-v-19f8877c] {
-    position: fixed;
-    top: 49px;
-    left: -96vw;
-    width: 100vw;
-    height: 95vh;
-    z-index: 10;
-}
-.scoped-hide-on-small.toggled[data-v-19f8877c] {
-    left: 0;
-}
-.scoped-hide-on-small .mainContentContainer[data-v-19f8877c] {
-    max-width: 80vw;
-    background: white;
-}
-#sidebar .resize-handle > button[data-v-19f8877c] {
-    width: 20px;
-    background: var(--LS-admintheme-basecolor);
-}
-.scoped-placeholder-greyed-area[data-v-19f8877c] {
-    display: block;
-    background: rgba(125, 125, 125, 0.2);
-    height: 100%;
-    width: 20vw;
-}
-}
-
-.loader-adminpanel .contain-pulse .square[data-v-1bc94e55]{
-    display: block;
-}
-
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].use[2]!./scss/adminsidepanelmain.scss ***!
+  \*******************************************************************************************************************************************************************************/
 /* New adminsidepanel */
 #sidebar .transition-animate-width {
+  -moz-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
 #sidebar.fill-height,
@@ -100,8 +25,7 @@
 
 .ls-ba .list-group {
   padding-right: 0;
-  -webkit-padding-start: 0;
-          padding-inline-start: 0;
+  padding-inline-start: 0;
 }
 .ls-ba .list-group > .list-group-item {
   padding-right: 0;
@@ -119,45 +43,78 @@
 }
 
 .fade-enter-active {
+  -moz-transition: all 0.8s ease;
+  -webkit-transition: all 0.8s ease;
+  -ms-transition: all 0.8s ease;
   transition: all 0.8s ease;
 }
 
 .fade-leave-active {
+  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
   transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .fade-enter,
 .fade-leave-to {
+  -moz-transform: translateY(10px);
+  -webkit-transform: translateY(10px);
+  -ms-transform: translateY(10px);
   transform: translateY(10px);
   opacity: 0;
 }
 
 .slide-fade-enter-active {
+  -moz-transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 
 .slide-fade-leave-active {
+  -moz-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+  -ms-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
   transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter,
 .slide-fade-leave-to {
+  -moz-transform: rotateY(90);
+  -webkit-transform: rotateY(90);
+  -ms-transform: rotateY(90);
   transform: rotateY(90);
+  -moz-transform-origin: left;
+  -webkit-transform-origin: left;
+  -ms-transform-origin: left;
   transform-origin: left;
   opacity: 0;
 }
 
 .slide-fade-down-enter-active {
+  -moz-transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 
 .slide-fade-down-leave-active {
+  -moz-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);
+  -webkit-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);
+  -ms-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);
   transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);
 }
 
 .slide-fade-down-enter,
 .slide-fade-down-leave-to {
+  -moz-transform: rotateY(45);
+  -webkit-transform: rotateY(45);
+  -ms-transform: rotateY(45);
   transform: rotateY(45);
+  -moz-transform-origin: left;
+  -webkit-transform-origin: left;
+  -ms-transform-origin: left;
   transform-origin: left;
   opacity: 0;
 }
@@ -272,61 +229,206 @@ div[class*=" col-"].nofloat {
   float: none;
 }
 
+.scoped-bottom-bar {
+  align-self: flex-end;
+}
+
+.scoped-toolbuttons-left {
+  flex: 3 0 auto;
+  align-self: flex-start;
+}
+.scoped-toolbuttons-left .btn {
+  flex: 1;
+}
+
+.scoped-toolbuttons-right {
+  flex: 2 1 auto;
+  align-self: flex-end;
+  white-space: nowrap;
+}
+.scoped-toolbuttons-right .btn {
+  float: right;
+}
+
+.list-group-item.question-question-list-item .editIcon {
+  margin: 10px 10px 10px 5px;
+}
+
+.display-as-container {
+  display: block;
+}
+
+#questionexplorer {
+  overflow: auto;
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.question-question-list-item .dropdown-menu li a.disabled {
+  opacity: 0.5;
+}
+
+.list-group-item.dragged,
+.question-question-list-item.dragged {
+  opacity: 0.5;
+  background-color: #f0f0f0;
+}
+
+.dragPointer {
+  cursor: grab;
+}
+.dragPointer:active {
+  cursor: grabbing;
+}
+.dragPointer.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.questiongroup-dropdown,
+.question-dropdown {
+  display: block;
+}
+
+#sidebar .q-group .questiongroup-link {
+  padding-right: 70px;
+}
+
+#sidebar #questionexplorer .question-question-list-item-link {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-right: 40px;
+}
+
+.question-question-list-item.resize-covered:hover .question-dropdown {
+  right: 34px !important;
+}
+
+.q-group.resize-covered:hover .position-absolute {
+  right: 29px !important;
+}
+
+.sidebar_loader {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  background: rgba(231, 231, 231, 0.3);
+  z-index: 4501;
+  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
+  top: 0;
+}
+
+.resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ew-resize;
+  pointer-events: none;
+}
+.resize-handle .resize-btn {
+  background: transparent;
+  border: none;
+  cursor: ew-resize;
+  padding: 4px;
+  color: #888;
+  transition: color 0.2s;
+  pointer-events: auto;
+}
+.resize-handle .resize-btn:hover {
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  #sidebar .resize-handle > button {
+    width: 20px;
+    background: var(--LS-admintheme-basecolor);
+  }
+}
+.scoped-placeholder-greyed-area {
+  display: none;
+}
+@media (max-width: 768px) {
+  .scoped-placeholder-greyed-area {
+    display: block;
+    background: rgba(125, 125, 125, 0.2);
+    height: 100%;
+    width: 20vw;
+  }
+}
+
 .ls-flex, .ls-flex-column, .ls-flex-row {
   display: -moz-flex;
+  display: -webkit-flex;
   display: flex;
 }
 .ls-flex.align-items-center, .align-items-center.ls-flex-column, .align-items-center.ls-flex-row {
   -ms-align-items: center;
+  -webkit-align-items: center;
   -moz-align-items: center;
   align-items: center;
 }
 .ls-flex.align-items-flex-start, .align-items-flex-start.ls-flex-column, .align-items-flex-start.ls-flex-row {
   -ms-align-items: flex-start;
+  -webkit-align-items: flex-start;
   -moz-align-items: flex-start;
   align-items: flex-start;
 }
 .ls-flex.align-items-flex-end, .align-items-flex-end.ls-flex-column, .align-items-flex-end.ls-flex-row {
   -ms-align-items: flex-end;
+  -webkit-align-items: flex-end;
   -moz-align-items: flex-end;
   align-items: flex-end;
 }
 .ls-flex.align-items-baseline, .align-items-baseline.ls-flex-column, .align-items-baseline.ls-flex-row {
   -ms-align-items: baseline;
+  -webkit-align-items: baseline;
   -moz-align-items: baseline;
   align-items: baseline;
 }
 .ls-flex.align-items-stretch, .align-items-stretch.ls-flex-column, .align-items-stretch.ls-flex-row {
   -ms-align-items: stretch;
+  -webkit-align-items: stretch;
   -moz-align-items: stretch;
   align-items: stretch;
 }
 .ls-flex.align-content-center, .align-content-center.ls-flex-column, .align-content-center.ls-flex-row {
   -ms-justify-content: center;
+  -webkit-justify-content: center;
   -moz-justify-content: center;
   justify-content: center;
 }
 .ls-flex.align-content-flex-start, .align-content-flex-start.ls-flex-column, .align-content-flex-start.ls-flex-row {
   -ms-justify-content: flex-start;
+  -webkit-justify-content: flex-start;
   -moz-justify-content: flex-start;
   justify-content: flex-start;
 }
 .ls-flex.align-content-flex-end, .align-content-flex-end.ls-flex-column, .align-content-flex-end.ls-flex-row {
   -ms-justify-content: flex-end;
+  -webkit-justify-content: flex-end;
   -moz-justify-content: flex-end;
   justify-content: flex-end;
 }
 .ls-flex.align-content-space-between, .align-content-space-between.ls-flex-column, .align-content-space-between.ls-flex-row {
   -ms-justify-content: space-between;
+  -webkit-justify-content: space-between;
   -moz-justify-content: space-between;
   justify-content: space-between;
 }
 .ls-flex.align-content-space-around, .align-content-space-around.ls-flex-column, .align-content-space-around.ls-flex-row {
   -ms-justify-content: space-around;
+  -webkit-justify-content: space-around;
   -moz-justify-content: space-around;
   justify-content: space-around;
 }
 .ls-flex.wrap, .wrap.ls-flex-column, .wrap.ls-flex-row {
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 .ls-flex .grow-1, .ls-flex-column .grow-1, .ls-flex-row .grow-1 {
@@ -443,12 +545,16 @@ div[class*=" col-"].nofloat {
 }
 
 .ls-flex-row {
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
   -moz-flex-direction: row;
   width: 100%;
   flex-direction: row;
 }
 
 .ls-flex-column {
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
   -moz-flex-direction: column;
   flex-direction: column;
 }
@@ -756,3 +862,5 @@ div[class*=" col-"].nofloat {
 .ls-space.padding.all-50 {
   padding: 50px;
 }
+
+/*# sourceMappingURL=adminsidepanel.css.map*/

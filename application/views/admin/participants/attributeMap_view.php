@@ -26,15 +26,13 @@
 </div>
 <?php
     $columncount = 0;
-    if (!empty($selectedcentralattribute))
-    {
-        $columncount = $columncount + 2;
-    }
-    if (!empty($selectedtokenattribute))
-    {
-        $columncount++;
-    }
-    $columnstyle = "attrcol_".$columncount;
+if (!empty($selectedcentralattribute)) {
+    $columncount = $columncount + 2;
+}
+if (!empty($selectedtokenattribute)) {
+    $columncount++;
+}
+    $columnstyle = "attrcol_" . $columncount;
 ?>
 
 <div class='row'>
@@ -44,8 +42,7 @@
             <div class='card-body'>
                 <div id="cpdbatt">
                     <?php
-                    foreach ($selectedcentralattribute as $key => $value)
-                    {
+                    foreach ($selectedcentralattribute as $key => $value) {
                         ?>
                         <div class='card col-12' id='c_<?php echo $key; ?>'><div class='card-body'><?php echo $value; ?></div></div>
                         <?php
@@ -72,8 +69,8 @@
                 </div>
                 <div class='card-body'>
                     <div class="tokenatt ui-sortable">
-                        <?php foreach ($selectedtokenattribute as $id => $name): ?>
-                                <?php if (isset($automaticallyMappedAttributes[$id])): ?>
+                        <?php foreach ($selectedtokenattribute as $id => $name) : ?>
+                                <?php if (isset($automaticallyMappedAttributes[$id])) : ?>
                                     <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>
                                     <div class='tokenatt-container row col-12'>
                                         <div class='col-6'>
@@ -92,7 +89,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                <?php else: ?>
+                                <?php else : ?>
                                     <div class='tokenatt-container row col-12'>
                                         <div class='col-6'>
                                             <div class='card ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
@@ -106,7 +103,7 @@
                         <?php endforeach; ?>
                     </div>
 
-                    <?php if(!empty($selectedtokenattribute)): ?>
+                    <?php if (!empty($selectedtokenattribute)) : ?>
                         <div class='explanation row m-3'>
                             <div class='form-check'>
                                 <input class="form-check-input" type='checkbox' id='overwriteman' name='overwriteman' />
@@ -123,15 +120,14 @@
                         </div>
                     <?php endif; ?>
 
-                    <?php if(!empty($alreadymappedattributename)): ?>
+                    <?php if (!empty($alreadymappedattributename)) : ?>
                         <div class='card-header '>
                             <?php eT("Pre-mapped attributes") ?>
                         </div>
                         <div class='card-body'>
                             <div class="notsortable">
                                 <?php
-                                foreach ($alreadymappedattributename as $key => $value)
-                                {
+                                foreach ($alreadymappedattributename as $key => $value) {
                                     ?>
                                     <div class='card' title='This attribute is already mapped' id=''><div class='card-body'><?php echo $value; ?></div></div>
                                     <?php

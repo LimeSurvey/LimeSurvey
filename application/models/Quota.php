@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -104,25 +104,6 @@ class Quota extends LSActiveRecord
     }
 
     /**
-     * @param $data
-     * @return bool|int
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $quota = new self();
-        foreach ($data as $k => $v) {
-            $quota->$k = $v;
-        }
-        try {
-            $quota->save();
-            return $quota->id;
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    /**
      * @param mixed|bool $condition
      * @param bool $recursive
      */
@@ -149,7 +130,7 @@ class Quota extends LSActiveRecord
 
     public function getCompleteCount()
     {
-        if (!tableExists("survey_{$this->sid}")) {
+        if (!tableExists("responses_{$this->sid}")) {
             return null;
         }
         /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/
@@ -195,7 +176,7 @@ class Quota extends LSActiveRecord
         foreach ($this->quotaMembers as $quotaMember) {
             $members[] = $quotaMember->memberInfo;
         }
-        $attributes = $this->attributes;
+        $attributes = $this->attributes ?? [];
 
         $defaultLanguageAttributes = [
             'quotals_message'     => gT("Sorry your responses have exceeded a quota on this survey."),
@@ -226,7 +207,7 @@ class Quota extends LSActiveRecord
         if ($oQuotaLanguageSettings) {
             return $oQuotaLanguageSettings;
         }
-        /* If not exist or found, return the one from survey base languague */
+        /* If not exist or found, return the one from survey base language */
         return $this->getMainLanguagesetting();
     }
 

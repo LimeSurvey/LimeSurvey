@@ -16,7 +16,6 @@ if ($hasUpdatePermission) {
             'link' => $this->createUrl("admin/labels/sa/editlabelset/lid/" . $lid),
             'htmlOptions' => [
                 'class' => 'btn btn-outline-secondary',
-                'role' => 'button'
             ],
         ]
     );
