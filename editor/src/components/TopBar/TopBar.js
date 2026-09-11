@@ -28,6 +28,7 @@ export const TopBar = ({
   showShareActionButton = false,
   showExportResponsesButton = false,
   showExportStatisticsButton = false,
+  onExportResponsesClick,
   setShowOverviewModalRef,
 }) => {
   const { survey, update, surveyList } = useSurvey(surveyId)
@@ -143,6 +144,7 @@ export const TopBar = ({
         showShareActionButton={showShareActionButton}
         showExportResponsesButton={showExportResponsesButton}
         showExportStatisticsButton={showExportStatisticsButton}
+        onExportResponsesClick={onExportResponsesClick}
         showPublishSettings={showPublishSettings}
         triggerPublish={triggerPublish}
         isAddingQuestionOrGroup={isAddingQuestionOrGroup}

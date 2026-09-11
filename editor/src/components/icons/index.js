@@ -1,4 +1,5 @@
 export * from './AddIcon'
+export * from './UpgradeSparkleIcon'
 export * from './DownloadIcon'
 export * from './LanguageIcon'
 export * from './AlignLeftIcon'
