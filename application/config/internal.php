@@ -323,6 +323,7 @@ $internalConfig = array(
                 't'     => 'gT',
                 'gT'    => 'gT',
                 'isAbsoluteUrl' => 'check_absolute_url',
+                'isImageUrl' => 'check_image_url',
             ),
 
             'sandboxConfig' => array(
@@ -352,7 +353,8 @@ $internalConfig = array(
                     'upper',
                     'striptags',
                     'number_format',
-                    'isAbsoluteUrl'
+                    'isAbsoluteUrl',
+                    'isImageUrl'
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox", "tag"),
