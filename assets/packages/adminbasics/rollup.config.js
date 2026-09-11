@@ -6,10 +6,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 // replace strings in input files with strings
 import replace from 'rollup-plugin-replace';
-// compile scss files
-// import scss from 'rollup-plugin-scss';
 import {terser} from 'rollup-plugin-terser';
-// import WriteRTLCSS from './buildplugins/rollup-plugin-writertlcss';
 
 const ENVIRONEMENT = process.env.NODE_ENV.trim();
 
@@ -32,16 +29,6 @@ if (ENVIRONEMENT === 'production') {
         nodeResolve(),
         commonjs(),
         babel(),
-        // scss({
-        //     failOnError: true,
-        //     outputStyle: 'compressed',
-        //     output: 'build/adminbasics.min.css'
-        // }),
-        // new WriteRTLCSS({
-        //     input: 'build/adminbasics.min.css',
-        //     output: 'build/adminbasics.rtl.min.css',
-        //     compressed: true
-        // }),
         terser()
     ];
 } else {
@@ -58,19 +45,8 @@ if (ENVIRONEMENT === 'production') {
         nodeResolve(),
         commonjs(),
         babel(),
-        // scss({
-        //     failOnError: true,
-        //     outputStyle: 'expanded',
-        //     output: 'build/adminbasics.css'
-        // }),
-        // WriteRTLCSS({
-        //     input: 'build/adminbasics.css',
-        //     output: 'build/adminbasics.rtl.css',
-        //     compressed: false
-        // }),
     ];
 }
-
 
 module.exports = {
     input: 'src/adminbasicsmain.js',

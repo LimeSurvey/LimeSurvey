@@ -1,22 +1,22 @@
 import path from 'path'
-import webpack from 'webpack'
+import { fileURLToPath } from 'url'
+import { mergeRsbuildConfig, rspack } from '@rsbuild/core'
 
-/** @type { import('@storybook/react-webpack5').StorybookConfig } */
+// Storybook 10 loads this file as native ESM, where __dirname does not exist.
+const dirname = path.dirname(fileURLToPath(import.meta.url))
+
+/** @type { import('storybook-react-rsbuild').StorybookConfig } */
 const config = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
 
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/preset-create-react-app',
-    '@storybook/addon-interactions',
-    '@storybook/addon-jest',
     '@storybook/addon-coverage',
     '@chromatic-com/storybook',
   ],
 
   framework: {
-    name: '@storybook/react-webpack5',
+    name: 'storybook-react-rsbuild',
   },
 
   docs: {},
@@ -30,22 +30,32 @@ const config = {
   logLevel: 'error',
 
   typescript: {
-    reactDocgen: 'react-docgen-typescript',
+    reactDocgen: 'react-docgen',
   },
 
-  webpackFinal: async (config) => {
-    config.plugins.push(
-      new webpack.ProvidePlugin({
-        t: [path.resolve(__dirname, './mocks/i18n.js'), 't'],
-        st: [path.resolve(__dirname, './mocks/i18n.js'), 'st'],
-      })
-    )
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      pluginRegistry: path.resolve(__dirname, '../src/plugins/pluginRegistry'),
-    }
-    return config
-  },
+  rsbuildFinal: (config) =>
+    mergeRsbuildConfig(config, {
+      tools: {
+        rspack: {
+          // jsconfig.json sets baseUrl:"src"; stories reach sbook/ and themes/
+          // through it, so the builder needs it spelled out.
+          resolve: {
+            modules: ['node_modules', path.resolve(dirname, '../src')],
+          },
+          plugins: [
+            new rspack.ProvidePlugin({
+              t: [path.resolve(dirname, './mocks/i18n.js'), 't'],
+              st: [path.resolve(dirname, './mocks/i18n.js'), 'st'],
+            }),
+          ],
+        },
+      },
+      resolve: {
+        alias: {
+          pluginRegistry: path.resolve(dirname, '../src/plugins/pluginRegistry'),
+        },
+      },
+    }),
 }
 
 export default config

@@ -1,36 +1,32 @@
 # adminsidepanel
 
-### Node version needs to be 14 - not higher! ###
+LimeSurvey admin side panel, vanilla JavaScript bundled with webpack.
+
+## Requirements
+
+Node.js 20.19 or later. The CI workflow uses Node.js 24. Node.js 14 is no longer supported; `css-minimizer-webpack-plugin` 8 needs 20.9 and `sass` 1.104 needs 20.19.
 
 ## Project setup
 ```
-yarn install
+yarn install --frozen-lockfile
 ```
 
-### Compiles and hot-reloads for development
+### Build development and production bundles
 ```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
+yarn build
 ```
 
-### Compiles for development
+### Build only the development bundle (writes to `build/`)
 ```
-yarn run build --mod development
-```
-
-### Run your tests
-```
-yarn run test
+yarn dev
 ```
 
-### Lints and fixes files
+### Build only the production bundle (writes to `build.min/`)
 ```
-yarn run lint
+yarn prod
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Rebuild on change
+```
+yarn watch
+```
