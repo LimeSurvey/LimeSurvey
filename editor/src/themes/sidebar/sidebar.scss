@@ -85,7 +85,8 @@
   .dropdown-toggler {
     opacity: 0;
 
-    &:hover {
+    &:hover,
+    &:focus {
       opacity: 1;
     }
   }
