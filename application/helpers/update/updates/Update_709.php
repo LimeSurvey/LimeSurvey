@@ -19,11 +19,14 @@ class Update_709 extends DatabaseUpdateBase
         addColumn("{{responses_" . $sid . "}}", "Q{$parent_qid}", "JSON");
         $alterElements = [];
         foreach ($cols as $col) {
-            $alterElements[] = (!count($alterElements) ?
-            "CASE WHEN LENGTH(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT('\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END," :
-            "CASE WHEN LENGTH(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT(',\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END,");
+            $quotedCol = $this->db->quoteColumnName($col);
+            // JSON_QUOTE() both quotes AND escapes the value (", \, control chars, ...),
+            // so we never build invalid JSON from the raw cell content.
+            // Emit NULL (not '') for empty values so CONCAT_WS skips them and never
+            // produces a leading/trailing/double comma, which would be invalid JSON.
+            $alterElements[] = "CASE WHEN LENGTH({$quotedCol}) > 0 THEN JSON_QUOTE({$quotedCol}) ELSE NULL END";
         }
-        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = CONCAT('[', " . implode($alterElements) . " ']')";
+        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = CONCAT('[', CONCAT_WS(',', " . implode(',', $alterElements) . "), ']')";
         $this->db->createCommand($updateCommand)->execute();
         foreach ($cols as $col) {
             dropColumn("{{responses_" . $sid . "}}", $col);
@@ -42,11 +45,14 @@ class Update_709 extends DatabaseUpdateBase
         addColumn("{{responses_" . $sid . "}}", "Q{$parent_qid}", "json");
         $alterElements = [];
         foreach ($cols as $col) {
-            $alterElements[] = (!count($alterElements) ?
-            "CASE WHEN LEN(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT('\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END," :
-            "CASE WHEN LEN(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT(',\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END,");
+            $quotedCol = $this->db->quoteColumnName($col);
+            // STRING_ESCAPE(..., 'json') escapes ", \, control chars, ... per JSON rules;
+            // we still add the surrounding quotes ourselves since it only escapes content.
+            // Emit NULL (not '') for empty values so CONCAT_WS skips them and never
+            // produces a leading/trailing/double comma, which would be invalid JSON.
+            $alterElements[] = "CASE WHEN LEN({$quotedCol}) > 0 THEN CONCAT('\"', STRING_ESCAPE({$quotedCol}, 'json'), '\"') ELSE NULL END";
         }
-        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = CONCAT('[', " . implode($alterElements) . " ']')";
+        $updateCommand = "UPDATE {{responses_" . $sid . "}} SET Q{$parent_qid} = CONCAT('[', CONCAT_WS(',', " . implode(',', $alterElements) . "), ']')";
         $this->db->createCommand($updateCommand)->execute();
         foreach ($cols as $col) {
             dropColumn("{{responses_" . $sid . "}}", $col);
@@ -67,12 +73,15 @@ class Update_709 extends DatabaseUpdateBase
 
         $alterElements = [];
         foreach ($cols as $col) {
-            $alterElements[] = (!count($alterElements) ?
-            "CASE WHEN LENGTH(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT('\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END," :
-            "CASE WHEN LENGTH(" . $this->db->quoteColumnName($col) . ") > 0 THEN CONCAT(',\"', " . $this->db->quoteColumnName($col) . ", '\"') ELSE '' END,");
+            $quotedCol = $this->db->quoteColumnName($col);
+            // to_json() both quotes AND escapes the value (", \, control chars, ...),
+            // so we never build invalid JSON from the raw cell content.
+            // Emit NULL (not '') for empty values so concat_ws skips them and never
+            // produces a leading/trailing/double comma, which would be invalid JSON.
+            $alterElements[] = "CASE WHEN LENGTH({$quotedCol}) > 0 THEN to_json({$quotedCol})::text ELSE NULL END";
         }
 
-        $updateCommand = "UPDATE {{responses_{$sid}}} SET {$newColumn} = (CONCAT('[', " . implode($alterElements) . " ']')::json)";
+        $updateCommand = "UPDATE {{responses_{$sid}}} SET {$newColumn} = (CONCAT('[', CONCAT_WS(',', " . implode(',', $alterElements) . "), ']')::json)";
         $this->db->createCommand($updateCommand)->execute();
         foreach ($cols as $col) {
             dropColumn("{{responses_" . $sid . "}}", $col);
