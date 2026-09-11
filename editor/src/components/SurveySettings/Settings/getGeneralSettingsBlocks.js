@@ -133,7 +133,7 @@ export const getGeneralSettingsBlocks = () => ({
           const { survey } = globalStates[STATES.SURVEY]
 
           const surveyLanguages = survey.language
-            .concat(` ${survey.additionalLanguages}`)
+            .concat(` ${survey.additionalLanguages ?? ''}`)
             .trim()
             .split(' ')
 

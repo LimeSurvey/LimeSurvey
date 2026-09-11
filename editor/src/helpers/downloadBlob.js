@@ -1,5 +1,8 @@
 // Parses the filename out of a Content-Disposition: attachment; filename="..." header
-export function getFilenameFromContentDisposition(contentDisposition, fallback) {
+export function getFilenameFromContentDisposition(
+  contentDisposition,
+  fallback
+) {
   const match = /filename="?([^"]+)"?/i.exec(contentDisposition || '')
   return match ? match[1] : fallback
 }

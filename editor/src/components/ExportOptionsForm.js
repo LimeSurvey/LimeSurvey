@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
 import { decodeHTMLEntities, STATES } from 'helpers'
 import { useAppState } from 'hooks'
 import { UpgradeSparkleIcon } from 'components/icons'
@@ -15,6 +16,7 @@ export const ExportOptionsForm = ({
   isFreeUser = false,
   onOptionsChange,
 }) => {
+  const { t } = useTranslation()
   const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
   const languageNames = allLanguages?.[userDetails?.lang]
@@ -34,22 +36,22 @@ export const ExportOptionsForm = ({
   }
 
   const responseTypeOptions = [
-    { label: 'Filtered data', value: 'filtered' },
-    { label: 'All data', value: 'all' },
+    { label: t('Filtered data'), value: 'filtered' },
+    { label: t('All data'), value: 'all' },
   ]
 
   // All available export formats, grouped into rows matching the design
   const allExportFormats = [
-    { value: 'csv', label: 'CSV' },
-    { value: 'html', label: 'HTML' },
-    { value: 'pdf', label: 'PDF' },
-    { value: 'spss', label: 'SPSS (sav.)' },
-    { value: 'stata', label: 'STATA (.xml)' },
-    { value: 'r_syntax', label: 'R (syntax)' },
-    { value: 'r_data', label: 'R (data file)' },
-    { value: 'json', label: 'JSON' },
-    { value: 'excel', label: 'Microsoft Excel' },
-    { value: 'word', label: 'Microsoft Word' },
+    { value: 'csv', label: t('CSV') },
+    { value: 'html', label: t('HTML') },
+    { value: 'pdf', label: t('PDF') },
+    { value: 'spss', label: t('SPSS (sav.)') },
+    { value: 'stata', label: t('STATA (.xml)') },
+    { value: 'r_syntax', label: t('R (syntax)') },
+    { value: 'r_data', label: t('R (data file)') },
+    { value: 'json', label: t('JSON') },
+    { value: 'excel', label: t('Microsoft Excel') },
+    { value: 'word', label: t('Microsoft Word') },
   ]
   const formatRows = [
     ['csv', 'html'],
@@ -68,9 +70,9 @@ export const ExportOptionsForm = ({
   }
 
   const csvSeparatorOptions = [
-    { label: 'Comma (,)', value: ',' },
-    { label: 'Semicolon (;)', value: ';' },
-    { label: 'Tab', value: '\t' },
+    { label: t('Comma (,)'), value: ',' },
+    { label: t('Semicolon (;)'), value: ';' },
+    { label: t('Tab'), value: '\t' },
   ]
 
   // Notify parent of form state changes
@@ -103,22 +105,25 @@ export const ExportOptionsForm = ({
                 <UpgradeSparkleIcon width={17} height={16} />
               </span>
               <span className="export-upsell-banner-title">
-                Take your results anywhere - unlock more formats
+                {t('Take your results anywhere - unlock more formats')}
               </span>
             </div>
             <div className="export-upsell-banner-subtitle-row">
               <span className="export-upsell-banner-subtitle">
-                Switch to LimeSurvey Expert to receive the advanced export
-                options.
+                {t(
+                  'Switch to LimeSurvey Expert to receive the advanced export options.'
+                )}
               </span>
             </div>
           </div>
-          <span className="export-upsell-banner-button">Show options</span>
+          <span className="export-upsell-banner-button">
+            {t('Show options')}
+          </span>
         </div>
       )}
 
       <div className="export-options-section">
-        <label className="export-options-label">Export data</label>
+        <label className="export-options-label">{t('Export data')}</label>
         <div className="export-format-options">
           {responseTypeOptions.map((option) => (
             <div key={option.value} className="export-format-option">
@@ -138,7 +143,7 @@ export const ExportOptionsForm = ({
 
       <div className="export-options-section">
         <label className="export-options-label">
-          File formats
+          {t('File formats')}
           {isFreeUser && <UpgradeSparkleIcon className="export-sparkle" />}
         </label>
         <div className="export-format-grid">
@@ -173,7 +178,9 @@ export const ExportOptionsForm = ({
 
       {type === 'csv' && (
         <div className="export-options-section">
-          <label className="export-options-label">CSV file seperator</label>
+          <label className="export-options-label">
+            {t('CSV file separator')}
+          </label>
           <div className="export-format-options">
             {csvSeparatorOptions.map((option) => (
               <div key={option.value} className="export-format-option">
@@ -194,7 +201,7 @@ export const ExportOptionsForm = ({
 
       {languages.length > 1 && (
         <div className="export-options-section">
-          <label className="export-options-label">Export language</label>
+          <label className="export-options-label">{t('Export language')}</label>
           <div className="export-format-options">
             {languages.map((lang) => (
               <div key={lang} className="export-format-option">

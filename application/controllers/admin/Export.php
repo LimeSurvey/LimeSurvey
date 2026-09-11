@@ -226,7 +226,8 @@ class Export extends SurveyCommonAction
 
             if (App()->request->getParam('modal')) {
                 $data['selectedColumns'] = $this->getResponseExportColumns($iSurveyID, array_keys($aFields));
-                $data['responseFilters'] = App()->request->getParam('SurveyDynamic', array());
+                $rawFilters = App()->request->getParam('SurveyDynamic', array());
+                $data['responseFilters'] = is_array($rawFilters) ? $rawFilters : array();
                 $this->getController()->renderPartial('/admin/export/exportresults_modal', $data);
                 Yii::app()->end();
             }
@@ -320,7 +321,9 @@ class Export extends SurveyCommonAction
         } elseif (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_' . $iSurveyID])) {
             $sFilter = Yii::app()->session['statistics_selects_' . $iSurveyID];
         } elseif (Yii::app()->request->getPost('exportdata') === 'filtered') {
-            $sFilter = $this->getResponseBrowseFilter($survey, Yii::app()->request->getPost('SurveyDynamic', array()));
+            $rawFilters = Yii::app()->request->getPost('SurveyDynamic', array());
+            $filters = is_array($rawFilters) ? $rawFilters : array();
+            $sFilter = $this->getResponseBrowseFilter($survey, $filters);
         } else {
             $sFilter = '';
         }
@@ -346,7 +349,9 @@ class Export extends SurveyCommonAction
             return $aAvailableColumns;
         }
 
-        return array_values(array_intersect($aAvailableColumns, $aFilteredColumns));
+        $filteredColumns = array_values(array_intersect($aAvailableColumns, $aFilteredColumns));
+
+        return $filteredColumns ?: $aAvailableColumns;
     }
 
     /**
@@ -381,7 +386,7 @@ class Export extends SurveyCommonAction
         }
 
         foreach ($aFilters as $sColumn => $sValue) {
-            if ($sValue === '' || in_array($sColumn, array('id', 'lastpage', 'submitdate', 'startlanguage', 'completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter')) || !in_array($sColumn, $aResponseColumns)) {
+            if (!is_scalar($sValue) || $sValue === '' || in_array($sColumn, array('id', 'lastpage', 'submitdate', 'startlanguage', 'completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter')) || !in_array($sColumn, $aResponseColumns)) {
                 continue;
             }
 

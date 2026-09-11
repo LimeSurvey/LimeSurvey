@@ -184,6 +184,11 @@
         box-shadow: none !important;
       }
 
+      &:focus-visible {
+        outline: 2px solid #0d6efd !important;
+        outline-offset: 2px;
+      }
+
       &:checked {
         background-color: #ffffff !important;
         background-size: initial !important;

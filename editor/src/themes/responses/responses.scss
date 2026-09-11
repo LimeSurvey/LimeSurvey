@@ -620,6 +620,7 @@
 
 .export-results-modal {
   .modal-dialog {
+    width: min(807px, calc(100vw - 2rem));
     max-width: 807px;
   }
 
@@ -646,7 +647,7 @@
       font-size: 24px;
       line-height: 32px;
       letter-spacing: -0.017em;
-      color: #1E1E1E;
+      color: #1e1e1e;
     }
   }
 
@@ -656,4 +657,3 @@
     padding: 0 24px 12px;
   }
 }
-

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ExportOptionsForm } from 'components'
 
 /**
@@ -6,27 +6,35 @@ import { ExportOptionsForm } from 'components'
  * Displays format/language/options selection.
  * Export action is handled by parent component via ref.
  */
-export const ExportResponsesModal = ({ 
-  surveyId, 
-  surveyLanguage, 
-  additionalLanguages, 
+export const ExportResponsesModal = ({
+  surveyId,
+  surveyLanguage,
+  additionalLanguages,
   isFreeUser = false,
-  exportRef
+  exportRef,
 }) => {
   const [exportOptions, setExportOptions] = useState({
+    responseType: 'filtered',
     type: 'csv',
     language: surveyLanguage,
     answerFormat: 'long',
-    csvSeparator: ','
+    csvSeparator: ',',
   })
 
-  // Expose export options to parent via ref
-  if (exportRef) {
+  useEffect(() => {
+    if (!exportRef) {
+      return undefined
+    }
+
     exportRef.current = {
       surveyId,
-      options: exportOptions
+      options: exportOptions,
     }
-  }
+
+    return () => {
+      exportRef.current = null
+    }
+  }, [exportOptions, exportRef, surveyId])
 
   return (
     <div className="export-responses-modal">
@@ -39,5 +47,3 @@ export const ExportResponsesModal = ({
     </div>
   )
 }
-
-
