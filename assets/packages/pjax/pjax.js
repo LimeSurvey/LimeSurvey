@@ -1260,6 +1260,8 @@
    *
    * The returned function iterates over `elements` (new <link> elements) and, for each one, checks `oldElements` for a stylesheet with a matching `href` (preferring the element's `href` attribute and falling back to the DOM `href` property). If no match is found, it creates and appends a `<link rel="stylesheet" type="text/css">` with the new stylesheet's `href` to the document head.
    *
+   * It also removes stylesheets it previously injected (marked with `data-pjax-injected`) when they are no longer present on the page being navigated to, so page-specific styles (e.g. one that hides the sidebar) don't leak into pages loaded afterwards, including via the browser back/forward buttons.
+   *
    * @return {Function} A function that accepts `(elements, oldElements)` and updates the document's stylesheets.
    * @param {Array|NodeList|HTMLCollection} elements - New stylesheet link elements to consider for insertion.
    * @param {Array|NodeList|HTMLCollection} oldElements - Existing stylesheet link elements to compare against.
@@ -1271,6 +1273,26 @@
       _this.log.log("styleheets old elements", oldElements);
 
       _this.log.log("styleheets new elements", elements);
+
+      var newHrefs = ArrayFrom(elements).map(function (newEl) {
+        return newEl.getAttribute("href") || newEl.href;
+      });
+
+      ArrayFrom(oldElements).forEach(function (oldEl) {
+        if (oldEl.getAttribute("data-pjax-injected") !== "true") {
+          return;
+        }
+
+        var oldHref = oldEl.getAttribute("href") || oldEl.href;
+
+        if (newHrefs.indexOf(oldHref) === -1 && oldEl.parentNode) {
+          if (_this.log) {
+            _this.log.log("stylesheet no longer needed => remove from head", oldHref);
+          }
+
+          oldEl.parentNode.removeChild(oldEl);
+        }
+      });
 
       forEachEls(elements, function (newEl) {
         var resemblingOld = ArrayFrom(oldElements).reduce(function (acc, oldEl) {
@@ -1294,6 +1316,7 @@
           link.setAttribute('href', newEl.getAttribute('href') || newEl.href);
           link.setAttribute('rel', 'stylesheet');
           link.setAttribute('type', 'text/css');
+          link.setAttribute('data-pjax-injected', 'true');
           head.appendChild(link);
         }
       });
