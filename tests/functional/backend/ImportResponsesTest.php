@@ -62,7 +62,6 @@ class ImportResponsesTest extends TestBaseClass
             $this->assertEquals($responses2[0]['third'], null);
             $survey = \Survey::model()->findByPk($result['newsid']);
             $surveyDeactivator->deactivate($survey->sid, ['ok' => true], true);
-            App()->db->createCommand("drop table {{responses_" . $survey->sid . "}}")->execute();
             $questions[1]->encrypted = 'N';
             $questions[1]->save();
             $surveyActivator->activate($survey->sid, ['restore' => true], true);
