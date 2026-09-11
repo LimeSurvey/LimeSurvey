@@ -123,4 +123,22 @@ describe('ColumnsManagement', () => {
       'response-actions',
     ])
   })
+
+  test('shows a styled question code when the question text is empty', async () => {
+    const columns = [
+      createColumn({
+        id: '42',
+        header: 'Q00',
+        qid: 42,
+        questionLabel: { code: 'Q00', text: '' },
+      }),
+    ]
+
+    await renderWithProviders(
+      <ColumnsManagement table={{ getAllLeafColumns: () => columns }} />
+    )
+
+    expect(screen.getByText('Q00')).toHaveClass('column-question-code')
+    expect(screen.getByLabelText('Q00')).toBeInTheDocument()
+  })
 })

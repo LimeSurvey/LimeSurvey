@@ -105,4 +105,38 @@ describe('generateColumns', () => {
 
     expect(columns.some((column) => column.meta?.timingType)).toBe(false)
   })
+
+  test('uses the question code when the question text is empty', () => {
+    const columns = generateColumns(
+      { responseField: { qid: 34 } },
+      {
+        sid: 123,
+        language: 'en',
+        languages: [],
+        questionGroups: [
+          {
+            questions: [
+              {
+                qid: 34,
+                title: 'Q00',
+                l10ns: { en: { question: '' } },
+              },
+            ],
+          },
+        ],
+      }
+    )
+
+    expect(columns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: '34',
+          header: 'Q00',
+          meta: expect.objectContaining({
+            questionLabel: { code: 'Q00', text: '' },
+          }),
+        }),
+      ])
+    )
+  })
 })

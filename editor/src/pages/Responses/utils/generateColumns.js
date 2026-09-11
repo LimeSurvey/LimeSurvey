@@ -20,7 +20,7 @@ const createQuestionLabel = (question, language) => {
   const code = question?.title
   const text = htmlToPlainText(question?.l10ns?.[language]?.question)
 
-  return code && text ? { code, text } : undefined
+  return code ? { code, text } : undefined
 }
 
 const createTimingColumn = (
@@ -216,7 +216,7 @@ export const generateColumns = (surveyQuestions, survey, timingFields = []) => {
     columns.push({
       accessorKey: qid.toString(),
       id: qid.toString(),
-      header: questionLabel?.text ?? '',
+      header: questionLabel?.text || questionLabel?.code || '',
       meta: {
         question,
         questionNumber,
