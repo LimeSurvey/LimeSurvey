@@ -113,10 +113,12 @@ class Update_706 extends DatabaseUpdateBase
      */
     private function dropOldEmailIndex()
     {
+        setTransactionBookmark();
         try {
             $this->db->createCommand()->dropIndex('{{idx2_users}}', '{{users}}');
         } catch (\Exception $e) {
             // Index may not exist in all installations.
+            rollBackToTransactionBookmark();
         }
     }
 

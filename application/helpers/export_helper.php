@@ -618,7 +618,14 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                 $ftype = $fielddata['type'];
                 $fsid = $fielddata['sid'];
                 $fgid = $fielddata['gid'];
-                $code = mb_substr((string) $fielddata['fieldname'], strlen("Q" . $qid));
+                $code = '';
+                if (isset($fielddata['aid']) && $fielddata['aid'] !== '') {
+                    $code = (string) $fielddata['aid'];
+                    // Dual scale arrays share the same aid for both scales, distinguish them by scale number.
+                    if (!empty($fielddata['scale']) && isset($fielddata['scale_id'])) {
+                        $code .= '_' . ((int) $fielddata['scale_id'] + 1);
+                    }
+                }
                 $varlabel = $fielddata['question'];
                 if (isset($fielddata['scale'])) {
                     $varlabel = "[{$fielddata['scale']}] " . $varlabel;

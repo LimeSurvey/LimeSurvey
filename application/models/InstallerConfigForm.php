@@ -134,6 +134,9 @@ class InstallerConfigForm extends CFormModel
     public $isPhpImapPresent = false;
 
     /** @var bool */
+    public $isPhpCurlPresent = false;
+
+    /** @var bool */
     public $isPhpVersionOK = false;
 
     /** @var bool */
@@ -167,6 +170,7 @@ class InstallerConfigForm extends CFormModel
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
             array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
             array('dbtype', 'in', 'range' => array_keys($this->supportedDbTypes), 'on' => 'database'),
+            array('dbtype', 'validateDBVersion', 'on' => 'database'),
             array('dbengine', 'validateDBEngine', 'on' => 'database'),
             array('dbengine', 'in', 'range' => array_keys($this->dbEngines), 'on' => 'database'),
             //Optional
@@ -221,6 +225,7 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpLdapPresent = extension_loaded('ldap');
         $this->isPhpImapPresent = extension_loaded('imap');
         $this->isPhpZipPresent = extension_loaded('zip');
+        $this->isPhpCurlPresent = extension_loaded('curl');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
         $this->isCollatorPresent = class_exists('Collator');
 
@@ -284,6 +289,39 @@ class InstallerConfigForm extends CFormModel
     public function getMemoryLimit()
     {
         return convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024;
+    }
+
+    /**
+     * Verifies that the connected database server meets the documented minimum
+     * version requirements. Adds a validation error if it does not.
+     * @param string $attribute
+     * @return void
+     */
+    public function validateDBVersion($attribute)
+    {
+        // Skip if the connection could not be established (a connection error is
+        // already reported in that case).
+        if (empty($this->db)) {
+            return;
+        }
+        try {
+            $driverName = $this->db->getDriverName();
+            $serverVersion = $this->db->getServerVersion();
+        } catch (\Exception $e) {
+            return;
+        }
+        $requirement = \LimeSurvey\Helpers\DbVersionHelper::getRequirement($driverName, $serverVersion);
+        if (!$requirement['supported']) {
+            $this->addError(
+                $attribute,
+                sprintf(
+                    gT('Your database server does not meet the minimum requirements. %s %s or newer is required, but the server reports version %s.'),
+                    $requirement['type'],
+                    $requirement['minimumLabel'],
+                    $requirement['current']
+                )
+            );
+        }
     }
 
     public function validateDBEngine($attribute)

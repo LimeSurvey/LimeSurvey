@@ -12,6 +12,7 @@ use Condition;
 use LSYii_Application;
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\{
+    QuestionAttributeHelper,
     Proxy\ProxySettingsUser,
     Proxy\ProxyQuestion,
     Exception\PersistErrorException,
@@ -32,6 +33,7 @@ class QuestionService
     private Survey $modelSurvey;
     private Condition $modelCondition;
     private L10nService $l10nService;
+    private QuestionAttributeHelper $questionAttributeHelper;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private LSYii_Application $yiiApp;
@@ -41,6 +43,7 @@ class QuestionService
         Survey $modelSurvey,
         Condition $modelCondition,
         L10nService $l10nService,
+        QuestionAttributeHelper $questionAttributeHelper,
         ProxySettingsUser $proxySettingsUser,
         ProxyQuestion $proxyQuestion,
         LSYii_Application $yiiApp
@@ -49,6 +52,7 @@ class QuestionService
         $this->modelSurvey = $modelSurvey;
         $this->modelCondition = $modelCondition;
         $this->l10nService = $l10nService;
+        $this->questionAttributeHelper = $questionAttributeHelper;
         $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyQuestion = $proxyQuestion;
         $this->yiiApp = $yiiApp;
@@ -377,11 +381,17 @@ class QuestionService
             )
             && $data['question']['save_as_default'] == 'Y'
         ) {
+            $advancedSettings = $data['advancedSettings'] ?? [];
+            if (!empty($data['loadCurrentAdvancedSettings'])) {
+                $advancedSettings = $this->getCurrentAdvancedSettings(
+                    (int) $data['question']['qid']
+                );
+            }
             $this->proxySettingsUser->setUserSetting(
                 'question_default_values_'
                 . $data['question']['type'],
                 ls_json_encode(
-                    $data['advancedSettings']
+                    $advancedSettings
                 )
             );
         } elseif (
@@ -396,6 +406,40 @@ class QuestionService
                 . $data['question']['type']
             );
         }
+    }
+
+    /**
+     * Return the currently persisted question attributes in the same shape as
+     * advancedSettings. Patch requests update attributes independently from
+     * the question, so action-only requests do not contain advancedSettings.
+     */
+    private function getCurrentAdvancedSettings(int $questionId): array
+    {
+        $attributes = [];
+        foreach ($this->getQuestionAttributes($questionId) as $attribute) {
+            $attributes[0][$attribute->attribute][$attribute->language] = $attribute->value;
+        }
+        return $attributes;
+    }
+
+    /**
+     * Return the current user's saved advanced attribute defaults for a
+     * question type, flattened to the API's attribute => language => value
+     * representation.
+     */
+    public function getDefaultAttributeValues(string $questionType): array
+    {
+        return $this->questionAttributeHelper
+            ->getUserDefaultsForQuestionType($questionType);
+    }
+
+    /**
+     * Return the current user's saved attribute defaults indexed by question type.
+     */
+    public function getDefaultAttributeValuesByQuestionType(): array
+    {
+        return $this->questionAttributeHelper
+            ->getUserDefaultsByQuestionType();
     }
 
     /**
